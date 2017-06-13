@@ -9154,35 +9154,36 @@ footer {
 .welcome-message a {
   padding-right: 7.5px;
 }
-body.errorpage header {
+#errorpage header {
   margin-bottom: 0px;
 }
-body.errorpage .wrapper {
+#errorpage.wrapper {
   background: url(assets/img/background/error_bg.jpg) no-repeat;
   padding: 0;
+  margin-top: -15px;
 }
-body.errorpage .wrapper .main-container {
+#errorpage.wrapper .main-container {
   background: none;
 }
-body.errorpage .errorpage-content {
+#errorpage .errorpage-content {
   color: #222222;
   padding: 75px 0px 120px;
 }
-body.errorpage .errorpage-content h1 {
+#errorpage .errorpage-content h1 {
   font-size: 70px;
   opacity: 0.85;
 }
-body.errorpage .errorpage-content .error-text {
+#errorpage .errorpage-content .error-text {
   background: rgba(238, 238, 238, 0.8);
   padding: 15px;
 }
-body.errorpage .errorpage-content input.form-control {
+#errorpage .errorpage-content input.form-control {
   border-color: #cccccc;
   background: rgba(238, 238, 238, 0.8);
   box-shadow: none;
   color: #222222;
 }
-body.errorpage .errorpage-content .btn-primary {
+#errorpage .errorpage-content .btn-primary {
   color: #1db5b5;
   font-weight: normal;
   bottom: 3px;
