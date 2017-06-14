@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/bin
 
 # dependencies
 /node_modules
@@ -28,9 +29,7 @@
 /.sass-cache
 /connect.lock
 /coverage
-/libpeerconnection.log
-npm-debug.log
-testem.log
+*.log
 /typings
 
 # e2e
@@ -40,3 +39,14 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# backup and compiled files
+**~
+*.bak
+*.class
+*.pyc
+
+# Gradle Files
+**/build/
+**/target/
+**/.gradle
