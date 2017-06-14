@@ -7,7 +7,6 @@ plugins {
 http://akhikhl.github.io/gretty-doc/Getting-started.html 
  */
 apply plugin: 'war'
-apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 
 node {
     version = '6.10.3'
@@ -30,6 +29,10 @@ task npmBuild(type: NpmTask, dependsOn:npmInstall, description: 'run npm distrib
     outputs.dir('dist')
 }
 
+task npmServe(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution') {
+    args = ['run', 'start']
+}
+
 task copyNodeModulesToDist(type:Copy, dependsOn:npmBuild) {
     from 'node_modules'
     into 'dist/node_modules'
@@ -37,10 +40,6 @@ task copyNodeModulesToDist(type:Copy, dependsOn:npmBuild) {
 }
 gradle.projectsEvaluated {
     [war]*.dependsOn copyNodeModulesToDist
-    tasks.find { 
-        it.class.name.startsWith('org.akhikhl.gretty.') && 
-        ( it.class.name.contains('Start') || it.class.name.contains('Before') )
-    }*.dependsOn copyNodeModulesToDist    
 }    
 
 war { 
@@ -48,15 +47,6 @@ war {
     webXml = file('src/web.xml')
 } 
 war.dependsOn npmBuild
-
-gretty {
-    extraResourceBase 'dist' /** use npm generated output */
-    
-    /** same as angular cli */
-    httpPort = 4200 
-    contextPath = '/'
-    integrationTestTask = 'test'
-}
 
 apply plugin:'groovy'
 
