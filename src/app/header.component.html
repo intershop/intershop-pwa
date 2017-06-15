@@ -18,12 +18,12 @@
 <li><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatus --><a class="compare-status" href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-Show" rel="nofollow">
 <span class="glyphicon-equalizer glyphicon glyphicon-header-icon"></span>
 <span class="compare-count-text" data-ajax-content="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-Status"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatusData --><div id="compare-count" data-compare-ids="">0</div>
-<span class="hidden-xs">LOCALIZATION TESTS</span>
+<span class="hidden-xs">{{ 'product.compare.link' | translate }}</span>
 <script type="text/javascript">RetailShop.setCompareState();</script><!-- END TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatusData --></span>
 </a><!-- END TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatus --></li>
 <li><!-- BEGIN TEMPLATE app_sf_responsive/default/account/wishlist/WishlistStatus --><a href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewUserAccount-ShowLogin?TargetPipeline=ViewWishlist-ViewAll" class="" rel="nofollow">
 <span class="glyphicon-heart glyphicon glyphicon-header-icon"></span>
-<span class="hidden-xs">WITH ngx-translate</span>
+<span class="hidden-xs">{{ 'header.wishlists.text' | translate }}</span>
 </a><!-- END TEMPLATE app_sf_responsive/default/account/wishlist/WishlistStatus --></li>
 <li class="visible-xs">
 <a href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewCart-View"><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
