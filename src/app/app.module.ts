@@ -5,10 +5,10 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header.component';
-import { FooterComponent } from './footer.component';
-import { FamilyPageComponent } from './pages/family-page.component';
-import { ErrorPageComponent } from './pages/error-page.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { FamilyPageComponent } from './pages/family-page/family-page.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: Http) {
