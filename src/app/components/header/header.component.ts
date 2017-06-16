@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.categories = this.categoriesService.getCategories();
+    this.categoriesService.getCategories().then(categories => this.categories = categories);
   }
 
 }
