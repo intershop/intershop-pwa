@@ -8,8 +8,8 @@ export class CategoriesService {
 
   constructor() { }
 
-  getCategories(): Category[] {
-    return CATEGORIES;
+  getCategories(): Promise<Category[]> {
+    return Promise.resolve(CATEGORIES);
   }
 
 }
