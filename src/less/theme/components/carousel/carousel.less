@@ -1,0 +1,67 @@
+/*********** CAROUSEL *************/
+
+.carousel-control {
+	color: @carousel-control-color;
+	text-shadow: none;
+	
+	// Set gradients for backgrounds
+	&.left {
+		background-image: none;
+	}
+	&.right {
+		background-image: none;
+	}
+	
+	@media screen and (min-width: @screen-sm-min) {
+		.glyphicon-chevron-left,
+		.glyphicon-chevron-right,
+		.icon-prev,
+		.icon-next {
+			width: 20px;
+			height: 20px;
+			margin-top: -10px;
+			font-size: 20px;
+		}
+	}
+}
+
+.carousel-indent {
+	.carousel-inner {
+		padding-left: (@space-default * 3);
+		padding-right: (@space-default * 3);
+		text-align: center;
+	}
+}
+
+.carousel-indicators {
+	li {
+		width: 11px;
+		height: 11px;
+		margin: 0px 5px;
+		background-color: @color-inverse;
+	}
+	.active {
+		width: 11px;
+		height: 11px;
+		margin: 0px 5px;
+		border: 1px solid @carousel-indicator-active-bg;
+	}
+}
+
+//Recently Viewed
+.recently-viewed-links-container {
+	
+	.recently-viewed-links {
+		list-style: none;
+		margin-top: 17px;
+		
+		@media (max-width:@screen-sm-max) {
+			margin-top: 0px;
+		}
+		
+		li {
+			display: inline-block;
+			padding-left: @space-default;
+		}
+	}
+}

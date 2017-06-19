@@ -1,0 +1,283 @@
+/**************** CATEGORY FILTER PANEL ******************/
+
+/* FILTER PANEL */
+
+.category-panel h3 {
+	text-transform: uppercase;
+}
+
+.filter-panel {
+	padding-right: (@space-default *2);
+	
+	@media (max-width:@screen-sm-max) {
+		padding-right: 0px;
+	}
+	
+	@media (max-width:@screen-xs-max) {
+		margin-top: @space-default;
+	}
+
+	h3 {
+		span {
+			color: @text-color-corporate;
+			font-size: 12px;
+		}
+	}
+	
+	.filter-group {
+		&:first-child {
+			h3 {
+				margin-top: 0;
+				cursor: initial;
+			}
+		}
+	}
+}
+
+.filter-group {
+	border-bottom: @border-width-default solid @border-color-light;
+	padding-bottom: @space-default;
+	margin-bottom: @space-default;
+	position: relative;
+	font-size: 14px;
+	
+	.filter-list {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+	
+	.filter-checkbox {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+	
+	.glyphicon {
+		
+		&:hover {
+			color: @link-hover-color;
+			cursor: pointer;
+		}
+	}
+	
+	
+	li {
+		&.filter-item {
+			padding: 3px 0;
+			color: @text-color-quarternary;
+			
+			&.filter-colour {
+				padding: 0;
+			}
+
+			a {
+				&.filter-item-name {
+					color: @text-color-quarternary;
+				}
+
+				&.filter-swatch {
+					span[style="background-color:#fcfcfc;"] {
+						border: 1px solid @border-color-light;
+					}
+				}
+			}
+			span {
+				&.icon-notselected {
+					background-color: @color-tertiary;
+					border: 1px solid @border-color-light;
+				    display: inline-block;
+				    height: 15px;
+				    margin-right: (@space-default / 3);
+				    width: 15px;
+				}
+				&.filter-count {
+					margin-left: (@space-default / 3);
+				}
+			}
+		}
+		
+		&.filter-selected {
+			color: @text-color-secondary;
+			
+			a {
+				&.filter-item-name {
+					color: @text-color-secondary;
+				}
+				
+				&.filter-clear {
+					float: right;
+					width: 16px;
+					height: 16px;
+					text-align: center;
+					line-height: 14px;
+				}
+			}
+			span {
+				&.icon-selected {
+					background-color: @color-corporate;
+					border: 1px solid @border-color-default;
+				    display: inline-block;
+				    height: 15px;
+				    margin-right: (@space-default / 3);
+				    width: 15px;
+				}
+			}
+			&.filter-colour {
+
+				span {
+					border: 2px solid @color-corporate;
+				}
+			}
+		}
+	
+		&.filter-layer1 {
+			.filter-list-item-layer(1);
+		}
+		&.filter-layer2 {
+			.filter-list-item-layer(2);
+		}
+		&.filter-layer3 {
+			.filter-list-item-layer(3);
+		}
+		&.filter-layer4 {
+			.filter-list-item-layer(4);
+		}
+		&.filter-layer5 {
+			.filter-list-item-layer(5);
+		}
+		&.filter-layer6 {
+			.filter-list-item-layer(6);
+		}
+		&.filter-layer7 {
+			.filter-list-item-layer(7);
+		}
+		&.filter-layer8 {
+			.filter-list-item-layer(8);
+		}
+		&.filter-layer9 {
+			.filter-list-item-layer(9);
+		}
+		
+	}
+	
+	> ul {
+		.filter-list {
+			max-height: 155px;
+			overflow-y: auto;
+		}
+	}
+}
+
+
+.non-parametric-panel {
+	.filter-group {
+		padding-bottom: 0;
+		margin-bottom: 0;
+		border-bottom: none;
+
+		ul {
+			ul {
+				padding-left: 15px;
+
+				&.filter-list {
+				  	max-height: none;
+					overflow-y: visible;
+					padding-top: 5px;
+				}
+			}
+			
+			li {
+				&.filter-item {
+					a {
+					 	&.filter-item-name {
+			  				&.filter-selected {
+								color: @text-color-secondary;
+							}
+			  			}		  		
+					}
+			  	}
+			}
+		}
+	}
+}
+
+input {
+	&.filter-checkbox {
+		display: none;
+	}
+} 
+
+label {
+	&.filter-checkbox-label {
+		font-size: 0;
+		text-indent: 999em;
+		width: 12px;
+		height: 12px;
+		background: @color-tertiary;
+		float: left;
+		margin: 3px 5px 0 0;
+		border: @border-width-default solid @border-color-light;
+		
+		&.selected {
+			background: @color-corporate;
+			border: @border-width-default solid @border-color-light;
+		}
+	}
+}
+
+.filter-clear .glyphicon {
+	font-size: 10px;
+	line-height: 14px;
+}
+
+.filter-colour {
+	float: left;
+	display: inline-block;
+	margin-right: 3px;
+}
+
+.filter-swatch {
+	span {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		display: inline-block;
+
+		&.filter-colour-bright {
+			border: 1px solid @border-color-light;
+		}
+	}
+}
+
+@media (max-width:@screen-xs-max) {	
+		
+	.mobile-filter-toggle {
+		display: block;
+		padding: @space-default 0;
+		text-align: center;
+		text-transform: uppercase;
+		font-size: 15px;
+		font-family: @font-family-condensedregular;
+		font-weight: 700;
+		margin-bottom: @space-default;
+		
+		&.collapsed {
+			.glyphicon-chevron-up {
+				&:before {
+					content: "\e114";
+				}
+			}
+		}
+		
+		&:hover {
+			text-decoration: none;
+		}
+		
+		.glyphicon{
+			display: block;
+			font-size: 12px;
+		}
+	}
+	
+}

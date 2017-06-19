@@ -1,0 +1,71 @@
+
+//
+// VARIATION SELECTION
+
+.imageVariationList {
+	&.swatchImage {
+		margin: 10px 0;
+		padding: 0;
+
+		.imageVariationListItem {
+			display: inline-block;
+			list-style: outside none none;
+		    margin-right: 5px;
+
+		    a {		
+		    	padding: 1px;
+		    	border-radius: 50%;
+		    	border: 1px solid transparent;
+		    	    	
+		    	&.selected {
+		    		background: #fff;
+				    display: block;
+				    border: 1px solid @border-color-light;
+		    	}
+
+		    	img {
+		    		border-radius: 50%;
+		    		width: 32px;
+		    	}
+
+		    }
+		}
+	}	
+
+	&.colorCode {
+
+		margin: 10px 0;
+		padding: 0;
+
+		.imageVariationListItem {
+			display: inline-block;
+		    list-style: outside none none;
+		    margin-right: 5px;	
+
+		    a {
+		    	padding: 1px;
+		    	border-radius: 50%;
+			    display: block;
+			    border: 1px solid transparent;	 	
+
+		    	&.selected {		    		
+		    		border: 1px solid @border-color-light;	 		    		
+		    	}
+
+		    	span {
+		    		color: #333;
+		    		font-weight: normal;		    		
+		    		border-radius: 50%;
+			    	display: block;
+			    	width: 32px;
+			    	height: 32px;
+			    	border: 1px solid transparent;	 
+		    	}
+
+
+
+		    }
+		}
+	}	
+	
+}

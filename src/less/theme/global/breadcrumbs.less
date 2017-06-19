@@ -1,0 +1,34 @@
+/******* GLOBAL BREADCRUMBS *********/
+
+.breadcrumbs {
+	padding: 0 @space-default @space-default @space-default;
+	
+	@media (max-width:@screen-xs-max) {
+		display: none;
+	}
+	
+	 ol {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	
+	li {
+		float: left;
+		text-transform: uppercase;
+		font-size: 12px;
+		
+		span {
+			margin: 0 (@space-default / 2);
+		}
+		
+		a {
+			color: @text-color-quarternary;
+			font-size: 12px;
+			
+			&:hover {
+				color: darken(@text-color-quarternary, 10%);
+			}
+		}
+	}
+}
