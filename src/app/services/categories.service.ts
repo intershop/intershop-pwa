@@ -9,14 +9,18 @@ import { CATEGORIES } from './mock-categories';
 @Injectable()
 export class CategoriesService {
 
-  private categoriesUrl = 'api/categories';  // URL to web api
+  private categoriesUrl = 'https://localhost:4443/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/categories';  // real Intershop REST call
+  //private categoriesUrl = 'api/categories';  // URL to web api
 
   constructor(private http: Http) {}
 
   getCategories(): Promise<Category[]> {
   return this.http.get(this.categoriesUrl)
              .toPromise()
-             .then(response => response.json().data as Category[])
+             .then(response => {
+               console.log(response.json().elements); 
+               return response.json().elements as Category[];
+              })
              .catch(this.handleError);
   }
 
