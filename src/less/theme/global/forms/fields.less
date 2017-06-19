@@ -1,0 +1,53 @@
+fieldset {
+	margin-bottom: (@space-default);
+}
+
+.form-control:focus {
+	border-color: @border-color-corporate;
+}
+
+input.quantity {
+	min-width: 80px; 
+	max-width: 100%;
+}
+
+input[type="radio"] ~ input[type="text"] {
+	margin-left: @space-default /2;
+	
+	@media (max-width: @screen-xs-max) {
+		display: inline-block;
+		width: 90%;		
+	}
+}
+
+// ERROR 
+.has-feedback .form-control-feedback {
+	height: 34px;
+	line-height: 34px;
+	position: absolute;
+}
+
+.bv-form .has-feedback select + .form-control-feedback {
+    right: 28px;
+}
+
+
+// 	REQUIRED FIELDS
+
+.indicates-required {	
+	color: @text-color-quarternary;
+
+	.required {
+		color: @text-color-special;
+		margin-right: 4px;
+	}
+}
+
+label {	
+	.required {
+		color: @text-color-special;
+		margin-left: 4px;
+	}
+}
+
+

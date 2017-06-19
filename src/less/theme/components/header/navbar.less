@@ -1,0 +1,46 @@
+
+//
+// NAVBAR ( Bootstrap )
+
+@media (max-width:@screen-xs-max) {
+
+	.navbar-toggle {
+		position: relative;
+		float: right;
+		margin: 0 0 0 0;
+		padding: 17px 17px;
+		background-color: @color-primary;
+		background-image: none;
+		border: @border-width-default solid transparent;
+		.round-corner(0px);
+
+		&:focus {
+			outline: none;
+		}
+		
+		& .icon-bar {
+			display: block;
+			width: 22px;
+			height: 2px;
+			.round-corner(1px);
+			background: @color-inverse;
+		}
+
+	}
+
+	.navbar-collapse {
+		
+		.container {
+			margin: 0 -@navbar-padding-horizontal;
+		}
+		
+	}
+	
+}
+
+.navbar-nav {
+  > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
