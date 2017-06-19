@@ -1,0 +1,140 @@
+/* CSS for PDF / Print */
+
+/* basics */
+	
+	@page { 
+		size: 29.7cm 42.0cm;
+		margin: 17mm; 
+		marks: none;
+	}
+	
+	body {
+		background: #fff !important;
+		font-family: @font-family-base;
+		font-size: 14px;
+		line-height: 1.42857143;
+		color: #333333;
+		background-color: #ffffff;
+	}
+	
+	.clear {
+		clear: both !important;
+	}
+	
+/* end basics */
+		
+/* END PDF / Print Code */
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: @font-family-condensedregular;
+    font-weight: 500;
+    color: #222;
+    line-height: 1.1;
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.cart-full-view {
+	width: 60%;
+	margin: 0 15px 0 0;
+}
+
+.order-summary{
+	width: 30%;
+}
+
+.cart-full-view, .order-summary{
+	display: table-cell;
+}
+
+td, tr, table {
+	border: 0 !important;
+	padding: 0 !important;
+	margin: 0;
+	text-align: left;
+}
+
+th {
+	padding: 0 0 10px 0 !important;
+	text-align: left;
+	border: 0 !important;
+}
+
+td.right, th.right {
+	text-align: right;
+}
+
+table img {
+	width: 90%;
+}
+
+table td.first-col {
+	padding: 0 20px 0 0 !important;
+}
+
+a {
+  color: #00abea;
+  text-decoration: none;
+}
+
+.cost-summary {
+	background: #efefef;
+	padding: 0 10px;
+	border-top: 1px solid #ccc;
+	margin: 10px 0 0 0;
+}
+
+.cost-summary dl {
+	display: table;
+	width: 100%;
+}
+
+.cost-summary dl dt {
+	float: left;
+	width: 60%;
+	text-align: left;
+	margin: 0;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.cost-summary dl span.promo-applied {
+	display: inline-block;
+	text-align: left;
+	width: 100%;
+}
+
+.cost-summary dl dd {
+	text-align: right;
+	width: 40%;
+	margin: 0;
+	float: left;
+}
+
+.cost-summary dl dd+dt {
+	clear: both;
+}
+
+hr{
+	margin: 10px 0;
+}
+
+.cost-summary td.col-width-1 {
+	width: 15%;
+}
+
+.cost-summary td.col-width-2 {
+	width: 40%;
+}
+
+.cost-summary td.col-width-3 {
+	width: 35%;
+}
+
+.cost-summary td.col-width-4 {
+	width: 65%;
+}

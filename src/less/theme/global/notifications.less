@@ -1,0 +1,57 @@
+
+//
+// User Session Information
+
+.system-notification {
+	padding: 15px 0;
+	background-color: @brand-warning;
+	
+	.system-notification-icon{
+		float: left;
+		padding: @space-default @space-default*4 @space-default 0;
+		
+		.glyphicon {
+			font-size: 300%;
+		}
+	}
+	
+	.system-notification-text {
+		float: left;
+	}
+	
+	.system-notification-close {
+		float: right;
+		color: @text-color-primary;
+		font-size: 200%;
+	}
+}
+
+// alert box, e.g. for product out of stock notification
+
+.alert-box {
+	border: 3px solid  @alert-danger-text;
+	
+	.alert-box-header {
+		color:  @alert-danger-text;
+		padding-bottom: @space-default;
+	}
+	
+	.list-body {
+		margin-bottom: 0;
+	}
+	
+	.list-item-row {
+		&:last-child {
+			border-bottom: none;
+			padding-bottom: 0;
+			margin-bottom: 0;
+		}
+	}
+	
+	@media (max-width: @screen-xs-max) {
+		.btn {
+			width: 100%;
+			margin-top: @space-default/2;
+		}
+	}
+}

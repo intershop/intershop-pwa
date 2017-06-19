@@ -1,0 +1,111 @@
+
+//
+// LOADER - Default
+
+.loader {
+	height: 20px;
+    width: 20px;
+    border: 4px solid #fff;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spin .8s linear infinite;
+    -moz-animation: spin .8s linear infinite;
+    animation: spin .8s linear infinite;
+    margin: auto;
+
+    &.loader-inline {
+    	display: inline-block;
+    	border-color: @text-color-primary;
+    	border-right-color: transparent;
+	    position: relative;
+    	top: 4px;
+    }
+
+}
+
+@-moz-keyframes spin {
+	100% {
+		-moz-transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform:rotate(360deg);
+	}
+}
+
+
+//
+// LOADER - Styles for loader within buttons
+
+.btn {
+
+	.loader {
+		display: none;
+	}
+
+	&.btn-default {
+
+		.loader {
+			border-color: @button-default-color;
+		}
+
+		&.disabled {
+			background: rgba(red(@button-default-color), green(@button-default-color), blue(@button-default-color), .3);
+		}
+
+	}
+
+	&.btn-primary {
+
+		.loader {
+			border-color: @button-default-bg;
+		}
+
+		&.btn-lg {
+			.loader {
+				height: 24px;
+				width: 24px;
+			}
+		}
+
+		&.disabled {
+			background: rgba(red(@button-default-bg), green(@button-default-bg), blue(@button-default-bg), .3);
+		}
+
+	}
+
+	&.btn-loader {
+		display: block;
+		.flex-display();
+		.flex-direction(row);
+		.justify-content(center);
+
+		.loader {
+			display: block;
+			border-right-color: transparent;
+			.align-items(center);
+
+			& + .btn-content {
+				display: none;
+
+				&.btn-content-show {
+					display: block;
+					margin-left: (@space-default / 2);
+				}
+
+			}
+
+		}
+
+	}
+
+}

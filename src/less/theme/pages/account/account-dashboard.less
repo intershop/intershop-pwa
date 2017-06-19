@@ -1,0 +1,61 @@
+
+//
+// ACCOUNT DASHBOARD
+
+.account-dashboard {
+	margin-top: (@space-default * 2);
+	display: flex;
+    flex-wrap: wrap;
+    
+	.dashboard-item {
+		text-align: center;
+		color: @text-color-secondary;
+		text-transform: uppercase;
+		margin-bottom: (@space-default * 2);
+
+		a {
+			font-size: 13px;
+			color: @text-color-secondary;
+			
+			&:hover {
+				text-decoration:none;
+			}
+		}
+	}
+	
+	.circle-icon {
+		background: @color-secondary;
+		width: 86px;
+		height: 86px;
+		border-radius: 50%;
+		text-align: center;
+		margin: 0 auto @space-default auto;
+		cursor: pointer;
+		
+		&:hover {
+		  background: @brand-primary;
+			-webkit-transition-property: background;
+			   -moz-transition-property: background;
+				 -o-transition-property: background;
+					transition-property: background;
+			-webkit-transition-duration: .3s;
+			   -moz-transition-duration: .3s;
+				 -o-transition-duration: .3s;
+					transition-duration: .3s;
+		}
+		
+		* {
+			color: @text-color-quinary;
+			font-size: 32px;
+			line-height: 86px;
+		}
+	}
+	
+	@media (max-width:@screen-xs-max) {
+		> div {
+			&:nth-child(2n+1) {
+				clear: left;
+			}
+		}
+	}
+}
