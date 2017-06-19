@@ -1,0 +1,92 @@
+
+//
+// ACCOUNT NAVIGATION
+
+
+.account-navigation li:hover {
+    background: @color-tertiary none repeat scroll 0 0;
+}
+
+
+.account-navigation {
+	
+	li {
+		padding-bottom: (@space-default / 2);
+		background: @color-tertiary;
+		border: @border-width-default solid @border-color-lighter;	
+		padding: @space-default *2/3;
+		border-width: 0 1px 1px 1px;
+
+		&.collapse, &.collapsing {
+			padding: 0;
+			border: none;
+		}
+		
+		&:hover {
+			background: darken(@color-tertiary, 10%);
+		}
+		
+		&.account-nav-header {
+			background: @color-secondary;
+			border: @border-width-default solid @border-color-default;
+			cursor: pointer;
+		}
+		
+		.glyphicon {
+			font-size: 14px;
+			margin-right: (@space-default / 2);
+			color: @text-color-quarternary;
+		}
+		
+		p {
+			margin: 0;
+			color: @text-color-primary;
+			font-size: 16px;
+		}
+		
+		&:first-child {
+			border-radius: 0;
+			border-width: @border-width-default;
+		}
+		
+		&:last-child {
+			border-radius: 0;			
+		}
+		
+		a {
+			color: @link-color;
+			font-size: 14px;
+		}
+		
+		&.active {
+			background: @color-inverse;
+			border-right: none;
+			
+			a {
+				color: @text-color-primary;
+			}
+		}
+	}
+}
+
+.account-nav-box {
+	
+	@media (max-width:@screen-xs-max) {	
+		background: @color-tertiary;
+		margin-top: -15px;
+		border-top: @border-width-default solid lighten(@border-color-default, 100%);
+		padding-top: @space-default;
+		padding-bottom: @space-default;
+		margin-bottom: (@space-default + (@space-default / 2));
+	}
+
+	@media (min-width:@screen-sm-min) and (max-width:@screen-sm-max) {	
+		background: @color-tertiary;
+		margin-top: -25px;
+		border-top: @border-width-default solid lighten(@border-color-default, 100%);
+		padding-top: @space-default;
+		padding-bottom: @space-default;
+		margin-bottom: (@space-default + (@space-default / 2));
+	}
+
+}	

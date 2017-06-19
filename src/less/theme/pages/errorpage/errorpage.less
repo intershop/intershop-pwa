@@ -1,0 +1,45 @@
+
+//
+// ERROR PAGE
+
+//body.errorpage {
+#errorpage {
+	header {
+		margin-bottom: 0px;
+	}
+	&.wrapper {
+		background: url(/assets/img/background/error_bg.jpg) no-repeat;
+		padding: 0;
+		.main-container {
+			background: none;
+		}
+		margin-top: -15px;
+	}
+	
+	.errorpage-content {
+		color: @text-color-primary;
+		padding: (@space-default * 5) 0px (@space-default * 8);
+		h1 {
+			font-size: 70px;
+			opacity: 0.85;
+		}
+		.error-text {
+			background: rgba(238, 238, 238, 0.80);
+			padding: @space-default;
+		}
+		input {
+			&.form-control {
+				border-color: @border-color-light;
+				background: rgba(238, 238, 238, 0.80);
+				box-shadow: none;
+				color: @text-color-primary;
+			}
+		}
+		.btn-primary {
+			color: @text-color-corporate;
+			font-weight: normal;
+			bottom: 3px;
+		}
+	}
+}
+
