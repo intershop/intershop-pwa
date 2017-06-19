@@ -1,0 +1,36 @@
+//
+// Page Navigation
+
+.page-navigation {
+	.page-navigation-contents {
+
+		ul {
+			list-style: none outside none;
+			padding-left: 0;
+
+
+			&.page-navigation-0 {
+				
+				ul {
+					padding-left: @space-default;
+
+					&.page-navigation-1 {
+
+					}
+				}
+			}
+
+			li {
+				line-height: 24px;
+
+				&.page-navigation-active {
+					> a {
+						font-weight: bold;
+					}
+				}
+			}
+		}
+
+		
+	}
+}

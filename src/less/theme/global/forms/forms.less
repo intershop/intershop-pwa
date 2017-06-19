@@ -1,0 +1,42 @@
+.server-error {
+	.form-control-validation(@state-danger-text; @state-danger-text; @state-danger-bg);
+}
+
+.has-feedback {
+	
+	.form-control[type="number"] {
+		padding: @padding-base-vertical @padding-base-horizontal;
+	}
+	
+	.form-control[type="number"] + .form-control-feedback {
+		display: none !important;
+	}
+	
+	.form-control {
+		
+		+ a.form-control-feedback {
+			pointer-events: all;
+		}
+		
+	}
+}
+
+.form-horizontal {
+	.has-feedback .form-control[type="number"] + .form-control-feedback {
+		display: none !important;
+	}
+	
+	&.form-horizontal-inline {
+		@media (max-width:@screen-xs-max) { 
+			label {
+				padding-top: @space-default/2;
+			}
+		}
+	}
+}
+
+input[type="file"] {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}

@@ -1,0 +1,74 @@
+
+//
+// CHECKOUT - PROGRESS BAR
+
+.progress-bar-panel {
+	background: @color-tertiary;
+	overflow: auto;
+}
+
+.progress-steps {
+	list-style: none;
+	margin: 0;
+	padding: 0;	
+	
+	li {
+		color: @text-color-quarternary;
+		border-bottom: 4px solid @border-color-light;
+		line-height: 50px;
+		float: left;
+		width: 20%;
+		padding-left: @space-default;
+		
+		@media (max-width:@screen-xs-max) {	
+			line-height: 25px;
+			text-align: center;
+			padding-top: @space-default;
+			padding-left: @space-default/4;	
+
+			.progress-label {
+				font-size: 85%;
+				display: block;
+			}			
+		}
+	}
+	
+	.progress-active {
+		color: @text-color-corporate;
+		border-bottom: 4px solid @border-color-corporate;
+				
+		.progress-number {
+			background: @color-corporate;
+			color: @color-inverse;
+		}
+	}
+	
+	.progress-complete {
+		color: @text-color-corporate;
+		border-bottom:solid 4px @border-color-corporate;
+	}
+}
+
+.progress-number {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border-radius: ((@space-default * 3) / 2);
+	text-align: center;
+	line-height: 30px;
+	font-weight: @font-family-bold;
+	background: @border-color-light;
+	color: @text-color-inverse;
+}
+
+.progress-complete {
+
+	.progress-number {		
+		background: @color-inverse;
+		color: @text-color-corporate;
+		border: 2px solid @border-color-corporate;
+		line-height: 26px;	
+	}
+
+}
+

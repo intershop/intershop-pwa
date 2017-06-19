@@ -1,0 +1,91 @@
+//
+
+ul {
+	&.collection {
+		list-style: none outside none;
+		padding-left: 0;
+	}
+
+}
+
+ol {
+	&.collection {
+		list-style: outside none decimal;
+		padding-left: 24px;
+	}
+
+}
+
+// HELPDESK
+
+.helpdesk-info-box {
+	color: @text-color-inverse;
+	background: @color-corporate;
+	padding: @space-default/2;
+	width: 100%;
+	
+	a {
+		color: @text-color-inverse;
+		text-decoration: underline;
+	}
+
+	h2 {
+		color: @text-color-inverse;
+		margin-top: 0;
+	}
+}
+
+// SITEMAP
+
+.sitemap-navigation {
+	
+	.navbar {
+		min-height: auto;
+	}
+}
+
+.sitemap-category-list {
+	list-style: none;
+	padding-left: 0px;
+	
+	li {
+		padding-bottom: @space-default;
+		font-family: @font-family-condensedbold;
+		font-size: @font-size-large;
+		
+		a {
+			color: @text-color-primary;
+			font-size: @font-size-large;
+			text-transform: uppercase;
+		}
+	}
+	
+	.sitemap-category-list {
+		padding-left: @space-default;
+		
+		li {
+			text-decoration: none;
+			font-family: @font-family-regular;
+			font-size: @font-size-large;
+			padding-top: 0px;
+			padding-bottom: @space-default /3;
+			
+			a {
+				font-size: (@grid-gutter-width / 2);
+			}
+		}	
+	}	
+}
+
+.sitemap-product-list {
+	list-style: none;
+	padding-left: 0px;
+	
+	li {
+		a {
+			text-decoration: none;
+			font-family: @font-family-condensedregular;
+			font-size: @font-size-large;
+		}
+	}
+}
