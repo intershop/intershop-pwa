@@ -1,4 +1,5 @@
 {
   "product.compare.link": "Compare",
-  "header.wishlists.text": "Wishlist"
+  "header.wishlists.text": "Wishlist",
+  "product.items.label": "{{value}} list item"
 }
