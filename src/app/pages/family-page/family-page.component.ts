@@ -7,7 +7,9 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./family-page.component.css']
 })
 export class FamilyPageComponent implements OnInit {
-
+  
+  products = ['product1','product2','product3'];
+  
   constructor() { }
 
   ngOnInit() {
