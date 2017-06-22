@@ -12,6 +12,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FamilyPageComponent } from './pages/family-page/family-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+
+import { AppRoutingModule }     from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -20,11 +23,13 @@ import { RegistrationPageComponent } from './pages/registration-page/registratio
     FooterComponent,
     FamilyPageComponent,
     ErrorPageComponent,
-    RegistrationPageComponent
+    RegistrationPageComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    AppRoutingModule
     //InMemoryWebApiModule.forRoot(InMemoryDataService)
   ],
   providers: [],
