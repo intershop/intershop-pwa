@@ -17,10 +17,10 @@
                     <ul class="user-links">
                         <li>
                             <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/LoginStatus -->
-                            <a class="my-account-links my-account-login" href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewUserAccount-ShowLogin"
+                            <a class="my-account-links my-account-login" routerLink="/registration"
                                 rel="nofollow"><span class="glyphicon-user glyphicon glyphicon-header-icon"></span><span class="hidden-xs">Sign In</span></a>
                             <span class="hidden-xs seperator">| </span>
-                            <a class="ish-siteHeader-myAccountUtilitiesMenu-myAccount-register" href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewUserAccount-ShowRegister"
+                            <a class="ish-siteHeader-myAccountUtilitiesMenu-myAccount-register" routerLink="/registration"
                                 rel="nofollow"><span class="hidden-xs">Register</span></a>
                             <!-- END TEMPLATE app_sf_responsive/default/inc/header/LoginStatus -->
                         </li>
@@ -37,7 +37,7 @@
                         </li>
                         <li>
                             <!-- BEGIN TEMPLATE app_sf_responsive/default/account/wishlist/WishlistStatus -->
-                            <a href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewUserAccount-ShowLogin?TargetPipeline=ViewWishlist-ViewAll"
+                            <a routerLink="/error"
                                 class="" rel="nofollow">
                                 <span class="glyphicon-heart glyphicon glyphicon-header-icon"></span>
                                 <span class="hidden-xs">Wishlists</span>
@@ -84,7 +84,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-3 logo-wrapper hidden-xs">
-                    <!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/system/HeaderPageLogo --><a rel="home" href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewHomepage-Start"><img src="/assets/img/logo.png" alt="Logo"></a>
+                    <!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/system/HeaderPageLogo -->
+                    <a rel="home" routerLink="/"><img src="/assets/img/logo.png" alt="Logo"></a>
                     <!-- END TEMPLATE app_sf_responsive_cm/default/component/system/HeaderPageLogo -->
                 </div>
                 <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
@@ -110,11 +111,11 @@
                     <div class="main-navigation col-sm-8 col-md-9" role="navigation">
                         <ul class="navbar-nav main-navigation-list">
                             <li class="home hidden-xs">
-                                <a class="" href="" title="home"><span class="glyphicon glyphicon-home"></span></a>
+                                <a class="" routerLink="/" title="home"><span class="glyphicon glyphicon-home"></span></a>
                             </li>
 
                             <li *ngFor="let category of categories" class="dropdown">
-                                <a href="" data-testing-id="Cameras-Camcorders-link">{{category.name}}</a>
+                                <a routerLink="/categories" data-testing-id="Cameras-Camcorders-link">{{category.name}}</a>
                             </li>
 
                         </ul>
