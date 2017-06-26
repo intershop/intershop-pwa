@@ -1,12 +1,15 @@
+@spock.lang.Unroll
 class CheckProofOfConceptSpec extends geb.spock.GebSpec {
 
-    def 'check content of example page '() {
+    def 'check default category of category page is #text '() {
         when:
         to ProofOfConceptPage
 
         then:
         at ProofOfConceptPage
-        welcomeTitle.text() == 'Welcome to app!!'
-        heroesLink.displayed
+        category.text() == text
+        
+        where:
+        text = 'ACTION CAMERAS'
     }
 }

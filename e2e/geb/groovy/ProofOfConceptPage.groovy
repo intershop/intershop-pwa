@@ -1,9 +1,8 @@
 class ProofOfConceptPage extends geb.Page {
     
-    static at = { title == "ProofOfConcept" }
+    static at = { title == "REST based storefront Proof of Concept" }
     
     static content = {
-        welcomeTitle { $('#welcome-title') }
-        heroesLink { $('#heroes-link') }
+        category { $('h1') }
     }
 }
