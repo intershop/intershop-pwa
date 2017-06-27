@@ -2,18 +2,6 @@
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
  
 <Configure id="FileServer" class="org.eclipse.jetty.server.Server">
- 
-    <New class="org.eclipse.jetty.server.ServerConnector">
-        <Arg name="server">
-            <Ref refid="FileServer" />
-        </Arg>
-        <Arg name="factories">
-            <Array type="org.eclipse.jetty.server.ConnectionFactory">
-            </Array>
-        </Arg>
-        <Set name="port">4200</Set>
-    </New>
- 
     <Set name="handler">
         <New class="org.eclipse.jetty.server.handler.HandlerList">
             <Set name="handlers">

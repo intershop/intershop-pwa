@@ -4,46 +4,36 @@ plugins {
 }
 
 /** Gretty Plugin for running jetty with static resources
-http://akhikhl.github.io/gretty-doc/Getting-started.html 
- */
+http://akhikhl.github.io/gretty-doc/Getting-started.html  */
 apply from:'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 apply plugin:'groovy'
 
 node {
     version = '6.10.3'
     npmVersion = '3.10.10'
-    download = false
+    download = true
     // distBaseUrl = Custom artifactory location here for node/npm.
 }
 
 gretty {
-    extraResourceBase 'dist' /** use npm generated output */
-    
     /** same as angular cli */
     httpPort = 4200 
-    contextPath = '/'
     integrationTestTask = 'test'
     serverConfigFile = "$projectDir/e2e/geb/jetty9.xml"
 }
 
-task npmClean(type:Delete) {
-    delete 'dist'
-
-    /** uncomment to delete node environment with clean */
-    //    delete 'node_modules', '.gradle/npm', '.gradle/nodejs'
+task reset(type:Delete, description:'delete node environment', group:'Node') {
+    delete 'node_modules', '.gradle/npm', '.gradle/nodejs'
 }
-clean.dependsOn npmClean
+reset.finalizedBy clean
 
-task npmBuild(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution') {
+task dist(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution', group:'Node') {
     args = ['run', 'build']
     inputs.dir('src')
     outputs.dir('dist')
 }
-test.dependsOn npmBuild
-
-task npmServe(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution') {
-    args = ['run', 'start']
-}
+test.dependsOn dist
+clean.dependsOn cleanDist
 
 dependencies {
     testCompile "org.gebish:geb-spock:1.1.1"
