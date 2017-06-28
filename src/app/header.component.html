@@ -1,0 +1,319 @@
+<header data-testing-id="page-header" class="top"><!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/system/Header --><div class="top-header">
+<nav class="container">
+<div class="row">
+<a rel="home" href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewHomepage-Start" class="visible-xs mobile-logo"><img src="assets/img/logo2x.png" alt="Logo" width="41" height="41"></a>
+<div class="visible-xs pull-right">
+<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#globalnav">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+</div>
+<div class="col-md-12">
+<ul class="user-links">
+<li><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/LoginStatus --><a class="my-account-links my-account-login" href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewUserAccount-ShowLogin" rel="nofollow"><span class="glyphicon-user glyphicon glyphicon-header-icon"></span><span class="hidden-xs">Sign In</span></a>
+<span class="hidden-xs seperator">| </span>
+<a class="ish-siteHeader-myAccountUtilitiesMenu-myAccount-register" href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewUserAccount-ShowRegister" rel="nofollow"><span class="hidden-xs">Register</span></a><!-- END TEMPLATE app_sf_responsive/default/inc/header/LoginStatus --></li>
+<li><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatus --><a class="compare-status" href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-Show" rel="nofollow">
+<span class="glyphicon-equalizer glyphicon glyphicon-header-icon"></span>
+<span class="compare-count-text" data-ajax-content="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-Status"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatusData --><div id="compare-count" data-compare-ids="">0</div>
+<span class="hidden-xs">{{ 'product.compare.link' | translate }}</span>
+<script type="text/javascript">RetailShop.setCompareState();</script><!-- END TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatusData --></span>
+</a><!-- END TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatus --></li>
+<li><!-- BEGIN TEMPLATE app_sf_responsive/default/account/wishlist/WishlistStatus --><a href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewUserAccount-ShowLogin?TargetPipeline=ViewWishlist-ViewAll" class="" rel="nofollow">
+<span class="glyphicon-heart glyphicon glyphicon-header-icon"></span>
+<span class="hidden-xs">{{ 'header.wishlists.text' | translate }}</span>
+</a><!-- END TEMPLATE app_sf_responsive/default/account/wishlist/WishlistStatus --></li>
+<li class="visible-xs">
+<a href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewCart-View"><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
+<div class="mobile-cart-counter"></div>
+</li>
+</ul>
+<div class="header-utility"><!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/common/FreeStyle --><!-- BEGIN TEMPLATE sld_pmc/default/inc/HtmlPrint --><ul class="customer-info hidden-xs">
+<li>
+<span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span>
+1300 032 032
+</li>
+</ul><!-- END TEMPLATE sld_pmc/default/inc/HtmlPrint --><!-- END TEMPLATE app_sf_responsive_cm/default/component/common/FreeStyle --><!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/system/LanguageSwitch --><div class="language-switch">
+<a class="language-switch-link" href="#languageSwitch" data-toggle="collapse" aria-expanded="true">
+<span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
+<span class="hidden-xs">en<span class="switch_arrow hidden-xs"></span></span>
+</a><div id="languageSwitch" class="language-switch-container collapse" aria-expanded="true">
+<div class="language-switch-menu-container">
+<ul><li><a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/de_DE/-/USD/ViewHomepage-Start">German</a></li><li><a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/fr_FR/-/USD/ViewHomepage-Start">French</a></li></ul>
+</div>
+</div></div><!-- END TEMPLATE app_sf_responsive_cm/default/component/system/LanguageSwitch --></div>
+</div>
+</div>
+</nav>
+</div>
+<div class="mid-header">
+<div class="container">
+<div class="row">
+<div class="col-sm-3 logo-wrapper hidden-xs"><!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/system/HeaderPageLogo --><a rel="home" href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewHomepage-Start"><img src="assets/img/logo.png" alt="Logo"></a><!-- END TEMPLATE app_sf_responsive_cm/default/component/system/HeaderPageLogo --></div>
+<div class="col-sm-5 header-info-wrapper hidden-xs"></div>
+<div class="col-sm-4 search-container header-search-container"><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/search/SearchBox --><form method="post" action="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewParametricSearch-SimpleOfferSearch" role="search" class="search clearfix" name="SearchBox_Header"><input autocomplete="off" name="SearchTerm" class="form-control searchTerm" data-suggesturl="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewSuggestSearch-Suggest?MaxAutoSuggestResults=10" placeholder="Search for keyword, product ID or category..." type="text">
+<button class="btn-search btn btn-primary" type="submit" name="search" title="Start search."><span class="glyphicon glyphicon-search"></span></button>
+<input name="search" value="" type="hidden">
+<ul class="search-suggest-results">
+</ul></form><!-- END TEMPLATE app_sf_responsive/default/modules/search/SearchBox --></div>
+</div>
+</div>
+</div>
+<div class="bottom-header">
+<div class="global-nav collapse navbar-collapse" id="globalnav">
+<div class="container">
+<div class="row">
+<div class="main-navigation col-sm-8 col-md-9" role="navigation">
+<ul class="navbar-nav main-navigation-list">
+<li class="home hidden-xs">
+<a class="" href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewHomepage-Start" title="home"><span class="glyphicon glyphicon-home"></span></a>
+</li><!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/system/MainNavigationFull --><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/navigation/SimpleNavigationBar --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><li class="dropdown">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Cameras-Camcorders&amp;CategoryName=Cameras-Camcorders" data-testing-id="Cameras-Camcorders-link">Cameras</a>
+<a class="dropdown-toggle visible-xs" data-toggle="dropdown" data-target="#"><span class="glyphicon glyphicon-plus"></span></a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level1 dropdown-menu"><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Cameras-Camcorders&amp;CategoryName=832">Action Cameras</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Cameras-Camcorders&amp;CategoryName=1290">Bags &amp; Cases</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Cameras-Camcorders&amp;CategoryName=584">Camcorders</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Cameras-Camcorders&amp;CategoryName=585">Camera Accessories</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Cameras-Camcorders&amp;CategoryName=575">Digital Cameras</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Cameras-Camcorders&amp;CategoryName=577">Webcams</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><!-- END TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><li class="dropdown">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=Computers" data-testing-id="Computers-link">Computers</a>
+<a class="dropdown-toggle visible-xs" data-toggle="dropdown" data-target="#"><span class="glyphicon glyphicon-plus"></span></a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level1 dropdown-menu"><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897">Tablets</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_Acer">Acer</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_Asus">Asus</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_Fujitsu">Fujitsu</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_Hanvon">Hanvon</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_Lenovo">Lenovo</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_MSI">MSI</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_Samsung">Samsung</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=1835">Notebooks and PCs</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=151">Notebooks</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=153">PCs</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=3003">Backpacks, Notebook Bags &amp; Cases</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=152">Docking Stations</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=9851">Ergonomic Wrist Rests</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=1284">Notebook Accessories</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=3001">Monitors</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=222">Flat Panel Displays</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=3002">Flat Panel Mounts</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=943">Monitor Glare &amp; Privacy Filters</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=903">Plasma Panels</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=223">Touch Screen Monitors</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=191">Input Devices</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=194">Keyboards</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=195">Mice</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=1637">Headsets</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=3652">Digital Pens</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=8547">Presentation Devices</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=206">Data Storage</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=1622">Blu-ray (re)writers</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=858">Card Readers</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=214">CD/DVD (Re)Writers</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=1823">External Hard Drives</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=902">Flash Memory</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=219">Hard Disk Drives</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=1563">Solid State Drives</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=298">Storage Media Cases</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=1554">USB Flash Drives</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=106">Hardware Components</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=173">Audio Cards</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=830">Cables</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=236">Chassis Components</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=911">Memory Modules</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=897_HP">Motherboards</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=816">Power Supplies</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=989">Processors</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=170">Video Cards</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=225">Printers</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=234">Inkjet Printers</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=235">Laser/LED Printers</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=304">Multifunctionals</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=922">Photo Printers</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Computers&amp;CategoryName=373">Printing Supplies</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><!-- END TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><li class="dropdown">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=Home-Entertainment" data-testing-id="Home-Entertainment-link">Home Entertainment</a>
+<a class="dropdown-toggle visible-xs" data-toggle="dropdown" data-target="#"><span class="glyphicon glyphicon-plus"></span></a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level1 dropdown-menu"><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1058">Audio &amp; Video</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1296">Computer TV Tuners</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1001">DVD Players &amp; Recorders</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1020">Headphones</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1082">Home Cinema Systems</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1081">Loudspeakers</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1373">Media players &amp; recorders</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1344">Record Players</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=857">Remote Controls</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=84214">Gaming</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=71515">Gaming Controls</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=8429">Headsets</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=220">TVs &amp; Projectors</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level2 "><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=558">Data Projectors</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1078">LCD TVs</a></li><li class="main-navigation-level2-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Home-Entertainment&amp;CategoryName=1584">LED TVs</a></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><!-- END TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><li class="dropdown">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Specials&amp;CategoryName=Specials" data-testing-id="Specials-link">Specials</a>
+<a class="dropdown-toggle visible-xs" data-toggle="dropdown" data-target="#"><span class="glyphicon glyphicon-plus"></span></a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><ul class="category-level1 dropdown-menu"><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Specials&amp;CategoryName=GiftCardsCertificates">Gift Cards &amp; Certificates</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Specials&amp;CategoryName=HotDeals">Hot Deals</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Specials&amp;CategoryName=NewProducts">New Products</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><li class="main-navigation-level1-item">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogID=Specials&amp;CategoryName=TopSellers">Top Sellers</a><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/category/SubCategories --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO -->
+
+
+
+
+<!-- END TEMPLATE app_sf_responsive/default/modules/customer/CurrentUserBO --><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li></ul><!-- END TEMPLATE app_sf_responsive/default/modules/category/SubCategories --></li><!-- END TEMPLATE app_sf_responsive/default/modules/category/CategoryNavigation --><!-- END TEMPLATE app_sf_responsive/default/inc/navigation/SimpleNavigationBar --><!-- END TEMPLATE app_sf_responsive_cm/default/component/system/MainNavigationFull --><!-- BEGIN TEMPLATE app_sf_responsive_cm/default/component/system/MainNavigationLink --><li class="dropdown">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewContent-Start?PageletEntryPointID=page.brandindex">Brands</a>
+<a data-target="#" data-toggle="dropdown" class="dropdown-toggle visible-xs"><span class="glyphicon"></span></a>
+</li><!-- END TEMPLATE app_sf_responsive_cm/default/component/system/MainNavigationLink --></ul>
+</div>
+<div class="col-sm-4 col-md-3 pull-right main-navigation-right" data-ajax-content="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewMiniCart-Status"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartStatus --><div class="quick-cart-link hidden-xs"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink --><a data-toggle="collapse" href="#miniCart"><span class="glyphicon glyphicon-shopping-cart"></span>
+<span class="js-cart-count">4</span>
+<span>4 items</span><span> / </span>
+<span class="mini-cart-price">$ 170.25</span></a><!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink --><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCart --><div class="mini-cart collapse" id="miniCart"><div class="btn-scroll-up disabled"><span class="glyphicon glyphicon-chevron-up"></span></div><div class="product-rows-block">
+<div class="slider"><div class="product-row">
+<div class="mini-product-img">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProduct-Start?SKU=3957288"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartProductImage --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/product/ProductImage --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/common/Image --><img src="assets/product_img/3957288-5427.jpg" data-test="true" class="product-image" data-type="S" alt="Kodak C series EasyShare C142 product photo" width="110" height="110"><!-- END TEMPLATE app_sf_responsive/default/modules/common/Image --><!-- END TEMPLATE app_sf_responsive/default/modules/product/ProductImage --><!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartProductImage --></a>
+</div>
+<div class="mini-product-info">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProduct-Start?SKU=3957288" title="Kodak C series EasyShare C142">Kodak C series EasyShare C142</a>
+<div class="product-price">$ 106.27</div>
+<div class="cart-pli-data"><span>Quantity:</span> 1</div>
+</div>
+</div><div class="product-row">
+<div class="mini-product-img">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProduct-Start?SKU=1612143"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartProductImage --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/product/ProductImage --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/common/Image --><img src="assets/product_img/1612143-4414.jpg" data-test="true" class="product-image" data-type="S" alt="Benq MD300 product photo" width="110" height="110"><!-- END TEMPLATE app_sf_responsive/default/modules/common/Image --><!-- END TEMPLATE app_sf_responsive/default/modules/product/ProductImage --><!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartProductImage --></a>
+</div>
+<div class="mini-product-info">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProduct-Start?SKU=1612143" title="Benq MD300">Benq MD300</a>
+<div class="product-price">$ 34.34</div>
+<div class="cart-pli-data"><span>Quantity:</span> 2</div>
+</div>
+</div><div class="product-row">
+<div class="mini-product-img">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProduct-Start?SKU=1664866"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartProductImage --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/product/ProductImage --><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/common/Image --><img src="assets/product_img/1959728-679.jpg" data-test="true" class="product-image" data-type="S" alt="Creative Labs Live! Cam Video IM product photo" width="110" height="110"><!-- END TEMPLATE app_sf_responsive/default/modules/common/Image --><!-- END TEMPLATE app_sf_responsive/default/modules/product/ProductImage --><!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartProductImage --></a>
+</div>
+<div class="mini-product-info">
+<a href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProduct-Start?SKU=1664866" title="Creative Labs Live! Cam Video IM">Creative Labs Live! Cam Video IM</a>
+<div class="product-price">$ 29.64</div>
+<div class="cart-pli-data"><span>Quantity:</span> 1</div>
+</div>
+</div></div>
+</div><div class="btn-scroll-down"><span class="glyphicon glyphicon-chevron-down"></span></div><a class="view-cart btn btn-primary btn-lg btn-block" href="https://localhost:4443/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewCart-View">View Cart</a></div> <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCart --></div><!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartStatus --></div>
+</div>
+</div>
+</div>
+</div><!-- END TEMPLATE app_sf_responsive_cm/default/component/system/Header --></header>

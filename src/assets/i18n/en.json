@@ -1,0 +1,7 @@
+{
+  "product.compare.link": "Compare",
+  "header.wishlists.text": "Wishlist",
+  "product.items.label.none": "no list item",
+  "product.items.label.singular": "one list item",
+  "product.items.label.plural": "{{count}} list items"
+}

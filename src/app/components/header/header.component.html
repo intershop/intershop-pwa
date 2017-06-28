@@ -30,7 +30,7 @@
                                 rel="nofollow">
                                 <span class="glyphicon-equalizer glyphicon glyphicon-header-icon"></span>
                                 <span class="compare-count-text" data-ajax-content="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-Status"><!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatusData --><div id="compare-count" data-compare-ids="">0</div>
-                                <span class="hidden-xs">Compare</span>
+                                <span class="hidden-xs">{{ 'product.compare.link' | translate }}</span>
                                 <script type="text/javascript">RetailShop.setCompareState();</script><!-- END TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatusData --></span>
                             </a>
                             <!-- END TEMPLATE app_sf_responsive/default/inc/header/ProductCompareStatus -->
@@ -40,7 +40,7 @@
                             <a routerLink="/error"
                                 class="" rel="nofollow">
                                 <span class="glyphicon-heart glyphicon glyphicon-header-icon"></span>
-                                <span class="hidden-xs">Wishlists</span>
+                                <span class="hidden-xs">{{ 'header.wishlists.text' | translate }}</span>
                             </a>
                             <!-- END TEMPLATE app_sf_responsive/default/account/wishlist/WishlistStatus -->
                         </li>
