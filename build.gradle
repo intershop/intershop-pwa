@@ -42,7 +42,7 @@ dependencies {
     }
     testCompile "org.codehaus.groovy:groovy-all:2.4.8"
     testCompile 'org.seleniumhq.selenium:selenium-api:3.4.0'
-    
+
     testRuntime 'io.github.bonigarcia:webdrivermanager:1.6.2'
     testRuntime 'org.seleniumhq.selenium:selenium-chrome-driver:3.4.0'
     testRuntime 'org.seleniumhq.selenium:selenium-firefox-driver:3.4.0'
