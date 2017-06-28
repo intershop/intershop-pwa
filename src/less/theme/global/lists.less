@@ -1,0 +1,56 @@
+
+//
+// DL - List
+.dl-horizontal {
+	margin-bottom: (@space-default / 2);
+	dt {
+		font-weight: normal;
+		text-align: left;
+		width: (@dl-horizontal-offset - 12);
+	}
+	dt + dd {
+		margin-bottom: (@space-default / 4);
+	}
+	
+	&.dl-horizontal-inline {
+		dt {
+			clear: left;
+			float: left;
+		}	
+		dd {
+			margin-left: @dl-horizontal-offset;
+		}		
+	}
+}
+
+// displays a separator (e.g. colon) after the definition type field
+.dl-separator > dt:after {
+    content: ":"
+}
+
+
+// 
+// General class for status 'deactivated' in general lists 
+.inactive {
+	
+	*:not(a) {
+		color: @text-color-quarternary;
+	}
+	
+	a {
+		@disabled-link-color: darken(@CORPORATE-PRIMARY, @default-color-adjust);
+		
+		color: @disabled-link-color;
+		
+		.glyphicon {
+			color: @disabled-link-color;
+		}
+		
+		&:hover
+		&:hover > .glyphicon {
+			color: darken(@disabled-link-color, @default-color-adjust);
+		}
+		
+	}
+	
+}

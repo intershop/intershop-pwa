@@ -1,0 +1,96 @@
+plugins {
+    /** https://github.com/srs/gradle-node-plugin */
+    id "com.moowork.node" version "1.1.1"
+}
+
+/** Gretty Plugin for running jetty
+http://akhikhl.github.io/gretty-doc/Getting-started.html 
+ */
+apply plugin: 'war'
+
+node {
+    version = '6.10.3'
+    npmVersion = '3.10.10'
+    download = false
+    // distBaseUrl = Custom artifactory location here for node/npm.
+}
+
+task npmClean(type:Delete) {
+    delete 'dist'
+
+    /** uncomment to delete node environment with clean */
+    //    delete 'node_modules', '.gradle/npm', '.gradle/nodejs'
+}
+clean.dependsOn npmClean
+
+task npmBuild(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution') {
+    args = ['run', 'build']
+    inputs.dir('src')
+    outputs.dir('dist')
+}
+
+task npmServe(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution') {
+    args = ['run', 'start']
+}
+
+task copyNodeModulesToDist(type:Copy, dependsOn:npmBuild) {
+    from 'node_modules'
+    into 'dist/node_modules'
+    // TODO: FILTER!!! or solve by projecting 
+}
+gradle.projectsEvaluated {
+    [war]*.dependsOn copyNodeModulesToDist
+}    
+
+war { 
+    from('dist') /** include npm generated output into war */
+    webXml = file('src/web.xml')
+} 
+war.dependsOn npmBuild
+
+apply plugin:'groovy'
+
+dependencies {
+    testCompile "org.gebish:geb-spock:1.1.1"
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
+        exclude group: "org.codehaus.groovy"
+    }
+    testCompile "org.codehaus.groovy:groovy-all:2.4.8"
+    testCompile 'org.seleniumhq.selenium:selenium-api:3.4.0'
+    
+    testRuntime 'io.github.bonigarcia:webdrivermanager:1.6.2'
+    testRuntime 'org.seleniumhq.selenium:selenium-chrome-driver:3.4.0'
+    testRuntime 'org.seleniumhq.selenium:selenium-firefox-driver:3.4.0'
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ['e2e/geb/java']
+        }
+        groovy {
+            srcDirs = ['e2e/geb/groovy']
+        }
+        resources {
+            srcDirs = ['e2e/geb/resources']
+        }
+    }
+}
+
+tasks.withType(Test) {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut"
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+
+        // set options for log level DEBUG and INFO
+        debug {
+            events "started", "passed", "skipped", "failed", "standardOut", "standardError"
+            exceptionFormat "full"
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+    }
+}
