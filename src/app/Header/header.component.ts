@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Category } from '../../services/category';
-import { CategoriesService } from '../../services/categories.service';
+import { Category } from '../services/category';
+import { CategoriesService } from '../services/categories.service';
 
 @Component({
-  selector: 'app-header',
+  selector: 'is-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   providers: [CategoriesService]
