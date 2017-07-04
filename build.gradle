@@ -3,6 +3,13 @@ plugins {
     id "com.moowork.node" version "1.1.1"
 }
 
+
+repositories {
+    maven {
+        url { 'http://rnd-repo/mvn-internal/' }
+    }
+}
+
 /** Gretty Plugin for running jetty with static resources
 http://akhikhl.github.io/gretty-doc/Getting-started.html  */
 apply from:'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
@@ -46,6 +53,7 @@ dependencies {
     testRuntime 'io.github.bonigarcia:webdrivermanager:1.6.2'
     testRuntime 'org.seleniumhq.selenium:selenium-chrome-driver:3.4.0'
     testRuntime 'org.seleniumhq.selenium:selenium-firefox-driver:3.4.0'
+    testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
 }
 
 sourceSets {
