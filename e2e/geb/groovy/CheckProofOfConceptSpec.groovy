@@ -1,15 +1,15 @@
 @spock.lang.Unroll
 class CheckProofOfConceptSpec extends geb.spock.GebSpec {
 
-    def 'check default category of category page is #text '() {
+    def 'check telephone number is #text '() {
         when:
         to ProofOfConceptPage
 
         then:
         at ProofOfConceptPage
-        category.text() == text
+        customerInfo.text().contains text
         
         where:
-        text = 'ACTION CAMERAS'
+        text = '1300 032 032'
     }
 }
