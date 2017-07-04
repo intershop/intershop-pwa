@@ -86,3 +86,10 @@ tasks.withType(Test) {
         info.exceptionFormat = debug.exceptionFormat
     }
 }
+
+task npmRun(type:NpmTask, description: 'run npm binary with space separated commands from <npmargs> property', group:'Node') {
+    doFirst {
+        assert project.hasProperty('npmargs'), 'you did not pass the property npmargs'
+        args = project.getProperty('npmargs').split(' ') as List
+    }
+}
