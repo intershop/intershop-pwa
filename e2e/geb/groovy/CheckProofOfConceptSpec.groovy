@@ -9,9 +9,6 @@ class CheckProofOfConceptSpec extends geb.spock.GebReportingSpec {
         at ProofOfConceptPage
         customerInfo.text().contains text
         
-        and:
-        waitFor { 1 == 0 }
-        
         where:
         text = '1300 032 032'
     }
