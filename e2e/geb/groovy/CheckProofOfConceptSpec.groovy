@@ -1,5 +1,5 @@
 @spock.lang.Unroll
-class CheckProofOfConceptSpec extends geb.spock.GebSpec {
+class CheckProofOfConceptSpec extends geb.spock.GebReportingSpec {
 
     def 'check telephone number is #text '() {
         when:
