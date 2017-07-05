@@ -42,6 +42,17 @@ task dist(type: NpmTask, dependsOn:npmInstall, description: 'run npm distributio
 test.dependsOn dist
 clean.dependsOn cleanDist
 
+test {
+    systemProperty 'geb.env', System.getProperty('geb.env', 'local')
+    systemProperty 'wdm.phantomjsDriverVersion', '2.1.1'
+}
+
+task karma(type: NpmTask, dependsOn:npmInstall, description: 'run karma tests', group:'Node') {
+    args = ['run', 'test-ci']
+    inputs.files('src', 'package.json', 'karma-ci.conf.js')
+}
+build.dependsOn karma
+
 dependencies {
     testCompile "org.gebish:geb-spock:1.1.1"
     testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
@@ -53,6 +64,10 @@ dependencies {
     testRuntime 'io.github.bonigarcia:webdrivermanager:1.6.2'
     testRuntime 'org.seleniumhq.selenium:selenium-chrome-driver:3.4.0'
     testRuntime 'org.seleniumhq.selenium:selenium-firefox-driver:3.4.0'
+    testRuntime ('com.codeborne:phantomjsdriver:1.4.3') {
+        // phantomjs driver pulls in a different selenium version
+        transitive = false
+    }
     testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
 }
 
