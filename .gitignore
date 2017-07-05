@@ -17,6 +17,8 @@
 *.launch
 .settings/
 *.sublime-workspace
+/.nb-gradle
+/nbproject/
 
 # IDE - VSCode
 .vscode/*
