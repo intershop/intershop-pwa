@@ -38,6 +38,8 @@ Utility tasks:
                           space-separated list of commands in property `npmargs`
 
 `appRun` - starts jetty using distribution output
+
+`tslint` - runs static code analysis via angular cli on the project
 */
 
 plugins {
@@ -152,4 +154,9 @@ task npmRun(type:NpmTask, description: 'run npm script with space-separated comm
         assert project.hasProperty('npmargs'), 'you did not pass the property npmargs'
         args = project.getProperty('npmargs').split(' ') as List
     }
+}
+
+task tslint(type:NodeTask, description:'run tslint', group:'Node Utility', dependsOn:npmInstall) {
+    script = new File(node.nodeModulesDir, 'node_modules/.bin/ng')
+    args = ['lint', '--format', 'stylish', '--typeCheck']
 }
