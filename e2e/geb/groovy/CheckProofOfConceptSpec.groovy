@@ -1,12 +1,15 @@
-class CheckProofOfConceptSpec extends geb.spock.GebSpec {
+@spock.lang.Unroll
+class CheckProofOfConceptSpec extends geb.spock.GebReportingSpec {
 
-    def 'check content of example page '() {
+    def 'check telephone number is #text '() {
         when:
         to ProofOfConceptPage
 
         then:
         at ProofOfConceptPage
-        welcomeTitle.text() == 'Welcome to app!!'
-        heroesLink.displayed
+        customerInfo.text().contains text
+        
+        where:
+        text = '1300 032 032'
     }
 }
