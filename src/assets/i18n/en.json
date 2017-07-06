@@ -3,5 +3,6 @@
   "header.wishlists.text": "Wishlist",
   "product.items.label.none": "no list item",
   "product.items.label.singular": "one list item",
-  "product.items.label.plural": "{{count}} list items"
+  "product.items.label.plural": "{{count}} list items",
+  "common.header.contact_no.text": "<small>1300</small>  032 032"
 }
