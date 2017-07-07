@@ -1,0 +1,61 @@
+<div *ngFor="let response of Collapse.Response;let categoryindex=index" class="filter-group">
+    <a data-toggle="collapse" aria-expanded="true" aria-controls="collapseExample" href="#collapseExample{{categoryindex}}"> {{response.Data ? response.title:null}} <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+    <div class="collapse in" id="collapseExample{{categoryindex}}">
+        <div *ngIf="response.type=='none'">
+            <ul type="none" class="filter-list">
+                <li class="filter-item filter-selected" *ngFor="let data of response.Data;let j = index">
+                    <a data-toggle="collapse" class="filter-item-name" (click)="filterCategory(data)" aria-expanded="true" aria-controls="collapseExample"
+                        href="#collapseChild{{j}}">
+                        <span class="icon-selected"></span> {{data.name}} 
+                        </a>
+                    <span class="filter-count">({{data.count}})</span>
+                    <div id="collapseChild{{j}}" *ngIf="data.child">
+                        &nbsp; &nbsp; &nbsp;<a>{{data.child.name}}</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--//Check Boxes-->
+        <div *ngIf="response.type=='checkBox'">
+            <ul type="none" class="filter-list clearfix collapse in">
+                <li class="filter-item" *ngFor="let data of response.Data">
+                    <!--<input type="checkbox" [(ngModel)]="data['checked']" (click)="filterBrand(data)" />{{data.name}} ({{data.count}})-->
+                    <!--<a href="javascript:void(0)"><img src="../../assets/minus.PNG" [hidden]="!data.checked" (click)="filterBrand(data)" /></a>-->
+                    <a href="javascript:void(0)" class="filter-item-name">
+                        <span class="icon-notselected"></span>
+                        {{data.name}}
+                        <span class="filter-count">({{data.count}})</span>
+                        </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!--//Radio Button-->
+        <div *ngIf="response.type=='Radiobutton'">
+            <ul class="filter-list clearfix collapse in">
+                <li *ngFor="let data of response.Data; let j=index" type="none" class="filter-item">
+                    <!--<input type="radio" value="{{j}}" (click)="filterPrice(response.Data,data)" [(ngModel)]="data.options" />                    {{data.name}} <a href="javascript:void(0)"><img *ngIf="data.showImage" src="../../assets/minus.PNG" (click)="filterPrice('',data);data.showImage=false;data.options=false"/></a>-->
+                    <a class="filter-item-name"> 
+                        <span class="icon-notselected"></span>
+                        {{data.name}}
+                        <span class="filter-count">({{2}})</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--//color-->
+        <div *ngIf="response.type=='color'">
+            <ul class="filter-list"></ul>
+            <ul class="filter-list clearfix collapse in">
+                <li *ngFor="let data of response.Data; let j=index" class="filter-item filter-colour">
+                    <!--<a href="javascript:void(0)" class="active"><img class="{{j == selectedColor?'img':''}}" style="width: 30px;" src="{{data.imgsrc}}" (click)="filterColor(data,j)" /></a>-->
+                    <a href="javascript:void(0)" class="filter-swatch">
+                        <span [style.background-color]="data.color"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
