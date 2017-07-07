@@ -1,54 +1,94 @@
+/**
+This is a Gradle Build wrapping the npm build and all testing for CI purposes.
+
+The Bamboo Build Plan can be found here: 
+https://bamboo.intershop.de/browse/ISHMS-ISREST
+
+A complete build like in the build plan can be started with:
+./gradlew build -Dgeb.env=ci
+
+Gradle is responsible for delegating the build to Node Package Manager (npm) 
+and afterwards starting a jetty instance for running end-to-end tests using 
+Geb+Spock. The steps are as follows:
+
+1. `npmSetup` + `npmInstall` (tasks via gradle-node-plugin) for setting up node 
+   and npm. The binaries are then available in .gradle/nodejs/../bin. 
+   Afterwards `npm install` is run to setup node components.
+
+2. `dist` runs `npm run build` for getting a deployment-ready distribution.
+
+3. gretty plugin is used to start a jetty server serving the dist output as 
+   static resources for testing. The gretty plugin automatically starts the 
+   server before the `test` task and shuts down afterwards.
+
+4. `test` executes end-to-end tests located in e2e/geb with Geb+Spock. 
+   In CI-Mode (-Dgeb.env=ci) the tests are run using PhantomJS. Otherwise 
+   Chrome is used. `test` can be run separately to only run Geb+Spock tests.
+
+5. `karma` is a task for delegated running the `npm run test-ci` script which
+   runs jasmine tests located in src/app with PhantomJS. The standard `check` 
+   task depends on `karma` so `build` triggers both `test` and `karma` 
+   execution. `karma` can be run separately to only run jasmine tests.
+   Interactive development should be done using npm.
+
+Utility tasks:
+`reset` - delete node binaries and output from npm install
+
+`npmRun -Pnpmargs="..." - run the embedded npm script with arguments in 
+                          space-separated list of commands in property `npmargs`
+
+`appRun` - starts jetty using distribution output
+*/
+
 plugins {
     /** https://github.com/srs/gradle-node-plugin */
     id "com.moowork.node" version "1.1.1"
 }
 
-/** Gretty Plugin for running jetty
-http://akhikhl.github.io/gretty-doc/Getting-started.html 
- */
-apply plugin: 'war'
+repositories {
+    maven {
+        url { 'http://rnd-repo/mvn-internal/' }
+    }
+}
+
+/** Gretty Plugin for running jetty with static resources
+http://akhikhl.github.io/gretty-doc/Getting-started.html  */
+apply from:'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
+apply plugin:'groovy'
 
 node {
     version = '6.10.3'
     npmVersion = '3.10.10'
-    download = false
-    // distBaseUrl = Custom artifactory location here for node/npm.
+    download = true
 }
 
-task npmClean(type:Delete) {
-    delete 'dist'
-
-    /** uncomment to delete node environment with clean */
-    //    delete 'node_modules', '.gradle/npm', '.gradle/nodejs'
+gretty {
+    /** same as angular cli */
+    httpPort = 4200 
+    integrationTestTask = 'test' // wrap gretty execution around `test`
+    serverConfigFile = "$projectDir/e2e/geb/jetty9.xml"
 }
-clean.dependsOn npmClean
 
-task npmBuild(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution') {
+task dist(type: NpmTask, dependsOn:npmInstall, description: 'build npm distribution to directory `dist`', group:'Node') {
     args = ['run', 'build']
     inputs.dir('src')
     outputs.dir('dist')
 }
-
-task npmServe(type: NpmTask, dependsOn:npmInstall, description: 'run npm distribution') {
-    args = ['run', 'start']
+project.afterEvaluate {
+    [test, appRun]*.dependsOn dist
+    clean.dependsOn cleanDist
 }
 
-task copyNodeModulesToDist(type:Copy, dependsOn:npmBuild) {
-    from 'node_modules'
-    into 'dist/node_modules'
-    // TODO: FILTER!!! or solve by projecting 
+test {
+    systemProperty 'geb.env', System.getProperty('geb.env', 'local')
+    systemProperty 'wdm.phantomjsDriverVersion', '2.1.1'
 }
-gradle.projectsEvaluated {
-    [war]*.dependsOn copyNodeModulesToDist
-}    
 
-war { 
-    from('dist') /** include npm generated output into war */
-    webXml = file('src/web.xml')
-} 
-war.dependsOn npmBuild
-
-apply plugin:'groovy'
+task karma(type: NpmTask, dependsOn:npmInstall, description: 'run jasmine tests with karma', group:'Node') {
+    args = ['run', 'test-ci']
+    inputs.files('src', 'package.json', 'karma-ci.conf.js')
+}
+build.dependsOn karma
 
 dependencies {
     testCompile "org.gebish:geb-spock:1.1.1"
@@ -57,13 +97,19 @@ dependencies {
     }
     testCompile "org.codehaus.groovy:groovy-all:2.4.8"
     testCompile 'org.seleniumhq.selenium:selenium-api:3.4.0'
-    
+
     testRuntime 'io.github.bonigarcia:webdrivermanager:1.6.2'
     testRuntime 'org.seleniumhq.selenium:selenium-chrome-driver:3.4.0'
     testRuntime 'org.seleniumhq.selenium:selenium-firefox-driver:3.4.0'
+    testRuntime ('com.codeborne:phantomjsdriver:1.4.3') {
+        // phantomjs driver pulls in a different selenium version
+        transitive = false
+    }
+    testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
 }
 
 sourceSets {
+    /** relocations for geb+spock tests */
     test {
         java {
             srcDirs = ['e2e/geb/java']
@@ -77,6 +123,7 @@ sourceSets {
     }
 }
 
+/** logging configuration for geb+spock tests */
 tasks.withType(Test) {
     testLogging {
         events "passed", "skipped", "failed", "standardOut"
@@ -92,5 +139,17 @@ tasks.withType(Test) {
         }
         info.events = debug.events
         info.exceptionFormat = debug.exceptionFormat
+    }
+}
+
+task reset(type:Delete, description:'delete node binaries and output from npm install', group:'Node Utility') {
+    delete 'node_modules', '.gradle/npm', '.gradle/nodejs'
+}
+reset.finalizedBy clean
+
+task npmRun(type:NpmTask, description: 'run npm script with space-separated commands from <npmargs> property, should not be run with gradle daemon', group:'Node Utility') {
+    doFirst {
+        assert project.hasProperty('npmargs'), 'you did not pass the property npmargs'
+        args = project.getProperty('npmargs').split(' ') as List
     }
 }

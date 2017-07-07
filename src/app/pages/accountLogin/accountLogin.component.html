@@ -1,0 +1,42 @@
+<div role="main" style=" text-align:left;" class="container main-container">
+    <h1>My Account</h1>
+    <div class="row" data-testing-id="account-login-page">
+        <div class="col-md-6">
+            <h2>Returning Users</h2>
+            <p>To sign in to your account, please enter your email address and password.</p>
+            <form c role="form" [formGroup]="myForm" (ngSubmit)="onSignin()">
+                <div class="form-group has-feedback" style="overflow:hidden;">
+                    <label for="ShopLoginForm_Login" class="col-sm-3 control-label">Email</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" formControlName="userName" name="userName" type="text" id="userName" placeholder="Name">
+                    </div>
+                </div>
+                <div class="form-group has-feedback" style="overflow:hidden;">
+                    <label class="col-sm-3 control-label">Password</label>
+                    <div class="col-sm-6">
+                        <input formControlName="password" class="form-control" placeholder="Password" name="password" type="password" id="password">
+                    </div>
+                </div>
+                <div class="form-group" style="overflow:hidden;">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" value="Login" name="login" class="btn btn-primary">Sign In</button>
+                        <a class="btn btn-link">Forgot your password?</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <h2>New Users</h2>
+            <p>When you create an account, you'll gain access to a wide range of benefits:</p>
+            <ul>
+                <li>Easier Order Tracking</li>
+                <li>Faster checkout</li>
+                <li>Create and manage your address book</li>
+                <li>Comprehensive view of your order history</li>
+                <li>Quick access to products saved in your shopping cart</li>
+            </ul>
+            <button type="submit" value="CREATE USER" (click)=(registerUser()) class="btn btn-primary">Create Account</button>
+        </div>
+    </div>
+</div>

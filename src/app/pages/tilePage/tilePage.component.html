@@ -1,0 +1,8 @@
+<div class="main-div">
+    <is-image></is-image>
+      <span (mouseover)="fnShowIcons()" (mouseleave)="fnHideIcons()">
+        <is-action *ngIf="isIconsShown"></is-action>
+        <is-status *ngIf="!isIconsShown"></is-status>
+    </span>
+    
+</div>

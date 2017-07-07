@@ -1,0 +1,259 @@
+<div class="container">
+    <form class="form-horizontal" [formGroup]="createAccountForm" (ngSubmit)="save()">
+        <div class="row text-left">
+            <h1>Create a New Account</h1>
+            <p>To take full advantage of account features & benefits, please provide all the information below.</p>
+        </div>
+        <div class="row text-left">
+            <h3>Email & Password</h3>
+            <p>You will use your email address and password to access your account on future visits.</p>
+        </div>
+        <br>
+        <p class="text-left">* Required Field</p>
+        <br>
+
+        <div formGroupName="emailDetails">
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('emailDetails.emailAddress').invalid && createAccountForm.get('emailDetails.emailAddress').touched}">
+                <label class="control-label col-sm-2" for="email">Email Address <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="email" id="email" class="form-control" formControlName="emailAddress">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('emailDetails.emailAddress').invalid && createAccountForm.get('emailDetails.emailAddress').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('emailDetails.emailAddress').invalid && createAccountForm.get('emailDetails.emailAddress').touched"></span>
+                    <div class="text-left text-danger" *ngIf="createAccountForm.get('emailDetails.emailAddress').touched && createAccountForm.get('emailDetails.emailAddress').hasError('required')">
+                        The email address is required and cannot be empty.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                    <div *ngIf="createAccountForm.get('emailDetails.emailAddress').touched && createAccountForm.get('emailDetails.emailAddress').hasError('pattern')"
+                        class="text-left text-danger">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('emailDetails.confirmEmailAddress').invalid && createAccountForm.get('emailDetails.confirmEmailAddress').touched}">
+                <label class="control-label col-sm-2" for="confirmEmail">Confirm Email Address <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="email" id="confirmEmail" class="form-control" formControlName="confirmEmailAddress">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('emailDetails.confirmEmailAddress').invalid && createAccountForm.get('emailDetails.confirmEmailAddress').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('emailDetails.confirmEmailAddress').invalid && createAccountForm.get('emailDetails.confirmEmailAddress').touched"></span>
+                    <div class="text-left text-danger" *ngIf="createAccountForm.get('emailDetails.confirmEmailAddress').touched && createAccountForm.get('emailDetails.confirmEmailAddress').hasError('matchOtherValidator')">
+                        Email address must match.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('emailDetails.password').invalid && createAccountForm.get('emailDetails.password').touched}">
+                <label class="control-label col-sm-2" for="password">Password <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="password" id="password" class="form-control" formControlName="password">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('emailDetails.password').invalid && createAccountForm.get('emailDetails.password').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('emailDetails.password').invalid && createAccountForm.get('emailDetails.password').touched"></span>
+                    <div *ngIf="createAccountForm.get('emailDetails.password').touched && createAccountForm.get('emailDetails.password').hasError('required')"
+                        class="text-left text-danger">
+                        Password is required and cannot be empty.
+                    </div>
+                    <div *ngIf="createAccountForm.get('emailDetails.password').touched && createAccountForm.get('emailDetails.password').hasError('pattern')"
+                        class="text-left text-danger">
+                        <span text-align="left">
+                            Your password must include both numeric and alphabetic characters. It must not contain whitespace characters.
+                            Your password must be at least 7 characters in length.
+                       </span>
+
+                    </div>
+                    <div class="text-left">
+                        <p class="text-muted">7 characters minimum, must include numbers and letters, no spaces</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('emailDetails.confirmPassword').invalid && createAccountForm.get('emailDetails.confirmPassword').touched}">
+                <label class="control-label col-sm-2" for="confirmPassword">Confirm Password <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="text" id="confirmPassword" class="form-control" formControlName="confirmPassword">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('emailDetails.confirmPassword').invalid && createAccountForm.get('emailDetails.confirmPassword').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('emailDetails.confirmPassword').invalid && createAccountForm.get('emailDetails.confirmPassword').touched"></span>
+                    <div class="text-left text-danger" *ngIf="createAccountForm.get('emailDetails.confirmPassword').touched && createAccountForm.get('emailDetails.confirmPassword').hasError('matchOtherValidator')">
+                        Password must match.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('emailDetails.securityQuestion').invalid && createAccountForm.get('emailDetails.securityQuestion').touched}">
+                <label class="control-label col-sm-2" for="securityQuestion">Security Question <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <select id="securityQuestion" class="form-control" formControlName="securityQuestion">
+                    <option value="">Select Security Question</option>
+                    <option value="Name of your school">Name of your school</option>
+                    <option value="First sport you played">First sport you played</option>
+                    <option value="Name of your teacher">Name of your teacher</option>
+                </select>
+                    <span class="glyphicon glyphicon-remove form-control-feedback ok-remove" *ngIf="createAccountForm.get('emailDetails.securityQuestion').invalid && createAccountForm.get('emailDetails.securityQuestion').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success ok-remove" *ngIf="!createAccountForm.get('emailDetails.securityQuestion').invalid && createAccountForm.get('emailDetails.securityQuestion').touched"></span>
+                    <div *ngIf="createAccountForm.get('emailDetails.securityQuestion').touched && createAccountForm.get('emailDetails.securityQuestion').hasError('required')"
+                        class="text-left text-danger">
+                        Security question is required.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('emailDetails.answer').invalid && createAccountForm.get('emailDetails.answer').touched}">
+                <label class="control-label col-sm-2" for="answer">Answer <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="text" id="answer" class="form-control" formControlName="answer">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('emailDetails.answer').invalid && createAccountForm.get('emailDetails.answer').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('emailDetails.answer').invalid && createAccountForm.get('emailDetails.answer').touched"></span>
+                    <div *ngIf="createAccountForm.get('emailDetails.answer').touched && createAccountForm.get('emailDetails.answer').hasError('required')"
+                        class="text-left text-danger">
+                        Answer is required.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row text-left">
+            <h3>Address</h3>
+            <p class="col-sm-7">To save time when placing an order, please provide your primary invoice or shipping address below. We will maintain
+                this information so you won't have to enter it again.</p>
+        </div>
+        <br>
+        <p class="text-left">* Required Field</p>
+        <br>
+        <div formGroupName="address">
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('address.country').invalid && createAccountForm.get('address.country').touched}">
+                <label class="control-label col-sm-2" for="country">Country <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <select id="country" class="form-control" formControlName="country">
+                    <option value="">Please Select</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="All Other Countries">All Other Countries</option>
+                    </select>
+                    <span class="glyphicon glyphicon-remove form-control-feedback ok-remove" *ngIf="createAccountForm.get('address.country').invalid && createAccountForm.get('address.country').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success ok-remove" *ngIf="!createAccountForm.get('address.country').invalid && createAccountForm.get('address.country').touched"></span>
+                    <div *ngIf="createAccountForm.get('address.country').touched && createAccountForm.get('address.country').hasError('required')"
+                        class="text-left text-danger">
+                        Please select a country.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('address.firstName').invalid && createAccountForm.get('address.firstName').touched}">
+                <label class="control-label col-sm-2" for="firstName">First Name <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="text" id="firstName" class="form-control" formControlName="firstName">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('address.firstName').invalid && createAccountForm.get('address.firstName').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('address.firstName').invalid && createAccountForm.get('address.firstName').touched"></span>
+                    <div *ngIf="createAccountForm.get('address.firstName').touched && createAccountForm.get('address.firstName').hasError('required')"
+                        class="text-left text-danger">
+                        Please enter a first name.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('address.lastName').invalid && createAccountForm.get('address.lastName').touched}">
+                <label class="control-label col-sm-2" for="lastName">Last Name <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="text" id="lastName" class="form-control" formControlName="lastName">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('address.lastName').invalid && createAccountForm.get('address.lastName').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('address.lastName').invalid && createAccountForm.get('address.lastName').touched"></span>
+                    <div *ngIf="createAccountForm.get('address.lastName').touched && createAccountForm.get('address.lastName').hasError('required')"
+                        class="text-left text-danger">
+                        Please enter a last name.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('address.line1').invalid && createAccountForm.get('address.line1').touched}">
+                <label class="control-label col-sm-2" for="line1">Address Line 1 <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="text" id="line1" class="form-control" formControlName="line1">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('address.line1').invalid && createAccountForm.get('address.line1').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('address.line1').invalid && createAccountForm.get('address.line1').touched"></span>
+                    <div *ngIf="createAccountForm.get('address.line1').touched && createAccountForm.get('address.line1').hasError('required')"
+                        class="text-left text-danger">
+                        Please enter an address.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="line2">Address Line 2</label>
+                <div class="col-sm-4">
+                    <input type="text" id="line2" class="form-control" formControlName="line2">
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('address.zip').invalid && createAccountForm.get('address.zip').touched}">
+                <label class="control-label col-sm-2" for="zip">Zip/Postal Code <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="text" id="zip" class="form-control" formControlName="zip">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('address.zip').invalid && createAccountForm.get('address.zip').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('address.zip').invalid && createAccountForm.get('address.zip').touched"></span>
+                    <div *ngIf="createAccountForm.get('address.zip').touched && createAccountForm.get('address.zip').hasError('required')" class="text-left text-danger">
+                        Please enter a valid ZIP code.
+                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error' : createAccountForm.get('address.city').invalid && createAccountForm.get('address.city').touched}">
+                <label class="control-label col-sm-2" for="city">City <sup>*</sup></label>
+                <div class="col-sm-4 has-clear has-feedback">
+                    <input type="text" id="city" class="form-control" formControlName="city">
+                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="createAccountForm.get('address.city').invalid && createAccountForm.get('address.city').touched"></span>
+                    <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!createAccountForm.get('address.city').invalid && createAccountForm.get('address.city').touched"></span>
+                    <div *ngIf="createAccountForm.get('address.city').touched && createAccountForm.get('address.city').hasError('required')"
+                        class="text-left text-danger">
+                        Please enter a city.
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="phone">Phone</label>
+                <div class="col-sm-4">
+                    <input type="text" id="phone" class="form-control" formControlName="phone">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="preferredLanguage">Preferred Language <sup>*</sup></label>
+                <div class="col-sm-4">
+                    <select id="preferredLanguage" class="form-control" formControlName="preferredLanguage">
+                        <option value="" selected>Select Language</option>
+                        <option value="eng">English (United States)</option>
+                        <option value="">German (Germany)</option>
+                        <option value="">French (France)</option>
+                </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="birthday">Birthday</label>
+                <div class="col-sm-1">
+                    <select id="birthday" class="form-control" formControlName="birthday" ngModel>
+                        <option value=""> MM </option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+                </div>
+                <div class="col-sm-1">
+                    <select id="birthday" class="form-control" formControlName="birthday">
+                    <option value=""> DD </option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+                </select>
+                </div>
+                <div class="col-sm-2">
+                    <select id="birthday" class="form-control" formControlName="birthday">
+                    <option value=""> YYYY </option><option value="1990">1990</option><option value="1991">1991</option><option value="1992">1992</option><option value="1993">1993</option><option value="1994">1994</option><option value="1995">1995</option><option value="1996">1996</option><option value="1997">1997</option><option value="1998">1998</option><option value="1999">1999</option><option value="2000">2000</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option>
+                </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2"></label>
+                <div class="col-sm-4">
+                    <recaptcha (resolved)="resolved($event)" siteKey="6LfsSycUAAAAACLDuGqp6RggUgpMqsrIjIdp1CZe"></recaptcha>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-4 text-left">
+            <input type="submit" [disabled]="createAccountForm.invalid || invalidCaptcha" class="btn btn-primary" value="Create Account" (click)="fnSubmit()"/>
+            <input type="button" class="btn btn-primary" value="Cancel" (click)="cancelClicked()" />
+            </div>
+        </div>
+    </form>
+</div>

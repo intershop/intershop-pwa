@@ -1,0 +1,97 @@
+<header data-testing-id="page-header" class="top">
+    <div class="top-header">
+        <nav class="container">
+            <div class="row">
+                <a rel="home" href="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewHomepage-Start" class="visible-xs mobile-logo"><img src="" alt="Logo" width="41" height="41"></a>
+                <div class="visible-xs pull-right">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#globalnav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="col-md-12">
+                    <ul class="user-links">
+                        <li>
+                            <a class="my-account-links my-account-login" routerLink="/login"
+                                rel="nofollow"><span class="glyphicon-user glyphicon glyphicon-header-icon"></span><span class="hidden-xs">Sign In</span></a>
+                            <span class="hidden-xs seperator">| </span>
+                            <a class="ish-siteHeader-myAccountUtilitiesMenu-myAccount-register" routerLink="/register"
+                                rel="nofollow"><span class="hidden-xs">Register</span></a>
+                        </li>
+                        <li>
+                           <is-productcomparestatus></is-productcomparestatus>
+                        </li>
+                        <li>
+                           <is-wishlist></is-wishlist>
+                        </li>
+                        <li class="visible-xs">
+                            <a href=""><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
+                            <div class="mobile-cart-counter"></div>
+                        </li>
+                    </ul>
+                    <div class="header-utility">
+                        <ul class="customer-info hidden-xs">
+                            <li>
+                                <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span> 1300 032 032
+                            </li>
+                        </ul>
+                        <div class="language-switch">
+                            <a class="language-switch-link" href="#languageSwitch" data-toggle="collapse" aria-expanded="true">
+                                <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
+                                <span class="hidden-xs">en<span class="switch_arrow hidden-xs"></span></span>
+                            </a>
+                            <div id="languageSwitch" class="language-switch-container collapse" aria-expanded="true">
+                                <div class="language-switch-menu-container">
+                                    <ul>
+                                        <li><a href="">German</a></li>
+                                        <li><a href="">French</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="mid-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 logo-wrapper hidden-xs">
+                    <a rel="home" routerLink="/"><img src="../../assets/intershop-logo.png" alt="Logo"></a>
+                </div>
+                <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
+                <div class="col-sm-4 search-container header-search-container">
+                    <form method="post" action=""
+                        role="search" class="search clearfix" name="SearchBox_Header">
+                        <is-searchbox></is-searchbox>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-header">
+        <div class="global-nav collapse navbar-collapse" id="globalnav">
+            <div class="container">
+                <div class="row">
+                    <div class="main-navigation col-sm-8 col-md-9" role="navigation">
+                        <ul class="navbar-nav main-navigation-list">
+                            <li class="home hidden-xs">
+                                <a class="" routerLink="/" title="home"><span class="glyphicon glyphicon-home"></span></a>
+                            </li>
+
+                            <li *ngFor="let category of categories" class="dropdown">
+                                <a routerLink="/category" data-testing-id="Cameras-Camcorders-link"> 
+                                <b> {{category.name | uppercase }} </b> </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                   <is-minicart></is-minicart>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

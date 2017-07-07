@@ -1,0 +1,6 @@
+<ng-template #rt let-r="result" let-t="term" class="">
+  <div class="container-fluid">
+    {{ r.name}}
+  </div>
+</ng-template>
+<input placeholder="Search for keyword, product ID or category..." name="SearchTerm" type="text" class="form-control searchTerm" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" />
