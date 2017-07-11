@@ -1,30 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule, Http, JsonpModule } from '@angular/http';
-
-// Imports for loading & configuring the in-memory web api
-//import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-//import { InMemoryDataService }  from './services/in-memory-data.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule, routingComponents } from './approuting.module';
 import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
 
-import { AppComponent } from './app.component';
 import { FooterModule } from './shared/components/footer/footer.module'
 import { HeaderModule } from './shared/components/header/header.module';
-import { CacheCustomService, EncryptDecryptService, CompressDecompressService, JwtService, ApiService, AuthService, DataEmitterService } from "app/shared/services";
+import { AppRoutingModule, routingComponents } from './approuting.module';
+
+import {
+  CacheCustomService, EncryptDecryptService, CompressDecompressService,
+  JwtService, ApiService, AuthService, DataEmitterService, InstanceService
+} from "app/shared/services";
 import { CategoryApiService } from "app/shared/components/categoryList/categoryListService/categoryList.service.api";
 import { CategoryMockService } from "app/shared/components/categoryList/categoryListService/categoryList.service.mock";
 import { CategoryService } from "app/shared/components/categoryList/categoryListService/categoryList.service";
-import { ProductListService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service";
-import { ProductListMockService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service.mock";
-import { ProductListApiService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service.api";
 
-
+import { AppComponent } from './app.component';
 
 
 // AoT requires an exported function for factories
@@ -45,7 +41,6 @@ export function createTranslateLoader(http: Http) {
     FooterModule,
     HeaderModule,
     ReactiveFormsModule,
-    //InMemoryWebApiModule.forRoot(InMemoryDataService)
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -59,15 +54,13 @@ export function createTranslateLoader(http: Http) {
     CacheService,
     DataEmitterService,
     EncryptDecryptService,
-    ProductListService,
-    ProductListMockService,
-    ProductListApiService,
     CategoryApiService,
     CategoryMockService,
     CategoryService,
     CompressDecompressService,
     AuthService,
     ApiService,
+    InstanceService,
     JwtService],
   bootstrap: [AppComponent]
 })

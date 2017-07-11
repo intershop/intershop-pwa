@@ -7,3 +7,4 @@ export * from './jwt.service';
 export * from './cache/compressDecompress.service';
 export * from './cache/encryptDecrypt.service';
 export * from './cache/cacheCustom.service';
+export * from './instance.service';

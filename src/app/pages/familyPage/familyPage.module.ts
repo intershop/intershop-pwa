@@ -10,6 +10,10 @@ import { ProductTileComponent } from "app/shared/components/productTile/productT
 import { CategoryComponent } from "app/shared/components/category/category.component";
 import { CategoryListComponent } from "app/shared/components/categoryList/categoryList.component";
 import { ProductListFilterComponent } from "app/pages/familyPage/productListFilter/productListFilter.component";
+import { ProductListService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service";
+import { ProductListMockService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service.mock";
+import { ProductListApiService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service.api";
+import { InstanceService } from "app/shared/services";
 
 
 @NgModule({
@@ -21,8 +25,10 @@ import { ProductListFilterComponent } from "app/pages/familyPage/productListFilt
 
     ],
     declarations: [FamilyPageComponent,
-        ProductListFilterComponent, CategoryListComponent, CategoryComponent, FamilyPageListComponent, BreadcrumbComponent, ProductTileComponent],
-    providers: []
+        ProductListFilterComponent, CategoryListComponent,
+        CategoryComponent, FamilyPageListComponent,
+        BreadcrumbComponent, ProductTileComponent],
+    providers: [ProductListService, ProductListMockService, ProductListApiService,InstanceService]
 })
 
 export class FamilyPageModule {

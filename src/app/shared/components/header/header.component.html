@@ -37,20 +37,7 @@
                                 <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span> 1300 032 032
                             </li>
                         </ul>
-                        <div class="language-switch">
-                            <a class="language-switch-link" href="#languageSwitch" data-toggle="collapse" aria-expanded="true">
-                                <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
-                                <span class="hidden-xs">en<span class="switch_arrow hidden-xs"></span></span>
-                            </a>
-                            <div id="languageSwitch" class="language-switch-container collapse" aria-expanded="true">
-                                <div class="language-switch-menu-container">
-                                    <ul>
-                                        <li><a href="">German</a></li>
-                                        <li><a href="">French</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <is-languageswitch></is-languageswitch>
                     </div>
                 </div>
             </div>
@@ -59,9 +46,7 @@
     <div class="mid-header">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3 logo-wrapper hidden-xs">
-                    <a rel="home" routerLink="/"><img src="../../assets/intershop-logo.png" alt="Logo"></a>
-                </div>
+                <is-logo></is-logo>
                 <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
                 <div class="col-sm-4 search-container header-search-container">
                     <form method="post" action=""
@@ -76,19 +61,7 @@
         <div class="global-nav collapse navbar-collapse" id="globalnav">
             <div class="container">
                 <div class="row">
-                    <div class="main-navigation col-sm-8 col-md-9" role="navigation">
-                        <ul class="navbar-nav main-navigation-list">
-                            <li class="home hidden-xs">
-                                <a class="" routerLink="/" title="home"><span class="glyphicon glyphicon-home"></span></a>
-                            </li>
-
-                            <li *ngFor="let category of categories" class="dropdown">
-                                <a routerLink="/category" data-testing-id="Cameras-Camcorders-link"> 
-                                <b> {{category.name | uppercase }} </b> </a>
-                            </li>
-
-                        </ul>
-                    </div>
+                    <is-headernavigation></is-headernavigation>
                    <is-minicart></is-minicart>
                 </div>
             </div>
