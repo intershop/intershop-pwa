@@ -1,0 +1,13 @@
+<div class="main-navigation col-sm-8 col-md-9" role="navigation">
+    <ul class="navbar-nav main-navigation-list">
+        <li class="home hidden-xs">
+            <a class="" routerLink="/" title="home"><span class="glyphicon glyphicon-home"></span></a>
+        </li>
+
+        <li *ngFor="let product of products" class="dropdown">
+            <a routerLink="/category" data-testing-id="Cameras-Camcorders-link"> 
+                <b> {{product.name | uppercase }} </b> </a>
+        </li>
+
+    </ul>
+</div>

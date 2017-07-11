@@ -9,20 +9,5 @@ import { Component } from '@angular/core';
 })
 
 export class HeaderSlotComponent {
-    categories: any = [
-        
-        {
-            name : 'Cameras'
-        },
-        {
-            name : 'Computers'
-        },
-        {
-            name : 'Home Entertainment'
-        },
-        {
-            name : 'Specials'
-        }
-
-    ]
+   
 }
