@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule } from 'ng2-recaptcha';
-import { registrationPageRoute } from "app/pages/registrationPage/registrationPage.routes";
-import { RegistrationPageComponent } from "app/pages/registrationPage/registrationPage.component";
-
+import { registrationPageRoute } from 'app/pages/registrationPage/registrationPage.routes';
+import { RegistrationPageComponent } from 'app/pages/registrationPage/registrationPage.component';
+import {CaptchaComponent} from './captcha/captcha.component';
 
 @NgModule({
     imports: [
@@ -15,7 +15,7 @@ import { RegistrationPageComponent } from "app/pages/registrationPage/registrati
         ReactiveFormsModule,
         RecaptchaModule.forRoot()
     ],
-    declarations: [RegistrationPageComponent],
+    declarations: [RegistrationPageComponent, CaptchaComponent],
     providers: []
 })
 
