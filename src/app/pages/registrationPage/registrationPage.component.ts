@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { Router } from '@angular/router'
-import { CreateAccountModel } from "app/pages/registrationPage/registrationPage.model";
-import { matchOtherValidator } from "app/shared/validators";
+import { CreateAccountModel } from 'app/pages/registrationPage/registrationPage.model';
+import { matchOtherValidator, EmailValidator, PasswordValidator } from 'app/shared/validators';
 
 @Component({
     templateUrl: './registrationPage.component.html'
@@ -23,13 +23,13 @@ export class RegistrationPageComponent implements OnInit {
         this.createAccountForm = this._formbuilder.group({
             emailDetails: this._formbuilder.group({
                 emailAddress: ['', [Validators.required,
-                Validators.pattern('([a-zA-Z0-9_.]{1,})((@[a-zA-Z]{2,})[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))')
+                  EmailValidator.validate
                 ]],
                 confirmEmailAddress: ['', [Validators.required,
                 matchOtherValidator('emailAddress')
                 ]],
                 password: ['', [Validators.required,
-                Validators.pattern('(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$')
+                  PasswordValidator.validate
                 ]],
                 confirmPassword: ['', [Validators.required,
                 matchOtherValidator('password')]],
@@ -54,6 +54,10 @@ export class RegistrationPageComponent implements OnInit {
         })
     }
 
+    onValidCaptcha( captchaValidation ){
+      this.invalidCaptcha = captchaValidation;
+    }
+
     save() {
         console.log(this.createAccountForm.value);
     }
@@ -62,14 +66,7 @@ export class RegistrationPageComponent implements OnInit {
         this.router.navigate(['']);
     }
 
-    resolved(captchaResponse: string) {
-        this.invalidCaptcha = false;
-        console.log(`Resolved captcha with response ${captchaResponse}:`);
-    }
-    fnSubmit() {
-    
-    }
-
+    fnSubmit() { }
 };
 
 
