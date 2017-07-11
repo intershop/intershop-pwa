@@ -4,7 +4,8 @@ import { ApiService } from './api.service';
 import { Headers, Http, Response, URLSearchParams } from '@angular/http';
 import { environment } from 'environments/environment';
 import { JwtService } from './jwt.service';
-import { AccountLogin } from "../../pages/accountLogin";
+import {} from ''
+import {AccountLogin} from '../../pages/accountLogin/accountLogin';
 
 export const UNKNOWN_USER: AccountLogin = {
     userName: 'Unknown'
