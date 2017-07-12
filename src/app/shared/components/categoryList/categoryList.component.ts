@@ -32,7 +32,7 @@ export class CategoryListComponent implements OnInit {
                 this.Collapse = this.customService.GetCachedData(this.filterkey);
            }else {
               this.deciderService.deciderFunction().getSideFilters().subscribe(data=>{
-                this.Collapse = data;
+                this.Collapse = data[0];
                });
                this.customService.StoreDataToCache(this.Collapse, this.filterkey,true);
            }

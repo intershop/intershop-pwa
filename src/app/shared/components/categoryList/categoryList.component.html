@@ -1,61 +1,40 @@
-<div *ngFor="let response of Collapse.Response;let categoryindex=index" class="filter-group">
-    <a data-toggle="collapse" aria-expanded="true" aria-controls="collapseExample" href="#collapseExample{{categoryindex}}"> {{response.Data ? response.title:null}} <span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
-    <div class="collapse in" id="collapseExample{{categoryindex}}">
-        <div *ngIf="response.type=='none'">
-            <ul type="none" class="filter-list">
-                <li class="filter-item filter-selected" *ngFor="let data of response.Data;let j = index">
-                    <a data-toggle="collapse" class="filter-item-name" (click)="filterCategory(data)" aria-expanded="true" aria-controls="collapseExample"
-                        href="#collapseChild{{j}}">
-                        <span class="icon-selected"></span> {{data.name}} 
-                        </a>
-                    <span class="filter-count">({{data.count}})</span>
-                    <div id="collapseChild{{j}}" *ngIf="data.child">
-                        &nbsp; &nbsp; &nbsp;<a>{{data.child.name}}</a>
-                    </div>
-                </li>
-            </ul>
+<div class="category-panel">
+  <h1>Cameras</h1><!-- BEGIN TEMPLATE app_sf_responsive/default/modules/navigation/FilterList -->
+  <div class="filter-panel" id="filter-accordion">
+    <div class="filter-group" *ngFor="let response of Collapse.elements">
+      <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/search/index/Filter -->
+      <h3 data-toggle="collapse" [attr.href]="'#' + response.id + ''">{{response.name}}
+        <span class="glyphicon glyphicon-chevron-down pull-right"></span>
+      </h3>
+      <ul class="filter-list clearfix collapse in" id="{{response.id}}">
+        <div *ngIf="response.name!='Color'">
+          <li class=" filter-item" *ngFor="let data of response.facets">
+            <a class="filter-item-name" data-testing-id="filter-link-Canon"
+               href="http://127.0.0.1:8081/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogCategoryID=&amp;SearchParameter=%26%40QueryTerm%3D*%26ContextCategoryUUID%3DYst_AAABY.kAAAFdWdgh_RgR%26ManufacturerName%3DCanon%26OnlineFlag%3D1%26%40Sort.CategoryPosition%3D0%26%40Sort.UUID%3D0&amp;PageSize=12&amp;SortingAttribute=&amp;CategoryName=Cameras-Camcorders&amp;CatalogID=Cameras-Camcorders">
+          <span class="icon-notselected">
+          </span>{{data.name}}
+            </a>
+            <span class="filter-count">({{data.count}})</span>
+          </li>
         </div>
-        <!--//Check Boxes-->
-        <div *ngIf="response.type=='checkBox'">
-            <ul type="none" class="filter-list clearfix collapse in">
-                <li class="filter-item" *ngFor="let data of response.Data">
-                    <!--<input type="checkbox" [(ngModel)]="data['checked']" (click)="filterBrand(data)" />{{data.name}} ({{data.count}})-->
-                    <!--<a href="javascript:void(0)"><img src="../../assets/minus.PNG" [hidden]="!data.checked" (click)="filterBrand(data)" /></a>-->
-                    <a href="javascript:void(0)" class="filter-item-name">
-                        <span class="icon-notselected"></span>
-                        {{data.name}}
-                        <span class="filter-count">({{data.count}})</span>
-                        </a>
-                </li>
-            </ul>
+        <div *ngIf="response.name=='Color'">
+          <li class="filter-item filter-colour" *ngFor="let data of response.facets">
+            <a class="filter-swatch" title="{{data.name}}"
+               href="'http://127.0.0.1:8081/' + {{data.link}} + ''">
+              <span [ngStyle]="{'background-color':data.name}">
+              </span>
+            </a>
+          </li>
+        </div>
+      </ul>
+      <!-- END TEMPLATE app_sf_responsive/default/modules/search/index/Filter -->
 
-        </div>
-
-        <!--//Radio Button-->
-        <div *ngIf="response.type=='Radiobutton'">
-            <ul class="filter-list clearfix collapse in">
-                <li *ngFor="let data of response.Data; let j=index" type="none" class="filter-item">
-                    <!--<input type="radio" value="{{j}}" (click)="filterPrice(response.Data,data)" [(ngModel)]="data.options" />                    {{data.name}} <a href="javascript:void(0)"><img *ngIf="data.showImage" src="../../assets/minus.PNG" (click)="filterPrice('',data);data.showImage=false;data.options=false"/></a>-->
-                    <a class="filter-item-name"> 
-                        <span class="icon-notselected"></span>
-                        {{data.name}}
-                        <span class="filter-count">({{2}})</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!--//color-->
-        <div *ngIf="response.type=='color'">
-            <ul class="filter-list"></ul>
-            <ul class="filter-list clearfix collapse in">
-                <li *ngFor="let data of response.Data; let j=index" class="filter-item filter-colour">
-                    <!--<a href="javascript:void(0)" class="active"><img class="{{j == selectedColor?'img':''}}" style="width: 30px;" src="{{data.imgsrc}}" (click)="filterColor(data,j)" /></a>-->
-                    <a href="javascript:void(0)" class="filter-swatch">
-                        <span [style.background-color]="data.color"></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
+      <!-- END TEMPLATE app_sf_responsive/default/modules/navigation/FilterList -->
     </div>
-</div>
+    <a class="visible-xs mobile-filter-toggle collapsed" data-toggle="collapse"
+       data-target="#filter-accordion">Filters<br><span class="glyphicon glyphicon-chevron-up"></span>
+    </a>
+  </div>
+
+
+
