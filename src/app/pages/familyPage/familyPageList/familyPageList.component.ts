@@ -21,14 +21,14 @@ export class FamilyPageListComponent {
     filteredData;
     constructor(private route: Router,
         private _dataEmitterService: DataEmitterService,
-        private deciderService: ProductListService,
+        private productListService: ProductListService,
         private customService: CacheCustomService) { }
 
     ngOnInit() {
         if (this.customService.CacheKeyExists(this.thumbnailKey)) {
             this.allData = this.customService.GetCachedData(this.thumbnailKey);
         }else {
-            this.deciderService.deciderFunction().getProductList().subscribe(data => {
+            this.productListService.getProductList().subscribe(data => {
                 this.allData = data;
             });
             this.customService.StoreDataToCache(this.allData, this.thumbnailKey,true);
