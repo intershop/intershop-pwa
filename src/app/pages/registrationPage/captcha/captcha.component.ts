@@ -7,11 +7,8 @@ import { Component, Output, EventEmitter } from '@angular/core'
 })
 
 export class CaptchaComponent {
-  @Output() invalidCaptcha = true;
-  @Output() captchaEmitter: EventEmitter<boolean> = new EventEmitter();
+  @Output() isValid: EventEmitter<boolean> = new EventEmitter();
   resolved(captchaResponse: string) {
-    this.invalidCaptcha = false;
-    this.captchaEmitter.emit(this.invalidCaptcha);
-    console.log(`Resolved captcha with response ${captchaResponse}:`);
+    this.isValid.emit(true);
   }
 }

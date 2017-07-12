@@ -6,6 +6,8 @@ import { RecaptchaModule } from 'ng2-recaptcha';
 import { registrationPageRoute } from 'app/pages/registrationPage/registrationPage.routes';
 import { RegistrationPageComponent } from 'app/pages/registrationPage/registrationPage.component';
 import {CaptchaComponent} from './captcha/captcha.component';
+import {EmailPasswordComponent} from './emailPassword/emailPassword.component';
+import {AddressComponent} from './address/address.component';
 
 @NgModule({
     imports: [
@@ -15,7 +17,7 @@ import {CaptchaComponent} from './captcha/captcha.component';
         ReactiveFormsModule,
         RecaptchaModule.forRoot()
     ],
-    declarations: [RegistrationPageComponent, CaptchaComponent],
+    declarations: [RegistrationPageComponent, CaptchaComponent, EmailPasswordComponent, AddressComponent],
     providers: []
 })
 
