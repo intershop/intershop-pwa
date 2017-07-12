@@ -24,15 +24,16 @@ export class CategoryListComponent implements OnInit {
     };
     class;
     filterkey = 'filterData';
-    constructor(private deciderService: CategoryService, private customService: CacheCustomService, private dataEmitterService: DataEmitterService) {
+    constructor(private categoryService: CategoryService, private customService: CacheCustomService, private dataEmitterService: DataEmitterService) {
     }
 
      ngOnInit() {
            if (this.customService.CacheKeyExists(this.filterkey)) {
                 this.Collapse = this.customService.GetCachedData(this.filterkey);
            }else {
-              this.deciderService.deciderFunction().getSideFilters().subscribe(data=>{
-                this.Collapse = data[0];
+
+              this.categoryService.getSideFilters().subscribe(data=>{
+                this.Collapse = data;
                });
                this.customService.StoreDataToCache(this.Collapse, this.filterkey,true);
            }

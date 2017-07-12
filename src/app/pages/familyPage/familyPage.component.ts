@@ -6,8 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class FamilyPageComponent implements OnInit {
-  public imageId;
-  public range;
+  imageId;
+  range;
 
   resolved(captchaResponse: string) {
     console.log(`Resolved captcha with response ${captchaResponse}:`);

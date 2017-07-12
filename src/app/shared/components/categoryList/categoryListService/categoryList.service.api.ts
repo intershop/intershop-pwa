@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx'
 import { Injectable } from '@angular/core'
 import { ApiService } from "app/shared/services";
-import { ICategoryService } from "app/shared/components/categoryList/categoryListService/iCategoryList.service";
+import { ICategoryService } from "app/shared/components/categoryList/categoryListService/categoryList.service";
 
 @Injectable()
 export class CategoryApiService implements ICategoryService {
@@ -11,6 +11,9 @@ export class CategoryApiService implements ICategoryService {
         this.apiService = apiService;
      }
 
+    /**
+     * @returns List of categories as an Observable
+     */
     getSideFilters() : Observable<any> {
         return this.apiService.get("url");
     }
