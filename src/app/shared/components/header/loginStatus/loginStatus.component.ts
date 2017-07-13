@@ -1,0 +1,59 @@
+import { Component } from '@angular/core'
+import { JwtService, CacheCustomService } from '../../../services';
+import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService'
+import { Router } from '@angular/router'
+
+@Component({
+    selector: 'is-loginstatus',
+    templateUrl: './loginStatus.component.html'
+})
+
+export class LoginStatusComponent {
+    userName: string;
+    constructor(
+        private accountLoginService: AccountLoginService,
+        private router: Router,
+        private jwtService: JwtService,
+        private cacheCustomService: CacheCustomService
+    ) {
+    }
+
+    ngOnInit() {
+        if (this.accountLoginService.isAuthorized()) {
+            if (this.cacheCustomService.CacheKeyExists('userDetail')) {
+                this.userName = this.cacheCustomService.GetCachedData('userDetail').firstName;
+            }
+        }
+        this.accountLoginService.loginStatusEmitter.subscribe(data => {
+            this.userName = data.firstName;
+        })
+    }
+
+    /**
+     * navigates to register page
+     * @returns void
+     */
+    register():void {
+        this.router.navigate(['register']);
+    }
+
+    /**
+     * navigates to login page
+     * @returns void
+     */
+    logout():void {
+        this.accountLoginService.logout();
+        this.userName = '';
+        this.router.navigate(['login']);
+    }
+
+    /**
+     * navigates to signin page
+     * @returns void
+     */
+    signIn():void {
+        this.router.navigate(['login']);
+    }
+
+}
+

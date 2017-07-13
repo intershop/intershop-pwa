@@ -10,7 +10,7 @@
         <div *ngIf="response.name!='Color'">
           <li class=" filter-item" *ngFor="let data of response.facets">
             <a class="filter-item-name" data-testing-id="filter-link-Canon"
-               href="http://127.0.0.1:8081/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogCategoryID=&amp;SearchParameter=%26%40QueryTerm%3D*%26ContextCategoryUUID%3DYst_AAABY.kAAAFdWdgh_RgR%26ManufacturerName%3DCanon%26OnlineFlag%3D1%26%40Sort.CategoryPosition%3D0%26%40Sort.UUID%3D0&amp;PageSize=12&amp;SortingAttribute=&amp;CategoryName=Cameras-Camcorders&amp;CatalogID=Cameras-Camcorders">
+               href="javascript:void(0)">
           <span class="icon-notselected">
           </span>{{data.name}}
             </a>
@@ -20,7 +20,7 @@
         <div *ngIf="response.name=='Color'">
           <li class="filter-item filter-colour" *ngFor="let data of response.facets">
             <a class="filter-swatch" title="{{data.name}}"
-               href="'http://127.0.0.1:8081/' + {{data.link}} + ''">
+               href="javascript:void(0)">
               <span [ngStyle]="{'background-color':data.name}">
               </span>
             </a>
