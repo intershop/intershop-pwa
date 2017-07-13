@@ -1,28 +1,28 @@
-import { Component,OnInit } from '@angular/core';
-import { DataEmitterService } from "app/shared/services";
-
+import {Component, OnInit} from '@angular/core';
+import {DataEmitterService} from '../../../services/dataEmitter.service';
 
 @Component({
-    selector: 'is-minicart',
-    templateUrl: './miniCart.component.html',
+  selector: 'is-minicart',
+  templateUrl: './miniCart.component.html',
 })
 
 export class MiniCartComponent implements OnInit {
-    cartItems=[];
-    cartPrice = 0;
-    cartLength= 0;
-    constructor(private _dataEmitterService:DataEmitterService){
-    }
+  cartItems = [];
+  cartPrice = 0;
+  cartLength = 0;
+
+  constructor(private _dataEmitterService: DataEmitterService) {
+  }
 
 
-ngOnInit(){
+  ngOnInit() {
     this._dataEmitterService.miniCartEmitter.subscribe(data => {
-        this.cartPrice = 0;
-            this.cartItems.push(data);
-            this.cartItems.forEach(item => {
-                this.cartPrice = this.cartPrice + item.Price;
-            })
-            this.cartLength = this.cartItems.length;
-        })
-}
+      this.cartPrice = 0;
+      this.cartItems.push(data);
+      this.cartItems.forEach(item => {
+        this.cartPrice = this.cartPrice + item.Price;
+      })
+      this.cartLength = this.cartItems.length;
+    })
+  }
 }

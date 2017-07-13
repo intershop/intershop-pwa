@@ -1,21 +1,19 @@
-import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
-import { Headers, Http, Response, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Headers, Http, Response, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {
-  CustomErrorHandler
-} from './customErrorHandler';
-import { JwtService } from './jwt.service';
+import {JwtService} from './jwt.service';
+import {Observable} from 'rxjs/Observable';
+import {CustomErrorHandler} from './customErrorHandler';
+import {environment} from '../../../environments/environment.prod';
+
 @Injectable()
 export class ApiService {
   private _customErrorHandler = new CustomErrorHandler();
-  constructor(
-    private http: Http,
-    private jwtService: JwtService,
 
-  ) { }
+  constructor(private http: Http,
+              private jwtService: JwtService,) {
+  }
 
   private setHeaders(): Headers {
     const headersConfig = {
@@ -34,7 +32,7 @@ export class ApiService {
   }
 
   get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {
-    return this.http.get(`${environment.api_url}${path}`, { headers: this.setHeaders(), search: params })
+    return this.http.get(`${environment.api_url}${path}`, {headers: this.setHeaders(), search: params})
       .map((data: Response) => {
         return data.json();
       })
@@ -45,7 +43,7 @@ export class ApiService {
     return this.http.put(
       `${environment.api_url}${path}`,
       JSON.stringify(body),
-      { headers: this.setHeaders() }
+      {headers: this.setHeaders()}
     )
       .catch(this.formatErrors)
       .map((res: Response) => {
@@ -57,7 +55,7 @@ export class ApiService {
     return this.http.post(
       `${environment.api_url}${path}`,
       JSON.stringify(body),
-      { headers: this.setHeaders() }
+      {headers: this.setHeaders()}
     )
       .catch(this.formatErrors)
       .map((res: Response) => {
@@ -68,7 +66,7 @@ export class ApiService {
   delete(path): Observable<any> {
     return this.http.delete(
       `${environment.api_url}${path}`,
-      { headers: this.setHeaders() }
+      {headers: this.setHeaders()}
     )
       .catch(this.formatErrors)
       .map((res: Response) => res.json());

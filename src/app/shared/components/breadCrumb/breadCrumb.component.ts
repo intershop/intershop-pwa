@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET} from '@angular/router';
 import 'rxjs/add/operator/filter';
 
 interface IBreadcrumb {
@@ -11,13 +11,13 @@ interface IBreadcrumb {
 @Component({
   selector: 'is-breadcrumb',
   template: `
-  <div class="breadcrumbs row">
-    <ol class="breadcrumbs-list">
-      <li class="breadcrumbs-list breadcrumbs-list-home"><a routerLink="" class="breadcrumbs-list-link">Home</a></li>
-      <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumbs-list">
-        <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{breadcrumb.label}}</a>
-      </li>
-    </ol>
+    <div class="breadcrumbs row">
+      <ol class="breadcrumbs-list">
+        <li class="breadcrumbs-list breadcrumbs-list-home"><a routerLink="" class="breadcrumbs-list-link">Home</a></li>
+        <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumbs-list">
+          <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{breadcrumb.label}}</a>
+        </li>
+      </ol>
     </div>
   `
 })
@@ -25,10 +25,8 @@ export class BreadcrumbComponent implements OnInit {
 
   public breadcrumbs: IBreadcrumb[];
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router
-  ) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router) {
     this.breadcrumbs = [];
   }
 
@@ -43,6 +41,7 @@ export class BreadcrumbComponent implements OnInit {
       this.breadcrumbs = this.getBreadcrumbs(root);
     });
   }
+
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
     const ROUTE_DATA_BREADCRUMB = 'breadcrumb'; // ?????????????????
     // get the child routes

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { DataEmitterService } from "app/shared/services";
+import {Component, OnInit} from '@angular/core';
+import {DataEmitterService} from '../../../services/dataEmitter.service';
 
 @Component({
   selector: 'is-wishlist',
@@ -9,7 +9,8 @@ export class WishListComponent implements OnInit {
   wishListItems = [];
   itemCount = 0;
 
-  constructor(private _dataEmitterService: DataEmitterService) { }
+  constructor(private _dataEmitterService: DataEmitterService) {
+  }
 
   ngOnInit() {
     this._dataEmitterService.wishListEmitter.subscribe(data => {

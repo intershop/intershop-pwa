@@ -1,34 +1,34 @@
-import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { RouterModule, Routes } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BreadcrumbComponent } from "app/shared/components/breadcrumb/breadcrumb.component";
-import { FamilyPageComponent } from "app/pages/familyPage/familyPage.component";
-import { familyPageRoute } from "app/pages/familyPage/familyPage.routes";
-import { FamilyPageListComponent } from "app/pages/familyPage/familyPageList/familyPageList.component";
-import { ProductTileComponent } from "app/shared/components/productTile/productTile.component";
-import { CategoryComponent } from "app/shared/components/category/category.component";
-import { CategoryListComponent } from "app/shared/components/categoryList/categoryList.component";
-import { ProductListFilterComponent } from "app/pages/familyPage/productListFilter/productListFilter.component";
-import { ProductListService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service";
-import { ProductListMockService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service.mock";
-import { ProductListApiService } from "app/pages/familyPage/familyPageList/productListService/ProductList.service.api";
-import { InstanceService } from "app/shared/services";
+import {NgModule} from '@angular/core'
+import {CommonModule} from '@angular/common'
+import {RouterModule} from '@angular/router';
+import {familyPageRoute} from './familyPage.routes';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FamilyPageComponent} from './familyPage.component';
+import {ProductListFilterComponent} from './productListFilter/productListFilter.component';
+import {CategoryListComponent} from '../../shared/components/categoryList/categoryList.component';
+import {CategoryComponent} from '../../shared/components/category/category.component';
+import {FamilyPageListComponent} from './familyPageList/familyPageList.component';
+import {BreadcrumbComponent} from '../../shared/components/breadCrumb/breadCrumb.component';
+import {ProductTileComponent} from '../../shared/components/productTile/productTile.component';
+import {ProductListService} from './familyPageList/productListService/ProductList.service';
+import {ProductListMockService} from './familyPageList/productListService/ProductList.service.mock';
+import {ProductListApiService} from './familyPageList/productListService/ProductList.service.api';
+import {InstanceService} from '../../shared/services/instance.service';
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule.forChild(familyPageRoute),
-        FormsModule,
-        ReactiveFormsModule
+  imports: [
+    CommonModule,
+    RouterModule.forChild(familyPageRoute),
+    FormsModule,
+    ReactiveFormsModule
 
-    ],
-    declarations: [FamilyPageComponent,
-        ProductListFilterComponent, CategoryListComponent,
-        CategoryComponent, FamilyPageListComponent,
-        BreadcrumbComponent, ProductTileComponent],
-    providers: [ProductListService, ProductListMockService, ProductListApiService,InstanceService]
+  ],
+  declarations: [FamilyPageComponent,
+    ProductListFilterComponent, CategoryListComponent,
+    CategoryComponent, FamilyPageListComponent,
+    BreadcrumbComponent, ProductTileComponent],
+  providers: [ProductListService, ProductListMockService, ProductListApiService, InstanceService]
 })
 
 export class FamilyPageModule {
