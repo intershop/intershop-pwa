@@ -1,18 +1,17 @@
-
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs/Rx'
-import { Data } from "app/shared/components/categoryList/categoryList.mock";
-import { ICategoryService } from "app/shared/components/categoryList/categoryListService/categoryList.service";
+import {Injectable} from '@angular/core'
+import {ICategoryService} from './categoryList.service';
+import {Observable} from 'rxjs/Observable';
+import {Data} from '../categoryList.mock';
 
 @Injectable()
 export class CategoryMockService implements ICategoryService {
-    
-    /**
-     * @returns List of categories as an Observable
-     */
-    getSideFilters(): Observable<any> {
-        return Observable.of(Data);
-    }
+
+  /**
+   * @returns List of categories as an Observable
+   */
+  getSideFilters(): Observable<any> {
+    return Observable.of(Data);
+  }
 
 }
 

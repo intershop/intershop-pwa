@@ -1,31 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
-    templateUrl: './registrationPage.component.html'
+  templateUrl: './registrationPage.component.html'
 })
 
 export class RegistrationPageComponent implements OnInit {
-    private isCaptchaValid = false;
-    private isAddressFormValid : boolean = false;
-    private isEmailFormValid : boolean = false;
+  isCaptchaValid = false;
+  isAddressFormValid = false;
+  isEmailFormValid = false;
 
-    constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
-    ngOnInit() {
-       
-    }
+  ngOnInit() {
 
-    save() {
-        //console.log(this.createAccountForm.value);
-    }
+  }
 
-    cancelClicked() {
-        this.router.navigate(['']);
-    }
+  save() {
+    // console.log(this.createAccountForm.value);
+  }
 
-    fnSubmit() { }
-};
+  cancelClicked() {
+    this.router.navigate(['']);
+  }
+
+  fnSubmit() {
+  }
+}
+;
 
 
 

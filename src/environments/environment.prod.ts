@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  needMock: false
+  needMock: false,
+  api_url: 'http://intershopwebapi.azurewebsites.net/'
 };

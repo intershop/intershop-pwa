@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from "app/shared/services";
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../shared/services/auth.service';
+
 @Component({
   templateUrl: './accountLogin.component.html'
 })
-export class AccountLoginComponent {
+export class AccountLoginComponent implements OnInit {
   myForm: FormGroup;
   error = false;
-  errorMessage = '';
   user: any;
   returnUrl: string;
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) {
+  }
+
   onSignin() {
 
     this.authService.singinUser(this.myForm.value, this.myForm.controls['userName'].value).subscribe(function () {
@@ -24,7 +27,8 @@ export class AccountLoginComponent {
   registerUser() {
     this.router.navigate(['register']);
   }
-  ngOnInit(): any {
+
+  ngOnInit() {
     this.myForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],

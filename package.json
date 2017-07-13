@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "prestart": "ng build --prod --env=prod && ngc && webpack",
+    "start": "node dist/server.js",
     "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "test-ci": "karma start --reporters junit,html --browsers PhantomJS --single-run --log-level debug",
@@ -56,6 +57,7 @@
     "karma-junit-reporter": "^1.2.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "protractor": "~5.1.2",
+    "ts-loader": "^2.2.2",
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3",
