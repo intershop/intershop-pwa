@@ -1,42 +1,70 @@
-<div role="main" style=" text-align:left;" class="container main-container">
-    <h1>My Account</h1>
-    <div class="row" data-testing-id="account-login-page">
-        <div class="col-md-6">
-            <h2>Returning Users</h2>
-            <p>To sign in to your account, please enter your email address and password.</p>
-            <form c role="form" [formGroup]="myForm" (ngSubmit)="onSignin()">
-                <div class="form-group has-feedback" style="overflow:hidden;">
-                    <label for="ShopLoginForm_Login" class="col-sm-3 control-label">Email</label>
-                    <div class="col-sm-6">
-                        <input class="form-control" formControlName="userName" name="userName" type="text" id="userName" placeholder="Name">
-                    </div>
-                </div>
-                <div class="form-group has-feedback" style="overflow:hidden;">
-                    <label class="col-sm-3 control-label">Password</label>
-                    <div class="col-sm-6">
-                        <input formControlName="password" class="form-control" placeholder="Password" name="password" type="password" id="password">
-                    </div>
-                </div>
-                <div class="form-group" style="overflow:hidden;">
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <button type="submit" value="Login" name="login" class="btn btn-primary">Sign In</button>
-                        <a class="btn btn-link">Forgot your password?</a>
-                    </div>
-                </div>
-            </form>
+<div class="wrapper">
+    <div role="main" class="container main-container">
+        <div class="marketing-area">
+            <!--TODO <is-marketingslot></is-marketingslot> -->
         </div>
+        <h1>My Account</h1>
+        <div class="row" data-testing-id="account-login-page">
+            <div class="col-md-6">
+                <div class="section">
+                    <div>
+                        <h2>Returning Users</h2>
+                        <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin()">
+                            <p>To sign in to your account, please enter your email address and password.</p>
+                            <div class="form-group has-feedback" [ngClass]="{'has-error' : loginForm.get('userName').invalid && loginForm.get('userName').touched,'has-success':loginForm.get('userName').valid && loginForm.get('userName').touched}">
+                                <label for="ShopLoginForm_Login" class="col-sm-3 control-label">Email</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control" formControlName="userName" name="ShopLoginForm_Login" type="email" id="ShopLoginForm_Login">
+                                    <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="loginForm.get('userName').invalid && loginForm.get('userName').touched"></i>
+                                    <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!loginForm.get('userName').invalid && loginForm.get('userName').touched"></i>
 
-        <div class="col-md-6">
-            <h2>New Users</h2>
-            <p>When you create an account, you'll gain access to a wide range of benefits:</p>
-            <ul>
-                <li>Easier Order Tracking</li>
-                <li>Faster checkout</li>
-                <li>Create and manage your address book</li>
-                <li>Comprehensive view of your order history</li>
-                <li>Quick access to products saved in your shopping cart</li>
-            </ul>
-            <button type="submit" value="CREATE USER" (click)=(registerUser()) class="btn btn-primary">Create Account</button>
+                                    <small class="help-block" *ngIf="loginForm.get('userName').touched && loginForm.get('userName').hasError('required')">
+                                        Please enter an email address.
+                                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+                                    </small>
+                                    <small *ngIf="loginForm.get('userName').touched && loginForm.get('userName').hasError('validateEmail')" class="help-block">
+                                        Please enter a valid email address.
+                                    </small>
+                                </div> 
+                                <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
+                            </div>
+
+                            <div class="form-group has-feedback" [ngClass]="{'has-error' : loginForm.get('password').invalid && loginForm.get('password').touched,'has-success':loginForm.get('password').valid && loginForm.get('password').touched}">
+                                <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
+                                <div class="col-sm-6">
+                                    <input formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password"
+                                        id="ShopLoginForm_Password">
+                                    <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched"></i>
+                                    <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!loginForm.get('password').invalid && loginForm.get('password').touched"></i>
+                                    <small class="help-block" *ngIf="loginForm.get('password').touched && loginForm.get('password').hasError('required')">
+                                        Please enter a password.
+                                    </small>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid">Sign In</button>
+                                    <a class="btn btn-link">Forgot your password?</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h2>New Users</h2>
+                <p>When you create an account, you'll gain access to a wide range of benefits:</p>
+                <ul>
+                    <li>Easier Order Tracking</li>
+                    <li>Faster checkout</li>
+                    <li>Create and manage your address book</li>
+                    <li>Comprehensive view of your order history</li>
+                    <li>Quick access to products saved in your shopping cart</li>
+                </ul>
+                <a class="btn btn-primary" href="javascript:void(0)" (click)="registerUser()">Create Account</a>
+            </div>
         </div>
     </div>
 </div>

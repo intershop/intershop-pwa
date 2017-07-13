@@ -1,37 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from "app/shared/services";
+import { AccountLoginService } from './accountLoginService/accountLogin.service';
+import { EmailValidator } from "../../shared/validators";
+
 @Component({
   templateUrl: './accountLogin.component.html'
 })
 export class AccountLoginComponent {
-  myForm: FormGroup;
-  error = false;
-  errorMessage = '';
-  user: any;
+  loginForm: FormGroup;
   returnUrl: string;
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
+ 
+  constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
+   private router: Router, private route: ActivatedRoute) { }
   onSignin() {
-
-    this.authService.singinUser(this.myForm.value, this.myForm.controls['userName'].value).subscribe(function () {
-      console.log(this.returnUrl);
-      this.router.navigate([this.returnUrl]);
-
-    }.bind(this));
+    this.accountLoginService.singinUser(this.loginForm.value).subscribe(userData=>{
+      if(userData){
+        this.router.navigate(['familyPage']);
+      }
+      else{
+        alert('Invalid Username or Password');
+      }
+    })
   }
 
   registerUser() {
     this.router.navigate(['register']);
   }
-  ngOnInit(): any {
-    this.myForm = this.fb.group({
-      userName: ['', Validators.required],
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      userName: ['',[Validators.required,EmailValidator.validate]],
       password: ['', Validators.required],
     });
 
     // reset login status
-    this.authService.logout();
+    this.accountLoginService.logout();
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';

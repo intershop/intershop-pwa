@@ -14,7 +14,7 @@ import { AppRoutingModule, routingComponents } from './approuting.module';
 
 import {
   CacheCustomService, EncryptDecryptService, CompressDecompressService,
-  JwtService, ApiService, AuthService, DataEmitterService, InstanceService
+  JwtService, ApiService, DataEmitterService, InstanceService
 } from "app/shared/services";
 import { CategoryApiService } from "app/shared/components/categoryList/categoryListService/categoryList.service.api";
 import { CategoryMockService } from "app/shared/components/categoryList/categoryListService/categoryList.service.mock";
@@ -30,7 +30,7 @@ export function createTranslateLoader(http: Http) {
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -58,10 +58,10 @@ export function createTranslateLoader(http: Http) {
     CategoryMockService,
     CategoryService,
     CompressDecompressService,
-    AuthService,
     ApiService,
     InstanceService,
-    JwtService],
+    JwtService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

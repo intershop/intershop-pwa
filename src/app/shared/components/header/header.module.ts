@@ -12,6 +12,8 @@ import { WishListComponent } from "app/shared/components/header/wishList/wishLis
 import { LogoComponent } from "app/shared/components/header/logo/logo.component";
 import { LanguageSwitchComponent } from "app/shared/components/header/languageSwitch/languageSwitch.component";
 import { HeaderNavigationComponent } from "app/shared/components/header/headerNavigation/headerNavigation.component";
+import { LoginStatusComponent } from './loginStatus/loginStatus.component'
+import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } from '../../../pages/accountLogin/accountLoginService';
 @NgModule({
     imports: [
         CommonModule,
@@ -23,10 +25,10 @@ import { HeaderNavigationComponent } from "app/shared/components/header/headerNa
         HeaderSlotComponent, ProductCompareComponent
     ],
     declarations: [HeaderSlotComponent, ProductCompareComponent, MiniCartComponent,
-        SearchBox, CompareDetailsComponent, WishListComponent,LogoComponent,
-        LanguageSwitchComponent,HeaderNavigationComponent
-        ],
-    providers: []
+        SearchBox, CompareDetailsComponent, WishListComponent, LogoComponent,
+        LanguageSwitchComponent, HeaderNavigationComponent, LoginStatusComponent
+    ],
+    providers: [AccountLoginApiService, AccountLoginMockService, AccountLoginService]
 })
 
 export class HeaderModule {

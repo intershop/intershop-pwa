@@ -1,5 +1,4 @@
 export * from './api.service';
-export * from './auth.service';
 export * from './customErrorHandler';
 export * from './dataEmitter.service';
 export * from './iCompressDecompress.service';

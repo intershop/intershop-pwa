@@ -1,0 +1,72 @@
+import { Injectable, EventEmitter } from '@angular/core'
+import { Observable } from 'rxjs/Rx'
+import { AccountLogin } from '../accountLogin';
+import { Router } from '@angular/router'
+import { JwtService, CacheCustomService } from '../../../shared/services';
+import { UserDetail } from "./accountLogin.model";
+import { userData } from "../accountLogin.mock";
+
+@Injectable()
+export class AccountLoginMockService {
+    loginStatusEmitter = new EventEmitter();
+    authorizedUser: AccountLogin =
+    {
+        userName: 'intershop@123.com',
+        password: '123456'
+    }
+
+    constructor(private router: Router, private jwtService: JwtService,
+        private cacheService: CacheCustomService
+    ) { }
+
+    
+    /**
+     * for logging in
+     * @param  {AccountLogin} user
+     * @returns Observable
+     */
+    singinUser(user: AccountLogin): Observable<UserDetail> {
+        if (user.userName === this.authorizedUser.userName && user.password === this.authorizedUser.password) {
+            let token = Math.floor(100000 + Math.random() * 900000).toString();
+            this.jwtService.saveToken(token);
+            return this.getUserDetail();
+        }
+        else {
+            return Observable.of(null);
+        }
+    }
+
+
+    /**
+     * destoys the token and cleans the cache
+     * @returns void
+     */
+    logout(): void {
+        this.jwtService.destroyToken();
+    }
+
+
+    /**
+     * Checks if the user is logged in
+     * @returns boolean
+     */
+    isAuthorized(): boolean {
+        if (this.jwtService.getToken()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    /**
+     * provides detail of logged in user
+     * @returns Observable
+     */
+    private getUserDetail(): Observable<UserDetail> {
+        return Observable.of(userData);
+    }
+
+
+}
+
+
