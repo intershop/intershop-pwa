@@ -1,9 +1,9 @@
-import {Component} from  '@angular/core'
+import {Component} from '@angular/core'
 
 @Component({
-    templateUrl:`./compareDetails.component.html`
+  templateUrl: './compareDetails.component.html'
 })
 
-export class CompareDetailsComponent{ 
-    
+export class CompareDetailsComponent {
+
 }

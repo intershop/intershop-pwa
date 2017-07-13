@@ -1,5 +1,5 @@
-import { Component, OnInit ,Input} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   templateUrl: './familyPage.component.html'
@@ -13,7 +13,8 @@ export class FamilyPageComponent implements OnInit {
     console.log(`Resolved captcha with response ${captchaResponse}:`);
   }
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];

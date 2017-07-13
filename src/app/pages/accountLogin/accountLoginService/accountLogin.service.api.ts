@@ -60,7 +60,7 @@ export class AccountLoginApiService {
      * provides detail of logged in user
      * @returns UserDetail
      */
-    getUserDetail(): UserDetail {
+    private getUserDetail(): UserDetail {
         return userData;
     }
 }

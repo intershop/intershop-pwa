@@ -5,15 +5,15 @@ import {FooterComponent} from './footer.component'
 import {footerRoutes} from './footer.routes'
 
 @NgModule({
-    imports: [
+  imports: [
     CommonModule,
     RouterModule.forChild(footerRoutes),
-    ],
-    exports: [
+  ],
+  exports: [
     FooterComponent
-    ],
-    declarations: [FooterComponent],
-    providers: []
+  ],
+  declarations: [FooterComponent],
+  providers: []
 })
 
 export class FooterModule {

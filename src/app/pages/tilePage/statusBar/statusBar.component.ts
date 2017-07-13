@@ -1,13 +1,13 @@
-import { Component, Input } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-    selector : 'is-status',
-    templateUrl : './statusBar.component.html',
-    styleUrls : ['./statusBar.component.css']
+  selector: 'is-status',
+  templateUrl: './statusBar.component.html',
+  styleUrls: ['./statusBar.component.css']
 })
 
 export class StatusBarComponent {
-    configObject = {
-        statusbarDescription : 'Task Bar (Hover over me)'
-    };
+  configObject = {
+    statusbarDescription: 'Task Bar (Hover over me)'
+  };
 }

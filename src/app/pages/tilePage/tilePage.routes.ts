@@ -1,6 +1,5 @@
-
-import { TilePageComponent } from "app/pages/tilePage/tilePage.component";
+import {TilePageComponent} from './tilePage.component';
 
 export const tilePageRoute = [
-     {path : '', component  : TilePageComponent},
+  {path: '', component: TilePageComponent},
 ]
