@@ -4,7 +4,6 @@ import {RouterModule} from '@angular/router';
 import {familyPageRoute} from './familyPage.routes';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FamilyPageComponent} from './familyPage.component';
-import {ProductListFilterComponent} from './productListFilter/productListFilter.component';
 import {CategoryListComponent} from '../../shared/components/categoryList/categoryList.component';
 import {CategoryComponent} from '../../shared/components/category/category.component';
 import {FamilyPageListComponent} from './familyPageList/familyPageList.component';
@@ -25,7 +24,7 @@ import {InstanceService} from '../../shared/services/instance.service';
 
   ],
   declarations: [FamilyPageComponent,
-    ProductListFilterComponent, CategoryListComponent,
+    CategoryListComponent,
     CategoryComponent, FamilyPageListComponent,
     BreadcrumbComponent, ProductTileComponent],
   providers: [ProductListService, ProductListMockService, ProductListApiService, InstanceService]
