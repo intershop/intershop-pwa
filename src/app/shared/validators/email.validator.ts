@@ -15,3 +15,6 @@ export class EmailValidator {
     }
   }
 }
+
+
+//"^[a-zA-Z0-9]*$"

@@ -1,21 +1,27 @@
-<div class="container">
-    <div class="row text-left">
-      <h1>Create a New Account</h1>
-      <p>To take full advantage of account features & benefits, please provide all the information below.</p>
+<div class="wrapper">
+  <div role="main" class="container main-container">
+    <div class="marketing-area">
+
     </div>
-    <!--is-email component-->
-    <div>
+    <h1>Create a New Account</h1>
+    <p>To take full advantage of account features & benefits, please provide all the information below.</p>
+    <div class="section" data-testing-id="account-create-full-page">
       <is-email (isValid)="isEmailFormValid = $event"></is-email>
-    </div>
-    <br>
-    <is-address (isValid)="isAddressFormValid = $event"></is-address>
-    <is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
-    <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-4 text-left">
-        <input type="submit" [disabled]="!isEmailFormValid ||  !isAddressFormValid || !isCaptchaValid" class="btn btn-primary" value="Create Account"
-          (click)="fnSubmit()" />
-        <input type="button" class="btn btn-primary" value="Cancel" (click)="cancelClicked()" />
+      <div class="row">
+				<div class="col-md-6 col-sm-8">
+					
+				</div>
+			</div>
+      <is-address (isValid)="isAddressFormValid = $event"></is-address>
+      <is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4 text-left">
+          <input type="submit" [disabled]="!isEmailFormValid ||  !isAddressFormValid || !isCaptchaValid" class="btn btn-primary" value="Create Account"
+            (click)="fnSubmit()" />
+          <input type="button" class="btn btn-primary" value="Cancel" (click)="cancelClicked()" />
+        </div>
       </div>
     </div>
+  </div>
 </div>

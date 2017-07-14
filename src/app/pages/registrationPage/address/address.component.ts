@@ -15,16 +15,16 @@ export class AddressComponent implements OnInit {
       this.addressForm = this._formbuilder.group({      
         address : this._formbuilder.group({
           country: ['', [Validators.required]],
-          firstName: ['', [Validators.required]],
-          lastName: ['', [Validators.required]],
-          line1: ['', [Validators.required]],
-          line2: [],
-          zip: ['', [Validators.required]],
-          city: ['', [Validators.required]],
-          phone: [],
+          firstName: ['', [Validators.required, Validators.maxLength(35)]],
+          lastName: ['', [Validators.required, Validators.maxLength(35)]],
+          line1: ['', [Validators.required, Validators.maxLength(60)]],
+          line2: ['',[Validators.maxLength(60)]],
+          zip: ['', [Validators.required, Validators.maxLength(35)]],
+          city: ['', [Validators.required, Validators.maxLength(35)]],
+          phone: ['',Validators.maxLength(35)],
           preferredLanguage: ['', [Validators.required]],
           birthday: [],
-          // state: ['', [Validators.required]],
+          state: ['', [Validators.required]],
         })
       })    
 
