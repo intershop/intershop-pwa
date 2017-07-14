@@ -1,18 +1,18 @@
 <form [formGroup]="addressForm" class="form-horizontal">
-<div class="row text-left">
-  <h3>Address</h3>
-  <p class="col-sm-7">To save time when placing an order, please provide your primary invoice or shipping address below. We will maintain
-    this information so you won't have to enter it again.</p>
-</div>
-<br>
-<p class="text-left">* Required Field</p>
-<br>
+  <div>
+    <h2>Address</h2>
+    <p>To save time when placing an order, please provide your primary invoice or shipping address below. We will maintain this
+      information so you won't have to enter it again.</p>
+  </div>
+  <p class="indicates-required">
+    <span class="required">*</span>Required field
+  </p>
 
-<div formGroupName="address">
-  <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.country').invalid && addressForm.get('address.country').touched}">
-    <label class="control-label col-sm-2" for="country">Country <sup>*</sup></label>
-    <div class="col-sm-4 has-clear has-feedback">
-      <select id="country" class="form-control" formControlName="country">
+  <div formGroupName="address">
+    <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.country').invalid && addressForm.get('address.country').touched}">
+      <label class="control-label col-sm-2" for="country">Country<span class="required">*</span></label>
+      <div class="col-sm-4 has-clear has-feedback">
+        <select id="country" class="form-control" formControlName="country">
         <option value="">Please Select</option>
         <option value="France">France</option>
         <option value="Germany">Germany</option>
@@ -20,119 +20,114 @@
         <option value="United States">United States</option>
         <option value="All Other Countries">All Other Countries</option>
       </select>
-      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.country').invalid && addressForm.get('address.country').touched"></span>
-      <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.country').invalid && addressForm.get('address.country').touched"></span>
-      <div *ngIf="addressForm.get('address.country').touched && addressForm.get('address.country').hasError('required')"
-           class="text-left text-danger">
-        Please select a country.
-        <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.country').invalid && addressForm.get('address.country').touched"></span>
+        <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.country').invalid && addressForm.get('address.country').touched"></span>
+        <div *ngIf="addressForm.get('address.country').touched && addressForm.get('address.country').hasError('required')" class="text-left text-danger">
+          Please select a country.
+          <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched}">
-    <label class="control-label col-sm-2" for="firstName">First Name <sup>*</sup></label>
-    <div class="col-sm-4 has-clear has-feedback">
-      <input type="text" id="firstName" class="form-control" formControlName="firstName">
-      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched"></span>
-      <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched"></span>
-      <div *ngIf="addressForm.get('address.firstName').touched && addressForm.get('address.firstName').hasError('required')"
-           class="text-left text-danger">
-        Please enter a first name.
-        <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+    <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched}">
+      <label class="control-label col-sm-2" for="firstName">First Name<span class="required">*</span></label>
+      <div class="col-sm-4 has-clear has-feedback">
+        <input type="text" id="firstName" class="form-control" formControlName="firstName">
+        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched"></span>
+        <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched"></span>
+        <div *ngIf="addressForm.get('address.firstName').touched && addressForm.get('address.firstName').hasError('required')" class="text-left text-danger">
+          Please enter a first name.
+          <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched}">
-    <label class="control-label col-sm-2" for="lastName">Last Name <sup>*</sup></label>
-    <div class="col-sm-4 has-clear has-feedback">
-      <input type="text" id="lastName" class="form-control" formControlName="lastName">
-      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched"></span>
-      <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched"></span>
-      <div *ngIf="addressForm.get('address.lastName').touched && addressForm.get('address.lastName').hasError('required')"
-           class="text-left text-danger">
-        Please enter a last name.
-        <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+    <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched}">
+      <label class="control-label col-sm-2" for="lastName">Last Name<span class="required">*</span></label>
+      <div class="col-sm-4 has-clear has-feedback">
+        <input type="text" id="lastName" class="form-control" formControlName="lastName">
+        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched"></span>
+        <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched"></span>
+        <div *ngIf="addressForm.get('address.lastName').touched && addressForm.get('address.lastName').hasError('required')" class="text-left text-danger">
+          Please enter a last name.
+          <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched}">
-    <label class="control-label col-sm-2" for="line1">Address Line 1 <sup>*</sup></label>
-    <div class="col-sm-4 has-clear has-feedback">
-      <input type="text" id="line1" class="form-control" formControlName="line1">
-      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched"></span>
-      <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched"></span>
-      <div *ngIf="addressForm.get('address.line1').touched && addressForm.get('address.line1').hasError('required')"
-           class="text-left text-danger">
-        Please enter an address.
-        <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+    <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched}">
+      <label class="control-label col-sm-2" for="line1">Address Line 1<span class="required">*</span></label>
+      <div class="col-sm-4 has-clear has-feedback">
+        <input type="text" id="line1" class="form-control" formControlName="line1">
+        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched"></span>
+        <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched"></span>
+        <div *ngIf="addressForm.get('address.line1').touched && addressForm.get('address.line1').hasError('required')" class="text-left text-danger">
+          Please enter an address.
+          <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="line2">Address Line 2</label>
-    <div class="col-sm-4">
-      <input type="text" id="line2" class="form-control" formControlName="line2">
-    </div>
-  </div>
-  <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched}">
-    <label class="control-label col-sm-2" for="zip">Zip/Postal Code <sup>*</sup></label>
-    <div class="col-sm-4 has-clear has-feedback">
-      <input type="text" id="zip" class="form-control" formControlName="zip">
-      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched"></span>
-      <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched"></span>
-      <div *ngIf="addressForm.get('address.zip').touched && addressForm.get('address.zip').hasError('required')" class="text-left text-danger">
-        Please enter a valid ZIP code.
-        <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="line2">Address Line 2</label>
+      <div class="col-sm-4">
+        <input type="text" id="line2" class="form-control" formControlName="line2">
       </div>
     </div>
-  </div>
-  <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.city').invalid && addressForm.get('address.city').touched}">
-    <label class="control-label col-sm-2" for="city">City <sup>*</sup></label>
-    <div class="col-sm-4 has-clear has-feedback">
-      <input type="text" id="city" class="form-control" formControlName="city">
-      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.city').invalid && addressForm.get('address.city').touched"></span>
-      <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.city').invalid && addressForm.get('address.city').touched"></span>
-      <div *ngIf="addressForm.get('address.city').touched && addressForm.get('address.city').hasError('required')"
-           class="text-left text-danger">
-        Please enter a city.
+    <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched}">
+      <label class="control-label col-sm-2" for="zip">Zip/Postal Code<span class="required">*</span></label>
+      <div class="col-sm-4 has-clear has-feedback">
+        <input type="text" id="zip" class="form-control" formControlName="zip">
+        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched"></span>
+        <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched"></span>
+        <div *ngIf="addressForm.get('address.zip').touched && addressForm.get('address.zip').hasError('required')" class="text-left text-danger">
+          Please enter a valid ZIP code.
+          <!--{{addressForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="phone">Phone</label>
-    <div class="col-sm-4">
-      <input type="text" id="phone" class="form-control" formControlName="phone">
+    <div class="form-group" [ngClass]="{ 'has-error' : addressForm.get('address.city').invalid && addressForm.get('address.city').touched}">
+      <label class="control-label col-sm-2" for="city">City<span class="required">*</span></label>
+      <div class="col-sm-4 has-clear has-feedback">
+        <input type="text" id="city" class="form-control" formControlName="city">
+        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.city').invalid && addressForm.get('address.city').touched"></span>
+        <span class="glyphicon glyphicon-ok form-control-feedback text-success" *ngIf="!addressForm.get('address.city').invalid && addressForm.get('address.city').touched"></span>
+        <div *ngIf="addressForm.get('address.city').touched && addressForm.get('address.city').hasError('required')" class="text-left text-danger">
+          Please enter a city.
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="preferredLanguage"> Preferred Language <sup>*</sup></label>
-    <div class="col-sm-4">
-      <select id="preferredLanguage" class="form-control" formControlName="preferredLanguage">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="phone">Phone</label>
+      <div class="col-sm-4">
+        <input type="text" id="phone" class="form-control" formControlName="phone">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="preferredLanguage"> Preferred Language<span class="required">*</span></label>
+      <div class="col-sm-4">
+        <select id="preferredLanguage" class="form-control" formControlName="preferredLanguage">
         <option value="" selected>Select Language</option>
         <option value="eng">English (United States)</option>
         <option value="">German (Germany)</option>
         <option value="">French (France)</option>
       </select>
+      </div>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="birthday">Birthday</label>
-    <div class="col-sm-1">
-      <select id="birthdayMonth" class="form-control" formControlName="birthday" ngModel>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="birthday">Birthday</label>
+      <div class="col-sm-4">
+<div class="birthday-input clearfix">
+        <select id="birthdayMonth" class="form-control" formControlName="birthday" ngModel>
         <option value=""> MM </option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
       </select>
-    </div>
-    <div class="col-sm-1">
-      <select id="birthdayDay" class="form-control" formControlName="birthday">
+
+        <select id="birthdayDay" class="form-control" formControlName="birthday">
         <option value=""> DD </option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
       </select>
-    </div>
-    <div class="col-sm-2">
-      <select id="birthdayYear" class="form-control" formControlName="birthday">
+
+        <select id="birthdayYear" class="form-control" formControlName="birthday">
         <option value=""> YYYY </option><option value="1990">1990</option><option value="1991">1991</option><option value="1992">1992</option><option value="1993">1993</option><option value="1994">1994</option><option value="1995">1995</option><option value="1996">1996</option><option value="1997">1997</option><option value="1998">1998</option><option value="1999">1999</option><option value="2000">2000</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option>
       </select>
+</div>
+      </div>
     </div>
   </div>
-</div>
 </form>
