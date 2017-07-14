@@ -16,16 +16,17 @@
 
 			<div class="">
 				<div>
-					<button type="submit" name="addProduct" class="btn btn-link " title="Add to Cart" data-testing-id="addToCartButton" (click)="addToCart(_data)"><span class="glyphicon glyphicon-shopping-cart"></span></button>
-					<button type="submit" class="btn add-to-wishlist btn-link add-to-wishlist_8182790134362" rel="nofollow" (click)="addToWishList(_data)" name="addToWishlistProduct"
-					 data-dialog="" data-dialog-action="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewWishlist-AddItems?AjaxRequestMarker=true&amp;TargetPipelineAfterLogin=ViewProduct-Start&amp;Parameter1_Name=LoginToUse&amp;Parameter1_Value=wishlists&amp;Parameter2_Name=TargetPipeline&amp;Parameter2_Value=ViewProduct-Start&amp;Parameter3_Name=Parameter1_Name&amp;Parameter3_Value=SKU&amp;Parameter4_Name=Parameter1_Value&amp;Parameter4_Value=8182790134362&amp;Parameter5_Name=TargetURLFragment&amp;Parameter5_Value=add-to-wishlist_8182790134362"
-					 data-testing-class="button-addToWishlistProduct" title="Add to Wish List"><span class="glyphicon glyphicon-heart"></span></button>
-					<button class="btn btn-link add-to-compare add-to-compare-trigger" title="Compare" (click)="addToCompare(_data)"  data-product-ref="8182790134362@inSPIRED-inTRONICS"
+					<button class="btn btn-link add-to-compare add-to-compare-trigger" title="Compare" (click)="addToCompare(_data)" data-product-ref="8182790134362@inSPIRED-inTRONICS"
 					 data-url-add="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-AddAjax?ProductRef=8182790134362%40inSPIRED-inTRONICS"
 					 data-url-delete="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-DeleteAjax?ProductRef=8182790134362%40inSPIRED-inTRONICS"
 					 rel="nofollow">
-				<span class="glyphicon glyphicon-equalizer"></span>
-			</button>
+					<span class="glyphicon glyphicon-equalizer"></span>
+					</button>
+					<button type="submit" class="btn add-to-wishlist btn-link add-to-wishlist_8182790134362" rel="nofollow" (click)="addToWishList(_data)"
+					 name="addToWishlistProduct" data-dialog="" data-dialog-action="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewWishlist-AddItems?AjaxRequestMarker=true&amp;TargetPipelineAfterLogin=ViewProduct-Start&amp;Parameter1_Name=LoginToUse&amp;Parameter1_Value=wishlists&amp;Parameter2_Name=TargetPipeline&amp;Parameter2_Value=ViewProduct-Start&amp;Parameter3_Name=Parameter1_Name&amp;Parameter3_Value=SKU&amp;Parameter4_Name=Parameter1_Value&amp;Parameter4_Value=8182790134362&amp;Parameter5_Name=TargetURLFragment&amp;Parameter5_Value=add-to-wishlist_8182790134362"
+					 data-testing-class="button-addToWishlistProduct" title="Add to Wish List"><span class="glyphicon glyphicon-heart"></span></button>
+					<button type="submit" name="addProduct" class="btn btn-link " title="Add to Cart" data-testing-id="addToCartButton" (click)="addToCart(_data)"><span class="glyphicon glyphicon-shopping-cart"></span></button>
+
 				</div>
 				<a (click)="goToNextPage(_data);"> 
 				<img [src]="_data.src" class="">
@@ -37,6 +38,6 @@
 			</span> <span> <b>Price:</b> {{_data.Price}}
 		</span>
 		</div>
-
 	</div>
+
 </div>
