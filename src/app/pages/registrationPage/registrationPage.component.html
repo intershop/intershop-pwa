@@ -1,15 +1,22 @@
-<div class="container">
-  <div class="row text-left">
+<div class="wrapper">
+  <div class="container main-container">
     <h1>Create a New Account</h1>
     <p>To take full advantage of account features & benefits, please provide all the information below.</p>
-  </div> 
-  <is-email (isValid)="isEmailFormValid = $event"></is-email>
-  <is-address (isValid)="isAddressFormValid = $event"></is-address>
-  <is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
-  <div class="form-group">
-    <div class="col-sm-offset-4 col-sm-8">
-      <button type="submit" value="CreateAccount" name="CreateAccount" [disabled]="!isEmailFormValid ||  !isAddressFormValid || !isCaptchaValid" class="btn btn-primary" (click)="createAccount()" >CreateAccount</button>
-      <a class="btn btn-default" href="" (click)="cancelClicked()">Cancel</a>
+    <!--is-email component-->
+    <div>
+      <is-email (isValid)="isEmailFormValid = $event"></is-email>
+    </div>
+    <br>
+    <is-address (isValid)="isAddressFormValid = $event"></is-address>
+    <is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-4">
+        <div class="form-group">
+          <input type="submit" [disabled]="!isEmailFormValid ||  !isAddressFormValid || !isCaptchaValid" class="btn btn-primary" value="Create Account"
+            (click)="fnSubmit()" />
+          <input type="button" class="btn btn-default" value="Cancel" (click)="cancelClicked()" />
+        </div>
+      </div>
     </div>
   </div>
 </div>
