@@ -26,6 +26,7 @@ export class CategoryListComponent implements OnInit {
   };
   class;
   filterkey = 'filterData';
+  toggleIcon = {};
 
   constructor(private categoryService: CategoryService, private customService: CacheCustomService, private dataEmitterService: DataEmitterService) {
   }
@@ -93,5 +94,10 @@ export class CategoryListComponent implements OnInit {
   allFilter(name, value) {
     this.allFilters[name] = value;
     this.dataEmitterService.pushData(this.allFilters);
+  }
+
+  ChevronIconSwap(index:number ){
+    console.log(index);
+   // 'chevronClassFlag'+index  
   }
 }
