@@ -4,8 +4,6 @@ import { FooterComponent } from './footer.component';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
-
-
 describe('FooterComponent', () => {
   let translate: TranslateService;
   let component: FooterComponent;
