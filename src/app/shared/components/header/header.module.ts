@@ -29,7 +29,7 @@ import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } 
     SearchBox, CompareDetailsComponent, WishListComponent, LogoComponent,
     LanguageSwitchComponent, HeaderNavigationComponent,LoginStatusComponent
   ],
-  providers: [AccountLoginApiService, AccountLoginMockService, AccountLoginService]
+   providers: [AccountLoginApiService, AccountLoginMockService, AccountLoginService]
 })
 
 export class HeaderModule {
