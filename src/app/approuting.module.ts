@@ -10,10 +10,10 @@ const routes: Routes = [
   {path: 'tile', loadChildren: 'app/pages/tilePage/tilePage.module#TilePageModule'},
   {path: 'login', loadChildren: 'app/pages/accountLogin/accountLogin.module#AccountLoginModule'},
   {path: 'error', loadChildren: 'app/pages/errorPage/error-page.module#ErrorPageModule'},
+  {path: 'wishlist', loadChildren: 'app/pages/wishlistPage/wishlistPage.module#WishlistPageModule'},
   {path: '**', redirectTo: 'familyPage'}
 
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
