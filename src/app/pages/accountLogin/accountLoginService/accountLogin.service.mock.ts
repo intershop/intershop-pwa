@@ -2,9 +2,10 @@ import { Injectable, EventEmitter } from '@angular/core'
 import { Observable } from 'rxjs/Rx'
 import { AccountLogin } from '../accountLogin';
 import { Router } from '@angular/router'
-import { JwtService, CacheCustomService } from '../../../shared/services';
-import { UserDetail } from "./accountLogin.model";
-import { userData } from "../accountLogin.mock";
+import { UserDetail } from './accountLogin.model';
+import { userData } from '../accountLogin.mock';
+import {JwtService} from '../../../shared/services/jwt.service';
+import {CacheCustomService} from '../../../shared/services/cache/cacheCustom.service';
 
 @Injectable()
 export class AccountLoginMockService {
@@ -19,7 +20,7 @@ export class AccountLoginMockService {
         private cacheService: CacheCustomService
     ) { }
 
-    
+
     /**
      * for logging in
      * @param  {AccountLogin} user

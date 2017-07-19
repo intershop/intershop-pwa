@@ -1,11 +1,12 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Headers, Http, Response, URLSearchParams } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { environment } from '../../../../environments/environment';
 import { AccountLogin } from '../accountLogin';
-import { ApiService, JwtService, CacheCustomService } from '../../../shared/services';
-import { UserDetail } from "./accountLogin.model";
-import { userData } from ".././accountLogin.mock";
+import { UserDetail } from './accountLogin.model';
+import { userData } from '.././accountLogin.mock';
+import {ApiService} from '../../../shared/services/api.service';
+import {JwtService} from '../../../shared/services/jwt.service';
 
 
 @Injectable()
@@ -19,7 +20,7 @@ export class AccountLoginApiService {
     ) { }
 
 
-    
+
     /**
      * for logging in
      * @param  {AccountLogin} user
