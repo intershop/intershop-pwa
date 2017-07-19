@@ -1,7 +1,7 @@
-import {Observable} from 'rxjs/Rx'
-import {Injectable} from '@angular/core'
-import {IProductListService} from './ProductList.service';
-import {ApiService} from '../../../../shared/services/api.service';
+import { Observable } from 'rxjs/Rx'
+import { Injectable } from '@angular/core'
+import { IProductListService } from './productList.service';
+import { ApiService } from '../../../../shared/services/api.service';
 
 
 @Injectable()

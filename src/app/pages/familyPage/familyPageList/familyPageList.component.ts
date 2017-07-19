@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataEmitterService } from '../../../shared/services/dataEmitter.service';
-import { ProductListService } from './productListService/ProductList.service';
+import { ProductListService } from './productListService';
 import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
 
 @Component({
@@ -14,16 +14,12 @@ import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.s
 export class FamilyPageListComponent implements OnInit {
   @Input() isListView;
   @Input() sortBy;
-  isList;
-  thumbnailKey: 'thumbnailKey';
-  AllCategories: 'AllCategories';
+  thumbnailKey = 'thumbnailKey';
   allData: any;
   thumbnails = [];
   filteredData;
 
   ngOnChanges() {
-    this.isList = this.isListView;
-
     this.thumbnails.sort((a, b) => {
       if (this.sortBy === 'name-asc') {
         if (a.Brand > b.Brand) { return 1 }

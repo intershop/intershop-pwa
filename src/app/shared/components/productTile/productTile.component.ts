@@ -9,7 +9,7 @@ import {DataEmitterService} from '../../services/dataEmitter.service';
 })
 export class ProductTileComponent {
   @Input() isListView;
-  @Input() _data: any;
+  @Input() data: any;
 
   constructor(private route: Router, private _dataEmitterService: DataEmitterService) {
   };

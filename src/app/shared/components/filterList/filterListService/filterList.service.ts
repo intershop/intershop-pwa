@@ -1,10 +1,9 @@
-import {Injectable} from '@angular/core'
-import {InstanceService} from '../../../services/instance.service';
-import {CategoryMockService} from './categoryList.service.mock';
-import {CategoryApiService} from './categoryList.service.api';
-import {Observable} from 'rxjs/Observable';
-import {environment} from '../../../../../environments/environment.prod';
-import {Data} from '../categoryList.mock';
+import { Injectable } from '@angular/core'
+import { InstanceService } from '../../../services/instance.service';
+import { CategoryMockService, CategoryApiService } from './index';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../../../environments/environment.prod';
+import { Data } from '../filterList.mock';
 
 @Injectable()
 export class CategoryService {

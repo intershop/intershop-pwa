@@ -1,7 +1,7 @@
-import {Observable} from 'rxjs/Rx'
-import {Injectable} from '@angular/core'
-import {ICategoryService} from './categoryList.service';
-import {ApiService} from '../../../services/api.service';
+import { Observable } from 'rxjs/Rx'
+import { Injectable } from '@angular/core'
+import { ICategoryService } from './index';
+import { ApiService } from '../../../services/api.service';
 
 @Injectable()
 export class CategoryApiService implements ICategoryService {
