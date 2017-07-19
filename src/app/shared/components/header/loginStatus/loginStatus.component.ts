@@ -20,8 +20,8 @@ export class LoginStatusComponent {
 
     ngOnInit() {
         if (this.accountLoginService.isAuthorized()) {
-            if (this.cacheCustomService.CacheKeyExists('userDetail')) {
-                this.userName = this.cacheCustomService.GetCachedData('userDetail').firstName;
+            if (this.cacheCustomService.cacheKeyExists('userDetail')) {
+                this.userName = this.cacheCustomService.getCachedData('userDetail').firstName;
             }
         }
         this.accountLoginService.loginStatusEmitter.subscribe(data => {

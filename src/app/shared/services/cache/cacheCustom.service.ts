@@ -1,27 +1,28 @@
-import {Injectable, OnInit} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {CacheService, CacheStoragesEnum} from 'ng2-cache/ng2-cache';
-import {EncryptDecryptService} from './encryptDecrypt.service';
-import {CompressDecompressService} from './compressDecompress.service';
+import { CacheService, CacheStoragesEnum } from 'ng2-cache/ng2-cache';
+import { EncryptDecryptService } from './encryptDecrypt.service';
+import { CompressDecompressService } from './compressDecompress.service';
 
 
 @Injectable()
-export class CacheCustomService implements OnInit {
+export class CacheCustomService {
   private key: string;
   private maximumAge: number = 5 * 60; // Maximum age of cache
-  constructor(private http: Http,
-              private cacheService: CacheService,
-              private encryptDecryptService: EncryptDecryptService,
-              private compressDecompressService: CompressDecompressService) {
-  }
-
-  ngOnInit() {
+  constructor(
+    private cacheService: CacheService,
+    private encryptDecryptService: EncryptDecryptService,
+    private compressDecompressService: CompressDecompressService) {
     this.cacheService.useStorage(CacheStoragesEnum.LOCAL_STORAGE); // Use local storage
   }
 
-  CacheKeyExists(keyToCheck) { // To check whether data key already exists or not
+  /**
+   * Checks if the passed key exists in cache
+   * @param  {} keyToCheck
+   * @returns Boolean
+   */
+  cacheKeyExists(keyToCheck): Boolean { // To check whether data key already exists or not
     if (this.cacheService.exists(keyToCheck) && this.cacheService.get(keyToCheck) != null) {
       return true;
     } else {
@@ -29,8 +30,16 @@ export class CacheCustomService implements OnInit {
     }
   }
 
-  StoreDataToCache(storeData: any, storekey: string, toBeEnrypted: Boolean) {
-    if (!this.CacheKeyExists(storekey)) {
+
+  /**
+   * Stores data to cache on the key specified
+   * @param  {any} storeData
+   * @param  {string} storekey
+   * @param  {Boolean} toBeEnrypted
+   * @returns void
+   */
+  storeDataToCache(storeData: any, storekey: string, toBeEnrypted: Boolean): void {
+    if (!this.cacheKeyExists(storekey)) {
       const compressedData = this.compressDecompressService.compress(storeData);  // Takes JSON Data and returns Uint8Array
       let encryptedData;
       if (toBeEnrypted) {
@@ -38,17 +47,33 @@ export class CacheCustomService implements OnInit {
         encryptedData = this.encryptDecryptService.encrypt(compressedData);
       }
       // To save cache and set maximum age of cache
-      this.cacheService.set(storekey, encryptedData || compressedData, {maxAge: this.maximumAge});
+      this.cacheService.set(storekey, encryptedData || compressedData, { maxAge: this.maximumAge });
+    }
+    else {
+      return
     }
   }
 
-  DeleteCacheKey(deleteKey: string) { // Make data in the Key as null
-    if (this.CacheKeyExists(deleteKey)) {
-      this.cacheService.set(deleteKey, null, {maxAge: this.maximumAge});
+
+  /**
+   * Deletes the key specified from the cache
+   * @param  {string} deleteKey
+   * @returns void
+   */
+  deleteCacheKey(deleteKey: string): void { // Make data in the Key as null
+    if (this.cacheKeyExists(deleteKey)) {
+      this.cacheService.set(deleteKey, null, { maxAge: this.maximumAge });
+    }
+    else {
+      return
     }
   }
 
-  GetCachedData(userKey: string) {
+  /**
+   * Fetches the data stored on the key passed
+   * @param  {string} userKey
+   */
+  getCachedData(userKey: string) {
     let cachedCompressedDecrypted, cahcedCompressed;
     if (typeof this.cacheService.get(userKey) === 'string') { // cached data was compressed and  encrypted as well
       cachedCompressedDecrypted = this.encryptDecryptService.decrypt(this.cacheService.get(userKey));
@@ -60,12 +85,17 @@ export class CacheCustomService implements OnInit {
     return this.compressDecompressService.decompress(dataToDecompress);
   }
 
-  getCompressedArray(cahcedData) {
+  /**
+   * Returns compressed array
+   * @param  {} cachedData
+   * @returns number
+   */
+  getCompressedArray(cachedData): number[] {
     // convert the object to an array as Uint8Array.from() requires an array to convert it to unit8Array
-    const temporaryArray = [];
-    for (const i in cahcedData) {
-      if (cahcedData.hasOwnProperty(i)) {
-        temporaryArray[i] = cahcedData[i];
+    const temporaryArray: number[] = [];
+    for (const i in cachedData) {
+      if (cachedData.hasOwnProperty(i)) {
+        temporaryArray[i] = cachedData[i];
       }
     }
     return temporaryArray;
