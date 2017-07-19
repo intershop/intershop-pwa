@@ -1,12 +1,12 @@
 import { Injectable, Injector, EventEmitter } from '@angular/core'
-import { environment } from "../../../../environments/environment";
-import { Observable } from "rxjs/Observable";
-import { InstanceService } from '../../../shared/services';
+import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs/Observable';
 import { AccountLoginMockService } from './accountLogin.service.mock';
 import { AccountLoginApiService } from './accountLogin.service.api';
-import { AccountLogin } from "../accountLogin";
-import { CacheCustomService } from "../../../shared/services/cache/cacheCustom.service";
-import { UserDetail } from "./accountLogin.model";
+import { AccountLogin } from '../accountLogin';
+import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
+import { UserDetail } from './accountLogin.model';
+import {InstanceService} from '../../../shared/services/instance.service';
 
 @Injectable()
 export class AccountLoginService implements ILoginService {
@@ -48,7 +48,7 @@ export class AccountLoginService implements ILoginService {
         return this.loginService.isAuthorized();
     }
 
-   
+
     /**
      * store user details in cache and emits to login status component
      * @param  {UserDetail} userDetail

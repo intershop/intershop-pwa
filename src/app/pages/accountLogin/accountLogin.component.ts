@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountLoginService } from './accountLoginService/accountLogin.service';
-import { EmailValidator } from "../../shared/validators";
+import {EmailValidator} from '../../shared/validators/email.validator';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { EmailValidator } from "../../shared/validators";
 export class AccountLoginComponent {
   loginForm: FormGroup;
   returnUrl: string;
- 
+
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
    private router: Router, private route: ActivatedRoute) { }
 
@@ -33,7 +33,7 @@ export class AccountLoginComponent {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      userName: ['',[Validators.required,EmailValidator.validate]],
+      userName: ['',[Validators.required, EmailValidator.validate]],
       password: ['', Validators.required],
     });
 
