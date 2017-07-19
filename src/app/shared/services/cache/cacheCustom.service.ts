@@ -15,6 +15,7 @@ export class CacheCustomService {
     private encryptDecryptService: EncryptDecryptService,
     private compressDecompressService: CompressDecompressService) {
     this.cacheService.useStorage(CacheStoragesEnum.LOCAL_STORAGE); // Use local storage
+    this.cacheService.setGlobalPrefix('is_');
   }
 
   /**

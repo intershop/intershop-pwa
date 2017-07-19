@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core'
-import {ICategoryService} from './categoryList.service';
-import {Observable} from 'rxjs/Observable';
-import {Data} from '../categoryList.mock';
+import { Injectable } from '@angular/core'
+import { ICategoryService } from './index';
+import { Observable } from 'rxjs/Observable';
+import { Data } from '../filterList.mock';
 
 @Injectable()
 export class CategoryMockService implements ICategoryService {

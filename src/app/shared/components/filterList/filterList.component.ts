@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {CategoryService} from './categoryListService/categoryList.service';
-import {CacheCustomService} from '../../services/cache/cacheCustom.service';
-import {DataEmitterService} from '../../services/dataEmitter.service';
+import { Component, OnInit } from '@angular/core';
+import { CategoryService } from './filterListService';
+import { CacheCustomService } from '../../services/cache/cacheCustom.service';
+import { DataEmitterService } from '../../services/dataEmitter.service';
 
 
 @Component({
   selector: 'is-filterlist',
-  templateUrl: './categoryList.component.html',
-  styles: ['.img { border:2px solid; border-radius:50px}',
-    '.mrgn-bt-5 {margin : 0 5px 0 0 }']
+  templateUrl: './filterList.component.html',
+  providers: [
+    CategoryService
+  ]
+
 })
 
 export class CategoryListComponent implements OnInit {
@@ -95,8 +97,8 @@ export class CategoryListComponent implements OnInit {
     this.dataEmitterService.pushData(this.allFilters);
   }
 
-  ChevronIconSwap(index:number ){
+  ChevronIconSwap(index: number) {
     console.log(index);
-   // 'chevronClassFlag'+index  
+    // 'chevronClassFlag'+index  
   }
 }

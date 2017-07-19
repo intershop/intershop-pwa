@@ -4,14 +4,14 @@ import {RouterModule} from '@angular/router'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AccountLoginRoute} from './accountLogin.routes';
 import {AccountLoginComponent} from './accountLogin.component';
-
-
+import { SharedModule } from "../../shared/sharedModules/shared.module";
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AccountLoginRoute),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [AccountLoginComponent],
   providers: []

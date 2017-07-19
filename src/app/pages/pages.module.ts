@@ -1,16 +1,15 @@
-import {NgModule} from '@angular/core'
-import {CommonModule} from '@angular/common'
-import {pageRoute} from './pages.routes'
-import {RouterModule} from '@angular/router'
-import {InstanceService} from '../shared/services/instance.service';
+import { NgModule } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { RouterModule } from '@angular/router'
+import { PagesRoutingModule } from "app/pages/pages.routes";
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(pageRoute),
+    PagesRoutingModule
   ],
   declarations: [],
-  providers: [InstanceService]
+  providers: []
 })
 
 export class PageModule {
