@@ -9,7 +9,7 @@ export class FamilyPageComponent implements OnInit {
   imageId;
   range;
   isListView: Boolean;
-
+  sortBy;
   constructor(private route: ActivatedRoute) {
   }
 
