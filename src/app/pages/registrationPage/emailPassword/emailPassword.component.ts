@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { matchOtherValidator, EmailValidator, PasswordValidator } from '../../../shared/validators';
+import {EmailValidator} from '../../../shared/validators/email.validator';
+import {matchOtherValidator} from '../../../shared/validators/matchWords.validator';
+import {PasswordValidator} from '../../../shared/validators/password.validator';
 
 @Component({
   selector: 'is-email',

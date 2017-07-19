@@ -1,7 +1,8 @@
 import { Component } from '@angular/core'
-import { JwtService, CacheCustomService } from '../../../services';
 import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService'
 import { Router } from '@angular/router'
+import {JwtService} from '../../../services/jwt.service';
+import {CacheCustomService} from '../../../services/cache/cacheCustom.service';
 
 @Component({
     selector: 'is-loginstatus',
