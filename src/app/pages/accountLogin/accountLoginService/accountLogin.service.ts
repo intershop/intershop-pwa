@@ -36,7 +36,7 @@ export class AccountLoginService implements ILoginService {
      * @returns void
      */
     logout(): void {
-        this.cacheService.DeleteCacheKey('userDetail');
+        this.cacheService.deleteCacheKey('userDetail');
         return this.loginService.logout();
     }
 
@@ -54,7 +54,7 @@ export class AccountLoginService implements ILoginService {
      * @param  {UserDetail} userDetail
      */
     private storeUserDetail(userDetail: UserDetail) {
-        this.cacheService.StoreDataToCache(userDetail, 'userDetail', false)
+        this.cacheService.storeDataToCache(userDetail, 'userDetail', false)
         this.loginStatusEmitter.emit(userDetail);
     }
 

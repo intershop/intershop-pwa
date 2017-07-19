@@ -1,19 +1,6 @@
-<div class="product-list-item col-md-4 col-xs-6 grid-view">
-	<style type="text/css">
-		.custom-pull-right {
-			float: right !important;
-			margin-right: 0 !important;
-			padding-right: 15px !important;
-			text-align: right !important;
-		}
-
-		.control-label-left {
-			text-align: left !important;
-		}
-	</style>
+<div [ngClass]="isListView ? 'col-md-12 list-view' : 'col-md-4 col-xs-6 grid-view'" class="product-list-item">
 	<div class="product-tile">
 		<div class="product-image-container">
-
 			<div class="">
 				<div>
 					<button class="btn btn-link add-to-compare add-to-compare-trigger" title="Compare" (click)="addToCompare(_data)" data-product-ref="8182790134362@inSPIRED-inTRONICS"
@@ -32,11 +19,12 @@
 				<img [src]="_data.src" class="">
 			</a>
 			</div>
-			<span> <b>ID:</b> {{_data.id}}
-		</span> <span> <b>Brand:</b> {{_data.Brand}}
-		</span> <span> <b>Color:</b><span>{{_data.color}} </span>
-			</span> <span> <b>Price:</b> {{_data.Price}}
-		</span>
+			<span> <b>ID:</b> {{_data.id}} </span>
+			<span> <b>Brand:</b> {{_data.Brand}} </span>
+			<span> <b>Color:</b>
+			<span>{{_data.color}} </span>
+			</span>
+			<span> <b>Price:</b> {{_data.Price}}</span>
 		</div>
 	</div>
 
