@@ -8,6 +8,7 @@ import {DataEmitterService} from '../../services/dataEmitter.service';
   styleUrls: ['./productTile.component.css']
 })
 export class ProductTileComponent {
+  @Input() isListView;
   @Input() _data: any;
 
   constructor(private route: Router, private _dataEmitterService: DataEmitterService) {
