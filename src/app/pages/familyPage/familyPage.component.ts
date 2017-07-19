@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './familyPage.component.html'
@@ -8,10 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 export class FamilyPageComponent implements OnInit {
   imageId;
   range;
-
-  resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response ${captchaResponse}:`);
-  }
+  isListView: Boolean;
 
   constructor(private route: ActivatedRoute) {
   }
@@ -21,5 +18,7 @@ export class FamilyPageComponent implements OnInit {
     this.imageId = id;
     const range = this.route.snapshot.params['range'];
     this.range = range;
+  }
+  resolved(captchaResponse: string) {
   }
 }

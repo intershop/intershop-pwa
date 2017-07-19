@@ -4,9 +4,9 @@
   <div class="filter-panel" id="filter-accordion">
     <div class="filter-group" *ngFor="let response of Collapse.elements let i = index">
       <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/search/index/Filter -->
-      <h3 data-toggle="collapse" [attr.data-target]="'#'+ response.id">
+      <h3 data-toggle="collapse" [attr.data-target]="'#'+ response.id" (click)="toggleIcon[i] = !toggleIcon[i]">
         {{response.name}}
-        <span class="glyphicon pull-right" [ngClass]="toggleIcon[i] ? 'glyphicon-chevron-right': 'glyphicon-chevron-down'" (click)="toggleIcon[i] = !toggleIcon[i]"></span>
+        <span class="glyphicon pull-right" [ngClass]="toggleIcon[i] ? 'glyphicon-chevron-right': 'glyphicon-chevron-down'" ></span>
       </h3>
       <ul class="filter-list clearfix collapse in" [attr.id]="response.id">
         <div *ngIf="response.name!='Color'">
