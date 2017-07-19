@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { InstanceService } from "../services";
+import { InstanceService } from "../services/instance.service";
 
 @NgModule({
     providers: [
