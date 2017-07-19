@@ -1,5 +1,5 @@
 <div class="product-image-container" *ngFor="let thumb of thumbnails">
-	<is-producttile [_data]="thumb"></is-producttile>
+	<is-producttile [_data]="thumb" [isListView]="isList" ></is-producttile>
 </div>
 <div *ngIf="thumbnails.length==0">
 	<h1>No Data Found!</h1>

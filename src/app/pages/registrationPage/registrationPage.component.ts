@@ -13,22 +13,30 @@ export class RegistrationPageComponent implements OnInit {
     constructor(private router: Router) { }
 
     ngOnInit() { }
-   
+
 
     /**
      * Redirects to Family page
      * @returns void
      */
-    cancelClicked():void {
+    cancelClicked(): void {
         this.router.navigate(['']);
     }
-    
+
     /**
      * @returns void
      * Creates Account
      */
     createAccount(): void {
-        
+
+    }
+
+    /**
+     * Submit form values
+     * @returns void
+     */
+    fnSubmit(): void {
+
     }
 }
 

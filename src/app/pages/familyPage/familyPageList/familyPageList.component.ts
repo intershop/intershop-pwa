@@ -1,38 +1,59 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {DataEmitterService} from '../../../shared/services/dataEmitter.service';
-import {ProductListService} from './productListService/ProductList.service';
-import {CacheCustomService} from '../../../shared/services/cache/cacheCustom.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataEmitterService } from '../../../shared/services/dataEmitter.service';
+import { ProductListService } from './productListService/ProductList.service';
+import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
 
 @Component({
   selector: 'is-familypagelist',
   templateUrl: './familyPageList.component.html',
   styleUrls: ['./familyPageList.component.css']
-
 })
 
 
 export class FamilyPageListComponent implements OnInit {
-
+  @Input() isListView;
+  @Input() sortBy;
+  isList;
   thumbnailKey: 'thumbnailKey';
   AllCategories: 'AllCategories';
   allData: any;
   thumbnails = [];
   filteredData;
 
+  ngOnChanges() {
+    this.isList = this.isListView;
+
+    this.thumbnails.sort((a, b) => {
+      if (this.sortBy === 'name-asc') {
+        if (a.Brand > b.Brand) { return 1 }
+        else if (a.Brand == b.Brand) { return 0 }
+        else return -1
+      }
+      else if (this.sortBy === 'name-desc') {
+        if (a.Brand > b.Brand) { return -1 }
+        else if (a.Brand == b.Brand) { return 0 }
+        else return 1
+      }
+      else {
+        return 0;
+      }
+    })
+  }
+
   constructor(private route: Router,
-              private _dataEmitterService: DataEmitterService,
-              private productListService: ProductListService,
-              private customService: CacheCustomService) {
+    private _dataEmitterService: DataEmitterService,
+    private productListService: ProductListService,
+    private customService: CacheCustomService) {
   }
 
   ngOnInit() {
-    if (this.customService.CacheKeyExists(this.thumbnailKey)) {
-      this.allData = this.customService.GetCachedData(this.thumbnailKey);
+    if (this.customService.cacheKeyExists(this.thumbnailKey)) {
+      this.allData = this.customService.getCachedData(this.thumbnailKey);
     } else {
       this.productListService.getProductList().subscribe(data => {
         this.allData = data;
-        this.customService.StoreDataToCache(this.allData, this.thumbnailKey, true);
+        this.customService.storeDataToCache(this.allData, this.thumbnailKey, true);
       });
     }
     this.thumbnails = this.allData[0]['Cameras'];
@@ -77,7 +98,6 @@ export class FamilyPageListComponent implements OnInit {
         })
         this.thumbnails = itemExists;
         isFiltered = true;
-
       }
       if (Object.keys(data.color).length !== 0) {
         itemExists = [];
@@ -92,9 +112,7 @@ export class FamilyPageListComponent implements OnInit {
         })
         this.thumbnails = itemExists;
         isFiltered = true;
-
       }
-
     })
   }
 
@@ -105,6 +123,5 @@ export class FamilyPageListComponent implements OnInit {
   addToCart(itemToAdd) {
     this._dataEmitterService.addToCart(itemToAdd);
   }
-
 }
 
