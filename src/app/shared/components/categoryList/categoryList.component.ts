@@ -27,18 +27,17 @@ export class CategoryListComponent implements OnInit {
   class;
   filterkey = 'filterData';
   toggleIcon = {};
-
   constructor(private categoryService: CategoryService, private customService: CacheCustomService, private dataEmitterService: DataEmitterService) {
   }
 
   ngOnInit() {
-    if (this.customService.CacheKeyExists(this.filterkey)) {
-      this.Collapse = this.customService.GetCachedData(this.filterkey);
+    if (this.customService.cacheKeyExists(this.filterkey)) {
+      this.Collapse = this.customService.getCachedData(this.filterkey);
     } else {
 
       this.categoryService.getSideFilters().subscribe(data => {
         this.Collapse = data;
-        this.customService.StoreDataToCache(this.Collapse, this.filterkey, true);
+        this.customService.storeDataToCache(this.Collapse, this.filterkey, true);
       });
     }
   }
