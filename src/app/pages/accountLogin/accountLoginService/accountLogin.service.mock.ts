@@ -16,13 +16,18 @@ export class AccountLoginMockService {
         password: '123456'
     }
 
-    constructor(private router: Router, private jwtService: JwtService,
-        private cacheService: CacheCustomService
-    ) { }
+    /**
+     * construcot
+     * @param router 
+     * @param jwtService 
+     * @param cacheService 
+     */
+    constructor(private router: Router, private jwtService: JwtService, private cacheService: CacheCustomService
+    ) { };
 
 
     /**
-     * for logging in
+     * For logging in
      * @param  {AccountLogin} user
      * @returns Observable
      */
@@ -35,16 +40,15 @@ export class AccountLoginMockService {
         else {
             return Observable.of(null);
         }
-    }
-
+    };
 
     /**
-     * destoys the token and cleans the cache
+     * Destoys the token and cleans the cache
      * @returns void
      */
     logout(): void {
         this.jwtService.destroyToken();
-    }
+    };
 
 
     /**
@@ -58,16 +62,15 @@ export class AccountLoginMockService {
         else {
             return false;
         }
-    }
+    };
+
     /**
-     * provides detail of logged in user
+     * Provides detail of logged in user
      * @returns Observable
      */
     private getUserDetail(): Observable<UserDetail> {
         return Observable.of(userData);
-    }
-
-
+    };
 }
 
 

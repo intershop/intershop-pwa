@@ -8,6 +8,10 @@ import { ApiService } from '../../../../shared/services/api.service';
 export class ProductListApiService implements IProductListService {
   apiService;
 
+  /**
+   * Constructor
+   * @param  {ApiService} apiService
+   */
   constructor(apiService: ApiService) {
     this.apiService = apiService;
   }
@@ -18,4 +22,4 @@ export class ProductListApiService implements IProductListService {
   getProductList(): Observable<any> {
     return this.apiService.get('url');
   }
-}
+};

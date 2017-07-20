@@ -5,24 +5,24 @@ import { environment } from '../../../../environments/environment';
 import { AccountLogin } from '../accountLogin';
 import { UserDetail } from './accountLogin.model';
 import { userData } from '.././accountLogin.mock';
-import {ApiService} from '../../../shared/services/api.service';
-import {JwtService} from '../../../shared/services/jwt.service';
+import { ApiService } from '../../../shared/services/api.service';
+import { JwtService } from '../../../shared/services/jwt.service';
 
 
 @Injectable()
 export class AccountLoginApiService {
     loginStatusEmitter = new EventEmitter();
 
-    constructor(
-        private apiService: ApiService,
-        private jwtService: JwtService,
-        private http: Http,
-    ) { }
-
-
+    /**
+     * Constructor
+     * @param apiService 
+     * @param jwtService 
+     * @param http 
+     */
+    constructor(private apiService: ApiService, private jwtService: JwtService, private http: Http) { };
 
     /**
-     * for logging in
+     * For logging in
      * @param  {AccountLogin} user
      * @returns Observable
      */
@@ -35,15 +35,15 @@ export class AccountLoginApiService {
                 }
                 return this.getUserDetail();
             })
-    }
+    };
 
     /**
-     * destroys the token and cleans the cache
+     * Destroys the token and cleans the cache
      * @returns void
      */
     logout(): void {
         this.jwtService.destroyToken();
-    }
+    };
 
     /**
      * Checks if the user is logged in
@@ -56,12 +56,13 @@ export class AccountLoginApiService {
         else {
             return false;
         }
-    }
+    };
+
     /**
-     * provides detail of logged in user
+     * Provides detail of logged in user
      * @returns UserDetail
      */
     private getUserDetail(): UserDetail {
         return userData;
-    }
+    };
 }

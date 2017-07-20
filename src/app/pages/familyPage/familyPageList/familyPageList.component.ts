@@ -10,7 +10,6 @@ import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.s
   styleUrls: ['./familyPageList.component.css']
 })
 
-
 export class FamilyPageListComponent implements OnInit {
   @Input() isListView;
   @Input() sortBy;
@@ -20,6 +19,10 @@ export class FamilyPageListComponent implements OnInit {
   filteredData;
 
   ngOnChanges() {
+
+    /**
+     * Sorts the Products either Ascending or Descending
+     */
     this.thumbnails.sort((a, b) => {
       if (this.sortBy === 'name-asc') {
         if (a.Brand > b.Brand) { return 1 }
@@ -35,14 +38,24 @@ export class FamilyPageListComponent implements OnInit {
         return 0;
       }
     })
-  }
+  };
 
+  /**
+   * Construcotr
+   * @param  {Router} privateroute
+   * @param  {DataEmitterService} private_dataEmitterService
+   * @param  {ProductListService} privateproductListService
+   * @param  {CacheCustomService} privatecustomService
+   */
   constructor(private route: Router,
     private _dataEmitterService: DataEmitterService,
     private productListService: ProductListService,
     private customService: CacheCustomService) {
-  }
+  };
 
+  /*
+  * Gets the data from Cache and shows products
+   */
   ngOnInit() {
     if (this.customService.cacheKeyExists(this.thumbnailKey)) {
       this.allData = this.customService.getCachedData(this.thumbnailKey);
@@ -51,7 +64,8 @@ export class FamilyPageListComponent implements OnInit {
         this.allData = data;
         this.customService.storeDataToCache(this.allData, this.thumbnailKey, true);
       });
-    }
+    };
+    
     this.thumbnails = this.allData[0]['Cameras'];
 
     this._dataEmitterService.emitter.subscribe(data => {
@@ -110,14 +124,21 @@ export class FamilyPageListComponent implements OnInit {
         isFiltered = true;
       }
     })
-  }
+  };
 
+  /**
+   * Routes to product details
+   * @param  {} thumb
+   */
   goToNextPage(thumb) {
     this.route.navigate(['/product/details', thumb.id, thumb.range]);
   };
 
+  /**
+   * Adds Product to Cart
+   * @param  {} itemToAdd
+   */
   addToCart(itemToAdd) {
     this._dataEmitterService.addToCart(itemToAdd);
-  }
-}
-
+  };
+};

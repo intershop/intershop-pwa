@@ -10,7 +10,7 @@ export class ProductListService {
   productService: IProductListService;
 
   /**
-   * decides the service to be used as per environment variable
+   * Decides the service to be used as per environment variable
    * @param  {InstanceService} privateinstanceService
    */
   constructor(private instanceService: InstanceService) {
