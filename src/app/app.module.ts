@@ -1,54 +1,57 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule, Http } from '@angular/http';
-
-// Imports for loading & configuring the in-memory web api
-//import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-//import { InMemoryDataService }  from './services/in-memory-data.service';
+import { HttpModule, Http, JsonpModule } from '@angular/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { FamilyPageComponent } from './pages/family-page/family-page.component';
-import { ErrorPageComponent } from './pages/error-page/error-page.component';
-import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
+import { CacheService } from 'ng2-cache/ng2-cache';
 
-import { AppRoutingModule }     from './app-routing.module';
+import { FooterModule } from './shared/components/footer/footer.module'
+import { HeaderModule } from './shared/components/header/header.module';
+import { AppRoutingModule } from './app.routing.module';
+
+import { AppComponent } from './app.component';
+import { CacheCustomService } from './shared/services/cache/cacheCustom.service';
+import { DataEmitterService } from './shared/services/dataEmitter.service';
+import { EncryptDecryptService } from './shared/services/cache/encryptDecrypt.service';
+import { CompressDecompressService } from './shared/services/cache/compressDecompress.service';
+import { ApiService } from './shared/services/api.service';
+import { JwtService } from './shared/services/jwt.service';
+import { PageModule } from "./pages/pages.module";
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: Http) {
-    return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    FamilyPageComponent,
-    ErrorPageComponent,
-    RegistrationPageComponent,
-    HomePageComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({
+      appId: 'proof-of-concept'
+    }),
     HttpModule,
+    JsonpModule,
     AppRoutingModule,
-    //InMemoryWebApiModule.forRoot(InMemoryDataService)
-    TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: (createTranslateLoader),
-          deps: [Http]
-        }
-    })
-    
+    FormsModule,
+    FooterModule,
+    HeaderModule,
+    ReactiveFormsModule,
+    PageModule,
   ],
-  providers: [],
+  providers: [CacheCustomService,
+    CacheService,
+    DataEmitterService,
+    EncryptDecryptService,
+    CompressDecompressService,
+    ApiService,
+    JwtService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
