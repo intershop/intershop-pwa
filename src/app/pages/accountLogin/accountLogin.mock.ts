@@ -59,5 +59,6 @@ export const userData =
         "phoneBusiness": "",
         "phoneMobile": "",
         "fax": "",
-        "email": "patricia@test.intershop.de"
+        "email": "patricia@test.intershop.de",
+        "hasRole" : true
     }
