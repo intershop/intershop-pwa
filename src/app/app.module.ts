@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule, Http, JsonpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { CacheService } from 'ng2-cache/ng2-cache';
