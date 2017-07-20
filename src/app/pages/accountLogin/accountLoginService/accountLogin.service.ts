@@ -14,13 +14,20 @@ export class AccountLoginService implements ILoginService {
     loginService: ILoginService;
     cacheService: CacheCustomService;
     loginStatusEmitter = new EventEmitter();
+
+    
+    /**
+     * Constructor
+     * @param  {InstanceService} privateinstanceService
+     */
     constructor(private instanceService: InstanceService) {
         this.loginService = this.instanceService.getInstance((environment.needMock) ?
             AccountLoginMockService : AccountLoginApiService);
         this.cacheService = this.instanceService.getInstance(CacheCustomService);
-    }
+    };
+
     /**
-     * calls signin function of concerned service
+     * Calls signin function of concerned service
      * @param  {} userDetails
      * @returns Observable
      */
@@ -29,16 +36,16 @@ export class AccountLoginService implements ILoginService {
             this.storeUserDetail(data);
             return data;
         });
-    }
+    };
 
     /**
-     * calls logout function of concerned service
+     * Calls logout function of concerned service
      * @returns void
      */
     logout(): void {
         this.cacheService.deleteCacheKey('userDetail');
         return this.loginService.logout();
-    }
+    };
 
     /**
      * calls isAuthorized function of concerned service
@@ -46,11 +53,10 @@ export class AccountLoginService implements ILoginService {
      */
     isAuthorized(): boolean {
         return this.loginService.isAuthorized();
-    }
-
+    };
 
     /**
-     * store user details in cache and emits to login status component
+     * Stores user details in cache and emits to login status component
      * @param  {UserDetail} userDetail
      */
     private storeUserDetail(userDetail: UserDetail) {
@@ -58,10 +64,10 @@ export class AccountLoginService implements ILoginService {
         this.loginStatusEmitter.emit(userDetail);
     }
 
-}
+};
 
 export interface ILoginService {
     singinUser(userDetails: AccountLogin): Observable<UserDetail>,
     logout(): void,
     isAuthorized(): boolean,
-}
+};
