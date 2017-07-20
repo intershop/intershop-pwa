@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core'
+import { Injectable, EventEmitter } from '@angular/core'
 
 @Injectable()
 export class DataEmitterService {
@@ -7,20 +7,36 @@ export class DataEmitterService {
   comparerListEmitter = new EventEmitter();
   emitter = new EventEmitter();
 
-  pushData(objectParam) {
+  /**
+   * push data event emitter
+   * @param  {any} objectParam
+   */
+  pushData(objectParam: any) {
     this.emitter.emit(objectParam);
-  }
+  };
 
-  addToCart(item) {
+  /**
+   * Add to cart event emitter
+   * @param  {any} item
+   */
+  addToCart(item: any) {
     this.miniCartEmitter.emit(item);
-  }
+  };
 
-  addToWishList(item) {
+  /**
+   * add to wish list event emitter
+   * @param  {any} item
+   */
+  addToWishList(item: any) {
     this.wishListEmitter.emit(item);
-  }
+  };
 
-  addToCompare(item) {
+  /**
+   * add to compare event emitter
+   * @param  {any} item
+   */
+  addToCompare(item: any) {
     this.comparerListEmitter.emit(item);
-  }
+  };
 
 }

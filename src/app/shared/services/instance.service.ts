@@ -2,11 +2,16 @@ import {Injectable, Injector} from '@angular/core'
 
 @Injectable()
 export class InstanceService {
+  
+  /**
+   * Constructor
+   * @param  {Injector} privateinject
+   */
   constructor(private inject: Injector) {
   }
 
   /**
-   * returns an instance of the service to be used
+   * Returns an instance of the service to be used
    * @param  {any} serviceType
    */
   getInstance(serviceType: any) {

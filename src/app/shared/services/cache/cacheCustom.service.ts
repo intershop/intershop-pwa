@@ -10,11 +10,19 @@ import { CompressDecompressService } from './compressDecompress.service';
 export class CacheCustomService {
   private key: string;
   private maximumAge: number = 5 * 60; // Maximum age of cache
+
+
+  /**
+   * Constructor
+   * @param  {CacheService} privatecacheService
+   * @param  {EncryptDecryptService} privateencryptDecryptService
+   * @param  {CompressDecompressService} privatecompressDecompressService
+   */
   constructor(
     private cacheService: CacheService,
     private encryptDecryptService: EncryptDecryptService,
     private compressDecompressService: CompressDecompressService) {
-    this.cacheService.useStorage(CacheStoragesEnum.LOCAL_STORAGE); // Use local storage
+    this.cacheService.useStorage(CacheStoragesEnum.LOCAL_STORAGE); 
     this.cacheService.setGlobalPrefix('is_');
   }
 
@@ -29,7 +37,7 @@ export class CacheCustomService {
     } else {
       return false;
     }
-  }
+  };
 
 
   /**
@@ -53,7 +61,7 @@ export class CacheCustomService {
     else {
       return
     }
-  }
+  };
 
 
   /**
@@ -68,7 +76,7 @@ export class CacheCustomService {
     else {
       return
     }
-  }
+  };
 
   /**
    * Fetches the data stored on the key passed
@@ -84,7 +92,7 @@ export class CacheCustomService {
     }
     const dataToDecompress = cachedCompressedDecrypted || Uint8Array.from(this.getCompressedArray(cahcedCompressed));
     return this.compressDecompressService.decompress(dataToDecompress);
-  }
+  };
 
   /**
    * Returns compressed array
@@ -100,5 +108,7 @@ export class CacheCustomService {
       }
     }
     return temporaryArray;
-  }
+  };
+
 }
+
