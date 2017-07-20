@@ -5,8 +5,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './wishlistPage.component.html',
   styleUrls: ['./wishlistPage.component.css']
 })
+
 export class WishlistPageComponent implements OnInit {
-  constructor() { }
+  /**
+   * Constructor
+   */
+  constructor() { };
   
-  ngOnInit() { }
-}
+  ngOnInit() { };
+};

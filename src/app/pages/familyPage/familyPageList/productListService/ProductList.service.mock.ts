@@ -12,7 +12,6 @@ export class ProductListMockService implements IProductListService {
   getProductList(): Observable<any> {
     return Observable.of(ProductList);
   }
-
-}
+};
 
 

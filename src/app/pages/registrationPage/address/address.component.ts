@@ -10,7 +10,15 @@ export class AddressComponent implements OnInit {
   addressForm: FormGroup;
   @Output() isValid: EventEmitter<Boolean> = new EventEmitter();
 
-  constructor(private _formbuilder: FormBuilder) { }
+  /**
+   * Constructor
+   * @param  {FormBuilder} private_formbuilder
+   */
+  constructor(private _formbuilder: FormBuilder) { };
+  
+  /**
+   * Creates Address Form
+   */
   ngOnInit() {
       this.addressForm = this._formbuilder.group({      
         address : this._formbuilder.group({
@@ -27,8 +35,9 @@ export class AddressComponent implements OnInit {
           state: ['', [Validators.required]],
         })
       })
+
     this.addressForm.valueChanges.subscribe(() => {
       this.addressForm.valid ? this.isValid.emit(true) : this.isValid.emit(false);
     });
   }
-}
+};

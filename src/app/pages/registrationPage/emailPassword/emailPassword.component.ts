@@ -13,8 +13,11 @@ export class EmailPasswordComponent implements OnInit {
   emailForm: FormGroup;
   @Output() isValid: EventEmitter<Boolean> = new EventEmitter();
 
-  constructor(private _formbuilder: FormBuilder) {
-  }
+  /**
+   * Constructor
+   * @param  {FormBuilder} private_formbuilder
+   */
+  constructor(private _formbuilder: FormBuilder) {  }
 
   ngOnInit() {
     this.emailForm = this._formbuilder.group({
@@ -39,5 +42,5 @@ export class EmailPasswordComponent implements OnInit {
     this.emailForm.valueChanges.subscribe(() => {
       this.emailForm.valid ? this.isValid.emit(true) : this.isValid.emit(false);
     });
-  }
-}
+  };
+};

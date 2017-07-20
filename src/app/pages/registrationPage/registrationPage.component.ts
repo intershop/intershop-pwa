@@ -10,10 +10,13 @@ export class RegistrationPageComponent implements OnInit {
     isAddressFormValid = false;
     isEmailFormValid = false;
 
-    constructor(private router: Router) { }
+    /**
+     * constructor
+     * @param  {Router} privaterouter
+     */
+    constructor(private router: Router) { };
 
-    ngOnInit() { }
-
+    ngOnInit() { };
 
     /**
      * Redirects to Family page
@@ -21,24 +24,20 @@ export class RegistrationPageComponent implements OnInit {
      */
     cancelClicked(): void {
         this.router.navigate(['']);
-    }
+    };
 
     /**
-     * @returns void
      * Creates Account
+     * @returns void 
      */
-    createAccount(): void {
-
-    }
+    createAccount(): void { };
 
     /**
      * Submit form values
      * @returns void
      */
-    fnSubmit(): void {
-
-    }
-}
+    fnSubmit(): void { };
+};
 
 
 
