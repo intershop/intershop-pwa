@@ -1,0 +1,3 @@
+<a href="javascript:void(0)" [ngClass]="userName? 'my-account-link' : 'my-account-links my-account-login'" rel="nofollow" (click)="userName? '' : signIn()"><span class="glyphicon-user glyphicon glyphicon-header-icon"></span><span class="hidden-xs" [ngClass]="userName? 'login-name':''">{{userName? userName:'Sign In'}}</span><span class="hidden-xs">{{userName? 'My Account':''}}</span></a>
+<span class="hidden-xs seperator">| </span>
+<a href="javascript:void(0)" [ngClass]="userName? 'my-account-link my-account-logout' : 'ish-siteHeader-myAccountUtilitiesMenu-myAccount-register'" rel="nofollow" (click)="userName? logout() : register()"><span class="hidden-xs">{{userName? 'Logout':'Register'}}</span></a>

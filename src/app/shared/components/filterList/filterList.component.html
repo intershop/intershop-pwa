@@ -1,0 +1,34 @@
+<div class="category-panel">
+  <h1>Cameras</h1>
+  <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/navigation/FilterList -->
+  <div class="filter-panel" id="filter-accordion">
+    <div class="filter-group" *ngFor="let response of Collapse.elements let i = index">
+      <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/search/index/Filter -->
+      <h3 data-toggle="collapse" [attr.data-target]="'#'+ response.id" (click)="toggleIcon[i] = !toggleIcon[i]">
+        {{response.name}}
+        <span class="glyphicon pull-right" [ngClass]="toggleIcon[i] ? 'glyphicon-chevron-right': 'glyphicon-chevron-down'" ></span>
+      </h3>
+      <ul class="filter-list clearfix collapse in" [attr.id]="response.id">
+        <div *ngIf="response.name!='Color'">
+          <li class="filter-item" *ngFor="let data of response.facets">
+            <a class="filter-item-name" data-testing-id="filter-link-Canon" href="javascript:void(0)">
+              <span class="icon-notselected"></span>{{data.name}}
+            </a>
+            <span class="filter-count">({{data.count}})</span>
+          </li>
+        </div>
+        <div *ngIf="response.name=='Color'">
+          <li class="filter-item filter-colour" *ngFor="let data of response.facets">
+            <a class="filter-swatch" title="{{data.name}}" href="javascript:void(0)">
+              <span [ngStyle]="{'background-color':data.name}">
+              </span>
+            </a>
+          </li>
+        </div>
+      </ul>
+      <!-- END TEMPLATE app_sf_responsive/default/modules/search/index/Filter -->
+      <!-- END TEMPLATE app_sf_responsive/default/modules/navigation/FilterList -->
+    </div>
+    <a class="visible-xs mobile-filter-toggle collapsed" data-toggle="collapse" data-target="#filter-accordion">Filters<br><span class="glyphicon glyphicon-chevron-up"></span>
+    </a>
+  </div>
