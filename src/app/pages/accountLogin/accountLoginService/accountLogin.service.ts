@@ -6,16 +6,16 @@ import { AccountLoginApiService } from './accountLogin.service.api';
 import { AccountLogin } from '../accountLogin';
 import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
 import { UserDetail } from './accountLogin.model';
-import {InstanceService} from '../../../shared/services/instance.service';
+import { InstanceService } from '../../../shared/services/instance.service';
 
 @Injectable()
-export class AccountLoginService implements ILoginService {
+export class AccountLoginService implements IAccountLoginService {
 
-    loginService: ILoginService;
+    loginService: IAccountLoginService;
     cacheService: CacheCustomService;
-    loginStatusEmitter = new EventEmitter();
+    loginStatusEmitter: EventEmitter<UserDetail> = new EventEmitter<UserDetail>();
 
-    
+
     /**
      * Constructor
      * @param  {InstanceService} privateinstanceService
@@ -66,7 +66,7 @@ export class AccountLoginService implements ILoginService {
 
 };
 
-export interface ILoginService {
+export interface IAccountLoginService {
     singinUser(userDetails: AccountLogin): Observable<UserDetail>,
     logout(): void,
     isAuthorized(): boolean,
