@@ -1,0 +1,75 @@
+<h1> Digital Cameras</h1>
+<!-- TODO : This should come from business object -->
+
+<div *ngIf="Collapse.elements">
+  <!-- isDefined(FilterEntries) -->
+  <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/navigation/FilterList -->
+  <div class="filter-panel" id="filter-accordion">
+    <div class="filter-group" *ngFor="let response of Collapse.elements let i = index">
+      <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/search/index/Filter -->
+
+      <!--TODO : response.ConfigurationFilterGroup isDefined-->
+      <div *ngIf="TODO; else elseBlock">TODO</div>
+      <ng-template #elseBlock>
+        <div *ngIf="response">
+          <!-- Render FilterPipeline-->
+          <div class="filter-group" *ngIf="(pageSource(page)); else categoryPage">
+
+            <h3 data-toggle="collapse" [attr.data-target]="'#'+ response.id">
+              <!-- TODO : if response.ConfigurationAttribute.FilterOptions.DisplayName NE '' then display response.ConfigurationAttribute.FilterOptions.DisplayName-->
+              <div *ngIf="TODO; else elseBlock">If Block</div>
+              <ng-template #elseBlock>
+                {{response.name}}
+                <span class="glyphicon pull-right" [ngClass]="toggleIcon[i] ? 'glyphicon-chevron-right': 'glyphicon-chevron-down'" (click)="toggleIcon[i] = !toggleIcon[i]"></span>
+              </ng-template>
+            </h3>
+          </div>
+          <ng-template #categoryPage>
+
+            <!-- TODO : if categoryObj:RootCatalogCategoryBO:DisplayName isDefined -->
+            <div *ngIf="TODO;">
+              <h3 data-toggle="collapse" [attr.data-target]="'#'+ response.id">
+                <!-- TODO :  categoryObj:RootCatalogCategoryBO:DisplayName will be displayed-->
+                <span class="glyphicon pull-right" [ngClass]="toggleIcon[i] ? 'glyphicon-chevron-right': 'glyphicon-chevron-down'" (click)="toggleIcon[i] = !toggleIcon[i]"></span>
+              </h3>
+            </div>
+
+          </ng-template>
+          <ul class="filter-list clearfix collapse in" [ngClass]="pageSource(page) ? 'filter-category': ''" [attr.id]="response.id">
+            <div *ngIf="response.name!='Color'">
+              
+                <li class="filter-item filter-selected" *ngFor="let data of response.facets">
+                  <div *ngIf="(data | json) != '{}'">
+                    
+                  <a class="filter-item-name" data-testing-id="filter-link-Canon" href="javascript:void(0)">
+                  <span *ngIf="response.displayType != 'swatch'" class="icon-selected"></span>{{data.name}}
+                  </a>
+                  <!-- TODO : if response.showcount=='true' AND response.facet.count !=0 AND response.displayType == 'swatch'-->
+                   <span *ngIf="true" class="filter-count">({{data.count}})</span>
+                   
+                  </div>
+                </li>
+              
+            </div>
+            <div *ngIf="response.name=='Color'">
+              <li class="filter-item filter-colour" *ngFor="let data of response.facets">
+                <a class="filter-swatch" title="{{data.name}}" href="javascript:void(0)">
+                  <span [ngStyle]="{'background-color':data.name}">
+                  </span>
+                </a>
+              </li>
+            </div>
+          </ul>
+
+          <!-- END TEMPLATE app_sf_responsive/default/modules/search/index/Filter -->
+          <!-- END TEMPLATE app_sf_responsive/default/modules/navigation/FilterList -->
+        </div>
+      </ng-template>
+
+
+    </div>
+  </div>
+
+  <a class="visible-xs mobile-filter-toggle collapsed" data-toggle="collapse" data-target="#filter-accordion">Filters<br><span class="glyphicon glyphicon-chevron-up"></span>
+    </a>
+</div>
