@@ -3,7 +3,8 @@ import { InstanceService } from '../../../services/instance.service';
 import { CategoryMockService, CategoryApiService } from './index';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../../environments/environment.prod';
-import { Data } from '../filterList.mock';
+import { data } from '../filterList.mock';
+import { FilterListData } from "../filterEntries";
 
 @Injectable()
 export class CategoryService {
@@ -21,8 +22,8 @@ export class CategoryService {
   /**
    * @returns List of categories as an Observable
    */
-  getSideFilters(): Observable<any> {
-    return Observable.of(Data);
+  getSideFilters(): Observable<FilterListData> {
+    return Observable.of(data);
   }
 }
 
