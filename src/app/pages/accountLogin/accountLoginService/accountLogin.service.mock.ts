@@ -1,11 +1,11 @@
-import { Injectable, EventEmitter } from '@angular/core'
-import { Observable } from 'rxjs/Rx'
+import { Injectable, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 import { AccountLogin } from '../accountLogin';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 import { UserDetail } from './accountLogin.model';
 import { userData } from '../accountLogin.mock';
-import {JwtService} from '../../../shared/services/jwt.service';
-import {CacheCustomService} from '../../../shared/services/cache/cacheCustom.service';
+import { JwtService } from '../../../shared/services/jwt.service';
+import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
 
 @Injectable()
 export class AccountLoginMockService {
@@ -14,16 +14,16 @@ export class AccountLoginMockService {
     {
         userName: 'intershop@123.com',
         password: '123456'
-    }
+    };
 
     /**
      * construcot
-     * @param router 
-     * @param jwtService 
-     * @param cacheService 
+     * @param router
+     * @param jwtService
+     * @param cacheService
      */
     constructor(private router: Router, private jwtService: JwtService, private cacheService: CacheCustomService
-    ) { };
+    ) { }
 
 
     /**
@@ -36,11 +36,10 @@ export class AccountLoginMockService {
             let token = Math.floor(100000 + Math.random() * 900000).toString();
             this.jwtService.saveToken(token);
             return this.getUserDetail();
-        }
-        else {
+        } else {
             return Observable.of(null);
         }
-    };
+    }
 
     /**
      * Destoys the token and cleans the cache
@@ -48,7 +47,7 @@ export class AccountLoginMockService {
      */
     logout(): void {
         this.jwtService.destroyToken();
-    };
+    }
 
 
     /**
@@ -58,11 +57,10 @@ export class AccountLoginMockService {
     isAuthorized(): boolean {
         if (this.jwtService.getToken()) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
-    };
+    }
 
     /**
      * Provides detail of logged in user
@@ -70,7 +68,5 @@ export class AccountLoginMockService {
      */
     private getUserDetail(): Observable<UserDetail> {
         return Observable.of(userData);
-    };
+    }
 }
-
-

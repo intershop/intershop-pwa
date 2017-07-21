@@ -55,4 +55,4 @@
 
 // @Component({ selector: 'is-header', template: '' })
 // export class HeaderStubComponent { }
-//TODO: commented as causing issue for server side rendering
+// TODO: commented as causing issue for server side rendering

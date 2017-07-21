@@ -4,7 +4,6 @@ import { CompareDetailsComponent } from './shared/components/header/productCompa
 
 const routes: Routes = [
   { path: '', redirectTo: 'familyPage', pathMatch: 'full' },
- 
   { path: 'familyPage/compare/:id', component: CompareDetailsComponent }
 ];
 
@@ -16,4 +15,4 @@ const routes: Routes = [
 export class AppRoutingModule {
 
 }
-export const routingComponents = []
+export const routingComponents = [];

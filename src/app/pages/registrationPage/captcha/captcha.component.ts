@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter} from '@angular/core'
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'is-captcha',
@@ -14,5 +14,5 @@ export class CaptchaComponent {
    */
   resolved(captchaResponse: string) {
     this.isValid.emit(true);
-  };
-};
+  }
+}

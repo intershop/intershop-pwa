@@ -1,3 +1,4 @@
+// tslint:disable:quotemark one-line
 export const Data =
   {
     elements: [

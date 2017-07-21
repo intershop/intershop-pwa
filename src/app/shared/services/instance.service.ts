@@ -1,8 +1,8 @@
-import {Injectable, Injector} from '@angular/core'
+import { Injectable, Injector } from '@angular/core';
 
 @Injectable()
 export class InstanceService {
-  
+
   /**
    * Constructor
    * @param  {Injector} privateinject
