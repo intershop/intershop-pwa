@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from './filterListService';
 import { CacheCustomService } from '../../services/cache/cacheCustom.service';
 import { DataEmitterService } from '../../services/dataEmitter.service';
+import { FilterListData } from "./filterEntries";
+
+
 
 
 @Component({
@@ -14,7 +17,7 @@ import { DataEmitterService } from '../../services/dataEmitter.service';
 })
 
 export class CategoryListComponent implements OnInit {
-  Collapse: any;
+  filterListData: FilterListData;
   brandFilter: any[] = [];
   categoryFilter;
   priceFilter;
@@ -33,14 +36,14 @@ export class CategoryListComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.customService.cacheKeyExists(this.filterkey)) {
-      this.Collapse = this.customService.getCachedData(this.filterkey);
-    } else {
 
-      this.categoryService.getSideFilters().subscribe(data => {
-        this.Collapse = data;
-        this.customService.storeDataToCache(this.Collapse, this.filterkey, true);
-      });
+    if (this.customService.cacheKeyExists(this.filterkey)) {
+    this.filterListData = this.customService.getCachedData(this.filterkey);
+    } else {
+    this.categoryService.getSideFilters().subscribe(data => {
+      this.filterListData = data;
+      this.customService.storeDataToCache(this.filterListData, this.filterkey, true);
+    });
     }
   }
 
@@ -100,5 +103,9 @@ export class CategoryListComponent implements OnInit {
   ChevronIconSwap(index: number) {
     console.log(index);
     // 'chevronClassFlag'+index  
+  }
+
+  pageSource(page) {
+
   }
 }
