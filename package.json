@@ -9,7 +9,7 @@
     "build": "ng build",
     "test": "ng test",
     "test-ci": "karma start --reporters junit,html --browsers PhantomJS --single-run --log-level debug",
-    "lint": "ng lint",
+    "lint": "ng lint --type-check",
     "e2e": "ng e2e"
   },
   "private": true,

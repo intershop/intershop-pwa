@@ -79,12 +79,12 @@ export class CategoryListComponent implements OnInit {
       this.priceFilter = {};
       this.allFilter('price', this.priceFilter);
     }
-  };
+  }
 
   filterColor(color, index) {
     this.selectedColor = index;
     if (this.colorFilter && this.colorFilter.name === color.name) {
-      this.colorFilter = {}
+      this.colorFilter = {};
       this.selectedColor = null;
     } else {
       this.colorFilter = color;
@@ -99,6 +99,6 @@ export class CategoryListComponent implements OnInit {
 
   ChevronIconSwap(index: number) {
     console.log(index);
-    // 'chevronClassFlag'+index  
+    // 'chevronClassFlag'+index
   }
 }

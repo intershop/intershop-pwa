@@ -1,4 +1,4 @@
-import {Component} from '@angular/core'
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'is-headernavigation',
@@ -21,5 +21,5 @@ export class HeaderNavigationComponent {
       name: 'Specials'
     }
 
-  ]
+  ];
 }

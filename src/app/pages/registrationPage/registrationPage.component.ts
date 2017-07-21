@@ -14,9 +14,9 @@ export class RegistrationPageComponent implements OnInit {
      * constructor
      * @param  {Router} privaterouter
      */
-    constructor(private router: Router) { };
+    constructor(private router: Router) { }
 
-    ngOnInit() { };
+    ngOnInit() { }
 
     /**
      * Redirects to Family page
@@ -24,20 +24,20 @@ export class RegistrationPageComponent implements OnInit {
      */
     cancelClicked(): void {
         this.router.navigate(['']);
-    };
+    }
 
     /**
      * Creates Account
-     * @returns void 
+     * @returns void
      */
-    createAccount(): void { };
+    createAccount(): void { }
 
     /**
      * Submit form values
      * @returns void
      */
-    fnSubmit(): void { };
-};
+    fnSubmit(): void { }
+}
 
 
 

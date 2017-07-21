@@ -1,3 +1,4 @@
+// tslint:disable:quotemark one-line
 export const userData =
     {
         "type": "PrivateCustomer",
@@ -60,4 +61,4 @@ export const userData =
         "phoneMobile": "",
         "fax": "",
         "email": "patricia@test.intershop.de"
-    }
+    };

@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'is-wishlistPage',
-  templateUrl: './wishlistPage.component.html',
-  styleUrls: ['./wishlistPage.component.css']
+  templateUrl: './wishlistPage.component.html'
 })
 
 export class WishlistPageComponent implements OnInit {
   /**
    * Constructor
    */
-  constructor() { };
-  
-  ngOnInit() { };
-};
+  constructor() { }
+
+  ngOnInit() { }
+}

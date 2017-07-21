@@ -1,15 +1,15 @@
-import { Component } from '@angular/core'
-import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService'
-import { Router } from '@angular/router'
-import {JwtService} from '../../../services/jwt.service';
-import {CacheCustomService} from '../../../services/cache/cacheCustom.service';
+import { Component, OnInit } from '@angular/core';
+import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService';
+import { Router } from '@angular/router';
+import { JwtService } from '../../../services/jwt.service';
+import { CacheCustomService } from '../../../services/cache/cacheCustom.service';
 
 @Component({
     selector: 'is-loginstatus',
     templateUrl: './loginStatus.component.html'
 })
 
-export class LoginStatusComponent {
+export class LoginStatusComponent implements OnInit {
     userName: string;
     constructor(
         private accountLoginService: AccountLoginService,
@@ -27,14 +27,14 @@ export class LoginStatusComponent {
         }
         this.accountLoginService.loginStatusEmitter.subscribe(data => {
             this.userName = data.firstName + ' ' + data.lastName;
-        })
+        });
     }
 
     /**
      * navigates to register page
      * @returns void
      */
-    register():void {
+    register(): void {
         this.router.navigate(['register']);
     }
 
@@ -42,7 +42,7 @@ export class LoginStatusComponent {
      * navigates to login page
      * @returns void
      */
-    logout():void {
+    logout(): void {
         this.accountLoginService.logout();
         this.userName = '';
         this.router.navigate(['login']);
@@ -52,7 +52,7 @@ export class LoginStatusComponent {
      * navigates to signin page
      * @returns void
      */
-    signIn():void {
+    signIn(): void {
         this.router.navigate(['login']);
     }
 

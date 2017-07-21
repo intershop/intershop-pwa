@@ -16,13 +16,13 @@ export class ApiService {
   private _customErrorHandler = new CustomErrorHandler();
 
   /**
-   * Constructor 
+   * Constructor
    * @param  {Http} privatehttp
    * @param  {JwtService} privatejwtService
    */
   constructor(private http: Http,
     private jwtService: JwtService) {
-  };
+  }
 
   /**
    * set request headers
@@ -38,18 +38,18 @@ export class ApiService {
       headersConfig['Authorization'] = `Bearer ${this.jwtService.getToken()}`;
     }
     return new Headers(headersConfig);
-  };
+  }
 
   /**
-   * format api errors and send errors to custom handler 
+   * format api errors and send errors to custom handler
    * @param  {any} error
    */
   private formatErrors(error: any) {
     return this._customErrorHandler.handleApiErros(error);
-  };
+  }
 
   /**
-   * http get request 
+   * http get request
    * @param  {string} path
    * @param  {URLSearchParams=newURLSearchParams(} params
    * @returns Observable
@@ -60,7 +60,7 @@ export class ApiService {
         return data.json();
       })
       .catch(this.formatErrors.bind(this));
-  };
+  }
 
   /**
    * http put request
@@ -78,7 +78,7 @@ export class ApiService {
       .map((res: Response) => {
         return res.json();
       });
-  };
+  }
 
   /**
    * http post request
@@ -96,7 +96,7 @@ export class ApiService {
       .map((res: Response) => {
         return res.json();
       });
-  };
+  }
 
   /**
    * http delete request
@@ -110,5 +110,5 @@ export class ApiService {
     )
       .catch(this.formatErrors)
       .map((res: Response) => res.json());
-  };
+  }
 }

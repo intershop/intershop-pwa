@@ -6,7 +6,8 @@
 
         <li *ngFor="let product of products" class="dropdown">
             <a routerLink="/category" data-testing-id="Cameras-Camcorders-link"> 
-                <b> {{product.name | uppercase }} </b> </a>
+                {{product.name | uppercase }}
+            </a>
         </li>
 
     </ul>

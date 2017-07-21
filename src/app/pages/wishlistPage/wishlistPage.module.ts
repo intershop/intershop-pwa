@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { WishlistPageComponent } from "./wishlistPage.component";
-import { WishlistPageRoutes } from "./wishlistPage.routes";
-import {PopoverModule} from 'ngx-popover';
+import { WishlistPageComponent } from './wishlistPage.component';
+import { WishlistPageRoutes } from './wishlistPage.routes';
+import { PopoverModule } from 'ngx-popover';
 
 @NgModule({
     imports: [

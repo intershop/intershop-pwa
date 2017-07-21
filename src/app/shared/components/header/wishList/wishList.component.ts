@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {DataEmitterService} from '../../../services/dataEmitter.service';
+import { Component, OnInit } from '@angular/core';
+import { DataEmitterService } from '../../../services/dataEmitter.service';
 
 @Component({
   selector: 'is-wishlist',
@@ -18,8 +18,8 @@ export class WishListComponent implements OnInit {
       this.wishListItems.push(data);
       this.wishListItems.forEach(item => {
         this.itemCount = this.itemCount + 1;
-      })
-    })
+      });
+    });
   }
 
 }

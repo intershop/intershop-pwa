@@ -8,7 +8,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { CacheService } from 'ng2-cache/ng2-cache';
 
-import { FooterModule } from './shared/components/footer/footer.module'
+import { FooterModule } from './shared/components/footer/footer.module';
 import { HeaderModule } from './shared/components/header/header.module';
 import { AppRoutingModule } from './app.routing.module';
 
@@ -19,7 +19,7 @@ import { EncryptDecryptService } from './shared/services/cache/encryptDecrypt.se
 import { CompressDecompressService } from './shared/services/cache/compressDecompress.service';
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
-import { PageModule } from "./pages/pages.module";
+import { PageModule } from './pages/pages.module';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: Http) {

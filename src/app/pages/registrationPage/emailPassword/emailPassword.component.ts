@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import {EmailValidator} from '../../../shared/validators/email.validator';
-import {matchOtherValidator} from '../../../shared/validators/matchWords.validator';
-import {PasswordValidator} from '../../../shared/validators/password.validator';
+import { EmailValidator } from '../../../shared/validators/email.validator';
+import { matchOtherValidator } from '../../../shared/validators/matchWords.validator';
+import { PasswordValidator } from '../../../shared/validators/password.validator';
 
 @Component({
   selector: 'is-email',
@@ -17,7 +17,7 @@ export class EmailPasswordComponent implements OnInit {
    * Constructor
    * @param  {FormBuilder} private_formbuilder
    */
-  constructor(private _formbuilder: FormBuilder) {  }
+  constructor(private _formbuilder: FormBuilder) { }
 
   ngOnInit() {
     this.emailForm = this._formbuilder.group({
@@ -42,5 +42,5 @@ export class EmailPasswordComponent implements OnInit {
     this.emailForm.valueChanges.subscribe(() => {
       this.emailForm.valid ? this.isValid.emit(true) : this.isValid.emit(false);
     });
-  };
-};
+  }
+}
