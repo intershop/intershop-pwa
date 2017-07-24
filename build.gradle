@@ -74,6 +74,7 @@ gretty {
 task dist(type: NpmTask, dependsOn:npmInstall, description: 'build npm distribution to directory `dist`', group:'Node') {
     args = ['run', 'build']
     inputs.dir('src')
+    inputs.files(fileTree(dir: projectDir, includes : ['*.js', '*.json']))
     outputs.dir('dist')
 }
 project.afterEvaluate {
