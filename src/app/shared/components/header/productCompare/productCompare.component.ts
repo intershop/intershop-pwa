@@ -3,7 +3,7 @@ import { DataEmitterService } from '../../../services/dataEmitter.service';
 
 @Component({
   selector: 'is-productcomparestatus',
-  templateUrl: './ProductCompare.component.html'
+  templateUrl: './productCompare.component.html'
 })
 
 export class ProductCompareComponent implements OnInit {
