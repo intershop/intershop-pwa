@@ -1,0 +1,4 @@
+build:
+  stage: build
+  script:
+  - sh ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
