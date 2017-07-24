@@ -11,6 +11,7 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-html-reporter'),
       require('karma-junit-reporter'),
+      require('karma-verbose-reporter'),
       require('karma-phantomjs-launcher'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular/cli/plugins/karma')
@@ -19,7 +20,7 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      reports: [ 'html', 'lcovonly' ],
+      reports: [ 'html', 'lcovonly', 'verbose' ],
       fixWebpackSourcePaths: true
     },
     angularCli: {
