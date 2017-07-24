@@ -79,6 +79,7 @@ task dist(type: NpmTask, dependsOn:npmInstall, description: 'build npm distribut
 project.afterEvaluate {
     [test, appRun]*.dependsOn dist
     clean.dependsOn cleanDist
+    appBeforeIntegrationTest.mustRunAfter dist
 }
 
 test {
