@@ -58,14 +58,14 @@ export class FamilyPageListComponent implements OnInit {
    */
   ngOnInit() {
     if (this.customService.cacheKeyExists(this.thumbnailKey)) {
-      this.allData = this.customService.getCachedData(this.thumbnailKey);
+      this.allData = this.customService.getCachedData(this.thumbnailKey, true);
     } else {
       this.productListService.getProductList().subscribe(data => {
         this.allData = data;
-        this.customService.storeDataToCache(this.allData, this.thumbnailKey, true);
+        this.customService.storeDataToCache(data, this.thumbnailKey, true);
       });
     };
-    
+
     this.thumbnails = this.allData[0]['Cameras'];
 
     this._dataEmitterService.emitter.subscribe(data => {

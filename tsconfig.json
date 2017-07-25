@@ -12,6 +12,10 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": [
+      "crypto-js",
+      "jasmine"
+    ],
     "lib": [
       "es2016",
       "dom"
