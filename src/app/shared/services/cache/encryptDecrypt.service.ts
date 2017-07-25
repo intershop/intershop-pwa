@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 
 @Injectable()
@@ -18,8 +18,7 @@ export class EncryptDecryptService {
      * @param  {string} dataToDecrypt
      */
     decrypt(dataToDecrypt: any, key: string): any {
-        // Decrypt 
-        var bytes = CryptoJS.AES.decrypt(dataToDecrypt, key);
+        const bytes = CryptoJS.AES.decrypt(dataToDecrypt, key);
         return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
     }
 }
