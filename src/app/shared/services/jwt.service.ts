@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class JwtService {
-  
+
   /**
    * Get Authentication token
    * @returns String
@@ -11,7 +11,7 @@ export class JwtService {
     return window.localStorage['jwtToken'];
   }
 
-  
+
   /**
    * Save Authentication token
    * @param  {String} token
@@ -20,7 +20,7 @@ export class JwtService {
     window.localStorage['jwtToken'] = token;
   }
 
-  
+
   /**
    * Distroy Authentication token
    */

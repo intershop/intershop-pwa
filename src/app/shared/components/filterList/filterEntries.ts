@@ -1,15 +1,3 @@
-
-// export class FilterEntries {
-//     filterEntries : Array<FilterEntry>;
-//     type: string;
-//     name: string;
-
-//      constructor(values: Object = {}) {
-//         Object.assign(this, values);
-//     }
-// }
-
-
 export class Link {
     type: string;
     uri: string;
@@ -26,7 +14,7 @@ export class Facet {
     name: string;
     type: string;
     count: number;
-    level: number = 0;
+    level = 0;
     link: Link;
     hits: Hits;
     selected: boolean;

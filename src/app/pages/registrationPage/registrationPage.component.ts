@@ -28,7 +28,7 @@ export class RegistrationPageComponent implements OnInit {
 
     /**
      * Creates Account
-     * @returns void 
+     * @returns void
      */
     createAccount(): void { };
 
