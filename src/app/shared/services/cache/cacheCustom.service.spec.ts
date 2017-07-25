@@ -7,7 +7,7 @@ import { CacheCustomService } from "./cacheCustom.service";
 describe('Cache Service', () => {
     let mockCache, mockEncrypt, mockCompress;
     let customCacheService: CacheCustomService;
-    let cacheStorageAbstract : CacheStorageAbstract
+    let cacheStorageAbstract: CacheStorageAbstract
     beforeEach(() => {
         mockCache = new CacheService(cacheStorageAbstract);
         mockCompress = new CompressDecompressService();
@@ -27,19 +27,13 @@ describe('Cache Service', () => {
     });
 
     it('should get Cached Data after decryption', () => {
-       let cachedData = customCacheService.getCachedData('task');
+        let cachedData = customCacheService.getCachedData('task', true);
         expect(cachedData).toContain('My task is testing');
     });
 
-     it('should delete the key from cache', () => {
+    it('should delete the key from cache', () => {
         customCacheService.deleteCacheKey('task');
         expect(customCacheService.cacheKeyExists('task')).toBeFalsy();
-    });
-
-    it('should return an array', () => {
-        let myObj = { 'name': 'intershop', 'id': 1 }
-        let result = customCacheService.getCompressedArray(myObj)
-        expect(result).not.toBeNull;
     });
 
     it('should cache data without encryption', () => {
@@ -48,7 +42,7 @@ describe('Cache Service', () => {
     });
 
     it('should get Cached Data', () => {
-       let cachedData = customCacheService.getCachedData('myTask');
+        let cachedData = customCacheService.getCachedData('myTask');
         expect(cachedData).toContain('My task is testing and implementation');
     });
 
@@ -60,11 +54,6 @@ describe('Cache Service', () => {
     it('should  try to cache data with same key again', () => {
         customCacheService.storeDataToCache("Rewrite data to existing key", 'myTask', false);
         let cachedData = customCacheService.getCachedData('myTask');
-        expect(cachedData).toContain('My task is testing and implementation');
+        expect(cachedData).toContain('Rewrite data to existing key');
     });
-})
-
-
-
-
-
+});
