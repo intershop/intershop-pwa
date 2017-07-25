@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MiniCartComponent } from './miniCart/miniCart.component';
-import { SearchBox } from './searchBox/searchBox.component';
+import { SearchBoxComponent } from './searchBox/searchBox.component';
 import { CompareDetailsComponent } from './productCompare/compareDetails.component';
 import { WishListComponent } from './wishList/wishList.component';
 import { LogoComponent } from './logo/logo.component';
@@ -14,7 +14,7 @@ import { LanguageSwitchComponent } from './languageSwitch/languageSwitch.compone
 import { HeaderNavigationComponent } from './headerNavigation/headerNavigation.component';
 import { LoginStatusComponent } from './loginStatus/loginStatus.component'
 import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } from '../../../pages/accountLogin/accountLoginService';
-import { SharedModule } from "../../sharedModules/shared.module";
+import { SharedModule } from '../../sharedModules/shared.module';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { SharedModule } from "../../sharedModules/shared.module";
     HeaderSlotComponent, ProductCompareComponent
   ],
   declarations: [HeaderSlotComponent, ProductCompareComponent, MiniCartComponent,
-    SearchBox, CompareDetailsComponent, WishListComponent, LogoComponent,
+    SearchBoxComponent, CompareDetailsComponent, WishListComponent, LogoComponent,
     LanguageSwitchComponent, HeaderNavigationComponent, LoginStatusComponent
   ],
   providers: [AccountLoginApiService, AccountLoginMockService, AccountLoginService]

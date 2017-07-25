@@ -4,7 +4,7 @@ import {RouterModule} from '@angular/router'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AccountLoginRoute} from './accountLogin.routes';
 import {AccountLoginComponent} from './accountLogin.component';
-import { SharedModule } from "../../shared/sharedModules/shared.module";
+import { SharedModule } from '../../shared/sharedModules/shared.module';
 
 @NgModule({
   imports: [

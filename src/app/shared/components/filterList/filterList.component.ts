@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from './filterListService';
 import { CacheCustomService } from '../../services/cache/cacheCustom.service';
 import { DataEmitterService } from '../../services/dataEmitter.service';
-import { FilterListData } from "./filterEntries";
+import { FilterListData } from './filterEntries';
 
 
 
@@ -16,7 +16,7 @@ import { FilterListData } from "./filterEntries";
 
 })
 
-export class CategoryListComponent implements OnInit {
+export class FilterListComponent implements OnInit {
   filterListData: FilterListData;
   brandFilter: any[] = [];
   categoryFilter;
@@ -102,7 +102,7 @@ export class CategoryListComponent implements OnInit {
 
   ChevronIconSwap(index: number) {
     console.log(index);
-    // 'chevronClassFlag'+index  
+    // 'chevronClassFlag'+index
   }
 
   pageSource(page) {

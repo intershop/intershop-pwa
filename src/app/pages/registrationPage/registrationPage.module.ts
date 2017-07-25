@@ -8,7 +8,7 @@ import { EmailPasswordComponent } from './emailPassword/emailPassword.component'
 import { AddressComponent } from './address/address.component';
 import { registrationPageRoute } from './registrationPage.routes';
 import { RegistrationPageComponent } from './registrationPage.component';
-import { SharedModule } from "../../shared/sharedModules/shared.module";
+import { SharedModule } from '../../shared/sharedModules/shared.module';
 
 @NgModule({
   imports: [

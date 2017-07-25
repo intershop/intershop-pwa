@@ -9,7 +9,7 @@ import { EmailValidator } from '../../shared/validators/email.validator';
   templateUrl: './accountLogin.component.html'
 })
 
-export class AccountLoginComponent {
+export class AccountLoginComponent implements OnInit {
   loginForm: FormGroup;
   returnUrl: string;
 
@@ -30,8 +30,7 @@ export class AccountLoginComponent {
     this.accountLoginService.singinUser(this.loginForm.value).subscribe(userData => {
       if (userData) {
         this.router.navigate(['familyPage']);
-      }
-      else {
+      } else {
         alert('Invalid Username or Password');
       }
     })

@@ -4,7 +4,7 @@ import { CategoryMockService, CategoryApiService } from './index';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../../environments/environment.prod';
 import { data } from '../filterList.mock';
-import { FilterListData } from "../filterEntries";
+import { FilterListData } from '../filterEntries';
 
 @Injectable()
 export class CategoryService {

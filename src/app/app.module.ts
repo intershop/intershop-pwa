@@ -19,8 +19,8 @@ import { EncryptDecryptService } from './shared/services/cache/encryptDecrypt.se
 import { CompressDecompressService } from './shared/services/cache/compressDecompress.service';
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
-import { PageModule } from "./pages/pages.module";
-
+import { PageModule } from './pages/pages.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
@@ -34,6 +34,8 @@ export function createTranslateLoader(http: Http) {
     BrowserModule.withServerTransition({
       appId: 'proof-of-concept'
     }),
+    NgbModule.forRoot(),
+
     HttpModule,
     JsonpModule,
     AppRoutingModule,

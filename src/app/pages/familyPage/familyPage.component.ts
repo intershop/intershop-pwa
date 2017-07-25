@@ -10,7 +10,7 @@ export class FamilyPageComponent implements OnInit {
   range;
   isListView: Boolean;
   sortBy;
-  
+
   /**
    * Constructor
    * @param  {ActivatedRoute} privateroute
@@ -18,7 +18,7 @@ export class FamilyPageComponent implements OnInit {
   constructor(private route: ActivatedRoute) { };
 
   /**
-   * Gets ID and range from URL 
+   * Gets ID and range from URL
    */
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
@@ -28,7 +28,7 @@ export class FamilyPageComponent implements OnInit {
   };
 
   /**
-   * 
+   *
    * @param  {string} captchaResponse
    */
   resolved(captchaResponse: string) {  };

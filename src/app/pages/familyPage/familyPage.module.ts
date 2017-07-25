@@ -4,14 +4,13 @@ import { RouterModule } from '@angular/router';
 import { familyPageRoute } from './familyPage.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FamilyPageComponent } from './familyPage.component';
-import { CategoryListComponent } from '../../shared/components/filterList/filterList.component';
+import { FilterListComponent } from '../../shared/components/filterList/filterList.component';
 import { CategoryComponent } from '../../shared/components/category/category.component';
 import { FamilyPageListComponent } from './familyPageList/familyPageList.component';
 import { BreadcrumbComponent } from '../../shared/components/breadCrumb/breadCrumb.component';
 import { ProductTileComponent } from '../../shared/components/productTile/productTile.component';
-import { ProductListService, ProductListApiService, ProductListMockService }
-  from './familyPageList/productListService';
-import { SharedModule } from "../../shared/sharedModules/shared.module";
+import { ProductListService, ProductListApiService, ProductListMockService } from './familyPageList/productListService';
+import { SharedModule } from '../../shared/sharedModules/shared.module';
 import { CategoryService, CategoryApiService, CategoryMockService } from '../../shared/components/filterList/filterListService';
 
 @NgModule({
@@ -25,7 +24,7 @@ import { CategoryService, CategoryApiService, CategoryMockService } from '../../
   ],
   declarations: [
     FamilyPageComponent,
-    CategoryListComponent,
+    FilterListComponent,
     CategoryComponent,
     FamilyPageListComponent,
     BreadcrumbComponent,

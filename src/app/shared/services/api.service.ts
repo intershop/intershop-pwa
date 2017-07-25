@@ -16,7 +16,7 @@ export class ApiService {
   private _customErrorHandler = new CustomErrorHandler();
 
   /**
-   * Constructor 
+   * Constructor
    * @param  {Http} privatehttp
    * @param  {JwtService} privatejwtService
    */
@@ -41,7 +41,7 @@ export class ApiService {
   };
 
   /**
-   * format api errors and send errors to custom handler 
+   * format api errors and send errors to custom handler
    * @param  {any} error
    */
   private formatErrors(error: any) {
@@ -49,7 +49,7 @@ export class ApiService {
   };
 
   /**
-   * http get request 
+   * http get request
    * @param  {string} path
    * @param  {URLSearchParams=newURLSearchParams(} params
    * @returns Observable

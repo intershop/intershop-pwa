@@ -22,7 +22,7 @@ export class CacheCustomService {
     private cacheService: CacheService,
     private encryptDecryptService: EncryptDecryptService,
     private compressDecompressService: CompressDecompressService) {
-    this.cacheService.useStorage(CacheStoragesEnum.LOCAL_STORAGE); 
+    this.cacheService.useStorage(CacheStoragesEnum.LOCAL_STORAGE);
     this.cacheService.setGlobalPrefix('is_');
   }
 
@@ -57,10 +57,7 @@ export class CacheCustomService {
       }
       // To save cache and set maximum age of cache
       this.cacheService.set(storekey, encryptedData || compressedData, { maxAge: this.maximumAge });
-    }
-    else {
-      return
-    }
+    } else { return }
   };
 
 
@@ -72,10 +69,7 @@ export class CacheCustomService {
   deleteCacheKey(deleteKey: string): void { // Make data in the Key as null
     if (this.cacheKeyExists(deleteKey)) {
       this.cacheService.set(deleteKey, null, { maxAge: this.maximumAge });
-    }
-    else {
-      return
-    }
+    } else { return }
   };
 
   /**
