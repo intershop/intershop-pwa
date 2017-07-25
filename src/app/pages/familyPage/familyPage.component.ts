@@ -15,7 +15,7 @@ export class FamilyPageComponent implements OnInit {
    * Constructor
    * @param  {ActivatedRoute} privateroute
    */
-  constructor(private route: ActivatedRoute) { };
+  constructor(private route: ActivatedRoute) { }
 
   /**
    * Gets ID and range from URL
@@ -25,11 +25,11 @@ export class FamilyPageComponent implements OnInit {
     this.imageId = id;
     const range = this.route.snapshot.params['range'];
     this.range = range;
-  };
+  }
 
   /**
    *
    * @param  {string} captchaResponse
    */
-  resolved(captchaResponse: string) {  };
-};
+  resolved(captchaResponse: string) { }
+}

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { familyPageRoute } from './familyPage.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

@@ -21,7 +21,7 @@ export class AccountLoginComponent implements OnInit {
    * @param  {ActivatedRoute} privateroute
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private route: ActivatedRoute) { };
+    private router: Router, private route: ActivatedRoute) { }
 
   /**
    * Routes to Family Page when user is logged in
@@ -33,15 +33,15 @@ export class AccountLoginComponent implements OnInit {
       } else {
         alert('Invalid Username or Password');
       }
-    })
-  };
+    });
+  }
 
   /**
    * Routes to Register Page
    */
   registerUser() {
     this.router.navigate(['register']);
-  };
+  }
 
   /**
    * Creates Login Form
@@ -62,5 +62,5 @@ export class AccountLoginComponent implements OnInit {
     */
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
-};
+}
 

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs/Observable'
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { ProductList } from '../../familyPage.mock';
 import { IProductListService } from './productList.service';
 
@@ -12,6 +12,4 @@ export class ProductListMockService implements IProductListService {
   getProductList(): Observable<any> {
     return Observable.of(ProductList);
   }
-};
-
-
+}

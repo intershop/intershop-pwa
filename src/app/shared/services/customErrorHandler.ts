@@ -1,5 +1,5 @@
-import {ErrorHandler} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
+import { ErrorHandler } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 export class CustomErrorHandler extends ErrorHandler {
 

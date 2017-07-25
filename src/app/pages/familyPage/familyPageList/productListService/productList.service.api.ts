@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Rx'
-import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
 import { IProductListService } from './productList.service';
 import { ApiService } from '../../../../shared/services/api.service';
 
@@ -22,4 +22,4 @@ export class ProductListApiService implements IProductListService {
   getProductList(): Observable<any> {
     return this.apiService.get('url');
   }
-};
+}

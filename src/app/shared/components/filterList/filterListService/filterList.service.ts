@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import { InstanceService } from '../../../services/instance.service';
 import { CategoryMockService, CategoryApiService } from './index';
 import { Observable } from 'rxjs/Observable';
