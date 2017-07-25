@@ -3,7 +3,7 @@ import { EncryptDecryptService } from './encryptDecrypt.service';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing'
 import { CompressDecompressService } from './compressDecompress.service';
 import { CacheCustomService } from './cacheCustom.service';
-import { ReflectiveInjector } from '@angular/core/core';
+import { ReflectiveInjector } from '@angular/core';
 
 describe('Cache Service', () => {
     let mockCache, mockEncrypt, mockCompress;
