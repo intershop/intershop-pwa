@@ -4,9 +4,6 @@ import { CacheCustomService } from '../../services/cache/cacheCustom.service';
 import { DataEmitterService } from '../../services/dataEmitter.service';
 import { FilterListData } from './filterEntries';
 
-
-
-
 @Component({
   selector: 'is-filterlist',
   templateUrl: './filterList.component.html',
@@ -38,12 +35,12 @@ export class FilterListComponent implements OnInit {
   ngOnInit() {
 
     if (this.customService.cacheKeyExists(this.filterkey)) {
-    this.filterListData = this.customService.getCachedData(this.filterkey);
+      this.filterListData = this.customService.getCachedData(this.filterkey, true);
     } else {
-    this.categoryService.getSideFilters().subscribe(data => {
-      this.filterListData = data;
-      this.customService.storeDataToCache(this.filterListData, this.filterkey, true);
-    });
+      this.categoryService.getSideFilters().subscribe(data => {
+        this.filterListData = data;
+        this.customService.storeDataToCache(this.filterListData, this.filterkey, true);
+      });
     }
   }
 
