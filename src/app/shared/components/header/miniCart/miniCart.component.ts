@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {DataEmitterService} from '../../../services/dataEmitter.service';
+import { Component, OnInit } from '@angular/core';
+import { DataEmitterService } from '../../../services/dataEmitter.service';
 
 @Component({
   selector: 'is-minicart',
@@ -21,8 +21,8 @@ export class MiniCartComponent implements OnInit {
       this.cartItems.push(data);
       this.cartItems.forEach(item => {
         this.cartPrice = this.cartPrice + item.Price;
-      })
+      });
       this.cartLength = this.cartItems.length;
-    })
+    });
   }
 }

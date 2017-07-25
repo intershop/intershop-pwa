@@ -10,19 +10,19 @@ export class CategoryListModel {
           {
             id: number, name: string, children?: { children }, count?: number
           }
-          ]
+        ]
 
       }
-      ],
+    ],
     Response: [
       {
         title: string;
         type: string;
         Data: [
           { id: number, name: string, count: number }
-          ]
+        ]
       }
-      ]
-  }
+    ]
+  };
 
 }

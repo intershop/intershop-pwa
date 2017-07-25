@@ -1,5 +1,5 @@
-import {ErrorPageComponent} from './error-page.component'
+import { ErrorPageComponent } from './error-page.component';
 
 export const errorPageRoute = [
-  {path: '', component: ErrorPageComponent}
-]
+  { path: '', component: ErrorPageComponent }
+];

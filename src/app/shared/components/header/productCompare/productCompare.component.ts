@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {DataEmitterService} from '../../../services/dataEmitter.service';
+import { DataEmitterService } from '../../../services/dataEmitter.service';
 
 @Component({
-    selector: 'is-productcomparestatus',
-    templateUrl: './ProductCompare.component.html'
+  selector: 'is-productcomparestatus',
+  templateUrl: './productCompare.component.html'
 })
 
 export class ProductCompareComponent implements OnInit {
-    compareListItems = [];
-    itemCount = 0;
-    constructor(private _dataEmitterService: DataEmitterService) { }
+  compareListItems = [];
+  itemCount = 0;
+  constructor(private _dataEmitterService: DataEmitterService) { }
 
   ngOnInit() {
     this._dataEmitterService.comparerListEmitter.subscribe(data => {
@@ -17,7 +17,7 @@ export class ProductCompareComponent implements OnInit {
       this.compareListItems.push(data);
       this.compareListItems.forEach(item => {
         this.itemCount = this.itemCount + 1;
-      })
-    })
+      });
+    });
   }
 }
