@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 declare const require: any;
 const LZUTF8 = require('lzutf8');
