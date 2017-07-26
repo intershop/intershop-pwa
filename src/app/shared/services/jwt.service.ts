@@ -1,14 +1,22 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Inject} from '@angular/core';
+import {PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser, isPlatformServer} from '@angular/common';
+
 
 @Injectable()
 export class JwtService {
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  }
 
   /**
    * Get Authentication token
    * @returns String
    */
   getToken(): String {
-    return window.localStorage['jwtToken'];
+    if (isPlatformBrowser(this.platformId)) {
+      return window.localStorage['jwtToken'];
+    }
   }
 
 
@@ -17,7 +25,9 @@ export class JwtService {
    * @param  {String} token
    */
   saveToken(token: String) {
-    window.localStorage['jwtToken'] = token;
+    if (isPlatformBrowser(this.platformId)) {
+      window.localStorage['jwtToken'] = token;
+    }
   }
 
 
@@ -25,7 +35,9 @@ export class JwtService {
    * Distroy Authentication token
    */
   destroyToken() {
-    window.localStorage.removeItem('jwtToken');
+    if (isPlatformBrowser(this.platformId)) {
+      window.localStorage.removeItem('jwtToken');
+    }
   }
 
 }
