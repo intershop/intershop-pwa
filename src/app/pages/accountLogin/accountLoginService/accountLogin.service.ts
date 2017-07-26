@@ -1,4 +1,4 @@
-import { Injectable, Injector, EventEmitter } from '@angular/core';
+import { Injectable, Injector, EventEmitter } from '@angular/core'
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { AccountLoginMockService } from './accountLogin.service.mock';
@@ -8,18 +8,12 @@ import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.s
 import { UserDetail } from './accountLogin.model';
 import { InstanceService } from '../../../shared/services/instance.service';
 
-export interface ILoginService {
-    singinUser(userDetails: AccountLogin): Observable<UserDetail>;
-    logout(): void;
-    isAuthorized(): boolean;
-}
-
 @Injectable()
-export class AccountLoginService implements ILoginService {
+export class AccountLoginService implements IAccountLoginService {
 
-    loginService: ILoginService;
+    loginService: IAccountLoginService;
     cacheService: CacheCustomService;
-    loginStatusEmitter = new EventEmitter();
+    loginStatusEmitter: EventEmitter<UserDetail> = new EventEmitter<UserDetail>();
 
 
     /**
@@ -30,7 +24,7 @@ export class AccountLoginService implements ILoginService {
         this.loginService = this.instanceService.getInstance((environment.needMock) ?
             AccountLoginMockService : AccountLoginApiService);
         this.cacheService = this.instanceService.getInstance(CacheCustomService);
-    }
+    };
 
     /**
      * Calls signin function of concerned service
@@ -42,7 +36,7 @@ export class AccountLoginService implements ILoginService {
             this.storeUserDetail(data);
             return data;
         });
-    }
+    };
 
     /**
      * Calls logout function of concerned service
@@ -51,7 +45,7 @@ export class AccountLoginService implements ILoginService {
     logout(): void {
         this.cacheService.deleteCacheKey('userDetail');
         return this.loginService.logout();
-    }
+    };
 
     /**
      * calls isAuthorized function of concerned service
@@ -59,15 +53,21 @@ export class AccountLoginService implements ILoginService {
      */
     isAuthorized(): boolean {
         return this.loginService.isAuthorized();
-    }
+    };
 
     /**
      * Stores user details in cache and emits to login status component
      * @param  {UserDetail} userDetail
      */
     private storeUserDetail(userDetail: UserDetail) {
-        this.cacheService.storeDataToCache(userDetail, 'userDetail', false);
+        this.cacheService.storeDataToCache(userDetail, 'userDetail', false)
         this.loginStatusEmitter.emit(userDetail);
     }
 
-}
+};
+
+export interface IAccountLoginService {
+    singinUser(userDetails: AccountLogin): Observable<UserDetail>,
+    logout(): void,
+    isAuthorized(): boolean,
+};

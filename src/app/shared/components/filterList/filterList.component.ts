@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from './filterListService';
 import { CacheCustomService } from '../../services/cache/cacheCustom.service';
 import { DataEmitterService } from '../../services/dataEmitter.service';
-
+import { FilterListData } from './filterEntries';
 
 @Component({
   selector: 'is-filterlist',
@@ -13,8 +13,8 @@ import { DataEmitterService } from '../../services/dataEmitter.service';
 
 })
 
-export class CategoryListComponent implements OnInit {
-  Collapse: any;
+export class FilterListComponent implements OnInit {
+  filterListData: FilterListData;
   brandFilter: any[] = [];
   categoryFilter;
   priceFilter;
@@ -33,13 +33,13 @@ export class CategoryListComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.customService.cacheKeyExists(this.filterkey)) {
-      this.Collapse = this.customService.getCachedData(this.filterkey);
-    } else {
 
+    if (this.customService.cacheKeyExists(this.filterkey)) {
+      this.filterListData = this.customService.getCachedData(this.filterkey, true);
+    } else {
       this.categoryService.getSideFilters().subscribe(data => {
-        this.Collapse = data;
-        this.customService.storeDataToCache(this.Collapse, this.filterkey, true);
+        this.filterListData = data;
+        this.customService.storeDataToCache(this.filterListData, this.filterkey, true);
       });
     }
   }
@@ -79,12 +79,12 @@ export class CategoryListComponent implements OnInit {
       this.priceFilter = {};
       this.allFilter('price', this.priceFilter);
     }
-  }
+  };
 
   filterColor(color, index) {
     this.selectedColor = index;
     if (this.colorFilter && this.colorFilter.name === color.name) {
-      this.colorFilter = {};
+      this.colorFilter = {}
       this.selectedColor = null;
     } else {
       this.colorFilter = color;
@@ -100,5 +100,9 @@ export class CategoryListComponent implements OnInit {
   ChevronIconSwap(index: number) {
     console.log(index);
     // 'chevronClassFlag'+index
+  }
+
+  pageSource(page) {
+
   }
 }

@@ -6,9 +6,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { CacheService } from 'ng2-cache/ng2-cache';
+import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 
-import { FooterModule } from './shared/components/footer/footer.module';
+import { FooterModule } from './shared/components/footer/footer.module'
 import { HeaderModule } from './shared/components/header/header.module';
 import { AppRoutingModule } from './app.routing.module';
 
@@ -20,7 +20,7 @@ import { CompressDecompressService } from './shared/services/cache/compressDecom
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
@@ -34,6 +34,8 @@ export function createTranslateLoader(http: Http) {
     BrowserModule.withServerTransition({
       appId: 'proof-of-concept'
     }),
+    NgbModule.forRoot(),
+
     HttpModule,
     JsonpModule,
     AppRoutingModule,
@@ -45,6 +47,7 @@ export function createTranslateLoader(http: Http) {
   ],
   providers: [CacheCustomService,
     CacheService,
+    { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     DataEmitterService,
     EncryptDecryptService,
     CompressDecompressService,

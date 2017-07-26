@@ -57,6 +57,7 @@
         phoneMobile: string;
         fax: string;
         email: string;
+        hasRole: boolean
     }
 
 

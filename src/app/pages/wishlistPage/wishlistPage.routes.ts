@@ -1,5 +1,5 @@
-import { WishlistPageComponent } from './wishlistPage.component';
+import { WishListPageComponent } from './wishlistPage.component';
 
 export const WishlistPageRoutes = [
-    { path: '', component: WishlistPageComponent }
-];
+    { path: '', component: WishListPageComponent }
+]
