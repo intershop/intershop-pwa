@@ -1,7 +1,8 @@
+import { Injectable } from '@angular/core';
 
 declare const require: any;
 const LZUTF8 = require('lzutf8');
-
+@Injectable()
 export class CompressDecompressService {
 
     /**
@@ -12,7 +13,7 @@ export class CompressDecompressService {
         return LZUTF8.compress(JSON.stringify(dataToCompress)); // string => Uint8Array(489)
     };
 
-    
+
     /**
      * Decompress data
      * @param  {any} dataToDeCompress

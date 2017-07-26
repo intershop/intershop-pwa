@@ -20,7 +20,7 @@ export class CreateAccountModel {
     industry?: string;
     preferredLanguage: string;
     texationID?: number;
-  }
+  };
   contact: {
     salutation?: string;
     firstName: string;
@@ -30,6 +30,6 @@ export class CreateAccountModel {
     fax?: number;
     birthday?: string;
     preferredLanguage: string;
-  }
+  };
 }
-;
+

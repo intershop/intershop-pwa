@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from './filterListService';
 import { CacheCustomService } from '../../services/cache/cacheCustom.service';
 import { DataEmitterService } from '../../services/dataEmitter.service';
-import { FilterListData } from "./filterEntries";
-
-
-
+import { FilterListData } from './filterEntries';
 
 @Component({
   selector: 'is-filterlist',
@@ -16,7 +13,7 @@ import { FilterListData } from "./filterEntries";
 
 })
 
-export class CategoryListComponent implements OnInit {
+export class FilterListComponent implements OnInit {
   filterListData: FilterListData;
   brandFilter: any[] = [];
   categoryFilter;
@@ -38,12 +35,12 @@ export class CategoryListComponent implements OnInit {
   ngOnInit() {
 
     if (this.customService.cacheKeyExists(this.filterkey)) {
-    this.filterListData = this.customService.getCachedData(this.filterkey);
+      this.filterListData = this.customService.getCachedData(this.filterkey, true);
     } else {
-    this.categoryService.getSideFilters().subscribe(data => {
-      this.filterListData = data;
-      this.customService.storeDataToCache(this.filterListData, this.filterkey, true);
-    });
+      this.categoryService.getSideFilters().subscribe(data => {
+        this.filterListData = data;
+        this.customService.storeDataToCache(this.filterListData, this.filterkey, true);
+      });
     }
   }
 
@@ -102,7 +99,7 @@ export class CategoryListComponent implements OnInit {
 
   ChevronIconSwap(index: number) {
     console.log(index);
-    // 'chevronClassFlag'+index  
+    // 'chevronClassFlag'+index
   }
 
   pageSource(page) {

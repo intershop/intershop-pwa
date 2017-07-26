@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import { ICategoryService } from './index';
 import { Observable } from 'rxjs/Observable';
 import { data } from '../filterList.mock';
@@ -14,8 +14,3 @@ export class CategoryMockService implements ICategoryService {
   }
 
 }
-
-
-
-
-

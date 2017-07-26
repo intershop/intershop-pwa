@@ -1,10 +1,10 @@
-import {NgModule} from '@angular/core'
-import {CommonModule} from '@angular/common'
-import {RouterModule} from '@angular/router'
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AccountLoginRoute} from './accountLogin.routes';
-import {AccountLoginComponent} from './accountLogin.component';
-import { SharedModule } from "../../shared/sharedModules/shared.module";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AccountLoginRoute } from './accountLogin.routes';
+import { AccountLoginComponent } from './accountLogin.component';
+import { SharedModule } from './../../shared/sharedModules/shared.module';
 
 @NgModule({
   imports: [
@@ -21,3 +21,4 @@ import { SharedModule } from "../../shared/sharedModules/shared.module";
 export class AccountLoginModule {
 
 };
+

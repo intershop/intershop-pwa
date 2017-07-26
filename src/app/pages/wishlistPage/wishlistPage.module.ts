@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { WishlistPageComponent } from "./wishlistPage.component";
-import { WishlistPageRoutes } from "./wishlistPage.routes";
+import { WishListPageComponent } from './wishlistPage.component';
+import { WishlistPageRoutes } from './wishlistPage.routes';
 import {PopoverModule} from 'ngx-popover';
 
 @NgModule({
@@ -11,7 +11,7 @@ import {PopoverModule} from 'ngx-popover';
         RouterModule.forChild(WishlistPageRoutes),
         PopoverModule
         ],
-    declarations: [WishlistPageComponent],
+    declarations: [WishListPageComponent],
     providers: []
 })
 

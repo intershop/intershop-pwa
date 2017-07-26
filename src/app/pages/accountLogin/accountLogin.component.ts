@@ -9,7 +9,7 @@ import { EmailValidator } from '../../shared/validators/email.validator';
   templateUrl: './accountLogin.component.html'
 })
 
-export class AccountLoginComponent {
+export class AccountLoginComponent implements OnInit {
   loginForm: FormGroup;
   returnUrl: string;
 
@@ -21,7 +21,7 @@ export class AccountLoginComponent {
    * @param  {ActivatedRoute} privateroute
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private route: ActivatedRoute) { };
+    private router: Router, private route: ActivatedRoute) { }
 
   /**
    * Routes to Family Page when user is logged in
@@ -30,19 +30,18 @@ export class AccountLoginComponent {
     this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
       if (userData) {
         this.router.navigate(['familyPage']);
-      }
-      else {
+      } else {
         alert('Invalid Username or Password');
       }
-    })
-  };
+    });
+  }
 
   /**
    * Routes to Register Page
   */
   registerUser() {
     this.router.navigate(['register']);
-  };
+  }
 
   /**
    * Creates Login Form
@@ -63,5 +62,5 @@ export class AccountLoginComponent {
     // */
     // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
-};
+}
 
