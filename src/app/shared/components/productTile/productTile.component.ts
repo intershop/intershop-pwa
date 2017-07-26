@@ -43,17 +43,13 @@ export class ProductTileComponent implements OnInit {
   calculateAverageRating(): void {
     if (this.mockData.averagRating >= 0.5 && this.mockData.averagRating < 1.5) {
       this.mockData.averageRatingClass = 'rating-one';
-    }
-    else if (this.mockData.averagRating >= 1.5 && this.mockData.averagRating < 2.5) {
+    } else if (this.mockData.averagRating >= 1.5 && this.mockData.averagRating < 2.5) {
       this.mockData.averageRatingClass = 'rating-two';
-    }
-    else if (this.mockData.averagRating >= 2.5 && this.mockData.averagRating < 3.5) {
+    } else if (this.mockData.averagRating >= 2.5 && this.mockData.averagRating < 3.5) {
       this.mockData.averageRatingClass = 'rating-three';
-    }
-    else if (this.mockData.averagRating >= 3.5 && this.mockData.averagRating < 4.5) {
+    } else if (this.mockData.averagRating >= 3.5 && this.mockData.averagRating < 4.5) {
       this.mockData.averageRatingClass = 'rating-four';
-    }
-    else if (this.mockData.averagRating >= 4.5) {
+    } else if (this.mockData.averagRating >= 4.5) {
       this.mockData.averageRatingClass = 'rating-five';
     }
   }
@@ -94,17 +90,17 @@ export class ProductTileComponent implements OnInit {
       this.oldPrice = 'N/A';
     }
 
-    //To calculate savings
-    /*if( this.mockData.showPriceSavings && this.mockData.listPrice.value && (this.mockData.salePrice < this.mockData.listPrice )){
+    // To calculate savings
+    /* if( this.mockData.showPriceSavings && this.mockData.listPrice.value && (this.mockData.salePrice < this.mockData.listPrice )){
          let actualPriceTypeSavings =  this.mockData.listPrice.value - this.mockData.salePrice;
          if(!this.mockData.savings){
-              this.shownSavings =  actualPriceTypeSavings;                                                                                                             
+            this.shownSavings = actualPriceTypeSavings;
          } else {
               if(this.mockData?.savings < actualPriceTypeSavings){
                 this.shownSavings = actualPriceTypeSavings;
-              }   
-         } 
-    }  */
+              }
+         }
+    } */
   }
 
   goToNextPage(thumb) {
