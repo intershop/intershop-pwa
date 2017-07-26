@@ -37,6 +37,6 @@ export const ProductList = [
         'Price': 31,
         'color': 'black'
       }
-    ],
+    ]
   }
 ];

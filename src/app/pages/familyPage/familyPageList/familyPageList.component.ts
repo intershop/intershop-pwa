@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataEmitterService } from '../../../shared/services/dataEmitter.service';
 import { ProductListService } from './productListService';
@@ -14,37 +14,23 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
   @Input() isListView;
   @Input() sortBy;
   thumbnailKey = 'thumbnailKey';
+  AllCategories: 'AllCategories';
   allData: any;
   thumbnails = [];
   filteredData;
 
   ngOnChanges() {
-
     /**
      * Sorts the Products either Ascending or Descending
      */
     this.thumbnails.sort((a, b) => {
       if (this.sortBy === 'name-asc') {
-        if (a.Brand > b.Brand) {
-          return 1;
-        } else if (a.Brand === b.Brand) {
-          return 0;
-        } else {
-          return -1;
-        }
+        if (a.Brand > b.Brand) { return 1 } else if (a.Brand === b.Brand) { return 0 } else { return -1 }
       } else if (this.sortBy === 'name-desc') {
-        if (a.Brand > b.Brand) {
-          return -1;
-        } else if (a.Brand === b.Brand) {
-          return 0;
-        } else {
-          return 1;
-        }
-      } else {
-        return 0;
-      }
-    });
-  }
+        if (a.Brand > b.Brand) { return -1 } else if (a.Brand === b.Brand) { return 0 } else { return 1 }
+      } else { return 0; }
+    })
+  };
 
   /**
    * Construcotr
@@ -57,20 +43,20 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
     private _dataEmitterService: DataEmitterService,
     private productListService: ProductListService,
     private customService: CacheCustomService) {
-  }
+  };
 
   /*
   * Gets the data from Cache and shows products
    */
   ngOnInit() {
     if (this.customService.cacheKeyExists(this.thumbnailKey)) {
-      this.allData = this.customService.getCachedData(this.thumbnailKey);
+      this.allData = this.customService.getCachedData(this.thumbnailKey, true);
     } else {
       this.productListService.getProductList().subscribe(data => {
         this.allData = data;
-        this.customService.storeDataToCache(this.allData, this.thumbnailKey, true);
+        this.customService.storeDataToCache(data, this.thumbnailKey, true);
       });
-    }
+    };
 
     this.thumbnails = this.allData[0]['Cameras'];
 
@@ -78,9 +64,9 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
       let itemExists = [];
       let isFiltered = false;
       const _that = this;
-      this.filteredData = this.allData[0]['Cameras'];
+      this.filteredData = this.allData[0]['Cameras']
       if (Object.keys(data.category).length !== 0) {
-        this.thumbnails = this.allData[0][data.category.name];
+        this.thumbnails = this.allData[0][data.category.name]
         isFiltered = true;
       } else {
         this.thumbnails = this.allData[0]['Cameras'];
@@ -96,8 +82,8 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
             if (item.name === product.Brand) {
               itemExists.push(product);
             }
-          });
-        });
+          })
+        })
         isFiltered = true;
         this.thumbnails = itemExists;
       }
@@ -111,7 +97,7 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
           if ((item.Price > data.price.min) && (item.Price < data.price.max)) {
             itemExists.push(item);
           }
-        });
+        })
         this.thumbnails = itemExists;
         isFiltered = true;
       }
@@ -125,12 +111,12 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
           if (item.color === data.color.name) {
             itemExists.push(item);
           }
-        });
+        })
         this.thumbnails = itemExists;
         isFiltered = true;
       }
-    });
-  }
+    })
+  };
 
   /**
    * Routes to product details
@@ -138,7 +124,7 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
    */
   goToNextPage(thumb) {
     this.route.navigate(['/product/details', thumb.id, thumb.range]);
-  }
+  };
 
   /**
    * Adds Product to Cart
@@ -146,5 +132,5 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
    */
   addToCart(itemToAdd) {
     this._dataEmitterService.addToCart(itemToAdd);
-  }
-}
+  };
+};

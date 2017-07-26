@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService'
+import { Router } from '@angular/router'
 import { JwtService } from '../../../services/jwt.service';
 import { CacheCustomService } from '../../../services/cache/cacheCustom.service';
+import { UserDetail } from '../../../.././pages/accountLogin/accountLoginService/accountLogin.model';
 
 @Component({
     selector: 'is-loginstatus',
@@ -10,7 +11,9 @@ import { CacheCustomService } from '../../../services/cache/cacheCustom.service'
 })
 
 export class LoginStatusComponent implements OnInit {
-    userName: string;
+    userDetail: UserDetail;
+    isLoggedIn: boolean;
+    userDetailKey = 'userDetail';
     constructor(
         private accountLoginService: AccountLoginService,
         private router: Router,
@@ -21,13 +24,15 @@ export class LoginStatusComponent implements OnInit {
 
     ngOnInit() {
         if (this.accountLoginService.isAuthorized()) {
-            if (this.cacheCustomService.cacheKeyExists('userDetail')) {
-                this.userName = this.cacheCustomService.getCachedData('userDetail').firstName + ' ' + this.cacheCustomService.getCachedData('userDetail').lastName;
+            if (this.cacheCustomService.cacheKeyExists(this.userDetailKey)) {
+                this.isLoggedIn = true;
+                this.userDetail = this.cacheCustomService.getCachedData(this.userDetailKey);
             }
         }
-        this.accountLoginService.loginStatusEmitter.subscribe(data => {
-            this.userName = data.firstName + ' ' + data.lastName;
-        });
+        this.accountLoginService.loginStatusEmitter.subscribe((userDetailData: UserDetail) => {
+            this.isLoggedIn = true;
+            this.userDetail = userDetailData;
+        })
     }
 
     /**
@@ -44,7 +49,8 @@ export class LoginStatusComponent implements OnInit {
      */
     logout(): void {
         this.accountLoginService.logout();
-        this.userName = '';
+        this.userDetail = null;
+        this.isLoggedIn = false;
         this.router.navigate(['login']);
     }
 

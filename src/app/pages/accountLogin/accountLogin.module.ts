@@ -20,4 +20,5 @@ import { SharedModule } from './../../shared/sharedModules/shared.module';
 
 export class AccountLoginModule {
 
-}
+};
+

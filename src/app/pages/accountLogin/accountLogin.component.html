@@ -9,7 +9,7 @@
                 <div class="section">
                     <div>
                         <h2>Returning Users</h2>
-                        <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin()">
+                        <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
                             <p>To sign in to your account, please enter your email address and password.</p>
                             <div class="form-group has-feedback" [ngClass]="{'has-error' : loginForm.get('userName').invalid && loginForm.get('userName').touched,'has-success':loginForm.get('userName').valid && loginForm.get('userName').touched}">
                                 <label for="ShopLoginForm_Login" class="col-sm-3 control-label">Email</label>
