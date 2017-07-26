@@ -39,3 +39,8 @@ Gradle automatically starts the application in the background.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Running the CI build locally
+
+To run the CI build of gitlab locally you can use `gitlab-runner`. Get it [here](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/bleeding-edge.md). To execute the build, start `gitlab-ci-multi-runner exec docker build`.
+
