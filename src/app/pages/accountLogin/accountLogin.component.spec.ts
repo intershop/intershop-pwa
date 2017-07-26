@@ -1,27 +1,27 @@
-import { ComponentFixture } from "@angular/core/testing";
-import { DebugElement, Injector } from "@angular/core";
-import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router/router";
-import { Observable } from "rxjs/Rx";
-import { TestBed } from "@angular/core/testing";;
-import { RouterTestingModule } from "@angular/router/testing";
+import { ComponentFixture } from '@angular/core/testing';
+import { DebugElement, Injector } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router/router';
+import { Observable } from 'rxjs/Rx';
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AccountLoginMockService, AccountLoginService } from './accountLoginService';
-import { InstanceService } from "../../shared/services/instance.service";
-import { CacheCustomService } from "../../shared/services/cache/cacheCustom.service";
-import { CacheService } from "ng2-cache/ng2-cache";
-import { EncryptDecryptService } from "../../shared/services/cache/encryptDecrypt.service";
-import { CompressDecompressService } from "../../shared/services/cache/compressDecompress.service";
-import { JwtService } from "../../shared/services/jwt.service";
-import { AccountLoginComponent } from "./accountLogin.component";
+import { InstanceService } from '../../shared/services/instance.service';
+import { CacheCustomService } from '../../shared/services/cache/cacheCustom.service';
+import { CacheService } from 'ng2-cache/ng2-cache';
+import { EncryptDecryptService } from '../../shared/services/cache/encryptDecrypt.service';
+import { CompressDecompressService } from '../../shared/services/cache/compressDecompress.service';
+import { JwtService } from '../../shared/services/jwt.service';
+import { AccountLoginComponent } from './accountLogin.component';
 
 
 describe('Login Component', () => {
     let fixture: ComponentFixture<AccountLoginComponent>,
         component: AccountLoginComponent,
         element: HTMLElement,
-        debugEl: DebugElement,
-        mockFormBuilder: FormBuilder, mockAccountLoginService, router, mockActivatedRoute: ActivatedRoute,
-        accountLoginComponent: AccountLoginComponent, accountLoginMockService: AccountLoginMockService
+        debugEl: DebugElement;
+        const mockFormBuilder = null; let mockAccountLoginService, router; const mockActivatedRoute = null;
+        let accountLoginComponent: AccountLoginComponent; const accountLoginMockService = null
 
     beforeEach(() => {
         router = {
@@ -30,10 +30,9 @@ describe('Login Component', () => {
 
         mockAccountLoginService = {
             singinUser: (userData) => {
-                if (userData.userName === "intershop@123.com" && userData.password === "123456") {
+                if (userData.userName === 'intershop@123.com' && userData.password === '123456') {
                     return Observable.of(true);
-                }
-                else {
+                } else {
                     return Observable.of(false);
                 }
             }
@@ -73,13 +72,13 @@ describe('Login Component', () => {
     });
 
     it(`should log in the user and checks if router.navigate is called with 'familyPage'`, () => {
-        let userDetails = { userName: "intershop@123.com", password: "123456" };
+        const userDetails = { userName: 'intershop@123.com', password: '123456' };
         accountLoginComponent.onSignin(userDetails);
         expect(router.navigate).toHaveBeenCalledWith(['familyPage']);
     });
 
     it(`should not call router.navigate since credentials are wrong`, () => {
-        let userDetails = { userName: "intershop@123.com", password: "12" }
+        const userDetails = { userName: 'intershop@123.com', password: '12' }
         accountLoginComponent.onSignin(userDetails);
         expect(router.navigate).not.toHaveBeenCalled();
     });
