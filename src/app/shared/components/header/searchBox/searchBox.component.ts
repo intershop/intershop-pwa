@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'is-searchbox',
-  templateUrl: './searchbox.component.html',
+  templateUrl: './searchBox.component.html',
   styles: [`.form-control {
     width: 300px;
   }`]
