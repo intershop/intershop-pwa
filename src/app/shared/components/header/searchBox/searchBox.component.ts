@@ -5,7 +5,7 @@ import {SearchBoxService} from './searchBoxService/searchBox.service';
 
 @Component({
   selector: 'is-searchbox',
-  templateUrl: './searchbox.component.html'
+  templateUrl: './searchBox.component.html'
 })
 
 
