@@ -8,6 +8,12 @@ import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.s
 import { UserDetail } from './accountLogin.model';
 import { InstanceService } from '../../../shared/services/instance.service';
 
+export interface IAccountLoginService {
+    singinUser(userDetails: AccountLogin): Observable<UserDetail>,
+    logout(): void,
+    isAuthorized(): boolean,
+};
+
 @Injectable()
 export class AccountLoginService implements IAccountLoginService {
 
@@ -64,10 +70,4 @@ export class AccountLoginService implements IAccountLoginService {
         this.loginStatusEmitter.emit(userDetail);
     }
 
-};
-
-export interface IAccountLoginService {
-    singinUser(userDetails: AccountLogin): Observable<UserDetail>,
-    logout(): void,
-    isAuthorized(): boolean,
 };
