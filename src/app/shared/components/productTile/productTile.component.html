@@ -35,9 +35,9 @@
 				<li *ngIf="mockData.totalRatingCount && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="rating-total">
 					({{mockData.totalRatingCount}})
 				</li>
-				<li *ngIf="mockData.richSnippetsEnabled && mockData.averagRating > 0" class="rating-average hidden"> {{mockData.averagRating}} out of 5 </li>
+				<li *ngIf="mockData.richSnippetsEnabled && (mockData.averagRating > 0)" class="rating-average hidden"> {{mockData.averagRating}} out of 5 </li>
 
-				<li *ngIf="mockData.richSnippetsEnabled && !mockData.averagRating > 0" class="rating-average hidden"> This product hasn't been rated yet. </li>
+				<li *ngIf="mockData.richSnippetsEnabled && !(mockData.averagRating > 0)" class="rating-average hidden"> This product hasn't been rated yet. </li>
 			</ul>
 			<span *ngIf="!mockData.simpleRatingView && mockData.totalRatingCount === 0  " class="rating-rated hidden-xs">This product hasn't been rated yet.</span>
 		</div>
@@ -198,9 +198,9 @@
 							<li *ngIf="mockData.totalRatingCount && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="rating-total">
 								({{mockData.totalRatingCount}})
 							</li>
-							<li *ngIf="mockData.richSnippetsEnabled && mockData.averagRating > 0" class="rating-average hidden"> {{mockData.averagRating}} out of 5 </li>
+							<li *ngIf="mockData.richSnippetsEnabled && (mockData.averagRating > 0)" class="rating-average hidden"> {{mockData.averagRating}} out of 5 </li>
 
-							<li *ngIf="mockData.richSnippetsEnabled && !mockData.averagRating > 0" class="rating-average hidden"> This product hasn't been rated yet. </li>
+							<li *ngIf="mockData.richSnippetsEnabled && !(mockData.averagRating > 0)" class="rating-average hidden"> This product hasn't been rated yet. </li>
 						</ul>
 						<span *ngIf="!mockData.simpleRatingView && mockData.totalRatingCount === 0  " class="rating-rated hidden-xs">This product hasn't been rated yet.</span>
 					</div>

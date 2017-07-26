@@ -99,5 +99,4 @@ export class ProductTileModel {
     id: string;
     averageRatingClass: string;
     isProductMaster: boolean = true;
-
 }
