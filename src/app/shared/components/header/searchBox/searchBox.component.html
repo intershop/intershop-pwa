@@ -9,7 +9,7 @@
     class="search-suggest-results" style="display: block;">
   <li *ngFor="let result of results | slice:0:9">
     <button type="button" class="search-result">
-      <span class="ish-searchTerm">{{ result.name }}</span>
+      <span class="ish-searchTerm">{{ result.term }}</span>
     </button>
   </li>
 </ul>
