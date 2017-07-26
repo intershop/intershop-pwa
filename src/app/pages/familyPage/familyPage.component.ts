@@ -8,6 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 export class FamilyPageComponent implements OnInit {
   imageId;
   range;
+  isListView: false;
 
   resolved(captchaResponse: string) {
     console.log(`Resolved captcha with response ${captchaResponse}:`);
