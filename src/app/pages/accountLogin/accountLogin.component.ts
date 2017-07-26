@@ -26,8 +26,8 @@ export class AccountLoginComponent {
   /**
    * Routes to Family Page when user is logged in
    */
-  onSignin() {
-    this.accountLoginService.singinUser(this.loginForm.value).subscribe(userData => {
+  onSignin(userCredentials) {
+    this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
       if (userData) {
         this.router.navigate(['familyPage']);
       }
@@ -39,7 +39,7 @@ export class AccountLoginComponent {
 
   /**
    * Routes to Register Page
-   */
+  */
   registerUser() {
     this.router.navigate(['register']);
   };
@@ -53,15 +53,15 @@ export class AccountLoginComponent {
       password: ['', Validators.required],
     });
 
-    /*
-      reset login status
-    */
-    this.accountLoginService.logout();
+    // /*
+    //   reset login status
+    // */
+    // this.accountLoginService.logout();
 
-    /*
-      get return url from route parameters or default to '/'
-    */
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+    // /*
+    //   get return url from route parameters or default to '/'
+    // */
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
 };
 
