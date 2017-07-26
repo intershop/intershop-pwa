@@ -11,6 +11,7 @@ export class FamilyPageComponent implements OnInit {
   isListView: Boolean;
   sortBy;
 
+
   /**
    * Constructor
    * @param  {ActivatedRoute} privateroute

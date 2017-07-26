@@ -14,12 +14,12 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
   @Input() isListView;
   @Input() sortBy;
   thumbnailKey = 'thumbnailKey';
+  AllCategories: 'AllCategories';
   allData: any;
   thumbnails = [];
   filteredData;
 
   ngOnChanges() {
-
     /**
      * Sorts the Products either Ascending or Descending
      */
