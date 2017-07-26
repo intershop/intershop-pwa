@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {Router} from '@angular/router';
 import {DataEmitterService} from '../../../shared/services/dataEmitter.service';
 import {ProductListService} from './productListService/ProductList.service';
@@ -13,7 +13,7 @@ import {CacheCustomService} from '../../../shared/services/cache/cacheCustom.ser
 
 
 export class FamilyPageListComponent implements OnInit {
-
+  @Input() isListView:false;
   thumbnailKey: 'thumbnailKey';
   AllCategories: 'AllCategories';
   allData: any;
