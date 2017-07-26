@@ -1,9 +1,9 @@
-import {ErrorHandler} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
+import { ErrorHandler } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 export class CustomErrorHandler extends ErrorHandler {
 
-  
+
   /**
    * Constructor
    */
@@ -11,12 +11,12 @@ export class CustomErrorHandler extends ErrorHandler {
     super(true);
   }
 
-  
+
   /**
    * handle error
    * @param  {any} error
    */
-  handleError(error:any) {
+  handleError(error: any) {
     console.log(error.message);
 
   }

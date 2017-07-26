@@ -7,6 +7,7 @@ import { FooterComponent } from "./shared/components/footer/footer.component";
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from "app/shared/components/mock.component";
 
+
 var translate: TranslateService;
 
 describe('AppComponent', () => {
@@ -19,6 +20,7 @@ describe('AppComponent', () => {
         TranslateService
       ],
       imports: [
+
         TranslateModule.forRoot(),
         RouterTestingModule 
       ]
@@ -44,10 +46,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('app');
   }));
 
-  
   it('should match the text passed in Header Component', async(() => {
      const fixture = TestBed.createComponent(AppComponent);
      const compiled = fixture.debugElement.nativeElement;
      expect(compiled.querySelector('is-header').textContent).toEqual('Header Component')
    }));
 });
+

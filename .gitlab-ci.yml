@@ -1,0 +1,4 @@
+image: openjdk:8-jdk
+
+build:
+  script: ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build

@@ -1,4 +1,4 @@
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 export function matchOtherValidator(otherControlName: string) {
 
@@ -35,6 +35,6 @@ export function matchOtherValidator(otherControlName: string) {
 
     return null;
 
-  }
+  };
 
 }

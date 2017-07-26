@@ -15,9 +15,9 @@ export class AccountLoginApiService {
 
     /**
      * Constructor
-     * @param apiService 
-     * @param jwtService 
-     * @param http 
+     * @param apiService
+     * @param jwtService
+     * @param http
      */
     constructor(private apiService: ApiService, private jwtService: JwtService, private http: Http) { };
 
@@ -27,7 +27,7 @@ export class AccountLoginApiService {
      * @returns Observable
      */
     singinUser(user: AccountLogin): Observable<UserDetail> {
-        return this.http.post(`${environment.api_url}token`, 'grant_type=password&username=' + user.userName + "&password=" + user.password)
+        return this.http.post(`${environment.api_url}token`, 'grant_type=password&username=' + user.userName + '&password=' + user.password)
             .map((res: Response) => {
                 const response = res.json();
                 if (response.access_token) {
@@ -52,10 +52,7 @@ export class AccountLoginApiService {
     isAuthorized(): boolean {
         if (this.jwtService.getToken()) {
             return true;
-        }
-        else {
-            return false;
-        }
+        } else { return false; }
     };
 
     /**

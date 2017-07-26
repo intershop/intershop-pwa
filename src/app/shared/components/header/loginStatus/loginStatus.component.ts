@@ -1,16 +1,16 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService'
 import { Router } from '@angular/router'
 import { JwtService } from '../../../services/jwt.service';
 import { CacheCustomService } from '../../../services/cache/cacheCustom.service';
-import { UserDetail } from "../../../.././pages/accountLogin/accountLoginService/accountLogin.model";
+import { UserDetail } from '../../../.././pages/accountLogin/accountLoginService/accountLogin.model';
 
 @Component({
     selector: 'is-loginstatus',
     templateUrl: './loginStatus.component.html'
 })
 
-export class LoginStatusComponent {
+export class LoginStatusComponent implements OnInit {
     userDetail: UserDetail;
     isLoggedIn: boolean;
     userDetailKey = 'userDetail';
