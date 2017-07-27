@@ -36,10 +36,13 @@ export class ProductTileComponent implements OnInit {
       this.mockData = data;
     });
     this.calculatePriceParameters();
+    this.calculateAverageRating();
   };
 
-
-
+  /**
+   * Calculates Average Rating
+   * @returns void
+   */
   calculateAverageRating(): void {
     if (this.mockData.averagRating >= 0.5 && this.mockData.averagRating < 1.5) {
       this.mockData.averageRatingClass = 'rating-one';
@@ -52,10 +55,12 @@ export class ProductTileComponent implements OnInit {
     } else if (this.mockData.averagRating >= 4.5) {
       this.mockData.averageRatingClass = 'rating-five';
     }
-  }
+  };
+
   /**
-  * Calculates old price, Savings
-  */
+   * Calculates old price, Savings
+   *@returns void
+   */
   calculatePriceParameters(): void {
     if (this.mockData.showInformationalPrice && !this.mockData.isEndOfLife) {
       this.greaterPrice = 1;
@@ -101,21 +106,41 @@ export class ProductTileComponent implements OnInit {
               }
          }
     } */
-  }
+  };
 
-  goToNextPage(thumb) {
+
+  /**
+   * Routes to product/Details
+   * @param  {} thumb
+   * @returns void
+   */
+  goToNextPage(thumb): void {
     this.route.navigate(['/product/details', thumb.id, thumb.range]);
-  }
-
-  addToCart(itemToAdd) {
+  };
+  /**
+   * Adds product to cart
+   * @param  {} itemToAdd
+   * @returns void
+   */
+  addToCart(itemToAdd): void {
     this._dataEmitterService.addToCart(itemToAdd);
-  }
+  };
 
-  addToWishList(itemToAdd) {
+  /**
+   * Adds product to wishlist
+   * @param  {} itemToAdd
+   * @returns void
+   */
+  addToWishList(itemToAdd): void {
     this._dataEmitterService.addToWishList(itemToAdd);
-  }
+  };
 
-  addToCompare(itemToAdd) {
+  /**
+   * Adds product to comparison
+   * @param  {} itemToAdd
+   * @returns void
+   */
+  addToCompare(itemToAdd): void {
     this._dataEmitterService.addToCompare(itemToAdd);
-  }
-}
+  };
+};
