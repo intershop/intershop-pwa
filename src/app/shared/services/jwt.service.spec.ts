@@ -14,7 +14,7 @@ describe('JWTService testing', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  xit('should call getToken function()', () => {
+  it('should call getToken function()', () => {
     const spy = spyOn(jwtService, 'getToken').and.callFake(() => {
       return '';
     });
@@ -23,7 +23,7 @@ describe('JWTService testing', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  xit('should call destroyToken function()', () => {
+  it('should call destroyToken function()', () => {
     const spy = spyOn(jwtService, 'destroyToken').and.callFake(() => {});
     jwtService.destroyToken();
 
