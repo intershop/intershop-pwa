@@ -57,7 +57,7 @@ export class ApiService {
   get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {
     return this.http.get(`${environment.api_url}${path}`, { headers: this.setHeaders(), search: params })
       .map((data: Response) => {
-        return data.json();
+        return JSON.parse(data.toString());
       })
       .catch(this.formatErrors.bind(this));
   }
@@ -76,7 +76,7 @@ export class ApiService {
     )
       .catch(this.formatErrors)
       .map((res: Response) => {
-        return res.json();
+        return JSON.parse(res.toString());
       });
   }
 
@@ -94,7 +94,7 @@ export class ApiService {
     )
       .catch(this.formatErrors)
       .map((res: Response) => {
-        return res.json();
+        return JSON.parse(res.toString());
       });
   }
 
@@ -109,6 +109,6 @@ export class ApiService {
       { headers: this.setHeaders() }
     )
       .catch(this.formatErrors)
-      .map((res: Response) => res.json());
+      .map((res: Response) => JSON.parse(res.toString()));
   }
 }
