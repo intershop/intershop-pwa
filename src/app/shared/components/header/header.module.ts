@@ -4,7 +4,6 @@ import { HeaderSlotComponent } from './header.component';
 import { ProductCompareComponent } from './productCompare/productCompare.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MiniCartComponent } from './miniCart/miniCart.component';
 import { SearchBoxComponent } from './searchBox/searchBox.component';
 import { CompareDetailsComponent } from './productCompare/compareDetails.component';
@@ -15,14 +14,15 @@ import { HeaderNavigationComponent } from './headerNavigation/headerNavigation.c
 import { LoginStatusComponent } from './loginStatus/loginStatus.component';
 import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } from '../../../pages/accountLogin/accountLoginService';
 import { SharedModule } from '../../sharedModules/shared.module';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
-    NgbModule.forRoot(),
-    SharedModule
+    SharedModule,
+    CollapseModule
   ],
   exports: [
     HeaderSlotComponent, ProductCompareComponent

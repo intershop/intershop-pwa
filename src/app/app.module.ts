@@ -20,7 +20,10 @@ import { CompressDecompressService } from './shared/services/cache/compressDecom
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
@@ -34,8 +37,6 @@ export function createTranslateLoader(http: Http) {
     BrowserModule.withServerTransition({
       appId: 'proof-of-concept'
     }),
-    NgbModule.forRoot(),
-
     HttpModule,
     JsonpModule,
     AppRoutingModule,
@@ -44,6 +45,8 @@ export function createTranslateLoader(http: Http) {
     HeaderModule,
     ReactiveFormsModule,
     PageModule,
+    CollapseModule.forRoot(),
+    PopoverModule.forRoot()
   ],
   providers: [CacheCustomService,
     CacheService,

@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
 })
 
 export class LanguageSwitchComponent {
-
+  public isCollapsed: boolean = true;
 }
