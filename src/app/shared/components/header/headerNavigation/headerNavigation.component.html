@@ -6,7 +6,8 @@
 
     <li *ngFor="let category of categories.elements" class="dropdown">
       <a routerLink="/category" data-testing-id="Cameras-Camcorders-link" (mouseEnter)="fillData(category.name)">
-        <b> {{category.name | uppercase }} </b> </a>
+        {{category.name | uppercase}}
+      </a>
 
       <ul *ngIf="category.subCategories" class="category-level1 dropdown-menu">
         <li
