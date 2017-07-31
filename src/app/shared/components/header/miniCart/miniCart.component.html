@@ -2,15 +2,16 @@
     <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartStatus -->
     <div class="quick-cart-link hidden-xs">
         <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
-        <a data-toggle="collapse" href="#miniCart"><span class="glyphicon glyphicon-shopping-cart"></span>
-                                <span class="js-cart-count">4</span>
-                                <span>{{cartLength}} items</span><span> / </span>
-                                <span class="mini-cart-price">$ {{cartPrice}}</span>
-                            </a>
+        <a (click)="isCollapsed = !isCollapsed; false;" href>
+          <span class="glyphicon glyphicon-shopping-cart"></span>
+          <span class="js-cart-count">4</span>
+          <span>{{cartLength}} items</span><span> / </span>
+          <span class="mini-cart-price">$ {{cartPrice}}</span>
+        </a>
         <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
         <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCart -->
-        <div class="mini-cart collapse" id="miniCart">
-
+        <div [collapse]="isCollapsed" class="mini-cart">
+          Your cart is currently empty.
         </div>
     </div>
     <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartStatus -->
