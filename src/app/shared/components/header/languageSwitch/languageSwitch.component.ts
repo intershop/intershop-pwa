@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'is-languageswitch',
@@ -17,8 +17,8 @@ export class LanguageSwitchComponent implements OnInit {
 
   ngOnInit() {
     this.localizationArray = [
-      {key: 'en', value: 'English'},
-      {key: 'de', value: 'German'}
+      { key: 'en', value: 'English' },
+      { key: 'de', value: 'German' }
     ];
     console.log(this.localizationArray);
   }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {SuggestedElement} from './searchBoxService/searchBox.model';
-import {SearchBoxService} from './searchBoxService/searchBox.service';
+import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { SuggestedElement } from './searchBoxService/searchBox.model';
+import { SearchBoxService } from './searchBoxService/searchBox.service';
 
 @Component({
   selector: 'is-searchbox',
@@ -21,10 +21,9 @@ export class SearchBoxComponent implements OnInit {
   ngOnInit() {
     SearchBoxService.search(this.searchTerm$)
       .subscribe((results: SuggestedElement[]) => {
-        this.results = results.length > 0 ? results : null;
-        console.log(this.results);
+        this.results = results.length > 0 ? results : [];
       });
   }
+};
 
-}
 
