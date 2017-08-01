@@ -384,7 +384,7 @@ export const ProductTileMockData = {
             'imageActualHeight': 110,
             'imageActualWidth': 110,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/a.jpg',
+            'effectiveUrl': '/assets/product_img/a.jpg',
             'typeID': 'S',
             'primaryImage': true
         },
@@ -394,7 +394,7 @@ export const ProductTileMockData = {
             'imageActualHeight': 500,
             'imageActualWidth': 500,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/a.jpg',
+            'effectiveUrl': '/assets/product_img/a.jpg',
             'typeID': 'L',
             'primaryImage': true
         },
@@ -404,7 +404,7 @@ export const ProductTileMockData = {
             'imageActualHeight': 270,
             'imageActualWidth': 270,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/a.jpg',
+            'effectiveUrl': '/assets/product_img/a.jpg',
             'typeID': 'M',
             'primaryImage': true
         }
