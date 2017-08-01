@@ -11,7 +11,7 @@ import { BreadcrumbComponent } from '../../shared/components/breadCrumb/breadCru
 import { ProductTileComponent } from '../../shared/components/productTile/productTile.component';
 import { ProductListService, ProductListApiService, ProductListMockService } from './familyPageList/productListService';
 import { SharedModule } from '../../shared/sharedModules/shared.module';
-import { CategoryService, CategoryApiService, CategoryMockService } from '../../shared/components/filterList/filterListService';
+import { FilterListService, FilterListMockService, FilterListApiService } from '../../shared/components/filterList/filterListService';
 
 @NgModule({
   imports: [
@@ -34,10 +34,9 @@ import { CategoryService, CategoryApiService, CategoryMockService } from '../../
     ProductListService,
     ProductListMockService,
     ProductListApiService,
-    CategoryService,
-    CategoryApiService,
-    CategoryMockService
-
+    FilterListService,
+    FilterListApiService,
+    FilterListMockService
   ]
 })
 
