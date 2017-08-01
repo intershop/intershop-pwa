@@ -60,4 +60,4 @@ export const userData = {
     'fax': '',
     'email': 'patricia@test.intershop.de',
     'hasRole': true
-}
+};

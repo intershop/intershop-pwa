@@ -12,15 +12,15 @@ export class MiniCartComponent implements OnInit {
   cartLength = 0;
 
   constructor(private _dataEmitterService: DataEmitterService) {
-  }
 
+  }
 
   ngOnInit() {
     this._dataEmitterService.miniCartEmitter.subscribe(data => {
       this.cartPrice = 0;
       this.cartItems.push(data);
       this.cartItems.forEach(item => {
-        this.cartPrice = this.cartPrice + item.Price;
+        this.cartPrice = this.cartPrice + item.listPrice.value;
       });
       this.cartLength = this.cartItems.length;
     });
