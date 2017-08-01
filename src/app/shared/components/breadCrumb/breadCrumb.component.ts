@@ -31,8 +31,6 @@ export class BreadcrumbComponent implements OnInit {
   }
 
   ngOnInit() {
-    const ROUTE_DATA_BREADCRUMB = 'breadcrumb'; // ???????
-
     // subscribe to the NavigationEnd event.
     // this.router.events returns an observable of route events
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {

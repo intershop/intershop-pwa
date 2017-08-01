@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { environment } from '../../../../environments/environment';
 import { AccountLogin } from '../accountLogin';
 import { UserDetail } from './accountLogin.model';
@@ -19,7 +19,7 @@ export class AccountLoginApiService {
      * @param jwtService
      * @param http
      */
-    constructor(private apiService: ApiService, private jwtService: JwtService, private http: Http) { };
+    constructor(private apiService: ApiService, private jwtService: JwtService) { };
 
     /**
      * For logging in
@@ -27,9 +27,9 @@ export class AccountLoginApiService {
      * @returns Observable
      */
     singinUser(user: AccountLogin): Observable<UserDetail> {
-        return this.http.post(`${environment.api_url}token`, 'grant_type=password&username=' + user.userName + '&password=' + user.password)
-            .map((res: Response) => {
-                const response = res.json();
+        return this.apiService.post(`${environment.api_url}token`, 'grant_type=password&username=' + user.userName + '&password=' + user.password)
+            .map((res: Response ) => {
+                const response = JSON.parse(res.toString())
                 if (response.access_token) {
                     this.jwtService.saveToken(response.access_token);
                 }

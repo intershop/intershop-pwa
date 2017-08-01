@@ -22,7 +22,7 @@ export class ProductListService {
    * @returns List of products as observable
    */
   getProductList(): Observable<any> {
-    return Observable.of(ProductList);
+    return this.productService.getProductList();
   }
 }
 
