@@ -21,5 +21,5 @@ export class WishListComponent implements OnInit {
       });
     });
   }
+};
 
-}

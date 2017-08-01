@@ -1,6 +1,6 @@
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import {searchBoxMock} from '../searchBoxMock';
+import { searchBoxMock } from '../searchBoxMock';
 
 export class SearchBoxService {
   public static search(terms: Observable<string>) {
@@ -11,7 +11,7 @@ export class SearchBoxService {
           Observable.of([]) :
           this.searchEntries(value);
       });
-  }
+  };
 
   public static searchEntries(value) {
     const filterList = _.filter(searchBoxMock.elements, (obj) => {
@@ -19,4 +19,4 @@ export class SearchBoxService {
     });
     return Observable.of(filterList);
   }
-}
+};
