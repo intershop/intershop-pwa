@@ -5,7 +5,7 @@ import { CompressDecompressService } from './compressDecompress.service';
 import { CacheCustomService } from './cacheCustom.service';
 import { ReflectiveInjector } from '@angular/core';
 
-describe('Cache Service', () => {
+describe('CacheCustom Service', () => {
     let mockCache, mockEncrypt, mockCompress;
     let customCacheService: CacheCustomService;
     beforeEach(() => {
@@ -56,5 +56,11 @@ describe('Cache Service', () => {
         customCacheService.storeDataToCache('Rewrite data to existing key', 'myTask', false);
         const cachedData = customCacheService.getCachedData('myTask');
         expect(cachedData).toContain('Rewrite data to existing key');
+    });
+
+    it('should  call removeAllCacheData method', () => {
+        customCacheService.removeAllCacheData();
+        const cachedData = customCacheService.getCachedData('myTask');
+        expect(cachedData).toBeNull();
     });
 });

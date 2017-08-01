@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { data } from '../filterList.mock';
 
 @Injectable()
-export class CategoryMockService implements ICategoryService {
+export class  FilterListMockService implements ICategoryService {
 
   /**
    * @returns List of categories as an Observable
