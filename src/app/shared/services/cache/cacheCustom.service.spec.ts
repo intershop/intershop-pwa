@@ -1,24 +1,22 @@
 import { CacheService, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from './encryptDecrypt.service';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing'
-import { CompressDecompressService } from './compressDecompress.service';
 import { CacheCustomService } from './cacheCustom.service';
 import { ReflectiveInjector } from '@angular/core';
 
 describe('CacheCustom Service', () => {
-    let mockCache, mockEncrypt, mockCompress;
+    let mockCache, mockEncrypt;
     let customCacheService: CacheCustomService;
     beforeEach(() => {
        const injector = ReflectiveInjector.resolveAndCreate([CacheService]);
         mockCache = injector.get(CacheService);
-        mockCompress = new CompressDecompressService();
         mockEncrypt = new EncryptDecryptService();
-        customCacheService = new CacheCustomService(mockCache, mockEncrypt, mockCompress);
+        customCacheService = new CacheCustomService(mockCache, mockEncrypt);
     })
 
     TestBed.configureTestingModule({
         providers: [
-            CacheService, EncryptDecryptService, CompressDecompressService
+            CacheService, EncryptDecryptService
         ]
     });
 
