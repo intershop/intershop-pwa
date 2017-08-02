@@ -20,7 +20,7 @@ describe('Product Compare Component', () => {
         component: ProductCompareComponent,
         element: HTMLElement,
         debugEl: DebugElement;
-        let translateService : TranslateService;
+    let translateService: TranslateService;
     beforeEach(() => {
         class DataEmitterServiceStub {
             public comparerListEmitter = new Observable((observer) => {
@@ -34,7 +34,7 @@ describe('Product Compare Component', () => {
                 RouterTestingModule.withRoutes([
                     { path: 'familyPage/compare/1', component: DummyComponent }
                 ]),
-                 TranslateModule.forRoot()
+                TranslateModule.forRoot()
             ],
             declarations: [
                 ProductCompareComponent,
@@ -46,7 +46,7 @@ describe('Product Compare Component', () => {
         translateService = TestBed.get(TranslateService);
         translateService.setDefaultLang('en');
         translateService.use('en');
-        
+
         fixture = TestBed.createComponent(ProductCompareComponent);
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
