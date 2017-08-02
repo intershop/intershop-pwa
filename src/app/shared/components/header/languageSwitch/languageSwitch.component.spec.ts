@@ -33,6 +33,13 @@ describe('Language Switch Component', () => {
 
         expect(languageOptions.length).toBeGreaterThan(1);
         expect(component.localizationArray.length).toBeGreaterThan(1);
-        expect(selectedLanguage[0].textContent).toEqual("en");
+        expect(selectedLanguage[0].textContent).toEqual('en');
+    });
+
+    it('should check language is changed when languageChange menthod is called', () => {
+        component.languageChange('de');
+        fixture.detectChanges();
+        const selectedLanguage = element.getElementsByClassName('hidden-xs');
+        expect(selectedLanguage[0].textContent).toEqual('de');
     });
 });
