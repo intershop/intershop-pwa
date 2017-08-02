@@ -20,7 +20,6 @@ export class LanguageSwitchComponent implements OnInit {
       { key: 'en', value: 'English' },
       { key: 'de', value: 'German' }
     ];
-    console.log(this.localizationArray);
   }
   languageChange(lang) {
     this.lang = lang;
