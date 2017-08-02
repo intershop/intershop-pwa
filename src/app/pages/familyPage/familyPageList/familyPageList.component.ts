@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataEmitterService } from '../../../shared/services/dataEmitter.service';
 import { ProductListService } from './productListService';
 import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
 
@@ -22,12 +21,10 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
 
   /**
    * Construcotr
-   * @param  {DataEmitterService} private_dataEmitterService
    * @param  {ProductListService} privateproductListService
    * @param  {CacheCustomService} privatecustomService
    */
   constructor(
-    private _dataEmitterService: DataEmitterService,
     private productListService: ProductListService,
     private customService: CacheCustomService) {
   };
@@ -73,11 +70,4 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
     this.thumbnails = this.allData[0]['Cameras'];
   };
 
-  /**
-   * Adds Product to Cart
-   * @param  {} itemToAdd
-   */
-  addToCart(itemToAdd) {
-    this._dataEmitterService.addToCart(itemToAdd);
-  };
 };

@@ -15,4 +15,5 @@ export class CaptchaComponent {
   resolved(captchaResponse: string) {
     this.isValid.emit(true);
   }
+
 }

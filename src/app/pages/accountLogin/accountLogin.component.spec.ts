@@ -10,10 +10,9 @@ import { InstanceService } from '../../shared/services/instance.service';
 import { CacheCustomService } from '../../shared/services/cache/cacheCustom.service';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from '../../shared/services/cache/encryptDecrypt.service';
-import { CompressDecompressService } from '../../shared/services/cache/compressDecompress.service';
 import { JwtService } from '../../shared/services/jwt.service';
 import { AccountLoginComponent } from './accountLogin.component';
-import { inject } from '@angular/core/testing';
+import { inject, async } from '@angular/core/testing';
 
 
 describe('AccountLogin Component', () => {
@@ -38,22 +37,23 @@ describe('AccountLogin Component', () => {
         }
     };
 
-    beforeEach(() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
                 AccountLoginComponent
             ],
             providers: [
                 InstanceService, AccountLoginMockService,
-                JwtService, CacheCustomService, CacheService, EncryptDecryptService, CompressDecompressService,
+                JwtService, CacheCustomService, CacheService, EncryptDecryptService,
                 { provide: AccountLoginService, useClass: MockAccountLoginService },
                 { provide: Router, useClass: RouterStub }
             ],
             imports: [
                 ReactiveFormsModule
             ]
-        });
-    })
+        })
+            .compileComponents();
+    }))
 
     beforeEach(() => {
         fixture = TestBed.createComponent(AccountLoginComponent);
@@ -94,5 +94,11 @@ describe('AccountLogin Component', () => {
     it('should call ngOnInit method', () => {
         component.ngOnInit();
         expect(component.loginForm).toBeDefined();
+    })
+
+    it('should assign value to Email field to test Email validator', () => {
+        component.ngOnInit();
+        component.loginForm.controls['userName'].setValue('test@test.com');
+        expect(component.loginForm.controls['userName'].value).toEqual('test@test.com');
     })
 });

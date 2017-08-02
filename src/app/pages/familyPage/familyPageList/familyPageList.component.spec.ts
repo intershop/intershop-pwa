@@ -1,17 +1,15 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 import { FamilyPageListComponent } from './familyPageList.component';
 import { ProductList } from '../../../pages/familyPage/familyPage.mock';
 import { By } from '@angular/platform-browser';
-import { DataEmitterService } from '../../../shared/services/dataEmitter.service';
 import { ProductListService, ProductListMockService } from 'app/pages/familyPage/familyPageList/productListService';
 import { InstanceService } from '../../../shared/services/instance.service';
 import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from '../../../shared/services/cache/encryptDecrypt.service';
-import { CompressDecompressService } from '../../../shared/services/cache/compressDecompress.service';
 
 describe('FamilyPageList Component', () => {
     let fixture: ComponentFixture<FamilyPageListComponent>,
@@ -39,25 +37,24 @@ describe('FamilyPageList Component', () => {
     }
 
     class MockProductListService {
-        debugger
         getProductList() {
             return Observable.of(ProductList);
         }
     }
 
-    beforeEach(() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [FamilyPageListComponent],
             providers: [InstanceService, ProductListMockService, CacheService,
-                EncryptDecryptService, CompressDecompressService,
+                EncryptDecryptService,
                 { provide: ProductListService, useClass: MockProductListService },
-                { provide: CacheCustomService, useClass: MockCacheCustomService },
-                { provide: DataEmitterService, useClass: MockDataEmitterService },
+                { provide: CacheCustomService, useClass: MockCacheCustomService }
             ],
             schemas: [NO_ERRORS_SCHEMA]
 
-        });
-    })
+        })
+            .compileComponents();
+    }))
 
     beforeEach(() => {
         fixture = TestBed.createComponent(FamilyPageListComponent);
@@ -65,13 +62,6 @@ describe('FamilyPageList Component', () => {
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
     })
-
-    it('should call add to cart function', inject([DataEmitterService], (dataEmiterService: DataEmitterService) => {
-        const spy = spyOn(dataEmiterService, 'addToCart');
-        component.addToCart('my data');
-        expect(dataEmiterService.addToCart).toHaveBeenCalledWith('my data');
-    })
-    )
 
     it('should call ngOnInit for 1st time and gets data from Productlist Service', () => {
         component.ngOnInit();
