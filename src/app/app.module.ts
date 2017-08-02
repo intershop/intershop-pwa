@@ -16,7 +16,6 @@ import { AppComponent } from './app.component';
 import { CacheCustomService } from './shared/services/cache/cacheCustom.service';
 import { DataEmitterService } from './shared/services/dataEmitter.service';
 import { EncryptDecryptService } from './shared/services/cache/encryptDecrypt.service';
-import { CompressDecompressService } from './shared/services/cache/compressDecompress.service';
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
@@ -50,7 +49,6 @@ export function createTranslateLoader(http: Http) {
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     DataEmitterService,
     EncryptDecryptService,
-    CompressDecompressService,
     ApiService,
     JwtService
   ],

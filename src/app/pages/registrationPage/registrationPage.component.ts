@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
     templateUrl: './registrationPage.component.html'
 })
 
-export class RegistrationPageComponent implements OnInit {
+export class RegistrationPageComponent {
     isCaptchaValid = false;
     isAddressFormValid = false;
     isEmailFormValid = false;
@@ -16,8 +16,6 @@ export class RegistrationPageComponent implements OnInit {
      */
     constructor(private router: Router) { }
 
-    ngOnInit() { }
-
     /**
      * Redirects to Family page
      * @returns void
@@ -27,16 +25,11 @@ export class RegistrationPageComponent implements OnInit {
     }
 
     /**
-     * Creates Account
-     * @returns void
-     */
-    createAccount(): void { }
-
-    /**
      * Submit form values
      * @returns void
      */
-    fnSubmit(): void { }
+    fnSubmit(): void {
+    }
 }
 
 
