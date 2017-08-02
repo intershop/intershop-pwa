@@ -21,7 +21,7 @@ describe('Wish List Component', () => {
         component: WishListComponent,
         element: HTMLElement,
         debugEl: DebugElement,
-        translateService: TranslateService;;
+        translateService: TranslateService;
 
     beforeEach(() => {
         class DataEmitterServiceStub {
