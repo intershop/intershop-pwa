@@ -6,6 +6,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { FooterModule } from './shared/components/footer/footer.module'
 import { HeaderModule } from './shared/components/header/header.module';
 import { AppRoutingModule } from './app.routing.module';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 import { AppComponent } from './app.component';
@@ -16,7 +17,6 @@ import { CompressDecompressService } from './shared/services/cache/compressDecom
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomTranslateLoader } from '../shared/lang-switcher/custom-translate-loader';
 
 @NgModule({
@@ -27,8 +27,6 @@ import { CustomTranslateLoader } from '../shared/lang-switcher/custom-translate-
     BrowserModule.withServerTransition({
       appId: 'proof-of-concept'
     }),
-    NgbModule.forRoot(),
-
     HttpModule,
     JsonpModule,
     AppRoutingModule,
@@ -37,6 +35,7 @@ import { CustomTranslateLoader } from '../shared/lang-switcher/custom-translate-
     HeaderModule,
     ReactiveFormsModule,
     PageModule,
+    PopoverModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

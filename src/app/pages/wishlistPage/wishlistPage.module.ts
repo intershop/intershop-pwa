@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {WishListPageComponent} from './wishlistPage.component';
 import {WishlistPageRoutes} from './wishlistPage.routes';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {PopoverModule} from 'ngx-bootstrap/popover';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(WishlistPageRoutes),
-    NgbModule.forRoot(),
+    PopoverModule
   ],
   declarations: [WishListPageComponent],
   providers: []

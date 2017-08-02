@@ -5,24 +5,11 @@
     </div>
     <div class="col-sm-9">
       <div class="wishlist">
-        <ng-template #popContent>
-          Every list has its own settings:<br><br><b>Make Public</b> allows other consumers to search and view the
-          wishlist. However it is possible to set individual items to "do not share". These items are only visible for
-          you even if the list is public or shared with a friend.<br/><br/><b>Set as Preferred</b> makes a wish list
-          your preferred wish list and sets all other lists (if any) back to normal. All added products will be added by
-          default to this wish list.<br/><br/><b>Quantity Information</b> allows you to enter quantity information for
-          the items on your list. <br/><br/>You can share wish lists with friends by sending them a mail. This works
-          with non-public lists, too. If you don't want to share you can stop the sharing by disabling the sharing-link
-          for this wish list.<br/><br/>On your wish list you can see if (and how many) items have already been purchased
-          by yourself and by your friends. Your friends can see this information on shared and public lists, too. This
-          prevents double purchases of items.
+        <ng-template #wishListsPopover>
+          Every list has its own settings:<br><br><b>Make Public</b> allows other consumers to search and view the wishlist. However it is possible to set individual items to "do not share". These items are only visible for you even if the list is public or shared with a friend.<br /><br /><b>Set as Preferred</b> makes a wish list your preferred wish list and sets all other lists (if any) back to normal. All added products will be added by default to this wish list.<br /><br /><b>Quantity Information</b> allows you to enter quantity information for the items on your list. <br /><br />You can share wish lists with friends by sending them a mail. This works with non-public lists, too. If you don't want to share you can stop the sharing by disabling the sharing-link for this wish list.<br /><br />On your wish list you can see if (and how many) items have already been purchased by yourself and by your friends. Your friends can see this information on shared and public lists, too. This prevents double purchases of items.
         </ng-template>
-        <a href="javascript:void(0)"
-           placement="bottom"
-           [ngbPopover]="popContent"
-           popoverTitle="WISH LISTS"
-           triggers="mouseenter:mouseleave">
-          How do Wish Lists work?
+        <a href="javascript:void(0)" [popover]="wishListsPopover" popoverTitle="WISH LISTS" placement="bottom">How do Wish Lists work?
+          <span class="glyphicon glyphicon-info-sign"></span>
         </a>
       </div>
       <h1>Wish Lists
