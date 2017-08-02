@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { By } from '@angular/platform-browser';
 import { SearchBoxComponent } from './searchBox.component';
 import { SearchBoxService } from './searchBoxService/searchBox.service';
-import { tick } from '@angular/core/testing';
+                          import { tick, async } from '@angular/core/testing';
 
 
 describe('Search Box Component', () => {
@@ -13,23 +13,21 @@ describe('Search Box Component', () => {
         element: HTMLElement,
         debugEl: DebugElement;
 
-    beforeEach(() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
                 SearchBoxComponent
             ]
-        }).compileComponents();
-    });
+        }).compileComponents().then(() => {
+            fixture = TestBed.createComponent(SearchBoxComponent);
+            component = fixture.componentInstance;
+            element = fixture.nativeElement;
+            debugEl = fixture.debugElement;
+            fixture.detectChanges();
+        });
+    }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(SearchBoxComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-        debugEl = fixture.debugElement;
-        fixture.detectChanges();
-    });
-
-     it('search box ngOninit', fakeAsync(() => {
+    it('search box ngOninit', fakeAsync(() => {
         component.searchTerm$.next('n');
 
         component.ngOnInit();
@@ -38,7 +36,7 @@ describe('Search Box Component', () => {
         expect(component.results).not.toBeNull();
     }));
 
-     it('search results should be blank when no suggestions are foud', fakeAsync(() => {
+    it('search results should be blank when no suggestions are found', fakeAsync(() => {
         component.searchTerm$.next('Test');
 
         component.ngOnInit();
