@@ -45,7 +45,7 @@ export class ApiService {
    * @param  {any} error
    */
   private formatErrors(error: any) {
-    return this._customErrorHandler.handleApiErros(error);
+    return this._customErrorHandler.handleApiErrors(error);
   }
 
   /**

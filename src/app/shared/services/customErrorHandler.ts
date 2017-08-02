@@ -26,7 +26,7 @@ export class CustomErrorHandler extends ErrorHandler {
    * @param  {any} error
    * @returns Observable
    */
-  handleApiErros(error: any): Observable<any> {
+  handleApiErrors(error: any): Observable<any> {
     const errorMessage = error.status + ' and ' + error.statusText;
     console.log(errorMessage);
     return Observable.of(null);
