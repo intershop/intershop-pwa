@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class WishListPageComponent implements OnInit {
+
   /**
    * Constructor
    */
