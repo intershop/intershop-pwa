@@ -26,15 +26,25 @@ describe('Search Box Component', () => {
         component = fixture.componentInstance;
         element = fixture.nativeElement;
         debugEl = fixture.debugElement;
+        fixture.detectChanges();
     });
 
-    it('search box ngOninit', fakeAsync(() => {
+     it('search box ngOninit', fakeAsync(() => {
         component.searchTerm$.next('n');
 
         component.ngOnInit();
         tick(400);
 
         expect(component.results).not.toBeNull();
+    }));
+
+     it('search results should be blank when no suggestions are foud', fakeAsync(() => {
+        component.searchTerm$.next('Test');
+
+        component.ngOnInit();
+        tick(400);
+
+        expect(component.results).toEqual([]);
     }));
 
     it('search Box suggestions on template', fakeAsync(() => {
