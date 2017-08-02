@@ -1,17 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule, Http, JsonpModule } from '@angular/http';
+import { HttpModule, JsonpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
-
 import { FooterModule } from './shared/components/footer/footer.module'
 import { HeaderModule } from './shared/components/header/header.module';
 import { AppRoutingModule } from './app.routing.module';
 
+import { CacheService, CacheStorageAbstract, CacheLocalStorage } from 'ng2-cache/ng2-cache';
 import { AppComponent } from './app.component';
 import { CacheCustomService } from './shared/services/cache/cacheCustom.service';
 import { DataEmitterService } from './shared/services/dataEmitter.service';
@@ -21,11 +17,7 @@ import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-// AoT requires an exported function for factories
-export function createTranslateLoader(http: Http) {
-  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
-}
+import { CustomTranslateLoader } from '../shared/lang-switcher/custom-translate-loader';
 
 @NgModule({
   declarations: [
@@ -48,8 +40,7 @@ export function createTranslateLoader(http: Http) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [Http]
+        useClass: CustomTranslateLoader
       }
     })
   ],
