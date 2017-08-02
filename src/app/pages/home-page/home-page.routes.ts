@@ -1,5 +1,5 @@
 import { HomePageComponent } from './home-page.component';
 
-export const homePageRoute = [
+export const HomePageRoute = [
   { path: '', component: HomePageComponent }
 ];
