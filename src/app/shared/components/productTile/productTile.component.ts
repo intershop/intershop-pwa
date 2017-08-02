@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { DataEmitterService } from '../../services/dataEmitter.service';
 import { ProductTileModel } from './productTileService/productTile.model';
 import { ProductTileService } from './productTileService/productTile.service';
@@ -17,18 +16,17 @@ export class ProductTileComponent implements OnInit {
   class1 = 'product-image';
 
   mockData: ProductTileModel;
-  private finalPrice: number = 1;
-  private greaterPrice: number = 0;
-  private displayCondition: boolean;
-  private oldPrice: any;
-  private shownSavings: number;
+  finalPrice: number = 1;
+  greaterPrice: number = 0;
+  displayCondition: boolean;
+  oldPrice: any;
+  shownSavings: number;
 
   /**
    * Constructor
-   * @param  {Router} privateroute
    * @param  {DataEmitterService} private_dataEmitterService
    */
-  constructor(private route: Router, private _dataEmitterService: DataEmitterService) {
+  constructor(private _dataEmitterService: DataEmitterService) {
   }
 
   ngOnInit() {
@@ -54,6 +52,8 @@ export class ProductTileComponent implements OnInit {
       this.mockData.averageRatingClass = 'rating-four';
     } else if (this.mockData.averagRating >= 4.5) {
       this.mockData.averageRatingClass = 'rating-five';
+    } else {
+      this.mockData.averageRatingClass = '';
     }
   };
 
@@ -67,8 +67,6 @@ export class ProductTileComponent implements OnInit {
       if (this.mockData.listPrice.value) {
         if (this.mockData.listPrice.value > this.mockData.salePrice.value) {
           this.finalPrice = 0;
-          this.greaterPrice = 0;
-        } else if (!(this.mockData.salePrice.value > this.mockData.listPrice.value)) {
           this.greaterPrice = 0;
         }
       }
@@ -109,14 +107,6 @@ export class ProductTileComponent implements OnInit {
   };
 
 
-  /**
-   * Routes to product/Details
-   * @param  {} thumb
-   * @returns void
-   */
-  goToNextPage(thumb): void {
-    this.route.navigate(['/product/details', thumb.id, thumb.range]);
-  };
   /**
    * Adds product to cart
    * @param  {} itemToAdd
