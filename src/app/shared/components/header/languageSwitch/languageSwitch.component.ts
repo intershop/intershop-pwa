@@ -27,4 +27,5 @@ export class LanguageSwitchComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
     this.translate.use(lang);
   }
-}
+};
+
