@@ -4,12 +4,14 @@ import { RouterModule } from '@angular/router';
 import { WishListPageComponent } from './wishlistPage.component';
 import { WishlistPageRoutes } from './wishlistPage.routes';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
     imports: [
       CommonModule,
       RouterModule.forChild(WishlistPageRoutes),
-      PopoverModule
+      PopoverModule,
+      ModalModule
     ],
     declarations: [WishListPageComponent],
     providers: []
