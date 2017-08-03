@@ -2,9 +2,9 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ProductTileComponent } from './productTile.component';
-import { ProductTileService } from './productTileService/productTile.service';
 import { DataEmitterService } from '../../../shared/services/dataEmitter.service';
 import { async, inject } from '@angular/core/testing';
+import { ProductList } from '../../../pages/familyPage/familyPage.mock';
 
 describe('ProductTile Component', () => {
     let fixture: ComponentFixture<ProductTileComponent>,
@@ -26,7 +26,7 @@ describe('ProductTile Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ProductTileComponent],
-            providers: [ProductTileService,
+            providers: [
                 { provide: DataEmitterService, useClass: DataEmitterServiceStub }
             ]
         })
@@ -41,6 +41,7 @@ describe('ProductTile Component', () => {
     });
 
     it('should call ngOnInit', () => {
+        component.mockData = ProductList[0].Cameras[0];
         component.ngOnInit();
         expect(component.mockData).not.toBeNull();
     });
@@ -67,6 +68,7 @@ describe('ProductTile Component', () => {
     ))
 
     it('should call calculateAverageRating and satisfy all conditions', () => {
+        component.mockData = ProductList[0].Cameras[0];
         component.ngOnInit();
         component.mockData.averagRating = 0.5;
         component.calculateAverageRating();
@@ -95,6 +97,7 @@ describe('ProductTile Component', () => {
 
 
     it('should call calculatePriceParameters and satisfy all conditions', () => {
+        component.mockData = ProductList[0].Cameras[0];
         component.ngOnInit();
         component.mockData.showInformationalPrice = true;
         component.mockData.listPrice.value = 12;
@@ -148,6 +151,7 @@ describe('ProductTile Component', () => {
     });
 
     it('should test if the tags are getting rendered', () => {
+        component.mockData = ProductList[0].Cameras[0];
         fixture.detectChanges();
         expect(element.getElementsByTagName('img')).toBeDefined();
         const elem = element.getElementsByClassName('rating-display clearfix');

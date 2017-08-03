@@ -98,5 +98,5 @@ export class ProductTileModel {
     isEndOfLife: boolean;
     id: string;
     averageRatingClass: string;
-    isProductMaster: boolean = true;
+    isProductMaster: boolean;
 }

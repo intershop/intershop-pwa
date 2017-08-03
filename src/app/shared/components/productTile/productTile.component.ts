@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataEmitterService } from '../../services/dataEmitter.service';
-import { ProductTileModel } from './productTileService/productTile.model';
-import { ProductTileService } from './productTileService/productTile.service';
+import { ProductTileModel } from './productTile.model';
+
 
 @Component({
   selector: 'is-producttile',
@@ -10,12 +10,8 @@ import { ProductTileService } from './productTileService/productTile.service';
 })
 
 export class ProductTileComponent implements OnInit {
-  @Input() _data: any;
+  @Input() mockData: ProductTileModel;
   @Input() isListView: false;
-  private productTileService: ProductTileService;
-  class1 = 'product-image';
-
-  mockData: ProductTileModel;
   finalPrice: number = 1;
   greaterPrice: number = 0;
   displayCondition: boolean;
@@ -30,9 +26,6 @@ export class ProductTileComponent implements OnInit {
   }
 
   ngOnInit() {
-    ProductTileService.getProductTile().subscribe(data => {
-      this.mockData = data;
-    });
     this.calculatePriceParameters();
     this.calculateAverageRating();
   };
