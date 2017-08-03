@@ -20,4 +20,4 @@ export class ProductCompareComponent implements OnInit {
       });
     });
   }
-}
+};

@@ -4,7 +4,6 @@ import { HeaderSlotComponent } from './header.component';
 import { ProductCompareComponent } from './productCompare/productCompare.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MiniCartComponent } from './miniCart/miniCart.component';
 import { SearchBoxComponent } from './searchBox/searchBox.component';
 import { CompareDetailsComponent } from './productCompare/compareDetails.component';
@@ -21,7 +20,6 @@ import { SharedModule } from '../../sharedModules/shared.module';
     CommonModule,
     RouterModule,
     FormsModule,
-    NgbModule.forRoot(),
     SharedModule
   ],
   exports: [

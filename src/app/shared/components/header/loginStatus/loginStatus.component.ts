@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core'
-import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService'
-import { Router } from '@angular/router'
-import { JwtService } from '../../../services/jwt.service';
+import { Component, OnInit } from '@angular/core';
+import { AccountLoginService } from '../../../../pages/accountLogin/accountLoginService';
+import { Router } from '@angular/router';
 import { CacheCustomService } from '../../../services/cache/cacheCustom.service';
 import { UserDetail } from '../../../.././pages/accountLogin/accountLoginService/accountLogin.model';
 
@@ -17,7 +16,6 @@ export class LoginStatusComponent implements OnInit {
     constructor(
         private accountLoginService: AccountLoginService,
         private router: Router,
-        private jwtService: JwtService,
         private cacheCustomService: CacheCustomService
     ) {
     }
@@ -33,7 +31,7 @@ export class LoginStatusComponent implements OnInit {
             this.isLoggedIn = true;
             this.userDetail = userDetailData;
         })
-    }
+    };
 
     /**
      * navigates to register page

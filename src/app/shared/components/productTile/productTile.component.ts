@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { DataEmitterService } from '../../services/dataEmitter.service';
 import { ProductTileModel } from './productTileService/productTile.model';
 import { ProductTileService } from './productTileService/productTile.service';
@@ -17,18 +16,17 @@ export class ProductTileComponent implements OnInit {
   class1 = 'product-image';
 
   mockData: ProductTileModel;
-  private finalPrice: number = 1;
-  private greaterPrice: number = 0;
-  private displayCondition: boolean;
-  private oldPrice: any;
-  private shownSavings: number;
+  finalPrice: number = 1;
+  greaterPrice: number = 0;
+  displayCondition: boolean;
+  oldPrice: any;
+  shownSavings: number;
 
   /**
    * Constructor
-   * @param  {Router} privateroute
    * @param  {DataEmitterService} private_dataEmitterService
    */
-  constructor(private route: Router, private _dataEmitterService: DataEmitterService) {
+  constructor(private _dataEmitterService: DataEmitterService) {
   }
 
   ngOnInit() {
@@ -36,10 +34,13 @@ export class ProductTileComponent implements OnInit {
       this.mockData = data;
     });
     this.calculatePriceParameters();
+    this.calculateAverageRating();
   };
 
-
-
+  /**
+   * Calculates Average Rating
+   * @returns void
+   */
   calculateAverageRating(): void {
     if (this.mockData.averagRating >= 0.5 && this.mockData.averagRating < 1.5) {
       this.mockData.averageRatingClass = 'rating-one';
@@ -51,19 +52,21 @@ export class ProductTileComponent implements OnInit {
       this.mockData.averageRatingClass = 'rating-four';
     } else if (this.mockData.averagRating >= 4.5) {
       this.mockData.averageRatingClass = 'rating-five';
+    } else {
+      this.mockData.averageRatingClass = '';
     }
-  }
+  };
+
   /**
-  * Calculates old price, Savings
-  */
+   * Calculates old price, Savings
+   *@returns void
+   */
   calculatePriceParameters(): void {
     if (this.mockData.showInformationalPrice && !this.mockData.isEndOfLife) {
       this.greaterPrice = 1;
       if (this.mockData.listPrice.value) {
         if (this.mockData.listPrice.value > this.mockData.salePrice.value) {
           this.finalPrice = 0;
-          this.greaterPrice = 0;
-        } else if (!(this.mockData.salePrice.value > this.mockData.listPrice.value)) {
           this.greaterPrice = 0;
         }
       }
@@ -101,21 +104,33 @@ export class ProductTileComponent implements OnInit {
               }
          }
     } */
-  }
+  };
 
-  goToNextPage(thumb) {
-    this.route.navigate(['/product/details', thumb.id, thumb.range]);
-  }
 
-  addToCart(itemToAdd) {
+  /**
+   * Adds product to cart
+   * @param  {} itemToAdd
+   * @returns void
+   */
+  addToCart(itemToAdd): void {
     this._dataEmitterService.addToCart(itemToAdd);
-  }
+  };
 
-  addToWishList(itemToAdd) {
+  /**
+   * Adds product to wishlist
+   * @param  {} itemToAdd
+   * @returns void
+   */
+  addToWishList(itemToAdd): void {
     this._dataEmitterService.addToWishList(itemToAdd);
-  }
+  };
 
-  addToCompare(itemToAdd) {
+  /**
+   * Adds product to comparison
+   * @param  {} itemToAdd
+   * @returns void
+   */
+  addToCompare(itemToAdd): void {
     this._dataEmitterService.addToCompare(itemToAdd);
-  }
-}
+  };
+};

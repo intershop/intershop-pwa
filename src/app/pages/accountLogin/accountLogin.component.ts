@@ -21,7 +21,7 @@ export class AccountLoginComponent implements OnInit {
    * @param  {ActivatedRoute} privateroute
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private route: ActivatedRoute) { }
+    private router: Router) { }
 
   /**
    * Routes to Family Page when user is logged in
@@ -51,16 +51,6 @@ export class AccountLoginComponent implements OnInit {
       userName: ['', [Validators.required, EmailValidator.validate]],
       password: ['', Validators.required],
     });
-
-    // /*
-    //   reset login status
-    // */
-    // this.accountLoginService.logout();
-
-    // /*
-    //   get return url from route parameters or default to '/'
-    // */
-    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
 }
 

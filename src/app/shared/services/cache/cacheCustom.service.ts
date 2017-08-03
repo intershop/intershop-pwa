@@ -3,7 +3,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { CacheService, CacheStoragesEnum, CacheOptionsInterface } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from './encryptDecrypt.service';
-import { CompressDecompressService } from './compressDecompress.service';
 import * as CryptoJS from 'crypto-js';
 
 @Injectable()
@@ -14,12 +13,10 @@ export class CacheCustomService {
    * Constructor
    * @param  {CacheService} privatecacheService
    * @param  {EncryptDecryptService} privateencryptDecryptService
-   * @param  {CompressDecompressService} privatecompressDecompressService
    */
   constructor(
     private cacheService: CacheService,
     private encryptDecryptService: EncryptDecryptService,
-    private compressDecompressService: CompressDecompressService,
   ) {
     this.cacheService.setGlobalPrefix('');
   }
