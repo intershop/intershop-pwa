@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+// the NO_ERRORS_SCHEMA import and configuration is needed for the Karma tests to run with <carousel> and <slide> tags
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { HomePageComponent } from './home-page.component';
 
@@ -8,7 +10,8 @@ describe('HomePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomePageComponent ]
+      declarations: [ HomePageComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));
