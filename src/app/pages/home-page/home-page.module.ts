@@ -9,7 +9,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
   imports: [
     CommonModule,
     RouterModule.forChild(HomePageRoute),
-    CarouselModule.forRoot()
+    CarouselModule
   ],
   declarations: [HomePageComponent]
 })

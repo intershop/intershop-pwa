@@ -21,6 +21,7 @@ import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
 
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 
@@ -45,6 +46,7 @@ export function createTranslateLoader(http: Http) {
     HeaderModule,
     ReactiveFormsModule,
     PageModule,
+    CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     PopoverModule.forRoot()
   ],
