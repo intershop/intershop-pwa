@@ -4,7 +4,7 @@ import { ICategoryService } from './index';
 import { ApiService } from '../../../services/api.service';
 
 @Injectable()
-export class CategoryApiService implements ICategoryService {
+export class FilterListApiService implements ICategoryService {
   apiService;
 
   constructor(apiService: ApiService) {

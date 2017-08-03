@@ -9,11 +9,6 @@
 			</div>
 			<a href="">
 				<!--ProductImage.isml start-->
-				<!--To Do, 
-					1. attr.alt to be updated according to ISML
-					2. Image height and width to be formatted according to isml
-					3. Regex is to be updated
-					-->
 				<img *ngIf="mockData && mockData.images" [src]="mockData.images[2].effectiveUrl ? mockData.images[2].effectiveUrl : '/img/not_available.png'"
 				 data-test="true" class="product-image" [attr.data-type]="mockData.images[2].typeID ? mockData.images[2].typeID : null"
 				 [attr.alt]="mockData.name ? mockData.name : null" [attr.view-value]="mockData.images[2].viewID ? mockData.images[2].viewID : null"
@@ -26,7 +21,7 @@
             <span *ngIf="mockData.richSnippetsEnabled">{{mockData.name}}</span> <!--name of the product -->
         </a>
 		<div *ngIf="mockData.ShowProductRating && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="product-rating clearfix">
-			<ul class="rating-display clearfix" [ngClass]="{'rating-zero': false, 'rating-one': false,'rating-two':true,'rating-three':false,'rating-four':false,'rating-five':false}">
+			<ul class="rating-display clearfix" [ngClass]="mockData.averageRatingClass">
 				<li class="star-one"><span class="glyphicon glyphicon-star"></span></li>
 				<li class="star-two"><span class="glyphicon glyphicon-star"></span></li>
 				<li class="star-three"><span class="glyphicon glyphicon-star"></span></li>
