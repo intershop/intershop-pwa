@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { DebugElement, Component } from '@angular/core';
+import { DebugElement, Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { WishListPageComponent } from './wishlistPage.component';
 
 describe('Wish list Page Component', () => {
@@ -10,7 +10,8 @@ describe('Wish list Page Component', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [WishListPageComponent]
+            declarations: [WishListPageComponent],
+            schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(WishListPageComponent);
             component = fixture.componentInstance;
