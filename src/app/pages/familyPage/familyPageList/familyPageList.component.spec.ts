@@ -76,52 +76,25 @@ describe('FamilyPageList Component', () => {
     })
 
     it('should sort data in descending order', () => {
-        component.thumbnails = [
-            { Brand: 'Apple' },
-            { Brand: 'Nokia' },
-            { Brand: 'Xiaomi' },
-            { Brand: 'Blackberry' },
-            { Brand: 'Apple' },
-            { Brand: 'Zara' }
-        ];
+        component.thumbnails = ProductList[0].Cameras;
         component.sortBy = 'name-desc';
         component.ngOnChanges();
-        expect(component.thumbnails[0].Brand).toBe('Zara');
+        fixture.detectChanges();
+        expect(component.thumbnails[0].name).toBe('Sony LED-2412');
     })
 
     it('should sort data in ascending order', () => {
-        component.thumbnails = [
-            { Brand: 'Zara' },
-            { Brand: 'Apple' },
-            { Brand: 'Nokia' },
-            { Brand: 'Xiaomi' },
-            { Brand: 'Blackberry' },
-            { Brand: 'Apple' }
-        ];
+        component.thumbnails = ProductList[0].Cameras;
         component.sortBy = 'name-asc';
         component.ngOnChanges();
-        expect(component.thumbnails[0].Brand).toBe('Apple');
-    })
-
-    it('should not sort the data', () => {
-        component.thumbnails = [
-            { Brand: 'Zara' },
-            { Brand: 'Apple' },
-            { Brand: 'Nokia' },
-            { Brand: 'Xiaomi' },
-            { Brand: 'Blackberry' },
-            { Brand: 'Apple' }
-        ];
-        component.sortBy = 'default';
-        component.ngOnChanges();
-        expect(component.thumbnails[0].Brand).toBe('Zara');
+        expect(component.thumbnails[0].name).toBe('Dicota');
     })
 
     it('should check if the data is being rendered on the page', () => {
         component.ngOnInit();
         fixture.detectChanges();
         const thumbs = fixture.debugElement.queryAll(By.css('is-producttile'));
-        expect(thumbs.length).toBe(4);
+        expect(thumbs.length).toBe(5);
     });
 
 });

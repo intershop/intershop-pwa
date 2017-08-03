@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductListService } from './productListService';
 import { CacheCustomService } from '../../../shared/services/cache/cacheCustom.service';
+import { ProductTileModel } from '../../../shared/components/productTile/productTile.model';
 
 @Component({
   selector: 'is-familypagelist',
@@ -15,7 +16,7 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
   thumbnailKey = 'thumbnailKey';
   AllCategories: 'AllCategories';
   allData: any;
-  thumbnails = [];
+  thumbnails: ProductTileModel[] = [];
   filteredData;
 
 
@@ -36,17 +37,17 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
      */
     this.thumbnails.sort((a, b) => {
       if (this.sortBy === 'name-asc') {
-        if (a.Brand > b.Brand) {
+        if (a.name > b.name) {
           return 1
-        } else if (a.Brand === b.Brand) {
+        } else if (a.name === b.name) {
           return 0
         } else {
           return -1
         }
       } else if (this.sortBy === 'name-desc') {
-        if (a.Brand > b.Brand) {
+        if (a.name > b.name) {
           return -1
-        } else if (a.Brand === b.Brand) {
+        } else if (a.name === b.name) {
           return 0
         } else {
           return 1
@@ -69,5 +70,4 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
     };
     this.thumbnails = this.allData[0]['Cameras'];
   };
-
 };
