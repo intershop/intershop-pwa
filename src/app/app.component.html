@@ -1,9 +1,12 @@
-<is-header></is-header>
+<!-- TODO: add some css class dynamicaly at this place based on the component in <router-outlet> e.g. 'homepage' or 'errorpage' -->
+<div class="">
+  <is-header></is-header>
 
-<div class="wrapper">
-  <div role="main" class="container main-container">
-    <router-outlet></router-outlet>
+  <div class="wrapper">
+    <div role="main" class="container main-container">
+      <router-outlet></router-outlet>
+    </div>
   </div>
-</div>
 
-<is-footer></is-footer>
+  <is-footer></is-footer>
+</div>
