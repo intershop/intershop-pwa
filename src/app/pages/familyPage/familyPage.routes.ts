@@ -1,5 +1,5 @@
 import { FamilyPageComponent } from './familyPage.component';
 
-export const familyPageRoute = [
+export const FamilyPageRoute = [
   { path: '', component: FamilyPageComponent },
 ];

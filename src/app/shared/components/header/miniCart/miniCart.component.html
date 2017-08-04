@@ -1,6 +1,6 @@
-<div class="col-sm-4 col-md-3 pull-right main-navigation-right" data-ajax-content="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewMiniCart-Status">
+<div class="col-sm-4 col-md-3 pull-right main-navigation-right">
     <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartStatus -->
-    <div class="quick-cart-link hidden-xs">
+    <div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed">
         <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
         <a (click)="isCollapsed = !isCollapsed; false;" href>
           <span class="glyphicon glyphicon-shopping-cart"></span>
@@ -11,7 +11,28 @@
         <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
         <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCart -->
         <div [collapse]="isCollapsed" class="mini-cart">
-          Your cart is currently empty.
+          <!-- Your cart is currently empty. -->
+
+          <!-- dummy mini cart data in the dropdown -->
+          <div class="product-rows-block">
+            <div class="slider">
+              <div class="product-row">
+                <div class="mini-product-img">
+                  <a routerLink="/">
+                    <img src="/assets/product_img/x_thumb.jpg"
+                      data-test="true" class="product-image" data-type="S" alt="A-DATA XPG Gaming Series V2.0, DDR3, 1600 MHz, CL9, 12GB (4GB x 3) product photo"
+                      height="110" width="110" />
+                  </a>
+                </div>
+                <div class="mini-product-info">
+                  <a routerLink="/">A-DATA XPG Gaming Series V2.0, DDR3, 1600 MHz, CL9, 12GB (4GB x 3)</a>
+                  <div class="product-price">$ 214.12</div>
+                  <div class="cart-pli-data"><span>Quantity:</span> 2</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/">View Cart</a>
         </div>
     </div>
     <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartStatus -->
