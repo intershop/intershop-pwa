@@ -13,7 +13,7 @@ import { HeaderNavigationComponent } from './headerNavigation/headerNavigation.c
 import { LoginStatusComponent } from './loginStatus/loginStatus.component';
 import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } from '../../../pages/accountLogin/accountLoginService';
 import { SharedModule } from '../../sharedModules/shared.module';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   imports: [
@@ -21,7 +21,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     RouterModule,
     FormsModule,
     SharedModule,
-    CollapseModule
+    BsDropdownModule
+
   ],
   exports: [
     HeaderSlotComponent,
