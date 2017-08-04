@@ -14,6 +14,7 @@ import { LoginStatusComponent } from './loginStatus/loginStatus.component';
 import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } from '../../../pages/accountLogin/accountLoginService';
 import { SharedModule } from '../../sharedModules/shared.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     RouterModule,
     FormsModule,
     SharedModule,
+    CollapseModule,
     BsDropdownModule
 
   ],
