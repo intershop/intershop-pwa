@@ -272,7 +272,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'range': {
             'minimumPrice': 110,
-            'maximumPrice': 220
+            'maximumPrice': 440
           }
         },
         'productBundle': false,
@@ -725,7 +725,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'range': {
             'minimumPrice': 110,
-            'maximumPrice': 220
+            'maximumPrice': 550
           }
         },
         'productBundle': false,
@@ -827,7 +827,7 @@ export const ProductList = [
         'salePrice':
         {
           'type': 'ProductPrice',
-          'value': 251,
+          'value': 140,
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
@@ -1178,7 +1178,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'range': {
             'minimumPrice': 110,
-            'maximumPrice': 220
+            'maximumPrice': 380
           }
         },
         'productBundle': false,
@@ -1280,7 +1280,7 @@ export const ProductList = [
         'salePrice':
         {
           'type': 'ProductPrice',
-          'value': 321,
+          'value': 135,
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
@@ -1631,7 +1631,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'range': {
             'minimumPrice': 110,
-            'maximumPrice': 220
+            'maximumPrice': 380
           }
         },
         'productBundle': false,
@@ -1733,7 +1733,7 @@ export const ProductList = [
         'salePrice':
         {
           'type': 'ProductPrice',
-          'value': 372,
+          'value': 150,
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
@@ -2084,7 +2084,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'range': {
             'minimumPrice': 110,
-            'maximumPrice': 220
+            'maximumPrice': 540
           }
         },
         'productBundle': false,
@@ -2186,7 +2186,7 @@ export const ProductList = [
         'salePrice':
         {
           'type': 'ProductPrice',
-          'value': 372,
+          'value': 149,
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
@@ -2199,7 +2199,7 @@ export const ProductList = [
             'imageActualHeight': 110,
             'imageActualWidth': 110,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/d.jpg',
+            'effectiveUrl': '../../assets/c.jpg',
             'typeID': 'S',
             'primaryImage': true
           },
@@ -2209,7 +2209,7 @@ export const ProductList = [
             'imageActualHeight': 500,
             'imageActualWidth': 500,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/d.jpg',
+            'effectiveUrl': '../../assets/c.jpg',
             'typeID': 'L',
             'primaryImage': true
           },
@@ -2219,7 +2219,7 @@ export const ProductList = [
             'imageActualHeight': 270,
             'imageActualWidth': 270,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/d.jpg',
+            'effectiveUrl': '../../assets/c.jpg',
             'typeID': 'M',
             'primaryImage': true
           }
