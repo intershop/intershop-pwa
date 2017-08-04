@@ -1,7 +1,9 @@
 <input
   placeholder="Search for keyword, product ID or category..."
   name="SearchTerm" type="text" class="form-control searchTerm"
-  (keyup)="searchTerm$.next($event.target.value)">
+  (keyup)="searchTerm$.next($event.target.value)"
+  (click)="results = null"
+  (blur)="results = null">
 <button class="btn-search btn btn-primary" type="submit" name="search" title="Start search."><span
   class="glyphicon glyphicon-search"></span></button>
 
