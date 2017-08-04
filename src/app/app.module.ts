@@ -21,7 +21,10 @@ import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
 
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 
 // AoT requires an exported function for factories
@@ -45,7 +48,10 @@ export function createTranslateLoader(http: Http) {
     HeaderModule,
     ReactiveFormsModule,
     PageModule,
+    BsDropdownModule.forRoot(),
+    CarouselModule.forRoot(),
     CollapseModule.forRoot(),
+    ModalModule.forRoot(),
     PopoverModule.forRoot()
   ],
   providers: [CacheCustomService,

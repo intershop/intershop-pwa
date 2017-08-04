@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="row">
+<div class="account-wrapper">
+	<div class="row account-main">
     <div class="col-sm-3">
     </div>
     <div class="col-sm-9">
@@ -11,9 +11,11 @@
           <span class="glyphicon glyphicon-info-sign"></span>
         </a>
       </div>
-      <h1>Wish Lists
-        <a class="btn btn-default pull-right" data-dialog="" href="javascript:void(0)">Add Wish List</a>
+      <h1>
+        Wish Lists
+        <a class="btn btn-default pull-right" (click)="addWishlistModal.show()">Add Wish List</a>
       </h1>
+
       <div class="section">
         <p class="flush"> Currently you don't have any wish lists.</p>
       </div>
@@ -55,3 +57,70 @@
   </div>
 </div>
 
+<div class="modal fade" bsModal #addWishlistModal="bs-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addWishlistModal.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        <h2 class="modal-title">Add Wish List</h2>
+      </div>
+
+      <form class="form-horizontal">
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-sm-4 control-label" for="awl">Wish List Name</label>
+            <div class="col-sm-8">
+              <input class="form-control" maxlength="35" type="text" name="awl" value="" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <div class="checkbox">
+                <label for="awl2">
+								<input type="checkbox"
+									id="awl2"
+									name="awl2"
+									value="true"
+								/>
+								Make List Public
+              </label>
+                <ng-template #publicWishListsPopover>
+                  Selection will make the wish list public and allow other consumers to search and view it.
+                </ng-template>
+                <a [popover]="publicWishListsPopover" popoverTitle="Make Public">Details
+                  <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+              </div>
+              <div class="checkbox">
+                <label for="awl3">
+								<input type="checkbox"
+									id="awl3"
+									name="awl3"
+									value="true"
+								/>
+								Preferred List
+              </label>
+                <ng-template #preferedWishListsPopover>
+                  Selection will make the wish list your preferred wish list and sets all other (if any) back to normal. All added products
+                  will be added by default to this wish list.
+                </ng-template>
+                <a [popover]="preferedWishListsPopover" popoverTitle="Set as Preferred">Details
+                  <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit" name="awlsubmit">Create</button>
+          <button type="button" class="btn btn-default" name="cancel" (click)="addWishlistModal.hide()">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

@@ -71,10 +71,10 @@ describe('Login Component', () => {
         expect(router.navigate).toHaveBeenCalledWith(['register']);
     });
 
-    it(`should log in the user and checks if router.navigate is called with 'familyPage'`, () => {
+    it(`should log in the user and checks if router.navigate is called with 'home'`, () => {
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
         accountLoginComponent.onSignin(userDetails);
-        expect(router.navigate).toHaveBeenCalledWith(['familyPage']);
+        expect(router.navigate).toHaveBeenCalledWith(['home']);
     });
 
     it(`should not call router.navigate since credentials are wrong`, () => {

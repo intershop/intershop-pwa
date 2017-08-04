@@ -5,9 +5,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ErrorPageComponent implements OnInit {
 
-  /**
-   * Constructor
-   */
+  cssClass = 'errorpage';
+
   constructor() { }
 
   ngOnInit() { }

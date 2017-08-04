@@ -1,9 +1,9 @@
-<div class="language-switch">
-    <a (click)="isCollapsed = !isCollapsed; false;" class="language-switch-link" href>
+<div class="language-switch" dropdown placement="bottom right">
+    <a dropdownToggle (click)="false" class="language-switch-link" href>
       <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
       <span class="hidden-xs">en<span class="switch_arrow hidden-xs"></span></span>
     </a>
-    <div [collapse]="isCollapsed" class="language-switch-container">
+    <div *dropdownMenu class="language-switch-container dropdown-menu dropdown-menu-right">
         <div class="language-switch-menu-container">
             <ul>
                 <li><a href="">German</a></li>

@@ -1,5 +1,5 @@
 import { ErrorPageComponent } from './error-page.component';
 
-export const errorPageRoute = [
+export const ErrorPageRoute = [
   { path: '', component: ErrorPageComponent }
 ];

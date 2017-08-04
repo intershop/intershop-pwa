@@ -1,7 +1,10 @@
-<div class="container">
-  <div class="row">
+<is-breadcrumb></is-breadcrumb>
+
+<div class="marketing-area"></div>
+
+<div id="product-search-result" class="product-search-result" data-testing-id="family-page">
+	<div class="row">
     <div class="col-sm-3">
-      <is-breadcrumb></is-breadcrumb>
       <is-filterpanel></is-filterpanel>
     </div>
     <div class="col-sm-9">
@@ -36,8 +39,8 @@
             <input name="CatalogID" type="hidden" value="Cameras-Camcorders">
             <input name="PageSize" type="hidden" value="12">
             <input name="PageNumber" type="hidden" value="0">
-            <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value" > 
-              <option selected="selected" value="">Default Sorting</option> 
+            <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value" >
+              <option selected="selected" value="">Default Sorting</option>
               <option value="name-asc">Name asc</option>
               <option value="name-desc">Name desc</option>
               <option value="SalesRankUnitsIndex-desc">Topsellers</option>
