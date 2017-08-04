@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { FooterModule } from './shared/components/footer/footer.module'
@@ -16,7 +17,7 @@ import { EncryptDecryptService } from './shared/services/cache/encryptDecrypt.se
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
-import { CustomTranslateLoader } from '../shared/lang-switcher/custom-translate-loader';
+import {translateFactory} from '../shared/lang-switcher/custom-translate-loader';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { CustomTranslateLoader } from '../shared/lang-switcher/custom-translate-
       appId: 'proof-of-concept'
     }),
     HttpModule,
+    HttpClientModule,
     JsonpModule,
     AppRoutingModule,
     FormsModule,
@@ -38,7 +40,8 @@ import { CustomTranslateLoader } from '../shared/lang-switcher/custom-translate-
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: CustomTranslateLoader
+        useFactory: translateFactory,
+        deps: [HttpClient]
       }
     })
   ],
