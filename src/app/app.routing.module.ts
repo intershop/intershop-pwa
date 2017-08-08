@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CompareDetailsComponent } from './shared/components/header/productCompare/compareDetails.component';
+import { CompareDetailsComponent } from './shared/components/header/product-compare/compare-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'familyPage', pathMatch: 'full' },
