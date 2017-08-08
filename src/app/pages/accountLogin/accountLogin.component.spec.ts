@@ -68,18 +68,18 @@ describe('AccountLogin Component', () => {
         expect(element.getElementsByClassName('btn btn-primary')).toBeDefined();
     });
 
-    it(`should checks if router.navigate is called with 'register'`, inject([Router], (router: Router) => {
+    it(`should checks if router.navigate is called with 'home'`, inject([Router], (router: Router) => {
         const spy = spyOn(router, 'navigate');
         component.registerUser();
-        expect(router.navigate).toHaveBeenCalledWith(['register']);
+        expect(router.navigate).toHaveBeenCalledWith(['home']);
     })
     );
 
-    it(`should log in the user and checks if router.navigate is called with 'familyPage'`, inject([Router], (router: Router) => {
+    it(`should log in the user and checks if router.navigate is called with 'home'`, inject([Router], (router: Router) => {
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
         const spy = spyOn(router, 'navigate');
         component.onSignin(userDetails);
-        expect(router.navigate).toHaveBeenCalledWith(['familyPage']);
+        expect(router.navigate).toHaveBeenCalledWith(['home']);
     })
     );
 
