@@ -5,12 +5,14 @@ import { ProductTileComponent } from './product-tile.component';
 import { DataEmitterService } from '../../../shared/services/data-emitter.service';
 import { async, inject } from '@angular/core/testing';
 import { ProductList } from '../../../pages/family-page/family-page.mock';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 describe('ProductTile Component', () => {
     let fixture: ComponentFixture<ProductTileComponent>,
         component: ProductTileComponent,
         element: HTMLElement,
-        debugEl: DebugElement;
+        debugEl: DebugElement,
+        translateService: TranslateService;
 
     class DataEmitterServiceStub {
         addToCart(itemToAdd) {
@@ -25,6 +27,7 @@ describe('ProductTile Component', () => {
     }
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            imports: [TranslateModule.forRoot()],
             declarations: [ProductTileComponent],
             providers: [
                 { provide: DataEmitterService, useClass: DataEmitterServiceStub }
@@ -34,6 +37,9 @@ describe('ProductTile Component', () => {
     }));
 
     beforeEach(() => {
+        translateService = TestBed.get(TranslateService);
+        translateService.setDefaultLang('en');
+        translateService.use('en');
         fixture = TestBed.createComponent(ProductTileComponent);
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
