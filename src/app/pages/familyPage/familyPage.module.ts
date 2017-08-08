@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { familyPageRoute } from './familyPage.routes';
+import { FamilyPageRoute } from './familyPage.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FamilyPageComponent } from './familyPage.component';
 import { FilterListComponent } from '../../shared/components/filterList/filterList.component';
@@ -16,7 +16,7 @@ import { FilterListService, FilterListMockService, FilterListApiService } from '
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(familyPageRoute),
+    RouterModule.forChild(FamilyPageRoute),
     FormsModule,
     ReactiveFormsModule,
     SharedModule
