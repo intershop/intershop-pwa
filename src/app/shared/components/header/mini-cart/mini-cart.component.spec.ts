@@ -1,4 +1,4 @@
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MiniCartComponent } from './mini-cart.component';
@@ -23,7 +23,8 @@ describe('Mini Cart Component', () => {
                 MiniCartComponent
             ],
             providers: [{ provide: DataEmitterService, useClass: DataEmitterServiceStub }],
-            imports: []
+            imports: [],
+            schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents();
 
         fixture = TestBed.createComponent(MiniCartComponent);
@@ -44,7 +45,7 @@ describe('Mini Cart Component', () => {
         const cartPrice = element.getElementsByClassName('mini-cart-price')[0].textContent;
         const cartLength = element.getElementsByClassName('js-cart-count')[0].nextElementSibling.textContent;
 
-        expect(cartPrice).toEqual('$20.00');
+        expect(cartPrice).toEqual('$ 20');
         expect(cartLength).toEqual('1 items');
     });
 });
