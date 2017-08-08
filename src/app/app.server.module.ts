@@ -7,16 +7,6 @@ import { Observable } from 'rxjs/Observable';
 
 const fs = require('fs');
 
-export class ServerFactoryLoader extends NgModuleFactoryLoader {
-  load(path: string): Promise<NgModuleFactory<any>> {
-    return new Promise((resolve, reject) => {
-      const [file, className] = path.split('#');
-      const classes = require('../../dist/ngfactory/src/app' + file.slice(1) + '.ngfactory');
-      resolve(classes[className + 'NgFactory']);
-    });
-  }
-}
-
 export class TranslateUniversalLoader implements TranslateLoader {
   public getTranslation(lang: string): Observable<any> {
     return Observable.create(observer => {
@@ -50,9 +40,6 @@ export class TranslateUniversalLoader implements TranslateLoader {
   ],
   bootstrap: [
     AppComponent
-  ],
-  providers: [
-    {provide: NgModuleFactoryLoader, useClass: ServerFactoryLoader}
   ]
 })
 export class AppServerModule {
