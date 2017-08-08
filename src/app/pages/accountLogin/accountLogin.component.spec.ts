@@ -81,7 +81,8 @@ describe('AccountLogin Component', () => {
         component.onSignin(userDetails);
         expect(router.navigate).toHaveBeenCalledWith(['familyPage']);
     })
-    )
+    );
+
 
     it(`should not call router.navigate since credentials are wrong`, inject([Router], (router: Router) => {
         const userDetails = { userName: 'intershop@123.com', password: '12' };
