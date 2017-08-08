@@ -1,4 +1,5 @@
-image: openjdk:8-jdk
-
 build:
+  tags:
+  - docker-executor
+  image: openjdk:8-jdk
   script: ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build

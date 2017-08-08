@@ -1,5 +1,5 @@
 import { RegistrationPageComponent } from './registration-page.component';
 
-export const registrationPageRoute = [
+export const RegistrationPageRoute = [
   { path: '', component: RegistrationPageComponent },
 ];

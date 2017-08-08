@@ -6,14 +6,15 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { CaptchaComponent } from './captcha/captcha.component';
 import { EmailPasswordComponent } from './email-password/email-password.component';
 import { AddressComponent } from './address/address.component';
-import { registrationPageRoute } from './registration-page.routes';
+import { RegistrationPageRoute } from './registration-page.routes';
 import { RegistrationPageComponent } from './registration-page.component';
 import { SharedModule } from '../../shared/shared-modules/shared.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(registrationPageRoute),
+    RouterModule.forChild(RegistrationPageRoute),
     FormsModule,
     ReactiveFormsModule,
     RecaptchaModule.forRoot(),

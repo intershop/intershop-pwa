@@ -7,6 +7,9 @@ import { DataEmitterService } from '../../../services/data-emitter.service';
 })
 
 export class MiniCartComponent implements OnInit {
+
+  public isCollapsed: boolean = true;
+
   cartItems = [];
   cartPrice = 0;
   cartLength = 0;
