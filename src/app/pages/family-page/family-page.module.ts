@@ -11,7 +11,7 @@ import { ProductTileComponent } from '../../shared/components/product-tile/produ
 import { ProductListService, ProductListApiService, ProductListMockService } from './family-page-list/product-list-service';
 import { SharedModule } from '../../shared/shared-modules/shared.module';
 import { FilterListService, FilterListMockService, FilterListApiService } from '../../shared/components/filter-list/filter-list-service';
-import { FamilyPageRoute } from "./family-page.routes";
+import { FamilyPageRoute } from './family-page.routes';
 
 @NgModule({
   imports: [
