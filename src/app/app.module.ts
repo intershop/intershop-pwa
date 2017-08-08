@@ -10,9 +10,9 @@ import { FooterModule } from './shared/components/footer/footer.module'
 import { HeaderModule } from './shared/components/header/header.module';
 import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
-import { CacheCustomService } from './shared/services/cache/cacheCustom.service';
-import { DataEmitterService } from './shared/services/dataEmitter.service';
-import { EncryptDecryptService } from './shared/services/cache/encryptDecrypt.service';
+import { CacheCustomService } from './shared/services/cache/cache-custom.service';
+import { DataEmitterService } from './shared/services/data-emitter.service';
+import { EncryptDecryptService } from './shared/services/cache/encrypt-decrypt.service';
 import { ApiService } from './shared/services/api.service';
 import { JwtService } from './shared/services/jwt.service';
 import { PageModule } from './pages/pages.module';
