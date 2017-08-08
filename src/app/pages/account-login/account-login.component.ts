@@ -29,7 +29,7 @@ export class AccountLoginComponent implements OnInit {
   onSignin(userCredentials) {
     this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
       if (userData) {
-        this.router.navigate(['familyPage']);
+        this.router.navigate(['home']);
       } else {
         alert('Invalid Username or Password');
       }

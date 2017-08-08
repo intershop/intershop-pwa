@@ -52,3 +52,6 @@ Thumbs.db
 **/build/
 **/target/
 **/.gradle
+
+# gitlab-runner
+/builds

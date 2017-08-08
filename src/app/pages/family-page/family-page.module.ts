@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { familyPageRoute } from './family-page.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FamilyPageComponent } from './family-page.component';
 import { FilterListComponent } from '../../shared/components/filter-list/filter-list.component';
@@ -12,15 +11,15 @@ import { ProductTileComponent } from '../../shared/components/product-tile/produ
 import { ProductListService, ProductListApiService, ProductListMockService } from './family-page-list/product-list-service';
 import { SharedModule } from '../../shared/shared-modules/shared.module';
 import { FilterListService, FilterListMockService, FilterListApiService } from '../../shared/components/filter-list/filter-list-service';
+import { FamilyPageRoute } from "./family-page.routes";
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(familyPageRoute),
+    RouterModule.forChild(FamilyPageRoute),
     FormsModule,
     ReactiveFormsModule,
     SharedModule
-
   ],
   declarations: [
     FamilyPageComponent,
