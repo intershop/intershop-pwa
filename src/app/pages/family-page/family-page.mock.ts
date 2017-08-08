@@ -387,7 +387,7 @@ export const ProductList = [
             'imageActualHeight': 110,
             'imageActualWidth': 110,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/a.jpg',
+            'effectiveUrl': '../../assets/product_img/a.jpg',
             'typeID': 'S',
             'primaryImage': true
           },
@@ -397,7 +397,7 @@ export const ProductList = [
             'imageActualHeight': 500,
             'imageActualWidth': 500,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/a.jpg',
+            'effectiveUrl': '../../assets/product_img/a.jpg',
             'typeID': 'L',
             'primaryImage': true
           },
@@ -407,7 +407,7 @@ export const ProductList = [
             'imageActualHeight': 270,
             'imageActualWidth': 270,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/a.jpg',
+            'effectiveUrl': '../../assets/product_img/a.jpg',
             'typeID': 'M',
             'primaryImage': true
           }
@@ -840,7 +840,7 @@ export const ProductList = [
             'imageActualHeight': 110,
             'imageActualWidth': 110,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/b.jpg',
+            'effectiveUrl': '../../assets/product_img/b.jpg',
             'typeID': 'S',
             'primaryImage': true
           },
@@ -850,7 +850,7 @@ export const ProductList = [
             'imageActualHeight': 500,
             'imageActualWidth': 500,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/b.jpg',
+            'effectiveUrl': '../../assets/product_img/b.jpg',
             'typeID': 'L',
             'primaryImage': true
           },
@@ -860,7 +860,7 @@ export const ProductList = [
             'imageActualHeight': 270,
             'imageActualWidth': 270,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/b.jpg',
+            'effectiveUrl': '../../assets/product_img/b.jpg',
             'typeID': 'M',
             'primaryImage': true
           }
@@ -1293,7 +1293,7 @@ export const ProductList = [
             'imageActualHeight': 110,
             'imageActualWidth': 110,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/c.jpg',
+            'effectiveUrl': '../../assets/product_img/c.jpg',
             'typeID': 'S',
             'primaryImage': true
           },
@@ -1303,7 +1303,7 @@ export const ProductList = [
             'imageActualHeight': 500,
             'imageActualWidth': 500,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/c.jpg',
+            'effectiveUrl': '../../assets/product_img/c.jpg',
             'typeID': 'L',
             'primaryImage': true
           },
@@ -1313,7 +1313,7 @@ export const ProductList = [
             'imageActualHeight': 270,
             'imageActualWidth': 270,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/c.jpg',
+            'effectiveUrl': '../../assets/product_img/c.jpg',
             'typeID': 'M',
             'primaryImage': true
           }
@@ -1746,7 +1746,7 @@ export const ProductList = [
             'imageActualHeight': 110,
             'imageActualWidth': 110,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/d.jpg',
+            'effectiveUrl': '../../assets/product_img/d.jpg',
             'typeID': 'S',
             'primaryImage': true
           },
@@ -1756,7 +1756,7 @@ export const ProductList = [
             'imageActualHeight': 500,
             'imageActualWidth': 500,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/d.jpg',
+            'effectiveUrl': '../../assets/product_img/d.jpg',
             'typeID': 'L',
             'primaryImage': true
           },
@@ -1766,7 +1766,7 @@ export const ProductList = [
             'imageActualHeight': 270,
             'imageActualWidth': 270,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/d.jpg',
+            'effectiveUrl': '../../assets/product_img/d.jpg',
             'typeID': 'M',
             'primaryImage': true
           }
@@ -2199,7 +2199,7 @@ export const ProductList = [
             'imageActualHeight': 110,
             'imageActualWidth': 110,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/c.jpg',
+            'effectiveUrl': '../../assets/product_img/c.jpg',
             'typeID': 'S',
             'primaryImage': true
           },
@@ -2209,7 +2209,7 @@ export const ProductList = [
             'imageActualHeight': 500,
             'imageActualWidth': 500,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/c.jpg',
+            'effectiveUrl': '../../assets/product_img/c.jpg',
             'typeID': 'L',
             'primaryImage': true
           },
@@ -2219,7 +2219,7 @@ export const ProductList = [
             'imageActualHeight': 270,
             'imageActualWidth': 270,
             'viewID': 'front',
-            'effectiveUrl': '../../assets/c.jpg',
+            'effectiveUrl': '../../assets/product_img/c.jpg',
             'typeID': 'M',
             'primaryImage': true
           }
