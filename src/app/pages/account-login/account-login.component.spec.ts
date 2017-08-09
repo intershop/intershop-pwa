@@ -68,10 +68,10 @@ describe('AccountLogin Component', () => {
         expect(element.getElementsByClassName('btn btn-primary')).toBeDefined();
     });
 
-    it(`should checks if router.navigate is called with 'home'`, inject([Router], (router: Router) => {
+    it(`should checks if router.navigate is called with 'register'`, inject([Router], (router: Router) => {
         const spy = spyOn(router, 'navigate');
         component.registerUser();
-        expect(router.navigate).toHaveBeenCalledWith(['home']);
+        expect(router.navigate).toHaveBeenCalledWith(['register']);
     })
     );
 
