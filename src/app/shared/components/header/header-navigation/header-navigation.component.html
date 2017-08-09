@@ -1,0 +1,29 @@
+<div class="main-navigation col-sm-8 col-md-9" role="navigation">
+  <ul class="navbar-nav main-navigation-list">
+    <li class="home hidden-xs">
+      <a class="" routerLink="/" title="home"><span class="glyphicon glyphicon-home"></span></a>
+    </li>
+
+    <li *ngFor="let category of categories.elements" class="dropdown">
+      <a routerLink="/category" data-testing-id="Cameras-Camcorders-link" (mouseEnter)="fillData(category.name)">
+        {{category.name | uppercase}}
+      </a>
+
+      <ul *ngIf="category.subCategories" class="category-level1 dropdown-menu">
+        <li
+          class="main-navigation-level1-item"
+          *ngFor="let subTitle of category.subCategories">
+          <a href="javascript:void(0)">{{subTitle.displayName}}</a>
+          <ul class="category-level-2">
+            <li
+              class="main-navigation-level1-item"
+              *ngFor="let item of subTitle.subItems">
+              <a href="javascript:void(0)">{{item}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</div>

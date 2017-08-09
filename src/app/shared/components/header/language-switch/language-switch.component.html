@@ -1,0 +1,22 @@
+<div class="language-switch" [class.language-switch-active]="!isCollapsed">
+  <a
+    (click)="isCollapsed = !isCollapsed; false;"
+    class="language-switch-link"
+    data-toggle="collapse"
+    aria-expanded="true"
+    href="#languageSwitch">
+    <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
+    <span class="hidden-xs">{{lang}}<span class="switch_arrow hidden-xs"></span></span>
+  </a>
+  <div [hidden]="isCollapsed"  class="language-switch-container" aria-expanded="false">
+    <div class="language-switch-menu-container">
+      <ul>
+        <li *ngFor = "let locale of localizationArray">
+          <a (click) = "languageChange(locale.key)" href="javascript:void(0)">
+            {{locale.value}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
