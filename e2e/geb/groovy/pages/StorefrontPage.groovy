@@ -1,7 +1,7 @@
 package pages;
 
 import geb.Page
-import pages.modules.Header
+import modules.Header
 
 class StorefrontPage extends Page
 {

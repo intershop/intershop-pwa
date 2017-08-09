@@ -1,7 +1,7 @@
 package pages
 
 import pages.StorefrontPage
-import pages.modules.CategoryTile
+import modules.CategoryTile
 
 class CategoryPage extends StorefrontPage
 {

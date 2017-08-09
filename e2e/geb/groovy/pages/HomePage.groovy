@@ -11,7 +11,7 @@ class HomePage extends StorefrontPage
     static at =
     {
         //The homepage must get the class "homepage" in backoffice
-        waitFor{$("app-home-page").size()>0}
+        waitFor{$("is-home-page").size()>0}
     }
 
     static content =
@@ -47,12 +47,12 @@ class HomePage extends StorefrontPage
 
     def selectCatalog(channel)
     {
-        waitFor{$('a[data-testing-id="'+channel+'-link"]').size()>0}
+        waitFor{$('a[data-testing-id="'+channel+'-link"]').size()==1}
         $("a[data-testing-id='"+channel+"-link']").click()
     }
 
     def clickCategoryLink(categoryId) {
-        waitFor{$('[data-testing-id="'+categoryId+'-link"]').size()>0}
+        waitFor{$('[data-testing-id="'+categoryId+'-link"]').size()==1}
         $('[data-testing-id="'+categoryId+'-link"]').click()
     }
 }
