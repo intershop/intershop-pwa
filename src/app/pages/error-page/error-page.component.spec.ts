@@ -1,25 +1,32 @@
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import { TestBed, async } from '@angular/core/testing';
+import { ErrorPageComponent } from './error-page.component';
 
-// import { ErrorPageComponent } from './error-page.component';
 
-// describe('ErrorPageComponent', () => {
-//   let component: ErrorPageComponent;
-//   let fixture: ComponentFixture<ErrorPageComponent>;
+describe('ErrorPage Component', () => {
+    let fixture: ComponentFixture<ErrorPageComponent>,
+        component: ErrorPageComponent,
+        element: HTMLElement,
+        debugEl: DebugElement;
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [ErrorPageComponent]
+        })
+            .compileComponents()
+    }));
 
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [ ErrorPageComponent ]
-//     })
-//     .compileComponents();
-//   }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ErrorPageComponent);
+        component = fixture.componentInstance;
+        debugEl = fixture.debugElement;
+        element = fixture.nativeElement;
+    });
 
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(ErrorPageComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
-
-//   it('should be created', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+    it('should test if tags with their text are getting rendered on the HTML', () => {
+        expect(element.getElementsByTagName('h3')[0].textContent).toContain('We are sorry');
+        expect(element.getElementsByTagName('p')[0].textContent).toContain('The page you are looking for is currently not available');
+        expect(element.getElementsByTagName('h4')[0].textContent).toContain('Please try one of the following:');
+        expect(element.getElementsByClassName('btn-primary')[0].textContent).toContain('Search');
+    });
+});

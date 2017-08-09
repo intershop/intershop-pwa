@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { JwtService } from './jwt.service';
 import { Observable } from 'rxjs/Observable';
-import { CustomErrorHandler } from './customErrorHandler';
+import { CustomErrorHandler } from './custom-error-handler';
 import { environment } from '../../../environments/environment.prod';
 
 @Injectable()
@@ -45,7 +45,7 @@ export class ApiService {
    * @param  {any} error
    */
   private formatErrors(error: any) {
-    return this._customErrorHandler.handleApiErros(error);
+    return this._customErrorHandler.handleApiErrors(error);
   }
 
   /**
@@ -57,7 +57,7 @@ export class ApiService {
   get(path: string, params: URLSearchParams = new URLSearchParams()): Observable<any> {
     return this.http.get(`${environment.api_url}${path}`, { headers: this.setHeaders(), search: params })
       .map((data: Response) => {
-        return data.json();
+        return JSON.parse(data.toString());
       })
       .catch(this.formatErrors.bind(this));
   }
@@ -76,7 +76,7 @@ export class ApiService {
     )
       .catch(this.formatErrors)
       .map((res: Response) => {
-        return res.json();
+        return JSON.parse(res.toString());
       });
   }
 
@@ -94,7 +94,7 @@ export class ApiService {
     )
       .catch(this.formatErrors)
       .map((res: Response) => {
-        return res.json();
+        return JSON.parse(res.toString());
       });
   }
 
@@ -109,6 +109,6 @@ export class ApiService {
       { headers: this.setHeaders() }
     )
       .catch(this.formatErrors)
-      .map((res: Response) => res.json());
+      .map((res: Response) => JSON.parse(res.toString()));
   }
 }
