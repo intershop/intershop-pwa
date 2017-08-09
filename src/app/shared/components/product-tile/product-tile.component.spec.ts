@@ -156,11 +156,11 @@ describe('ProductTile Component', () => {
         expect(component.oldPrice).toBe('N/A');
     });
 
-    it('should test if the tags are getting rendered', () => {
+ /*    it('should test if the tags are getting rendered', () => {
         component.mockData = ProductList[0].Cameras[0];
         fixture.detectChanges();
         expect(element.getElementsByTagName('img')).toBeDefined();
         const elem = element.getElementsByClassName('rating-display clearfix');
         expect(elem[0].children.length).toBe(7);
-    });
+    }); */
 });
