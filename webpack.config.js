@@ -11,10 +11,9 @@ module.exports = {
   target: 'node',
   externals: [nodeExternals({
     whitelist: [
-      /^@ng-bootstrap\/ng-bootstrap/,
-      /^ng2-bootstrap/,
       /^ngx-bootstrap/,
-      /^@ngx-translate/
+      /^@ngx-translate\/core/,
+      /^@ngx-translate\/http-loader/
     ]
   })],
   node: {

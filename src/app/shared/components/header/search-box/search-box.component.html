@@ -1,0 +1,17 @@
+<input
+  placeholder="Search for keyword, product ID or category..."
+  name="SearchTerm" type="text" class="form-control searchTerm"
+  (keyup)="searchTerm$.next($event.target.value); "
+  (click)="hidePopuep()"
+  (blur)="isHide=true">
+<button class="btn-search btn btn-primary" type="submit" name="search" title="Start search."><span
+  class="glyphicon glyphicon-search"></span></button>
+
+<ul *ngIf="results"
+    class="search-suggest-results" [style.display]="isHide ? 'none' : 'block'">
+  <li *ngFor="let result of results | slice:0:9">
+    <button type="button" class="search-result">
+      <span class="ish-searchTerm">{{ result.term }}</span>
+    </button>
+  </li>
+</ul>
