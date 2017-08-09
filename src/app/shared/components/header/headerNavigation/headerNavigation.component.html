@@ -5,7 +5,7 @@
     </li>
 
     <li *ngFor="let category of categories.elements" class="dropdown">
-      <a routerLink="/category" data-testing-id="Cameras-Camcorders-link" (mouseEnter)="fillData(category.name)">
+      <a routerLink="/category" attr.data-testing-id="{{category.id}}-link" (mouseEnter)="fillData(category.name)">
         {{category.name | uppercase}}
       </a>
 

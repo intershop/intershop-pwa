@@ -1,7 +1,7 @@
 package pages
 
 import pages.StorefrontPage
-import pages.modules.ProductTile
+import modules.ProductTile
 
 class FamilyPage extends StorefrontPage
 {

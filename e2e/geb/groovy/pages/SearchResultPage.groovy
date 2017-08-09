@@ -1,6 +1,6 @@
 package pages
 
-import pages.modules.ProductTile
+import modules.ProductTile
 import pages.StorefrontPage;
 
 import geb.Page
