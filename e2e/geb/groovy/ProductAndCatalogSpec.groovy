@@ -43,6 +43,7 @@ class ProductAndCatalogSpec extends GebReportingSpec {
         withCategory(categoryTerm)
 
         when: "... and choose one."
+        interact{moveByOffset(-100, -100)}
         familyTiles(familyCode).click()
 
         then: "Now I can see all Products of this Subcategory."
