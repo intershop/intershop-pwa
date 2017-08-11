@@ -13,7 +13,7 @@ export class JwtService {
    * Get Authentication token
    * @returns String
    */
-  getToken(): String {
+  getToken(): string {
     if (isPlatformBrowser(this.platformId)) {
       return window.localStorage['jwtToken'];
     }
@@ -22,9 +22,9 @@ export class JwtService {
 
   /**
    * Save Authentication token
-   * @param  {String} token
+   * @param  {string} token
    */
-  saveToken(token: String) {
+  saveToken(token: string) {
     if (isPlatformBrowser(this.platformId)) {
       window.localStorage['jwtToken'] = token;
     }
