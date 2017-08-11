@@ -1,9 +1,7 @@
-<a class="compare-status" href="" rel="nofollow">
+<a class="compare-status" [routerLink]="['compare']" rel="nofollow">
   <span class="glyphicon-equalizer glyphicon glyphicon-header-icon"></span>
   <span class="compare-count-text" >
     <div id="compare-count" data-compare-ids="">{{itemCount}}</div>
-    <a class="hidden-xs" [routerLink]="['compare']">
-      {{ 'product.compare.link' | translate }}
-    </a>
+    <span class="hidden-xs">{{ 'product.compare.link' | translate }}</span>
   </span>
 </a>
