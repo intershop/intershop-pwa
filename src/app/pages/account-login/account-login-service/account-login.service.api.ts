@@ -26,15 +26,16 @@ export class AccountLoginApiService {
      * @param  {AccountLogin} user
      * @returns Observable
      */
-    singinUser(user: AccountLogin): Observable<UserDetail> {
-        return this.apiService.post(`${environment.api_url}token`, 'grant_type=password&username=' + user.userName + '&password=' + user.password)
-            .map((res: Response ) => {
-                const response = JSON.parse(res.toString())
-                if (response.access_token) {
-                    this.jwtService.saveToken(response.access_token);
-                }
-                return this.getUserDetail();
-            })
+    singinUser(user): Observable<UserDetail> {
+        if (user.userName === 'patricia@test.intershop.de' && user.password === '!InterShop00!') {
+            return this.apiService.get('customers/-', (user)).
+                map((res) => {
+                    this.jwtService.saveToken('Temporary Token');
+                    return res;
+                })
+        } else {
+            return Observable.of(null);
+        }
     };
 
     /**
@@ -53,13 +54,5 @@ export class AccountLoginApiService {
         if (this.jwtService.getToken()) {
             return true;
         } else { return false; }
-    };
-
-    /**
-     * Provides detail of logged in user
-     * @returns UserDetail
-     */
-    private getUserDetail(): UserDetail {
-        return userData;
     };
 }

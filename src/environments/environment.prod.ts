@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  needMock: true,
-  api_url: 'http://intershopwebapi.azurewebsites.net/'
+  needMock: false,
+  api_url: 'http://localhost:9091/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/'
 };
+

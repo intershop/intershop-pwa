@@ -12,7 +12,7 @@
       <div class="filters-row row">
         <div class="col-md-7 col-sm-9 col-xs-12 switch-layout">
           <div class="col-md-3 col-sm-3 col-xs-4">
-            <div class="pagination-total text-nowrap"> 4 List Items</div>
+            <div class="pagination-total text-nowrap"> {{totalItems}} List Item{{totalItems > 1 ? 's':''}}</div>
           </div>
           <div class="pagination-sites col-md-9 col-sm-9 col-xs-8">
             <ul class="pagination-site-list">
@@ -53,7 +53,7 @@
           </form>
         </div>
       </div>
-      <is-familypagelist [sortBy] = "sortBy" [isListView]="isListView"></is-familypagelist>
+      <is-familypagelist [sortBy] = "sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-familypagelist>
     </div>
   </div>
 </div>

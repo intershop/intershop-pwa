@@ -4,7 +4,7 @@ import { FilterListApiService, FilterListMockService } from './index';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../../environments/environment';
 import { data } from '../filter-list.mock';
-import { FilterListData } from '../filter-entries';
+import { FilterListModel } from '../filter-entries';
 
 @Injectable()
 export class FilterListService {
@@ -22,7 +22,7 @@ export class FilterListService {
   /**
    * @returns List of categories as an Observable
    */
-  getSideFilters(): Observable<FilterListData> {
+  getSideFilters(): Observable<FilterListModel> {
     return this.categoryListService.getSideFilters();
   }
 }

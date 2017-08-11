@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { SuggestedElement } from './search-box-service/search-box.model';
+import { SuggestedElement, SearchBoxModel } from './search-box-service/search-box.model';
 import { SearchBoxService } from './search-box-service/search-box.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class SearchBoxComponent implements OnInit {
   searchTerm$ = new Subject<string>();
   isHide = false;
 
-  constructor() {
+  constructor(private searchBoxService: SearchBoxService) {
   }
 
   hidePopuep() {
@@ -26,16 +26,15 @@ export class SearchBoxComponent implements OnInit {
   }
 
   ngOnInit() {
-    SearchBoxService.search(this.searchTerm$)
-      .subscribe((results: SuggestedElement[]) => {
+    this.searchBoxService.search(this.searchTerm$)
+      .subscribe((results: SearchBoxModel) => {
 
-        if (results.length > 0) {
-          this.results = results;
+        if (results && results.elements.length > 0) {
+          this.results = results.elements;
           this.isHide = false;
         } else {
           this.results = [];
         }
-        // this.results = results.length > 0 ? results : [];
       });
   }
 };

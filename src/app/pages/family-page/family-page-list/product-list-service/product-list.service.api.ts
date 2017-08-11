@@ -20,6 +20,6 @@ export class ProductListApiService implements IProductListService {
    * @returns Products to be displayed as Observable
    */
   getProductList(): Observable<any> {
-    return this.apiService.get('url');
+    return this.apiService.get('categories/Cameras-Camcorders/584/products/3953312');
   }
 }

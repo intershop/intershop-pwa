@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductListService } from './product-list-service';
 import { CacheCustomService } from '../../../shared/services/cache/cache-custom.service';
 import { ProductTileModel } from '../../../shared/components/product-tile/product-tile.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'is-familypagelist',
@@ -13,6 +14,7 @@ import { ProductTileModel } from '../../../shared/components/product-tile/produc
 export class FamilyPageListComponent implements OnInit, OnChanges {
   @Input() isListView;
   @Input() sortBy;
+  @Output() totalItems: EventEmitter<number> = new EventEmitter();
   thumbnailKey = 'thumbnailKey';
   AllCategories: 'AllCategories';
   allData: any;
@@ -61,13 +63,20 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     if (this.customService.cacheKeyExists(this.thumbnailKey)) {
-      this.allData = this.customService.getCachedData(this.thumbnailKey, true);
+      this.thumbnails = this.customService.getCachedData(this.thumbnailKey, true);
+      this.totalItems.emit(this.thumbnails.length);
     } else {
-      this.productListService.getProductList().subscribe(data => {
+      this.productListService.getProductList().subscribe((data: ProductTileModel[]) => {
         this.allData = data;
-        this.customService.storeDataToCache(data, this.thumbnailKey, true);
+        if (environment.needMock) {
+          this.thumbnails = this.allData[0]['Cameras'];
+        } else {
+          this.thumbnails.push(this.allData);
+        }
+        this.totalItems.emit(this.thumbnails.length);
+        this.customService.storeDataToCache(this.thumbnails, this.thumbnailKey, true);
       });
     };
-    this.thumbnails = this.allData[0]['Cameras'];
+
   };
 };
