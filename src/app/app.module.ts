@@ -23,6 +23,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { translateFactory } from '../shared/lang-switcher/custom-translate-loader';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from 'app/shared/services/auth-interceptor';
 @NgModule({
   declarations: [
     AppComponent
@@ -58,7 +60,8 @@ import { translateFactory } from '../shared/lang-switcher/custom-translate-loade
     DataEmitterService,
     EncryptDecryptService,
     ApiService,
-    JwtService
+    JwtService,
+    { provide: HTTP_INTERCEPTORS,  useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
