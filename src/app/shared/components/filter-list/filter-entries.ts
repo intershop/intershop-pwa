@@ -14,26 +14,27 @@ export class Facet {
     name: string;
     type: string;
     count: number;
-    level = 0;
     link: Link;
     hits: Hits;
     selected: boolean;
+    level?: boolean;
 }
 
-export class FilterEntry {
+export class Element {
     name: string;
     type: string;
     id: string;
+    facets: Facet[];
     displayType: string;
     selectionType: string;
     limitCount: number;
     minCount: number;
     scope: string;
-    facets: Facet[];
 }
 
-export class FilterListData {
-    filterEntries: FilterEntry[];
+export class FilterListModel {
+    elements: Element[];
     type: string;
     name: string;
 }
+

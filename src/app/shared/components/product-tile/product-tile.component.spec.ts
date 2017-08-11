@@ -106,6 +106,7 @@ describe('ProductTile Component', () => {
         component.mockData = ProductList[0].Cameras[0];
         component.ngOnInit();
         component.mockData.showInformationalPrice = true;
+        component.mockData.isEndOfLife = false;
         component.mockData.listPrice.value = 12;
         component.mockData.salePrice.value = 10;
         component.calculatePriceParameters();

@@ -15,6 +15,12 @@ import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } 
 import { SharedModule } from '../../shared-modules/shared.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { HeaderNavigationService } from './header-navigation/header-navigation-service/header-navigation.service';
+import { HeaderNavigationMockService } from './header-navigation/header-navigation-service/header-navigation.service.mock';
+import { HeaderNavigationApiService } from './header-navigation/header-navigation-service/header-navigation.service.api';
+import { SearchBoxApiService } from './search-box/search-box-service/search-box.service.api';
+import { SearchBoxMockService } from './search-box/search-box-service/search-box.service.mock';
+import { SearchBoxService } from './search-box/search-box-service/search-box.service';
 
 @NgModule({
   imports: [
@@ -40,10 +46,9 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     HeaderNavigationComponent,
     LoginStatusComponent
   ],
-  providers: [
-    AccountLoginApiService,
-    AccountLoginMockService,
-    AccountLoginService
+  providers: [AccountLoginApiService, AccountLoginMockService, AccountLoginService,
+    HeaderNavigationService, HeaderNavigationMockService, HeaderNavigationApiService,
+    SearchBoxApiService, SearchBoxMockService, SearchBoxService
   ]
 })
 

@@ -1,5 +1,5 @@
-<div class="filter-panel" id="filter-accordion" *ngIf="filterListData.filterEntries">
-  <div *ngFor="let filterEntry of filterListData.filterEntries let i = index">
+<div class="filter-panel" id="filter-accordion" *ngIf="filterListData?.elements">
+  <div *ngFor="let filterEntry of filterListData.elements let i = index">
     <!--TODO : filterEntry.ConfigurationFilterGroup isDefined-->
     <div *ngIf="TODO; else elseBlock" class="filter-group">TODO</div>
     <ng-template #elseBlock>
@@ -19,8 +19,8 @@
             <li class="filter-item " [ngClass]="{'filter-layer1':data.level,'filter-selected':true}" *ngFor="let data of filterEntry.facets">
               <a class="filter-item-name">	
                 <span  [ngClass] ="data.level>0 ? 'glyphicon glyphicon-minus pull-right':''"> </span>
-                <span [ngClass]="data.selected?'icon-selected':'icon-notselected'"></span>{{data.name}}
-                <span *ngIf="!data.level" class="filter-count">({{data.count}})</span>
+                <span *ngIf="(data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category')" [ngClass]="data.selected?'icon-selected':'icon-notselected'"></span>{{(data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category') ? data.name : ''}}
+                <span *ngIf="!data.level && (data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category')" class="filter-count">({{(data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category') ? data.count : ''}})</span>
               </a>
             </li>
           </ng-container>

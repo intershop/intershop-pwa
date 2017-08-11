@@ -18,7 +18,7 @@ describe('Login Status Component', () => {
             return true;
         };
         getCachedData() {
-            return 'userDetails';
+            return [];
         };
     };
 

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataEmitterService } from '../../services/data-emitter.service';
 import { ProductTileModel } from './product-tile.model';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -26,8 +27,52 @@ export class ProductTileComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!environment.needMock) {
+      this.mockData['enableExpressShop'] = true;
+      this.mockData['richSnippetsEnabled'] = true;
+      this.mockData['ShowProductRating'] = true;
+      this.mockData['showAddToCart'] = true;
+      this.mockData['totalRatingCount'] = 2;
+      this.mockData['simpleRatingView'] = true;
+      this.mockData['averagRating'] = 2;
+      this.mockData['isRetailSet'] = true;
+      this.mockData['displayType'] = 'glyphicon';
+      this.mockData['applicablePromotions'] = [
+        {
+          'disableMessages': true,
+          'isUnderABTest': true,
+          'title': 'Promotion Test Title',
+          'icon': 'test',
+          'externalDetailsUrl': 'www.testUrl.com'
+        },
+        {
+          'disableMessages': true,
+          'isUnderABTest': true,
+          'title': 'Promotion Test Title',
+          'icon': 'test',
+          'externalDetailsUrl': 'www.testUrl.com'
+        }
+      ];
+      this.mockData['name_override'] = 'Test_override';
+      this.mockData['mockListView'] = {
+        'displayType': 'test',
+        'isRetailSet': false
+      };
+      this.mockData['showInformationalPrice'] = true;
+      this.mockData['isEndOfLife'] = true;
+      this.mockData['id'] = '1';
+      this.mockData['averageRatingClass'] = '';
+      this.mockData['isProductMaster'] = true;
+      this.mockData.listPrice['range'] = {
+        'minimumPrice': 110,
+        'maximumPrice': 380
+      };
+      this.mockData.images[2].effectiveUrl = 'http://localhost:9091/' + this.mockData.images[2].effectiveUrl;
+      this.mockData.images[0].effectiveUrl = 'http://localhost:9091/' + this.mockData.images[0].effectiveUrl;
+    }
     this.calculatePriceParameters();
     this.calculateAverageRating();
+
   };
 
   /**

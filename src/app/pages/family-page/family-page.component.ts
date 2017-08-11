@@ -8,4 +8,5 @@ import { ActivatedRoute } from '@angular/router';
 export class FamilyPageComponent {
   isListView: Boolean;
   sortBy;
+  totalItems:number;
 }

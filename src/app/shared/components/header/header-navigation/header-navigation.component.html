@@ -4,20 +4,19 @@
       <a class="" routerLink="/" title="home"><span class="glyphicon glyphicon-home"></span></a>
     </li>
 
-    <li *ngFor="let category of categories.elements" class="dropdown">
-      <a routerLink="/category" data-testing-id="Cameras-Camcorders-link" (mouseEnter)="fillData(category.name)">
+    <li *ngFor="let category of categories?.elements" class="dropdown">
+      <a routerLink="/category" data-testing-id="Cameras-Camcorders-link" on-mouseover="getSubCategories(category.id)">
         {{category.name | uppercase}}
       </a>
-
-      <ul *ngIf="category.subCategories" class="category-level1 dropdown-menu">
+      <ul class="category-level1 dropdown-menu">
         <li
           class="main-navigation-level1-item"
-          *ngFor="let subTitle of category.subCategories">
-          <a href="javascript:void(0)">{{subTitle.displayName}}</a>
+          *ngFor="let subTitle of subCategories?.subCategories">
+          <a href="javascript:void(0)">{{subTitle.name}}</a>
           <ul class="category-level-2">
             <li
               class="main-navigation-level1-item"
-              *ngFor="let item of subTitle.subItems">
+              *ngFor="let item of subTitle?.subItems">
               <a href="javascript:void(0)">{{item}}</a>
             </li>
           </ul>

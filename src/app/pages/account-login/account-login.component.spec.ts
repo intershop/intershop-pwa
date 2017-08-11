@@ -43,8 +43,7 @@ describe('AccountLogin Component', () => {
                 AccountLoginComponent
             ],
             providers: [
-                InstanceService, AccountLoginMockService,
-                JwtService, CacheCustomService, CacheService, EncryptDecryptService,
+                CacheCustomService, CacheService, EncryptDecryptService,
                 { provide: AccountLoginService, useClass: MockAccountLoginService },
                 { provide: Router, useClass: RouterStub }
             ],

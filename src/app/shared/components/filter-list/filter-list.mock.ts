@@ -1,5 +1,5 @@
 export const data = {
-	'filterEntries': [
+	'elements': [
 		{
 			'name': 'Category',
 			'type': 'SearchIndexFilter',
