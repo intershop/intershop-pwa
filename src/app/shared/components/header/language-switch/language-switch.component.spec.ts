@@ -1,7 +1,8 @@
 import { LanguageSwitchComponent } from './language-switch.component';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core/';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 describe('Language Switch Component', () => {
     let fixture: ComponentFixture<LanguageSwitchComponent>,
@@ -12,7 +13,10 @@ describe('Language Switch Component', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot()],
+            imports: [
+              TranslateModule.forRoot(),
+              BsDropdownModule.forRoot()
+            ],
             declarations: [LanguageSwitchComponent],
             providers: [TranslateService]
         }).compileComponents();
@@ -26,20 +30,24 @@ describe('Language Switch Component', () => {
         element = fixture.nativeElement;
     });
 
-    it('should check if more than 1 language options are available on the template', () => {
-        fixture.detectChanges();
-        const languageOptions = element.getElementsByTagName('li');
-        const selectedLanguage = element.getElementsByClassName('hidden-xs');
+    it('should check if more than 1 language options are available on the template', fakeAsync(() => {
+      fixture.detectChanges(); // update the view
+      fixture.nativeElement.querySelectorAll('[dropdownToggle]')[0].click(); // trigger drop down opening
+      tick(); // wait for async tasks to end
+      fixture.detectChanges(); // update the view
+      const languageOptions = element.getElementsByTagName('li');
+      expect(languageOptions.length).toBeGreaterThan(1);
 
-        expect(languageOptions.length).toBeGreaterThan(1);
-        expect(component.localizationArray.length).toBeGreaterThan(1);
-        expect(selectedLanguage[0].textContent).toEqual('en');
-    });
+      expect(component.localizationArray.length).toBeGreaterThan(1);
+
+      const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
+      expect(selectedLanguage[0].textContent.trim()).toEqual('en');
+    }));
 
     it('should check language is changed when languageChange menthod is called', () => {
         component.languageChange('de');
         fixture.detectChanges();
-        const selectedLanguage = element.getElementsByClassName('hidden-xs');
-        expect(selectedLanguage[0].textContent).toEqual('de');
+        const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
+        expect(selectedLanguage[0].textContent.trim()).toEqual('de');
     });
 });
