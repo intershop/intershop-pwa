@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HeaderSlotComponent } from './header.component';
 import { ProductCompareComponent } from './product-compare/product-compare.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { MiniCartComponent } from './mini-cart/mini-cart.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
 import { WishListComponent } from './wish-list/wish-list.component';
@@ -24,9 +22,6 @@ import { SearchBoxService } from './search-box/search-box-service/search-box.ser
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
     SharedModule,
     CollapseModule,
     BsDropdownModule

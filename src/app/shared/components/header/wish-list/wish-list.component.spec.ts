@@ -1,6 +1,6 @@
 import { TestBed, ComponentFixture, async, inject } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +9,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { WishListComponent } from './wish-list.component';
 import { DataEmitterService } from '../../../services/data-emitter.service';
 import { WishListPageComponent } from '../../../../pages/wish-list-page/wish-list-page.component';
+import { SharedModule } from '../../../shared-modules/shared.module';
 
 @Component({
     template: ''
@@ -31,7 +32,8 @@ describe('Wish List Component', () => {
         };
 
         TestBed.configureTestingModule({
-            imports: [CommonModule,
+            imports: [
+                SharedModule,
                 RouterTestingModule.withRoutes([
                     { path: 'wishlist', component: DummyComponent }
                 ]),
