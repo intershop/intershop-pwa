@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { CaptchaComponent } from './captcha/captcha.component';
 import { EmailPasswordComponent } from './email-password/email-password.component';
@@ -13,10 +11,7 @@ import { SharedModule } from '../../shared/shared-modules/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
     RouterModule.forChild(RegistrationPageRoute),
-    FormsModule,
-    ReactiveFormsModule,
     RecaptchaModule.forRoot(),
     SharedModule
   ],

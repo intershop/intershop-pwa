@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FamilyPageComponent } from './family-page.component';
 import { FilterListComponent } from '../../shared/components/filter-list/filter-list.component';
 import { CategoryComponent } from '../../shared/components/category/category.component';
@@ -15,10 +13,7 @@ import { FamilyPageRoute } from './family-page.routes';
 
 @NgModule({
   imports: [
-    CommonModule,
     RouterModule.forChild(FamilyPageRoute),
-    FormsModule,
-    ReactiveFormsModule,
     SharedModule
   ],
   declarations: [

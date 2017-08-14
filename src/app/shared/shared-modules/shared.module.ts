@@ -1,9 +1,21 @@
 import { NgModule } from '@angular/core';
-import { InstanceService } from '../services/instance.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InstanceService } from '../services/instance.service';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  exports: [TranslateModule],
+    exports: [
+        TranslateModule,
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        ReactiveFormsModule
+    ],
+    imports: [
+        CommonModule
+    ],
     providers: [
         InstanceService
     ]

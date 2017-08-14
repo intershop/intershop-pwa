@@ -1,6 +1,5 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
@@ -13,6 +12,7 @@ import { EncryptDecryptService } from '../../shared/services/cache/encrypt-decry
 import { JwtService } from '../../shared/services/jwt.service';
 import { AccountLoginComponent } from './account-login.component';
 import { inject, async } from '@angular/core/testing';
+import { SharedModule } from '../../shared/shared-modules/shared.module';
 
 
 describe('AccountLogin Component', () => {
@@ -48,7 +48,7 @@ describe('AccountLogin Component', () => {
                 { provide: Router, useClass: RouterStub }
             ],
             imports: [
-                ReactiveFormsModule
+                SharedModule
             ]
         })
             .compileComponents();
