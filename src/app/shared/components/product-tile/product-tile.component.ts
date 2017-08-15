@@ -5,8 +5,7 @@ import { ProductTileModel } from './product-tile.model';
 
 @Component({
   selector: 'is-producttile',
-  templateUrl: './product-tile.component.html',
-  styleUrls: ['./product-tile.component.css']
+  templateUrl: './product-tile.component.html'
 })
 
 export class ProductTileComponent implements OnInit {
