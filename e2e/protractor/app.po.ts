@@ -5,7 +5,7 @@ export class ProofOfConceptPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getCustomerInfo() {
+    return element(by.css('.customer-info')).getText();
   }
 }
