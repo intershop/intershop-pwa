@@ -12,7 +12,7 @@ describe('Mini Cart Component', () => {
 
     class DataEmitterServiceStub {
         public miniCartEmitter = new Observable((observer) => {
-            observer.next({ name: 'testItem', listPrice: { value: 20 } });
+            observer.next({ name: 'testItem', salePrice: { value: 20 } });
             observer.complete();
         });
     };
