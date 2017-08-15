@@ -26,7 +26,7 @@ class CategoryPage extends StorefrontPage
     //------------------------------------------------------------
     def withCategory(name)
     {
-        categoryName.contains(name)
+        categoryName==name
     }
     
     
