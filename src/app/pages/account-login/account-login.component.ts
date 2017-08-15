@@ -24,7 +24,7 @@ export class AccountLoginComponent implements OnInit {
     private router: Router) { }
 
   /**
-   * Routes to Family Page when user is logged in
+   * Routes to Homepage when user is logged in
    */
   onSignin(userCredentials) {
     this.accountLoginService.singinUser(userCredentials).subscribe(userData => {

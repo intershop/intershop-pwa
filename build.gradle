@@ -1,40 +1,40 @@
 /**
 This is a Gradle Build wrapping the npm build and all testing for CI purposes.
 
-The Bamboo Build Plan can be found here: 
+The Bamboo Build Plan can be found here:
 https://bamboo.intershop.de/browse/ISHMS-ISREST
 
 A complete build like in the build plan can be started with:
 ./gradlew build -Dgeb.env=ci
 
-Gradle is responsible for delegating the build to Node Package Manager (npm) 
-and afterwards starting a jetty instance for running end-to-end tests using 
+Gradle is responsible for delegating the build to Node Package Manager (npm)
+and afterwards starting a jetty instance for running end-to-end tests using
 Geb+Spock. The steps are as follows:
 
-1. `npmSetup` + `npmInstall` (tasks via gradle-node-plugin) for setting up node 
-   and npm. The binaries are then available in .gradle/nodejs/../bin. 
+1. `npmSetup` + `npmInstall` (tasks via gradle-node-plugin) for setting up node
+   and npm. The binaries are then available in .gradle/nodejs/../bin.
    Afterwards `npm install` is run to setup node components.
 
 2. `dist` runs `npm run build` for getting a deployment-ready distribution.
 
-3. gretty plugin is used to start a jetty server serving the dist output as 
-   static resources for testing. The gretty plugin automatically starts the 
+3. gretty plugin is used to start a jetty server serving the dist output as
+   static resources for testing. The gretty plugin automatically starts the
    server before the `test` task and shuts down afterwards.
 
-4. `test` executes end-to-end tests located in e2e/geb with Geb+Spock. 
-   In CI-Mode (-Dgeb.env=ci) the tests are run using PhantomJS. Otherwise 
+4. `test` executes end-to-end tests located in e2e/geb with Geb+Spock.
+   In CI-Mode (-Dgeb.env=ci) the tests are run using PhantomJS. Otherwise
    Chrome is used. `test` can be run separately to only run Geb+Spock tests.
 
 5. `karma` is a task for delegated running the `npm run test-ci` script which
-   runs jasmine tests located in src/app with PhantomJS. The standard `check` 
-   task depends on `karma` so `build` triggers both `test` and `karma` 
+   runs jasmine tests located in src/app with PhantomJS. The standard `check`
+   task depends on `karma` so `build` triggers both `test` and `karma`
    execution. `karma` can be run separately to only run jasmine tests.
    Interactive development should be done using npm.
 
 Utility tasks:
 `reset` - delete node binaries and output from npm install
 
-`npmRun -Pnpmargs="..." - run the embedded npm script with arguments in 
+`npmRun -Pnpmargs="..." - run the embedded npm script with arguments in
                           space-separated list of commands in property `npmargs`
 
 `appRun` - starts jetty using distribution output
@@ -59,14 +59,14 @@ apply from:'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.pl
 apply plugin:'groovy'
 
 node {
-    version = '6.10.3'
-    npmVersion = '3.10.10'
+    version = '6.11.2'
+    npmVersion = '5.3.0'
     download = true
 }
 
 gretty {
     /** same as angular cli */
-    httpPort = 4200 
+    httpPort = 4200
     integrationTestTask = 'test' // wrap gretty execution around `test`
     serverConfigFile = "$projectDir/e2e/geb/jetty9.xml"
 }
