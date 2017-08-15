@@ -7,7 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class LanguageSwitchComponent implements OnInit {
-  public isCollapsed: boolean = true;
+
+  // TODO: is this default realy a property of the language switch component or a global configuration
   lang: string = 'en';
 
   localizationArray = [];
@@ -16,15 +17,15 @@ export class LanguageSwitchComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO: discussion whether this information is coming from a service or is configured at development time
     this.localizationArray = [
       { key: 'en', value: 'English' },
       { key: 'de', value: 'German' }
     ];
   }
+
   languageChange(lang) {
     this.lang = lang;
-    this.isCollapsed = !this.isCollapsed;
     this.translate.use(lang);
   }
 };
-
