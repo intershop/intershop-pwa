@@ -9,7 +9,7 @@ import { CategoryPageRoute } from './category-page.routes';
     CommonModule,
     RouterModule.forChild(CategoryPageRoute)
   ],
-  declarations: [CategoryPageComponent]  
+  declarations: [CategoryPageComponent]
 })
 
 export class CategoryPageModule {
