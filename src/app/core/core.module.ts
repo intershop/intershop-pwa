@@ -15,6 +15,7 @@ import {
 import { HeaderModule } from '../shared/components/header/header.module';
 import { FooterModule } from '../shared/components/footer/footer.module';
 import { translateFactory } from '../../shared/lang-switcher/custom-translate-loader';
+import { StyleWrapperDirective } from "./style-wrapper.directive";
 
 @NgModule({
   imports: [
@@ -33,7 +34,9 @@ import { translateFactory } from '../../shared/lang-switcher/custom-translate-lo
       }
     }),
   ],
-  declarations: [],
+  declarations: [
+    StyleWrapperDirective 
+  ],
   providers: [
     ApiService,
     DataEmitterService,
@@ -45,7 +48,8 @@ import { translateFactory } from '../../shared/lang-switcher/custom-translate-lo
   ],
   exports: [
     FooterModule,
-    HeaderModule
+    HeaderModule,
+    StyleWrapperDirective
   ]
 })
 export class CoreModule {
