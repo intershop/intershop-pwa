@@ -24,7 +24,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { translateFactory } from '../shared/lang-switcher/custom-translate-loader';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from 'app/shared/services/auth-interceptor';
+import { AuthInterceptor } from './shared/http-interceptors/auth-interceptor';
 @NgModule({
   declarations: [
     AppComponent
@@ -61,7 +61,7 @@ import { AuthInterceptor } from 'app/shared/services/auth-interceptor';
     EncryptDecryptService,
     ApiService,
     JwtService,
-    { provide: HTTP_INTERCEPTORS,  useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
