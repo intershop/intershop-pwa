@@ -1,10 +1,11 @@
-import pages.*
+package specs
 
+import pages.*
 import testdata.TestDataLoader
 import geb.spock.GebReportingSpec
-import geb.*;
-import geb.spock.*;
-import spock.lang.*;
+import geb.*
+import geb.spock.*
+import spock.lang.*
 import static java.util.UUID.randomUUID
 
 
@@ -14,11 +15,9 @@ import static java.util.UUID.randomUUID
  * @author Sebastian Glass
  *
  */
-
-
 @Timeout(600)
 class ProductAndCatalogSpec extends GebReportingSpec {
-      private static Map<String,List> testData;
+    private static Map<String,List> testData;
 
     def setupSpec() {
         setup:
@@ -38,12 +37,12 @@ class ProductAndCatalogSpec extends GebReportingSpec {
         at HomePage
         selectCatalog(categoryTerm)
 
+
         then: "... now I'm at the Category-Page...."
         at CategoryPage
         withCategory(categoryTerm)
 
         when: "... and choose one."
-        interact{moveByOffset(-100, -100)}
         familyTiles(familyCode).click()
 
         then: "Now I can see all Products of this Subcategory."
@@ -58,7 +57,7 @@ class ProductAndCatalogSpec extends GebReportingSpec {
 
     /**
      * View Product Details<p>
-     *      
+     *
      * Old Smoke Test:
      * testViewProductDetailsInSF(...)
      */
@@ -79,7 +78,7 @@ class ProductAndCatalogSpec extends GebReportingSpec {
 
         then: "Now I can see all Products of this Subcategory."
         at FamilyPage
-        
+
         when: "I go through all Family Pages until I've found my Product."
         int iteration = 1
         while (iteration<=100 ) {
@@ -88,15 +87,15 @@ class ProductAndCatalogSpec extends GebReportingSpec {
                 break;
             nextPage()
             at FamilyPage
-            
+
             iteration++
-            
+
             waitFor{$("li",class:"pagination-site-active").text().toInteger().equals(iteration)}
         }
-        
+
         then: "Check for to many iterations"
         iteration<100
-        
+
         when: "And then I click it..."
         productTiles(productName).click()
 
@@ -205,7 +204,7 @@ class ProductAndCatalogSpec extends GebReportingSpec {
 
     /**
      * Display List of Products in Storefront<p>
-     * 
+     *
      * Old Smoke Test:
      * testDisplayListOfProductsInSF(...)
      */
@@ -241,34 +240,34 @@ class ProductAndCatalogSpec extends GebReportingSpec {
         at SearchResultPage
         waitFor{contentSlot.$('button', name: 'addProduct').size()>0}
     }
-    
+
      @Ignore
     def "Search after No Results found"(){
-        
+
         when: "I go to the home page, search for a non existing product..."
         to HomePage
         at HomePage
         header.search "NothingToFindHere"
-        
+
         then: "...and can't find anything."
         at NoSearchResultPage
         waitFor{contentSlot.$('input', name: 'SearchTerm').size()>0}
-        
+
         when: "I will search with the Search box on 'No Results Found'..."
         contentSlot.$('input', name: 'SearchTerm').value   searchTerm
         contentSlot.$('button', name:'search').click()
-        
+
         then: "... find it at the Detail Page."
         at ProductDetailPage
         lookedForSKU searchTerm
         title.contains(productName)
-        isVariationable()        
-        
+        isVariationable()
+
         where:
         searchTerm  << testData.get("defaultProduct.variation.sku")
         productName << testData.get("defaultProduct.variation.name")
     }
-    
+
     /**
      * Paging of Products with brand filter<p>
      *
@@ -293,24 +292,24 @@ class ProductAndCatalogSpec extends GebReportingSpec {
 
         then: "Now I can see all Products of this Subcategory."
         at FamilyPage
-        
+
         when: "Click on next page link"
         nextPage()
-        
+
         then: "I can see second page with products"
         at FamilyPage
         filterBar.find("li",class:contains("pagination-site-active"),text:iContains("2")).size() > 0
-        
+
         when: "Click on a brand filter"
         selectFilterInNavigationBar(filter)
-        
+
         then: "I can see results from applied brand filter"
         at FamilyPage
         checkSelectedFilterValue(filter)
-        
+
         when: "Click on next page link"
         nextPage()
-        
+
         then: "I can see second page with products and brand filter still selected"
         at FamilyPage
         checkSelectedFilterValue(filter)
@@ -329,36 +328,36 @@ class ProductAndCatalogSpec extends GebReportingSpec {
      */
      @Ignore
     def "Select_Deselect Category Specific Filter"() {
-        
+
         when: "I go to the home page and click on a category..."
         to HomePage
         at HomePage
         selectCatalog(catalogID)
-        
+
         then: "category specific filter is not present"
         at CategoryPage
         navigationBar.find("h3", text:iContains(filterName)).size() == 0
-        
+
         when: "I select a global filter at the category page"
         selectFilterInNavigationBar(globalFilterDisplayValue)
-        
+
         then: "I got a family page with product results"
         at FamilyPage
         checkSelectedFilterValue(globalFilterDisplayValue)
         String totalCountMessage = getTotalCountMessage()
         totalCountMessage != null
-        
+
         when: "I select the category with specific filter"
         at FamilyPage
         selectFilterInNavigationBar(categoryName)
-        
+
         then: "the specific filter is present at that family page"
         at FamilyPage
         checkFilterExists(filterName)
-        
+
         when: "Clicking on the category specific filter"
         selectFilterInNavigationBar(filterDisplayValue)
-        
+
         then: "I see results with applied filter"
         at FamilyPage
         getTotalCountMessage() != totalCountMessage
@@ -366,10 +365,10 @@ class ProductAndCatalogSpec extends GebReportingSpec {
 
         when: "I deselect the category with the specific filter"
         deselectFilterInNavigationBar(categoryName)
-        
+
         then: "the category specific filter is also deselected - result count is equal to before"
         getTotalCountMessage() == totalCountMessage
-        
+
         where:
         catalogID                   << testData.get("filter.categorySpecific.catalogID")
         categoryID                  << testData.get("filter.categorySpecific.categoryID")
@@ -378,14 +377,14 @@ class ProductAndCatalogSpec extends GebReportingSpec {
         filterName                  << testData.get("filter.categorySpecific.filterName")
         filterDisplayValue          << testData.get("filter.categorySpecific.filterDisplayValue")
     }
-    
+
 	@Override
 	Browser createBrowser() {
 		Browser browser = super.createBrowser()
 		browser.registerPageChangeListener(new PageChangeReporter())
 		return browser
 	}
-	
+
     /**
      * Compare Products<p>
      *

@@ -1,13 +1,13 @@
 package pages
 
-import geb.Page
+import pages.StorefrontPage
 
 class HomePage extends StorefrontPage
 {
 
 
     static url= StorefrontPage.url + "";
-    
+
     static at =
     {
         //The homepage must get the class "homepage" in backoffice
@@ -20,7 +20,7 @@ class HomePage extends StorefrontPage
         catalogBar {$("ul",class:contains("navbar-nav"))}
         registerLink {$("a",class:"ish-siteHeader-myAccountUtilitiesMenu-myAccount-register")}
         logoutLink {$("a",class:"my-account-link my-account-logout")}
-        
+
     }
 
     //------------------------------------------------------------

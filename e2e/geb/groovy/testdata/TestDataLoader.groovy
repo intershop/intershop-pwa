@@ -9,7 +9,7 @@ class TestDataLoader
     private static Map<String,List> testData ;
     public static final String defaultFileName = "TestData";
     public static final String defaultLocaleID = "en_US";
-    
+
     private void readTestDataFromFile(String fileName, String localeID)
     {
         testData = new HashMap<String,List>();
@@ -21,15 +21,15 @@ class TestDataLoader
 
         //System.out.println("TestData loaded from: FileName \t= " + fileName + ".properties");
         //System.out.println("TestData loaded with: LocaleID \t= " + localeID);
-        
+
         while (bundleKeys.hasMoreElements())
         {
             String key = (String)bundleKeys.nextElement();
             String value = testDataBundle.getString(key);
-            if(!value.contains("["))
+            if(!value.contains("[")){
                 value="["+value+"]"
-            
-          //  System.out.println(key + "\t=" + value);
+            }
+            //System.out.println(key + "\t=" + value);
 
             testData.put(key.toString(),Eval.me(value))
         }
