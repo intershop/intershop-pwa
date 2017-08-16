@@ -5,7 +5,7 @@
     </li>
 
     <li *ngFor="let category of categories.elements" class="dropdown">
-      <a routerLink="/category" data-testing-id="Cameras-Camcorders-link" (mouseEnter)="fillData(category.name)">
+      <a routerLink="/category" attr.data-testing-id="{{category.id}}-link" (mouseEnter)="fillData(category.name)">
         {{category.name | uppercase}}
       </a>
 
@@ -13,7 +13,8 @@
         <li
           class="main-navigation-level1-item"
           *ngFor="let subTitle of category.subCategories">
-          <a href="javascript:void(0)">{{subTitle.displayName}}</a>
+
+          <a  routerLink="/family" href="javascript:void(0)">{{subTitle.displayName}}</a>
           <ul class="category-level-2">
             <li
               class="main-navigation-level1-item"
@@ -27,3 +28,5 @@
 
   </ul>
 </div>
+
+
