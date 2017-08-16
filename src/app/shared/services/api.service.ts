@@ -48,8 +48,8 @@ export class ApiService {
    * @param  {URLSearchParams=newURLSearchParams(} params
    * @returns Observable
    */
-  get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
-    return this.httpClient.get(`${environment.api_url}${path}`, { headers: this.setHeaders() })
+  get(path: string, params: HttpParams = new HttpParams(), headers ?: HttpHeaders): Observable<any> {
+    return this.httpClient.get(`${environment.api_url}${path}`, { headers: headers })
       .catch(this.formatErrors.bind(this));
   }
 

@@ -7,6 +7,7 @@ import { UserDetail } from './account-login.model';
 import { userData } from '.././account-login.mock';
 import { ApiService } from '../../../shared/services/api.service';
 import { JwtService } from '../../../shared/services/jwt.service';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable()
@@ -27,16 +28,12 @@ export class AccountLoginApiService {
      * @returns Observable
      */
     singinUser(user): Observable<UserDetail> {
-        if (user.userName === 'patricia@test.intershop.de' && user.password === '!InterShop00!') {
-            return this.apiService.get('customers/-', (user)).
-                map((res) => {
-                    this.jwtService.saveToken('Temporary Token');
+    const headers = new HttpHeaders().set('Authorization', 'Basic ' + Buffer.from((user.userName + ':' + user.password)).toString('base64'));
+            return this.apiService.get('customers/-', null, headers )
+                .map((res) => {
                     return res;
-                })
-        } else {
-            return Observable.of(null);
-        }
-    };
+                });
+      };
 
     /**
      * Destroys the token and cleans the cache
