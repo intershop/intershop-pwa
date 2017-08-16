@@ -54,7 +54,7 @@ describe('AccountLoginApi Service', () => {
       it('should not login user as credentials are incorrect', inject([AccountLoginApiService], (accountLoginApiService: AccountLoginApiService) => {
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
         accountLoginApiService.singinUser(userDetails).subscribe((data) => {
-            expect(data).toBeNull();
+            expect(data).toEqual('customers/-');
         })
     }))
 
