@@ -1,3 +1,5 @@
+package specs
+
 import pages.ProofOfConceptPage
 
 @spock.lang.Unroll
