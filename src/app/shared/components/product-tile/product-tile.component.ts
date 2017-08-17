@@ -66,8 +66,8 @@ export class ProductTileComponent implements OnInit {
         'minimumPrice': 110,
         'maximumPrice': 380
       };
-      this.mockData.images[2].effectiveUrl = 'http://localhost:9091/' + this.mockData.images[2].effectiveUrl;
-      this.mockData.images[0].effectiveUrl = 'http://localhost:9091/' + this.mockData.images[0].effectiveUrl;
+      this.mockData.images[2].effectiveUrl = environment.base_url + this.mockData.images[2].effectiveUrl;
+      this.mockData.images[0].effectiveUrl = environment.base_url + this.mockData.images[0].effectiveUrl;
     }
     this.calculatePriceParameters();
     this.calculateAverageRating();

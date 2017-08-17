@@ -31,7 +31,7 @@ export class ApiService {
    * @returns Observable
    */
   get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<any> {
-    return this.httpClient.get(`${environment.api_url}${path}`, { headers: headers })
+    return this.httpClient.get(`${environment.rest_url}${path}`, { headers: headers })
       .catch(this.formatErrors.bind(this));
   }
 
@@ -43,7 +43,7 @@ export class ApiService {
    */
   put(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.put(
-      `${environment.api_url}${path}`,
+      `${environment.rest_url}${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -56,7 +56,7 @@ export class ApiService {
    */
   post(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.post(
-      `${environment.api_url}${path}`,
+      `${environment.rest_url}${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -69,7 +69,7 @@ export class ApiService {
   delete(path): Observable<any> {
 
     return this.httpClient.delete(
-      `${environment.api_url}${path}`
+      `${environment.rest_url}${path}`
     ).catch(this.formatErrors);
 
   }
