@@ -1,67 +1,67 @@
 <header data-testing-id="page-header" class="top">
-  <div class="top-header">
-    <nav class="container">
-      <div class="row">
-        <a rel="home" routerLink="/" class="visible-xs mobile-logo"><img src="/assets/img/logo_mobile.png" alt="Logo" width="41" height="41"></a>
-        <div class="visible-xs pull-right">
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#globalnav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+    <div class="top-header">
+        <nav class="container">
+            <div class="row">
+                <a rel="home" routerLink="/" class="visible-xs mobile-logo"><img src="/assets/img/logo_mobile.png" alt="Logo" width="41" height="41"></a>
+                <div class="visible-xs pull-right">
+                    <button class="navbar-toggle" type="button" (click)="globalnav = !globalnav" data-target="#globalnav">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
           </button>
-        </div>
-        <div class="col-md-12">
-          <ul class="user-links">
-            <li>
-              <is-loginstatus></is-loginstatus>
-            </li>
-            <li>
-              <is-productcomparestatus></is-productcomparestatus>
-            </li>
-            <li>
-              <is-wishlist></is-wishlist>
-            </li>
-            <li class="visible-xs">
-              <a href=""><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
-              <div class="mobile-cart-counter"></div>
-            </li>
-          </ul>
-          <div class="header-utility">
-            <ul class="customer-info hidden-xs">
-              <li>
-                <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span> 1300 032 032
-              </li>
-            </ul>
-            <is-languageswitch></is-languageswitch>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
-  <div class="mid-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-3 logo-wrapper hidden-xs">
-          <is-logo></is-logo>
-        </div>
-        <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
-        <div class="col-sm-4 search-container header-search-container">
-          <form method="post" action="" role="search" class="search clearfix" name="SearchBox_Header">
-            <is-searchbox></is-searchbox>
-          </form>
-        </div>
-      </div>
+                </div>
+                <div class="col-md-10">
+                    <ul class="user-links">
+                        <li>
+                            <is-loginstatus></is-loginstatus>
+                        </li>
+                        <li>
+                            <is-productcomparestatus></is-productcomparestatus>
+                        </li>
+                        <li>
+                            <is-wishlist></is-wishlist>
+                        </li>
+                        <li class="visible-xs">
+                            <a href=""><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
+                            <div class="mobile-cart-counter"></div>
+                        </li>
+                    </ul>
+                    <div class="header-utility">
+                        <ul class="customer-info hidden-xs">
+                            <li>
+                                <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span> 1300 032 032
+                            </li>
+                        </ul>
+                        <is-languageswitch></is-languageswitch>
+                    </div>
+                </div>
+            </div>
+        </nav>
     </div>
-  </div>
-  <div class="bottom-header">
-    <div class="global-nav collapse navbar-collapse" id="globalnav">
-      <div class="container">
-        <div class="row">
-          <is-headernavigation></is-headernavigation>
-          <is-minicart></is-minicart>
+    <div class="mid-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 logo-wrapper hidden-xs">
+                    <is-logo></is-logo>
+                </div>
+                <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
+                <div class="col-sm-4 search-container header-search-container">
+                    <form method="post" action="" role="search" class="search clearfix" name="SearchBox_Header">
+                        <is-searchbox></is-searchbox>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+    <div class="bottom-header">
+        <div class="global-nav collapse navbar-collapse" [collapse]="globalnav" id="globalnav">
+            <div class="container">
+                <div class="row">
+                    <is-headernavigation></is-headernavigation>
+                    <is-minicart></is-minicart>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>

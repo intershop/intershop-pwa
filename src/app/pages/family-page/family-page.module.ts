@@ -10,11 +10,13 @@ import { ProductListService, ProductListApiService, ProductListMockService } fro
 import { SharedModule } from '../../shared/shared-modules/shared.module';
 import { FilterListService, FilterListMockService, FilterListApiService } from '../../shared/components/filter-list/filter-list-service';
 import { FamilyPageRoute } from './family-page.routes';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   imports: [
     RouterModule.forChild(FamilyPageRoute),
-    SharedModule
+    SharedModule,
+    CollapseModule
   ],
   declarations: [
     FamilyPageComponent,

@@ -7,7 +7,7 @@ import { ApiService } from '../../../../shared/services/api.service';
 @Injectable()
 export class ProductListApiService implements IProductListService {
   apiService;
-  url:string = 'categories/Cameras-Camcorders/584/products/3953312';
+  url: string = 'categories/Cameras-Camcorders/584/products/3953312';
 
   /**
    * Constructor

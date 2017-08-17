@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { InstanceService } from '../../../../shared/services/instance.service';
 import { environment } from '../../../../../environments/environment';
-import { ProductListMockService, ProductListApiService } from './index';
+import { ProductListMockService } from './product-list.service.mock';
+import { ProductListApiService } from './product-list.service.api';
 import { Observable } from 'rxjs/Observable';
 import { ProductList } from '../../family-page.mock';
 
