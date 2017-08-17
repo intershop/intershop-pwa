@@ -29,10 +29,7 @@ export class AccountLoginApiService {
      */
     singinUser(user): Observable<UserDetail> {
     const headers = new HttpHeaders().set('Authorization', 'Basic ' + Buffer.from((user.userName + ':' + user.password)).toString('base64'));
-            return this.apiService.get('customers/-', null, headers )
-                .map((res) => {
-                    return res;
-                });
+            return this.apiService.get('customers/-', null, headers );
       };
 
     /**

@@ -7,6 +7,7 @@ import { FilterListModel } from '../filter-entries';
 @Injectable()
 export class FilterListApiService implements ICategoryService {
   apiService;
+  url:string = 'filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=';
 
   constructor(apiService: ApiService) {
     this.apiService = apiService;
@@ -16,6 +17,6 @@ export class FilterListApiService implements ICategoryService {
    * @returns List of categories as an Observable
    */
   getSideFilters(): Observable<FilterListModel> {
-    return this.apiService.get('filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=');
+    return this.apiService.get(this.url);
   }
 }
