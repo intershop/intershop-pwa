@@ -6,7 +6,12 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'is-producttile',
-  templateUrl: './product-tile.component.html'
+  templateUrl: './product-tile.component.html',
+  styles: [`
+   .product-list-item.grid-view:nth-child(2n+1) {
+      clear: none;
+    }
+  `]
 })
 
 export class ProductTileComponent implements OnInit {
