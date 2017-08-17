@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
 })
 
 export class HeaderSlotComponent {
-
+    globalnav: boolean = true;
 }
