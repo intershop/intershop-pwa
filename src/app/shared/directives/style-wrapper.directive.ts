@@ -1,13 +1,13 @@
-import { Directive, HostBinding, Renderer, ElementRef } from '@angular/core';
+import { Directive, HostBinding, Renderer, ElementRef, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
 @Directive({
-    selector: '[style-wrapper]'
+    selector: '[is-style-wrapper]'
 })
-export class StyleWrapperDirective {
+export class StyleWrapperDirective implements OnInit {
 
     @HostBinding('class') classesString: string = '';
     constructor(private router: Router,
@@ -19,7 +19,7 @@ export class StyleWrapperDirective {
             .filter((event) => event instanceof NavigationEnd)
             .map(() => this.route)
             .map((route) => {
-                while (route.firstChild) route = route.firstChild;
+                while (route.firstChild) { route = route.firstChild };
                 return route;
             })
             .filter((route) => route.outlet === 'primary')

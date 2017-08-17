@@ -66,7 +66,7 @@ export class AccountLoginService implements IAccountLoginService {
      * @param  {UserDetail} userDetail
      */
     private storeUserDetail(userDetail: UserDetail) {
-        if (userDetail) {
+        if (userDetail && typeof userDetail !== 'string') {
             this.cacheService.storeDataToCache(userDetail, 'userDetail', false)
             this.loginStatusEmitter.emit(userDetail);
         }

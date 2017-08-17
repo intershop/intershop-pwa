@@ -15,7 +15,7 @@ import {
 import { HeaderModule } from '../shared/components/header/header.module';
 import { FooterModule } from '../shared/components/footer/footer.module';
 import { translateFactory } from '../../shared/lang-switcher/custom-translate-loader';
-import { StyleWrapperDirective } from "../shared/directives/style-wrapper.directive";
+import { StyleWrapperDirective } from '../shared/directives/style-wrapper.directive';
 
 @NgModule({
   imports: [
