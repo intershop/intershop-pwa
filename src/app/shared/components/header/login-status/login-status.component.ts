@@ -51,7 +51,7 @@ export class LoginStatusComponent implements OnInit {
         this.accountLoginService.logout();
         this.userDetail = null;
         this.isLoggedIn = false;
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     }
 
     /**

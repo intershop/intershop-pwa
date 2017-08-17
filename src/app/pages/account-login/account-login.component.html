@@ -1,66 +1,75 @@
-        <div class="marketing-area">
-            <!--TODO <is-marketingslot></is-marketingslot> -->
-        </div>
-        <h1>My Account</h1>
-        <div class="row" data-testing-id="account-login-page">
-            <div class="col-md-6">
-                <div class="section">
-                    <div>
-                        <h2>Returning Users</h2>
-                        <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
-                            <p>To sign in to your account, please enter your email address and password.</p>
-                            <div class="form-group has-feedback" [ngClass]="{'has-error' : loginForm.get('userName').invalid && loginForm.get('userName').touched,'has-success':loginForm.get('userName').valid && loginForm.get('userName').touched}">
-                                <label for="ShopLoginForm_Login" class="col-sm-3 control-label">Email</label>
-                                <div class="col-sm-6">
-                                    <input class="form-control" formControlName="userName" name="ShopLoginForm_Login" type="email" id="ShopLoginForm_Login">
-                                    <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="loginForm.get('userName').invalid && loginForm.get('userName').touched"></i>
-                                    <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!loginForm.get('userName').invalid && loginForm.get('userName').touched"></i>
-
-                                    <small class="help-block" *ngIf="loginForm.get('userName').touched && loginForm.get('userName').hasError('required')">
-                                        Please enter an email address.
-                                        <!--{{createAccountForm.get('emailDetails.emailAddress').hasError('pattern')}}-->
-                                    </small>
-                                    <small *ngIf="loginForm.get('userName').touched && loginForm.get('userName').hasError('validateEmail')" class="help-block">
-                                        Please enter a valid email address.
-                                    </small>
-                                </div>
-                                <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
-                            </div>
-
-                            <div class="form-group has-feedback" [ngClass]="{'has-error' : loginForm.get('password').invalid && loginForm.get('password').touched,'has-success':loginForm.get('password').valid && loginForm.get('password').touched}">
-                                <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
-                                <div class="col-sm-6">
-                                    <input formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password"
-                                        id="ShopLoginForm_Password">
-                                    <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched"></i>
-                                    <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!loginForm.get('password').invalid && loginForm.get('password').touched"></i>
-                                    <small class="help-block" *ngIf="loginForm.get('password').touched && loginForm.get('password').hasError('required')">
-                                        Please enter a password.
-                                    </small>
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-3 col-sm-9">
-                                    <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid">Sign In</button>
-                                    <a class="btn btn-link">Forgot your password?</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+<div class="marketing-area">
+    <!--TODO <is-marketingslot></is-marketingslot> -->
+</div>
+<h1>{{ 'account.login.heading' | translate }}</h1>
+<div class="row" data-testing-id="account-login-page">
+    <div class="col-md-6">
+        <div class="section">
+            <div *ngIf="!isLoggedIn">
+                <h2>{{'account.login.returning_user.heading' | translate}}</h2>
+                <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.addresses.message' | translate}}</p>
+                <div *ngIf="((errorUser && errorUser !== 'UserNotLoggedIn' && errorUser !== 'LoginAlreadyInUse'))" role="alert" class="alert alert-danger">
+                    {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (registrationLoginType
+                    && registrationLoginType === 'username') ? ('account.login.username_password.error.invalid'  | translate) : ('account.login.email_password.error.invalid' | translate) : ''}}
+                    
+                    <!-- TODO  -->
+                    <!-- Apply condition for other possible inputs -->
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <h2>New Users</h2>
-                <p>When you create an account, you'll gain access to a wide range of benefits:</p>
-                <ul>
-                    <li>Easier Order Tracking</li>
-                    <li>Faster checkout</li>
-                    <li>Create and manage your address book</li>
-                    <li>Comprehensive view of your order history</li>
-                    <li>Quick access to products saved in your shopping cart</li>
-                </ul>
-                <a class="btn btn-primary" href="javascript:void(0)" (click)="registerUser()">Create Account</a>
+                <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
+                    <!-- Hidden Fields in ISML -->
+                    <p>{{'account.login.message' | translate}}</p>
+                    <div class="form-group has-feedback" [ngClass]="{'has-error' : loginForm.get('userName').invalid && loginForm.get('userName').dirty,'has-success':loginForm.get('userName').valid && loginForm.get('userName').dirty}">
+                        <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{registrationLoginType && registrationLoginType === 'username' ?'Username' : 'Email'}}</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" formControlName="userName" name="ShopLoginForm_Login" type="{{registrationLoginType === 'username' ? 'text' : 'email'}}"
+                                id="ShopLoginForm_Login">
+                            <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="loginForm.get('userName').invalid && loginForm.get('userName').dirty"></i>
+                            <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!loginForm.get('userName').invalid && loginForm.get('userName').dirty"></i>
+
+                            <small class="help-block" *ngIf="loginForm.get('userName').dirty && loginForm.get('userName').hasError('required')">
+                                {{registrationLoginType && registrationLoginType === 'username' ? ('account.login.username.error.required' | translate) : ('account.login.email.error.required' | translate)}}
+                                    </small>
+                            <small *ngIf="loginForm.get('userName').dirty && loginForm.get('userName').hasError('validateEmail')" class="help-block">
+                                {{registrationLoginType && registrationLoginType === 'email' ?('account.login.email.error.invalid' | translate) : ''}}
+                                    </small>
+                        </div>
+                        <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
+                    </div>
+
+                    <div class="form-group has-feedback" [ngClass]="{'has-error' : loginForm.get('password').invalid && loginForm.get('password').dirty,'has-success':loginForm.get('password').valid && loginForm.get('password').dirty}">
+                        <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
+                        <div class="col-sm-6">
+                            <input formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password" id="ShopLoginForm_Password">
+                            <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="loginForm.get('password').invalid && loginForm.get('password').dirty"></i>
+                            <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!loginForm.get('password').invalid && loginForm.get('password').dirty"></i>
+                            <small class="help-block" *ngIf="loginForm.get('password').dirty && loginForm.get('password').hasError('required')">
+                                       {{'account.login.password.error.required' | translate}}
+                                    </small>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid && loginForm.get('password').dirty && loginForm.get('userName').dirty">{{'account.signin.button.label' | translate}}</button>
+                            <a class="btn btn-link">{{'account.send_password.heading' | translate}}</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+
+    <div class="col-md-6">
+        <h2>{{'account.new_user.heading' | translate}}</h2>
+        <p>{{'account.create.benefit.text' | translate}}</p>
+        <ul>
+            <li>{{'account.create.benefit1.text' | translate}}</li>
+            <li>{{'account.create.benefit2.text' | translate}}</li>
+            <li>{{'account.create.benefit3.text' | translate}}</li>
+            <li>{{'account.create.benefit4.text' | translate}}</li>
+            <li>{{'account.create.benefit5.text' | translate}}</li>
+        </ul>
+        <a class="btn btn-primary" href="javascript:void(0)" routerLink="/register">{{'account.create.button.label' | translate}}</a>
+    </div>
+</div>

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountLoginService } from './account-login-service';
 import { EmailValidator } from '../../shared/validators/email.validator';
+import { CacheCustomService } from '../../shared/services';
 
 
 @Component({
@@ -11,8 +12,12 @@ import { EmailValidator } from '../../shared/validators/email.validator';
 
 export class AccountLoginComponent implements OnInit {
   loginForm: FormGroup;
-  returnUrl: string;
-
+  loginToUse: boolean = false;
+  loginFormSubmitted: boolean;
+  errorUser: any;
+  registrationLoginType = 'email';
+  isLoggedIn;
+  defaultResponse: string = '401 and Unauthorized'
   /**
    * Constructor
    * @param  {FormBuilder} privateformBuilder
@@ -21,36 +26,39 @@ export class AccountLoginComponent implements OnInit {
    * @param  {ActivatedRoute} privateroute
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router) { }
+    private router: Router, private cacheService: CacheCustomService) { }
 
   /**
-   * Routes to Homepage when user is logged in
-   */
-  onSignin(userCredentials) {
-    this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
-      if (userData) {
-        this.router.navigate(['home']);
-      } else {
-        alert('Invalid Username or Password');
-      }
-    });
-  }
-
-  /**
-   * Routes to Register Page
-  */
-  registerUser() {
-    this.router.navigate(['register']);
-  }
-
-  /**
-   * Creates Login Form
-   */
+     * Creates Login Form
+     */
   ngOnInit() {
+    this.isLoggedIn = this.cacheService.cacheKeyExists('userDetail');
     this.loginForm = this.formBuilder.group({
-      userName: ['', [Validators.required, EmailValidator.validate]],
+      userName: ['', [Validators.compose([Validators.required,
+      (this.registrationLoginType === 'email' ? EmailValidator.validate : null)])]],
       password: ['', Validators.required],
     });
+  }
+
+  /**
+   * Routes to Family Page when user is logged in
+   */
+  onSignin(userCredentials) {
+    if (this.loginForm.invalid) {
+      Object.keys(this.loginForm.controls).forEach(key => {
+        this.loginForm.get(key).markAsDirty();
+      });
+    } else {
+      this.loginFormSubmitted = true;
+      this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
+        if (userData && typeof userData !== 'string') {
+          this.router.navigate(['home']);
+        } else {
+          this.loginForm.get('password').reset();
+          this.errorUser = userData || this.defaultResponse;
+        }
+      });
+    }
   }
 }
 

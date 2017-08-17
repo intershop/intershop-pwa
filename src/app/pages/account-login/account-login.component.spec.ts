@@ -12,6 +12,8 @@ import { EncryptDecryptService } from '../../shared/services/cache/encrypt-decry
 import { JwtService } from '../../shared/services/jwt.service';
 import { AccountLoginComponent } from './account-login.component';
 import { inject, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { userData } from './account-login.mock';
 import { SharedModule } from '../../shared/shared-modules/shared.module';
 
 
@@ -22,11 +24,11 @@ describe('AccountLogin Component', () => {
         debugEl: DebugElement;
 
     class MockAccountLoginService {
-        singinUser(userData) {
-            if (userData.userName === 'intershop@123.com' && userData.password === '123456') {
-                return Observable.of(true);
+        singinUser(userDetails) {
+            if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
+                return Observable.of(userData);
             } else {
-                return Observable.of(false);
+                return Observable.of('Incorrect Credentials');
             }
         }
     }
@@ -48,7 +50,8 @@ describe('AccountLogin Component', () => {
                 { provide: Router, useClass: RouterStub }
             ],
             imports: [
-                SharedModule
+                SharedModule,
+                TranslateModule.forRoot()
             ]
         })
             .compileComponents();
@@ -67,29 +70,36 @@ describe('AccountLogin Component', () => {
         expect(element.getElementsByClassName('btn btn-primary')).toBeDefined();
     });
 
-    it(`should checks if router.navigate is called with 'register'`, inject([Router], (router: Router) => {
-        const spy = spyOn(router, 'navigate');
-        component.registerUser();
-        expect(router.navigate).toHaveBeenCalledWith(['register']);
-    })
-    );
-
-    it(`should log in the user and checks if router.navigate is called with 'home'`, inject([Router], (router: Router) => {
+    it(`should call onSignIn when loginForm is invalid`, inject([Router], (router: Router) => {
+        component.ngOnInit();
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
-        const spy = spyOn(router, 'navigate');
-        component.onSignin(userDetails);
-        expect(router.navigate).toHaveBeenCalledWith(['home']);
-    })
-    );
-
-
-    it(`should not call router.navigate since credentials are wrong`, inject([Router], (router: Router) => {
-        const userDetails = { userName: 'intershop@123.com', password: '12' };
         const spy = spyOn(router, 'navigate');
         component.onSignin(userDetails);
         expect(router.navigate).not.toHaveBeenCalled();
     })
-    )
+    );
+
+    it(`should call onSignIn when loginForm is valid but credentials are incorrect`, inject([Router], (router: Router) => {
+        component.ngOnInit();
+        const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
+        const spy = spyOn(router, 'navigate');
+        component.loginForm.controls['userName'].setValue('test@test.com');
+        component.loginForm.controls['password'].setValue('123213');
+        component.onSignin(userDetails);
+        expect(component.errorUser).toEqual('Incorrect Credentials');
+    })
+    );
+
+    it(`should call onSignIn when loginForm is valid with correct credentials`, inject([Router], (router: Router) => {
+        component.ngOnInit();
+        const userDetails = { userName: 'intershop@123.com', password: '123456' };
+        const spy = spyOn(router, 'navigate');
+        component.loginForm.controls['userName'].setValue('test@test.com');
+        component.loginForm.controls['password'].setValue('123213');
+        component.onSignin(userDetails);
+        expect(router.navigate).toHaveBeenCalledWith(['home']);
+    })
+    );
 
     it('should call ngOnInit method', () => {
         component.ngOnInit();
