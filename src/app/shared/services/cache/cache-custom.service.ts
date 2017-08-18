@@ -26,7 +26,7 @@ export class CacheCustomService {
     * @param  {} keyToCheck
     * @returns Boolean
     */
-  cacheKeyExists(keyToCheck): Boolean { // To check whether data key already exists or not
+  cacheKeyExists(keyToCheck): boolean { // To check whether data key already exists or not
 
 
     return (this.cacheService.exists(keyToCheck));

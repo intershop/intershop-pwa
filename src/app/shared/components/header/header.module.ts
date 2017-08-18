@@ -4,7 +4,7 @@ import { ProductCompareComponent } from './product-compare/product-compare.compo
 import { RouterModule } from '@angular/router';
 import { MiniCartComponent } from './mini-cart/mini-cart.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
-import { WishListComponent } from './wish-list/wish-list.component';
+import { WishListComponent } from './wishlist-status/wishlist-status.component';
 import { LogoComponent } from './logo/logo.component';
 import { LanguageSwitchComponent } from './language-switch/language-switch.component';
 import { HeaderNavigationComponent } from './header-navigation/header-navigation.component';
