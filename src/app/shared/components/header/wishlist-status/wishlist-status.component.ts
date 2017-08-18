@@ -12,7 +12,7 @@ export class WishListComponent implements OnInit {
   itemCount = 0;
   isLoggedIn;
   constructor(private _dataEmitterService: DataEmitterService, private accountLoginService: AccountLoginService,
-  private cacheService:CacheCustomService
+    private cacheService: CacheCustomService
   ) {
   }
 
