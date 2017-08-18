@@ -17,16 +17,16 @@ describe('API service test', () => {
 
     mockHttpService = {
       get: (url: string, options: {}): Observable<any> => {
-        return Observable.of({"type":"get"});
+        return Observable.of({ 'type': 'get' });
       },
       put: (path: string, body: {}): Observable<any> => {
-        return Observable.of({"type":"put"});
+        return Observable.of({ 'type': 'put' });
       },
       post: (path: string, body: {}): Observable<any> => {
-        return Observable.of({"type":"post"});
+        return Observable.of({ 'type': 'post' });
       },
       delete: (path: string): Observable<any> => {
-        return Observable.of({"type":"delete"});
+        return Observable.of({ 'type': 'delete' });
       },
 
     };
