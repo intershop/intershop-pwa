@@ -6,6 +6,7 @@ import { DataEmitterService } from '../../../shared/services/data-emitter.servic
 import { async, inject } from '@angular/core/testing';
 import { ProductList } from '../../../pages/family-page/family-page.mock';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../../environments/environment';
 
 describe('ProductTile Component', () => {
     let fixture: ComponentFixture<ProductTileComponent>,
@@ -47,9 +48,11 @@ describe('ProductTile Component', () => {
     });
 
     it('should call ngOnInit', () => {
+        environment.needMock = false;
         component.mockData = ProductList[0].Cameras[0];
         component.ngOnInit();
         expect(component.mockData).not.toBeNull();
+        environment.needMock = false;
     });
 
     it('should call addToCart method of DataEmitterService', async(inject([DataEmitterService], (dataEmitterService: DataEmitterService) => {
@@ -106,6 +109,7 @@ describe('ProductTile Component', () => {
         component.mockData = ProductList[0].Cameras[0];
         component.ngOnInit();
         component.mockData.showInformationalPrice = true;
+        component.mockData.isEndOfLife = false;
         component.mockData.listPrice.value = 12;
         component.mockData.salePrice.value = 10;
         component.calculatePriceParameters();

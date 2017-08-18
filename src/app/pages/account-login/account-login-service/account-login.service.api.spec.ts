@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { TestBed, inject } from '@angular/core/testing';
 import { AccountLoginApiService } from './account-login.service.api';
-import { ResponseOptions } from '@angular/http';
 import { JwtService } from '../../../shared/services/jwt.service';
 import { ApiService } from '../../../shared/services/api.service';
 
@@ -15,6 +14,11 @@ describe('AccountLoginApi Service', () => {
             }
             return Observable.of(JSON.stringify(data));
         }
+
+        get(url) {
+            return Observable.of(url);
+        }
+
     }
 
     class JwtServiceStub {
@@ -40,11 +44,17 @@ describe('AccountLoginApi Service', () => {
             ]
         });
     })
-
     it('should login user', inject([AccountLoginApiService], (accountLoginApiService: AccountLoginApiService) => {
-        const userDetails = { userName: 'intershop@123.com', password: '123456' };
+        const userDetails = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
         accountLoginApiService.singinUser(userDetails).subscribe((data) => {
             expect(data).not.toBeNull();
+        })
+    }))
+
+      it('should not login user as credentials are incorrect', inject([AccountLoginApiService], (accountLoginApiService: AccountLoginApiService) => {
+        const userDetails = { userName: 'intershop@123.com', password: '123456' };
+        accountLoginApiService.singinUser(userDetails).subscribe((data) => {
+            expect(data).toEqual('customers/-');
         })
     }))
 
@@ -62,7 +72,7 @@ describe('AccountLoginApi Service', () => {
     })
     )
 
-     it('should call isAuthorized method whrn token exists in memory', inject([AccountLoginApiService, JwtService], (accountLoginApiService: AccountLoginApiService, jwtService: JwtService) => {
+    it(`should call isAuthorized method when token doesn't exists in memory`, inject([AccountLoginApiService, JwtService], (accountLoginApiService: AccountLoginApiService, jwtService: JwtService) => {
         tokenExists = false;
         const result = accountLoginApiService.isAuthorized();
         expect(result).toBe(false);

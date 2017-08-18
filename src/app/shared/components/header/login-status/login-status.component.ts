@@ -25,11 +25,13 @@ export class LoginStatusComponent implements OnInit {
             if (this.cacheCustomService.cacheKeyExists(this.userDetailKey)) {
                 this.isLoggedIn = true;
                 this.userDetail = this.cacheCustomService.getCachedData(this.userDetailKey);
+                this.userDetail['hasRole'] = true;
             }
         }
         this.accountLoginService.loginStatusEmitter.subscribe((userDetailData: UserDetail) => {
             this.isLoggedIn = true;
             this.userDetail = userDetailData;
+            this.userDetail['hasRole'] = true;
         })
     };
 
@@ -49,7 +51,7 @@ export class LoginStatusComponent implements OnInit {
         this.accountLoginService.logout();
         this.userDetail = null;
         this.isLoggedIn = false;
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
     }
 
     /**

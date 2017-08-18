@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'is-header',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
 })
 
 export class HeaderSlotComponent {
-
+    globalnav: boolean = true;
 }

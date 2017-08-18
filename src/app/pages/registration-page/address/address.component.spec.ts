@@ -2,7 +2,8 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { TestBed, inject, async } from '@angular/core/testing';
 import { AddressComponent } from './address.component';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { SharedModule } from '../../../shared/shared-modules/shared.module';
 
 describe('Address Component', () => {
     let fixture: ComponentFixture<AddressComponent>,
@@ -13,7 +14,7 @@ describe('Address Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [AddressComponent],
-            imports: [ReactiveFormsModule]
+            imports: [SharedModule]
         })
             .compileComponents();
     }))

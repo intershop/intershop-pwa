@@ -8,7 +8,7 @@ import { CacheCustomService } from '../../../shared/services/cache/cache-custom.
 import { FilterListService, FilterListMockService } from '../../../shared/components/filter-list/filter-list-service';
 import { InstanceService } from '../../../shared/services/instance.service';
 import { By } from '@angular/platform-browser';
-
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 describe('FilterList Component', () => {
     let fixture: ComponentFixture<FilterListComponent>,
         component: FilterListComponent,
@@ -18,7 +18,7 @@ describe('FilterList Component', () => {
 
     class CacheCustomServiceStub {
         cacheKeyExists(key) {
-           return keyExists;
+            return keyExists;
         }
         getCachedData(key, isDecrypyted) {
             return data
@@ -36,6 +36,7 @@ describe('FilterList Component', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [FilterListComponent],
+            imports: [CollapseModule],
             providers: [
                 { provide: FilterListService, useClass: FilterListServiceStub },
                 { provide: CacheCustomService, useClass: CacheCustomServiceStub },

@@ -11,13 +11,27 @@ describe('Search Box Component', () => {
     let fixture: ComponentFixture<SearchBoxComponent>,
         component: SearchBoxComponent,
         element: HTMLElement,
-        debugEl: DebugElement;
+        debugEl: DebugElement,
+        resultRequired = true;
+
+    class SearchBoxServiceStub {
+        search(term) {
+            const result = {
+                'elements': [
+                    'Camera', 'Camcoder'
+                ]
+            }
+
+            return resultRequired ? Observable.of(result) : Observable.of(null);
+        }
+    }
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
                 SearchBoxComponent
-            ]
+            ],
+            providers: [{ provide: SearchBoxService, useClass: SearchBoxServiceStub }]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(SearchBoxComponent);
             component = fixture.componentInstance;
@@ -28,7 +42,7 @@ describe('Search Box Component', () => {
     }));
 
     it('search box ngOninit', fakeAsync(() => {
-        component.searchTerm$.next('n');
+        component.searchTerm$.next('c');
 
         component.ngOnInit();
         tick(400);
@@ -37,12 +51,19 @@ describe('Search Box Component', () => {
     }));
 
     it('search results should be blank when no suggestions are found', fakeAsync(() => {
+        resultRequired = false;
         component.searchTerm$.next('Test');
 
         component.ngOnInit();
         tick(400);
 
         expect(component.results).toEqual([]);
+    }));
+
+    it('should call hidePopeup method', fakeAsync(() => {
+        component.results = []
+        component.hidePopuep();
+        expect(component.isHide).toBe(true);
     }));
 
     it('search Box suggestions on template', fakeAsync(() => {

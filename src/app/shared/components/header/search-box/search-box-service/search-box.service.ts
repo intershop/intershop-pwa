@@ -1,22 +1,32 @@
+import { Injectable, Injector, EventEmitter } from '@angular/core'
+import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
-import { searchBoxMock } from '../search-box-mock';
+import { InstanceService } from '../../../../../shared/services/instance.service';
+import { SearchBoxApiService } from './search-box.service.api';
+import { SearchBoxMockService } from './search-box.service.mock';
 
-export class SearchBoxService {
-  public static search(terms: Observable<string>) {
-    return terms.debounceTime(400)
-      .distinctUntilChanged()
-      .switchMap((value) => {
-        return value.length === 0 ?
-          Observable.of([]) :
-          this.searchEntries(value);
-      });
-  };
 
-  public static searchEntries(value) {
-    const filterList = _.filter(searchBoxMock.elements, (obj) => {
-      return obj.term.indexOf(value) !== -1;
-    });
-    return Observable.of(filterList);
-  }
+export interface ISearchBoxService {
+   search(terms: Observable<string>);
+};
+
+@Injectable()
+export class SearchBoxService implements ISearchBoxService {
+
+    searchBoxservice;
+
+    /**
+     * Constructor
+     * @param  {InstanceService} privateinstanceService
+     */
+    constructor(private instanceService: InstanceService) {
+        this.searchBoxservice = this.instanceService.getInstance((environment.needMock) ?
+            SearchBoxMockService : SearchBoxApiService);
+    };
+
+    public search(terms: Observable<string>) {
+      return this.searchBoxservice.search(terms);
+    }
+
+
 };

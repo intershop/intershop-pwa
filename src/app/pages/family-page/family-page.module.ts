@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FamilyPageComponent } from './family-page.component';
 import { FilterListComponent } from '../../shared/components/filter-list/filter-list.component';
 import { CategoryComponent } from '../../shared/components/category/category.component';
@@ -12,14 +10,13 @@ import { ProductListService, ProductListApiService, ProductListMockService } fro
 import { SharedModule } from '../../shared/shared-modules/shared.module';
 import { FilterListService, FilterListMockService, FilterListApiService } from '../../shared/components/filter-list/filter-list-service';
 import { FamilyPageRoute } from './family-page.routes';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   imports: [
-    CommonModule,
     RouterModule.forChild(FamilyPageRoute),
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    CollapseModule
   ],
   declarations: [
     FamilyPageComponent,
