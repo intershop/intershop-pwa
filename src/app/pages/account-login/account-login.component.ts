@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountLoginService } from './account-login-service';
 import { EmailValidator } from '../../shared/validators/email.validator';
@@ -23,7 +23,6 @@ export class AccountLoginComponent implements OnInit {
    * @param  {FormBuilder} privateformBuilder
    * @param  {AccountLoginService} privateaccountLoginService
    * @param  {Router} privaterouter
-   * @param  {ActivatedRoute} privateroute
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
     private router: Router, private cacheService: CacheCustomService) { }
