@@ -1,0 +1,31 @@
+<div class="breadcrumbs row">
+  <ol class="breadcrumbs-list">
+    <li class="breadcrumbs-list breadcrumbs-list-home">
+      <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" href="http://jdevbuilddemo05.rnd.j.intershop.de:3080/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewHomepage-Start">Home</a>
+      <span class="breadcrumb-list-separator">/</span>
+    </li>
+    <li class="breadcrumbs-list breadcrumbs-list-active">Cameras</li>
+  </ol>
+</div>
+
+<div class="marketing-area"></div>
+
+<div class="category-page" data-testing-id="Cameras-Camcorders">
+  <div class="row">
+    <div class="col-sm-3">
+
+    </div>
+    <div class="col-sm-9">
+
+      <ul class="category-list row ">
+        <li *ngFor="let family of families" class="category-list-item col-md-4 col-xs-6">
+          <div attr.data-testing-id="category-{{family.id}}" class="category-name ">
+            <a routerLink="/family"><img src="" data-test="true" data-type="M" alt="832" data-testing-id="category-image-832" height="270" width="270"><h3>{{family.name}}</h3>
+            </a>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
