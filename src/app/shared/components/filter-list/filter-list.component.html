@@ -1,46 +1,46 @@
-<div class="filter-panel" id="filter-accordion" *ngIf="filterListData.filterEntries">
-  <div *ngFor="let filterEntry of filterListData.filterEntries let i = index">
-    <!--TODO : filterEntry.ConfigurationFilterGroup isDefined-->
-    <div *ngIf="TODO; else elseBlock" class="filter-group">TODO</div>
-    <ng-template #elseBlock>
+<div class="filter-panel" [collapse]="filterAccordion" id="filter-accordion" *ngIf="filterListData?.elements">
+    <div *ngFor="let filterEntry of filterListData.elements let i = index">
+        <!--TODO : filterEntry.ConfigurationFilterGroup isDefined-->
+        <div *ngIf="TODO; else elseBlock" class="filter-group">TODO</div>
+        <ng-template #elseBlock>
 
-      <!--Start of filter component -->
-      <div *ngIf="filterEntry" class="filter-group">
+            <!--Start of filter component -->
+            <div *ngIf="filterEntry" class="filter-group">
 
-        <!-->TODO Category and page page header condition </!-->
-        <h3 data-toggle="collapse" [attr.data-target]="'#'+ filterEntry.id">
-          {{filterEntry?.name}}
-          <span class="glyphicon pull-right" [ngClass]="toggleIcon[i] ? 'glyphicon-chevron-right': 'glyphicon-chevron-down'" (click)="toggleIcon[i] = !toggleIcon[i]"></span>
-        </h3>
+                <!-->TODO Category and page page header condition </!-->
+                <h3 data-toggle="collapse" [attr.data-target]="'#'+ filterEntry.id">
+                    {{filterEntry?.name}}
+                    <span class="glyphicon pull-right" [ngClass]="toggleIcon[i] ? 'glyphicon-chevron-right': 'glyphicon-chevron-down'" (click)="toggleIcon[i] = !toggleIcon[i]"></span>
+                </h3>
 
-        <!-->TODO ul condition for category or family page</!-->
-        <ul class="filter-list clearfix collapse in" [ngClass]="true ? '': 'filter-category'" [attr.id]="filterEntry.id">
-          <ng-container *ngIf="(filterEntry.displayType =='text_clear' ); else elseblock">
-            <li class="filter-item " [ngClass]="{'filter-layer1':data.level,'filter-selected':true}" *ngFor="let data of filterEntry.facets">
-              <a class="filter-item-name">	
+                <!-->TODO ul condition for category or family page</!-->
+                <ul class="filter-list clearfix collapse in" [ngClass]="true ? '': 'filter-category'" [attr.id]="filterEntry.id">
+                    <ng-container *ngIf="(filterEntry.displayType =='text_clear' ); else elseblock">
+                        <li class="filter-item " [ngClass]="{'filter-layer1':data.level,'filter-selected':true}" *ngFor="let data of filterEntry.facets">
+                            <a class="filter-item-name">	
                 <span  [ngClass] ="data.level>0 ? 'glyphicon glyphicon-minus pull-right':''"> </span>
-                <span [ngClass]="data.selected?'icon-selected':'icon-notselected'"></span>{{data.name}}
-                <span *ngIf="!data.level" class="filter-count">({{data.count}})</span>
+                <span *ngIf="(data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category')" [ngClass]="data.selected?'icon-selected':'icon-notselected'"></span>{{(data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category') ? data.name : ''}}
+                <span *ngIf="!data.level && (data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category')" class="filter-count">({{(data.selected && filterEntry.name === 'Category') || (filterEntry.name !== 'Category') ? data.count : ''}})</span>
               </a>
-            </li>
-          </ng-container>
+                        </li>
+                    </ng-container>
 
-          <ng-template #elseblock>
-            <li class="filter-item filter-colour" *ngFor="let data of filterEntry.facets">
-              <a class="filter-swatch" title="{{data.name}}({{data.count}})" href="javascript:void(0)">
-                  <span [ngStyle]="{'background-color':data.name}">
+                    <ng-template #elseblock>
+                        <li class="filter-item filter-colour" *ngFor="let data of filterEntry.facets">
+                            <a class="filter-swatch" title="{{data.name}}({{data.count}})" href="javascript:void(0)">
+                                <span [ngStyle]="{'background-color':data.name}">
                   </span>
-                </a>
-            </li>
-          </ng-template>
-        </ul>
+                            </a>
+                        </li>
+                    </ng-template>
+                </ul>
 
-      </div>
-    </ng-template>
+            </div>
+        </ng-template>
 
 
-  </div>
+    </div>
 </div>
 
-<a class="visible-xs mobile-filter-toggle collapsed" data-toggle="collapse" data-target="#filter-accordion">Filters<br><span class="glyphicon glyphicon-chevron-up"></span>
+<a class="visible-xs mobile-filter-toggle collapsed" (click)="filterAccordion = !filterAccordion">Filters<br><span class="glyphicon glyphicon-chevron-up"></span>
     </a>

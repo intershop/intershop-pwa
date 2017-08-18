@@ -3,6 +3,7 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from '../../../shared/components/mock.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 describe('Header Slot Component', () => {
   let fixture: ComponentFixture<HeaderSlotComponent>,
@@ -12,13 +13,13 @@ describe('Header Slot Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [CollapseModule],
       providers: [],
       declarations: [
         HeaderSlotComponent,
         MockComponent({ selector: 'is-loginstatus', template: 'Login Status Template' }),
         MockComponent({ selector: 'is-productcomparestatus', template: 'Product Compare Status Template' }),
-        MockComponent({ selector: 'is-wishlist', template: 'Wish List Template' }),
+        MockComponent({ selector: 'is-wishlist-status', template: 'Wish List Template'}),
         MockComponent({ selector: 'is-languageswitch', template: 'Language Switch Template' }),
         MockComponent({ selector: 'is-logo', template: 'Logo Template' }),
         MockComponent({ selector: 'is-searchbox', template: 'Search Box Template' }),
@@ -38,7 +39,7 @@ describe('Header Slot Component', () => {
     expect(element.getElementsByClassName('user-links')[0].childElementCount).toBe(4);
     expect(element.getElementsByTagName('is-loginstatus')[0].textContent).toContain('Login Status Template');
     expect(element.getElementsByTagName('is-productcomparestatus')[0].textContent).toContain('Product Compare Status Template');
-    expect(element.getElementsByTagName('is-wishlist')[0].textContent).toContain('Wish List Template');
+    expect(element.getElementsByTagName('is-wishlist-status')[0].textContent).toContain('Wish List Template');
   });
 
   it('should check "LanguageSwitchComponent" is rendered on template', () => {

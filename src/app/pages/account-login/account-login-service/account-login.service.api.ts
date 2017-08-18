@@ -7,6 +7,7 @@ import { UserDetail } from './account-login.model';
 import { userData } from '.././account-login.mock';
 import { ApiService } from '../../../shared/services/api.service';
 import { JwtService } from '../../../shared/services/jwt.service';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable()
@@ -26,16 +27,10 @@ export class AccountLoginApiService {
      * @param  {AccountLogin} user
      * @returns Observable
      */
-    singinUser(user: AccountLogin): Observable<UserDetail> {
-        return this.apiService.post(`${environment.api_url}token`, 'grant_type=password&username=' + user.userName + '&password=' + user.password)
-            .map((res: Response ) => {
-                const response = JSON.parse(res.toString())
-                if (response.access_token) {
-                    this.jwtService.saveToken(response.access_token);
-                }
-                return this.getUserDetail();
-            })
-    };
+    singinUser(user): Observable<UserDetail> {
+    const headers = new HttpHeaders().set('Authorization', 'Basic ' + Buffer.from((user.userName + ':' + user.password)).toString('base64'));
+            return this.apiService.get('customers/-', null, headers );
+      };
 
     /**
      * Destroys the token and cleans the cache
@@ -53,13 +48,5 @@ export class AccountLoginApiService {
         if (this.jwtService.getToken()) {
             return true;
         } else { return false; }
-    };
-
-    /**
-     * Provides detail of logged in user
-     * @returns UserDetail
-     */
-    private getUserDetail(): UserDetail {
-        return userData;
     };
 }

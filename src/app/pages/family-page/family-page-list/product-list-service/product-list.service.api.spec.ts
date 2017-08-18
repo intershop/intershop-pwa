@@ -2,9 +2,11 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { ProductListApiService } from './product-list.service.api';
 import { CustomErrorHandler } from '../../../../shared/services/custom-error-handler';
 import { ApiService } from '../../../../shared/services/api.service';
+import { environment } from '../../../../../environments/environment';
 
 
 describe('ProuctListApi Service', () => {
+    environment.needMock = true;
     class ApiServiceStub {
         _customErrorHandler = new CustomErrorHandler();
         get(path) {

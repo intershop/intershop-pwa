@@ -1,8 +1,8 @@
-import { ErrorHandler } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
+@Injectable()
 export class CustomErrorHandler extends ErrorHandler {
-
 
   /**
    * Constructor
@@ -16,7 +16,7 @@ export class CustomErrorHandler extends ErrorHandler {
    * handle error
    * @param  {any} error
    */
-  handleError(error: any) {
+  public handleError(error: any) {
     console.log(error.message);
 
   }
@@ -26,9 +26,9 @@ export class CustomErrorHandler extends ErrorHandler {
    * @param  {any} error
    * @returns Observable
    */
-  handleApiErrors(error: any): Observable<any> {
+  public handleApiErrors(error: any): Observable<any> {
     const errorMessage = error.status + ' and ' + error.statusText;
     console.log(errorMessage);
-    return Observable.of(null);
+    return Observable.of(errorMessage);
   }
 }

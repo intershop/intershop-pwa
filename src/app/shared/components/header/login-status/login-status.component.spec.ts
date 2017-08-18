@@ -18,7 +18,7 @@ describe('Login Status Component', () => {
             return true;
         };
         getCachedData() {
-            return 'userDetails';
+            return [];
         };
     };
 
@@ -80,7 +80,7 @@ describe('Login Status Component', () => {
 
         component.logout();
 
-        expect(router.navigate).toHaveBeenCalledWith(['login']);
+        expect(router.navigate).toHaveBeenCalledWith(['home']);
         expect(component.userDetail).toBeNull();
         expect(component.isLoggedIn).toBe(false);
         expect(accountLoginService.logout).toHaveBeenCalled();

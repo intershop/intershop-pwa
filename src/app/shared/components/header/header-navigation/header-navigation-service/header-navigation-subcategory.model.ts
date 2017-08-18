@@ -1,51 +1,46 @@
 class Image {
   name: string;
   type: string;
+  effectiveUrl: string;
+  viewID: string;
+  typeID: string;
   imageActualHeight: number;
   imageActualWidth: number;
-  effectiveUrl: string;
-  typeID: string;
   primaryImage: boolean;
-  viewID: string;
-}
-
-export class SubCategory {
-  name: string;
-  type: string;
-  id: string;
-  displayName: string;
-  online: string;
-  images: Image[];
-  hasOnlineSubCategories: boolean;
-  hasOnlineProducts: boolean;
-  uri: string;
 }
 
 class Image2 {
   name: string;
   type: string;
+  effectiveUrl: string;
+  viewID: string;
+  typeID: string;
   imageActualHeight: number;
   imageActualWidth: number;
-  effectiveUrl: string;
-  typeID: string;
   primaryImage: boolean;
-  viewID: string;
 }
 
-class Element {
+export class SubCategory {
   name: string;
   type: string;
-  id: string;
-  displayName: string;
-  description: string;
-  subCategories: SubCategory[];
-  online: string;
-  images: Image2[];
-  subCategoriesCount: number;
-  hasOnlineSubCategories: boolean;
   hasOnlineProducts: boolean;
+  hasOnlineSubCategories: boolean;
+  online: string;
+  description: string;
+  images: Image2[];
+  id: string;
+  uri: string;
 }
 
 export class HeaderNavigationSubcategoryModel {
-  elements: Element[];
+  name: string;
+  type: string;
+  hasOnlineProducts: boolean;
+  hasOnlineSubCategories: boolean;
+  online: string;
+  description: string;
+  subCategoriesCount: number;
+  images: Image[];
+  id: string;
+  subCategories: SubCategory[];
 }

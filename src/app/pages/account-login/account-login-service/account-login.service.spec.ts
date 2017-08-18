@@ -6,11 +6,14 @@ import { UserDetail } from './account-login.model';
 import { async } from '@angular/core/testing';
 import { inject } from '@angular/core/testing';
 import { JwtService } from '../../../shared/services/jwt.service';
+
 import { CacheCustomService } from '../../../shared/services/cache/cache-custom.service';
+import { environment } from '../../../../environments/environment';
 
 
 describe('AccountLogin Service', () => {
     let tokenExists = true;
+    environment.needMock = true;
     class JwtServiceStub {
         saveToken(token) {
             return token;

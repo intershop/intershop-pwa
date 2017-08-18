@@ -1,10 +1,8 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AccountLoginMockService, AccountLoginService } from './account-login-service';
 import { InstanceService } from '../../shared/services/instance.service';
 import { CacheCustomService } from '../../shared/services/cache/cache-custom.service';
@@ -13,20 +11,24 @@ import { EncryptDecryptService } from '../../shared/services/cache/encrypt-decry
 import { JwtService } from '../../shared/services/jwt.service';
 import { AccountLoginComponent } from './account-login.component';
 import { inject, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { userData } from './account-login.mock';
+import { SharedModule } from '../../shared/shared-modules/shared.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 
 describe('AccountLogin Component', () => {
     let fixture: ComponentFixture<AccountLoginComponent>,
         component: AccountLoginComponent,
         element: HTMLElement,
-        debugEl: DebugElement;
-
+        debugEl: DebugElement,
+        navSpy;
     class MockAccountLoginService {
-        singinUser(userData) {
-            if (userData.userName === 'intershop@123.com' && userData.password === '123456') {
-                return Observable.of(true);
+        singinUser(userDetails) {
+            if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
+                return Observable.of(userData);
             } else {
-                return Observable.of(false);
+                return Observable.of('Incorrect Credentials');
             }
         }
     }
@@ -43,14 +45,15 @@ describe('AccountLogin Component', () => {
                 AccountLoginComponent
             ],
             providers: [
-                InstanceService, AccountLoginMockService,
-                JwtService, CacheCustomService, CacheService, EncryptDecryptService,
-                { provide: AccountLoginService, useClass: MockAccountLoginService },
-                { provide: Router, useClass: RouterStub }
+                CacheCustomService, CacheService, EncryptDecryptService,
+                { provide: AccountLoginService, useClass: MockAccountLoginService }
             ],
             imports: [
-                ReactiveFormsModule
-            ]
+                SharedModule,
+                TranslateModule.forRoot(),
+                RouterTestingModule
+            ],
+            schemas: [NO_ERRORS_SCHEMA]
         })
             .compileComponents();
     }))
@@ -60,6 +63,8 @@ describe('AccountLogin Component', () => {
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
+        const router = TestBed.get(Router);
+        this.navSpy = spyOn(router, 'navigate');
     })
 
     it('should check if controls are rendered on Login page', () => {
@@ -68,29 +73,30 @@ describe('AccountLogin Component', () => {
         expect(element.getElementsByClassName('btn btn-primary')).toBeDefined();
     });
 
-    it(`should checks if router.navigate is called with 'register'`, inject([Router], (router: Router) => {
-        const spy = spyOn(router, 'navigate');
-        component.registerUser();
-        expect(router.navigate).toHaveBeenCalledWith(['register']);
-    })
-    );
-
-    it(`should log in the user and checks if router.navigate is called with 'home'`, inject([Router], (router: Router) => {
+    it(`should call onSignIn when loginForm is invalid`, () => {
+        component.ngOnInit();
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
-        const spy = spyOn(router, 'navigate');
         component.onSignin(userDetails);
-        expect(router.navigate).toHaveBeenCalledWith(['home']);
+        expect(this.navSpy).not.toHaveBeenCalled();
     })
-    );
 
-
-    it(`should not call router.navigate since credentials are wrong`, inject([Router], (router: Router) => {
-        const userDetails = { userName: 'intershop@123.com', password: '12' };
-        const spy = spyOn(router, 'navigate');
+    it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
+        component.ngOnInit();
+        const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
+        component.loginForm.controls['userName'].setValue('test@test.com');
+        component.loginForm.controls['password'].setValue('123213');
         component.onSignin(userDetails);
-        expect(router.navigate).not.toHaveBeenCalled();
+        expect(component.errorUser).toEqual('Incorrect Credentials');
     })
-    )
+
+    it(`should call onSignIn when loginForm is valid with correct credentials`, () => {
+        component.ngOnInit();
+        const userDetails = { userName: 'intershop@123.com', password: '123456' };
+        component.loginForm.controls['userName'].setValue('test@test.com');
+        component.loginForm.controls['password'].setValue('123213');
+        component.onSignin(userDetails);
+        expect(this.navSpy).toHaveBeenCalledWith(['home']);
+    })
 
     it('should call ngOnInit method', () => {
         component.ngOnInit();

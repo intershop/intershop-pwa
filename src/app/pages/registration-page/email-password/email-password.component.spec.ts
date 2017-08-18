@@ -2,9 +2,10 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { TestBed, inject, async } from '@angular/core/testing';
-import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { EmailPasswordComponent } from './email-password.component';
 import { matchOtherValidator } from '../../../shared/validators/match-words.validator';
+import { SharedModule } from '../../../shared/shared-modules/shared.module';
 
 describe('EmailPassword Component', () => {
     let fixture: ComponentFixture<EmailPasswordComponent>,
@@ -15,7 +16,7 @@ describe('EmailPassword Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [EmailPasswordComponent],
-            imports: [ReactiveFormsModule]
+            imports: [SharedModule]
         })
             .compileComponents();
     }))

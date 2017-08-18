@@ -6,8 +6,9 @@ import { ProductCompareComponent } from './product-compare.component';
 import { DataEmitterService } from '../../../services/data-emitter.service';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '../../../../shared/shared-modules/shared.module';
 
 @Component({
     template: ''
@@ -31,6 +32,7 @@ describe('Product Compare Component', () => {
 
         TestBed.configureTestingModule({
             imports: [
+                SharedModule,
                 RouterTestingModule.withRoutes([
                     { path: 'compare', component: DummyComponent }
                 ]),

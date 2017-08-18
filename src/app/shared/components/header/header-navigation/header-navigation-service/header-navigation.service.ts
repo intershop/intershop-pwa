@@ -1,20 +1,40 @@
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { CategoriesMock, SubCategoriesMock } from '../header-navigation-mock';
-import 'rxjs/add/operator/map';
-import { HeaderNavigationSubcategoryModel } from './header-navigation-subcategory.model';
-import { HeaderNavigationCategoryModel } from './header-navigation-category.model';
+import { InstanceService } from '../../../../../shared/services/instance.service';
+import { HeaderNavigationApiService } from './header-navigation.service.api';
+import { HeaderNavigationMockService } from './header-navigation.service.mock';
+import { environment } from '../../../../../../environments/environment';
 
-
+@Injectable()
 export class HeaderNavigationService {
-  public getSubCategories(): Observable<HeaderNavigationSubcategoryModel> {
-    return Observable.of(SubCategoriesMock);
-  }
+    headerNavigationService: IHeaderNavigationService;
 
-  public getCategories(): Observable<HeaderNavigationCategoryModel> {
-    return Observable.of(CategoriesMock as HeaderNavigationCategoryModel);
-  }
-};
+    /**
+     * decides the service to be used as per environment variable
+     * @param  {InstanceService} privateinstanceService
+     */
+    constructor(private instanceService: InstanceService) {
+        this.headerNavigationService = this.instanceService.getInstance((environment.needMock) ?
+            HeaderNavigationMockService : HeaderNavigationApiService);
+    }
 
+    /**
+     * @returns List of subcategories as an Observable
+     */
+    getSubCategories(categoryId): Observable<any> {
+        return this.headerNavigationService.getSubCategories(categoryId);
+    }
 
+    /**
+   * @returns List of categories as an Observable
+   */
+    getCategories(): Observable<any> {
+        return this.headerNavigationService.getCategories();
+    }
 
+}
 
+export interface IHeaderNavigationService {
+    getSubCategories(categoryId): Observable<any>;
+    getCategories(): Observable<any>;
+}

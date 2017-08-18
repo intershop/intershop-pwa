@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ErrorPageComponent } from './error-page.component';
 import { RouterModule } from '@angular/router';
 import { ErrorPageRoute } from './error-page.routes';
+import { SharedModule } from '../../shared/shared-modules/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
+    SharedModule,
     RouterModule.forChild(ErrorPageRoute),
   ],
   declarations: [ErrorPageComponent],
