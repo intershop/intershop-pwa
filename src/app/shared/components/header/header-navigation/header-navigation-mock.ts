@@ -3,7 +3,7 @@ export const CategoriesMock = {
     {
       'name': 'Cameras',
       'type': 'Category',
-      'id': 'Cameras',
+      'id': 'Cameras-Camcorders',
       'description': 'The Vectra products and services catalog.',
       'online': '1',
       'images': [

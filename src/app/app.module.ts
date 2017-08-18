@@ -6,9 +6,9 @@ import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
 import { PageModule } from './pages/pages.module';
 import { CoreModule } from './core/core.module';
-
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/http-interceptors/auth-interceptor';
+
 @NgModule({
   declarations: [
     AppComponent
