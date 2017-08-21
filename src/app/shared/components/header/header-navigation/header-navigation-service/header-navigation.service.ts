@@ -4,6 +4,8 @@ import { InstanceService } from '../../../../../shared/services/instance.service
 import { HeaderNavigationApiService } from './header-navigation.service.api';
 import { HeaderNavigationMockService } from './header-navigation.service.mock';
 import { environment } from '../../../../../../environments/environment';
+import { HeaderNavigationCategoryModel } from './header-navigation-category.model';
+import { HeaderNavigationSubcategoryModel } from './header-navigation-subcategory.model';
 
 @Injectable()
 export class HeaderNavigationService {
@@ -21,14 +23,14 @@ export class HeaderNavigationService {
     /**
      * @returns List of subcategories as an Observable
      */
-    getSubCategories(categoryId): Observable<any> {
+    getSubCategories(categoryId): Observable<HeaderNavigationSubcategoryModel> {
         return this.headerNavigationService.getSubCategories(categoryId);
     }
 
     /**
    * @returns List of categories as an Observable
    */
-    getCategories(): Observable<any> {
+    getCategories(): Observable<HeaderNavigationCategoryModel> {
         return this.headerNavigationService.getCategories();
     }
 

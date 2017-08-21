@@ -7,10 +7,22 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class HeaderNavigationMockService {
+
+
+  /**
+     * retuns subcategories based on the category passed
+     * @param  {} categoryId
+     * @returns Observable
+  */
   public getSubCategories(categoryId): Observable<HeaderNavigationSubcategoryModel> {
-    return Observable.of(SubCategoriesMock);
+    const subCategories = (SubCategoriesMock.find(item => item.id === categoryId));
+    return Observable.of(subCategories as HeaderNavigationSubcategoryModel);
   }
 
+  /**
+     * returns list of categories
+     * @returns Observable
+  */
   public getCategories(): Observable<HeaderNavigationCategoryModel> {
     return Observable.of(CategoriesMock as HeaderNavigationCategoryModel);
   }

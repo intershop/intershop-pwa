@@ -80,11 +80,8 @@ describe('Header Navigation Component', () => {
         const subCategories = element.getElementsByClassName('main-navigation-level1-item');
         expect(categories[0].children[0].textContent).toContain('CAMERAS');
         expect(categories[1].children[0].textContent).toContain('COMPUTERS');
-        expect(categories[2].children[0].textContent).toContain('TELECOMMUNICATION');
+        expect(categories[2].children[0].textContent).toContain('HOME ENTERTAINMENT');
         expect(categories[3].children[0].textContent).toContain('SPECIALS');
-        // expect(subCategories[0].children[0].textContent).toEqual('Binoculars');
-        // expect(subCategories[1].children[0].textContent).toEqual('Camera Accessories & Supplies');
-        // expect(subCategories[2].children[0].textContent).toEqual('Camera Backpacks & Cases');
     });
 });
 
