@@ -12,13 +12,13 @@ describe('Header Navigation Service', () => {
         });
     });
 
-    it('should return categories data', inject([HeaderNavigationService], (headerNavigationService: HeaderNavigationService) => {
+    it('should verify that getCategories method is returning the Categories', inject([HeaderNavigationService], (headerNavigationService: HeaderNavigationService) => {
         let categories;
         headerNavigationService.getCategories().map(response => response).subscribe(response => categories = response);
         expect(categories).not.toBeNull();
     }));
 
-    it('should return sub-categories data', inject([HeaderNavigationService], (headerNavigationService: HeaderNavigationService) => {
+    it('should verify that getSubCategories method is returning the Subcategories', inject([HeaderNavigationService], (headerNavigationService: HeaderNavigationService) => {
         let subCategories;
         headerNavigationService.getSubCategories('Cameras-Camcorders').map(response => response).subscribe(response => subCategories = response);
         expect(subCategories).not.toBeNull();
