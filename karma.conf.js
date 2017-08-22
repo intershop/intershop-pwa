@@ -11,6 +11,7 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-html-reporter'),
       require('karma-junit-reporter'),
+      require('karma-spec-reporter'),
       require('karma-phantomjs-launcher'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular/cli/plugins/karma')
@@ -36,16 +37,25 @@ module.exports = function (config) {
 //      xmlVersion: null // use '1' if reporting to be per SonarQube 6.2 XML format
     },
     htmlReporter: {
-      outputDir: 'build/reports/karma', // where to put the reports  
-//      templatePath: null, // set if you moved jasmine_template.html 
-      focusOnFailures: true, // reports show failures on start 
-      namedFiles: false, // name files instead of creating sub-directories 
-//      pageTitle: 'karma', // page title for reports; browser info by default 
-      urlFriendlyName: false, // simply replaces spaces with _ for files/dirs 
-//      reportName: 'report-summary-filename', // report summary filename; browser info by default 
-      // experimental 
-      preserveDescribeNesting: false, // folded suites stay folded  
-      foldAll: false, // reports start folded (only with preserveDescribeNesting) 
+      outputDir: 'build/reports/karma', // where to put the reports
+//      templatePath: null, // set if you moved jasmine_template.html
+      focusOnFailures: true, // reports show failures on start
+      namedFiles: false, // name files instead of creating sub-directories
+//      pageTitle: 'karma', // page title for reports; browser info by default
+      urlFriendlyName: false, // simply replaces spaces with _ for files/dirs
+//      reportName: 'report-summary-filename', // report summary filename; browser info by default
+      // experimental
+      preserveDescribeNesting: false, // folded suites stay folded
+      foldAll: false, // reports start folded (only with preserveDescribeNesting)
+    },
+    specReporter: {
+      maxLogLines: 3, // limit number of lines logged per test
+      suppressErrorSummary: true, // do not print error summary
+      suppressFailed: false, // do not print information about failed tests
+      suppressPassed: true, // do not print information about passed tests
+      suppressSkipped: false, // do not print information about skipped tests
+      showSpecTiming: false, // print the time elapsed for each spec
+      failFast: false // test would finish with error when a first fail occurs.
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
