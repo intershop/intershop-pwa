@@ -14,6 +14,7 @@ export class SearchBoxComponent implements OnInit {
   results: SuggestedElement[];
   searchTerm$ = new Subject<string>();
   isHide = false;
+  searchButtonText: string;
   constructor(private searchBoxService: SearchBoxService) {
   }
 
