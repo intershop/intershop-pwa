@@ -144,17 +144,15 @@
 			<!-- AddToProductCompare.isml start-->
 			<!--condition=NOT(ProductBO:isEndOfLife) -->
 			<ng-container *ngIf="true">
-				<button *ngIf="mockData.displayType == 'glyphicon' " class="btn btn-link add-to-compare add-to-compare-trigger" title="Compare"
-				 rel="nofollow">
-					<span class="glyphicon glyphicon-equalizer" (click)="addToCompare(mockData)"></span>
+				<button *ngIf="mockData.displayType == 'glyphicon' " class="btn btn-link add-to-compare add-to-compare-trigger" [ngClass]="{'is-selected' : isCompared}" title="Compare" rel="nofollow">
+					<span class="glyphicon glyphicon-equalizer" (click)="addToCompare(mockData.sku)"></span>
 				</button>
-				<a *ngIf="mockData.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)"
-				 rel="nofollow">
+				<a *ngIf="mockData.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)" rel="nofollow">
 					<span class="glyphicon glyphicon-equalizer"></span>
 					<span class="share-label">Compare</span>
 				</a>
-				<a *ngIf="mockData.displayType != 'glyphicon' && mockData.displayType != 'share-tool'" class="btn add-to-compare btn-link"
-				 attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)" rel="nofollow"> Compare	</a>
+				<a *ngIf="mockData.displayType != 'glyphicon' && mockData.displayType != 'share-tool'" class="btn add-to-compare btn-link" attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)" rel="nofollow"> Compare
+				</a>
 			</ng-container>
 			<!-- AddToProductCompare.isml End-->
 	</div>
@@ -224,7 +222,7 @@
 						number : '1.2-2' | currency : mockData.listPrice.currencyMnemonic : true}}
 					</div>
 					<!--TODO  ISProductPriceAdditionalText.ISML Start-->
-					
+
 					<!--  ISProductPriceAdditionalText.ISML End-->
 
 					<!--No ScaledPrice property on API Data-->
@@ -271,8 +269,7 @@
 					</ng-container>
 					<div class="product-availability">
 						<ng-container *ngIf="!mockData.inStock">
-							<link *ngIf="mockData.richSnippetsEnabled" itemprop="availability" href="http://schema.org/OutOfStock" /> 
-							Out of Stock
+							<link *ngIf="mockData.richSnippetsEnabled" itemprop="availability" href="http://schema.org/OutOfStock" /> Out of Stock
 						</ng-container>
 						<ng-container *ngIf="!mockData.isEndOfLife && !mockData.isLastOrder">
 							<link *ngIf="mockData.richSnippetsEnabled " itemprop="availability" href="http://schema.org/InStock" /> In Stock
@@ -336,13 +333,13 @@
 										<!--  CurrentCustomerBO.ISMl Start-->
 										<!--  CurrentCustomerBO.ISMl End-->
 										<!--  GetProductPrice.ISMl Start-->
-										<!--  GetProductPrice.ISMl End-->										
-											<a *ngIf="mockData.digitalGiftCard" href="" class="btn btn-primary"> </a>
-											<button type="submit" name="addProduct" *ngIf="!mockData.digitalGiftCard" class="btn btn-primary" title="Add to Cart" data-testing-id="addToCartButton"
-											 (click)="addToCart(mockData)">
+										<!--  GetProductPrice.ISMl End-->
+										<a *ngIf="mockData.digitalGiftCard" href="" class="btn btn-primary"> </a>
+										<button type="submit" name="addProduct" *ngIf="!mockData.digitalGiftCard" class="btn btn-primary" title="Add to Cart" data-testing-id="addToCartButton"
+										 (click)="addToCart(mockData)">
 											{{(mockData.mockListView.displayType != 'glyphicon' && mockData.mockListView.isRetailSet) ? 'Add item(s) to Cart' : null}} 
 											{{(mockData.mockListView.displayType != 'glyphicon' && !mockData.mockListView.isRetailSet) ? 'Add to Cart' : null}}
-											</button>								
+											</button>
 									</ng-container>
 								</div>
 							</div>
@@ -352,7 +349,7 @@
 							<ng-container *ngIf="!mockData.mockListView.isEndOfLife">
 								<button *ngIf="mockData.mockListView.displayType == 'glyphicon' " class="btn btn-link add-to-compare add-to-compare-trigger"
 								 title="Compare" rel="nofollow">
-									<span class="glyphicon glyphicon-equalizer" (click)="addToCompare(mockData)"></span>
+									<span class="glyphicon glyphicon-equalizer" (click)="addToCompare(mockData.sku)"></span>
 								</button>
 								<a *ngIf="mockData.mockListView.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)"
 								 rel="nofollow">
@@ -360,7 +357,7 @@
 									<span class="share-label">Compare</span>
 								</a>
 								<a *ngIf="mockData.mockListView.displayType != 'glyphicon' && mockData.mockListView.displayType != 'share-tool'" class="btn add-to-compare btn-link"
-								 attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)" rel="nofollow"> Compare	</a>
+								 attr.data-testing-id="compare-{{mockData.sku}}" (click)="addToCompare(mockData.sku)" rel="nofollow"> Compare	</a>
 							</ng-container>
 							<!-- AddToProductCompare.isml End-->
 							<button *ngIf="true" type="submit" class="btn add-to-wishlist" [ngClass]="{'btn-link' : true}" rel="nofollow" name="addToWishlistProduct"

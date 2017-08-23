@@ -831,7 +831,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
-        'sku': '8706917',
+        'sku': '8706918',
         'images':
         [
           {
@@ -1284,7 +1284,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
-        'sku': '8706917',
+        'sku': '8706919',
         'images':
         [
           {
@@ -1737,7 +1737,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
-        'sku': '8706917',
+        'sku': '8706920',
         'images':
         [
           {
@@ -2190,7 +2190,7 @@ export const ProductList = [
           'currencyMnemonic': 'USD',
           'scaledPrices': []
         },
-        'sku': '8706917',
+        'sku': '8706921',
         'images':
         [
           {
