@@ -12,9 +12,6 @@ export class ComparePageComponent implements OnInit {
 
   ngOnInit() {
     const cachedComparedItems = this.cacheCustomService.getCachedData(this.cacheStoreKey);
-    cachedComparedItems.forEach(element => {
-      this.comparedProducts.push(element);
-    });
-    console.log(this.comparedProducts);
+    this.comparedProducts = cachedComparedItems ? cachedComparedItems : [];
   }
 }
