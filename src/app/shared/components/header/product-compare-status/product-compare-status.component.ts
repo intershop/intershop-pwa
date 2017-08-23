@@ -17,16 +17,12 @@ export class ProductCompareStatusComponent implements OnInit {
    * @param  {CacheCustomService} privatecacheCustomService
    */
   constructor(private _dataEmitterService: DataEmitterService,
-              private cacheCustomService: CacheCustomService) { }
+    private cacheCustomService: CacheCustomService) { }
 
   ngOnInit() {
-    if(this.cacheCustomService.cacheKeyExists(this.cacheStoreKey)){
+    if (this.cacheCustomService.cacheKeyExists(this.cacheStoreKey)) {
       const cachedComparedItems = this.cacheCustomService.getCachedData(this.cacheStoreKey);
-      if(cachedComparedItems){
-        cachedComparedItems.forEach(element => {
-          this.compareListItems.push(element);
-        });
-      }      
+      this.compareListItems = cachedComparedItems ? cachedComparedItems : [];
     }
     this._dataEmitterService.comparerListEmitter.subscribe(data => {
       const index = this.compareListItems.indexOf(data);
