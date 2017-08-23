@@ -26,5 +26,21 @@
   "account.login.username.error.required": "Geben Sie einen Benutzernamen an.",
   "account.login.email.error.required": "Bitte geben Sie eine E-Mail-Adresse an.",
   "account.login.email.error.invalid": "Bitte geben Sie eine g\u00FCltige E-Mail-Adresse an.",
-  "account.login.password.error.required": "Bitte geben Sie ein Kennwort ein."
+  "account.login.password.error.required": "Bitte geben Sie ein Kennwort ein.",
+  "account.register.heading":"Neues Benutzerkonto anlegen",
+  "account.register.message":"Um alle Benutzerfunktionen und -vorteile in vollem Umfang nutzen zu k\u00F6nnen, geben Sie bitte unten alle n\u00F6tigen Informationen an.",
+  "account.register.email_password.heading":"E-Mail und Kennwort",
+  "account.register.email_password.message":"Mit E-Mail-Adresse und Kennwort haben Sie zuk\u00FCnftig Zugriff auf Ihr Konto.",
+  "account.register.address.headding":"Adresse",
+  "account.register.address.message":"Um bei der Bestellung Zeit zu sparen, geben Sie unten Ihre Hauptadressen f\u00FCr Versand und Lieferung an. Die Informationen werden gespeichert, sodass Sie sie bei zuk\u00FCnftigen Bestellungen nicht mehr jedes Mal erneut eingeben m\u00FCssen.",
+  "account.register.email.label":"E-Mail-Adresse",
+  "account.register.email.example.text":"(z.B. joe@aol.com)",
+  "account.register.email.supplementary_text":"* Sie k\u00F6nnen im Bereich 'Mein Konto' jederzeit Newsletter abonnieren. Ihre pers\u00F6nlichen Daten werden wir nur wie in unseren <a href':''{0}'>Datenschutzhinweisen</a> beschrieben verwenden.",
+  "account.register.email.supplementary_text.auto_email":"* Wir werden Ihnen exklusive Neuigkeiten zu Produkten oder besonderen Aktionen senden. Diese Einstellungen k\u00F6nnen Sie jederzeit im Bereich 'Mein Konto' \u00E4ndern. Ihre pers\u00F6nlichen Daten werden wir nur wie in unseren <a href':''{0}'>Datenschutzhinweisen</a> beschrieben verwenden.",
+  "account.register.email_confirmation.label":"E-Mail-Adresse best\u00E4tigen",
+  "account.register.email_confirmation.not_match.error":"Die E-Mail-Adresse wurde nicht korrekt best\u00E4tigt.",
+  "account.register.password.label":"Kennwort",
+  "account.register.password.extrainfo.message":"mindestens {0} Zeichen, muss Buchstaben und Ziffern enthalten, keine Leerzeichen erlaubt",
+  "account.register.password_confirmation.label":"Kennwort best\u00E4tigen"
+  
 }

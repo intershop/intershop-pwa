@@ -22,6 +22,7 @@ export class ProductTileComponent implements OnInit {
   displayCondition: boolean;
   oldPrice: any;
   shownSavings: number;
+  isCompared:boolean =  false;
 
   /**
    * Constructor
@@ -174,5 +175,6 @@ export class ProductTileComponent implements OnInit {
    */
   addToCompare(itemToAdd): void {
     this._dataEmitterService.addToCompare(itemToAdd);
+    this.isCompared = !this.isCompared;
   };
 };
