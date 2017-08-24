@@ -3,7 +3,6 @@ import { Component, Directive, Injectable, Input } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { TranslateService } from '@ngx-translate/core';
-import { FooterComponent } from './shared/components/footer/footer.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from './shared/components/mock.component';
 
@@ -14,7 +13,9 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent, FooterComponent, MockComponent({ selector: 'is-header', template: 'Header Component' }),
+        AppComponent,
+        MockComponent({ selector: 'is-header', template: 'Header Component' }),
+        MockComponent({ selector: 'is-footer', template: 'Footer Component' })
       ],
       providers: [
         TranslateService
