@@ -7,7 +7,7 @@ import { async } from '@angular/core/testing';
 import { inject } from '@angular/core/testing';
 import { JwtService } from '../../../shared/services/jwt.service';
 
-import { CacheCustomService } from '../../../shared/services/cache/cache-custom.service';
+import { CacheCustomService, GlobalState } from '../../../shared/services';
 import { environment } from '../../../../environments/environment';
 
 
@@ -41,12 +41,22 @@ describe('AccountLogin Service', () => {
         }
     }
 
+    class GlobalStateServiceStub {
+        notifyDataChanged(event, value) {
+            return true;
+        }
+        subscribe(event: string, callback: Function) {
+            callback();
+        }
+    }
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 AccountLoginService, AccountLoginMockService, InstanceService,
                 { provide: JwtService, useClass: JwtServiceStub },
-                { provide: CacheCustomService, useClass: CacheCustomServiceStub }
+                { provide: CacheCustomService, useClass: CacheCustomServiceStub },
+                { provide: GlobalState, useClass: GlobalStateServiceStub }
             ]
         });
     })
