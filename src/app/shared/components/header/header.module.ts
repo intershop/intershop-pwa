@@ -19,6 +19,9 @@ import { HeaderNavigationApiService } from './header-navigation/header-navigatio
 import { SearchBoxApiService } from './search-box/search-box-service/search-box.service.api';
 import { SearchBoxMockService } from './search-box/search-box-service/search-box.service.mock';
 import { SearchBoxService } from './search-box/search-box-service/search-box.service';
+import {
+  WishListService
+} from '../../../pages/wish-list-page/wish-list-service/wish-list-service';
 
 @NgModule({
   imports: [
@@ -43,7 +46,8 @@ import { SearchBoxService } from './search-box/search-box-service/search-box.ser
   ],
   providers: [AccountLoginApiService, AccountLoginMockService, AccountLoginService,
     HeaderNavigationService, HeaderNavigationMockService, HeaderNavigationApiService,
-    SearchBoxApiService, SearchBoxMockService, SearchBoxService
+    SearchBoxApiService, SearchBoxMockService, SearchBoxService,
+    WishListService
   ]
 })
 

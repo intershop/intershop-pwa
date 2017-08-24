@@ -1,16 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { WishListService } from './wish-list-service/wish-list-service';
+import { WishListModel, WishListItem } from './wish-list-service/wish-list.model';
 
 @Component({
-  selector: 'is-wishlistpage',
   templateUrl: './wish-list-page.component.html'
 })
 
 export class WishListPageComponent implements OnInit {
 
+  wishList: WishListItem[] = [];
   /**
    * Constructor
    */
-  constructor() { };
+  constructor(private wishListService: WishListService) { };
 
-  ngOnInit() { };
+  ngOnInit() {
+    this.wishListService.getWishList().subscribe((wishListData: WishListModel) => {
+      this.wishList = wishListData.items;
+    });
+  };
 };
