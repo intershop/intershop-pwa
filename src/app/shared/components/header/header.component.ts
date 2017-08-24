@@ -15,12 +15,12 @@ import { GlobalState } from '../../services/global.state';
 export class HeaderSlotComponent {
     globalnav: boolean = true;
     constructor(private wishListService: WishListService, private globalState: GlobalState) {
-        // this.globalState.subscribe('customerDetails', (customerDetails) => {
-        //     if (customerDetails) {
-        //         this.wishListService.getWishList().subscribe(_ => _);
-        //     } else {
-        //         this.globalState.notifyDataChanged('wishListStatus', customerDetails);
-        //     }
-        // });
+        this.globalState.subscribe('customerDetails', (customerDetails) => {
+            if (customerDetails) {
+                this.wishListService.getWishList().subscribe(_ => _);
+            } else {
+                this.globalState.notifyDataChanged('wishListStatus', customerDetails);
+            }
+        });
     }
 }
