@@ -20,7 +20,6 @@ describe('AppComponent', () => {
         TranslateService
       ],
       imports: [
-
         TranslateModule.forRoot(),
         RouterTestingModule
       ]
@@ -40,16 +39,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'app'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
-  }));
-
   it('should match the text passed in Header Component', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('is-header').textContent).toEqual('Header Component')
+    expect(compiled.querySelector('is-header').textContent).toEqual('Header Component');
   }));
 });
 
