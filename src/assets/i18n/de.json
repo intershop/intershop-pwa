@@ -26,5 +26,7 @@
   "account.login.username.error.required": "Geben Sie einen Benutzernamen an.",
   "account.login.email.error.required": "Bitte geben Sie eine E-Mail-Adresse an.",
   "account.login.email.error.invalid": "Bitte geben Sie eine g\u00FCltige E-Mail-Adresse an.",
-  "account.login.password.error.required": "Bitte geben Sie ein Kennwort ein."
+  "account.login.password.error.required": "Bitte geben Sie ein Kennwort ein.",
+  "search.searchbox.instructional_text":"Suchen Sie nach Schlagwort, Produkt-ID oder Kategorie.",
+  "search.searchbox.button.title":"Suche starten"
 }
