@@ -11,15 +11,14 @@ import { SearchBoxService } from './search-box-service/search-box.service';
 
 export class SearchBoxComponent implements OnInit {
 
-  public model: any;
   results: SuggestedElement[];
   searchTerm$ = new Subject<string>();
   isHide = false;
-
+  searchButtonText: string;
   constructor(private searchBoxService: SearchBoxService) {
   }
 
-  hidePopuep() {
+  hidePopup() {
     if (this.results) {
       this.isHide = true;
     }
@@ -27,10 +26,10 @@ export class SearchBoxComponent implements OnInit {
 
   ngOnInit() {
     this.searchBoxService.search(this.searchTerm$)
-      .subscribe((results: SearchBoxModel) => {
+      .subscribe((searchResults: SearchBoxModel) => {
 
-        if (results && results.elements.length > 0) {
-          this.results = results.elements;
+        if (searchResults && searchResults.elements && searchResults.elements.length > 0) {
+          this.results = searchResults.elements;
           this.isHide = false;
         } else {
           this.results = [];
