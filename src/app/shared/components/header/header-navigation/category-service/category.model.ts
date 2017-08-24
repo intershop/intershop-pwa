@@ -1,4 +1,4 @@
-import {HeaderNavigationSubcategoryModel, SubCategory} from './header-navigation-subcategory.model';
+import {SubcategoryModel, SubCategory} from './subcategory.model';
 
 class Image {
   name: string;
@@ -24,7 +24,7 @@ class Element {
   subCategories: SubCategory[];
 }
 
-export class HeaderNavigationCategoryModel {
+export class CategoryModel {
   elements: Element[];
   type: string;
 }

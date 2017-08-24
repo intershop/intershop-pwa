@@ -5,7 +5,7 @@ import {
 import {
     WishListModel
 } from '../../../pages/wish-list-page/wish-list-service/wish-list.model';
-import { JwtService, GlobalState } from '../../services';
+import { GlobalState } from '../../services/global.state';
 
 @Component({
     selector: 'is-header',
@@ -15,12 +15,12 @@ import { JwtService, GlobalState } from '../../services';
 export class HeaderSlotComponent {
     globalnav: boolean = true;
     constructor(private wishListService: WishListService, private globalState: GlobalState) {
-        this.globalState.subscribe('customerDetails', (customerDetails) => {
-            if (customerDetails) {
-                this.wishListService.getWishList().subscribe(_ => _);
-            } else {
-                this.globalState.notifyDataChanged('wishListStatus', customerDetails);
-            }
-        });
+        // this.globalState.subscribe('customerDetails', (customerDetails) => {
+        //     if (customerDetails) {
+        //         this.wishListService.getWishList().subscribe(_ => _);
+        //     } else {
+        //         this.globalState.notifyDataChanged('wishListStatus', customerDetails);
+        //     }
+        // });
     }
 }

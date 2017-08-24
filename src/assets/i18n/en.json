@@ -26,6 +26,7 @@
   "account.login.username.error.required":"Please enter a username.",
   "account.login.email.error.required":"Please enter an email address.",
   "account.login.email.error.invalid":"Please enter a valid email address.",
-  "account.login.password.error.required":"Please enter a password."
-  
+  "account.login.password.error.required":"Please enter a password.",
+  "search.searchbox.instructional_text":"Search for keyword, product ID or category...",
+  "search.searchbox.button.title":"Start search."
 }
