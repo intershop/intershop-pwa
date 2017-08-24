@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { HeaderNavigationComponent } from './header-navigation.component';
-import { HeaderNavigationService } from './header-navigation-service/header-navigation.service';
+import { CategoryService } from './category-service/category.service';
 import { CategoriesMock, SubCategoriesMock } from './header-navigation-mock';
 import { CacheCustomService } from '../../../../shared/services/cache/cache-custom.service';
 import { async, inject } from '@angular/core/testing';
@@ -24,7 +24,7 @@ describe('Header Navigation Component', () => {
         }
     }
 
-    class HeaderNavigationServiceStub {
+    class CategoryServiceStub {
         getCategories(): Observable<any> {
             return Observable.of(CategoriesMock);
         }
@@ -40,7 +40,7 @@ describe('Header Navigation Component', () => {
             ],
             providers: [
                 { provide: CacheCustomService, useClass: CacheCustomServiceStub },
-                { provide: HeaderNavigationService, useClass: HeaderNavigationServiceStub }
+                { provide: CategoryService, useClass: CategoryServiceStub }
             ]
         })
             .compileComponents();
@@ -62,10 +62,10 @@ describe('Header Navigation Component', () => {
         expect(component.categories).not.toBeNull();
     });
 
-    it('should call getSubCategories method and get data from HeaderNavigation Service', inject([HeaderNavigationService], (headerNavigationService: HeaderNavigationService) => {
-        const headerNavigationServiceSpy = spyOn(headerNavigationService, 'getSubCategories').and.returnValue(Observable.of(CategoriesMock));
+    it('should call getSubCategories method and get data from Category Service', inject([CategoryService], (categoryService: CategoryService) => {
+        const categoryServiceSpy = spyOn(categoryService, 'getSubCategories').and.returnValue(Observable.of(CategoriesMock));
         component.getSubCategories('Cameras');
-        expect(headerNavigationServiceSpy).toHaveBeenCalled();
+        expect(categoryServiceSpy).toHaveBeenCalled();
         expect(component.subCategories).not.toBeNull();
     })
     );
