@@ -1,17 +1,15 @@
-import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { By } from '@angular/platform-browser';
 import { SearchBoxComponent } from './search-box.component';
 import { SearchBoxService } from './search-box-service/search-box.service';
 import { tick, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 describe('Search Box Component', () => {
     let fixture: ComponentFixture<SearchBoxComponent>,
         component: SearchBoxComponent,
         element: HTMLElement,
-        debugEl: DebugElement,
         resultRequired = true;
 
     class SearchBoxServiceStub {
@@ -31,26 +29,30 @@ describe('Search Box Component', () => {
             declarations: [
                 SearchBoxComponent
             ],
+            imports: [TranslateModule.forRoot()],
             providers: [{ provide: SearchBoxService, useClass: SearchBoxServiceStub }]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(SearchBoxComponent);
             component = fixture.componentInstance;
             element = fixture.nativeElement;
-            debugEl = fixture.debugElement;
             fixture.detectChanges();
         });
     }));
 
-    it('search box ngOninit', fakeAsync(() => {
-        component.searchTerm$.next('c');
+    it('should create the component', async(() => {
+        const app = fixture.debugElement.componentInstance;
+        expect(app).toBeTruthy();
+    }));
 
+    it('should call search method of searchBox service and verify that it returns data when suggestions are available', fakeAsync(() => {
+        component.searchTerm$.next('c');
         component.ngOnInit();
         tick(400);
-
+        console.log(component.results);
         expect(component.results).not.toBeNull();
     }));
 
-    it('search results should be blank when no suggestions are found', fakeAsync(() => {
+    it('should call search method of searchBox service and verify that search results should be a blank array when no suggestions are found', fakeAsync(() => {
         resultRequired = false;
         component.searchTerm$.next('Test');
 
@@ -60,13 +62,13 @@ describe('Search Box Component', () => {
         expect(component.results).toEqual([]);
     }));
 
-    it('should call hidePopeup method', fakeAsync(() => {
-        component.results = []
-        component.hidePopuep();
+    it('should call hidePopeup method and expect isHide to be true', fakeAsync(() => {
+        component.results = [];
+        component.hidePopup();
         expect(component.isHide).toBe(true);
     }));
 
-    it('search Box suggestions on template', fakeAsync(() => {
+    it('should check if both the search results are rendered on HTML', fakeAsync(() => {
         component.results = [{
             term: 'networking software',
             type: 'SuggestTerm'
@@ -77,8 +79,7 @@ describe('Search Box Component', () => {
         }];
 
         fixture.detectChanges();
-        const listElements = element.getElementsByTagName('li');
-
-        expect(listElements.length).toBeGreaterThan(0);
+        const listElements = element.getElementsByClassName('search-suggest-results');
+        expect(listElements[0].children.length).toEqual(2);
     }));
 });

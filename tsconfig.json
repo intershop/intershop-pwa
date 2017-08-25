@@ -14,7 +14,8 @@
     ],
     "types": [
       "crypto-js",
-      "jasmine"
+      "jasmine",
+      "lodash"
     ],
     "lib": [
       "es2016",
