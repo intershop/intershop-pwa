@@ -6,6 +6,7 @@ import { UserDetail } from './account-login.model';
 import { userData } from '../account-login.mock';
 import { JwtService } from '../../../shared/services/jwt.service';
 import { CacheCustomService } from '../../../shared/services/cache/cache-custom.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class AccountLoginMockService {
@@ -17,43 +18,14 @@ export class AccountLoginMockService {
     }
 
     /**
-     * construcot
-     * @param router
-     * @param jwtService
-     * @param cacheService
-     */
-    constructor(private jwtService: JwtService
-    ) { };
-
-
-    /**
      * For logging in
      * @param  {AccountLogin} user
      * @returns Observable
      */
     singinUser(user: AccountLogin): Observable<UserDetail> {
-        if (user.userName === this.authorizedUser.userName && user.password === this.authorizedUser.password) {
-            const token = Math.floor(100000 + Math.random() * 900000).toString();
-            this.jwtService.saveToken(token);
+        if (_.isEqual(user, this.authorizedUser)) {
             return this.getUserDetail();
         } else { return Observable.of(null); }
-    };
-
-    /**
-     * Destoys the token and cleans the cache
-     * @returns void
-     */
-    logout(): void {
-        this.jwtService.destroyToken();
-    };
-
-
-    /**
-     * Checks if the user is logged in
-     * @returns boolean
-     */
-    isAuthorized(): boolean {
-        if (this.jwtService.getToken()) { return true; } else { return false; }
     };
 
     /**

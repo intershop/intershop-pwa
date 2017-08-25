@@ -1,12 +1,11 @@
-import {Injectable, Inject} from '@angular/core';
-import {PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser, isPlatformServer} from '@angular/common';
-
+import { Injectable, Inject } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 @Injectable()
 export class JwtService {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor( @Inject(PLATFORM_ID) private platformId: Object) {
   }
 
   /**
