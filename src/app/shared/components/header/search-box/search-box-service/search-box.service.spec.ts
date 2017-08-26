@@ -17,7 +17,7 @@ describe('Search Box Service', () => {
         });
     });
 
-    it('search results should not be null when search term matches one or more products in the available product list', inject([SearchBoxService], (searchBoxService: SearchBoxService) => {
+    it('searchresults should not be undefined when data is available in the service', inject([SearchBoxService], (searchBoxService: SearchBoxService) => {
         let searchResults;
         searchBoxService.search(Observable.of('g')).subscribe((results) => {
             searchResults = results;
@@ -26,7 +26,7 @@ describe('Search Box Service', () => {
         expect(searchResults).not.toBeNull();
     }));
 
-    it('search results should be blank array when search term dont match any product in the available product list', inject([SearchBoxService], (searchBoxService: SearchBoxService) => {
+    it('searchresults should be blanck array when data is not available in the service', inject([SearchBoxService], (searchBoxService: SearchBoxService) => {
         let searchResults;
         searchBoxService.search(Observable.of('test')).subscribe((results) => {
             searchResults = results;

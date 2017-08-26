@@ -32,7 +32,7 @@ export class SubCategory {
   uri: string;
 }
 
-export class SubcategoryModel {
+export class HeaderNavigationSubcategoryModel {
   name: string;
   type: string;
   hasOnlineProducts: boolean;

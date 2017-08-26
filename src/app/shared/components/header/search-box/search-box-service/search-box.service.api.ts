@@ -6,14 +6,11 @@ import { ApiService } from '../../../../../shared/services/api.service';
 
 @Injectable()
 export class SearchBoxApiService {
-    url: string = 'suggest?SearchTerm=';
+
     constructor(private apiService: ApiService) {
 
     }
-    /**
-     * Returns the list of items matching the search term
-     * @param  {} terms
-     */
+
     public search(terms) {
         return terms.debounceTime(400)
             .distinctUntilChanged()
@@ -23,11 +20,8 @@ export class SearchBoxApiService {
                     this.searchEntries(value);
             });
     };
-    /**
-     * Calls the get method of api
-     * @param  {} value
-     */
+
     public searchEntries(value) {
-        return this.apiService.get(this.url + value)
+        return this.apiService.get('suggest?SearchTerm=' + value)
     }
 };

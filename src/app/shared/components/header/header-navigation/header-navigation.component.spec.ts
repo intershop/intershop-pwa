@@ -1,16 +1,18 @@
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { HeaderNavigationComponent } from './header-navigation.component';
-import { CategoryService } from './category-service/category.service';
+import { HeaderNavigationService } from './header-navigation-service/header-navigation.service';
 import { CategoriesMock, SubCategoriesMock } from './header-navigation-mock';
 import { CacheCustomService } from '../../../../shared/services/cache/cache-custom.service';
-import { async, inject } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 
 describe('Header Navigation Component', () => {
     let fixture: ComponentFixture<HeaderNavigationComponent>,
         component: HeaderNavigationComponent,
         element: HTMLElement,
-        keyExists = false;
+        debugEl: DebugElement;
+    let keyExists = false;
 
     class CacheCustomServiceStub {
         cacheKeyExists(categoryId) {
@@ -24,7 +26,8 @@ describe('Header Navigation Component', () => {
         }
     }
 
-    class CategoryServiceStub {
+    class HeaderNavigationServiceStub {
+        constructor() { }
         getCategories(): Observable<any> {
             return Observable.of(CategoriesMock);
         }
@@ -40,7 +43,7 @@ describe('Header Navigation Component', () => {
             ],
             providers: [
                 { provide: CacheCustomService, useClass: CacheCustomServiceStub },
-                { provide: CategoryService, useClass: CategoryServiceStub }
+                { provide: HeaderNavigationService, useClass: HeaderNavigationServiceStub }
             ]
         })
             .compileComponents();
@@ -49,37 +52,27 @@ describe('Header Navigation Component', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(HeaderNavigationComponent);
         component = fixture.componentInstance;
+        debugEl = fixture.debugElement;
         element = fixture.nativeElement;
     })
 
-    it('should create the component', async(() => {
-        const app = fixture.debugElement.componentInstance;
-        expect(app).toBeTruthy();
-    }));
-
-    it('should call ngOnInt and verify if categories has got data', () => {
-        component.ngOnInit();
+    it('should set values data to categories', () => {
+        fixture.detectChanges();
         expect(component.categories).not.toBeNull();
     });
 
-    it('should call getSubCategories method and get data from Category Service', inject([CategoryService], (categoryService: CategoryService) => {
-        const categoryServiceSpy = spyOn(categoryService, 'getSubCategories').and.returnValue(Observable.of(CategoriesMock));
+    it('should call getSubCategories method and get data from HeaderNavigation Service', () => {
         component.getSubCategories('Cameras');
-        expect(categoryServiceSpy).toHaveBeenCalled();
         expect(component.subCategories).not.toBeNull();
-    })
-    );
+    });
 
-    it('should call getSubCategories method and get data from CacheCustom Service', inject([CacheCustomService], (cacheCustomService: CacheCustomService) => {
+    it('should call getSubCategories method and get data from CacheCustom Service', () => {
         keyExists = true;
-        const cacheCustomServiceSpy = spyOn(cacheCustomService, 'getCachedData').and.returnValue(Observable.of(SubCategoriesMock));
         component.getSubCategories('Cameras');
-        expect(cacheCustomServiceSpy).toHaveBeenCalled();
         expect(component.subCategories).not.toBeNull();
-    })
-    )
+    });
 
-    it('should check if categories are rendered on template', () => {
+    it('should render categories and subcategories on template', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
@@ -87,8 +80,11 @@ describe('Header Navigation Component', () => {
         const subCategories = element.getElementsByClassName('main-navigation-level1-item');
         expect(categories[0].children[0].textContent).toContain('CAMERAS');
         expect(categories[1].children[0].textContent).toContain('COMPUTERS');
-        expect(categories[2].children[0].textContent).toContain('HOME ENTERTAINMENT');
+        expect(categories[2].children[0].textContent).toContain('TELECOMMUNICATION');
         expect(categories[3].children[0].textContent).toContain('SPECIALS');
+        // expect(subCategories[0].children[0].textContent).toEqual('Binoculars');
+        // expect(subCategories[1].children[0].textContent).toEqual('Camera Accessories & Supplies');
+        // expect(subCategories[2].children[0].textContent).toEqual('Camera Backpacks & Cases');
     });
 });
 

@@ -7,7 +7,6 @@ import { AccountLogin } from '../account-login';
 import { CacheCustomService } from '../../../shared/services/cache/cache-custom.service';
 import { UserDetail } from './account-login.model';
 import { InstanceService } from '../../../shared/services/instance.service';
-import { JwtService, GlobalState } from '../../../shared/services';
 
 export interface IAccountLoginService {
     singinUser(userDetails: AccountLogin): Observable<UserDetail>,
@@ -27,7 +26,7 @@ export class AccountLoginService implements IAccountLoginService {
      * Constructor
      * @param  {InstanceService} privateinstanceService
      */
-    constructor(private instanceService: InstanceService, private jwtService: JwtService, private globalState: GlobalState) {
+    constructor(private instanceService: InstanceService) {
         this.loginService = this.instanceService.getInstance((environment.needMock) ?
             AccountLoginMockService : AccountLoginApiService);
         this.cacheService = this.instanceService.getInstance(CacheCustomService);
@@ -40,12 +39,6 @@ export class AccountLoginService implements IAccountLoginService {
      */
     singinUser(userDetails: AccountLogin): Observable<UserDetail> {
         return this.loginService.singinUser(userDetails).map((data) => {
-            const token = Math.floor(100000 + Math.random() * 900000).toString();
-
-            if (environment.needMock) {
-                this.jwtService.saveToken(token);
-            }
-            this.globalState.notifyDataChanged('customerDetails', data);
             this.storeUserDetail(data);
             return data;
         });
@@ -57,8 +50,7 @@ export class AccountLoginService implements IAccountLoginService {
      */
     logout(): void {
         this.cacheService.deleteCacheKey('userDetail');
-        this.globalState.notifyDataChanged('customerDetails', null);
-        this.jwtService.destroyToken();
+        return this.loginService.logout();
     };
 
     /**
@@ -66,7 +58,7 @@ export class AccountLoginService implements IAccountLoginService {
      * @returns boolean
      */
     isAuthorized(): boolean {
-        return !!this.jwtService.getToken();
+        return this.loginService.isAuthorized();
     };
 
     /**

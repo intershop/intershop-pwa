@@ -26,12 +26,12 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` or `gradlew karma` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
-Run `ng e2e` or `gradlew protractor` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-The application is automatically started in the background.
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
 
 User `gradlew test` to execute the end-to-end tests via [geb+spock](http://www.gebish.org/).
 Gradle automatically starts the application in the background.

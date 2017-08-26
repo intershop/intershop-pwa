@@ -21,9 +21,9 @@ describe('Search Box Api Service', () => {
         });
     });
 
-     it('should call search method', inject([SearchBoxApiService], (searchBoxApiService: SearchBoxApiService) => {
-        const searchTerm = searchBoxApiService.search(Observable.of('g'));
-        expect(searchTerm).toBeTruthy();
+     it('should call search mehthod', inject([SearchBoxApiService], (searchBoxApiService: SearchBoxApiService) => {
+        const urlPassed = searchBoxApiService.search(Observable.of('g'));
+        expect(urlPassed).toBeTruthy();
     }));
 
     it('should call searchEntries method and verify the url passed', inject([SearchBoxApiService], (searchBoxApiService: SearchBoxApiService) => {

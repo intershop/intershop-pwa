@@ -7,13 +7,6 @@ import { async, inject } from '@angular/core/testing';
 import { ProductList } from '../../../pages/family-page/family-page.mock';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
-import { JwtService } from '../../../shared/services';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
-import {
-    WishListService
-} from '../../../pages/wish-list-page/wish-list-service/wish-list-service';
-import { Observable } from 'rxjs/Observable';
 
 describe('ProductTile Component', () => {
     let fixture: ComponentFixture<ProductTileComponent>,
@@ -21,16 +14,7 @@ describe('ProductTile Component', () => {
         element: HTMLElement,
         debugEl: DebugElement,
         translateService: TranslateService;
-    let jwtToken: string;
-    class JwtServiceStub {
-        saveToken(token) {
-            jwtToken = token;
-            return token;
-        }
-        getToken() {
-            return jwtToken;
-        }
-    }
+
     class DataEmitterServiceStub {
         addToCart(itemToAdd) {
 
@@ -41,30 +25,13 @@ describe('ProductTile Component', () => {
         addToCompare(itemToAdd) {
 
         }
-    };
-    class RouterStub {
-        navigate(url) {
-            return url;
-        }
-    };
-
-    class WishListServiceStub {
-        getWishList() {
-            return Observable.of(null);
-        }
-    };
-
+    }
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [TranslateModule.forRoot(),
-                RouterTestingModule
-            ],
+            imports: [TranslateModule.forRoot()],
             declarations: [ProductTileComponent],
             providers: [
-                { provide: DataEmitterService, useClass: DataEmitterServiceStub },
-                { provide: JwtService, useClass: JwtServiceStub },
-                { provide: Router, useClass: RouterStub },
-                { provide: WishListService, useClass: WishListServiceStub }
+                { provide: DataEmitterService, useClass: DataEmitterServiceStub }
             ]
         })
             .compileComponents();
@@ -95,9 +62,9 @@ describe('ProductTile Component', () => {
     })
     ))
 
-    it('should call addToWishList method of DataEmitterService', async(inject([WishListService], (wishListService: WishListService) => {
-        const spy = spyOn(wishListService, 'getWishList').and.returnValue(Observable.of(null));
-        component.addToWishList(null);
+    it('should call addToWishList method of DataEmitterService', async(inject([DataEmitterService], (dataEmitterService: DataEmitterService) => {
+        const spy = spyOn(dataEmitterService, 'addToWishList');
+        component.addToWishList('add to wishList');
         expect(spy).toHaveBeenCalled();
     })
     ))
@@ -193,11 +160,11 @@ describe('ProductTile Component', () => {
         expect(component.oldPrice).toBe('N/A');
     });
 
-    /*    it('should test if the tags are getting rendered', () => {
-           component.mockData = ProductList[0].Cameras[0];
-           fixture.detectChanges();
-           expect(element.getElementsByTagName('img')).toBeDefined();
-           const elem = element.getElementsByClassName('rating-display clearfix');
-           expect(elem[0].children.length).toBe(7);
-       }); */
+ /*    it('should test if the tags are getting rendered', () => {
+        component.mockData = ProductList[0].Cameras[0];
+        fixture.detectChanges();
+        expect(element.getElementsByTagName('img')).toBeDefined();
+        const elem = element.getElementsByClassName('rating-display clearfix');
+        expect(elem[0].children.length).toBe(7);
+    }); */
 });
