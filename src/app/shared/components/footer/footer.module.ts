@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer.component';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { footerRoutes } from './footer.routes';
 
 @NgModule({
   imports: [
-    CollapseModule
+    RouterModule.forChild(footerRoutes),
   ],
   exports: [
     FooterComponent
   ],
-  declarations: [
-    FooterComponent
-  ],
+  declarations: [FooterComponent],
   providers: []
 })
 

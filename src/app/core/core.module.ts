@@ -10,9 +10,8 @@ import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache
 
 import {
   ApiService, InstanceService, JwtService, EncryptDecryptService,
-  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState
+  DataEmitterService, CacheCustomService, CustomErrorHandler
 } from '../shared/services';
-
 import { HeaderModule } from '../shared/components/header/header.module';
 import { FooterModule } from '../shared/components/footer/footer.module';
 import { translateFactory } from '../../shared/lang-switcher/custom-translate-loader';
@@ -46,8 +45,7 @@ import { StyleWrapperDirective } from '../shared/directives/style-wrapper.direct
     CacheCustomService,
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
-    CustomErrorHandler,
-    GlobalState
+    CustomErrorHandler
   ],
   exports: [
     FooterModule,
@@ -60,7 +58,8 @@ export class CoreModule {
   public static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: []
+      providers: [
+      ]
     };
   }
 

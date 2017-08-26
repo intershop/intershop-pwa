@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CategoryModel } from './category-service/category.model';
-import { SubcategoryModel } from './category-service/subcategory.model';
-import { CategoryService } from './category-service/category.service';
-import { CacheCustomService } from '../../../../shared/services/cache/cache-custom.service';
+import { Component, OnInit } from '@angular/core'
+import { HeaderNavigationCategoryModel } from './header-navigation-service/header-navigation-category.model';
+import { HeaderNavigationSubcategoryModel } from './header-navigation-service/header-navigation-subcategory.model';
+
+
+
 import * as _ from 'lodash';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Observable } from 'rxjs/Observable';
+import { HeaderNavigationService } from './header-navigation-service/header-navigation.service';
+import { CacheCustomService } from '../../../../shared/services/cache/cache-custom.service';
 
 @Component({
   selector: 'is-headernavigation',
@@ -13,15 +16,15 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class HeaderNavigationComponent implements OnInit {
-  categories: CategoryModel;
-  subCategories: SubcategoryModel;
+  categories: HeaderNavigationCategoryModel;
+  subCategories: HeaderNavigationSubcategoryModel;
 
-  constructor(private categoryService: CategoryService, private cacheService: CacheCustomService) {
+  constructor(private headerNavigationService: HeaderNavigationService, private cacheService: CacheCustomService) {
 
   }
 
   ngOnInit() {
-    this.categoryService.getCategories().subscribe(data => {
+    this.headerNavigationService.getCategories().subscribe(data => {
       this.categories = data;
     })
   }
@@ -30,7 +33,7 @@ export class HeaderNavigationComponent implements OnInit {
     if (this.cacheService.cacheKeyExists(categoryId)) {
       this.subCategories = this.cacheService.getCachedData(categoryId);
     } else {
-      this.categoryService.getSubCategories(categoryId).subscribe(data => {
+      this.headerNavigationService.getSubCategories(categoryId).subscribe(data => {
         this.subCategories = data;
         this.cacheService.storeDataToCache(this.subCategories, categoryId);
       })

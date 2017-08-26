@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { PopoverConfig } from 'ngx-bootstrap/popover';
 import { TranslateService } from '@ngx-translate/core';
-
 export function getPopoverConfig(): PopoverConfig {
   return Object.assign(new PopoverConfig(), { placement: 'top', triggers: 'hover', container: 'body' });
 }
-
 @Component({
   selector: 'is-root',
   templateUrl: './app.component.html',
@@ -13,10 +11,9 @@ export function getPopoverConfig(): PopoverConfig {
     { provide: PopoverConfig, useFactory: getPopoverConfig }
   ]
 })
-
 export class AppComponent {
+  title = 'app';
 
-  // TODO: is this the right place to handle the global application translation?
   constructor(translate: TranslateService) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InstanceService } from '../services';
+import { InstanceService } from '../services/instance.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

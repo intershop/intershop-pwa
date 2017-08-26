@@ -2,11 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DataEmitterService } from '../../services/data-emitter.service';
 import { ProductTileModel } from './product-tile.model';
 import { environment } from '../../../../environments/environment';
-import { JwtService } from '../../services';
-import { Router } from '@angular/router';
-import {
-  WishListService
-} from '../../../pages/wish-list-page/wish-list-service/wish-list-service';
+
 
 @Component({
   selector: 'is-producttile',
@@ -31,10 +27,7 @@ export class ProductTileComponent implements OnInit {
    * Constructor
    * @param  {DataEmitterService} private_dataEmitterService
    */
-  constructor(private _dataEmitterService: DataEmitterService, private router: Router,
-    private jwtService: JwtService,
-    private wishListService: WishListService) {
-
+  constructor(private _dataEmitterService: DataEmitterService) {
   }
 
   ngOnInit() {
@@ -83,8 +76,6 @@ export class ProductTileComponent implements OnInit {
     }
     this.calculatePriceParameters();
     this.calculateAverageRating();
-
-
 
   };
 
@@ -173,10 +164,7 @@ export class ProductTileComponent implements OnInit {
    * @returns void
    */
   addToWishList(itemToAdd): void {
-    if (!this.jwtService.getToken()) {
-      this.router.navigate(['/login']);
-    }
-    this.wishListService.getWishList().subscribe(_ => _);
+    this._dataEmitterService.addToWishList(itemToAdd);
   };
 
   /**
