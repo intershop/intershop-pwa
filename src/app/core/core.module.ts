@@ -7,7 +7,6 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
-
 import {
   ApiService, InstanceService, JwtService, EncryptDecryptService,
   DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState
@@ -17,6 +16,8 @@ import { HeaderModule } from '../shared/components/header/header.module';
 import { FooterModule } from '../shared/components/footer/footer.module';
 import { translateFactory } from '../../shared/lang-switcher/custom-translate-loader';
 import { StyleWrapperDirective } from '../shared/directives/style-wrapper.directive';
+
+
 
 @NgModule({
   imports: [

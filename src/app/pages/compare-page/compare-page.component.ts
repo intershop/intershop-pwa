@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { CacheCustomService } from "../../shared/services/cache/cache-custom.service";
+import { Component } from '@angular/core';
+import { GlobalState } from '../../shared/services';
 
 @Component({
   selector: 'is-compare-page',
   templateUrl: './compare-page.component.html'
 })
-export class ComparePageComponent implements OnInit {
-  cacheStoreKey: string = 'productCompareKey';
+export class ComparePageComponent {
   comparedProducts = [];
-  constructor(private cacheCustomService: CacheCustomService) { }
+  constructor(private globalState: GlobalState) {
 
-  ngOnInit() {
-    const cachedComparedItems = this.cacheCustomService.getCachedData(this.cacheStoreKey);
-    this.comparedProducts = cachedComparedItems ? cachedComparedItems : [];
+    globalState.subscribeCachedData('productCompareData', data => {
+      this.comparedProducts = data;
+    });
   }
 }

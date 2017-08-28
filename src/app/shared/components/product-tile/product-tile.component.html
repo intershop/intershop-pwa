@@ -144,7 +144,7 @@
 			<!-- AddToProductCompare.isml start-->
 			<!--condition=NOT(ProductBO:isEndOfLife) -->
 			<ng-container *ngIf="true">
-				<button *ngIf="mockData.displayType == 'glyphicon' " class="btn btn-link add-to-compare add-to-compare-trigger" [ngClass]="{'is-selected' : isCompared}" title="Compare" rel="nofollow">
+				<button *ngIf="mockData.displayType == 'glyphicon' " class="btn btn-link add-to-compare add-to-compare-trigger" is-disable-icon [property]="mockData.sku" [globalStateKey]="'productCompareData'" title="Compare" rel="nofollow">
 					<span class="glyphicon glyphicon-equalizer" (click)="addToCompare(mockData.sku)"></span>
 				</button>
 				<a *ngIf="mockData.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)" rel="nofollow">

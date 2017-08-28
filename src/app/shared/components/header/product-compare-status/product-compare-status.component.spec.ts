@@ -1,14 +1,12 @@
-import { DebugElement, Component } from '@angular/core';
-import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
 import { ProductCompareStatusComponent } from './product-compare-status.component';
-import { DataEmitterService } from '../../../services/data-emitter.service';
+import { DebugElement, Component } from '@angular/core';
+import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalState } from '../../../services';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from '../../../../shared/shared-modules/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     template: ''
@@ -16,22 +14,20 @@ import { SharedModule } from '../../../../shared/shared-modules/shared.module';
 class DummyComponent {
 }
 
-describe('Product Compare Component', () => {
+describe('Product Compare status Component', () => {
     let fixture,
         component: ProductCompareStatusComponent,
         debugEl: DebugElement;
-    let translateService: TranslateService;
+
     beforeEach(() => {
-        class DataEmitterServiceStub {
-            public comparerListEmitter = new Observable((observer) => {
-                observer.next('1234');
-                observer.complete();
-            });
-        };
+        class GlobalStateStub {
+            subscribeCachedData(key, callBack: Function) {
+
+            }
+        }
 
         TestBed.configureTestingModule({
             imports: [
-                SharedModule,
                 RouterTestingModule.withRoutes([
                     { path: 'compare', component: DummyComponent }
                 ]),
@@ -41,38 +37,28 @@ describe('Product Compare Component', () => {
                 ProductCompareStatusComponent,
                 DummyComponent
             ],
-            providers: [{ provide: DataEmitterService, useClass: DataEmitterServiceStub }, TranslateService]
-        }).compileComponents();
+            providers: [
+                { provide: GlobalState, useClass: GlobalStateStub }
+            ],
 
-        translateService = TestBed.get(TranslateService);
-        translateService.setDefaultLang('en');
-        translateService.use('en');
+        }).compileComponents();
 
         fixture = TestBed.createComponent(ProductCompareStatusComponent);
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
     });
 
-    it('should create the component', async(() => {
+    it('should create the product compare status component', () => {
         const app = debugEl.componentInstance;
         expect(app).toBeTruthy();
-    }));
-
-    it('should check number of items is greater than 0', () => {
-        component.ngOnInit();
-        expect(component.compareListItems.length).toBeGreaterThan(0);
     });
 
-    it('should remove the already pushed data', () => {
-        expect(component.compareListItems.length).toBe(0);
-    });
-
-    it('should go to URL "familyPage/compare/1" ', async(inject([Router, Location], (router: Router, location: Location) => {
+    it('should go to URL "familyPage/compare/1" ', inject([Router, Location], (router: Router, location: Location) => {
         fixture.detectChanges();
         debugEl.query(By.css('.compare-status')).nativeElement.click();
 
         fixture.whenStable().then(() => {
             expect(location.path()).toContain('compare');
         });
-    })));
+    }));
 });

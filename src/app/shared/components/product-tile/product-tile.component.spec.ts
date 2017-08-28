@@ -1,19 +1,21 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA, Directive, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ProductTileComponent } from './product-tile.component';
-import { DataEmitterService } from '../../../shared/services/data-emitter.service';
 import { async, inject } from '@angular/core/testing';
 import { ProductList } from '../../../pages/family-page/family-page.mock';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
-import { JwtService } from '../../../shared/services';
+
+import { JwtService, GlobalState, DataEmitterService, CacheCustomService } from '../../../shared/services';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import {
     WishListService
 } from '../../../pages/wish-list-page/wish-list-service/wish-list-service';
 import { Observable } from 'rxjs/Observable';
+import { DisableIconDirective } from '../../../shared/directives/disable-icon.directive';
+
 
 describe('ProductTile Component', () => {
     let fixture: ComponentFixture<ProductTileComponent>,
@@ -22,6 +24,7 @@ describe('ProductTile Component', () => {
         debugEl: DebugElement,
         translateService: TranslateService;
     let jwtToken: string;
+
     class JwtServiceStub {
         saveToken(token) {
             jwtToken = token;
@@ -54,26 +57,48 @@ describe('ProductTile Component', () => {
         }
     };
 
+
+    class GlobalStateStub {
+        subscribeCachedData(key, callBack: Function) {
+
+        }
+
+        notifyDataChanged(key, data: [string]) {
+
+        }
+    }
+
+    class CacheCustomServiceStub {
+        getCachedData(productCompareKey) {
+            return ['123', '21'];
+        }
+
+        storeDataToCache(item, key) {
+
+        }
+    }
+
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [TranslateModule.forRoot(),
                 RouterTestingModule
             ],
-            declarations: [ProductTileComponent],
+            declarations: [ProductTileComponent, DisableIconDirective],
             providers: [
                 { provide: DataEmitterService, useClass: DataEmitterServiceStub },
                 { provide: JwtService, useClass: JwtServiceStub },
                 { provide: Router, useClass: RouterStub },
-                { provide: WishListService, useClass: WishListServiceStub }
-            ]
-        })
-            .compileComponents();
+                { provide: WishListService, useClass: WishListServiceStub },
+                { provide: GlobalState, useClass: GlobalStateStub },
+                { provide: CacheCustomService, useClass: CacheCustomServiceStub }
+            ],
+            schemas: [NO_ERRORS_SCHEMA]
+        }).compileComponents();
+
     }));
 
     beforeEach(() => {
-        translateService = TestBed.get(TranslateService);
-        translateService.setDefaultLang('en');
-        translateService.use('en');
+        TranslateModule.forRoot();
         fixture = TestBed.createComponent(ProductTileComponent);
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
@@ -88,26 +113,27 @@ describe('ProductTile Component', () => {
         environment.needMock = false;
     });
 
+    xit('should call notifyDataChanged method of GlobalState', async(inject([GlobalState], (globalState: GlobalState) => {
+        const spy = spyOn(globalState, 'notifyDataChanged');
+        fixture.detectChanges();
+        component.addToCompare('add to Compare');
+        expect(spy).toHaveBeenCalled();
+    })
+    ))
+
     it('should call addToCart method of DataEmitterService', async(inject([DataEmitterService], (dataEmitterService: DataEmitterService) => {
         const spy = spyOn(dataEmitterService, 'addToCart');
         component.addToCart('add to cart');
         expect(spy).toHaveBeenCalled();
     })
-    ))
+    ));
 
     it('should call addToWishList method of DataEmitterService', async(inject([WishListService], (wishListService: WishListService) => {
         const spy = spyOn(wishListService, 'getWishList').and.returnValue(Observable.of(null));
         component.addToWishList(null);
         expect(spy).toHaveBeenCalled();
     })
-    ))
-
-    it('should call addToCompare method of DataEmitterService', async(inject([DataEmitterService], (dataEmitterService: DataEmitterService) => {
-        const spy = spyOn(dataEmitterService, 'addToCompare');
-        component.addToCompare('add to Compare');
-        expect(spy).toHaveBeenCalled();
-    })
-    ))
+    ));
 
     it('should call calculateAverageRating and satisfy all conditions', () => {
         component.mockData = ProductList[0].Cameras[0];
