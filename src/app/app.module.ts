@@ -5,9 +5,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
 import { PageModule } from './pages/pages.module';
-import { CoreModule } from './core/core.module';
+import { CoreModule } from './modules/core.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './shared/http-interceptors/auth-interceptor';
+import { AuthInterceptor } from './interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [

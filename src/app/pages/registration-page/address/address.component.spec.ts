@@ -3,7 +3,7 @@ import { DebugElement } from '@angular/core';
 import { TestBed, inject, async } from '@angular/core/testing';
 import { AddressComponent } from './address.component';
 import { FormGroup } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared-modules/shared.module';
+import { SharedModule } from 'app/modules/shared.module';
 
 describe('Address Component', () => {
     let fixture: ComponentFixture<AddressComponent>,

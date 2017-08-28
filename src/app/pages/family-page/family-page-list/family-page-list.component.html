@@ -1,5 +1,5 @@
 <div class="product-list row">
-	<is-producttile *ngFor="let thumb of thumbnails" [mockData]="thumb" [isListView]="isListView"></is-producttile>
+	<is-product-tile *ngFor="let thumb of thumbnails" [mockData]="thumb" [isListView]="isListView"></is-product-tile>
 </div>
 <div *ngIf="thumbnails?.length==0">
 	<h1>No Data Found!</h1>

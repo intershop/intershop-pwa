@@ -3,17 +3,17 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
-import { AccountLoginMockService, AccountLoginService } from './account-login-service';
-import { InstanceService } from '../../shared/services/instance.service';
-import { CacheCustomService } from '../../shared/services/cache/cache-custom.service';
+import { AccountLoginMockService, AccountLoginService } from 'app/services/account-login/';
+import { InstanceService } from 'app/services/instance.service';
+import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 import { CacheService } from 'ng2-cache/ng2-cache';
-import { EncryptDecryptService } from '../../shared/services/cache/encrypt-decrypt.service';
-import { JwtService } from '../../shared/services/jwt.service';
+import { EncryptDecryptService } from 'app/services/cache/encrypt-decrypt.service';
+import { JwtService } from 'app/services/jwt.service';
 import { AccountLoginComponent } from './account-login.component';
 import { inject, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { userData } from './account-login.mock';
-import { SharedModule } from '../../shared/shared-modules/shared.module';
+import { userData } from 'app/services/account-login/account-login.mock';
+import { SharedModule } from 'app/modules/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
 
