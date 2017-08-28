@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { GlobalState } from '../../shared/services';
 
 @Component({
   selector: 'is-compare-page',
   templateUrl: './compare-page.component.html'
 })
-export class ComparePageComponent implements OnInit {
+export class ComparePageComponent {
+  comparedProducts = [];
+  constructor(private globalState: GlobalState) {
 
-  constructor() { }
-
-  ngOnInit() {
+    globalState.subscribeCachedData('productCompareData', data => {
+      this.comparedProducts = data;
+    });
   }
-
 }

@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DataEmitterService } from '../../services/data-emitter.service';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { DataEmitterService, GlobalState } from '../../services';
 import { ProductTileModel } from './product-tile.model';
 import { environment } from '../../../../environments/environment';
 import { JwtService } from '../../services';
 import { Router } from '@angular/router';
-import {
-  WishListService
-} from '../../../pages/wish-list-page/wish-list-service/wish-list-service';
+import { WishListService } from '../../../pages/wish-list-page/wish-list-service/wish-list-service';
+import * as _ from 'lodash';
+import { DisableIconDirective } from '../../directives/disable-icon.directive';
 
 @Component({
   selector: 'is-producttile',
@@ -26,15 +26,21 @@ export class ProductTileComponent implements OnInit {
   displayCondition: boolean;
   oldPrice: any;
   shownSavings: number;
+  @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
 
   /**
-   * Constructor
    * @param  {DataEmitterService} private_dataEmitterService
+   * @param  {Router} privaterouter
+   * @param  {JwtService} privatejwtService
+   * @param  {WishListService} privatewishListService
+   * @param  {GlobalState} privateglobalState
    */
-  constructor(private _dataEmitterService: DataEmitterService, private router: Router,
-    private jwtService: JwtService,
-    private wishListService: WishListService) {
 
+  constructor(private _dataEmitterService: DataEmitterService,
+    private router: Router,
+    private jwtService: JwtService,
+    private wishListService: WishListService,
+    private globalState: GlobalState) {
   }
 
   ngOnInit() {
@@ -85,7 +91,9 @@ export class ProductTileComponent implements OnInit {
     this.calculateAverageRating();
 
 
-
+    this.globalState.subscribeCachedData('productCompareData', data => {
+      this._updateProductCompareData(data);
+    })
   };
 
   /**
@@ -157,7 +165,6 @@ export class ProductTileComponent implements OnInit {
     } */
   };
 
-
   /**
    * Adds product to cart
    * @param  {} itemToAdd
@@ -185,6 +192,19 @@ export class ProductTileComponent implements OnInit {
    * @returns void
    */
   addToCompare(itemToAdd): void {
-    this._dataEmitterService.addToCompare(itemToAdd);
+    this.globalState.subscribeCachedData('productCompareData', compareListItems => {
+      if (_.find(compareListItems, compareProduct => compareProduct === itemToAdd)) {
+        _.remove(compareListItems, compareProduct => compareProduct === itemToAdd);
+      } else {
+        compareListItems.push(itemToAdd);
+      }
+      this._updateProductCompareData(compareListItems);
+    });
+    this.disableIconDirective.toggleClass();
   };
+
+  private _updateProductCompareData(productCompareData: string[]) {
+    this.globalState.notifyDataChanged('productCompareData', productCompareData);
+  };
+
 };
