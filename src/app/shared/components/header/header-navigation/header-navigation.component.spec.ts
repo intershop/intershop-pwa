@@ -85,10 +85,10 @@ describe('Header Navigation Component', () => {
 
         const categories = element.getElementsByClassName('dropdown');
         const subCategories = element.getElementsByClassName('main-navigation-level1-item');
-        expect(categories[0].children[0].textContent).toContain('CAMERAS');
-        expect(categories[1].children[0].textContent).toContain('COMPUTERS');
-        expect(categories[2].children[0].textContent).toContain('HOME ENTERTAINMENT');
-        expect(categories[3].children[0].textContent).toContain('SPECIALS');
+        expect(categories[0].children[0].textContent).toContain('Cameras');
+        expect(categories[1].children[0].textContent).toContain('Computers');
+        expect(categories[2].children[0].textContent).toContain('Home Entertainment');
+        expect(categories[3].children[0].textContent).toContain('Specials');
     });
 });
 

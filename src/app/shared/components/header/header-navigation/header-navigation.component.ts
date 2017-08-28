@@ -3,12 +3,9 @@ import { CategoryModel } from './category-service/category.model';
 import { SubcategoryModel } from './category-service/subcategory.model';
 import { CategoryService } from './category-service/category.service';
 import { CacheCustomService } from '../../../../shared/services/cache/cache-custom.service';
-import * as _ from 'lodash';
-import { forEach } from '@angular/router/src/utils/collection';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'is-headernavigation',
+  selector: 'is-header-navigation',
   templateUrl: './header-navigation.component.html'
 })
 
