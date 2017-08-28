@@ -1,5 +1,6 @@
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEventType, HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { JwtService } from '../services/jwt.service';
 
@@ -19,6 +20,9 @@ export class AuthInterceptor implements HttpInterceptor {
    * @returns  Observable<HttpEvent<any>>
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // TODO Maybe we should also be neutral on requests
+    // that are not meant for our service backend?
+    // E.g. req.url not same base URL like environment.base_url
     const tokenHeaderKeyName = 'authentication-token';
     const authorizationHeaderKey = 'Authorization';
     const token = this.jwtService.getToken();
@@ -28,9 +32,10 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req).do(event => {
-      if (event instanceof HttpResponse) {
-        const response = <HttpResponse<any>>event;
-        const tokenReturned = response.headers.get(tokenHeaderKeyName);
+      if (event.type === HttpEventType.ResponseHeader) {
+        // TODO Maybe check event.status for error classes 300, 400 or 500
+        // so we're not saving false tokens
+        const tokenReturned = event.headers.get(tokenHeaderKeyName);
         if (tokenReturned) {
           this.jwtService.saveToken(tokenReturned);
         }

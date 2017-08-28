@@ -28,7 +28,7 @@ export class AccountLoginApiService {
      * @returns Observable
      */
     singinUser(user): Observable<UserDetail> {
-    const headers = new HttpHeaders().set('Authorization', 'Basic ' + Buffer.from((user.userName + ':' + user.password)).toString('base64'));
+    const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((user.userName + ':' + user.password)).toString('base64'));
             return this.apiService.get('customers/-', null, headers );
       };
 
