@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Rx';
 import { TestBed, inject, async } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { EmailPasswordComponent } from './email-password.component';
-import { matchOtherValidator } from '../../../shared/validators/match-words.validator';
-import { SharedModule } from '../../../shared/shared-modules/shared.module';
+import { matchOtherValidator } from 'app/validators/match-words.validator';
+import { SharedModule } from 'app/modules/shared.module';
 
 describe('EmailPassword Component', () => {
     let fixture: ComponentFixture<EmailPasswordComponent>,

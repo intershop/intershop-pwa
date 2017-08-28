@@ -4,7 +4,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent } from './shared/components/mock.component';
+import { MockComponent } from './components/mock.component';
 
 
 let translate: TranslateService;
