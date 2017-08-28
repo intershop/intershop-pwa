@@ -1,32 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { DataEmitterService } from '../../../services/data-emitter.service';
-import { AccountLoginService } from '../../../../pages/account-login/account-login-service';
-import { CacheCustomService } from '../../../../shared/services';
+import { Component } from '@angular/core';
+import { WishListModel } from '../../../../pages/wish-list-page/wish-list-service/wish-list.model';
+import { GlobalState } from '../../../../shared/services';
 
 @Component({
   selector: 'is-wishlist-status',
   templateUrl: './wishlist-status.component.html'
 })
-export class WishListComponent implements OnInit {
-  wishListItems = [];
-  itemCount = 0;
-  isLoggedIn;
-  constructor(private _dataEmitterService: DataEmitterService, private accountLoginService: AccountLoginService,
-    private cacheService: CacheCustomService
-  ) {
-  }
+export class WishListComponent {
+  itemCount?: number;
+  constructor(private globalState: GlobalState) {
 
-  ngOnInit() {
-
-    this.isLoggedIn = this.cacheService.cacheKeyExists('userDetail');
-
-    this._dataEmitterService.wishListEmitter.subscribe(data => {
-      this.wishListItems.push(data);
+    this.globalState.subscribe('wishListStatus', (wishListData: WishListModel) => {
+      this.itemCount = (wishListData) ? wishListData.itemsCount : 0;
+    });
+    this.globalState.subscribeCachedData('wishListStatus', (wishListCachedData) => {
+      this.globalState.notifyDataChanged('wishListStatus', wishListCachedData);
     });
 
-    this.accountLoginService.loginStatusEmitter.subscribe((userDetailData) => {
-      this.isLoggedIn = true;
-    })
   }
 };
 
