@@ -27,6 +27,7 @@
   "account.login.email.error.required":"Please enter an email address.",
   "account.login.email.error.invalid":"Please enter a valid email address.",
   "account.login.password.error.required":"Please enter a password.",
+
   "account.register.heading":"Create a New Account",
   "account.register.message":"To take full advantage of account features & benefits, please provide all the information below.",
   "account.register.email_password.heading":"Email & Password",
@@ -41,7 +42,7 @@
   "account.register.email_confirmation.not_match.error":"Your Confirm Email Address do not match.",
   "account.register.password.label":"Password",
   "account.register.password.extrainfo.message":"{0} characters minimum, must include numbers and letters, no spaces",
-  "account.register.password_confirmation.label":"Confirm Password"
-
-  
+  "account.register.password_confirmation.label":"Confirm Password",
+  "search.searchbox.instructional_text":"Search for keyword, product ID or category...",
+  "search.searchbox.button.title":"Start search."
 }
