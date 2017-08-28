@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService, GlobalState } from '../../../shared/services';
 import { WishListModel } from './wish-list.model';
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class WishListService {
@@ -22,6 +23,13 @@ export class WishListService {
      */
     getWishList(): Observable<WishListModel> {
         // TODO:check empty data
+        if (environment.needMock) {
+            let wishListMock = new WishListModel();
+            wishListMock.itemsCount = 3;
+            this.globalState.notifyDataChanged('wishListStatus', wishListMock);
+            return Observable.of(wishListMock);
+
+        }
         return this.apiService.get(this.baseUrl)
             .do(data => {
                 this.preferredWishListUrl = data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1)
