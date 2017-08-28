@@ -72,29 +72,40 @@ gretty {
 }
 
 task dist(type: NodeTask, dependsOn:npmInstall, description: 'build npm distribution to directory `dist`', group:'Node') {
-    script = file("$projectDir/node_modules/.bin/ng")
+    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
     args = ['build', '--progress=false']
     inputs.dir('src')
     inputs.files(fileTree(dir: projectDir, includes : ['*.js', '*.json']))
     outputs.dir('dist')
 }
-project.afterEvaluate {
-    [test, appRun]*.dependsOn dist
-    clean.dependsOn cleanDist
-    appBeforeIntegrationTest.mustRunAfter dist
-}
-
 test {
     systemProperty 'geb.env', System.getProperty('geb.env', 'local')
     systemProperty 'wdm.phantomjsDriverVersion', '2.1.1'
 }
 
-task karma(type: NodeTask, dependsOn:npmInstall, description: 'run jasmine tests', group:'Node') {
-    script = file("$projectDir/node_modules/.bin/ng")
+task karma(type: NodeTask, dependsOn:[npmInstall, dist], description: 'run jasmine tests', group:'Node') {
+    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
     args = ['test', '--progress=false', '--reporters', 'junit,html,spec', '--browsers', 'PhantomJS', '--single-run', '--no-color']
     inputs.files('src', 'package.json', 'karma-ci.conf.js')
 }
 build.dependsOn karma
+
+task protractor(type: NodeTask, dependsOn:[npmInstall, dist], description: 'run protractor tests', group:'Node') {
+    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
+    args = ['e2e', '--progress=false']
+    inputs.files('e2e', 'src', 'package.json', 'protractor.conf.js')
+}
+/**
+  TODO: this links protractor with gradle but Chrome headless needs to work first
+ */
+// build.dependsOn protractor
+
+project.afterEvaluate {
+    [test, appRun]*.dependsOn dist
+    clean.dependsOn cleanDist
+    appBeforeIntegrationTest.mustRunAfter dist
+    protractor.mustRunAfter appAfterIntegrationTest
+}
 
 dependencies {
     testCompile "org.gebish:geb-spock:1.1.1"
@@ -161,6 +172,6 @@ task npmRun(type:NpmTask, description: 'run npm script with space-separated comm
 }
 
 task tslint(type:NodeTask, description:'run tslint', group:'Node Utility', dependsOn:npmInstall) {
-    script = new File(node.nodeModulesDir, 'node_modules/.bin/ng')
+    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
     args = ['lint', '--format', 'stylish', '--typeCheck']
 }
