@@ -9,9 +9,14 @@ import { GlobalState } from '../../../../shared/services';
 export class WishListComponent {
   itemCount?: number;
   constructor(private globalState: GlobalState) {
+
     this.globalState.subscribe('wishListStatus', (wishListData: WishListModel) => {
       this.itemCount = (wishListData) ? wishListData.itemsCount : 0;
     });
+    this.globalState.subscribeCachedData('wishListStatus', (wishListCachedData) => {
+      this.globalState.notifyDataChanged('wishListStatus', wishListCachedData);
+    });
+
   }
 };
 

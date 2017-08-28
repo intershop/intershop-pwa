@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { CacheCustomService } from './cache/cache-custom.service';
 
 @Injectable()
 export class GlobalState {
@@ -9,7 +10,7 @@ export class GlobalState {
 
     private _subscriptions: Map<string, Array<Function>> = new Map<string, Array<Function>>();
 
-    constructor() {
+    constructor(private cacheService: CacheCustomService) {
         this._dataStream$.subscribe((data) => this._onEvent(data));
     }
 
@@ -17,7 +18,7 @@ export class GlobalState {
 
         let current = this._data[event];
         this._data[event] = value;
-
+        this.cacheService.storeDataToCache(value, event);
         this._data.next({
             event: event,
             data: this._data[event]
@@ -29,6 +30,10 @@ export class GlobalState {
         subscribers.push(callback);
 
         this._subscriptions.set(event, subscribers);
+    }
+
+    subscribeCachedData(event: string, callback: Function) {
+        callback(this.cacheService.getCachedData(event) || []);
     }
 
     _onEvent(data: any) {
