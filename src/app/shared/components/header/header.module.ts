@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HeaderSlotComponent } from './header.component';
-import { ProductCompareComponent } from './product-compare/product-compare.component';
+import { ProductCompareStatusComponent } from './product-compare-status/product-compare-status.component';
 import { RouterModule } from '@angular/router';
 import { MiniCartComponent } from './mini-cart/mini-cart.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
@@ -31,11 +31,11 @@ import {
   ],
   exports: [
     HeaderSlotComponent,
-    ProductCompareComponent
+    ProductCompareStatusComponent
   ],
   declarations: [
     HeaderSlotComponent,
-    ProductCompareComponent,
+    ProductCompareStatusComponent,
     MiniCartComponent,
     SearchBoxComponent,
     WishListComponent,

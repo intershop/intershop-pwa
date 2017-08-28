@@ -60,7 +60,7 @@ describe('Header Slot Component', () => {
   xit('should check "User Links" are rendered on template', () => {
     expect(element.getElementsByClassName('user-links')[0].childElementCount).toBe(4);
     expect(element.getElementsByTagName('is-loginstatus')[0].textContent).toContain('Login Status Template');
-    expect(element.getElementsByTagName('is-productcomparestatus')[0].textContent).toContain('Product Compare Status Template');
+    expect(element.getElementsByTagName('is-product-compare-status')[0].textContent).toContain('Product Compare Status Template');
     expect(element.getElementsByTagName('is-wishlist-status')[0].textContent).toContain('Wish List Template');
   });
 
