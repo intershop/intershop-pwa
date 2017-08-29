@@ -204,7 +204,7 @@ export class ProductTileComponent implements OnInit {
   };
 
   private _updateProductCompareData(productCompareData: string[]) {
-    this.globalState.notifyDataChanged('productCompareData', productCompareData);
+    this.globalState.notifyDataChanged('productCompareData', productCompareData, true);
   };
 
 };
