@@ -19,8 +19,8 @@ export class WishListService {
     }
 
     /**
-     * @returns wishlist as observable
-     */
+      * @returns wishlist as observable
+      */
     getWishList(): Observable<WishListModel> {
         // TODO:check empty data
         if (environment.needMock) {
@@ -32,18 +32,28 @@ export class WishListService {
         }
         return this.apiService.get(this.baseUrl)
             .do(data => {
-                this.preferredWishListUrl = data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1)
+                this.preferredWishListUrl = (data.elements.length > 0) ?
+                    data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null
             })
-            .flatMap(u => this.getPreferredWishList(this.preferredWishListUrl));
+            .flatMap(u =>
+                this.getPreferredWishList(this.preferredWishListUrl)
+            );
     }
 
     /**
      * @returns wishlist as observable
+     * @param  string url
      */
     getPreferredWishList(url: string): Observable<any> {
-        return this.apiService.get(this.baseUrl + url)
-            .map((data) => {
-                this.globalState.notifyDataChanged('wishListStatus', data);
-            })
+        if (url) {
+            return this.apiService.get(this.baseUrl + url)
+                .map((data) => {
+                    this.globalState.notifyDataChanged('wishListStatus', data);
+                })
+        } else {
+            return Observable.of(null);
+        }
     }
+
+
 }
