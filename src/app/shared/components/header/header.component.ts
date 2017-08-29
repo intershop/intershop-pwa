@@ -14,6 +14,9 @@ import { GlobalState } from '../../services/global.state';
 
 export class HeaderSlotComponent {
     globalnav: boolean = true;
+    mobileLogo: boolean = true;
+    cartItemLength: number;
+
     constructor(private wishListService: WishListService, private globalState: GlobalState) {
         this.globalState.subscribe('customerDetails', (customerDetails) => {
             if (customerDetails) {
@@ -22,5 +25,10 @@ export class HeaderSlotComponent {
                 this.globalState.notifyDataChanged('wishListStatus', customerDetails);
             }
         });
+
+        this.globalState.subscribe('cartData', (cartItems) => {
+            this.cartItemLength = cartItems.length;
+        });
     }
+
 }
