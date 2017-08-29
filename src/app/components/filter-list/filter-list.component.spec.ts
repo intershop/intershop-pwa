@@ -9,11 +9,11 @@ import { FilterListService, FilterListMockService } from './filter-list-service'
 import { InstanceService } from 'app/services/instance.service';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 describe('FilterList Component', () => {
-    let fixture: ComponentFixture<FilterListComponent>,
-        component: FilterListComponent,
-        element: HTMLElement,
-        debugEl: DebugElement,
-        keyExists = false;
+    let fixture: ComponentFixture<FilterListComponent>;
+    let component: FilterListComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
+    let keyExists = false;
 
     class CacheCustomServiceStub {
         cacheKeyExists(key) {

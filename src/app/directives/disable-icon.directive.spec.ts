@@ -14,9 +14,9 @@ describe('DisableIconDirective', () => {
         }
     }
 
-    let fixture: ComponentFixture<MockComponent>,
-        component: MockComponent,
-        element: HTMLElement;
+    let fixture: ComponentFixture<MockComponent>;
+    let component: MockComponent;
+    let element: HTMLElement;
     class ElementRefStub {
 
     }

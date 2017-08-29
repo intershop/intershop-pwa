@@ -5,10 +5,10 @@ import { AddressComponent } from './address.component';
 import { SharedModule } from 'app/modules/shared.module';
 
 describe('Address Component', () => {
-    let fixture: ComponentFixture<AddressComponent>,
-        component: AddressComponent,
-        element: HTMLElement,
-        debugEl: DebugElement
+    let fixture: ComponentFixture<AddressComponent>;
+    let component: AddressComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({

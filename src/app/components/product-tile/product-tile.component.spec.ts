@@ -16,10 +16,10 @@ import { DisableIconDirective } from 'app/directives/disable-icon.directive';
 
 
 describe('ProductTile Component', () => {
-    let fixture: ComponentFixture<ProductTileComponent>,
-        component: ProductTileComponent,
-        element: HTMLElement,
-        debugEl: DebugElement;
+    let fixture: ComponentFixture<ProductTileComponent>;
+    let component: ProductTileComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
     let jwtToken: string;
 
     class JwtServiceStub {

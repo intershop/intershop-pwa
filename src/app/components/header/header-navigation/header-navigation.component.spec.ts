@@ -7,10 +7,10 @@ import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 import { async, inject } from '@angular/core/testing';
 
 describe('Header Navigation Component', () => {
-    let fixture: ComponentFixture<HeaderNavigationComponent>,
-        component: HeaderNavigationComponent,
-        element: HTMLElement,
-        keyExists = false;
+    let fixture: ComponentFixture<HeaderNavigationComponent>;
+    let component: HeaderNavigationComponent;
+    let element: HTMLElement;
+    let keyExists = false;
 
     class CacheCustomServiceStub {
         cacheKeyExists(categoryId) {

@@ -8,10 +8,10 @@ import { WishListService } from 'app/services/wishlists/wishlists.service';
 import { Observable } from 'rxjs/Observable';
 
 describe('Header Slot Component', () => {
-  let fixture: ComponentFixture<HeaderSlotComponent>,
-    component: HeaderSlotComponent,
-    element: HTMLElement,
-    debugEl: DebugElement
+  let fixture: ComponentFixture<HeaderSlotComponent>;
+  let component: HeaderSlotComponent;
+  let element: HTMLElement;
+  let debugEl: DebugElement;
 
   class GlobalStateServiceStub {
     notifyDataChanged(event, value) {

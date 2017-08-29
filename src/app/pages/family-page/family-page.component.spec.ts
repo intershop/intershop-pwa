@@ -5,10 +5,10 @@ import { FamilyPageComponent } from './family-page.component';
 
 
 describe('FamilyPage Component', () => {
-    let fixture: ComponentFixture<FamilyPageComponent>,
-        component: FamilyPageComponent,
-        element: HTMLElement,
-        debugEl: DebugElement;
+    let fixture: ComponentFixture<FamilyPageComponent>;
+    let component: FamilyPageComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [FamilyPageComponent],

@@ -7,10 +7,10 @@ import { AccountLoginService } from 'app/services/account-login/account-login.se
 import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 
 describe('Login Status Component', () => {
-    let fixture: ComponentFixture<LoginStatusComponent>,
-        component: LoginStatusComponent,
-        element: HTMLElement,
-        debugEl: DebugElement;
+    let fixture: ComponentFixture<LoginStatusComponent>;
+    let component: LoginStatusComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
 
     class CacheCustomServicestub {
         cacheKeyExists() {

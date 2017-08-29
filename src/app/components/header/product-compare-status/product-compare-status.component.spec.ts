@@ -15,9 +15,9 @@ class DummyComponent {
 }
 
 describe('Product Compare status Component', () => {
-    let fixture,
-        component: ProductCompareStatusComponent,
-        debugEl: DebugElement;
+    let fixture;
+    let component: ProductCompareStatusComponent;
+    let debugEl: DebugElement;
 
     beforeEach(() => {
         class GlobalStateStub {

@@ -7,10 +7,10 @@ import { TranslateModule } from '@ngx-translate/core';
 
 
 describe('Search Box Component', () => {
-    let fixture: ComponentFixture<SearchBoxComponent>,
-        component: SearchBoxComponent,
-        element: HTMLElement,
-        resultRequired = true;
+    let fixture: ComponentFixture<SearchBoxComponent>;
+    let component: SearchBoxComponent;
+    let element: HTMLElement;
+    let resultRequired = true;
 
     class SearchBoxServiceStub {
         search(term) {

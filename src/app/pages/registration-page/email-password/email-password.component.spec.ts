@@ -7,10 +7,10 @@ import { matchOtherValidator } from 'app/validators/match-words.validator';
 import { SharedModule } from 'app/modules/shared.module';
 
 describe('EmailPassword Component', () => {
-    let fixture: ComponentFixture<EmailPasswordComponent>,
-        component: EmailPasswordComponent,
-        element: HTMLElement,
-        debugEl: DebugElement
+    let fixture: ComponentFixture<EmailPasswordComponent>;
+    let component: EmailPasswordComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({

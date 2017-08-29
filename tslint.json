@@ -74,6 +74,7 @@
       "check-else",
       "check-whitespace"
     ],
+    "one-variable-per-declaration": true,
     "prefer-const": false,
     "quotemark": [
       true,

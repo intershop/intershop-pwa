@@ -5,10 +5,10 @@ import { CaptchaComponent } from './captcha.component';
 import { RecaptchaModule } from 'ng-recaptcha';
 
 describe('Captcha Component', () => {
-    let fixture: ComponentFixture<CaptchaComponent>,
-        component: CaptchaComponent,
-        element: HTMLElement,
-        debugEl: DebugElement
+    let fixture: ComponentFixture<CaptchaComponent>;
+    let component: CaptchaComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({

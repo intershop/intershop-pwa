@@ -14,11 +14,11 @@ class DummyComponent {
 }
 
 describe('Wish List Component', () => {
-    let fixture: ComponentFixture<WishListComponent>,
-        component: WishListComponent,
-        element: HTMLElement,
-        debugEl: DebugElement,
-        translateService: TranslateService;
+    let fixture: ComponentFixture<WishListComponent>;
+    let component: WishListComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
+    let translateService: TranslateService;
 
     beforeEach(() => {
         class DataEmitterServiceStub {
