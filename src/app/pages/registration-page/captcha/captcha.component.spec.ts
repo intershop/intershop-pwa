@@ -1,6 +1,6 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { CaptchaComponent } from './captcha.component';
 import { RecaptchaModule } from 'ng-recaptcha';
 

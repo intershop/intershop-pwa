@@ -1,11 +1,10 @@
 import { LoginStatusComponent } from './login-status.component';
 import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { EventEmitter, DebugElement } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AccountLoginService } from 'app/services/account-login/account-login.service';
 import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-import { userData } from 'app/services/account-login/account-login.mock';
 
 describe('Login Status Component', () => {
     let fixture: ComponentFixture<LoginStatusComponent>,
@@ -67,7 +66,7 @@ describe('Login Status Component', () => {
     });
 
     it('should check if register is called with "register"', inject([Router], (router: Router) => {
-        const spy = spyOn(router, 'navigate');
+        spyOn(router, 'navigate');
 
         component.register();
 
@@ -75,8 +74,8 @@ describe('Login Status Component', () => {
     }));
 
     it('should check if logout is called with "login"', inject([Router, AccountLoginService], (router: Router, accountLoginService: AccountLoginService) => {
-        const spyrouter = spyOn(router, 'navigate');
-        const spyaccount = spyOn(accountLoginService, 'logout');
+        spyOn(router, 'navigate');
+        spyOn(accountLoginService, 'logout');
 
         component.logout();
 
@@ -88,7 +87,7 @@ describe('Login Status Component', () => {
     }));
 
     it('should check if signIn method and router.navigate is called', inject([Router], (router: Router) => {
-        const spyrouter = spyOn(router, 'navigate');
+        spyOn(router, 'navigate');
 
         component.signIn();
 

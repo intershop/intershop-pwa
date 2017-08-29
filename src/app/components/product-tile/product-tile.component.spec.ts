@@ -1,10 +1,10 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement, NO_ERRORS_SCHEMA, Directive, ViewChild } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ProductTileComponent } from './product-tile.component';
 import { async, inject } from '@angular/core/testing';
 import { ProductList } from 'app/services/products/products.mock';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'environments/environment';
 
 import { JwtService, GlobalState, DataEmitterService, CacheCustomService } from 'app/services';
@@ -19,8 +19,7 @@ describe('ProductTile Component', () => {
     let fixture: ComponentFixture<ProductTileComponent>,
         component: ProductTileComponent,
         element: HTMLElement,
-        debugEl: DebugElement,
-        translateService: TranslateService;
+        debugEl: DebugElement;
     let jwtToken: string;
 
     class JwtServiceStub {

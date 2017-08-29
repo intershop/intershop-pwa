@@ -4,7 +4,6 @@ import { environment } from 'environments/environment';
 import { ProductListMockService } from './products.service.mock';
 import { ProductListApiService } from './products.service.api';
 import { Observable } from 'rxjs/Observable';
-import { ProductList } from './products.mock';
 
 @Injectable()
 export class ProductListService {

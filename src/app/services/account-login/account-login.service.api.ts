@@ -1,10 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Response } from '@angular/http';
-import { environment } from 'environments/environment';
-import { AccountLogin } from './account-login';
 import { UserDetail } from './account-login.model';
-import { userData } from './account-login.mock';
 import { ApiService } from 'app/services/api.service';
 import { JwtService } from 'app/services/jwt.service';
 import { HttpHeaders } from '@angular/common/http';

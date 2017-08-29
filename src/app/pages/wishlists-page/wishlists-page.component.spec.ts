@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { DebugElement, Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { WishListPageComponent } from './wishlists-page.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs/Observable';

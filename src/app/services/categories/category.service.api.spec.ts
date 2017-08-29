@@ -1,6 +1,4 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { CategoryService } from './category.service';
-import { InstanceService } from 'app/services/instance.service';
 import { CategoryApiService } from './category.service.api';
 import { ApiService } from 'app/services/api.service';
 

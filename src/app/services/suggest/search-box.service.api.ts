@@ -1,6 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
-import { searchBoxMock } from './search-box.mock';
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/services/api.service';
 

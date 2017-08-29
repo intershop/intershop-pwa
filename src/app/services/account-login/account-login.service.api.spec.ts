@@ -60,7 +60,7 @@ describe('AccountLoginApi Service', () => {
 
 
     it('should logout user', inject([AccountLoginApiService, JwtService], (accountLoginApiService: AccountLoginApiService, jwtService: JwtService) => {
-        const spy = spyOn(jwtService, 'destroyToken');
+        spyOn(jwtService, 'destroyToken');
         accountLoginApiService.logout();
         expect(jwtService.destroyToken).toHaveBeenCalled();
     })

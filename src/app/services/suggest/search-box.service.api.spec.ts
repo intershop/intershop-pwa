@@ -1,6 +1,4 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { environment } from 'environments/environment';
-import { InstanceService } from 'app/services/instance.service';
 import { ApiService } from 'app/services/api.service';
 import { SearchBoxApiService } from './search-box.service.api';
 import { Observable } from 'rxjs/Rx';

@@ -1,7 +1,6 @@
 import { HeaderSlotComponent } from './header.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { MockComponent } from 'app/components/mock.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { GlobalState } from 'app/services/global.state';

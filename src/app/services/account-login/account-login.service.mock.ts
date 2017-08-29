@@ -1,11 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core'
 import { Observable } from 'rxjs/Rx'
 import { AccountLogin } from './account-login';
-import { Router } from '@angular/router'
 import { UserDetail } from './account-login.model';
 import { userData } from './account-login.mock';
-import { JwtService } from 'app/services/jwt.service';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 import * as _ from 'lodash';
 
 @Injectable()

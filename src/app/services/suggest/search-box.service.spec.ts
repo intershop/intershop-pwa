@@ -1,8 +1,6 @@
-import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { Subject } from 'rxjs/Subject';
+import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { SearchBoxService } from './search-box.service';
-import { SuggestedElement } from './search-box.model';
 import { environment } from 'environments/environment';
 import { InstanceService } from 'app/services/instance.service';
 import { SearchBoxMockService } from './search-box.service.mock';

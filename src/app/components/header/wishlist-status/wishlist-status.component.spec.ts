@@ -1,10 +1,7 @@
-import { TestBed, ComponentFixture, async, inject } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
-import { Location } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { By } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { WishListComponent } from './wishlist-status.component';
 import { DataEmitterService } from 'app/services/data-emitter.service';

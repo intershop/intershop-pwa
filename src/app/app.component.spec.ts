@@ -1,6 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
-import { Component, Directive, Injectable, Input } from '@angular/core';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
