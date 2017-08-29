@@ -87,6 +87,32 @@ header {
 	}
 }
 
+//copied from header.less of reference application
+.customer-info {
+	margin: 0;
+	padding: 0 (@grid-gutter-width / 2) 0 0;
+	line-height: 40px;
+	
+	li {
+		list-style: none;
+		color: @text-color-quinary;
+		font-size: 12px;
+		font-family: @font-family-bold;
+		float: right;
+		margin-left: (@space-default * 2);
+		
+		.locale {
+			color: @text-color-corporate;
+		}
+		
+		> div {
+			color: @text-color-quarternary;
+			font-size: 13px;
+			padding-left: (@space-default * 2);
+		}
+	}
+}
+
 .user-links {
 	margin: 0;
 	padding: 0;

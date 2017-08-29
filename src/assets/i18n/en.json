@@ -4,7 +4,7 @@
   "product.items.label.none": "no list item",
   "product.items.label.singular": "one list item",
   "product.items.label.plural": "{{count}} list items",
-  "common.header.contact_no.text": "<small>1300</small>  032 032",
+  "common.header.contact_no.text": "1300  032 032",
   "js.message.constructor": "localized message from constructor",
   "js.message.somewhere": "localized message from somewhere in javascript",
   "account.login.heading": "My Account",
@@ -44,5 +44,6 @@
   "account.register.password.extrainfo.message":"{0} characters minimum, must include numbers and letters, no spaces",
   "account.register.password_confirmation.label":"Confirm Password",
   "search.searchbox.instructional_text":"Search for keyword, product ID or category...",
-  "search.searchbox.button.title":"Start search."
+  "search.searchbox.button.title":"Start search.",
+  "common.button.navbartoggle.text":"Toggle navigation"
 }

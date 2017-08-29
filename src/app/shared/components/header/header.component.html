@@ -2,40 +2,59 @@
     <div class="top-header">
         <nav class="container">
             <div class="row">
-                <a rel="home" routerLink="/" class="visible-xs mobile-logo"><img src="/assets/img/logo_mobile.png" alt="Logo" width="41" height="41"></a>
+                <a rel="home" routerLink="/" class="visible-xs mobile-logo">
+                    <img *ngIf="mobileLogo; else OtherImage" src="/assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
+                    <ng-template #OtherImage>
+                        <!-- <TODO>Find src of this image -->
+                        <img src="" alt="Logo" width="40" height="40">
+                    </ng-template>
+                </a>
                 <div class="visible-xs pull-right">
                     <button class="navbar-toggle" type="button" (click)="globalnav = !globalnav" data-target="#globalnav">
-                      <span class="sr-only">Toggle navigation</span>
+                      <span class="sr-only">{{'common.button.navbartoggle.text' | translate}}</span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
-          </button>
+                    </button>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <ul class="user-links">
                         <li>
                             <is-loginstatus></is-loginstatus>
                         </li>
                         <li>
-                             <is-product-compare-status></is-product-compare-status>
+                            <is-product-compare-status></is-product-compare-status>
                         </li>
                         <li>
+                            <!-- TODO:Conditions -->
                             <is-wishlist-status></is-wishlist-status>
                         </li>
                         <li class="visible-xs">
-                            <a href=""><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
-                            <div class="mobile-cart-counter"></div>
+                            <!-- TODO: href yet to be found -->
+                            <a href="">
+                                <span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon">
+                                </span>
+                            </a>
+                            <div class="mobile-cart-counter">
+                                <!-- span is getting rendered dynamically  -->
+                                <span class="js-cart-count">{{cartItemLength}}</span>
+                            </div>
                         </li>
                     </ul>
                     <div class="header-utility">
-                        <ul class="customer-info hidden-xs">
-                            <li>
-                                <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span> 1300 032 032
-                            </li>
-                        </ul>
-                        <is-languageswitch></is-languageswitch>
+                        <!-- <isslot slot="app_sf_responsive_cm:slot.header.utility.pagelet2-Slot"> -->
                     </div>
                 </div>
+                <ul class="customer-info col-md-3 pull-right hidden-xs">
+                    <!-- TODO: Docker needed for actual ISML -->
+                    <li>
+                        <is-languageswitch></is-languageswitch>
+                    </li>
+                    <li>
+                        <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span> {{'common.header.contact_no.text'|
+                        translate}}
+                    </li>
+                </ul>
             </div>
         </nav>
     </div>
@@ -45,6 +64,12 @@
                 <div class="col-sm-3 logo-wrapper hidden-xs">
                     <is-logo></is-logo>
                 </div>
+                <!-- Not getting rendered on actual HTML
+                <div class="col-sm-5 quick-order-links hidden-xs">
+                    <a data-testing-id="link-quickorder" href="" title="Quick Order">
+                        <span class="glyphicon glyphicon-fast-forward">
+                            </span>Quick Order</a>
+                </div> -->
                 <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
                 <div class="col-sm-4 search-container header-search-container">
                     <form role="search" class="search clearfix" name="SearchBox_Header">
@@ -64,4 +89,15 @@
             </div>
         </div>
     </div>
+    <!-- Not rendering on actual HTML-->
+    <!-- <div class="container visible-xs">
+        <div class="row">
+            <div class="col-xs-9 quick-order-links">
+                <a href="" title="Quick Order">
+                    <span class="glyphicon glyphicon-fast-forward">
+                        </span>
+                    Quick Order</a>
+            </div>
+        </div>
+    </div> -->
 </header>
