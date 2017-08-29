@@ -1,4 +1,4 @@
-import { HeaderSlotComponent } from './header.component';
+import { HeaderComponent } from './header.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockComponent } from 'app/components/mock.component';
@@ -7,9 +7,9 @@ import { GlobalState } from 'app/services/global.state';
 import { WishListService } from 'app/services/wishlists/wishlists.service';
 import { Observable } from 'rxjs/Observable';
 
-describe('Header Slot Component', () => {
-  let fixture: ComponentFixture<HeaderSlotComponent>;
-  let component: HeaderSlotComponent;
+describe('Header Component', () => {
+  let fixture: ComponentFixture<HeaderComponent>;
+  let component: HeaderComponent;
   let element: HTMLElement;
   let debugEl: DebugElement;
 
@@ -37,7 +37,7 @@ describe('Header Slot Component', () => {
 
       ],
       declarations: [
-        HeaderSlotComponent,
+        HeaderComponent,
         MockComponent({ selector: 'is-login-status', template: 'Login Status Template' }),
         MockComponent({ selector: 'is-product-compare-status', template: 'Product Compare Status Template' }),
         MockComponent({ selector: 'is-wishlist-status', template: 'Wish List Template' }),
@@ -47,7 +47,7 @@ describe('Header Slot Component', () => {
         MockComponent({ selector: 'is-mini-cart', template: 'Mini Cart Template' }),
       ]
     }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(HeaderSlotComponent);
+      fixture = TestBed.createComponent(HeaderComponent);
       component = fixture.componentInstance;
       element = fixture.nativeElement;
       debugEl = fixture.debugElement;
@@ -74,7 +74,7 @@ describe('Header Slot Component', () => {
     expect(element.getElementsByTagName('is-header-navigation')[0].textContent).toContain('Header Navigation Template');
   });
 
-  xit('should check "MinicartComponent" is rendered on template', () => {
+  xit('should check "MiniCartComponent" is rendered on template', () => {
     expect(element.getElementsByTagName('is-mini-cart')[0].textContent).toContain('Mini Cart Template');
   });
 });

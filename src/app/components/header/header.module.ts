@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HeaderSlotComponent } from './header.component';
+import { HeaderComponent } from './header.component';
 import { ProductCompareStatusComponent } from './product-compare-status/product-compare-status.component';
 import { MiniCartComponent } from './mini-cart/mini-cart.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
@@ -26,11 +26,11 @@ import { WishListService } from 'app/services/wishlists/wishlists.service';
     BsDropdownModule
   ],
   exports: [
-    HeaderSlotComponent,
+    HeaderComponent,
     ProductCompareStatusComponent
   ],
   declarations: [
-    HeaderSlotComponent,
+    HeaderComponent,
     ProductCompareStatusComponent,
     MiniCartComponent,
     SearchBoxComponent,
