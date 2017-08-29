@@ -8,7 +8,7 @@ import { GlobalState } from 'app/services/global.state';
     templateUrl: './header.component.html',
 })
 
-export class HeaderSlotComponent {
+export class HeaderComponent {
     globalnav: boolean = true;
     cartItemLength: number;
 
