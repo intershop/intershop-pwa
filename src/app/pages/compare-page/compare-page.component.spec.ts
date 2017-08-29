@@ -1,16 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ComparePageComponent } from './compare-page.component';
+import { GlobalState } from 'app/services'
 
 describe('ComparePageComponent', () => {
   let component: ComparePageComponent;
   let fixture: ComponentFixture<ComparePageComponent>;
 
   beforeEach(async(() => {
+    class GlobalStatestub {
+      subscribeCachedData(key, callBack: Function) {
+
+      }
+    }
+
     TestBed.configureTestingModule({
-      declarations: [ ComparePageComponent ]
+      declarations: [ComparePageComponent],
+      providers: [{ provide: GlobalState, useClass: GlobalStatestub }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +26,8 @@ describe('ComparePageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should create the component', async(() => {
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  }));
 });

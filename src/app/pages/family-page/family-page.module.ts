@@ -10,6 +10,7 @@ import { SharedModule } from 'app/modules/shared.module';
 import { FilterListService, FilterListMockService, FilterListApiService } from 'app/components/filter-list/filter-list-service';
 import { FamilyPageRoute } from './family-page.routes';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { DisableIconDirective } from 'app/directives/disable-icon.directive';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     FilterListComponent,
     FamilyPageListComponent,
     BreadcrumbComponent,
-    ProductTileComponent
+    ProductTileComponent,
+    DisableIconDirective
   ],
   providers: [
     ProductListService,

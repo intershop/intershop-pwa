@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService, GlobalState } from 'app/services';
 import { WishListModel } from './wishlists.model';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../../../environments/environment';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class WishListService {
