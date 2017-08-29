@@ -1,9 +1,9 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AccountLoginService } from './account-login-service';
-import { EmailValidator } from '../../shared/validators/email.validator';
-import { CacheCustomService } from '../../shared/services';
+import { AccountLoginService } from 'app/services/account-login';
+import { EmailValidator } from 'app/validators/email.validator';
+import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 
 
 @Component({

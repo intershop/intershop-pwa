@@ -1,17 +1,16 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { TestBed, inject, async } from '@angular/core/testing';
-import { FormControl, Validators } from '@angular/forms';
+import { TestBed, async } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
 import { EmailPasswordComponent } from './email-password.component';
-import { matchOtherValidator } from '../../../shared/validators/match-words.validator';
-import { SharedModule } from '../../../shared/shared-modules/shared.module';
+import { matchOtherValidator } from 'app/validators/match-words.validator';
+import { SharedModule } from 'app/modules/shared.module';
 
 describe('EmailPassword Component', () => {
-    let fixture: ComponentFixture<EmailPasswordComponent>,
-        component: EmailPasswordComponent,
-        element: HTMLElement,
-        debugEl: DebugElement
+    let fixture: ComponentFixture<EmailPasswordComponent>;
+    let component: EmailPasswordComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({

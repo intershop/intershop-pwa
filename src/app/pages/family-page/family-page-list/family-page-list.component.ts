@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProductListService } from './product-list-service';
-import { CacheCustomService } from '../../../shared/services/cache/cache-custom.service';
-import { ProductTileModel } from '../../../shared/components/product-tile/product-tile.model';
-import { environment } from '../../../../environments/environment';
+import { ProductListService } from 'app/services/products';
+import { CacheCustomService } from 'app/services/cache/cache-custom.service';
+import { ProductTileModel } from 'app/components/product-tile/product-tile.model';
+import { environment } from 'environments/environment';
 
 @Component({
-  selector: 'is-familypagelist',
+  selector: 'is-family-page-list',
   templateUrl: './family-page-list.component.html',
   styleUrls: ['./family-page-list.component.css']
 })

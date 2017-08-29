@@ -5,7 +5,7 @@
 <div id="product-search-result" class="product-search-result" data-testing-id="family-page">
 	<div class="row">
     <div class="col-sm-3">
-      <is-filterpanel></is-filterpanel>
+      <is-filter-list></is-filter-list>
     </div>
     <div class="col-sm-9">
       <!-- Product List filter -->
@@ -53,7 +53,7 @@
           </form>
         </div>
       </div>
-      <is-familypagelist [sortBy] = "sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-familypagelist>
+      <is-family-page-list [sortBy] = "sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-family-page-list>
     </div>
   </div>
 </div>
