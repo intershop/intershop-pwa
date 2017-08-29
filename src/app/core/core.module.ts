@@ -9,7 +9,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import {
   ApiService, InstanceService, JwtService, EncryptDecryptService,
-  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState
+  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator
 } from '../shared/services';
 
 import { HeaderModule } from '../shared/components/header/header.module';
@@ -48,7 +48,8 @@ import { StyleWrapperDirective } from '../shared/directives/style-wrapper.direct
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
-    GlobalState
+    GlobalState,
+    CrossTabCommunicator
   ],
   exports: [
     FooterModule,
