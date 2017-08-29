@@ -6,7 +6,7 @@ import { EmailPasswordComponent } from './email-password/email-password.componen
 import { AddressComponent } from './address/address.component';
 import { RegistrationPageRoute } from './registration-page.routes';
 import { RegistrationPageComponent } from './registration-page.component';
-import { SharedModule } from '../../shared/shared-modules/shared.module';
+import { SharedModule } from 'app/modules/shared.module';
 
 
 @NgModule({

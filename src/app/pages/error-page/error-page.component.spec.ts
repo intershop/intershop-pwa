@@ -5,10 +5,10 @@ import { ErrorPageComponent } from './error-page.component';
 
 
 describe('ErrorPage Component', () => {
-    let fixture: ComponentFixture<ErrorPageComponent>,
-        component: ErrorPageComponent,
-        element: HTMLElement,
-        debugEl: DebugElement;
+    let fixture: ComponentFixture<ErrorPageComponent>;
+    let component: ErrorPageComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ErrorPageComponent]

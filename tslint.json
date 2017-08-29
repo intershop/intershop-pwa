@@ -63,6 +63,7 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
+    "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
@@ -73,6 +74,7 @@
       "check-else",
       "check-whitespace"
     ],
+    "one-variable-per-declaration": true,
     "prefer-const": false,
     "quotemark": [
       true,

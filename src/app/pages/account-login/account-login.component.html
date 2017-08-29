@@ -1,6 +1,3 @@
-<div class="marketing-area">
-    <!--TODO <is-marketingslot></is-marketingslot> -->
-</div>
 <h1>{{ 'account.login.heading' | translate }}</h1>
 <div class="row" data-testing-id="account-login-page">
     <div class="col-md-6">
@@ -11,7 +8,7 @@
                 <div *ngIf="((errorUser && errorUser !== 'UserNotLoggedIn' && errorUser !== 'LoginAlreadyInUse'))" role="alert" class="alert alert-danger">
                     {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (registrationLoginType
                     && registrationLoginType === 'username') ? ('account.login.username_password.error.invalid'  | translate) : ('account.login.email_password.error.invalid' | translate) : ''}}
-                    
+
                     <!-- TODO  -->
                     <!-- Apply condition for other possible inputs -->
                 </div>
