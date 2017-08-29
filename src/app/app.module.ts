@@ -21,7 +21,8 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
     JsonpModule,
     AppRoutingModule,
     PageModule,
-    CoreModule],
+    CoreModule
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

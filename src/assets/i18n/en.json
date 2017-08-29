@@ -27,6 +27,22 @@
   "account.login.email.error.required":"Please enter an email address.",
   "account.login.email.error.invalid":"Please enter a valid email address.",
   "account.login.password.error.required":"Please enter a password.",
+
+  "account.register.heading":"Create a New Account",
+  "account.register.message":"To take full advantage of account features & benefits, please provide all the information below.",
+  "account.register.email_password.heading":"Email & Password",
+  "account.register.email_password.message":"You will use your email address and password to access your account on future visits.",
+  "account.register.address.headding":"Address",
+  "account.register.address.message":"To save time when placing an order, please provide your primary invoice or shipping address below. We will maintain this information so you won''t have to enter it again.",
+  "account.register.email.label":"Email Address",
+  "account.register.email.example.text":"(e.g. joe@aol.com)",
+  "account.register.email.supplementary_text":"* You can subscribe to newsletters any time in the My Account section. We will only use your personal data as described in our <a href':''{0}'>Privacy Policy</a>.",
+  "account.register.email.supplementary_text.auto_email":"* We will send you exclusive news about new products and special offers. You can change this any time in the My Account section. We will only use your personal data as described in our <a href':''{0}'>Privacy Policy</a>.",
+  "account.register.email_confirmation.label":"Confirm Email Address",
+  "account.register.email_confirmation.not_match.error":"Your Confirm Email Address do not match.",
+  "account.register.password.label":"Password",
+  "account.register.password.extrainfo.message":"{0} characters minimum, must include numbers and letters, no spaces",
+  "account.register.password_confirmation.label":"Confirm Password",
   "search.searchbox.instructional_text":"Search for keyword, product ID or category...",
   "search.searchbox.button.title":"Start search."
 }

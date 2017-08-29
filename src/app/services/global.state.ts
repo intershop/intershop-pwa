@@ -32,14 +32,15 @@ export class GlobalState {
         this._subscriptions.set(event, subscribers);
     }
 
-    subscribeCachedData(event: string, callback: Function) {
-        callback(this.cacheService.getCachedData(event) || []);
-    }
-
     _onEvent(data: any) {
         let subscribers = this._subscriptions.get(data['event']) || [];
         subscribers.forEach((callback) => {
             callback.call(null, data['data']);
         });
     }
+
+    subscribeCachedData(event: string, callback: Function) {
+        callback(this.cacheService.getCachedData(event) || []);
+    }
+
 }
