@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { CacheService, CacheStoragesEnum, CacheOptionsInterface } from 'ng2-cache/ng2-cache';
+import { CacheService } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from './encrypt-decrypt.service';
-import * as CryptoJS from 'crypto-js';
 
 @Injectable()
 export class CacheCustomService {

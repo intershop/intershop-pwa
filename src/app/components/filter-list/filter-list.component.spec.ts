@@ -7,7 +7,6 @@ import { data } from './filter-list-service/filter-list.mock';
 import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 import { FilterListService, FilterListMockService } from './filter-list-service';
 import { InstanceService } from 'app/services/instance.service';
-import { By } from '@angular/platform-browser';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 describe('FilterList Component', () => {
     let fixture: ComponentFixture<FilterListComponent>,

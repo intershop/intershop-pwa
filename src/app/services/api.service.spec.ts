@@ -1,5 +1,3 @@
-import { Headers, Http, Response, URLSearchParams } from '@angular/http';
-
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs/Observable';
 

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
 import { ProductListService } from 'app/services/products';
 import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 import { ProductTileModel } from 'app/components/product-tile/product-tile.model';

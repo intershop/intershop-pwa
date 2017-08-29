@@ -1,10 +1,9 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { FamilyPageListComponent } from './family-page-list.component';
 import { ProductList } from 'app/services/products/products.mock';
-import { By } from '@angular/platform-browser';
 import { ProductListService, ProductListMockService } from 'app/services/products';
 import { InstanceService } from 'app/services/instance.service';
 import { CacheCustomService } from 'app/services/cache/cache-custom.service';
@@ -18,12 +17,6 @@ describe('FamilyPageList Component', () => {
     element: HTMLElement,
     debugEl: DebugElement,
     keyExists = false;
-
-  class MockDataEmitterService {
-    addToCart() {
-      return true
-    }
-  }
 
   class MockCacheCustomService {
     cacheKeyExists(key) {

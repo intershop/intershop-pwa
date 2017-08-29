@@ -7,7 +7,7 @@ import { GlobalState } from 'app/services';
 })
 export class ComparePageComponent {
   comparedProducts = [];
-  constructor(private globalState: GlobalState) {
+  constructor(globalState: GlobalState) {
 
     globalState.subscribeCachedData('productCompareData', data => {
       this.comparedProducts = data;

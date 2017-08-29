@@ -4,7 +4,6 @@ import { FilterListMockService } from './filter-list.service.mock';
 import { FilterListApiService } from './filter-list.service.api';
 import { Observable } from 'rxjs/Observable';
 import { environment } from 'environments/environment';
-import { data } from './filter-list.mock';
 import { FilterListModel } from './filter-entries';
 
 @Injectable()

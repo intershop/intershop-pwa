@@ -84,7 +84,6 @@ describe('Header Navigation Component', () => {
         fixture.detectChanges();
 
         const categories = element.getElementsByClassName('dropdown');
-        const subCategories = element.getElementsByClassName('main-navigation-level1-item');
         expect(categories[0].children[0].textContent).toContain('Cameras');
         expect(categories[1].children[0].textContent).toContain('Computers');
         expect(categories[2].children[0].textContent).toContain('Home Entertainment');

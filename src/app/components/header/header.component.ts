@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { WishListService } from 'app/services/wishlists/wishlists.service';
 import { WishListModel } from 'app/services/wishlists/wishlists.model';
 import { GlobalState } from 'app/services/global.state';

@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { InstanceService } from 'app/services/instance.service';
 import { AccountLoginService } from './account-login.service'
 import { AccountLoginMockService } from './account-login.service.mock'
-import { UserDetail } from './account-login.model';
 import { async } from '@angular/core/testing';
 import { inject } from '@angular/core/testing';
 import { JwtService } from 'app/services/jwt.service';
@@ -69,7 +68,7 @@ describe('AccountLogin Service', () => {
     })));
 
     it('should logout user', async(inject([AccountLoginService, JwtService], (accountLoginService: AccountLoginService, jwtService: JwtService) => {
-        const spy = spyOn(jwtService, 'destroyToken');
+        spyOn(jwtService, 'destroyToken');
         accountLoginService.logout();
         expect(jwtService.destroyToken).toHaveBeenCalled();
     })));

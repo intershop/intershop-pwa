@@ -1,8 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { TestBed, inject, async } from '@angular/core/testing';
-import { FormControl, Validators } from '@angular/forms';
+import { TestBed, async } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
 import { EmailPasswordComponent } from './email-password.component';
 import { matchOtherValidator } from 'app/validators/match-words.validator';
 import { SharedModule } from 'app/modules/shared.module';

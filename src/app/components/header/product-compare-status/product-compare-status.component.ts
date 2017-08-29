@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { GlobalState } from 'app/services/';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'is-product-compare-status',

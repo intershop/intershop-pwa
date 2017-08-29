@@ -41,6 +41,7 @@ import { StyleWrapperDirective } from 'app/directives/style-wrapper.directive';
   ],
   providers: [
     ApiService,
+    InstanceService,
     DataEmitterService,
     EncryptDecryptService,
     JwtService,

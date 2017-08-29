@@ -16,7 +16,6 @@ export class GlobalState {
 
     notifyDataChanged(event, value) {
 
-        let current = this._data[event];
         this._data[event] = value;
         this.cacheService.storeDataToCache(value, event);
         this._data.next({

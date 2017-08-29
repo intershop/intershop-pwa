@@ -1,8 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { AddressComponent } from './address.component';
-import { FormGroup } from '@angular/forms';
 import { SharedModule } from 'app/modules/shared.module';
 
 describe('Address Component', () => {

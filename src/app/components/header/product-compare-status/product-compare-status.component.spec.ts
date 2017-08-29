@@ -1,6 +1,6 @@
 import { ProductCompareStatusComponent } from './product-compare-status.component';
 import { DebugElement, Component } from '@angular/core';
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalState } from 'app/services';
 import { Router } from '@angular/router';
@@ -53,7 +53,7 @@ describe('Product Compare status Component', () => {
         expect(app).toBeTruthy();
     });
 
-    it('should go to URL "familyPage/compare/1" ', inject([Router, Location], (router: Router, location: Location) => {
+    it('should go to URL "compare"', inject([Router, Location], (router: Router, location: Location) => {
         fixture.detectChanges();
         debugEl.query(By.css('.compare-status')).nativeElement.click();
 

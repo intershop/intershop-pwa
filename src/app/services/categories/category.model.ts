@@ -1,4 +1,4 @@
-import {SubcategoryModel, SubCategory} from './subcategory.model';
+import { SubCategory } from './subcategory.model';
 
 class Image {
   name: string;
