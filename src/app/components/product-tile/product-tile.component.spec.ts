@@ -7,7 +7,7 @@ import { ProductList } from 'app/services/products/products.mock';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'environments/environment';
 
-import { JwtService, GlobalState, DataEmitterService, CacheCustomService } from 'app/services';
+import { JwtService, GlobalState, CacheCustomService } from 'app/services';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { WishListService } from 'app/services/wishlists/wishlists.service';
@@ -31,17 +31,6 @@ describe('ProductTile Component', () => {
             return jwtToken;
         }
     }
-    class DataEmitterServiceStub {
-        addToCart(itemToAdd) {
-
-        }
-        addToWishList(itemToAdd) {
-
-        }
-        addToCompare(itemToAdd) {
-
-        }
-    };
     class RouterStub {
         navigate(url) {
             return url;
@@ -57,7 +46,7 @@ describe('ProductTile Component', () => {
 
     class GlobalStateStub {
         subscribeCachedData(key, callBack: Function) {
-
+            callBack(['12', '23']);
         }
 
         notifyDataChanged(key, data: [string]) {
@@ -82,7 +71,6 @@ describe('ProductTile Component', () => {
             ],
             declarations: [ProductTileComponent, DisableIconDirective],
             providers: [
-                { provide: DataEmitterService, useClass: DataEmitterServiceStub },
                 { provide: JwtService, useClass: JwtServiceStub },
                 { provide: Router, useClass: RouterStub },
                 { provide: WishListService, useClass: WishListServiceStub },
@@ -110,22 +98,20 @@ describe('ProductTile Component', () => {
         environment.needMock = false;
     });
 
-    xit('should call notifyDataChanged method of GlobalState', async(inject([GlobalState], (globalState: GlobalState) => {
+    xit('should call AddToCompare method and hence notifyDataChanged method of GlobalState', async(inject([GlobalState], (globalState: GlobalState) => {
         const spy = spyOn(globalState, 'notifyDataChanged');
-        fixture.detectChanges();
         component.addToCompare('add to Compare');
         expect(spy).toHaveBeenCalled();
     })
-    ))
-
-    it('should call addToCart method of DataEmitterService', async(inject([DataEmitterService], (dataEmitterService: DataEmitterService) => {
-        const spy = spyOn(dataEmitterService, 'addToCart');
+    ));
+    it('should call AddToCart and hence notifyDataChanged method of GlobalState', async(inject([GlobalState], (globalState: GlobalState) => {
+        const spy = spyOn(globalState, 'notifyDataChanged');
         component.addToCart('add to cart');
         expect(spy).toHaveBeenCalled();
     })
     ));
 
-    it('should call addToWishList method of DataEmitterService', async(inject([WishListService], (wishListService: WishListService) => {
+    it('should call getWishList method of WishListService', async(inject([WishListService], (wishListService: WishListService) => {
         const spy = spyOn(wishListService, 'getWishList').and.returnValue(Observable.of(null));
         component.addToWishList(null);
         expect(spy).toHaveBeenCalled();

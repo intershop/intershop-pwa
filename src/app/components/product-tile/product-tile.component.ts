@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { DataEmitterService, GlobalState } from 'app/services';
+import { GlobalState } from 'app/services';
 import { ProductTileModel } from './product-tile.model';
 import { environment } from 'environments/environment';
 import { JwtService } from 'app/services';
@@ -31,7 +31,7 @@ export class ProductTileComponent implements OnInit {
    * @param  {GlobalState} privateglobalState
    */
 
-  constructor(private _dataEmitterService: DataEmitterService,
+  constructor(
     private router: Router,
     private jwtService: JwtService,
     private wishListService: WishListService,
@@ -166,7 +166,14 @@ export class ProductTileComponent implements OnInit {
    * @returns void
    */
   addToCart(itemToAdd): void {
-    this._dataEmitterService.addToCart(itemToAdd);
+    this.globalState.subscribeCachedData('cartData', cartData => {
+      cartData.push(itemToAdd);
+      this._updateCartData(cartData);
+    });
+  };
+
+  private _updateCartData(cartData: string[]) {
+    this.globalState.notifyDataChanged('cartData', cartData);
   };
 
   /**
