@@ -12,11 +12,11 @@ import { EncryptDecryptService } from 'app/services/cache/encrypt-decrypt.servic
 import { environment } from 'environments/environment';
 
 describe('FamilyPageList Component', () => {
-  let fixture: ComponentFixture<FamilyPageListComponent>,
-    component: FamilyPageListComponent,
-    element: HTMLElement,
-    debugEl: DebugElement,
-    keyExists = false;
+  let fixture: ComponentFixture<FamilyPageListComponent>;
+  let component: FamilyPageListComponent;
+  let element: HTMLElement;
+  let debugEl: DebugElement;
+  let keyExists = false;
 
   class MockCacheCustomService {
     cacheKeyExists(key) {

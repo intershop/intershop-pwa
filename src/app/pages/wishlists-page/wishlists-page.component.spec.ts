@@ -6,10 +6,10 @@ import { Observable } from 'rxjs/Observable';
 import { WishListService } from 'app/services/wishlists/wishlists.service';
 
 describe('Wish list Page Component', () => {
-  let fixture: ComponentFixture<WishListPageComponent>,
-    component: WishListPageComponent,
-    element: HTMLElement,
-    debugEl: DebugElement;
+  let fixture: ComponentFixture<WishListPageComponent>;
+  let component: WishListPageComponent;
+  let element: HTMLElement;
+  let debugEl: DebugElement;
   class WishListServiceStub {
     getWishList() {
       return Observable.of(null);

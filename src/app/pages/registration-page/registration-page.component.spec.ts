@@ -6,10 +6,10 @@ import { Router } from '@angular/router';
 import { MockComponent } from 'app/components/mock.component';
 
 describe('RegistrationPage Component', () => {
-    let fixture: ComponentFixture<RegistrationPageComponent>,
-        component: RegistrationPageComponent,
-        element: HTMLElement,
-        debugEl: DebugElement
+    let fixture: ComponentFixture<RegistrationPageComponent>;
+    let component: RegistrationPageComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
 
     class RouterStub {
         navigate(url) {

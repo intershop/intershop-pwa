@@ -5,11 +5,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 describe('Language Switch Component', () => {
-    let fixture: ComponentFixture<LanguageSwitchComponent>,
-        component: LanguageSwitchComponent,
-        element: HTMLElement,
-        debugEl: DebugElement,
-        translateService: TranslateService;
+    let fixture: ComponentFixture<LanguageSwitchComponent>;
+    let component: LanguageSwitchComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
+    let translateService: TranslateService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({

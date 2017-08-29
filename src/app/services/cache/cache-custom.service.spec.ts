@@ -5,7 +5,8 @@ import { CacheCustomService } from './cache-custom.service';
 import { ReflectiveInjector } from '@angular/core';
 
 describe('CacheCustom Service', () => {
-    let mockCache, mockEncrypt;
+    let mockCache;
+    let mockEncrypt;
     let customCacheService: CacheCustomService;
     beforeEach(() => {
        const injector = ReflectiveInjector.resolveAndCreate([CacheService]);

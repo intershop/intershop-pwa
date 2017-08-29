@@ -16,10 +16,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 
 describe('AccountLogin Component', () => {
-    let fixture: ComponentFixture<AccountLoginComponent>,
-        component: AccountLoginComponent,
-        element: HTMLElement,
-        debugEl: DebugElement;
+    let fixture: ComponentFixture<AccountLoginComponent>;
+    let component: AccountLoginComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
     class MockAccountLoginService {
         singinUser(userDetails) {
             if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {

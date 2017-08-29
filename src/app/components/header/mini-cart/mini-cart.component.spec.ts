@@ -5,10 +5,10 @@ import { MiniCartComponent } from './mini-cart.component';
 import { DataEmitterService } from 'app/services/data-emitter.service';
 
 describe('Mini Cart Component', () => {
-    let fixture: ComponentFixture<MiniCartComponent>,
-        component: MiniCartComponent,
-        element: HTMLElement,
-        debugEl: DebugElement;
+    let fixture: ComponentFixture<MiniCartComponent>;
+    let component: MiniCartComponent;
+    let element: HTMLElement;
+    let debugEl: DebugElement;
 
     class DataEmitterServiceStub {
         public miniCartEmitter = new Observable((observer) => {
