@@ -8,8 +8,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import {
-  ApiService, InstanceService, JwtService, EncryptDecryptService,
-  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState
+  ApiService, JwtService, EncryptDecryptService,
+  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator
 } from 'app/services';
 
 import { HeaderModule } from 'app/components/header/header.module';
@@ -41,7 +41,6 @@ import { StyleWrapperDirective } from 'app/directives/style-wrapper.directive';
   ],
   providers: [
     ApiService,
-    InstanceService,
     DataEmitterService,
     EncryptDecryptService,
     JwtService,
@@ -49,7 +48,8 @@ import { StyleWrapperDirective } from 'app/directives/style-wrapper.directive';
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
-    GlobalState
+    GlobalState,
+    CrossTabCommunicator
   ],
   exports: [
     FooterModule,
