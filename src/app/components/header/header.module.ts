@@ -7,17 +7,17 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
 import { LanguageSwitchComponent } from './language-switch/language-switch.component';
 import { HeaderNavigationComponent } from './header-navigation/header-navigation.component';
 import { LoginStatusComponent } from './login-status/login-status.component';
-import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } from 'app/services/account-login';
-import { SharedModule } from 'app/modules/shared.module';
+import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } from '../../services/account-login';
+import { SharedModule } from '../../modules/shared.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { CategoryService } from 'app/services/categories/category.service';
-import { CategoryMockService } from 'app/services/categories/category.service.mock';
-import { CategoryApiService } from 'app/services/categories/category.service.api';
-import { SearchBoxApiService } from 'app/services/suggest/search-box.service.api';
-import { SearchBoxMockService } from 'app/services/suggest/search-box.service.mock';
-import { SearchBoxService } from 'app/services/suggest/search-box.service';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
+import { CategoryService } from '../../services/categories/category.service';
+import { CategoryMockService } from '../../services/categories/category.service.mock';
+import { CategoryApiService } from '../../services/categories/category.service.api';
+import { SearchBoxApiService } from '../../services/suggest/search-box.service.api';
+import { SearchBoxMockService } from '../../services/suggest/search-box.service.mock';
+import { SearchBoxService } from '../../services/suggest/search-box.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 
 @NgModule({
   imports: [

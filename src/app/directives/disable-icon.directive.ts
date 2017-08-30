@@ -20,10 +20,12 @@ export class DisableIconDirective implements OnInit {
 
     toggleClass() {
         this.globalState.subscribeCachedData(this.globalStateKey, compareListItems => {
-            if (_.find(compareListItems, compareProduct => compareProduct === this.property)) {
-                this.renderer.addClass(this.el.nativeElement, 'is-selected')
-            } else {
-                this.renderer.removeClass(this.el.nativeElement, 'is-selected')
+            if (compareListItems) {
+                if (_.find(compareListItems, compareProduct => compareProduct === this.property)) {
+                    this.renderer.addClass(this.el.nativeElement, 'is-selected')
+                } else {
+                    this.renderer.removeClass(this.el.nativeElement, 'is-selected')
+                }
             }
         });
     };

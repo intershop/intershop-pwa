@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { WishListModel } from 'app/services/wishlists/wishlists.model';
-import { GlobalState } from 'app/services';
+import { WishListModel } from '../../../services/wishlists/wishlists.model';
+import { GlobalState } from '../../../services';
 
 @Component({
   selector: 'is-wishlist-status',

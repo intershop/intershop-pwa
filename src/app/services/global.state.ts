@@ -53,7 +53,6 @@ export class GlobalState {
     subscribe(event: string, callback: Function) {
         let subscribers = this._subscriptions.get(event) || [];
         subscribers.push(callback);
-
         this._subscriptions.set(event, subscribers);
     }
 
@@ -72,7 +71,7 @@ export class GlobalState {
      * @param  {Function} callback
      */
     subscribeCachedData(event: string, callback: Function) {
-        callback(this.cacheService.getCachedData(event) || []);
+        callback(this.cacheService.getCachedData(event) || null);
     }
 
 }
