@@ -48,7 +48,6 @@ describe('Search Box Component', () => {
         component.searchTerm$.next('c');
         component.ngOnInit();
         tick(400);
-        console.log(component.results);
         expect(component.results).not.toBeNull();
     }));
 

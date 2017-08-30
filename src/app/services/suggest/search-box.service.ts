@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
-import { environment } from 'environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
-import { InstanceService } from 'app/services/instance.service';
+import { InstanceService } from '../../services/instance.service';
 import { SearchBoxApiService } from './search-box.service.api';
 import { SearchBoxMockService } from './search-box.service.mock';
 
