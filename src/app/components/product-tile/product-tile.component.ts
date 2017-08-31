@@ -185,8 +185,9 @@ export class ProductTileComponent implements OnInit {
   addToWishList(itemToAdd): void {
     if (!this.jwtService.getToken()) {
       this.router.navigate(['/login']);
+    } else {
+      this.wishListService.getWishList().subscribe(_ => _);
     }
-    this.wishListService.getWishList().subscribe(_ => _);
   };
 
   /**
