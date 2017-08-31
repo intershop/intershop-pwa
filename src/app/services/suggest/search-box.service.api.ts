@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { ApiService } from 'app/services/api.service';
+import { ApiService } from '../../services/api.service';
 
 @Injectable()
 export class SearchBoxApiService {

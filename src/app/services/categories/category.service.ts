@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { InstanceService } from 'app/services/instance.service';
+import { InstanceService } from '../../services/instance.service';
 import { CategoryApiService } from './category.service.api';
 import { CategoryMockService } from './category.service.mock';
-import { environment } from 'environments/environment';
+import { environment } from '../../../environments/environment';
 import { CategoryModel } from './category.model';
 import { SubcategoryModel } from './subcategory.model';
 

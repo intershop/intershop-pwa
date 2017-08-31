@@ -25,7 +25,7 @@ describe('DisableIconDirective', () => {
     }
     class GlobalStatestub {
         subscribeCachedData(key: string, callBack: Function) {
-            callBack();
+            callBack('some data');
         }
     }
 

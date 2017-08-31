@@ -2,24 +2,16 @@ import { LoginStatusComponent } from './login-status.component';
 import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AccountLoginService } from 'app/services/account-login/account-login.service';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
+import { userData } from '../../../services/account-login/account-login.mock';
+import { AccountLoginService } from '../../../services/account-login';
+import { GlobalState } from '../../../services';
+
 
 describe('Login Status Component', () => {
     let fixture: ComponentFixture<LoginStatusComponent>;
     let component: LoginStatusComponent;
     let element: HTMLElement;
     let debugEl: DebugElement;
-
-    class CacheCustomServicestub {
-        cacheKeyExists() {
-            return true;
-        };
-        getCachedData() {
-            return [];
-        };
-    };
 
     class RouterStub {
         public navigate(url: string[]) {
@@ -28,17 +20,17 @@ describe('Login Status Component', () => {
     };
 
     class AccountLoginServiceStub {
-        public loginStatusEmitter = new Observable((observer) => {
-            observer.next({ firstName: 'john', lastName: 'Wick', hasRole: true });
-
-            observer.complete();
-        });
-        public isAuthorized() {
-            return true;
-        };
-
-        public logout() { };
+        logout() { };
     };
+
+    class GlobalStateStub {
+        subscribeCachedData(key, callBack: Function) {
+            callBack(userData);
+        }
+        subscribe(key, callBack: Function) {
+            callBack(userData);
+        }
+    }
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -47,8 +39,8 @@ describe('Login Status Component', () => {
             ],
             providers: [
                 { provide: Router, useClass: RouterStub },
-                { provide: CacheCustomService, useClass: CacheCustomServicestub },
-                { provide: AccountLoginService, useClass: AccountLoginServiceStub }
+                { provide: AccountLoginService, useClass: AccountLoginServiceStub },
+                { provide: GlobalState, useClass: GlobalStateStub },
             ]
         }).compileComponents();
 
@@ -58,50 +50,43 @@ describe('Login Status Component', () => {
         element = fixture.nativeElement;
     });
 
-    it('should check user is logged in', () => {
-        component.ngOnInit();
+    it('should create the component', () => {
+        const app = debugEl.componentInstance;
+        expect(app).toBeTruthy();
+    });
 
+    it('should check if user is logged in', () => {
+        component.ngOnInit();
         expect(component.isLoggedIn).toBe(true);
         expect(component.userDetail).not.toBeNull();
     });
 
-    it('should check if register is called with "register"', inject([Router], (router: Router) => {
-        spyOn(router, 'navigate');
-
+    it('should call register method and verify if router.navigate is called with "register"', inject([Router], (router: Router) => {
+        const spy = spyOn(router, 'navigate');
         component.register();
-
-        expect(router.navigate).toHaveBeenCalledWith(['register']);
+        expect(spy).toHaveBeenCalledWith(['register']);
     }));
 
-    it('should check if logout is called with "login"', inject([Router, AccountLoginService], (router: Router, accountLoginService: AccountLoginService) => {
-        spyOn(router, 'navigate');
-        spyOn(accountLoginService, 'logout');
-
+    it('should call logout method and verify if router.navigate is called with "home" and userDetails are null', inject([Router, AccountLoginService], (router: Router, accountLoginService: AccountLoginService) => {
+        const spyrouter = spyOn(router, 'navigate');
+        const spyaccount = spyOn(accountLoginService, 'logout');
         component.logout();
-
-        expect(router.navigate).toHaveBeenCalledWith(['home']);
+        expect(spyrouter).toHaveBeenCalledWith(['home']);
         expect(component.userDetail).toBeNull();
         expect(component.isLoggedIn).toBe(false);
-        expect(accountLoginService.logout).toHaveBeenCalled();
-
+        expect(spyaccount).toHaveBeenCalled();
     }));
 
-    it('should check if signIn method and router.navigate is called', inject([Router], (router: Router) => {
-        spyOn(router, 'navigate');
-
+    it('should call signIn method and verify if router.navigate is called with "login"', inject([Router], (router: Router) => {
+        const spyrouter = spyOn(router, 'navigate');
         component.signIn();
-
-        expect(router.navigate).toHaveBeenCalledWith(['login']);
+        expect(spyrouter).toHaveBeenCalledWith(['login']);
     }));
 
-    it('should check if user full name, "Logout" and "MyAccount" are rendered on template when user is logged In', () => {
+    it('should check if user full name is getting rendered on template when user is logged In', () => {
         component.ngOnInit();
         fixture.detectChanges();
-
-        const loggedInDetails = element.getElementsByClassName('hidden-xs');
-
-        expect(loggedInDetails[0].textContent).toEqual('john Wick');
-        expect(loggedInDetails[1].textContent).toEqual('My Account');
-        expect(loggedInDetails[3].textContent).toEqual('Logout');
+        const loggedInDetails = element.getElementsByClassName('login-name');
+        expect(loggedInDetails[0].textContent).toEqual('Patricia Miller');
     });
 });

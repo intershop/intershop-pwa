@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryModel } from 'app/services/categories/category.model';
-import { SubcategoryModel } from 'app/services/categories/subcategory.model';
-import { CategoryService } from 'app/services/categories/category.service';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
+import { CategoryModel } from '../../../services/categories/category.model';
+import { SubcategoryModel } from '../../../services/categories/subcategory.model';
+import { CategoryService } from '../../../services/categories/category.service';
+import { CacheCustomService } from '../../../services/cache/cache-custom.service';
 
 @Component({
   selector: 'is-header-navigation',

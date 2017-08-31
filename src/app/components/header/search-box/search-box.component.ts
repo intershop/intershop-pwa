@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { SuggestedElement, SearchBoxModel } from 'app/services/suggest/search-box.model';
-import { SearchBoxService } from 'app/services/suggest/search-box.service';
+import { SuggestedElement, SearchBoxModel } from '../../../services/suggest/search-box.model';
+import { SearchBoxService } from '../../../services/suggest/search-box.service';
 
 @Component({
   selector: 'is-search-box',

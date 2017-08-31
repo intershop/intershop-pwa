@@ -167,8 +167,9 @@ export class ProductTileComponent implements OnInit {
    */
   addToCart(itemToAdd): void {
     this.globalState.subscribeCachedData('cartData', cartData => {
+      cartData = cartData || [];
       cartData.push(itemToAdd);
-      this._updateCartData(cartData);
+      this._updateCartData(cartData)
     });
   };
 
@@ -198,6 +199,7 @@ export class ProductTileComponent implements OnInit {
       if (_.find(compareListItems, compareProduct => compareProduct === itemToAdd)) {
         _.remove(compareListItems, compareProduct => compareProduct === itemToAdd);
       } else {
+        compareListItems = compareListItems || [];
         compareListItems.push(itemToAdd);
       }
       this._updateProductCompareData(compareListItems);
