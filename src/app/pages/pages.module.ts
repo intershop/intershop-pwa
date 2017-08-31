@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PagesRoutingModule } from './pages.routes';
-import { AuthGuard } from 'app/services/auth-guard.service';
+import { AuthGuard } from '../services/auth-guard.service';
 
 @NgModule({
   imports: [

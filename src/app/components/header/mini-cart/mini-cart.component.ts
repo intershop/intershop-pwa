@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GlobalState } from 'app/services';
+import { GlobalState } from '../../../services';
 
 @Component({
   selector: 'is-mini-cart',
@@ -30,7 +30,7 @@ export class MiniCartComponent {
   calculateCartValues(cartItems) {
     this.cartPrice = 0;
     this.cartLength = 0;
-    if (cartItems.length > 0) {
+    if (cartItems) {
       cartItems.forEach(item => {
         this.cartPrice = this.cartPrice + item.salePrice.value;
       });

@@ -1,13 +1,13 @@
 import { Injectable, EventEmitter } from '@angular/core'
-import { environment } from 'environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { AccountLoginMockService } from './account-login.service.mock';
 import { AccountLoginApiService } from './account-login.service.api';
 import { AccountLogin } from './account-login';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { UserDetail } from './account-login.model';
-import { InstanceService } from 'app/services/instance.service';
-import { JwtService, GlobalState } from 'app/services';
+import { InstanceService } from '../../services/instance.service';
+import { JwtService, GlobalState } from '../../services';
 
 export interface IAccountLoginService {
     singinUser(userDetails: AccountLogin): Observable<UserDetail>,

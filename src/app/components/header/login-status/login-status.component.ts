@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountLoginService } from 'app/services/account-login/account-login.service';
+import { AccountLoginService } from '../../../services/account-login/account-login.service';
 import { Router } from '@angular/router';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-import { UserDetail } from 'app/services/account-login/account-login.model';
+import { UserDetail } from '../../../services/account-login/account-login.model';
+import { GlobalState } from '../../../services';
 
 @Component({
     selector: 'is-login-status',
@@ -12,27 +12,32 @@ import { UserDetail } from 'app/services/account-login/account-login.model';
 export class LoginStatusComponent implements OnInit {
     userDetail: UserDetail;
     isLoggedIn: boolean;
-    userDetailKey = 'userDetail';
+    userDetailKey: string = 'customerDetails';
     constructor(
         private accountLoginService: AccountLoginService,
         private router: Router,
-        private cacheCustomService: CacheCustomService
+        private globalState: GlobalState
     ) {
     }
 
     ngOnInit() {
-        if (this.accountLoginService.isAuthorized()) {
-            if (this.cacheCustomService.cacheKeyExists(this.userDetailKey)) {
-                this.isLoggedIn = true;
-                this.userDetail = this.cacheCustomService.getCachedData(this.userDetailKey);
-                this.userDetail['hasRole'] = true;
-            }
-        }
-        this.accountLoginService.loginStatusEmitter.subscribe((userDetailData: UserDetail) => {
+        this.globalState.subscribeCachedData(this.userDetailKey, (data: UserDetail) => {
+            this.setUserDetails(data);
+            this.globalState.subscribe(this.userDetailKey, (customerDetails: UserDetail) => {
+                this.setUserDetails(customerDetails);
+            });
+        });
+    };
+    /**
+     * Sets user Details
+     * @param  {} userData
+     */
+    private setUserDetails(userData: UserDetail) {
+        if (userData) {
             this.isLoggedIn = true;
-            this.userDetail = userDetailData;
+            this.userDetail = userData;
             this.userDetail['hasRole'] = true;
-        })
+        }
     };
 
     /**
@@ -41,7 +46,7 @@ export class LoginStatusComponent implements OnInit {
      */
     register(): void {
         this.router.navigate(['register']);
-    }
+    };
 
     /**
      * navigates to login page
@@ -52,7 +57,7 @@ export class LoginStatusComponent implements OnInit {
         this.userDetail = null;
         this.isLoggedIn = false;
         this.router.navigate(['home']);
-    }
+    };
 
     /**
      * navigates to signin page
@@ -60,7 +65,5 @@ export class LoginStatusComponent implements OnInit {
      */
     signIn(): void {
         this.router.navigate(['login']);
-    }
-
+    };
 }
-

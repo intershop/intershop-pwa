@@ -10,12 +10,12 @@ import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache
 import {
   ApiService, JwtService, EncryptDecryptService,
   DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator
-} from 'app/services';
+} from '../services';
 
-import { HeaderModule } from 'app/components/header/header.module';
-import { FooterModule } from 'app/components/footer/footer.module';
-import { translateFactory } from 'app/services/custom-translate-loader';
-import { StyleWrapperDirective } from 'app/directives/style-wrapper.directive';
+import { HeaderModule } from '../components/header/header.module';
+import { FooterModule } from '../components/footer/footer.module';
+import { translateFactory } from '../services/custom-translate-loader';
+import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
 
 
 
