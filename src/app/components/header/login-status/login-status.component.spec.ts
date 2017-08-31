@@ -2,7 +2,6 @@ import { LoginStatusComponent } from './login-status.component';
 import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { userData } from '../../../services/account-login/account-login.mock';
 import { AccountLoginService } from '../../../services/account-login';
 import { GlobalState } from '../../../services';
@@ -65,23 +64,23 @@ describe('Login Status Component', () => {
     it('should call register method and verify if router.navigate is called with "register"', inject([Router], (router: Router) => {
         const spy = spyOn(router, 'navigate');
         component.register();
-        expect(router.navigate).toHaveBeenCalledWith(['register']);
+        expect(spy).toHaveBeenCalledWith(['register']);
     }));
 
     it('should call logout method and verify if router.navigate is called with "home" and userDetails are null', inject([Router, AccountLoginService], (router: Router, accountLoginService: AccountLoginService) => {
         const spyrouter = spyOn(router, 'navigate');
         const spyaccount = spyOn(accountLoginService, 'logout');
         component.logout();
-        expect(router.navigate).toHaveBeenCalledWith(['home']);
+        expect(spyrouter).toHaveBeenCalledWith(['home']);
         expect(component.userDetail).toBeNull();
         expect(component.isLoggedIn).toBe(false);
-        expect(accountLoginService.logout).toHaveBeenCalled();
+        expect(spyaccount).toHaveBeenCalled();
     }));
 
     it('should call signIn method and verify if router.navigate is called with "login"', inject([Router], (router: Router) => {
         const spyrouter = spyOn(router, 'navigate');
         component.signIn();
-        expect(router.navigate).toHaveBeenCalledWith(['login']);
+        expect(spyrouter).toHaveBeenCalledWith(['login']);
     }));
 
     it('should check if user full name is getting rendered on template when user is logged In', () => {
