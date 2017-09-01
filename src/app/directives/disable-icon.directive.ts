@@ -3,7 +3,7 @@ import { GlobalState } from 'app/services';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[is-disable-icon]'
+    selector: '[isDisableIcon]'
 })
 export class DisableIconDirective implements OnInit {
     @Input() property: string;
