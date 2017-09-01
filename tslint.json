@@ -19,20 +19,27 @@
     ],
     "import-spacing": true,
     "indent": [
-      false,
-      "spaces"
+      true,
+      "spaces",
+      2
     ],
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
       false,
-      200
+      140
     ],
     "member-access": false,
     "member-ordering": [
       true,
-      "static-before-instance",
-      "variables-before-functions"
+      {
+        "order": [
+          "static-field",
+          "instance-field",
+          "static-method",
+          "instance-method"
+        ]
+      }
     ],
     "no-arg": true,
     "no-bitwise": true,
@@ -51,7 +58,7 @@
     "no-empty-interface": true,
     "no-eval": true,
     "no-inferrable-types": [
-      false,
+      true,
       "ignore-params"
     ],
     "no-misused-new": true,
@@ -75,13 +82,14 @@
       "check-whitespace"
     ],
     "one-variable-per-declaration": true,
-    "prefer-const": false,
+    "prefer-const": true,
     "quotemark": [
       true,
       "single"
     ],
     "radix": true,
     "semicolon": [
+      true,
       "always"
     ],
     "triple-equals": [
@@ -113,7 +121,7 @@
       true,
       "attribute",
       "is",
-      "kebab-case"
+      "camelCase"
     ],
     "component-selector": [
       true,
