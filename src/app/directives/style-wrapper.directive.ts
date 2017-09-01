@@ -5,10 +5,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
 /**
- * The <is-style-wrapper> directive dynamicaly adds a context specific CSS class based on a setting in the route handling, e.g. 'homepage' or 'errorpage'
+ * The <isStyleWrapper> directive dynamicaly adds a context specific CSS class based on a setting in the route handling, e.g. 'homepage' or 'errorpage'
  */
 @Directive({
-  selector: '[is-style-wrapper]'
+  selector: '[isStyleWrapper]'
 })
 export class StyleWrapperDirective implements OnInit {
 
