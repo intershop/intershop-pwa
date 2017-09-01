@@ -21,8 +21,11 @@ export class HeaderComponent {
             }
         });
 
+        this.globalState.subscribeCachedData('cartData', (cartItems) => {
+            this.cartItemLength = cartItems ? cartItems.length : '';
+        });
         this.globalState.subscribe('cartData', (cartItems) => {
-            this.cartItemLength = cartItems.length;
+            this.cartItemLength = cartItems ? cartItems.length : '';
         });
     }
 

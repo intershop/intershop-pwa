@@ -12,30 +12,30 @@
                     </button>
                 </div>
                 <div class="col-md-12">
-                  <ul class="user-links">
-                      <li>
-                          <is-login-status></is-login-status>
-                      </li>
-                      <li>
-                          <is-product-compare-status></is-product-compare-status>
-                      </li>
-                      <li>
-                          <is-wishlist-status></is-wishlist-status>
-                      </li>
-                      <li class="visible-xs">
-                          <a href=""><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
-                          <div class="mobile-cart-counter">{{cartItemLength}}</div>
-                      </li>
-                  </ul>
-                  <div class="header-utility">
-                      <ul class="customer-info hidden-xs">
-                          <li>
-                              <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span>
-                              {{'common.header.contact_no.text' | translate}}
-                          </li>
-                      </ul>
-                      <is-language-switch></is-language-switch>
-                  </div>
+                    <ul class="user-links">
+                        <li>
+                            <is-login-status></is-login-status>
+                        </li>
+                        <li>
+                            <is-product-compare-status></is-product-compare-status>
+                        </li>
+                        <li>
+                            <is-wishlist-status></is-wishlist-status>
+                        </li>
+                        <li class="visible-xs">
+                            <a href=""><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
+                            <div class="mobile-cart-counter">{{cartItemLength}}</div>
+                        </li>
+                    </ul>
+                    <div class="header-utility">
+                        <ul class="customer-info hidden-xs">
+                            <li>
+                                <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span>
+                                {{'common.header.contact_no.text' | translate}}
+                            </li>
+                        </ul>
+                        <is-language-switch></is-language-switch>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -48,9 +48,7 @@
                 </div>
                 <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
                 <div class="col-sm-4 search-container header-search-container">
-                    <form role="search" class="search clearfix" name="SearchBox_Header">
-                        <is-search-box></is-search-box>
-                    </form>
+                    <is-search-box></is-search-box>
                 </div>
             </div>
         </div>
