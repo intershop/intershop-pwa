@@ -20,7 +20,7 @@ describe('ProductTile Component', () => {
     let component: ProductTileComponent;
     let element: HTMLElement;
     let debugEl: DebugElement;
-    let jwtToken: string;
+    let jwtToken: boolean;
 
     class JwtServiceStub {
         saveToken(token) {
@@ -111,10 +111,18 @@ describe('ProductTile Component', () => {
     })
     ));
 
-    it('should call getWishList method of WishListService', async(inject([WishListService], (wishListService: WishListService) => {
-        const spy = spyOn(wishListService, 'getWishList').and.returnValue(Observable.of(null));
+    it('should call addToWishList method and verify if router.navigate is called', async(inject([Router], (router: Router) => {
+        const routerSpy = spyOn(router, 'navigate');
         component.addToWishList(null);
-        expect(spy).toHaveBeenCalled();
+        expect(routerSpy).toHaveBeenCalled();
+    })
+    ));
+
+    it('should call addToWishList method and verify if getWishList method of Wishlistservice is called', async(inject([WishListService], (wishListService: WishListService) => {
+        jwtToken = true;
+        const wishListSpy = spyOn(wishListService, 'getWishList').and.returnValue(Observable.of(null));
+        component.addToWishList(null);
+        expect(wishListSpy).toHaveBeenCalled();
     })
     ));
 
