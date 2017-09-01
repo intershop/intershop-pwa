@@ -11,7 +11,7 @@ import { GlobalState } from '../../services/global.state';
 export class HeaderComponent {
     globalnav: boolean = true;
     cartItemLength: number;
-    mobileLogo: boolean = true;
+
     constructor(private wishListService: WishListService, private globalState: GlobalState) {
         this.globalState.subscribe('customerDetails', (customerDetails) => {
             if (customerDetails) {
