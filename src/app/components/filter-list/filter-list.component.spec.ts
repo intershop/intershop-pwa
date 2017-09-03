@@ -22,7 +22,7 @@ describe('FilterList Component', () => {
         getCachedData(key, isDecrypyted) {
             return data
         }
-        storeDataToCache(data, key, shouldEncrypt) {
+        storeDataToCache(dataToStore, key, shouldEncrypt) {
             return true
         }
     }

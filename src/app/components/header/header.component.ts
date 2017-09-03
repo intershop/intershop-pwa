@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { WishListService } from '../../services/wishlists/wishlists.service';
-import { WishListModel } from '../../services/wishlists/wishlists.model';
 import { GlobalState } from '../../services/global.state';
 
 @Component({
