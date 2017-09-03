@@ -47,7 +47,7 @@ export class CrossTabCommunicator {
         if (isPlatformBrowser(this.platformId)) {
             if (!sessionStorage.length) {
                 localStorage.setItem('getSessionStorage', Date.now().toString());
-            };
+            }
         }
     }
 
@@ -57,7 +57,7 @@ export class CrossTabCommunicator {
 */
     private registerStorgaeEventListner(): void {
         if (isPlatformBrowser(this.platformId)) {
-            let storageEvent = Observable.fromEvent(window, 'storage');
+            const storageEvent = Observable.fromEvent(window, 'storage');
             storageEvent.subscribe((event: any) => {
                 this.handleStorageEvent(event);
             });
@@ -97,7 +97,7 @@ export class CrossTabCommunicator {
             // publish-subscribe pattern is used where all the subscribe get notified based on event key.
             default: {
                 if (event.newValue && event.key.startsWith(this._nameCollisionPreventionPrefix)) {
-                    let newValue = this.transformToNullIfEmpty(event.newValue);
+                    const newValue = this.transformToNullIfEmpty(event.newValue);
                     this._events.fireEvent(event.key, JSON.parse(newValue));
                 }
             }

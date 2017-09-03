@@ -11,10 +11,10 @@ describe('ProuctList Service', () => {
                 ProductListService, InstanceService, ProductListMockService
             ]
         });
-    })
+    });
 
     it('should call getProductList method', async(inject([ProductListService], (productListService: ProductListService) => {
         const data = productListService.getProductList();
         expect(data).not.toBe(null);
-    })))
+    })));
 });

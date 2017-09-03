@@ -48,7 +48,7 @@ describe('Mini Cart Component', () => {
                     'value': 40
                 }
             },
-        ]
+        ];
         component.calculateCartValues(cartItems);
         expect(component.cartPrice).toEqual(60);
         expect(component.cartLength).toEqual(2);

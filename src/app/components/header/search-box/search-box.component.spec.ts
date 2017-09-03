@@ -18,7 +18,7 @@ describe('Search Box Component', () => {
                 'elements': [
                     'Camera', 'Camcoder'
                 ]
-            }
+            };
 
             return resultRequired ? Observable.of(result) : Observable.of(null);
         }

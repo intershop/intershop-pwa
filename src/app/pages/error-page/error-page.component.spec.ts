@@ -13,7 +13,7 @@ describe('ErrorPage Component', () => {
         TestBed.configureTestingModule({
             declarations: [ErrorPageComponent]
         })
-            .compileComponents()
+            .compileComponents();
     }));
 
     beforeEach(() => {

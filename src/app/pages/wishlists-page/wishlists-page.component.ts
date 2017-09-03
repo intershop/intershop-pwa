@@ -12,11 +12,11 @@ export class WishListPageComponent implements OnInit {
   /**
    * Constructor
    */
-  constructor(private wishListService: WishListService) { };
+  constructor(private wishListService: WishListService) { }
 
   ngOnInit() {
     this.wishListService.getWishList().subscribe((wishListData: WishListModel) => {
       this.wishList = wishListData.items;
     });
-  };
-};
+  }
+}
