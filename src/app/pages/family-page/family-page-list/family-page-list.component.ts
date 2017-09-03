@@ -7,7 +7,6 @@ import { environment } from 'environments/environment';
 @Component({
   selector: 'is-family-page-list',
   templateUrl: './family-page-list.component.html',
-  styleUrls: ['./family-page-list.component.css']
 })
 
 export class FamilyPageListComponent implements OnInit, OnChanges {
