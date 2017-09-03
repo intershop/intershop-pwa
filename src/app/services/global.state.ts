@@ -51,7 +51,7 @@ export class GlobalState {
      * @param  {Function} callback
      */
     subscribe(event: string, callback: Function) {
-        let subscribers = this._subscriptions.get(event) || [];
+        const subscribers = this._subscriptions.get(event) || [];
         subscribers.push(callback);
         this._subscriptions.set(event, subscribers);
     }
@@ -60,7 +60,7 @@ export class GlobalState {
      * @param  {any} data
      */
     _onEvent(data: any) {
-        let subscribers = this._subscriptions.get(data['event']) || [];
+        const subscribers = this._subscriptions.get(data['event']) || [];
         subscribers.forEach((callback) => {
             callback.call(null, data['data']);
         });

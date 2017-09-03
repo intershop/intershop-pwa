@@ -26,7 +26,7 @@ export class CategoryMockService {
   public getCategories(): Observable<CategoryModel> {
     return Observable.of(CategoriesMock as CategoryModel);
   }
-};
+}
 
 
 

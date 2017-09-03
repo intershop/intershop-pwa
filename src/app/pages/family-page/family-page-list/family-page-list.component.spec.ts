@@ -48,26 +48,26 @@ describe('FamilyPageList Component', () => {
 
     })
       .compileComponents();
-  }))
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FamilyPageListComponent);
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
     element = fixture.nativeElement;
-  })
+  });
 
   it('should call ngOnInit for 1st time and gets data from Productlist Service', () => {
     component.ngOnInit();
     expect(component.thumbnails).not.toBeNull();
-  })
+  });
 
 
   it('should call ngOnInit for 2nd time and gets data from Cache Service', () => {
     keyExists = true;
     component.ngOnInit();
     expect(component.thumbnails).not.toBeNull();
-  })
+  });
 
     it('should call ngOnInit when needMock variable is set to false', () => {
     keyExists = false;
@@ -75,21 +75,21 @@ describe('FamilyPageList Component', () => {
     component.ngOnInit();
     expect(component.thumbnails).not.toBeNull();
     environment.needMock = true;
-  })
+  });
 
   it('should sort data in descending order', () => {
     component.thumbnails = ProductList[0].Cameras;
     component.sortBy = 'name-desc';
     component.ngOnChanges();
     expect(component.thumbnails[0].name).toBe('Sony LED-2412');
-  })
+  });
 
   it('should sort data in ascending order', () => {
     component.thumbnails = ProductList[0].Cameras;
     component.sortBy = 'name-asc';
     component.ngOnChanges();
     expect(component.thumbnails[0].name).toBe('Dicota');
-  })
+  });
 
   // it('should check if the data is being rendered on the page', () => {
   //   component.ngOnInit();

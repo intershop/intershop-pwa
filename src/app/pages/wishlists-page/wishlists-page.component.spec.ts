@@ -14,7 +14,7 @@ describe('Wish list Page Component', () => {
     getWishList() {
       return Observable.of(null);
     }
-  };
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

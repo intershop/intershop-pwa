@@ -16,7 +16,7 @@ describe('Captcha Component', () => {
             imports: [RecaptchaModule.forRoot()]
         })
             .compileComponents();
-    }))
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(CaptchaComponent);
@@ -24,18 +24,18 @@ describe('Captcha Component', () => {
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
         fixture.detectChanges();
-    })
+    });
 
     it('should call resolved method', () => {
-        component.resolved('Resolved')
+        component.resolved('Resolved');
         component.isValid.subscribe(data => {
             expect(data).toBe(true);
-        })
-    })
+        });
+    });
 
     it('should check if controls are rendered on the HTML', () => {
         const elem = element.getElementsByClassName('form-group');
         expect(elem[0].innerHTML).toContain('re-captcha');
-    })
+    });
 
 });

@@ -16,8 +16,8 @@ import { DisableIconDirective } from 'app/directives/disable-icon.directive';
 export class ProductTileComponent implements OnInit {
   @Input() mockData: ProductTileModel;
   @Input() isListView: false;
-  finalPrice: number = 1;
-  greaterPrice: number = 0;
+  finalPrice = 1;
+  greaterPrice = 0;
   displayCondition: boolean;
   oldPrice: any;
   shownSavings: number;
@@ -88,8 +88,8 @@ export class ProductTileComponent implements OnInit {
 
     this.globalState.subscribeCachedData('productCompareData', data => {
       this._updateProductCompareData(data);
-    })
-  };
+    });
+  }
 
   /**
    * Calculates Average Rating
@@ -109,7 +109,7 @@ export class ProductTileComponent implements OnInit {
     } else {
       this.mockData.averageRatingClass = '';
     }
-  };
+  }
 
   /**
    * Calculates old price, Savings
@@ -158,7 +158,7 @@ export class ProductTileComponent implements OnInit {
               }
          }
     } */
-  };
+  }
 
   /**
    * Adds product to cart
@@ -169,13 +169,13 @@ export class ProductTileComponent implements OnInit {
     this.globalState.subscribeCachedData('cartData', cartData => {
       cartData = cartData || [];
       cartData.push(itemToAdd);
-      this._updateCartData(cartData)
+      this._updateCartData(cartData);
     });
-  };
+  }
 
   private _updateCartData(cartData: string[]) {
     this.globalState.notifyDataChanged('cartData', cartData);
-  };
+  }
 
   /**
    * Adds product to wishlist
@@ -188,7 +188,7 @@ export class ProductTileComponent implements OnInit {
     } else {
       this.wishListService.getWishList().subscribe(wishlistData => wishlistData);
     }
-  };
+  }
 
   /**
    * Adds product to comparison
@@ -206,10 +206,10 @@ export class ProductTileComponent implements OnInit {
       this._updateProductCompareData(compareListItems);
     });
     this.disableIconDirective.toggleClass();
-  };
+  }
 
   private _updateProductCompareData(productCompareData: string[]) {
     this.globalState.notifyDataChanged('productCompareData', productCompareData, true);
-  };
+  }
 
-};
+}

@@ -997,4 +997,4 @@ export const SubCategoriesMock = [
       }
     ]
   }
-]
+];

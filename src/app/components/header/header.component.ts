@@ -8,7 +8,7 @@ import { GlobalState } from '../../services/global.state';
 })
 
 export class HeaderComponent {
-    globalnav: boolean = true;
+    globalnav = true;
     cartItemLength: number;
 
     constructor(private wishListService: WishListService, private globalState: GlobalState) {

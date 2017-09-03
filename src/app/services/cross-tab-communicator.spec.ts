@@ -11,12 +11,12 @@ describe('cross tab communicator', () => {
       imports: [
       ]
     });
-  })
+  });
 
   it('should run set getSessionStorage data', inject([CrossTabCommunicator], (crossTabCommunicator: CrossTabCommunicator) => {
     sessionStorage.setItem('testdata', 'test');
     localStorage.setItem('getSessionStorage', Date.now().toString());
-  }))
+  }));
 
   it('should be able to subscribe event', inject([CrossTabCommunicator], (crossTabCommunicator: CrossTabCommunicator) => {
     sessionStorage.setItem('testdata', 'test');
@@ -28,5 +28,5 @@ describe('cross tab communicator', () => {
 
     crossTabCommunicator.notify('testEvent', 1);
     expect(count).toEqual(0);
-  }))
+  }));
 });
