@@ -41,7 +41,7 @@
     "@angular/compiler-cli": "^4.2.4",
     "@angular/language-service": "^4.2.4",
     "@types/crypto-js": "^3.1.33",
-    "@types/jasmine": "~2.5.53",
+    "@types/jasmine": "2.5.45",
     "@types/jasminewd2": "~2.0.2",
     "@types/lodash": "^4.14.73",
     "@types/node": "~6.0.60",
@@ -62,7 +62,7 @@
     "protractor": "~5.1.2",
     "ts-loader": "^2.2.2",
     "ts-node": "~3.2.0",
-    "tslint": "~5.3.2",
+    "tslint": "^5.7.0",
     "typescript": "~2.3.3",
     "webpack-node-externals": "^1.6.0"
   }
