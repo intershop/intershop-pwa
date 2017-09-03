@@ -6,15 +6,15 @@ import geb.navigator.Navigator
 class ProductTile extends Module
 {
     def productTerm;
-
+    
     static content = {
-        expressShopContainerDiv {
+        expressShopContainerDiv { 
             $("div",class:"product-tile",text:iContains(productTerm)).
             find("div" ,class: "product-image-container") }
         expressShopTriggerDiv { expressShopContainerDiv.find("div" ,class: "express-shop-trigger") }
         title { $("a",class:"product-title",text:iContains(productTerm)) }
     }
-
+    
     def clickExpressShop()
     {
         interact
@@ -24,7 +24,7 @@ class ProductTile extends Module
             expressShopTriggerDiv.click()
         }
     }
-
+    
     Navigator click(){
         title.first().click()
     }
