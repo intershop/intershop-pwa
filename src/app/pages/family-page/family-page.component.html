@@ -3,7 +3,7 @@
 <div class="marketing-area"></div>
 
 <div id="product-search-result" class="product-search-result" data-testing-id="family-page">
-	<div class="row">
+  <div class="row">
     <div class="col-sm-3">
       <is-filter-list></is-filter-list>
     </div>
@@ -24,10 +24,12 @@
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
           <div class="pull-right sort-by">
-            <a class="list-view-link" [ngClass]="isListView ? 'list-active' : ''" data-testing-id="list-view-link" href="javascript:void(0)" (click)="isListView = true">
+            <a class="list-view-link" [ngClass]="isListView ? 'list-active' : ''" data-testing-id="list-view-link" href="javascript:void(0)"
+              (click)="isListView = true">
           <span class="glyphicon glyphicon-list"></span>
           </a>
-            <a class="grid-view-link" [ngClass]="!isListView ? 'grid-active' : ''" data-testing-id="grid-view-link" href="javascript:void(0)" (click)="isListView = false">
+            <a class="grid-view-link" [ngClass]="!isListView ? 'grid-active' : ''" data-testing-id="grid-view-link" href="javascript:void(0)"
+              (click)="isListView = false">
           <span class="glyphicon glyphicon-th"></span>
         </a></div>
 
@@ -39,7 +41,7 @@
             <input name="CatalogID" type="hidden" value="Cameras-Camcorders">
             <input name="PageSize" type="hidden" value="12">
             <input name="PageNumber" type="hidden" value="0">
-            <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value" >
+            <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value">
               <option selected="selected" value="">Default Sorting</option>
               <option value="name-asc">Name asc</option>
               <option value="name-desc">Name desc</option>
@@ -53,7 +55,7 @@
           </form>
         </div>
       </div>
-      <is-family-page-list [sortBy] = "sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-family-page-list>
+      <is-family-page-list [sortBy]="sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-family-page-list>
     </div>
   </div>
 </div>
