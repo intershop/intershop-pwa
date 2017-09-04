@@ -1,5 +1,5 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { TestBed, async } from '@angular/core/testing';
 import { FamilyPageListComponent } from './family-page-list.component';
@@ -15,7 +15,6 @@ describe('FamilyPageList Component', () => {
   let fixture: ComponentFixture<FamilyPageListComponent>;
   let component: FamilyPageListComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
   let keyExists = false;
 
   class MockCacheCustomService {
@@ -53,7 +52,6 @@ describe('FamilyPageList Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FamilyPageListComponent);
     component = fixture.componentInstance;
-    debugEl = fixture.debugElement;
     element = fixture.nativeElement;
   });
 
@@ -91,9 +89,9 @@ describe('FamilyPageList Component', () => {
     expect(component.thumbnails[0].name).toBe('Dicota');
   });
 
-  // it('should check if the data is being rendered on the page', () => {
-  //   fixture.detectChanges();
-  //   const thumbs = fixture.debugElement.queryAll(By.css('is-product-tile'));
-  //   expect(thumbs.length).toBe(5);
-  // });
+  it('should check if the data is being rendered on the page', () => {
+    fixture.detectChanges();
+    const thumbs = element.querySelectorAll('is-product-tile');
+    expect(thumbs.length).toBe(5);
+  });
 });
