@@ -56,6 +56,7 @@ describe('AccountLogin Component', () => {
         element = fixture.nativeElement;
         const router = TestBed.get(Router);
         this.navSpy = spyOn(router, 'navigate');
+        fixture.detectChanges();
     });
 
     it('should check if controls are rendered on Login page', () => {
@@ -65,14 +66,12 @@ describe('AccountLogin Component', () => {
     });
 
     it(`should call onSignIn when loginForm is invalid`, () => {
-        component.ngOnInit();
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
         component.onSignin(userDetails);
         expect(this.navSpy).not.toHaveBeenCalled();
     });
 
     it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
-        component.ngOnInit();
         const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
         component.loginForm.controls['userName'].setValue('test@test.com');
         component.loginForm.controls['password'].setValue('123213');
@@ -81,7 +80,6 @@ describe('AccountLogin Component', () => {
     });
 
     it(`should call onSignIn when loginForm is valid with correct credentials`, () => {
-        component.ngOnInit();
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
         component.loginForm.controls['userName'].setValue('test@test.com');
         component.loginForm.controls['password'].setValue('123213');
@@ -90,12 +88,10 @@ describe('AccountLogin Component', () => {
     });
 
     it('should call ngOnInit method', () => {
-        component.ngOnInit();
         expect(component.loginForm).toBeDefined();
     });
 
     it('should assign value to Email field to test Email validator', () => {
-        component.ngOnInit();
         component.loginForm.controls['userName'].setValue('test@test.com');
         expect(component.loginForm.controls['userName'].value).toEqual('test@test.com');
     });

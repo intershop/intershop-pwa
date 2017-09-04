@@ -58,21 +58,21 @@ describe('FamilyPageList Component', () => {
   });
 
   it('should call ngOnInit for 1st time and gets data from Productlist Service', () => {
-    component.ngOnInit();
+    fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
   });
 
 
   it('should call ngOnInit for 2nd time and gets data from Cache Service', () => {
     keyExists = true;
-    component.ngOnInit();
+    fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
   });
 
     it('should call ngOnInit when needMock variable is set to false', () => {
     keyExists = false;
     environment.needMock = false;
-    component.ngOnInit();
+    fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
     environment.needMock = true;
   });
@@ -92,7 +92,6 @@ describe('FamilyPageList Component', () => {
   });
 
   // it('should check if the data is being rendered on the page', () => {
-  //   component.ngOnInit();
   //   fixture.detectChanges();
   //   const thumbs = fixture.debugElement.queryAll(By.css('is-product-tile'));
   //   expect(thumbs.length).toBe(5);
