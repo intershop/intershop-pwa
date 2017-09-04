@@ -3,7 +3,7 @@ import { AccountLoginService } from '../../../services/account-login/account-log
 import { Router } from '@angular/router';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { GlobalState } from '../../../services';
-import { accountSettings } from '../../../application-setting/application.settings';
+import { GlobalConfiguration } from '../../../global-configuration/global-configuration';
 
 @Component({
     selector: 'is-login-status',
@@ -17,7 +17,8 @@ export class LoginStatusComponent implements OnInit {
     constructor(
         private accountLoginService: AccountLoginService,
         private router: Router,
-        private globalState: GlobalState
+        private globalState: GlobalState,
+        private globalConfiguration: GlobalConfiguration
     ) {
     }
 
@@ -49,7 +50,9 @@ export class LoginStatusComponent implements OnInit {
      * @returns void
      */
     register(): void {
-        accountSettings.useSimpleAccount ? this.router.navigate(['login']) : this.router.navigate(['register']);
+        this.globalConfiguration.getApplicationSettings().subscribe(accountSettings => {
+            accountSettings.useSimpleAccount ? this.router.navigate(['login']) : this.router.navigate(['register']);
+        })
     };
 
     /**
