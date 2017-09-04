@@ -5,6 +5,7 @@ import { DebugElement } from '@angular/core';
 import { userData } from '../../../services/account-login/account-login.mock';
 import { AccountLoginService } from '../../../services/account-login';
 import { GlobalState } from '../../../services';
+import { accountSettings } from '../../../application-setting/application.settings';
 
 
 describe('Login Status Component', () => {
@@ -12,6 +13,8 @@ describe('Login Status Component', () => {
     let component: LoginStatusComponent;
     let element: HTMLElement;
     let debugEl: DebugElement;
+    let returnData: boolean;
+    accountSettings.useSimpleAccount = false;
 
     class RouterStub {
         public navigate(url: string[]) {
@@ -25,10 +28,10 @@ describe('Login Status Component', () => {
 
     class GlobalStateStub {
         subscribeCachedData(key, callBack: Function) {
-            callBack(userData);
+            returnData ? callBack(userData) : callBack(null);
         }
         subscribe(key, callBack: Function) {
-            callBack(userData);
+            returnData ? callBack(userData) : callBack(null);
         }
     }
 
@@ -48,6 +51,7 @@ describe('Login Status Component', () => {
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
+        returnData = true;
     });
 
     it('should create the component', () => {
@@ -55,10 +59,17 @@ describe('Login Status Component', () => {
         expect(app).toBeTruthy();
     });
 
-    it('should check if user is logged in', () => {
-        component.ngOnInit();
+    it('should set isLoggedIn to true when Global State returns User data', () => {
+        fixture.detectChanges();
         expect(component.isLoggedIn).toBe(true);
         expect(component.userDetail).not.toBeNull();
+    });
+
+    it('should set isLoggedIn to false when Global State returns null', () => {
+        returnData = false;
+        fixture.detectChanges();
+        expect(component.isLoggedIn).toBe(false);
+        expect(component.userDetail).toBeNull();
     });
 
     it('should call register method and verify if router.navigate is called with "register"', inject([Router], (router: Router) => {

@@ -3,6 +3,7 @@ import { AccountLoginService } from '../../../services/account-login/account-log
 import { Router } from '@angular/router';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { GlobalState } from '../../../services';
+import { accountSettings } from '../../../application-setting/application.settings';
 
 @Component({
     selector: 'is-login-status',
@@ -12,7 +13,7 @@ import { GlobalState } from '../../../services';
 export class LoginStatusComponent implements OnInit {
     userDetail: UserDetail;
     isLoggedIn: boolean;
-    userDetailKey: string = 'customerDetails';
+    customerDetailKey: string = 'customerDetails';
     constructor(
         private accountLoginService: AccountLoginService,
         private router: Router,
@@ -21,9 +22,9 @@ export class LoginStatusComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.globalState.subscribeCachedData(this.userDetailKey, (data: UserDetail) => {
+        this.globalState.subscribeCachedData(this.customerDetailKey, (data: UserDetail) => {
             this.setUserDetails(data);
-            this.globalState.subscribe(this.userDetailKey, (customerDetails: UserDetail) => {
+            this.globalState.subscribe(this.customerDetailKey, (customerDetails: UserDetail) => {
                 this.setUserDetails(customerDetails);
             });
         });
@@ -37,6 +38,9 @@ export class LoginStatusComponent implements OnInit {
             this.isLoggedIn = true;
             this.userDetail = userData;
             this.userDetail['hasRole'] = true;
+        } else {
+            this.userDetail = null;
+            this.isLoggedIn = false;
         }
     };
 
@@ -45,7 +49,7 @@ export class LoginStatusComponent implements OnInit {
      * @returns void
      */
     register(): void {
-        this.router.navigate(['register']);
+        accountSettings.useSimpleAccount ? this.router.navigate(['login']) : this.router.navigate(['register']);
     };
 
     /**
