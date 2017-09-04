@@ -4,7 +4,7 @@ import { HeaderNavigationComponent } from './header-navigation.component';
 import { CategoryService } from 'app/services/categories/category.service';
 import { CategoriesMock, SubCategoriesMock } from 'app/services/categories/categories.mock';
 import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-import { async, inject } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { mock, instance, when, anything, verify } from 'ts-mockito';
 import { CategoryModel } from 'app/services/categories/category.model';
 import { SubcategoryModel } from 'app/services/categories/subcategory.model';

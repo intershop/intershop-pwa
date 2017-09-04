@@ -1,7 +1,6 @@
 import { LoginStatusComponent } from './login-status.component';
 import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { DebugElement } from '@angular/core';
 import { userData } from '../../../services/account-login/account-login.mock';
 import { AccountLoginService } from '../../../services/account-login';
 import { GlobalState } from '../../../services';

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AuthInterceptor } from './auth-interceptor';
 import { JwtService } from 'app/services/jwt.service';
 import { HttpRequest, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http';
