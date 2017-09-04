@@ -24,7 +24,7 @@ describe('CustomErrorHandler test', () => {
   it('should test for null observable when call handleAPIError', () => {
     customError.handleApiErrors({'status': 'error', 'statusText': 'status'})
       .subscribe((retVal) => {
-      expect(retVal).toEqual('error and status')
+      expect(retVal).toEqual('error and status');
       });
   });
 

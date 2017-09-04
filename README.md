@@ -10,7 +10,7 @@ The Registration Page will feature form handling, validation and interaction wit
 
 ---
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.0.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
 
 ## Development server
 
@@ -18,7 +18,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 

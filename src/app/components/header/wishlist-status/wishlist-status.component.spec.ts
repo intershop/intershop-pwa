@@ -25,7 +25,7 @@ describe('Wish List Component', () => {
             wishListEmitter = new Observable((observer) => {
                 observer.next('item');
             });
-        };
+        }
 
         TestBed.configureTestingModule({
             imports: [

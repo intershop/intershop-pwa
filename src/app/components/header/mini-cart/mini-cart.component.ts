@@ -8,7 +8,7 @@ import { GlobalState } from '../../../services';
 
 export class MiniCartComponent {
 
-  public isCollapsed: boolean = true;
+  public isCollapsed = true;
   cartPrice: number;
   cartLength: number;
   /**

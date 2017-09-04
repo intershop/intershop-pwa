@@ -9,8 +9,8 @@ describe('FilterListApi Service', () => {
         _customErrorHandler = new CustomErrorHandler();
         get(path) {
             return true;
-        };
-    };
+        }
+    }
 
     beforeEach(() => {
         TestBed.configureTestingModule({

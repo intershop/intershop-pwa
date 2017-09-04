@@ -39,34 +39,34 @@ describe('Auth Interceptor Service', () => {
       imports: [
       ]
     });
-  })
+  });
 
   it('should return expected response', inject([AuthInterceptor], (authInterceptor: AuthInterceptor) => {
     authInterceptor.intercept(getRequest, new MockInterceptor()).subscribe((data) => {
       const response = <HttpResponse<any>>data;
       expect(response.body).toEqual(JSON.parse(responseData));
-    })
-  }))
+    });
+  }));
 
   it('should set token', inject([AuthInterceptor], (authInterceptor: AuthInterceptor) => {
     jwtToken = 'testtoken';
     authInterceptor.intercept(getRequest, new MockInterceptor()).subscribe((data) => {
       expect(mockRequest.headers.get('authentication-token')).toEqual('testtoken');
-    })
-  }))
+    });
+  }));
 
   it('should not set token for Authorization request', inject([AuthInterceptor], (authInterceptor: AuthInterceptor) => {
     const headers = new HttpHeaders().set('Authorization', 'Basic');
     const request = new HttpRequest<any>('GET', ' ', { headers: headers });
     authInterceptor.intercept(request, new MockInterceptor()).subscribe((data) => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
-    })
-  }))
+    });
+  }));
 
   it('should not set token when token is empty', inject([AuthInterceptor], (authInterceptor: AuthInterceptor) => {
     jwtToken = '';
     authInterceptor.intercept(getRequest, new MockInterceptor()).subscribe((data) => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
-    })
-  }))
+    });
+  }));
 });

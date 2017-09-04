@@ -16,7 +16,7 @@ export class AccountLoginApiService {
      * @param jwtService
      * @param http
      */
-    constructor(private apiService: ApiService, private jwtService: JwtService) { };
+    constructor(private apiService: ApiService, private jwtService: JwtService) { }
 
     /**
      * For logging in
@@ -26,7 +26,7 @@ export class AccountLoginApiService {
     singinUser(user): Observable<UserDetail> {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((user.userName + ':' + user.password)).toString('base64'));
             return this.apiService.get('customers/-', null, headers );
-      };
+      }
 
     /**
      * Destroys the token and cleans the cache
@@ -34,7 +34,7 @@ export class AccountLoginApiService {
      */
     logout(): void {
         this.jwtService.destroyToken();
-    };
+    }
 
     /**
      * Checks if the user is logged in
@@ -44,5 +44,5 @@ export class AccountLoginApiService {
         if (this.jwtService.getToken()) {
             return true;
         } else { return false; }
-    };
+    }
 }

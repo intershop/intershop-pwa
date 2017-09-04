@@ -21,10 +21,10 @@ describe('ProuctListApi Service', () => {
                 { provide: ApiService, useClass: ApiServiceStub }
             ]
         });
-    })
+    });
 
     it('should call getProductList method', async(inject([ProductListApiService], (productListApiService: ProductListApiService) => {
         const result = productListApiService.getProductList();
         expect(result).toBe(true);
-    })))
+    })));
 });

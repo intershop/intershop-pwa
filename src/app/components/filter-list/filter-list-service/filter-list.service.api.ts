@@ -7,7 +7,7 @@ import { FilterListModel } from './filter-entries';
 @Injectable()
 export class FilterListApiService implements ICategoryService {
   apiService;
-  url: string = 'filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=';
+  url = 'filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=';
 
   constructor(apiService: ApiService) {
     this.apiService = apiService;

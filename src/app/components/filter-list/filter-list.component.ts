@@ -50,7 +50,7 @@ export class FilterListComponent implements OnInit {
             if (item.name === 'Camcorders') {
               item['level'] = true;
             }
-          })
+          });
           this.customService.storeDataToCache(this.filterListData, this.filterkey, true);
         }
       });
