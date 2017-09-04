@@ -4,7 +4,7 @@ import { ApiService } from '../../services/api.service';
 
 @Injectable()
 export class SearchBoxApiService {
-    url: string = 'suggest?SearchTerm=';
+    url = 'suggest?SearchTerm=';
     constructor(private apiService: ApiService) {
 
     }
@@ -20,12 +20,12 @@ export class SearchBoxApiService {
                     Observable.of([]) :
                     this.searchEntries(value);
             });
-    };
+    }
     /**
      * Calls the get method of api
      * @param  {} value
      */
     public searchEntries(value) {
-        return this.apiService.get(this.url + value)
+        return this.apiService.get(this.url + value);
     }
-};
+}

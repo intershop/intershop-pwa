@@ -20,13 +20,13 @@ describe('Header Component', () => {
     subscribe(event: string, callback: Function) {
       callback();
     }
-  };
+  }
 
   class WishListServiceStub {
     getWishList() {
       return Observable.of(null);
     }
-  };
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

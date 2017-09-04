@@ -5,7 +5,7 @@ import { GlobalState } from 'app/services';
 
 describe('DisableIconDirective', () => {
     @Component({
-        template: `<div class="is-selected" is-disable-icon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
+        template: `<div class="is-selected" isDisableIcon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
     })
     class MockComponent implements OnInit {
         @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;

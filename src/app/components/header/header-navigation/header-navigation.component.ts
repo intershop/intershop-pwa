@@ -20,7 +20,7 @@ export class HeaderNavigationComponent implements OnInit {
   ngOnInit() {
     this.categoryService.getCategories().subscribe(data => {
       this.categories = data;
-    })
+    });
   }
 
   getSubCategories(categoryId) {
@@ -30,7 +30,7 @@ export class HeaderNavigationComponent implements OnInit {
       this.categoryService.getSubCategories(categoryId).subscribe(data => {
         this.subCategories = data;
         this.cacheService.storeDataToCache(this.subCategories, categoryId);
-      })
+      });
     }
   }
 }

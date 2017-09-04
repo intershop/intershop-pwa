@@ -12,12 +12,12 @@ import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 
 export class AccountLoginComponent implements OnInit {
   loginForm: FormGroup;
-  loginToUse: boolean = false;
+  loginToUse = false;
   loginFormSubmitted: boolean;
   errorUser: any;
   registrationLoginType = 'email';
   isLoggedIn;
-  defaultResponse: string = '401 and Unauthorized'
+  defaultResponse = '401 and Unauthorized';
   /**
    * Constructor
    * @param  {FormBuilder} privateformBuilder

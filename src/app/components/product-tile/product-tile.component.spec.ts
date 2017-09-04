@@ -35,13 +35,13 @@ describe('ProductTile Component', () => {
         navigate(url) {
             return url;
         }
-    };
+    }
 
     class WishListServiceStub {
         getWishList() {
             return Observable.of(null);
         }
-    };
+    }
 
 
     class GlobalStateStub {

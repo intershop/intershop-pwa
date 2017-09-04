@@ -11,7 +11,7 @@ describe('event aggregator', () => {
       imports: [
       ]
     });
-  })
+  });
 
   it('should fire event', inject([EventAggregator], (eventAggregator: EventAggregator) => {
     let called = false;
@@ -21,6 +21,6 @@ describe('event aggregator', () => {
 
     eventAggregator.fireEvent('testevent', null);
     expect(called).toEqual(true);
-  }))
+  }));
 
 });

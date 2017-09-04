@@ -14,17 +14,17 @@ describe('FamilyPage Component', () => {
             declarations: [FamilyPageComponent],
             schemas: [NO_ERRORS_SCHEMA]
         });
-    })
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(FamilyPageComponent);
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
-    })
+    });
 
     it('should click list view icon and verify value of isListView to be true', () => {
         debugEl.nativeElement.querySelector('a').click();
         expect(component.isListView).toBe(true);
-    })
+    });
 });

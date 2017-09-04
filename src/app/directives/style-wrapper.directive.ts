@@ -5,14 +5,14 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
 /**
- * The <is-style-wrapper> directive dynamicaly adds a context specific CSS class based on a setting in the route handling, e.g. 'homepage' or 'errorpage'
+ * The <isStyleWrapper> directive dynamicaly adds a context specific CSS class based on a setting in the route handling, e.g. 'homepage' or 'errorpage'
  */
 @Directive({
-  selector: '[is-style-wrapper]'
+  selector: '[isStyleWrapper]'
 })
 export class StyleWrapperDirective implements OnInit {
 
-  @HostBinding('class') classesString: string = '';
+  @HostBinding('class') classesString = '';
   constructor(private router: Router,
     private route: ActivatedRoute) {
   }
@@ -22,7 +22,7 @@ export class StyleWrapperDirective implements OnInit {
       .filter((event) => event instanceof NavigationEnd)
       .map(() => this.route)
       .map((route) => {
-        while (route.firstChild) { route = route.firstChild };
+        while (route.firstChild) { route = route.firstChild; }
         return route;
       })
       .filter((route) => route.outlet === 'primary')
@@ -30,7 +30,7 @@ export class StyleWrapperDirective implements OnInit {
       .subscribe((event) => {
         this.addClass(event['className'] || '');
       });
-  };
+  }
 
   private addClass(className: string) {
     this.classesString = className;

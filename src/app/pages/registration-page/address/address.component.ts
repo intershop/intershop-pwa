@@ -14,7 +14,7 @@ export class AddressComponent implements OnInit {
    * Constructor
    * @param  {FormBuilder} private_formbuilder
    */
-  constructor(private _formbuilder: FormBuilder) { };
+  constructor(private _formbuilder: FormBuilder) { }
 
   /**
    * Creates Address Form
@@ -34,10 +34,10 @@ export class AddressComponent implements OnInit {
           birthday: [],
           state: ['', [Validators.required]],
         })
-      })
+      });
 
     this.addressForm.valueChanges.subscribe(() => {
       this.addressForm.valid ? this.isValid.emit(true) : this.isValid.emit(false);
     });
   }
-};
+}

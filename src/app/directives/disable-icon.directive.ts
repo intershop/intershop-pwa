@@ -3,7 +3,7 @@ import { GlobalState } from 'app/services';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[is-disable-icon]'
+    selector: '[isDisableIcon]'
 })
 export class DisableIconDirective implements OnInit {
     @Input() property: string;
@@ -22,12 +22,12 @@ export class DisableIconDirective implements OnInit {
         this.globalState.subscribeCachedData(this.globalStateKey, compareListItems => {
             if (compareListItems) {
                 if (_.find(compareListItems, compareProduct => compareProduct === this.property)) {
-                    this.renderer.addClass(this.el.nativeElement, 'is-selected')
+                    this.renderer.addClass(this.el.nativeElement, 'is-selected');
                 } else {
-                    this.renderer.removeClass(this.el.nativeElement, 'is-selected')
+                    this.renderer.removeClass(this.el.nativeElement, 'is-selected');
                 }
             }
         });
-    };
+    }
 }
 

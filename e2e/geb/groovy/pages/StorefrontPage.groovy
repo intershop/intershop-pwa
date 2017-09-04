@@ -7,8 +7,7 @@ class StorefrontPage extends Page
 {
     //StorefrontPage is an abstract page for all Pages to have in store
     //Header, Footer and basic functionalities
-     static url= "/";
-
+    static url= "/";
 
     static content =
     {
@@ -33,15 +32,15 @@ class StorefrontPage extends Page
     String metaDescription() {
         return $("meta[name='description']").@content
     }
-
+    
     String metaKeywords() {
         return $("meta[name='keywords']").@content
     }
-
+    
     String metaRobots() {
         return $("meta[name='robots']").@content
     }
-
+	
     def linkRelNext() {
         return $("link[rel='next']")
     }

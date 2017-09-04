@@ -10,7 +10,7 @@ export class EncryptDecryptService {
      */
     encrypt(dataToEncrypt: any, key: string): string {
         return CryptoJS.AES.encrypt(JSON.stringify(dataToEncrypt), key).toString();
-    };
+    }
 
 
     /**

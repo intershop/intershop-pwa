@@ -12,7 +12,7 @@ import { GlobalState } from '../../../services';
 export class LoginStatusComponent implements OnInit {
     userDetail: UserDetail;
     isLoggedIn: boolean;
-    userDetailKey: string = 'customerDetails';
+    userDetailKey = 'customerDetails';
     constructor(
         private accountLoginService: AccountLoginService,
         private router: Router,
@@ -27,7 +27,7 @@ export class LoginStatusComponent implements OnInit {
                 this.setUserDetails(customerDetails);
             });
         });
-    };
+    }
     /**
      * Sets user Details
      * @param  {} userData
@@ -38,7 +38,7 @@ export class LoginStatusComponent implements OnInit {
             this.userDetail = userData;
             this.userDetail['hasRole'] = true;
         }
-    };
+    }
 
     /**
      * navigates to register page
@@ -46,7 +46,7 @@ export class LoginStatusComponent implements OnInit {
      */
     register(): void {
         this.router.navigate(['register']);
-    };
+    }
 
     /**
      * navigates to login page
@@ -57,7 +57,7 @@ export class LoginStatusComponent implements OnInit {
         this.userDetail = null;
         this.isLoggedIn = false;
         this.router.navigate(['home']);
-    };
+    }
 
     /**
      * navigates to signin page
@@ -65,5 +65,5 @@ export class LoginStatusComponent implements OnInit {
      */
     signIn(): void {
         this.router.navigate(['login']);
-    };
+    }
 }

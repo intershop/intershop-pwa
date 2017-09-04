@@ -30,7 +30,7 @@ export class CacheCustomService {
 
     return (this.cacheService.exists(keyToCheck));
 
-  };
+  }
 
   /**
    * Stores data to cache on the key specified
@@ -53,7 +53,7 @@ export class CacheCustomService {
    */
   deleteCacheKey(deleteKey: string): void { // Make data in the Key as null
     this.cacheService.set(deleteKey, null);
-  };
+  }
 
   /**
    * Fetches the data stored on the key passed
@@ -65,7 +65,7 @@ export class CacheCustomService {
     return (isDecrypted ?
       this.encryptDecryptService.decrypt(this.cacheService.get(userKey), userKey) :
       this.cacheService.get(userKey));
-  };
+  }
 
 
   /**

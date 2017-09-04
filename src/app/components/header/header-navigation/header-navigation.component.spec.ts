@@ -31,7 +31,7 @@ describe('Header Navigation Component', () => {
         getSubCategories(categoryId): Observable<any> {
             return Observable.of(SubCategoriesMock);
         }
-    };
+    }
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -44,13 +44,13 @@ describe('Header Navigation Component', () => {
             ]
         })
             .compileComponents();
-    }))
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(HeaderNavigationComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
-    })
+    });
 
     it('should create the component', async(() => {
         const app = fixture.debugElement.componentInstance;
@@ -77,7 +77,7 @@ describe('Header Navigation Component', () => {
         expect(cacheCustomServiceSpy).toHaveBeenCalled();
         expect(component.subCategories).not.toBeNull();
     })
-    )
+    );
 
     it('should check if categories are rendered on template', () => {
         component.ngOnInit();

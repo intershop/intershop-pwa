@@ -1,6 +1,6 @@
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from './encrypt-decrypt.service';
-import { TestBed } from '@angular/core/testing'
+import { TestBed } from '@angular/core/testing';
 import { CacheCustomService } from './cache-custom.service';
 import { ReflectiveInjector } from '@angular/core';
 
@@ -13,7 +13,7 @@ describe('CacheCustom Service', () => {
         mockCache = injector.get(CacheService);
         mockEncrypt = new EncryptDecryptService();
         customCacheService = new CacheCustomService(mockCache, mockEncrypt);
-    })
+    });
 
     TestBed.configureTestingModule({
         providers: [

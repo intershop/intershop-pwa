@@ -7,7 +7,6 @@ import { environment } from 'environments/environment';
 @Component({
   selector: 'is-family-page-list',
   templateUrl: './family-page-list.component.html',
-  styleUrls: ['./family-page-list.component.css']
 })
 
 export class FamilyPageListComponent implements OnInit, OnChanges {
@@ -29,7 +28,7 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
   constructor(
     private productListService: ProductListService,
     private customService: CacheCustomService) {
-  };
+  }
 
 
   ngOnChanges() {
@@ -39,23 +38,23 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
     this.thumbnails.sort((a, b) => {
       if (this.sortBy === 'name-asc') {
         if (a.name > b.name) {
-          return 1
+          return 1;
         } else if (a.name === b.name) {
-          return 0
+          return 0;
         } else {
-          return -1
+          return -1;
         }
       } else if (this.sortBy === 'name-desc') {
         if (a.name > b.name) {
-          return -1
+          return -1;
         } else if (a.name === b.name) {
-          return 0
+          return 0;
         } else {
-          return 1
+          return 1;
         }
       }
-    })
-  };
+    });
+  }
 
   /*
   * Gets the data from Cache and shows products
@@ -75,7 +74,7 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
         this.totalItems.emit(this.thumbnails.length);
         this.customService.storeDataToCache(this.thumbnails, this.thumbnailKey, true);
       });
-    };
+    }
 
-  };
-};
+  }
+}

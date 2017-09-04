@@ -15,5 +15,5 @@ import { SharedModule } from 'app/modules/shared.module';
 
 export class AccountLoginModule {
 
-};
+}
 

@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core'
+import { Injectable, EventEmitter } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { AccountLoginMockService } from './account-login.service.mock';
@@ -10,10 +10,10 @@ import { InstanceService } from '../../services/instance.service';
 import { JwtService, GlobalState } from '../../services';
 
 export interface IAccountLoginService {
-    singinUser(userDetails: AccountLogin): Observable<UserDetail>,
-    logout(): void,
-    isAuthorized(): boolean,
-};
+    singinUser(userDetails: AccountLogin): Observable<UserDetail>;
+    logout(): void;
+    isAuthorized(): boolean;
+}
 
 @Injectable()
 export class AccountLoginService implements IAccountLoginService {
@@ -31,7 +31,7 @@ export class AccountLoginService implements IAccountLoginService {
         this.loginService = this.instanceService.getInstance((environment.needMock) ?
             AccountLoginMockService : AccountLoginApiService);
         this.cacheService = this.instanceService.getInstance(CacheCustomService);
-    };
+    }
 
     /**
      * Calls signin function of concerned service
@@ -49,7 +49,7 @@ export class AccountLoginService implements IAccountLoginService {
             this.storeUserDetail(data);
             return data;
         });
-    };
+    }
 
     /**
      * Calls logout function of concerned service
@@ -59,7 +59,7 @@ export class AccountLoginService implements IAccountLoginService {
         this.cacheService.deleteCacheKey('userDetail');
         this.globalState.notifyDataChanged('customerDetails', null);
         this.jwtService.destroyToken();
-    };
+    }
 
     /**
      * calls isAuthorized function of concerned service
@@ -67,7 +67,7 @@ export class AccountLoginService implements IAccountLoginService {
      */
     isAuthorized(): boolean {
         return !!this.jwtService.getToken();
-    };
+    }
 
     /**
      * Stores user details in cache and emits to login status component
@@ -75,9 +75,9 @@ export class AccountLoginService implements IAccountLoginService {
      */
     private storeUserDetail(userDetail: UserDetail) {
         if (userDetail && typeof userDetail !== 'string') {
-            this.cacheService.storeDataToCache(userDetail, 'userDetail', false)
+            this.cacheService.storeDataToCache(userDetail, 'userDetail', false);
             this.loginStatusEmitter.emit(userDetail);
         }
     }
 
-};
+}

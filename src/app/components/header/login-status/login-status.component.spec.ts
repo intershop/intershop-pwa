@@ -17,11 +17,11 @@ describe('Login Status Component', () => {
         public navigate(url: string[]) {
             return url;
         }
-    };
+    }
 
     class AccountLoginServiceStub {
-        logout() { };
-    };
+        logout() { }
+    }
 
     class GlobalStateStub {
         subscribeCachedData(key, callBack: Function) {

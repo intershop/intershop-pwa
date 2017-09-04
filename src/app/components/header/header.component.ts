@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { WishListService } from '../../services/wishlists/wishlists.service';
-import { WishListModel } from '../../services/wishlists/wishlists.model';
 import { GlobalState } from '../../services/global.state';
 
 @Component({
@@ -9,7 +8,7 @@ import { GlobalState } from '../../services/global.state';
 })
 
 export class HeaderComponent {
-    globalnav: boolean = true;
+    globalnav = true;
     cartItemLength: number;
 
     constructor(private wishListService: WishListService, private globalState: GlobalState) {
