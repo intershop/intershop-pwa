@@ -5,8 +5,8 @@ import { DebugElement } from '@angular/core';
 import { userData } from '../../../services/account-login/account-login.mock';
 import { AccountLoginService } from '../../../services/account-login';
 import { GlobalState } from '../../../services';
-import { accountSettings } from '../../../application-setting/application.settings';
-
+import { GlobalConfiguration } from '../../../global-configuration/global-configuration';
+import { Observable } from 'rxjs/Rx';
 
 describe('Login Status Component', () => {
     let fixture: ComponentFixture<LoginStatusComponent>;
@@ -14,7 +14,6 @@ describe('Login Status Component', () => {
     let element: HTMLElement;
     let debugEl: DebugElement;
     let returnData: boolean;
-    accountSettings.useSimpleAccount = false;
 
     class RouterStub {
         public navigate(url: string[]) {
@@ -24,6 +23,12 @@ describe('Login Status Component', () => {
 
     class AccountLoginServiceStub {
         logout() { };
+    };
+
+    class GlobalConfigurationStub {
+        getApplicationSettings() {
+            return Observable.of(false);
+        };
     };
 
     class GlobalStateStub {
@@ -44,6 +49,7 @@ describe('Login Status Component', () => {
                 { provide: Router, useClass: RouterStub },
                 { provide: AccountLoginService, useClass: AccountLoginServiceStub },
                 { provide: GlobalState, useClass: GlobalStateStub },
+                { provide: GlobalConfiguration, useClass: GlobalConfigurationStub },
             ]
         }).compileComponents();
 
