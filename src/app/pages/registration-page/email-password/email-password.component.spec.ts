@@ -65,12 +65,12 @@ describe('EmailPassword Component', () => {
     it('should check if controls are rendered on the HTML', () => {
         const elem = element.getElementsByClassName('form-control');
         expect(elem.length).toBe(6);
-        expect(elem[0]).toBeDefined();
-        expect(elem[1]).toBeDefined();
-        expect(elem[2]).toBeDefined();
-        expect(elem[3]).toBeDefined();
-        expect(elem[4]).toBeDefined();
-        expect(elem[5]).toBeDefined();
+        expect(elem[0]).toBeTruthy();
+        expect(elem[1]).toBeTruthy();
+        expect(elem[2]).toBeTruthy();
+        expect(elem[3]).toBeTruthy();
+        expect(elem[4]).toBeTruthy();
+        expect(elem[5]).toBeTruthy();
     });
 
 });

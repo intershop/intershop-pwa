@@ -60,9 +60,9 @@ describe('AccountLogin Component', () => {
     });
 
     it('should check if controls are rendered on Login page', () => {
-        expect(element.querySelector('#ShopLoginForm_Login')).toBeDefined();
-        expect(element.querySelector('#ShopLoginForm_Password')).toBeDefined();
-        expect(element.getElementsByClassName('btn btn-primary')).toBeDefined();
+        expect(element.querySelector('#ShopLoginForm_Login')).toBeTruthy();
+        expect(element.querySelector('#ShopLoginForm_Password')).toBeTruthy();
+        expect(element.getElementsByClassName('btn btn-primary')).toBeTruthy();
     });
 
     it(`should call onSignIn when loginForm is invalid`, () => {
@@ -88,7 +88,7 @@ describe('AccountLogin Component', () => {
     });
 
     it('should call ngOnInit method', () => {
-        expect(component.loginForm).toBeDefined();
+        expect(component.loginForm).toBeTruthy();
     });
 
     it('should assign value to Email field to test Email validator', () => {
