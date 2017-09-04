@@ -25,15 +25,14 @@ describe('EmailPassword Component', () => {
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
+        fixture.detectChanges();
     });
 
     it('should call ngOnInit method', () => {
-        component.ngOnInit();
         expect(component.emailForm).not.toBe(null);
     });
 
     it('should call valueChanges method of form and verify that form is not valid', () => {
-        component.ngOnInit();
         component.emailForm.get('emailDetails.password').setValue('newPassword');
         component.emailForm.get('emailDetails.confirmPassword').setValue('newPassword12');
         expect(component.emailForm.get('emailDetails.confirmPassword').value).toBe('newPassword12');
@@ -43,7 +42,6 @@ describe('EmailPassword Component', () => {
     });
 
     it('should call valueChanges method of form and verify that the form is valid', () => {
-        component.ngOnInit();
         component.emailForm.get('emailDetails.emailAddress').setValue('intershop@123.com');
         component.emailForm.get('emailDetails.confirmEmailAddress').setValue('intershop@123.com');
         component.emailForm.get('emailDetails.password').setValue('intershop1@Aqwe');
@@ -54,8 +52,10 @@ describe('EmailPassword Component', () => {
         expect(component.emailForm.valid).toBe(true);
     });
 
-    it('should test all the conditions of the matchWordsValidator', () => {
-        component.ngOnInit();
+    /*
+      TODO: move test to validators package
+     */
+    xit('should test all the conditions of the matchWordsValidator', () => {
         component.emailForm.addControl('TestMatchWords', new FormControl('', [matchOtherValidator('coolTest')]));
         component.emailForm.controls['TestMatchWords'].setValue('testValue');
         expect(component.emailForm.controls['TestMatchWords'].value).toEqual('testValue');

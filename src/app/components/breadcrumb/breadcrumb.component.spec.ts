@@ -44,7 +44,7 @@
 //     })
 
 //     it('should call ngOnInit', () => {
-//         component.ngOnInit();
+//         fixture.detectChanges();
 //     })
 
 // });

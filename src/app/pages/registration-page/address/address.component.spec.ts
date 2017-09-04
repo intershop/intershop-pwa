@@ -23,21 +23,19 @@ describe('Address Component', () => {
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
+        fixture.detectChanges();
     });
 
     it('should call ngOnInit method', () => {
-        component.ngOnInit();
         expect(component.addressForm).not.toBe(null);
     });
 
     it('should call valueChanges method of form and verify that the form is invalid', () => {
-        component.ngOnInit();
         component.addressForm.get('address.country').setValue('London');
         expect(component.addressForm.valid).toBe(false);
     });
 
     it('should call valueChanges method of form and verify that the form is valid', () => {
-        component.ngOnInit();
         component.addressForm.get('address.country').setValue('London');
         component.addressForm.get('address.firstName').setValue('Patricia');
         component.addressForm.get('address.lastName').setValue('Miller');

@@ -49,14 +49,12 @@ describe('Wish List Component', () => {
     });
 
     // it('should check itemCount is equal to 1', () => {
-    //     component.ngOnInit();
     //     fixture.detectChanges();
 
     //     expect(component.itemCount).toBeGreaterThan(0);
     // });
 
     // it('should check itemCount on the template to be item', () => {
-    //     component.ngOnInit();
     //     fixture.detectChanges();
     //     const itemCount = element.querySelector('#compare-count').textContent;
 
