@@ -60,6 +60,7 @@
     "karma-spec-reporter": "0.0.31",
     "protractor": "~5.1.2",
     "ts-loader": "^2.2.2",
+    "ts-mockito": "^2.1.0",
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3",
