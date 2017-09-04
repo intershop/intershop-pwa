@@ -53,15 +53,8 @@ describe('Address Component', () => {
     it('should check if controls are rendered on the HTML', () => {
         const elem = element.getElementsByClassName('form-control');
         expect(elem.length).toBe(13);
-        expect(elem[0]).toBeDefined();
-        expect(elem[1]).toBeDefined();
-        expect(elem[2]).toBeDefined();
-        expect(elem[3]).toBeDefined();
-        expect(elem[4]).toBeDefined();
-        expect(elem[5]).toBeDefined();
-        expect(elem[6]).toBeDefined();
-        expect(elem[7]).toBeDefined();
-        expect(elem[8]).toBeDefined();
+        for (let i = 0 ; i <= 8 ; i++) {
+            expect(elem[i]).toBeTruthy();
+        }
     });
-
 });
