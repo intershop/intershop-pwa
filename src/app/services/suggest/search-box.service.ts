@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { InstanceService } from '../../services/instance.service';
@@ -8,7 +8,7 @@ import { SearchBoxMockService } from './search-box.service.mock';
 
 export interface ISearchBoxService {
    search(terms: Observable<string>);
-};
+}
 
 @Injectable()
 export class SearchBoxService implements ISearchBoxService {
@@ -22,11 +22,11 @@ export class SearchBoxService implements ISearchBoxService {
     constructor(private instanceService: InstanceService) {
         this.searchBoxservice = this.instanceService.getInstance((environment.needMock) ?
             SearchBoxMockService : SearchBoxApiService);
-    };
+    }
 
     public search(terms: Observable<string>) {
       return this.searchBoxservice.search(terms);
     }
 
 
-};
+}

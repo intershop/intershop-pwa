@@ -1,6 +1,7 @@
-<input placeholder="{{'search.searchbox.instructional_text' | translate}}" autocomplete="off" name="SearchTerm" type="text"
-  class="form-control searchTerm" (keyup)="searchTerm$.next($event.target.value); " (click)="hidePopup()" (blur)="isHide=true">
-<button class="btn-search btn btn-primary" type="submit" name="search" title="{{'search.searchbox.button.title' | translate}}">
+<form role="search" class="search clearfix" name="SearchBox_Header">
+  <input placeholder="{{'search.searchbox.instructional_text' | translate}}" autocomplete="off" name="SearchTerm" type="text"
+    class="form-control searchTerm" (keyup)="searchTerm$.next($event.target.value); " (click)="hidePopup()" (blur)="isHide=true">
+  <button class="btn-search btn btn-primary" type="submit" name="search" title="{{'search.searchbox.button.title' | translate}}">
   <span *ngIf="!searchButtonText ; else textBlock" class="glyphicon glyphicon-search"></span>
     <ng-template #textBlock>
       <!-- TODO: To find the value of searchButtonText
@@ -8,10 +9,11 @@
     </ng-template>
 </button>
 
-<ul *ngIf="results" class="search-suggest-results" [style.display]="isHide ? 'none' : 'block'">
-  <li *ngFor="let result of results | slice:0:9">
-    <button type="button" class="search-result">
+  <ul *ngIf="results" class="search-suggest-results" [style.display]="isHide ? 'none' : 'block'">
+    <li *ngFor="let result of results | slice:0:9">
+      <button type="button" class="search-result">
       <span class="ish-searchTerm">{{ result.term }}</span>
     </button>
-  </li>
-</ul>
+    </li>
+  </ul>
+</form>

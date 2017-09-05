@@ -17,7 +17,7 @@ export class SearchBoxMockService {
           Observable.of([]) :
           this.searchEntries(value);
       });
-  };
+  }
   /**
    * Filters out the data from Mock data
    * @param  {} value
@@ -25,10 +25,10 @@ export class SearchBoxMockService {
   public searchEntries(value) {
     const filterList = {
       'elements': []
-    }
+    };
     filterList.elements = _.filter(searchBoxMock.elements, (obj) => {
       return obj.term.indexOf(value) !== -1;
     });
     return Observable.of(filterList);
   }
-};
+}

@@ -1,11 +1,11 @@
 import { DisableIconDirective } from './disable-icon.directive';
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { ElementRef, OnInit, Renderer2, Component, ViewChild } from '@angular/core';
-import { GlobalState } from 'app/services';
+import { GlobalState } from '../services';
 
 describe('DisableIconDirective', () => {
     @Component({
-        template: `<div class="is-selected" is-disable-icon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
+        template: `<div class="is-selected" isDisableIcon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
     })
     class MockComponent implements OnInit {
         @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;

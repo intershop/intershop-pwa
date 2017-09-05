@@ -1,6 +1,6 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import { CustomErrorHandler } from 'app/services/custom-error-handler';
-import { ApiService } from 'app/services/api.service';
+import { CustomErrorHandler } from '../../../services/custom-error-handler';
+import { ApiService } from '../../../services/api.service';
 import { FilterListApiService } from './filter-list.service.api';
 
 
@@ -9,8 +9,8 @@ describe('FilterListApi Service', () => {
         _customErrorHandler = new CustomErrorHandler();
         get(path) {
             return true;
-        };
-    };
+        }
+    }
 
     beforeEach(() => {
         TestBed.configureTestingModule({

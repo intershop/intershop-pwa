@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class WishListService {
 
-    baseUrl: string = 'customers/-/wishlists/';
+    baseUrl = 'customers/-/wishlists/';
     private preferredWishListUrl: string;
 
 
@@ -24,7 +24,7 @@ export class WishListService {
     getWishList(): Observable<WishListModel> {
         // TODO:check empty data
         if (environment.needMock) {
-            let wishListMock = new WishListModel();
+            const wishListMock = new WishListModel();
             wishListMock.itemsCount = 3;
             this.globalState.notifyDataChanged('wishListStatus', wishListMock);
             return Observable.of(wishListMock);
@@ -33,7 +33,7 @@ export class WishListService {
         return this.apiService.get(this.baseUrl)
             .do(data => {
                 this.preferredWishListUrl = (data.elements.length > 0) ?
-                    data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null
+                    data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
             })
             .flatMap(u =>
                 this.getPreferredWishList(this.preferredWishListUrl)
@@ -49,7 +49,7 @@ export class WishListService {
             return this.apiService.get(this.baseUrl + url)
                 .map((data) => {
                     this.globalState.notifyDataChanged('wishListStatus', data);
-                })
+                });
         } else {
             return Observable.of(null);
         }

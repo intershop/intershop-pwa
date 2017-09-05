@@ -2,7 +2,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { AddressComponent } from './address.component';
-import { SharedModule } from 'app/modules/shared.module';
+import { SharedModule } from '../../../modules/shared.module';
 
 describe('Address Component', () => {
     let fixture: ComponentFixture<AddressComponent>;
@@ -16,25 +16,25 @@ describe('Address Component', () => {
             imports: [SharedModule]
         })
             .compileComponents();
-    }))
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(AddressComponent);
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
-    })
+    });
 
     it('should call ngOnInit method', () => {
         component.ngOnInit();
         expect(component.addressForm).not.toBe(null);
-    })
+    });
 
     it('should call valueChanges method of form and verify that the form is invalid', () => {
         component.ngOnInit();
         component.addressForm.get('address.country').setValue('London');
         expect(component.addressForm.valid).toBe(false);
-    })
+    });
 
     it('should call valueChanges method of form and verify that the form is valid', () => {
         component.ngOnInit();
@@ -50,7 +50,7 @@ describe('Address Component', () => {
         component.addressForm.get('address.birthday').setValue('18/07/1993');
         component.addressForm.get('address.state').setValue('California');
         expect(component.addressForm.valid).toBe(true);
-    })
+    });
 
     it('should check if controls are rendered on the HTML', () => {
         const elem = element.getElementsByClassName('form-control');
@@ -64,6 +64,6 @@ describe('Address Component', () => {
         expect(elem[6]).toBeDefined();
         expect(elem[7]).toBeDefined();
         expect(elem[8]).toBeDefined();
-    })
+    });
 
 });

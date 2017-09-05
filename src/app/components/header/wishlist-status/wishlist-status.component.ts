@@ -16,5 +16,5 @@ export class WishListComponent {
       this.globalState.notifyDataChanged('wishListStatus', wishListCachedData);
     });
   }
-};
+}
 

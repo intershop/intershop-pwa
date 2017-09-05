@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { GlobalState } from 'app/services';
+import { GlobalState } from '../../services';
 import { ProductTileModel } from './product-tile.model';
-import { environment } from 'environments/environment';
-import { JwtService } from 'app/services';
+import { environment } from '../../../environments/environment';
+import { JwtService } from '../../services';
 import { Router } from '@angular/router';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 import * as _ from 'lodash';
-import { DisableIconDirective } from 'app/directives/disable-icon.directive';
+import { DisableIconDirective } from '../../directives/disable-icon.directive';
 
 @Component({
   selector: 'is-product-tile',
@@ -16,8 +16,8 @@ import { DisableIconDirective } from 'app/directives/disable-icon.directive';
 export class ProductTileComponent implements OnInit {
   @Input() mockData: ProductTileModel;
   @Input() isListView: false;
-  finalPrice: number = 1;
-  greaterPrice: number = 0;
+  finalPrice = 1;
+  greaterPrice = 0;
   displayCondition: boolean;
   oldPrice: any;
   shownSavings: number;
@@ -49,7 +49,7 @@ export class ProductTileComponent implements OnInit {
       this.mockData['averagRating'] = 2;
       this.mockData['isRetailSet'] = true;
       this.mockData['displayType'] = 'glyphicon';
-      this.mockData['applicablePromotions'] = [
+      this.mockData['../..licablePromotions'] = [
         {
           'disableMessages': true,
           'isUnderABTest': true,
@@ -88,8 +88,8 @@ export class ProductTileComponent implements OnInit {
 
     this.globalState.subscribeCachedData('productCompareData', data => {
       this._updateProductCompareData(data);
-    })
-  };
+    });
+  }
 
   /**
    * Calculates Average Rating
@@ -109,7 +109,7 @@ export class ProductTileComponent implements OnInit {
     } else {
       this.mockData.averageRatingClass = '';
     }
-  };
+  }
 
   /**
    * Calculates old price, Savings
@@ -158,7 +158,7 @@ export class ProductTileComponent implements OnInit {
               }
          }
     } */
-  };
+  }
 
   /**
    * Adds product to cart
@@ -169,13 +169,13 @@ export class ProductTileComponent implements OnInit {
     this.globalState.subscribeCachedData('cartData', cartData => {
       cartData = cartData || [];
       cartData.push(itemToAdd);
-      this._updateCartData(cartData)
+      this._updateCartData(cartData);
     });
-  };
+  }
 
   private _updateCartData(cartData: string[]) {
     this.globalState.notifyDataChanged('cartData', cartData);
-  };
+  }
 
   /**
    * Adds product to wishlist
@@ -185,9 +185,10 @@ export class ProductTileComponent implements OnInit {
   addToWishList(itemToAdd): void {
     if (!this.jwtService.getToken()) {
       this.router.navigate(['/login']);
+    } else {
+      this.wishListService.getWishList().subscribe(wishlistData => wishlistData);
     }
-    this.wishListService.getWishList().subscribe(_ => _);
-  };
+  }
 
   /**
    * Adds product to comparison
@@ -205,10 +206,10 @@ export class ProductTileComponent implements OnInit {
       this._updateProductCompareData(compareListItems);
     });
     this.disableIconDirective.toggleClass();
-  };
+  }
 
   private _updateProductCompareData(productCompareData: string[]) {
     this.globalState.notifyDataChanged('productCompareData', productCompareData, true);
-  };
+  }
 
-};
+}
