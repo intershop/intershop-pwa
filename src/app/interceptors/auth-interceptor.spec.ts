@@ -26,6 +26,7 @@ describe('Auth Interceptor Service', () => {
   let jwtServiceMock: JwtService;
 
   beforeEach(() => {
+    mockRequest = null;
     jwtServiceMock = mock(JwtService);
 
     TestBed.configureTestingModule({

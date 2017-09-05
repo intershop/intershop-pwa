@@ -15,7 +15,7 @@ describe('FamilyPageList Component', () => {
   let fixture: ComponentFixture<FamilyPageListComponent>;
   let component: FamilyPageListComponent;
   let element: HTMLElement;
-  let keyExists = false;
+  let keyExists: boolean;
 
   class MockCacheCustomService {
     cacheKeyExists(key) {
@@ -36,6 +36,7 @@ describe('FamilyPageList Component', () => {
   }
 
   beforeEach(async(() => {
+    keyExists = false;
     TestBed.configureTestingModule({
       declarations: [FamilyPageListComponent],
       providers: [InstanceService, ProductListMockService, CacheService,

@@ -67,6 +67,7 @@ describe('ProductTile Component', () => {
     }
 
     beforeEach(async(() => {
+        jwtToken = null;
         TestBed.configureTestingModule({
             imports: [TranslateModule.forRoot(),
                 RouterTestingModule
