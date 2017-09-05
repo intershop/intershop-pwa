@@ -3,15 +3,15 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
-import { AccountLoginService } from 'app/services/account-login/';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
+import { AccountLoginService } from '../../services/account-login/';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { CacheService } from 'ng2-cache/ng2-cache';
-import { EncryptDecryptService } from 'app/services/cache/encrypt-decrypt.service';
+import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
 import { AccountLoginComponent } from './account-login.component';
 import { async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { userData } from 'app/services/account-login/account-login.mock';
-import { SharedModule } from 'app/modules/shared.module';
+import { userData } from '../../services/account-login/account-login.mock';
+import { SharedModule } from '../../modules/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
 
@@ -47,7 +47,7 @@ describe('AccountLogin Component', () => {
             schemas: [NO_ERRORS_SCHEMA]
         })
             .compileComponents();
-    }))
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(AccountLoginComponent);
@@ -56,7 +56,7 @@ describe('AccountLogin Component', () => {
         element = fixture.nativeElement;
         const router = TestBed.get(Router);
         this.navSpy = spyOn(router, 'navigate');
-    })
+    });
 
     it('should check if controls are rendered on Login page', () => {
         expect(element.querySelector('#ShopLoginForm_Login')).toBeDefined();
@@ -69,7 +69,7 @@ describe('AccountLogin Component', () => {
         const userDetails = { userName: 'intershop@123.com', password: '123456' };
         component.onSignin(userDetails);
         expect(this.navSpy).not.toHaveBeenCalled();
-    })
+    });
 
     it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
         component.ngOnInit();
@@ -78,7 +78,7 @@ describe('AccountLogin Component', () => {
         component.loginForm.controls['password'].setValue('123213');
         component.onSignin(userDetails);
         expect(component.errorUser).toEqual('Incorrect Credentials');
-    })
+    });
 
     it(`should call onSignIn when loginForm is valid with correct credentials`, () => {
         component.ngOnInit();
@@ -87,16 +87,16 @@ describe('AccountLogin Component', () => {
         component.loginForm.controls['password'].setValue('123213');
         component.onSignin(userDetails);
         expect(this.navSpy).toHaveBeenCalledWith(['home']);
-    })
+    });
 
     it('should call ngOnInit method', () => {
         component.ngOnInit();
         expect(component.loginForm).toBeDefined();
-    })
+    });
 
     it('should assign value to Email field to test Email validator', () => {
         component.ngOnInit();
         component.loginForm.controls['userName'].setValue('test@test.com');
         expect(component.loginForm.controls['userName'].value).toEqual('test@test.com');
-    })
+    });
 });

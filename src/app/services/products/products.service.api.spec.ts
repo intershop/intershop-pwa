@@ -1,8 +1,8 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { ProductListApiService } from './products.service.api';
-import { CustomErrorHandler } from 'app/services/custom-error-handler';
-import { ApiService } from 'app/services/api.service';
-import { environment } from 'environments/environment';
+import { CustomErrorHandler } from '../../services/custom-error-handler';
+import { ApiService } from '../../services/api.service';
+import { environment } from '../../../environments/environment';
 
 
 describe('ProuctListApi Service', () => {
@@ -21,10 +21,10 @@ describe('ProuctListApi Service', () => {
                 { provide: ApiService, useClass: ApiServiceStub }
             ]
         });
-    })
+    });
 
     it('should call getProductList method', async(inject([ProductListApiService], (productListApiService: ProductListApiService) => {
         const result = productListApiService.getProductList();
         expect(result).toBe(true);
-    })))
+    })));
 });

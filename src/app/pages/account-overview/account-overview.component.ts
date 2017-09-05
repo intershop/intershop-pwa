@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 
 export class AccountOverviewComponent {
-    cusotmerDetailKey: string = 'customerDetails';
+    cusotmerDetailKey = 'customerDetails';
     customerName: string;
     constructor(private globalState: GlobalState, private accountLoginService: AccountLoginService,
         private router: Router) {
@@ -16,13 +16,14 @@ export class AccountOverviewComponent {
             if (customerData) {
                 this.customerName = customerData.firstName;
             }
-        })
+        });
     }
 
     logout() {
         this.accountLoginService.logout();
         this.globalState.notifyDataChanged(this.cusotmerDetailKey, null);
         this.router.navigate(['home']);
+        return false;
     }
 
 }

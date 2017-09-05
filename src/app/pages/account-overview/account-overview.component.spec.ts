@@ -40,7 +40,7 @@ describe('Account Overview Component', () => {
                 },
             ]
         }).compileComponents();
-    }))
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(AccountOverviewComponent);
@@ -62,4 +62,4 @@ describe('Account Overview Component', () => {
         verify(globalStateMock.notifyDataChanged(anyString(), anything())).called();
         verify(routerMock.navigate(anything())).called();
     });
-})
+});

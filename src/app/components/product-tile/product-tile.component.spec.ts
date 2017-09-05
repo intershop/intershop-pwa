@@ -3,16 +3,16 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ProductTileComponent } from './product-tile.component';
 import { async, inject } from '@angular/core/testing';
-import { ProductList } from 'app/services/products/products.mock';
+import { ProductList } from '../../services/products/products.mock';
 import { TranslateModule } from '@ngx-translate/core';
-import { environment } from 'environments/environment';
+import { environment } from '../../../environments/environment';
 
-import { JwtService, GlobalState, CacheCustomService } from 'app/services';
+import { JwtService, GlobalState, CacheCustomService } from '../../services';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 import { Observable } from 'rxjs/Observable';
-import { DisableIconDirective } from 'app/directives/disable-icon.directive';
+import { DisableIconDirective } from '../../directives/disable-icon.directive';
 
 
 describe('ProductTile Component', () => {
@@ -20,7 +20,7 @@ describe('ProductTile Component', () => {
     let component: ProductTileComponent;
     let element: HTMLElement;
     let debugEl: DebugElement;
-    let jwtToken: string;
+    let jwtToken: boolean;
 
     class JwtServiceStub {
         saveToken(token) {
@@ -35,13 +35,13 @@ describe('ProductTile Component', () => {
         navigate(url) {
             return url;
         }
-    };
+    }
 
     class WishListServiceStub {
         getWishList() {
             return Observable.of(null);
         }
-    };
+    }
 
 
     class GlobalStateStub {
@@ -111,10 +111,18 @@ describe('ProductTile Component', () => {
     })
     ));
 
-    it('should call getWishList method of WishListService', async(inject([WishListService], (wishListService: WishListService) => {
-        const spy = spyOn(wishListService, 'getWishList').and.returnValue(Observable.of(null));
+    it('should call addToWishList method and verify if router.navigate is called', async(inject([Router], (router: Router) => {
+        const routerSpy = spyOn(router, 'navigate');
         component.addToWishList(null);
-        expect(spy).toHaveBeenCalled();
+        expect(routerSpy).toHaveBeenCalled();
+    })
+    ));
+
+    it('should call addToWishList method and verify if getWishList method of Wishlistservice is called', async(inject([WishListService], (wishListService: WishListService) => {
+        jwtToken = true;
+        const wishListSpy = spyOn(wishListService, 'getWishList').and.returnValue(Observable.of(null));
+        component.addToWishList(null);
+        expect(wishListSpy).toHaveBeenCalled();
     })
     ));
 

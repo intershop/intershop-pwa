@@ -13,7 +13,8 @@ import { GlobalConfiguration } from '../../../global-configuration/global-config
 export class LoginStatusComponent implements OnInit {
     userDetail: UserDetail;
     isLoggedIn: boolean;
-    customerDetailKey: string = 'customerDetails';
+    customerDetailKey = 'customerDetails';
+
     constructor(
         private accountLoginService: AccountLoginService,
         private router: Router,
@@ -29,7 +30,7 @@ export class LoginStatusComponent implements OnInit {
                 this.setUserDetails(customerDetails);
             });
         });
-    };
+    }
     /**
      * Sets user Details
      * @param  {} userData
@@ -43,34 +44,46 @@ export class LoginStatusComponent implements OnInit {
             this.userDetail = null;
             this.isLoggedIn = false;
         }
-    };
+    }
 
     /**
      * navigates to register page
      * @returns void
      */
-    register(): void {
+    register() {
         this.globalConfiguration.getApplicationSettings().subscribe(accountSettings => {
             accountSettings.useSimpleAccount ? this.router.navigate(['login']) : this.router.navigate(['register']);
-        })
-    };
+        });
+        return false;
+    }
 
     /**
      * navigates to login page
      * @returns void
      */
-    logout(): void {
+    logout() {
         this.accountLoginService.logout();
         this.userDetail = null;
         this.isLoggedIn = false;
         this.router.navigate(['home']);
-    };
+        return false;
+    }
 
     /**
      * navigates to signin page
      * @returns void
      */
-    signIn(): void {
+    signIn() {
         this.router.navigate(['login']);
-    };
+        return false;
+    }
+
+    /**
+     * navigates to accountOverview page
+     * @returns void
+     */
+    accountOverview() {
+        this.router.navigate(['accountOverview']);
+        return false;
+    }
 }

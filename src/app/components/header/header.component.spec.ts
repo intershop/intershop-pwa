@@ -1,10 +1,10 @@
 import { HeaderComponent } from './header.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { MockComponent } from 'app/components/mock.component';
+import { MockComponent } from '../../components/mock.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { GlobalState } from 'app/services/global.state';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
+import { GlobalState } from '../../services/global.state';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 import { Observable } from 'rxjs/Observable';
 
 describe('Header Component', () => {
@@ -20,13 +20,13 @@ describe('Header Component', () => {
     subscribe(event: string, callback: Function) {
       callback();
     }
-  };
+  }
 
   class WishListServiceStub {
     getWishList() {
       return Observable.of(null);
     }
-  };
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

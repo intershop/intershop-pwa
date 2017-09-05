@@ -3,8 +3,8 @@ import { DebugElement } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { EmailPasswordComponent } from './email-password.component';
-import { matchOtherValidator } from 'app/validators/match-words.validator';
-import { SharedModule } from 'app/modules/shared.module';
+import { matchOtherValidator } from '../../../validators/match-words.validator';
+import { SharedModule } from '../../../modules/shared.module';
 
 describe('EmailPassword Component', () => {
     let fixture: ComponentFixture<EmailPasswordComponent>;
@@ -18,19 +18,19 @@ describe('EmailPassword Component', () => {
             imports: [SharedModule]
         })
             .compileComponents();
-    }))
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(EmailPasswordComponent);
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
-    })
+    });
 
     it('should call ngOnInit method', () => {
         component.ngOnInit();
         expect(component.emailForm).not.toBe(null);
-    })
+    });
 
     it('should call valueChanges method of form and verify that form is not valid', () => {
         component.ngOnInit();
@@ -40,7 +40,7 @@ describe('EmailPassword Component', () => {
 
         component.emailForm.get('emailDetails.password').setValue('newPassword123');
         expect(component.emailForm.valid).toBe(false);
-    })
+    });
 
     it('should call valueChanges method of form and verify that the form is valid', () => {
         component.ngOnInit();
@@ -52,14 +52,14 @@ describe('EmailPassword Component', () => {
         component.emailForm.get('emailDetails.answer').setValue('dog');
         component.emailForm.get('emailDetails.receivePromotions').setValue(true);
         expect(component.emailForm.valid).toBe(true);
-    })
+    });
 
     it('should test all the conditions of the matchWordsValidator', () => {
         component.ngOnInit();
         component.emailForm.addControl('TestMatchWords', new FormControl('', [matchOtherValidator('coolTest')]));
         component.emailForm.controls['TestMatchWords'].setValue('testValue');
         expect(component.emailForm.controls['TestMatchWords'].value).toEqual('testValue');
-    })
+    });
 
 
     it('should check if controls are rendered on the HTML', () => {
@@ -71,6 +71,6 @@ describe('EmailPassword Component', () => {
         expect(elem[3]).toBeDefined();
         expect(elem[4]).toBeDefined();
         expect(elem[5]).toBeDefined();
-    })
+    });
 
 });

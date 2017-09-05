@@ -9,7 +9,7 @@ export class EventAggregator  {
      * @param  {Function} callback
      */
     registerEvent(event: string, callback: Function) {
-        let subscribers = this._subscriptions.get(event) || [];
+        const subscribers = this._subscriptions.get(event) || [];
         subscribers.push(callback);
         this._subscriptions.set(event, subscribers);
     }
@@ -19,7 +19,7 @@ export class EventAggregator  {
      * @param  {any} data
      */
     fireEvent(event: string, data: any) {
-        let subscribers = this._subscriptions.get(event) || [];
+        const subscribers = this._subscriptions.get(event) || [];
         subscribers.forEach((callback) => {
             callback.call(null, data);
         });

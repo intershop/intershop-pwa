@@ -4,8 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { WishListComponent } from './wishlist-status.component';
-import { DataEmitterService } from 'app/services/data-emitter.service';
-import { SharedModule } from 'app/modules/shared.module';
+import { DataEmitterService } from '../../../services/data-emitter.service';
+import { SharedModule } from '../../../modules/shared.module';
 
 @Component({
     template: ''
@@ -25,7 +25,7 @@ describe('Wish List Component', () => {
             wishListEmitter = new Observable((observer) => {
                 observer.next('item');
             });
-        };
+        }
 
         TestBed.configureTestingModule({
             imports: [

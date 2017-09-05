@@ -17,7 +17,7 @@ export class TranslateUniversalLoader implements TranslateLoader {
       if (!fs.existsSync(file)) {
         console.log(`Localization file '${file}' not found!`);
       } else {
-        content = JSON.parse(fs.readFileSync(file, 'utf8'))
+        content = JSON.parse(fs.readFileSync(file, 'utf8'));
       }
 
       observer.next(content);

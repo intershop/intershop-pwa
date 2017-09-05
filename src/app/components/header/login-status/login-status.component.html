@@ -1,12 +1,12 @@
-<a href="javascript:void(0)" [attr.data-testing-id]="isLoggedIn?'link-myaccount' : null" [attr.rel]="isLoggedIn ? null : 'nofollow'"
-    [ngClass]="isLoggedIn? 'my-account-link' : 'my-account-links my-account-login'" (click)="isLoggedIn? '' : signIn()">
+<a [href]="isLoggedIn ? 'ViewUserAccounnt' : 'SignIn'" [attr.data-testing-id]="isLoggedIn?'link-myaccount' : null" [attr.rel]="isLoggedIn ? null : 'nofollow'"
+    [ngClass]="isLoggedIn? 'my-account-link' : 'my-account-links my-account-login'" (click)="isLoggedIn? accountOverview(): signIn()">
     <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
     <span class="hidden-xs" [ngClass]="userDetail?.lastName && isLoggedIn? 'login-name':''">{{userDetail?.lastName && isLoggedIn? (userDetail?.firstName + ' ' + userDetail?.lastName):'Sign In'}}</span>
-    <span *ngIf="isLoggedIn" class="hidden-xs" routerLink="/accountOverview">My Account</span>
+    <span *ngIf="isLoggedIn" class="hidden-xs">My Account</span>
 </a>
 <span class="hidden-xs seperator">&#124; </span>
-<a href="javascript:void(0)" [attr.data-testing-id]="isLoggedIn?'link-logout' : null" [attr.rel]="isLoggedIn ?  null : 'nofollow'"
-    [ngClass]="userDetail?.hasRole && isLoggedIn? 'my-account-link my-account-logout' : 'ish-siteHeader-myAccountUtilitiesMenu-myAccount-register'"
-    (click)="userDetail?.lastName && isLoggedIn? logout() : register()">
-<span class="hidden-xs">{{userDetail?.hasRole && isLoggedIn? 'Logout':'Register'}}</span>
+<a [href]="isLoggedIn ? 'Logout' : 'Register'" [attr.data-testing-id]="isLoggedIn?'link-logout' : null" [attr.rel]="isLoggedIn ?  null : 'nofollow'"
+  [ngClass]="userDetail?.hasRole && isLoggedIn? 'my-account-link my-account-logout' : 'ish-siteHeader-myAccountUtilitiesMenu-myAccount-register'"
+  (click)="userDetail?.lastName && isLoggedIn? logout() : register()">
+  <span class="hidden-xs">{{userDetail?.hasRole && isLoggedIn? 'Logout':'Register'}}</span>
 </a>

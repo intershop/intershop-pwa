@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class LanguageSwitchComponent implements OnInit {
 
   // TODO: is this default realy a property of the language switch component or a global configuration
-  lang: string = 'en';
+  lang = 'en';
 
   localizationArray = [];
 
@@ -28,4 +28,4 @@ export class LanguageSwitchComponent implements OnInit {
     this.lang = lang;
     this.translate.use(lang);
   }
-};
+}

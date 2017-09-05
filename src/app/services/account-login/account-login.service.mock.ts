@@ -1,5 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core'
-import { Observable } from 'rxjs/Rx'
+import { Injectable, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 import { AccountLogin } from './account-login';
 import { UserDetail } from './account-login.model';
 import { userData } from './account-login.mock';
@@ -12,7 +12,7 @@ export class AccountLoginMockService {
     {
         userName: 'intershop@123.com',
         password: '123456'
-    }
+    };
 
     /**
      * For logging in
@@ -23,7 +23,7 @@ export class AccountLoginMockService {
         if (_.isEqual(user, this.authorizedUser)) {
             return this.getUserDetail();
         } else { return Observable.of(null); }
-    };
+    }
 
     /**
      * Provides detail of logged in user
@@ -31,7 +31,7 @@ export class AccountLoginMockService {
      */
     private getUserDetail(): Observable<UserDetail> {
         return Observable.of(userData);
-    };
+    }
 }
 
 

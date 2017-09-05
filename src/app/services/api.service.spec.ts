@@ -9,9 +9,9 @@ describe('API service test', () => {
   beforeEach(() => {
     mockJwtService = {
       getToken: () => {
-        return '123token456'
+        return '123token456';
       }
-    }
+    };
 
     mockHttpService = {
       get: (url: string, options: {}): Observable<any> => {
