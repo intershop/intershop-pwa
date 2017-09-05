@@ -13,7 +13,7 @@ describe('FilterList Component', () => {
   let component: FilterListComponent;
   let element: HTMLElement;
   let debugEl: DebugElement;
-  let keyExists = false;
+  let keyExists: boolean;
 
   class CacheCustomServiceStub {
     cacheKeyExists(key) {
@@ -33,6 +33,7 @@ describe('FilterList Component', () => {
   }
 
   beforeEach(() => {
+    keyExists = false;
     TestBed.configureTestingModule({
       declarations: [FilterListComponent],
       imports: [CollapseModule],

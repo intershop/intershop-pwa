@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 
 
 describe('AccountLogin Service', () => {
-    let tokenExists = true;
+    let tokenExists: boolean;
     environment.needMock = true;
     class JwtServiceStub {
         saveToken(token) {
@@ -50,6 +50,7 @@ describe('AccountLogin Service', () => {
     }
 
     beforeEach(() => {
+        tokenExists = true;
         TestBed.configureTestingModule({
             providers: [
                 AccountLoginService, AccountLoginMockService, InstanceService,

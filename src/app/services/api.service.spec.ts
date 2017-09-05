@@ -2,8 +2,8 @@ import { ApiService } from './api.service';
 import { Observable } from 'rxjs/Observable';
 
 describe('API service test', () => {
-  let mockJwtService = null;
-  let mockHttpService = null;
+  let mockJwtService;
+  let mockHttpService;
   let apiService: ApiService;
 
   beforeEach(() => {
