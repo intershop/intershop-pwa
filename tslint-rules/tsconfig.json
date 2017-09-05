@@ -15,6 +15,7 @@
     ]
   },
   "files": [
-    "noSuspiciousVariableInitInTestsRule.ts"
+    "noSuspiciousVariableInitInTestsRule.ts",
+    "meaningfulNamingInTestsRule.ts"
   ]
 }
