@@ -172,9 +172,9 @@ task npmRun(type:NpmTask, description: 'run npm script with space-separated comm
     }
 }
 
-task tslint(type:NodeTask, description:'run tslint', group:'Node Utility', dependsOn:npmInstall) {
-    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
-    args = ['lint', '--format', 'stylish', '--typeCheck']
+task tslint(type:NpmTask, description:'run tslint', group:'Node Utility', dependsOn:npmInstall) {
+    args = ['run', 'lint', '--', '--format', 'stylish', '--typeCheck']
+    inputs.files(file('src'), fileTree('tslint-rules') {include('**/*Rule.ts')}, fileTree(projectDir) {include('*.json')})
 }
 check.finalizedBy tslint
 

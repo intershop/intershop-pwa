@@ -8,6 +8,7 @@
     "prestart": "ng build --prod --env=prod && ngc && webpack",
     "build": "ng build",
     "test": "ng test",
+    "prelint": "tsc -p tslint-rules || true",
     "lint": "ng lint --type-check",
     "e2e": "ng e2e"
   },
