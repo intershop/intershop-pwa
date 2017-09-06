@@ -17,12 +17,12 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
             // }
             // console.log('####' + sourceFile.fileName);
             const statements = sourceFile.statements.filter(
-                (stmt) => stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe' );
+                (stmt) => stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe');
             if (statements.length && statements[0].getChildAt(0)) {
                 const describeStatement: ts.Node = statements[0].getChildAt(0).getChildAt(2);
                 const describeBody = describeStatement.getChildAt(2).getChildAt(4).getChildAt(1);
 
-                for (let i = 0; i < describeBody.getChildCount() ; i++) {
+                for (let i = 0; i < describeBody.getChildCount(); i++) {
                     const child: ts.Node = describeBody.getChildAt(i);
                     if (child.kind === ts.SyntaxKind.VariableStatement) {
                         this.checkVariableStatementInDescribe(child.getChildAt(0));
@@ -98,20 +98,20 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
             console.log('type: ' + node.kind);
             console.log('text: ' + node.getText());
             console.log('child count: ' + node.getChildCount());
-            for (let index = 0; index < node.getChildCount() ; index++) {
+            for (let index = 0; index < node.getChildCount(); index++) {
                 const c: ts.Node = node.getChildAt(index);
                 console.log('child #' + index + ' ' + c.kind + ': ' + c.getText());
             }
             if (dumpTokens) {
-            let pointer = node.getFirstToken();
-            while (pointer !== node.getLastToken()) {
-                console.log(pointer.kind + ':' + pointer.getText());
-                pointer = getNextToken(pointer);
+                let pointer = node.getFirstToken();
+                while (pointer !== node.getLastToken()) {
+                    console.log(pointer.kind + ':' + pointer.getText());
+                    pointer = getNextToken(pointer);
+                }
+                if (pointer) {
+                    console.log(pointer.kind + ':' + pointer.getText());
+                }
             }
-            if (pointer) {
-                console.log(pointer.kind + ':' + pointer.getText());
-            }
-        }
         } else {
             console.log(node);
         }
