@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 describe('API service test', () => {
   let mockJwtService = null;
   let mockHttpService = null;
+  const mockLocalizeRouterService = null;
   let apiService: ApiService;
 
   beforeEach(() => {
@@ -28,7 +29,7 @@ describe('API service test', () => {
       },
 
     };
-    apiService = new ApiService(mockHttpService, mockJwtService);
+    apiService = new ApiService(mockHttpService, mockJwtService, mockLocalizeRouterService);
   });
 
   // it('should return an observable on calling of GET().', () => {
