@@ -151,6 +151,6 @@
     ],
     "no-suspicious-variable-init-in-tests": true,
     "meaningful-naming-in-tests": false,
-    "no-commented-out-tests": true
+    "no-commented-out-tests": false
   }
 }
