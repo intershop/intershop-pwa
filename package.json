@@ -32,6 +32,8 @@
     "ng-recaptcha": "^2.1.1",
     "ng2-cache": "^0.1.11",
     "ng2-completer": "^1.6.0",
+    "ng2-validation": "^4.2.0",
+    "ng2-validators": "^2.2.0",
     "ngx-bootstrap": "^1.8.1",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14"

@@ -1,6 +1,7 @@
 import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -16,13 +17,18 @@ import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { translateFactory } from '../services/custom-translate-loader';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-
-
+import { FormControlMessages } from "../components/form-control-messages";
+import { FormsModule } from "@angular/forms";
+import { CustomFormsModule } from 'ng2-validation'
+import { ValidatorsModule } from 'ng2-validators'
 
 @NgModule({
   imports: [
+ 
+    FormsModule,
     FooterModule,
     HeaderModule,
+    ValidatorsModule,
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
@@ -37,7 +43,8 @@ import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
     }),
   ],
   declarations: [
-    StyleWrapperDirective
+    StyleWrapperDirective,
+    //FormControlMessages
   ],
   providers: [
     ApiService,
@@ -54,7 +61,8 @@ import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
   exports: [
     FooterModule,
     HeaderModule,
-    StyleWrapperDirective
+    StyleWrapperDirective,
+    //FormControlMessages
   ]
 })
 export class CoreModule {
