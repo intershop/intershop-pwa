@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { JsonpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
@@ -8,10 +7,13 @@ import { PageModule } from './pages/pages.module';
 import { CoreModule } from './modules/core.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
-
+import { FormControlMessages } from "./components/form-control-messages";
+import { FormsModule } from "@angular/forms";
+import { BrowserModule } from '@angular/platform-browser';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    //FormControlMessages
   ],
   imports: [
     BrowserModule.withServerTransition({
@@ -21,6 +23,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
     JsonpModule,
     AppRoutingModule,
     PageModule,
+    FormsModule,
     CoreModule
   ],
   providers: [

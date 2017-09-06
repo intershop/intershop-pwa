@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AccountLoginService } from 'app/services/account-login';
-import { EmailValidator } from 'app/validators/email.validator';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-
+import { EmailValidator } from "../../validators/email.validator";
+import { AccountLoginService } from "../../services/account-login/account-login.service";
+import { CacheCustomService } from "../../services/index";
+import {PhoneValidators} from 'ng2-validators'
 
 @Component({
   templateUrl: './account-login.component.html'
@@ -15,7 +15,7 @@ export class AccountLoginComponent implements OnInit {
   loginToUse = false;
   loginFormSubmitted: boolean;
   errorUser: any;
-  registrationLoginType = 'email';
+  registrationLoginType = 'username';
   isLoggedIn;
   defaultResponse = '401 and Unauthorized';
   /**
@@ -36,6 +36,7 @@ export class AccountLoginComponent implements OnInit {
       userName: ['', [Validators.compose([Validators.required,
       (this.registrationLoginType === 'email' ? EmailValidator.validate : null)])]],
       password: ['', Validators.required],
+      field: ['',PhoneValidators.isPhoneNumber('US')]
     });
   }
 

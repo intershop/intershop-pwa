@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InstanceService } from '../services/instance.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormControlMessages } from "../components/form-control-messages";
 
 @NgModule({
     exports: [
@@ -11,8 +12,10 @@ import { CommonModule } from '@angular/common';
         CommonModule,
         FormsModule,
         RouterModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormControlMessages
     ],
+    declarations: [FormControlMessages],
     imports: [
         CommonModule
     ],
