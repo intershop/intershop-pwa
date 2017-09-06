@@ -3,6 +3,7 @@ import { AccountLoginService } from '../../../services/account-login/account-log
 import { Router } from '@angular/router';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { GlobalState } from '../../../services';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
     selector: 'is-login-status',
@@ -12,12 +13,12 @@ import { GlobalState } from '../../../services';
 export class LoginStatusComponent implements OnInit {
     userDetail: UserDetail;
     isLoggedIn: boolean;
-    userDetailKey = 'customerDetails';
-    constructor(
-        private accountLoginService: AccountLoginService,
+  userDetailKey = 'customerDetails';
+
+  constructor(private accountLoginService: AccountLoginService,
         private router: Router,
-        private globalState: GlobalState
-    ) {
+              private globalState: GlobalState,
+              public localize: LocalizeRouterService) {
     }
 
     ngOnInit() {
@@ -45,8 +46,9 @@ export class LoginStatusComponent implements OnInit {
      * @returns void
      */
     register(): void {
-        this.router.navigate(['register']);
-    }
+    const translatedPath = this.localize.translateRoute('/register');
+    this.router.navigate([translatedPath]);
+  }
 
     /**
      * navigates to login page
@@ -56,14 +58,16 @@ export class LoginStatusComponent implements OnInit {
         this.accountLoginService.logout();
         this.userDetail = null;
         this.isLoggedIn = false;
-        this.router.navigate(['home']);
-    }
+    const translatedPath = this.localize.translateRoute('/home');
+    this.router.navigate([translatedPath]);
+  }
 
     /**
      * navigates to signin page
      * @returns void
      */
     signIn(): void {
-        this.router.navigate(['login']);
-    }
+    const translatedPath = this.localize.translateRoute('/login');
+    this.router.navigate([translatedPath]);
+  }
 }

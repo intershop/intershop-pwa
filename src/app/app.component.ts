@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PopoverConfig } from 'ngx-bootstrap/popover';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizeRouterService } from './services/routes-parser-locale-currency/localize-router.service';
 
 export function getPopoverConfig(): PopoverConfig {
   return Object.assign(new PopoverConfig(), { placement: 'top', triggers: 'hover', container: 'body' });
@@ -17,11 +17,7 @@ export function getPopoverConfig(): PopoverConfig {
 export class AppComponent {
 
   // TODO: is this the right place to handle the global application translation?
-  constructor(translate: TranslateService) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
-
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('en');
+  constructor(private localize: LocalizeRouterService) {
+    console.log('ROUTES', this.localize.parser.routes);
   }
 }
