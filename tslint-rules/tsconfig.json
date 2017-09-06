@@ -15,6 +15,7 @@
     ]
   },
   "files": [
+    "ruleHelpers.ts",
     "noSuspiciousVariableInitInTestsRule.ts",
     "meaningfulNamingInTestsRule.ts",
     "noCommentedOutTestsRule.ts"
