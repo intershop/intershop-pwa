@@ -2,7 +2,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { AddressComponent } from './address.component';
-import { SharedModule } from 'app/modules/shared.module';
+import { SharedModule } from '../../../modules/shared.module';
 
 describe('Address Component', () => {
     let fixture: ComponentFixture<AddressComponent>;

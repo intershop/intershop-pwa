@@ -1,12 +1,13 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { GlobalState } from 'app/services';
+import { GlobalState } from '../../services';
 import { ProductTileModel } from './product-tile.model';
-import { environment } from 'environments/environment';
-import { JwtService } from 'app/services';
+import { environment } from '../../../environments/environment';
+import { JwtService } from '../../services';
 import { Router } from '@angular/router';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 import * as _ from 'lodash';
-import { DisableIconDirective } from 'app/directives/disable-icon.directive';
+import { DisableIconDirective } from '../../directives/disable-icon.directive';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-product-tile',
@@ -35,7 +36,8 @@ export class ProductTileComponent implements OnInit {
     private router: Router,
     private jwtService: JwtService,
     private wishListService: WishListService,
-    private globalState: GlobalState) {
+    private globalState: GlobalState,
+    private localize: LocalizeRouterService) {
   }
 
   ngOnInit() {
@@ -184,7 +186,7 @@ export class ProductTileComponent implements OnInit {
    */
   addToWishList(itemToAdd): void {
     if (!this.jwtService.getToken()) {
-      this.router.navigate(['/login']);
+      this.router.navigate([this.localize.translateRoute('/login')]);
     } else {
       this.wishListService.getWishList().subscribe(wishlistData => wishlistData);
     }

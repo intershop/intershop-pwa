@@ -1,8 +1,8 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { ProductListApiService } from './products.service.api';
-import { CustomErrorHandler } from 'app/services/custom-error-handler';
-import { ApiService } from 'app/services/api.service';
-import { environment } from 'environments/environment';
+import { CustomErrorHandler } from '../custom-error-handler';
+import { ApiService } from '../api.service';
+import { environment } from '../../../environments/environment';
 
 
 describe('ProuctListApi Service', () => {

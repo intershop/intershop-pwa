@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { SearchBoxService } from './search-box.service';
-import { environment } from 'environments/environment';
-import { InstanceService } from 'app/services/instance.service';
+import { environment } from '../../../environments/environment';
+import { InstanceService } from '../instance.service';
 import { SearchBoxMockService } from './search-box.service.mock';
 
 describe('Search Box Service', () => {

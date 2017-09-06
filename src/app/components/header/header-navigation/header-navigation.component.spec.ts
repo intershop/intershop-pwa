@@ -1,13 +1,13 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { HeaderNavigationComponent } from './header-navigation.component';
-import { CategoryService } from 'app/services/categories/category.service';
-import { CategoriesMock, SubCategoriesMock } from 'app/services/categories/categories.mock';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
+import { CategoryService } from '../../../services/categories/category.service';
+import { CategoriesMock, SubCategoriesMock } from '../../../services/categories/categories.mock';
+import { CacheCustomService } from '../../../services/cache/cache-custom.service';
 import { async } from '@angular/core/testing';
 import { mock, instance, when, anything, verify } from 'ts-mockito';
-import { CategoryModel } from 'app/services/categories/category.model';
-import { SubcategoryModel } from 'app/services/categories/subcategory.model';
+import { CategoryModel } from '../../../services/categories/category.model';
+import { SubcategoryModel } from '../../../services/categories/subcategory.model';
 
 describe('Header Navigation Component', () => {
     let fixture: ComponentFixture<HeaderNavigationComponent>;

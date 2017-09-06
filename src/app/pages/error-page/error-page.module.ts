@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ErrorPageComponent } from './error-page.component';
 import { RouterModule } from '@angular/router';
 import { ErrorPageRoute } from './error-page.routes';
-import { SharedModule } from 'app/modules/shared.module';
+import { SharedModule } from '../../modules/shared.module';
 
 @NgModule({
   imports: [
