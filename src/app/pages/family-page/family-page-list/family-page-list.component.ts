@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { ProductListService } from 'app/services/products';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-import { ProductTileModel } from 'app/components/product-tile/product-tile.model';
-import { environment } from 'environments/environment';
+import { ProductListService } from '../../../services/products';
+import { CacheCustomService } from '../../../services';
+import { ProductTileModel } from '../../../components/product-tile/product-tile.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'is-family-page-list',

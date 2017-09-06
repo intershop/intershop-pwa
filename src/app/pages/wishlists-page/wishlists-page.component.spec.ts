@@ -3,7 +3,7 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { WishListPageComponent } from './wishlists-page.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs/Observable';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 
 describe('Wish list Page Component', () => {
   let fixture: ComponentFixture<WishListPageComponent>;

@@ -3,13 +3,11 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { TestBed, async } from '@angular/core/testing';
 import { FamilyPageListComponent } from './family-page-list.component';
-import { ProductList } from 'app/services/products/products.mock';
-import { ProductListService, ProductListMockService } from 'app/services/products';
-import { InstanceService } from 'app/services/instance.service';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
 import { CacheService } from 'ng2-cache/ng2-cache';
-import { EncryptDecryptService } from 'app/services/cache/encrypt-decrypt.service';
-import { environment } from 'environments/environment';
+import { ProductList } from '../../../services/products/products.mock';
+import { ProductListService, ProductListMockService } from '../../../services/products/index';
+import { InstanceService, CacheCustomService, EncryptDecryptService } from '../../../services/index';
+import { environment } from '../../../../environments/environment';
 
 describe('FamilyPageList Component', () => {
   let fixture: ComponentFixture<FamilyPageListComponent>;
@@ -69,7 +67,7 @@ describe('FamilyPageList Component', () => {
     expect(component.thumbnails).not.toBeNull();
   });
 
-    it('should call ngOnInit when needMock variable is set to false', () => {
+  it('should call ngOnInit when needMock variable is set to false', () => {
     keyExists = false;
     environment.needMock = false;
     component.ngOnInit();

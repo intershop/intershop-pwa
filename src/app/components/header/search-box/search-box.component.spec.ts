@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { SearchBoxComponent } from './search-box.component';
-import { SearchBoxService } from 'app/services/suggest/search-box.service';
 import { tick, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { SearchBoxService } from '../../../services/suggest/search-box.service';
 
 describe('Search Box Component', () => {
     let fixture: ComponentFixture<SearchBoxComponent>;

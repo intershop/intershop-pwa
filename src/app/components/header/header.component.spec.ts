@@ -1,11 +1,11 @@
 import { HeaderComponent } from './header.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { MockComponent } from 'app/components/mock.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { GlobalState } from 'app/services/global.state';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
 import { Observable } from 'rxjs/Observable';
+import { MockComponent } from '../mock.component';
+import { GlobalState } from '../../services/index';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 
 describe('Header Component', () => {
   let fixture: ComponentFixture<HeaderComponent>;
