@@ -177,35 +177,3 @@ task tslint(type:NpmTask, description:'run tslint', group:'Node Utility', depend
     inputs.files(file('src'), fileTree('tslint-rules') {include('**/*Rule.ts') include('tsconfig.json')}, fileTree(projectDir) {include('*.json')})
 }
 check.finalizedBy tslint
-
-task deadTestCodeDetection {
-    inputs.files(fileTree("$projectDir/src"))
-
-    doFirst {
-        FileTree testFiles = fileTree("$projectDir/src") {
-            include('**/*.spec.ts')
-        }
-        def singleLineComment = /\/\/.*(?=(it|describe|xit|xdescribe|fit|fdescribe)\()/
-        def multiLineComment = /\/\*[^(\*\/)]*(?=(it|describe|xit|xdescribe|fit|fdescribe)\()/
-
-        def foundSomething = false
-        def message = '\nfound commented out tests in: \n'
-
-        testFiles.sort().each { File testFile ->
-            if (testFile.text =~ singleLineComment || testFile.text =~ multiLineComment) {
-                message += "$testFile\n"
-                foundSomething = true
-            }
-        }
-
-        if (foundSomething) {
-            if (Boolean.parseBoolean(System.getProperty('strict', 'false'))) {
-                throw new GradleScriptException(message, null)
-            } else {
-                logger.warn message
-            }
-        }
-    }
-}
-check.finalizedBy deadTestCodeDetection
-deadTestCodeDetection.mustRunAfter tslint
