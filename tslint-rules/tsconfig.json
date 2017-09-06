@@ -18,6 +18,7 @@
     "ruleHelpers.ts",
     "noSuspiciousVariableInitInTestsRule.ts",
     "meaningfulNamingInTestsRule.ts",
-    "noCommentedOutTestsRule.ts"
+    "noCommentedOutTestsRule.ts",
+    "preferMocksInsteadOfStubsInTestsRule.ts"
   ]
 }
