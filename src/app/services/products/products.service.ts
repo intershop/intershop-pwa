@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { InstanceService } from 'app/services/instance.service';
-import { environment } from 'environments/environment';
+import { InstanceService } from '../instance.service';
+import { environment } from '../../../environments/environment';
 import { ProductListMockService } from './products.service.mock';
 import { ProductListApiService } from './products.service.api';
 import { Observable } from 'rxjs/Observable';

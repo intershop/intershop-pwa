@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { CategoryApiService } from './category.service.api';
-import { ApiService } from 'app/services/api.service';
+import { ApiService } from '../api.service';
 
 
 describe('Category Api Service', () => {

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AccountLoginService } from 'app/services/account-login';
-import { EmailValidator } from 'app/validators/email.validator';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-
+import { AccountLoginService } from '../../services/account-login/account-login.service';
+import { EmailValidator } from '../../validators/email.validator';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   templateUrl: './account-login.component.html'
@@ -25,7 +25,7 @@ export class AccountLoginComponent implements OnInit {
    * @param  {Router} privaterouter
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private cacheService: CacheCustomService) { }
+    private router: Router, private cacheService: CacheCustomService, private localize: LocalizeRouterService) { }
 
   /**
      * Creates Login Form
@@ -51,7 +51,7 @@ export class AccountLoginComponent implements OnInit {
       this.loginFormSubmitted = true;
       this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
         if (userData && typeof userData !== 'string') {
-          this.router.navigate(['home']);
+          this.router.navigate([this.localize.translateRoute('/home')]);
         } else {
           this.loginForm.get('password').reset();
           this.errorUser = userData || this.defaultResponse;

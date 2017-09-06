@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { InstanceService } from 'app/services/instance.service';
+import { InstanceService } from '../instance.service';
 import { AccountLoginService } from './account-login.service';
 import { AccountLoginMockService } from './account-login.service.mock';
 import { async } from '@angular/core/testing';
 import { inject } from '@angular/core/testing';
-import { JwtService } from 'app/services/jwt.service';
-
-import { CacheCustomService, GlobalState } from 'app/services';
-import { environment } from 'environments/environment';
-
+import { JwtService } from '../jwt.service';
+import { CacheCustomService } from '../cache/cache-custom.service';
+import { GlobalState } from '../global.state';
+import { environment } from '../../../environments/environment';
 
 describe('AccountLogin Service', () => {
     let tokenExists = true;

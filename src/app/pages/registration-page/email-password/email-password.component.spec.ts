@@ -3,8 +3,8 @@ import { DebugElement } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { EmailPasswordComponent } from './email-password.component';
-import { matchOtherValidator } from 'app/validators/match-words.validator';
-import { SharedModule } from 'app/modules/shared.module';
+import { matchOtherValidator } from '../../../validators/match-words.validator';
+import { SharedModule } from '../../../modules/shared.module';
 
 describe('EmailPassword Component', () => {
     let fixture: ComponentFixture<EmailPasswordComponent>;

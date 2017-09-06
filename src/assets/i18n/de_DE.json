@@ -13,6 +13,8 @@
   "account.login.message": "Geben Sie f\u00FCr die Anmeldung E-Mail-Adresse und Kennwort ein.",
   "account.send_password.heading": "Kennwort vergessen?",
   "account.signin.button.label": "Anmelden",
+  "account.register.button.label": "Neu registrieren",
+  "account.logout.button.label": "Ausloggen",
   "account.new_user.heading": "Neue Benutzer",
   "account.create.benefit.text": "Wenn Sie ein Konto anlegen, profitieren Sie von zahlreichen Vorteilen!",
   "account.create.benefit1.text": "Einfachere Bestellverfolgung",
@@ -44,5 +46,13 @@
   "account.register.password_confirmation.label":"Kennwort best\u00E4tigen",
   "search.searchbox.instructional_text":"Suchen Sie nach Schlagwort, Produkt-ID oder Kategorie.",
   "search.searchbox.button.title":"Suche starten",
-  "common.button.navbartoggle.text":"Navigation umschalten"
+  "common.button.navbartoggle.text":"Navigation umschalten",
+
+  "ROUTES.home": "home",
+  "ROUTES.category": "category",
+  "ROUTES.compare": "compare",
+  "ROUTES.login": "login",
+  "ROUTES.register": "register",
+  "ROUTES.wishlist": "wishlist",
+  "ROUTES.error": "error"
 }
