@@ -1,6 +1,6 @@
 import { Directive, Input, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { GlobalState } from 'app/services';
 import * as _ from 'lodash';
+import { GlobalState } from '../services';
 
 @Directive({
     selector: '[isDisableIcon]'

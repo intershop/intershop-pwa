@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { IProductListService } from './products.service';
-import { ApiService } from 'app/services/api.service';
-
+import { ApiService } from '../../services/api.service';
 
 @Injectable()
 export class ProductListApiService implements IProductListService {

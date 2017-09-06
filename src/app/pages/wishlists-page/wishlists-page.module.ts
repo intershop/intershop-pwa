@@ -5,8 +5,8 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { WishListPageComponent } from './wishlists-page.component';
 import { WishlistPageRoutes } from './wishlists-page.routes';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
-import { SharedModule } from 'app/modules/shared.module';
+import { WishListService } from '../../services/wishlists/wishlists.service';
+import { SharedModule } from '../../modules/shared.module';
 
 @NgModule({
   imports: [

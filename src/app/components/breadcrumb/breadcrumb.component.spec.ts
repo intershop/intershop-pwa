@@ -1,50 +1,63 @@
-// import { ComponentFixture } from '@angular/core/testing';
-// import { DebugElement, Injector, ReflectiveInjector, NO_ERRORS_SCHEMA } from '@angular/core';
-// import { Observable } from 'rxjs/Rx';
-// import { TestBed } from '@angular/core/testing';
-// import { BreadcrumbComponent } from './breadCrumb.component';
-// import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-// import { RouterTestingModule } from '@angular/router/testing'
+import { ComponentFixture } from '@angular/core/testing';
+import { Observable } from 'rxjs/Rx';
+import { TestBed } from '@angular/core/testing';
+import { BreadcrumbComponent } from './breadCrumb.component';
+import { Router, NavigationEnd } from '@angular/router';
+import { mock, instance, when, anything, verify, capture } from 'ts-mockito';
+import { BreadcrumbService } from './breadcrumb.service';
 
-// describe('BreadCrumb Component', () => {
-//     let fixture: ComponentFixture<BreadcrumbComponent>,
-//         component: BreadcrumbComponent,
-//         element: HTMLElement,
-//         debugEl: DebugElement;
-//         const mockActivatedRoute: ActivatedRoute = null
+describe('BreadCrumb Component', () => {
+    let fixture: ComponentFixture<BreadcrumbComponent>;
+    let component: BreadcrumbComponent;
+    let element: HTMLElement;
+    let routerMock: Router;
+    let breadcrumbServiceMock: BreadcrumbService;
+    beforeEach(() => {
+        routerMock = mock(Router);
+        breadcrumbServiceMock = mock(BreadcrumbService);
 
-//     class RouterStub {
-//         public navigate = jasmine.createSpy('navigate');
-//         public ne = new NavigationEnd(1, '', '');
-//         // id: number,
-//         // /** @docsNotRequired */
-//         // url: string,
-//         // /** @docsNotRequired */
-//         // urlAfterRedirects: string
-//         public events = new Observable((observer) => {
-//             observer.next(this.ne);
-//             observer.complete();
-//         });
-//         public navigateByUrl(url: string) { location.hash = url; }
-//     }
+        TestBed.configureTestingModule({
+            declarations: [BreadcrumbComponent],
+            providers: [
+                { provide: Router, useFactory: () => instance(routerMock) },
+                { provide: BreadcrumbService, useFactory: () => instance(breadcrumbServiceMock) }
+            ]
+        });
+        fixture = TestBed.createComponent(BreadcrumbComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+    });
 
-//     beforeEach(() => {
-//         TestBed.configureTestingModule({
-//             declarations: [BreadcrumbComponent],
-//             providers: [
-//                 { provide: Router, useClass: RouterStub },
-//                 { provide: ActivatedRoute, useValue: mockActivatedRoute }
-//             ],
-//             imports: [RouterTestingModule]
-//         });
-//         fixture = TestBed.createComponent(BreadcrumbComponent);
-//         component = fixture.componentInstance;
-//         debugEl = fixture.debugElement;
-//         element = fixture.nativeElement;
-//     })
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+        expect(element).toBeTruthy();
+    });
 
-//     it('should call ngOnInit', () => {
-//         component.ngOnInit();
-//     })
+    it('should call the generateBreadcrumbTrail method of component from ngOnInit and confirm that the length of _urls is 2', () => {
+        when(routerMock.events).thenReturn(Observable.of(new NavigationEnd(2, '/category/Computers', '/category/Computers')));
+        fixture.detectChanges();
+        expect(component._urls.length).toBe(2);
+    });
 
-// });
+    it('should confirm the length of the _urls to be 4', () => {
+        expect(component._urls.length).toBe(0);
+        component.generateBreadcrumbTrail('category/Home%20Entertainment/family/Digital%20Cameras');
+        expect(component._urls.length).toBe(4);
+    });
+
+    it('should confirm that navigateByUrl method is called with provided arguments when navigateTo method is called', () => {
+        component.navigateTo('category/Home%20Entertainment');
+
+        verify(routerMock.navigateByUrl(anything())).once();
+
+        const [navigateToArgument] = capture(routerMock.navigateByUrl).last();
+        expect(navigateToArgument).toEqual('category/Home%20Entertainment');
+    });
+
+    it('should call the getFriendlyNameForRoute of breadcrumbServiceMock and should return "Welcome!"', () => {
+        when(breadcrumbServiceMock.getFriendlyNameForRoute('home')).thenReturn('Welcome!');
+
+        const name = component.friendlyName('home');
+        expect(name).toBe('Welcome!');
+    });
+});

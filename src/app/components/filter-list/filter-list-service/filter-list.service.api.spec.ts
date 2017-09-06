@@ -1,8 +1,6 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import { CustomErrorHandler } from 'app/services/custom-error-handler';
-import { ApiService } from 'app/services/api.service';
 import { FilterListApiService } from './filter-list.service.api';
-
+import { CustomErrorHandler, ApiService } from '../../../services';
 
 describe('FilterListApi Service', () => {
     class ApiServiceStub {

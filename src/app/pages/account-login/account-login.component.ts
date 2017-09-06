@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AccountLoginService } from 'app/services/account-login';
-import { EmailValidator } from 'app/validators/email.validator';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-
+import { AccountLoginService } from '../../services/account-login';
+import { EmailValidator } from '../../validators/email.validator';
+import { CacheCustomService } from '../../services/';
 
 @Component({
   templateUrl: './account-login.component.html'
