@@ -1,25 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { GlobalState } from '../../services';
+import { Component } from '@angular/core';
 import { WishListItem, WishListModel } from '../../services/wishlists/wishlists.model';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 
 @Component({
   templateUrl: './wishlists-page.component.html'
 })
-
-export class WishListPageComponent implements OnInit {
+export class WishListPageComponent {
 
   wishList: WishListItem[] = [];
-  /**
-   * Constructor
-   */
-  constructor(private globalState: GlobalState) { }
+
+  constructor(wishListService: WishListService) {
+    wishListService.subscribe(this.updateWishList);
+  }
 
   private updateWishList = (wishListData: WishListModel) => {
     this.wishList = (wishListData) ? wishListData.items : [];
-  }
-
-  ngOnInit() {
-    this.globalState.subscribe('wishListStatus', this.updateWishList);
-    this.globalState.subscribeCachedData('wishListStatus', this.updateWishList);
   }
 }

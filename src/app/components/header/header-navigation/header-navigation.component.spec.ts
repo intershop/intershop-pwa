@@ -7,7 +7,7 @@ import { CacheCustomService } from '../../../services/cache/cache-custom.service
 import { CategoryModel } from '../../../services/categories/category.model';
 import { CategoryService } from '../../../services/categories/category.service';
 import { SubcategoryModel } from '../../../services/categories/subcategory.model';
-import { GlobalState } from '../../../services/global.state';
+import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { HeaderNavigationComponent } from './header-navigation.component';
 
@@ -18,11 +18,9 @@ describe('Header Navigation Component', () => {
   let cacheCustomServiceMock: CacheCustomService;
   let categoryServiceMock: CategoryService;
   let localizeRouterServiceMock: LocalizeRouterService;
-  let globalStateMock: GlobalState;
 
   beforeEach(async(() => {
     cacheCustomServiceMock = mock(CacheCustomService);
-    globalStateMock = mock(GlobalState);
 
     categoryServiceMock = mock(CategoryService);
     when(categoryServiceMock.getCategories()).thenReturn(Observable.of(new CategoryModel()));
@@ -41,7 +39,7 @@ describe('Header Navigation Component', () => {
         { provide: CacheCustomService, useFactory: () => instance(cacheCustomServiceMock) },
         { provide: CategoryService, useFactory: () => instance(categoryServiceMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
-        { provide: GlobalState, useFactory: () => instance(globalStateMock) }
+        { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) }
       ]
     })
       .compileComponents();

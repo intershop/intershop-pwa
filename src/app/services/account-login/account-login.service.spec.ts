@@ -1,18 +1,25 @@
+import { UserDetail } from './account-login.model';
+import { UserDetailService } from './user-detail.service';
 
 import { Observable } from 'rxjs/Rx';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { ApiService, CacheCustomService, GlobalState, JwtService } from '../index';
+import { ApiService, JwtService } from '../index';
 import { AccountLoginService } from './index';
 
 describe('AccountLogin Service', () => {
+    const userData = {
+        'firstName': 'Patricia',
+        'lastName': 'Miller'
+    };
+
     let accountLoginService: AccountLoginService;
     const jwtServiceMock = mock(JwtService);
-    const globalStateMock = mock(GlobalState);
-    const cacheCustomServiceMock = mock(CacheCustomService);
+    const userDetailService = mock(UserDetailService);
     const apiServiceMock = mock(ApiService);
 
     beforeEach(() => {
-        accountLoginService = new AccountLoginService(instance(jwtServiceMock), instance(globalStateMock), instance(cacheCustomServiceMock), instance(apiServiceMock));
+        when(userDetailService.current).thenReturn(userData as UserDetail);
+        accountLoginService = new AccountLoginService(instance(jwtServiceMock), instance(userDetailService), instance(apiServiceMock));
     });
 
     it('should login user', () => {
@@ -23,7 +30,7 @@ describe('AccountLogin Service', () => {
             loggedInDetail = data;
         });
 
-        verify(globalStateMock.notifyDataChanged(anything(), anything())).called();
+        verify(userDetailService.next(anything())).called();
         expect(loggedInDetail).not.toBe({ authorized: true });
     });
 

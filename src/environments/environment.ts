@@ -4,6 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
+  platformId: '',
   production: false,
   needMock: true,
   rest_url: 'https://localhost:8444/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
