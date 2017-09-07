@@ -3,11 +3,11 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyFunction, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
-import { GlobalState } from '../../../services';
-import { AccountLoginService } from '../../../services/account-login';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { UserDetail } from './../../../services/account-login/account-login.model';
+import { AccountLoginService } from './../../../services/account-login/account-login.service';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
@@ -16,7 +16,6 @@ describe('Login Status Component', () => {
   let element: HTMLElement;
   let routerMock: Router;
   let accountLoginServiceMock: AccountLoginService;
-  let globalStateMock: GlobalState;
   let globalConfigurationMock: GlobalConfiguration;
   let localizeRouterServiceMock: LocalizeRouterService;
   const userData = {
@@ -27,15 +26,12 @@ describe('Login Status Component', () => {
   beforeEach(() => {
     routerMock = mock(Router);
     accountLoginServiceMock = mock(AccountLoginService);
+    when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
+    when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: UserDetail) => void) => callback(userData as UserDetail));
     localizeRouterServiceMock = mock(LocalizeRouterService);
     when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
       return arg1;
     });
-
-    globalStateMock = mock(GlobalState);
-    const callBackMock = (key, callBack: Function) => callBack(userData);
-    when(globalStateMock.subscribe(anything(), anything())).thenCall(callBackMock);
-    when(globalStateMock.subscribeCachedData(anything(), anything())).thenCall(callBackMock);
 
     globalConfigurationMock = mock(GlobalConfiguration);
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(false));
@@ -49,7 +45,6 @@ describe('Login Status Component', () => {
       ],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: GlobalState, useFactory: () => instance(globalStateMock) },
         { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
         { provide: Router, useFactory: () => instance(routerMock) }
@@ -74,7 +69,7 @@ describe('Login Status Component', () => {
   it('should log in mocked user', fakeAsync(() => {
     fixture.detectChanges();
     tick();
-    expect(component.isLoggedIn).toBe(true);
+    expect(component.isLoggedIn).toBeTruthy();
     expect(component.userDetail).toBeTruthy();
   }));
 
@@ -83,23 +78,22 @@ describe('Login Status Component', () => {
     verify(routerMock.navigate(anything())).once();
   });
 
-  it('should navigate to "home" and unset userDetails when logout is called', () => {
+  it('should navigate to "home" and when logout is called', () => {
     component.logout();
-
-    expect(component.userDetail).toBeNull();
     verify(routerMock.navigate(anything())).once();
   });
 
   it('should render full name on template when user is logged in', () => {
     fixture.detectChanges();
     const loggedInDetails = element.getElementsByClassName('login-name');
+    expect(loggedInDetails).toBeTruthy();
+    expect(loggedInDetails.length).toBeGreaterThan(0);
     expect(loggedInDetails[0].textContent).toEqual('Patricia Miller');
   });
 
-  xit('should verify that isLoggedIn is set to false when globalState returns null', () => {
+  it('should verify that isLoggedIn returns false when user is not authorized', () => {
+    when(accountLoginServiceMock.isAuthorized()).thenReturn(false);
     fixture.detectChanges();
-    when(globalStateMock.subscribe(anything(), anything())).thenReturn(null);
-    when(globalStateMock.subscribeCachedData(anything(), anything())).thenReturn(null);
     expect(component.isLoggedIn).toBe(false);
   });
 });

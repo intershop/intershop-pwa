@@ -1,8 +1,6 @@
-import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { Observable } from 'rxjs/Observable';
-import { GlobalState } from '../../services/global.state';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 import { MockComponent } from '../mock.component';
 import { HeaderComponent } from './header.component';
@@ -11,16 +9,6 @@ describe('Header Component', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let component: HeaderComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
-
-  class GlobalStateServiceStub {
-    notifyDataChanged(event, value) {
-      return true;
-    }
-    subscribe(event: string, callback: Function) {
-      callback();
-    }
-  }
 
   class WishListServiceStub {
     getWishList() {
@@ -32,8 +20,7 @@ describe('Header Component', () => {
     TestBed.configureTestingModule({
       imports: [CollapseModule],
       providers: [
-        { provider: WishListService, useClass: WishListServiceStub },
-        { provide: GlobalState, useClass: GlobalStateServiceStub }
+        { provider: WishListService, useClass: WishListServiceStub }
 
       ],
       declarations: [
@@ -50,7 +37,6 @@ describe('Header Component', () => {
       fixture = TestBed.createComponent(HeaderComponent);
       component = fixture.componentInstance;
       element = fixture.nativeElement;
-      debugEl = fixture.debugElement;
     });
 
   }));
