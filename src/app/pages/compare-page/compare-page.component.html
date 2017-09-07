@@ -1,5 +1,5 @@
 <div>
-  <h3 *ngIf="comparedProducts.length === 0; else listTemplate">There are no items listed for comparison</h3>
+  <h3 *ngIf="!comparedProducts || comparedProducts.length === 0; else listTemplate">There are no items listed for comparison</h3>
   <ng-template #listTemplate>
     <h3>Below are the SKUs of the items added to comparison list</h3>
   </ng-template>
