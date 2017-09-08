@@ -165,6 +165,7 @@ task reset(type:Delete, description:'delete node binaries and output from npm in
 reset.finalizedBy clean
 
 task npmRun(type:NpmTask, description: 'run npm script with space-separated commands from <npmargs> property, should not be run with gradle daemon', group:'Node Utility') {
+    inputs.files(fileTree(dir: projectDir, includes: ['**/*.js', '**/*.ts', '**/*.json'], excludes: ['dist/**', 'node_modules/**'] ))
     doFirst {
         assert project.hasProperty('npmargs'), 'you did not pass the property npmargs'
         args = project.getProperty('npmargs').split(' ') as List
