@@ -1,7 +1,8 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { ProductListService } from './products.service';
-import { InstanceService } from '../../services';
+import { InstanceService } from '../../services/instance.service';
 import { ProductListMockService } from '../../services/products/products.service.mock';
+
 
 describe('ProuctList Service', () => {
     beforeEach(() => {

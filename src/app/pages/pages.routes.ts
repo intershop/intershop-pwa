@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' },
   { path: 'register', loadChildren: 'app/pages/registration-page/registration-page.module#RegistrationPageModule' },
   { path: 'wishlist', loadChildren: 'app/pages/wishlists-page/wishlists-page.module#WishlistPageModule', canActivate: [AuthGuard] },
+  { path: 'accountOverview', loadChildren: 'app/pages/account-overview/account-overview.module#AccountOverviewModule', canActivate: [AuthGuard] },
   { path: 'error', loadChildren: 'app/pages/error-page/error-page.module#ErrorPageModule', data: { className: 'errorpage' } },
   { path: '**', redirectTo: 'error' }
 ];

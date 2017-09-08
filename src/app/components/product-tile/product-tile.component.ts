@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { GlobalState } from '../../services';
 import { ProductTileModel } from './product-tile.model';
-import { Router } from '@angular/router';
-import * as _ from 'lodash';
-import { GlobalState, JwtService } from '../../services/index';
-import { DisableIconDirective } from '../../directives/disable-icon.directive';
-import { WishListService } from '../../services/wishlists/wishlists.service';
 import { environment } from '../../../environments/environment';
+import { JwtService } from '../../services';
+import { Router } from '@angular/router';
+import { WishListService } from '../../services/wishlists/wishlists.service';
+import * as _ from 'lodash';
+import { DisableIconDirective } from '../../directives/disable-icon.directive';
 
 @Component({
   selector: 'is-product-tile',

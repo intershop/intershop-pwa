@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
 import { AuthInterceptor } from './auth-interceptor';
+import { JwtService } from '../services/jwt.service';
 import { HttpRequest, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { mock, instance, when } from 'ts-mockito';
-import { JwtService } from '../services';
 
 describe('Auth Interceptor Service', () => {
   const responseData = `{"name":"test","age":"34"}`;
