@@ -4,6 +4,8 @@ import { WishListPageComponent } from './wishlists-page.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs/Observable';
 import { WishListService } from '../../services/wishlists/wishlists.service';
+import { GlobalState } from '../../services';
+import { mock, instance} from 'ts-mockito';
 
 describe('Wish list Page Component', () => {
   let fixture: ComponentFixture<WishListPageComponent>;
@@ -17,12 +19,14 @@ describe('Wish list Page Component', () => {
   }
 
   beforeEach(async(() => {
+    const globalStateMock = mock(GlobalState);
     TestBed.configureTestingModule({
       imports: [
         ModalModule.forRoot()
       ],
       providers: [
-        { provide: WishListService, useClass: WishListServiceStub }
+        { provide: WishListService, useClass: WishListServiceStub },
+        { provide: GlobalState, useFactory: () => instance(globalStateMock) }
       ],
       declarations: [WishListPageComponent],
       schemas: [NO_ERRORS_SCHEMA]
