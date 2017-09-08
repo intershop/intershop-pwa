@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { WishListService } from '../../services/wishlists/wishlists.service';
 import { WishListModel, WishListItem } from '../../services/wishlists/wishlists.model';
 import { GlobalState } from '../../services';
 
@@ -9,11 +8,11 @@ import { GlobalState } from '../../services';
 
 export class WishListPageComponent implements OnInit {
 
-  private wishList: WishListItem[] = [];
+  wishList: WishListItem[] = [];
   /**
    * Constructor
    */
-  constructor(private wishListService: WishListService, private globalState: GlobalState) { }
+  constructor(private globalState: GlobalState) { }
 
   private updateWishList = (wishListData: WishListModel) => {
     this.wishList = (wishListData) ? wishListData.items : [];

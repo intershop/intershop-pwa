@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 import { TestBed, inject } from '@angular/core/testing';
 import { AccountLoginApiService } from './account-login.service.api';
-import { JwtService } from 'app/services/jwt.service';
-import { ApiService } from 'app/services/api.service';
+import { JwtService } from '../../services/jwt.service';
+import { ApiService } from '../../services/api.service';
 
 
 describe('AccountLoginApi Service', () => {

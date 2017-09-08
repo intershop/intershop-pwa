@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FilterListService } from './filter-list-service';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { FilterListModel } from './filter-list-service/filter-entries';
 
 @Component({
