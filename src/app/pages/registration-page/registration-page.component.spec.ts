@@ -3,7 +3,7 @@ import { DebugElement } from '@angular/core';
 import { TestBed, inject, async } from '@angular/core/testing';
 import { RegistrationPageComponent } from './registration-page.component';
 import { Router } from '@angular/router';
-import { MockComponent } from 'app/components/mock.component';
+import { MockComponent } from '../../components/mock.component';
 
 describe('RegistrationPage Component', () => {
     let fixture: ComponentFixture<RegistrationPageComponent>;

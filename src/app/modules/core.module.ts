@@ -16,7 +16,7 @@ import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { translateFactory } from '../services/custom-translate-loader';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-
+import { GlobalConfiguration } from '../global-configuration/global-configuration';
 
 
 @NgModule({
@@ -49,7 +49,8 @@ import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
     GlobalState,
-    CrossTabCommunicator
+    CrossTabCommunicator,
+    GlobalConfiguration
   ],
   exports: [
     FooterModule,
