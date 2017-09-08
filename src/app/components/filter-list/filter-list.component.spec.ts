@@ -4,10 +4,10 @@ import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
 import { FilterListComponent } from './filter-list.component';
 import { data } from './filter-list-service/filter-list.mock';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { FilterListService, FilterListMockService } from './filter-list-service';
+import { InstanceService } from '../../services/instance.service';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { CacheCustomService, InstanceService } from '../../services';
-
 describe('FilterList Component', () => {
   let fixture: ComponentFixture<FilterListComponent>;
   let component: FilterListComponent;

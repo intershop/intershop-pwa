@@ -3,15 +3,17 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ProductTileComponent } from './product-tile.component';
 import { async, inject } from '@angular/core/testing';
+import { ProductList } from '../../services/products/products.mock';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
+
+import { JwtService, GlobalState, CacheCustomService } from '../../services';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { environment } from '../../../environments/environment';
-import { JwtService, GlobalState, CacheCustomService } from '../../services';
 import { WishListService } from '../../services/wishlists/wishlists.service';
-import { ProductList } from '../../services/products/products.mock';
+import { Observable } from 'rxjs/Observable';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
+
 
 describe('ProductTile Component', () => {
     let fixture: ComponentFixture<ProductTileComponent>;

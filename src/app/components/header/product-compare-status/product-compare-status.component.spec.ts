@@ -2,12 +2,11 @@ import { ProductCompareStatusComponent } from './product-compare-status.componen
 import { DebugElement, Component } from '@angular/core';
 import { TestBed, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalState } from '../../../services';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { GlobalState } from '../../../services';
-
 
 @Component({
     template: ''

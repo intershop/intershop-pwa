@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { ICategoryService } from './index';
+import { ApiService } from '../../../services/api.service';
 import { FilterListModel } from './filter-entries';
-import { ApiService } from '../../../services/index';
 
 @Injectable()
 export class FilterListApiService implements ICategoryService {

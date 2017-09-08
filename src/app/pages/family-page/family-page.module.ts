@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FamilyPageComponent } from './family-page.component';
+import { FilterListComponent } from '../../components/filter-list/filter-list.component';
 import { FamilyPageListComponent } from './family-page-list/family-page-list.component';
+import { BreadcrumbComponent } from '../../components/breadcrumb/breadcrumb.component';
+import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
 import { ProductListService, ProductListApiService, ProductListMockService } from '../../services/products';
+import { SharedModule } from '../../modules/shared.module';
 import { FilterListService, FilterListMockService, FilterListApiService } from '../../components/filter-list/filter-list-service';
 import { FamilyPageRoute } from './family-page.routes';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { FilterListComponent } from '../../components/filter-list/filter-list.component';
-import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
-import { SharedModule } from '../../modules/shared.module';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { DisableIconDirective } from '../../directives/disable-icon.directive';
     FamilyPageComponent,
     FilterListComponent,
     FamilyPageListComponent,
+    BreadcrumbComponent,
     ProductTileComponent,
     DisableIconDirective
   ],

@@ -3,15 +3,17 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
+import { AccountLoginService } from '../../services/account-login/';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { CacheService } from 'ng2-cache/ng2-cache';
+import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
 import { AccountLoginComponent } from './account-login.component';
 import { async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { userData } from '../../services/account-login/account-login.mock';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AccountLoginService } from '../../services/account-login';
-import { CacheCustomService, EncryptDecryptService } from '../../services';
 import { SharedModule } from '../../modules/shared.module';
+import { RouterTestingModule } from '@angular/router/testing';
+
 
 describe('AccountLogin Component', () => {
     let fixture: ComponentFixture<AccountLoginComponent>;

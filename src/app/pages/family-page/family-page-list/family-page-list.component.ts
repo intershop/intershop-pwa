@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ProductListService } from '../../../services/products';
-import { CacheCustomService } from '../../../services';
+import { CacheCustomService } from '../../../services/cache/cache-custom.service';
 import { ProductTileModel } from '../../../components/product-tile/product-tile.model';
 import { environment } from '../../../../environments/environment';
 

@@ -8,6 +8,7 @@ import { RegistrationPageRoute } from './registration-page.routes';
 import { RegistrationPageComponent } from './registration-page.component';
 import { SharedModule } from '../../modules/shared.module';
 
+
 @NgModule({
   imports: [
     RouterModule.forChild(RegistrationPageRoute),

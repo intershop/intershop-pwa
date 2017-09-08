@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { InstanceService } from '../../../services/instance.service';
 import { FilterListMockService } from './filter-list.service.mock';
 import { FilterListApiService } from './filter-list.service.api';
 import { Observable } from 'rxjs/Observable';
-import { FilterListModel } from './filter-entries';
-import { InstanceService } from '../../../services/index';
 import { environment } from '../../../../environments/environment';
+import { FilterListModel } from './filter-entries';
 
 @Injectable()
 export class FilterListService {
