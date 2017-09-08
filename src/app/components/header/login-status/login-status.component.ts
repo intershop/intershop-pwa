@@ -6,84 +6,84 @@ import { GlobalState } from '../../../services';
 import { GlobalConfiguration } from '../../../global-configuration/global-configuration';
 
 @Component({
-    selector: 'is-login-status',
-    templateUrl: './login-status.component.html'
+  selector: 'is-login-status',
+  templateUrl: './login-status.component.html'
 })
 
 export class LoginStatusComponent implements OnInit {
-    userDetail: UserDetail;
-    isLoggedIn: boolean;
-    customerDetailKey = 'customerDetails';
+  userDetail: UserDetail;
+  isLoggedIn: boolean;
+  customerDetailKey = 'customerDetails';
 
-    constructor(
-        private accountLoginService: AccountLoginService,
-        private router: Router,
-        private globalState: GlobalState,
-        private globalConfiguration: GlobalConfiguration
-    ) {
-    }
+  constructor(
+    private accountLoginService: AccountLoginService,
+    private router: Router,
+    private globalState: GlobalState,
+    private globalConfiguration: GlobalConfiguration
+  ) {
+  }
 
-    ngOnInit() {
-        this.globalState.subscribeCachedData(this.customerDetailKey, (data: UserDetail) => {
-            this.setUserDetails(data);
-            this.globalState.subscribe(this.customerDetailKey, (customerDetails: UserDetail) => {
-                this.setUserDetails(customerDetails);
-            });
-        });
+  ngOnInit() {
+    this.globalState.subscribeCachedData(this.customerDetailKey, (data: UserDetail) => {
+      this.setUserDetails(data);
+      this.globalState.subscribe(this.customerDetailKey, (customerDetails: UserDetail) => {
+        this.setUserDetails(customerDetails);
+      });
+    });
+  }
+  /**
+   * Sets user Details
+   * @param  {} userData
+   */
+  private setUserDetails(userData: UserDetail) {
+    if (userData) {
+      this.isLoggedIn = true;
+      this.userDetail = userData;
+      this.userDetail['hasRole'] = true;
+    } else {
+      this.userDetail = null;
+      this.isLoggedIn = false;
     }
-    /**
-     * Sets user Details
-     * @param  {} userData
-     */
-    private setUserDetails(userData: UserDetail) {
-        if (userData) {
-            this.isLoggedIn = true;
-            this.userDetail = userData;
-            this.userDetail['hasRole'] = true;
-        } else {
-            this.userDetail = null;
-            this.isLoggedIn = false;
-        }
-    }
+  }
 
-    /**
-     * navigates to register page
-     * @returns void
-     */
-    register() {
-        this.globalConfiguration.getApplicationSettings().subscribe(accountSettings => {
-            accountSettings.useSimpleAccount ? this.router.navigate(['login']) : this.router.navigate(['register']);
-        });
-        return false;
-    }
+  /**
+   * navigates to register page
+   * @returns void
+   */
+  register() {
+    this.globalConfiguration.getApplicationSettings().subscribe(accountSettings => {
+      accountSettings.useSimpleAccount ? this.router.navigate(['login']) : this.router.navigate(['register']);
+    });
+    return false;
+  }
 
-    /**
-     * navigates to login page
-     * @returns void
-     */
-    logout() {
-        this.accountLoginService.logout();
-        this.userDetail = null;
-        this.isLoggedIn = false;
-        this.router.navigate(['home']);
-        return false;
-    }
+  /**
+   * navigates to login page
+   * @returns void
+   */
+  logout() {
+    this.accountLoginService.logout();
+    this.userDetail = null;
+    this.isLoggedIn = false;
+    this.router.navigate(['home']);
+    return false;
+  }
 
-    /**
-     * navigates to signin page
-     * @returns void
-     */
-    signIn() {
-        this.router.navigate(['login']);
-        return false;
-    }
+  /**
+   * navigates to signin page
+   * @returns void
+   */
+  signIn() {
+    this.router.navigate(['login']);
+    return false;
+  }
 
-    /**
-     * navigates to accountOverview page
-     * @returns void
-     */
-    accountOverview() {
-        this.router.navigate(['accountOverview']);
-        return false;
-    }
+  /**
+   * navigates to accountOverview page
+   * @returns void
+   */
+  accountOverview() {
+    this.router.navigate(['accountOverview']);
+    return false;
+  }
 }

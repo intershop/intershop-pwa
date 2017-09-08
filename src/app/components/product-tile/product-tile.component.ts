@@ -49,7 +49,7 @@ export class ProductTileComponent implements OnInit {
       this.mockData['averagRating'] = 2;
       this.mockData['isRetailSet'] = true;
       this.mockData['displayType'] = 'glyphicon';
-      this.mockData['../..licablePromotions'] = [
+      this.mockData['applicablePromotions'] = [
         {
           'disableMessages': true,
           'isUnderABTest': true,
