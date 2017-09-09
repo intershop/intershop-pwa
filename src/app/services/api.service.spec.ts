@@ -2,8 +2,8 @@ import { ApiService } from './api.service';
 import { Observable } from 'rxjs/Observable';
 
 describe('API service test', () => {
-  let mockJwtService = null;
-  let mockHttpService = null;
+  let mockJwtService;
+  let mockHttpService;
   let apiService: ApiService;
 
   beforeEach(() => {
@@ -31,13 +31,13 @@ describe('API service test', () => {
     apiService = new ApiService(mockHttpService, mockJwtService);
   });
 
-  // it('should return an observable on calling of GET().', () => {
-  //   let returnVal;
-  //   apiService.get('', null).subscribe((res) => {
-  //     returnVal = res;
-  //   });
-  //   expect(returnVal.type).toBeTruthy();
-  // });
+  it('should return an observable on calling of GET().', () => {
+    let returnVal;
+    apiService.get('', null).subscribe((res) => {
+      returnVal = res;
+    });
+    expect(returnVal.type).toBeTruthy();
+  });
 
   it('should return an observable on calling of PUT().', () => {
     let returnVal;

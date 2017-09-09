@@ -6,7 +6,7 @@ import { ApiService } from '../../services/api.service';
 
 
 describe('AccountLoginApi Service', () => {
-    let tokenExists = true;
+    let tokenExists;
     class ApiServiceStub {
         post(userName, password) {
             const data = {
@@ -34,6 +34,7 @@ describe('AccountLoginApi Service', () => {
     }
 
     beforeEach(() => {
+        tokenExists = true;
         TestBed.configureTestingModule({
             providers: [
                 AccountLoginApiService,
