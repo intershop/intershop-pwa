@@ -1,7 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { Observable } from 'rxjs/Rx';
 import { TestBed } from '@angular/core/testing';
-import { BreadcrumbComponent } from './breadCrumb.component';
+import { BreadcrumbComponent } from './breadcrumb.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { mock, instance, when, anything, verify, capture } from 'ts-mockito';
 import { BreadcrumbService } from './breadcrumb.service';
