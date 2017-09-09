@@ -68,7 +68,7 @@ describe('FamilyPageList Component', () => {
     expect(component.thumbnails).not.toBeNull();
   });
 
-    it('should call ngOnInit when needMock variable is set to false', () => {
+  it('should call ngOnInit when needMock variable is set to false', () => {
     keyExists = false;
     environment.needMock = false;
     fixture.detectChanges();
