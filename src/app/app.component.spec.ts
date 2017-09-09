@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, NavigationEnd } from '@angular/router';
 import { MockComponent } from './components/mock.component';
-import { BreadcrumbService } from 'ng2-breadcrumb/ng2-breadcrumb';
+import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
 import { GlobalState } from './services';
 import { Observable } from 'rxjs/Rx';
 

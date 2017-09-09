@@ -1,6 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { HeaderNavigationComponent } from './header-navigation.component';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CategoryService } from '../../../services/categories/category.service';
 import { CategoriesMock, SubCategoriesMock } from '../../../services/categories/categories.mock';
 import { CacheCustomService } from '../../../services/cache/cache-custom.service';
@@ -26,6 +27,7 @@ describe('Header Navigation Component', () => {
         when(categoryServiceMock.getSubCategories('Cameras')).thenReturn(Observable.of(SubCategoriesMock[0] as SubcategoryModel));
 
         TestBed.configureTestingModule({
+            imports: [RouterTestingModule],
             declarations: [
                 HeaderNavigationComponent
             ],
