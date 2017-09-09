@@ -1,6 +1,7 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { DebugElement, Component } from '@angular/core';
+import { TestBed, ComponentFixture, async, inject } from '@angular/core/testing';
+import { Component } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { WishListComponent } from './wishlist-status.component';
@@ -13,11 +14,10 @@ import { SharedModule } from '../../../modules/shared.module';
 class DummyComponent {
 }
 
-describe('Wish List Component', () => {
+xdescribe('Wish List Component', () => {
     let fixture: ComponentFixture<WishListComponent>;
     let component: WishListComponent;
     let element: HTMLElement;
-    let debugEl: DebugElement;
     let translateService: TranslateService;
 
     beforeEach(() => {
@@ -45,30 +45,24 @@ describe('Wish List Component', () => {
         fixture = TestBed.createComponent(WishListComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
-        debugEl = fixture.debugElement;
+        fixture.detectChanges();
     });
 
-    // it('should check itemCount is equal to 1', () => {
-    //     component.ngOnInit();
-    //     fixture.detectChanges();
+    it('should check itemCount is equal to 1', () => {
+        expect(component.itemCount).toBeGreaterThan(0);
+    });
 
-    //     expect(component.itemCount).toBeGreaterThan(0);
-    // });
+    it('should check itemCount on the template to be item', () => {
+        const itemCount = element.querySelector('#compare-count').textContent;
 
-    // it('should check itemCount on the template to be item', () => {
-    //     component.ngOnInit();
-    //     fixture.detectChanges();
-    //     const itemCount = element.querySelector('#compare-count').textContent;
+        expect(itemCount).toBeGreaterThan(0);
+    });
 
-    //     expect(itemCount).toBeGreaterThan(0);
-    // });
+    it('should go to URL "wishlist"', async(inject([Router, Location], (router: Router, location: Location) => {
+        element.querySelector('a').click();
 
-    // it('should go to URL "wishlist"', async(inject([Router, Location], (router: Router, location: Location) => {
-    //     fixture.detectChanges();
-    //     fixture.debugElement.query(By.css('a')).nativeElement.click();
-
-    //     fixture.whenStable().then(() => {
-    //         expect(location.path()).toContain('wishlist');
-    //     });
-    // })));
+        fixture.whenStable().then(() => {
+            expect(location.href).toContain('wishlist');
+        });
+    })));
 });

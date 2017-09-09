@@ -5,6 +5,8 @@
 /tmp
 /out-tsc
 /bin
+/tslint-rules/**/*.js
+/tslint-rules/**/*.js.map
 
 # dependencies
 /node_modules

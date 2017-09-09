@@ -13,7 +13,7 @@ describe('FilterList Component', () => {
   let component: FilterListComponent;
   let element: HTMLElement;
   let debugEl: DebugElement;
-  let keyExists = false;
+  let keyExists: boolean;
 
   class CacheCustomServiceStub {
     cacheKeyExists(key) {
@@ -33,6 +33,7 @@ describe('FilterList Component', () => {
   }
 
   beforeEach(() => {
+    keyExists = false;
     TestBed.configureTestingModule({
       declarations: [FilterListComponent],
       imports: [CollapseModule],
@@ -50,23 +51,20 @@ describe('FilterList Component', () => {
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
     element = fixture.nativeElement;
+    fixture.detectChanges();
   });
 
 
   it('should call ngOnInit for 1st time and gets data from Category Service', () => {
-    component.ngOnInit();
     expect(component.filterListData).not.toBeNull();
   });
 
   it('should call ngOnInit for 2nd time and gets data from Cache Service', () => {
     keyExists = true;
-    component.ngOnInit();
     expect(component.filterListData).not.toBeNull();
   });
 
   it('should check if Categories are getting rendered on page', () => {
-    component.ngOnInit();
-    fixture.detectChanges();
     const categories = element.getElementsByTagName('h3');
     expect(categories.length).toBe(4);
     expect(categories[0].textContent).toContain('Category');

@@ -8,7 +8,7 @@ import { mock, instance, when } from 'ts-mockito';
 
 describe('Auth Interceptor Service', () => {
   const responseData = `{"name":"test","age":"34"}`;
-  const getRequest = new HttpRequest<any>('GET', ' ');
+  let getRequest: HttpRequest<any>;
 
   let mockRequest: HttpRequest<any>;
 
@@ -26,6 +26,8 @@ describe('Auth Interceptor Service', () => {
   let jwtServiceMock: JwtService;
 
   beforeEach(() => {
+    getRequest = new HttpRequest<any>('GET', ' ');
+    mockRequest = null;
     jwtServiceMock = mock(JwtService);
 
     TestBed.configureTestingModule({

@@ -1,5 +1,5 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { TestBed, async } from '@angular/core/testing';
 import { FamilyPageListComponent } from './family-page-list.component';
@@ -15,8 +15,7 @@ describe('FamilyPageList Component', () => {
   let fixture: ComponentFixture<FamilyPageListComponent>;
   let component: FamilyPageListComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
-  let keyExists = false;
+  let keyExists: boolean;
 
   class MockCacheCustomService {
     cacheKeyExists(key) {
@@ -37,6 +36,7 @@ describe('FamilyPageList Component', () => {
   }
 
   beforeEach(async(() => {
+    keyExists = false;
     TestBed.configureTestingModule({
       declarations: [FamilyPageListComponent],
       providers: [InstanceService, ProductListMockService, CacheService,
@@ -53,26 +53,25 @@ describe('FamilyPageList Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FamilyPageListComponent);
     component = fixture.componentInstance;
-    debugEl = fixture.debugElement;
     element = fixture.nativeElement;
   });
 
   it('should call ngOnInit for 1st time and gets data from Productlist Service', () => {
-    component.ngOnInit();
+    fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
   });
 
 
   it('should call ngOnInit for 2nd time and gets data from Cache Service', () => {
     keyExists = true;
-    component.ngOnInit();
+    fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
   });
 
   it('should call ngOnInit when needMock variable is set to false', () => {
     keyExists = false;
     environment.needMock = false;
-    component.ngOnInit();
+    fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
     environment.needMock = true;
   });
@@ -91,10 +90,9 @@ describe('FamilyPageList Component', () => {
     expect(component.thumbnails[0].name).toBe('Dicota');
   });
 
-  // it('should check if the data is being rendered on the page', () => {
-  //   component.ngOnInit();
-  //   fixture.detectChanges();
-  //   const thumbs = fixture.debugElement.queryAll(By.css('is-product-tile'));
-  //   expect(thumbs.length).toBe(5);
-  // });
+  it('should check if the data is being rendered on the page', () => {
+    fixture.detectChanges();
+    const thumbs = element.querySelectorAll('is-product-tile');
+    expect(thumbs.length).toBe(5);
+  });
 });

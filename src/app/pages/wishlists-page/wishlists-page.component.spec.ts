@@ -40,15 +40,15 @@ describe('Wish list Page Component', () => {
 
   it('should check if "Add to Wishlist" button is rendered', () => {
     const anchorTag = element.querySelector('.btn-default');
-    expect(anchorTag).toBeDefined();
+    expect(anchorTag).toBeTruthy();
   });
 
   // TODO: the relevance of this test needs to be discussed (counting input fields?)
   it('should check if input fields are rendered on HTML', () => {
     const inputFields = element.getElementsByClassName('form-control');
     expect(inputFields.length).toBe(4);
-    expect(inputFields[0]).toBeDefined();
-    expect(inputFields[1]).toBeDefined();
-    expect(inputFields[2]).toBeDefined();
+    expect(inputFields[0]).toBeTruthy();
+    expect(inputFields[1]).toBeTruthy();
+    expect(inputFields[2]).toBeTruthy();
   });
 });
