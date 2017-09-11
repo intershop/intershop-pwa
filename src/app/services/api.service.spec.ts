@@ -32,13 +32,13 @@ describe('API service test', () => {
     apiService = new ApiService(mockHttpService, mockJwtService, mockLocalizeRouterService);
   });
 
-  // it('should return an observable on calling of GET().', () => {
-  //   let returnVal;
-  //   apiService.get('', null).subscribe((res) => {
-  //     returnVal = res;
-  //   });
-  //   expect(returnVal.type).toBeTruthy();
-  // });
+  it('should return an observable on calling of GET().', () => {
+    let returnVal;
+    apiService.get('', null).subscribe((res) => {
+      returnVal = res;
+    });
+    expect(returnVal.type).toBeTruthy();
+  });
 
   it('should return an observable on calling of PUT().', () => {
     let returnVal;

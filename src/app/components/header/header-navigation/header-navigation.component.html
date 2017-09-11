@@ -4,11 +4,11 @@
       <a [routerLink]="localize.translateRoute('/home')" title="home"><span class="glyphicon glyphicon-home"></span></a>
     </li>
     <li *ngFor="let category of categories?.elements" class="dropdown">
-      <a [routerLink]="localize.translateRoute('/category')" attr.data-testing-id="{{category.id}}-link" (mouseover)="getSubCategories(category.id)">{{category.name}}</a>
+      <a [routerLink]="[localize.translateRoute('/category'), category.name]" attr.data-testing-id="{{category.id}}-link" (mouseover)="getSubCategories(category.id)">{{category.name}}</a>
       <a class="dropdown-toggle visible-xs"><span class="glyphicon glyphicon-plus"></span></a>
       <ul class="category-level1 dropdown-menu">
         <li class="main-navigation-level1-item" *ngFor="let subCategory of subCategories?.subCategories">
-          <a [routerLink]="localize.translateRoute('/family')">{{subCategory.name}}</a>
+          <a [routerLink]="[localize.translateRoute('/category'), category.name, 'family', subCategory.name]">{{subCategory.name}}</a>
           <ul class="category-level2">
             <li class="main-navigation-level2-item" *ngFor="let item of subCategory?.subItems">
               <a routerLink="/family">{{item}}</a>

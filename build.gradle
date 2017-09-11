@@ -88,7 +88,7 @@ task karma(type: NodeTask, dependsOn:[npmInstall, dist], description: 'run jasmi
     args = ['test', '--progress=false', '--reporters', 'junit,html,spec', '--browsers', 'PhantomJS', '--single-run', '--no-color']
     inputs.files('src', 'package.json', 'karma-ci.conf.js')
 }
-build.dependsOn karma
+check.dependsOn karma
 
 task protractor(type: NodeTask, dependsOn:[npmInstall, dist], description: 'run protractor tests', group:'Node') {
     script = file("$projectDir/node_modules/@angular/cli/bin/ng")
@@ -98,7 +98,7 @@ task protractor(type: NodeTask, dependsOn:[npmInstall, dist], description: 'run 
 /**
   TODO: this links protractor with gradle but Chrome headless needs to work first
  */
-// build.dependsOn protractor
+// check.dependsOn protractor
 
 project.afterEvaluate {
     [test, appRun]*.dependsOn dist
@@ -165,13 +165,15 @@ task reset(type:Delete, description:'delete node binaries and output from npm in
 reset.finalizedBy clean
 
 task npmRun(type:NpmTask, description: 'run npm script with space-separated commands from <npmargs> property, should not be run with gradle daemon', group:'Node Utility') {
+    inputs.files(fileTree(dir: projectDir, includes: ['**/*.js', '**/*.ts', '**/*.json'], excludes: ['dist/**', 'node_modules/**'] ))
     doFirst {
         assert project.hasProperty('npmargs'), 'you did not pass the property npmargs'
         args = project.getProperty('npmargs').split(' ') as List
     }
 }
 
-task tslint(type:NodeTask, description:'run tslint', group:'Node Utility', dependsOn:npmInstall) {
-    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
-    args = ['lint', '--format', 'stylish', '--typeCheck']
+task tslint(type:NpmTask, description:'run tslint', group:'Node Utility', dependsOn:npmInstall) {
+    args = ['run', 'lint', '--silent', '--', '--format', 'stylish', '--typeCheck']
+    inputs.files(file('src'), fileTree('tslint-rules') {include('**/*Rule.ts') include('tsconfig.json')}, fileTree(projectDir) {include('*.json')})
 }
+check.finalizedBy tslint

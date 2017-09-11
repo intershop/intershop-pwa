@@ -8,6 +8,7 @@
     "prestart": "ng build --prod --env=prod && ngc && webpack",
     "build": "ng build",
     "test": "ng test",
+    "prelint": "tsc -p tslint-rules || true",
     "lint": "ng lint --type-check",
     "e2e": "ng e2e"
   },
@@ -64,7 +65,7 @@
     "ts-mockito": "^2.1.0",
     "ts-node": "~3.2.0",
     "tslint": "^5.7.0",
-    "typescript": "~2.3.3",
+    "typescript": "^2.5.2",
     "webpack-node-externals": "^1.6.0"
   }
 }

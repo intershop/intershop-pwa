@@ -11,4 +11,3 @@ export const environment = {
   prefix: 'ROUTES',
   pattern: '{LANG}/{CURRENCY}'
 };
-

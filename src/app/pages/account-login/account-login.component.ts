@@ -18,23 +18,26 @@ export class AccountLoginComponent implements OnInit {
   registrationLoginType = 'email';
   isLoggedIn;
   defaultResponse = '401 and Unauthorized';
-  /**
-   * Constructor
-   * @param  {FormBuilder} privateformBuilder
-   * @param  {AccountLoginService} privateaccountLoginService
-   * @param  {Router} privaterouter
-   */
-  constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private cacheService: CacheCustomService, private localize: LocalizeRouterService) { }
 
   /**
-     * Creates Login Form
-     */
+   * @param {FormBuilder} formBuilder
+   * @param {AccountLoginService} accountLoginService
+   * @param {Router} router
+   * @param {CacheCustomService} cacheService
+   * @param {LocalizeRouterService} localize
+   */
+  constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
+              private router: Router, private cacheService: CacheCustomService, private localize: LocalizeRouterService) {
+  }
+
+  /**
+   * Creates Login Form
+   */
   ngOnInit() {
     this.isLoggedIn = this.cacheService.cacheKeyExists('userDetail');
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.compose([Validators.required,
-      (this.registrationLoginType === 'email' ? EmailValidator.validate : null)])]],
+        (this.registrationLoginType === 'email' ? EmailValidator.validate : null)])]],
       password: ['', Validators.required],
     });
   }
