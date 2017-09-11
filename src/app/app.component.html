@@ -3,6 +3,7 @@
 
   <div class="wrapper">
     <div role="main" class="container main-container">
+      <is-breadcrumb [hidden]="!showBreadCrumb"></is-breadcrumb>
       <router-outlet></router-outlet>
     </div>
   </div>

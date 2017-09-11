@@ -25,13 +25,13 @@ export class ProductTileComponent implements OnInit {
   @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
 
   /**
-   * @param  {DataEmitterService} private_dataEmitterService
-   * @param  {Router} privaterouter
-   * @param  {JwtService} privatejwtService
-   * @param  {WishListService} privatewishListService
-   * @param  {GlobalState} privateglobalState
+   *
+   * @param {Router} router
+   * @param {JwtService} jwtService
+   * @param {WishListService} wishListService
+   * @param {GlobalState} globalState
+   * @param {LocalizeRouterService} localize
    */
-
   constructor(
     private router: Router,
     private jwtService: JwtService,

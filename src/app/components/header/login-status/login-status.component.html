@@ -5,9 +5,8 @@
   <span *ngIf="isLoggedIn" class="hidden-xs">My Account</span>
 </a>
 <span class="hidden-xs seperator">&#124; </span>
-<a
-  href="javascript:void(0)" [routerLink]="userDetail?.lastName && isLoggedIn? localize.translateRoute('/') : localize.translateRoute('/register')" [attr.data-testing-id]="isLoggedIn?'link-logout' : null" [attr.rel]="isLoggedIn ?  null : 'nofollow'"
+<a href="javascript:void(0)" [routerLink]="userDetail?.lastName && isLoggedIn? localize.translateRoute('/') : localize.translateRoute('/register')" [attr.data-testing-id]="isLoggedIn?'link-logout' : null" [attr.rel]="isLoggedIn ?  null : 'nofollow'"
   [ngClass]="userDetail?.hasRole && isLoggedIn? 'my-account-link my-account-logout' : 'ish-siteHeader-myAccountUtilitiesMenu-myAccount-register'"
   (click)="userDetail?.lastName && isLoggedIn? logout() : register()">
-  <span class="hidden-xs">{{userDetail?.hasRole && isLoggedIn? ('account.logout.button.label' | translate) : ('account.register.button.label' | translate)}}</span>
+  <span class="hidden-xs">{{isLoggedIn? ('account.logout.button.label' | translate) : ('account.register.button.label' | translate)}}</span>
 </a>

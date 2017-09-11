@@ -4,9 +4,8 @@ import { AccountLoginApiService } from './account-login.service.api';
 import { JwtService } from '../jwt.service';
 import { ApiService } from '../api.service';
 
-
 describe('AccountLoginApi Service', () => {
-    let tokenExists = true;
+    let tokenExists;
     class ApiServiceStub {
         post(userName, password) {
             const data = {
@@ -34,6 +33,7 @@ describe('AccountLoginApi Service', () => {
     }
 
     beforeEach(() => {
+        tokenExists = true;
         TestBed.configureTestingModule({
             providers: [
                 AccountLoginApiService,
