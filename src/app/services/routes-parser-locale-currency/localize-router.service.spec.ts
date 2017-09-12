@@ -196,20 +196,5 @@ describe('LocalizeRouterService', () => {
     (<any>router).fakeRouterEvents.next(new NavigationEnd(1, '/en/new/path', '/en/new/path'));
     expect(parser.translateRoutes).not.toHaveBeenCalled();
   });
-
-  it('should not set new url if same language', fakeAsync(() => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
-    parser.currentLang = 'de';
-    parser.langs = langs;
-    parser.localesCollection = locales;
-    parser.routes = routes;
-    spyOn(router, 'parseUrl').and.returnValue(null);
-    spyOn(parser, 'translateRoutes').and.returnValue(Promise.resolve('en'));
-    spyOn(history, 'pushState').and.stub();
-
-    localizeRouterService.changeLanguage('de');
-    tick();
-    expect(history.pushState).not.toHaveBeenCalled();
-  }));
 });
 

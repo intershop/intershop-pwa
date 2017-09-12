@@ -84,7 +84,7 @@ export class LoginStatusComponent implements OnInit {
    * @returns void
    */
   accountOverview() {
-    this.router.navigate(['accountOverview']);
+    this.router.navigate([this.localize.translateRoute('/accountOverview')]);
     return false;
   }
 }

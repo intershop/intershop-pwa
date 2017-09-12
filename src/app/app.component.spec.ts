@@ -9,6 +9,7 @@ import { MockComponent } from './components/mock.component';
 import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
 import { GlobalState } from './services';
 import { Observable } from 'rxjs/Rx';
+import { LocalizeRouterService } from './services/routes-parser-locale-currency/localize-router.service';
 
 let translate: TranslateService;
 
@@ -17,10 +18,11 @@ describe('AppComponent', () => {
     breadcrumbPages: ['/family', '/category']
   };
   let breadcrumbServiceMock: BreadcrumbService;
+  let localizeRouterServiceMock: LocalizeRouterService;
   let routerMock: Router;
   let fixture: ComponentFixture<AppComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -32,18 +34,20 @@ describe('AppComponent', () => {
         TranslateService,
         { provide: GlobalState, useValue: globalStateStub },
         { provide: BreadcrumbService, useFactory: () => instance(breadcrumbServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) }
+        { provide: Router, useFactory: () => instance(routerMock) },
+        {provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
       imports: [
         TranslateModule.forRoot(),
         RouterTestingModule
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     breadcrumbServiceMock = mock(BreadcrumbService);
     routerMock = mock(Router);
+    localizeRouterServiceMock = mock(LocalizeRouterService);
     translate = TestBed.get(TranslateService);
     fixture = TestBed.createComponent(AppComponent);
 

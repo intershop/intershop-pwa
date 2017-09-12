@@ -1,38 +1,69 @@
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs/Observable';
+import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
+import { Injector } from '@angular/core';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import { CustomErrorHandler } from './custom-error-handler';
 
-describe('API service test', () => {
-  let mockJwtService = null;
-  let mockHttpService = null;
-  const mockLocalizeRouterService = null;
+class DummyCustomErrorHandler {
+}
+
+class DummyTraslateService {
+  parser = {
+    currentLocale: { lang: 'en', currency: 'USD' }
+  };
+}
+
+class DummyHttpClient {
+  get(url: string, options: {}): Observable<any> {
+    return Observable.of({ 'type': 'get' });
+  }
+
+  put(path: string, body: {}): Observable<any> {
+    return Observable.of({ 'type': 'put' });
+  }
+
+  post(path: string, body: {}): Observable<any> {
+    return Observable.of({ 'type': 'post' });
+  }
+
+  delete(path: string): Observable<any> {
+    return Observable.of({ 'type': 'delete' });
+  }
+}
+
+describe('test', () => {
+  let injector: Injector;
+  let localizeRouterService: LocalizeRouterService;
   let apiService: ApiService;
+  let customErrorHandler: CustomErrorHandler;
+  let httpClient: HttpClient;
 
   beforeEach(() => {
-    mockJwtService = {
-      getToken: () => {
-        return '123token456';
-      }
-    };
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: HttpClient, useClass: DummyHttpClient },
+        { provide: CustomErrorHandler, useClass: DummyCustomErrorHandler },
+        { provide: LocalizeRouterService, useClass: DummyTraslateService }
+      ]
+    });
 
-    mockHttpService = {
-      get: (url: string, options: {}): Observable<any> => {
-        return Observable.of({ 'type': 'get' });
-      },
-      put: (path: string, body: {}): Observable<any> => {
-        return Observable.of({ 'type': 'put' });
-      },
-      post: (path: string, body: {}): Observable<any> => {
-        return Observable.of({ 'type': 'post' });
-      },
-      delete: (path: string): Observable<any> => {
-        return Observable.of({ 'type': 'delete' });
-      },
+    injector = getTestBed();
+    localizeRouterService = injector.get(LocalizeRouterService);
+    customErrorHandler = injector.get(CustomErrorHandler);
+    httpClient = injector.get(HttpClient);
+  });
 
-    };
-    apiService = new ApiService(mockHttpService, mockJwtService, mockLocalizeRouterService);
+  afterEach(() => {
+    injector = void 0;
+    localizeRouterService = void 0;
+    apiService = void 0;
   });
 
   it('should return an observable on calling of GET().', () => {
+    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
+
     let returnVal;
     apiService.get('', null).subscribe((res) => {
       returnVal = res;
@@ -41,6 +72,8 @@ describe('API service test', () => {
   });
 
   it('should return an observable on calling of PUT().', () => {
+    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
+
     let returnVal;
     apiService.put('', null).subscribe((res) => {
       returnVal = res;
@@ -49,6 +82,8 @@ describe('API service test', () => {
   });
 
   it('should return an observable on calling of POST().', () => {
+    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
+
     let returnVal;
     apiService.post('', null).subscribe((res) => {
       returnVal = res;
@@ -57,11 +92,13 @@ describe('API service test', () => {
   });
 
   it('should return an observable on calling of DELETE().', () => {
+    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
+
     let returnVal;
     apiService.delete('').subscribe((res) => {
       returnVal = res;
     });
     expect(returnVal.type).toEqual('delete');
   });
-
 });
+
