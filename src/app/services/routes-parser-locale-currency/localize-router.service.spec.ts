@@ -2,7 +2,7 @@ import { Injector } from '@angular/core';
 import { LocalizeRouterService } from './localize-router.service';
 import { LocalizeParser } from './localize-router.parser';
 import { LocalizeRouterModule } from './localize-router.module';
-import { getTestBed, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { Routes, Router, Event, NavigationStart, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -85,6 +85,8 @@ describe('LocalizeRouterService', () => {
     injector = getTestBed();
     parser = injector.get(LocalizeParser);
     router = injector.get(Router);
+
+    localizeRouterService = new LocalizeRouterService(parser, router);
   });
 
   afterEach(() => {
@@ -93,14 +95,12 @@ describe('LocalizeRouterService', () => {
   });
 
   it('is defined', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
-    expect(localizeRouterService).toBeDefined();
+    expect(localizeRouterService).toBeTruthy();
     expect(localizeRouterService instanceof LocalizeRouterService).toBeTruthy();
   });
 
   it('should initialize routerEvents', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
-    expect(localizeRouterService.routerEvents).toBeDefined();
+    expect(localizeRouterService.routerEvents).toBeTruthy();
   });
 
   it('should reset route config on init', () => {
@@ -108,13 +108,11 @@ describe('LocalizeRouterService', () => {
     parser.routes = routes;
     spyOn(router, 'resetConfig').and.callThrough();
 
-    localizeRouterService = new LocalizeRouterService(parser, router);
     localizeRouterService.init();
     expect(router.resetConfig).toHaveBeenCalledWith(routes);
   });
 
   it('should call parser translateRoute', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
     const testString = 'result/path';
     spyOn(parser, 'translateRoute').and.returnValue(testString);
 
@@ -124,7 +122,6 @@ describe('LocalizeRouterService', () => {
   });
 
   it('should append language if root route', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
@@ -138,7 +135,6 @@ describe('LocalizeRouterService', () => {
   });
 
   it('should translate complex route', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
@@ -153,7 +149,6 @@ describe('LocalizeRouterService', () => {
   });
 
   it('should translate routes if language had changed on route event', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
     localizeRouterService.init();
     parser.currentLang = 'de';
     parser.langs = langs;
@@ -165,7 +160,6 @@ describe('LocalizeRouterService', () => {
   });
 
   it('should not translate routes if language not found', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
@@ -176,7 +170,6 @@ describe('LocalizeRouterService', () => {
   });
 
   it('should not translate routes if language is same', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
@@ -187,7 +180,6 @@ describe('LocalizeRouterService', () => {
   });
 
   it('should not translate routes if not NavigationStart', () => {
-    localizeRouterService = new LocalizeRouterService(parser, router);
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;

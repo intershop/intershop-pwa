@@ -128,8 +128,8 @@ describe('LocalizeParser', () => {
   });
 
   it('is defined', () => {
-    expect(ManualParserLoader).toBeDefined();
-    expect(loader).toBeDefined();
+    expect(ManualParserLoader).toBeTruthy();
+    expect(loader).toBeTruthy();
     expect(loader instanceof LocalizeParser).toEqual(true);
   });
 

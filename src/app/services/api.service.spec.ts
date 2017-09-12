@@ -53,6 +53,8 @@ describe('test', () => {
     localizeRouterService = injector.get(LocalizeRouterService);
     customErrorHandler = injector.get(CustomErrorHandler);
     httpClient = injector.get(HttpClient);
+
+    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
   });
 
   afterEach(() => {
@@ -62,8 +64,6 @@ describe('test', () => {
   });
 
   it('should return an observable on calling of GET().', () => {
-    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
-
     let returnVal;
     apiService.get('', null).subscribe((res) => {
       returnVal = res;
@@ -72,8 +72,6 @@ describe('test', () => {
   });
 
   it('should return an observable on calling of PUT().', () => {
-    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
-
     let returnVal;
     apiService.put('', null).subscribe((res) => {
       returnVal = res;
@@ -82,8 +80,6 @@ describe('test', () => {
   });
 
   it('should return an observable on calling of POST().', () => {
-    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
-
     let returnVal;
     apiService.post('', null).subscribe((res) => {
       returnVal = res;
@@ -92,8 +88,6 @@ describe('test', () => {
   });
 
   it('should return an observable on calling of DELETE().', () => {
-    apiService = new ApiService(httpClient, customErrorHandler, localizeRouterService);
-
     let returnVal;
     apiService.delete('').subscribe((res) => {
       returnVal = res;

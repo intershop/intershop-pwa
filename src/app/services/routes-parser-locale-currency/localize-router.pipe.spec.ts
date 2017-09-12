@@ -53,8 +53,8 @@ describe('LocalizeRouterPipe', () => {
   });
 
   it('is defined', () => {
-    expect(LocalizeRouterPipe).toBeDefined();
-    expect(localizePipe).toBeDefined();
+    expect(LocalizeRouterPipe).toBeTruthy();
+    expect(localizePipe).toBeTruthy();
     expect(localizePipe instanceof LocalizeRouterPipe).toBeTruthy();
   });
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AddressComponent } from './address.component';
 import { SharedModule } from '../../../modules/shared.module';
 

@@ -99,7 +99,6 @@ describe('Login Status Component', () => {
   it('should render full name on template when user is logged in', () => {
     fixture.detectChanges();
     const loggedInDetails = element.getElementsByClassName('login-name');
-    debugger;
     expect(loggedInDetails[0].textContent).toEqual('Patricia Miller');
   });
 
