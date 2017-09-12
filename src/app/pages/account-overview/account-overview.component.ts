@@ -14,7 +14,7 @@ export class AccountOverviewComponent {
     private router: Router) {
     this.globalState.subscribeCachedData(this.cusotmerDetailKey, customerData => {
       if (customerData) {
-        this.customerName = customerData.firstName;
+        this.customerName = customerData.firstName || customerData.userName;
       }
     });
   }

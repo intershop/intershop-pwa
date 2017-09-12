@@ -77,7 +77,7 @@ describe('AccountLogin Service', () => {
     it(`shouldn't login user as the credentials passed are incorrect`, async(inject([AccountLoginService], (accountLoginService: AccountLoginService) => {
         const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
         accountLoginService.singinUser(userDetails).subscribe((data) => {
-            expect(data).toBe(null);
+            expect(data).toBe('401 and Unauthorized');
         });
     })));
 
