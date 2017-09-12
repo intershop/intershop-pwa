@@ -10,7 +10,6 @@ import { CategoryModel } from '../../../services/categories/category.model';
 import { SubcategoryModel } from '../../../services/categories/subcategory.model';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { GlobalState } from '../../../services/global.state';
-import { fakeAsync } from '@angular/core/testing';
 
 describe('Header Navigation Component', () => {
   let fixture: ComponentFixture<HeaderNavigationComponent>;
