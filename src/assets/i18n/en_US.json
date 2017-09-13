@@ -13,6 +13,8 @@
   "account.login.message": "To sign in to your account, please enter your email address and password.",
   "account.send_password.heading": "Forgot your password?",
   "account.signin.button.label": "Sign In",
+  "account.register.button.label": "Register",
+  "account.logout.button.label": "Logout",
   "account.new_user.heading": "New Users",
   "account.create.benefit.text": "When you create an account, you''ll gain access to a wide range of benefits:",
   "account.create.benefit1.text": "Easier Order Tracking",
@@ -41,7 +43,7 @@
   "account.register.email_confirmation.label":"Confirm Email Address",
   "account.register.email_confirmation.not_match.error":"Your Confirm Email Address do not match.",
   "account.register.password.label":"Password",
-  "account.register.password.extrainfo.message":"7 characters minimum, must include numbers and letters, no spaces",
+  "account.register.password.extrainfo.message":"{0} characters minimum, must include numbers and letters, no spaces",
   "account.register.password_confirmation.label":"Confirm Password",
   "search.searchbox.instructional_text":"Search for keyword, product ID or category...",
   "search.searchbox.button.title":"Start search.",
@@ -60,5 +62,13 @@
   "account.cancel.link":"Cancel",
   "account.login.username.label":"Username",
   "account.login.email.label":"Email",
-  "account.login.password.label":"Password"
+  "account.login.password.label":"Password",
+
+  "ROUTES.home": "home",
+  "ROUTES.category": "category",
+  "ROUTES.compare": "compare",
+  "ROUTES.login": "login",
+  "ROUTES.register": "register",
+  "ROUTES.wishlist": "wishlist",
+  "ROUTES.error": "error"
 }

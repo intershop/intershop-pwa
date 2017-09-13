@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { AccountLoginMockService } from './account-login.service.mock';
 import { AccountLoginApiService } from './account-login.service.api';
 import { AccountLogin } from './account-login';
-import { CacheCustomService } from '../../services/cache/cache-custom.service';
+import { CacheCustomService } from '../cache/cache-custom.service';
 import { UserDetail } from './account-login.model';
-import { InstanceService } from '../../services/instance.service';
+import { InstanceService } from '../instance.service';
 import { JwtService, GlobalState } from '../../services';
 
 export interface IAccountLoginService {
