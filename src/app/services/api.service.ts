@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { CustomErrorHandler } from './custom-error-handler';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 @Injectable()
 export class ApiService {
@@ -14,7 +15,9 @@ export class ApiService {
    * @param  {Http} privatehttp
    */
   constructor(private httpClient: HttpClient,
-    private customErrorHandler: CustomErrorHandler) { }
+              private customErrorHandler: CustomErrorHandler,
+              private localize: LocalizeRouterService) {
+  }
 
   /**
    * format api errors and send errors to custom handler
@@ -31,7 +34,12 @@ export class ApiService {
    * @returns Observable
    */
   get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<any> {
-    return this.httpClient.get(`${environment.rest_url}${path}`, { headers: headers })
+
+    const loc = this.localize.parser.currentLocale;
+
+    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency};/${path}`;
+
+    return this.httpClient.get(url, { headers: headers })
       .catch(this.formatErrors.bind(this));
   }
 

@@ -1,8 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { UserDetail } from './account-login.model';
-import { ApiService } from '../../services/api.service';
-import { JwtService } from '../../services/jwt.service';
+import { ApiService } from '../api.service';
+import { JwtService } from '../jwt.service';
 import { HttpHeaders } from '@angular/common/http';
 
 

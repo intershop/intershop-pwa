@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GlobalState } from '../../../services/';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-product-compare-status',
@@ -12,7 +13,7 @@ export class ProductCompareStatusComponent {
   /**
    * @param  {GlobalState} privateglobalState
    */
-  constructor(private globalState: GlobalState) {
+  constructor(private globalState: GlobalState, public localize: LocalizeRouterService) {
     this.globalState.subscribeCachedData('productCompareData', data => {
       this.productCompareCount = data ? data.length : 0;
       this.globalState.subscribe('productCompareData', (productCompareData: string[]) => {

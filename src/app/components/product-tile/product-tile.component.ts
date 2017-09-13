@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 import * as _ from 'lodash';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-product-tile',
@@ -24,18 +25,19 @@ export class ProductTileComponent implements OnInit {
   @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
 
   /**
-   * @param  {DataEmitterService} private_dataEmitterService
-   * @param  {Router} privaterouter
-   * @param  {JwtService} privatejwtService
-   * @param  {WishListService} privatewishListService
-   * @param  {GlobalState} privateglobalState
+   *
+   * @param {Router} router
+   * @param {JwtService} jwtService
+   * @param {WishListService} wishListService
+   * @param {GlobalState} globalState
+   * @param {LocalizeRouterService} localize
    */
-
   constructor(
     private router: Router,
     private jwtService: JwtService,
     private wishListService: WishListService,
-    private globalState: GlobalState) {
+    private globalState: GlobalState,
+    private localize: LocalizeRouterService) {
   }
 
   ngOnInit() {
@@ -184,7 +186,7 @@ export class ProductTileComponent implements OnInit {
    */
   addToWishList(itemToAdd): void {
     if (!this.jwtService.getToken()) {
-      this.router.navigate(['/login']);
+      this.router.navigate([this.localize.translateRoute('/login')]);
     } else {
       this.wishListService.getWishList().subscribe(wishlistData => wishlistData);
     }

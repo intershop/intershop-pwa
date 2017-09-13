@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 import { SubcategoryModel } from './subcategory.model';
 import { CategoryModel } from './category.model';
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../api.service';
 
 @Injectable()
 export class CategoryApiService {

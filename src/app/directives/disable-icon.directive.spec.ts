@@ -1,7 +1,7 @@
 import { DisableIconDirective } from './disable-icon.directive';
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { ElementRef, OnInit, Renderer2, Component, ViewChild } from '@angular/core';
-import { GlobalState } from '../services';
+import { GlobalState } from '../services/global.state';
 
 describe('DisableIconDirective', () => {
     @Component({
