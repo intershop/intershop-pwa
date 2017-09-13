@@ -5,7 +5,7 @@ import { userData } from '../../../services/account-login/account-login.mock';
 import { AccountLoginService } from '../../../services/account-login';
 import { GlobalState } from '../../../services';
 import { mock, instance, when, anything, anyString } from 'ts-mockito';
-import { GlobalConfiguration } from '../../../global-configuration/global-configuration';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { Observable } from 'rxjs/Rx';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { TranslateModule } from '@ngx-translate/core';

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmailValidator } from '../../../validators/email.validator';
 import { matchOtherValidator } from '../../../validators/match-words.validator';
 import { PasswordValidator } from '../../../validators/password.validator';
-import { GlobalConfiguration } from '../../../global-configuration/global-configuration';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { SimpleRegistrationService } from './simple-registration.service';
 
 @Component({

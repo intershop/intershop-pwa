@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountLoginService } from '../../services/account-login';
 import { EmailValidator } from '../../validators/email.validator';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
-import { GlobalConfiguration } from '../../global-configuration/global-configuration';
+import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { UserDetail } from '../../services/account-login/account-login.model';
 
 

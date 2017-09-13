@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { GlobalState } from '../../../services';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { GlobalConfiguration } from '../../../global-configuration/global-configuration';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
 
 @Component({
   selector: 'is-login-status',
