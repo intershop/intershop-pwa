@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { userData } from '../../services/account-login/account-login.mock';
 import { SharedModule } from '../../modules/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { GlobalConfiguration } from '../../global-configuration/global-configuration';
+import { GlobalConfiguration } from '../../configurations/global.configuration';
 
 
 describe('AccountLogin Component', () => {

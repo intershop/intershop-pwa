@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { GlobalConfiguration } from '../../../global-configuration/global-configuration';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { Observable } from 'rxjs/Observable';
 import { SimpleRegistrationService } from './simple-registration.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

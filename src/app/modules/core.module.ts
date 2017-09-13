@@ -16,7 +16,7 @@ import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { translateFactory } from '../services/custom-translate-loader';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-import { GlobalConfiguration } from '../global-configuration/global-configuration';
+import { GlobalConfiguration } from '../configurations/global.configuration';
 
 
 @NgModule({
