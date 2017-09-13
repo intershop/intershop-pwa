@@ -5,7 +5,7 @@
     </li>
     <li *ngFor="let url of _urls; let last = last" class="breadcrumbs-list" [ngClass]="{'breadcrumbs-list-active' : last}">
       <a class="breadcrumbs-list-link" *ngIf="!last" (click)="navigateTo(url)" href="{{url}}">{{friendlyName(url)}}</a>
-      <span *ngIf="last" >{{friendlyName(url)}}</span>
+      <span *ngIf="last">{{friendlyName(url)}}</span>
       <span *ngIf="!last" class="breadcrumb-list-separator">/</span>
     </li>
   </ol>

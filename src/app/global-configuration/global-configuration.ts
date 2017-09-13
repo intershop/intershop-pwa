@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class GlobalConfiguration {
   private accountSettings = {
-    useSimpleAccount: false
+    useSimpleAccount: true,
+    userRegistrationLoginType: 'email'
   };
   /**
    * returns applicationSettings
