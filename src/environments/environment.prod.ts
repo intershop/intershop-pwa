@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   needMock: false,
-  rest_url: 'https://localhost:8444/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
-  base_url: 'https://localhost:8444',
+  rest_url: 'http://192.168.99.100:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
+  base_url: 'http://192.168.99.100:8081',
 
   locales: [
     { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },

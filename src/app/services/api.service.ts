@@ -15,8 +15,8 @@ export class ApiService {
    * @param  {Http} privatehttp
    */
   constructor(private httpClient: HttpClient,
-              private customErrorHandler: CustomErrorHandler,
-              private localize: LocalizeRouterService) {
+    private customErrorHandler: CustomErrorHandler,
+    private localize: LocalizeRouterService) {
   }
 
   /**
@@ -37,7 +37,7 @@ export class ApiService {
 
     const loc = this.localize.parser.currentLocale;
 
-    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency};/${path}`;
+    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
 
     return this.httpClient.get(url, { headers: headers })
       .catch(this.formatErrors.bind(this));
@@ -51,7 +51,7 @@ export class ApiService {
    */
   put(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.put(
-      `${environment.rest_url}${path}`,
+      `${environment.rest_url}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -64,7 +64,7 @@ export class ApiService {
    */
   post(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.post(
-      `${environment.rest_url}${path}`,
+      `${environment.rest_url}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -77,7 +77,7 @@ export class ApiService {
   delete(path): Observable<any> {
 
     return this.httpClient.delete(
-      `${environment.rest_url}${path}`
+      `${environment.rest_url}/${path}`
     ).catch(this.formatErrors);
 
   }
