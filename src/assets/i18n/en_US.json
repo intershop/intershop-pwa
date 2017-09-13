@@ -13,6 +13,8 @@
   "account.login.message": "To sign in to your account, please enter your email address and password.",
   "account.send_password.heading": "Forgot your password?",
   "account.signin.button.label": "Sign In",
+  "account.register.button.label": "Register",
+  "account.logout.button.label": "Logout",
   "account.new_user.heading": "New Users",
   "account.create.benefit.text": "When you create an account, you''ll gain access to a wide range of benefits:",
   "account.create.benefit1.text": "Easier Order Tracking",
@@ -45,5 +47,13 @@
   "account.register.password_confirmation.label":"Confirm Password",
   "search.searchbox.instructional_text":"Search for keyword, product ID or category...",
   "search.searchbox.button.title":"Start search.",
-  "common.button.navbartoggle.text":"Toggle navigation"
+  "common.button.navbartoggle.text":"Toggle navigation",
+
+  "ROUTES.home": "home",
+  "ROUTES.category": "category",
+  "ROUTES.compare": "compare",
+  "ROUTES.login": "login",
+  "ROUTES.register": "register",
+  "ROUTES.wishlist": "wishlist",
+  "ROUTES.error": "error"
 }

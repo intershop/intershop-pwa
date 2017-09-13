@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GlobalState } from '../../services';
+import { GlobalState } from '../../services/global.state';
 
 @Component({
   selector: 'is-compare-page',

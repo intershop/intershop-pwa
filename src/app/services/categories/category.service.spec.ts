@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { environment } from '../../../environments/environment';
 import { CategoryService } from './category.service';
-import { InstanceService } from '../../services/instance.service';
+import { InstanceService } from '../instance.service';
 import { CategoryMockService } from './category.service.mock';
 
 describe('Category Service', () => {

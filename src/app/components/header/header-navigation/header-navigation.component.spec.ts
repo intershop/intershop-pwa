@@ -5,85 +5,95 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CategoryService } from '../../../services/categories/category.service';
 import { CategoriesMock, SubCategoriesMock } from '../../../services/categories/categories.mock';
 import { CacheCustomService } from '../../../services/cache/cache-custom.service';
-import { async } from '@angular/core/testing';
 import { mock, instance, when, anything, verify } from 'ts-mockito';
 import { CategoryModel } from '../../../services/categories/category.model';
 import { SubcategoryModel } from '../../../services/categories/subcategory.model';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { GlobalState } from '../../../services/global.state';
 
 describe('Header Navigation Component', () => {
-    let fixture: ComponentFixture<HeaderNavigationComponent>;
-    let component: HeaderNavigationComponent;
-    let element: HTMLElement;
-    let cacheCustomServiceMock: CacheCustomService;
-    let categoryServiceMock: CategoryService;
+  let fixture: ComponentFixture<HeaderNavigationComponent>;
+  let component: HeaderNavigationComponent;
+  let element: HTMLElement;
+  let cacheCustomServiceMock: CacheCustomService;
+  let categoryServiceMock: CategoryService;
+  let localizeRouterServiceMock: LocalizeRouterService;
+  let globalStateMock: GlobalState;
 
-    beforeEach(async(() => {
-        cacheCustomServiceMock = mock(CacheCustomService);
-        when(cacheCustomServiceMock.cacheKeyExists(anything())).thenReturn(false);
-        when(cacheCustomServiceMock.getCachedData('Cameras')).thenReturn(SubCategoriesMock[0]);
+  beforeEach(() => {
+    cacheCustomServiceMock = mock(CacheCustomService);
+    when(cacheCustomServiceMock.cacheKeyExists(anything())).thenReturn(false);
+    when(cacheCustomServiceMock.getCachedData('Cameras')).thenReturn(SubCategoriesMock[0]);
 
-        categoryServiceMock = mock(CategoryService);
-        when(categoryServiceMock.getCategories()).thenReturn(Observable.of(CategoriesMock as CategoryModel));
-        when(categoryServiceMock.getSubCategories('Cameras')).thenReturn(Observable.of(SubCategoriesMock[0] as SubcategoryModel));
+    categoryServiceMock = mock(CategoryService);
+    when(categoryServiceMock.getCategories()).thenReturn(Observable.of(CategoriesMock as CategoryModel));
+    when(categoryServiceMock.getSubCategories('Cameras')).thenReturn(Observable.of(SubCategoriesMock[0] as SubcategoryModel));
 
-        TestBed.configureTestingModule({
-            imports: [RouterTestingModule],
-            declarations: [
-                HeaderNavigationComponent
-            ],
-            providers: [
-                { provide: CacheCustomService, useFactory: () => instance(cacheCustomServiceMock) },
-                { provide: CategoryService, useFactory: () => instance(categoryServiceMock) }
-            ]
-        })
-            .compileComponents();
-    }));
+    localizeRouterServiceMock = mock(LocalizeRouterService);
+    when(localizeRouterServiceMock.translateRoute('/category')).thenReturn('/category');
+    when(localizeRouterServiceMock.translateRoute('/home')).thenReturn('/home');
+    globalStateMock = mock(GlobalState);
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(HeaderNavigationComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-    });
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      declarations: [
+        HeaderNavigationComponent
+      ],
+      providers: [
+        { provide: CacheCustomService, useFactory: () => instance(cacheCustomServiceMock) },
+        { provide: CategoryService, useFactory: () => instance(categoryServiceMock) },
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
+        { provide: GlobalState, useFactory: () => instance(globalStateMock) }
+      ]
+    })
+      .compileComponents();
+  });
 
-    it('should be created', async(() => {
-        expect(component).toBeTruthy();
-        expect(element).toBeTruthy();
-    }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeaderNavigationComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
-    it('should initialized with categories when created', () => {
-        fixture.detectChanges();
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+  });
 
-        expect(component.categories).toBeTruthy();
-        expect(component.categories.elements.length).toBeGreaterThan(0);
-    });
+  it('should initialized with categories when created', () => {
+    fixture.detectChanges();
 
-    it('should render mocked category data on template', () => {
-        fixture.detectChanges();
+    expect(component.categories).toBeTruthy();
+    expect(component.categories.elements.length).toBeGreaterThan(0);
+  });
 
-        const categories = element.getElementsByClassName('dropdown');
-        expect(categories[0].children[0].textContent).toContain('Cameras');
-        expect(categories[1].children[0].textContent).toContain('Computers');
-        expect(categories[2].children[0].textContent).toContain('Home Entertainment');
-        expect(categories[3].children[0].textContent).toContain('Specials');
-    });
+  it('should render mocked category data on template', () => {
+    fixture.detectChanges();
 
-    it('should get Subcategories data from Category Service when no cache is available', () => {
-        component.getSubCategories('Cameras');
+    const categories = element.getElementsByClassName('dropdown');
+    expect(categories[0].children[0].textContent).toContain('Cameras');
+    expect(categories[1].children[0].textContent).toContain('Computers');
+    expect(categories[2].children[0].textContent).toContain('Home Entertainment');
+    expect(categories[3].children[0].textContent).toContain('Specials');
+  });
 
-        verify(categoryServiceMock.getSubCategories(anything())).once();
-        verify(cacheCustomServiceMock.getCachedData(anything())).never();
-        expect(component.subCategories).toBeTruthy();
-        expect(component.subCategories.subCategories.length).toBeGreaterThan(0);
-    });
+  it('should get Subcategories data from Category Service when no cache is available', () => {
+    component.getSubCategories('Cameras');
 
-    it('should get Subcategories data from CacheCustom Service if available', () => {
-        when(cacheCustomServiceMock.cacheKeyExists('Cameras')).thenReturn(true);
-        component.getSubCategories('Cameras');
+    verify(categoryServiceMock.getSubCategories(anything())).once();
+    verify(cacheCustomServiceMock.getCachedData(anything())).never();
+    expect(component.subCategories).toBeTruthy();
+    expect(component.subCategories.subCategories.length).toBeGreaterThan(0);
+  });
 
-        verify(categoryServiceMock.getSubCategories(anything())).never();
-        verify(cacheCustomServiceMock.getCachedData(anything())).once();
-        expect(component.subCategories).toBeTruthy();
-        expect(component.subCategories.subCategories.length).toBeGreaterThan(0);
-    });
+  it('should get Subcategories data from CacheCustom Service if available', () => {
+    when(cacheCustomServiceMock.cacheKeyExists('Cameras')).thenReturn(true);
+    component.getSubCategories('Cameras');
+
+    verify(categoryServiceMock.getSubCategories(anything())).once();
+    verify(cacheCustomServiceMock.getCachedData(anything())).never();
+    expect(component.subCategories).toBeTruthy();
+    expect(component.subCategories.subCategories.length).toBeGreaterThan(0);
+  });
 });
 
