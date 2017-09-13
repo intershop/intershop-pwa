@@ -41,8 +41,9 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateTo(url: string): void {
+  navigateTo(url: string) {
     this.router.navigateByUrl(url);
+    return false;
   }
 
   friendlyName(url: string): string {

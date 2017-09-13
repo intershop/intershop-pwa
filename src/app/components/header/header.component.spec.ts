@@ -1,7 +1,7 @@
 import { HeaderComponent } from './header.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { MockComponent } from '../../components/mock.component';
+import { MockComponent } from '../mock.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { GlobalState } from '../../services/global.state';
 import { WishListService } from '../../services/wishlists/wishlists.service';

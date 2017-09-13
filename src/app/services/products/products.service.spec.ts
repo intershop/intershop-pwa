@@ -3,7 +3,6 @@ import { ProductListService } from './products.service';
 import { InstanceService } from '../../services/instance.service';
 import { ProductListMockService } from '../../services/products/products.service.mock';
 
-
 describe('ProuctList Service', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({

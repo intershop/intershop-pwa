@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 import { TestBed, inject } from '@angular/core/testing';
 import { AccountLoginApiService } from './account-login.service.api';
-import { JwtService } from '../../services/jwt.service';
-import { ApiService } from '../../services/api.service';
-
+import { JwtService } from '../jwt.service';
+import { ApiService } from '../api.service';
 
 describe('AccountLoginApi Service', () => {
     let tokenExists;
