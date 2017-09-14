@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { Observable } from 'rxjs/Observable';
 import { SimpleRegistrationService } from './simple-registration.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 
@@ -38,6 +39,10 @@ describe('Simle Registration Component', () => {
       providers: [{
         provide: Router,
         useFactory: () => instance(routerMock)
+      },
+      {
+        provide: LocalizeRouterService,
+        useFactory: () => instance(mock(LocalizeRouterService))
       },
       {
         provide: GlobalConfiguration,
