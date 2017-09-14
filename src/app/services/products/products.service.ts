@@ -1,31 +1,22 @@
 import { Injectable } from '@angular/core';
-import { InstanceService } from 'app/services/instance.service';
-import { environment } from 'environments/environment';
-import { ProductListMockService } from './products.service.mock';
-import { ProductListApiService } from './products.service.api';
 import { Observable } from 'rxjs/Observable';
+import { ApiService } from '../';
+
 
 @Injectable()
 export class ProductListService {
-  productService: IProductListService;
+  public url = 'categories/Cameras-Camcorders/584/products/3953312';
 
   /**
-   * Decides the service to be used as per environment variable
-   * @param  {InstanceService} privateinstanceService
+   * @param  {ApiService} privateapiService
    */
-  constructor(private instanceService: InstanceService) {
-    this.productService = this.instanceService.getInstance((environment.needMock) ?
-      ProductListMockService : ProductListApiService);
-  }
+  constructor(private apiService: ApiService) { }
 
   /**
    * @returns List of products as observable
    */
   getProductList(): Observable<any> {
-    return this.productService.getProductList();
+    return this.apiService.get(this.url);
   }
 }
 
-export interface IProductListService {
-  getProductList(): Observable<any>;
-}
