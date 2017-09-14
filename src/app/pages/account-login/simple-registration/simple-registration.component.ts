@@ -7,6 +7,7 @@ import { PasswordValidator } from '../../../validators/password.validator';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { SimpleRegistrationService } from './simple-registration.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { UserDetail } from '../../../services/account-login/account-login.model';
 
 @Component({
   selector: 'is-simple-registration',
@@ -56,7 +57,7 @@ export class SimpleRegistrationComponent implements OnInit {
       });
       this.isDirty = true;
     } else {
-      this.simpleRegistrationService.createUser(userData).subscribe(response => {
+      this.simpleRegistrationService.createUser(userData as UserDetail).subscribe(response => {
         if (response) {
           this.router.navigate([this.localize.translateRoute('/home')]);
         }

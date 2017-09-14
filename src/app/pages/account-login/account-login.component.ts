@@ -60,7 +60,7 @@ export class AccountLoginComponent implements OnInit {
       this.isDirty = true;
     } else {
       this.loginFormSubmitted = true;
-      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail | string) => {
+      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
         if (typeof(userData) === 'object') {
           this.router.navigate(['home']);
         } else {
