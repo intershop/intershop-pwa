@@ -10,7 +10,6 @@ import { EncryptDecryptService } from 'app/services/cache/encrypt-decrypt.servic
 import { AccountLoginComponent } from './account-login.component';
 import { async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { userData } from 'app/services/account-login/account-login.mock';
 import { SharedModule } from 'app/modules/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -20,6 +19,70 @@ describe('AccountLogin Component', () => {
     let component: AccountLoginComponent;
     let element: HTMLElement;
     let debugEl: DebugElement;
+
+    const userData = {
+        'type': 'PrivateCustomer',
+        'customerNo': 'Patricia',
+        'preferredInvoiceToAddress': {
+            'type': 'Address',
+            'urn': 'urn:address:customer:vTwKAB2YqvEAAAFb8BMYJJBT:I2MKAB2YsVUAAAFb9RMYJJBT',
+            'id': 'I2MKAB2YsVUAAAFb9RMYJJBT',
+            'addressName': 'customeraddr-ABCDEFGPRMuMCscyXgSRVU',
+            'title': 'Ms.',
+            'firstName': 'Patricia',
+            'lastName': 'Miller',
+            'addressLine1': 'Potsdamer Str. 20',
+            'postalCode': '14483',
+            'phoneHome': '049364112677',
+            'country': 'Germany',
+            'countryCode': 'DE',
+            'city': 'Berlin',
+            'usage': [
+                true,
+                true
+            ],
+            'invoiceToAddress': true,
+            'shipFromAddress': false,
+            'serviceToAddress': false,
+            'installToAddress': false,
+            'shipToAddress': true,
+            'street': 'Potsdamer Str. 20'
+        },
+        'preferredShipToAddress': {
+            'type': 'Address',
+            'urn': 'urn:address:customer:vTwKAB2YqvEAAAFb8BMYJJBT:I2MKAB2YsVUAAAFb9RMYJJBT',
+            'id': '.uUKAB2YsVEAAAFb9RMYJJBT',
+            'addressName': 'customeraddr-YXEwLKSprCWPRMuMCscyXgSRVU',
+            'title': 'Ms.',
+            'firstName': 'Patricia',
+            'lastName': 'Miller',
+            'addressLine1': 'Berliner Str. 20',
+            'postalCode': '14482',
+            'phoneHome': '049364112677',
+            'country': 'Germany',
+            'countryCode': 'DE',
+            'city': 'Potsdam',
+            'usage': [
+                true,
+                true
+            ],
+            'invoiceToAddress': true,
+            'shipFromAddress': false,
+            'serviceToAddress': false,
+            'installToAddress': false,
+            'shipToAddress': true,
+            'street': 'Berliner Str. 20'
+        },
+        'title': '',
+        'firstName': 'Patricia',
+        'lastName': 'Miller',
+        'phoneHome': '',
+        'phoneBusiness': '',
+        'phoneMobile': '',
+        'fax': '',
+        'email': 'patricia@test.intershop.de',
+        'hasRole': true
+    };
     class MockAccountLoginService {
         singinUser(userDetails) {
             if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {

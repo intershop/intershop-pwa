@@ -1,93 +1,39 @@
-import { TestBed } from '@angular/core/testing';
-import { InstanceService } from 'app/services/instance.service';
-import { AccountLoginService } from './account-login.service';
-import { AccountLoginMockService } from './account-login.service.mock';
-import { async } from '@angular/core/testing';
-import { inject } from '@angular/core/testing';
-import { JwtService } from 'app/services/jwt.service';
-
-import { CacheCustomService, GlobalState } from 'app/services';
-import { environment } from 'environments/environment';
-
+import { mock, instance, when, anything, verify } from 'ts-mockito';
+import { TestBed, async } from '@angular/core/testing';
+import { AccountLoginService } from './index';
+import { JwtService, GlobalState, CacheCustomService, ApiService } from '../index';
+import { Observable } from 'rxjs/Rx';
 
 describe('AccountLogin Service', () => {
-    let tokenExists = true;
-    environment.needMock = true;
-    class JwtServiceStub {
-        saveToken(token) {
-            return token;
-        }
-        destroyToken(token) {
-            return token;
-        }
-        getToken() {
-            return tokenExists;
-        }
-    }
-
-    class CacheCustomServiceStub {
-        cacheKeyExists(key) {
-            return true;
-        }
-        getCachedData(key, isDecrypyted) {
-            return true;
-        }
-        storeDataToCache(data, key, shouldEncrypt) {
-            return true;
-        }
-        deleteCacheKey() {
-            return true;
-        }
-    }
-
-    class GlobalStateServiceStub {
-        notifyDataChanged(event, value) {
-            return true;
-        }
-        subscribe(event: string, callback: Function) {
-            callback();
-        }
-    }
+    let accountLoginService: AccountLoginService;
+    let jwtServiceMock = mock(JwtService);
+    let globalStateMock = mock(GlobalState);
+    let cacheCustomServiceMock = mock(CacheCustomService);
+    let apiServiceMock = mock(ApiService);
 
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [
-                AccountLoginService, AccountLoginMockService, InstanceService,
-                { provide: JwtService, useClass: JwtServiceStub },
-                { provide: CacheCustomService, useClass: CacheCustomServiceStub },
-                { provide: GlobalState, useClass: GlobalStateServiceStub }
-            ]
-        });
+        accountLoginService = new AccountLoginService(instance(jwtServiceMock), instance(globalStateMock), instance(cacheCustomServiceMock), instance(apiServiceMock));
     });
 
-    it('should login user', async(inject([AccountLoginService], (accountLoginService: AccountLoginService) => {
-        const userDetails = { userName: 'intershop@123.com', password: '123456' };
-        accountLoginService.singinUser(userDetails).subscribe((data) => {
-            expect(data).not.toBe(null);
-        });
-    })));
+    it('should login user' , () => {
+        const loginDetail = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
+        when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.of({authorized: true}));
+        let loggedInDetail;
+        accountLoginService.singinUser(loginDetail).subscribe( data => {
+            loggedInDetail = data;
+        })
+        verify(globalStateMock.notifyDataChanged(anything(), anything())).called();
+        expect(loggedInDetail).not.toBe({authorized: true});
+    });
 
-    it('should logout user', async(inject([AccountLoginService, JwtService], (accountLoginService: AccountLoginService, jwtService: JwtService) => {
-        spyOn(jwtService, 'destroyToken');
+    it('should confirm destroyToken method of jwt service is called', () => {
         accountLoginService.logout();
-        expect(jwtService.destroyToken).toHaveBeenCalled();
-    })));
+        verify(jwtServiceMock.destroyToken()).called();
+    });
 
-    it(`shouldn't login user as the credentials passed are incorrect`, async(inject([AccountLoginService], (accountLoginService: AccountLoginService) => {
-        const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
-        accountLoginService.singinUser(userDetails).subscribe((data) => {
-            expect(data).toBe(null);
-        });
-    })));
-
-    it('should call isAuthorized method when token exists in the memory', async(inject([AccountLoginService], (accountLoginService: AccountLoginService) => {
-        const result = accountLoginService.isAuthorized();
-        expect(result).toBe(true);
-    })));
-
-    it('should call isAuthorized method when no token exixts in memory', async(inject([AccountLoginService], (accountLoginService: AccountLoginService) => {
-        tokenExists = false;
-        const result = accountLoginService.isAuthorized();
-        expect(result).toBe(false);
-    })));
+    it('should confirm isAuthorized method of jwt service is called when isAuthorized method is called', () => {
+        when(jwtServiceMock.getToken()).thenReturn('Authorised');
+        const authorized = accountLoginService.isAuthorized();
+        expect(authorized).toBe(true);
+    });
 });

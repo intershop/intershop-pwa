@@ -1,0 +1,11 @@
+{
+    "mockAllRequest": true,
+    
+    "exlcudePath": [
+        "categories_"
+    ],
+
+    "includePath": [
+        "categories/computers_"
+    ]
+}

@@ -1,7 +1,6 @@
 import { LoginStatusComponent } from './login-status.component';
 import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { userData } from '../../../services/account-login/account-login.mock';
 import { AccountLoginService } from '../../../services/account-login';
 import { GlobalState } from '../../../services';
 import { mock, instance, when, anything, verify, capture } from 'ts-mockito';
@@ -14,6 +13,10 @@ describe('Login Status Component', () => {
     let routerMock: Router;
     let accountLoginServiceMock: AccountLoginService;
     let globalStateMock: GlobalState;
+    const userData = {
+        'firstName': 'Patricia',
+        'lastName': 'Miller'
+    };
 
     beforeEach(() => {
         routerMock = mock(Router);

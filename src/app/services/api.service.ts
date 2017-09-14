@@ -5,7 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { CustomErrorHandler } from './custom-error-handler';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
+import * as _ from 'lodash';
+import { MockApiService } from '../services/mock-api-service';
 @Injectable()
 export class ApiService {
 
@@ -14,7 +15,8 @@ export class ApiService {
    * @param  {Http} privatehttp
    */
   constructor(private httpClient: HttpClient,
-    private customErrorHandler: CustomErrorHandler) { }
+    private customErrorHandler: CustomErrorHandler,
+    private mockApiService: MockApiService) { }
 
   /**
    * format api errors and send errors to custom handler
@@ -30,8 +32,18 @@ export class ApiService {
    * @param  {URLSearchParams=newURLSearchParams(} params
    * @returns Observable
    */
-  get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders): Observable<any> {
+  get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders,
+    elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
+    const url = `${environment.rest_url}${path}`;
+
+    // TODO: Mocking may support link translation in future
+    if (environment.needMock) {
+      return this.mockApiService.get(path, headers, url);
+    }
+
     return this.httpClient.get(`${environment.rest_url}${path}`, { headers: headers })
+      .map(data => data = (elementsTranslation ? data['elements'] : data))
+      .flatMap((data) => this.getLinkedData(data, linkTranslation))
       .catch(this.formatErrors.bind(this));
   }
 
@@ -73,4 +85,41 @@ export class ApiService {
     ).catch(this.formatErrors);
 
   }
+
+  //TODO: need to improve  base url replacement logic
+  getSubLinkBaseUrl(): string {
+    return environment.rest_url.replace('inSPIRED-inTRONICS-Site/-/', '');
+  }
+
+  getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
+    if (!linkTranslation) {
+      return Observable.of(data);
+    } else {
+
+      let elements = (_.has(data, 'elements') ? data['elements'] : data);
+      return Observable.forkJoin(this.getLinkUri(elements)).map(results => {
+        elements = _.map(elements, (item, key) => {
+          return results[key];
+        });
+        return { ...data, elements };
+      });
+
+    }
+  }
+
+  
+  /**
+   * @param  {any[]} data
+   * @returns Observable
+   */
+  getLinkUri(data: any[]): Observable<Object>[] {
+    const uriList: Observable<Object>[] = [];
+    _.forEach(data, item => {
+      if (item.type === 'Link' && item.uri) {
+        uriList.push(this.httpClient.get(`${this.getSubLinkBaseUrl()}${item.uri}`));
+      }
+    });
+    return uriList;
+  }
+
 }
