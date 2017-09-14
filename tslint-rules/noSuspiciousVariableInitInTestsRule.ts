@@ -1,6 +1,5 @@
 import * as ts from 'typescript';
 import * as Lint from 'tslint';
-import { forEachToken, getNextToken, getChildOfKind } from 'tsutils';
 import { RuleHelpers } from './ruleHelpers';
 
 class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
@@ -68,7 +67,7 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
     if (letKeywordFound && assignmentFound) {
       this.addFailureAtNode(statement, 'Statement should be const statement or re-initialized in beforeEach');
     } else if (letKeywordFound) {
-      const varName = RuleHelpers.extractVariableNameInDeclaration(statement);
+      // const varName = RuleHelpers.extractVariableNameInDeclaration(statement);
       // console.log('interested in "' + varName + '"');
       this.interestingVariables.push(statement);
     }
