@@ -8,8 +8,8 @@
     "prestart": "ng build --prod --env=prod && ngc && webpack",
     "build": "ng build",
     "test": "ng test",
-    "prelint": "tsc -p tslint-rules || true",
-    "lint": "ng lint --type-check",
+    "prelint": "ng build --progress=false && ngc",
+    "lint": "ts-node node_modules/tslint/bin/tslint --project . 'src/app/**/*.ts' 'tslint-rules/**/*.ts' -e 'node_modules/**' --type-check --format stylish",
     "e2e": "ng e2e"
   },
   "private": true,
