@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +6,7 @@ import { CustomErrorHandler } from './custom-error-handler';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CacheCustomService } from './cache/cache-custom.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable()
 export class MockApiService {
@@ -13,9 +14,12 @@ export class MockApiService {
   configSettings: any;
   constructor(private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
-    private cacheCustomService: CacheCustomService
+    private cacheCustomService: CacheCustomService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.getConfig();
+    if (isPlatformBrowser(this.platformId)) {
+      this.getConfig();
+    }
   }
 
   /**
