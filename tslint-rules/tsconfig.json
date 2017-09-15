@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": ".",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "target": "es5",
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "es6",
+      "dom",
+      "scripthost"
+    ]
+  },
+  "files": [
+    "ruleHelpers.ts",
+    "noSuspiciousVariableInitInTestsRule.ts",
+    "meaningfulNamingInTestsRule.ts",
+    "noCommentedOutTestsRule.ts",
+    "preferMocksInsteadOfStubsInTestsRule.ts"
+  ]
+}

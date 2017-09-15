@@ -4,61 +4,61 @@ import { mock, instance, when, anything } from 'ts-mockito';
 import { Observable } from 'rxjs/Rx';
 
 describe('Category Service', () => {
-    let apiService: ApiService = mock(ApiService);
+    const apiService: ApiService = mock(ApiService);
     let categoryService: CategoryService;
 
     beforeEach(() => {
         categoryService = new CategoryService(instance(apiService));
-    })
+    });
 
     it('should verify that getCategories method is returning the Categories', () => {
         const categoryData = {
-            "elements": [
+            'elements': [
                 {
-                    "name": "Mock Cameras",
-                    "type": "Category",
-                    "hasOnlineProducts": false,
-                    "hasOnlineSubCategories": true,
-                    "online": "1",
-                    "description": "The cameras and camcorders products catalog.",
-                    "id": "Cameras-Camcorders",
-                    "uri": "inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Cameras-Camcorders",
+                    'name': 'Mock Cameras',
+                    'type': 'Category',
+                    'hasOnlineProducts': false,
+                    'hasOnlineSubCategories': true,
+                    'online': '1',
+                    'description': 'The cameras and camcorders products catalog.',
+                    'id': 'Cameras-Camcorders',
+                    'uri': 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Cameras-Camcorders',
                 },
                 {
-                    "name": "Fake Computers",
-                    "type": "Category",
-                    "hasOnlineProducts": false,
-                    "hasOnlineSubCategories": true,
-                    "online": "1",
-                    "description": "The Computers products and services catalog.",
-                    "id": "Computers",
-                    "uri": "inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Computers",
+                    'name': 'Fake Computers',
+                    'type': 'Category',
+                    'hasOnlineProducts': false,
+                    'hasOnlineSubCategories': true,
+                    'online': '1',
+                    'description': 'The Computers products and services catalog.',
+                    'id': 'Computers',
+                    'uri': 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Computers',
 
                 },
                 {
-                    "name": "Home Entertainment",
-                    "type": "Category",
-                    "hasOnlineProducts": false,
-                    "hasOnlineSubCategories": true,
-                    "online": "1",
-                    "description": "The TV & Home Entertainment products and services catalog.",
-                    "id": "Home-Entertainment",
-                    "uri": "inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Home-Entertainment",
+                    'name': 'Home Entertainment',
+                    'type': 'Category',
+                    'hasOnlineProducts': false,
+                    'hasOnlineSubCategories': true,
+                    'online': '1',
+                    'description': 'The TV & Home Entertainment products and services catalog.',
+                    'id': 'Home-Entertainment',
+                    'uri': 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Home-Entertainment',
 
                 },
                 {
-                    "name": "Specials",
-                    "type": "Category",
-                    "hasOnlineProducts": false,
-                    "hasOnlineSubCategories": true,
-                    "online": "1",
-                    "description": "Special products and services.",
-                    "id": "Specials",
-                    "uri": "inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Specials",
+                    'name': 'Specials',
+                    'type': 'Category',
+                    'hasOnlineProducts': false,
+                    'hasOnlineSubCategories': true,
+                    'online': '1',
+                    'description': 'Special products and services.',
+                    'id': 'Specials',
+                    'uri': 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD;/categories/Specials',
 
                 }
             ],
-            "type": "Categories"
+            'type': 'Categories'
         };
         when(apiService.get(anything())).thenReturn(Observable.of(categoryData));
         let categories;
@@ -70,13 +70,13 @@ describe('Category Service', () => {
 
     it('should verify that getSubCategories method is returning the Subcategories', () => {
         const subCategoryData = {
-            "elements": [],
-            "type": "Categories"
+            'elements': [],
+            'type': 'Categories'
         };
         when(apiService.get('categories/Cameras-Camcorders')).thenReturn(Observable.of(subCategoryData));
 
         let subCategories;
-        categoryService.getSubCategories('Cameras-Camcorders').subscribe( (data) => {
+        categoryService.getSubCategories('Cameras-Camcorders').subscribe((data) => {
             subCategories = data;
         });
 

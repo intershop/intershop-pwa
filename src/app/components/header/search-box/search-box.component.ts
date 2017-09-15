@@ -24,17 +24,21 @@ export class SearchBoxComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  doSearch() {
     this.searchBoxService.search(this.searchTerm$)
-      .subscribe((searchResults: SearchBoxModel) => {
+    .subscribe((searchResults: SearchBoxModel) => {
 
-        if (searchResults && searchResults.elements && searchResults.elements.length > 0) {
-          this.results = searchResults.elements;
-          this.isHide = false;
-        } else {
-          this.results = [];
-        }
-      });
+      if (searchResults && searchResults.elements && searchResults.elements.length > 0) {
+        this.results = searchResults.elements;
+        this.isHide = false;
+      } else {
+        this.results = [];
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.doSearch();
   }
 }
 

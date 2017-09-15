@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../';
 
-
 @Injectable()
 export class ProductListService {
   public url = 'categories/Cameras-Camcorders/584/products/3953312';
@@ -19,4 +18,3 @@ export class ProductListService {
     return this.apiService.get(this.url);
   }
 }
-

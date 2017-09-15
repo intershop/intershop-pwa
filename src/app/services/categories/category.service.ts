@@ -21,8 +21,8 @@ export class CategoryService {
     }
 
     /**
-   * @returns List of categories as an Observable
-   */
+     * @returns List of categories as an Observable
+     */
     getCategories(): Observable<CategoryModel> {
         return this.apiService.get('categories');
     }

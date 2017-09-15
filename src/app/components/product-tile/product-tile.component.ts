@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { GlobalState } from 'app/services';
+import { GlobalState } from '../../services';
 import { ProductTileModel } from './product-tile.model';
-import { environment } from 'environments/environment';
-import { JwtService } from 'app/services';
+import { JwtService } from '../../services';
 import { Router } from '@angular/router';
-import { WishListService } from 'app/services/wishlists/wishlists.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 import * as _ from 'lodash';
-import { DisableIconDirective } from 'app/directives/disable-icon.directive';
+import { DisableIconDirective } from '../../directives/disable-icon.directive';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-product-tile',
@@ -24,64 +24,65 @@ export class ProductTileComponent implements OnInit {
   @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
 
   /**
-   * @param  {DataEmitterService} private_dataEmitterService
-   * @param  {Router} privaterouter
-   * @param  {JwtService} privatejwtService
-   * @param  {WishListService} privatewishListService
-   * @param  {GlobalState} privateglobalState
+   *
+   * @param {Router} router
+   * @param {JwtService} jwtService
+   * @param {WishListService} wishListService
+   * @param {GlobalState} globalState
+   * @param {LocalizeRouterService} localize
    */
-
   constructor(
     private router: Router,
     private jwtService: JwtService,
     private wishListService: WishListService,
-    private globalState: GlobalState) {
+    private globalState: GlobalState,
+    private localize: LocalizeRouterService) {
   }
 
   ngOnInit() {
-    if (!environment.needMock) {
-      this.mockData['enableExpressShop'] = true;
-      this.mockData['richSnippetsEnabled'] = true;
-      this.mockData['ShowProductRating'] = true;
-      this.mockData['showAddToCart'] = true;
-      this.mockData['totalRatingCount'] = 2;
-      this.mockData['simpleRatingView'] = true;
-      this.mockData['averagRating'] = 2;
-      this.mockData['isRetailSet'] = true;
-      this.mockData['displayType'] = 'glyphicon';
-      this.mockData['applicablePromotions'] = [
-        {
-          'disableMessages': true,
-          'isUnderABTest': true,
-          'title': 'Promotion Test Title',
-          'icon': 'test',
-          'externalDetailsUrl': 'www.testUrl.com'
-        },
-        {
-          'disableMessages': true,
-          'isUnderABTest': true,
-          'title': 'Promotion Test Title',
-          'icon': 'test',
-          'externalDetailsUrl': 'www.testUrl.com'
-        }
-      ];
-      this.mockData['name_override'] = 'Test_override';
-      this.mockData['mockListView'] = {
-        'displayType': 'test',
-        'isRetailSet': false
-      };
-      this.mockData['showInformationalPrice'] = true;
-      this.mockData['isEndOfLife'] = true;
-      this.mockData['id'] = '1';
-      this.mockData['averageRatingClass'] = '';
-      this.mockData['isProductMaster'] = true;
-      this.mockData.listPrice['range'] = {
-        'minimumPrice': 110,
-        'maximumPrice': 380
-      };
-      this.mockData.images[2].effectiveUrl = 'http://10.131.60.148:9091/' + this.mockData.images[2].effectiveUrl;
-      this.mockData.images[0].effectiveUrl = 'http://10.131.60.148:9091/' + this.mockData.images[0].effectiveUrl;
-    }
+
+    this.mockData['enableExpressShop'] = true;
+    this.mockData['richSnippetsEnabled'] = true;
+    this.mockData['ShowProductRating'] = true;
+    this.mockData['showAddToCart'] = true;
+    this.mockData['totalRatingCount'] = 2;
+    this.mockData['simpleRatingView'] = true;
+    this.mockData['averagRating'] = 2;
+    this.mockData['isRetailSet'] = true;
+    this.mockData['displayType'] = 'glyphicon';
+    this.mockData['applicablePromotions'] = [
+      {
+        'disableMessages': true,
+        'isUnderABTest': true,
+        'title': 'Promotion Test Title',
+        'icon': 'test',
+        'externalDetailsUrl': 'www.testUrl.com'
+      },
+      {
+        'disableMessages': true,
+        'isUnderABTest': true,
+        'title': 'Promotion Test Title',
+        'icon': 'test',
+        'externalDetailsUrl': 'www.testUrl.com'
+      }
+    ];
+    this.mockData['name_override'] = 'Test_override';
+    this.mockData['mockListView'] = {
+      'displayType': 'test',
+      'isRetailSet': false
+    };
+    this.mockData['showInformationalPrice'] = true;
+    this.mockData['isEndOfLife'] = true;
+    this.mockData['id'] = '1';
+    this.mockData['averageRatingClass'] = '';
+    this.mockData['isProductMaster'] = true;
+    this.mockData.listPrice['range'] = {
+      'minimumPrice': 110,
+      'maximumPrice': 380
+    };
+    this.mockData.images[2].effectiveUrl = 'http://localhost:4200/' + this.mockData.images[2].effectiveUrl;
+    this.mockData.images[0].effectiveUrl = 'http://localhost:4200/' + this.mockData.images[0].effectiveUrl;
+
     this.calculatePriceParameters();
     this.calculateAverageRating();
 
@@ -184,7 +185,7 @@ export class ProductTileComponent implements OnInit {
    */
   addToWishList(itemToAdd): void {
     if (!this.jwtService.getToken()) {
-      this.router.navigate(['/login']);
+      this.router.navigate([this.localize.translateRoute('/login')]);
     } else {
       this.wishListService.getWishList().subscribe(wishlistData => wishlistData);
     }

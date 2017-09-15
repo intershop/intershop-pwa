@@ -1,5 +1,5 @@
 {
-    "name": "Canon LEGRIA HF R14 Mock",
+    "name": "Canon LEGRIA HF R16",
     "type": "Product",
     "attributes": [
         {
@@ -43,11 +43,6 @@
             "value": "10 s"
         },
         {
-            "name": "Maximum video resolution",
-            "type": "String",
-            "value": "1920 x 1080 pixels"
-        },
-        {
             "name": "Camera shutter speed",
             "type": "String",
             "value": "1/2 - 1/20000 s"
@@ -56,6 +51,11 @@
             "name": "Shooting modes",
             "type": "String",
             "value": "FXP, XP+, SP, LP"
+        },
+        {
+            "name": "Maximum video resolution",
+            "type": "String",
+            "value": "1920 x 1080 pixels"
         },
         {
             "name": "Depth",
@@ -77,14 +77,14 @@
             "value": "0"
         },
         {
-            "name": "S-Video in",
-            "type": "String",
-            "value": "0"
-        },
-        {
             "name": "Manual focus",
             "type": "String",
             "value": "Y"
+        },
+        {
+            "name": "S-Video in",
+            "type": "String",
+            "value": "0"
         },
         {
             "name": "USB 2.0 ports quantity",
@@ -179,9 +179,9 @@
             "value": "N"
         },
         {
-            "name": "Component video (YPbPr/YCbCr) out",
+            "name": "Night mode",
             "type": "String",
-            "value": "1"
+            "value": "Y"
         },
         {
             "name": "HDMI ports quantity",
@@ -189,9 +189,9 @@
             "value": "1"
         },
         {
-            "name": "Night mode",
+            "name": "Component video (YPbPr/YCbCr) out",
             "type": "String",
-            "value": "Y"
+            "value": "1"
         },
         {
             "name": "Audio system",
@@ -214,19 +214,14 @@
             "value": "8 GB"
         },
         {
-            "name": "Focus",
-            "type": "String",
-            "value": "TTL"
-        },
-        {
             "name": "Audio output",
             "type": "String",
             "value": "1"
         },
         {
-            "name": "Total megapixels",
+            "name": "Focus",
             "type": "String",
-            "value": "2.39 MP"
+            "value": "TTL"
         },
         {
             "name": "Interface",
@@ -234,9 +229,9 @@
             "value": "USB 2.0"
         },
         {
-            "name": "Display",
+            "name": "Total megapixels",
             "type": "String",
-            "value": "LCD"
+            "value": "2.39 MP"
         },
         {
             "name": "Camcorder tape type",
@@ -244,14 +239,19 @@
             "value": "Flash memory"
         },
         {
+            "name": "Colour_of_product",
+            "type": "String",
+            "value": "Red"
+        },
+        {
             "name": "Image stabilizer",
             "type": "String",
             "value": "Y"
         },
         {
-            "name": "Colour_of_product",
+            "name": "Display",
             "type": "String",
-            "value": "Red"
+            "value": "LCD"
         }
     ],
     "sku": "3953312",
@@ -288,18 +288,18 @@
             "shippingTimeMax": 7
         },
         {
-            "name": "5-Business Day",
-            "type": "ShippingMethod",
-            "id": "STD_5DAY",
-            "shippingTimeMin": 2,
-            "shippingTimeMax": 5
-        },
-        {
             "name": "2-Business Day",
             "type": "ShippingMethod",
             "id": "STD_2DAY",
             "shippingTimeMin": 1,
             "shippingTimeMax": 2
+        },
+        {
+            "name": "5-Business Day",
+            "type": "ShippingMethod",
+            "id": "STD_5DAY",
+            "shippingTimeMin": 2,
+            "shippingTimeMax": 5
         },
         {
             "name": "Saturday Delivery",
@@ -353,7 +353,7 @@
         {
             "name": "front S",
             "type": "Image",
-            "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/S/3953312-9812.jpg",
+            "effectiveUrl":"/assets/product_img/a.jpg",
             "viewID": "front",
             "typeID": "S",
             "imageActualHeight": 110,
@@ -363,7 +363,7 @@
         {
             "name": "front L",
             "type": "Image",
-            "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/L/3953312-9812.jpg",
+            "effectiveUrl": "/assets/product_img/a.jpg",
             "viewID": "front",
             "typeID": "L",
             "imageActualHeight": 500,
@@ -373,7 +373,7 @@
         {
             "name": "front M",
             "type": "Image",
-            "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/3953312-9812.jpg",
+            "effectiveUrl": "/assets/product_img/a.jpg",
             "viewID": "front",
             "typeID": "M",
             "imageActualHeight": 270,

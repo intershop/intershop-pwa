@@ -1,5 +1,5 @@
 import { HomePageComponent } from './home-page.component';
 
 export const HomePageRoute = [
-  { path: '', component: HomePageComponent }
+  { path: 'home', component: HomePageComponent, data: { className: 'homepage' } }
 ];

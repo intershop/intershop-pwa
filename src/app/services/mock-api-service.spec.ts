@@ -1,5 +1,5 @@
 import { MockApiService, CustomErrorHandler, CacheCustomService } from './';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { instance, mock, when, anything } from 'ts-mockito/lib/ts-mockito';
 import { Observable } from 'rxjs/Rx';
 
@@ -15,10 +15,11 @@ describe('MockApiService', () => {
         customErrorHandler = mock(CustomErrorHandler);
         cacheCustomService = mock(CacheCustomService);
         const configSettings = {
-            exlcudePath: ["categories12"],
-            includePath: ["categories/computers12"],
+            exlcudePath: ['categories12'],
+            includePath: ['categories/computers12'],
             mockAllRequest: true
-        }
+        };
+
         when(cacheCustomService.cacheKeyExists(anything())).thenReturn(true);
         when(cacheCustomService.getCachedData(anything())).thenReturn(configSettings);
 
@@ -34,5 +35,4 @@ describe('MockApiService', () => {
         });
         expect(suggestionResults).toBe(suggestionData);
     });
-
 });
