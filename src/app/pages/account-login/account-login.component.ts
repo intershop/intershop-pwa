@@ -6,7 +6,7 @@ import { EmailValidator } from '../../validators/email.validator';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { UserDetail } from '../../services/account-login/account-login.model';
-
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   templateUrl: './account-login.component.html'
@@ -29,7 +29,7 @@ export class AccountLoginComponent implements OnInit {
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
     private router: Router, private cacheService: CacheCustomService,
-    private globalConfiguration: GlobalConfiguration) { }
+    private globalConfiguration: GlobalConfiguration, private localizeRouterService: LocalizeRouterService) { }
 
   /**
      * Creates Login Form
@@ -62,7 +62,7 @@ export class AccountLoginComponent implements OnInit {
       this.loginFormSubmitted = true;
       this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail | string) => {
         if (typeof(userData) === 'object') {
-          this.router.navigate(['home']);
+          this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
         } else {
           this.loginForm.get('password').reset();
           this.errorUser = userData;
