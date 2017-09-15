@@ -17,7 +17,7 @@ import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { translateFactory } from '../services/custom-translate-loader';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-
+import { GlobalConfiguration } from '../configurations/global.configuration';
 
 
 @NgModule({
@@ -47,11 +47,12 @@ import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
     JwtService,
     CacheCustomService,
     CacheService,
-   { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
+    { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
     GlobalState,
     CrossTabCommunicator,
-    MockApiService
+    MockApiService,
+    GlobalConfiguration
   ],
   exports: [
     FooterModule,

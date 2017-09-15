@@ -3,13 +3,13 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import { CustomErrorHandler } from './custom-error-handler';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CacheCustomService } from './cache/cache-custom.service';
 
 @Injectable()
 export class MockApiService {
-  mockDataRootPath: string = '/assets/mock-data';
+  mockDataRootPath = '/assets/mock-data';
   configSettings: any;
   constructor(private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
@@ -17,7 +17,7 @@ export class MockApiService {
   ) {
     this.getConfig();
   }
-  
+
   /**
    * @param  {string} path
    * @param  {HttpHeaders} headers
@@ -25,14 +25,13 @@ export class MockApiService {
    * @returns Observable
    */
   get(path: string, headers: HttpHeaders, apiUrl: string): Observable<any> {
-    let response: Observable<any>;
     if (this.isExcluded(path)) {
       // get data from api server if path is excluded
       return this.httpClient.get(apiUrl, { headers: headers })
         .catch(this.formatErrors.bind(this));
     }
 
-    let mockDataUrl = `${this.mockDataRootPath}/${this.ParsePath(path)}/get-data.json`;
+    const mockDataUrl = `${this.mockDataRootPath}/${this.ParsePath(path)}/get-data.json`;
 
     // this code block get executed when there is no
     return this.httpClient.get(mockDataUrl, { headers: headers }).map(data => {
@@ -57,11 +56,11 @@ export class MockApiService {
   private getConfig() {
     const mockConfigDataKey = 'mockConfigData';
     if (this.cacheCustomService.cacheKeyExists(mockConfigDataKey)) {
-      this.configSettings = this.cacheCustomService.getCachedData(mockConfigDataKey)
+      this.configSettings = this.cacheCustomService.getCachedData(mockConfigDataKey);
       return;
     }
 
-    let configJason = `${this.mockDataRootPath}/config.json`;
+    const configJason = `${this.mockDataRootPath}/config.json`;
     this.httpClient.get(configJason).subscribe(data => {
       this.configSettings = data;
       this.cacheCustomService.storeDataToCache(data, mockConfigDataKey);
@@ -74,15 +73,15 @@ export class MockApiService {
     }
 
     if (this.configSettings.mockAllRequest) {
-      return this.matchPath(path, this.configSettings.exlcudePath)
+      return this.matchPath(path, this.configSettings.exlcudePath);
     } else {
-      return !this.matchPath(path, this.configSettings.includePath)
+      return !this.matchPath(path, this.configSettings.includePath);
     }
   }
 
 
   private matchPath(requestedPath: string, pathArray: any) {
-    for (let configPath of pathArray) {
+    for (const configPath of pathArray) {
       if (requestedPath.endsWith(configPath)) {
         return true;
       }

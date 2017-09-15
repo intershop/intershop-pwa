@@ -7,6 +7,8 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as _ from 'lodash';
 import { MockApiService } from '../services/mock-api-service';
+import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
+
 @Injectable()
 export class ApiService {
 
@@ -16,7 +18,9 @@ export class ApiService {
    */
   constructor(private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
-    private mockApiService: MockApiService) { }
+    private mockApiService: MockApiService,
+    private localize: LocalizeRouterService) {
+  }
 
   /**
    * format api errors and send errors to custom handler
@@ -32,16 +36,17 @@ export class ApiService {
    * @param  {URLSearchParams=newURLSearchParams(} params
    * @returns Observable
    */
+
   get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
-    const url = `${environment.rest_url}${path}`;
+    const loc = this.localize.parser.currentLocale;
+    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
 
     // TODO: Mocking may support link translation in future
     if (environment.needMock) {
       return this.mockApiService.get(path, headers, url);
     }
-
-    return this.httpClient.get(`${environment.rest_url}${path}`, { headers: headers })
+    return this.httpClient.get(url, { headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
       .flatMap((data) => this.getLinkedData(data, linkTranslation))
       .catch(this.formatErrors.bind(this));
@@ -55,7 +60,7 @@ export class ApiService {
    */
   put(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.put(
-      `${environment.rest_url}${path}`,
+      `${environment.rest_url}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -68,7 +73,7 @@ export class ApiService {
    */
   post(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.post(
-      `${environment.rest_url}${path}`,
+      `${environment.rest_url}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -81,12 +86,12 @@ export class ApiService {
   delete(path): Observable<any> {
 
     return this.httpClient.delete(
-      `${environment.rest_url}${path}`
+      `${environment.rest_url}/${path}`
     ).catch(this.formatErrors);
 
   }
 
-  //TODO: need to improve  base url replacement logic
+  // TODO: need to improve  base url replacement logic
   getSubLinkBaseUrl(): string {
     return environment.rest_url.replace('inSPIRED-inTRONICS-Site/-/', '');
   }
@@ -107,7 +112,7 @@ export class ApiService {
     }
   }
 
-  
+
   /**
    * @param  {any[]} data
    * @returns Observable

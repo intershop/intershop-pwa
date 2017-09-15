@@ -3,10 +3,8 @@ import { FilterListComponent } from './filter-list.component';
 import { FilterListService } from './filter-list-service/index';
 import { CacheCustomService } from '../../services/index';
 import { instance, mock, when, anything } from 'ts-mockito/lib/ts-mockito';
-import { DebugElement } from '@angular/core/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { Observable } from 'rxjs/Rx';
-
 
 describe('FilterList Component', () => {
   let fixture: ComponentFixture<FilterListComponent>;
@@ -103,13 +101,12 @@ describe('FilterList Component', () => {
     ],
     'type': 'ResourceCollection',
     'name': 'filters'
-  }
+  };
 
   beforeEach(async(() => {
     cacheCustomService = mock(CacheCustomService);
     filterListService = mock(FilterListService);
     when(filterListService.getSideFilters()).thenReturn(Observable.of(filterData));
-
     TestBed.configureTestingModule({
       declarations: [FilterListComponent],
       imports: [
@@ -135,6 +132,7 @@ describe('FilterList Component', () => {
     fixture = TestBed.createComponent(FilterListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    fixture.detectChanges();
   });
 
   it('should create the component', () => {
@@ -151,10 +149,7 @@ describe('FilterList Component', () => {
   it('should call the ngOnInit and get data from filterListService', () => {
     when(cacheCustomService.cacheKeyExists(anything())).thenReturn(false);
     when(filterListService.getSideFilters()).thenReturn(Observable.of(filterData));
-
     fixture.detectChanges();
     expect(component.filterListData).toBe(filterData);
   });
-
-
 });

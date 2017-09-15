@@ -1,5 +1,5 @@
 import { Directive, Input, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { GlobalState } from 'app/services';
+import { GlobalState } from '../services/global.state';
 import * as _ from 'lodash';
 
 @Directive({

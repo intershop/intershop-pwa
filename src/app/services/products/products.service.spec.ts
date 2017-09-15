@@ -2,11 +2,10 @@ import { ProductListService } from './products.service';
 import { ApiService } from '../';
 import { mock, when, instance } from 'ts-mockito';
 import { Observable } from 'rxjs/Rx';
-import { ProductTileModel } from "../../components/product-tile/product-tile.model";
 
 describe('ProuctList Service', () => {
     let productListService: ProductListService;
-    let apiService: ApiService = mock(ApiService);
+    const apiService: ApiService = mock(ApiService);
     beforeEach(() => {
         productListService = new ProductListService(instance(apiService));
     });

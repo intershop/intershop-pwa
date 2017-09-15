@@ -8,10 +8,13 @@ import { PageModule } from './pages/pages.module';
 import { CoreModule } from './modules/core.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule.withServerTransition({
@@ -25,6 +28,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    BreadcrumbService
   ],
   bootstrap: [AppComponent]
 })

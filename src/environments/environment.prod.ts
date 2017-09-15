@@ -1,7 +1,13 @@
 export const environment = {
   production: true,
   needMock: false,
-  rest_url: 'http://10.131.60.148:9091/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/',
-  base_url: 'http://10.131.60.148:9091'
-};
+  rest_url: 'http://192.168.99.100:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
+  base_url: 'http://192.168.99.100:8081',
 
+  locales: [
+    { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },
+    { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
+  ],
+  prefix: 'ROUTES',
+  pattern: '{LANG}/{CURRENCY}'
+};

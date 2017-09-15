@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComparePageComponent } from './compare-page.component';
-import { GlobalState } from 'app/services';
+import { GlobalState } from '../../services/global.state';
 
 describe('ComparePageComponent', () => {
   let component: ComparePageComponent;

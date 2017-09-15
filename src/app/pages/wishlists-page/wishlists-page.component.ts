@@ -8,7 +8,7 @@ import { GlobalState } from '../../services';
 
 export class WishListPageComponent implements OnInit {
 
-  private wishList: WishListItem[] = [];
+  wishList: WishListItem[] = [];
   /**
    * Constructor
    */

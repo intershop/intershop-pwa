@@ -1,8 +1,12 @@
 <div class="breadcrumbs row">
   <ol class="breadcrumbs-list">
-    <li class="breadcrumbs-list breadcrumbs-list-home"><a routerLink="" class="breadcrumbs-list-link">Home</a></li>
-    <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumbs-list">
-      <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{breadcrumb.label}}</a>
+    <li><a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/">Home</a>
+      <span class="breadcrumb-list-separator">/</span>
+    </li>
+    <li *ngFor="let url of _urls; let last = last" class="breadcrumbs-list" [ngClass]="{'breadcrumbs-list-active' : last}">
+      <a class="breadcrumbs-list-link" *ngIf="!last" (click)="navigateTo(url)" href="{{url}}">{{friendlyName(url)}}</a>
+      <span *ngIf="last">{{friendlyName(url)}}</span>
+      <span *ngIf="!last" class="breadcrumb-list-separator">/</span>
     </li>
   </ol>
 </div>
