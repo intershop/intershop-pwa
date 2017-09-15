@@ -9,7 +9,6 @@ describe('MockApiService', () => {
     let customErrorHandler: CustomErrorHandler;
     let cacheCustomService: CacheCustomService;
 
-
     beforeEach(() => {
         httpClient = mock(HttpClient);
         customErrorHandler = mock(CustomErrorHandler);
@@ -23,7 +22,7 @@ describe('MockApiService', () => {
         when(cacheCustomService.cacheKeyExists(anything())).thenReturn(true);
         when(cacheCustomService.getCachedData(anything())).thenReturn(configSettings);
 
-        mockApiService = new MockApiService(instance(httpClient), instance(customErrorHandler), instance(cacheCustomService));
+        mockApiService = new MockApiService(instance(httpClient), instance(customErrorHandler), instance(cacheCustomService), null);
     });
 
     it('should return data returened by http', () => {
