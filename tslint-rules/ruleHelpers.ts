@@ -1,5 +1,4 @@
 import * as ts from 'typescript';
-import * as Lint from 'tslint';
 import { getNextToken } from 'tsutils';
 
 export class RuleHelpers {
