@@ -64,11 +64,6 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
       this.productListService.getProductList().subscribe((data: any) => {// type should be ProductTileModel[]
         this.allData = data;
         this.thumbnails.push(this.allData);
-        /* if (environment.needMock) {
-          this.thumbnails = this.allData[0]['Cameras'];
-        } else {
-          this.thumbnails.push(this.allData);
-        } */
         this.totalItems.emit(this.thumbnails.length);
         this.customService.storeDataToCache(this.thumbnails, this.thumbnailKey, true);
       });
