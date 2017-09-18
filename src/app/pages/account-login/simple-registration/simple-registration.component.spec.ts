@@ -8,10 +8,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { Observable } from 'rxjs/Observable';
 import { SimpleRegistrationService } from './simple-registration.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { userData } from '../../../services/account-login/account-login.mock';
 
 
-describe('Simle Registration Component', () => {
+describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
   let element: HTMLElement;
@@ -27,7 +29,7 @@ describe('Simle Registration Component', () => {
     globalConfigurationMock = mock(GlobalConfiguration);
     simpleRegistrationServiceMock = mock(SimpleRegistrationService);
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(accountSettings));
-    when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of('Data Saved'));
+    when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of(userData));
     TestBed.configureTestingModule({
       declarations: [SimpleRegistrationComponent],
       imports: [
@@ -38,6 +40,10 @@ describe('Simle Registration Component', () => {
       providers: [{
         provide: Router,
         useFactory: () => instance(routerMock)
+      },
+      {
+        provide: LocalizeRouterService,
+        useFactory: () => instance(mock(LocalizeRouterService))
       },
       {
         provide: GlobalConfiguration,
