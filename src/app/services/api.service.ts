@@ -6,7 +6,7 @@ import { CustomErrorHandler } from './custom-error-handler';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as _ from 'lodash';
-import { MockApiService } from '../services/mock-api-service';
+import { MockApiService } from '../services/mock-api.service';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 @Injectable()
@@ -40,12 +40,13 @@ export class ApiService {
   get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
     const loc = this.localize.parser.currentLocale;
-    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
+    let url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
 
     // TODO: Mocking may support link translation in future
-    if (environment.needMock) {
-      return this.mockApiService.get(path, headers, url);
+    if (environment.needMock && this.mockApiService.pathHasToBeMocked(path)) {
+      url = this.mockApiService.getMockPath(path);
     }
+
     return this.httpClient.get(url, { headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
       .flatMap((data) => this.getLinkedData(data, linkTranslation))
@@ -121,7 +122,7 @@ export class ApiService {
     const uriList: Observable<Object>[] = [];
     _.forEach(data, item => {
       if (item.type === 'Link' && item.uri) {
-        uriList.push(this.httpClient.get(`${this.getSubLinkBaseUrl()}${item.uri}`));
+        uriList.push(this.get(`${this.getSubLinkBaseUrl()}${item.uri}`));
       }
     });
     return uriList;
