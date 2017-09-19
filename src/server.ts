@@ -23,7 +23,7 @@ app.engine('html', (_, options, callback) => {
 });
 
 app.set('view engine', 'html');
-app.set('views', 'src')
+app.set('views', 'src');
 
 app.get('*.*', express.static(join(__dirname, '..', 'dist')));
 
