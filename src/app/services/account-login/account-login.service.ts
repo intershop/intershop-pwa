@@ -1,12 +1,12 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AccountLogin } from './account-login';
-import { CacheCustomService } from '../cache/cache-custom.service';
-import { UserDetail } from './account-login.model';
-import { JwtService, GlobalState } from '../../services';
 import { HttpHeaders } from '@angular/common/http';
-import { ApiService } from '../../services/api.service';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
+import { GlobalState, JwtService } from '../../services';
+import { ApiService } from '../../services/api.service';
+import { CacheCustomService } from '../cache/cache-custom.service';
+import { AccountLogin } from './account-login';
+import { UserDetail } from './account-login.model';
 
 export interface IAccountLoginService {
   singinUser(userDetails: AccountLogin): Observable<UserDetail>;

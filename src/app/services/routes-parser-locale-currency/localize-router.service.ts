@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationStart, ActivatedRouteSnapshot, NavigationExtras } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { ActivatedRouteSnapshot, NavigationExtras, NavigationStart, Router } from '@angular/router';
 import 'rxjs/add/observable/of';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 import { LocalizeParser } from './localize-router.parser';
 

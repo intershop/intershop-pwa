@@ -1,10 +1,10 @@
-import { mock, instance, when, anything, verify, anyFunction, anyString } from 'ts-mockito';
+import { async } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { anyFunction, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalState } from '../../services';
 import { AccountLoginService } from '../../services/account-login';
-import { async } from '@angular/core/testing';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AccountOverviewComponent } from './account-overview.component';
-import { Router } from '@angular/router';
 
 describe('Account Overview Component', () => {
   let fixture: ComponentFixture<AccountOverviewComponent>;

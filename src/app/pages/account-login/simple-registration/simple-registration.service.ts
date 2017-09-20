@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
 import { UserDetail } from '../../../services/account-login/account-login.model';
+import { AccountLoginService } from '../../../services/account-login/account-login.service';
 
 @Injectable()
 export class SimpleRegistrationService {

@@ -1,5 +1,5 @@
-import * as ts from 'typescript';
 import { getNextToken } from 'tsutils';
+import * as ts from 'typescript';
 
 export class RuleHelpers {
 

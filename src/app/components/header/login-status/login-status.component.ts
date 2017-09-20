@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
 import { Router } from '@angular/router';
-import { UserDetail } from '../../../services/account-login/account-login.model';
-import { GlobalState } from '../../../services';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
+import { GlobalState } from '../../../services';
+import { UserDetail } from '../../../services/account-login/account-login.model';
+import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-login-status',
