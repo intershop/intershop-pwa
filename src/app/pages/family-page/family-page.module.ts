@@ -31,6 +31,13 @@ import { DisableIconDirective } from '../../directives/disable-icon.directive';
     FilterListService,
     FilterListApiService,
     FilterListMockService
+  ],
+  exports: [
+    FamilyPageComponent,
+    FilterListComponent,
+    FamilyPageListComponent,
+    ProductTileComponent,
+    DisableIconDirective
   ]
 })
 
