@@ -14,13 +14,16 @@ import { userData } from '../../services/account-login/account-login.mock';
 import { SharedModule } from '../../modules/shared.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
-
+import { mock, instance, anyString, when } from 'ts-mockito';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 describe('AccountLogin Component', () => {
   let fixture: ComponentFixture<AccountLoginComponent>;
   let component: AccountLoginComponent;
   let element: HTMLElement;
   let debugEl: DebugElement;
+  let localizeRouterServiceMock: LocalizeRouterService;
+
   class MockAccountLoginService {
     singinUser(userDetails) {
       if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
@@ -42,6 +45,11 @@ describe('AccountLogin Component', () => {
   }
 
   beforeEach(async(() => {
+    localizeRouterServiceMock = mock(LocalizeRouterService);
+    when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
+      return arg1;
+    });
+
     TestBed.configureTestingModule({
       declarations: [
         AccountLoginComponent
@@ -49,7 +57,8 @@ describe('AccountLogin Component', () => {
       providers: [
         CacheCustomService, CacheService, EncryptDecryptService,
         { provide: AccountLoginService, useClass: MockAccountLoginService },
-        { provide: GlobalConfiguration, useClass: GlobalConfigurationStub }
+        { provide: GlobalConfiguration, useClass: GlobalConfigurationStub },
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
       imports: [
         SharedModule,
@@ -96,7 +105,7 @@ describe('AccountLogin Component', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('123213');
     component.onSignin(userDetails);
-    expect(this.navSpy).toHaveBeenCalledWith(['home']);
+    expect(this.navSpy).toHaveBeenCalledWith(['/home']);
   });
 
   it('should call ngOnInit method', () => {
