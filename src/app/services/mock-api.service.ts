@@ -1,6 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { CustomErrorHandler } from './custom-error-handler';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable()

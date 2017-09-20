@@ -1,16 +1,9 @@
-import { MockApiService, CustomErrorHandler } from './';
-import { HttpClient } from '@angular/common/http';
-import { instance, mock } from 'ts-mockito/lib/ts-mockito';
+import { MockApiService } from './';
 
 describe('MockApiService', () => {
   let mockApiService: MockApiService;
-  let httpClient: HttpClient;
-  let customErrorHandler: CustomErrorHandler;
 
   beforeEach(() => {
-    httpClient = mock(HttpClient);
-    customErrorHandler = mock(CustomErrorHandler);
-
     mockApiService = new MockApiService();
   });
 
