@@ -9,7 +9,8 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import {
   ApiService, JwtService, EncryptDecryptService,
-  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator
+  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator,
+  MockApiService
 } from '../services';
 
 import { HeaderModule } from '../components/header/header.module';
@@ -50,6 +51,7 @@ import { GlobalConfiguration } from '../configurations/global.configuration';
     CustomErrorHandler,
     GlobalState,
     CrossTabCommunicator,
+    MockApiService,
     GlobalConfiguration
   ],
   exports: [

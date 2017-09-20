@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ProductListService } from '../../../services/products';
-import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { CacheCustomService } from '../../../services/index';
 import { ProductTileModel } from '../../../components/product-tile/product-tile.model';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'is-family-page-list',
@@ -19,7 +18,6 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
   thumbnails: ProductTileModel[] = [];
   filteredData;
 
-
   /**
    * Construcotr
    * @param  {ProductListService} privateproductListService
@@ -29,7 +27,6 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
     private productListService: ProductListService,
     private customService: CacheCustomService) {
   }
-
 
   ngOnChanges() {
     /**
@@ -64,13 +61,9 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
       this.thumbnails = this.customService.getCachedData(this.thumbnailKey, true);
       this.totalItems.emit(this.thumbnails.length);
     } else {
-      this.productListService.getProductList().subscribe((data: ProductTileModel[]) => {
+      this.productListService.getProductList().subscribe((data: any) => {// type should be ProductTileModel[]
         this.allData = data;
-        if (environment.needMock) {
-          this.thumbnails = this.allData[0]['Cameras'];
-        } else {
-          this.thumbnails.push(this.allData);
-        }
+        this.thumbnails.push(this.allData);
         this.totalItems.emit(this.thumbnails.length);
         this.customService.storeDataToCache(this.thumbnails, this.thumbnailKey, true);
       });
