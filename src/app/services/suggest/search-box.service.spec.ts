@@ -1,8 +1,8 @@
 
 import { Observable } from 'rxjs/Observable';
-import { SearchBoxService } from './search-box.service';
+import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../';
-import { instance, mock, when, anything } from 'ts-mockito/lib/ts-mockito';
+import { SearchBoxService } from './search-box.service';
 
 describe('Search Box Service', () => {
     let searchBoxService: SearchBoxService;

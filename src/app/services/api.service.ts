@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import { Observable } from 'rxjs/Observable';
-import { CustomErrorHandler } from './custom-error-handler';
-import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../environments/environment';
 import { MockApiService } from '../services/mock-api.service';
+import { CustomErrorHandler } from './custom-error-handler';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 @Injectable()

@@ -1,6 +1,6 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { ErrorPageComponent } from './error-page.component';
 
 

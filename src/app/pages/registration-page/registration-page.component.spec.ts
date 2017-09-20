@@ -1,11 +1,11 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, inject, async } from '@angular/core/testing';
-import { RegistrationPageComponent } from './registration-page.component';
+import { ComponentFixture } from '@angular/core/testing';
+import { async, inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { anyString, instance, mock, when } from 'ts-mockito';
 import { MockComponent } from '../../components/mock.component';
-import { mock, instance, when, anyString } from 'ts-mockito';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
+import { RegistrationPageComponent } from './registration-page.component';
 
 describe('RegistrationPage Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;

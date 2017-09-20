@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
+import { UserDetail } from '../../../services/account-login/account-login.model';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { EmailValidator } from '../../../validators/email.validator';
 import { matchOtherValidator } from '../../../validators/match-words.validator';
 import { PasswordValidator } from '../../../validators/password.validator';
-import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { SimpleRegistrationService } from './simple-registration.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { UserDetail } from '../../../services/account-login/account-login.model';
 
 @Component({
   selector: 'is-simple-registration',

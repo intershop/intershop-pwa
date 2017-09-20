@@ -1,7 +1,7 @@
-import { mock, instance, when } from 'ts-mockito';
 import { Observable } from 'rxjs/Rx';
-import { FilterListService } from './';
+import { instance, mock, when } from 'ts-mockito';
 import { ApiService } from '../../../services';
+import { FilterListService } from './';
 
 describe('FilterListService', () => {
     const apiService: ApiService = mock(ApiService);

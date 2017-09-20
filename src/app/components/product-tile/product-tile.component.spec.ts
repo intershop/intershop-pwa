@@ -1,18 +1,18 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { ProductTileComponent } from './product-tile.component';
+import { ComponentFixture } from '@angular/core/testing';
 import { async, inject } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { environment } from '../../../environments/environment';
-import { JwtService, GlobalState, CacheCustomService } from '../../services';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
+import { instance, mock } from 'ts-mockito';
+import { environment } from '../../../environments/environment';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
-import { mock, instance } from 'ts-mockito';
+import { CacheCustomService, GlobalState, JwtService } from '../../services';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
+import { ProductTileComponent } from './product-tile.component';
 
 
 /*

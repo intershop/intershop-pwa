@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import * as _ from 'lodash';
-import { GlobalState } from '../../../services/global.state';
-import { environment } from '../../../../environments/environment';
 import { Router } from '@angular/router';
+import * as _ from 'lodash';
+import { environment } from '../../../../environments/environment';
+import { GlobalState } from '../../../services/global.state';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-language-switch',

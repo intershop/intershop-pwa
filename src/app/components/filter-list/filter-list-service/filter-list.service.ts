@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { FilterListModel } from './filter-entries';
 import { ApiService } from '../../../services';
+import { FilterListModel } from './filter-entries';
 
 @Injectable()
 export class FilterListService {
