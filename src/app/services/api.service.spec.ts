@@ -1,12 +1,12 @@
-import { Observable } from 'rxjs/Observable';
-import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
-import { TestBed, inject } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
-import { CustomErrorHandler } from './custom-error-handler';
+import { inject, TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
+import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { environment } from '../../environments/environment';
 import { MockApiService } from '../services/mock-api.service';
 import { ApiService } from './api.service';
-import { instance, mock, when, anything, verify } from 'ts-mockito/lib/ts-mockito';
-import { environment } from '../../environments/environment';
+import { CustomErrorHandler } from './custom-error-handler';
+import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 class LocalizeRouterServiceMock {
   parser = {

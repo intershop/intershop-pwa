@@ -1,6 +1,6 @@
-import { SyntaxKind, SourceFile } from 'typescript';
 import * as Lint from 'tslint';
 import { forEachToken, getNextToken } from 'tsutils';
+import { SourceFile, SyntaxKind } from 'typescript';
 
 const DESCRIPTION_REGEX = /^'should(.* (when|if|until|on) .*| be created)'$/;
 

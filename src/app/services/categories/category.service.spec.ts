@@ -1,6 +1,6 @@
-import { CategoryService } from './category.service';
+import { instance, mock, verify } from 'ts-mockito';
 import { ApiService } from '../';
-import { mock, instance, verify } from 'ts-mockito';
+import { CategoryService } from './category.service';
 
 describe('Category Service', () => {
   const apiService: ApiService = mock(ApiService);

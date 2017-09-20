@@ -1,8 +1,8 @@
 
-import { mock, instance, when, anything, verify } from 'ts-mockito';
-import { AccountLoginService } from './index';
-import { JwtService, GlobalState, CacheCustomService, ApiService } from '../index';
 import { Observable } from 'rxjs/Rx';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { ApiService, CacheCustomService, GlobalState, JwtService } from '../index';
+import { AccountLoginService } from './index';
 
 describe('AccountLogin Service', () => {
     let accountLoginService: AccountLoginService;

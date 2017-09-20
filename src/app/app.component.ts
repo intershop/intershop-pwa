@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { PopoverConfig } from 'ngx-bootstrap/popover';
-import { LocalizeRouterService } from './services/routes-parser-locale-currency/localize-router.service';
-import { Router, NavigationEnd } from '@angular/router';
 import { GlobalState } from './services';
+import { LocalizeRouterService } from './services/routes-parser-locale-currency/localize-router.service';
 
 export function getPopoverConfig(): PopoverConfig {
   return Object.assign(new PopoverConfig(), { placement: 'top', triggers: 'hover', container: 'body' });

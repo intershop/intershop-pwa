@@ -1,13 +1,13 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { TestBed, async } from '@angular/core/testing';
-import { FamilyPageListComponent } from './family-page-list.component';
-import { ProductListService } from '../../../services/products';
-import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { ComponentFixture } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { CacheService } from 'ng2-cache/ng2-cache';
-import { EncryptDecryptService } from '../../../services/cache/encrypt-decrypt.service';
+import { Observable } from 'rxjs/Rx';
 import { environment } from '../../../../environments/environment';
+import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { EncryptDecryptService } from '../../../services/cache/encrypt-decrypt.service';
+import { ProductListService } from '../../../services/products';
+import { FamilyPageListComponent } from './family-page-list.component';
 
 describe('FamilyPageList Component', () => {
   let fixture: ComponentFixture<FamilyPageListComponent>;

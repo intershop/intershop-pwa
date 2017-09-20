@@ -1,15 +1,15 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
-import { HeaderNavigationComponent } from './header-navigation.component';
-import { CategoryService } from '../../../services/categories/category.service';
-import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
-import { mock, instance, when, anything, verify } from 'ts-mockito';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Observable } from 'rxjs/Observable';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { CacheCustomService } from '../../../services/cache/cache-custom.service';
 import { CategoryModel } from '../../../services/categories/category.model';
+import { CategoryService } from '../../../services/categories/category.service';
 import { SubcategoryModel } from '../../../services/categories/subcategory.model';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { GlobalState } from '../../../services/global.state';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { HeaderNavigationComponent } from './header-navigation.component';
 
 describe('Header Navigation Component', () => {
   let fixture: ComponentFixture<HeaderNavigationComponent>;
