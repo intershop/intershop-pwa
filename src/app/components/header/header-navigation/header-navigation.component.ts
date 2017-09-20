@@ -17,8 +17,8 @@ export class HeaderNavigationComponent implements OnInit {
   local: string;
 
   constructor(private categoryService: CategoryService,
-              private cacheService: CacheCustomService,
-              public localize: LocalizeRouterService, private globalState: GlobalState) {
+    private cacheService: CacheCustomService,
+    public localize: LocalizeRouterService, private globalState: GlobalState) {
 
   }
 

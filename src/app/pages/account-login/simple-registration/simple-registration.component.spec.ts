@@ -10,8 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { SimpleRegistrationService } from './simple-registration.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { userData } from '../../../services/account-login/account-login.mock';
-
+import { UserDetail } from '../../../services/account-login/account-login.model';
 
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
@@ -24,12 +23,14 @@ describe('Simple Registration Component', () => {
     useSimpleAccount: true,
     userRegistrationLoginType: 'email'
   };
+
   beforeEach(async(() => {
     routerMock = mock(Router);
     globalConfigurationMock = mock(GlobalConfiguration);
     simpleRegistrationServiceMock = mock(SimpleRegistrationService);
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(accountSettings));
-    when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of(userData));
+    when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of(new UserDetail()));
+
     TestBed.configureTestingModule({
       declarations: [SimpleRegistrationComponent],
       imports: [

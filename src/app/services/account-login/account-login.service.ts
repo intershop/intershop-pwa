@@ -1,13 +1,12 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
-import { AccountLoginMockService } from './account-login.service.mock';
-import { AccountLoginApiService } from './account-login.service.api';
 import { AccountLogin } from './account-login';
 import { CacheCustomService } from '../cache/cache-custom.service';
 import { UserDetail } from './account-login.model';
-import { InstanceService } from '../instance.service';
 import { JwtService, GlobalState } from '../../services';
+import { HttpHeaders } from '@angular/common/http';
+import { ApiService } from '../../services/api.service';
+import { environment } from '../../../environments/environment';
 
 export interface IAccountLoginService {
   singinUser(userDetails: AccountLogin): Observable<UserDetail>;
@@ -17,21 +16,14 @@ export interface IAccountLoginService {
 
 @Injectable()
 export class AccountLoginService implements IAccountLoginService {
-
-  loginService: IAccountLoginService;
-  cacheService: CacheCustomService;
   loginStatusEmitter: EventEmitter<UserDetail> = new EventEmitter<UserDetail>();
 
-
   /**
-   * Constructor
-   * @param  {InstanceService} privateinstanceService
+   * @param  {JwtService} privatejwtService
+   * @param  {GlobalState} privateglobalState
+   * @param  {CacheCustomService} privatecacheService
    */
-  constructor(private instanceService: InstanceService, private jwtService: JwtService, private globalState: GlobalState) {
-    this.loginService = this.instanceService.getInstance((environment.needMock) ?
-      AccountLoginMockService : AccountLoginApiService);
-    this.cacheService = this.instanceService.getInstance(CacheCustomService);
-  }
+  constructor(private jwtService: JwtService, private globalState: GlobalState, private cacheService: CacheCustomService, private apiService: ApiService) { }
 
   /**
    * Calls signin function of concerned service
@@ -39,7 +31,8 @@ export class AccountLoginService implements IAccountLoginService {
    * @returns Observable
    */
   singinUser(userDetails: AccountLogin): Observable<UserDetail> {
-    return this.loginService.singinUser(userDetails).map((data: UserDetail) => {
+    const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
+    return this.apiService.get('customers/-', null, headers).map((data) => {
       if ((typeof (data) === 'object')) {
         this.storeUserDetail(data);
       }
@@ -48,21 +41,21 @@ export class AccountLoginService implements IAccountLoginService {
   }
 
   /**
-   * Calls logout function of concerned service
-   * @returns void
-   */
-  logout(): void {
-    this.cacheService.deleteCacheKey('userDetail');
-    this.globalState.notifyDataChanged('customerDetails', null);
-    this.jwtService.destroyToken();
-  }
-
-  /**
    * calls isAuthorized function of concerned service
    * @returns boolean
    */
   isAuthorized(): boolean {
     return !!this.jwtService.getToken();
+  }
+
+  /**
+  * Calls logout function of concerned service
+  * @returns void
+  */
+  logout(): void {
+    this.cacheService.deleteCacheKey('userDetail');
+    this.globalState.notifyDataChanged('customerDetails', null);
+    this.jwtService.destroyToken();
   }
 
   /**

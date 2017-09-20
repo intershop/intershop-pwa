@@ -5,7 +5,6 @@ import { async } from '@angular/core/testing';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AccountOverviewComponent } from './account-overview.component';
 import { Router } from '@angular/router';
-import { userData } from '../../services/account-login/account-login.mock';
 
 describe('Account Overview Component', () => {
   let fixture: ComponentFixture<AccountOverviewComponent>;
@@ -14,6 +13,7 @@ describe('Account Overview Component', () => {
   let globalStateMock: GlobalState;
   let accountLoginServiceMock: AccountLoginService;
   let routerMock: Router;
+  const userData = { firstName: 'Patricia', userName: 'Miller' };
 
   beforeEach(async(() => {
     globalStateMock = mock(GlobalState);
