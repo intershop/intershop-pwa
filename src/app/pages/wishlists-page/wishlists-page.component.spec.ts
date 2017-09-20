@@ -1,11 +1,11 @@
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { WishListPageComponent } from './wishlists-page.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs/Observable';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { instance, mock} from 'ts-mockito';
 import { GlobalState } from '../../services';
-import { mock, instance} from 'ts-mockito';
+import { WishListService } from '../../services/wishlists/wishlists.service';
+import { WishListPageComponent } from './wishlists-page.component';
 
 describe('Wish list Page Component', () => {
   let fixture: ComponentFixture<WishListPageComponent>;

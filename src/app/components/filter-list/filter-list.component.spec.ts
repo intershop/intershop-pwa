@@ -1,10 +1,10 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { FilterListComponent } from './filter-list.component';
-import { FilterListService } from './filter-list-service/index';
-import { CacheCustomService } from '../../services/index';
-import { instance, mock, when, anything } from 'ts-mockito/lib/ts-mockito';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { Observable } from 'rxjs/Rx';
+import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { CacheCustomService } from '../../services/index';
+import { FilterListService } from './filter-list-service/index';
+import { FilterListComponent } from './filter-list.component';
 
 describe('FilterList Component', () => {
   let fixture: ComponentFixture<FilterListComponent>;

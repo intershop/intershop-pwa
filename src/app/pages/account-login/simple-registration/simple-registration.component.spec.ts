@@ -1,16 +1,16 @@
-import { mock, instance, anything, verify, when } from 'ts-mockito';
-import { SimpleRegistrationComponent } from './simple-registration.component';
-import { ComponentFixture } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { TestBed, async } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { GlobalConfiguration } from '../../../configurations/global.configuration';
-import { Observable } from 'rxjs/Observable';
-import { SimpleRegistrationService } from './simple-registration.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { UserDetail } from '../../../services/account-login/account-login.model';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { SimpleRegistrationComponent } from './simple-registration.component';
+import { SimpleRegistrationService } from './simple-registration.service';
 
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;

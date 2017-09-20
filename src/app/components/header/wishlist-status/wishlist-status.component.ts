@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { WishListModel } from '../../../services/wishlists/wishlists.model';
 import { GlobalState } from '../../../services';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { WishListModel } from '../../../services/wishlists/wishlists.model';
 
 @Component({
   selector: 'is-wishlist-status',

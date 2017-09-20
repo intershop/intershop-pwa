@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { GlobalState } from '../../services';
 import { AccountLoginService } from '../../services/account-login';
-import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './account-overview.component.html'

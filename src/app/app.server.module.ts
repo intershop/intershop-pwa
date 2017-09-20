@@ -1,16 +1,16 @@
+import { Location } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
-import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
+import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { Location } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { LocalizeRouterSettings } from './services/routes-parser-locale-currency/localize-router.config';
+import { AppComponent } from './app.component';
+import { AppModule } from './app.module';
 import { HomePageModule } from './pages/home-page/home-page.module';
+import { LocalizeRouterLoader } from './services/router-parser-loader';
+import { LocalizeRouterSettings } from './services/routes-parser-locale-currency/localize-router.config';
 import { LocalizeRouterModule } from './services/routes-parser-locale-currency/localize-router.module';
 import { LocalizeParser } from './services/routes-parser-locale-currency/localize-router.parser';
-import { LocalizeRouterLoader } from './services/router-parser-loader';
 
 const fs = require('fs');
 

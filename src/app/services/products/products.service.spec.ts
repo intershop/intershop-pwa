@@ -1,7 +1,7 @@
-import { ProductListService } from './products.service';
-import { ApiService } from '../';
-import { mock, when, instance } from 'ts-mockito';
 import { Observable } from 'rxjs/Rx';
+import { instance, mock, when } from 'ts-mockito';
+import { ApiService } from '../';
+import { ProductListService } from './products.service';
 
 describe('ProuctList Service', () => {
     let productListService: ProductListService;
