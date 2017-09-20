@@ -3,7 +3,8 @@
 <div id="product-search-result" class="product-search-result" data-testing-id="family-page">
   <div class="row">
     <div class="col-sm-3">
-      <is-filter-list></is-filter-list>
+      <h1>Category Name</h1>
+       <is-category-navigation></is-category-navigation>
     </div>
     <div class="col-sm-9">
       <!-- Product List filter -->
@@ -24,13 +25,13 @@
           <div class="pull-right sort-by">
             <a class="list-view-link" [ngClass]="isListView ? 'list-active' : ''" data-testing-id="list-view-link" href="javascript:void(0)"
               (click)="isListView = true">
-          <span class="glyphicon glyphicon-list"></span>
-          </a>
+              <span class="glyphicon glyphicon-list"></span>
+            </a>
             <a class="grid-view-link" [ngClass]="!isListView ? 'grid-active' : ''" data-testing-id="grid-view-link" href="javascript:void(0)"
               (click)="isListView = false">
-          <span class="glyphicon glyphicon-th"></span>
-        </a></div>
-
+              <span class="glyphicon glyphicon-th"></span>
+            </a>
+          </div>
         </div>
         <div class="col-md-3 col-sm-12 col-xs-8 pull-right sort-by">
           <form class="sort-by-filter" method="post" name="sortByForm" novalidate="">

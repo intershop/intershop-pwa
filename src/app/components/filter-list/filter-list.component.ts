@@ -8,14 +8,7 @@ import { FilterListModel } from './filter-list-service/filter-entries';
   templateUrl: './filter-list.component.html',
   providers: [
     FilterListService
-  ],
-  styles: [`
-     @media only screen and (min-width: 768px){
-       #filter-accordion.filter-panel{
-         display:block !important;
-       }
-      }
-  `]
+  ]
 })
 
 export class FilterListComponent implements OnInit {
