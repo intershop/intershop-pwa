@@ -1,30 +1,26 @@
-import { SubCategory } from './subcategory.model';
-
 class Image {
   name: string;
   type: string;
+  effectiveUrl: string;
+  viewID: string;
+  typeID: string;
   imageActualHeight: number;
   imageActualWidth: number;
-  effectiveUrl: string;
-  typeID: string;
   primaryImage: boolean;
-  viewID: string;
 }
 
-class Element {
+export class Category {
   name: string;
   type: string;
-  id: string;
-  description: string;
-  online: string;
-  images: Image[];
-  hasOnlineSubCategories: boolean;
   hasOnlineProducts: boolean;
+  hasOnlineSubCategories: boolean;
+  online: string;
+  description: string;
+  subCategoriesCount?: number;
+  images?: Image[];
+  id: string;
+  subCategories?: Category[];
   uri: string;
-  subCategories: SubCategory[];
 }
 
-export class CategoryModel {
-  elements: Element[];
-  type: string;
-}
+

@@ -11,9 +11,9 @@ import { AccountLoginApiService, AccountLoginMockService, AccountLoginService } 
 import { SharedModule } from '../../modules/shared.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { CategoryService } from '../../services/categories/category.service';
-import { CategoryMockService } from '../../services/categories/category.service.mock';
-import { CategoryApiService } from '../../services/categories/category.service.api';
+import { CategoriesService } from '../../services/categories/categories.service';
+import { CategoriesMockService } from '../../services/categories/categories.service.mock';
+import { CategoriesApiService } from '../../services/categories/categories.service.api';
 import { SearchBoxApiService } from '../../services/suggest/search-box.service.api';
 import { SearchBoxMockService } from '../../services/suggest/search-box.service.mock';
 import { SearchBoxService } from '../../services/suggest/search-box.service';
@@ -40,7 +40,7 @@ import { WishListService } from '../../services/wishlists/wishlists.service';
     LoginStatusComponent
   ],
   providers: [AccountLoginApiService, AccountLoginMockService, AccountLoginService,
-    CategoryService, CategoryMockService, CategoryApiService,
+    CategoriesService, CategoriesMockService, CategoriesApiService,
     SearchBoxApiService, SearchBoxMockService, SearchBoxService,
     WishListService
   ]
