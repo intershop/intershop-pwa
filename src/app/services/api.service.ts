@@ -43,7 +43,7 @@ export class ApiService {
     let url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
 
     // TODO: Mocking may support link translation in future
-    if (environment.needMock && this.mockApiService.pathHasToBeMocked(path)) {
+    if (this.mockApiService.pathHasToBeMocked(path)) {
       url = this.mockApiService.getMockPath(path);
     }
 
