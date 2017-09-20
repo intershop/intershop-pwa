@@ -11,29 +11,58 @@ describe('MockApiService', () => {
     httpClient = mock(HttpClient);
     customErrorHandler = mock(CustomErrorHandler);
 
-    mockApiService = new MockApiService(instance(httpClient), null, instance(customErrorHandler));
+    mockApiService = new MockApiService();
   });
 
-  it('should confirm that getMockPath returns correct path for mock json file', () => {
+  it('should return the correct path for mock json file', () => {
     const mockPath = mockApiService.getMockPath('Cutomers');
     expect(mockPath).toBe('/assets/mock-data/Cutomers/get-data.json');
   });
 
-  it('should return true when path is not to be excluded as per configSettings', () => {
-    mockApiService.configSettings = {
-      exlcudePath: ['categories'],
-      mockAllRequest: true
-    };
-    const toBeMocked = mockApiService.pathHasToBeMocked('Cutomers');
-    expect(toBeMocked).toBe(true);
-  });
+  describe('matchPath', () => {
 
-  it('should return false when path to be excluded as per configSettings', () => {
-    mockApiService.configSettings = {
-      exlcudePath: ['categories'],
-      mockAllRequest: true
-    };
-    const toBeMocked = mockApiService.pathHasToBeMocked('categories');
-    expect(toBeMocked).toBe(false);
+    it('should find \'categories\' in [categories]', () => {
+      expect(mockApiService.matchPath('categories', ['categories'])).toBe(true);
+    });
+
+    it('should not find \'catego\' in [categories]', () => {
+      expect(mockApiService.matchPath('catego', ['categories'])).toBe(false);
+    });
+
+    it('should find \'categories\' in [cat.*]', () => {
+      expect(mockApiService.matchPath('categories', ['cat.*'])).toBe(true);
+    });
+
+    it('should not find \'categories/Computers\' in [categories]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories'])).toBe(false);
+    });
+
+    it('should find \'categories/Computers\' in [categories.*]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories.*'])).toBe(true);
+    });
+
+    it('should find \'categories/Computers\' in [categories/.*]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories/.*'])).toBe(true);
+    });
+
+    it('should find \'categories/Computers\' in [categories/Computers]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories/Computers'])).toBe(true);
+    });
+
+    it('should not find \'categories/Computers\' in [categories/Audio]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories/Audio'])).toBe(false);
+    });
+
+    it('should not find \'categories/Computers\' in [categories/]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories/'])).toBe(false);
+    });
+
+    it('should find \'categories/Computers\' in [categories/(Audio|Computers|HiFi)]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories/(Audio|Computers|HiFi)'])).toBe(true);
+    });
+
+    it('should not find \'categories/Computers\' in [categories/(Audio|Computers|HiFi)/]', () => {
+      expect(mockApiService.matchPath('categories/Computers', ['categories/(Audio|Computers|HiFi)/'])).toBe(false);
+    });
   });
 });
