@@ -90,12 +90,6 @@ describe('Login Status Component', () => {
     // expect(component.isLoggedIn).toBe(false);
   });
 
-  it('should navigate to "login" when signIn is called', inject([Router], (router: Router) => {
-    component.signIn();
-
-    expect(this.navSpy).toHaveBeenCalledWith(['/login']);
-  }));
-
   it('should render full name on template when user is logged in', () => {
     fixture.detectChanges();
     const loggedInDetails = element.getElementsByClassName('login-name');
@@ -107,10 +101,5 @@ describe('Login Status Component', () => {
     when(globalStateMock.subscribe(anything(), anything())).thenReturn(null);
     when(globalStateMock.subscribeCachedData(anything(), anything())).thenReturn(null);
     expect(component.isLoggedIn).toBe(false);
-  });
-
-  it('should call accountOverview and verify if router.navigate is called with "accountOverview"', () => {
-    component.accountOverview();
-    expect(this.navSpy).toHaveBeenCalledWith(['/accountOverview']);
   });
 });

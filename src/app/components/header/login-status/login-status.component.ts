@@ -69,22 +69,4 @@ export class LoginStatusComponent implements OnInit {
     this.router.navigate([this.localize.translateRoute('/home')]);
     return false;
   }
-
-  /**
-   * navigates to signin page
-   * @returns void
-   */
-  signIn() {
-    this.router.navigate([this.localize.translateRoute('/login')]);
-    return false;
-  }
-
-  /**
-   * navigates to accountOverview page
-   * @returns void
-   */
-  accountOverview() {
-    this.router.navigate([this.localize.translateRoute('/accountOverview')]);
-    return false;
-  }
 }
