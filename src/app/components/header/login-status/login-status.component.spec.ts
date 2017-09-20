@@ -1,5 +1,5 @@
 import { LoginStatusComponent } from './login-status.component';
-import { inject, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { userData } from '../../../services/account-login/account-login.mock';
 import { AccountLoginService } from '../../../services/account-login';
