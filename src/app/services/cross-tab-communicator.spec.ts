@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { CrossTabCommunicator } from './cross-tab-communicator';
 
 describe('cross tab communicator', () => {

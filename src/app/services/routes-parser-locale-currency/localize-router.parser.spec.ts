@@ -1,14 +1,14 @@
+import { CommonModule, Location } from '@angular/common';
 import { Injector } from '@angular/core';
-import { LocalizeParser } from './localize-router.parser';
-import { getTestBed, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, getTestBed, TestBed, tick } from '@angular/core/testing';
 import { Routes } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
-import { Location, CommonModule } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
 import {
-  LocalizeRouterSettings,
-  ALWAYS_SET_PREFIX
+  ALWAYS_SET_PREFIX,
+  LocalizeRouterSettings
 } from './localize-router.config';
+import { LocalizeParser } from './localize-router.parser';
 
 class ManualParserLoader extends LocalizeParser {
   constructor(translate: TranslateService,

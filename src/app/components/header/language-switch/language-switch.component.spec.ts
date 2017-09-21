@@ -1,13 +1,13 @@
-import { LanguageSwitchComponent } from './language-switch.component';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core/';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { mock, instance } from 'ts-mockito';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { GlobalState } from '../../../services/global.state';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Observable } from 'rxjs/Observable';
+import { instance, mock } from 'ts-mockito';
+import { GlobalState } from '../../../services/global.state';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { LanguageSwitchComponent } from './language-switch.component';
 
 class DummyTraslateService {
   parser = {

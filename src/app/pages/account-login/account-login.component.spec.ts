@@ -1,21 +1,20 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { ComponentFixture } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { CacheService } from 'ng2-cache/ng2-cache';
+import { Observable } from 'rxjs/Rx';
+import { anyString, instance, mock, when } from 'ts-mockito';
+import { GlobalConfiguration } from '../../configurations/global.configuration';
+import { SharedModule } from '../../modules/shared.module';
 import { AccountLoginService } from '../../services/account-login/';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
-import { CacheService } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
-import { AccountLoginComponent } from './account-login.component';
-import { async } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { userData } from '../../services/account-login/account-login.mock';
-import { SharedModule } from '../../modules/shared.module';
-import { RouterTestingModule } from '@angular/router/testing';
-import { GlobalConfiguration } from '../../configurations/global.configuration';
-import { mock, instance, anyString, when } from 'ts-mockito';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
+import { AccountLoginComponent } from './account-login.component';
 
 describe('AccountLogin Component', () => {
   let fixture: ComponentFixture<AccountLoginComponent>;
@@ -27,7 +26,7 @@ describe('AccountLogin Component', () => {
   class MockAccountLoginService {
     singinUser(userDetails) {
       if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
-        return Observable.of(userData);
+        return Observable.of({ data: 'Correct Details' });
       } else {
         return Observable.of('Incorrect Credentials');
       }
@@ -59,6 +58,7 @@ describe('AccountLogin Component', () => {
         { provide: AccountLoginService, useClass: MockAccountLoginService },
         { provide: GlobalConfiguration, useClass: GlobalConfigurationStub },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+
       ],
       imports: [
         SharedModule,

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FamilyPageComponent } from './family-page.component';
-import { FilterListComponent } from '../../components/filter-list/filter-list.component';
-import { FamilyPageListComponent } from './family-page-list/family-page-list.component';
-import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
-import { ProductListService, ProductListApiService, ProductListMockService } from '../../services/products';
-import { SharedModule } from '../../modules/shared.module';
-import { FilterListService, FilterListMockService, FilterListApiService } from '../../components/filter-list/filter-list-service';
-import { FamilyPageRoute } from './family-page.routes';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { FilterListService } from '../../components/filter-list/filter-list-service';
+import { FilterListComponent } from '../../components/filter-list/filter-list.component';
+import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
+import { SharedModule } from '../../modules/shared.module';
+import { ProductListService } from '../../services/products';
+import { FamilyPageListComponent } from './family-page-list/family-page-list.component';
+import { FamilyPageComponent } from './family-page.component';
+import { FamilyPageRoute } from './family-page.routes';
 
 @NgModule({
   imports: [
@@ -25,12 +25,7 @@ import { DisableIconDirective } from '../../directives/disable-icon.directive';
     DisableIconDirective
   ],
   providers: [
-    ProductListService,
-    ProductListMockService,
-    ProductListApiService,
-    FilterListService,
-    FilterListApiService,
-    FilterListMockService
+    ProductListService, FilterListService
   ]
 })
 
