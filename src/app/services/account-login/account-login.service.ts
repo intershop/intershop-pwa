@@ -10,7 +10,7 @@ import { InstanceService } from '../../services/instance.service';
 import { JwtService, GlobalState } from '../../services';
 
 export interface IAccountLoginService {
-    singinUser(userDetails: AccountLogin): Observable<UserDetail>;
+    singinUser(userDetails: AccountLogin): Observable<UserDetail | any>;
     logout(): void;
     isAuthorized(): boolean;
 }
@@ -38,15 +38,17 @@ export class AccountLoginService implements IAccountLoginService {
      * @param  {} userDetails
      * @returns Observable
      */
-    singinUser(userDetails: AccountLogin): Observable<UserDetail> {
-        return this.loginService.singinUser(userDetails).map((data) => {
+    singinUser(userDetails: AccountLogin): Observable<UserDetail | any> {
+        return this.loginService.singinUser(userDetails).map((data: UserDetail | any) => {
             const token = Math.floor(100000 + Math.random() * 900000).toString();
 
             if (environment.needMock) {
                 this.jwtService.saveToken(token);
             }
-            this.globalState.notifyDataChanged('customerDetails', data);
-            this.storeUserDetail(data);
+            if (data instanceof UserDetail) {
+                this.globalState.notifyDataChanged('customerDetails', data);
+                this.storeUserDetail(data);
+            }
             return data;
         });
     }

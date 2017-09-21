@@ -41,7 +41,7 @@
   "account.register.email_confirmation.label":"Confirm Email Address",
   "account.register.email_confirmation.not_match.error":"Your Confirm Email Address do not match.",
   "account.register.password.label":"Password",
-  "account.register.password.extrainfo.message":"{0} characters minimum, must include numbers and letters, no spaces",
+  "account.register.password.extrainfo.message":"{{0}} characters minimum, must include numbers and letters, no spaces",
   "account.register.password_confirmation.label":"Confirm Password",
   "search.searchbox.instructional_text":"Search for keyword, product ID or category...",
   "search.searchbox.button.title":"Start search.",

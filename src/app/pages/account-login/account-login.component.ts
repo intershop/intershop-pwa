@@ -1,23 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailValidator } from "../../validators/email.validator";
+import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { AccountLoginService } from "../../services/account-login/account-login.service";
 import { CacheCustomService } from "../../services/index";
-import {PhoneValidators} from 'ng2-validators'
-
+import { CustomValidations } from "../../validators/custom.validations";
+import { UserDetail } from "../../services/account-login/account-login.model";
+import { ErrorCodeMappingService } from "../../services/error-code-mapping.service";
+import { FormControlMessages } from "../../components/form-control-messages";
 @Component({
-  templateUrl: './account-login.component.html'
+  templateUrl: './account-login.component.html',
+  providers: [ErrorCodeMappingService],
+  entryComponents: [FormControlMessages],
 })
 
 export class AccountLoginComponent implements OnInit {
+  @ViewChild('dynamic', {
+    read: ViewContainerRef
+  }) viewContainerRef: ViewContainerRef;
   loginForm: FormGroup;
   loginToUse = false;
   loginFormSubmitted: boolean;
   errorUser: any;
-  registrationLoginType = 'username';
+  registrationLoginType = 'email';
   isLoggedIn;
   defaultResponse = '401 and Unauthorized';
+  restError: string;
   /**
    * Constructor
    * @param  {FormBuilder} privateformBuilder
@@ -25,7 +32,10 @@ export class AccountLoginComponent implements OnInit {
    * @param  {Router} privaterouter
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private cacheService: CacheCustomService) { }
+    private router: Router, private cacheService: CacheCustomService,
+    private errorCodeMappingService: ErrorCodeMappingService,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) { }
 
   /**
      * Creates Login Form
@@ -33,12 +43,14 @@ export class AccountLoginComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn = this.cacheService.cacheKeyExists('userDetail');
     this.loginForm = this.formBuilder.group({
-      userName: ['', [Validators.compose([Validators.required,
-      (this.registrationLoginType === 'email' ? EmailValidator.validate : null)])]],
-      password: ['', Validators.required],
-      field: ['',PhoneValidators.isPhoneNumber('US')]
+      userName: ['', [Validators.compose([Validators.required, (this.registrationLoginType === 'email' ?  CustomValidations.emailValidate : null)])]],
+      password: ['', [Validators.compose([Validators.required, Validators.minLength(7),
+      Validators.maxLength(256), CustomValidations.passwordValidate])]]
+
     });
+
   }
+
 
   /**
    * Routes to Family Page when user is logged in
@@ -50,15 +62,24 @@ export class AccountLoginComponent implements OnInit {
       });
     } else {
       this.loginFormSubmitted = true;
-      this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
-        if (userData && typeof userData !== 'string') {
+      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail | any) => {
+        if (userData instanceof UserDetail) {
           this.router.navigate(['home']);
         } else {
           this.loginForm.get('password').reset();
-          this.errorUser = userData || this.defaultResponse;
+          this.errorUser = this.defaultResponse || userData;
+          this.restError = this.errorCodeMappingService.getErrorMapping(userData);
+          this.loadCustomError(this.restError, userData.fieldName);
         }
       });
     }
+  }
+
+  loadCustomError(errorMessage, fieldName) {
+    let passwordControl: FormControl = <FormControl>this.loginForm.controls[fieldName];
+    passwordControl.markAsDirty();
+    passwordControl.setErrors({ "customError": errorMessage });
+
   }
 }
 

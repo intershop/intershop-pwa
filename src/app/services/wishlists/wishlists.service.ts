@@ -32,7 +32,7 @@ export class WishListService {
         }
         return this.apiService.get(this.baseUrl)
             .do(data => {
-                this.preferredWishListUrl = (data.elements.length > 0) ?
+                this.preferredWishListUrl = (data.elements && data.elements.length > 0) ?
                     data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
             })
             .flatMap(u =>

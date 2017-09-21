@@ -17,18 +17,15 @@ import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { translateFactory } from '../services/custom-translate-loader';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-import { FormControlMessages } from "../components/form-control-messages";
+import { FormControlMessages, FormGroupComponent, FormValidationDirective } from "../components/form-control-messages";
 import { FormsModule } from "@angular/forms";
-import { CustomFormsModule } from 'ng2-validation'
-import { ValidatorsModule } from 'ng2-validators'
-
+import { ErrorCodeMappingService } from "../services/error-code-mapping.service";
 @NgModule({
   imports: [
- 
+
     FormsModule,
     FooterModule,
     HeaderModule,
-    ValidatorsModule,
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
@@ -44,7 +41,7 @@ import { ValidatorsModule } from 'ng2-validators'
   ],
   declarations: [
     StyleWrapperDirective,
-    //FormControlMessages
+    FormValidationDirective
   ],
   providers: [
     ApiService,
@@ -56,13 +53,13 @@ import { ValidatorsModule } from 'ng2-validators'
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
     GlobalState,
-    CrossTabCommunicator
+    CrossTabCommunicator,
+    ErrorCodeMappingService
   ],
   exports: [
     FooterModule,
     HeaderModule,
-    StyleWrapperDirective,
-    //FormControlMessages
+    StyleWrapperDirective
   ]
 })
 export class CoreModule {
