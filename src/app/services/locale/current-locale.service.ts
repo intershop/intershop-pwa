@@ -5,6 +5,6 @@ import { GlobalStateAwareService } from '../base-services/global-state-aware-ser
 export class CurrentLocaleService extends GlobalStateAwareService<string> {
 
   constructor() {
-    super('currentLocale', false);
+    super('currentLocale', false, false);
   }
 }

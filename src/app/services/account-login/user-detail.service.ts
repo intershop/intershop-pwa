@@ -6,6 +6,6 @@ import { UserDetail } from './account-login.model';
 export class UserDetailService extends GlobalStateAwareService<UserDetail> {
 
   constructor() {
-    super('currentUserDetail', true);
+    super('currentUserDetail', true, true);
   }
 }
