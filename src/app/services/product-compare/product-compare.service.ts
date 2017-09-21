@@ -5,6 +5,6 @@ import { GlobalStateAwareService } from '../base-services/global-state-aware-ser
 export class ProductCompareService extends GlobalStateAwareService<string[]> {
 
   constructor() {
-    super('productCompareStatus', true, []);
+    super('productCompareStatus', true, true, []);
   }
 }

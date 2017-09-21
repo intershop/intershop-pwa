@@ -46,8 +46,8 @@ export class AccountLoginService implements IAccountLoginService {
   * @returns void
   */
   logout(): void {
-    this.userDetailService.next(null);
     this.jwtService.destroyToken();
+    this.userDetailService.next(null);
   }
 
   subscribe(callback: (userDetail: UserDetail) => void) {

@@ -13,7 +13,7 @@ export class WishListService {
   private wishListShareService: GlobalStateAwareService<WishListModel>;
 
   constructor(private apiService: ApiService, private accountLoginService: AccountLoginService) {
-    this.wishListShareService = new GlobalStateAwareService<WishListModel>('wishListStatus', true);
+    this.wishListShareService = new GlobalStateAwareService<WishListModel>('wishListStatus', true, false);
     accountLoginService.subscribe(this.update);
   }
 

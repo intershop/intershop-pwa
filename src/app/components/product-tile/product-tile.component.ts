@@ -175,7 +175,9 @@ export class ProductTileComponent implements OnInit {
    */
   addToCompare(): void {
     const productCompareList = this.productCompareService.current;
-    if (!productCompareList.find(c => c === this.mockData.sku)) {
+    if (!productCompareList) {
+      this.productCompareService.next([this.mockData.sku]);
+    } else if (!productCompareList.find(c => c === this.mockData.sku)) {
       productCompareList.push(this.mockData.sku);
       this.productCompareService.next(productCompareList);
     } else {
