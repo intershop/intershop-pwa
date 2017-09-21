@@ -1,66 +1,89 @@
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { inject, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
+import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { environment } from '../../environments/environment';
+import { MockApiService } from '../services/mock-api.service';
+import { ApiService } from './api.service';
+import { CustomErrorHandler } from './custom-error-handler';
+import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
-describe('API service test', () => {
-  let mockJwtService;
-  let mockHttpService;
-  let apiService: ApiService;
+class LocalizeRouterServiceMock {
+  parser = {
+    currentLocale: { lang: 'en', currency: 'USD' }
+  };
+}
+
+describe('ApiService', () => {
+  let customErrorHandler: CustomErrorHandler;
+  let httpClient: HttpClient;
+  let mockApi: MockApiService;
 
   beforeEach(() => {
-    mockJwtService = {
-      getToken: () => {
-        return '123token456';
-      }
-    };
+    customErrorHandler = mock(CustomErrorHandler);
+    httpClient = mock(HttpClient);
+    mockApi = mock(MockApiService);
 
-    mockHttpService = {
-      get: (url: string, options: {}): Observable<any> => {
-        return Observable.of({ 'type': 'get' });
-      },
-      put: (path: string, body: {}): Observable<any> => {
-        return Observable.of({ 'type': 'put' });
-      },
-      post: (path: string, body: {}): Observable<any> => {
-        return Observable.of({ 'type': 'post' });
-      },
-      delete: (path: string): Observable<any> => {
-        return Observable.of({ 'type': 'delete' });
-      },
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: HttpClient, useFactory: () => instance(httpClient) },
+        { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
+        { provide: MockApiService, useFactory: () => instance(mockApi) },
+        { provide: LocalizeRouterService, useClass: LocalizeRouterServiceMock },
+        ApiService
+      ]
+    });
 
-    };
-    apiService = new ApiService(mockHttpService, mockJwtService);
+    when(httpClient.get(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    when(httpClient.put(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    when(httpClient.post(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    when(httpClient.delete(anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
   });
 
-  it('should return an observable on calling of GET().', () => {
-    let returnVal;
+  it('should call the httpClient.get method when apiService.get method is called.', inject([ApiService], (apiService: ApiService) => {
+    when(mockApi.pathHasToBeMocked(anything())).thenReturn(false);
+
+    verify(httpClient.get(anything())).never();
     apiService.get('', null).subscribe((res) => {
-      returnVal = res;
-    });
-    expect(returnVal.type).toBeTruthy();
-  });
 
-  it('should return an observable on calling of PUT().', () => {
-    let returnVal;
+    });
+    verify(httpClient.get(anything())).once();
+  }));
+
+  it('should call the httpClient.put method when apiService.put method is called.', inject([ApiService], (apiService: ApiService) => {
+    verify(httpClient.put(anything(), anything())).never();
     apiService.put('', null).subscribe((res) => {
-      returnVal = res;
-    });
-    expect(returnVal.type).toEqual('put');
-  });
 
-  it('should return an observable on calling of POST().', () => {
-    let returnVal;
+    });
+    verify(httpClient.put(anything(), anything())).once();
+  }));
+
+
+  it('should call the httpClient.post method when apiService.post method is called.', inject([ApiService], (apiService: ApiService) => {
+    verify(httpClient.post(anything(), anything())).never();
     apiService.post('', null).subscribe((res) => {
-      returnVal = res;
-    });
-    expect(returnVal.type).toEqual('post');
-  });
 
-  it('should return an observable on calling of DELETE().', () => {
-    let returnVal;
+    });
+    verify(httpClient.post(anything(), anything())).once();
+  }));
+
+  it('should call the httpClient.delete method when apiService.delete method is called.', inject([ApiService], (apiService: ApiService) => {
+    verify(httpClient.delete(anything())).never();
+
     apiService.delete('').subscribe((res) => {
-      returnVal = res;
-    });
-    expect(returnVal.type).toEqual('delete');
-  });
 
+    });
+    verify(httpClient.delete(anything())).once();
+  }));
+
+  it('should confirm that mockApi.getMockPath is called when pathHasToBeMocked returns true and environment.needMock is true', inject([ApiService], (apiService: ApiService) => {
+    when(mockApi.pathHasToBeMocked(anything())).thenReturn(true);
+    environment.needMock = true;
+
+    verify(mockApi.getMockPath(anything())).never();
+    apiService.get('', null).subscribe((res) => {
+
+    });
+    verify(mockApi.getMockPath(anything())).once();
+  }));
 });

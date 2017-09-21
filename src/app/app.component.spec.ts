@@ -1,14 +1,15 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { mock, instance, when } from 'ts-mockito';
-import { TranslateModule } from '@ngx-translate/core';
-import { AppComponent } from './app.component';
-import { TranslateService } from '@ngx-translate/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router, NavigationEnd } from '@angular/router';
-import { MockComponent } from './components/mock.component';
-import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
-import { GlobalState } from './services';
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
+import { instance, mock, when } from 'ts-mockito';
+import { AppComponent } from './app.component';
+import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
+import { MockComponent } from './components/mock.component';
+import { GlobalState } from './services';
+import { LocalizeRouterService } from './services/routes-parser-locale-currency/localize-router.service';
 
 let translate: TranslateService;
 
@@ -17,10 +18,11 @@ describe('AppComponent', () => {
     breadcrumbPages: ['/family', '/category']
   };
   let breadcrumbServiceMock: BreadcrumbService;
+  let localizeRouterServiceMock: LocalizeRouterService;
   let routerMock: Router;
   let fixture: ComponentFixture<AppComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -32,18 +34,20 @@ describe('AppComponent', () => {
         TranslateService,
         { provide: GlobalState, useValue: globalStateStub },
         { provide: BreadcrumbService, useFactory: () => instance(breadcrumbServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) }
+        { provide: Router, useFactory: () => instance(routerMock) },
+        {provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
       imports: [
         TranslateModule.forRoot(),
         RouterTestingModule
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     breadcrumbServiceMock = mock(BreadcrumbService);
     routerMock = mock(Router);
+    localizeRouterServiceMock = mock(LocalizeRouterService);
     translate = TestBed.get(TranslateService);
     fixture = TestBed.createComponent(AppComponent);
 

@@ -1,31 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { InstanceService } from '../../services/instance.service';
-import { CategoriesApiService } from './categories.service.api';
-import { CategoriesMockService } from './categories.service.mock';
-import { environment } from '../../../environments/environment';
-import { Category } from './category.model';
+import { ApiService } from '../';
+import { Category } from './categories.model';
+
 @Injectable()
 export class CategoriesService {
-  categoryService;
 
   /**
-   * decides the service to be used as per environment variable
-   * @param  {InstanceService} privateinstanceService
+   * @param  {ApiService} privateapiService
    */
-  constructor(private instanceService: InstanceService) {
-    this.categoryService = this.instanceService.getInstance((environment.needMock) ?
-      CategoriesMockService : CategoriesApiService);
+  constructor(private apiService: ApiService) {
   }
-
   /**
- * @returns List of categories as an Observable
- */
+   * @returns List of categories as an Observable
+   */
   getCategories(uri: string): Observable<Category[]> {
-    return this.categoryService.getCategories(uri);
+    return this.apiService.get(uri, null, null, true);
   }
-
 }
+
 
 
 

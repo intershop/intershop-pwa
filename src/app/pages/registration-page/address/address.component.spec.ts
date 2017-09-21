@@ -1,8 +1,8 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
-import { AddressComponent } from './address.component';
+import { ComponentFixture, fakeAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { SharedModule } from '../../../modules/shared.module';
+import { AddressComponent } from './address.component';
 
 describe('Address Component', () => {
     let fixture: ComponentFixture<AddressComponent>;
@@ -10,7 +10,7 @@ describe('Address Component', () => {
     let element: HTMLElement;
     let debugEl: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(fakeAsync(() => {
         TestBed.configureTestingModule({
             declarations: [AddressComponent],
             imports: [SharedModule]

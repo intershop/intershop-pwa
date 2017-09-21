@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import { Observable } from 'rxjs/Observable';
-import { CustomErrorHandler } from './custom-error-handler';
-import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../environments/environment';
+import { MockApiService } from '../services/mock-api.service';
+import { CustomErrorHandler } from './custom-error-handler';
+import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 @Injectable()
 export class ApiService {
@@ -15,8 +17,9 @@ export class ApiService {
    * @param  {Http} privatehttp
    */
   constructor(private httpClient: HttpClient,
-    private customErrorHandler: CustomErrorHandler
-    ) {
+    private customErrorHandler: CustomErrorHandler,
+    private mockApiService: MockApiService,
+    private localize: LocalizeRouterService) {
   }
 
   /**
@@ -36,13 +39,13 @@ export class ApiService {
 
   get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
-    // const loc = this.localize.parser.currentLocale;
-     const url = `${environment.rest_url}/${path}`;
+    const loc = this.localize.parser.currentLocale;
+    let url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
 
     // TODO: Mocking may support link translation in future
-    // if (environment.needMock && this.mockApiService.pathHasToBeMocked(path)) {
-    //   url = this.mockApiService.getMockPath(path);
-    // }
+    if (this.mockApiService.pathHasToBeMocked(path)) {
+      url = this.mockApiService.getMockPath(path);
+    }
 
     return this.httpClient.get(url, { headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))

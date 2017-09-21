@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CategoriesService } from '../../../services/categories/categories.service';
-import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Category } from '../../../services/categories/category.model';
+import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { Category } from '../../../services/categories/categories.model';
+import { CategoriesService } from '../../../services/categories/categories.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 @Component({
   selector: 'is-header-navigation',
   templateUrl: './header-navigation.component.html',
@@ -17,9 +18,9 @@ export class HeaderNavigationComponent implements OnInit {
   allCategories: Category[] = [];
   uri = 'categories?view=tree&limit=';
   @Input() subcategoryLevel: number;
-  @Output() hideHeaderNavigation:EventEmitter<any> = new EventEmitter();
+  @Output() hideHeaderNavigation: EventEmitter<any> = new EventEmitter();
   constructor(private categoryService: CategoriesService, private cacheService: CacheCustomService,
-    private router: Router) {
+    private router: Router, public localize: LocalizeRouterService) {
   }
 
   ngOnInit() {
@@ -32,8 +33,10 @@ export class HeaderNavigationComponent implements OnInit {
 
   getCategoryTree() {
     this.categoryService.getCategories(this.uri + this.subcategoryLevel).subscribe(response => {
-      this.allCategories = response;
-      this.cacheService.storeDataToCache(this.allCategories, 'CatData');
+      if (typeof (response) === 'object') {
+        this.allCategories = response;
+        this.cacheService.storeDataToCache(this.allCategories, 'CatData');
+      }
     });
   }
 
@@ -43,7 +46,7 @@ export class HeaderNavigationComponent implements OnInit {
       this.cacheService.storeDataToCache(isNonLeaf, 'isNonLeaf');
     }
     this.hideHeaderNavigation.emit();
-    this.router.navigate(['category', category.id, subCategory.id]);
+    this.router.navigate([this.localize.translateRoute('/category'), category.id, subCategory.id]);
     return false;
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { GlobalState } from '../../services';
 import { AccountLoginService } from '../../services/account-login';
-import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './account-overview.component.html'
@@ -14,7 +14,7 @@ export class AccountOverviewComponent {
     private router: Router) {
     this.globalState.subscribeCachedData(this.cusotmerDetailKey, customerData => {
       if (customerData) {
-        this.customerName = customerData.firstName;
+        this.customerName = customerData.firstName || customerData.userName;
       }
     });
   }

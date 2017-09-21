@@ -5,7 +5,16 @@
 
 export const environment = {
   production: false,
-  needMock: false,
+  needMock: true,
   rest_url: 'http://10.131.60.92:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
-  base_url: 'http://10.131.60.92:8081'
+  base_url: 'http://10.131.60.92:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
+  mustMockPaths: [
+    '12/'
+  ],
+  locales: [
+    { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },
+    { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
+  ],
+  prefix: 'ROUTES',
+  pattern: '{LANG}/{CURRENCY}'
 };

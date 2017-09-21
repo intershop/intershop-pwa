@@ -1,18 +1,19 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { ProductTileComponent } from './product-tile.component';
+import { ComponentFixture } from '@angular/core/testing';
 import { async, inject } from '@angular/core/testing';
-import { ProductList } from '../../services/products/products.mock';
-import { TranslateModule } from '@ngx-translate/core';
-import { environment } from '../../../environments/environment';
-
-import { JwtService, GlobalState, CacheCustomService } from '../../services';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
+import { instance, mock } from 'ts-mockito';
+import { environment } from '../../../environments/environment';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
+import { CacheCustomService, GlobalState, JwtService } from '../../services';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
+import { ProductTileComponent } from './product-tile.component';
+
 
 /*
   TODO: commented out tests fail with "ReferenceError: Can't find variable: Intl in vendor.bundle.js (line 56892)"
@@ -23,6 +24,150 @@ describe('ProductTile Component', () => {
     let element: HTMLElement;
     let debugEl: DebugElement;
     let jwtToken: boolean;
+    let localizeRouterServiceMock: LocalizeRouterService;
+    const ProductList = [
+        {
+            Cameras: [
+                {
+                    'name': 'Lenco',
+                    'type': 'Product',
+                    'attributes': [
+                        {
+                            'name': 'Component video (YPbPr/YCbCr) in',
+                            'type': 'String',
+                            'value': '1'
+                        }
+                    ],
+                    'shortDescription': 'LED-2412 - 60.96 cm (24 ) LED, 1920 x 1080, 16:9, DVB-T',
+                    'minOrderQuantity': 1,
+                    'longDescription': '- 61 (24”) 16:9 LED display. - Full HD (1920 x 1080 pixels).- DVB-T function. - Common Interface (CI). - Personal video recorder. - Supports analogue and cable TV. - Multi TV system: PAL & SECAM. - Supports NICAM stereo. - Multiple OSD languages. - Electronic Program Guide (EPG). - Teletext. - Sleeptimer. - Built-in Stereospeakers 3W. - Suitable for wall  ounting (VESA 100).',
+                    'productMaster': false,
+                    'listPrice':
+                    {
+                        'type': 'ProductPrice',
+                        'value': 375.24,
+                        'currencyMnemonic': 'USD',
+                        'range': {
+                            'minimumPrice': 110,
+                            'maximumPrice': 440
+                        }
+                    },
+                    'productBundle': false,
+                    'shippingMethods':
+                    [
+                        {
+                            'name': '2-Business Day',
+                            'type': 'ShippingMethod',
+                            'id': 'STD_2DAY',
+                            'shippingTimeMin': 1,
+                            'shippingTimeMax': 2
+                        }
+                    ],
+                    'availableWarranties':
+                    [
+                        {
+                            'type': 'Link',
+                            'description': 'Insurance against breakdown. Warranty period: 1 year.',
+                            'title': '1-year LED TV Support',
+                            'uri': 'inSPIRED-inTRONICS-Site/-/products/1YLEDTVSUP',
+                            'attributes':
+                            [
+                                {
+                                    'name': 'WarrantyPrice',
+                                    'type': 'MoneyRO',
+                                    'value':
+                                    {
+                                        'type': 'Money',
+                                        'value': 106,
+                                        'currencyMnemonic': 'USD'
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    'productName': 'Lenco LED-2412',
+                    'roundedAverageRating': '0.0',
+                    'readyForShipmentMin': 3,
+                    'readyForShipmentMax': 7,
+                    'salePrice':
+                    {
+                        'type': 'ProductPrice',
+                        'value': 122,
+                        'currencyMnemonic': 'USD',
+                        'scaledPrices': []
+                    },
+                    'sku': '8706917',
+                    'images':
+                    [
+                        {
+                            'name': 'front S',
+                            'type': 'Image',
+                            'imageActualHeight': 110,
+                            'imageActualWidth': 110,
+                            'viewID': 'front',
+                            'effectiveUrl': '../../assets/product_img/a.jpg',
+                            'typeID': 'S',
+                            'primaryImage': true
+                        },
+                        {
+                            'name': 'front S',
+                            'type': 'Image',
+                            'imageActualHeight': 110,
+                            'imageActualWidth': 110,
+                            'viewID': 'front',
+                            'effectiveUrl': '../../assets/product_img/a.jpg',
+                            'typeID': 'S',
+                            'primaryImage': true
+                        },
+                        {
+                            'name': 'front S',
+                            'type': 'Image',
+                            'imageActualHeight': 110,
+                            'imageActualWidth': 110,
+                            'viewID': 'front',
+                            'effectiveUrl': '../../assets/product_img/a.jpg',
+                            'typeID': 'S',
+                            'primaryImage': true
+                        }
+                    ],
+                    'manufacturer': 'Lenco',
+                    'availability': true,
+                    'retailSet': false,
+                    'inStock': true,
+                    'mastered': false,
+
+                    'enableExpressShop': true,
+                    'richSnippetsEnabled': true,
+                    'ShowProductRating': true,
+                    'showAddToCart': true,
+                    'totalRatingCount': 2,
+                    'simpleRatingView': true,
+                    'averagRating': 2,
+                    'isRetailSet': true,
+                    'displayType': 'glyphicon',
+                    'applicablePromotions': [
+                        {
+                            'disableMessages': true,
+                            'isUnderABTest': true,
+                            'title': 'Promotion Test Title',
+                            'icon': 'test',
+                            'externalDetailsUrl': 'www.testUrl.com'
+                        }
+                    ],
+                    'name_override': 'Test_override',
+                    'mockListView': {
+                        'displayType': 'test',
+                        'isRetailSet': false
+                    },
+                    'showInformationalPrice': true,
+                    'isEndOfLife': false,
+                    'id': '1',
+                    'averageRatingClass': '',
+                    'isProductMaster': true
+                }
+            ]
+        }
+    ];
 
     class JwtServiceStub {
         saveToken(token) {
@@ -45,7 +190,6 @@ describe('ProductTile Component', () => {
         }
     }
 
-
     class GlobalStateStub {
         subscribeCachedData(key, callBack: Function) {
             callBack(['12', '23']);
@@ -67,6 +211,7 @@ describe('ProductTile Component', () => {
     }
 
     beforeEach(async(() => {
+        localizeRouterServiceMock = mock(LocalizeRouterService);
         jwtToken = null;
         TestBed.configureTestingModule({
             imports: [TranslateModule.forRoot(),
@@ -78,7 +223,8 @@ describe('ProductTile Component', () => {
                 { provide: Router, useClass: RouterStub },
                 { provide: WishListService, useClass: WishListServiceStub },
                 { provide: GlobalState, useClass: GlobalStateStub },
-                { provide: CacheCustomService, useClass: CacheCustomServiceStub }
+                { provide: CacheCustomService, useClass: CacheCustomServiceStub },
+                { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents();
