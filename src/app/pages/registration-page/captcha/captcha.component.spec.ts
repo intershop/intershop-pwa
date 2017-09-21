@@ -1,8 +1,8 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
-import { CaptchaComponent } from './captcha.component';
+import { ComponentFixture } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { CaptchaComponent } from './captcha.component';
 
 describe('Captcha Component', () => {
     let fixture: ComponentFixture<CaptchaComponent>;

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryModel } from '../../../services/categories/category.model';
-import { SubcategoryModel } from '../../../services/categories/subcategory.model';
-import { CategoryService } from '../../../services/categories/category.service';
 import { CacheCustomService } from '../../../services/cache/cache-custom.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { CategoryModel } from '../../../services/categories/category.model';
+import { CategoryService } from '../../../services/categories/category.service';
+import { SubcategoryModel } from '../../../services/categories/subcategory.model';
 import { GlobalState } from '../../../services/global.state';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-header-navigation',
@@ -17,8 +17,8 @@ export class HeaderNavigationComponent implements OnInit {
   local: string;
 
   constructor(private categoryService: CategoryService,
-              private cacheService: CacheCustomService,
-              public localize: LocalizeRouterService, private globalState: GlobalState) {
+    private cacheService: CacheCustomService,
+    public localize: LocalizeRouterService, private globalState: GlobalState) {
 
   }
 
