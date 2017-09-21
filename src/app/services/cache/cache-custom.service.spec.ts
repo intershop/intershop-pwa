@@ -1,8 +1,8 @@
-import { CacheService } from 'ng2-cache/ng2-cache';
-import { EncryptDecryptService } from './encrypt-decrypt.service';
-import { TestBed } from '@angular/core/testing';
-import { CacheCustomService } from './cache-custom.service';
 import { ReflectiveInjector } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { CacheService } from 'ng2-cache/ng2-cache';
+import { CacheCustomService } from './cache-custom.service';
+import { EncryptDecryptService } from './encrypt-decrypt.service';
 
 describe('CacheCustom Service', () => {
     let mockCache;

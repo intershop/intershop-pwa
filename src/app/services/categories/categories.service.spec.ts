@@ -1,21 +1,17 @@
-// import { TestBed, inject } from '@angular/core/testing';
-// import { environment } from '../../../environments/environment';
-// import { CategoriesService } from './categories.service';
-// import { InstanceService } from '../../services/instance.service';
-// import { CategoriesMockService } from './categories.service.mock';
+import { anything, instance, mock, verify } from 'ts-mockito';
+import { ApiService } from '../';
+import { CategoriesService } from './categories.service';
 
-// describe('Category Service', () => {
-//     environment.needMock = true;
-//     beforeEach(() => {
-//         TestBed.configureTestingModule({
-//             providers: [CategoriesMockService, CategoriesService, InstanceService]
-//         });
-//     });
+describe('Category Service', () => {
+  const apiService: ApiService = mock(ApiService);
+  let categoriesService: CategoriesService;
 
-//     // it('should verify that getCategories method is returning the Categories', inject([CategoryService], (categoryService: CategoryService) => {
-//     //     let categories;
-//     //     categoryService.getCategories().map(response => response).subscribe(response => categories = response);
-//     //     expect(categories).not.toBeNull();
-//     // }));
+  beforeEach(() => {
+    categoriesService = new CategoriesService(instance(apiService));
+  });
 
-// });
+  it('should verify that correct api is called when getCategories method is called', () => {
+    categoriesService.getCategories('uri');
+    verify(apiService.get(anything(), anything(), anything(), anything())).once();
+  });
+});

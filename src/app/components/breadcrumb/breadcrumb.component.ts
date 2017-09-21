@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { BreadcrumbService } from './breadcrumb.service';
 
 /**
@@ -41,8 +41,9 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigateTo(url: string): void {
+  navigateTo(url: string) {
     this.router.navigateByUrl(url);
+    return false;
   }
 
   friendlyName(url: string): string {

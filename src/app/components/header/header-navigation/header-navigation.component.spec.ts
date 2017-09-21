@@ -1,13 +1,15 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
-import { HeaderNavigationComponent } from './header-navigation.component';
-import { CategoriesService } from '../../../services/categories/categories.service';
-import { CacheCustomService } from '../../../services/cache/cache-custom.service';
-import { async } from '@angular/core/testing';
-import { mock, instance, when, anything, verify, anyString } from 'ts-mockito';
-import { Category } from '../../../services/categories/category.model';
-import { Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { Category } from '../../../services/categories/categories.model';
+import { CategoriesService } from '../../../services/categories/categories.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { HeaderNavigationComponent } from './header-navigation.component';
+
 
 describe('Header Navigation Component', () => {
   let fixture: ComponentFixture<HeaderNavigationComponent>;
@@ -16,11 +18,13 @@ describe('Header Navigation Component', () => {
   let cacheCustomServiceMock: CacheCustomService;
   let categoriesServiceMock: CategoriesService;
   let routerMock: Router;
+  let localize: LocalizeRouterService;
 
   beforeEach(async(() => {
     cacheCustomServiceMock = mock(CacheCustomService);
     categoriesServiceMock = mock(CategoriesService);
     routerMock = mock(Router);
+    localize = mock(LocalizeRouterService);
     when(categoriesServiceMock.getCategories(anyString())).thenReturn(Observable.of([new Category()]));
 
     TestBed.configureTestingModule({
@@ -30,7 +34,8 @@ describe('Header Navigation Component', () => {
       providers: [
         { provide: CacheCustomService, useFactory: () => instance(cacheCustomServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) }
+        { provide: Router, useFactory: () => instance(routerMock) },
+        { provide: LocalizeRouterService, useFactory: () => instance(localize) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -75,6 +80,7 @@ describe('Header Navigation Component', () => {
     component.changeRoute(category, subCategory);
     verify(cacheCustomServiceMock.storeDataToCache(anything(), anything())).once();
     verify(routerMock.navigate(anything())).once();
+    verify(localize.translateRoute(anything())).once();
   });
 });
 

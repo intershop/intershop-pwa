@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { AccountLoginService } from '../../services/account-login';
-import { EmailValidator } from '../../validators/email.validator';
+import { UserDetail } from '../../services/account-login/account-login.model';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
-
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
+import { EmailValidator } from '../../validators/email.validator';
 
 @Component({
   templateUrl: './account-login.component.html'
@@ -15,9 +17,10 @@ export class AccountLoginComponent implements OnInit {
   loginToUse = false;
   loginFormSubmitted: boolean;
   errorUser: any;
-  registrationLoginType = 'email';
+  userRegistrationLoginType: string;
   isLoggedIn;
-  defaultResponse = '401 and Unauthorized';
+  useSimpleAccount: boolean;
+  isDirty: boolean;
   /**
    * Constructor
    * @param  {FormBuilder} privateformBuilder
@@ -25,17 +28,24 @@ export class AccountLoginComponent implements OnInit {
    * @param  {Router} privaterouter
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private cacheService: CacheCustomService) { }
+    private router: Router, private cacheService: CacheCustomService,
+    private globalConfiguration: GlobalConfiguration, private localizeRouterService: LocalizeRouterService) { }
 
   /**
      * Creates Login Form
      */
   ngOnInit() {
     this.isLoggedIn = this.cacheService.cacheKeyExists('userDetail');
-    this.loginForm = this.formBuilder.group({
-      userName: ['', [Validators.compose([Validators.required,
-      (this.registrationLoginType === 'email' ? EmailValidator.validate : null)])]],
-      password: ['', Validators.required],
+    this.globalConfiguration.getApplicationSettings().subscribe(data => {
+      if (data) {
+        this.useSimpleAccount = data.useSimpleAccount;
+        this.userRegistrationLoginType = data.userRegistrationLoginType;
+      }
+      this.loginForm = this.formBuilder.group({
+        userName: ['', [Validators.compose([Validators.required,
+        (this.userRegistrationLoginType === 'email' ? EmailValidator.validate : null)])]],
+        password: ['', Validators.required],
+      });
     });
   }
 
@@ -47,17 +57,17 @@ export class AccountLoginComponent implements OnInit {
       Object.keys(this.loginForm.controls).forEach(key => {
         this.loginForm.get(key).markAsDirty();
       });
+      this.isDirty = true;
     } else {
       this.loginFormSubmitted = true;
-      this.accountLoginService.singinUser(userCredentials).subscribe(userData => {
-        if (userData && typeof userData !== 'string') {
-          this.router.navigate(['home']);
+      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
+        if (typeof(userData) === 'object') {
+          this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
         } else {
           this.loginForm.get('password').reset();
-          this.errorUser = userData || this.defaultResponse;
+          this.errorUser = userData;
         }
       });
     }
   }
 }
-

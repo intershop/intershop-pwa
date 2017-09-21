@@ -1,17 +1,17 @@
 <div class="main-navigation col-sm-8 col-md-9" role="navigation">
   <ul class="navbar-nav main-navigation-list">
     <li class="home hidden-xs">
-      <a routerLink="/" title="home"><span class="glyphicon glyphicon-home"></span></a>
+      <a [routerLink]="localize.translateRoute('/home')" title="home"><span class="glyphicon glyphicon-home"></span></a>
     </li>
     <li *ngFor="let category of allCategories" class="dropdown" [ngClass]="category.isCategory ? 'open': ''">
-      <a [routerLink]="['category', category.id]" attr.data-testing-id="{{category.id}}-link">{{category.name}}</a>
+      <a [routerLink]="[localize.translateRoute('/category'), category.id]" attr.data-testing-id="{{category.id}}-link">{{category.name}}</a>
       <a (click)="category.isCategory = !category.isCategory" class="dropdown-toggle visible-xs"><span class="glyphicon glyphicon-plus" [ngClass]="category.isCategory ? 'glyphicon-minus': 'glyphicon-plus'"></span></a>
       <ul class="category-level1 dropdown-menu">
         <li class="main-navigation-level1-item" *ngFor="let subCategory of category.subCategories">
-          <a [href]="category.id +'/'+ subCategory.id" (click) ="changeRoute(category,subCategory)">{{subCategory.name}}</a>
+          <a [href]="category.id +'/'+ subCategory.id" (click)="changeRoute(category,subCategory)">{{subCategory.name}}</a>
           <ul class="category-level2">
             <li class="main-navigation-level2-item" *ngFor="let item of subCategory.subCategories">
-              <a [routerLink]="['category', category.id , subCategory.id , item.id]">{{item.name}}</a>
+              <a [routerLink]="[localize.translateRoute('/category'), category.id, subCategory.id, item.id]">{{item.name}}</a>
             </li>
           </ul>
         </li>

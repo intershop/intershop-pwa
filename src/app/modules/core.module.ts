@@ -1,22 +1,23 @@
-import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { CacheLocalStorage, CacheService, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import {
-  ApiService, JwtService, EncryptDecryptService,
-  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator
+  ApiService, CacheCustomService, CrossTabCommunicator,
+  CustomErrorHandler, DataEmitterService, EncryptDecryptService, GlobalState, JwtService,
+  MockApiService
 } from '../services';
 
-import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
-import { translateFactory } from '../services/custom-translate-loader';
+import { HeaderModule } from '../components/header/header.module';
+import { GlobalConfiguration } from '../configurations/global.configuration';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-import { GlobalConfiguration } from '../global-configuration/global-configuration';
+import { translateFactory } from '../services/custom-translate-loader';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { GlobalConfiguration } from '../global-configuration/global-configuratio
     CustomErrorHandler,
     GlobalState,
     CrossTabCommunicator,
+    MockApiService,
     GlobalConfiguration
   ],
   exports: [

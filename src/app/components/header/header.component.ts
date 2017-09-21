@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { WishListService } from '../../services/wishlists/wishlists.service';
 import { GlobalState } from '../../services/global.state';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 
 @Component({
     selector: 'is-header',
