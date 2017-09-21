@@ -19,10 +19,10 @@ export class AccountLoginMockService {
      * @param  {AccountLogin} user
      * @returns Observable
      */
-    singinUser(user: AccountLogin): Observable<UserDetail> {
+    singinUser(user: AccountLogin): Observable<UserDetail | any> {
         if (_.isEqual(user, this.authorizedUser)) {
             return this.getUserDetail();
-        } else { return Observable.of(null); }
+        } else { return Observable.of({ errorCode: 'Err001', parameter: [1], fieldName: 'password' }); }
     }
 
     /**
