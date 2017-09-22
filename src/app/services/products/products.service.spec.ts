@@ -1,20 +1,22 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { Observable } from 'rxjs/Rx';
+import { instance, mock, when } from 'ts-mockito';
+import { ApiService } from '../';
 import { ProductListService } from './products.service';
-import { InstanceService } from 'app/services/instance.service';
-import { ProductListMockService } from 'app/services/products/products.service.mock';
-
 
 describe('ProuctList Service', () => {
+    let productListService: ProductListService;
+    const apiService: ApiService = mock(ApiService);
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [
-                ProductListService, InstanceService, ProductListMockService
-            ]
-        });
+        productListService = new ProductListService(instance(apiService));
     });
 
-    it('should call getProductList method', async(inject([ProductListService], (productListService: ProductListService) => {
-        const data = productListService.getProductList();
-        expect(data).not.toBe(null);
-    })));
+    it('should call getProductList method', () => {
+        const products = ['Product1', 'Product2'];
+        when(apiService.get('categories/Cameras-Camcorders/584/products/3953312')).thenReturn(Observable.of(products));
+        let productList;
+        productListService.getProductList().subscribe((data) => {
+            productList = data;
+        });
+        expect(productList).toBe(products);
+    });
 });

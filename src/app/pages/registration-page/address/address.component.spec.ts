@@ -1,8 +1,8 @@
-import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { SharedModule } from '../../../modules/shared.module';
 import { AddressComponent } from './address.component';
-import { SharedModule } from 'app/modules/shared.module';
 
 describe('Address Component', () => {
     let fixture: ComponentFixture<AddressComponent>;
@@ -10,7 +10,7 @@ describe('Address Component', () => {
     let element: HTMLElement;
     let debugEl: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(fakeAsync(() => {
         TestBed.configureTestingModule({
             declarations: [AddressComponent],
             imports: [SharedModule]
@@ -23,21 +23,19 @@ describe('Address Component', () => {
         component = fixture.componentInstance;
         debugEl = fixture.debugElement;
         element = fixture.nativeElement;
+        fixture.detectChanges();
     });
 
     it('should call ngOnInit method', () => {
-        component.ngOnInit();
         expect(component.addressForm).not.toBe(null);
     });
 
     it('should call valueChanges method of form and verify that the form is invalid', () => {
-        component.ngOnInit();
         component.addressForm.get('address.country').setValue('London');
         expect(component.addressForm.valid).toBe(false);
     });
 
     it('should call valueChanges method of form and verify that the form is valid', () => {
-        component.ngOnInit();
         component.addressForm.get('address.country').setValue('London');
         component.addressForm.get('address.firstName').setValue('Patricia');
         component.addressForm.get('address.lastName').setValue('Miller');
@@ -55,15 +53,8 @@ describe('Address Component', () => {
     it('should check if controls are rendered on the HTML', () => {
         const elem = element.getElementsByClassName('form-control');
         expect(elem.length).toBe(13);
-        expect(elem[0]).toBeDefined();
-        expect(elem[1]).toBeDefined();
-        expect(elem[2]).toBeDefined();
-        expect(elem[3]).toBeDefined();
-        expect(elem[4]).toBeDefined();
-        expect(elem[5]).toBeDefined();
-        expect(elem[6]).toBeDefined();
-        expect(elem[7]).toBeDefined();
-        expect(elem[8]).toBeDefined();
+        for (let i = 0 ; i <= 8 ; i++) {
+            expect(elem[i]).toBeTruthy();
+        }
     });
-
 });

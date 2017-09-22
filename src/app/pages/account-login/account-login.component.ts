@@ -1,29 +1,27 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from '@angular/forms';
-import { AccountLoginService } from "../../services/account-login/account-login.service";
-import { CacheCustomService } from "../../services/index";
+import { GlobalConfiguration } from '../../configurations/global.configuration';
+import { AccountLoginService } from '../../services/account-login';
+import { UserDetail } from '../../services/account-login/account-login.model';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { CustomValidations } from "../../validators/custom.validations";
-import { UserDetail } from "../../services/account-login/account-login.model";
 import { ErrorCodeMappingService } from "../../services/error-code-mapping.service";
-import { FormControlMessages } from "../../components/form-control-messages";
+
 @Component({
-  templateUrl: './account-login.component.html',
-  providers: [ErrorCodeMappingService],
-  entryComponents: [FormControlMessages],
+  templateUrl: './account-login.component.html'
 })
 
 export class AccountLoginComponent implements OnInit {
-  @ViewChild('dynamic', {
-    read: ViewContainerRef
-  }) viewContainerRef: ViewContainerRef;
   loginForm: FormGroup;
   loginToUse = false;
   loginFormSubmitted: boolean;
   errorUser: any;
-  registrationLoginType = 'email';
+  userRegistrationLoginType: string;
   isLoggedIn;
-  defaultResponse = '401 and Unauthorized';
+  useSimpleAccount: boolean;
+  isDirty: boolean;
   restError: string;
   /**
    * Constructor
@@ -34,7 +32,9 @@ export class AccountLoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
     private router: Router, private cacheService: CacheCustomService,
     private errorCodeMappingService: ErrorCodeMappingService,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private globalConfiguration: GlobalConfiguration,
+    private localizeRouterService: LocalizeRouterService
   ) { }
 
   /**
@@ -42,11 +42,16 @@ export class AccountLoginComponent implements OnInit {
      */
   ngOnInit() {
     this.isLoggedIn = this.cacheService.cacheKeyExists('userDetail');
-    this.loginForm = this.formBuilder.group({
-      userName: ['', [Validators.compose([Validators.required, (this.registrationLoginType === 'email' ?  CustomValidations.emailValidate : null)])]],
-      password: ['', [Validators.compose([Validators.required, Validators.minLength(7),
-      Validators.maxLength(256), CustomValidations.passwordValidate])]]
-
+    this.globalConfiguration.getApplicationSettings().subscribe(data => {
+      if (data) {
+        this.useSimpleAccount = data.useSimpleAccount;
+        this.userRegistrationLoginType = data.userRegistrationLoginType;
+      }
+      this.loginForm = this.formBuilder.group({
+        userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidations.emailValidate : null)])]],
+        password: ['', [Validators.compose([Validators.required, Validators.minLength(7),
+        Validators.maxLength(256), CustomValidations.passwordValidate])]]
+      });
     });
 
   }
@@ -60,26 +65,17 @@ export class AccountLoginComponent implements OnInit {
       Object.keys(this.loginForm.controls).forEach(key => {
         this.loginForm.get(key).markAsDirty();
       });
+      this.isDirty = true;
     } else {
       this.loginFormSubmitted = true;
-      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail | any) => {
-        if (userData instanceof UserDetail) {
-          this.router.navigate(['home']);
+      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
+        if (typeof(userData) === 'object') {
+          this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
         } else {
           this.loginForm.get('password').reset();
-          this.errorUser = this.defaultResponse || userData;
-          this.restError = this.errorCodeMappingService.getErrorMapping(userData);
-          this.loadCustomError(this.restError, userData.fieldName);
+          this.errorUser = userData;
         }
       });
     }
   }
-
-  loadCustomError(errorMessage, fieldName) {
-    let passwordControl: FormControl = <FormControl>this.loginForm.controls[fieldName];
-    passwordControl.markAsDirty();
-    passwordControl.setErrors({ "customError": errorMessage });
-
-  }
 }
-

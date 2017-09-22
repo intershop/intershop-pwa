@@ -1,6 +1,6 @@
-import {InstanceService} from './instance.service';
 import { Injector } from '@angular/core';
 import {DataEmitterService} from './data-emitter.service';
+import {InstanceService} from './instance.service';
 
 export class Abc extends Injector {
   get(token: any, notFoundValue?: any) {

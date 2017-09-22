@@ -1,89 +1,105 @@
-import { LoginStatusComponent } from './login-status.component';
-import { inject, TestBed, ComponentFixture } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { userData } from '../../../services/account-login/account-login.mock';
-import { AccountLoginService } from '../../../services/account-login';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Rx';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { GlobalState } from '../../../services';
-import { mock, instance, when, anything, verify, capture } from 'ts-mockito';
-
+import { AccountLoginService } from '../../../services/account-login';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
-    let fixture: ComponentFixture<LoginStatusComponent>;
-    let component: LoginStatusComponent;
-    let element: HTMLElement;
-    let routerMock: Router;
-    let accountLoginServiceMock: AccountLoginService;
-    let globalStateMock: GlobalState;
+  let fixture: ComponentFixture<LoginStatusComponent>;
+  let component: LoginStatusComponent;
+  let element: HTMLElement;
+  let routerMock: Router;
+  let accountLoginServiceMock: AccountLoginService;
+  let globalStateMock: GlobalState;
+  let globalConfigurationMock: GlobalConfiguration;
+  let localizeRouterServiceMock: LocalizeRouterService;
+  const userData = {
+    'firstName': 'Patricia',
+    'lastName': 'Miller'
+  };
 
-    beforeEach(() => {
-        routerMock = mock(Router);
-        accountLoginServiceMock = mock(AccountLoginService);
-
-        globalStateMock = mock(GlobalState);
-        const callBackMock = (key, callBack: Function) => callBack(userData);
-        when(globalStateMock.subscribe(anything(), anything())).thenCall(callBackMock);
-        when(globalStateMock.subscribeCachedData(anything(), anything())).thenCall(callBackMock);
-
-        TestBed.configureTestingModule({
-            declarations: [
-                LoginStatusComponent
-            ],
-            providers: [
-                { provide: Router, useFactory: () => instance(routerMock) },
-                { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-                { provide: GlobalState, useFactory: () => instance(globalStateMock) },
-            ]
-        }).compileComponents();
-
-        fixture = TestBed.createComponent(LoginStatusComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-        fixture.detectChanges();
+  beforeEach(() => {
+    routerMock = mock(Router);
+    accountLoginServiceMock = mock(AccountLoginService);
+    localizeRouterServiceMock = mock(LocalizeRouterService);
+    when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
+      return arg1;
     });
 
-    it('should be created', () => {
-        expect(component).toBeTruthy();
-        expect(element).toBeTruthy();
-    });
+    globalStateMock = mock(GlobalState);
+    const callBackMock = (key, callBack: Function) => callBack(userData);
+    when(globalStateMock.subscribe(anything(), anything())).thenCall(callBackMock);
+    when(globalStateMock.subscribeCachedData(anything(), anything())).thenCall(callBackMock);
 
-    it('should log in mocked user', () => {
-        expect(component.isLoggedIn).toBe(true);
-        expect(component.userDetail).toBeTruthy();
-    });
+    globalConfigurationMock = mock(GlobalConfiguration);
+    when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(false));
 
-    it('should navigate to "register" when register is clicked', () => {
-        component.register();
-        verify(routerMock.navigate(anything())).once();
-        const [navigateToArgument] = capture(routerMock.navigate).last();
-        expect(navigateToArgument).toEqual(['register']);
-    });
+    TestBed.configureTestingModule({
+      imports: [
+        TranslateModule.forRoot()
+      ],
+      declarations: [
+        LoginStatusComponent
+      ],
+      providers: [
+        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
+        { provide: GlobalState, useFactory: () => instance(globalStateMock) },
+        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
+        { provide: Router, useFactory: () => instance(routerMock) }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    }).compileComponents();
+  });
 
-    it('should navigate to "home" and unset userDetails when logout is called', () => {
-        // mocked user details in place
-        expect(component.userDetail).toBeTruthy();
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LoginStatusComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
-        component.logout();
+  it('should be created', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+  }));
 
-        verify(accountLoginServiceMock.logout()).once();
+  it('should log in mocked user', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
+    expect(component.isLoggedIn).toBe(true);
+    expect(component.userDetail).toBeTruthy();
+  }));
 
-        verify(routerMock.navigate(anything())).once();
-        const [navigateToArgument] = capture(routerMock.navigate).last();
-        expect(navigateToArgument).toEqual(['home']);
+  it('should navigate to "register" when register is clicked', () => {
+    component.register();
+    verify(routerMock.navigate(anything())).once();
+  });
 
-        expect(component.userDetail).toBeNull();
-        expect(component.isLoggedIn).toBe(false);
-    });
+  it('should navigate to "home" and unset userDetails when logout is called', () => {
+    component.logout();
 
-    it('should navigate to "login" when signIn is called', inject([Router], (router: Router) => {
-        component.signIn();
+    expect(component.userDetail).toBeNull();
+    verify(routerMock.navigate(anything())).once();
+  });
 
-        verify(routerMock.navigate(anything())).once();
-        const [navigateToArgument] = capture(routerMock.navigate).last();
-        expect(navigateToArgument).toEqual(['login']);
-    }));
+  it('should render full name on template when user is logged in', () => {
+    fixture.detectChanges();
+    const loggedInDetails = element.getElementsByClassName('login-name');
+    expect(loggedInDetails[0].textContent).toEqual('Patricia Miller');
+  });
 
-    it('should render full name on template when user is logged in', () => {
-        const loggedInDetails = element.getElementsByClassName('login-name');
-        expect(loggedInDetails[0].textContent).toEqual('Patricia Miller');
-    });
+  xit('should verify that isLoggedIn is set to false when globalState returns null', () => {
+    fixture.detectChanges();
+    when(globalStateMock.subscribe(anything(), anything())).thenReturn(null);
+    when(globalStateMock.subscribeCachedData(anything(), anything())).thenReturn(null);
+    expect(component.isLoggedIn).toBe(false);
+  });
 });

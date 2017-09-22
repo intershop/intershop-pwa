@@ -1,29 +1,30 @@
-import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { CacheLocalStorage, CacheService, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import {
-  ApiService, JwtService, EncryptDecryptService,
-  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator
+  ApiService, CacheCustomService, 
+  CustomErrorHandler, DataEmitterService, EncryptDecryptService, JwtService,
+  MockApiService,
+  GlobalState,
+  CrossTabCommunicator
 } from '../services';
 
-import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
-import { translateFactory } from '../services/custom-translate-loader';
+import { HeaderModule } from '../components/header/header.module';
+import { GlobalConfiguration } from '../configurations/global.configuration';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-import { FormControlMessages, FormGroupComponent, FormValidationDirective } from "../components/form-control-messages";
-import { FormsModule } from "@angular/forms";
+import { translateFactory } from '../services/custom-translate-loader';
 import { ErrorCodeMappingService } from "../services/error-code-mapping.service";
+import { FormValidationDirective } from "../directives/form-validation.directive";
+
 @NgModule({
   imports: [
-
-    FormsModule,
     FooterModule,
     HeaderModule,
     BsDropdownModule.forRoot(),
@@ -54,7 +55,9 @@ import { ErrorCodeMappingService } from "../services/error-code-mapping.service"
     CustomErrorHandler,
     GlobalState,
     CrossTabCommunicator,
-    ErrorCodeMappingService
+    ErrorCodeMappingService,
+    MockApiService,
+    GlobalConfiguration
   ],
   exports: [
     FooterModule,

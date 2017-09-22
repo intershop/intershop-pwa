@@ -1,35 +1,32 @@
-import { TestBed, inject } from '@angular/core/testing';
+
 import { Observable } from 'rxjs/Observable';
+import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { ApiService } from '../';
 import { SearchBoxService } from './search-box.service';
-import { environment } from 'environments/environment';
-import { InstanceService } from 'app/services/instance.service';
-import { SearchBoxMockService } from './search-box.service.mock';
 
 describe('Search Box Service', () => {
-    environment.needMock = true;
+    let searchBoxService: SearchBoxService;
+    let apiService: ApiService;
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [SearchBoxService,
-                InstanceService, SearchBoxMockService
-            ]
-        });
+        apiService = mock(ApiService);
+        searchBoxService = new SearchBoxService(instance(apiService));
+
     });
 
-    it('search results should not be null when search term matches one or more products in the available product list', inject([SearchBoxService], (searchBoxService: SearchBoxService) => {
+    it('SearchBox service should return the matched terms when search term matches one or more products in the available product list', () => {
+        when(apiService.get(anything())).thenReturn(Observable.of('Goods'));
         let searchResults;
         searchBoxService.search(Observable.of('g')).subscribe((results) => {
             searchResults = results;
         });
+        expect(searchResults).toBe('Goods');
+    });
 
-        expect(searchResults).not.toBeNull();
-    }));
-
-    it('search results should be blank array when search term dont match any product in the available product list', inject([SearchBoxService], (searchBoxService: SearchBoxService) => {
+    it('SearchBox service should return a blank array when nothing is entered as searchterm', () => {
         let searchResults;
-        searchBoxService.search(Observable.of('test')).subscribe((results) => {
+        searchBoxService.search(Observable.of('')).subscribe((results) => {
             searchResults = results;
         });
-
-        expect(searchResults.elements).toEqual([]);
-    }));
+        expect(searchResults).toEqual([]);
+    });
 });
