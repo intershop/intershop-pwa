@@ -1,13 +1,13 @@
-import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { Route, Routes } from '@angular/router';
+import { Routes, Route } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import * as _ from 'lodash';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import { Location } from '@angular/common';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/share';
+import * as _ from 'lodash';
 import { LocalizeRouterSettings } from './localize-router.config';
 
 interface ILocales {

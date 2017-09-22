@@ -1,9 +1,9 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { TestBed } from '@angular/core/testing';
-import { NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { TestBed } from '@angular/core/testing';
 import { BreadcrumbComponent } from './breadcrumb.component';
+import { Router, NavigationEnd } from '@angular/router';
+import { mock, instance, when, anything, verify, capture } from 'ts-mockito';
 import { BreadcrumbService } from './breadcrumb.service';
 
 describe('BreadCrumb Component', () => {

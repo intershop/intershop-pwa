@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { ShoppingModule } from './../../modules/shopping.module';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { ShoppingModule } from '../../modules/shopping.module';
+import { CommonModule } from '@angular/common';
 import { CategoryPageComponent } from './category-page.component';
+import { RouterModule } from '@angular/router';
 import { CategoryPageRoute } from './category-page.routes';
 
 @NgModule({

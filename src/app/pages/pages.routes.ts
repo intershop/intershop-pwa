@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { BreadcrumbService } from '../components/breadcrumb/breadcrumb.service';
+import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../services/auth-guard.service';
 import { LocalizeRouterModule } from '../services/routes-parser-locale-currency/localize-router.module';
+import { BreadcrumbService } from '../components/breadcrumb/breadcrumb.service';
 
 
 const routes: Routes = [

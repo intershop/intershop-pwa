@@ -1,41 +1,33 @@
-import { Directive, ElementRef, Injector, Input, Renderer2 } from '@angular/core';
+import { Directive, Input, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { GlobalState } from '../services/global.state';
 import * as _ from 'lodash';
-import { GlobalStateAwareService } from '../services/base-services/global-state-aware.service';
-import { ProductCompareService } from '../services/product-compare/product-compare.service';
 
 @Directive({
-  selector: '[isDisableIcon]'
+    selector: '[isDisableIcon]'
 })
-export class DisableIconDirective {
-  @Input() property: string;
+export class DisableIconDirective implements OnInit {
+    @Input() property: string;
+    @Input() globalStateKey: string;
 
-  constructor(private renderer: Renderer2,
-    private el: ElementRef,
-    private injector: Injector
-  ) {
-  }
-
-  private update = compareListItems => {
-    if (compareListItems) {
-      if (_.find(compareListItems, compareProduct => compareProduct === this.property)) {
-        this.renderer.addClass(this.el.nativeElement, 'is-selected');
-      } else {
-        this.renderer.removeClass(this.el.nativeElement, 'is-selected');
-      }
-    }
-  }
-
-  @Input()
-  set globalStateKey(globalStateKey: string) {
-    let service: GlobalStateAwareService<string[]>;
-    if (globalStateKey === 'productCompareData') {
-      service = this.injector.get(ProductCompareService);
-    } else {
-      throw new Error('cannot resolve service for "' + globalStateKey + '"');
+    constructor(private globalState: GlobalState,
+        private renderer: Renderer2,
+        private el: ElementRef) {
     }
 
-    service.subscribe(this.update);
-    this.update(service.current);
-  }
+    ngOnInit() {
+        this.toggleClass();
+    }
+
+    toggleClass() {
+        this.globalState.subscribeCachedData(this.globalStateKey, compareListItems => {
+            if (compareListItems) {
+                if (_.find(compareListItems, compareProduct => compareProduct === this.property)) {
+                    this.renderer.addClass(this.el.nativeElement, 'is-selected');
+                } else {
+                    this.renderer.removeClass(this.el.nativeElement, 'is-selected');
+                }
+            }
+        });
+    }
 }
 

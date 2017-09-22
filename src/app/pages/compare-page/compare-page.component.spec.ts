@@ -1,17 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { instance, mock } from 'ts-mockito';
-import { ProductCompareService } from '../../services/product-compare/product-compare.service';
 import { ComparePageComponent } from './compare-page.component';
-
+import { GlobalState } from '../../services/global.state';
 
 describe('ComparePageComponent', () => {
   let component: ComparePageComponent;
   let fixture: ComponentFixture<ComparePageComponent>;
 
   beforeEach(async(() => {
+    class GlobalStatestub {
+      subscribeCachedData(key, callBack: Function) {
+
+      }
+    }
+
     TestBed.configureTestingModule({
       declarations: [ComparePageComponent],
-      providers: [{ provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }]
+      providers: [{ provide: GlobalState, useClass: GlobalStatestub }]
     })
       .compileComponents();
   }));

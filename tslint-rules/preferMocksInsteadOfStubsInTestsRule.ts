@@ -1,5 +1,5 @@
+import { SyntaxKind, SourceFile } from 'typescript';
 import * as Lint from 'tslint';
-import { SourceFile, SyntaxKind } from 'typescript';
 import { RuleHelpers } from './ruleHelpers';
 
 class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {

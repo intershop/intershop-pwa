@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from '@angular/core';
-import 'rxjs/add/observable/forkJoin';
-import { Subscription } from 'rxjs/Subscription';
+import { PipeTransform, Pipe, Injectable, ChangeDetectorRef } from '@angular/core';
 import { LocalizeRouterService } from './localize-router.service';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/observable/forkJoin';
 
 @Injectable()
 @Pipe({
