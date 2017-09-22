@@ -8,4 +8,8 @@ export class UserDetailService extends GlobalStateAwareService<UserDetail> {
   constructor() {
     super('currentUserDetail', true, true);
   }
+
+  setUserDetail(newUserDetail: UserDetail): void {
+    this.next(newUserDetail);
+  }
 }

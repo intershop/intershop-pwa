@@ -6,14 +6,12 @@ import { GlobalStateAwareService } from '../base-services/global-state-aware-ser
 import { WishListModel } from './wishlists.model';
 
 @Injectable()
-export class WishListService {
+export class WishListService extends GlobalStateAwareService<WishListModel> {
 
   baseUrl = 'customers/-/wishlists/';
 
-  private wishListShareService: GlobalStateAwareService<WishListModel>;
-
   constructor(private apiService: ApiService, private accountLoginService: AccountLoginService) {
-    this.wishListShareService = new GlobalStateAwareService<WishListModel>('wishListStatus', true, false);
+    super('wishListStatus', true, false);
     accountLoginService.subscribe(this.update);
   }
 
@@ -21,12 +19,12 @@ export class WishListService {
     if (this.accountLoginService.isAuthorized()) {
       this.retrieveWishListFromServer();
     } else {
-      this.wishListShareService.next(null);
+      this.next(null);
     }
   }
 
   subscribe(callback: (model: WishListModel) => void) {
-    this.wishListShareService.subscribe(callback);
+    super.subscribe(callback);
   }
 
   private retrieveWishListFromServer() {
@@ -34,14 +32,14 @@ export class WishListService {
     if (environment.needMock) {
       const wishListMock = new WishListModel();
       wishListMock.itemsCount = 3;
-      this.wishListShareService.next(wishListMock);
+      this.next(wishListMock);
     }
     this.apiService.get(this.baseUrl).subscribe(data => {
         const preferredWishListUrl = (!!data.elements && data.elements.length > 0) ?
           data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
         if (!!preferredWishListUrl) {
           this.apiService.get(this.baseUrl + preferredWishListUrl).subscribe((data2) => {
-            this.wishListShareService.next(data2);
+            this.next(data2);
           });
         }
       });

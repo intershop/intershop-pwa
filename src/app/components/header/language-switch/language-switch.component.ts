@@ -23,7 +23,7 @@ export class LanguageSwitchComponent implements OnInit {
   ngOnInit() {
     // TODO: discussion whether this information is coming from a service or is configured at development time
     this.localizationArray = environment.locales;
-    this.currentLocaleService.next(this.localize.parser.currentLocale.lang);
+    this.currentLocaleService.setLang(this.localize.parser.currentLocale.lang);
     this.lang = _.find(environment.locales, (p) => {
       return (p.lang === this.localize.parser.currentLang);
     }).displayValue;
@@ -32,7 +32,7 @@ export class LanguageSwitchComponent implements OnInit {
   languageChange(locale) {
     this.lang = locale.displayValue;
     this.localize.changeLanguage(locale).subscribe(p =>
-      this.currentLocaleService.next(this.localize.parser.currentLocale.lang)
+      this.currentLocaleService.setLang(this.localize.parser.currentLocale.lang)
     );
     return false;
   }
