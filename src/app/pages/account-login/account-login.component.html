@@ -1,4 +1,3 @@
-<h1>{{ 'account.login.heading' | translate }}</h1>
 <div class="row" data-testing-id="account-login-page">
   <div class="col-md-6">
     <div class="section">
@@ -6,30 +5,27 @@
         <h2>{{'account.login.returning_user.heading' | translate}}</h2>
         <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.addresses.message' | translate}}</p>
         <div *ngIf="((errorUser && errorUser !== 'UserNotLoggedIn' && errorUser !== 'LoginAlreadyInUse'))" role="alert" class="alert alert-danger">
-          {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (registrationLoginType
-          && registrationLoginType === 'username') ? ('account.login.username_password.error.invalid' | translate) : ('account.login.email_password.error.invalid'
+          {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (userRegistrationLoginType
+          && userRegistrationLoginType === 'username') ? ('account.login.username_password.error.invalid' | translate) : ('account.login.email_password.error.invalid'
           | translate) : ''}}
 
           <!-- TODO  -->
           <!-- Apply condition for other possible inputs -->
         </div>
-        <div role="alert" class="alert alert-danger" *ngIf="restError">{{restError}}</div>
-
-
         <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
           <!-- Hidden Fields in ISML -->
           <p>{{'account.login.message' | translate}}</p>
-          <div class="form-group has-feedback" [mesage]="registrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'validateEmail':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
+          <div class="form-group has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'validateEmail':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
             <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{registrationLoginType && registrationLoginType === 'username' ?'Username' : 'Email'}}</label>
             <div class="col-sm-6">
 
-              <input class="form-control" #dynamicError formControlName="userName" name="ShopLoginForm_Login" type="{{registrationLoginType === 'username' ? 'text' : 'email'}}"
+              <input class="form-control" #dynamicError  formControlName="userName" name="ShopLoginForm_Login" type="{{registrationLoginType === 'username' ? 'text' : 'email'}}"
                 id="ShopLoginForm_Login">
             </div>
             <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
           </div>
 
-          <div class="form-group has-feedback" [mesage]="{'required':'account.login.password.error.required' ,'validatePassword':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}">
+          <div class="form-group has-feedback" [errorMessages]="{'required':'account.login.password.error.required' ,'validatePassword':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}">
             <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
             <div class="col-sm-6">
               <input #dynamicError formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password" id="ShopLoginForm_Password">
@@ -38,7 +34,7 @@
           </div>
           <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-              <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid && loginForm.get('password').dirty && loginForm.get('userName').dirty">{{'account.signin.button.label' | translate}}</button>
+              <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid && isDirty">{{'account.signin.button.label' | translate}}</button>
               <a class="btn btn-link">{{'account.send_password.heading' | translate}}</a>
             </div>
           </div>
@@ -57,6 +53,11 @@
       <li>{{'account.create.benefit4.text' | translate}}</li>
       <li>{{'account.create.benefit5.text' | translate}}</li>
     </ul>
-    <a class="btn btn-primary" href="javascript:void(0)" [routerLink]="['/register']">{{'account.create.button.label' | translate}}</a>
+    <a *ngIf="!useSimpleAccount ; else simpleRegistrationComponent" class="btn btn-primary" href="javascript:void(0)" [routerLink]="['/register']">{{'account.create.button.label' | translate}}</a>
+    <ng-template #simpleRegistrationComponent>
+      <is-simple-registration></is-simple-registration>
+    </ng-template>
+
+
   </div>
 </div>

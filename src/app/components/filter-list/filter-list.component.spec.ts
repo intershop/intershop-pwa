@@ -1,78 +1,155 @@
-import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { TestBed } from '@angular/core/testing';
-import { FilterListComponent } from './filter-list.component';
-import { data } from './filter-list-service/filter-list.mock';
-import { CacheCustomService } from 'app/services/cache/cache-custom.service';
-import { FilterListService, FilterListMockService } from './filter-list-service';
-import { InstanceService } from 'app/services/instance.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { Observable } from 'rxjs/Rx';
+import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { CacheCustomService } from '../../services/index';
+import { FilterListService } from './filter-list-service/index';
+import { FilterListComponent } from './filter-list.component';
+
 describe('FilterList Component', () => {
   let fixture: ComponentFixture<FilterListComponent>;
   let component: FilterListComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
-  let keyExists = false;
+  let cacheCustomService: CacheCustomService;
+  let filterListService: FilterListService;
+  const filterData = {
+    'elements': [
+      {
+        'name': 'Category',
+        'type': 'SearchIndexFilter',
+        'id': 'CategoryUUIDLevelMulti',
+        'facets': [
+          {
+            'name': 'Cameras',
+            'type': 'Facet',
+            'count': 75,
+            'link': {
+              'type': 'Link',
+              'uri': 'inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPUpkUUtBQjFVbEh3QUFBRmRCVXdpMGxuNCZPbmxpbmVGbGFnPTE=',
+              'title': 'Cameras'
+            },
+            'selected': false,
+            'hits': {
+              'type': 'Link',
+              'uri': 'inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPUpkUUtBQjFVbEh3QUFBRmRCVXdpMGxuNCZPbmxpbmVGbGFnPTE=/hits',
+              'title': 'Cameras'
+            }
+          }
+        ],
+        'displayType': 'text_clear',
+        'selectionType': 'taxonomic',
+        'limitCount': -1,
+        'minCount': 1,
+        'scope': 'Global'
+      },
+      {
+        'name': 'Brand',
+        'type': 'SearchIndexFilter',
+        'id': 'ManufacturerName',
+        'facets': [
+          {
+            'name': 'Camcorders',
+            'type': 'Facet',
+            'count': 149,
+            'link': {
+              'type': 'Link',
+              'uri': 'inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUEtREFUQSZPbmxpbmVGbGFnPTE=',
+              'title': 'Camcorders'
+            },
+            'selected': false,
+            'hits': {
+              'type': 'Link',
+              'uri': 'inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUEtREFUQSZPbmxpbmVGbGFnPTE=/hits',
+              'title': 'Camcorders'
+            }
+          }
+        ],
+        'displayType': 'text_clear',
+        'selectionType': 'single',
+        'limitCount': 7,
+        'minCount': 1,
+        'scope': 'Global'
+      },
+      {
+        'name': 'Price',
+        'type': 'SearchIndexFilter',
+        'id': 'ProductSalePriceGross',
+        'facets': [
+          {
+            'name': '<= $ 25',
+            'type': 'Facet',
+            'count': 226,
+            'link': {
+              'type': 'Link',
+              'uri': 'inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjAuMCtUTysyNC45OSU1RA==',
+              'title': '<= $ 25'
+            },
+            'selected': false,
+            'hits': {
+              'type': 'Link',
+              'uri': 'inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjAuMCtUTysyNC45OSU1RA==/hits',
+              'title': '<= $ 25'
+            }
+          }
+        ],
+        'displayType': 'text_clear',
+        'selectionType': 'multiple_or',
+        'limitCount': -1,
+        'minCount': 1,
+        'scope': 'Global'
+      }
+    ],
+    'type': 'ResourceCollection',
+    'name': 'filters'
+  };
 
-  class CacheCustomServiceStub {
-    cacheKeyExists(key) {
-      return keyExists;
-    }
-    getCachedData(key, isDecrypyted) {
-      return data;
-    }
-    storeDataToCache(dataToStore, key, shouldEncrypt) {
-      return true;
-    }
-  }
-  class FilterListServiceStub {
-    getSideFilters() {
-      return Observable.of(data);
-    }
-  }
-
-  beforeEach(() => {
+  beforeEach(async(() => {
+    cacheCustomService = mock(CacheCustomService);
+    filterListService = mock(FilterListService);
+    when(filterListService.getSideFilters()).thenReturn(Observable.of(filterData));
     TestBed.configureTestingModule({
       declarations: [FilterListComponent],
-      imports: [CollapseModule],
-      providers: [
-        { provide: FilterListService, useClass: FilterListServiceStub },
-        { provide: CacheCustomService, useClass: CacheCustomServiceStub },
-        InstanceService, FilterListMockService
+      imports: [
+        CollapseModule
+      ],
+      providers: [{
+        provide: CacheCustomService,
+        useFactory: () => instance(cacheCustomService)
+      }
       ]
-
-    });
-  });
-
+    }).overrideComponent(FilterListComponent, {
+      set: {
+        providers: [
+          {
+            provide: FilterListService,
+            useFactory: () => instance(filterListService)
+          }
+        ]
+      }
+    }).compileComponents();
+  }));
   beforeEach(() => {
     fixture = TestBed.createComponent(FilterListComponent);
     component = fixture.componentInstance;
-    debugEl = fixture.debugElement;
     element = fixture.nativeElement;
-  });
-
-
-  it('should call ngOnInit for 1st time and gets data from Category Service', () => {
-    component.ngOnInit();
-    expect(component.filterListData).not.toBeNull();
-  });
-
-  it('should call ngOnInit for 2nd time and gets data from Cache Service', () => {
-    keyExists = true;
-    component.ngOnInit();
-    expect(component.filterListData).not.toBeNull();
-  });
-
-  it('should check if Categories are getting rendered on page', () => {
-    component.ngOnInit();
     fixture.detectChanges();
-    const categories = element.getElementsByTagName('h3');
-    expect(categories.length).toBe(4);
-    expect(categories[0].textContent).toContain('Category');
-    expect(categories[1].textContent).toContain('Brand');
-    expect(categories[2].textContent).toContain('Price');
-    expect(categories[3].textContent).toContain('Color');
   });
 
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should call the ngOnInit and get data from Cache', () => {
+    when(cacheCustomService.cacheKeyExists(anything())).thenReturn(true);
+    when(cacheCustomService.getCachedData(anything(), anything())).thenReturn(filterData);
+    fixture.detectChanges();
+    expect(component.filterListData).toBe(filterData);
+  });
+
+  it('should call the ngOnInit and get data from filterListService', () => {
+    when(cacheCustomService.cacheKeyExists(anything())).thenReturn(false);
+    when(filterListService.getSideFilters()).thenReturn(Observable.of(filterData));
+    fixture.detectChanges();
+    expect(component.filterListData).toBe(filterData);
+  });
 });

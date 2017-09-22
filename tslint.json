@@ -1,6 +1,7 @@
 {
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "tslint-rules"
   ],
   "rules": {
     "arrow-return-shorthand": true,
@@ -140,6 +141,18 @@
     "directive-class-suffix": true,
     "no-access-missing-member": false,
     "templates-use-public": true,
-    "invoke-injectable": true
+    "invoke-injectable": true,
+    "ordered-imports": true,
+    "ban": [
+      true,
+      {"name": ["*", "ngOnInit"], "message": "Use fixture.detectChanges instead!"},
+      {"name": ["fdescribe"], "message": "Do not commit focused tests!"},
+      {"name": ["fit"], "message": "Do not commit focused tests!"},
+      {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"}
+    ],
+    "no-suspicious-variable-init-in-tests": true,
+    "meaningful-naming-in-tests": false,
+    "no-commented-out-tests": false,
+    "prefer-mocks-instead-of-stubs-in-tests": false
   }
 }

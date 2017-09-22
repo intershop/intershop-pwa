@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { SuggestedElement, SearchBoxModel } from '../../../services/suggest/search-box.model';
+import { SearchBoxModel, SuggestedElement } from '../../../services/suggest/search-box.model';
 import { SearchBoxService } from '../../../services/suggest/search-box.service';
 
 @Component({
@@ -24,17 +24,21 @@ export class SearchBoxComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  doSearch() {
     this.searchBoxService.search(this.searchTerm$)
-      .subscribe((searchResults: SearchBoxModel) => {
+    .subscribe((searchResults: SearchBoxModel) => {
 
-        if (searchResults && searchResults.elements && searchResults.elements.length > 0) {
-          this.results = searchResults.elements;
-          this.isHide = false;
-        } else {
-          this.results = [];
-        }
-      });
+      if (searchResults && searchResults.elements && searchResults.elements.length > 0) {
+        this.results = searchResults.elements;
+        this.isHide = false;
+      } else {
+        this.results = [];
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.doSearch();
   }
 }
 

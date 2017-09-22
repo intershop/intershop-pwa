@@ -7,3 +7,4 @@ export * from './cache/encrypt-decrypt.service';
 export * from './custom-error-handler';
 export * from './global.state';
 export * from './cross-tab-communicator';
+export * from './mock-api.service';

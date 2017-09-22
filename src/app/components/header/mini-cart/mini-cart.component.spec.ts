@@ -1,7 +1,7 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { GlobalState } from '../../../services/global.state';
 import { MiniCartComponent } from './mini-cart.component';
-import { GlobalState } from 'app/services';
 
 describe('Mini Cart Component', () => {
     let fixture: ComponentFixture<MiniCartComponent>;
