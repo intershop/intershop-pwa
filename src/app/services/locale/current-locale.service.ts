@@ -7,4 +7,8 @@ export class CurrentLocaleService extends GlobalStateAwareService<string> {
   constructor() {
     super('currentLocale', false, false);
   }
+
+  setLang(lang: string) {
+    this.next(lang);
+  }
 }

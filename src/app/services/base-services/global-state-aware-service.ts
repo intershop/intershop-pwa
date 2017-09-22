@@ -3,7 +3,7 @@ import * as crosstablib from 'crosstab';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { environment } from '../../../environments/environment';
 
-export class GlobalStateAwareService<T> {
+export abstract class GlobalStateAwareService<T> {
 
   private subject: BehaviorSubject<T>;
 
@@ -39,7 +39,7 @@ export class GlobalStateAwareService<T> {
     this.subject.subscribe(callback);
   }
 
-  next(data: T) {
+  protected next(data: T) {
     // console.error('data of ' + this._name + ' is now ' + data);
     this.subject.next(data);
 

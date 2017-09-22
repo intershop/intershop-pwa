@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { GlobalStateAwareService } from '../base-services/global-state-aware-service';
+import { SKUListService } from '../base-services/sku-list-service';
 
 @Injectable()
-export class CartStatusService extends GlobalStateAwareService<string[]> {
+export class CartStatusService extends SKUListService {
 
   constructor() {
-    super('cartData', true, false, []);
+    super('cartData', false);
   }
 }

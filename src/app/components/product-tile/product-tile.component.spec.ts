@@ -217,14 +217,14 @@ describe('ProductTile Component', () => {
     environment.needMock = false;
     component.mockData = ProductList[0].Cameras[0];
     component.addToCompare();
-    verify(productCompareServiceMock.next(anything())).once();
+    verify(productCompareServiceMock.addSKU(anything())).once();
   });
 
   it('should call service when added to cart', () => {
     environment.needMock = false;
     component.mockData = ProductList[0].Cameras[0];
     component.addToCart();
-    verify(cartStatusServiceMock.next(anything())).once();
+    verify(cartStatusServiceMock.addSKU(anything())).once();
   });
 
   it('should call addToWishList method and verify if router.navigate is called', async(inject([Router], (router: Router) => {
