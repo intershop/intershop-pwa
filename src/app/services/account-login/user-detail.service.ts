@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GlobalStateAwareService } from '../base-services/global-state-aware-service';
+import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 import { UserDetail } from './account-login.model';
 
 @Injectable()

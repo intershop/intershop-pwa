@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ApiService } from '../../services';
 import { AccountLoginService } from '../account-login/account-login.service';
-import { GlobalStateAwareService } from '../base-services/global-state-aware-service';
+import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 import { WishListModel } from './wishlists.model';
 
 @Injectable()
