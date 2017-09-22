@@ -40,6 +40,7 @@ Utility tasks:
 `appRun` - starts jetty using distribution output
 
 `tslint` - runs static code analysis via angular cli on the project
+`tslint -Pfix` - run tslint and fix fixable problems
 */
 
 plugins {
@@ -174,6 +175,9 @@ task npmRun(type:NpmTask, description: 'run npm script with space-separated comm
 
 task tslint(type:NpmTask, description:'run tslint', group:'Node Utility', dependsOn:npmInstall) {
     args = ['run', 'lint', '--silent']
+    if (project.hasProperty('fix')) {
+      args += ['--', '--fix']
+    }
     inputs.files(file('src'), fileTree('tslint-rules') {include('**/*Rule.ts') include('tsconfig.json')}, fileTree(projectDir) {include('*.json')})
 }
 check.finalizedBy tslint
