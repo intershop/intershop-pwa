@@ -1,13 +1,13 @@
-import { CommonModule, Location } from '@angular/common';
 import { Injector } from '@angular/core';
+import { LocalizeRouterService } from './localize-router.service';
+import { LocalizeParser } from './localize-router.parser';
+import { LocalizeRouterModule } from './localize-router.module';
 import { getTestBed, TestBed } from '@angular/core/testing';
-import { Event, NavigationEnd, NavigationStart, Router, Routes } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Routes, Router, Event, NavigationStart, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { LocalizeRouterModule } from './localize-router.module';
-import { LocalizeParser } from './localize-router.parser';
-import { LocalizeRouterService } from './localize-router.service';
+import { TranslateService } from '@ngx-translate/core';
+import { CommonModule, Location } from '@angular/common';
 
 class FakeTranslateService {
   defLang: string;

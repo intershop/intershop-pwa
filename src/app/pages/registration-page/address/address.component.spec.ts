@@ -1,8 +1,8 @@
-import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../../modules/shared.module';
 import { AddressComponent } from './address.component';
+import { SharedModule } from '../../../modules/shared.module';
 
 describe('Address Component', () => {
     let fixture: ComponentFixture<AddressComponent>;

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FooterComponent } from './footer.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   imports: [

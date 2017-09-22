@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GlobalConfiguration } from '../../configurations/global.configuration';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountLoginService } from '../../services/account-login';
-import { UserDetail } from '../../services/account-login/account-login.model';
-import { CacheCustomService } from '../../services/cache/cache-custom.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { EmailValidator } from '../../validators/email.validator';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
+import { GlobalConfiguration } from '../../configurations/global.configuration';
+import { UserDetail } from '../../services/account-login/account-login.model';
+
 
 @Component({
   templateUrl: './account-login.component.html'
@@ -29,7 +29,7 @@ export class AccountLoginComponent implements OnInit {
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
     private router: Router, private cacheService: CacheCustomService,
-    private globalConfiguration: GlobalConfiguration, private localizeRouterService: LocalizeRouterService) { }
+    private globalConfiguration: GlobalConfiguration) { }
 
   /**
      * Creates Login Form
@@ -62,7 +62,7 @@ export class AccountLoginComponent implements OnInit {
       this.loginFormSubmitted = true;
       this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
         if (typeof(userData) === 'object') {
-          this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
+          this.router.navigate(['home']);
         } else {
           this.loginForm.get('password').reset();
           this.errorUser = userData;

@@ -1,32 +1,30 @@
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
-import { async } from '@angular/core/testing';
-import { TestBed } from '@angular/core/testing';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { CacheService } from 'ng2-cache/ng2-cache';
 import { Observable } from 'rxjs/Rx';
-import { anyString, instance, mock, when } from 'ts-mockito';
-import { GlobalConfiguration } from '../../configurations/global.configuration';
-import { SharedModule } from '../../modules/shared.module';
+import { TestBed } from '@angular/core/testing';
 import { AccountLoginService } from '../../services/account-login/';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
+import { CacheService } from 'ng2-cache/ng2-cache';
 import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountLoginComponent } from './account-login.component';
+import { async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { userData } from '../../services/account-login/account-login.mock';
+import { SharedModule } from '../../modules/shared.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalConfiguration } from '../../configurations/global.configuration';
+
 
 describe('AccountLogin Component', () => {
   let fixture: ComponentFixture<AccountLoginComponent>;
   let component: AccountLoginComponent;
   let element: HTMLElement;
   let debugEl: DebugElement;
-  let localizeRouterServiceMock: LocalizeRouterService;
-
   class MockAccountLoginService {
     singinUser(userDetails) {
       if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
-        return Observable.of({ data: 'Correct Details' });
+        return Observable.of(userData);
       } else {
         return Observable.of('Incorrect Credentials');
       }
@@ -44,11 +42,6 @@ describe('AccountLogin Component', () => {
   }
 
   beforeEach(async(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
-    when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
-      return arg1;
-    });
-
     TestBed.configureTestingModule({
       declarations: [
         AccountLoginComponent
@@ -56,9 +49,7 @@ describe('AccountLogin Component', () => {
       providers: [
         CacheCustomService, CacheService, EncryptDecryptService,
         { provide: AccountLoginService, useClass: MockAccountLoginService },
-        { provide: GlobalConfiguration, useClass: GlobalConfigurationStub },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
-
+        { provide: GlobalConfiguration, useClass: GlobalConfigurationStub }
       ],
       imports: [
         SharedModule,
@@ -105,7 +96,7 @@ describe('AccountLogin Component', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('123213');
     component.onSignin(userDetails);
-    expect(this.navSpy).toHaveBeenCalledWith(['/home']);
+    expect(this.navSpy).toHaveBeenCalledWith(['home']);
   });
 
   it('should call ngOnInit method', () => {

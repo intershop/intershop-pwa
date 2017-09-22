@@ -1,22 +1,32 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { instance, mock } from 'ts-mockito';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { WishListPageComponent } from './wishlists-page.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs/Observable';
+import { WishListService } from '../../services/wishlists/wishlists.service';
+import { GlobalState } from '../../services';
+import { mock, instance} from 'ts-mockito';
 
 describe('Wish list Page Component', () => {
   let fixture: ComponentFixture<WishListPageComponent>;
   let component: WishListPageComponent;
   let element: HTMLElement;
+  let debugEl: DebugElement;
+  class WishListServiceStub {
+    getWishList() {
+      return Observable.of(null);
+    }
+  }
 
   beforeEach(async(() => {
+    const globalStateMock = mock(GlobalState);
     TestBed.configureTestingModule({
       imports: [
         ModalModule.forRoot()
       ],
       providers: [
-        { provide: WishListService, useFactory: () => instance(mock(WishListService)) }
+        { provide: WishListService, useClass: WishListServiceStub },
+        { provide: GlobalState, useFactory: () => instance(globalStateMock) }
       ],
       declarations: [WishListPageComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -24,13 +34,9 @@ describe('Wish list Page Component', () => {
       fixture = TestBed.createComponent(WishListPageComponent);
       component = fixture.componentInstance;
       element = fixture.nativeElement;
-      fixture.autoDetectChanges(true);
+      debugEl = fixture.debugElement;
     });
   }));
-
-  it ('should be created', () => {
-    expect(component).toBeTruthy();
-  });
 
   it('should check if "Add to Wishlist" button is rendered', () => {
     const anchorTag = element.querySelector('.btn-default');

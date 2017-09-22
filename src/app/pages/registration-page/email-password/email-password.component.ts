@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { EmailValidator } from '../../../validators/email.validator';
 import { matchOtherValidator } from '../../../validators/match-words.validator';
 import { PasswordValidator } from '../../../validators/password.validator';

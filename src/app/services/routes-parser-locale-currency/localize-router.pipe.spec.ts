@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Injector } from '@angular/core';
-import { getTestBed, TestBed } from '@angular/core/testing';
-import { Subject } from 'rxjs/Subject';
-import { instance, mock } from 'ts-mockito';
 import { equals, LocalizeRouterPipe } from './localize-router.pipe';
 import { LocalizeRouterService } from './localize-router.service';
+import { Injector, ChangeDetectorRef } from '@angular/core';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { Subject } from 'rxjs/Subject';
+import { mock, instance } from 'ts-mockito';
 
 class DummyLocalizeParser {
   currentLang: string;

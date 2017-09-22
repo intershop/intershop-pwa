@@ -1,35 +1,32 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
-import { ApiService } from '../index';
+import { InstanceService } from '../instance.service';
+import { SearchBoxApiService } from './search-box.service.api';
+import { SearchBoxMockService } from './search-box.service.mock';
+
+
+export interface ISearchBoxService {
+   search(terms: Observable<string>);
+}
 
 @Injectable()
-export class SearchBoxService {
-    url = 'suggest?SearchTerm=';
+export class SearchBoxService implements ISearchBoxService {
+
+    searchBoxservice;
 
     /**
-     * @param  {ApiService} privateapiService
+     * Constructor
+     * @param  {InstanceService} privateinstanceService
      */
-    constructor(private apiService: ApiService) { }
-
-    /**
-     * Returns the list of items matching the search term
-     * @param  {} terms
-     */
-    public search(terms) {
-        return terms.debounceTime(400)
-            .distinctUntilChanged()
-            .switchMap((value) => {
-                return value.length === 0 ?
-                    Observable.of([]) :
-                    this.searchEntries(value);
-            });
+    constructor(private instanceService: InstanceService) {
+        this.searchBoxservice = this.instanceService.getInstance((environment.needMock) ?
+            SearchBoxMockService : SearchBoxApiService);
     }
 
-    /**
-     * Calls the get method of api
-     * @param  {} value
-     */
-    public searchEntries(value) {
-        return this.apiService.get(this.url + value);
+    public search(terms: Observable<string>) {
+      return this.searchBoxservice.search(terms);
     }
+
+
 }

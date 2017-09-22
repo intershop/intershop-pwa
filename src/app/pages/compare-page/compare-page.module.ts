@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { ComparePageComponent } from './compare-page.component';
+import { RouterModule } from '@angular/router';
 import { ComparePageRoute } from './compare-page.routes';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
