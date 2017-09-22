@@ -8,10 +8,14 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import {
-  ApiService, CacheCustomService, CrossTabCommunicator,
-  CustomErrorHandler, DataEmitterService, EncryptDecryptService, GlobalState, JwtService,
+  ApiService, CacheCustomService,
+  CustomErrorHandler, DataEmitterService, EncryptDecryptService, JwtService,
   MockApiService
 } from '../services';
+import { UserDetailService } from '../services/account-login/user-detail.service';
+import { CartStatusService } from '../services/cart-status/cart-status.service';
+import { CurrentLocaleService } from '../services/locale/current-locale.service';
+import { ProductCompareService } from '../services/product-compare/product-compare.service';
 
 import { FooterModule } from '../components/footer/footer.module';
 import { HeaderModule } from '../components/header/header.module';
@@ -49,9 +53,11 @@ import { translateFactory } from '../services/custom-translate-loader';
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
-    GlobalState,
-    CrossTabCommunicator,
     MockApiService,
+    ProductCompareService,
+    UserDetailService,
+    CurrentLocaleService,
+    CartStatusService,
     GlobalConfiguration
   ],
   exports: [

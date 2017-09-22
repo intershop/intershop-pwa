@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { UserDetail } from '../../../services/account-login/account-login.model';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { UserDetailService } from '../../../services/account-login/user-detail.service';
 
 @Injectable()
 export class SimpleRegistrationService {
-  constructor(private accountLoginService: AccountLoginService) { }
-  createUser(userDetails: UserDetail): Observable<UserDetail> {
-    this.accountLoginService.storeUserDetail(userDetails);
-    return Observable.of(userDetails);
+  constructor(private userDetailService: UserDetailService) { }
+  createUser(userDetails): Observable<UserDetail> {
+    // TODO: creating the user should be done with a method from account-login.service
+    this.userDetailService.next(userDetails);
+    return Observable.of(null);
   }
 }
