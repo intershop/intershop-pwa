@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { GlobalStateAwareService } from './global-state-aware-service';
+import { GlobalStateAwareService } from './global-state-aware.service';
 
 export abstract class SKUListService extends GlobalStateAwareService<string[]> {
 
