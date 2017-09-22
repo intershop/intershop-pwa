@@ -3,7 +3,7 @@ import { CacheCustomService } from '../../../services/cache/cache-custom.service
 import { CategoryModel } from '../../../services/categories/category.model';
 import { CategoryService } from '../../../services/categories/category.service';
 import { SubcategoryModel } from '../../../services/categories/subcategory.model';
-import { GlobalState } from '../../../services/global.state';
+import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
@@ -18,13 +18,13 @@ export class HeaderNavigationComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
     private cacheService: CacheCustomService,
-    public localize: LocalizeRouterService, private globalState: GlobalState) {
+    public localize: LocalizeRouterService, private currentLocaleService: CurrentLocaleService) {
 
   }
 
   ngOnInit() {
     this.getCategories();
-    this.globalState.subscribe('local', (localData) => {
+    this.currentLocaleService.subscribe((localData) => {
       this.local = localData;
       this.getCategories();
     });

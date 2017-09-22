@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
-import { GlobalState } from '../../../services/global.state';
+import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { ProductCompareStatusComponent } from './product-compare-status.component';
 
@@ -22,11 +22,6 @@ describe('Product Compare Status Component', () => {
   let localizeRouterServiceMock: LocalizeRouterService;
 
   beforeEach(() => {
-    class GlobalStateStub {
-      subscribeCachedData(key, callBack: Function) {
-      }
-    }
-
     localizeRouterServiceMock = mock(LocalizeRouterService);
 
     TestBed.configureTestingModule({
@@ -41,8 +36,8 @@ describe('Product Compare Status Component', () => {
         DummyComponent
       ],
       providers: [
-        {provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
-        { provide: GlobalState, useClass: GlobalStateStub }
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
+        { provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }
       ],
 
     }).compileComponents();

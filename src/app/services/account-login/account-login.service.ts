@@ -1,12 +1,11 @@
 import { HttpHeaders } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../../environments/environment';
-import { GlobalState, JwtService } from '../../services';
+import { JwtService } from '../../services';
 import { ApiService } from '../../services/api.service';
-import { CacheCustomService } from '../cache/cache-custom.service';
 import { AccountLogin } from './account-login';
 import { UserDetail } from './account-login.model';
+import { UserDetailService } from './user-detail.service';
 
 export interface IAccountLoginService {
   singinUser(userDetails: AccountLogin): Observable<UserDetail>;
@@ -16,14 +15,8 @@ export interface IAccountLoginService {
 
 @Injectable()
 export class AccountLoginService implements IAccountLoginService {
-  loginStatusEmitter: EventEmitter<UserDetail> = new EventEmitter<UserDetail>();
 
-  /**
-   * @param  {JwtService} privatejwtService
-   * @param  {GlobalState} privateglobalState
-   * @param  {CacheCustomService} privatecacheService
-   */
-  constructor(private jwtService: JwtService, private globalState: GlobalState, private cacheService: CacheCustomService, private apiService: ApiService) { }
+  constructor(private jwtService: JwtService, private userDetailService: UserDetailService, private apiService: ApiService) { }
 
   /**
    * Calls signin function of concerned service
@@ -34,7 +27,7 @@ export class AccountLoginService implements IAccountLoginService {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
     return this.apiService.get('customers/-', null, headers).map((data) => {
       if ((typeof (data) === 'object')) {
-        this.storeUserDetail(data);
+        this.userDetailService.next(data);
       }
       return data;
     });
@@ -45,7 +38,7 @@ export class AccountLoginService implements IAccountLoginService {
    * @returns boolean
    */
   isAuthorized(): boolean {
-    return !!this.jwtService.getToken();
+    return (!!this.jwtService.getToken()) && (!!this.userDetailService.current);
   }
 
   /**
@@ -53,21 +46,11 @@ export class AccountLoginService implements IAccountLoginService {
   * @returns void
   */
   logout(): void {
-    this.cacheService.deleteCacheKey('userDetail');
-    this.globalState.notifyDataChanged('customerDetails', null);
     this.jwtService.destroyToken();
+    this.userDetailService.next(null);
   }
 
-  /**
-   * Stores user details in cache and emits to login status component
-   * @param  {UserDetail} userDetail
-   */
-  public storeUserDetail(userDetail: UserDetail) {
-    if (environment.needMock) {
-      const token = Math.floor(100000 + Math.random() * 900000).toString();
-      this.jwtService.saveToken(token);
-    }
-    this.globalState.notifyDataChanged('customerDetails', userDetail);
+  subscribe(callback: (userDetail: UserDetail) => void) {
+    this.userDetailService.subscribe(callback);
   }
-
 }
