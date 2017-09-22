@@ -27,7 +27,7 @@ export class AccountLoginService implements IAccountLoginService {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
     return this.apiService.get('customers/-', null, headers).map((data) => {
       if ((typeof (data) === 'object')) {
-        this.userDetailService.next(data);
+        this.userDetailService.setUserDetail(data);
       }
       return data;
     });
@@ -47,7 +47,7 @@ export class AccountLoginService implements IAccountLoginService {
   */
   logout(): void {
     this.jwtService.destroyToken();
-    this.userDetailService.next(null);
+    this.userDetailService.setUserDetail(null);
   }
 
   subscribe(callback: (userDetail: UserDetail) => void) {

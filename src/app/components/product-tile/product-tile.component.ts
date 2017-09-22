@@ -155,8 +155,7 @@ export class ProductTileComponent implements OnInit {
    * Adds product to cart
    */
   addToCart(): void {
-    const cartData = [this.mockData.sku];
-    this.cartStatusService.next(cartData);
+    this.cartStatusService.addSKU(this.mockData.sku);
   }
 
   /**
@@ -174,14 +173,10 @@ export class ProductTileComponent implements OnInit {
    * Adds product to comparison
    */
   addToCompare(): void {
-    const productCompareList = this.productCompareService.current;
-    if (!productCompareList) {
-      this.productCompareService.next([this.mockData.sku]);
-    } else if (!productCompareList.find(c => c === this.mockData.sku)) {
-      productCompareList.push(this.mockData.sku);
-      this.productCompareService.next(productCompareList);
+    if (this.productCompareService.containsSKU(this.mockData.sku)) {
+      this.productCompareService.removeSKU(this.mockData.sku);
     } else {
-      this.productCompareService.next(productCompareList.filter(c => c !== this.mockData.sku));
+      this.productCompareService.addSKU(this.mockData.sku);
     }
   }
 }
