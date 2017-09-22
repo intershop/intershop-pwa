@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
 import { GlobalState } from '../../services';
@@ -25,18 +24,15 @@ export class ProductTileComponent implements OnInit {
 
   /**
    *
-   * @param {Router} router
    * @param {JwtService} jwtService
    * @param {WishListService} wishListService
    * @param {GlobalState} globalState
    * @param {LocalizeRouterService} localize
    */
-  constructor(
-    private router: Router,
-    private jwtService: JwtService,
-    private wishListService: WishListService,
-    private globalState: GlobalState,
-    private localize: LocalizeRouterService) {
+  constructor(private jwtService: JwtService,
+              private wishListService: WishListService,
+              private globalState: GlobalState,
+              private localize: LocalizeRouterService) {
   }
 
   ngOnInit() {
@@ -185,7 +181,7 @@ export class ProductTileComponent implements OnInit {
    */
   addToWishList(itemToAdd): void {
     if (!this.jwtService.getToken()) {
-      this.router.navigate([this.localize.translateRoute('/login')]);
+      this.localize.navigateToRoute('/login');
     } else {
       this.wishListService.getWishList().subscribe(wishlistData => wishlistData);
     }

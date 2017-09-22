@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
@@ -21,15 +20,20 @@ export class AccountLoginComponent implements OnInit {
   isLoggedIn;
   useSimpleAccount: boolean;
   isDirty: boolean;
+
   /**
    * Constructor
-   * @param  {FormBuilder} privateformBuilder
-   * @param  {AccountLoginService} privateaccountLoginService
-   * @param  {Router} privaterouter
+   * @param {FormBuilder} formBuilder
+   * @param {AccountLoginService} accountLoginService
+   * @param {CacheCustomService} cacheService
+   * @param {GlobalConfiguration} globalConfiguration
+   * @param {LocalizeRouterService} localizeRouterService
    */
-  constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
-    private router: Router, private cacheService: CacheCustomService,
-    private globalConfiguration: GlobalConfiguration, private localizeRouterService: LocalizeRouterService) { }
+  constructor(private formBuilder: FormBuilder,
+              private accountLoginService: AccountLoginService,
+              private cacheService: CacheCustomService,
+              private globalConfiguration: GlobalConfiguration,
+              private localizeRouterService: LocalizeRouterService) { }
 
   /**
      * Creates Login Form
@@ -62,7 +66,7 @@ export class AccountLoginComponent implements OnInit {
       this.loginFormSubmitted = true;
       this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
         if (typeof(userData) === 'object') {
-          this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
+          this.localizeRouterService.navigateToRoute('/home');
         } else {
           this.loginForm.get('password').reset();
           this.errorUser = userData;

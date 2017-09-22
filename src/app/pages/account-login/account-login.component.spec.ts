@@ -2,7 +2,6 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CacheService } from 'ng2-cache/ng2-cache';
@@ -75,8 +74,8 @@ describe('AccountLogin Component', () => {
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
     element = fixture.nativeElement;
-    const router = TestBed.get(Router);
-    this.navSpy = spyOn(router, 'navigate');
+    const router = TestBed.get(LocalizeRouterService);
+    this.navSpy = spyOn(router, 'navigateToRoute');
     fixture.detectChanges();
   });
 
@@ -105,7 +104,7 @@ describe('AccountLogin Component', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('123213');
     component.onSignin(userDetails);
-    expect(this.navSpy).toHaveBeenCalledWith(['/home']);
+    expect(this.navSpy).toHaveBeenCalledWith('/home');
   });
 
   it('should call ngOnInit method', () => {
