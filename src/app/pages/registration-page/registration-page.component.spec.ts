@@ -1,7 +1,6 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, inject, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { anyString, instance, mock, when } from 'ts-mockito';
 import { MockComponent } from '../../components/mock.component';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
@@ -13,12 +12,6 @@ describe('RegistrationPage Component', () => {
   let element: HTMLElement;
   let debugEl: DebugElement;
   let localizeRouterServiceMock: LocalizeRouterService;
-
-  class RouterStub {
-    navigate(url) {
-      return url;
-    }
-  }
 
   beforeEach(async(() => {
     localizeRouterServiceMock = mock(LocalizeRouterService);
@@ -33,7 +26,6 @@ describe('RegistrationPage Component', () => {
         MockComponent({ selector: 'is-captcha', template: 'Captcha Template' }),
       ],
       providers: [
-        { provide: Router, useClass: RouterStub },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ]
     })
@@ -47,10 +39,10 @@ describe('RegistrationPage Component', () => {
     element = fixture.nativeElement;
   });
 
-  it('should call cancelClicked method', (inject([Router], (router: Router) => {
-      const spy = spyOn(router, 'navigate');
+  it('should call cancelClicked method', (inject([LocalizeRouterService], (router: LocalizeRouterService) => {
+      const spy = spyOn(router, 'navigateToRoute');
       component.cancelClicked();
-      expect(spy).toHaveBeenCalledWith(['']);
+      expect(spy).toHaveBeenCalledWith('');
     })
   ));
 

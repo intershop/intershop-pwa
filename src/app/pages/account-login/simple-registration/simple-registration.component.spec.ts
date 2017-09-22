@@ -2,7 +2,6 @@ import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -12,7 +11,7 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 import { SimpleRegistrationComponent } from './simple-registration.component';
 import { SimpleRegistrationService } from './simple-registration.service';
 
-@Pipe({name: 'localize'})
+@Pipe({ name: 'localize' })
 class MockPipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -23,20 +22,25 @@ describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
   let element: HTMLElement;
-  let routerMock: Router;
+  // let routerMock: Router;
   let globalConfigurationMock: GlobalConfiguration;
   let simpleRegistrationServiceMock: SimpleRegistrationService;
+  let localizeRouterServiceMock: LocalizeRouterService;
+
   const accountSettings = {
     useSimpleAccount: true,
     userRegistrationLoginType: 'email'
   };
 
   beforeEach(async(() => {
-    routerMock = mock(Router);
+    // routerMock = mock(Router);
     globalConfigurationMock = mock(GlobalConfiguration);
     simpleRegistrationServiceMock = mock(SimpleRegistrationService);
+    localizeRouterServiceMock = mock(LocalizeRouterService);
+
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(accountSettings));
     when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of(new UserDetail()));
+    // when(localizeRouterServiceMock.navigateToRoute(anyString())).thenReturn('Hello');
 
     TestBed.configureTestingModule({
       declarations: [SimpleRegistrationComponent, MockPipe],
@@ -46,17 +50,13 @@ describe('Simple Registration Component', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{
-        provide: Router,
-        useFactory: () => instance(routerMock)
-      },
-      {
-        provide: LocalizeRouterService,
-        useFactory: () => instance(mock(LocalizeRouterService))
-      },
-      {
-        provide: GlobalConfiguration,
-        useFactory: () => instance(globalConfigurationMock)
-      }]
+          provide: LocalizeRouterService,
+          useFactory: () => instance(mock(LocalizeRouterService))
+        },
+        {
+          provide: GlobalConfiguration,
+          useFactory: () => instance(globalConfigurationMock)
+        }]
     }).overrideComponent(SimpleRegistrationComponent, {
       set: {
         providers: [
@@ -72,6 +72,8 @@ describe('Simple Registration Component', () => {
     fixture = TestBed.createComponent(SimpleRegistrationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    const router = TestBed.get(LocalizeRouterService);
+    this.navSpy = spyOn(router, 'navigateToRoute');
   });
 
   it('should create the component', () => {
@@ -95,6 +97,6 @@ describe('Simple Registration Component', () => {
     component.simpleRegistrationForm.controls['confirmPassword'].setValue('aaaaaa1');
     component.createAccount(userDetails);
     verify(simpleRegistrationServiceMock.createUser(anything())).once();
-    verify(routerMock.navigate(anything())).once();
+    expect(this.navSpy).toHaveBeenCalled();
   });
 });
