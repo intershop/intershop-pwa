@@ -1,50 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserDetail } from '../../../services/account-login/account-login.model';
-import { GlobalState } from '../../../services';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
+import { UserDetail } from '../../../services/account-login/account-login.model';
+import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-login-status',
   templateUrl: './login-status.component.html'
 })
 
-export class LoginStatusComponent implements OnInit {
-  userDetail: UserDetail;
-  isLoggedIn: boolean;
-  customerDetailKey = 'customerDetails';
+export class LoginStatusComponent {
 
-  constructor(private accountLoginService: AccountLoginService,
-              private router: Router,
-              private globalState: GlobalState,
-              private globalConfiguration: GlobalConfiguration,
-              public localize: LocalizeRouterService) {
+  userDetail: UserDetail = null;
+
+  constructor(
+    private accountLoginService: AccountLoginService,
+    private router: Router,
+    private globalConfiguration: GlobalConfiguration,
+    public localize: LocalizeRouterService
+  ) {
+    accountLoginService.subscribe(userDetail => this.userDetail = userDetail);
   }
 
-  ngOnInit() {
-    this.globalState.subscribeCachedData(this.customerDetailKey, (data: UserDetail) => {
-      this.setUserDetails(data);
-      this.globalState.subscribe(this.customerDetailKey, (customerDetails: UserDetail) => {
-        this.setUserDetails(customerDetails);
-      });
-    });
-  }
-
-  /**
-   * Sets user Details
-   * @param  {} userData
-   */
-  private setUserDetails(userData: UserDetail) {
-    if (userData) {
-      this.isLoggedIn = true;
-      this.userDetail = userData;
-      this.userDetail['hasRole'] = true;
-    } else {
-      this.userDetail = null;
-      this.isLoggedIn = false;
-    }
+  get isLoggedIn() {
+    return this.accountLoginService.isAuthorized();
   }
 
   /**
@@ -64,27 +44,7 @@ export class LoginStatusComponent implements OnInit {
    */
   logout() {
     this.accountLoginService.logout();
-    this.userDetail = null;
-    this.isLoggedIn = false;
     this.router.navigate([this.localize.translateRoute('/home')]);
-    return false;
-  }
-
-  /**
-   * navigates to signin page
-   * @returns void
-   */
-  signIn() {
-    this.router.navigate([this.localize.translateRoute('/login')]);
-    return false;
-  }
-
-  /**
-   * navigates to accountOverview page
-   * @returns void
-   */
-  accountOverview() {
-    this.router.navigate([this.localize.translateRoute('/accountOverview')]);
     return false;
   }
 }

@@ -1,14 +1,14 @@
-import { ShoppingModule } from './../../modules/shopping.module';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FamilyPageComponent } from './family-page.component';
-import { FamilyPageListComponent } from './family-page-list/family-page-list.component';
-import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
-import { ProductListService, ProductListApiService, ProductListMockService } from '../../services/products';
-import { SharedModule } from '../../modules/shared.module';
-import { FamilyPageRoute } from './family-page.routes';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ProductTileComponent } from '../../components/product-tile/product-tile.component';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
+import { SharedModule } from '../../modules/shared.module';
+import { ShoppingModule } from '../../modules/shopping.module';
+import { ProductListService } from '../../services/products';
+import { FamilyPageListComponent } from './family-page-list/family-page-list.component';
+import { FamilyPageComponent } from './family-page.component';
+import { FamilyPageRoute } from './family-page.routes';
 
 @NgModule({
   imports: [
@@ -24,9 +24,7 @@ import { DisableIconDirective } from '../../directives/disable-icon.directive';
     DisableIconDirective
   ],
   providers: [
-    ProductListService,
-    ProductListMockService,
-    ProductListApiService
+    ProductListService
   ]
 })
 
