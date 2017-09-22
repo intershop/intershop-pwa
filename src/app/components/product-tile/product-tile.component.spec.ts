@@ -2,7 +2,6 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, inject } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
@@ -178,11 +177,6 @@ describe('ProductTile Component', () => {
             return jwtToken;
         }
     }
-    class RouterStub {
-        navigate(url) {
-            return url;
-        }
-    }
 
     class WishListServiceStub {
         getWishList() {
@@ -212,6 +206,8 @@ describe('ProductTile Component', () => {
 
     beforeEach(async(() => {
         localizeRouterServiceMock = mock(LocalizeRouterService);
+
+
         jwtToken = null;
         TestBed.configureTestingModule({
             imports: [TranslateModule.forRoot(),
@@ -220,7 +216,6 @@ describe('ProductTile Component', () => {
             declarations: [ProductTileComponent, DisableIconDirective],
             providers: [
                 { provide: JwtService, useClass: JwtServiceStub },
-                { provide: Router, useClass: RouterStub },
                 { provide: WishListService, useClass: WishListServiceStub },
                 { provide: GlobalState, useClass: GlobalStateStub },
                 { provide: CacheCustomService, useClass: CacheCustomServiceStub },
@@ -260,8 +255,8 @@ describe('ProductTile Component', () => {
     })
     ));
 
-    it('should call addToWishList method and verify if router.navigate is called', async(inject([Router], (router: Router) => {
-        const routerSpy = spyOn(router, 'navigate');
+    it('should call addToWishList method and verify if router.navigate is called', async(inject([LocalizeRouterService], (router: LocalizeRouterService) => {
+        const routerSpy = spyOn(router, 'navigateToRoute');
         component.addToWishList(null);
         expect(routerSpy).toHaveBeenCalled();
     })
