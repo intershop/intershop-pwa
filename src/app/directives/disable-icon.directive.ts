@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Injector, Input, Renderer2 } from '@angular/core';
 import * as _ from 'lodash';
-import { GlobalStateAwareService } from '../services/base-services/global-state-aware-service';
+import { GlobalStateAwareService } from '../services/base-services/global-state-aware.service';
 import { ProductCompareService } from '../services/product-compare/product-compare.service';
 
 @Directive({

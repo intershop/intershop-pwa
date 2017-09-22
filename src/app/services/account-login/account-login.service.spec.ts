@@ -1,10 +1,9 @@
-import { UserDetail } from './account-login.model';
-import { UserDetailService } from './user-detail.service';
-
 import { Observable } from 'rxjs/Rx';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService, JwtService } from '../index';
+import { UserDetail } from './account-login.model';
 import { AccountLoginService } from './index';
+import { UserDetailService } from './user-detail.service';
 
 describe('AccountLogin Service', () => {
     const userData = {
@@ -30,7 +29,7 @@ describe('AccountLogin Service', () => {
             loggedInDetail = data;
         });
 
-        verify(userDetailService.next(anything())).called();
+        verify(userDetailService.setUserDetail(anything())).called();
         expect(loggedInDetail).not.toBe({ authorized: true });
     });
 
