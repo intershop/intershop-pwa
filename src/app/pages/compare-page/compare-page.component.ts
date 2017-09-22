@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GlobalState } from '../../services/global.state';
+import { ProductCompareService } from '../../services/product-compare/product-compare.service';
 
 @Component({
   selector: 'is-compare-page',
@@ -7,9 +7,9 @@ import { GlobalState } from '../../services/global.state';
 })
 export class ComparePageComponent {
   comparedProducts = [];
-  constructor(globalState: GlobalState) {
+  constructor(productCompareService: ProductCompareService) {
 
-    globalState.subscribeCachedData('productCompareData', data => {
+    productCompareService.subscribe(data => {
       this.comparedProducts = data;
     });
   }

@@ -1,18 +1,18 @@
-import {
-  NgModule, ModuleWithProviders, APP_INITIALIZER, Optional, SkipSelf,
-  Injectable, Injector
-} from '@angular/core';
-import { LocalizeRouterService } from './localize-router.service';
-import { DummyLocalizeParser, LocalizeParser } from './localize-router.parser';
-import { RouterModule, Routes } from '@angular/router';
-import { LocalizeRouterPipe } from './localize-router.pipe';
-import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import {
+  APP_INITIALIZER, Injectable, Injector, ModuleWithProviders, NgModule,
+  Optional, SkipSelf
+} from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   ALWAYS_SET_PREFIX,
   LOCALIZE_ROUTER_FORROOT_GUARD, LocalizeRouterConfig, LocalizeRouterSettings,
   RAW_ROUTES
 } from './localize-router.config';
+import { DummyLocalizeParser, LocalizeParser } from './localize-router.parser';
+import { LocalizeRouterPipe } from './localize-router.pipe';
+import { LocalizeRouterService } from './localize-router.service';
 
 @Injectable()
 export class ParserInitializer {

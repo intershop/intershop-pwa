@@ -1,22 +1,27 @@
-import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { CacheLocalStorage, CacheService, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { CacheService, CacheLocalStorage, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import {
-  ApiService, JwtService, EncryptDecryptService,
-  DataEmitterService, CacheCustomService, CustomErrorHandler, GlobalState, CrossTabCommunicator
+  ApiService, CacheCustomService,
+  CustomErrorHandler, DataEmitterService, EncryptDecryptService, JwtService,
+  MockApiService
 } from '../services';
+import { UserDetailService } from '../services/account-login/user-detail.service';
+import { CartStatusService } from '../services/cart-status/cart-status.service';
+import { CurrentLocaleService } from '../services/locale/current-locale.service';
+import { ProductCompareService } from '../services/product-compare/product-compare.service';
 
-import { HeaderModule } from '../components/header/header.module';
 import { FooterModule } from '../components/footer/footer.module';
-import { translateFactory } from '../services/custom-translate-loader';
-import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
+import { HeaderModule } from '../components/header/header.module';
 import { GlobalConfiguration } from '../configurations/global.configuration';
+import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
+import { translateFactory } from '../services/custom-translate-loader';
 
 
 @NgModule({
@@ -48,8 +53,11 @@ import { GlobalConfiguration } from '../configurations/global.configuration';
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
-    GlobalState,
-    CrossTabCommunicator,
+    MockApiService,
+    ProductCompareService,
+    UserDetailService,
+    CurrentLocaleService,
+    CartStatusService,
     GlobalConfiguration
   ],
   exports: [

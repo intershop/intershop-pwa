@@ -1,24 +1,17 @@
 import { Component } from '@angular/core';
-import { GlobalState } from '../../../services/';
+import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-product-compare-status',
   templateUrl: './product-compare-status.component.html'
 })
-
 export class ProductCompareStatusComponent {
-  productCompareCount: number;
 
-  /**
-   * @param  {GlobalState} privateglobalState
-   */
-  constructor(private globalState: GlobalState, public localize: LocalizeRouterService) {
-    this.globalState.subscribeCachedData('productCompareData', data => {
-      this.productCompareCount = data ? data.length : 0;
-      this.globalState.subscribe('productCompareData', (productCompareData: string[]) => {
-        this.productCompareCount = productCompareData ? productCompareData.length : 0;
-      });
-    });
+  constructor(public localize: LocalizeRouterService, private productCompareService: ProductCompareService) {
+  }
+
+  get productCompareCount(): number {
+    return this.productCompareService.current ? this.productCompareService.current.length : 0;
   }
 }

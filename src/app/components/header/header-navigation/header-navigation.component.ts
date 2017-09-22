@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryModel } from '../../../services/categories/category.model';
-import { SubcategoryModel } from '../../../services/categories/subcategory.model';
-import { CategoryService } from '../../../services/categories/category.service';
 import { CacheCustomService } from '../../../services/cache/cache-custom.service';
+import { CategoryModel } from '../../../services/categories/category.model';
+import { CategoryService } from '../../../services/categories/category.service';
+import { SubcategoryModel } from '../../../services/categories/subcategory.model';
+import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { GlobalState } from '../../../services/global.state';
 
 @Component({
   selector: 'is-header-navigation',
@@ -17,14 +17,14 @@ export class HeaderNavigationComponent implements OnInit {
   local: string;
 
   constructor(private categoryService: CategoryService,
-              private cacheService: CacheCustomService,
-              public localize: LocalizeRouterService, private globalState: GlobalState) {
+    private cacheService: CacheCustomService,
+    public localize: LocalizeRouterService, private currentLocaleService: CurrentLocaleService) {
 
   }
 
   ngOnInit() {
     this.getCategories();
-    this.globalState.subscribe('local', (localData) => {
+    this.currentLocaleService.subscribe((localData) => {
       this.local = localData;
       this.getCategories();
     });
