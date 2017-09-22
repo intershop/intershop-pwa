@@ -7,7 +7,6 @@ import { UserDetail } from '../../services/account-login/account-login.model';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { CustomValidations } from "../../validators/custom.validations";
-import { ErrorCodeMappingService } from "../../services/error-code-mapping.service";
 
 @Component({
   templateUrl: './account-login.component.html'
@@ -31,7 +30,6 @@ export class AccountLoginComponent implements OnInit {
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
     private router: Router, private cacheService: CacheCustomService,
-    private errorCodeMappingService: ErrorCodeMappingService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private globalConfiguration: GlobalConfiguration,
     private localizeRouterService: LocalizeRouterService
