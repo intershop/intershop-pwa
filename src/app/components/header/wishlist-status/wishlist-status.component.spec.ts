@@ -1,12 +1,12 @@
-import { TestBed, ComponentFixture, async, inject } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { RouterTestingModule } from '@angular/router/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { WishListComponent } from './wishlist-status.component';
-import { DataEmitterService } from '../../../services/data-emitter.service';
+import { Observable } from 'rxjs/Observable';
 import { SharedModule } from '../../../modules/shared.module';
+import { DataEmitterService } from '../../../services/data-emitter.service';
+import { WishListComponent } from './wishlist-status.component';
 
 @Component({
     template: ''

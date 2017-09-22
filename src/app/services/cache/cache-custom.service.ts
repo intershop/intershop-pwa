@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 import { CacheService } from 'ng2-cache/ng2-cache';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 import { EncryptDecryptService } from './encrypt-decrypt.service';
 
 @Injectable()

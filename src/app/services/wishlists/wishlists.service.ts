@@ -1,60 +1,48 @@
 import { Injectable } from '@angular/core';
-import { ApiService, GlobalState } from '../../services';
-import { WishListModel } from './wishlists.model';
-import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
+import { ApiService } from '../../services';
+import { AccountLoginService } from '../account-login/account-login.service';
+import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
+import { WishListModel } from './wishlists.model';
 
 @Injectable()
-export class WishListService {
+export class WishListService extends GlobalStateAwareService<WishListModel> {
 
-    baseUrl = 'customers/-/wishlists/';
-    private preferredWishListUrl: string;
+  baseUrl = 'customers/-/wishlists/';
 
+  constructor(private apiService: ApiService, private accountLoginService: AccountLoginService) {
+    super('wishListStatus', true, false);
+    accountLoginService.subscribe(this.update);
+  }
 
-    /**
-     * Decides the service to be used as per environment variable
-     * @param  {ApiService} private apiService
-     */
-    constructor(private apiService: ApiService, private globalState: GlobalState) {
+  update = () => {
+    if (this.accountLoginService.isAuthorized()) {
+      this.retrieveWishListFromServer();
+    } else {
+      this.next(null);
     }
+  }
 
-    /**
-      * @returns wishlist as observable
-      */
-    getWishList(): Observable<WishListModel> {
-        // TODO:check empty data
-        if (environment.needMock) {
-            const wishListMock = new WishListModel();
-            wishListMock.itemsCount = 3;
-            this.globalState.notifyDataChanged('wishListStatus', wishListMock);
-            return Observable.of(wishListMock);
+  subscribe(callback: (model: WishListModel) => void) {
+    super.subscribe(callback);
+  }
 
+  private retrieveWishListFromServer() {
+    // TODO:check empty data
+    if (environment.needMock) {
+      const wishListMock = new WishListModel();
+      wishListMock.itemsCount = 3;
+      this.next(wishListMock);
+    }
+    this.apiService.get(this.baseUrl).subscribe(data => {
+        const preferredWishListUrl = (!!data.elements && data.elements.length > 0) ?
+          data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
+        if (!!preferredWishListUrl) {
+          this.apiService.get(this.baseUrl + preferredWishListUrl).subscribe((data2) => {
+            this.next(data2);
+          });
         }
-        return this.apiService.get(this.baseUrl)
-            .do(data => {
-                this.preferredWishListUrl = (data.elements.length > 0) ?
-                    data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
-            })
-            .flatMap(u =>
-                this.getPreferredWishList(this.preferredWishListUrl)
-            );
-    }
-
-    /**
-     * @returns wishlist as observable
-     * @param  string url
-     */
-    getPreferredWishList(url: string): Observable<any> {
-        if (url) {
-            return this.apiService.get(this.baseUrl + url)
-                .map((data) => {
-                    this.globalState.notifyDataChanged('wishListStatus', data);
-                });
-        } else {
-            return Observable.of(null);
-        }
-    }
-
-
+      });
+  }
 }
 

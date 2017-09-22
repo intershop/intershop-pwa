@@ -42,7 +42,7 @@
   "account.register.email_confirmation.label":"E-Mail-Adresse best\u00E4tigen",
   "account.register.email_confirmation.not_match.error":"Die E-Mail-Adresse wurde nicht korrekt best\u00E4tigt.",
   "account.register.password.label":"Kennwort",
-  "account.register.password.extrainfo.message":"mindestens {0} Zeichen, muss Buchstaben und Ziffern enthalten, keine Leerzeichen erlaubt",
+  "account.register.password.extrainfo.message":"mindestens 7 Zeichen, muss Buchstaben und Ziffern enthalten, keine Leerzeichen erlaubt",
   "account.register.password_confirmation.label":"Kennwort best\u00E4tigen",
   "search.searchbox.instructional_text":"Suchen Sie nach Schlagwort, Produkt-ID oder Kategorie.",
   "search.searchbox.button.title":"Suche starten",
