@@ -1,0 +1,629 @@
+{
+    "elements": [
+        {
+            "name": "Category",
+            "type": "SearchIndexFilter",
+            "id": "CategoryUUIDLevelMulti",
+            "facets": [
+                {
+                    "name": "Cameras",
+                    "type": "Facet",
+                    "count": 75,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPUpkUUtBQjFVbEh3QUFBRmRCVXdpMGxuNCZPbmxpbmVGbGFnPTE=",
+                        "title": "Cameras"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPUpkUUtBQjFVbEh3QUFBRmRCVXdpMGxuNCZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Cameras"
+                    }
+                },
+                {
+                    "name": "Computers",
+                    "type": "Facet",
+                    "count": 903,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPTlYWUtBQjFVRmJNQUFBRmRtMHNpMGxuNCZPbmxpbmVGbGFnPTE=",
+                        "title": "Computers"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPTlYWUtBQjFVRmJNQUFBRmRtMHNpMGxuNCZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Computers"
+                    }
+                },
+                {
+                    "name": "Home Entertainment",
+                    "type": "Facet",
+                    "count": 175,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPVR6MEtBQjFVbjZBQUFBRmR3RXNpMGxuNCZPbmxpbmVGbGFnPTE=",
+                        "title": "Home Entertainment"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPVR6MEtBQjFVbjZBQUFBRmR3RXNpMGxuNCZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Home Entertainment"
+                    }
+                },
+                {
+                    "name": "Specials",
+                    "type": "Facet",
+                    "count": 27,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPWFJUUtBQjFVZS5JQUFBRmRYa3dpMGxuNCZPbmxpbmVGbGFnPTE=",
+                        "title": "Specials"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/CategoryUUIDLevelMulti;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPWFJUUtBQjFVZS5JQUFBRmRYa3dpMGxuNCZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Specials"
+                    }
+                }
+            ],
+            "displayType": "text_clear",
+            "selectionType": "taxonomic",
+            "limitCount": -1,
+            "minCount": 1,
+            "scope": "Global"
+        },
+        {
+            "name": "Brand",
+            "type": "SearchIndexFilter",
+            "id": "ManufacturerName",
+            "facets": [
+                {
+                    "name": "A-DATA",
+                    "type": "Facet",
+                    "count": 149,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUEtREFUQSZPbmxpbmVGbGFnPTE=",
+                        "title": "A-DATA"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUEtREFUQSZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "A-DATA"
+                    }
+                },
+                {
+                    "name": "Belkin",
+                    "type": "Facet",
+                    "count": 103,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUJlbGtpbiZPbmxpbmVGbGFnPTE=",
+                        "title": "Belkin"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUJlbGtpbiZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Belkin"
+                    }
+                },
+                {
+                    "name": "Fujitsu",
+                    "type": "Facet",
+                    "count": 89,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUZ1aml0c3UmT25saW5lRmxhZz0x",
+                        "title": "Fujitsu"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUZ1aml0c3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Fujitsu"
+                    }
+                },
+                {
+                    "name": "Kingston",
+                    "type": "Facet",
+                    "count": 72,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUtpbmdzdG9uJk9ubGluZUZsYWc9MQ==",
+                        "title": "Kingston"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUtpbmdzdG9uJk9ubGluZUZsYWc9MQ==/hits",
+                        "title": "Kingston"
+                    }
+                },
+                {
+                    "name": "Epson",
+                    "type": "Facet",
+                    "count": 60,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUVwc29uJk9ubGluZUZsYWc9MQ==",
+                        "title": "Epson"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUVwc29uJk9ubGluZUZsYWc9MQ==/hits",
+                        "title": "Epson"
+                    }
+                },
+                {
+                    "name": "Dataflex",
+                    "type": "Facet",
+                    "count": 37,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPURhdGFmbGV4Jk9ubGluZUZsYWc9MQ==",
+                        "title": "Dataflex"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPURhdGFmbGV4Jk9ubGluZUZsYWc9MQ==/hits",
+                        "title": "Dataflex"
+                    }
+                },
+                {
+                    "name": "HP",
+                    "type": "Facet",
+                    "count": 37,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUhQJk9ubGluZUZsYWc9MQ==",
+                        "title": "HP"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPUhQJk9ubGluZUZsYWc9MQ==/hits",
+                        "title": "HP"
+                    }
+                },
+                {
+                    "name": "Show all",
+                    "type": "Facet",
+                    "count": -1,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPVNIT1dBTEwmT25saW5lRmxhZz0x",
+                        "title": "Show all"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ManufacturerName;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZNYW51ZmFjdHVyZXJOYW1lPVNIT1dBTEwmT25saW5lRmxhZz0x/hits",
+                        "title": "Show all"
+                    }
+                }
+            ],
+            "displayType": "text_clear",
+            "selectionType": "single",
+            "limitCount": 7,
+            "minCount": 1,
+            "scope": "Global"
+        },
+        {
+            "name": "Price",
+            "type": "SearchIndexFilter",
+            "id": "ProductSalePriceGross",
+            "facets": [
+                {
+                    "name": "<= $ 25",
+                    "type": "Facet",
+                    "count": 226,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjAuMCtUTysyNC45OSU1RA==",
+                        "title": "<= $ 25"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjAuMCtUTysyNC45OSU1RA==/hits",
+                        "title": "<= $ 25"
+                    }
+                },
+                {
+                    "name": "$ 25 - $ 50",
+                    "type": "Facet",
+                    "count": 212,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjI1LjArVE8rNDkuOTklNUQ=",
+                        "title": "$ 25 - $ 50"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjI1LjArVE8rNDkuOTklNUQ=/hits",
+                        "title": "$ 25 - $ 50"
+                    }
+                },
+                {
+                    "name": "$ 50 - $ 100",
+                    "type": "Facet",
+                    "count": 169,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjUwLjArVE8rOTkuOTklNUQ=",
+                        "title": "$ 50 - $ 100"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjUwLjArVE8rOTkuOTklNUQ=/hits",
+                        "title": "$ 50 - $ 100"
+                    }
+                },
+                {
+                    "name": "$ 100 - $ 250",
+                    "type": "Facet",
+                    "count": 277,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjEwMC4wK1RPKzI0OS45OSU1RA==",
+                        "title": "$ 100 - $ 250"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjEwMC4wK1RPKzI0OS45OSU1RA==/hits",
+                        "title": "$ 100 - $ 250"
+                    }
+                },
+                {
+                    "name": "$ 250 - $ 500",
+                    "type": "Facet",
+                    "count": 127,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjI1MC4wK1RPKzQ5OS45OSU1RA==",
+                        "title": "$ 250 - $ 500"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjI1MC4wK1RPKzQ5OS45OSU1RA==/hits",
+                        "title": "$ 250 - $ 500"
+                    }
+                },
+                {
+                    "name": "$ 500 - $ 1000",
+                    "type": "Facet",
+                    "count": 85,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjUwMC4wK1RPKzk5OS45OTklNUQ=",
+                        "title": "$ 500 - $ 1000"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjUwMC4wK1RPKzk5OS45OTklNUQ=/hits",
+                        "title": "$ 500 - $ 1000"
+                    }
+                },
+                {
+                    "name": "> $ 1000",
+                    "type": "Facet",
+                    "count": 89,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjEwMDAuMCtUTysqJTVE",
+                        "title": "> $ 1000"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/ProductSalePriceGross;SearchParameter=JkBRdWVyeVRlcm09KiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTEmUHJvZHVjdFNhbGVQcmljZUdyb3NzPSU1QjEwMDAuMCtUTysqJTVE/hits",
+                        "title": "> $ 1000"
+                    }
+                }
+            ],
+            "displayType": "text_clear",
+            "selectionType": "multiple_or",
+            "limitCount": -1,
+            "minCount": 1,
+            "scope": "Global"
+        },
+        {
+            "name": "Color",
+            "type": "SearchIndexFilter",
+            "facets": [
+                {
+                    "name": "Aluminium",
+                    "type": "Facet",
+                    "count": 4,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1BbHVtaW5pdW0mQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Aluminium"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1BbHVtaW5pdW0mQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Aluminium"
+                    }
+                },
+                {
+                    "name": "Black",
+                    "type": "Facet",
+                    "count": 463,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1CbGFjayZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=",
+                        "title": "Black"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1CbGFjayZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Black"
+                    }
+                },
+                {
+                    "name": "Blue",
+                    "type": "Facet",
+                    "count": 67,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1CbHVlJkNvbnRleHRDYXRlZ29yeVVVSUQ9dTlWX0FBQUJNMUFBQUFGZDRxME5MemN1Jk9ubGluZUZsYWc9MQ==",
+                        "title": "Blue"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1CbHVlJkNvbnRleHRDYXRlZ29yeVVVSUQ9dTlWX0FBQUJNMUFBQUFGZDRxME5MemN1Jk9ubGluZUZsYWc9MQ==/hits",
+                        "title": "Blue"
+                    }
+                },
+                {
+                    "name": "Brown",
+                    "type": "Facet",
+                    "count": 11,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1Ccm93biZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=",
+                        "title": "Brown"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1Ccm93biZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Brown"
+                    }
+                },
+                {
+                    "name": "Chocolat",
+                    "type": "Facet",
+                    "count": 1,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1DaG9jb2xhdCZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=",
+                        "title": "Chocolat"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1DaG9jb2xhdCZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Chocolat"
+                    }
+                },
+                {
+                    "name": "Green",
+                    "type": "Facet",
+                    "count": 9,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1HcmVlbiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=",
+                        "title": "Green"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1HcmVlbiZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Green"
+                    }
+                },
+                {
+                    "name": "Grey",
+                    "type": "Facet",
+                    "count": 64,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1HcmV5JkNvbnRleHRDYXRlZ29yeVVVSUQ9dTlWX0FBQUJNMUFBQUFGZDRxME5MemN1Jk9ubGluZUZsYWc9MQ==",
+                        "title": "Grey"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1HcmV5JkNvbnRleHRDYXRlZ29yeVVVSUQ9dTlWX0FBQUJNMUFBQUFGZDRxME5MemN1Jk9ubGluZUZsYWc9MQ==/hits",
+                        "title": "Grey"
+                    }
+                },
+                {
+                    "name": "Orange",
+                    "type": "Facet",
+                    "count": 8,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1PcmFuZ2UmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Orange"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1PcmFuZ2UmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Orange"
+                    }
+                },
+                {
+                    "name": "Pink",
+                    "type": "Facet",
+                    "count": 13,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1QaW5rJkNvbnRleHRDYXRlZ29yeVVVSUQ9dTlWX0FBQUJNMUFBQUFGZDRxME5MemN1Jk9ubGluZUZsYWc9MQ==",
+                        "title": "Pink"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1QaW5rJkNvbnRleHRDYXRlZ29yeVVVSUQ9dTlWX0FBQUJNMUFBQUFGZDRxME5MemN1Jk9ubGluZUZsYWc9MQ==/hits",
+                        "title": "Pink"
+                    }
+                },
+                {
+                    "name": "Purple",
+                    "type": "Facet",
+                    "count": 3,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1QdXJwbGUmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Purple"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1QdXJwbGUmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Purple"
+                    }
+                },
+                {
+                    "name": "Red",
+                    "type": "Facet",
+                    "count": 27,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1SZWQmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Red"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1SZWQmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Red"
+                    }
+                },
+                {
+                    "name": "Silver",
+                    "type": "Facet",
+                    "count": 110,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1TaWx2ZXImQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Silver"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1TaWx2ZXImQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Silver"
+                    }
+                },
+                {
+                    "name": "Stainless steel",
+                    "type": "Facet",
+                    "count": 1,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1TdGFpbmxlc3Mrc3RlZWwmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Stainless steel"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1TdGFpbmxlc3Mrc3RlZWwmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Stainless steel"
+                    }
+                },
+                {
+                    "name": "Transparent",
+                    "type": "Facet",
+                    "count": 8,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1UcmFuc3BhcmVudCZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=",
+                        "title": "Transparent"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1UcmFuc3BhcmVudCZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "Transparent"
+                    }
+                },
+                {
+                    "name": "Violet",
+                    "type": "Facet",
+                    "count": 1,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1WaW9sZXQmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Violet"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1WaW9sZXQmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Violet"
+                    }
+                },
+                {
+                    "name": "White",
+                    "type": "Facet",
+                    "count": 82,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1XaGl0ZSZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=",
+                        "title": "White"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1XaGl0ZSZDb250ZXh0Q2F0ZWdvcnlVVUlEPXU5Vl9BQUFCTTFBQUFBRmQ0cTBOTHpjdSZPbmxpbmVGbGFnPTE=/hits",
+                        "title": "White"
+                    }
+                },
+                {
+                    "name": "Yellow",
+                    "type": "Facet",
+                    "count": 6,
+                    "link": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1ZZWxsb3cmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x",
+                        "title": "Yellow"
+                    },
+                    "selected": false,
+                    "hits": {
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/filters/;SearchParameter=JkBRdWVyeVRlcm09KiZDb2xvdXJfb2ZfcHJvZHVjdD1ZZWxsb3cmQ29udGV4dENhdGVnb3J5VVVJRD11OVZfQUFBQk0xQUFBQUZkNHEwTkx6Y3UmT25saW5lRmxhZz0x/hits",
+                        "title": "Yellow"
+                    }
+                }
+            ],
+            "displayType": "swatch",
+            "selectionType": "multiple_or",
+            "limitCount": -1,
+            "minCount": 1,
+            "scope": "Global"
+        }
+    ],
+    "type": "ResourceCollection",
+    "name": "filters"
+}

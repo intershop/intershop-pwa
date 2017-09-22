@@ -1,13 +1,13 @@
-import { ProductCompareStatusComponent } from './product-compare-status.component';
-import { Component } from '@angular/core';
-import { TestBed, inject } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { GlobalState } from '../../../services/global.state';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { mock, instance } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
+import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { ProductCompareStatusComponent } from './product-compare-status.component';
 
 @Component({
   template: ''
@@ -22,11 +22,6 @@ describe('Product Compare Status Component', () => {
   let localizeRouterServiceMock: LocalizeRouterService;
 
   beforeEach(() => {
-    class GlobalStateStub {
-      subscribeCachedData(key, callBack: Function) {
-      }
-    }
-
     localizeRouterServiceMock = mock(LocalizeRouterService);
 
     TestBed.configureTestingModule({
@@ -41,8 +36,8 @@ describe('Product Compare Status Component', () => {
         DummyComponent
       ],
       providers: [
-        {provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
-        { provide: GlobalState, useClass: GlobalStateStub }
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
+        { provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }
       ],
 
     }).compileComponents();

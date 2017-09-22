@@ -1,0 +1,145 @@
+{
+    "name": "Cameras",
+    "type": "Category",
+    "hasOnlineProducts": false,
+    "hasOnlineSubCategories": true,
+    "online": "1",
+    "description": "The cameras and camcorders products catalog.",
+    "subCategoriesCount": 6,
+    "id": "Cameras-Camcorders",
+    "subCategories": [
+        {
+            "name": "Webcams Mock",
+            "type": "Category",
+            "hasOnlineProducts": true,
+            "hasOnlineSubCategories": false,
+            "online": "1",
+            "description": "The camera products and services catalog.",
+            "images": [
+                {
+                    "name": "front M",
+                    "type": "Image",
+                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/3930709-8114.jpg",
+                    "viewID": "front",
+                    "typeID": "M",
+                    "imageActualHeight": 270,
+                    "imageActualWidth": 270,
+                    "primaryImage": true
+                }
+            ],
+            "id": "577",
+            "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577"
+        },
+        {
+            "name": "Action Cameras",
+            "type": "Category",
+            "hasOnlineProducts": true,
+            "hasOnlineSubCategories": false,
+            "online": "1",
+            "description": "The camera products and services catalog.",
+            "images": [
+                {
+                    "name": "front M",
+                    "type": "Image",
+                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/M4548736000919.jpg",
+                    "viewID": "front",
+                    "typeID": "M",
+                    "imageActualHeight": 270,
+                    "imageActualWidth": 270,
+                    "primaryImage": true
+                }
+            ],
+            "id": "832",
+            "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832"
+        },
+        {
+            "name": "Digital Cameras",
+            "type": "Category",
+            "hasOnlineProducts": true,
+            "hasOnlineSubCategories": false,
+            "online": "1",
+            "description": "The camera products and services catalog.",
+            "richContent": "<p><strong>TestImport Cameras</strong></p>\n<p>Digital cameras make amazing pictures, much better than smartphones do. Discover it yourself: the easy handling, the excellent picture quality, the wide zoom range and the quick focus. Digital cameras automatically minimize the effects of vibration to deliver clearer and sharper pictures. At inSPIRED, we offer the best camera equipment for every purpose – leisure or work, robust or sophisticated, always at the best value option. Everyone - both beginners and professionals - feel comfortable in the world of photography with our top digital cameras.</p>\n<p> </p>\n<p><strong>The best choice for beginners and professionals</strong></p>\n<p>Modern digital cameras offer a lot of options with many settings, but still allow for an easy handling. Our cameras from Canon and Kodak produce fascinating pictures. The compact cameras are suitable for leisure and outdoor photography. But we also have extensively equipped devices that can be used in special occasions like underwater photography – specific functions and designs for specific purposes. Take, for example, the GoPro Hero 5: A well-equipped action camera in a compact body that offers high video quality and low battery consumption.</p>\n<p> </p>\n<p><strong>New Cameras - Trendy, stylish, compact design</strong></p>\n<p>You like it simple, modern and impressive? Then you must see the new products from Canon. Here you live to see a new dimension of photography with the IXUS series. The new solutions are adapted to the needs of the customers. Kodak’s M series is the best option for more flexibility. They are easy to carry and sport a touch screen, which allows you to make the settings directly on the display. Thanks to its reversible front, this series is especially suited to take selfies.</p>",
+            "images": [
+                {
+                    "name": "front M",
+                    "type": "Image",
+                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/3957278-6938.jpg",
+                    "viewID": "front",
+                    "typeID": "M",
+                    "imageActualHeight": 270,
+                    "imageActualWidth": 270,
+                    "primaryImage": true
+                }
+            ],
+            "id": "575",
+            "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/575"
+        },
+        {
+            "name": "Bags & Cases",
+            "type": "Category",
+            "hasOnlineProducts": true,
+            "hasOnlineSubCategories": false,
+            "online": "1",
+            "description": "The camera products and services catalog.",
+            "images": [
+                {
+                    "name": "front M",
+                    "type": "Image",
+                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/4584970-3468.jpg",
+                    "viewID": "front",
+                    "typeID": "M",
+                    "imageActualHeight": 270,
+                    "imageActualWidth": 270,
+                    "primaryImage": true
+                }
+            ],
+            "id": "1290",
+            "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/1290"
+        },
+        {
+            "name": "Camera Accessories",
+            "type": "Category",
+            "hasOnlineProducts": true,
+            "hasOnlineSubCategories": false,
+            "online": "1",
+            "description": "The camera products and services catalog.",
+            "images": [
+                {
+                    "name": "front M",
+                    "type": "Image",
+                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/4905524961133_1.jpg",
+                    "viewID": "front",
+                    "typeID": "M",
+                    "imageActualHeight": 270,
+                    "imageActualWidth": 270,
+                    "primaryImage": true
+                }
+            ],
+            "id": "585",
+            "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/585"
+        },
+        {
+            "name": "Camcorders",
+            "type": "Category",
+            "hasOnlineProducts": true,
+            "hasOnlineSubCategories": false,
+            "online": "1",
+            "description": "The camera products and services catalog.",
+            "images": [
+                {
+                    "name": "front M",
+                    "type": "Image",
+                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/4729528-9270.jpg",
+                    "viewID": "front",
+                    "typeID": "M",
+                    "imageActualHeight": 270,
+                    "imageActualWidth": 270,
+                    "primaryImage": true
+                }
+            ],
+            "id": "584",
+            "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584"
+        }
+    ]
+}

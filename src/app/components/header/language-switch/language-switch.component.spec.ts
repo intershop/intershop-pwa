@@ -1,13 +1,12 @@
-import { LanguageSwitchComponent } from './language-switch.component';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { DebugElement } from '@angular/core/';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { mock, instance } from 'ts-mockito';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { GlobalState } from '../../../services/global.state';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Observable } from 'rxjs/Observable';
+import { instance, mock } from 'ts-mockito';
+import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { LanguageSwitchComponent } from './language-switch.component';
 
 class DummyTraslateService {
   parser = {
@@ -31,13 +30,8 @@ describe('Language Switch Component', () => {
   let fixture: ComponentFixture<LanguageSwitchComponent>;
   let component: LanguageSwitchComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
-  let localizeRouterServiceMock: LocalizeRouterService;
-  let globalStateMock: GlobalState;
 
   beforeEach(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
-    globalStateMock = mock(GlobalState);
 
     TestBed.configureTestingModule({
       imports: [
@@ -47,7 +41,7 @@ describe('Language Switch Component', () => {
       declarations: [LanguageSwitchComponent],
       providers: [
         { provide: LocalizeRouterService, useClass: DummyTraslateService },
-        { provide: GlobalState, useFactory: () => instance(globalStateMock) },
+        { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
         { provide: Router, useClass: DummyRouter }
       ]
     }).compileComponents();
@@ -56,12 +50,15 @@ describe('Language Switch Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LanguageSwitchComponent);
     component = fixture.componentInstance;
-    debugEl = fixture.debugElement;
     element = fixture.nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should be created', () => {
+    expect(component).toBeTruthy();
   });
 
   xit('should check if more than 1 language options are available on the template', () => {
-    fixture.detectChanges();
     fixture.nativeElement.querySelectorAll('[dropdownToggle]')[0].click(); // trigger drop down opening
     const languageOptions = element.getElementsByTagName('li');
     expect(languageOptions.length).toBeGreaterThan(1);
@@ -73,7 +70,7 @@ describe('Language Switch Component', () => {
   });
 
   it('should check language is changed when languageChange menthod is called', () => {
-    component.languageChange({ 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' } );
+    component.languageChange({ 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' });
     fixture.detectChanges();
     const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
     expect(selectedLanguage[0].textContent.trim()).toEqual('en');
