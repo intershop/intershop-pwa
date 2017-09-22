@@ -103,6 +103,15 @@ export class LocalizeRouterService {
   }
 
   /**
+   * Navigate to given route (translate the given route first ofcourse)
+   * @param {string | any[]} path
+   * @param {NavigationExtras} extras
+   */
+  navigateToRoute(path: string | any[], extras?: NavigationExtras) {
+    this.router.navigate([this.translateRoute(path)], extras);
+  }
+
+  /**
    * Event handler to react on route change
    * @returns {(event:any)=>void}
    * @private

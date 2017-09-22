@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { GlobalState } from '../../../services';
 import { UserDetail } from '../../../services/account-login/account-login.model';
@@ -16,11 +15,17 @@ export class LoginStatusComponent implements OnInit {
   isLoggedIn: boolean;
   customerDetailKey = 'customerDetails';
 
+  /**
+   * Constructor
+   * @param {AccountLoginService} accountLoginService
+   * @param {GlobalState} globalState
+   * @param {GlobalConfiguration} globalConfiguration
+   * @param {LocalizeRouterService} localizeRouterService
+   */
   constructor(private accountLoginService: AccountLoginService,
-              private router: Router,
               private globalState: GlobalState,
               private globalConfiguration: GlobalConfiguration,
-              public localize: LocalizeRouterService) {
+              public localizeRouterService: LocalizeRouterService) {
   }
 
   ngOnInit() {
@@ -53,7 +58,7 @@ export class LoginStatusComponent implements OnInit {
    */
   register() {
     this.globalConfiguration.getApplicationSettings().subscribe(accountSettings => {
-      accountSettings.useSimpleAccount ? this.router.navigate([this.localize.translateRoute('/login')]) : this.router.navigate([this.localize.translateRoute('/register')]);
+      accountSettings.useSimpleAccount ? this.localizeRouterService.navigateToRoute('/login') : this.localizeRouterService.navigateToRoute('/register');
     });
     return false;
   }
@@ -66,7 +71,7 @@ export class LoginStatusComponent implements OnInit {
     this.accountLoginService.logout();
     this.userDetail = null;
     this.isLoggedIn = false;
-    this.router.navigate([this.localize.translateRoute('/home')]);
+    this.localizeRouterService.navigateToRoute('/home');
     return false;
   }
 }

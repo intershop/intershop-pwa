@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
@@ -23,33 +22,37 @@ export class SimpleRegistrationComponent implements OnInit {
 
   /**
    * Constructor
-   * @param  {FormBuilder} privateformBuilder
-   * @param  {AccountLoginService} privateaccountLoginService
-   * @param  {Router} privaterouter
+   * @param {FormBuilder} formBuilder
+   * @param {LocalizeRouterService} localize
+   * @param {GlobalConfiguration} globalConfiguration
+   * @param {SimpleRegistrationService} simpleRegistrationService
    */
   constructor(private formBuilder: FormBuilder,
-    private localize: LocalizeRouterService,
-    private router: Router,
-    private globalConfiguration: GlobalConfiguration,
-    private simpleRegistrationService: SimpleRegistrationService) { }
+              private localize: LocalizeRouterService,
+              private globalConfiguration: GlobalConfiguration,
+              private simpleRegistrationService: SimpleRegistrationService) {
+  }
 
   /**
-     * Creates Login Form
-     */
+   * Creates Login Form
+   */
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
       this.simpleRegistrationForm = this.formBuilder.group({
         userName: ['', [Validators.compose([Validators.required,
-        (this.userRegistrationLoginType === 'email' ? EmailValidator.validate : null)])]],
+          (this.userRegistrationLoginType === 'email' ? EmailValidator.validate : null)])]],
         password: ['', [Validators.required, Validators.minLength(7), PasswordValidator.validate]],
         confirmPassword: ['', [Validators.required,
-        matchOtherValidator('password')]]
+          matchOtherValidator('password')]]
       });
     });
   }
 
-
+  /**
+   * Create account
+   * @param userData
+   */
   createAccount(userData) {
     if (this.simpleRegistrationForm.invalid) {
       Object.keys(this.simpleRegistrationForm.controls).forEach(key => {
@@ -59,7 +62,7 @@ export class SimpleRegistrationComponent implements OnInit {
     } else {
       this.simpleRegistrationService.createUser(userData as UserDetail).subscribe(response => {
         if (response) {
-          this.router.navigate([this.localize.translateRoute('/home')]);
+          this.localize.navigateToRoute('/home');
         }
       });
     }

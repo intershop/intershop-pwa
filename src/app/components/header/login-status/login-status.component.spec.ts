@@ -1,9 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { GlobalState } from '../../../services';
 import { AccountLoginService } from '../../../services/account-login';
@@ -14,7 +13,6 @@ describe('Login Status Component', () => {
   let fixture: ComponentFixture<LoginStatusComponent>;
   let component: LoginStatusComponent;
   let element: HTMLElement;
-  let routerMock: Router;
   let accountLoginServiceMock: AccountLoginService;
   let globalStateMock: GlobalState;
   let globalConfigurationMock: GlobalConfiguration;
@@ -25,7 +23,6 @@ describe('Login Status Component', () => {
   };
 
   beforeEach(() => {
-    routerMock = mock(Router);
     accountLoginServiceMock = mock(AccountLoginService);
     localizeRouterServiceMock = mock(LocalizeRouterService);
     when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
@@ -51,8 +48,7 @@ describe('Login Status Component', () => {
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: GlobalState, useFactory: () => instance(globalStateMock) },
         { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) }
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -62,6 +58,8 @@ describe('Login Status Component', () => {
     fixture = TestBed.createComponent(LoginStatusComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    const router = TestBed.get(LocalizeRouterService);
+    this.navSpy = spyOn(router, 'navigateToRoute');
   });
 
   it('should be created', fakeAsync(() => {
@@ -80,14 +78,13 @@ describe('Login Status Component', () => {
 
   it('should navigate to "register" when register is clicked', () => {
     component.register();
-    verify(routerMock.navigate(anything())).once();
+    expect(this.navSpy).toHaveBeenCalledWith('/register');
   });
 
   it('should navigate to "home" and unset userDetails when logout is called', () => {
     component.logout();
-
+    expect(this.navSpy).toHaveBeenCalledWith('/home');
     expect(component.userDetail).toBeNull();
-    verify(routerMock.navigate(anything())).once();
   });
 
   it('should render full name on template when user is logged in', () => {
