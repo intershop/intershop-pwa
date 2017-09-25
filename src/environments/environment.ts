@@ -6,8 +6,8 @@
 export const environment = {
   production: false,
   needMock: true,
-  rest_url: 'http://10.131.60.92:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
-  base_url: 'http://10.131.60.92:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
+  rest_url: 'http://192.168.99.100:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
+  base_url: 'http://192.168.99.100:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
   mustMockPaths: [
     '12/'
   ],
@@ -16,5 +16,7 @@ export const environment = {
     { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
   ],
   prefix: 'ROUTES',
-  pattern: '{LANG}/{CURRENCY}'
+  pattern: '{LANG}/{CURRENCY}',
+  subCategoryDepth: 2,
+  routingDepth: 5
 };

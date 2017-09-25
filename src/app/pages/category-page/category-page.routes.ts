@@ -1,8 +1,22 @@
+import { environment } from '../../../environments/environment';
 import { CategoryPageComponent } from './category-page.component';
 import { DeciderComponent } from './decider.component';
 
-export const CategoryPageRoute = [
-  { path: ':category-name', component: CategoryPageComponent },
-  { path: ':category-name/:subcategory', component: DeciderComponent },
-  { path: ':category-name/:subcategory/:subcategory', loadChildren: 'app/pages/family-page/family-page.module#FamilyPageModule' }
-];
+const categoryPageRoute = [];
+
+class CategoryRoutes {
+  static createRoute() {
+    categoryPageRoute.push(
+      { path: ':category-name', component: CategoryPageComponent }
+    );
+    let path = ':category-name';
+    for (let i = 0; i < environment.routingDepth; i++) {
+      path += '/:subcategory';
+      categoryPageRoute.push({ path: path, component: DeciderComponent });
+    }
+  }
+}
+
+CategoryRoutes.createRoute();
+
+export let CategoryPageRoute = categoryPageRoute;

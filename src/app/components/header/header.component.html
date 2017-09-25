@@ -57,7 +57,7 @@
     <div class="global-nav collapse navbar-collapse" [collapse]="globalnav" id="globalnav">
       <div class="container">
         <div class="row">
-          <is-header-navigation subcategoryLevel="2" (hideHeaderNavigation)="globalnav = !globalnav"></is-header-navigation>
+          <is-header-navigation [allCategories] = "allCategories"></is-header-navigation>
           <is-mini-cart></is-mini-cart>
         </div>
       </div>
