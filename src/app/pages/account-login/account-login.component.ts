@@ -7,7 +7,7 @@ import { UserDetail } from '../../services/account-login/account-login.model';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { CustomValidations } from '../../validators/custom.validations';
-
+import { CustomValidators } from 'ng2-validation';
 @Component({
   templateUrl: './account-login.component.html'
 })
@@ -45,9 +45,9 @@ export class AccountLoginComponent implements OnInit {
         this.userRegistrationLoginType = data.userRegistrationLoginType;
       }
       this.loginForm = this.formBuilder.group({
-        userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidations.emailValidate : null)])]],
+        userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
         password: ['', [Validators.compose([Validators.required, Validators.minLength(7),
-        Validators.maxLength(256), CustomValidations.passwordValidate])]]
+        Validators.maxLength(256), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]]
       });
     });
 
@@ -58,14 +58,16 @@ export class AccountLoginComponent implements OnInit {
    * Routes to Family Page when user is logged in
    */
   onSignin(userCredentials) {
-    this.loginFormSubmitted = true;
-    this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
-      if (typeof (userData) === 'object') {
-        this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
-      } else {
-        this.loginForm.get('password').reset();
-        this.errorUser = userData;
-      }
-    });
+    if (this.loginForm.valid) {
+      this.loginFormSubmitted = true;
+      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
+        if (typeof (userData) === 'object') {
+          this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
+        } else {
+          this.loginForm.get('password').reset();
+          this.errorUser = userData;
+        }
+      });
+    }
   }
 }

@@ -7,6 +7,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { CustomFormsModule } from 'ng2-validation';
 import {
   ApiService, CacheCustomService,
   CustomErrorHandler, DataEmitterService, EncryptDecryptService, JwtService,
@@ -20,7 +21,6 @@ import { ProductCompareService } from '../services/product-compare/product-compa
 import { FooterModule } from '../components/footer/footer.module';
 import { HeaderModule } from '../components/header/header.module';
 import { GlobalConfiguration } from '../configurations/global.configuration';
-import { FormValidationDirective } from '../directives/form-validation.directive';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
 import { translateFactory } from '../services/custom-translate-loader';
 import { ErrorCodeMappingService } from '../services/error-code-mapping.service';
@@ -41,10 +41,10 @@ import { ErrorCodeMappingService } from '../services/error-code-mapping.service'
         deps: [HttpClient]
       }
     }),
+    CustomFormsModule
   ],
   declarations: [
-    StyleWrapperDirective,
-    FormValidationDirective
+    StyleWrapperDirective
   ],
   providers: [
     ApiService,

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { CustomValidations } from '../../../validators/custom.validations';
 import { SimpleRegistrationService } from './simple-registration.service';
-
+import { CustomValidators } from 'ng2-validation';
 @Component({
   selector: 'is-simple-registration',
   templateUrl: './simple-registration.component.html',
@@ -37,25 +37,20 @@ export class SimpleRegistrationComponent implements OnInit {
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
+      let password = new FormControl('', [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]);
+      let certainPassword = new FormControl('', CustomValidators.equalTo(password));
       this.simpleRegistrationForm = this.formBuilder.group({
         userName: ['', [Validators.compose([Validators.required,
-        (this.userRegistrationLoginType === 'email' ? CustomValidations.emailValidate : null)])]],
-        password: ['', [Validators.required, Validators.minLength(7), CustomValidations.passwordValidate]],
-        confirmPassword: ['', [Validators.required
-          // matchOtherValidator('password')
-        ]]
+        (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
+        password: password,
+        confirmPassword: certainPassword
       });
     });
   }
 
 
   createAccount(userData) {
-    if (this.simpleRegistrationForm.invalid) {
-      Object.keys(this.simpleRegistrationForm.controls).forEach(key => {
-        this.simpleRegistrationForm.get(key).markAsDirty();
-      });
-      this.isDirty = true;
-    } else {
+    if (this.simpleRegistrationForm.valid) {
       this.simpleRegistrationService.createUser(userData as UserDetail).subscribe(response => {
         if (response) {
           this.router.navigate([this.localize.translateRoute('/home')]);
