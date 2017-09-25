@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GlobalState } from '../../../services';
+import { CartStatusService } from '../../../services/cart-status/cart-status.service';
 
 @Component({
   selector: 'is-mini-cart',
@@ -11,26 +11,19 @@ export class MiniCartComponent {
   public isCollapsed = true;
   cartPrice: number;
   cartLength: number;
-  /**
-   * @param  {GlobalState} privateglobalState
-   */
-  constructor(private globalState: GlobalState) {
-    this.globalState.subscribeCachedData('cartData', cartItems => {
-      this.calculateCartValues(cartItems);
-      this.globalState.subscribe('cartData', (cartData) => {
-        this.calculateCartValues(cartData);
-      });
-    });
+
+  constructor(cartStatusService: CartStatusService) {
+    cartStatusService.subscribe(this.calculateCartValues);
   }
 
   /**
    * Calculate the total price of cart items
    * @param  {} cartItems
    */
-  calculateCartValues(cartItems) {
+  calculateCartValues = (cartItems) => {
     this.cartPrice = 0;
     this.cartLength = 0;
-    if (cartItems) {
+    if (cartItems && cartItems.length) {
       cartItems.forEach(item => {
         this.cartPrice = this.cartPrice + item.salePrice.value;
       });

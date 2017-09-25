@@ -34,25 +34,22 @@ export class SimpleRegistrationComponent implements OnInit {
   }
 
   /**
-   * Creates Login Form
-   */
+     * Creates Login Form
+     */
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
       this.simpleRegistrationForm = this.formBuilder.group({
         userName: ['', [Validators.compose([Validators.required,
-          (this.userRegistrationLoginType === 'email' ? EmailValidator.validate : null)])]],
+        (this.userRegistrationLoginType === 'email' ? EmailValidator.validate : null)])]],
         password: ['', [Validators.required, Validators.minLength(7), PasswordValidator.validate]],
         confirmPassword: ['', [Validators.required,
-          matchOtherValidator('password')]]
+        matchOtherValidator('password')]]
       });
     });
   }
 
-  /**
-   * Create account
-   * @param userData
-   */
+
   createAccount(userData) {
     if (this.simpleRegistrationForm.invalid) {
       Object.keys(this.simpleRegistrationForm.controls).forEach(key => {

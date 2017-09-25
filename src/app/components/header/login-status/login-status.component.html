@@ -1,13 +1,13 @@
-<a [routerLink]="isLoggedIn? this.localizeRouterService.translateRoute('/accountOverview') : this.localizeRouterService.translateRoute('/login')"
+<a [routerLink]="isLoggedIn? this.localize.translateRoute('/accountOverview') : this.localize.translateRoute('/login')"
   [attr.data-testing-id]="isLoggedIn?'link-myaccount' : null" [attr.rel]="isLoggedIn ? null : 'nofollow'"
   [ngClass]="isLoggedIn? 'my-account-link' : 'my-account-links my-account-login'" >
   <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
-  <span class="hidden-xs" *ngIf="!(isLoggedIn && !userDetail?.lastName)" [ngClass]="userDetail?.lastName && isLoggedIn? 'login-name':''">{{userDetail?.lastName && isLoggedIn? (userDetail?.firstName + ' ' + userDetail?.lastName):'Sign In'}}</span>
+  <span class="hidden-xs" *ngIf="!(isLoggedIn && !userDetail?.lastName)" [ngClass]="userDetail?.lastName && isLoggedIn? 'login-name':''">{{userDetail?.lastName && isLoggedIn? (userDetail?.firstName + ' ' + userDetail?.lastName):'account.signin.button.label' | translate}}</span>
   <span *ngIf="isLoggedIn" class="hidden-xs">My Account</span>
 </a>
 <span class="hidden-xs seperator">&#124; </span>
-<a [href]=" isLoggedIn? localizeRouterService.translateRoute('/') + 'logout' : localizeRouterService.translateRoute('/register')" [attr.data-testing-id]="isLoggedIn?'link-logout' : null" [attr.rel]="isLoggedIn ?  null : 'nofollow'"
-   [ngClass]="userDetail?.hasRole && isLoggedIn? 'my-account-link my-account-logout' : 'ish-siteHeader-myAccountUtilitiesMenu-myAccount-register'"
-   (click)="userDetail?.hasRole && isLoggedIn? logout() : register()">
-  <span class="hidden-xs">{{userDetail?.hasRole && isLoggedIn? ('account.logout.button.label' | translate) : ('account.register.button.label' | translate)}}</span>
+<a [routerLink]="userDetail?.lastName && isLoggedIn? localize.translateRoute('/') + 'logout' : localize.translateRoute('/register')" [attr.data-testing-id]="isLoggedIn?'link-logout' : null" [attr.rel]="isLoggedIn ?  null : 'nofollow'"
+   [ngClass]="isLoggedIn? 'my-account-link my-account-logout' : 'ish-siteHeader-myAccountUtilitiesMenu-myAccount-register'"
+   (click)="userDetail?.lastName && isLoggedIn? logout() : register()">
+  <span class="hidden-xs">{{isLoggedIn? ('account.logout.button.label' | translate) : ('account.register.button.label' | translate)}}</span>
 </a>
