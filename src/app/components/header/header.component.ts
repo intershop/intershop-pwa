@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { CartStatusService } from '../../services/cart-status/cart-status.service';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { GlobalState } from '../../services/global.state';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+
 
 @Component({
   selector: 'is-header',
@@ -17,23 +17,8 @@ export class HeaderComponent implements OnInit {
   allCategories: Category[];
   uri = 'categories?view=tree&limit=';
 
-  constructor(private wishListService: WishListService, private globalState: GlobalState,
-    private categoryService: CategoriesService
-  ) {
-    this.globalState.subscribe('customerDetails', (customerDetails) => {
-      if (customerDetails) {
-        this.wishListService.getWishList().subscribe(_ => _);
-      } else {
-        this.globalState.notifyDataChanged('wishListStatus', customerDetails);
-      }
-    });
-
-    this.globalState.subscribeCachedData('cartData', (cartItems) => {
-      this.cartItemLength = cartItems ? cartItems.length : '';
-    });
-    this.globalState.subscribe('cartData', (cartItems) => {
-      this.cartItemLength = cartItems ? cartItems.length : '';
-    });
+  constructor(cartStatusService: CartStatusService, private categoryService: CategoriesService) {
+    cartStatusService.subscribe(this.updateCartItemLength);
   }
 
   ngOnInit() {
@@ -42,5 +27,9 @@ export class HeaderComponent implements OnInit {
         this.allCategories = response;
       }
     });
+  }
+
+  private updateCartItemLength = (cartItems) => {
+    this.cartItemLength = cartItems ? cartItems.length : '';
   }
 }

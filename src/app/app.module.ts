@@ -1,8 +1,9 @@
-import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
 import { JsonpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -33,4 +34,7 @@ import { PageModule } from './pages/pages.module';
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(@Inject(PLATFORM_ID) platformId) {
+    environment.platformId = platformId;
+  }
 }

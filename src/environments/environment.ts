@@ -4,14 +4,12 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
+  platformId: '',
   production: false,
   needMock: true,
-  rest_url: 'http://192.168.99.100:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
-  base_url: 'http://192.168.99.100:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
-  mustMockPaths: [
-    '12/'
-  ],
-  locales: [
+  rest_url: 'https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
+  base_url: 'https://localhost:80',
+   locales: [
     { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },
     { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
   ],

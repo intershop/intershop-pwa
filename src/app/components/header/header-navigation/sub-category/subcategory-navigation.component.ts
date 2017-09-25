@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Category } from '../../../../services/categories/categories.model';
 import { CacheCustomService } from '../../../../services/index';
 import { LocalizeRouterService } from '../../../../services/routes-parser-locale-currency/localize-router.service';
 @Component({
@@ -9,10 +8,6 @@ import { LocalizeRouterService } from '../../../../services/routes-parser-locale
 })
 
 export class SubCategoryNavigationComponent {
-  allCategories: Category[] = [];
-  uri = 'categories?view=tree&limit=';
-  categoryKey = 'CategoryData';
-  myDepth = [];
   @Input() parent;
   @Input() categoryLevel;
   constructor(private cacheService: CacheCustomService, private router: Router,
