@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GlobalState } from '../../services';
 import { AccountLoginService } from '../../services/account-login';
 
 @Component({
@@ -8,20 +7,18 @@ import { AccountLoginService } from '../../services/account-login';
 })
 
 export class AccountOverviewComponent {
-  cusotmerDetailKey = 'customerDetails';
   customerName: string;
-  constructor(private globalState: GlobalState, private accountLoginService: AccountLoginService,
+  constructor(private accountLoginService: AccountLoginService,
     private router: Router) {
-    this.globalState.subscribeCachedData(this.cusotmerDetailKey, customerData => {
+    this.accountLoginService.subscribe(customerData => {
       if (customerData) {
-        this.customerName = customerData.firstName || customerData.userName;
+        this.customerName = customerData.firstName;
       }
     });
   }
 
   logout() {
     this.accountLoginService.logout();
-    this.globalState.notifyDataChanged(this.cusotmerDetailKey, null);
     this.router.navigate(['home']);
     return false;
   }

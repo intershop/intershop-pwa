@@ -8,12 +8,14 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import {
-  ApiService, CacheCustomService, 
+  ApiService, CacheCustomService,
   CustomErrorHandler, DataEmitterService, EncryptDecryptService, JwtService,
-  MockApiService,
-  GlobalState,
-  CrossTabCommunicator
+  MockApiService
 } from '../services';
+import { UserDetailService } from '../services/account-login/user-detail.service';
+import { CartStatusService } from '../services/cart-status/cart-status.service';
+import { CurrentLocaleService } from '../services/locale/current-locale.service';
+import { ProductCompareService } from '../services/product-compare/product-compare.service';
 
 import { FooterModule } from '../components/footer/footer.module';
 import { HeaderModule } from '../components/header/header.module';
@@ -53,11 +55,13 @@ import { FormValidationDirective } from "../directives/form-validation.directive
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
-    GlobalState,
-    CrossTabCommunicator,
-    ErrorCodeMappingService,
     MockApiService,
-    GlobalConfiguration
+    ProductCompareService,
+    UserDetailService,
+    CurrentLocaleService,
+    CartStatusService,
+    GlobalConfiguration,
+    ErrorCodeMappingService
   ],
   exports: [
     FooterModule,
