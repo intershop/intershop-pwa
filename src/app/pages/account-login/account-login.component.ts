@@ -1,12 +1,12 @@
-import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
-import { CustomValidations } from "../../validators/custom.validations";
+import { CustomValidations } from '../../validators/custom.validations';
 
 @Component({
   templateUrl: './account-login.component.html'
@@ -30,7 +30,6 @@ export class AccountLoginComponent implements OnInit {
    */
   constructor(private formBuilder: FormBuilder, private accountLoginService: AccountLoginService,
     private router: Router, private cacheService: CacheCustomService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private globalConfiguration: GlobalConfiguration,
     private localizeRouterService: LocalizeRouterService
   ) { }
@@ -59,21 +58,14 @@ export class AccountLoginComponent implements OnInit {
    * Routes to Family Page when user is logged in
    */
   onSignin(userCredentials) {
-    if (this.loginForm.invalid) {
-      Object.keys(this.loginForm.controls).forEach(key => {
-        this.loginForm.get(key).markAsDirty();
-      });
-      this.isDirty = true;
-    } else {
-      this.loginFormSubmitted = true;
-      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
-        if (typeof(userData) === 'object') {
-          this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
-        } else {
-          this.loginForm.get('password').reset();
-          this.errorUser = userData;
-        }
-      });
-    }
+    this.loginFormSubmitted = true;
+    this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
+      if (typeof (userData) === 'object') {
+        this.router.navigate([this.localizeRouterService.translateRoute('/home')]);
+      } else {
+        this.loginForm.get('password').reset();
+        this.errorUser = userData;
+      }
+    });
   }
 }

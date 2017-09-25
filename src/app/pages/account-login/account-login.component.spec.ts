@@ -87,7 +87,7 @@ describe('AccountLogin Component', () => {
   });
 
   it(`should call onSignIn when loginForm is invalid`, () => {
-    const userDetails = { userName: 'intershop@123.com', password: '123456' };
+    const userDetails = { userName: 'intershop@123.com', password: '12346' };
     component.onSignin(userDetails);
     expect(this.navSpy).not.toHaveBeenCalled();
   });

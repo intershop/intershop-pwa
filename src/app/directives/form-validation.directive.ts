@@ -1,15 +1,15 @@
-import { Directive, Input, Output, HostListener, EventEmitter } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Directive({
-    selector: "form"
+    selector: 'form'
 })
 export class FormValidationDirective {
 
     @Input() formGroup: FormGroup;
     @Output() validSubmit = new EventEmitter<any>();
 
-    @HostListener("submit") onSubmit() {
+    @HostListener('submit') onSubmit() {
         this.markAsDirty(this.formGroup);
         if (this.formGroup.valid) {
             this.validSubmit.emit(this.formGroup.value);

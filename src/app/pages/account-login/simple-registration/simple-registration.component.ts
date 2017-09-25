@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { CustomValidations } from '../../../validators/custom.validations';
 import { SimpleRegistrationService } from './simple-registration.service';
-import { CustomValidations } from "../../../validators/custom.validations";
 
 @Component({
   selector: 'is-simple-registration',
@@ -42,7 +42,7 @@ export class SimpleRegistrationComponent implements OnInit {
         (this.userRegistrationLoginType === 'email' ? CustomValidations.emailValidate : null)])]],
         password: ['', [Validators.required, Validators.minLength(7), CustomValidations.passwordValidate]],
         confirmPassword: ['', [Validators.required
-          //matchOtherValidator('password')
+          // matchOtherValidator('password')
         ]]
       });
     });

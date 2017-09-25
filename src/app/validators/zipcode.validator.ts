@@ -8,5 +8,5 @@ export function zipValidate(pattern: any): ValidatorFn {
                 zipValidate: true
             } : null;
         }
-    }
+    };
 }

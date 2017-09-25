@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomValidations } from "../../../validators/custom.validations";
+import { CustomValidations } from '../../../validators/custom.validations';
 
 @Component({
   selector: 'is-email-password',
@@ -21,9 +21,13 @@ export class EmailPasswordComponent implements OnInit {
     this.emailForm = this._formbuilder.group({
       emailDetails: this._formbuilder.group({
         emailAddress: [null, [Validators.required, CustomValidations.emailValidate, Validators.maxLength(256)]],
-        //confirmEmailAddress: [null, [Validators.required, CustomValidations.mismatchedValidation('emailAddress', 'confirmEmailAddress'), Validators.maxLength(256)]],
+        confirmEmailAddress: [null, [Validators.required,
+        //CustomValidations.mismatchedValidation('emailAddress', 'confirmEmailAddress'), 
+        Validators.maxLength(256)]],
         password: [null, [Validators.required, CustomValidations.passwordValidate, Validators.minLength(7)]],
-        //confirmPassword: [null, [Validators.required, CustomValidations.mismatchedValidation( 'password', 'confirmPassword')]],
+        confirmPassword: [null, [Validators.required,
+          //CustomValidations.mismatchedValidation('password', 'confirmPassword')
+        ]],
         securityQuestion: ['', [Validators.required]],
         answer: ['', [Validators.required]],
         receivePromotions: []
