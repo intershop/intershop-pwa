@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { CacheCustomService } from '../../services/index';
 
 @Component({
-  templateUrl: './decider.component.html'
+  templateUrl: './category-family-host.component.html'
 })
 
-export class DeciderComponent implements OnInit {
+export class CategoryFamilyHostComponent implements OnInit {
   isFamilyPage = true;
   isNonLeaf: string;
   constructor(private cacheService: CacheCustomService, private route: ActivatedRoute) {

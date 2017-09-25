@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
+import { environment } from '../../../environments/environment';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
-import { GlobalState } from '../../services';
-import { JwtService } from '../../services';
+import { AccountLoginService } from '../../services/account-login/account-login.service';
+import { CartStatusService } from '../../services/cart-status/cart-status.service';
+import { ProductCompareService } from '../../services/product-compare/product-compare.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 import { ProductTileModel } from './product-tile.model';
@@ -23,19 +24,12 @@ export class ProductTileComponent implements OnInit {
   shownSavings: number;
   @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
 
-  /**
-   *
-   * @param {Router} router
-   * @param {JwtService} jwtService
-   * @param {WishListService} wishListService
-   * @param {GlobalState} globalState
-   * @param {LocalizeRouterService} localize
-   */
   constructor(
     private router: Router,
-    private jwtService: JwtService,
+    private accountLoginService: AccountLoginService,
     private wishListService: WishListService,
-    private globalState: GlobalState,
+    private productCompareService: ProductCompareService,
+    private cartStatusService: CartStatusService,
     private localize: LocalizeRouterService) {
   }
 
@@ -80,16 +74,12 @@ export class ProductTileComponent implements OnInit {
       'minimumPrice': 110,
       'maximumPrice': 380
     };
-    this.mockData.images[2].effectiveUrl = 'http://localhost:4200/' + this.mockData.images[2].effectiveUrl;
-    this.mockData.images[0].effectiveUrl = 'http://localhost:4200/' + this.mockData.images[0].effectiveUrl;
+    this.mockData.images[2].effectiveUrl = environment.base_url + this.mockData.images[2].effectiveUrl;
+    this.mockData.images[0].effectiveUrl = environment.base_url + this.mockData.images[0].effectiveUrl;
 
     this.calculatePriceParameters();
     this.calculateAverageRating();
-
-
-    this.globalState.subscribeCachedData('productCompareData', data => {
-      this._updateProductCompareData(data);
-    });
+    // TODO: read product compare list from local cache if user is REMEMBERED
   }
 
   /**
@@ -163,54 +153,30 @@ export class ProductTileComponent implements OnInit {
 
   /**
    * Adds product to cart
-   * @param  {} itemToAdd
-   * @returns void
    */
-  addToCart(itemToAdd): void {
-    this.globalState.subscribeCachedData('cartData', cartData => {
-      cartData = cartData || [];
-      cartData.push(itemToAdd);
-      this._updateCartData(cartData);
-    });
-  }
-
-  private _updateCartData(cartData: string[]) {
-    this.globalState.notifyDataChanged('cartData', cartData);
+  addToCart(): void {
+    this.cartStatusService.addSKU(this.mockData.sku);
   }
 
   /**
    * Adds product to wishlist
-   * @param  {} itemToAdd
-   * @returns void
    */
-  addToWishList(itemToAdd): void {
-    if (!this.jwtService.getToken()) {
+  addToWishList(): void {
+    if (!this.accountLoginService.isAuthorized()) {
       this.router.navigate([this.localize.translateRoute('/login')]);
     } else {
-      this.wishListService.getWishList().subscribe(wishlistData => wishlistData);
+      this.wishListService.update();
     }
   }
 
   /**
    * Adds product to comparison
-   * @param  {} itemToAdd
-   * @returns void
    */
-  addToCompare(itemToAdd): void {
-    this.globalState.subscribeCachedData('productCompareData', compareListItems => {
-      if (_.find(compareListItems, compareProduct => compareProduct === itemToAdd)) {
-        _.remove(compareListItems, compareProduct => compareProduct === itemToAdd);
-      } else {
-        compareListItems = compareListItems || [];
-        compareListItems.push(itemToAdd);
-      }
-      this._updateProductCompareData(compareListItems);
-    });
-    this.disableIconDirective.toggleClass();
+  addToCompare(): void {
+    if (this.productCompareService.containsSKU(this.mockData.sku)) {
+      this.productCompareService.removeSKU(this.mockData.sku);
+    } else {
+      this.productCompareService.addSKU(this.mockData.sku);
+    }
   }
-
-  private _updateProductCompareData(productCompareData: string[]) {
-    this.globalState.notifyDataChanged('productCompareData', productCompareData, true);
-  }
-
 }

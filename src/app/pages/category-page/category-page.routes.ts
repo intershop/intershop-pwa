@@ -1,18 +1,18 @@
 import { environment } from '../../../environments/environment';
+import { CategoryFamilyHostComponent } from '../../components/category-family-host/category-family-host.component';
 import { CategoryPageComponent } from './category-page.component';
-import { DeciderComponent } from './decider.component';
 
 const categoryPageRoute = [];
 
 class CategoryRoutes {
   static createRoute() {
-    categoryPageRoute.push(
-      { path: ':category-name', component: CategoryPageComponent }
-    );
     let path = ':category-name';
-    for (let i = 0; i < environment.routingDepth; i++) {
+    categoryPageRoute.push(
+      { path: path, component: CategoryPageComponent }
+    );
+    for (let depthIndex = 0; depthIndex < environment.routingDepth; depthIndex++) {
       path += '/:subcategory';
-      categoryPageRoute.push({ path: path, component: DeciderComponent });
+      categoryPageRoute.push({ path: path, component: CategoryFamilyHostComponent });
     }
   }
 }
