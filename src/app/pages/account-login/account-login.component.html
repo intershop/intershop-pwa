@@ -15,7 +15,7 @@
         <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
           <!-- Hidden Fields in ISML -->
           <p>{{'account.login.message' | translate}}</p>
-          <div class="form-group has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'validateEmail':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
+          <div class="form-group has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
             <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{registrationLoginType && registrationLoginType === 'username' ?'Username' : 'Email'}}</label>
             <div class="col-sm-6">
 
@@ -25,7 +25,7 @@
             <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
           </div>
 
-          <div class="form-group has-feedback" [errorMessages]="{'required':'account.login.password.error.required' ,'validatePassword':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}">
+          <div class="form-group has-feedback" [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}">
             <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
             <div class="col-sm-6">
               <input #dynamicError formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password" id="ShopLoginForm_Password">
