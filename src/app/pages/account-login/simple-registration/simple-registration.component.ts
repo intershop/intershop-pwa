@@ -38,12 +38,12 @@ export class SimpleRegistrationComponent implements OnInit {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
       let password = new FormControl('', [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]);
-      let certainPassword = new FormControl('', CustomValidators.equalTo(password));
+      let confirmPassword = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(password)])]);
       this.simpleRegistrationForm = this.formBuilder.group({
         userName: ['', [Validators.compose([Validators.required,
         (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
         password: password,
-        confirmPassword: certainPassword
+        confirmPassword: confirmPassword
       });
     });
   }
