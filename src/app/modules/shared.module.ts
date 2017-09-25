@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { FormControlErrorComponent } from '../components/global-form-validation/form-control-error.component';
+import { FormGroupValidationComponent } from '../components/global-form-validation/form-group-validation.component';
 import { InstanceService } from '../services/instance.service';
-import { FormGroupValidationComponent } from "../components/global-form-validation/form-group-validation.component";
-import { FormControlErrorComponent } from "../components/global-form-validation/form-control-error.component";
 
 @NgModule({
     exports: [
@@ -20,7 +20,7 @@ import { FormControlErrorComponent } from "../components/global-form-validation/
         FormGroupValidationComponent,
         FormControlErrorComponent
     ],
-    entryComponents:[FormControlErrorComponent],
+    entryComponents: [FormControlErrorComponent],
     imports: [
         CommonModule
     ],

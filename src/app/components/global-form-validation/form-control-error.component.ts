@@ -1,5 +1,5 @@
-import { Component, Input } from "@angular/core";
-import { FormControlName } from "@angular/forms";
+import { Component, Input } from '@angular/core';
+import { FormControlName } from '@angular/forms';
 
 @Component({
     selector: 'is-control-messages',

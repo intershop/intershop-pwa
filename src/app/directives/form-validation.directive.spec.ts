@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild, ViewContainerRef, Input, DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormValidationDirective } from "./form-validation.directive";
-import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { By, BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from "@angular/common";
+import { CommonModule } from '@angular/common';
+import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BrowserModule, By } from '@angular/platform-browser';
+import { FormValidationDirective } from './form-validation.directive';
 @Component({
     template: ` <form name="loginForm" [formGroup]="loginForm" >
                 <input class="form-control" formControlName="userName" name="userName" />
@@ -46,7 +46,7 @@ describe('Form Validation Directive', () => {
         formValidationElement = fixture.debugElement.query(By.directive(FormValidationDirective));
         formValidationDirective = formValidationElement.injector.get(FormValidationDirective) as FormValidationDirective;
         fixture.detectChanges();
-    })
+    });
 
     it('should return invalid form', () => {
         formValidationDirective.onSubmit();
@@ -54,7 +54,7 @@ describe('Form Validation Directive', () => {
     });
 
     it('should return valid form', () => {
-        component.loginForm.controls["userName"].setValue("test");
+        component.loginForm.controls['userName'].setValue('test');
         formValidationDirective.onSubmit();
         expect(formValidationDirective.formGroup.valid).toBe(component.loginForm.valid);
     });

@@ -1,11 +1,11 @@
-import { TranslateService } from "@ngx-translate/core";
-import { TestBed } from "@angular/core/testing";
-import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
-import { ErrorCodeMappingService } from "./error-code-mapping.service";
-import { Observable } from "rxjs/Rx";
-import { inject } from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
+import { inject } from '@angular/core/testing';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Rx';
+import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { ErrorCodeMappingService } from './error-code-mapping.service';
 
-fdescribe('ApiService', () => {
+describe('Error code mapping service', () => {
     let translateService: TranslateService;
 
     beforeEach(() => {

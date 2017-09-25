@@ -10,4 +10,4 @@ export const emailValidate: ValidatorFn = (control: AbstractControl): { [key: st
       }
     };
   }
-}
+};

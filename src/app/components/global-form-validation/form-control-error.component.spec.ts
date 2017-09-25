@@ -1,11 +1,10 @@
-import { TestBed } from "@angular/core/testing";
-import { BrowserModule, By } from "@angular/platform-browser";
-import { ComponentFixture } from "@angular/core/testing";
-import { DebugElement } from "@angular/core";
-import { FormControlErrorComponent } from "./form-control-error.component";
-import { FormControl, FormControlName, Validators } from "@angular/forms";
+import { DebugElement } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
+import { BrowserModule, By } from '@angular/platform-browser';
+import { FormControlErrorComponent } from './form-control-error.component';
 
-fdescribe('Form control error component', () => {
+describe('Form control error component', () => {
     let fixture: ComponentFixture<FormControlErrorComponent>;
     let component: FormControlErrorComponent;
     let smallElement: DebugElement;
@@ -23,9 +22,9 @@ fdescribe('Form control error component', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(FormControlErrorComponent);
         component = fixture.componentInstance;
+        smallElement = fixture.debugElement.query(By.css('small'));
     });
     it('should not create form control error', () => {
-        smallElement = fixture.debugElement.query(By.css('small'));
         expect(smallElement).toBeFalsy();
     });
     it('should create form control error', () => {
