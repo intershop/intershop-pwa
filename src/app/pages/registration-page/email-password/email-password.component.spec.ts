@@ -4,7 +4,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { SharedModule } from '../../../modules/shared.module';
 // import { matchOtherValidator } from '../../../validators/match-words.validator';
 import { EmailPasswordComponent } from './email-password.component';
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('EmailPassword Component', () => {
     let fixture: ComponentFixture<EmailPasswordComponent>;

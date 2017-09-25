@@ -6,7 +6,6 @@ import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
-import { CustomValidations } from '../../validators/custom.validations';
 import { CustomValidators } from 'ng2-validation';
 @Component({
   templateUrl: './account-login.component.html'
