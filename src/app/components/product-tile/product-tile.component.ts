@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
@@ -25,7 +24,6 @@ export class ProductTileComponent implements OnInit {
   @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
 
   constructor(
-    private router: Router,
     private accountLoginService: AccountLoginService,
     private wishListService: WishListService,
     private productCompareService: ProductCompareService,
@@ -163,7 +161,7 @@ export class ProductTileComponent implements OnInit {
    */
   addToWishList(): void {
     if (!this.accountLoginService.isAuthorized()) {
-      this.router.navigate([this.localize.translateRoute('/login')]);
+      this.localize.navigateToRoute('/login');
     } else {
       this.wishListService.update();
     }

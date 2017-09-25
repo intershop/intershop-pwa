@@ -1,8 +1,8 @@
 import { async } from '@angular/core/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { anything, instance, mock, verify } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../services/account-login';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountOverviewComponent } from './account-overview.component';
 
 describe('Account Overview Component', () => {
@@ -10,23 +10,17 @@ describe('Account Overview Component', () => {
   let component: AccountOverviewComponent;
   let element: HTMLElement;
   let accountLoginService: AccountLoginService;
-  let routerMock: Router;
+  let localizeRouterServiceMock: LocalizeRouterService;
 
   beforeEach(async(() => {
-    routerMock = mock(Router);
+    localizeRouterServiceMock = mock(LocalizeRouterService);
     const accountLoginServiceMock = mock(AccountLoginService);
 
     TestBed.configureTestingModule({
       declarations: [AccountOverviewComponent],
       providers: [
-        {
-          provide: AccountLoginService,
-          useFactory: () => instance(accountLoginServiceMock)
-        },
-        {
-          provide: Router,
-          useFactory: () => instance(routerMock)
-        },
+        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
       ]
     }).compileComponents();
   }));
@@ -36,6 +30,8 @@ describe('Account Overview Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     accountLoginService = TestBed.get(AccountLoginService);
+    const router = TestBed.get(LocalizeRouterService);
+    this.navSpy = spyOn(router, 'navigateToRoute');
   });
 
   it('should create the component', () => {
@@ -44,7 +40,7 @@ describe('Account Overview Component', () => {
 
   it('should call router.navigate and change user state when logout is called', () => {
     component.logout();
-    verify(routerMock.navigate(anything())).called();
+    expect(this.navSpy).toHaveBeenCalled();
     expect(accountLoginService.isAuthorized()).toBeFalsy();
   });
 });
