@@ -1,4 +1,3 @@
-
 import { Observable } from 'rxjs/Rx';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService, JwtService } from '../index';
