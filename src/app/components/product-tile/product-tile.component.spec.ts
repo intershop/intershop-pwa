@@ -2,7 +2,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { async, inject } from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -187,7 +186,6 @@ describe('ProductTile Component', () => {
       declarations: [ProductTileComponent, DisableIconDirective],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: Router, useFactory: () => instance(mock(Router)) },
         { provide: WishListService, useFactory: () => instance(wishListServiceMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
         { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) },
@@ -227,13 +225,12 @@ describe('ProductTile Component', () => {
     verify(cartStatusServiceMock.addSKU(anything())).once();
   });
 
-  it('should call addToWishList method and verify if router.navigate is called', async(inject([Router], (router: Router) => {
-    const routerSpy = spyOn(router, 'navigate');
+  it('should call addToWishList method and verify if router.navigate is called', () => {
     component.addToWishList();
-    expect(routerSpy).toHaveBeenCalled();
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
     verify(wishListServiceMock.update()).never();
-  })
-  ));
+  });
 
   it('should call addToWishList method and verify if getWishList method of Wishlistservice is called', async(inject([WishListService], (wishListService: WishListService) => {
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
