@@ -33,14 +33,12 @@ describe('Simple Registration Component', () => {
   };
 
   beforeEach(async(() => {
-    // routerMock = mock(Router);
     globalConfigurationMock = mock(GlobalConfiguration);
     simpleRegistrationServiceMock = mock(SimpleRegistrationService);
     localizeRouterServiceMock = mock(LocalizeRouterService);
 
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(accountSettings));
     when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of(new UserDetail()));
-    // when(localizeRouterServiceMock.navigateToRoute(anyString())).thenReturn('Hello');
 
     TestBed.configureTestingModule({
       declarations: [SimpleRegistrationComponent, MockPipe],
@@ -49,21 +47,14 @@ describe('Simple Registration Component', () => {
         ReactiveFormsModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{
-          provide: LocalizeRouterService,
-          useFactory: () => instance(mock(LocalizeRouterService))
-        },
-        {
-          provide: GlobalConfiguration,
-          useFactory: () => instance(globalConfigurationMock)
-        }]
+      providers: [
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
+        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) }
+      ]
     }).overrideComponent(SimpleRegistrationComponent, {
       set: {
         providers: [
-          {
-            provide: SimpleRegistrationService,
-            useFactory: () => instance(simpleRegistrationServiceMock)
-          }
+          { provide: SimpleRegistrationService, useFactory: () => instance(simpleRegistrationServiceMock) }
         ]
       }
     }).compileComponents();
@@ -72,8 +63,7 @@ describe('Simple Registration Component', () => {
     fixture = TestBed.createComponent(SimpleRegistrationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    const router = TestBed.get(LocalizeRouterService);
-    this.navSpy = spyOn(router, 'navigateToRoute');
+    fixture.detectChanges();
   });
 
   it('should create the component', () => {
@@ -81,7 +71,6 @@ describe('Simple Registration Component', () => {
   });
 
   it('should call createAccount when the form is Invalid and verify if controls are made dirty', () => {
-    fixture.detectChanges();
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.simpleRegistrationForm.controls['userName'].setValue('invalid@email');
     component.simpleRegistrationForm.controls['password'].setValue('13123');
@@ -90,13 +79,13 @@ describe('Simple Registration Component', () => {
   });
 
   it('should call createAccount when the form is valid and verify if router.navigate is being called', () => {
-    fixture.detectChanges();
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.simpleRegistrationForm.controls['userName'].setValue('valid@email.com');
     component.simpleRegistrationForm.controls['password'].setValue('aaaaaa1');
     component.simpleRegistrationForm.controls['confirmPassword'].setValue('aaaaaa1');
     component.createAccount(userDetails);
     verify(simpleRegistrationServiceMock.createUser(anything())).once();
-    expect(this.navSpy).toHaveBeenCalled();
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
   });
 });

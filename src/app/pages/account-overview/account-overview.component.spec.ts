@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { instance, mock } from 'ts-mockito';
+import { anything, instance, mock, verify } from 'ts-mockito';
 import { AccountLoginService } from '../../services/account-login';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountOverviewComponent } from './account-overview.component';
@@ -30,8 +30,6 @@ describe('Account Overview Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     accountLoginService = TestBed.get(AccountLoginService);
-    const router = TestBed.get(LocalizeRouterService);
-    this.navSpy = spyOn(router, 'navigateToRoute');
   });
 
   it('should create the component', () => {
@@ -40,7 +38,8 @@ describe('Account Overview Component', () => {
 
   it('should call router.navigate and change user state when logout is called', () => {
     component.logout();
-    expect(this.navSpy).toHaveBeenCalled();
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
     expect(accountLoginService.isAuthorized()).toBeFalsy();
   });
 });

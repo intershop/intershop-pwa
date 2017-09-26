@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
-import { anyFunction, anyString, anything, capture, instance, mock, reset, verify, when } from 'ts-mockito';
+import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { UserDetail } from './../../../services/account-login/account-login.model';

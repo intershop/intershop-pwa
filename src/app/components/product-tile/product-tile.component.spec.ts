@@ -225,13 +225,12 @@ describe('ProductTile Component', () => {
     verify(cartStatusServiceMock.addSKU(anything())).once();
   });
 
-  it('should call addToWishList method and verify if router.navigate is called', async(inject([LocalizeRouterService], (router: LocalizeRouterService) => {
-    const routerSpy = spyOn(router, 'navigateToRoute');
+  it('should call addToWishList method and verify if router.navigate is called', () => {
     component.addToWishList();
-    expect(routerSpy).toHaveBeenCalled();
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
     verify(wishListServiceMock.update()).never();
-  })
-  ));
+  });
 
   it('should call addToWishList method and verify if getWishList method of Wishlistservice is called', async(inject([WishListService], (wishListService: WishListService) => {
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
