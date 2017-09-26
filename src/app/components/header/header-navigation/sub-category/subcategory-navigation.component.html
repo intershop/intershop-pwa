@@ -1,5 +1,5 @@
-<ul class="category-level{{categoryLevel}}" [ngClass]="categoryLevel == 1 ? 'dropdown-menu' : ''">
-  <li class="main-navigation-level{{categoryLevel}}-item" *ngFor="let subcategory of parent?.subCategories">
+<ul class="category-level{{categoryLevel}}" *ngIf="parent.subCategories" [ngClass]="categoryLevel == 1 ? 'dropdown-menu' : ''">
+  <li class="main-navigation-level{{categoryLevel}}-item" *ngFor="let subcategory of parent.subCategories">
     <a (click)="navigate(subcategory)">{{subcategory.name}}</a>
     <is-subcategory-navigation [parent]="subcategory" categoryLevel={{1*categoryLevel+1}} isRemoveHost></is-subcategory-navigation>
   </li>
