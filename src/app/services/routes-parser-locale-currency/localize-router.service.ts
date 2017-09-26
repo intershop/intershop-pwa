@@ -108,7 +108,10 @@ export class LocalizeRouterService {
    * @param {NavigationExtras} extras
    */
   navigateToRoute(path: string | any[], extras?: NavigationExtras) {
+    // This is the only place Router.navigate is allowed, all other routing should be done using this method.
+    /* tslint:disable:ban */
     this.router.navigate([this.translateRoute(path)], extras);
+    /* tslint:enable:ban */
   }
 
   /**
