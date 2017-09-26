@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
-import { anyFunction, anyString, instance, mock, when } from 'ts-mockito';
+import { anyFunction, anyString, anything, capture, instance, mock, reset, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { UserDetail } from './../../../services/account-login/account-login.model';
@@ -26,9 +26,6 @@ describe('Login Status Component', () => {
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
     when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: UserDetail) => void) => callback(userData as UserDetail));
     localizeRouterServiceMock = mock(LocalizeRouterService);
-    when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
-      return arg1;
-    });
 
     globalConfigurationMock = mock(GlobalConfiguration);
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(false));
@@ -53,8 +50,6 @@ describe('Login Status Component', () => {
     fixture = TestBed.createComponent(LoginStatusComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    const router = TestBed.get(LocalizeRouterService);
-    this.navSpy = spyOn(router, 'navigateToRoute');
   });
 
   it('should be created', fakeAsync(() => {
@@ -73,12 +68,19 @@ describe('Login Status Component', () => {
 
   it('should navigate to "register" when register is clicked', () => {
     component.register();
-    expect(this.navSpy).toHaveBeenCalledWith('/register');
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
+    // capture last arguments and verify.
+    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/register']);
+
   });
 
   it('should navigate to "home" and unset userDetails when logout is called', () => {
     component.logout();
-    expect(this.navSpy).toHaveBeenCalledWith('/home');
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
+    // capture last arguments and verify.
+    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/home']);
   });
 
   it('should render full name on template when user is logged in', () => {
