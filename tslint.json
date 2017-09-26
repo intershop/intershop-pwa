@@ -118,12 +118,12 @@
       "check-separator",
       "check-type"
     ],
-    // "directive-selector": [
-    //   true,
-    //   "attribute",
-    //   "is",
-    //   "camelCase"
-    // ],
+    "directive-selector": [
+      true,
+      "attribute",
+      "is",
+      "camelCase"
+    ],
     // "component-selector": [
     //   true,
     //   "element",

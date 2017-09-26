@@ -2,7 +2,7 @@
     {{ (userRegistrationLoginType && userRegistrationLoginType === 'username') ? ('account.username.already_exist.error' | translate)
     : ('account.email.already_exist.error' | translate)}}
 </div>
-<form name="PostCheckoutRegisterForm" [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form" (ngSubmit)="createAccount(simpleRegistrationForm.value)">
+<form isFormValidation name="PostCheckoutRegisterForm" [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form" (ngSubmit)="createAccount(simpleRegistrationForm.value)">
     <p>{{'account.create_user.message' | translate}} {{ (userRegistrationLoginType && userRegistrationLoginType === 'username')
         ? ('account.create_user.username.message' | translate) : ('account.create_user.email_password.message' | translate)}}</p>
     <div class="form-group clearfix has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">

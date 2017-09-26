@@ -12,13 +12,13 @@
           <!-- TODO  -->
           <!-- Apply condition for other possible inputs -->
         </div>
-        <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
+        <form isFormValidation name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
           <!-- Hidden Fields in ISML -->
           <p>{{'account.login.message' | translate}}</p>
+
           <div class="form-group has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
             <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{registrationLoginType && registrationLoginType === 'username' ?'Username' : 'Email'}}</label>
             <div class="col-sm-6">
-
               <input class="form-control" #dynamicError  formControlName="userName" name="ShopLoginForm_Login" type="{{registrationLoginType === 'username' ? 'text' : 'email'}}"
                 id="ShopLoginForm_Login">
             </div>
@@ -30,14 +30,15 @@
             <div class="col-sm-6">
               <input #dynamicError formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password" id="ShopLoginForm_Password">
             </div>
-
           </div>
+
           <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
               <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid && isDirty">{{'account.signin.button.label' | translate}}</button>
               <a class="btn btn-link">{{'account.send_password.heading' | translate}}</a>
             </div>
           </div>
+
         </form>
       </div>
     </div>
