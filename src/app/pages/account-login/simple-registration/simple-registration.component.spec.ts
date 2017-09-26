@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { UserDetail } from '../../../services/account-login/account-login.model'
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 import { SimpleRegistrationService } from './simple-registration.service';
+import { CustomFormsModule } from 'ng2-validation';
 
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
@@ -35,7 +36,8 @@ describe('Simple Registration Component', () => {
       declarations: [SimpleRegistrationComponent],
       imports: [
         TranslateModule.forRoot(),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CustomFormsModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{
@@ -71,13 +73,14 @@ describe('Simple Registration Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call createAccount when the form is Invalid and verify if controls are made dirty', () => {
+  it('should call createAccount when the form is Invalid and verify if router.navigate is not being called', () => {
     fixture.detectChanges();
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.simpleRegistrationForm.controls['userName'].setValue('invalid@email');
-    component.simpleRegistrationForm.controls['password'].setValue('13123');
+    component.simpleRegistrationForm.controls['password'].setValue('12121');
     component.createAccount(userDetails);
-    expect(component.simpleRegistrationForm.controls['password'].dirty).toBe(true);
+    verify(simpleRegistrationServiceMock.createUser(anything())).never();
+    verify(routerMock.navigate(anything())).never();
   });
 
   it('should call createAccount when the form is valid and verify if router.navigate is being called', () => {

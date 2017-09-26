@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidations } from '../../../validators/custom.validations';
-import { CustomValidators } from "ng2-validation";
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'is-email-password',
