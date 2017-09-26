@@ -35,14 +35,14 @@ export class WishListService extends GlobalStateAwareService<WishListModel> {
       this.next(wishListMock);
     }
     this.apiService.get(this.baseUrl).subscribe(data => {
-        const preferredWishListUrl = (!!data.elements && data.elements.length > 0) ?
-          data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
-        if (!!preferredWishListUrl) {
-          this.apiService.get(this.baseUrl + preferredWishListUrl).subscribe((data2) => {
-            this.next(data2);
-          });
-        }
-      });
+      const preferredWishListUrl = (!!data.elements && data.elements.length > 0) ?
+        data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
+      if (!!preferredWishListUrl) {
+        this.apiService.get(this.baseUrl + preferredWishListUrl).subscribe((data2) => {
+          this.next(data2);
+        });
+      }
+    });
   }
 }
 

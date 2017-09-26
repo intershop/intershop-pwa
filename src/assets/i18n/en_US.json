@@ -64,6 +64,7 @@
   "account.login.email.label":"Email",
   "account.login.password.label":"Password",
 
+
   "ROUTES.home": "home",
   "ROUTES.category": "category",
   "ROUTES.compare": "compare",
