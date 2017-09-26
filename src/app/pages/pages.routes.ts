@@ -6,8 +6,8 @@ import { LocalizeRouterModule } from '../services/routes-parser-locale-currency/
 
 
 const routes: Routes = [
-  { path: 'family', loadChildren: 'app/pages/family-page/family-page.module#FamilyPageModule' },
-  { path: 'category/:category-name', loadChildren: 'app/pages/category-page/category-page.module#CategoryPageModule' },
+  // { path: 'family', loadChildren: 'app/pages/family-page/family-page.module#FamilyPageModule' },
+  { path: 'category', loadChildren: 'app/pages/category-page/category-page.module#CategoryPageModule' },
   { path: 'compare', loadChildren: 'app/pages/compare-page/compare-page.module#ComparePageModule' },
   { path: 'login', loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' },
   { path: 'register', loadChildren: 'app/pages/registration-page/registration-page.module#RegistrationPageModule' },

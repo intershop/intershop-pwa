@@ -24,7 +24,13 @@ import { FamilyPageRoute } from './family-page.routes';
     DisableIconDirective
   ],
   providers: [
-    ProductListService
+    ProductListService,
+  ],
+  exports: [
+    FamilyPageComponent,
+    FamilyPageListComponent,
+    ProductTileComponent,
+    DisableIconDirective
   ]
 })
 
