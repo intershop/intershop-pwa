@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AccountLoginService } from '../../services/account-login';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   templateUrl: './account-overview.component.html'
@@ -8,8 +8,9 @@ import { AccountLoginService } from '../../services/account-login';
 
 export class AccountOverviewComponent {
   customerName: string;
+
   constructor(private accountLoginService: AccountLoginService,
-    private router: Router) {
+              private localize: LocalizeRouterService) {
     this.accountLoginService.subscribe(customerData => {
       if (customerData) {
         this.customerName = customerData.firstName;
@@ -19,7 +20,7 @@ export class AccountOverviewComponent {
 
   logout() {
     this.accountLoginService.logout();
-    this.router.navigate(['home']);
+    this.localize.navigateToRoute('/home');
     return false;
   }
 

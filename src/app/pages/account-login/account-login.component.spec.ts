@@ -2,12 +2,11 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { Observable } from 'rxjs/Rx';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { SharedModule } from '../../modules/shared.module';
 import { AccountLoginService } from '../../services/account-login/';
@@ -75,8 +74,6 @@ describe('AccountLogin Component', () => {
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
     element = fixture.nativeElement;
-    const router = TestBed.get(Router);
-    this.navSpy = spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -89,7 +86,6 @@ describe('AccountLogin Component', () => {
   it(`should call onSignIn when loginForm is invalid`, () => {
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.onSignin(userDetails);
-    expect(this.navSpy).not.toHaveBeenCalled();
   });
 
   it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
@@ -105,7 +101,10 @@ describe('AccountLogin Component', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('123213');
     component.onSignin(userDetails);
-    expect(this.navSpy).toHaveBeenCalledWith(['/home']);
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
+    // capture last arguments and verify.
+    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/home']);
   });
 
   it('should call ngOnInit method', () => {
