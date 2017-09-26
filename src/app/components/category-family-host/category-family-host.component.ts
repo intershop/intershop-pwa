@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CacheCustomService } from '../../services/index';
+import { CategoriesService } from '../../services/categories/categories.service';
 
 @Component({
   templateUrl: './category-family-host.component.html'
@@ -8,14 +8,13 @@ import { CacheCustomService } from '../../services/index';
 
 export class CategoryFamilyHostComponent implements OnInit {
   isFamilyPage = true;
-  isNonLeaf: string;
-  constructor(private cacheService: CacheCustomService, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,
+    private categoriesService: CategoriesService) {
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.isNonLeaf = this.cacheService.getCachedData('isNonLeaf');
-      if (this.cacheService.cacheKeyExists('isNonLeaf') && this.isNonLeaf === 'true') {
+      if (this.categoriesService.current.hasOnlineSubCategories) {
         this.isFamilyPage = false;
       } else {
         this.isFamilyPage = true;

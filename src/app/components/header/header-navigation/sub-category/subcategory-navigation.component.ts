@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { CacheCustomService } from '../../../../services/index';
+import { CategoriesService } from '../../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../../services/routes-parser-locale-currency/localize-router.service';
 @Component({
   selector: 'is-subcategory-navigation',
@@ -10,14 +10,13 @@ import { LocalizeRouterService } from '../../../../services/routes-parser-locale
 export class SubCategoryNavigationComponent {
   @Input() parent;
   @Input() categoryLevel;
-  constructor(private cacheService: CacheCustomService, private router: Router,
-    public localize: LocalizeRouterService) {
+  constructor(private router: Router,
+    public localize: LocalizeRouterService, private categoriesService: CategoriesService) {
   }
 
-  navigate(subcategory) {
-    this.cacheService.storeDataToCache(subcategory.hasOnlineSubCategories.toString(), 'isNonLeaf');
-    let navigationPath = subcategory.uri.split('/categories')[1];
-    navigationPath = '/category/' + navigationPath;
-    this.router.navigate([this.localize.translateRoute(navigationPath)]);
+  navigate(subCategory) {
+    this.categoriesService.setCurrentCategory(subCategory);
+    const navigationPath = subCategory.uri.split('/categories')[1];
+    this.router.navigate([this.localize.translateRoute('/category/' + navigationPath)]);
   }
 }

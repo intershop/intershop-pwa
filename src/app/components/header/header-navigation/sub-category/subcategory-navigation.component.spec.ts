@@ -2,20 +2,20 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { anyString, anything, instance, mock, verify } from 'ts-mockito';
-import { CacheCustomService } from '../../../../services/index';
+import { anything, instance, mock, verify } from 'ts-mockito';
+import { CategoriesService } from '../../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../../services/routes-parser-locale-currency/localize-router.service';
 import { SubCategoryNavigationComponent } from './subcategory-navigation.component';
 
 describe('SubCategory Navigation Component', () => {
   let fixture: ComponentFixture<SubCategoryNavigationComponent>;
   let component: SubCategoryNavigationComponent;
-  let cacheCustomServiceMock: CacheCustomService;
+  let categoriesServiceMock: CategoriesService;
   let routerMock: Router;
   let localizeServiceMock: LocalizeRouterService;
 
   beforeEach(async(() => {
-    cacheCustomServiceMock = mock(CacheCustomService);
+    categoriesServiceMock = mock(CategoriesService);
     routerMock = mock(Router);
     localizeServiceMock = mock(LocalizeRouterService);
 
@@ -24,7 +24,7 @@ describe('SubCategory Navigation Component', () => {
         SubCategoryNavigationComponent
       ],
       providers: [
-        { provide: CacheCustomService, useFactory: () => instance(cacheCustomServiceMock) },
+        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: Router, useFactory: () => instance(routerMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeServiceMock) }
       ],
@@ -48,7 +48,7 @@ describe('SubCategory Navigation Component', () => {
       hasOnlineSubCategories: true
     };
     component.navigate(subCategory);
-    verify(cacheCustomServiceMock.storeDataToCache(anything(), anyString())).once();
+    verify(categoriesServiceMock.setCurrentCategory(anything())).once();
     verify(routerMock.navigate(anything())).once();
     verify(localizeServiceMock.translateRoute(anything())).once();
   });
