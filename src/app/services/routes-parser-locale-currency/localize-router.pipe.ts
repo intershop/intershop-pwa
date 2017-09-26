@@ -49,7 +49,12 @@ export class LocalizeRouterPipe implements PipeTransform {
   }
 }
 
-
+/**
+ * Compare complex object i.e (array and JSON array of object)
+ * @param o1
+ * @param o2
+ * @returns {boolean}
+ */
 export function equals(o1: any, o2: any): boolean {
   if (o1 === o2) {
     return true;
