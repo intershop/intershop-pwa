@@ -1,9 +1,10 @@
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
@@ -11,7 +12,6 @@ import { UserDetail } from '../../../services/account-login/account-login.model'
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 import { SimpleRegistrationService } from './simple-registration.service';
-import { CustomFormsModule } from 'ng2-validation';
 
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;

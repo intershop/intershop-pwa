@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomValidations } from '../../../validators/custom.validations';
 import { CustomValidators } from 'ng2-validation';
 
 @Component({
