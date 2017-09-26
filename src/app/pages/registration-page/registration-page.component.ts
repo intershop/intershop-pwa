@@ -1,37 +1,36 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
-    templateUrl: './registration-page.component.html'
+  templateUrl: './registration-page.component.html'
 })
 
 export class RegistrationPageComponent {
-    isCaptchaValid = false;
-    isAddressFormValid = false;
-    isEmailFormValid = false;
+  isCaptchaValid = false;
+  isAddressFormValid = false;
+  isEmailFormValid = false;
 
-    /**
-     * constructor
-     * @param  {Router} privaterouter
-     */
-    constructor(private router: Router,
-                private localize: LocalizeRouterService) { }
+  /**
+   * Constructor
+   * @param {LocalizeRouterService} localize
+   */
+  constructor(private localize: LocalizeRouterService) {
+  }
 
-    /**
-     * Redirects to Family page
-     * @returns void
-     */
-    cancelClicked(): void {
-        this.router.navigate([this.localize.translateRoute('')]);
-    }
+  /**
+   * Redirects to Family page
+   * @returns void
+   */
+  cancelClicked(): void {
+    this.localize.navigateToRoute('');
+  }
 
-    /**
-     * Submit form values
-     * @returns void
-     */
-    fnSubmit(): void {
-    }
+  /**
+   * Submit form values
+   * @returns void
+   */
+  fnSubmit(): void {
+  }
 }
 
 

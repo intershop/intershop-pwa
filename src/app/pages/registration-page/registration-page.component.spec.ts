@@ -1,8 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
-import { async, inject, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { async, TestBed } from '@angular/core/testing';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { MockComponent } from '../../components/mock.component';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { RegistrationPageComponent } from './registration-page.component';
@@ -13,12 +12,6 @@ describe('RegistrationPage Component', () => {
   let element: HTMLElement;
   let debugEl: DebugElement;
   let localizeRouterServiceMock: LocalizeRouterService;
-
-  class RouterStub {
-    navigate(url) {
-      return url;
-    }
-  }
 
   beforeEach(async(() => {
     localizeRouterServiceMock = mock(LocalizeRouterService);
@@ -33,7 +26,6 @@ describe('RegistrationPage Component', () => {
         MockComponent({ selector: 'is-captcha', template: 'Captcha Template' }),
       ],
       providers: [
-        { provide: Router, useClass: RouterStub },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ]
     })
@@ -47,12 +39,13 @@ describe('RegistrationPage Component', () => {
     element = fixture.nativeElement;
   });
 
-  it('should call cancelClicked method', (inject([Router], (router: Router) => {
-      const spy = spyOn(router, 'navigate');
+  it('should call cancelClicked method', () => {
       component.cancelClicked();
-      expect(spy).toHaveBeenCalledWith(['']);
-    })
-  ));
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
+    // capture last arguments and verify.
+    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['']);
+    });
 
   it('should check if controls are getting rendered on the page', () => {
     expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');

@@ -1,6 +1,6 @@
 import * as Lint from 'tslint';
-import { forEachToken, getNextToken } from 'tsutils';
-import { SourceFile, SyntaxKind } from 'typescript';
+import { getNextToken } from 'tsutils';
+import { Identifier, SourceFile } from 'typescript';
 
 const DESCRIPTION_REGEX = /^'should(.* (when|if|until|on) .*| be created)'$/;
 
@@ -8,23 +8,22 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
-
       // console.log('####' + sourceFile.fileName);
-      forEachToken(sourceFile, (node) => {
-        // console.log(node.kind + ': ' + node.getText());
-        if (node.kind === SyntaxKind.Identifier && node.getText() === 'it') {
-          do {
-            node = getNextToken(node);
-          } while (node.kind !== SyntaxKind.StringLiteral);
-          if (node) {
-            const description = node.getText();
-            if (!DESCRIPTION_REGEX.test(description)) {
-              this.addFailureAtNode(node, '"' + description + '" does not match ' + DESCRIPTION_REGEX);
-            }
-          }
-        }
-      });
+      super.visitSourceFile(sourceFile);
     }
+  }
+
+  public visitIdentifier(node: Identifier) {
+    if (node.getText() === 'it') {
+      const descriptionToken = getNextToken(getNextToken(node));
+      if (!!descriptionToken) {
+        const description = descriptionToken.getText();
+        if (!DESCRIPTION_REGEX.test(description)) {
+          this.addFailureAtNode(node, '"' + description + '" does not match ' + DESCRIPTION_REGEX);
+        }
+      }
+    }
+    super.visitIdentifier(node);
   }
 }
 
