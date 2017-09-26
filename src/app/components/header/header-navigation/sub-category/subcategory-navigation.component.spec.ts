@@ -1,7 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { anything, instance, mock, verify } from 'ts-mockito';
 import { CategoriesService } from '../../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../../services/routes-parser-locale-currency/localize-router.service';
@@ -11,12 +10,10 @@ describe('SubCategory Navigation Component', () => {
   let fixture: ComponentFixture<SubCategoryNavigationComponent>;
   let component: SubCategoryNavigationComponent;
   let categoriesServiceMock: CategoriesService;
-  let routerMock: Router;
   let localizeServiceMock: LocalizeRouterService;
 
   beforeEach(async(() => {
     categoriesServiceMock = mock(CategoriesService);
-    routerMock = mock(Router);
     localizeServiceMock = mock(LocalizeRouterService);
 
     TestBed.configureTestingModule({
@@ -25,7 +22,6 @@ describe('SubCategory Navigation Component', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeServiceMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -42,15 +38,14 @@ describe('SubCategory Navigation Component', () => {
     expect(component).toBeTruthy();
   }));
 
-  it(`should call navigate method and verify if router.navigate is called`, () => {
+  it(`should invoke routing and set current category when navigate method is called`, () => {
     const subCategory = {
       uri: 'INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/categoriesCameras-Camcorders/585',
       hasOnlineSubCategories: true
     };
-    component.navigate(subCategory);
+    component.navigateToSubcategory(subCategory);
     verify(categoriesServiceMock.setCurrentCategory(anything())).once();
-    verify(routerMock.navigate(anything())).once();
-    verify(localizeServiceMock.translateRoute(anything())).once();
+    verify(localizeServiceMock.navigateToRoute(anything())).once();
   });
 });
 
