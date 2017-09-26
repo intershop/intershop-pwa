@@ -13,5 +13,7 @@ export const environment = {
     { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
   ],
   prefix: 'ROUTES',
-  pattern: '{LANG}/{CURRENCY}'
+  pattern: '{LANG}/{CURRENCY}',
+  subCategoryDepth: 2,
+  routingDepth: 5
 };
