@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { CategoriesService } from '../../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../../services/routes-parser-locale-currency/localize-router.service';
 @Component({
@@ -10,13 +9,13 @@ import { LocalizeRouterService } from '../../../../services/routes-parser-locale
 export class SubCategoryNavigationComponent {
   @Input() parent;
   @Input() categoryLevel;
-  constructor(private router: Router,
-    public localize: LocalizeRouterService, private categoriesService: CategoriesService) {
+  constructor(
+    public localizeRouterService: LocalizeRouterService, private categoriesService: CategoriesService) {
   }
 
-  navigate(subCategory) {
+  navigateToSubcategory(subCategory) {
     this.categoriesService.setCurrentCategory(subCategory);
     const navigationPath = subCategory.uri.split('/categories')[1];
-    this.router.navigate([this.localize.translateRoute('/category/' + navigationPath)]);
+    this.localizeRouterService.navigateToRoute('/category/' + navigationPath);
   }
 }

@@ -44,12 +44,12 @@ describe('Category Family Host Component', () => {
     expect(component).toBeTruthy();
   }));
 
-  it(`should call ngOnInit when subCategory is a NonLeaf node`, () => {
+  it(`should set isFamilyPage to true when subCategory is a Leaf node`, () => {
     fixture.detectChanges();
     expect(component.isFamilyPage).toBe(true);
   });
 
-  it(`should call ngOnInit when subCategory is a Leaf node`, inject([CategoriesService], (categoriesService: CategoriesService) => {
+  it(`should set isFamilyPage to false when subCategory is a Non-Leaf node`, inject([CategoriesService], (categoriesService: CategoriesService) => {
     categoriesService.current.hasOnlineSubCategories = true;
     fixture.detectChanges();
     expect(component.isFamilyPage).toBe(false);
