@@ -15,6 +15,7 @@ import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountLoginComponent } from './account-login.component';
+import { CustomFormsModule } from 'ng2-validation';
 
 describe('AccountLogin Component', () => {
   let fixture: ComponentFixture<AccountLoginComponent>;
@@ -63,7 +64,8 @@ describe('AccountLogin Component', () => {
       imports: [
         SharedModule,
         TranslateModule.forRoot(),
-        RouterTestingModule
+        RouterTestingModule,
+        CustomFormsModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -95,7 +97,7 @@ describe('AccountLogin Component', () => {
   it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
     component.loginForm.controls['userName'].setValue('test@test.com');
-    component.loginForm.controls['password'].setValue('123213');
+    component.loginForm.controls['password'].setValue('!InterShop0');
     component.onSignin(userDetails);
     expect(component.errorUser).toEqual('Incorrect Credentials');
   });
@@ -103,7 +105,7 @@ describe('AccountLogin Component', () => {
   it(`should call onSignIn when loginForm is valid with correct credentials`, () => {
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.loginForm.controls['userName'].setValue('test@test.com');
-    component.loginForm.controls['password'].setValue('123213');
+    component.loginForm.controls['password'].setValue('!InterShop0');
     component.onSignin(userDetails);
     expect(this.navSpy).toHaveBeenCalledWith(['/home']);
   });
