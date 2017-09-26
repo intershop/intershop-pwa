@@ -1,32 +1,10 @@
-import { FormControl } from '@angular/forms';
-
-export function matchOtherValidator(otherControlName: string) {
-
-  let thisControl: FormControl;
-  let otherControl: FormControl;
-
-  return function matchOtherValidate(control: FormControl) {
+import { FormControl, ValidatorFn } from '@angular/forms';
+export function mismatchedValidation(controlName?: string, matchControlName?: string): ValidatorFn {
+  return (control: FormControl): { [key: string]: any } => {
     if (!control.parent) {
       return null;
     }
-
-    // Initializing the validator.
-    if (!thisControl) {
-      thisControl = control;
-      otherControl = control.parent.get(otherControlName) as FormControl;
-      if (!otherControl) {
-        return Error('matchOtherValidator(): other control is not found in parent group');
-      }
-      otherControl.valueChanges.subscribe(() => {
-        thisControl.updateValueAndValidity();
-      });
-    }
-
-    if (otherControl.value !== thisControl.value) {
-      return {
-        matchOtherValidator: true
-      };
-    }
+    return (control.parent.get(controlName).value !== control.parent.get(matchControlName).value) ?
+      { 'mismatchedValidation': true } : null;
   };
-
 }

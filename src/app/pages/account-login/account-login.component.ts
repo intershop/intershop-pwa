@@ -4,8 +4,7 @@ import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
-import { EmailValidator } from '../../validators/email.validator';
-
+import { CustomValidators } from 'ng2-validation';
 @Component({
   templateUrl: './account-login.component.html'
 })
@@ -13,21 +12,21 @@ import { EmailValidator } from '../../validators/email.validator';
 export class AccountLoginComponent implements OnInit {
   loginForm: FormGroup;
   loginToUse = false;
-  loginFormSubmitted: boolean;
   errorUser: any;
   userRegistrationLoginType: string;
   isLoggedIn: boolean;
   useSimpleAccount: boolean;
   isDirty: boolean;
+  isSimpleRegistration: boolean;
 
   constructor(private formBuilder: FormBuilder,
     private accountLoginService: AccountLoginService,
     private globalConfiguration: GlobalConfiguration,
     private localizeRouterService: LocalizeRouterService) {
 
-      accountLoginService.subscribe(() => {
-        this.isLoggedIn = this.accountLoginService.isAuthorized();
-      });
+    accountLoginService.subscribe(() => {
+      this.isLoggedIn = this.accountLoginService.isAuthorized();
+    });
   }
 
   /**
@@ -40,24 +39,20 @@ export class AccountLoginComponent implements OnInit {
         this.userRegistrationLoginType = data.userRegistrationLoginType;
       }
       this.loginForm = this.formBuilder.group({
-        userName: ['', [Validators.compose([Validators.required,
-        (this.userRegistrationLoginType === 'email' ? EmailValidator.validate : null)])]],
-        password: ['', Validators.required],
+        userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
+        password: ['', [Validators.compose([Validators.required, Validators.minLength(7),
+        Validators.maxLength(256), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]]
       });
     });
+
   }
+
 
   /**
    * Routes to Family Page when user is logged in
    */
   onSignin(userCredentials) {
-    if (this.loginForm.invalid) {
-      Object.keys(this.loginForm.controls).forEach(key => {
-        this.loginForm.get(key).markAsDirty();
-      });
-      this.isDirty = true;
-    } else {
-      this.loginFormSubmitted = true;
+    if (this.loginForm.valid) {
       this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
         if (typeof (userData) === 'object') {
           this.localizeRouterService.navigateToRoute('/home');
@@ -66,6 +61,17 @@ export class AccountLoginComponent implements OnInit {
           this.errorUser = userData;
         }
       });
+    } else {
+      this.isDirty = true;
+    }
+  }
+
+  createAccount() {
+    if (this.useSimpleAccount) {
+      this.isSimpleRegistration = this.useSimpleAccount;
+    }
+    else {
+      this.localizeRouterService.navigateToRoute('/register');
     }
   }
 }

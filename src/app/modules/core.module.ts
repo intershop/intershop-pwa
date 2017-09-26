@@ -7,6 +7,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { CustomFormsModule } from 'ng2-validation';
 import {
   ApiService, CacheCustomService,
   CustomErrorHandler, DataEmitterService, EncryptDecryptService, JwtService,
@@ -22,7 +23,7 @@ import { HeaderModule } from '../components/header/header.module';
 import { GlobalConfiguration } from '../configurations/global.configuration';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
 import { translateFactory } from '../services/custom-translate-loader';
-
+import { ErrorCodeMappingService } from '../services/error-code-mapping.service';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { translateFactory } from '../services/custom-translate-loader';
         deps: [HttpClient]
       }
     }),
+    CustomFormsModule
   ],
   declarations: [
     StyleWrapperDirective
@@ -58,7 +60,8 @@ import { translateFactory } from '../services/custom-translate-loader';
     UserDetailService,
     CurrentLocaleService,
     CartStatusService,
-    GlobalConfiguration
+    GlobalConfiguration,
+    ErrorCodeMappingService
   ],
   exports: [
     FooterModule,

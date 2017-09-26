@@ -1,59 +1,45 @@
 <div *ngIf="errorUser && errorUser === 'LoginAlreadyInUse'" role="alert" class="alert alert-danger">
-    {{ (userRegistrationLoginType && userRegistrationLoginType === 'username') ? ('account.username.already_exist.error' | translate)
-    : ('account.email.already_exist.error' | translate)}}
+  {{ (userRegistrationLoginType && userRegistrationLoginType === 'username') ? ('account.username.already_exist.error' | translate)
+  : ('account.email.already_exist.error' | translate)}}
 </div>
 <form name="PostCheckoutRegisterForm" [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form" (ngSubmit)="createAccount(simpleRegistrationForm.value)">
-    <p>{{'account.create_user.message' | translate}} {{ (userRegistrationLoginType && userRegistrationLoginType === 'username') ? ('account.create_user.username.message'
-        | translate) : ('account.create_user.email_password.message' | translate)}}</p>
-    <div class="form-group clearfix has-feedback" [ngClass]="{'has-error' : simpleRegistrationForm.get('userName').invalid && simpleRegistrationForm.get('userName').dirty,'has-success':simpleRegistrationForm.get('userName').valid && simpleRegistrationForm.get('userName').dirty}">
-        <label for="PostCheckoutRegisterForm_Login" class="col-sm-3 control-label">{{userRegistrationLoginType && userRegistrationLoginType === 'username' ?('account.create_user.login.label' | translate) : ('account.register.email.label' | translate)}}</label>
-        <div class="col-sm-6">
-            <input class="form-control" formControlName="userName" name="PostCheckoutRegisterForm_Login" type="{{userRegistrationLoginType === 'username' ? 'text' : 'email'}}"
-                id="PostCheckoutRegisterForm_Login">
-            <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="simpleRegistrationForm.get('userName').invalid && simpleRegistrationForm.get('userName').dirty"></i>
-            <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!simpleRegistrationForm.get('userName').invalid && simpleRegistrationForm.get('userName').dirty"></i>
+  <p>{{'account.create_user.message' | translate}} {{ (userRegistrationLoginType && userRegistrationLoginType === 'username')
+    ? ('account.create_user.username.message' | translate) : ('account.create_user.email_password.message' | translate)}}</p>
+  <div class="form-group clearfix has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
+    <label for="PostCheckoutRegisterForm_Login" class="col-sm-3 control-label">{{userRegistrationLoginType && userRegistrationLoginType === 'username' ?('account.create_user.login.label' | translate) : ('account.register.email.label' | translate)}}</label>
+    <div class="col-sm-6">
+      <input class="form-control" #dynamicError formControlName="userName" name="PostCheckoutRegisterForm_Login" type="{{userRegistrationLoginType === 'username' ? 'text' : 'email'}}"
+        id="PostCheckoutRegisterForm_Login">
+    </div>
+    <i class="form-control-feedback" data-bv-icon-for="Username"></i>
+  </div>
+  <div *ngIf="userRegistrationLoginType === 'username'" class="form-group clearfix has-feedback" [errorMessages]="{'required':'account.login.email.error.required' , 'email':'account.login.email.error.invalid'}">
+    <label for="" class="col-sm-3 control-label">{{'account.register.email.label' | translate}}</label>
+    <div class="col-sm-6">
+      <input class="form-control" formControlName="email" #dynamicError type="email" id="" name="">
+    </div>
+  </div>
+  <div class="form-group clearfix has-feedback" [errorMessages]="{'required':'account.update_password.new_password.error.required','pattern':'account.update_password.new_password.error.regexp','minlength':'account.update_password.new_password.error.length'}">
+    <label for="PostCheckoutRegisterForm_Password" class="col-sm-3 control-label">{{'account.register.password.label' | translate}}</label>
+    <div class="col-sm-6">
+      <input formControlName="password" #dynamicError class="form-control" name="PostCheckoutRegisterForm_Password" type="password"
+        id="PostCheckoutRegisterForm_Password" maxlength="256">
+    </div>
+    <div class="col-sm-offset-3 col-sm-10">
+      <small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
+    </div>
+  </div>
 
-            <small class="help-block" *ngIf="simpleRegistrationForm.get('userName').dirty && simpleRegistrationForm.get('userName').hasError('required')">
-                {{userRegistrationLoginType && userRegistrationLoginType === 'username' ? ('account.login.username.error.required' | translate) : ('account.login.email.error.required' | translate)}}
-              </small>
-            <small *ngIf="simpleRegistrationForm.get('userName').dirty && simpleRegistrationForm.get('userName').hasError('validateEmail')"
-                class="help-block">
-                {{userRegistrationLoginType && userRegistrationLoginType === 'email' ?('account.login.email.error.invalid' | translate) : ''}}
-              </small>
-        </div>
-        <i class="form-control-feedback" data-bv-icon-for="Username"></i>
+  <div class="form-group clearfix has-feedback" [errorMessages]="{'required':'account.register.password_confirmation.error.default','equalTo':'account.update_password.confirm_password.error.stringcompare'}">
+    <label class="col-sm-3 control-label" for="PostCheckoutRegisterForm_RetypedPassword">{{'account.register.password_confirmation.label' | translate}}</label>
+    <div class="col-sm-6">
+      <input type="password" #dynamicError autocomplete="off" class="form-control" size="18" id="PostCheckoutRegisterForm_RetypedPassword"
+        name="PostCheckoutRegisterForm_RetypedPassword" formControlName="confirmPassword">
     </div>
-    <div class="form-group clearfix has-feedback" [ngClass]="{'has-error' : simpleRegistrationForm.get('password').invalid && simpleRegistrationForm.get('password').dirty,'has-success':simpleRegistrationForm.get('password').valid && simpleRegistrationForm.get('password').dirty}">
-        <label for="PostCheckoutRegisterForm_Password" class="col-sm-3 control-label">{{'account.register.password.label' | translate}}</label>
-        <div class="col-sm-6">
-            <input formControlName="password" class="form-control" name="PostCheckoutRegisterForm_Password" type="password" id="PostCheckoutRegisterForm_Password" maxlength="256">
-            <i class="form-control-feedback glyphicon glyphicon-remove" *ngIf="simpleRegistrationForm.get('password').invalid && simpleRegistrationForm.get('password').dirty"></i>
-            <i class="form-control-feedback glyphicon glyphicon-ok" *ngIf="!simpleRegistrationForm.get('password').invalid && simpleRegistrationForm.get('password').dirty"></i>
-            <small class="help-block" *ngIf="simpleRegistrationForm.get('password').dirty && simpleRegistrationForm.get('password').hasError('required')">
-                {{'account.update_password.new_password.error.required' | translate}}
-              </small>
-            <small class="help-block" *ngIf="simpleRegistrationForm.get('password').dirty && simpleRegistrationForm.get('password').hasError('validatePassword')">{{'account.update_password.new_password.error.regexp' | translate}}</small>
-            <small class="help-block" *ngIf="simpleRegistrationForm.get('password').dirty && simpleRegistrationForm.get('password').hasError('minlength')">{{'account.update_password.new_password.error.length' | translate}}</small>
-        </div>
-        <div class="col-sm-offset-3 col-sm-10">
-            <small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
-        </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <button class="btn btn-primary" type="submit" name="login" [disabled]="simpleRegistrationForm.invalid && isDirty">{{'account.create.button.label' | translate}}</button>
     </div>
-
-    <div class="form-group clearfix has-feedback" [ngClass]="{ 'has-error' : simpleRegistrationForm.get('confirmPassword').invalid && simpleRegistrationForm.get('confirmPassword').dirty,'has-success':simpleRegistrationForm.get('confirmPassword').valid && simpleRegistrationForm.get('confirmPassword').dirty}">
-        <label class="col-sm-3 control-label" for="PostCheckoutRegisterForm_RetypedPassword">{{'account.register.password_confirmation.label' | translate}}</label>
-        <div class="col-sm-6">
-            <input type="password" autocomplete="off" class="form-control" size="18" id="PostCheckoutRegisterForm_RetypedPassword" name="PostCheckoutRegisterForm_RetypedPassword" formControlName="confirmPassword">
-            <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="simpleRegistrationForm.get('confirmPassword').invalid && simpleRegistrationForm.get('confirmPassword').dirty"></i>
-            <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="simpleRegistrationForm.get('confirmPassword').valid && simpleRegistrationForm.get('confirmPassword').dirty"></i>
-            <small class="help-block" *ngIf="simpleRegistrationForm.get('confirmPassword').value && simpleRegistrationForm.get('confirmPassword').dirty && simpleRegistrationForm.get('confirmPassword').hasError('matchOtherValidator')">{{'account.update_password.confirm_password.error.stringcompare' | translate}}</small>
-            <small class="help-block" *ngIf="simpleRegistrationForm.get('confirmPassword').dirty && simpleRegistrationForm.get('confirmPassword').hasError('required')">{{'account.register.password_confirmation.error.default' | translate }}</small>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-            <button class="btn btn-primary" type="submit" name="login" [disabled]="simpleRegistrationForm.invalid && isDirty">{{'account.create.button.label' | translate}}</button>
-            <a class="btn btn-default" [routerLink] = "'/home' | localize">{{'account.cancel.link' | translate}}</a>
-        </div>
-    </div>
+  </div>
 </form>
