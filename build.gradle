@@ -181,3 +181,22 @@ task tslint(type:NpmTask, description:'run tslint', group:'Node Utility', depend
     inputs.files(file('src'), fileTree('tslint-rules') {include('**/*Rule.ts') include('tsconfig.json')}, fileTree(projectDir) {include('*.json')})
 }
 check.finalizedBy tslint
+
+task tsdependencygraph(type:NodeTask, description:'create dependency graph with depcruise', group:'Node Utility', dependsOn:npmInstall) {
+    doFirst {
+      file("$projectDir/build/reports/dependencies").mkdirs()
+    }
+    script = file("$projectDir/node_modules/dependency-cruiser/bin/dependency-cruise")
+    args = ['-x', '(.*node_modules.*|.*spec.ts|.*module.ts|.*routes.ts)', '--output-type', 'dot', '--output-to', 'build/reports/dependencies/dependencies.dot', 'src']
+    inputs.files('src')
+    doLast {
+        exec {
+            executable 'dot'
+            args '-Tps', "$projectDir/build/reports/dependencies/dependencies.dot", '-o', "$projectDir/build/reports/dependencies/dependencies.pdf"
+        }
+        exec {
+            executable 'dot'
+            args '-Tpng', "$projectDir/build/reports/dependencies/dependencies.dot", '-o', "$projectDir/build/reports/dependencies/dependencies.png"
+        }
+    }
+}
