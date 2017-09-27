@@ -142,9 +142,7 @@
     "no-access-missing-member": false,
     "templates-use-public": true,
     "invoke-injectable": true,
-    "ordered-imports": [
-      true
-    ],
+    "ordered-imports": true,
     "ban": [
       true,
       {"name": ["*", "ngOnInit"], "message": "Use fixture.detectChanges instead!"},
