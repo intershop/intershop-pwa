@@ -150,11 +150,12 @@
       {"name": ["*", "ngOnInit"], "message": "Use fixture.detectChanges instead!"},
       {"name": ["fdescribe"], "message": "Do not commit focused tests!"},
       {"name": ["fit"], "message": "Do not commit focused tests!"},
-      {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"}
+      {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"},
+      {"name": ["*", "navigate"], "message": "Using @angular/Router directly will not work, use LocalizeRouterService.navigateToRoute!"}
     ],
     "no-suspicious-variable-init-in-tests": true,
     "meaningful-naming-in-tests": false,
-    "no-commented-out-tests": false,
+    "no-commented-out-tests": true,
     "prefer-mocks-instead-of-stubs-in-tests": false
   }
 }

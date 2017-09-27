@@ -103,6 +103,18 @@ export class LocalizeRouterService {
   }
 
   /**
+   * Navigate to given route (translate the given route first ofcourse)
+   * @param {string | any[]} path
+   * @param {NavigationExtras} extras
+   */
+  navigateToRoute(path: string | any[], extras?: NavigationExtras) {
+    // This is the only place Router.navigate is allowed, all other routing should be done using this method.
+    /* tslint:disable:ban */
+    this.router.navigate([this.translateRoute(path)], extras);
+    /* tslint:enable:ban */
+  }
+
+  /**
    * Event handler to react on route change
    * @returns {(event:any)=>void}
    * @private

@@ -1,5 +1,6 @@
 import * as Lint from 'tslint';
-import { SourceFile, SyntaxKind } from 'typescript';
+import { getNextToken } from 'tsutils';
+import { ClassDeclaration, SourceFile, SyntaxKind } from 'typescript';
 import { RuleHelpers } from './ruleHelpers';
 
 class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {
@@ -10,24 +11,18 @@ class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {
       // if (!sourceFile.fileName.endsWith('registration-page.component.spec.ts')) {
       //     return;
       // }
-
-      const describeBody = RuleHelpers.getDescribeBody(sourceFile);
-      if (describeBody) {
-        describeBody.getChildren().forEach(child => {
-          if (child.kind === SyntaxKind.ClassDeclaration) {
-            // console.log(child.kind + ': ' + child.getText());
-            const classNameToken = RuleHelpers.getNextChildTokenOfKind(child, SyntaxKind.Identifier);
-            if (classNameToken) {
-              const className = classNameToken.getText();
-              if (/.*Stub/.test(className)) {
-                this.addFailureAtNode(child, 'Do not use stub classes like "' + className +
-                  '". Use the capabilities of ts-mockito instead.');
-              }
-            }
-          }
-        });
-      }
+      super.visitSourceFile(sourceFile);
     }
+  }
+
+  public visitClassDeclaration(node: ClassDeclaration) {
+    const classToken = RuleHelpers.getNextChildTokenOfKind(node, SyntaxKind.ClassKeyword);
+    const classNameToken = getNextToken(classToken);
+    const className = classNameToken.getText();
+    this.addFailureAtNode(classNameToken, 'Do not use stub classes like "' + className +
+      '" in tests. Use ts-mockito or reusable testhelper classes instead.');
+
+    super.visitClassDeclaration(node);
   }
 }
 

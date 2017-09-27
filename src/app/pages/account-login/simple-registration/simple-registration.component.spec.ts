@@ -1,8 +1,7 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
@@ -13,52 +12,51 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 import { SimpleRegistrationComponent } from './simple-registration.component';
 import { SimpleRegistrationService } from './simple-registration.service';
 
+@Pipe({ name: 'localize' })
+class MockPipe implements PipeTransform {
+  transform(value: number): number {
+    return value;
+  }
+}
+
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
   let element: HTMLElement;
-  let routerMock: Router;
+  // let routerMock: Router;
   let globalConfigurationMock: GlobalConfiguration;
   let simpleRegistrationServiceMock: SimpleRegistrationService;
+  let localizeRouterServiceMock: LocalizeRouterService;
+
   const accountSettings = {
     useSimpleAccount: true,
     userRegistrationLoginType: 'email'
   };
 
   beforeEach(async(() => {
-    routerMock = mock(Router);
     globalConfigurationMock = mock(GlobalConfiguration);
     simpleRegistrationServiceMock = mock(SimpleRegistrationService);
+    localizeRouterServiceMock = mock(LocalizeRouterService);
+
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(accountSettings));
     when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of(new UserDetail()));
 
     TestBed.configureTestingModule({
-      declarations: [SimpleRegistrationComponent],
+      declarations: [SimpleRegistrationComponent, MockPipe],
       imports: [
         TranslateModule.forRoot(),
         ReactiveFormsModule,
         CustomFormsModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{
-        provide: Router,
-        useFactory: () => instance(routerMock)
-      },
-      {
-        provide: LocalizeRouterService,
-        useFactory: () => instance(mock(LocalizeRouterService))
-      },
-      {
-        provide: GlobalConfiguration,
-        useFactory: () => instance(globalConfigurationMock)
-      }]
+      providers: [
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
+        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) }
+      ]
     }).overrideComponent(SimpleRegistrationComponent, {
       set: {
         providers: [
-          {
-            provide: SimpleRegistrationService,
-            useFactory: () => instance(simpleRegistrationServiceMock)
-          }
+          { provide: SimpleRegistrationService, useFactory: () => instance(simpleRegistrationServiceMock) }
         ]
       }
     }).compileComponents();
@@ -67,6 +65,7 @@ describe('Simple Registration Component', () => {
     fixture = TestBed.createComponent(SimpleRegistrationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    fixture.detectChanges();
   });
 
   it('should create the component', () => {
@@ -80,17 +79,17 @@ describe('Simple Registration Component', () => {
     component.simpleRegistrationForm.controls['password'].setValue('12121');
     component.createAccount(userDetails);
     verify(simpleRegistrationServiceMock.createUser(anything())).never();
-    verify(routerMock.navigate(anything())).never();
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).never();
   });
 
   it('should call createAccount when the form is valid and verify if router.navigate is being called', () => {
-    fixture.detectChanges();
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.simpleRegistrationForm.controls['userName'].setValue('valid@email.com');
     component.simpleRegistrationForm.controls['password'].setValue('aaaaaa1');
     component.simpleRegistrationForm.controls['confirmPassword'].setValue('aaaaaa1');
     component.createAccount(userDetails);
     verify(simpleRegistrationServiceMock.createUser(anything())).once();
-    verify(routerMock.navigate(anything())).once();
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
   });
 });
