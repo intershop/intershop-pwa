@@ -2,13 +2,12 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Rx';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { SharedModule } from '../../modules/shared.module';
 import { AccountLoginService } from '../../services/account-login/';
@@ -24,31 +23,26 @@ describe('AccountLogin Component', () => {
   let debugEl: DebugElement;
   let localizeRouterServiceMock: LocalizeRouterService;
 
-  class MockAccountLoginService {
-    singinUser(userDetails) {
-      if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
-        return Observable.of({ data: 'Correct Details' });
-      } else {
-        return Observable.of('Incorrect Credentials');
-      }
-    }
-  }
-
-  class GlobalConfigurationStub {
-    getApplicationSettings() {
-      const accountSettings = {
-        useSimpleAccount: true,
-        userRegistrationLoginType: 'email'
-      };
-      return Observable.of(accountSettings);
-    }
-  }
-
   beforeEach(async(() => {
     localizeRouterServiceMock = mock(LocalizeRouterService);
     when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
       return arg1;
     });
+
+    const accountLoginServiceMock = mock(AccountLoginService);
+    when(accountLoginServiceMock.singinUser(anything())).thenCall((userDetails) => {
+      if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
+        return Observable.of({ data: 'Correct Details' });
+      } else {
+        return Observable.of('Incorrect Credentials');
+      }
+    });
+
+    const globalConfigurationMock = mock(GlobalConfiguration);
+    when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of({
+      useSimpleAccount: true,
+      userRegistrationLoginType: 'email'
+    }));
 
     TestBed.configureTestingModule({
       declarations: [
@@ -56,8 +50,8 @@ describe('AccountLogin Component', () => {
       ],
       providers: [
         CacheCustomService, CacheService, EncryptDecryptService,
-        { provide: AccountLoginService, useClass: MockAccountLoginService },
-        { provide: GlobalConfiguration, useClass: GlobalConfigurationStub },
+        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
+        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
 
       ],
@@ -77,8 +71,6 @@ describe('AccountLogin Component', () => {
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
     element = fixture.nativeElement;
-    const router = TestBed.get(Router);
-    this.navSpy = spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -91,7 +83,6 @@ describe('AccountLogin Component', () => {
   it(`should call onSignIn when loginForm is invalid`, () => {
     const userDetails = { userName: 'intershop@123.com', password: '12346' };
     component.onSignin(userDetails);
-    expect(this.navSpy).not.toHaveBeenCalled();
   });
 
   it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
@@ -107,7 +98,10 @@ describe('AccountLogin Component', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('!InterShop0');
     component.onSignin(userDetails);
-    expect(this.navSpy).toHaveBeenCalledWith(['/home']);
+    // check if it was called
+    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
+    // capture last arguments and verify.
+    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/home']);
   });
 
   it('should call ngOnInit method', () => {
