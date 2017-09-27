@@ -17,13 +17,11 @@ import { UserDetailService } from '../services/account-login/user-detail.service
 import { CartStatusService } from '../services/cart-status/cart-status.service';
 import { CurrentLocaleService } from '../services/locale/current-locale.service';
 import { ProductCompareService } from '../services/product-compare/product-compare.service';
-
 import { FooterModule } from '../components/footer/footer.module';
 import { HeaderModule } from '../components/header/header.module';
 import { GlobalConfiguration } from '../configurations/global.configuration';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-import { translateFactory } from '../services/custom-translate-loader';
-import { ErrorCodeMappingService } from '../services/error-code-mapping.service';
+import { ErrorCodeMappingService, translateFactory } from '../services';
 
 @NgModule({
   imports: [

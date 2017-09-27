@@ -6,32 +6,36 @@
         <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.addresses.message' | translate}}</p>
         <div *ngIf="((errorUser && errorUser !== 'UserNotLoggedIn' && errorUser !== 'LoginAlreadyInUse'))" role="alert" class="alert alert-danger">
           {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (userRegistrationLoginType
-          && userRegistrationLoginType === 'username') ? ('account.login.username_password.error.invalid' | translate) : ('account.login.email_password.error.invalid'
-          | translate) : ''}}
+          && userRegistrationLoginType === 'username') ? ('account.login.username_password.error.invalid' | translate) :
+          ('account.login.email_password.error.invalid' | translate) : ''}}
 
           <!-- TODO  -->
           <!-- Apply condition for other possible inputs -->
         </div>
-        <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
+        <form isFormValidation name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
           <!-- Hidden Fields in ISML -->
           <p>{{'account.login.message' | translate}}</p>
-          <div class="form-group has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
-            <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{registrationLoginType && registrationLoginType === 'username' ?'Username' : 'Email'}}</label>
-            <div class="col-sm-6">
 
-              <input class="form-control" #dynamicError  formControlName="userName" name="ShopLoginForm_Login" type="{{registrationLoginType === 'username' ? 'text' : 'email'}}"
-                id="ShopLoginForm_Login">
+          <is-form-group-validation [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
+            <div class="form-group has-feedback">
+              <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{registrationLoginType && registrationLoginType === 'username' ?'Username' : 'Email'}}</label>
+              <div class="col-sm-6">
+
+                <input class="form-control" #dynamicError formControlName="userName" name="ShopLoginForm_Login" type="{{registrationLoginType === 'username' ? 'text' : 'email'}}"
+                  id="ShopLoginForm_Login">
+              </div>
+              <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
             </div>
-            <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
-          </div>
+          </is-form-group-validation>
+          <is-form-group-validation [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}">
+            <div class="form-group has-feedback">
+              <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
+              <div class="col-sm-6">
+                <input #dynamicError formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password" id="ShopLoginForm_Password">
+              </div>
 
-          <div class="form-group has-feedback" [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}">
-            <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
-            <div class="col-sm-6">
-              <input #dynamicError formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password" id="ShopLoginForm_Password">
             </div>
-
-          </div>
+          </is-form-group-validation>
           <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
               <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid && isDirty">{{'account.signin.button.label' | translate}}</button>
@@ -57,7 +61,5 @@
     <ng-template #simpleRegistrationComponent>
       <is-simple-registration></is-simple-registration>
     </ng-template>
-
-
   </div>
 </div>

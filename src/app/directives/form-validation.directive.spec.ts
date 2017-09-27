@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormValidationDirective } from './form-validation.directive';
 @Component({
-    template: ` <form name="loginForm" [formGroup]="loginForm" >
+    template: ` <form isFormValidation name="loginForm" [formGroup]="loginForm" >
                 <input class="form-control" formControlName="userName" name="userName" />
                 <button type="submit" class="btn btn-primary" >Submit</button>
                 </form>
