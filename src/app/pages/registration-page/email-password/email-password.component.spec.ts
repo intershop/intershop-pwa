@@ -1,10 +1,9 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../../modules/shared.module';
-// import { matchOtherValidator } from '../../../validators/match-words.validator';
-import { EmailPasswordComponent } from './email-password.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '../../../modules/shared.module';
+import { EmailPasswordComponent } from './email-password.component';
 
 describe('EmailPassword Component', () => {
     let fixture: ComponentFixture<EmailPasswordComponent>;
