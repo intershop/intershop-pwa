@@ -4,7 +4,7 @@
 </div>
 <form name="PostCheckoutRegisterForm" [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form" (ngSubmit)="createAccount(simpleRegistrationForm.value)">
   <p>{{'account.create_user.message' | translate}} {{ (userRegistrationLoginType && userRegistrationLoginType === 'username')
-    ? ('account.create_user.username.message' | translate) : ('account.create_user.email_password.message' | translate)}}</p>
+    ? ('account.create_user.username.message' | translate ): '' }} {{('account.create_user.email_password.message' | translate)}}</p>
   <div class="form-group clearfix has-feedback" [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
     <label for="PostCheckoutRegisterForm_Login" class="col-sm-3 control-label">{{userRegistrationLoginType && userRegistrationLoginType === 'username' ?('account.create_user.login.label' | translate) : ('account.register.email.label' | translate)}}</label>
     <div class="col-sm-6">

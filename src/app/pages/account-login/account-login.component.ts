@@ -5,6 +5,7 @@ import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { CustomValidators } from 'ng2-validation';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   templateUrl: './account-login.component.html'
 })
@@ -22,7 +23,8 @@ export class AccountLoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private accountLoginService: AccountLoginService,
     private globalConfiguration: GlobalConfiguration,
-    private localizeRouterService: LocalizeRouterService) {
+    private localizeRouterService: LocalizeRouterService,
+    private route: Router) {
 
     accountLoginService.subscribe(() => {
       this.isLoggedIn = this.accountLoginService.isAuthorized();
@@ -40,11 +42,12 @@ export class AccountLoginComponent implements OnInit {
       }
       this.loginForm = this.formBuilder.group({
         userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
-        password: ['', [Validators.compose([Validators.required, Validators.minLength(7),
-        Validators.maxLength(256), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]]
+        password: ['', Validators.required]
       });
     });
-
+    if (this.route.url.indexOf('register') > -1) {
+      this.isSimpleRegistration = true;
+    }
   }
 
 
@@ -63,15 +66,6 @@ export class AccountLoginComponent implements OnInit {
       });
     } else {
       this.isDirty = true;
-    }
-  }
-
-  createAccount() {
-    if (this.useSimpleAccount) {
-      this.isSimpleRegistration = this.useSimpleAccount;
-    }
-    else {
-      this.localizeRouterService.navigateToRoute('/register');
     }
   }
 }

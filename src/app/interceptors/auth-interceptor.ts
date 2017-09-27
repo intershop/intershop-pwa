@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { JwtService } from '../services/jwt.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -31,8 +32,8 @@ export class AuthInterceptor implements HttpInterceptor {
       if (event instanceof HttpResponse) {
         const response = <HttpResponse<any>>event;
         const tokenReturned = response.headers.get(tokenHeaderKeyName);
-        if (tokenReturned) {
-          this.jwtService.saveToken(tokenReturned);
+        if (tokenReturned || environment.needMock) {
+          this.jwtService.saveToken(tokenReturned || 'Dummy Token');
         }
       }
     });

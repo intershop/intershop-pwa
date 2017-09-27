@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
@@ -15,7 +14,6 @@ export class LoginStatusComponent {
 
   constructor(
     private accountLoginService: AccountLoginService,
-    private globalConfiguration: GlobalConfiguration,
     public localize: LocalizeRouterService
   ) {
     accountLoginService.subscribe(userDetail => this.userDetail = userDetail);
@@ -30,10 +28,7 @@ export class LoginStatusComponent {
    * @returns void
    */
   register() {
-    this.globalConfiguration.getApplicationSettings().subscribe(accountSettings => {
-      accountSettings.useSimpleAccount ? this.localize.navigateToRoute('/login') : this.localize.navigateToRoute('/register');
-    });
-    return false;
+    this.localize.navigateToRoute('/register');
   }
 
   /**
@@ -43,6 +38,5 @@ export class LoginStatusComponent {
   logout() {
     this.accountLoginService.logout();
     this.localize.navigateToRoute('/home');
-    return false;
   }
 }
