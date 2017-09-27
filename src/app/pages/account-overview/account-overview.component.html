@@ -33,7 +33,7 @@
           <a href="">Product Notifications</a>
         </li>
         <li>
-          <a href="/logout" (click)="logout()">Logout</a>
+          <a href="/logout" (click)="logout();false">Logout</a>
         </li>
       </ul>
     </div>
@@ -42,7 +42,8 @@
       </div>
       <h1>Hi, {{customerName}}.<br>Welcome back!</h1>
       <p>Everything you need to track your orders, update your address book, edit your account information and more is right
-        here.</p>
+        here.
+      </p>
       <div class="row account-dashboard">
         <div class="col-sm-3 col-xs-6 dashboard-item">
           <a href="">
