@@ -2,7 +2,7 @@ import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { FormGroup } from '@angular/forms';
 
 @Directive({
-    selector: 'form'
+    selector: '[isFormValidation]'
 })
 export class FormValidationDirective {
 

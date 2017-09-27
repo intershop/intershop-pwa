@@ -6,7 +6,10 @@
 export const environment = {
   platformId: '',
   production: false,
-  needMock: true,
+  mustMockPaths: [
+    'categories/Specials'
+  ],
+  needMock: false,
   rest_url: 'https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
   base_url: 'https://localhost:80',
 

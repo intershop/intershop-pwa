@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { FormControlErrorComponent } from './form-control-error.component';
 
 @Component({
-    selector: '.form-group',
+    selector: 'is-form-group-validation',
     template: `
       <ng-content></ng-content>
     `
