@@ -14,6 +14,5 @@ export const environment = {
   ],
   prefix: 'ROUTES',
   pattern: '{LANG}/{CURRENCY}',
-  subCategoryDepth: 2,
   routingDepth: 5
 };

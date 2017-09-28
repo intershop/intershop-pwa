@@ -9,12 +9,12 @@ export const environment = {
   needMock: true,
   rest_url: 'https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
   base_url: 'https://localhost:80',
-   locales: [
+
+  locales: [
     { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },
     { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
   ],
   prefix: 'ROUTES',
   pattern: '{LANG}/{CURRENCY}',
-  subCategoryDepth: 2,
   routingDepth: 5
 };

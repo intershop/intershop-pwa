@@ -3,9 +3,9 @@
     <li class="home hidden-xs">
       <a [routerLink]="localize.translateRoute('/home')" title="home"><span class="glyphicon glyphicon-home"></span></a>
     </li>
-    <li *ngFor="let category of allCategories" class="dropdown" [ngClass]="category.isCategory ? 'open': ''">
+    <li *ngFor="let category of categories" class="dropdown" [ngClass]="category.isOpenedToggle ? 'open': ''">
       <a [routerLink]="[localize.translateRoute('/category'), category.id]" attr.data-testing-id="{{category.id}}-link">{{category.name}}</a>
-      <a (click)="category.isCategory = !category.isCategory" class="dropdown-toggle visible-xs"><span class="glyphicon glyphicon-plus" [ngClass]="category.isCategory ? 'glyphicon-minus': 'glyphicon-plus'"></span></a>
+      <a (click)="category.isOpenedToggle = !category.isOpenedToggle" class="dropdown-toggle visible-xs"><span class="glyphicon glyphicon-plus" [ngClass]="category.isOpenedToggle ? 'glyphicon-minus': 'glyphicon-plus'"></span></a>
       <is-subcategory-navigation [parent]="category" [categoryLevel] = "1" isRemoveHost></is-subcategory-navigation>
     </li>
   </ul>
