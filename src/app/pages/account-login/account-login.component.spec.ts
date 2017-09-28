@@ -22,31 +22,26 @@ describe('AccountLogin Component', () => {
   let debugEl: DebugElement;
   let localizeRouterServiceMock: LocalizeRouterService;
 
-  class MockAccountLoginService {
-    singinUser(userDetails) {
-      if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
-        return Observable.of({ data: 'Correct Details' });
-      } else {
-        return Observable.of('Incorrect Credentials');
-      }
-    }
-  }
-
-  class GlobalConfigurationStub {
-    getApplicationSettings() {
-      const accountSettings = {
-        useSimpleAccount: true,
-        userRegistrationLoginType: 'email'
-      };
-      return Observable.of(accountSettings);
-    }
-  }
-
   beforeEach(async(() => {
     localizeRouterServiceMock = mock(LocalizeRouterService);
     when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
       return arg1;
     });
+
+    const accountLoginServiceMock = mock(AccountLoginService);
+    when(accountLoginServiceMock.singinUser(anything())).thenCall((userDetails) => {
+      if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
+        return Observable.of({ data: 'Correct Details' });
+      } else {
+        return Observable.of('Incorrect Credentials');
+      }
+    });
+
+    const globalConfigurationMock = mock(GlobalConfiguration);
+    when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of({
+      useSimpleAccount: true,
+      userRegistrationLoginType: 'email'
+    }));
 
     TestBed.configureTestingModule({
       declarations: [
@@ -54,8 +49,8 @@ describe('AccountLogin Component', () => {
       ],
       providers: [
         CacheCustomService, CacheService, EncryptDecryptService,
-        { provide: AccountLoginService, useClass: MockAccountLoginService },
-        { provide: GlobalConfiguration, useClass: GlobalConfigurationStub },
+        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
+        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
 
       ],

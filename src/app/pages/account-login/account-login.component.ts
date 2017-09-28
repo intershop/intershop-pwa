@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
-import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { EmailValidator } from '../../validators/email.validator';
 
@@ -17,29 +16,24 @@ export class AccountLoginComponent implements OnInit {
   loginFormSubmitted: boolean;
   errorUser: any;
   userRegistrationLoginType: string;
-  isLoggedIn;
+  isLoggedIn: boolean;
   useSimpleAccount: boolean;
   isDirty: boolean;
 
-  /**
-   * Constructor
-   * @param {FormBuilder} formBuilder
-   * @param {AccountLoginService} accountLoginService
-   * @param {CacheCustomService} cacheService
-   * @param {GlobalConfiguration} globalConfiguration
-   * @param {LocalizeRouterService} localizeRouterService
-   */
   constructor(private formBuilder: FormBuilder,
-              private accountLoginService: AccountLoginService,
-              private cacheService: CacheCustomService,
-              private globalConfiguration: GlobalConfiguration,
-              private localizeRouterService: LocalizeRouterService) { }
+    private accountLoginService: AccountLoginService,
+    private globalConfiguration: GlobalConfiguration,
+    private localizeRouterService: LocalizeRouterService) {
+
+      accountLoginService.subscribe(() => {
+        this.isLoggedIn = this.accountLoginService.isAuthorized();
+      });
+  }
 
   /**
-     * Creates Login Form
-     */
+   * Creates Login Form
+   */
   ngOnInit() {
-    this.isLoggedIn = this.cacheService.cacheKeyExists('userDetail');
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       if (data) {
         this.useSimpleAccount = data.useSimpleAccount;
@@ -65,7 +59,7 @@ export class AccountLoginComponent implements OnInit {
     } else {
       this.loginFormSubmitted = true;
       this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
-        if (typeof(userData) === 'object') {
+        if (typeof (userData) === 'object') {
           this.localizeRouterService.navigateToRoute('/home');
         } else {
           this.loginForm.get('password').reset();
