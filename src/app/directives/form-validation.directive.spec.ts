@@ -4,13 +4,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormValidationDirective } from './form-validation.directive';
+
 @Component({
-    template: ` <form isFormValidation name="loginForm" [formGroup]="loginForm" >
-                <input class="form-control" formControlName="userName" name="userName" />
-                <button type="submit" class="btn btn-primary" >Submit</button>
-              </form>
+  template: `
+            <form isFormValidation name="loginForm" [formGroup]="loginForm" >
+              <input class="form-control" formControlName="userName" name="userName" />
+              <button type="submit" class="btn btn-primary" >Submit</button>
+            </form>
             `
 })
+
 class MockComponent {
   loginForm: FormGroup;
   constructor(private formBuilder: FormBuilder) {
@@ -19,6 +22,7 @@ class MockComponent {
     });
   }
 }
+
 describe('Form Validation Directive', () => {
   let fixture: ComponentFixture<MockComponent>;
   let component: MockComponent;
