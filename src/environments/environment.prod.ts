@@ -1,7 +1,7 @@
 export const environment = {
   platformId: '',
   production: true,
-  needMock: false,
+  needMock: true,
   mustMockPaths: [
     'categories/Specials'
   ],
