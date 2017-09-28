@@ -3,8 +3,7 @@ import { CategoriesService } from '../../../../services/categories/categories.se
 import { LocalizeRouterService } from '../../../../services/routes-parser-locale-currency/localize-router.service';
 @Component({
   selector: 'is-subcategory-navigation',
-  templateUrl: './subcategory-navigation.component.html',
-  
+  templateUrl: './subcategory-navigation.component.html'
 })
 
 export class SubCategoryNavigationComponent {
