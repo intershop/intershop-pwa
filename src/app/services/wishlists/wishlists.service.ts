@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { ApiService } from '../../services';
 import { AccountLoginService } from '../account-login/account-login.service';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
@@ -28,12 +27,6 @@ export class WishListService extends GlobalStateAwareService<WishListModel> {
   }
 
   private retrieveWishListFromServer() {
-    // TODO:check empty data
-    if (environment.needMock) {
-      const wishListMock = new WishListModel();
-      wishListMock.itemsCount = 3;
-      this.next(wishListMock);
-    }
     this.apiService.get(this.baseUrl).subscribe(data => {
       const preferredWishListUrl = (!!data.elements && data.elements.length > 0) ?
         data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
