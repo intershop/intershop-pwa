@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailValidator } from '../../../validators/email.validator';
-import { matchOtherValidator } from '../../../validators/match-words.validator';
-import { PasswordValidator } from '../../../validators/password.validator';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'is-email-password',
@@ -20,19 +18,17 @@ export class EmailPasswordComponent implements OnInit {
   constructor(private _formbuilder: FormBuilder) { }
 
   ngOnInit() {
+    const emailAddress = new FormControl(null, [Validators.compose([Validators.required, CustomValidators.email, Validators.maxLength(256)])]);
+    const confirmEmailAddressControl = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(emailAddress), Validators.maxLength(256)])]);
+    const password = new FormControl(null, [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/),
+    Validators.maxLength(256)])]);
+    const confirmPasswordControl = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(password)])]);
     this.emailForm = this._formbuilder.group({
       emailDetails: this._formbuilder.group({
-        emailAddress: ['', [Validators.required,
-        EmailValidator.validate, Validators.maxLength(256)
-        ]],
-        confirmEmailAddress: ['', [Validators.required,
-        matchOtherValidator('emailAddress'), Validators.maxLength(256)
-        ]],
-        password: ['', [Validators.required,
-        PasswordValidator.validate, Validators.minLength(7)
-        ]],
-        confirmPassword: ['', [Validators.required,
-        matchOtherValidator('password')]],
+        emailAddress: emailAddress,
+        confirmEmailAddress: confirmEmailAddressControl,
+        password: password,
+        confirmPassword: confirmPasswordControl,
         securityQuestion: ['', [Validators.required]],
         answer: ['', [Validators.required]],
         receivePromotions: []

@@ -1,6 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../../modules/shared.module';
 import { AddressComponent } from './address.component';
 
@@ -13,7 +14,9 @@ describe('Address Component', () => {
     beforeEach(fakeAsync(() => {
         TestBed.configureTestingModule({
             declarations: [AddressComponent],
-            imports: [SharedModule]
+            imports: [SharedModule,
+                TranslateModule.forRoot()
+            ]
         })
             .compileComponents();
     }));
@@ -53,7 +56,7 @@ describe('Address Component', () => {
     it('should check if controls are rendered on the HTML', () => {
         const elem = element.getElementsByClassName('form-control');
         expect(elem.length).toBe(13);
-        for (let i = 0 ; i <= 8 ; i++) {
+        for (let i = 0; i <= 8; i++) {
             expect(elem[i]).toBeTruthy();
         }
     });
