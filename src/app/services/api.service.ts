@@ -5,7 +5,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
-import { MockApiService } from '../services/mock-api.service';
 import { CustomErrorHandler } from './custom-error-handler';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
@@ -18,7 +17,6 @@ export class ApiService {
    */
   constructor(private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
-    private mockApiService: MockApiService,
     private localize: LocalizeRouterService) {
   }
 
@@ -40,12 +38,7 @@ export class ApiService {
   get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
     const loc = this.localize.parser.currentLocale;
-    let url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
-
-    // TODO: Mocking may support link translation in future
-    if (this.mockApiService.pathHasToBeMocked(path)) {
-      url = this.mockApiService.getMockPath(path);
-    }
+    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
 
     return this.httpClient.get(url, { headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
