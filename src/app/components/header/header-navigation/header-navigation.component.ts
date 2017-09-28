@@ -10,14 +10,13 @@ import { CategoriesService } from './../../../services/categories/categories.ser
 
 export class HeaderNavigationComponent implements OnInit {
 
-  @Input() maxSubCategoriesDepth;
+  @Input() maxSubCategoriesDepth = 0;
   categories: Category[];
 
-  constructor(public localize: LocalizeRouterService, private categoryService: CategoriesService) {}
+  constructor(public localize: LocalizeRouterService, private categoriesService: CategoriesService) {}
 
   ngOnInit() {
-    // TODO: the url needs to go into the categories service
-    this.categoryService.getCategories('categories?view=tree&limit=' + this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
+    this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
       if (typeof (response) === 'object') {
         this.categories = response;
       }

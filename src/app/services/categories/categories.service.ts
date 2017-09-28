@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../';
@@ -10,11 +11,18 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
   constructor(private apiService: ApiService) {
     super('currentSubCategory', false, true);
   }
+
   /**
-   * @returns List of categories as an Observable
+   * REST API - Get top level categories
+   * @param limit  The number of levels to be returned (depth) in hierarchical view.
+   * @returns      List of top level categories.
    */
-  getCategories(uri: string): Observable<Category[]> {
-    return this.apiService.get(uri, null, null, true);
+  getTopLevelCategories(limit: number): Observable<Category[]> {
+    let params = new HttpParams().set('imageView', 'NO-IMAGE');
+    if (limit > 0) {
+      params = params.set('view', 'tree').set('limit', limit.toString());
+    }
+    return this.apiService.get('categories', params , null, true);
   }
 
   setCurrentCategory(subCategory: Category): void {
