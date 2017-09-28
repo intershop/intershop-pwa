@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { environment } from '../../../environments/environment';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
-import { ProductListService } from '../../services/products';
+import { ProductListService } from '../../services/products/products.service';
 import { ProductListComponent } from './product-list.component';
 
 describe('Product List Component', () => {

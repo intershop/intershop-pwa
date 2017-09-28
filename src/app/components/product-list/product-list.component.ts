@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { ProductTileModel } from '../../components/product-tile/product-tile.model';
-import { CacheCustomService } from '../../services/index';
-import { ProductListService } from '../../services/products';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
+import { ProductListService } from '../../services/products/products.service';
+import { ProductTileModel } from '../product-tile/product-tile.model';
 
 @Component({
   selector: 'is-product-list',
