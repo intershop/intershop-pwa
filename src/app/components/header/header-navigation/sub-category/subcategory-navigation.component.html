@@ -1,7 +1,15 @@
 <ul class="category-level{{categoryLevel}}" *ngIf="parent.subCategories" [ngClass]="categoryLevel == 1 ? 'dropdown-menu' : ''">
+<<<<<<< HEAD
     <li class="main-navigation-level{{categoryLevel}}-item" *ngFor="let subcategory of parent.subCategories" class="dropdown" [ngClass]="subcategory.isSubCategory ? 'open': ''">
         <a (click)="navigate(subcategory)" [style.width]="subcategory.hasOnlineSubCategories ? '' : '100%'">{{subcategory.name}}</a>
         <a (click)="subcategory.isSubCategory = !subcategory.isSubCategory" *ngIf="subcategory.subCategories" class="dropdown-toggle visible-xs"><span class="glyphicon" [ngClass]="subcategory.isSubCategory ? 'glyphicon-minus': 'glyphicon-plus'"></span></a>
         <is-subcategory-navigation [parent]="subcategory" categoryLevel={{1*categoryLevel+1}} isRemoveHost></is-subcategory-navigation>
     </li>
 </ul>
+=======
+  <li class="main-navigation-level{{categoryLevel}}-item" *ngFor="let subcategory of parent.subCategories">
+    <a [routerLink]="subcategory.uri.split('/categories')[1]" (click)="navigateToSubcategory(subcategory);false">{{subcategory.name}}</a>
+    <is-subcategory-navigation [parent]="subcategory" categoryLevel={{1*categoryLevel+1}} isRemoveHost></is-subcategory-navigation>
+  </li>
+</ul>
+>>>>>>> 2e41cb1f4bb8b97fed88060f2eabaf02c4c8ad1c

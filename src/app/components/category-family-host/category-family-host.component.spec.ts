@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async, inject } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { CategoryFamilyHostComponent } from './category-family-host.component';
 
@@ -10,14 +12,9 @@ import { CategoryFamilyHostComponent } from './category-family-host.component';
 describe('Category Family Host Component', () => {
   let fixture: ComponentFixture<CategoryFamilyHostComponent>;
   let component: CategoryFamilyHostComponent;
+  const categoriesServiceMock: CategoriesService = mock(CategoriesService);
   class ActivtedRouteStub {
     params = Observable.of('url');
-  }
-
-  class CategoriesServiceStub {
-    current = {
-      hasOnlineSubCategories: false
-    };
   }
 
   beforeEach(async(() => {
@@ -27,8 +24,8 @@ describe('Category Family Host Component', () => {
         CategoryFamilyHostComponent
       ],
       providers: [
-        { provide: ActivatedRoute, useClass: ActivtedRouteStub },
-        { provide: CategoriesService, useClass: CategoriesServiceStub },
+        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: ActivatedRoute, useClass: ActivtedRouteStub }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -44,13 +41,15 @@ describe('Category Family Host Component', () => {
     expect(component).toBeTruthy();
   }));
 
-  it(`should call ngOnInit when subCategory is a NonLeaf node`, () => {
+  it(`should set isFamilyPage to true when subCategory is a Leaf node`, () => {
+    when(categoriesServiceMock.current).thenReturn({ hasOnlineSubCategories: false } as Category);
     fixture.detectChanges();
     expect(component.isFamilyPage).toBe(true);
   });
 
-  it(`should call ngOnInit when subCategory is a Leaf node`, inject([CategoriesService], (categoriesService: CategoriesService) => {
-    categoriesService.current.hasOnlineSubCategories = true;
+
+  it(`should set isFamilyPage to false when subCategory is a Non-Leaf node`, inject([CategoriesService], (categoriesService: CategoriesService) => {
+    when(categoriesServiceMock.current).thenReturn({ hasOnlineSubCategories: true } as Category);
     fixture.detectChanges();
     expect(component.isFamilyPage).toBe(false);
   }));
