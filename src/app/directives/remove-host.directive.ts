@@ -1,11 +1,14 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 
+// see https://stackoverflow.com/questions/34280475/remove-the-host-html-element-selectors-created-by-angular-component
+
 @Directive({
   selector: '[isRemoveHost]'
 })
+
 export class RemoveHostDirective implements OnInit {
-  constructor(private el: ElementRef) {
-  }
+
+  constructor(private el: ElementRef) {}
 
   // wait for the component to render completely
   ngOnInit() {

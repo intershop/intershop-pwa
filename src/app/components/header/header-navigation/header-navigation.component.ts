@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Category } from '../../../services/categories/categories.model';
+import { CategoriesService } from '../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { Category } from './../../../services/categories/categories.model';
-import { CategoriesService } from './../../../services/categories/categories.service';
 
 @Component({
   selector: 'is-header-navigation',
@@ -13,7 +13,10 @@ export class HeaderNavigationComponent implements OnInit {
   @Input() maxSubCategoriesDepth = 0;
   categories: Category[];
 
-  constructor(public localize: LocalizeRouterService, private categoriesService: CategoriesService) {}
+  constructor(
+    public localize: LocalizeRouterService,
+    private categoriesService: CategoriesService
+  ) {}
 
   ngOnInit() {
     this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
