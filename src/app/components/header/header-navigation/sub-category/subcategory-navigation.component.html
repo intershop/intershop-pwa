@@ -1,6 +1,6 @@
-<ul class="category-level{{categoryLevel}}" *ngIf="parent.subCategories" [ngClass]="categoryLevel == 1 ? 'dropdown-menu' : ''">
-  <li class="main-navigation-level{{categoryLevel}}-item" *ngFor="let subcategory of parent.subCategories">
-    <a [routerLink]="subcategory.uri.split('/categories')[1]" (click)="navigateToSubcategory(subcategory);false">{{subcategory.name}}</a>
-    <is-subcategory-navigation [parent]="subcategory" categoryLevel={{1*categoryLevel+1}} isRemoveHost></is-subcategory-navigation>
+<ul *ngIf="category.subCategories" class="category-level{{subCategoriesDepth}}" [ngClass]="subCategoriesDepth == 1 ? 'dropdown-menu' : ''">
+  <li *ngFor="let subcategory of category.subCategories" class="main-navigation-level{{subCategoriesDepth}}-item">
+    <a [routerLink]="localize.translateRoute(categoriesService.generateCategoryRoute(subcategory))">{{subcategory.name}}</a>
+    <is-subcategory-navigation [category]="subcategory" [subCategoriesDepth]="subCategoriesDepth+1" isRemoveHost></is-subcategory-navigation>
   </li>
 </ul>

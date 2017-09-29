@@ -25,8 +25,13 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
     return this.apiService.get('categories', params , null, true);
   }
 
-  setCurrentCategory(subCategory: Category): void {
-    this.next(subCategory);
+  /**
+   * Helper function to generate the applications category route from the categories REST API uri
+   * @param category  The category the application route should be generated for.
+   * @returns         The application /category route string for the given category.
+   */
+  generateCategoryRoute(category: Category): string {
+    return '/category/' + category.uri.split('/categories')[1];
   }
 }
 
