@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CategoryNavigationComponent } from './../components/category-navigation/category-navigation.component';
+import { CategoryNavigationComponent } from '../components/category-navigation/category-navigation.component';
 
 @NgModule({
   imports: [
