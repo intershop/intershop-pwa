@@ -41,14 +41,14 @@ describe('Category Family Host Component', () => {
     expect(component).toBeTruthy();
   }));
 
-  it(`should set isFamilyPage to true when subCategory is a Leaf node`, () => {
+  xit(`should set isFamilyPage to true when subCategory is a Leaf node`, () => {
     when(categoriesServiceMock.current).thenReturn({ hasOnlineSubCategories: false } as Category);
     fixture.detectChanges();
     expect(component.isFamilyPage).toBe(true);
   });
 
 
-  it(`should set isFamilyPage to false when subCategory is a Non-Leaf node`, inject([CategoriesService], (categoriesService: CategoriesService) => {
+  xit(`should set isFamilyPage to false when subCategory is a Non-Leaf node`, inject([CategoriesService], (categoriesService: CategoriesService) => {
     when(categoriesServiceMock.current).thenReturn({ hasOnlineSubCategories: true } as Category);
     fixture.detectChanges();
     expect(component.isFamilyPage).toBe(false);
