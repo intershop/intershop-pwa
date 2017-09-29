@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CategoriesService } from '../../services/categories/categories.service';
+// import { CategoriesService } from '../../services/categories/categories.service';
 
 @Component({
   templateUrl: './category-family-host.component.html'
@@ -12,7 +12,7 @@ export class CategoryFamilyHostComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private categoriesService: CategoriesService
+    // private categoriesService: CategoriesService
   ) {}
 
   ngOnInit() {
