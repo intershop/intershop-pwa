@@ -85,11 +85,6 @@ export class ApiService {
 
   }
 
-  // TODO: need to improve  base url replacement logic
-  getSubLinkBaseUrl(): string {
-    return environment.rest_url.replace('inSPIRED-inTRONICS-Site/-/', '');
-  }
-
   getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
     if (!linkTranslation) {
       return Observable.of(data);
@@ -115,7 +110,10 @@ export class ApiService {
     const uriList: Observable<Object>[] = [];
     _.forEach(data, item => {
       if (item.type === 'Link' && item.uri) {
-        uriList.push(this.get(`${this.getSubLinkBaseUrl()}${item.uri}`));
+        // removes <site>/-;loc;cur/
+        const linkUrl = (item.uri).replace(/inSPIRED-inTRONICS-Site\/-[^\/]*\//gi, '');
+        // console.log(`link-translation ${item.uri} to ${linkUrl}`);
+        uriList.push(this.get(linkUrl));
       }
     });
     return uriList;
