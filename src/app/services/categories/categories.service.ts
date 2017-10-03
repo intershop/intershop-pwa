@@ -20,6 +20,11 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
   setCurrentCategory(subCategory: Category): void {
     this.next(subCategory);
   }
+
+  // Fetches the data for category clicked
+  getCategory(uri: string): Observable<Category> {
+    return this.apiService.get(uri, null, null, false);
+  }
 }
 
 
