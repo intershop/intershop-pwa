@@ -33,6 +33,11 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
   generateCategoryRoute(category: Category): string {
     return '/category/' + category.uri.split('/categories')[1];
   }
+
+  // Fetches the data for category clicked
+  getCategory(uri: string): Observable<Category> {
+    return this.apiService.get(uri, null, null, false);
+  }
 }
 
 
