@@ -1,7 +1,6 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { JwtService } from '../services/jwt.service';
 import { environment } from './../../environments/environment';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
@@ -9,7 +8,7 @@ const MOCK_DATA_ROOT = './assets/mock-data';
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
 
-  constructor(private jwtService: JwtService) { }
+  constructor() { }
 
   /**
    * Intercepts out going request and changes url to mock url if needed.
@@ -29,13 +28,14 @@ export class MockInterceptor implements HttpInterceptor {
         // patricia@test.intershop.de with !InterShop00!
         'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==';
 
-      try {
-        return next.handle(req.clone({ url: newUrl }));
-      } finally {
-        if (attachToken) {
-          this.jwtService.saveToken('Dummy Token');
+      return next.handle(req.clone({ url: newUrl })).map(event => {
+        if (event instanceof HttpResponse && attachToken) {
+          const response = <HttpResponse<any>>event;
+          console.log('attaching dummy token');
+          return response.clone({headers: response.headers.append('authentication-token', 'Dummy Token')});
         }
-      }
+        return event;
+      });
     } else {
       return next.handle(req);
     }
