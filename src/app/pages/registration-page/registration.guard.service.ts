@@ -12,19 +12,20 @@ export class RegistrationGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    this.globalConfiguration.getApplicationSettings().subscribe(settings => {
+    return this.globalConfiguration.getApplicationSettings().toPromise().then(settings => {
       if (!settings.useSimpleAccount) {
         return true;
+      } else {
+        this.router.config[0].children = this.router.config[0].children.filter(item => {
+          return item.path !== 'register';
+        })
+        this.router.config[0].children.push(
+          { path: 'register', loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' }
+        )
+        this.localize.navigateToRoute('en_US/USD/register');
+        return false;
       }
     })
-    this.router.config[0].children = this.router.config[0].children.filter(item => {
-      return item.path !== 'register';
-    })
-    this.router.config[0].children.push(
-      { path: 'register', loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' }
-    )
-    this.localize.navigateToRoute('en_US/USD/register');
-    return false;
   }
 }
 
