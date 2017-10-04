@@ -1,8 +1,9 @@
-import { HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
 import * as using from 'jasmine-data-provider';
-import { anything, instance, mock, verify } from 'ts-mockito';
+import { Observable } from 'rxjs/Observable';
+import { anything, instance, mock, when } from 'ts-mockito';
 import { environment } from './../../environments/environment';
-import { JwtService } from './../services/jwt.service';
 import { MockInterceptor } from './mock-interceptor';
 
 describe('Mock Interceptor', () => {
@@ -12,7 +13,7 @@ describe('Mock Interceptor', () => {
     let mockInterceptor: MockInterceptor;
 
     beforeEach(() => {
-      mockInterceptor = new MockInterceptor(instance(mock(JwtService)));
+      mockInterceptor = new MockInterceptor();
     });
 
     it('should extract the correct path when rest URL is given', () => {
@@ -30,7 +31,7 @@ describe('Mock Interceptor', () => {
     const request: HttpRequest<any> = new HttpRequest('GET', '');
 
     beforeEach(() => {
-      mockInterceptor = new MockInterceptor(instance(mock(JwtService)));
+      mockInterceptor = new MockInterceptor();
     });
 
     function dataProvider() {
@@ -76,7 +77,7 @@ describe('Mock Interceptor', () => {
 
     using(dataProvider, (dataSlice) => {
       it(`should${dataSlice.expect ? '' : ' not'} find \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
-        const mockInterceptor = new MockInterceptor(instance(mock(JwtService)));
+        const mockInterceptor = new MockInterceptor();
         expect(mockInterceptor.matchPath(dataSlice.item, dataSlice.in)).toBe(dataSlice.expect);
       });
     });
@@ -84,32 +85,34 @@ describe('Mock Interceptor', () => {
 
   describe('Intercepting', () => {
 
-    let jwtServiceMock: JwtService;
     let mockInterceptor: MockInterceptor;
     let request: HttpRequest<any>;
     let handler: HttpHandler;
 
     beforeEach(() => {
-      jwtServiceMock = mock(JwtService);
-      mockInterceptor = new MockInterceptor(instance(jwtServiceMock));
+      mockInterceptor = new MockInterceptor();
       request = new HttpRequest('GET', `${environment.rest_url}/some`);
-      handler = instance(mock(HttpHandler));
+      const handlerMock = mock(HttpHandler);
+      when(handlerMock.handle(anything())).thenReturn(Observable.of(new HttpResponse<any>()));
+      handler = instance(handlerMock);
     });
 
     it('should attach token when patricia is logged in correctly', () => {
-      verify(jwtServiceMock.saveToken(anything())).never();
+      mockInterceptor.intercept(request.clone({ headers: request.headers.append('Authorization', 'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==') }), handler).subscribe(event => {
+        expect(event.type).toBe(HttpEventType.Response);
 
-      mockInterceptor.intercept(request.clone({headers: request.headers.append('Authorization', 'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==')}), handler);
-
-      verify(jwtServiceMock.saveToken(anything())).once();
+        const response = event as HttpResponse<any>;
+        expect(response.headers.get('authentication-token')).toBeTruthy();
+      });
     });
 
     it('should not attach token when patricia is not logged in correctly', () => {
-      verify(jwtServiceMock.saveToken(anything())).never();
+      mockInterceptor.intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler).subscribe(event => {
+        expect(event.type).toBe(HttpEventType.Response);
 
-      mockInterceptor.intercept(request.clone({headers: request.headers.append('Authorization', 'invalid')}), handler);
-
-      verify(jwtServiceMock.saveToken(anything())).never();
+        const response = event as HttpResponse<any>;
+        expect(response.headers.get('authentication-token')).toBeFalsy();
+      });
     });
   });
 });
