@@ -22,7 +22,16 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
     if (limit > 0) {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
-    return this.apiService.get('categories', params , null, true);
+    return this.apiService.get('categories', params, null, true);
+  }
+
+  /**
+   * REST API - Get info on (sub-)category
+   * @param categoryPath  The category id path for the category of interest.
+   * @returns             Category information.
+   */
+  getCategory(categoryPath: string): Observable<Category> {
+    return this.apiService.get('categories' + categoryPath, null, null, false);
   }
 
   /**
@@ -33,13 +42,4 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
   generateCategoryRoute(category: Category): string {
     return '/category/' + category.uri.split('/categories')[1];
   }
-
-  // Fetches the data for category clicked
-  getCategory(uri: string): Observable<Category> {
-    return this.apiService.get(uri, null, null, false);
-  }
 }
-
-
-
-
