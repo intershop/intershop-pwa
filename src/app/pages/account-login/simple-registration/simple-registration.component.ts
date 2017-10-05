@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { GlobalConfiguration } from '../../../configurations/global.configuration';
-import { UserDetail } from '../../../services/account-login/account-login.model';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { SimpleRegistrationService } from './simple-registration.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { GlobalConfiguration } from '../../../configurations/global.configuration';
+import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+
 @Component({
   selector: 'is-simple-registration',
-  templateUrl: './simple-registration.component.html',
-  providers: [SimpleRegistrationService]
+  templateUrl: './simple-registration.component.html'
 })
 
 export class SimpleRegistrationComponent implements OnInit {
   simpleRegistrationForm: FormGroup;
   userRegistrationLoginType: string;
   errorUser: string;
-  isDirty: boolean;
+  isInvalid: boolean;
 
   /**
    * Constructor
@@ -27,7 +26,7 @@ export class SimpleRegistrationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private localize: LocalizeRouterService,
     private globalConfiguration: GlobalConfiguration,
-    private simpleRegistrationService: SimpleRegistrationService) {
+    private accountLoginService: AccountLoginService) {
   }
 
   /**
@@ -36,14 +35,24 @@ export class SimpleRegistrationComponent implements OnInit {
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
+      const userName = new FormControl('', [this.userRegistrationLoginType === 'username' ? Validators.required : Validators.nullValidator]);
+      const email = new FormControl('', [Validators.required, CustomValidators.email]);
       const password = new FormControl('', [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]);
       const confirmPassword = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(password)])]);
       this.simpleRegistrationForm = this.formBuilder.group({
-        userName: ['', [Validators.compose([Validators.required,
-        (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
-        email: ['', [CustomValidators.email, Validators.required]],
+        userName: userName,
+        email: email,
         password: password,
         confirmPassword: confirmPassword
+      });
+    });
+
+    this.simpleRegistrationForm.valueChanges.subscribe(value => {
+      this.isInvalid = false;
+      Object.keys(this.simpleRegistrationForm.controls).forEach(key => {
+        if (this.simpleRegistrationForm.get(key).dirty && this.simpleRegistrationForm.get(key).invalid) {
+          this.isInvalid = true;
+        }
       });
     });
   }
@@ -51,13 +60,13 @@ export class SimpleRegistrationComponent implements OnInit {
 
   createAccount(userData) {
     if (this.simpleRegistrationForm.valid) {
-      this.simpleRegistrationService.createUser(userData as UserDetail).subscribe(response => {
+      this.accountLoginService.createUser(userData).subscribe(response => {
         if (response) {
           this.localize.navigateToRoute('/home');
         }
       });
     } else {
-      this.isDirty = true;
+      this.isInvalid = true;
     }
   }
 }

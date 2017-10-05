@@ -1,10 +1,8 @@
 import { DebugElement } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
-import { async, TestBed } from '@angular/core/testing';
-import { SharedModule } from '../../../modules/shared.module';
-// import { matchOtherValidator } from '../../../validators/match-words.validator';
-import { EmailPasswordComponent } from './email-password.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '../../../modules/shared.module';
+import { EmailPasswordComponent } from './email-password.component';
 
 describe('EmailPassword Component', () => {
     let fixture: ComponentFixture<EmailPasswordComponent>;
@@ -35,16 +33,15 @@ describe('EmailPassword Component', () => {
         expect(component.emailForm).not.toBe(null);
     });
 
-    xit('should call valueChanges method of form and verify that form is not valid', () => {
+    it('should call valueChanges method of form and verify that form is not valid', () => {
         component.emailForm.get('emailDetails.password').setValue('newPassword');
         component.emailForm.get('emailDetails.confirmPassword').setValue('newPassword12');
         expect(component.emailForm.get('emailDetails.confirmPassword').value).toBe('newPassword12');
-
         component.emailForm.get('emailDetails.password').setValue('newPassword123');
         expect(component.emailForm.valid).toBe(false);
     });
 
-    xit('should call valueChanges method of form and verify that the form is valid', () => {
+    it('should call valueChanges method of form and verify that the form is valid', () => {
         component.emailForm.get('emailDetails.emailAddress').setValue('intershop@123.com');
         component.emailForm.get('emailDetails.confirmEmailAddress').setValue('intershop@123.com');
         component.emailForm.get('emailDetails.password').setValue('intershop1@Aqwe');
@@ -55,14 +52,11 @@ describe('EmailPassword Component', () => {
         expect(component.emailForm.valid).toBe(true);
     });
 
-    /*
-      TODO: move test to validators package
-     */
-    // xit('should test all the conditions of the matchWordsValidator', () => {
-    //     //component.emailForm.addControl('TestMatchWords', new FormControl('', [matchOtherValidator('coolTest')]));
-    //     component.emailForm.controls['TestMatchWords'].setValue('testValue');
-    //     expect(component.emailForm.controls['TestMatchWords'].value).toEqual('testValue');
-    // });
+    it('should test all the conditions of the matchWordsValidator', () => {
+        component.emailForm.get('emailDetails.password').setValue('!nterShop');
+        component.emailForm.get('emailDetails.confirmPassword').setValue('!nterShop');
+        expect(component.emailForm.get('emailDetails.confirmPassword').value).toEqual('!nterShop');
+    });
 
 
     it('should check if controls are rendered on the HTML', () => {

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
-import { CustomValidators } from 'ng2-validation';
-import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   templateUrl: './account-login.component.html'
 })
@@ -16,14 +16,13 @@ export class AccountLoginComponent implements OnInit {
   errorUser: any;
   userRegistrationLoginType: string;
   isLoggedIn: boolean;
-  useSimpleAccount: boolean;
   isDirty: boolean;
   isSimpleRegistration: boolean;
 
   constructor(private formBuilder: FormBuilder,
     private accountLoginService: AccountLoginService,
     private globalConfiguration: GlobalConfiguration,
-    private localizeRouterService: LocalizeRouterService,
+    public localizeRouterService: LocalizeRouterService,
     private route: Router) {
 
     accountLoginService.subscribe(() => {
@@ -37,11 +36,10 @@ export class AccountLoginComponent implements OnInit {
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       if (data) {
-        this.useSimpleAccount = data.useSimpleAccount;
         this.userRegistrationLoginType = data.userRegistrationLoginType;
       }
       this.loginForm = this.formBuilder.group({
-        userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
+        userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : Validators.nullValidator)])]],
         password: ['', Validators.required]
       });
     });
