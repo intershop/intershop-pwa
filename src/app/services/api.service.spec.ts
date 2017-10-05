@@ -4,8 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { environment } from '../../environments/environment';
 import { MockApiService } from '../services/mock-api.service';
-import { ApiService } from './api.service';
-import { CustomErrorHandler } from './custom-error-handler';
+import { ApiService, CustomErrorHandler } from './index';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 class LocalizeRouterServiceMock {
