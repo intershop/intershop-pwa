@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormControlErrorComponent } from '../components/global-form-validation/form-control-error.component';
 import { FormGroupValidationComponent } from '../components/global-form-validation/form-group-validation.component';
 import { FormValidationDirective } from '../directives/form-validation.directive';
-import { InstanceService } from '../services/instance.service';
 
 @NgModule({
     exports: [
@@ -27,8 +26,6 @@ import { InstanceService } from '../services/instance.service';
     imports: [
         CommonModule
     ],
-    providers: [
-        InstanceService
-    ]
+    providers: []
 })
 export class SharedModule { }
