@@ -10,11 +10,12 @@
         <div data-address-form="data-address-form" formGroupName="address">
           <p class="indicates-required"><span class="required">*</span>Required field</p>
           <fieldset>
-            <div class="form-group has-feedback " [ngClass]="{ 'has-error' : addressForm.get('address.country').invalid && addressForm.get('address.country').touched,'has-success':addressForm.get('address.country').valid && addressForm.get('address.country').touched}">
-              <label class="control-label col-sm-4" for="AddressForm_CountryCode">Country<span class="required">*</span></label>
-              <div class="col-sm-8">
-                <select class="form-control" formControlName="country" data-country-list="data-country-list" name="AddressForm_CountryCode"
-                  id="AddressForm_CountryCode">
+            <is-form-group-validation [errorMessages]="{'required':'Country is mandatory. Please provide a country.' }">
+              <div class="form-group has-feedback ">
+                <label class="control-label col-sm-4" for="AddressForm_CountryCode">Country<span class="required">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control" #dynamicError formControlName="country" data-country-list="data-country-list" name="AddressForm_CountryCode"
+                    id="AddressForm_CountryCode">
                   <option value="" selected="selected" disabled="">Please select</option>
                   <option value="AR">Argentina</option>
                   <option value="AW">Aruba</option>
@@ -114,96 +115,70 @@
                   <option value="VI">VIRGIN ISLANDS (U.S.)</option>
                   <option value="YU">Yugoslavia</option>
                 </select>
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.country').invalid && addressForm.get('address.country').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.country').valid && addressForm.get('address.country').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.country').touched && addressForm.get('address.country').hasError('required')">
-                  Country is mandatory. Please provide a country.
-                </small>
+                </div>
               </div>
-            </div>
+            </is-form-group-validation>
           </fieldset>
           <fieldset>
-            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched,'has-success':addressForm.get('address.firstName').valid && addressForm.get('address.firstName').touched}">
-              <label class="control-label col-sm-4" for="">
+            <is-form-group-validation [errorMessages]="{'required':' Please enter a first name.','maxlength':'Please enter a value with valid length.' }">
+              <div class="form-group has-feedback">
+                <label class="control-label col-sm-4" for="">
                 First Name<span class="required">*</span>
               </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" name="AddressForm_FirstName" formControlName="firstName">
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.firstName').invalid && addressForm.get('address.firstName').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.firstName').valid && addressForm.get('address.firstName').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.firstName').touched && addressForm.get('address.firstName').hasError('required')">
-                  Please enter a first name.
-                </small>
-                <small class="help-block" *ngIf="addressForm.get('address.firstName').touched && addressForm.get('address.firstName').hasError('maxlength')">Please enter a value with valid length.</small>
+                <div class="col-sm-8">
+                  <input type="text" #dynamicError class="form-control" name="AddressForm_FirstName" formControlName="firstName">
+                </div>
               </div>
-            </div>
-            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched,'has-success':addressForm.get('address.lastName').valid && addressForm.get('address.lastName').touched}">
-              <label class="control-label col-sm-4" for="">Last Name<span class="required">*</span></label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" name="AddressForm_LastName" formControlName="lastName">
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.lastName').invalid && addressForm.get('address.lastName').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.lastName').valid && addressForm.get('address.lastName').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.lastName').touched && addressForm.get('address.lastName').hasError('required')">
-                  Please enter a last name.
-                </small>
-                <small class="help-block" *ngIf="addressForm.get('address.lastName').touched && addressForm.get('address.lastName').hasError('maxlength')">Please enter a value with valid length</small>
+            </is-form-group-validation>
+
+            <is-form-group-validation [errorMessages]="{'required':'Please enter a last name.','maxlength':'Please enter a value with valid length.' }">
+              <div class="form-group has-feedback">
+                <label class="control-label col-sm-4" for="">Last Name<span class="required">*</span></label>
+                <div class="col-sm-8">
+                  <input type="text" #dynamicError class="form-control" name="AddressForm_LastName" formControlName="lastName">
+                </div>
               </div>
-            </div>
+            </is-form-group-validation>
           </fieldset>
           <fieldset>
-            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched,'has-success':addressForm.get('address.line1').valid && addressForm.get('address.line1').touched}">
-              <label class="control-label col-sm-4" for="">Address Line 1<span class="required">*</span></label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" formControlName="line1">
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.line1').valid && addressForm.get('address.line1').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.line1').touched && addressForm.get('address.line1').hasError('required')">
-                  Address 1 is mandatory. Please provide a street.
-                </small>
-                <small class="help-block" *ngIf="addressForm.get('address.line1').touched && addressForm.get('address.line1').hasError('maxlength')">Please enter a value with valid length.</small>
+            <is-form-group-validation [errorMessages]="{'required':'Address 1 is mandatory. Please provide a street.','maxlength':'Please enter a value with valid length.' }">
+              <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.line1').invalid && addressForm.get('address.line1').touched,'has-success':addressForm.get('address.line1').valid && addressForm.get('address.line1').touched}">
+                <label class="control-label col-sm-4" for="">Address Line 1<span class="required">*</span></label>
+                <div class="col-sm-8">
+                  <input type="text" #dynamicError class="form-control" formControlName="line1">
+                </div>
               </div>
-            </div>
-            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.line2').invalid && addressForm.get('address.line2').touched,'has-success':addressForm.get('address.line2').valid && addressForm.get('address.line2').touched}">
-              <label class="control-label col-sm-4" for="">Address Line 2</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" formControlName="line2" name="AddressForm_Address2">
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.line2').invalid && addressForm.get('address.line2').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.line2').valid && addressForm.get('address.line2').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.line2').touched && addressForm.get('address.line2').hasError('maxlength')">Please enter a value with valid length.</small>
+            </is-form-group-validation>
+            <is-form-group-validation [errorMessages]="{'maxlength':'Please enter a value with valid length.' }">
+              <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.line2').invalid && addressForm.get('address.line2').touched,'has-success':addressForm.get('address.line2').valid && addressForm.get('address.line2').touched}">
+                <label class="control-label col-sm-4" for="">Address Line 2</label>
+                <div class="col-sm-8">
+                  <input type="text" #dynamicError class="form-control" formControlName="line2" name="AddressForm_Address2">
+                </div>
               </div>
-            </div>
-            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.city').invalid && addressForm.get('address.city').touched,'has-success':addressForm.get('address.city').valid && addressForm.get('address.city').touched}">
-              <label class="control-label col-sm-4" for="">City<span class="required">*</span></label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" name="AddressForm_City" formControlName="city">
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.city').invalid && addressForm.get('address.city').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.city').valid && addressForm.get('address.city').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.city').touched && addressForm.get('address.city').hasError('required')">
-                  City is mandatory. Please provide a city.
-                </small>
-                <small class="help-block" *ngIf="addressForm.get('address.city').touched && addressForm.get('address.city').hasError('maxlength')">
-                  Please enter a value with valid length.
-                </small>
+            </is-form-group-validation>
+            <is-form-group-validation [errorMessages]="{'required':'City is mandatory. Please provide a city.','maxlength':'Please enter a value with valid length.' }">
+              <div class="form-group has-feedback">
+                <label class="control-label col-sm-4" for="">City<span class="required">*</span></label>
+                <div class="col-sm-8">
+                  <input type="text" #dynamicError class="form-control" name="AddressForm_City" formControlName="city">
+                </div>
               </div>
-            </div>
-            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched,'has-success':addressForm.get('address.zip').valid && addressForm.get('address.zip').touched}">
-              <label class="control-label col-sm-4" for="">ZIP/Postal Code<span class="required">*</span></label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" name="AddressForm_PostalCode" formControlName="zip">
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.zip').invalid && addressForm.get('address.zip').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.zip').valid && addressForm.get('address.zip').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.zip').touched && addressForm.get('address.zip').hasError('required')">
-                  ZIP Code is mandatory. Please provide a ZIP code.
-                </small>
-                <small class="help-block" *ngIf="addressForm.get('address.zip').touched && addressForm.get('address.zip').hasError('maxlength')">
-                  Please enter a value with valid length.
-                </small>
+            </is-form-group-validation>
+
+            <is-form-group-validation [errorMessages]="{'required':'ZIP Code is mandatory. Please provide a ZIP code.','maxlength':'Please enter a value with valid length.' }">
+              <div class="form-group has-feedback">
+                <label class="control-label col-sm-4" for="">ZIP/Postal Code<span class="required">*</span></label>
+                <div class="col-sm-8">
+                  <input type="text" #dynamicError class="form-control" name="AddressForm_PostalCode" formControlName="zip">
+                </div>
               </div>
-            </div>
-            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.state').invalid && addressForm.get('address.state').touched,'has-success':addressForm.get('address.state').valid && addressForm.get('address.state').touched}">
-              <label class="control-label col-sm-4" for="AddressForm_State">State/Province<span class="required">*</span></label>
-              <div class="col-sm-8">
-                <select class="form-control" name="AddressForm_State" id="AddressForm_State" formControlName="state">
+            </is-form-group-validation>
+            <is-form-group-validation [errorMessages]="{'required':'Please select a state.'}">
+              <div class="form-group has-feedback">
+                <label class="control-label col-sm-4" for="AddressForm_State">State/Province<span class="required">*</span></label>
+                <div class="col-sm-8">
+                  <select #dynamicError class="form-control" name="AddressForm_State" id="AddressForm_State" formControlName="state">
                   <option value="">Please select</option>
                   <option value="ACT">Australian Capital Territory</option>
                   <option value="NSW">New South Wales</option>
@@ -214,33 +189,31 @@
                   <option value="VIC">Victoria</option>
                   <option value="WA">Western Australia</option>
                 </select>
-                <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.state').invalid && addressForm.get('address.state').touched"></i>
-                <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.state').valid && addressForm.get('address.state').touched"></i>
-                <small class="help-block" *ngIf="addressForm.get('address.state').touched && addressForm.get('address.state').hasError('required')">Please select a state.</small>
+                </div>
+              </div>
+            </is-form-group-validation>
+          </fieldset>
+          <is-form-group-validation [errorMessages]="{'maxlength':'Please enter less than 35 characters.'}">
+            <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.phone').invalid && addressForm.get('address.phone').touched,'has-success':addressForm.get('address.phone').valid && addressForm.get('address.phone').touched}">
+              <label class="control-label col-sm-4" for="">Phone</label>
+              <div class="col-sm-8">
+                <input type="text" #dynamicError class="form-control" name="AddressForm_PhoneHome" formControlName="phone">
               </div>
             </div>
-          </fieldset>
-          <div class="form-group has-feedback" [ngClass]="{ 'has-error' : addressForm.get('address.phone').invalid && addressForm.get('address.phone').touched,'has-success':addressForm.get('address.phone').valid && addressForm.get('address.phone').touched}">
-            <label class="control-label col-sm-4" for="">Phone</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="AddressForm_PhoneHome" formControlName="phone">
-              <i class="glyphicon glyphicon-remove form-control-feedback" *ngIf="addressForm.get('address.phone').invalid && addressForm.get('address.phone').touched"></i>
-              <i class="glyphicon glyphicon-ok form-control-feedback" *ngIf="addressForm.get('address.phone').valid && addressForm.get('address.phone').touched"></i>
-              <small class="help-block" *ngIf="addressForm.get('address.phone').touched && addressForm.get('address.phone').hasError('maxlength')">
-                Please enter less than 35 characters.
-              </small>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4" for="AddressForm_LocaleID">Preferred Language<span class="required">*</span></label>
-            <div class="col-sm-8">
-              <select class="form-control" id="AddressForm_LocaleID" name="AddressForm_LocaleID" formControlName="preferredLanguage">
+          </is-form-group-validation>
+
+          <is-form-group-validation [errorMessages]="{'required':'Please select preferred language.'}">
+            <div class="form-group">
+              <label class="control-label col-sm-4" for="AddressForm_LocaleID">Preferred Language<span class="required">*</span></label>
+              <div class="col-sm-8">
+                <select class="form-control" #dynamicError id="AddressForm_LocaleID" name="AddressForm_LocaleID" formControlName="preferredLanguage">
                 <option value="de_DE">German (Germany)</option>
                 <option value="en_US" selected="selected">English (United States)</option>
                 <option value="fr_FR">French (France)</option>
               </select>
+              </div>
             </div>
-          </div>
+          </is-form-group-validation>
           <div class="form-group">
             <label class="control-label col-sm-4" for="AddressForm_Birthday">Birthday</label>
             <div class="col-sm-8">

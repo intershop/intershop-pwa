@@ -1,10 +1,11 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CacheService } from 'ng2-cache/ng2-cache';
+import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Rx';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
@@ -14,7 +15,6 @@ import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountLoginComponent } from './account-login.component';
-import { CustomFormsModule } from 'ng2-validation';
 
 describe('AccountLogin Component', () => {
   let fixture: ComponentFixture<AccountLoginComponent>;

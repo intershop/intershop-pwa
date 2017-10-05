@@ -13,7 +13,7 @@ export class AccountOverviewComponent {
     private localize: LocalizeRouterService) {
     this.accountLoginService.subscribe(customerData => {
       if (customerData) {
-        this.customerName = customerData.firstName || customerData.email;
+        this.customerName = customerData.firstName || customerData.userName || customerData.email;
       }
     });
   }
