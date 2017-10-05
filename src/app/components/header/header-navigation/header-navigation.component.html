@@ -4,7 +4,7 @@
       <a [routerLink]="localize.translateRoute('/home')" title="home"><span class="glyphicon glyphicon-home"></span></a>
     </li>
     <li *ngFor="let category of categories" class="dropdown" [ngClass]="category.isOpenedToggle ? 'open': ''">
-      <a [routerLink]="[localize.translateRoute('/category'), category.id]" attr.data-testing-id="{{category.id}}-link">{{category.name}}</a>
+      <a [routerLink]="localize.translateRoute(categoriesService.generateCategoryRoute(category))" attr.data-testing-id="{{category.id}}-link">{{category.name}}</a>
       <a (click)="category.isOpenedToggle = !category.isOpenedToggle" class="dropdown-toggle visible-xs"><span class="glyphicon glyphicon-plus" [ngClass]="category.isOpenedToggle ? 'glyphicon-minus': 'glyphicon-plus'"></span></a>
       <is-subcategory-navigation [category]="category" [subCategoriesDepth]="1" isRemoveHost></is-subcategory-navigation>
     </li>

@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { ProductTileModel } from '../../../components/product-tile/product-tile.model';
-import { CacheCustomService } from '../../../services/index';
-import { ProductListService } from '../../../services/products';
+import { ProductTileModel } from '../../components/product-tile/product-tile.model';
+import { CacheCustomService } from '../../services/index';
+import { ProductListService } from '../../services/products';
 
 @Component({
-  selector: 'is-family-page-list',
-  templateUrl: './family-page-list.component.html',
+  selector: 'is-product-list',
+  templateUrl: './product-list.component.html',
 })
 
-export class FamilyPageListComponent implements OnInit, OnChanges {
+export class ProductListComponent implements OnInit, OnChanges {
   @Input() isListView;
   @Input() sortBy;
   @Output() totalItems: EventEmitter<number> = new EventEmitter();
