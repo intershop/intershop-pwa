@@ -2,23 +2,26 @@
 
 <div class="category-page" data-testing-id="Cameras-Camcorders">
   <div class="row">
+
     <div class="col-sm-3">
       <div class="category-panel">
-        <h1>Category Name</h1>
+        <h1>{{category?.name}}</h1>
         <is-category-navigation></is-category-navigation>
       </div>
     </div>
     <div class="col-sm-9">
+      <ng-container *ngIf="category">
+        <ng-container *ngIf="category.hasOnlineSubCategories; then categoryPage else familyPage"></ng-container>
 
-      <ul class="category-list row ">
-        <li *ngFor="let family of families" class="category-list-item col-md-4 col-xs-6">
-          <div attr.data-testing-id="category-{{family.id}}" class="category-name ">
-            <a [routerLink]="['family',family.name]"><img src="" data-test="true" data-type="M" alt="832" data-testing-id="category-image-832" height="270" width="270"><h3>{{family.name}}</h3>
-            </a>
-          </div>
-        </li>
-      </ul>
+        <ng-template #categoryPage>
+          <is-category-list [categories]="category.subCategories"></is-category-list>
+        </ng-template>
 
+        <ng-template #familyPage>
+          <h2>do family page stuff</h2>
+        </ng-template>
+
+      </ng-container>
     </div>
   </div>
 </div>
