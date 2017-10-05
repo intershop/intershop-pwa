@@ -13,9 +13,8 @@ class FamilyPage extends StorefrontPage
     static content =
     {
 
-        contentSlot { $('[data-testing-id^="family-page"]') }
-//    contentSlot   { $("div[data-testing-id]") }
-        navigationBar { contentSlot.find("div",class:"filter-panel") }
+        contentSlot   { $("div",class:"family-page") }
+        navigationBar { contentSlot.find("div",class:"navigation-panel") }
         filterBar     { contentSlot.$("div",class:contains("filters-row")) }
         productList   { contentSlot.$("div",class:"product-list row") }
         productTiles  { term -> module(new ProductTile(productTerm: term)) }
