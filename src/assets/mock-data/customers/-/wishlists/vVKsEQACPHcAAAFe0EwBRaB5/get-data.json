@@ -1,0 +1,70 @@
+{
+  "type": "WishList",
+  "preferred": true,
+  "items": [
+    {
+      "type": "Link",
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "6997041"
+        },
+        {
+          "name": "id",
+          "type": "String",
+          "value": "bUCsEQACuEcAAAFeLjsBRch_"
+        },
+        {
+          "name": "creationDate",
+          "type": "String",
+          "value": "1506602335022"
+        },
+        {
+          "name": "desiredQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "value": 1,
+            "unit": ""
+          }
+        }
+      ],
+      "uri": "inSPIRED-inTRONICS-Site/-/products/6997041"
+    },
+    {
+      "type": "Link",
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "8899566"
+        },
+        {
+          "name": "id",
+          "type": "String",
+          "value": "9qesEQACo7IAAAFe5IIBRaB5"
+        },
+        {
+          "name": "creationDate",
+          "type": "String",
+          "value": "1505930871524"
+        },
+        {
+          "name": "desiredQuantity",
+          "type": "ResourceAttribute",
+          "value": {
+            "type": "Quantity",
+            "value": 1,
+            "unit": ""
+          }
+        }
+      ],
+      "uri": "inSPIRED-inTRONICS-Site/-/products/8899566"
+    }
+  ],
+  "itemsCount": 2,
+  "title": "srmjnsrzj",
+  "creationDate": 1505930857680,
+  "public": false
+}

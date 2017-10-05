@@ -34,6 +34,7 @@
     "ng-recaptcha": "^2.1.1",
     "ng2-cache": "^0.1.11",
     "ng2-completer": "^1.6.0",
+    "ng2-validation": "^4.2.0",
     "ngx-bootstrap": "^1.8.1",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14"
@@ -48,6 +49,7 @@
     "@types/lodash": "^4.14.73",
     "@types/node": "~6.0.60",
     "codelyzer": "~3.1.1",
+    "dependency-cruiser": "^2.3.2",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "jasmine-xml-reporter": "^1.1.0",

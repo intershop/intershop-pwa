@@ -1,10 +1,11 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CacheService } from 'ng2-cache/ng2-cache';
+import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Rx';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
@@ -57,7 +58,8 @@ describe('AccountLogin Component', () => {
       imports: [
         SharedModule,
         TranslateModule.forRoot(),
-        RouterTestingModule
+        RouterTestingModule,
+        CustomFormsModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -79,14 +81,14 @@ describe('AccountLogin Component', () => {
   });
 
   it(`should call onSignIn when loginForm is invalid`, () => {
-    const userDetails = { userName: 'intershop@123.com', password: '123456' };
+    const userDetails = { userName: 'intershop@123.com', password: '12346' };
     component.onSignin(userDetails);
   });
 
   it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
     component.loginForm.controls['userName'].setValue('test@test.com');
-    component.loginForm.controls['password'].setValue('123213');
+    component.loginForm.controls['password'].setValue('!InterShop0');
     component.onSignin(userDetails);
     expect(component.errorUser).toEqual('Incorrect Credentials');
   });
@@ -94,7 +96,7 @@ describe('AccountLogin Component', () => {
   it(`should call onSignIn when loginForm is valid with correct credentials`, () => {
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.loginForm.controls['userName'].setValue('test@test.com');
-    component.loginForm.controls['password'].setValue('123213');
+    component.loginForm.controls['password'].setValue('!InterShop0');
     component.onSignin(userDetails);
     // check if it was called
     verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
