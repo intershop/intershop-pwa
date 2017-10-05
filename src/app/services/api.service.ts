@@ -37,7 +37,7 @@ export class ApiService {
    * @returns Observable
    */
 
-  get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders,
+  get(path: string, params?: HttpParams, headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
     const loc = this.localize.parser.currentLocale;
     let url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
@@ -47,7 +47,7 @@ export class ApiService {
       url = this.mockApiService.getMockPath(path);
     }
 
-    return this.httpClient.get(url, { headers: headers })
+    return this.httpClient.get(url, { params: params, headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
       .flatMap((data) => this.getLinkedData(data, linkTranslation))
       .catch(this.formatErrors.bind(this));

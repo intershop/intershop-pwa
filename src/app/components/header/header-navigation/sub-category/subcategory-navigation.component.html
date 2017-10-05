@@ -1,0 +1,6 @@
+<ul *ngIf="category.subCategories" class="category-level{{subCategoriesDepth}}" [ngClass]="subCategoriesDepth == 1 ? 'dropdown-menu' : ''">
+  <li *ngFor="let subcategory of category.subCategories" class="main-navigation-level{{subCategoriesDepth}}-item">
+    <a [routerLink]="localize.translateRoute(categoriesService.generateCategoryRoute(subcategory))">{{subcategory.name}}</a>
+    <is-subcategory-navigation [category]="subcategory" [subCategoriesDepth]="subCategoriesDepth+1" isRemoveHost></is-subcategory-navigation>
+  </li>
+</ul>
