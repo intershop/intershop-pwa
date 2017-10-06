@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   }
 
   showRoute(activatedUrl: string): boolean {
-    const pages = ['/family', '/category'];
+    const pages = ['/category'];
     return pages.some((page) => {
       return activatedUrl.indexOf(page) > -1;
     });
