@@ -3,7 +3,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { RemoveHostDirective } from '../../directives/remove-host.directive';
 import { SharedModule } from '../../modules/shared.module';
-import { AccountLoginService } from '../../services/account-login';
+import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { SearchBoxService } from '../../services/suggest/search-box.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
