@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../services/categories/categories.model';
-import { CategoriesService } from '../../services/categories/categories.service';
 
 @Component({
   selector: 'is-category-page',
@@ -18,17 +17,10 @@ export class CategoryPageComponent implements OnInit {
   totalItems: number;
 
   constructor(
-    private route: ActivatedRoute,
-    private categoriesService: CategoriesService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      // TODO: use this.route.snapshot.url instead of internal this.route.snapshot['_routerState'].url
-      this.categoriesService.getCategory(this.route.snapshot['_routerState'].url.split('/category')[1]).subscribe((data: Category) => {
-        this.category = data;
-      });
-    });
+    this.route.data.subscribe((data: { category: Category }) => this.category = data.category);
   }
-
 }
