@@ -18,10 +18,10 @@
 
           <is-form-group-validation [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
             <div class="form-group has-feedback">
-              <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{registrationLoginType && registrationLoginType === 'username' ?'Username' : 'Email'}}</label>
+              <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{userRegistrationLoginType && userRegistrationLoginType === 'username' ?'Username' : 'Email'}}</label>
               <div class="col-sm-6">
 
-                <input class="form-control" #dynamicError formControlName="userName" name="ShopLoginForm_Login" type="{{registrationLoginType === 'username' ? 'text' : 'email'}}"
+                <input class="form-control" #dynamicError formControlName="userName" name="ShopLoginForm_Login" type="{{userRegistrationLoginType === 'username' ? 'text' : 'email'}}"
                   id="ShopLoginForm_Login">
               </div>
               <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
