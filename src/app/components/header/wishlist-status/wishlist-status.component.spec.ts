@@ -3,9 +3,7 @@ import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing'
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
 import { SharedModule } from '../../../modules/shared.module';
-import { DataEmitterService } from '../../../services/data-emitter.service';
 import { WishListComponent } from './wishlist-status.component';
 
 @Component({
@@ -21,12 +19,6 @@ xdescribe('Wish List Component', () => {
     let translateService: TranslateService;
 
     beforeEach(() => {
-        class DataEmitterServiceStub {
-            wishListEmitter = new Observable((observer) => {
-                observer.next('item');
-            });
-        }
-
         TestBed.configureTestingModule({
             imports: [
                 SharedModule,
@@ -35,7 +27,7 @@ xdescribe('Wish List Component', () => {
                 ]),
                 TranslateModule.forRoot()
             ],
-            providers: [{ provide: DataEmitterService, useClass: DataEmitterServiceStub }, TranslateService],
+            providers: [TranslateService],
             declarations: [WishListComponent, DummyComponent]
         }).compileComponents();
 

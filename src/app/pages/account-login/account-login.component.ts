@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
-import { AccountLoginService } from '../../services/account-login';
 import { UserDetail } from '../../services/account-login/account-login.model';
+import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 @Component({
   templateUrl: './account-login.component.html'

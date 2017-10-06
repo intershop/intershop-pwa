@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../services';
+import { ApiService } from '../../services/api.service';
 import { AccountLoginService } from '../account-login/account-login.service';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 import { WishListModel } from './wishlists.model';
