@@ -58,7 +58,9 @@
       <li>{{'account.create.benefit4.text' | translate}}</li>
       <li>{{'account.create.benefit5.text' | translate}}</li>
     </ul>
-    <a *ngIf="!isSimpleRegistration" class="btn btn-primary" [routerLink]="localizeRouterService.translateRoute('/register')">{{'account.create.button.label' | translate}}</a>
-    <is-simple-registration *ngIf="isSimpleRegistration"></is-simple-registration>
+    <a *ngIf="!isSimpleRegistration; else simpleRegistration" class="btn btn-primary" [routerLink]="localizeRouterService.translateRoute('/register')">{{'account.create.button.label' | translate}}</a>
+    <ng-template #simpleRegistration>
+      <is-simple-registration></is-simple-registration>
+    </ng-template>
   </div>
 </div>

@@ -32,9 +32,11 @@ export class AccountLoginService implements IAccountLoginService {
       return data;
     });
   }
-
+  /**
+   * Creates the User and saves the User details
+   * @param  {} userDetails
+   */
   createUser(userDetails): Observable<UserDetail> {
-    // TODO: creating the user should be done with a method from account-login.service
     this.userDetailService.setUserDetail(userDetails);
     return Observable.of(userDetails);
   }
