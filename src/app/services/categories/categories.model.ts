@@ -1,14 +1,3 @@
-class Image {
-  name: string;
-  type: string;
-  effectiveUrl: string;
-  viewID: string;
-  typeID: string;
-  imageActualHeight: number;
-  imageActualWidth: number;
-  primaryImage: boolean;
-}
-
 export class Category {
   name: string;
   type: string;
@@ -23,4 +12,13 @@ export class Category {
   uri: string;
 }
 
-
+class Image {
+  name: string;
+  type: string;
+  effectiveUrl: string;
+  viewID: string;
+  typeID: string;
+  imageActualHeight: number;
+  imageActualWidth: number;
+  primaryImage: boolean;
+}

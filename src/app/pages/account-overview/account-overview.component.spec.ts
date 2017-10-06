@@ -1,7 +1,7 @@
 import { async } from '@angular/core/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { anything, instance, mock, verify } from 'ts-mockito';
-import { AccountLoginService } from '../../services/account-login';
+import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountOverviewComponent } from './account-overview.component';
 

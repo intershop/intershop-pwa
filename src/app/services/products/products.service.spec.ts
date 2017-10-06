@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { instance, mock, when } from 'ts-mockito';
-import { ApiService } from '../';
+import { ApiService } from '../api.service';
 import { ProductListService } from './products.service';
 
 describe('ProuctList Service', () => {

@@ -1,5 +1,6 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
+const path = require('path');
 
 module.exports = function (config) {
   config.set({
@@ -21,6 +22,7 @@ module.exports = function (config) {
     },
     coverageIstanbulReporter: {
       reports: [ 'html', 'lcovonly' ],
+      dir: path.join(__dirname, 'build/reports/coverage/%browser%'),
       fixWebpackSourcePaths: true
     },
     angularCli: {

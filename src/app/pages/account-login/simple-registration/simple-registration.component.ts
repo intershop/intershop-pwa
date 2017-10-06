@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { EmailValidator } from '../../../validators/email.validator';
-import { matchOtherValidator } from '../../../validators/match-words.validator';
-import { PasswordValidator } from '../../../validators/password.validator';
 import { SimpleRegistrationService } from './simple-registration.service';
 
 @Component({
@@ -28,9 +26,9 @@ export class SimpleRegistrationComponent implements OnInit {
    * @param {SimpleRegistrationService} simpleRegistrationService
    */
   constructor(private formBuilder: FormBuilder,
-              private localize: LocalizeRouterService,
-              private globalConfiguration: GlobalConfiguration,
-              private simpleRegistrationService: SimpleRegistrationService) {
+    private localize: LocalizeRouterService,
+    private globalConfiguration: GlobalConfiguration,
+    private simpleRegistrationService: SimpleRegistrationService) {
   }
 
   /**
@@ -39,24 +37,20 @@ export class SimpleRegistrationComponent implements OnInit {
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
+      const password = new FormControl('', [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]);
+      const confirmPassword = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(password)])]);
       this.simpleRegistrationForm = this.formBuilder.group({
         userName: ['', [Validators.compose([Validators.required,
-        (this.userRegistrationLoginType === 'email' ? EmailValidator.validate : null)])]],
-        password: ['', [Validators.required, Validators.minLength(7), PasswordValidator.validate]],
-        confirmPassword: ['', [Validators.required,
-        matchOtherValidator('password')]]
+        (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
+        password: password,
+        confirmPassword: confirmPassword
       });
     });
   }
 
 
   createAccount(userData) {
-    if (this.simpleRegistrationForm.invalid) {
-      Object.keys(this.simpleRegistrationForm.controls).forEach(key => {
-        this.simpleRegistrationForm.get(key).markAsDirty();
-      });
-      this.isDirty = true;
-    } else {
+    if (this.simpleRegistrationForm.valid) {
       this.simpleRegistrationService.createUser(userData as UserDetail).subscribe(response => {
         if (response) {
           this.localize.navigateToRoute('/home');

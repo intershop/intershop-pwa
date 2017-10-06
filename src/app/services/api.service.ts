@@ -5,7 +5,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
-import { MockApiService } from '../services/mock-api.service';
 import { CustomErrorHandler } from './custom-error-handler';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
@@ -18,7 +17,6 @@ export class ApiService {
    */
   constructor(private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
-    private mockApiService: MockApiService,
     private localize: LocalizeRouterService) {
   }
 
@@ -37,17 +35,12 @@ export class ApiService {
    * @returns Observable
    */
 
-  get(path: string, params: HttpParams = new HttpParams(), headers?: HttpHeaders,
+  get(path: string, params?: HttpParams, headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
     const loc = this.localize.parser.currentLocale;
-    let url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
+    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
 
-    // TODO: Mocking may support link translation in future
-    if (this.mockApiService.pathHasToBeMocked(path)) {
-      url = this.mockApiService.getMockPath(path);
-    }
-
-    return this.httpClient.get(url, { headers: headers })
+    return this.httpClient.get(url, { params: params, headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
       .flatMap((data) => this.getLinkedData(data, linkTranslation))
       .catch(this.formatErrors.bind(this));
@@ -92,11 +85,6 @@ export class ApiService {
 
   }
 
-  // TODO: need to improve  base url replacement logic
-  getSubLinkBaseUrl(): string {
-    return environment.rest_url.replace('inSPIRED-inTRONICS-Site/-/', '');
-  }
-
   getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
     if (!linkTranslation) {
       return Observable.of(data);
@@ -122,7 +110,10 @@ export class ApiService {
     const uriList: Observable<Object>[] = [];
     _.forEach(data, item => {
       if (item.type === 'Link' && item.uri) {
-        uriList.push(this.get(`${this.getSubLinkBaseUrl()}${item.uri}`));
+        // removes <site>/-;loc;cur/
+        const linkUrl = (item.uri).replace(/inSPIRED-inTRONICS-Site\/-[^\/]*\//gi, '');
+        // console.log(`link-translation ${item.uri} to ${linkUrl}`);
+        uriList.push(this.get(linkUrl));
       }
     });
     return uriList;

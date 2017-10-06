@@ -1,8 +1,8 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { JwtService } from '../../services';
 import { ApiService } from '../../services/api.service';
+import { JwtService } from '../../services/jwt.service';
 import { AccountLogin } from './account-login';
 import { UserDetail } from './account-login.model';
 import { UserDetailService } from './user-detail.service';
