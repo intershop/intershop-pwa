@@ -12,7 +12,7 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 
 export class SimpleRegistrationComponent implements OnInit {
   simpleRegistrationForm: FormGroup;
-  userRegistrationLoginType: string;
+  isUsername: boolean;
   errorUser: string;
   isInvalid: boolean;
 
@@ -34,8 +34,8 @@ export class SimpleRegistrationComponent implements OnInit {
      */
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
-      this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
-      const userName = new FormControl('', [this.userRegistrationLoginType === 'username' ? Validators.required : Validators.nullValidator]);
+      this.isUsername = data.userRegistrationLoginType === 'username';
+      const userName = new FormControl('', [this.isUsername ? Validators.required : Validators.nullValidator]);
       const email = new FormControl('', [Validators.required, CustomValidators.email]);
       const password = new FormControl('', [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]);
       const confirmPassword = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(password)])]);

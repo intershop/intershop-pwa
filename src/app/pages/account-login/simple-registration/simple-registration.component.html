@@ -1,17 +1,16 @@
-<div *ngIf="errorUser && errorUser === 'LoginAlreadyInUse'" role="alert" class="alert alert-danger">
-  {{ (userRegistrationLoginType && userRegistrationLoginType === 'username') ? ('account.username.already_exist.error' | translate)
-  : ('account.email.already_exist.error' | translate)}}
+<div *ngIf="errorUser === 'LoginAlreadyInUse'" role="alert" class="alert alert-danger">
+  {{ isUsername ? ('account.username.already_exist.error' | translate) : ('account.email.already_exist.error' | translate)}}
 </div>
 <form isFormValidation name="PostCheckoutRegisterForm" [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form"
   (ngSubmit)="createAccount(simpleRegistrationForm.value)">
-  <p>{{'account.create_user.message' | translate}} {{ (userRegistrationLoginType && userRegistrationLoginType === 'username')
-    ? ('account.create_user.username.message' | translate) : ('account.create_user.email_password.message' | translate)}}</p>
+  <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ('account.create_user.email_password.message'
+    | translate)}}</p>
 
   <is-form-group-validation [errorMessages]="{'required':'account.login.username.error.required'}">
-    <div *ngIf="userRegistrationLoginType === 'username'" class="form-group clearfix has-feedback">
-      <label for="" class="col-sm-3 control-label">{{'account.create_user.login.label' | translate}}</label>
+    <div *ngIf="isUsername" class="form-group clearfix has-feedback">
+      <label for="PostCheckoutRegisterForm_username" class="col-sm-3 control-label">{{'account.create_user.login.label' | translate}}</label>
       <div class="col-sm-6">
-        <input class="form-control" formControlName="userName" #dynamicError type="text" id="" name="">
+        <input class="form-control" formControlName="userName" #dynamicError type="text" id="PostCheckoutRegisterForm_username" name="PostCheckoutRegisterForm_username">
       </div>
     </div>
   </is-form-group-validation>
