@@ -1,4 +1,3 @@
-export * from './mock-api.service';
 export * from './custom-error-handler';
 export * from './api.service';
 export * from './data-emitter.service';
