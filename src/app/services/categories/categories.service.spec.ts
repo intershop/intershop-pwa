@@ -1,5 +1,5 @@
 import { anything, instance, mock, verify } from 'ts-mockito';
-import { ApiService } from '../';
+import { ApiService } from '../api.service';
 import { CategoriesService } from './categories.service';
 
 describe('Categories Service', () => {
