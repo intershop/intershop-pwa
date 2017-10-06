@@ -24,14 +24,6 @@ export class LoginStatusComponent {
   }
 
   /**
-   * navigates to register page
-   * @returns void
-   */
-  register() {
-    this.localize.navigateToRoute('/register');
-  }
-
-  /**
    * navigates to login page
    * @returns void
    */

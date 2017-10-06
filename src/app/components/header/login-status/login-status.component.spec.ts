@@ -66,15 +66,6 @@ describe('Login Status Component', () => {
     expect(component.userDetail).toBeTruthy();
   }));
 
-  it('should navigate to "register" when register is clicked', () => {
-    component.register();
-    // check if it was called
-    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
-    // capture last arguments and verify.
-    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/register']);
-
-  });
-
   it('should navigate to "home" and unset userDetails when logout is called', () => {
     component.logout();
     // check if it was called
