@@ -3,15 +3,15 @@ import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { Observable } from 'rxjs/Rx';
-import { environment } from '../../../../environments/environment';
-import { CacheCustomService } from '../../../services/cache/cache-custom.service';
-import { EncryptDecryptService } from '../../../services/cache/encrypt-decrypt.service';
-import { ProductListService } from '../../../services/products';
-import { FamilyPageListComponent } from './family-page-list.component';
+import { environment } from '../../../environments/environment';
+import { CacheCustomService } from '../../services/cache/cache-custom.service';
+import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
+import { ProductListService } from '../../services/products/products.service';
+import { ProductListComponent } from './product-list.component';
 
-describe('FamilyPageList Component', () => {
-  let fixture: ComponentFixture<FamilyPageListComponent>;
-  let component: FamilyPageListComponent;
+describe('Product List Component', () => {
+  let fixture: ComponentFixture<ProductListComponent>;
+  let component: ProductListComponent;
   let element: HTMLElement;
   let keyExists: boolean;
 
@@ -355,7 +355,7 @@ describe('FamilyPageList Component', () => {
   beforeEach(async(() => {
     keyExists = false;
     TestBed.configureTestingModule({
-      declarations: [FamilyPageListComponent],
+      declarations: [ProductListComponent],
       providers: [CacheService, EncryptDecryptService,
         { provide: ProductListService, useClass: MockProductListService },
         { provide: CacheCustomService, useClass: MockCacheCustomService }
@@ -367,7 +367,7 @@ describe('FamilyPageList Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FamilyPageListComponent);
+    fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

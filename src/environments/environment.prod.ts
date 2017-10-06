@@ -1,7 +1,7 @@
 export const environment = {
   platformId: '',
   production: true,
-  needMock: true,
+  needMock: false,
   mustMockPaths: [
     'categories/Specials'
   ],
@@ -13,7 +13,5 @@ export const environment = {
     { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
   ],
   prefix: 'ROUTES',
-  pattern: '{LANG}/{CURRENCY}',
-  subCategoryDepth: 2,
-  routingDepth: 5
+  pattern: '{LANG}/{CURRENCY}'
 };

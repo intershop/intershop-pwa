@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { InstanceService } from '../services/instance.service';
+import { FormControlErrorComponent } from '../components/global-form-validation/form-control-error.component';
+import { FormGroupValidationComponent } from '../components/global-form-validation/form-group-validation.component';
+import { FormValidationDirective } from '../directives/form-validation.directive';
 
 @NgModule({
     exports: [
@@ -11,13 +13,19 @@ import { InstanceService } from '../services/instance.service';
         CommonModule,
         FormsModule,
         RouterModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormGroupValidationComponent,
+        FormValidationDirective
     ],
+    declarations: [
+        FormGroupValidationComponent,
+        FormControlErrorComponent,
+        FormValidationDirective
+    ],
+    entryComponents: [FormControlErrorComponent],
     imports: [
         CommonModule
     ],
-    providers: [
-        InstanceService
-    ]
+    providers: []
 })
 export class SharedModule { }
