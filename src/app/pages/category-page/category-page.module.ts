@@ -13,7 +13,7 @@ import { CategoryPageRoute } from './category-page.routes';
     ShoppingModule
   ],
   providers: [
-    ProductListService,
+    ProductListService
   ],
   declarations: [CategoryPageComponent]
 })

@@ -1,72 +1,68 @@
 <div class="marketing-area"></div>
 
-<div [ngClass]="category?.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" attr.data-testing-id="{{category?.id}}">
-  >
+<div [ngClass]="category.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" attr.data-testing-id="{{category.id}}">
   <div class="row">
 
     <div class="col-sm-3">
       <div class="navigation-panel">
-        <h1>{{category?.name}}</h1>
+        <h1>{{category.name}}</h1>
         <is-category-navigation></is-category-navigation>
       </div>
     </div>
 
     <div class="col-sm-9">
-      <ng-container *ngIf="category">
-        <ng-container *ngIf="category.hasOnlineSubCategories; then categoryPage else familyPage"></ng-container>
+      <ng-container *ngIf="category.hasOnlineSubCategories; then categoryPage else familyPage"></ng-container>
 
-        <ng-template #categoryPage>
-          <is-category-list [categories]="category.subCategories"></is-category-list>
-        </ng-template>
+      <ng-template #categoryPage>
+        <is-category-list [categories]="category.subCategories"></is-category-list>
+      </ng-template>
 
-        <ng-template #familyPage>
-          <!-- TODO: Product List filter should be an own component -->
-          <div class="filters-row row">
-            <div class="col-md-7 col-sm-9 col-xs-12 switch-layout">
-              <div class="col-md-3 col-sm-3 col-xs-4">
-                <div class="pagination-total text-nowrap"> {{totalItems}} List Item{{totalItems > 1 ? 's':''}}</div>
-              </div>
-              <div class="pagination-sites col-md-9 col-sm-9 col-xs-8">
-                <ul class="pagination-site-list">
-                  <li class="pagination-site-list-previous">«</li>
-                  <li class=" pagination-site-active">1</li>
-                  <li class="pagination-list-next">»</li>
-                </ul>
-              </div>
+      <ng-template #familyPage>
+        <!-- TODO: Product List filter should be an own component -->
+        <div class="filters-row row">
+          <div class="col-md-7 col-sm-9 col-xs-12 switch-layout">
+            <div class="col-md-3 col-sm-3 col-xs-4">
+              <div class="pagination-total text-nowrap"> {{totalItems}} List Item{{totalItems > 1 ? 's':''}}</div>
             </div>
-            <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
-              <div class="pull-right sort-by">
-                <a class="list-view-link" [ngClass]="isListView ? 'list-active' : ''" data-testing-id="list-view-link" href="javascript:void(0)"
-                  (click)="isListView = true">
-                    <span class="glyphicon glyphicon-list"></span>
-                  </a>
-                <a class="grid-view-link" [ngClass]="!isListView ? 'grid-active' : ''" data-testing-id="grid-view-link" href="javascript:void(0)"
-                  (click)="isListView = false">
-                    <span class="glyphicon glyphicon-th"></span>
-                  </a>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-12 col-xs-8 pull-right sort-by">
-              <form class="sort-by-filter" method="post" name="sortByForm" novalidate="">
-                <input name="CategoryName" type="hidden" value="832">
-                <input name="SearchParameter" type="hidden" value="&amp;@QueryTerm=*&amp;ContextCategoryUUID=D1rAqDgB0ykAAAFcKPNVLIKL&amp;OnlineFlag=1">
-                <input name="CatalogID" type="hidden" value="Cameras-Camcorders">
-                <input name="PageSize" type="hidden" value="12">
-                <input name="PageNumber" type="hidden" value="0">
-                <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value">
-                  <option selected="selected" value="">Default Sorting</option>
-                  <option value="name-asc">Name asc</option>
-                  <option value="name-desc">Name desc</option>
-                  <option value="SalesRankUnitsIndex-desc">Topsellers</option>
-                  <option value="ArrivalDate-desc">Newest Arrivals</option>
-                </select>
-              </form>
+            <div class="pagination-sites col-md-9 col-sm-9 col-xs-8">
+              <ul class="pagination-site-list">
+                <li class="pagination-site-list-previous">«</li>
+                <li class=" pagination-site-active">1</li>
+                <li class="pagination-list-next">»</li>
+              </ul>
             </div>
           </div>
-          <is-product-list [sortBy]="sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-product-list>
-        </ng-template>
-
-      </ng-container>
+          <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
+            <div class="pull-right sort-by">
+              <a class="list-view-link" [ngClass]="isListView ? 'list-active' : ''" data-testing-id="list-view-link" href="javascript:void(0)"
+                (click)="isListView = true">
+                    <span class="glyphicon glyphicon-list"></span>
+                  </a>
+              <a class="grid-view-link" [ngClass]="!isListView ? 'grid-active' : ''" data-testing-id="grid-view-link" href="javascript:void(0)"
+                (click)="isListView = false">
+                    <span class="glyphicon glyphicon-th"></span>
+                  </a>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-8 pull-right sort-by">
+            <form class="sort-by-filter" method="post" name="sortByForm" novalidate="">
+              <input name="CategoryName" type="hidden" value="832">
+              <input name="SearchParameter" type="hidden" value="&amp;@QueryTerm=*&amp;ContextCategoryUUID=D1rAqDgB0ykAAAFcKPNVLIKL&amp;OnlineFlag=1">
+              <input name="CatalogID" type="hidden" value="Cameras-Camcorders">
+              <input name="PageSize" type="hidden" value="12">
+              <input name="PageNumber" type="hidden" value="0">
+              <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value">
+                <option selected="selected" value="">Default Sorting</option>
+                <option value="name-asc">Name asc</option>
+                <option value="name-desc">Name desc</option>
+                <option value="SalesRankUnitsIndex-desc">Topsellers</option>
+                <option value="ArrivalDate-desc">Newest Arrivals</option>
+              </select>
+            </form>
+          </div>
+        </div>
+        <is-product-list [sortBy]="sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-product-list>
+      </ng-template>
     </div>
   </div>
 </div>
