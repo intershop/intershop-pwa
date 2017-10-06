@@ -1,15 +1,20 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../api.service';
-import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 import { Category } from './categories.model';
 
 @Injectable()
-export class CategoriesService extends GlobalStateAwareService<Category> {
+export class CategoriesService implements Resolve<Category> {
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Category> {
+    const categoryPath = route.url.map(x => x.path).join('/');
+    // TODO: redirect to /error when category not found
+    return this.getCategory(categoryPath);
+  }
 
   constructor(private apiService: ApiService) {
-    super('currentSubCategory', false, true);
   }
 
   /**
@@ -31,7 +36,7 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
    * @returns             Category information.
    */
   getCategory(categoryPath: string): Observable<Category> {
-    return this.apiService.get('categories' + categoryPath, null, null, false);
+    return this.apiService.get('categories/' + categoryPath, null, null, false);
   }
 
   /**
@@ -40,6 +45,6 @@ export class CategoriesService extends GlobalStateAwareService<Category> {
    * @returns         The application /category route string for the given category.
    */
   generateCategoryRoute(category: Category): string {
-    return '/category/' + category.uri.split('/categories')[1];
+    return '/category/' + category.uri.split('/categories/')[1];
   }
 }
