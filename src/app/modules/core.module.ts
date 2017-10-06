@@ -15,7 +15,7 @@ import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
 import {
   ApiService, CacheCustomService,
   CustomErrorHandler, DataEmitterService, EncryptDecryptService, ErrorCodeMappingService, JwtService,
-  MockApiService, translateFactory
+  translateFactory
 } from '../services';
 import { UserDetailService } from '../services/account-login/user-detail.service';
 import { CartStatusService } from '../services/cart-status/cart-status.service';
@@ -52,7 +52,6 @@ import { ProductCompareService } from '../services/product-compare/product-compa
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
-    MockApiService,
     ProductCompareService,
     UserDetailService,
     CurrentLocaleService,
