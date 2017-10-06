@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
-import { ApiService, CustomErrorHandler } from './index';
+import { ApiService } from './api.service';
+import { CustomErrorHandler } from './custom-error-handler';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 class LocalizeRouterServiceMock {

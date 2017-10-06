@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ApiService } from '../';
+import { ApiService } from '../api.service';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 import { Category } from './categories.model';
 
