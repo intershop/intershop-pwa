@@ -9,6 +9,7 @@ import { LocalizeRouterService } from '../../services/routes-parser-locale-curre
 
 export class HeaderComponent implements OnInit {
   cartItems: string[];
+  navbarCollapsed = true;
 
   constructor(
     public localize: LocalizeRouterService,
