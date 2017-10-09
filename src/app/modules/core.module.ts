@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { CacheLocalStorage, CacheService, CacheStorageAbstract } from 'ng2-cache/ng2-cache';
 import { CustomFormsModule } from 'ng2-validation';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -51,8 +50,6 @@ import { ProductCompareService } from '../services/product-compare/product-compa
     EncryptDecryptService,
     JwtService,
     CacheCustomService,
-    CacheService,
-    { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
     ProductCompareService,
     UserDetailService,
