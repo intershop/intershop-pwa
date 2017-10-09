@@ -4,7 +4,6 @@ import { TestBed } from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { CacheService } from 'ng2-cache/ng2-cache';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Rx';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
@@ -49,7 +48,7 @@ describe('AccountLogin Component', () => {
         AccountLoginComponent
       ],
       providers: [
-        CacheCustomService, CacheService, EncryptDecryptService,
+        CacheCustomService, EncryptDecryptService,
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }

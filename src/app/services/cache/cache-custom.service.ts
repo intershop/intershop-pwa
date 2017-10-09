@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CacheService } from 'ng2-cache/ng2-cache';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import { EncryptDecryptService } from './encrypt-decrypt.service';
 
 @Injectable()
 export class CacheCustomService {
@@ -10,14 +6,8 @@ export class CacheCustomService {
 
   /**
    * Constructor
-   * @param  {CacheService} privatecacheService
-   * @param  {EncryptDecryptService} privateencryptDecryptService
    */
-  constructor(
-    private cacheService: CacheService,
-    private encryptDecryptService: EncryptDecryptService,
-  ) {
-    this.cacheService.setGlobalPrefix('');
+  constructor() {
   }
 
   /**
@@ -26,10 +16,7 @@ export class CacheCustomService {
     * @returns Boolean
     */
   cacheKeyExists(keyToCheck): boolean { // To check whether data key already exists or not
-
-
-    return (this.cacheService.exists(keyToCheck));
-
+    return false;
   }
 
   /**
@@ -40,10 +27,6 @@ export class CacheCustomService {
    * @returns void
    */
   storeDataToCache(storeData: any, storekey: string, isEnrypted: Boolean = false): void {
-    if (isEnrypted) {
-      storeData = this.encryptDecryptService.encrypt(storeData, storekey);
-    }
-    this.cacheService.set(storekey, storeData);
   }
 
   /**
@@ -51,8 +34,7 @@ export class CacheCustomService {
    * @param  {string} deleteKey
    * @returns void
    */
-  deleteCacheKey(deleteKey: string): void { // Make data in the Key as null
-    this.cacheService.set(deleteKey, null);
+  deleteCacheKey(deleteKey: string): void {
   }
 
   /**
@@ -61,10 +43,7 @@ export class CacheCustomService {
    *  * @param  {Boolean} isDecrypted
    */
   getCachedData(userKey: string, isDecrypted: Boolean = false) {
-
-    return (isDecrypted ?
-      this.encryptDecryptService.decrypt(this.cacheService.get(userKey), userKey) :
-      this.cacheService.get(userKey));
+    return null;
   }
 
 
@@ -73,7 +52,6 @@ export class CacheCustomService {
    * @returns void
    */
   removeAllCacheData(): void {
-    this.cacheService.removeAll();
   }
 
 }
