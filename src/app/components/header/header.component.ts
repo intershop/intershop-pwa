@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartStatusService } from '../../services/cart-status/cart-status.service';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-header',
   templateUrl: './header.component.html',
 })
 
-export class HeaderComponent {
-  globalnav = true;
-  cartItemLength: number;
+export class HeaderComponent implements OnInit {
+  cartItems: string[];
 
-  constructor(cartStatusService: CartStatusService) {
-    cartStatusService.subscribe(this.updateCartItemLength);
-  }
+  constructor(
+    public localize: LocalizeRouterService,
+    private cartStatusService: CartStatusService
+  ) {}
 
-  private updateCartItemLength = (cartItems) => {
-    this.cartItemLength = cartItems ? cartItems.length : '';
+  ngOnInit() {
+    this.cartStatusService.subscribe((cartItems: string[]) => {
+      this.cartItems = cartItems;
+    });
   }
 }
