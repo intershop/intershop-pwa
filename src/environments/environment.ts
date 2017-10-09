@@ -8,10 +8,10 @@ export const environment = {
   production: true,
   needMock: false,
   mustMockPaths: [
-    //   'categories/Specials'
+       'categories/Specials'
   ],
-  rest_url: 'http://10.131.60.97:9091/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
-  base_url: 'http://10.131.60.97:9091',
+  rest_url: 'https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
+  base_url: 'https://localhost:80',
 
   locales: [
     { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },

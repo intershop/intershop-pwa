@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AccountLoginService } from '../../services/account-login';
+import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({

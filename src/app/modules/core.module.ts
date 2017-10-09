@@ -12,16 +12,19 @@ import { FooterModule } from '../components/footer/footer.module';
 import { HeaderModule } from '../components/header/header.module';
 import { GlobalConfiguration } from '../configurations/global.configuration';
 import { StyleWrapperDirective } from '../directives/style-wrapper.directive';
-import {
-  ApiService, CacheCustomService,
-  CustomErrorHandler, DataEmitterService, EncryptDecryptService, ErrorCodeMappingService, JwtService,
-  MockApiService, translateFactory
-} from '../services';
 import { UserDetailService } from '../services/account-login/user-detail.service';
+import { ApiService } from '../services/api.service';
+import { CacheCustomService } from '../services/cache/cache-custom.service';
+import { EncryptDecryptService } from '../services/cache/encrypt-decrypt.service';
 import { CartStatusService } from '../services/cart-status/cart-status.service';
+import { CustomErrorHandler } from '../services/custom-error-handler';
+import { translateFactory } from '../services/custom-translate-loader';
+import { ErrorCodeMappingService } from '../services/error-code-mapping.service';
+import { JwtService } from '../services/jwt.service';
 import { CurrentLocaleService } from '../services/locale/current-locale.service';
 import { ProductCompareService } from '../services/product-compare/product-compare.service';
 import { CategoryNavigationService } from "../services/category-navigation.service";
+
 
 @NgModule({
   imports: [
@@ -46,14 +49,12 @@ import { CategoryNavigationService } from "../services/category-navigation.servi
   ],
   providers: [
     ApiService,
-    DataEmitterService,
     EncryptDecryptService,
     JwtService,
     CacheCustomService,
     CacheService,
     { provide: CacheStorageAbstract, useClass: CacheLocalStorage },
     CustomErrorHandler,
-    MockApiService,
     ProductCompareService,
     UserDetailService,
     CurrentLocaleService,

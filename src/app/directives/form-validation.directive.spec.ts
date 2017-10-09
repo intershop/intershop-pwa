@@ -51,12 +51,12 @@ describe('Form Validation Directive', () => {
     fixture.detectChanges();
   });
 
-  it('should return invalid form', () => {
+  it('should detect that form is invalid when form with required field is submitted empty', () => {
     formValidationDirective.onSubmit();
     expect(component.loginForm.invalid).toBe(true);
   });
 
-  it('should return valid form', () => {
+  it('should detect that form is valid when form with required field is submitted after setting content', () => {
     component.loginForm.controls['userName'].setValue('test');
     formValidationDirective.onSubmit();
     expect(formValidationDirective.formGroup.valid).toBe(component.loginForm.valid);

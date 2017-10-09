@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Category } from '../../services/categories/categories.model';
 
 @Component({
   selector: 'is-category-page',
@@ -7,14 +9,18 @@ import { Component, OnInit } from '@angular/core';
 
 export class CategoryPageComponent implements OnInit {
 
-  families = [
-    { 'name': 'Camcorders', 'id': 832 },
-    { 'name': 'Digital Cameras', 'id': 833 },
-    { 'name': 'Webcams', 'id': 834 }
-  ];
+  category: Category = null;
+
+  // TODO: these properties were copied from family-page.component and their relevance needs to be evaluated
+  isListView: Boolean;
+  sortBy;
+  totalItems: number;
+
+  constructor(
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-
+    this.route.data.subscribe((data: { category: Category }) => this.category = data.category);
   }
-
 }
