@@ -21,6 +21,7 @@ import { UserDetailService } from '../services/account-login/user-detail.service
 import { CartStatusService } from '../services/cart-status/cart-status.service';
 import { CurrentLocaleService } from '../services/locale/current-locale.service';
 import { ProductCompareService } from '../services/product-compare/product-compare.service';
+import { CategoryNavigationService } from "../services/category-navigation.service";
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { ProductCompareService } from '../services/product-compare/product-compa
     CurrentLocaleService,
     CartStatusService,
     GlobalConfiguration,
-    ErrorCodeMappingService
+    ErrorCodeMappingService,
+    CategoryNavigationService
   ],
   exports: [
     FooterModule,

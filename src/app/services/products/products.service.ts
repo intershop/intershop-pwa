@@ -4,7 +4,7 @@ import { ApiService } from '../';
 
 @Injectable()
 export class ProductListService {
-  public url = 'categories/Cameras-Camcorders/584/products/3953312';
+
 
   /**
    * @param  {ApiService} privateapiService
@@ -14,7 +14,8 @@ export class ProductListService {
   /**
    * @returns List of products as observable
    */
-  getProductList(): Observable<any> {
-    return this.apiService.get(this.url);
+  getProductList(params: any): Observable<any> {
+    const url = `categories/${params.category}/${params.subcategory}/products`;
+    return this.apiService.get(url, null, null, true, true);
   }
 }
