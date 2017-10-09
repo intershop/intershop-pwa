@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class MockApiService {
-  mockDataRootPath = '/assets/mock-data';
+  mockDataRootPath = 'assets/mock-data';
 
   public getMockPath(path: string): string {
     return `${this.mockDataRootPath}/${this.removeQueryStringParameter(path)}/get-data.json`;

@@ -68,14 +68,14 @@ export class ProductTileComponent implements OnInit {
     this.mockData['id'] = '1';
     this.mockData['averageRatingClass'] = '';
     this.mockData['isProductMaster'] = true;
-    this.mockData.listPrice['range'] = {
-      'minimumPrice': 110,
-      'maximumPrice': 380
-    };
+    // this.mockData.listPrice['range'] = {
+    //   'minimumPrice': 110,
+    //   'maximumPrice': 380
+    // };
     this.mockData.images[2].effectiveUrl = environment.base_url + this.mockData.images[2].effectiveUrl;
     this.mockData.images[0].effectiveUrl = environment.base_url + this.mockData.images[0].effectiveUrl;
 
-    this.calculatePriceParameters();
+    //this.calculatePriceParameters();
     this.calculateAverageRating();
     // TODO: read product compare list from local cache if user is REMEMBERED
   }
@@ -115,12 +115,12 @@ export class ProductTileComponent implements OnInit {
       }
     }
 
-    if (this.mockData.listPrice.value) {
-      this.displayCondition = true;
-      if (this.mockData.salePrice.value && !(this.mockData.listPrice.value > this.mockData.salePrice.value)) {
-        this.displayCondition = false;
-      }
-    }
+    // if (this.mockData.listPrice.value) {
+    //   this.displayCondition = true;
+    //   if (this.mockData.salePrice.value && !(this.mockData.listPrice.value > this.mockData.salePrice.value)) {
+    //     this.displayCondition = false;
+    //   }
+    // }
 
 
     if (this.mockData.listPrice.range && !(this.mockData.listPrice.range.minimumPrice === this.mockData.listPrice.range.maximumPrice)) {

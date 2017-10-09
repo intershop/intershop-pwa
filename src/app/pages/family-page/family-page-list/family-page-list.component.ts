@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { ProductTileModel } from '../../../components/product-tile/product-tile.model';
 import { CacheCustomService } from '../../../services/index';
 import { ProductListService } from '../../../services/products';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'is-family-page-list',
@@ -24,6 +25,7 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
    * @param  {CacheCustomService} privatecustomService
    */
   constructor(
+    private activatedRoute: ActivatedRoute,
     private productListService: ProductListService,
     private customService: CacheCustomService) {
   }
@@ -57,17 +59,12 @@ export class FamilyPageListComponent implements OnInit, OnChanges {
   * Gets the data from Cache and shows products
    */
   ngOnInit() {
-    if (this.customService.cacheKeyExists(this.thumbnailKey)) {
-      this.thumbnails = this.customService.getCachedData(this.thumbnailKey, true);
-      this.totalItems.emit(this.thumbnails.length);
-    } else {
-      this.productListService.getProductList().subscribe((data: any) => {// type should be ProductTileModel[]
-        this.allData = data;
-        this.thumbnails.push(this.allData);
+    this.activatedRoute.params.subscribe(params => {
+      this.productListService.getProductList(params).subscribe((data: any) => {
+        this.thumbnails = data;
         this.totalItems.emit(this.thumbnails.length);
-        this.customService.storeDataToCache(this.thumbnails, this.thumbnailKey, true);
       });
-    }
+    });
 
   }
 }

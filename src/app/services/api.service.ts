@@ -94,7 +94,11 @@ export class ApiService {
 
   // TODO: need to improve  base url replacement logic
   getSubLinkBaseUrl(): string {
-    return environment.rest_url.replace('inSPIRED-inTRONICS-Site/-/', '');
+    return environment.rest_url.replace('inSPIRED-inTRONICS-Site/-', '');
+
+  }
+  removeLanguageUrl(url: string) {
+    return url.replace('inSPIRED-inTRONICS-Site/-', '').replace(';loc=en_US;cur=USD/', '');
   }
 
   getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
@@ -103,11 +107,14 @@ export class ApiService {
     } else {
 
       let elements = (_.has(data, 'elements') ? data['elements'] : data);
+      if (!elements.length) {
+        return Observable.of(elements);
+      }
       return Observable.forkJoin(this.getLinkUri(elements)).map(results => {
         elements = _.map(elements, (item, key) => {
           return results[key];
         });
-        return { ...data, elements };
+        return elements;
       });
 
     }
@@ -122,7 +129,8 @@ export class ApiService {
     const uriList: Observable<Object>[] = [];
     _.forEach(data, item => {
       if (item.type === 'Link' && item.uri) {
-        uriList.push(this.get(`${this.getSubLinkBaseUrl()}${item.uri}`));
+        const link = `${this.removeLanguageUrl(item.uri)}`;
+        uriList.push(this.get(link));
       }
     });
     return uriList;

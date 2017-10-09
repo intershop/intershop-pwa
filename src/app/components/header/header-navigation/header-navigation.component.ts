@@ -5,6 +5,8 @@ import { CategoryService } from '../../../services/categories/category.service';
 import { SubcategoryModel } from '../../../services/categories/subcategory.model';
 import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { ActivatedRoute } from "@angular/router";
+import { CategoryNavigationService } from "../../../services/category-navigation.service";
 
 @Component({
   selector: 'is-header-navigation',
@@ -17,7 +19,9 @@ export class HeaderNavigationComponent implements OnInit {
   local: string;
 
   constructor(private categoryService: CategoryService,
+    private activatedRoute: ActivatedRoute,
     private cacheService: CacheCustomService,
+    private categoryNavigationService: CategoryNavigationService,
     public localize: LocalizeRouterService, private currentLocaleService: CurrentLocaleService) {
 
   }
@@ -48,4 +52,11 @@ export class HeaderNavigationComponent implements OnInit {
       });
     }
   }
+
+
+  navigateToProduct(category: any, subCategory: any) {
+    const path = '/category/' + category.id + '/family/' + subCategory.id;
+    this.categoryNavigationService.setCategory(subCategory.name);
+    this.localize.navigateToRoute(path);
+  };
 }

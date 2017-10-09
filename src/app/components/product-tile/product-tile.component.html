@@ -39,21 +39,21 @@
     <div *ngIf="mockData.richSnippetsEnabled" class="price-container">
       <!--ProductPrice.isml start-->
       <div class="current-price" [ngClass]="finalPrice == '0' ? 'sale-price' : (greaterPrice == '1' ? 'sale-price-higher' : null)">
-        {{((mockData.salePrice.range && !(mockData.salePrice.priceRange.minimumPrice === mockData.salePrice.priceRange.maximumPrice))
-        ? mockData.salePrice.priceRange.minimumPrice - mockData.salePrice.priceRange.maximumPrice : (mockData.salePrice.value
-        && finalPrice === 0 ? mockData.salePrice.value : (mockData.salePrice.value ? mockData.salePrice.value : 'N/A')) )
-        | number : '1.2-2' | currency : mockData.listPrice.currencyMnemonic : true}}
+        {{((mockData.salePrice?.range && !(mockData.salePrice?.priceRange.minimumPrice === mockData.salePrice?.priceRange.maximumPrice))
+        ? mockData.salePrice?.priceRange.minimumPrice - mockData.salePrice?.priceRange.maximumPrice : (mockData.salePrice?.value
+        && finalPrice === 0 ? mockData.salePrice?.value : (mockData.salePrice?.value ? mockData.salePrice?.value : 'N/A')) )
+         }}
       </div>
       <!--TODO  ISProductPriceAdditionalText.ISML Start-->
       <!--  ISProductPriceAdditionalText.ISML End-->
-      <div *ngIf="mockData.salePrice.scaledPrices" class="scale-prices">
-        <span *ngFor="let scale of mockData.salePrice.scaledPrices">
+      <div *ngIf="mockData.salePrice?.scaledPrices" class="scale-prices">
+        <span *ngFor="let scale of mockData.salePrice?.scaledPrices">
           {{scale.quantity.value > 1 ? 'Buy '+scale.quantity.value+' items ('+ scale.totalPrice +' each)'  : null}}
           <br />
         </span>
       </div>
-      <div *ngIf="displayCondition && mockData.listPrice.value" class="old-price">
-        {{ oldPrice | currency : mockData.listPrice.currencyMnemonic : true }}
+      <div *ngIf="displayCondition && mockData.listPrice?.value" class="old-price">
+        {{ oldPrice | currency : mockData.listPrice?.currencyMnemonic : true }}
       </div>
       <span *ngIf="shownSavings" class="price-savings">
         You save {{shownSavings}}
@@ -170,7 +170,7 @@
     <div class="col-sm-2 col-xs-3">
       <div class="product-image-container">
         <a href="javascript:void(0)">
-          <img *ngIf="mockData && mockData.images" [src]="mockData.images[0].effectiveUrl ? mockData.images[0].effectiveUrl : '/img/not_available.png'"
+          <img *ngIf="mockData && mockData.images" [src]="mockData.images[0].effectiveUrl"
             data-test="true" Class="product-image" [attr.data-type]="mockData.images[0].typeID ? mockData.images[0].typeID : null"
             [attr.alt]="mockData.name ? mockData.name : mockData?.sku" [attr.view-value]="mockData.images[0].viewID ? mockData.images[0].viewID : null"
             [attr.title]="mockData.title ? mockData.title : null" [attr.height]="mockData.images[0].imageActualHeight ? mockData.images[0].imageActualHeight : null"
@@ -218,23 +218,23 @@
 
           <!--  ISProductPrice.ISML Start-->
           <div class="current-price" [ngClass]="finalPrice == '0' ? 'sale-price' : (greaterPrice == '1' ? 'sale-price-higher' : null)">
-            {{((mockData.salePrice.range && !(mockData.salePrice.priceRange.minimumPrice === mockData.salePrice.priceRange.maximumPrice))
-            ? mockData.salePrice.priceRange.minimumPrice - mockData.salePrice.priceRange.maximumPrice : (mockData.salePrice.value
-            && finalPrice === 0 ? mockData.salePrice.value : (mockData.salePrice.value ? mockData.salePrice.value : 'N/A'))
-            ) | number : '1.2-2' | currency : mockData.listPrice.currencyMnemonic : true}}
+            {{((mockData.salePrice?.range && !(mockData.salePrice?.priceRange.minimumPrice === mockData.salePrice?.priceRange.maximumPrice))
+            ? mockData.salePrice?.priceRange.minimumPrice - mockData.salePrice?.priceRange.maximumPrice : (mockData.salePrice?.value
+            && finalPrice === 0 ? mockData.salePrice?.value : (mockData.salePrice?.value ? mockData.salePrice?.value : 'N/A'))
+            )  }}
           </div>
           <!--TODO  ISProductPriceAdditionalText.ISML Start-->
 
           <!--  ISProductPriceAdditionalText.ISML End-->
 
           <!--No ScaledPrice property on API Data-->
-          <div *ngIf="mockData.salePrice.scaledPrices" class="scale-prices">
-            <span *ngFor="let scale of mockData.salePrice.scaledPrices">
+          <div *ngIf="mockData.salePrice?.scaledPrices" class="scale-prices">
+            <span *ngFor="let scale of mockData.salePrice?.scaledPrices">
               {{scale.quantity.value > 1 ? 'Buy '+scale.quantity.value+' items ('+ scale.totalPrice +' each)'  : null}}
             </span>
           </div>
-          <div *ngIf="displayCondition && mockData.listPrice.value" class="old-price">
-            {{ oldPrice | currency : mockData.listPrice.currencyMnemonic : true }}
+          <div *ngIf="displayCondition && mockData.listPrice?.value" class="old-price">
+            {{ oldPrice | currency : mockData.listPrice?.currencyMnemonic : true }}
           </div>
           <span *ngIf="shownSavings" class="price-savings">
             You save {{shownSavings}}
