@@ -86,14 +86,6 @@
 							font-size: 14px;
 						}
 					}
-					
-					&.open {
-						.glyphicon-plus {
-							&:before {
-								content: "\2212";
-							}
-						}
-					}
 				}
 				
 				> ul {
@@ -176,6 +168,21 @@
 						width: 100%;
 						color: @text-color-primary;
 						display: block;
+
+						&.dropdown-toggle {
+							color: lighten(@text-color-quarternary, 5%);
+							width: 15%;
+							float: left;
+							border-left: 1px solid @border-color-light;
+						}
+					}
+				}
+
+				> a {
+					@media (max-width: @screen-xs-max) {
+						width: 85%;
+						float: left;
+						clear: initial;
 					}
 				}
 				
@@ -197,9 +204,20 @@
 				}
 				
 				@media (max-width:@screen-xs-max) {
-					
+
 					ul {
-						display:none;
+						display: none;
+					}
+				}
+			}
+
+			li {
+				&.dropdown {
+					background: none;
+				}
+				&.open {
+					ul{
+						display: block;
 					}
 				}
 			}
