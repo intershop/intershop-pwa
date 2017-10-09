@@ -1,4 +1,3 @@
-import { DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
@@ -7,7 +6,6 @@ import { FormControlErrorComponent } from './form-control-error.component';
 describe('Form control error component', () => {
   let fixture: ComponentFixture<FormControlErrorComponent>;
   let component: FormControlErrorComponent;
-  let smallElement: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -22,16 +20,20 @@ describe('Form control error component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FormControlErrorComponent);
     component = fixture.componentInstance;
-    smallElement = fixture.debugElement.query(By.css('small'));
-  });
-  it('should not create form control error', () => {
-    expect(smallElement).toBeFalsy();
-  });
-  it('should create form control error', () => {
-    component.messagesList = ['error1'];
-    fixture.detectChanges();
-    smallElement = fixture.debugElement.query(By.css('small'));
-    expect(smallElement).toBeTruthy();
   });
 
+  function searchErrorDisplay() {
+    fixture.detectChanges();
+    return fixture.debugElement.query(By.css('small'));
+  }
+
+  it('should not create form control error when initialized', () => {
+    expect(component.messagesList).toBeFalsy();
+    expect(searchErrorDisplay()).toBeFalsy();
+  });
+
+  it('should create form control error when error is set', () => {
+    component.messagesList = ['error1'];
+    expect(searchErrorDisplay()).toBeTruthy();
+  });
 });

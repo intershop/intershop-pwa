@@ -14,7 +14,7 @@ class CategoryPage extends StorefrontPage
     static content=
     {
         contentSlot   { $("div",class:"category-page") }
-        navigationBar { contentSlot.find("div",class:"category-panel") }
+        navigationBar { contentSlot.find("div",class:"navigation-panel") }
         categoryName  { contentSlot.@"data-testing-id" }
         categoryList  { contentSlot.$("ul",class:contains("category-list")) }
         familyTiles   { term ->  module(new CategoryTile(categoryID: term)) }

@@ -18,7 +18,8 @@ describe('Error code mapping service', () => {
         });
         when(translateService.get(anything(), anything())).thenReturn(Observable.of('mapped error tranlated string'));
     });
-    it('should return mapped error message', inject([ErrorCodeMappingService], (errorCodeMappingService: ErrorCodeMappingService) => {
+
+    it('should return mapped error message when it is supplied by translate service', inject([ErrorCodeMappingService], (errorCodeMappingService: ErrorCodeMappingService) => {
         const translatedMessage = errorCodeMappingService.getErrorMapping({ errorCode: 'Err001', parameter: [1] });
         expect(translatedMessage).toBe('mapped error tranlated string');
     }));
