@@ -75,7 +75,7 @@ export class ProductTileComponent implements OnInit {
     this.mockData.images[2].effectiveUrl = environment.base_url + this.mockData.images[2].effectiveUrl;
     this.mockData.images[0].effectiveUrl = environment.base_url + this.mockData.images[0].effectiveUrl;
 
-    //this.calculatePriceParameters();
+    // this.calculatePriceParameters();
     this.calculateAverageRating();
     // TODO: read product compare list from local cache if user is REMEMBERED
   }
