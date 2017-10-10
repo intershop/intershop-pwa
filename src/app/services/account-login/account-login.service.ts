@@ -37,8 +37,10 @@ export class AccountLoginService implements IAccountLoginService {
    * @param  {} userDetails
    */
   createUser(userDetails): Observable<UserDetail> {
-    this.userDetailService.setUserDetail(userDetails);
-    return Observable.of(userDetails);
+    return this.apiService.post('createUser', userDetails).map(data => {
+      this.userDetailService.setUserDetail(data);
+      return data;
+    });
   }
 
   /**

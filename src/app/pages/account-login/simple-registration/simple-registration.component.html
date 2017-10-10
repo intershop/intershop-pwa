@@ -1,10 +1,10 @@
 <div *ngIf="errorUser === 'LoginAlreadyInUse'" role="alert" class="alert alert-danger">
-  {{ isUsername ? ('account.username.already_exist.error' | translate) : ('account.email.already_exist.error' | translate)}}
+  {{errorMessage() | translate}}
 </div>
 <form isFormValidation name="PostCheckoutRegisterForm" [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form"
   (ngSubmit)="createAccount(simpleRegistrationForm.value)">
-  <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ('account.create_user.email_password.message'
-    | translate)}}</p>
+  <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ''
+    }} {{('account.create_user.email_password.message' | translate)}}</p>
 
   <is-form-group-validation [errorMessages]="{'required':'account.login.username.error.required'}">
     <div *ngIf="isUsername" class="form-group clearfix has-feedback">
