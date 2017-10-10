@@ -14,7 +14,7 @@ export class LoginStatusComponent {
 
   constructor(
     private accountLoginService: AccountLoginService,
-    public localize: LocalizeRouterService
+    public localizeRouter: LocalizeRouterService
   ) {
     accountLoginService.subscribe(userDetail => this.userDetail = userDetail);
   }
@@ -29,6 +29,6 @@ export class LoginStatusComponent {
    */
   logout() {
     this.accountLoginService.logout();
-    this.localize.navigateToRoute('/home');
+    this.localizeRouter.navigateToRoute('/home');
   }
 }

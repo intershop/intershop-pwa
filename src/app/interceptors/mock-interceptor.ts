@@ -1,4 +1,5 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
@@ -19,6 +20,14 @@ export class MockInterceptor implements HttpInterceptor {
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const authorizationHeaderKey = 'Authorization';
+
+    if (req.method === 'POST') {
+      const headers = new HttpHeaders().set('authentication-token', 'BASIC ');
+      const body = {
+        userName: 'Patricia', email: 'patricia@intronics.com'
+      };
+      return Observable.of(new HttpResponse({ headers: headers, body: body }));
+    }
 
     if (this.requestHasToBeMocked(req)) {
       const newUrl = this.getMockUrl(req.url);

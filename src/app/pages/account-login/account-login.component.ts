@@ -50,20 +50,20 @@ export class AccountLoginComponent implements OnInit {
 
 
   /**
-   * Routes to Family Page when user is logged in
+   * Redirects to Home Page when user is logged in successfully
    */
   onSignin(userCredentials) {
-    if (this.loginForm.valid) {
-      this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
-        if (typeof (userData) === 'object') {
-          this.localizeRouterService.navigateToRoute('/home');
-        } else {
-          this.loginForm.get('password').reset();
-          this.errorUser = userData;
-        }
-      });
-    } else {
+    if (this.loginForm.invalid) {
       this.isDirty = true;
+      return;
     }
+    this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
+      if (typeof (userData) !== 'object') {
+        this.loginForm.get('password').reset();
+        this.errorUser = userData;
+        return;
+      }
+      this.localizeRouterService.navigateToRoute('/home');
+    });
   }
 }

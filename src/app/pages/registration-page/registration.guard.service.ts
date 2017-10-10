@@ -22,7 +22,7 @@ export class RegistrationGuard implements CanActivate {
         this.router.config[0].children.push(
           { path: 'register', loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' }
         );
-        this.localize.navigateToRoute('en_US/USD/register');
+        this.localize.navigateToRoute(state.url.slice(1));
         return false;
       }
     });
