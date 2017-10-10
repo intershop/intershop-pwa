@@ -1,13 +1,13 @@
 <div class="marketing-area"></div>
 
 <div [ngClass]="category?.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" attr.data-testing-id="{{category?.id}}">
-  >
+  
   <div class="row">
 
     <div class="col-sm-3">
       <div class="navigation-panel">
         <h1>{{category?.name}}</h1>
-        <is-category-navigation></is-category-navigation>
+        <is-category-navigation *ngIf="category" [selectedCategory]="category"></is-category-navigation>
       </div>
     </div>
 
