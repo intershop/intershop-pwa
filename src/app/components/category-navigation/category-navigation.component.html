@@ -1,13 +1,5 @@
-<div class="non-parametric-panel">
-  <div class="filter-group">
-
-    <ul class="filter-list">
-        <li class="filter-item">
-          <a class="filter-item-name " href="">
-            Categrory Name
-          </a>
-        </li>
-    </ul>
-
-  </div>
-</div>
+ <div class="non-parametric-panel">
+  <div class="filter-group"> 
+           <is-subcategory-navigation  *ngIf="rootCategory" [selectedCategoryUri]="selectedCategoryUri" [category]="rootCategory"  [selectedCategory]= "selectedCategory" isRemoveHost></is-subcategory-navigation> 
+    </div>
+</div>   
