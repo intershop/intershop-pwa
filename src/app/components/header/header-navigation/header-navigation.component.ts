@@ -2,8 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Category } from '../../../services/categories/categories.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { ActivatedRoute } from "@angular/router";
-import { CategoryNavigationService } from "../../../services/category-navigation.service";
 
 @Component({
   selector: 'is-header-navigation',

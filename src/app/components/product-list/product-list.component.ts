@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { ProductListService } from '../../services/products/products.service';
 import { ProductTileModel } from '../product-tile/product-tile.model';
 
@@ -22,13 +21,12 @@ export class ProductListComponent implements OnInit {
 
   /**
    * Construcotr
+   * @param  {ActivatedRoute} activatedRoute
    * @param  {ProductListService} privateproductListService
-   * @param  {CacheCustomService} privatecustomService
    */
   constructor(
     private activatedRoute: ActivatedRoute,
-    private productListService: ProductListService,
-    private customService: CacheCustomService) {
+    private productListService: ProductListService) {
   }
 
   /*
