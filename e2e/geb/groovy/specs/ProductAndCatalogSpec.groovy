@@ -30,7 +30,6 @@ class ProductAndCatalogSpec extends GebReportingSpec {
      * Old Smoke Test:
      * testCatalogCategoryBrowsing(...)
      */
-    @Ignore
     def "Browse in Catalogs"() {
 
         when: "I go to the home page and click on a catalog..."
