@@ -1,12 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Rx';
-import { ProductListService } from '../../services/products/products.service';
-import { ProductListComponent } from './product-list.component';
-import { mock, instance, when, anything, verify } from "ts-mockito/lib/ts-mockito";
 import { ActivatedRoute } from '@angular/router';
-import { ProductTileModel } from "../product-tile/product-tile.model";
+import { Observable } from 'rxjs/Rx';
+import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { ProductListService } from '../../services/products/products.service';
+import { ProductTileModel } from '../product-tile/product-tile.model';
+import { ProductListComponent } from './product-list.component';
 
 describe('Product List Component', () => {
   let fixture: ComponentFixture<ProductListComponent>;
@@ -18,7 +18,7 @@ describe('Product List Component', () => {
       [{ 'path': 'cameras', 'parameters': {} },
       { 'path': 'cameras', 'parameters': {} }
       ])
-  }
+  };
 
   beforeEach(async(() => {
     productListService = mock(ProductListService);
