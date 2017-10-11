@@ -9,28 +9,21 @@ import { CategoriesService } from '../../services/categories/categories.service'
   templateUrl: './category-navigation.component.html'
 })
 
-export class CategoryNavigationComponent implements OnInit, OnChanges {
-  @Input() selectedCategory: Category;
+export class CategoryNavigationComponent implements OnInit {
+  @Input() category: Category;
   topLevelCategory: Category;
   currentCategoryUri: string;
 
   constructor(private categoriesService: CategoriesService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.loadTopLevelCategory();
-  }
-
-  loadTopLevelCategory() {
-    this.currentCategoryUri = this.route.snapshot.url.toString().split('/category')[1];
-    const rootCatName = '/' + this.currentCategoryUri.split('/')[1];
-    // TODO: use this.route.snapshot.url instead of internal this.route.snapshot['_routerState'].url
-    this.categoriesService.getCategory(rootCatName).subscribe((data: Category) => {
-      this.topLevelCategory = data;
+    this.route.data.subscribe((data: { category: Category }) => {
+      this.category = data.category;
+      this.currentCategoryUri = this.route.snapshot.url.map(x => x.path).join('/');
+      this.categoriesService.getCategory(this.route.snapshot.url[0].toString()).subscribe((categoryData: Category) => {
+        this.topLevelCategory = categoryData;
+      });
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.loadTopLevelCategory();
   }
 }
 
