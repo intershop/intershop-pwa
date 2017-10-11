@@ -17,7 +17,6 @@ import { ApiService } from '../services/api.service';
 import { CacheCustomService } from '../services/cache/cache-custom.service';
 import { EncryptDecryptService } from '../services/cache/encrypt-decrypt.service';
 import { CartStatusService } from '../services/cart-status/cart-status.service';
-import { CategoryNavigationService } from '../services/category-navigation.service';
 import { CustomErrorHandler } from '../services/custom-error-handler';
 import { translateFactory } from '../services/custom-translate-loader';
 import { ErrorCodeMappingService } from '../services/error-code-mapping.service';
@@ -60,8 +59,7 @@ import { ProductCompareService } from '../services/product-compare/product-compa
     CurrentLocaleService,
     CartStatusService,
     GlobalConfiguration,
-    ErrorCodeMappingService,
-    CategoryNavigationService
+    ErrorCodeMappingService
   ],
   exports: [
     FooterModule,
