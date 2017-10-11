@@ -46,6 +46,6 @@ export class SubCategoryNavigationComponent implements OnInit {
   }
 
   getCategoryUri(category: Category): string {
-    return category.uri ? category.uri.split('/categories')[1] : '';
+    return category.uri ? category.uri.split('/categories/')[1] : '';
   }
 }
