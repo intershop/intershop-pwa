@@ -21,7 +21,7 @@ export class CategoryNavigationComponent implements OnInit, OnChanges {
   }
 
   loadTopLevelCategory() {
-    this.currentCategoryUri = this.route.snapshot['_routerState'].url.split('/category')[1];
+    this.currentCategoryUri = this.route.snapshot.url.toString().split('/category')[1];
     const rootCatName = '/' + this.currentCategoryUri.split('/')[1];
     // TODO: use this.route.snapshot.url instead of internal this.route.snapshot['_routerState'].url
     this.categoriesService.getCategory(rootCatName).subscribe((data: Category) => {
