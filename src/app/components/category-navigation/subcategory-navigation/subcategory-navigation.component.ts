@@ -11,7 +11,6 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 
 export class SubCategoryNavigationComponent implements OnInit {
   @Input() category: Category;
-  @Input() selectedCategory: Category;
   @Input() selectedCategoryUri: string;
   expanded = false;
   expandedSubCategory: SubCategoryNavigationComponent;
@@ -22,19 +21,17 @@ export class SubCategoryNavigationComponent implements OnInit {
     this.expandIfSelected();
   }
 
-  private expandIfSelected() {
-    if (this.isCategoryPathSelected(this.category)) {
+  expandIfSelected() {
+    if (this.selectedCategoryUri.startsWith(this.getCategoryUri(this.category))) {
       this.expand();
     }
   }
 
-  private isCategoryPathSelected(category: Category): boolean {
-    if (!category.uri || this.selectedCategoryUri.startsWith(category.uri.split('/categories')[1])) {
-      return true;
-    }
+  isSelectedCategory(category) {
+    return category.uri && this.selectedCategoryUri === this.getCategoryUri(category);
   }
 
-  private expand() {
+  expand() {
     if (this.category.subCategories) {
       this.expanded = true;
       return;
@@ -45,12 +42,16 @@ export class SubCategoryNavigationComponent implements OnInit {
     }
   }
 
-  private loadSubCategories() {
-    const uri = this.category.uri.split('/categories')[1];
+  loadSubCategories() {
+    const uri = this.getCategoryUri(this.category);
     this.categoriesService.getCategory(uri).subscribe((data: any) => {
       this.expanded = true;
       this.category = data;
     });
+  }
+
+  getCategoryUri(category: Category): string {
+   return category.uri ?  category.uri.split('/categories')[1] : '';
   }
 }
 
