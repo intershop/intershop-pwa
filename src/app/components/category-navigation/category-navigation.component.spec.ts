@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
@@ -40,7 +40,11 @@ fdescribe('Category Navigation Component', () => {
   }));
 
   it('should be created', () => {
-    when(activatedRoute.snapshot['_routerState']).thenReturn('inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501');
+    const url = Array.of(UrlSegment);
+
+    const url1: UrlSegment = new UrlSegment('', {'dsdsds': 'sassasa' });
+
+    when(activatedRoute.snapshot.url).thenReturn('inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501');
     expect(component).toBeTruthy();
   });
 
