@@ -11,24 +11,15 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 
 export class SubCategoryNavigationComponent implements OnInit {
   @Input() category: Category;
-  @Input() selectedCategoryUri: string;
+  @Input() currentCategoryUri: string;
   expanded = false;
-  expandedSubCategory: SubCategoryNavigationComponent;
-  childSubCategories: SubCategoryNavigationComponent[] = [];
+
   constructor(private localizeRouterService: LocalizeRouterService, private categoriesService: CategoriesService) { }
 
   ngOnInit() {
-    this.expandIfSelected();
-  }
-
-  expandIfSelected() {
-    if (this.selectedCategoryUri.startsWith(this.getCategoryUri(this.category))) {
+    if (this.currentCategoryUri.startsWith(this.getCategoryUri(this.category))) {
       this.expand();
     }
-  }
-
-  isSelectedCategory(category) {
-    return category.uri && this.selectedCategoryUri === this.getCategoryUri(category);
   }
 
   expand() {
@@ -37,9 +28,13 @@ export class SubCategoryNavigationComponent implements OnInit {
       return;
     }
 
-    if (!this.category.subCategories && this.category.hasOnlineSubCategories) {
+    if (this.category.hasOnlineSubCategories) {
       this.loadSubCategories();
     }
+  }
+
+  isCurrentCategory(category) {
+    return category.uri && this.currentCategoryUri === this.getCategoryUri(category);
   }
 
   loadSubCategories() {
@@ -51,8 +46,6 @@ export class SubCategoryNavigationComponent implements OnInit {
   }
 
   getCategoryUri(category: Category): string {
-   return category.uri ?  category.uri.split('/categories')[1] : '';
+    return category.uri ? category.uri.split('/categories')[1] : '';
   }
 }
-
-
