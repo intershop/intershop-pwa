@@ -6,11 +6,13 @@ import { CategoryNavigationComponent } from '../components/category-navigation/c
 import { ProductListComponent } from '../components/product-list/product-list.component';
 import { ProductTileComponent } from '../components/product-tile/product-tile.component';
 import { DisableIconDirective } from '../directives/disable-icon.directive';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    SharedModule
   ],
   declarations: [
     CategoryListComponent,
