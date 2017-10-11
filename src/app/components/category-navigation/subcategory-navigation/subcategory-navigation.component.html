@@ -1,6 +1,6 @@
     <ul *ngIf="expanded" class="filter-list">
        <li *ngFor="let subcategory of category?.subCategories" class="filter-item">
-           <a  class="filter-item-name" [routerLink]="localizeRouterService.translateRoute(categoriesService.generateCategoryRoute(subcategory))">{{subcategory.name}} </a>
+           <a  class="filter-item-name"  [ngClass]="isSelectedCategory(subcategory) == true? 'filter-selected' : ''" [routerLink]="localizeRouterService.translateRoute(categoriesService.generateCategoryRoute(subcategory))">{{subcategory.name}} </a>
               <is-subcategory-navigation [selectedCategoryUri] = "selectedCategoryUri"  [category]="subcategory"  isRemoveHost></is-subcategory-navigation>
         </li>
     </ul>
