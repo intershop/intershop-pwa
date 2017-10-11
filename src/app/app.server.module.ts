@@ -16,7 +16,7 @@ import { LocalizeRouterSettings } from './services/routes-parser-locale-currency
 export class TranslateUniversalLoader implements TranslateLoader {
   public getTranslation(lang: string): Observable<any> {
     return Observable.create((observer: Observer<any>) => {
-      const file = join(process.cwd(), 'dist', 'server', 'assets', 'i18n', `${lang}.json`);
+      const file = join(process.cwd(), 'browser', 'assets', 'i18n', `${lang}.json`);
       if (!existsSync(file)) {
         const errString = `Localization file '${file}' not found!`;
         console.error(errString);
