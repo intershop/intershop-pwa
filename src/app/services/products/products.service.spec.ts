@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { instance, mock, when, anything, verify } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../api.service';
 import { ProductListService } from './products.service';
 
