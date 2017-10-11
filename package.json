@@ -18,7 +18,7 @@
     "webpack:server": "webpack --config webpack.server.config.js --progress=false --colors",
     "webpack:server:prod": "webpack --config webpack.server.prod.config.js --progress=false --colors",
     "serve:static": "cd dist/browser && http-server",
-    "serve:dynamic": "node dist/server",
+    "serve:dynamic": "cd dist && node server",
     "start:static": "npm run build:static && npm run serve:static -- -p 4000",
     "start:dynamic": "npm run build:dynamic && npm run serve:dynamic",
     "start:dynamic:prod": "npm run build:dynamic:prod && npm run serve:dynamic"

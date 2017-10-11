@@ -79,7 +79,7 @@ task prepareDist {
 }
 npmInstall.finalizedBy(prepareDist)
 task dist(type: NpmTask, dependsOn:npmInstall, description: 'build npm distribution to directory `dist`', group:'Node') {
-    args = ['run', 'build']
+    args = ['run', 'build', '--silent', '--', '--progress=false']
     inputs.dir('src')
     inputs.files(fileTree(dir: projectDir, includes : ['*.js', '*.json']))
     outputs.dir('dist')

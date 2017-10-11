@@ -13,6 +13,7 @@ function universalTest {
   res=$?
   echo -n "TEST $NUM: searching '$GREP' in '$URL': " >&2
   [ "$res" -eq "0" ] && echo "SUCCESS" >&2 || echo "FAILURE" >&2
+  [ "$res" -ne "0" ] && curl "$URL"
   return $res
 }
 
@@ -23,11 +24,14 @@ testmatrix[2,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders/584
 testmatrix[2,1]="router-outlet><is-category-page>"
 testmatrix[3,0]="http://localhost:4000/en_US/USD/login"
 testmatrix[3,1]="Forgot your password?"
-#testmatrix[4,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
-testmatrix[4,1]="<h3>Webcams Mock</h3>"
-#testmatrix[5,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders/584"
-testmatrix[5,1]="add-to-compare"
-lasttest=5
+testmatrix[4,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
+testmatrix[4,1]="<h1>Cameras</h1>"
+# Product-Tile related
+#testmatrix[5,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
+testmatrix[5,1]="<h3>Webcams Mock</h3>"
+#testmatrix[6,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders/584"
+testmatrix[6,1]="add-to-compare"
+lasttest=6
 
 
 testno=1

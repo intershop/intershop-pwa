@@ -40,6 +40,18 @@ Running `ng serve --port 4300` will start the server on different port than the 
 
 Running `ng serve --open` will automatically open a new browser tab with the started application. The different start options can be combined.
 
+## Deployment
+
+Deployments are generated to the `dist` folder of the project.
+
+Use `npm run build` to get an application using browser rendering. All the files under `dist/browser` have to be served statically.
+
+Use `npm run build:static` to generate a prerendered version. All the files under `dist/browser` have to be served statically. Some paths supplied by `static.paths.js` are pre-rendered to speed up browser-side bootstrapping.
+
+Use `npm run build:dynamic` to generate the angular universal enabled version. On the server the `dist/server.js` script has to be executed with `node`.
+
+see also [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration)
+
 ## Running unit tests
 
 Run `ng test` to start an on the fly test running environment or `gradlew karma` to execute the unit tests via [Karma](https://karma-runner.github.io) once.
