@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { RemoveHostDirective } from '../../directives/remove-host.directive';
 import { SharedModule } from '../../modules/shared.module';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { CategoriesService } from '../../services/categories/categories.service';
@@ -25,7 +24,7 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
   ],
   exports: [
     HeaderComponent,
-    ProductCompareStatusComponent
+    ProductCompareStatusComponent,
   ],
   declarations: [
     HeaderComponent,
@@ -36,12 +35,12 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
     LanguageSwitchComponent,
     HeaderNavigationComponent,
     LoginStatusComponent,
-    SubCategoryNavigationComponent,
-    RemoveHostDirective
+    SubCategoryNavigationComponent
   ],
   providers: [AccountLoginService, CategoriesService, SearchBoxService,
     WishListService
   ]
+
 })
 
 export class HeaderModule {
