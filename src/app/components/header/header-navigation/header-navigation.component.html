@@ -1,12 +1,12 @@
-<div class="main-navigation col-sm-8 col-md-9" role="navigation">
-  <ul class="navbar-nav main-navigation-list">
-    <li class="home hidden-xs">
-      <a [routerLink]="localize.translateRoute('/home')" title="home"><span class="glyphicon glyphicon-home"></span></a>
-    </li>
-    <li *ngFor="let category of categories" class="dropdown" [ngClass]="category.isOpenedToggle ? 'open': ''">
-      <a [routerLink]="localize.translateRoute(categoriesService.generateCategoryRoute(category))" attr.data-testing-id="{{category.id}}-link">{{category.name}}</a>
-      <a (click)="category.isOpenedToggle = !category.isOpenedToggle" class="dropdown-toggle visible-xs"><span class="glyphicon glyphicon-plus" [ngClass]="category.isOpenedToggle ? 'glyphicon-minus': 'glyphicon-plus'"></span></a>
-      <is-subcategory-navigation [category]="category" [subCategoriesDepth]="1" isRemoveHost></is-subcategory-navigation>
-    </li>
-  </ul>
-</div>
+<ul class="navbar-nav main-navigation-list">
+  <li class="home hidden-xs">
+    <a [routerLink]="localize.translateRoute('/home')" title="home"><span class="glyphicon glyphicon-home"></span></a>
+  </li>
+  <li *ngFor="let category of categories" class="dropdown" [ngClass]="category.isOpenedToggle ? 'open' : ''">
+    <a [routerLink]="localize.translateRoute(categoriesService.generateCategoryRoute(category))" attr.data-testing-id="{{category.id}}-link" [style.width]="category.hasOnlineSubCategories ? '' : '100%'">{{category.name}}</a>
+    <a *ngIf="category.subCategories" (click)="category.isOpenedToggle = !category.isOpenedToggle" class="dropdown-toggle visible-xs">
+      <span class="glyphicon" [ngClass]="category.isOpenedToggle ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+    </a>
+    <is-subcategory-navigation [category]="category" [subCategoriesDepth]="1" isRemoveHost></is-subcategory-navigation>
+  </li>
+</ul>
