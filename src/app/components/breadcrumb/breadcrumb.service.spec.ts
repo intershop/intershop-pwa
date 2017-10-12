@@ -1,43 +1,21 @@
 import { BreadcrumbService } from './breadcrumb.service';
 
 describe('Breadcrumb Service', () => {
-    let breadcrumbService: BreadcrumbService;
-    beforeEach(() => {
-        breadcrumbService = new BreadcrumbService();
-    });
+  let breadcrumbService: BreadcrumbService;
+  beforeEach(() => {
+    breadcrumbService = new BreadcrumbService();
+  });
 
-    it('should confirm that call back for a regular expression is called and regular expression is executed for the matching route  ', () => {
-        breadcrumbService.addCallbackForRouteRegex('.*%.*', (route) => {
-            return route.replace(/%20/g, ' ').replace(/%26/g, '&');
-        });
+  it('should return true if regular expression matches a url', () => {
+    const toBeHidden = breadcrumbService.isRouteHidden('/category');
 
-        const formattedRout = breadcrumbService.getFriendlyNameForRoute('Digital%20Cameras');
-        expect(formattedRout).toBe('Digital Cameras');
-    });
+    expect(toBeHidden).toBe(true);
+  });
 
-    describe(' Hide a url in breadcrumbs', () => {
-        it('should confirm the length of hideRoutesRegex to be 1', () => {
-            expect(breadcrumbService.hideRoutesRegex.length).toBe(0);
+  it('should return false if regular expression does not matche a url', () => {
+    const toBeHidden = breadcrumbService.isRouteHidden('/family');
 
-            breadcrumbService.hideRouteRegex('/category$');
+    expect(toBeHidden).toBe(false);
+  });
 
-            expect(breadcrumbService.hideRoutesRegex.length).toBe(1);
-        });
-
-        it('should return true if regular expression matches a url', () => {
-            breadcrumbService.hideRouteRegex('/category$');
-
-            const toBeHidden = breadcrumbService.isRouteHidden('/category');
-
-            expect(toBeHidden).toBe(true);
-        });
-
-        it('should return false if regular expression does not matche a url', () => {
-            breadcrumbService.hideRouteRegex('/category$');
-
-            const toBeHidden = breadcrumbService.isRouteHidden('/family');
-
-            expect(toBeHidden).toBe(false);
-        });
-    });
 });

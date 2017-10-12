@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BreadcrumbService } from '../components/breadcrumb/breadcrumb.service';
 import { AuthGuard } from '../services/auth-guard.service';
 import { LocalizeRouterModule } from '../services/routes-parser-locale-currency/localize-router.module';
 
@@ -24,16 +23,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class PagesRoutingModule {
-  constructor(private breadcrumbService: BreadcrumbService) {
-    breadcrumbService.hideRouteRegex('/category$'); // Hide breadrumb string for which path ends with "/category"
-    breadcrumbService.hideRouteRegex('/en_US$'); // Hide breadrumb string for which path ends with "/category"
-    breadcrumbService.hideRouteRegex('/USD$'); // Hide breadrumb string for which path ends with "/category"
 
-
-    // Replace 'white space' and '&' in breadcrumb string
-    this.breadcrumbService.addCallbackForRouteRegex('.*%.*', (route) => {
-      return route.replace(/%20/g, ' ').replace(/%26/g, '&');
-    });
-
-  }
 }

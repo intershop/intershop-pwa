@@ -1,6 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BreadcrumbService } from './breadcrumb.service';
+
+class BreadCrumbLinkNames {
+  name: string;
+  link: string;
+  constructor(name: string, link: string) {
+    this.name = name;
+    this.link = link;
+  }
+}
 
 /**
  * ng2-breadcrumb reference
@@ -11,10 +20,14 @@ import { BreadcrumbService } from './breadcrumb.service';
   selector: 'is-breadcrumb',
   templateUrl: './breadcrumb.component.html'
 })
-export class BreadcrumbComponent implements OnInit, OnDestroy {
 
-  public _urls: string[] = [];
+export class BreadcrumbComponent implements OnInit, OnChanges, OnDestroy {
+
+  // public _urls: string[] = [];
+  public _urls: BreadCrumbLinkNames[] = [];
   public _routerSubscription: any;
+  @Input() friendlyPath: string;
+  @Input() startAfter: string;
 
   constructor(
     private router: Router,
@@ -22,32 +35,44 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    if (!this.friendlyPath && !this.startAfter) {
+      this.generateBreadcrumbTrail(this.router.url, this.router.url);
+    }
     this._routerSubscription = this.router.events.subscribe((navigationEnd: NavigationEnd) => {
       if (navigationEnd instanceof NavigationEnd) {
         this._urls.length = 0; // Fastest way to clear out array
-        this.generateBreadcrumbTrail(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
+        this.generateBreadcrumbTrail(this.getUrlWithNames(navigationEnd.url), navigationEnd.url);
       }
     });
   }
 
-  generateBreadcrumbTrail(url: string): void {
-    if (!this.breadcrumbService.isRouteHidden(url)) {
-      // Add url to beginning of array (since the url is being recursively broken down from full url to its parent)
-      this._urls.unshift(url);
-    }
-
-    if (url.lastIndexOf('/') > 0) {
-      this.generateBreadcrumbTrail(url.substr(0, url.lastIndexOf('/'))); // Find last '/' and add everything before it as a parent route
-    }
+  ngOnChanges(): void {
+    this._urls.length = 0;
+    this.generateBreadcrumbTrail(this.getUrlWithNames(this.router.url), this.router.url);
   }
 
-  navigateTo(url: string) {
-    this.router.navigateByUrl(url);
-    return false;
+  getUrlWithNames(url): string {
+    if (this.friendlyPath && this.startAfter) {
+      const base = '/' + this.startAfter + '/';
+      url = url.substr(0, url.indexOf(base) + base.length) + this.friendlyPath;
+    }
+    return url;
+  }
+
+  generateBreadcrumbTrail(urlWithNames: string, urlWithIds: string): void {
+    if (!this.breadcrumbService.isRouteHidden(urlWithNames)) {
+      // Add url to beginning of array (since the url is being recursively broken down from full url to its parent)
+      this._urls.unshift(new BreadCrumbLinkNames(urlWithNames, urlWithIds));
+    }
+
+    if (urlWithNames.lastIndexOf('/') > 0) {
+      this.generateBreadcrumbTrail(urlWithNames.substr(0, urlWithNames.lastIndexOf('/')), urlWithIds.substr(0, urlWithIds.lastIndexOf('/'))); // Find last '/' and add everything before it as a parent route
+    }
+
   }
 
   friendlyName(url: string): string {
-    return !url ? '' : this.breadcrumbService.getFriendlyNameForRoute(url);
+    return !url ? '' : decodeURIComponent(url.substr(url.lastIndexOf('/') + 1, url.length));
   }
 
   ngOnDestroy(): void {
@@ -56,3 +81,5 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     }
   }
 }
+
+

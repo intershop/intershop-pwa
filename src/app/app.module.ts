@@ -6,8 +6,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
-import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { MockInterceptor } from './interceptors/mock-interceptor';
 import { CoreModule } from './modules/core.module';
@@ -15,8 +13,7 @@ import { PageModule } from './pages/pages.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    BreadcrumbComponent
+    AppComponent
   ],
   imports: [
     BrowserModule.withServerTransition({
@@ -31,7 +28,6 @@ import { PageModule } from './pages/pages.module';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
-    BreadcrumbService
   ],
   bootstrap: [AppComponent]
 })
