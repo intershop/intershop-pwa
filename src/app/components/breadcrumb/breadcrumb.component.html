@@ -4,9 +4,8 @@
       <span class="breadcrumb-list-separator">/</span>
     </li>
     <li *ngFor="let url of _urls; let last = last" class="breadcrumbs-list" [ngClass]="{'breadcrumbs-list-active' : last}">
-      <a class="breadcrumbs-list-link" *ngIf="!last" (click)="navigateTo(url)" href="{{url}}">{{friendlyName(url)}}</a>
-      <span *ngIf="last">{{friendlyName(url)}}</span>
-      <span *ngIf="!last" class="breadcrumb-list-separator">/</span>
+      <a class="breadcrumbs-list-link" *ngIf="!last" [routerLink]="url.link">{{friendlyName(url.name)}}</a>
+      <span *ngIf="!last" class="breadcrumb-list-separator">/</span> {{last ? friendlyName(url.name) : null}}
     </li>
   </ol>
 </div>

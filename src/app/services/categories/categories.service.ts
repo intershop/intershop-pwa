@@ -47,4 +47,22 @@ export class CategoriesService implements Resolve<Category> {
   generateCategoryRoute(category: Category): string {
     return '/category/' + category.uri.split('/categories/')[1];
   }
+
+  // This functionality will be done at API in future. Takes uri of the current category and iterates through all the subcategories to replace the IDs to their names and returns url with names instead of IDs.
+  getFriendlyPathOfCurrentCategory(currentUri): Observable<string> {
+    return this.getTopLevelCategories(2).flatMap((categoryData: any) => {
+      return Observable.of(this.createFriendlyPath({ subCategories: categoryData }, currentUri.split('/')));
+    });
+  }
+
+  createFriendlyPath(categoriesData, arrPath, friendlyPath = ''): string {
+    if (!arrPath.length) {
+      return friendlyPath.replace('/', '');
+    }
+    const matchedCategory = categoriesData.subCategories.find((category) => {
+      return category.id === arrPath[0];
+    });
+    friendlyPath += '/' + encodeURIComponent(matchedCategory.name); // friendlyPath encodes '/' in name
+    return this.createFriendlyPath(matchedCategory, arrPath.splice(1), friendlyPath);
+  }
 }

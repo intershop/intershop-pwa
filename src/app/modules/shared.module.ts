@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
+import { BreadcrumbService } from '../components/breadcrumb/breadcrumb.service';
 import { FormControlErrorComponent } from '../components/global-form-validation/form-control-error.component';
 import { FormGroupValidationComponent } from '../components/global-form-validation/form-group-validation.component';
 import { FormValidationDirective } from '../directives/form-validation.directive';
@@ -15,17 +17,20 @@ import { FormValidationDirective } from '../directives/form-validation.directive
         RouterModule,
         ReactiveFormsModule,
         FormGroupValidationComponent,
-        FormValidationDirective
+        FormValidationDirective,
+        BreadcrumbComponent
     ],
     declarations: [
         FormGroupValidationComponent,
         FormControlErrorComponent,
-        FormValidationDirective
+        FormValidationDirective,
+        BreadcrumbComponent
     ],
     entryComponents: [FormControlErrorComponent],
     imports: [
-        CommonModule
+        CommonModule,
+        RouterModule
     ],
-    providers: []
+    providers: [BreadcrumbService]
 })
 export class SharedModule { }
