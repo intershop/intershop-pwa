@@ -7,7 +7,7 @@ import { LocalizeRouterService } from '../../services/routes-parser-locale-curre
 export class RegistrationGuard implements CanActivate {
 
   constructor(private globalConfiguration: GlobalConfiguration,
-    private localize: LocalizeRouterService, private router: Router) {
+    private localizeRouter: LocalizeRouterService, private router: Router) {
 
   }
 
@@ -15,17 +15,25 @@ export class RegistrationGuard implements CanActivate {
     return this.globalConfiguration.getApplicationSettings().toPromise().then(settings => {
       if (!settings.useSimpleAccount) {
         return true;
-      } else {
-        this.router.config[0].children = this.router.config[0].children.filter(item => {
-          return item.path !== 'register';
-        });
-        this.router.config[0].children.push(
-          { path: 'register', loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' }
-        );
-        this.localize.navigateToRoute(state.url.slice(1));
-        return false;
       }
+      this.router.config.forEach(routes => {
+        this.modifyExisitingRoute(routes);
+      });
+      this.localizeRouter.navigateToRoute(state.url.slice(1));
+      return false;
     });
+  }
+
+  modifyExisitingRoute(routes) {
+    const register = 'register';
+    if (routes.children) {
+      routes.children.forEach(function (children, index) {
+        if (children.path === register) {
+          routes.children.splice(index, 1);
+          routes.children[index] = { path: register, loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' };
+        }
+      });
+    }
   }
 }
 
