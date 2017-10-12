@@ -1,4 +1,5 @@
 import { Location } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { Routes } from '@angular/router';
@@ -10,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
+import { UniversalMockInterceptor } from './interceptors/universal-mock-interceptor';
 import { LocalizeRouterLoader } from './services/router-parser-loader';
 import { LocalizeRouterSettings } from './services/routes-parser-locale-currency/localize-router.config';
 
@@ -45,6 +47,9 @@ export function translateLoaderFactory() {
         useFactory: translateLoaderFactory
       }
     })
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
   ],
   bootstrap: [
     AppComponent
