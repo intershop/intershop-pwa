@@ -14,7 +14,7 @@ export class SubCategoryNavigationComponent implements OnInit {
   @Input() currentCategoryUri: string;
   expanded = false;
 
-  constructor(private localizeRouterService: LocalizeRouterService, private categoriesService: CategoriesService) { }
+  constructor(public localizeRouterService: LocalizeRouterService, private categoriesService: CategoriesService) { }
 
   ngOnInit() {
     if (this.currentCategoryUri.startsWith(this.getCategoryUri(this.category))) {
@@ -22,7 +22,11 @@ export class SubCategoryNavigationComponent implements OnInit {
     }
   }
 
-  expand() {
+  public isCurrentCategory(category) {
+    return category.uri && this.currentCategoryUri === this.getCategoryUri(category);
+  }
+
+  private expand() {
     if (this.category.subCategories) {
       this.expanded = true;
       return;
@@ -33,11 +37,7 @@ export class SubCategoryNavigationComponent implements OnInit {
     }
   }
 
-  isCurrentCategory(category) {
-    return category.uri && this.currentCategoryUri === this.getCategoryUri(category);
-  }
-
-  loadSubCategories() {
+  private loadSubCategories() {
     const uri = this.getCategoryUri(this.category);
     this.categoriesService.getCategory(uri).subscribe((data: any) => {
       this.expanded = true;
@@ -45,7 +45,7 @@ export class SubCategoryNavigationComponent implements OnInit {
     });
   }
 
-  getCategoryUri(category: Category): string {
+  private getCategoryUri(category: Category): string {
     return category.uri ? category.uri.split('/categories/')[1] : '';
   }
 }
