@@ -1,60 +1,81 @@
 import { Component } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { instance, mock } from 'ts-mockito';
+import { verify } from 'ts-mockito/lib/ts-mockito';
 import { SharedModule } from '../../../modules/shared.module';
+import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
+import { WishListModel } from '../../../services/wishlists/wishlists.model';
+import { WishListService } from '../../../services/wishlists/wishlists.service';
 import { WishListComponent } from './wishlist-status.component';
 
 @Component({
-    template: ''
+  template: ''
 })
 class DummyComponent {
 }
 
-xdescribe('Wish List Component', () => {
-    let fixture: ComponentFixture<WishListComponent>;
-    let component: WishListComponent;
-    let element: HTMLElement;
-    let translateService: TranslateService;
+describe('Wish List Component', () => {
+  let fixture: ComponentFixture<WishListComponent>;
+  let component: WishListComponent;
+  let element: HTMLElement;
+  let wishListServiceMock: BehaviorSubject<WishListModel>;
+  let localizeRouterServiceMock: LocalizeRouterService;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                SharedModule,
-                RouterTestingModule.withRoutes([
-                    { path: 'wishlist', component: DummyComponent }
-                ]),
-                TranslateModule.forRoot()
-            ],
-            providers: [TranslateService],
-            declarations: [WishListComponent, DummyComponent]
-        }).compileComponents();
+  beforeEach(() => {
+    wishListServiceMock = new BehaviorSubject({itemsCount: 1} as WishListModel);
+    localizeRouterServiceMock = mock(LocalizeRouterService);
 
-        translateService = TestBed.get(TranslateService);
-        translateService.setDefaultLang('en');
-        translateService.use('en');
-        fixture = TestBed.createComponent(WishListComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-        fixture.detectChanges();
+    TestBed.configureTestingModule({
+      imports: [
+        SharedModule,
+        RouterTestingModule.withRoutes([
+          { path: 'wishlist', component: DummyComponent }
+        ]),
+        TranslateModule.forRoot()
+      ],
+      providers: [
+        { provide: WishListService, useValue: wishListServiceMock },
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+      ],
+      declarations: [WishListComponent, DummyComponent]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(WishListComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    fixture.detectChanges();
+  });
+
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have itemCount of 1 when mock data supplies 1', () => {
+    expect(component.itemCount).toBe(1);
+  });
+
+  it('should display itemCount of 1 when mock data supplies 1', () => {
+    const itemCount = element.querySelector('#compare-count').textContent;
+
+    expect(itemCount).toBe('1');
+  });
+
+  it('should not display counter when item count is 0', () => {
+    wishListServiceMock.next({itemsCount: 0} as WishListModel);
+    fixture.detectChanges();
+
+    const itemCountElement = element.querySelector('#compare-count');
+    expect(itemCountElement).toBeFalsy();
+  });
+
+  it('should go to URL "wishlist" when clicked', () => {
+    element.querySelector('a').click();
+
+    fixture.whenStable().then(() => {
+      verify(localizeRouterServiceMock.navigateToRoute('/wishlist')).once();
     });
-
-    it('should check itemCount is equal to 1', () => {
-        expect(component.itemCount).toBeGreaterThan(0);
-    });
-
-    it('should check itemCount on the template to be item', () => {
-        const itemCount = element.querySelector('#compare-count').textContent;
-
-        expect(itemCount).toBeGreaterThan(0);
-    });
-
-    it('should go to URL "wishlist"', async(inject([Router, Location], (router: Router, location: Location) => {
-        element.querySelector('a').click();
-
-        fixture.whenStable().then(() => {
-            expect(location.href).toContain('wishlist');
-        });
-    })));
+  });
 });
