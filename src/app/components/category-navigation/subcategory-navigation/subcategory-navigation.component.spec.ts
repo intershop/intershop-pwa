@@ -46,12 +46,18 @@ fdescribe('SubCategory Navigation Component', () => {
   });
 
   it(`should expand if category is selected`, () => {
-    component.currentCategoryUri = '/Computers';
+    component.currentCategoryUri = 'Computers/06';
     component.category.uri = '/categories/Computers';
     fixture.detectChanges();
     expect(component.expanded).toEqual(true);
   });
 
+   it(`should  return true (isCurrentCategory) if current category uri natch with category uri`, () => {
+    component.currentCategoryUri = 'Computers/06';
+    component.category.uri = '/categories/Computers/06';
+    fixture.detectChanges();
+    expect(component.isCurrentCategory(component.category)).toEqual(true);
+  });
 
   //  it(`should add subcategory`, () => {
   //   const subCatComp = new SubCategoryNavigationComponent(localizeServiceMock, categoriesServiceMock);

@@ -16,40 +16,36 @@ fdescribe('Category Navigation Component', () => {
   let component: CategoryNavigationComponent;
   let fixture: ComponentFixture<CategoryNavigationComponent>;
   let categoriesServiceMock: CategoriesService;
-  let activatedRoute: ActivatedRoute;
   const category: Category = new Category();
 
   beforeEach(async(() => {
     categoriesServiceMock = mock(CategoriesService);
-    activatedRoute = mock(ActivatedRoute);
+    const activatedRoute = {
+      snapshot: {
+        url: ['']
+      },
+      data: Observable.of({ category: '' })
+
+    };
+
     TestBed.configureTestingModule({
       declarations: [CategoryNavigationComponent,
         MockComponent({ selector: 'is-subcategory-navigation', template: 'Subcategory Navigation Template' })],
       imports: [RouterTestingModule],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) }
+        { provide: ActivatedRoute, useValue: activatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(CategoryNavigationComponent);
       component = fixture.componentInstance;
-      //  when(categoriesServiceMock.getCurrentRootCategory()).thenReturn(Observable.of(category));
-      fixture.detectChanges();
     });
   }));
 
   it('should be created', () => {
-    const url = Array.of(UrlSegment);
-
-    const url1: UrlSegment = new UrlSegment('', {'dsdsds': 'sassasa' });
-
-    when(activatedRoute.snapshot.url).thenReturn('inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501');
+    when(categoriesServiceMock.getCategory(anything())).thenReturn(Observable.of(category));
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-
-  // it('should call getCurrentRootCategory', () => {
-  //   verify(categoriesServiceMock.getCurrentRootCategory()).once();
-  //   expect(component.rootCategory).toEqual(category);
-  // });
 });
