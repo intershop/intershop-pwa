@@ -58,7 +58,7 @@ describe('SubCategory Navigation Component', () => {
   });
 
   it('should call CategoriesService.getCategory if subcategories data is not loaded', () => {
-   component.category.subCategories = null;
+    component.category.subCategories = null;
     component.category.hasOnlineSubCategories = true;
     fixture.detectChanges();
     verify(categoriesServiceMock.getCategory(anything())).once();
