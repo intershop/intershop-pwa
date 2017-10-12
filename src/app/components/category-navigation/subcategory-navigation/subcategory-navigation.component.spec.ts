@@ -10,7 +10,7 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 import { MockComponent } from '../../mock.component';
 import { SubCategoryNavigationComponent } from './subcategory-navigation.component';
 
-fdescribe('SubCategory Navigation Component', () => {
+describe('SubCategory Navigation Component', () => {
   let component: SubCategoryNavigationComponent;
   let fixture: ComponentFixture<SubCategoryNavigationComponent>;
   let categoriesServiceMock: CategoriesService;
@@ -37,6 +37,8 @@ fdescribe('SubCategory Navigation Component', () => {
       category.hasOnlineSubCategories = true;
       category.subCategories = categories;
       component.category = category;
+      component.currentCategoryUri = 'Computers/06';
+      component.category.uri = '/categories/Computers/06';
       when(categoriesServiceMock.getCategory(anything())).thenReturn(Observable.of(category));
     });
   }));
@@ -46,67 +48,19 @@ fdescribe('SubCategory Navigation Component', () => {
   });
 
   it(`should expand if category is selected`, () => {
-    component.currentCategoryUri = 'Computers/06';
-    component.category.uri = '/categories/Computers';
     fixture.detectChanges();
     expect(component.expanded).toEqual(true);
   });
 
-   it(`should  return true (isCurrentCategory) if current category uri natch with category uri`, () => {
-    component.currentCategoryUri = 'Computers/06';
-    component.category.uri = '/categories/Computers/06';
+  it(`should  return true (isCurrentCategory) if current category uri match with category uri`, () => {
     fixture.detectChanges();
     expect(component.isCurrentCategory(component.category)).toEqual(true);
   });
 
-  //  it(`should add subcategory`, () => {
-  //   const subCatComp = new SubCategoryNavigationComponent(localizeServiceMock, categoriesServiceMock);
-  //   fixture.detectChanges();
-  //   component.addSubCategory(subCatComp);
-  //   expect(component.childSubCategories.pop()).toEqual(subCatComp);
-  // });
-
-
-  // it(`should subCategoryClicked`, () => {
-  //   const subCatComp = new SubCategoryNavigationComponent(localizeServiceMock, categoriesServiceMock);
-  //   subCatComp.category = category;
-  //   fixture.detectChanges();
-  //   component.addSubCategory(subCatComp);
-  //   component.subCategoryClicked(category);
-  // });
-
-  // it(`should add to parent category `, () => {
-  //   const parentCategory = new SubCategoryNavigationComponent(localizeServiceMock, categoriesServiceMock);
-  //   component.parentCategory = parentCategory;
-  //   component.addToParent();
-  //   fixture.detectChanges();
-  //   expect(parentCategory.childSubCategories.pop()).toEqual(component);
-  // });
-
-  // it(`should navigate to subcategory `, () => {
-  //   fixture.detectChanges();
-  //   component.navigateToSubcategory(category);
-  //   verify(categoriesServiceMock.setCurrentCategory(anything())).once();
-  //   verify(localizeServiceMock.navigateToRoute(anything())).once();
-  // });
-
-  // it(`should be expanded if selected category`, () => {
-  //   component.selectedCategory = component.category;
-  //   fixture.detectChanges();
-  //   expect(component.expanded).toEqual(true);
-  // });
-
-  // it(`should be expanded if selected category 123`, () => {
-  //   component.selectedCategory = new Category();
-  //   component.selectedCategory.uri = '';
-  //   fixture.detectChanges();
-  //   expect(component.expanded).toEqual(false);
-  // });
-
-  // it(`should get sub categories  from server if subCategories not loaded`, () => {
-  //   component.category.subCategories = null;
-  //   component.category.hasOnlineSubCategories = true;
-  //   fixture.detectChanges();
-  //   verify(categoriesServiceMock.getCategories(anything())).once();
-  // });
+  it('should call CategoriesService.getCategory if subcategories data is not loaded', () => {
+   component.category.subCategories = null;
+    component.category.hasOnlineSubCategories = true;
+    fixture.detectChanges();
+    verify(categoriesServiceMock.getCategory(anything())).once();
+  });
 });

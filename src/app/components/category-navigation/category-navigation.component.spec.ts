@@ -12,7 +12,7 @@ import { MockComponent } from '../mock.component';
 import { CategoryNavigationComponent } from './category-navigation.component';
 import { SubCategoryNavigationComponent } from './subcategory-navigation/subcategory-navigation.component';
 
-fdescribe('Category Navigation Component', () => {
+describe('Category Navigation Component', () => {
   let component: CategoryNavigationComponent;
   let fixture: ComponentFixture<CategoryNavigationComponent>;
   let categoriesServiceMock: CategoriesService;
@@ -25,7 +25,6 @@ fdescribe('Category Navigation Component', () => {
         url: ['']
       },
       data: Observable.of({ category: '' })
-
     };
 
     TestBed.configureTestingModule({
@@ -40,12 +39,17 @@ fdescribe('Category Navigation Component', () => {
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(CategoryNavigationComponent);
       component = fixture.componentInstance;
+      when(categoriesServiceMock.getCategory(anything())).thenReturn(Observable.of(category));
     });
   }));
 
   it('should be created', () => {
-    when(categoriesServiceMock.getCategory(anything())).thenReturn(Observable.of(category));
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should call CategoriesService.getCategory', () => {
+    fixture.detectChanges();
+    verify(categoriesServiceMock.getCategory(anything())).once();
   });
 });
