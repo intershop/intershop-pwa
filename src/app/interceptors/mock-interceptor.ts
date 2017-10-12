@@ -17,25 +17,29 @@ export class MockInterceptor implements HttpInterceptor {
    * @returns  Observable<HttpEvent<any>>
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const newUrl = this.getMockUrl(req);
-    if (req.method === 'POST') {
-      req = new HttpRequest('GET', req.url);
-    }
-
-    if (this.requestHasToBeMocked(req)) {
-      console.log(`redirecting '${req.url}' to '${newUrl}'`);
-
-      return next.handle(req.clone({ url: newUrl })).map(event => {
-        if (event instanceof HttpResponse && this.attachToken(req)) {
-          const response = <HttpResponse<any>>event;
-          console.log('attaching dummy token');
-          return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
-        }
-        return event;
-      });
-    } else {
+    if (!this.requestHasToBeMocked(req)) {
       return next.handle(req);
     }
+    const newUrl = this.getMockUrl(req);
+    req = this.modifyRequestMethod(req);
+    console.log(`redirecting '${req.url}' to '${newUrl}'`);
+
+    return next.handle(req.clone({ url: newUrl })).map(event => {
+      if (event instanceof HttpResponse && this.attachToken(req)) {
+        const response = <HttpResponse<any>>event;
+        console.log('attaching dummy token');
+        return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
+      }
+      return event;
+    });
+  }
+
+  modifyRequestMethod(req) {
+    const GET = 'GET';
+    if (req.method !== GET) {
+      req = new HttpRequest(GET, req.url);
+    }
+    return req;
   }
 
 
@@ -70,7 +74,7 @@ export class MockInterceptor implements HttpInterceptor {
    * check if HttpRequest has to be mocked
    */
   public requestHasToBeMocked(req: HttpRequest<any>): boolean {
-    return req.method === 'GET' && this.urlHasToBeMocked(req.url);
+    return this.urlHasToBeMocked(req.url);
   }
 
   public getRestPath(url: string): string {
