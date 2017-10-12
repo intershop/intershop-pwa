@@ -26,10 +26,9 @@ testmatrix[3,0]="http://localhost:4000/en_US/USD/login"
 testmatrix[3,1]="Forgot your password?"
 testmatrix[4,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
 testmatrix[4,1]="<h1>Cameras</h1>"
-# Product-Tile related
-#testmatrix[5,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
+testmatrix[5,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
 testmatrix[5,1]="<h3>Webcams Mock</h3>"
-#testmatrix[6,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders/584"
+testmatrix[6,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders/584"
 testmatrix[6,1]="add-to-compare"
 lasttest=6
 
