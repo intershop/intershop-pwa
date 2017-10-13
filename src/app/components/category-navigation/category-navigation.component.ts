@@ -10,7 +10,7 @@ import { CategoriesService } from '../../services/categories/categories.service'
 })
 
 export class CategoryNavigationComponent implements OnInit {
-  @Input() category: Category;
+  category: Category;
   topLevelCategory: Category;
   currentCategoryUri: string;
 
