@@ -41,7 +41,7 @@ describe('BreadCrumb Component', () => {
 
     it('should confirm the length of the _urls to be 4', () => {
         expect(component._urls.length).toBe(0);
-        component.generateBreadcrumbTrail('category/Home%20Entertainment/family/Digital%20Cameras');
+        component.generateBreadcrumbTrail('category/Home-Entertainment/220/1584');
         expect(component._urls.length).toBe(4);
     });
 
