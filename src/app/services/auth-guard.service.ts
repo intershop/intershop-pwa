@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { AccountLoginService } from './account-login/account-login.service';
-import { JwtService } from './jwt.service';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private jwtService: JwtService,
-              private localize: LocalizeRouterService,
+  constructor(private localize: LocalizeRouterService,
               private accountLoginService: AccountLoginService) {
   }
 
