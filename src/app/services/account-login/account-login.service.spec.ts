@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs/Rx';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { ApiService, JwtService } from '../index';
+import { ApiService } from '../api.service';
+import { JwtService } from '../jwt.service';
 import { UserDetail } from './account-login.model';
-import { AccountLoginService } from './index';
+import { AccountLoginService } from './account-login.service';
 import { UserDetailService } from './user-detail.service';
 
 describe('AccountLogin Service', () => {
