@@ -64,7 +64,7 @@
   "account.login.password.label":"Kennwort",
 
   "ROUTES.home": "home",
-  "ROUTES.category": "category",
+  "ROUTES.category": "Kategory",
   "ROUTES.compare": "compare",
   "ROUTES.login": "login",
   "ROUTES.register": "register",

@@ -39,13 +39,13 @@ describe('Categories Service', () => {
     verify(apiService.get(anything(), anything(), anything(), anything())).once();
   });
 
-  it('should verify getFriendlyPathOfCurrentCategory method returns finalUrl containing names of the categories instead of their IDs', () => {
+  it('should verify getFriendlyPathOfCurrentCategory method returns categoryNamesArray containing names of the categories instead of their IDs', () => {
     when(apiService.get(anything(), anything(), anything(), anything())).thenReturn(Observable.of(categoriesData.elements));
-    let finalUrl;
-    categoriesService.getFriendlyPathOfCurrentCategory('Cameras-Camcorders/1290/832').subscribe(url => {
-      finalUrl = url;
+    let categoryNamesArray;
+    categoriesService.getFriendlyPathOfCurrentCategory('Cameras-Camcorders/1290/832').subscribe(data => {
+      categoryNamesArray = data;
     });
-    expect(finalUrl).toBe('Cameras/Lenses/Covers');
+    expect(categoryNamesArray).toEqual(['Cameras', 'Lenses', 'Covers']);
   });
 });
 

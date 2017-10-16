@@ -1,5 +1,5 @@
 <div class="marketing-area"></div>
-<is-breadcrumb *ngIf="friendlyPath" [startAfter]="'ROUTES.category' | translate" [friendlyPath]="friendlyPath"></is-breadcrumb>
+<is-breadcrumb *ngIf="urlSegmentsArray" [startAfter]="startAfter" [categoryNames]="urlSegmentsArray"></is-breadcrumb>
 <div [ngClass]="category?.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" attr.data-testing-id="{{category?.id}}">
   <div class="row">
 

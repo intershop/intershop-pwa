@@ -48,21 +48,36 @@ export class CategoriesService implements Resolve<Category> {
     return '/category/' + category.uri.split('/categories/')[1];
   }
 
-  // This functionality will be done at API in future. Takes uri of the current category and iterates through all the subcategories to replace the IDs to their names and returns url with names instead of IDs.
-  getFriendlyPathOfCurrentCategory(currentUri): Observable<string> {
+  /**
+   * This functionality will be done at API in future. Takes uri of the current category and iterates through all the * subcategories to replace the IDs to their names and returns url with names instead of IDs.
+   *
+   * Takes current category's uri and returns url with names
+   * @param  {string} currentUri
+   * @returns Observable
+   */
+  getFriendlyPathOfCurrentCategory(currentUri: string): Observable<string[]> {
     return this.getTopLevelCategories(2).flatMap((categoryData: any) => {
-      return Observable.of(this.createFriendlyPath({ subCategories: categoryData }, currentUri.split('/')));
+      const topLevelCategory = new Category();
+      topLevelCategory.subCategories = categoryData;
+      return Observable.of(this.createFriendlyPath(topLevelCategory, currentUri.split('/'), []));
     });
   }
 
-  createFriendlyPath(categoriesData, arrPath, friendlyPath = ''): string {
-    if (!arrPath.length) {
-      return friendlyPath.replace('/', '');
+  /**
+   * Helper function to convert ids to names in category uri
+   * @param  {Category} categoriesData
+   * @param  {string[]} categoryIdsArray
+   * @param  {string[]} categoryNamesArray
+   * @returns string
+   */
+  createFriendlyPath(categoriesData: Category, categoryIdsArray: string[], categoryNamesArray: string[]): string[] {
+    if (!categoryIdsArray.length) {
+      return categoryNamesArray;
     }
     const matchedCategory = categoriesData.subCategories.find((category) => {
-      return category.id === arrPath[0];
+      return category.id === categoryIdsArray[0];
     });
-    friendlyPath += '/' + encodeURIComponent(matchedCategory.name); // friendlyPath encodes '/' in name
-    return this.createFriendlyPath(matchedCategory, arrPath.splice(1), friendlyPath);
+    categoryNamesArray.push(matchedCategory.name);
+    return this.createFriendlyPath(matchedCategory, categoryIdsArray.splice(1), categoryNamesArray);
   }
 }
