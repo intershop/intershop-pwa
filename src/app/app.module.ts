@@ -12,11 +12,14 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { MockInterceptor } from './interceptors/mock-interceptor';
 import { CoreModule } from './modules/core.module';
 import { PageModule } from './pages/pages.module';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { HomePageModule } from './pages/home-page/home-page.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({
@@ -26,7 +29,8 @@ import { PageModule } from './pages/pages.module';
     JsonpModule,
     AppRoutingModule,
     PageModule,
-    CoreModule
+    CoreModule,
+    HomePageModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
