@@ -2,15 +2,6 @@ import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BreadcrumbService } from './breadcrumb.service';
 
-class BreadCrumbLinkNames {
-  name: string;
-  link: string;
-  constructor(name: string, link: string) {
-    this.name = name;
-    this.link = link;
-  }
-}
-
 /**
  * ng2-breadcrumb reference
  * This component shows a breadcrumb trail for available routes the router can navigate to.
@@ -23,10 +14,9 @@ class BreadCrumbLinkNames {
 
 export class BreadcrumbComponent implements OnInit, OnChanges, OnDestroy {
 
-  // public _urls: string[] = [];
-  public _urls: BreadCrumbLinkNames[] = [];
+  public _urls: { name: string, link: string }[] = [];
   public _routerSubscription: any;
-  @Input() friendlyPath: string;
+  @Input() categoryNames: string[];
   @Input() startAfter: string;
 
   constructor(
@@ -35,7 +25,7 @@ export class BreadcrumbComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    if (!this.friendlyPath && !this.startAfter) {
+    if (!this.inputsToBeUSed()) {
       this.generateBreadcrumbTrail(this.router.url, this.router.url);
     }
     this._routerSubscription = this.router.events.subscribe((navigationEnd: NavigationEnd) => {
@@ -52,26 +42,37 @@ export class BreadcrumbComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getUrlWithNames(url): string {
-    if (this.friendlyPath && this.startAfter) {
-      const base = '/' + this.startAfter + '/';
-      url = url.substr(0, url.indexOf(base) + base.length) + this.friendlyPath;
+    if (this.inputsToBeUSed()) {
+      url = url.substr(0, url.indexOf(this.startAfter) + this.startAfter.length) + this.categoryNames.map(segment => encodeURIComponent(segment)).join('/');
     }
     return url;
   }
 
+  /**
+   * Generate breadcrumbs based on given url
+   * @param  {string} urlWithNames
+   * @param  {string} urlWithIds
+   * @returns void
+   */
   generateBreadcrumbTrail(urlWithNames: string, urlWithIds: string): void {
     if (!this.breadcrumbService.isRouteHidden(urlWithNames)) {
       // Add url to beginning of array (since the url is being recursively broken down from full url to its parent)
-      this._urls.unshift(new BreadCrumbLinkNames(urlWithNames, urlWithIds));
+      this._urls.unshift({ name: urlWithNames, link: urlWithIds });
     }
 
     if (urlWithNames.lastIndexOf('/') > 0) {
-      this.generateBreadcrumbTrail(urlWithNames.substr(0, urlWithNames.lastIndexOf('/')), urlWithIds.substr(0, urlWithIds.lastIndexOf('/'))); // Find last '/' and add everything before it as a parent route
+      this.generateBreadcrumbTrail(this.removeLastSegment(urlWithNames), this.removeLastSegment(urlWithIds));
+      // Find last '/' and add everything before it as a parent route
     }
-
   }
 
+  /**
+   * Returns name to be shown on html
+   * @param  {string} url
+   * @returns string
+   */
   friendlyName(url: string): string {
+    // Forward slash '/' in category name is decoded
     return !url ? '' : decodeURIComponent(url.substr(url.lastIndexOf('/') + 1, url.length));
   }
 
@@ -80,6 +81,21 @@ export class BreadcrumbComponent implements OnInit, OnChanges, OnDestroy {
       this._routerSubscription.unsubscribe();
     }
   }
+
+  /**
+   * Returns true if inputs to the component are available otherwise false
+   * @returns boolean
+   */
+  inputsToBeUSed(): boolean {
+    return !!(this.categoryNames && this.startAfter);
+  }
+
+  /**
+   * Removes the part of the string after last forward slash
+   * @param  {string} url
+   * @returns string
+   */
+  removeLastSegment(url: string): string {
+    return url.substr(0, url.lastIndexOf('/'));
+  }
 }
-
-

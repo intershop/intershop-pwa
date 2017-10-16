@@ -38,7 +38,7 @@ describe('BreadCrumb Component', () => {
   it('should call the generateBreadcrumbTrail method of component from ngOnInit and confirm that the length of _urls is 2', () => {
     when(routerMock.events).thenReturn(Observable.of(new NavigationEnd(2, '/category/Computers', '/category/Computers')));
     when(routerMock.url).thenReturn('/category/Computers');
-    component.friendlyPath = '';
+    component.categoryNames = [];
     component.startAfter = '';
     expect(component._urls.length).toBe(0);
     fixture.detectChanges();
@@ -46,8 +46,8 @@ describe('BreadCrumb Component', () => {
   });
 
   it('should return url by replacing the IDs with their names provided in friendlyPath', () => {
-    component.friendlyPath = 'Cameras/camcorders';
-    component.startAfter = 'category';
+    component.categoryNames = ['Cameras', 'camcorders'];
+    component.startAfter = '/category/';
     const url = component.getUrlWithNames('home/category/12/256');
     expect(url).toBe('home/category/Cameras/camcorders');
   });
@@ -55,5 +55,16 @@ describe('BreadCrumb Component', () => {
   it('should return last part of the url', () => {
     const breadcrumName = component.friendlyName('home/category/cameras');
     expect(breadcrumName).toBe('cameras');
+  });
+
+  it('should remove the last segment of the url', () => {
+    const breadcrumName = component.removeLastSegment('home/category/cameras');
+    expect(breadcrumName).toBe('home/category');
+  });
+
+  it('should return false when no inputs are provided to the component', () => {
+    component.categoryNames = [];
+    component.startAfter = '';
+    expect(component.inputsToBeUSed()).toBeFalsy();
   });
 });

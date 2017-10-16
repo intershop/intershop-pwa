@@ -5,6 +5,7 @@ import {
 import {
   ActivatedRoute, Router
 } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import {
   Category
 } from '../../services/categories/categories.model';
@@ -22,20 +23,26 @@ export class CategoryPageComponent implements OnInit {
   isListView: Boolean;
   sortBy;
   totalItems: number;
-  friendlyPath: string; // Get friendly Name for current URL
+  urlSegmentsArray: string[]; // Get friendly Name for current URL
+  startAfter: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
     this.route.data.subscribe((data: { category: Category }) => {
       this.category = data.category;
-      this.categoriesService.getFriendlyPathOfCurrentCategory(this.router.url.split('/category/')[1]).subscribe(path => {
-        this.friendlyPath = path;
+      this.categoriesService.getFriendlyPathOfCurrentCategory(this.router.url.split('/category/')[1]).subscribe((response: string[]) => {
+        this.urlSegmentsArray = response;
       });
+    });
+
+    this.translateService.get('category').subscribe(path => {
+      this.startAfter = '/' + path + '/';
     });
   }
 }
