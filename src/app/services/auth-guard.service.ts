@@ -6,23 +6,18 @@ import { LocalizeRouterService } from './routes-parser-locale-currency/localize-
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private localize: LocalizeRouterService,
+  constructor(private localizeRouter: LocalizeRouterService,
               private accountLoginService: AccountLoginService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.accountLoginService.isAuthorized()) {
       // not logged in so redirect to login page with the return url
-      this.localize.navigateToRoute('/login', { queryParams: { returnUrl: state.url } });
+      this.localizeRouter.navigateToRoute('/login', { queryParams: { returnUrl: state.url } });
       return false;
     }
 
     return true;
-    /*if (!!this.jwtService.getToken()) {
-      return true;
-    }*/
-
-
   }
 }
 

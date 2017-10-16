@@ -10,7 +10,7 @@ import { WishListService } from '../../../services/wishlists/wishlists.service';
 export class WishListComponent {
   itemCount?: number;
 
-  constructor(wishListService: WishListService, public localize: LocalizeRouterService) {
+  constructor(wishListService: WishListService, public localizeRouter: LocalizeRouterService) {
     wishListService.subscribe(this.updateItemCount);
   }
 
