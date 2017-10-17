@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
 import { Category } from '../../../services/categories/categories.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
