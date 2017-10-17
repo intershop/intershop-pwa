@@ -18,11 +18,11 @@ describe('SubCategory Navigation Component', () => {
   let categories: Category[];
 
   beforeEach(async(() => {
+    category = new Category();
+    categories = new Array<Category>();
     categoriesServiceMock = mock(CategoriesService);
     localizeServiceMock = mock(LocalizeRouterService);
     category.uri = '/categories/Cameras-Camcorders/585';
-    category = new Category();
-    categories = new Array<Category>();
     TestBed.configureTestingModule({
       declarations: [SubCategoryNavigationComponent],
       imports: [RouterTestingModule],
