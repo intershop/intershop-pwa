@@ -1,8 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { CacheService } from 'ng2-cache/ng2-cache';
 import { Observable } from 'rxjs/Rx';
+import { anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { environment } from '../../../environments/environment';
 import { CacheCustomService } from '../../services/cache/cache-custom.service';
 import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
@@ -10,11 +11,6 @@ import { ProductListService } from '../../services/products/products.service';
 import { ProductListComponent } from './product-list.component';
 
 describe('Product List Component', () => {
-  let fixture: ComponentFixture<ProductListComponent>;
-  let component: ProductListComponent;
-  let element: HTMLElement;
-  let keyExists: boolean;
-
   const ProductList = [
     {
       Cameras: [
@@ -333,35 +329,24 @@ describe('Product List Component', () => {
       ]
     }
   ];
-
-  class MockCacheCustomService {
-    cacheKeyExists(key) {
-      return keyExists;
-    }
-    getCachedData(key, isDecrypyted) {
-      return ProductList;
-    }
-    storeDataToCache(data, key, shouldEncrypt) {
-      return true;
-    }
-  }
-
-  class MockProductListService {
-    getProductList() {
-      return Observable.of(ProductList);
-    }
-  }
+  let fixture: ComponentFixture<ProductListComponent>;
+  let component: ProductListComponent;
+  let element: HTMLElement;
+  const cacheServiceMock: CacheCustomService = mock(CacheCustomService);
+  const productListServiceMock: ProductListService = mock(ProductListService);
+  when(cacheServiceMock.getCachedData(anything(), anything())).thenReturn(ProductList);
+  when(productListServiceMock.getProductList()).thenReturn(
+    Observable.of(ProductList)
+  );
 
   beforeEach(async(() => {
-    keyExists = false;
     TestBed.configureTestingModule({
       declarations: [ProductListComponent],
       providers: [CacheService, EncryptDecryptService,
-        { provide: ProductListService, useClass: MockProductListService },
-        { provide: CacheCustomService, useClass: MockCacheCustomService }
+        { provide: ProductListService, useFactory: () => instance(productListServiceMock) },
+        { provide: CacheCustomService, useFactory: () => instance(cacheServiceMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
-
     })
       .compileComponents();
   }));
@@ -373,19 +358,20 @@ describe('Product List Component', () => {
   });
 
   it('should call ngOnInit for 1st time and gets data from Productlist Service', () => {
+    when(cacheServiceMock.cacheKeyExists(anyString())).thenReturn(false);
     fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
   });
 
 
   it('should call ngOnInit for 2nd time and gets data from Cache Service', () => {
-    keyExists = true;
+    when(cacheServiceMock.cacheKeyExists(anyString())).thenReturn(true);
     fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
   });
 
   it('should call ngOnInit when needMock variable is set to false', () => {
-    keyExists = false;
+    when(cacheServiceMock.cacheKeyExists(anyString())).thenReturn(false);
     environment.needMock = false;
     fixture.detectChanges();
     expect(component.thumbnails).not.toBeNull();
