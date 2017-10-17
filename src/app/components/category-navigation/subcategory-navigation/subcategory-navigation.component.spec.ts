@@ -7,7 +7,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockit
 import { Category } from '../../../services/categories/categories.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { MockComponent } from '../../mock.component';
 import { SubCategoryNavigationComponent } from './subcategory-navigation.component';
 
 describe('SubCategory Navigation Component', () => {
@@ -15,13 +14,15 @@ describe('SubCategory Navigation Component', () => {
   let fixture: ComponentFixture<SubCategoryNavigationComponent>;
   let categoriesServiceMock: CategoriesService;
   let localizeServiceMock: LocalizeRouterService;
-  const category: Category = new Category();
-  const categories: Category[] = new Array<Category>();
+  let category: Category;
+  let categories: Category[];
 
   beforeEach(async(() => {
     categoriesServiceMock = mock(CategoriesService);
     localizeServiceMock = mock(LocalizeRouterService);
     category.uri = '/categories/Cameras-Camcorders/585';
+    category = new Category();
+    categories = new Array<Category>();
 
     TestBed.configureTestingModule({
       declarations: [SubCategoryNavigationComponent],

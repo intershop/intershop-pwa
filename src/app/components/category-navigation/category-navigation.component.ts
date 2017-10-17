@@ -1,6 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '../../services/api.service';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 
