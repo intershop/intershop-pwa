@@ -11,9 +11,8 @@ import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { MockInterceptor } from './interceptors/mock-interceptor';
 import { CoreModule } from './modules/core.module';
-import { PageModule } from './pages/pages.module';
-import { HomePageComponent } from './pages/home-page/home-page.component';
 import { HomePageModule } from './pages/home-page/home-page.module';
+import { PageModule } from './pages/pages.module';
 
 
 @NgModule({

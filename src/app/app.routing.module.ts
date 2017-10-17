@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { HomePageComponent } from './pages/home-page/home-page.component';
-import { HomePageModule } from './pages/home-page/home-page.module';
 import { LocalizeRouterLoader } from './services/router-parser-loader';
 import { LocalizeRouterSettings } from './services/routes-parser-locale-currency/localize-router.config';
 import { LocalizeRouterModule } from './services/routes-parser-locale-currency/localize-router.module';
@@ -20,7 +19,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    /*HomePageModule,*/
     RouterModule.forRoot(routes),
     LocalizeRouterModule.forRoot(routes, {
       parser: {
