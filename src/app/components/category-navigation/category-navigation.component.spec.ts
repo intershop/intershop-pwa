@@ -25,7 +25,7 @@ describe('Category Navigation Component', () => {
       },
       data: Observable.of({ category: '' })
     };
-
+    category = new Category();
     TestBed.configureTestingModule({
       declarations: [CategoryNavigationComponent,
         MockComponent({ selector: 'is-subcategory-navigation', template: 'Subcategory Navigation Template' })],
