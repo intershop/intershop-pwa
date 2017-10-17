@@ -4,77 +4,13 @@ import { fakeAsync, getTestBed, TestBed, tick } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
+import { anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import {
   ALWAYS_SET_PREFIX,
   LocalizeRouterSettings
 } from './localize-router.config';
 import { LocalizeParser } from './localize-router.parser';
 
-class ManualParserLoader extends LocalizeParser {
-  constructor(translate: TranslateService,
-              location: Location,
-              settings: LocalizeRouterSettings,
-              langs: string[],
-              localesCollection: any,
-              prefix: string = 'ROUTES.',
-              pattern: string = '{LANG}/{CURRENCY}') {
-    super(translate, location, settings);
-    this.langs = langs;
-    this.localesCollection = localesCollection;
-    this.prefix = prefix || '';
-    this.pattern = pattern;
-  }
-
-  load(routes: Routes): Promise<any> {
-    return new Promise((resolve: any) => {
-      this.init(routes).then(resolve);
-    });
-  }
-}
-
-class FakeTranslateService {
-  defLang: string;
-  currentLang: string;
-
-  browserLang = '';
-
-  content: any = {
-    'PREFIX.home': 'home_',
-    'PREFIX.about': 'about_',
-    'PREFIX.contact': 'contact_',
-    'PREFIX.info': 'info_'
-  };
-
-  setDefaultLang(lang: string) {
-    this.defLang = lang;
-  }
-
-  getDefaultLang() {
-    return this.defLang;
-  }
-
-  use(lang: string) {
-    this.currentLang = lang;
-    return Observable.of(Object.keys(this.content).reduce((prev: any, key) => {
-      prev[key] = this.content[key] + this.currentLang;
-      return prev;
-    }, {}));
-  }
-
-  get(input: string) {
-    return Observable.of(this.content[input] ? this.content[input] + this.currentLang : input);
-  }
-
-  getBrowserLang() {
-    return this.browserLang;
-  }
-}
-
-class FakeLocation {
-  path(): string {
-    return '';
-  }
-}
 
 describe('LocalizeParser', () => {
   let injector: Injector;
@@ -87,13 +23,58 @@ describe('LocalizeParser', () => {
   let locales: any;
   let langs: string[];
   const prefix = 'PREFIX.';
+  const translateServiceMock: any = mock(TranslateService);
+  const locationMock: any = mock(Location);
+  when(locationMock.path(anything())).thenReturn('');
+  translateServiceMock.content = {
+    'PREFIX.home': 'home_',
+    'PREFIX.about': 'about_',
+    'PREFIX.contact': 'contact_',
+    'PREFIX.info': 'info_'
+  };
+  when(translateServiceMock.setDefaultLang(anyString())).thenReturn();
+  when(translateServiceMock.getDefaultLang()).thenReturn('En');
+  when(translateServiceMock.use(anyString())).thenCall((lang: string) => {
+    return Observable.of(Object.keys(translateServiceMock.content).reduce((prev: any, key) => {
+      prev[key] = translateServiceMock.content[key] + lang;
+      return prev;
+    }, {}));
+  });
+  when(translateServiceMock.get(anyString())).thenCall((input: string) => {
+    return Observable.of(translateServiceMock.content[input] ? translateServiceMock.content[input] + 'en' : input);
+  });
+  when(translateServiceMock.getBrowserLang()).thenReturn('En');
+
+/* tslint:disable:prefer-mocks-instead-of-stubs-in-tests */
+  class ManualParserLoader extends LocalizeParser {
+    constructor(translateService: TranslateService,
+      locationService: Location,
+      localizeRouterSettings: LocalizeRouterSettings,
+      languages: string[],
+      localesCollection: any,
+      prefixes: string = 'ROUTES.',
+      pattern: string = '{LANG}/{CURRENCY}') {
+      super(translateService, locationService, localizeRouterSettings);
+      this.langs = languages;
+      this.localesCollection = localesCollection;
+      this.prefix = prefixes || '';
+      this.pattern = pattern;
+    }
+
+    load(route: Routes): Promise<any> {
+      return new Promise((resolve: any) => {
+        this.init(route).then(resolve);
+      });
+    }
+  }
+/* tslint:enable:prefer-mocks-instead-of-stubs-in-tests */
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule],
       providers: [
-        { provide: TranslateService, useClass: FakeTranslateService },
-        { provide: Location, useClass: FakeLocation },
+        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
+        { provide: Location, useFactory: () => instance(locationMock) },
         { provide: ALWAYS_SET_PREFIX, useValue: true },
         LocalizeRouterSettings
       ]
@@ -102,9 +83,9 @@ describe('LocalizeParser', () => {
       { path: '', redirectTo: 'some/path' },
       {
         path: 'some/path', children: [
-        { path: '', redirectTo: 'nothing' },
-        { path: 'else/:id', redirectTo: 'nothing/else' }
-      ]
+          { path: '', redirectTo: 'nothing' },
+          { path: 'else/:id', redirectTo: 'nothing/else' }
+        ]
       }
     ];
 

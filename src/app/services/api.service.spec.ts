@@ -6,15 +6,14 @@ import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
-class LocalizeRouterServiceMock {
-  parser = {
-    currentLocale: { lang: 'en', currency: 'USD' }
-  };
-}
-
 describe('ApiService', () => {
   let customErrorHandler: CustomErrorHandler;
   let httpClient: HttpClient;
+  const mockLoalizeRouterService: any = mock(LocalizeRouterService);
+  const loalizeRouterServiceMock = instance(mockLoalizeRouterService);
+  loalizeRouterServiceMock.parser = {
+    currentLocale: { lang: 'en', currency: 'USD' }
+  };
 
   beforeEach(() => {
     customErrorHandler = mock(CustomErrorHandler);
@@ -24,7 +23,7 @@ describe('ApiService', () => {
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
-        { provide: LocalizeRouterService, useClass: LocalizeRouterServiceMock },
+        { provide: LocalizeRouterService, useFactory: () => loalizeRouterServiceMock },
         ApiService
       ]
     });

@@ -154,7 +154,7 @@
     "no-suspicious-variable-init-in-tests": true,
     "meaningful-naming-in-tests": false,
     "no-commented-out-tests": true,
-    "prefer-mocks-instead-of-stubs-in-tests": false,
+    "prefer-mocks-instead-of-stubs-in-tests": true,
     "no-barrel-files": true
   }
 }
