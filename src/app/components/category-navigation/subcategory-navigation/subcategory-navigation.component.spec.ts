@@ -23,12 +23,6 @@ describe('SubCategory Navigation Component', () => {
     categoriesServiceMock = mock(CategoriesService);
     localizeServiceMock = mock(LocalizeRouterService);
     category.uri = '/categories/Cameras-Camcorders/585';
-<<<<<<< HEAD
-    category = new Category();
-    categories = new Array<Category>();
-
-=======
->>>>>>> 5171778c5dcead5ad00f2385206c77799c2c9831
     TestBed.configureTestingModule({
       declarations: [SubCategoryNavigationComponent],
       imports: [RouterTestingModule],
