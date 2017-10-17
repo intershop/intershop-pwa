@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 
   // TODO: is this the right place to handle the global application translation?
   constructor(private localize: LocalizeRouterService, private _router: Router) {
-    // console.log('ROUTES', this.localize.parser.routes);
+    console.log('ROUTES', this.localize.parser.routes);
   }
 
   showRoute(activatedUrl: string): boolean {
