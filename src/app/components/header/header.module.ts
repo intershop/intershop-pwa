@@ -24,7 +24,7 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
   ],
   exports: [
     HeaderComponent,
-    ProductCompareStatusComponent,
+    ProductCompareStatusComponent
   ],
   declarations: [
     HeaderComponent,
@@ -40,7 +40,6 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
   providers: [AccountLoginService, CategoriesService, SearchBoxService,
     WishListService
   ]
-
 })
 
 export class HeaderModule {
