@@ -3,7 +3,6 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { ProductListService } from '../../services/products/products.service';
 import { ProductTileModel } from '../product-tile/product-tile.model';
 
-
 @Component({
   selector: 'is-product-list',
   templateUrl: './product-list.component.html',
