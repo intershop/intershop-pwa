@@ -3,8 +3,7 @@
   <!--List View-->
   <ng-template [ngIf]="listView" [ngIfElse]="gridView">
       <div *ngFor="let product of products" class="product-list-item col-md-12 list-view">
-        <!-- TODO: a separate product row component needs to be created and used here -->
-        <is-product-tile [mockData]="product"></is-product-tile>
+        <is-product-row [mockData]="product"></is-product-row>
       </div>
   </ng-template>
 

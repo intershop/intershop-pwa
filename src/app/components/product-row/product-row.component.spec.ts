@@ -12,14 +12,14 @@ import { CartStatusService } from '../../services/cart-status/cart-status.servic
 import { ProductCompareService } from '../../services/product-compare/product-compare.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
-import { ProductTileComponent } from './product-tile.component';
+import { ProductRowComponent } from './product-row.component';
 
 /*
   TODO: commented out tests fail with "ReferenceError: Can't find variable: Intl in vendor.bundle.js (line 56892)"
  */
-describe('Product Tile Component', () => {
-  let fixture: ComponentFixture<ProductTileComponent>;
-  let component: ProductTileComponent;
+describe('Product Row Component', () => {
+  let fixture: ComponentFixture<ProductRowComponent>;
+  let component: ProductRowComponent;
   let element: HTMLElement;
   let localizeRouterServiceMock: LocalizeRouterService;
   let productCompareServiceMock: ProductCompareService;
@@ -183,7 +183,7 @@ describe('Product Tile Component', () => {
       imports: [TranslateModule.forRoot(),
         RouterTestingModule
       ],
-      declarations: [ProductTileComponent, DisableIconDirective],
+      declarations: [ProductRowComponent, DisableIconDirective],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: WishListService, useFactory: () => instance(wishListServiceMock) },
@@ -198,7 +198,7 @@ describe('Product Tile Component', () => {
 
   beforeEach(() => {
     TranslateModule.forRoot();
-    fixture = TestBed.createComponent(ProductTileComponent);
+    fixture = TestBed.createComponent(ProductRowComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

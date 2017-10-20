@@ -38,7 +38,6 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
     LoginStatusComponent,
     SubCategoryNavigationComponent,
     RemoveHostDirective
-
   ],
   providers: [AccountLoginService, CategoriesService, SearchBoxService,
     WishListService
