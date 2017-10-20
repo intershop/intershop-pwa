@@ -1,0 +1,208 @@
+  <!--To Do, append UUID to  data-dynamic-block-call-parameters-->
+  <div class="product-tile-list row" data-dynamic-block="" [attr.data-dynamic-block-call-parameters]="'CID'" [attr.data-dynamic-block-product-id]="mockData.id">
+    <div class="col-sm-2 col-xs-3">
+      <div class="product-image-container">
+        <a href="javascript:void(0)">
+          <img *ngIf="mockData && mockData.images" [src]="mockData.images[0].effectiveUrl"
+            data-test="true" Class="product-image" [attr.data-type]="mockData.images[0].typeID ? mockData.images[0].typeID : null"
+            [attr.alt]="mockData.name ? mockData.name : mockData?.sku" [attr.view-value]="mockData.images[0].viewID ? mockData.images[0].viewID : null"
+            [attr.title]="mockData.title ? mockData.title : null" [attr.height]="mockData.images[0].imageActualHeight ? mockData.images[0].imageActualHeight : null"
+            [attr.width]="mockData.images[0].imageActualWidth ? mockData.images[0].imageActualWidth : null">
+        </a>
+        <span *ngIf="mockData" class="product-label" [ngClass]="{'product-label-topseller' : true, 'product-label-new': false, 'product-label-sale' : false}"></span>
+      </div>
+    </div>
+    <div class="col-sm-10 col-xs-9">
+      <div class="row">
+        <div class="col-xs-8 text-left">
+          <a class="product-title" href="javascript:void(0)">{{mockData.name}}</a>
+          <div *ngIf="mockData.ShowProductRating && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="product-rating clearfix">
+            <ul class="rating-display clearfix" [ngClass]="mockData.averageRatingClass">
+              <li class="star-one"><span class="glyphicon glyphicon-star"></span></li>
+              <li class="star-two"><span class="glyphicon glyphicon-star"></span></li>
+              <li class="star-three"><span class="glyphicon glyphicon-star"></span></li>
+              <li class="star-four"><span class="glyphicon glyphicon-star"></span></li>
+              <li class="star-five"><span class="glyphicon glyphicon-star"></span></li>
+              <li *ngIf="mockData.totalRatingCount && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="rating-total">
+                ({{mockData.totalRatingCount}})
+              </li>
+              <li *ngIf="mockData.richSnippetsEnabled && (mockData.averagRating > 0)" class="rating-average hidden"> {{mockData.averagRating}} out of 5 </li>
+
+              <li *ngIf="mockData.richSnippetsEnabled && !(mockData.averagRating > 0)" class="rating-average hidden"> This product hasn't been rated yet. </li>
+            </ul>
+            <span *ngIf="!mockData.simpleRatingView && mockData.totalRatingCount === 0  " class="rating-rated hidden-xs">This product hasn't been rated yet.</span>
+          </div>
+          <div class="product-description">
+            {{mockData.shortDescription}}
+          </div>
+          <div class="product-number">
+            <span class="product-number-label">Product ID:</span>
+            <span *ngIf="mockData.richSnippetsEnabled">
+              {{mockData.sku}}
+            </span>
+          </div>
+          <!-- PromotionList.isml Starts-->
+          <ul *ngIf="mockData.applicablePromotions" class="promotion-list">
+
+          </ul>
+          <!-- PromotionList.isml Ends-->
+        </div>
+        <div class="col-sm-4 col-xs-12 pull-right text-right text-left-xs">
+
+          <!--  ISProductPrice.ISML Start-->
+          <div class="current-price" [ngClass]="finalPrice == '0' ? 'sale-price' : (greaterPrice == '1' ? 'sale-price-higher' : null)">
+            {{((mockData.salePrice?.range && !(mockData.salePrice?.priceRange.minimumPrice === mockData.salePrice?.priceRange.maximumPrice))
+            ? mockData.salePrice?.priceRange.minimumPrice - mockData.salePrice?.priceRange.maximumPrice : (mockData.salePrice?.value
+            && finalPrice === 0 ? mockData.salePrice?.value : (mockData.salePrice?.value ? mockData.salePrice?.value : 'N/A'))
+            )  }}
+          </div>
+          <!--TODO  ISProductPriceAdditionalText.ISML Start-->
+
+          <!--  ISProductPriceAdditionalText.ISML End-->
+
+          <!--No ScaledPrice property on API Data-->
+          <div *ngIf="mockData.salePrice?.scaledPrices" class="scale-prices">
+            <span *ngFor="let scale of mockData.salePrice?.scaledPrices">
+              {{scale.quantity.value > 1 ? 'Buy '+scale.quantity.value+' items ('+ scale.totalPrice +' each)'  : null}}
+            </span>
+          </div>
+          <div *ngIf="displayCondition && mockData.listPrice?.value" class="old-price">
+            {{ oldPrice | currency : mockData.listPrice?.currencyMnemonic : true }}
+          </div>
+          <span *ngIf="shownSavings" class="price-savings">
+            You save {{shownSavings}}
+          </span>
+          <!--  ISProductPrice.ISML END-->
+
+          <ng-container *ngIf="mockData.InStock">
+            <div *ngIf="mockData.isEndOfLife; else lifeRemainsTemplate" class="product-lifecycle-status">
+              <span class="product-lifecycle-status-title">Not available</span>
+              <span>The product cannot be currently ordered.</span>
+            </div>
+            <ng-template #lifeRemainsTemplate>
+              <ng-container *ngIf="mockData.getLastOrderDate; else endOflifeTemplate">
+                <div *ngIf="mockData.lastOrderDate; else canOrderTemplate" class="product-lifecycle-status">
+                  <span class="product-lifecycle-status-title">Not available</span>
+                  <span>The product cannot be currently ordered.</span>
+                </div>
+                <ng-template #canOrderTemplate>
+                  <div class="product-lifecycle-status">
+                    <span class="product-lifecycle-status-title">Last Order Date</span>
+                    <span>The product can only be ordered until {{mockData.lastOrderDate}}</span>
+                  </div>
+                </ng-template>
+                <div *ngIf="mockData.getEndOfLife" class="product-end-of-live-status">
+                  <span>The support for this product ends at {{isEndOfLife}} /></span>
+                </div>
+              </ng-container>
+              <ng-container #endOflifeTemplate>
+                <div *ngIf="mockData.getEndOfLife" class="product-end-of-live-status">
+                  <span>The support for this product ends at {{isEndOfLife}} /></span>
+                </div>
+              </ng-container>
+            </ng-template>
+          </ng-container>
+          <div class="product-availability">
+            <ng-container *ngIf="!mockData.inStock">
+              <link *ngIf="mockData.richSnippetsEnabled" itemprop="availability" href="http://schema.org/OutOfStock" /> Out of Stock
+            </ng-container>
+            <ng-container *ngIf="!mockData.isEndOfLife && !mockData.isLastOrder">
+              <link *ngIf="mockData.richSnippetsEnabled " itemprop="availability" href="http://schema.org/InStock" /> In Stock
+            </ng-container>
+          </div>
+          <form method="post" name="productForm_{{mockData.sku}}_{{mockData.formID}}" action="" method="post" class="product-form bv-form form-horizontal"
+            novalidate="novalidate">
+            <ng-container *ngIf="true; else bundleInformationTemplate">
+              <input type="hidden" name="SKU" [value]="mockData.sku" />
+            </ng-container>
+            <ng-template #bundleInformationTemplate>
+              <ng-container *ngFor="let retailSetProduct of mockData.bundledProductBOs">
+                <input *ngIf="retailSetProduct.online" type="hidden" name="SKU" value="retailSetProduct.sku" />
+              </ng-container>
+            </ng-template>
+            <div *ngIf="mockData.isMastered && mockData.variationAttributes" class="product-variation-container">
+              <div *ngFor="let attribute of mockData.variationAttributes" class="product-variation">
+                <div class="form-group">
+                  <label class="control-label" for="id_{{attribute.variationAttributes.name}}">
+                    {{attribute.variationAttributes.displayName}}
+                  </label>
+                  <div *ngIf="false">
+                    <!-- To DO Check conditions and Template from "ProductVAriationSelect.ISML"-->
+                    <!-- Include Template -->
+                  </div>
+                  <div *ngIf="false">
+                    <!-- To DO Check conditions and Template from "ProductVAriationSelect.ISML"-->
+                    <!-- Include Template -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="mockData.showAddToCart" class="product-list-actions-container">
+              <div class="addtocart-container">
+                <div role="alert" [attr.data-name]="mockData.name_override ? mockData.name_override : mockData.qualifiedName" class="server-error">
+                  <!--To Do, append 'Error' in data-name -->
+                  <!-- fieldErrorMessage.isml Start-->
+                  <!-- class to be found for ngClass -->
+                  <div *ngIf="false" role="alert">
+                    <!--To Do -->
+                    <!-- Condition based text -->
+                  </div>
+                  <div *ngIf="false" role="alert" class="server-error">
+                    <!-- fieldErrorList.isml start-->
+                    <small *ngIf="false">
+                      <!--To Do --> <!--Condition based text-->
+                    </small>
+                    <small *ngIf="false"> <!-- *ngFor="" -->
+                      <!--To Do --> <!--Condition based text-->
+                    </small>
+                  </div>
+                  <!-- fieldErrorList.isml End-->
+                </div>
+                <div *ngIf="mockData.retailSet" role="alert" class="kor-form-error-message-placeholder"></div>
+                <div class="add-to-cart">
+                  <ng-container *ngIf="true">
+                    <!-- Conditions on Addtocart.isml start line 15 -->
+                    <div *ngIf="mockData.retailSet" role="alert" class="kor-form-error-message-placeholder"></div>
+                    <!--  CurrentCustomerBO.ISMl Start-->
+                    <!--  CurrentCustomerBO.ISMl End-->
+                    <!--  GetProductPrice.ISMl Start-->
+                    <!--  GetProductPrice.ISMl End-->
+                    <a *ngIf="mockData.digitalGiftCard" href="" class="btn btn-primary"> </a>
+                    <button type="submit" name="addProduct" *ngIf="!mockData.digitalGiftCard" class="btn btn-primary" title="Add to Cart" data-testing-id="addToCartButton"
+                      (click)="addToCart(mockData)">
+                      {{(mockData.mockListView.displayType != 'glyphicon' && mockData.mockListView.isRetailSet) ? 'Add item(s) to Cart' : null}}
+                      {{(mockData.mockListView.displayType != 'glyphicon' && !mockData.mockListView.isRetailSet) ? 'Add to Cart' : null}}
+                    </button>
+                  </ng-container>
+                </div>
+              </div>
+
+              <!-- AddToProductCompare.isml start-->
+              <!--condition=NOT(ProductBO:isEndOfLife) -->
+              <ng-container *ngIf="!mockData.mockListView.isEndOfLife">
+                <button *ngIf="mockData.mockListView.displayType == 'glyphicon' " (click)="addToCompare(mockData.sku)" class="btn btn-link add-to-compare add-to-compare-trigger"
+                  title="Compare" rel="nofollow">
+                  <span class="glyphicon glyphicon-equalizer"></span>
+                </button>
+                <a *ngIf="mockData.mockListView.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)"
+                  rel="nofollow">
+                  <span class="glyphicon glyphicon-equalizer"></span>
+                  <span class="share-label">Compare</span>
+                </a>
+                <a *ngIf="mockData.mockListView.displayType != 'glyphicon' && mockData.mockListView.displayType != 'share-tool'" class="btn add-to-compare btn-link"
+                  attr.data-testing-id="compare-{{mockData.sku}}" (click)="addToCompare(mockData.sku)" rel="nofollow"> Compare  </a>
+              </ng-container>
+              <!-- AddToProductCompare.isml End-->
+              <button *ngIf="true" type="submit" class="btn add-to-wishlist" [ngClass]="{'btn-link' : true}" rel="nofollow" name="addToWishlistProduct"
+                data-dialog="" (click)="addToWishList(mockData)" data-testing-class="button-addToWishlistProduct" title="Add to Wish List">
+                <span *ngIf="mockData.mockListView.displayType == 'glyphicon'" class="glyphicon glyphicon-heart"></span>
+                <span *ngIf="mockData.mockListView.displayType == 'share-tool'" class="glyphicon glyphicon-heart"></span>
+                <span *ngIf="mockData.mockListView.displayType == 'share-tool'" class="share-label">Add to Wish List</span>
+                {{(mockData.mockListView.displayType != 'share-tool' && mockData.mockListView.displayType != 'glyphicon') ? 'Add to Wish List' : null}}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
