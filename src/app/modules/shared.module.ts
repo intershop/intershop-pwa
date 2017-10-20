@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormControlErrorComponent } from '../components/global-form-validation/form-control-error.component';
 import { FormGroupValidationComponent } from '../components/global-form-validation/form-group-validation.component';
 import { FormValidationDirective } from '../directives/form-validation.directive';
-import { RemoveHostDirective } from '../directives/remove-host.directive';
 
 @NgModule({
   exports: [
@@ -16,14 +15,12 @@ import { RemoveHostDirective } from '../directives/remove-host.directive';
     RouterModule,
     ReactiveFormsModule,
     FormGroupValidationComponent,
-    FormValidationDirective,
-    RemoveHostDirective
+    FormValidationDirective
   ],
   declarations: [
     FormGroupValidationComponent,
     FormControlErrorComponent,
-    FormValidationDirective,
-    RemoveHostDirective
+    FormValidationDirective
   ],
   entryComponents: [FormControlErrorComponent],
   imports: [
