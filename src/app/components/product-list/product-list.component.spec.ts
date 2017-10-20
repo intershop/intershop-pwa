@@ -4,8 +4,8 @@ import { async, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { Product } from '../../services/products/products.model';
 import { ProductListService } from '../../services/products/products.service';
-import { ProductTileModel } from '../product-tile/product-tile.model';
 import { ProductListComponent } from './product-list.component';
 
 describe('Product List Component', () => {
@@ -37,7 +37,7 @@ describe('Product List Component', () => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(productListService.getProductList(anything())).thenReturn(Observable.of([new ProductTileModel()]));
+    when(productListService.getProductList(anything())).thenReturn(Observable.of([new Product()]));
   });
 
   it('should call ngOnInit and confirm that getProductList is called once', () => {
