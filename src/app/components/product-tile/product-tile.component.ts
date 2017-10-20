@@ -15,7 +15,6 @@ import { ProductTileModel } from './product-tile.model';
 
 export class ProductTileComponent implements OnInit {
   @Input() mockData: ProductTileModel;
-  @Input() isListView: false;
   finalPrice = 1;
   greaterPrice = 0;
   displayCondition: boolean;
