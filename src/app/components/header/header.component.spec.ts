@@ -1,8 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { Observable } from 'rxjs/Observable';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { instance, mock } from 'ts-mockito';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { MockComponent } from '../mock.component';
+import { CartStatusService } from './../../services/cart-status/cart-status.service';
 import { HeaderComponent } from './header.component';
 
 describe('Header Component', () => {
@@ -10,17 +13,16 @@ describe('Header Component', () => {
   let component: HeaderComponent;
   let element: HTMLElement;
 
-  class WishListServiceStub {
-    getWishList() {
-      return Observable.of(null);
-    }
-  }
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule],
+      imports: [
+        CollapseModule,
+        TranslateModule.forRoot(),
+        RouterTestingModule
+      ],
       providers: [
-        { provider: WishListService, useClass: WishListServiceStub }
+        { provide: LocalizeRouterService, useFactory: () => instance(mock(LocalizeRouterService)) },
+        { provide: CartStatusService, useFactory: () => instance(mock(CartStatusService)) },
 
       ],
       declarations: [
@@ -41,26 +43,26 @@ describe('Header Component', () => {
 
   }));
 
-  xit('should check "User Links" are rendered on template', () => {
+  it('should check "User Links" are rendered on template', () => {
     expect(element.getElementsByClassName('user-links')[0].childElementCount).toBe(4);
     expect(element.getElementsByTagName('is-login-status')[0].textContent).toContain('Login Status Template');
     expect(element.getElementsByTagName('is-product-compare-status')[0].textContent).toContain('Product Compare Status Template');
     expect(element.getElementsByTagName('is-wishlist-status')[0].textContent).toContain('Wish List Template');
   });
 
-  xit('should check "LanguageSwitchComponent" is rendered on template', () => {
+  it('should check "LanguageSwitchComponent" is rendered on template', () => {
     expect(element.getElementsByTagName('is-language-switch')[0].textContent).toContain('Language Switch Template');
   });
 
-  xit('should check "SearchBoxComponent" is rendered on template', () => {
+  it('should check "SearchBoxComponent" is rendered on template', () => {
     expect(element.getElementsByTagName('is-search-box')[0].textContent).toContain('Search Box Template');
   });
 
-  xit('should check "HeaderNavigationComponent" is rendered on template', () => {
+  it('should check "HeaderNavigationComponent" is rendered on template', () => {
     expect(element.getElementsByTagName('is-header-navigation')[0].textContent).toContain('Header Navigation Template');
   });
 
-  xit('should check "MiniCartComponent" is rendered on template', () => {
+  it('should check "MiniCartComponent" is rendered on template', () => {
     expect(element.getElementsByTagName('is-mini-cart')[0].textContent).toContain('Mini Cart Template');
   });
 });
