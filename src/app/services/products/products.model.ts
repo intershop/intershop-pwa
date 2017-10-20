@@ -57,7 +57,7 @@ class Image {
     primaryImage: boolean;
 }
 
-export class ProductTileModel {
+export class Product {
     name: string;
     type: string;
     attributes: Attribute[];

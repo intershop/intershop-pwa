@@ -8,13 +8,12 @@ import { Product } from '../../services/products/products.model';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 
-
 @Component({
-  selector: 'is-product-tile',
-  templateUrl: './product-tile.component.html',
+  selector: 'is-product-row',
+  templateUrl: './product-row.component.html',
 })
 
-export class ProductTileComponent implements OnInit {
+export class ProductRowComponent implements OnInit {
   @Input() mockData: Product;
   finalPrice = 1;
   greaterPrice = 0;

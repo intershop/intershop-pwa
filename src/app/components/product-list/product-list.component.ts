@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { Product } from '../../services/products/products.model';
 import { ProductListService } from '../../services/products/products.service';
-import { ProductTileModel } from '../product-tile/product-tile.model';
+
 
 @Component({
   selector: 'is-product-list',
@@ -12,7 +13,7 @@ export class ProductListComponent implements OnInit {
   @Input() listView;
   @Input() sortBy;
   @Output() totalItems: EventEmitter<number> = new EventEmitter();
-  products: ProductTileModel[];
+  products: Product[];
 
   /**
    * Construcotr

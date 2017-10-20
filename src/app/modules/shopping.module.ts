@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { CategoryListComponent } from '../components/category-list/category-list.component';
 import { CategoryNavigationComponent } from '../components/category-navigation/category-navigation.component';
 import { ProductListComponent } from '../components/product-list/product-list.component';
+import { ProductRowComponent } from '../components/product-row/product-row.component';
 import { ProductTileComponent } from '../components/product-tile/product-tile.component';
 import { DisableIconDirective } from '../directives/disable-icon.directive';
 import { SharedModule } from './shared.module';
@@ -19,6 +20,7 @@ import { SharedModule } from './shared.module';
     CategoryNavigationComponent,
     DisableIconDirective,
     ProductListComponent,
+    ProductRowComponent,
     ProductTileComponent
   ],
   exports: [
@@ -26,6 +28,7 @@ import { SharedModule } from './shared.module';
     CategoryNavigationComponent,
     DisableIconDirective,
     ProductListComponent,
+    ProductRowComponent,
     ProductTileComponent
   ]
 })

@@ -3,7 +3,7 @@
     <div class="col-sm-2 col-xs-3">
       <div class="product-image-container">
         <a href="javascript:void(0)">
-          <img *ngIf="mockData && mockData.images" [src]="mockData.images[0].effectiveUrl"
+          <img *ngIf="mockData && mockData.images" [src]="base_url + mockData.images[2].effectiveUrl"
             data-test="true" Class="product-image" [attr.data-type]="mockData.images[0].typeID ? mockData.images[0].typeID : null"
             [attr.alt]="mockData.name ? mockData.name : mockData?.sku" [attr.view-value]="mockData.images[0].viewID ? mockData.images[0].viewID : null"
             [attr.title]="mockData.title ? mockData.title : null" [attr.height]="mockData.images[0].imageActualHeight ? mockData.images[0].imageActualHeight : null"
