@@ -50,7 +50,7 @@
         <div class="col-sm-4 col-xs-12 pull-right text-right text-left-xs">
 
           <!--  ISProductPrice.ISML Start-->
-          <div class="current-price" [ngClass]="finalPrice == '0' ? 'sale-price' : (greaterPrice == '1' ? 'sale-price-higher' : null)">
+          <div class="current-price" [ngClass]="finalPrice === 0 ? 'sale-price' : (greaterPrice === 1 ? 'sale-price-higher' : null)">
             {{((mockData.salePrice?.range && !(mockData.salePrice?.priceRange.minimumPrice === mockData.salePrice?.priceRange.maximumPrice))
             ? mockData.salePrice?.priceRange.minimumPrice - mockData.salePrice?.priceRange.maximumPrice : (mockData.salePrice?.value
             && finalPrice === 0 ? mockData.salePrice?.value : (mockData.salePrice?.value ? mockData.salePrice?.value : 'N/A'))
@@ -74,7 +74,7 @@
           </span>
           <!--  ISProductPrice.ISML END-->
 
-          <ng-container *ngIf="mockData.InStock">
+          <ng-container *ngIf="mockData.inStock">
             <div *ngIf="mockData.isEndOfLife; else lifeRemainsTemplate" class="product-lifecycle-status">
               <span class="product-lifecycle-status-title">Not available</span>
               <span>The product cannot be currently ordered.</span>
@@ -106,11 +106,11 @@
             <ng-container *ngIf="!mockData.inStock">
               <link *ngIf="mockData.richSnippetsEnabled" itemprop="availability" href="http://schema.org/OutOfStock" /> Out of Stock
             </ng-container>
-            <ng-container *ngIf="!mockData.isEndOfLife && !mockData.isLastOrder">
+            <ng-container *ngIf="!mockData.isEndOfLife">
               <link *ngIf="mockData.richSnippetsEnabled " itemprop="availability" href="http://schema.org/InStock" /> In Stock
             </ng-container>
           </div>
-          <form method="post" name="productForm_{{mockData.sku}}_{{mockData.formID}}" action="" method="post" class="product-form bv-form form-horizontal"
+          <form method="post" name="productForm_{{mockData.sku}}" action="" method="post" class="product-form bv-form form-horizontal"
             novalidate="novalidate">
             <ng-container *ngIf="true; else bundleInformationTemplate">
               <input type="hidden" name="SKU" [value]="mockData.sku" />
@@ -120,7 +120,7 @@
                 <input *ngIf="retailSetProduct.online" type="hidden" name="SKU" value="retailSetProduct.sku" />
               </ng-container>
             </ng-template>
-            <div *ngIf="mockData.isMastered && mockData.variationAttributes" class="product-variation-container">
+            <div *ngIf="mockData.mastered && mockData.variationAttributes" class="product-variation-container">
               <div *ngFor="let attribute of mockData.variationAttributes" class="product-variation">
                 <div class="form-group">
                   <label class="control-label" for="id_{{attribute.variationAttributes.name}}">

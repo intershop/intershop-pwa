@@ -47,7 +47,7 @@
   </div>
   <div *ngIf="mockData.richSnippetsEnabled" class="price-container">
     <!--ProductPrice.isml start-->
-    <div class="current-price" [ngClass]="finalPrice == '0' ? 'sale-price' : (greaterPrice == '1' ? 'sale-price-higher' : null)">
+    <div class="current-price" [ngClass]="finalPrice === 0 ? 'sale-price' : (greaterPrice === 1 ? 'sale-price-higher' : null)">
       {{((mockData.salePrice?.range && !(mockData.salePrice?.priceRange.minimumPrice === mockData.salePrice?.priceRange.maximumPrice))
       ? mockData.salePrice?.priceRange.minimumPrice - mockData.salePrice?.priceRange.maximumPrice : (mockData.salePrice?.value
       && finalPrice === 0 ? mockData.salePrice?.value : (mockData.salePrice?.value ? mockData.salePrice?.value : 'N/A'))
@@ -80,7 +80,7 @@
       </ng-container>
     </ng-template>
 
-    <div *ngIf="mockData.isMastered && mockData.variationAttributes" class="product-variation-container">
+    <div *ngIf="mockData.mastered && mockData.variationAttributes" class="product-variation-container">
       <div *ngFor="let attribute of mockData.variationAttributes" class="product-variation">
         <div class="form-group">
           <label class="control-label" for="id_{{attribute.variationAttributes.name}}">
