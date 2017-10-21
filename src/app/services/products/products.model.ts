@@ -44,6 +44,8 @@ class SalePrice {
     value: number;
     currencyMnemonic: string;
     scaledPrices: any[];
+    priceRange?;
+    range?;
 }
 
 class Image {
@@ -57,7 +59,7 @@ class Image {
     primaryImage: boolean;
 }
 
-export class ProductTileModel {
+export class Product {
     name: string;
     type: string;
     attributes: Attribute[];
@@ -81,7 +83,7 @@ export class ProductTileModel {
     retailSet: boolean;
     inStock: boolean;
     mastered: boolean;
-
+    variationAttributes?: Attribute[];
     enableExpressShop: boolean;
     richSnippetsEnabled: boolean;
     ShowProductRating: boolean;

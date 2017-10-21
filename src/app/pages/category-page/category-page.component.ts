@@ -12,7 +12,7 @@ export class CategoryPageComponent implements OnInit {
   category: Category = null;
 
   // TODO: these properties were copied from family-page.component and their relevance needs to be evaluated
-  isListView: Boolean;
+  listView: Boolean;
   sortBy;
   totalItems: number;
 
