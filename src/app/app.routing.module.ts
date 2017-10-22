@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { HomePageComponent } from './pages/home-page/home-page.component';
+import { HomePageModule } from './pages/home-page/home-page.module';
 import { LocalizeRouterLoader } from './services/router-parser-loader';
 import { LocalizeRouterSettings } from './services/routes-parser-locale-currency/localize-router.config';
 import { LocalizeRouterModule } from './services/routes-parser-locale-currency/localize-router.module';
@@ -13,12 +13,12 @@ export function HttpLoaderFactory(translate: TranslateService, location: Locatio
 }
 
 const routes: Routes = [
-  { path: '',   redirectTo: 'home', pathMatch: 'full'},
-  { path: 'home',   component: HomePageComponent, data: { className: 'homepage' } }
+  { path: '',   redirectTo: '/home', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [
+    HomePageModule,
     RouterModule.forRoot(routes),
     LocalizeRouterModule.forRoot(routes, {
       parser: {
