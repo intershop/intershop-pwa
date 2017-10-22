@@ -11,14 +11,12 @@ import { BreadcrumbService } from './components/breadcrumb/breadcrumb.service';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { MockInterceptor } from './interceptors/mock-interceptor';
 import { CoreModule } from './modules/core.module';
-import { HomePageModule } from './pages/home-page/home-page.module';
 import { PageModule } from './pages/pages.module';
-
 
 @NgModule({
   declarations: [
     AppComponent,
-    BreadcrumbComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule.withServerTransition({
@@ -28,8 +26,7 @@ import { PageModule } from './pages/pages.module';
     JsonpModule,
     AppRoutingModule,
     PageModule,
-    CoreModule,
-    HomePageModule
+    CoreModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
