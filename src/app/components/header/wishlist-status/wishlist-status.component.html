@@ -1,7 +1,7 @@
-<a class="compare-status" rel="nofollow" [routerLink]="localize.translateRoute('/wishlist')">
+<a class="wishlist-count" [routerLink]="localizeRouter.translateRoute('/wishlist')" rel="nofollow">
   <span class="glyphicon-heart glyphicon glyphicon-header-icon"></span>
-  <span class="compare-count-text" data-ajax-content="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewProductCompare-Status">
-    <div *ngIf="itemCount>0" id="compare-count">{{itemCount}}</div>
+  <span class="wishlist-count-text">
+    <div *ngIf="itemCount > 0" id="preferred-wishlist-counter">{{itemCount}}</div>
     <span class="hidden-xs">{{ 'header.wishlists.text' | translate }}</span>
   </span>
 </a>
