@@ -6,9 +6,10 @@ import { LocalizeRouterService } from './routes-parser-locale-currency/localize-
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private localizeRouter: LocalizeRouterService,
-              private accountLoginService: AccountLoginService) {
-  }
+  constructor(
+    private localizeRouter: LocalizeRouterService,
+    private accountLoginService: AccountLoginService
+  ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.accountLoginService.isAuthorized()) {
@@ -16,8 +17,6 @@ export class AuthGuard implements CanActivate {
       this.localizeRouter.navigateToRoute('/login', { queryParams: { returnUrl: state.url } });
       return false;
     }
-
     return true;
   }
 }
-
