@@ -1,10 +1,7 @@
 <div class="language-switch" dropdown placement="bottom right">
   <a dropdownToggle (click)="false" class="language-switch-link" href='{{router.url}}#languageSwitch'>
     <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
-    <span class="language-switch-current-selection hidden-xs">
-      {{lang}}
-      <span class="switch_arrow"></span>
-    </span>
+    <span class="language-switch-current-selection hidden-xs">{{lang}}<span class="switch_arrow"></span></span>
   </a>
   <div *dropdownMenu class="language-switch-container dropdown-menu dropdown-menu-right">
     <div class="language-switch-menu-container">
