@@ -5,13 +5,16 @@ import { CategoryListComponent } from '../components/category-list/category-list
 import { CategoryNavigationComponent } from '../components/category-navigation/category-navigation.component';
 import { SubCategoryNavigationComponent } from '../components/category-navigation/subcategory-navigation/subcategory-navigation.component';
 import { ProductListComponent } from '../components/product-list/product-list.component';
+import { ProductRowComponent } from '../components/product-row/product-row.component';
 import { ProductTileComponent } from '../components/product-tile/product-tile.component';
 import { DisableIconDirective } from '../directives/disable-icon.directive';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
+    SharedModule
   ],
   declarations: [
     CategoryListComponent,
@@ -19,6 +22,7 @@ import { DisableIconDirective } from '../directives/disable-icon.directive';
     SubCategoryNavigationComponent,
     DisableIconDirective,
     ProductListComponent,
+    ProductRowComponent,
     ProductTileComponent
   ],
   exports: [
@@ -27,6 +31,7 @@ import { DisableIconDirective } from '../directives/disable-icon.directive';
     SubCategoryNavigationComponent,
     DisableIconDirective,
     ProductListComponent,
+    ProductRowComponent,
     ProductTileComponent
   ]
 })
