@@ -44,12 +44,6 @@ describe('LocalizeRouterService', () => {
   when(translateServiceMock.get(anyString())).thenReturn();
   when(translateServiceMock.getBrowserLang(anyString())).thenReturn('English');
 
-  // let mockRouter: any = mock(Router);
-  // const routerMock: any = instance(mockRouter);
-  // routerMock.events = '';
-  // when(mockRouter.resetConfig(anything())).thenReturn();
-  // when(mockRouter.parseUrl(anything())).thenReturn('');
-
   beforeEach(() => {
     routes = [
       { path: 'home', redirectTo: 'fakePath' },
