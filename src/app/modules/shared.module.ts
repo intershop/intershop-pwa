@@ -8,24 +8,24 @@ import { FormGroupValidationComponent } from '../components/global-form-validati
 import { FormValidationDirective } from '../directives/form-validation.directive';
 
 @NgModule({
-    exports: [
-        TranslateModule,
-        CommonModule,
-        FormsModule,
-        RouterModule,
-        ReactiveFormsModule,
-        FormGroupValidationComponent,
-        FormValidationDirective
-    ],
-    declarations: [
-        FormGroupValidationComponent,
-        FormControlErrorComponent,
-        FormValidationDirective
-    ],
-    entryComponents: [FormControlErrorComponent],
-    imports: [
-        CommonModule
-    ],
-    providers: []
+  exports: [
+    TranslateModule,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormGroupValidationComponent,
+    FormValidationDirective
+  ],
+  declarations: [
+    FormGroupValidationComponent,
+    FormControlErrorComponent,
+    FormValidationDirective
+  ],
+  entryComponents: [FormControlErrorComponent],
+  imports: [
+    CommonModule
+  ],
+  providers: []
 })
 export class SharedModule { }
