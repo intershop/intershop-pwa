@@ -68,4 +68,63 @@ describe('ApiService', () => {
     });
     verify(httpClient.delete(anything())).once();
   }));
+
+  it('should test if the Element traslation is working as expected', inject([ApiService], (apiService: ApiService) => {
+    when(httpClient.get(anything(), new Object(anything()))).thenReturn(
+      Observable.of({
+        'elements': [
+          {
+            'type': 'Link',
+            'uri': 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD/customers/-/wishlists/vVKsEQACPHcAAAFe0EwBRaB5',
+            'title': 'For Christmas'
+          }
+        ],
+        'type': 'ResourceCollection',
+        'name': 'wishlists'
+      })
+    );
+    apiService.get('customers/-/wishlists/', null, null, true).subscribe((data) => {
+      expect(data).toEqual([
+        {
+          'type': 'Link',
+          'uri': 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD/customers/-/wishlists/vVKsEQACPHcAAAFe0EwBRaB5',
+          'title': 'For Christmas'
+        }
+      ]);
+    });
+  }));
+
+  it('should test if the Link traslation is working as expected', inject([ApiService], (apiService: ApiService) => {
+    when(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/', new Object(anything()))).thenReturn(
+      Observable.of(
+        {
+          'elements': [
+            {
+              'type': 'Link',
+              'uri': 'inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577'
+            }]
+        }
+      )
+    );
+
+    when(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/Cameras-Camcorders/577', new Object(anything()))).thenReturn(
+      Observable.of(
+        {
+          'name': 'Webcams',
+          'description': 'The camera products and services catalog.',
+          'id': '577'
+        }
+      )
+    );
+
+    apiService.get('categories/', null, null, false, true).subscribe((data) => {
+      verify(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/', new Object(anything()))).once();
+      verify(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/Cameras-Camcorders/577', new Object(anything()))).once();
+      expect(data[0]).toEqual({
+        'description': 'The camera products and services catalog.',
+        'id': '577',
+        'name': 'Webcams'
+      });
+    });
+  }));
 });
