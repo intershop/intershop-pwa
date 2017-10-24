@@ -52,7 +52,7 @@ describe('Wish List Component', () => {
   });
 
   it('should display itemCount of 1 when mock data supplies 1', () => {
-    const itemCount = element.querySelector('#compare-count').textContent;
+    const itemCount = element.querySelector('#preferred-wishlist-counter').textContent;
 
     expect(itemCount).toBe('1');
   });
@@ -61,7 +61,7 @@ describe('Wish List Component', () => {
     wishListServiceMock.next({itemsCount: 0} as WishListModel);
     fixture.detectChanges();
 
-    const itemCountElement = element.querySelector('#compare-count');
+    const itemCountElement = element.querySelector('#preferred-wishlist-counter');
     expect(itemCountElement).toBeFalsy();
   });
 
