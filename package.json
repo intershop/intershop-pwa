@@ -32,7 +32,6 @@
     "crypto-js": "^3.1.9-1",
     "lzutf8": "^0.4.4",
     "ng-recaptcha": "^2.1.1",
-    "ng2-cache": "^0.1.11",
     "ng2-completer": "^1.6.0",
     "ng2-validation": "^4.2.0",
     "ngx-bootstrap": "^1.8.1",
