@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { environment } from '../../environments/environment';
 import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
@@ -70,7 +71,7 @@ describe('ApiService', () => {
   }));
 
   it('should test if the Element traslation is working as expected', inject([ApiService], (apiService: ApiService) => {
-    when(httpClient.get(anything(), new Object(anything()))).thenReturn(
+    when(httpClient.get(anyString(), new Object(anything()))).thenReturn(
       Observable.of({
         'elements': [
           {
@@ -95,7 +96,8 @@ describe('ApiService', () => {
   }));
 
   it('should test if the Link traslation is working as expected', inject([ApiService], (apiService: ApiService) => {
-    when(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/', new Object(anything()))).thenReturn(
+    const locale = 'loc=en;cur=USD';
+    when(httpClient.get(`${environment.rest_url};${locale}/categories/`, new Object(anything()))).thenReturn(
       Observable.of(
         {
           'elements': [
@@ -107,7 +109,7 @@ describe('ApiService', () => {
       )
     );
 
-    when(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/Cameras-Camcorders/577', new Object(anything()))).thenReturn(
+    when(httpClient.get(`${environment.rest_url};${locale}/categories/Cameras-Camcorders/577`, new Object(anything()))).thenReturn(
       Observable.of(
         {
           'name': 'Webcams',
@@ -118,8 +120,8 @@ describe('ApiService', () => {
     );
 
     apiService.get('categories/', null, null, false, true).subscribe((data) => {
-      verify(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/', new Object(anything()))).once();
-      verify(httpClient.get('https://localhost:80/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-;loc=en;cur=USD/categories/Cameras-Camcorders/577', new Object(anything()))).once();
+      verify(httpClient.get(`${environment.rest_url};${locale}/categories/`, new Object(anything()))).once();
+      verify(httpClient.get(`${environment.rest_url};${locale}/categories/Cameras-Camcorders/577`, new Object(anything()))).once();
       expect(data[0]).toEqual({
         'description': 'The camera products and services catalog.',
         'id': '577',
