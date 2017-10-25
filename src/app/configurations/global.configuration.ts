@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 export class GlobalConfiguration {
   private accountSettings = {
     useSimpleAccount: true,
-    userRegistrationLoginType: 'username'
+    userRegistrationLoginType: 'email'
   };
   /**
    * returns applicationSettings

@@ -1,52 +1,54 @@
 <div *ngIf="errorUser === 'LoginAlreadyInUse'" role="alert" class="alert alert-danger">
   {{errorMessage() | translate}}
 </div>
-<form isFormValidation name="PostCheckoutRegisterForm" [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form"
-  (ngSubmit)="createAccount(simpleRegistrationForm.value)">
+<form isFormValidation [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form"
+  (ngSubmit)="createAccount()">
   <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ''
     }} {{('account.create_user.email_password.message' | translate)}}</p>
 
   <is-form-group-validation [errorMessages]="{'required':'account.login.username.error.required'}">
     <div *ngIf="isUsername" class="form-group clearfix has-feedback">
-      <label for="PostCheckoutRegisterForm_username" class="col-sm-3 control-label">{{'account.create_user.login.label' | translate}}</label>
+      <label for="simpleRegistrationForm_username" class="col-sm-3 control-label">{{'account.create_user.login.label' | translate}}</label>
       <div class="col-sm-6">
-        <input class="form-control" formControlName="userName" #dynamicError type="text" id="PostCheckoutRegisterForm_username" name="PostCheckoutRegisterForm_username">
+        <input formControlName="userName" id="simpleRegistrationForm_username" #dynamicError class="form-control" type="text">
       </div>
     </div>
   </is-form-group-validation>
+
   <is-form-group-validation [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}">
     <div class="form-group clearfix has-feedback">
-      <label for="PostCheckoutRegisterForm_Login" class="col-sm-3 control-label">{{'account.register.email.label' | translate}}</label>
+      <label for="simpleRegistrationForm_Login" class="col-sm-3 control-label">{{'account.register.email.label' | translate}}</label>
       <div class="col-sm-6">
-        <input class="form-control" #dynamicError formControlName="email" name="PostCheckoutRegisterForm_Login" type="email" id="PostCheckoutRegisterForm_Login">
+        <input formControlName="email" id="simpleRegistrationForm_Login" #dynamicError class="form-control" type="email">
       </div>
       <i class="form-control-feedback" data-bv-icon-for="Username"></i>
     </div>
   </is-form-group-validation>
+
   <is-form-group-validation [errorMessages]="{'required':'account.update_password.new_password.error.required','pattern':'account.update_password.new_password.error.regexp','minlength':'account.update_password.new_password.error.length'}">
     <div class="form-group clearfix has-feedback">
-      <label for="PostCheckoutRegisterForm_Password" class="col-sm-3 control-label">{{'account.register.password.label' | translate}}</label>
+      <label for="simpleRegistrationForm_Password" class="col-sm-3 control-label">{{'account.register.password.label' | translate}}</label>
       <div class="col-sm-6">
-        <input formControlName="password" #dynamicError class="form-control" name="PostCheckoutRegisterForm_Password" type="password"
-          id="PostCheckoutRegisterForm_Password" maxlength="256">
+        <input formControlName="password" id="simpleRegistrationForm_Password" #dynamicError class="form-control" type="password">
       </div>
       <div class="col-sm-offset-3 col-sm-10">
         <small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
       </div>
     </div>
   </is-form-group-validation>
+
   <is-form-group-validation [errorMessages]="{'required':'account.register.password_confirmation.error.default','equalTo':'account.update_password.confirm_password.error.stringcompare'}">
     <div class="form-group clearfix has-feedback">
-      <label class="col-sm-3 control-label" for="PostCheckoutRegisterForm_RetypedPassword">{{'account.register.password_confirmation.label' | translate}}</label>
+      <label class="col-sm-3 control-label" for="simpleRegistrationForm_ConfirmPassword">{{'account.register.password_confirmation.label' | translate}}</label>
       <div class="col-sm-6">
-        <input type="password" #dynamicError autocomplete="off" class="form-control" size="18" id="PostCheckoutRegisterForm_RetypedPassword"
-          name="PostCheckoutRegisterForm_RetypedPassword" formControlName="confirmPassword">
+        <input formControlName="confirmPassword" id="simpleRegistrationForm_ConfirmPassword" #dynamicError class="form-control" type="password" autocomplete="off">
       </div>
     </div>
   </is-form-group-validation>
+
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
-      <button class="btn btn-primary" type="submit" name="login" [disabled]="isInvalid">{{'account.create.button.label' | translate}}</button>
+      <button class="btn btn-primary" type="submit" name="login" [disabled]="simpleRegistrationForm.invalid && isDirty">{{'account.create.button.label' | translate}}</button>
     </div>
   </div>
 </form>
