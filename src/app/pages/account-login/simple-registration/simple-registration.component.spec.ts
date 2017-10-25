@@ -73,20 +73,18 @@ describe('Simple Registration Component', () => {
 
   it('should call createAccount when the form is Invalid and verify if router.navigate is not being called', () => {
     fixture.detectChanges();
-    const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.simpleRegistrationForm.controls['userName'].setValue('invalid@email');
     component.simpleRegistrationForm.controls['password'].setValue('12121');
-    component.createAccount(userDetails);
+    component.createAccount();
     verify(accountLoginServiceMock.createUser(anything())).never();
     verify(localizeRouterServiceMock.navigateToRoute(anything())).never();
   });
 
   xit('should call createAccount when the form is valid and verify if router.navigate is being called', () => {
-    const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.simpleRegistrationForm.controls['userName'].setValue('valid@email.com');
     component.simpleRegistrationForm.controls['password'].setValue('aaaaaa1');
     component.simpleRegistrationForm.controls['confirmPassword'].setValue('aaaaaa1');
-    component.createAccount(userDetails);
+    component.createAccount();
     verify(accountLoginServiceMock.createUser(anything())).once();
     // check if it was called
     verify(localizeRouterServiceMock.navigateToRoute(anything())).once();

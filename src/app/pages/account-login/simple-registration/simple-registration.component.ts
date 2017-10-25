@@ -14,7 +14,7 @@ export class SimpleRegistrationComponent implements OnInit {
   simpleRegistrationForm: FormGroup;
   isUsername: boolean;
   errorUser: string;
-  isInvalid: boolean;
+  isDirty: boolean;
 
   /**
    * Constructor
@@ -31,7 +31,7 @@ export class SimpleRegistrationComponent implements OnInit {
 
   /**
      * Creates Login Form
-     */
+  */
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       this.isUsername = data.userRegistrationLoginType === 'username';
@@ -44,22 +44,17 @@ export class SimpleRegistrationComponent implements OnInit {
         confirmPassword: confirmPassword
       });
     });
-
-    this.simpleRegistrationForm.valueChanges.subscribe(value => {
-      this.isInvalid = false;
-      Object.keys(this.simpleRegistrationForm.controls).forEach(key => {
-        if (this.simpleRegistrationForm.get(key).dirty && this.simpleRegistrationForm.get(key).invalid) {
-          this.isInvalid = true;
-        }
-      });
-    });
   }
 
-  createAccount(userData) {
+  /**
+     * Creates simple Account
+  */
+  createAccount() {
     if (this.simpleRegistrationForm.invalid) {
-      this.isInvalid = true;
+      this.isDirty = true;
       return;
     }
+    const userData = this.simpleRegistrationForm.value;
     this.accountLoginService.createUser(userData).subscribe(response => {
       // TODO: Check should be in accordance with rest call response
       if (response) {
