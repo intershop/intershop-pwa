@@ -46,7 +46,7 @@ Deployments are generated to the `dist` folder of the project.
 
 Use `npm run build` to get an application using browser rendering. All the files under `dist/browser` have to be served statically.
 
-Use `npm run build:static` to generate a prerendered version. All the files under `dist/browser` have to be served statically. Some paths supplied by `static.paths.js` are pre-rendered to speed up browser-side bootstrapping.
+Use `npm run build:static` to generate a prerendered version. All the files under `dist/browser` have to be served statically. Paths entered in `static.paths.js` are pre-rendered for static serving. This speeds up browser-side bootstrapping.
 
 Use `npm run build:dynamic` to generate the angular universal enabled version. On the server the `dist/server.js` script has to be executed with `node`.
 
