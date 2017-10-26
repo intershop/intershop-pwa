@@ -17,7 +17,11 @@ export class UniversalMockInterceptor implements HttpInterceptor {
     if (!req.url.startsWith('http')) {
       console.log(`loading mock-data for '${req.url}' from file system.`);
       return Observable.create((observer: Observer<HttpResponse<any>>) => {
-        const file = join(process.cwd(), 'browser', req.url);
+        let rootPath = process.cwd();
+        if (!!rootPath && rootPath.indexOf('browser') > 0) {
+          rootPath = process.cwd().split('browser')[0];
+        }
+        const file = join(rootPath, 'browser', req.url);
         if (!existsSync(file)) {
           const errString = `mock data file '${file}' not found!`;
           console.error(errString);
