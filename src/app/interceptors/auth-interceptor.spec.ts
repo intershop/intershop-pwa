@@ -1,4 +1,4 @@
-import { HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Rx';
@@ -14,22 +14,20 @@ describe('Auth Interceptor Service', () => {
 
   let authInterceptor: AuthInterceptor;
 
-  class MockInterceptor implements HttpHandler {
-    handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
-    const headers = new HttpHeaders();
-    const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers: headers });
-      mockRequest = req;
-      return Observable.of(res);
-    }
-  }
-
   let jwtServiceMock: JwtService;
-
+  let mockInterceptor: any;
   beforeEach(() => {
     getRequest = new HttpRequest<any>('GET', ' ');
     mockRequest = null;
     jwtServiceMock = mock(JwtService);
-
+    mockInterceptor = {
+      handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
+        const headers = new HttpHeaders();
+        const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers: headers });
+        mockRequest = req;
+        return Observable.of(res);
+      }
+    };
     TestBed.configureTestingModule({
       providers: [
         AuthInterceptor,
@@ -40,7 +38,7 @@ describe('Auth Interceptor Service', () => {
   });
 
   it('should return mocked body in response', () => {
-    authInterceptor.intercept(getRequest, new MockInterceptor()).subscribe((data: HttpResponse<any>) => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data: HttpResponse<any>) => {
       const response = data;
       expect(response.body).toEqual(JSON.parse(responseData));
     });
@@ -48,7 +46,7 @@ describe('Auth Interceptor Service', () => {
 
   it('should use mocked test token', () => {
     when(jwtServiceMock.getToken()).thenReturn('testtoken');
-    authInterceptor.intercept(getRequest, new MockInterceptor()).subscribe((data) => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
       expect(mockRequest.headers.get('authentication-token')).toEqual('testtoken');
     });
   });
@@ -56,14 +54,14 @@ describe('Auth Interceptor Service', () => {
   it('should not set token for Authorization request', () => {
     const headers = new HttpHeaders().set('Authorization', 'Basic');
     const request = new HttpRequest<any>('GET', ' ', { headers: headers });
-    authInterceptor.intercept(request, new MockInterceptor()).subscribe((data) => {
+    authInterceptor.intercept(request, mockInterceptor).subscribe((data) => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
     });
   });
 
   it('should not set token when token is empty', () => {
     when(jwtServiceMock.getToken()).thenReturn('');
-    authInterceptor.intercept(getRequest, new MockInterceptor()).subscribe((data) => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
     });
   });

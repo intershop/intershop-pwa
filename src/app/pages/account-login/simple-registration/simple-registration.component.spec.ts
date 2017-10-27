@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,18 +12,10 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 import { SimpleRegistrationComponent } from './simple-registration.component';
 import { SimpleRegistrationService } from './simple-registration.service';
 
-@Pipe({ name: 'localize' })
-class MockPipe implements PipeTransform {
-  transform(value: number): number {
-    return value;
-  }
-}
-
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
   let element: HTMLElement;
-  // let routerMock: Router;
   let globalConfigurationMock: GlobalConfiguration;
   let simpleRegistrationServiceMock: SimpleRegistrationService;
   let localizeRouterServiceMock: LocalizeRouterService;
@@ -42,7 +34,7 @@ describe('Simple Registration Component', () => {
     when(simpleRegistrationServiceMock.createUser(anything())).thenReturn(Observable.of(new UserDetail()));
 
     TestBed.configureTestingModule({
-      declarations: [SimpleRegistrationComponent, MockPipe],
+      declarations: [SimpleRegistrationComponent],
       imports: [
         TranslateModule.forRoot(),
         ReactiveFormsModule,

@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -8,12 +7,6 @@ import { instance, mock } from 'ts-mockito';
 import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { ProductCompareStatusComponent } from './product-compare-status.component';
-
-@Component({
-  template: ''
-})
-class DummyComponent {
-}
 
 describe('Product Compare Status Component', () => {
   let fixture;
@@ -27,13 +20,12 @@ describe('Product Compare Status Component', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'compare', component: DummyComponent }
+          { path: 'compare', redirectTo: 'fakePath' }
         ]),
         TranslateModule.forRoot()
       ],
       declarations: [
-        ProductCompareStatusComponent,
-        DummyComponent
+        ProductCompareStatusComponent
       ],
       providers: [
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
