@@ -9,7 +9,8 @@ import { anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-moc
 import { LocalizeRouterModule } from './localize-router.module';
 import { LocalizeParser } from './localize-router.parser';
 import { LocalizeRouterService } from './localize-router.service';
-/* tslint:disable:prefer-mocks-instead-of-stubs-in-tests */
+
+// tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
 class FakeRouter {
   routes: Routes;
   fakeRouterEvents: Subject<Event> = new Subject<Event>();
@@ -24,9 +25,6 @@ class FakeRouter {
 
   parseUrl = () => '';
 }
-/* tslint:enable:prefer-mocks-instead-of-stubs-in-tests */
-
-
 
 describe('LocalizeRouterService', () => {
   let injector: Injector;

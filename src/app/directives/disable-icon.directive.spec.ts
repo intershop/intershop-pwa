@@ -8,11 +8,11 @@ describe('DisableIconDirective', () => {
   @Component({
     template: `<div class="is-selected" isDisableIcon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
   })
-  /* tslint:disable:prefer-mocks-instead-of-stubs-in-tests */
+
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class MockComponent {
     @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
   }
-  /* tslint:enable:prefer-mocks-instead-of-stubs-in-tests */
 
   let fixture: ComponentFixture<MockComponent>;
   let component: MockComponent;
