@@ -36,9 +36,9 @@ describe('Mock Interceptor', () => {
 
     function dataProvider() {
       return [
-        { url: environment.rest_url + '/categories', willBeMocked: true },
-        { url: environment.rest_url + ';loc=en_US;cur=USD/categories', willBeMocked: true },
-        { url: './assets/picture.png', willBeMocked: false }
+        { url: environment.rest_url + '/categories', willBeMocked: true, method: 'GET' },
+        { url: environment.rest_url + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
+        { url: './assets/picture.png', willBeMocked: false, method: 'GET' }
       ];
     }
 
@@ -49,9 +49,9 @@ describe('Mock Interceptor', () => {
 
       it('should ' + (dataSlice.willBeMocked ? '' : 'not ') + 'change url for ' + dataSlice.url, () => {
         if (dataSlice.willBeMocked) {
-          expect(mockInterceptor.getMockUrl(dataSlice.url)).not.toBe(dataSlice.url);
+          expect(mockInterceptor.getMockUrl(dataSlice)).not.toBe(dataSlice.url);
         } else {
-          expect(mockInterceptor.getMockUrl(dataSlice.url)).toBe(dataSlice.url);
+          expect(mockInterceptor.getMockUrl(dataSlice)).toBe(dataSlice.url);
         }
       });
     });
