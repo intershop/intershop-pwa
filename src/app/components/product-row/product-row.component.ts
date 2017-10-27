@@ -112,12 +112,12 @@ export class ProductRowComponent implements OnInit {
       }
     }
 
-    // if (this.mockData.listPrice.value) {
-    //   this.displayCondition = true;
-    //   if (this.mockData.salePrice.value && !(this.mockData.listPrice.value > this.mockData.salePrice.value)) {
-    //     this.displayCondition = false;
-    //   }
-    // }
+    if (this.mockData.listPrice.value) {
+      this.displayCondition = true;
+      if (this.mockData.salePrice.value && !(this.mockData.listPrice.value > this.mockData.salePrice.value)) {
+        this.displayCondition = false;
+      }
+    }
 
 
     if (this.mockData.listPrice.range && !(this.mockData.listPrice.range.minimumPrice === this.mockData.listPrice.range.maximumPrice)) {
