@@ -10,8 +10,6 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { SharedModule } from '../../modules/shared.module';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
-import { CacheCustomService } from '../../services/cache/cache-custom.service';
-import { EncryptDecryptService } from '../../services/cache/encrypt-decrypt.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountLoginComponent } from './account-login.component';
 
@@ -48,11 +46,9 @@ describe('AccountLogin Component', () => {
         AccountLoginComponent
       ],
       providers: [
-        CacheCustomService, EncryptDecryptService,
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
-
       ],
       imports: [
         SharedModule,
