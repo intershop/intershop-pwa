@@ -14,7 +14,7 @@ import { FormValidationDirective } from './form-validation.directive';
             `
 })
 
-/* tslint:disable:prefer-mocks-instead-of-stubs-in-tests */
+// tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
 class MockComponent {
   loginForm: FormGroup;
   constructor(private formBuilder: FormBuilder) {
@@ -23,7 +23,6 @@ class MockComponent {
     });
   }
 }
-/* tslint:enable:prefer-mocks-instead-of-stubs-in-tests */
 
 describe('Form Validation Directive', () => {
   let fixture: ComponentFixture<MockComponent>;

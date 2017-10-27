@@ -45,7 +45,7 @@ describe('LocalizeParser', () => {
   });
   when(translateServiceMock.getBrowserLang()).thenReturn('En');
 
-/* tslint:disable:prefer-mocks-instead-of-stubs-in-tests */
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class ManualParserLoader extends LocalizeParser {
     constructor(translateService: TranslateService,
       locationService: Location,
@@ -67,7 +67,6 @@ describe('LocalizeParser', () => {
       });
     }
   }
-/* tslint:enable:prefer-mocks-instead-of-stubs-in-tests */
 
   beforeEach(() => {
     TestBed.configureTestingModule({

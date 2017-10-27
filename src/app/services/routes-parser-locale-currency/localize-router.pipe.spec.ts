@@ -195,7 +195,7 @@ describe('LocalizeRouterPipe', () => {
       expect(equals({ text: 123, same: 1 }, { text: 123, same: 1 })).toBe(true);
     });
     it('should ignore if inherited fields dont match', () => {
-      /* tslint:disable:prefer-mocks-instead-of-stubs-in-tests */
+      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class Class1 {
         same: boolean;
 
@@ -206,6 +206,7 @@ describe('LocalizeRouterPipe', () => {
         }
       }
 
+      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class Class2 {
         same: boolean;
 
@@ -215,7 +216,6 @@ describe('LocalizeRouterPipe', () => {
         constructor() {
         }
       }
-      /* tslint:enable:prefer-mocks-instead-of-stubs-in-tests */
 
       const instance1: any = new Class1();
       instance1.same = true;
