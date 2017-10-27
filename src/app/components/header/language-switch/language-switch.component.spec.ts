@@ -3,33 +3,26 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Observable } from 'rxjs/Observable';
-import { instance, mock } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { LanguageSwitchComponent } from './language-switch.component';
-
-class DummyTraslateService {
-  parser = {
-    currentLocale: { lang: 'en', currency: 'USD' },
-    urlPrefix: (str: string): string => str,
-    currentLang: 'en_US'
-  };
-  changeLanguage(locale: any): Observable<any> {
-    this.parser.currentLocale = locale;
-    return Observable.of(locale);
-  }
-}
-
-class DummyRouter {
-  get url() {
-    return 'test';
-  }
-}
 
 describe('Language Switch Component', () => {
   let fixture: ComponentFixture<LanguageSwitchComponent>;
   let component: LanguageSwitchComponent;
   let element: HTMLElement;
+  const mockLocalizeRouterService: any = mock(LocalizeRouterService);
+  const localizeRouterServiceMock: any = instance(mockLocalizeRouterService);
+  localizeRouterServiceMock.parser = {
+    currentLocale: { lang: 'en', currency: 'USD' },
+    urlPrefix: (str: string): string => str,
+    currentLang: 'en_US'
+  };
+  when(mockLocalizeRouterService.changeLanguage(anything())).thenCall((locale: any) => {
+    localizeRouterServiceMock.parser.currentLocale = locale;
+    return Observable.of(locale);
+  });
 
   beforeEach(() => {
 
@@ -38,12 +31,12 @@ describe('Language Switch Component', () => {
         BsDropdownModule.forRoot(),
         RouterTestingModule
       ],
-      declarations: [LanguageSwitchComponent],
       providers: [
-        { provide: LocalizeRouterService, useClass: DummyTraslateService },
+        { provide: LocalizeRouterService, useFactory: () => localizeRouterServiceMock },
         { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
-        { provide: Router, useClass: DummyRouter }
-      ]
+        { provide: Router, useFactory: () => instance(mock(Router)) },
+      ],
+      declarations: [LanguageSwitchComponent]
     }).compileComponents();
   });
 
