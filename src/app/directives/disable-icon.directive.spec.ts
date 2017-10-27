@@ -8,6 +8,8 @@ describe('DisableIconDirective', () => {
   @Component({
     template: `<div class="is-selected" isDisableIcon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
   })
+
+  // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
   class MockComponent {
     @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
   }
@@ -16,12 +18,8 @@ describe('DisableIconDirective', () => {
   let component: MockComponent;
   let element: HTMLElement;
   let productCompareServiceMock: ProductCompareService;
-  class ElementRefStub {
-
-  }
-  class RendererStub {
-
-  }
+  const elementRefMock: ElementRef = mock(ElementRef);
+  const rendererMock: Renderer2 = mock(Renderer2);
 
   beforeEach(async(() => {
     productCompareServiceMock = mock(ProductCompareService);
@@ -29,8 +27,8 @@ describe('DisableIconDirective', () => {
 
     TestBed.configureTestingModule({
       declarations: [DisableIconDirective, MockComponent],
-      providers: [{ provide: ElementRef, useClass: ElementRefStub },
-      { provide: Renderer2, useClass: RendererStub },
+      providers: [{ provide: ElementRef, useFactory: () => instance(elementRefMock) },
+      { provide: Renderer2, useFactory: () => instance(rendererMock) },
       { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) }
       ]
     }).compileComponents().then(() => {
