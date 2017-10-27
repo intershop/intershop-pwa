@@ -1,26 +1,9 @@
 import { ChangeDetectorRef, Injector } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs/Subject';
-import { instance, mock } from 'ts-mockito';
+import { anyString, instance, mock, when } from 'ts-mockito';
 import { equals, LocalizeRouterPipe } from './localize-router.pipe';
 import { LocalizeRouterService } from './localize-router.service';
-
-class DummyLocalizeParser {
-  currentLang: string;
-}
-
-class FakeLocalizeRouterService {
-  routerEvents: Subject<string> = new Subject<string>();
-  parser: DummyLocalizeParser;
-
-  constructor() {
-    this.parser = new DummyLocalizeParser();
-  }
-
-  translateRoute(route: string): string {
-    return route + '_TR';
-  }
-}
 
 describe('LocalizeRouterPipe', () => {
   let injector: Injector;
@@ -28,13 +11,19 @@ describe('LocalizeRouterPipe', () => {
   let localizePipe: LocalizeRouterPipe;
   let mockedRef: ChangeDetectorRef;
   let ref: any;
+  const localizeRouterServiceMock: any = mock(LocalizeRouterService);
+  const mockLocalizeRouterService = instance(localizeRouterServiceMock);
+  mockLocalizeRouterService.routerEvents = new Subject<string>();
+  when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((route: string) => {
+    return route + '_TR';
+  });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [LocalizeRouterPipe],
       providers: [
         {
-          provide: LocalizeRouterService, useClass: FakeLocalizeRouterService
+          provide: LocalizeRouterService, useFactory: () => mockLocalizeRouterService
         }
       ]
     });
@@ -206,6 +195,7 @@ describe('LocalizeRouterPipe', () => {
       expect(equals({ text: 123, same: 1 }, { text: 123, same: 1 })).toBe(true);
     });
     it('should ignore if inherited fields dont match', () => {
+      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class Class1 {
         same: boolean;
 
@@ -216,6 +206,7 @@ describe('LocalizeRouterPipe', () => {
         }
       }
 
+      // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
       class Class2 {
         same: boolean;
 

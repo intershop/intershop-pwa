@@ -7,7 +7,6 @@ const MOCK_DATA_ROOT = './assets/mock-data';
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
-
   constructor() { }
 
   /**
@@ -18,34 +17,46 @@ export class MockInterceptor implements HttpInterceptor {
    * @returns  Observable<HttpEvent<any>>
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authorizationHeaderKey = 'Authorization';
-
-    if (this.requestHasToBeMocked(req)) {
-      const newUrl = this.getMockUrl(req.url);
-      console.log(`redirecting '${req.url}' to '${newUrl}'`);
-
-      const attachToken: boolean = req.headers.has(authorizationHeaderKey) && req.headers.get(authorizationHeaderKey) ===
-        // patricia@test.intershop.de with !InterShop00!
-        'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==';
-
-      return next.handle(req.clone({ url: newUrl })).map(event => {
-        if (event instanceof HttpResponse && attachToken) {
-          const response = <HttpResponse<any>>event;
-          console.log('attaching dummy token');
-          return response.clone({headers: response.headers.append('authentication-token', 'Dummy Token')});
-        }
-        return event;
-      });
-    } else {
+    if (!this.requestHasToBeMocked(req)) {
       return next.handle(req);
     }
+    const newUrl = this.getMockUrl(req);
+    console.log(`redirecting '${req.url}' to '${newUrl}'`);
+
+    return next.handle(req.clone({ url: newUrl, method: 'GET' })).map(event => {
+      if (event instanceof HttpResponse) {
+        const response = <HttpResponse<any>>event;
+        return this.attachTokenIfNecessary(req, response);
+      }
+      return event;
+    });
+  }
+
+  /**
+   * check if user patricia@test.intershop.de with !InterShop00! is logged in correctly
+   */
+  private mockUserIsLoggingIn(req: HttpRequest<any>) {
+    const authorizationHeaderKey = 'Authorization';
+    return req.headers.has(authorizationHeaderKey) && req.headers.get(authorizationHeaderKey) ===
+      'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==';
+  }
+
+  /**
+   * Decides if token needs to be attached and attaches it
+   */
+  private attachTokenIfNecessary(req: HttpRequest<any>, response: HttpResponse<any>): HttpResponse<any> {
+    if (this.mockUserIsLoggingIn(req) || req.url.indexOf('createUser') > -1) {
+      console.log('attaching dummy token');
+      return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
+    }
+    return response;
   }
 
   /**
    * transforms server REST URL to mock REST URL
    */
-  public getMockUrl(url: string): string {
-    return this.urlHasToBeMocked(url) ? `${MOCK_DATA_ROOT}/${this.getRestPath(this.removeQueryStringParameter(url))}/get-data.json` : url;
+  public getMockUrl(req: HttpRequest<any>) {
+    return this.urlHasToBeMocked(req.url) ? `${MOCK_DATA_ROOT}/${this.getRestPath(this.removeQueryStringParameter(req.url))}/${req.method.toLocaleLowerCase()}-data.json` : req.url;
   }
 
   private urlHasToBeMocked(url: string): boolean {
@@ -60,7 +71,7 @@ export class MockInterceptor implements HttpInterceptor {
    * check if HttpRequest has to be mocked
    */
   public requestHasToBeMocked(req: HttpRequest<any>): boolean {
-    return req.method === 'GET' && this.urlHasToBeMocked(req.url);
+    return this.urlHasToBeMocked(req.url);
   }
 
   public getRestPath(url: string): string {

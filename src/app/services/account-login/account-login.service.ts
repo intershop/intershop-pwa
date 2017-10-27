@@ -32,6 +32,16 @@ export class AccountLoginService implements IAccountLoginService {
       return data;
     });
   }
+  /**
+   * Creates the User and saves the User details
+   * @param  {} userDetails
+   */
+  createUser(userDetails): Observable<UserDetail> {
+    return this.apiService.post('createUser', userDetails).map(data => {
+      this.userDetailService.setUserDetail(data);
+      return data;
+    });
+  }
 
   /**
    * calls isAuthorized function of concerned service

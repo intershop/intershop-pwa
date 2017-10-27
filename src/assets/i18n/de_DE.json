@@ -62,6 +62,10 @@
   "account.login.username.label": "Benutzername",
   "account.login.email.label": "E-Mail",
   "account.login.password.label": "Kennwort",
+  "account.login_status.myaccount.link": "Mein Konto",
+  "account.logout.link": "Abmelden",
+  "account.login.link": "Anmelden",
+  "account.register.link": "Registrieren",
 
   "ROUTES.home": "home",
   "ROUTES.category": "category",
