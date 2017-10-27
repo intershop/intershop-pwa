@@ -142,6 +142,7 @@
     "no-access-missing-member": false,
     "templates-use-public": true,
     "invoke-injectable": true,
+    "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": true,
     "ban": [
       true,
