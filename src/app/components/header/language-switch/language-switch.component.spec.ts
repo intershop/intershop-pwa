@@ -1,5 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Observable } from 'rxjs/Observable';
@@ -19,13 +18,12 @@ describe('Language Switch Component', () => {
     urlPrefix: (str: string): string => str,
     currentLang: 'en_US'
   };
-  when(mockLocalizeRouterService.changeLanguage(anything())).thenCall((locale: any) => {
-    localizeRouterServiceMock.parser.currentLocale = locale;
-    return Observable.of(locale);
-  });
 
   beforeEach(() => {
-
+    when(mockLocalizeRouterService.changeLanguage(anything())).thenCall((locale: any) => {
+      localizeRouterServiceMock.parser.currentLocale = locale;
+      return Observable.of(locale);
+    });
     TestBed.configureTestingModule({
       imports: [
         BsDropdownModule.forRoot(),
@@ -34,7 +32,6 @@ describe('Language Switch Component', () => {
       providers: [
         { provide: LocalizeRouterService, useFactory: () => localizeRouterServiceMock },
         { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
-        { provide: Router, useFactory: () => instance(mock(Router)) },
       ],
       declarations: [LanguageSwitchComponent]
     }).compileComponents();
@@ -51,16 +48,18 @@ describe('Language Switch Component', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should check if more than 1 language options are available on the template', () => {
-    fixture.nativeElement.querySelectorAll('[dropdownToggle]')[0].click(); // trigger drop down opening
+  it('should show the available language options when language dropdown is clicked', fakeAsync(() => {
+    const anchorTag = fixture.debugElement.nativeElement.querySelectorAll('[dropdownToggle]')[0];
+    anchorTag.click();
+    tick();
+    fixture.detectChanges();
     const languageOptions = element.getElementsByTagName('li');
-    expect(languageOptions.length).toBeGreaterThan(1);
-
-    expect(component.localizationArray.length).toBeGreaterThan(1);
-
     const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
+
+    expect(languageOptions.length).toBeGreaterThan(1);
+    expect(component.localizationArray.length).toBeGreaterThan(1);
     expect(selectedLanguage[0].textContent.trim()).toEqual('en');
-  });
+  }));
 
   it('should check language is changed when languageChange menthod is called', () => {
     component.languageChange({ 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' });

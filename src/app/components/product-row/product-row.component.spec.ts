@@ -187,9 +187,9 @@ describe('Product Row Component', () => {
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: WishListService, useFactory: () => instance(wishListServiceMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
         { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) },
-        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) }
+        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) },
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -203,7 +203,7 @@ describe('Product Row Component', () => {
     element = fixture.nativeElement;
   });
 
-  xit('should call ngOnInit', () => {
+  it('should call ngOnInit', () => {
     environment.needMock = false;
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
@@ -239,7 +239,7 @@ describe('Product Row Component', () => {
   })
   ));
 
-  xit('should call calculateAverageRating and satisfy all conditions', () => {
+  it('should call calculateAverageRating and satisfy all conditions', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.averagRating = 0.5;
@@ -268,7 +268,7 @@ describe('Product Row Component', () => {
   });
 
 
-  xit('should call calculatePriceParameters and satisfy all conditions', () => {
+  it('should call calculatePriceParameters and satisfy all conditions', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.showInformationalPrice = true;
@@ -323,7 +323,7 @@ describe('Product Row Component', () => {
     expect(component.oldPrice).toBe('N/A');
   });
 
-  xit('should test if the tags are getting rendered', () => {
+  it('should test if the tags are getting rendered', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     expect(element.getElementsByTagName('img')).toBeTruthy();

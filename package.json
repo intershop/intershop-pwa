@@ -43,6 +43,7 @@
     "core-js": "^2.4.1",
     "crosstab": "^0.2.12",
     "crypto-js": "^3.1.9-1",
+    "intl": "^1.2.5",
     "lzutf8": "^0.4.4",
     "ng-recaptcha": "^2.1.1",
     "ng2-completer": "^1.6.0",
