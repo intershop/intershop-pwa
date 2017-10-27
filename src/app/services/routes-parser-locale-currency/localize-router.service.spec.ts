@@ -5,31 +5,12 @@ import { Event, NavigationEnd, NavigationStart, Router, Routes } from '@angular/
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { LocalizeRouterModule } from './localize-router.module';
 import { LocalizeParser } from './localize-router.parser';
 import { LocalizeRouterService } from './localize-router.service';
 
-class FakeTranslateService {
-  defLang: string;
-  currentLang: string;
-
-  browserLang = '';
-
-  content: any = {
-    'PREFIX.home': 'home_TR',
-    'PREFIX.about': 'about_TR'
-  };
-
-  setDefaultLang = (lang: string) => {
-    this.defLang = lang;
-  }
-  use = (lang: string) => {
-    this.currentLang = lang;
-  }
-  get = (input: string) => Observable.of(this.content[input] || input);
-  getBrowserLang = () => this.browserLang;
-}
-
+// tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
 class FakeRouter {
   routes: Routes;
   fakeRouterEvents: Subject<Event> = new Subject<Event>();
@@ -45,13 +26,6 @@ class FakeRouter {
   parseUrl = () => '';
 }
 
-class FakeLocation {
-  path = () => '';
-}
-
-class DummyComponent {
-}
-
 describe('LocalizeRouterService', () => {
   let injector: Injector;
   let parser: LocalizeParser;
@@ -60,11 +34,18 @@ describe('LocalizeRouterService', () => {
   let routes: Routes;
   let locales: any;
   let langs: string[];
+  const locationMock: any = mock(Location);
+  when(locationMock.path(anything())).thenReturn('');
+  const translateServiceMock: any = mock(TranslateService);
+  when(translateServiceMock.setDefaultLang(anyString())).thenReturn();
+  when(translateServiceMock.use(anyString())).thenReturn();
+  when(translateServiceMock.get(anyString())).thenReturn();
+  when(translateServiceMock.getBrowserLang(anyString())).thenReturn('English');
 
   beforeEach(() => {
     routes = [
-      { path: 'home', component: DummyComponent },
-      { path: 'home/about', component: DummyComponent }
+      { path: 'home', redirectTo: 'fakePath' },
+      { path: 'home/about', redirectTo: 'fakePath' }
     ];
 
     langs = ['en', 'de'];
@@ -78,8 +59,8 @@ describe('LocalizeRouterService', () => {
       ],
       providers: [
         { provide: Router, useClass: FakeRouter },
-        { provide: TranslateService, useClass: FakeTranslateService },
-        { provide: Location, useClass: FakeLocation },
+        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
+        { provide: Location, useFactory: () => instance(locationMock) },
       ]
     });
     injector = getTestBed();
