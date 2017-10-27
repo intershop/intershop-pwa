@@ -21,38 +21,35 @@ export class MockInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     const newUrl = this.getMockUrl(req);
-    req = this.modifyRequestMethod(req);
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
-    return next.handle(req.clone({ url: newUrl })).map(event => {
-      if (event instanceof HttpResponse && this.attachToken(req)) {
+    return next.handle(req.clone({ url: newUrl, method: 'GET' })).map(event => {
+      if (event instanceof HttpResponse) {
         const response = <HttpResponse<any>>event;
-        console.log('attaching dummy token');
-        return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
+        return this.attachTokenIfNecessary(req, response);
       }
       return event;
     });
   }
 
-  modifyRequestMethod(req) {
-    const GET = 'GET';
-    if (req.method !== GET) {
-      req = new HttpRequest(GET, req.url);
-    }
-    return req;
-  }
-
-
   /**
-   * Decides if token needs to be attached
-   * @param  {} req
-   * @returns boolean
+   * check if user patricia@test.intershop.de with !InterShop00! is logged in correctly
    */
-  attachToken(req): boolean {
+  private mockUserIsLoggingIn(req: HttpRequest<any>) {
     const authorizationHeaderKey = 'Authorization';
     return req.headers.has(authorizationHeaderKey) && req.headers.get(authorizationHeaderKey) ===
-      // patricia@test.intershop.de with !InterShop00!
-      'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==' || req.url.indexOf('createUser') > -1;
+      'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==';
+  }
+
+  /**
+   * Decides if token needs to be attached and attaches it
+   */
+  private attachTokenIfNecessary(req: HttpRequest<any>, response: HttpResponse<any>): HttpResponse<any> {
+    if (this.mockUserIsLoggingIn(req) || req.url.indexOf('createUser') > -1) {
+      console.log('attaching dummy token');
+      return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
+    }
+    return response;
   }
 
   /**
