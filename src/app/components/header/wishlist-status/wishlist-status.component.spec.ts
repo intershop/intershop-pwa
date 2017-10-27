@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,11 +10,6 @@ import { WishListModel } from '../../../services/wishlists/wishlists.model';
 import { WishListService } from '../../../services/wishlists/wishlists.service';
 import { WishListComponent } from './wishlist-status.component';
 
-@Component({
-  template: ''
-})
-class DummyComponent {
-}
 
 describe('Wish List Component', () => {
   let fixture: ComponentFixture<WishListComponent>;
@@ -32,7 +26,7 @@ describe('Wish List Component', () => {
       imports: [
         SharedModule,
         RouterTestingModule.withRoutes([
-          { path: 'wishlist', component: DummyComponent }
+          { path: 'wishlist', redirectTo: 'fakePath' }
         ]),
         TranslateModule.forRoot()
       ],
@@ -40,7 +34,7 @@ describe('Wish List Component', () => {
         { provide: WishListService, useValue: wishListServiceMock },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
-      declarations: [WishListComponent, DummyComponent]
+      declarations: [WishListComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(WishListComponent);

@@ -2,4 +2,6 @@ build:
   tags:
   - docker-executor
   image: openjdk:8-jdk
-  script: ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
+  script:
+  - ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
+  - bash .gitlab-ci-test-universal.sh
