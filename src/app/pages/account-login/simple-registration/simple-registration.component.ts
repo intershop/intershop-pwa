@@ -2,19 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
-import { UserDetail } from '../../../services/account-login/account-login.model';
+import { AccountLoginService } from '../../../services/account-login/account-login.service';
 import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
-import { SimpleRegistrationService } from './simple-registration.service';
 
 @Component({
   selector: 'is-simple-registration',
-  templateUrl: './simple-registration.component.html',
-  providers: [SimpleRegistrationService]
+  templateUrl: './simple-registration.component.html'
 })
 
 export class SimpleRegistrationComponent implements OnInit {
   simpleRegistrationForm: FormGroup;
-  userRegistrationLoginType: string;
+  isUsername: boolean;
   errorUser: string;
   isDirty: boolean;
 
@@ -26,37 +24,46 @@ export class SimpleRegistrationComponent implements OnInit {
    * @param {SimpleRegistrationService} simpleRegistrationService
    */
   constructor(private formBuilder: FormBuilder,
-    private localize: LocalizeRouterService,
+    private localizeRouter: LocalizeRouterService,
     private globalConfiguration: GlobalConfiguration,
-    private simpleRegistrationService: SimpleRegistrationService) {
+    private accountLoginService: AccountLoginService) {
   }
 
   /**
      * Creates Login Form
-     */
+  */
   ngOnInit() {
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
-      this.userRegistrationLoginType = data ? data.userRegistrationLoginType : 'email';
-      const password = new FormControl('', [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)])]);
-      const confirmPassword = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(password)])]);
+      this.isUsername = data.userRegistrationLoginType === 'username';
+      const password = new FormControl('', [Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)]);
+      const confirmPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
       this.simpleRegistrationForm = this.formBuilder.group({
-        userName: ['', [Validators.compose([Validators.required,
-        (this.userRegistrationLoginType === 'email' ? CustomValidators.email : null)])]],
+        userName: ['', Validators.compose([this.isUsername ? Validators.required : Validators.nullValidator])],
+        email: ['', [Validators.required, CustomValidators.email]],
         password: password,
         confirmPassword: confirmPassword
       });
     });
   }
 
-
-  createAccount(userData) {
-    if (this.simpleRegistrationForm.valid) {
-      this.simpleRegistrationService.createUser(userData as UserDetail).subscribe(response => {
-        if (response) {
-          this.localize.navigateToRoute('/home');
-        }
-      });
+  /**
+     * Creates simple Account
+  */
+  createAccount() {
+    if (this.simpleRegistrationForm.invalid) {
+      this.isDirty = true;
+      return;
     }
+    const userData = this.simpleRegistrationForm.value;
+    this.accountLoginService.createUser(userData).subscribe(response => {
+      // TODO: Check should be in accordance with rest call response
+      if (response) {
+        this.localizeRouter.navigateToRoute('/home');
+      }
+    });
+  }
+  errorMessage() {
+    return this.isUsername ? ('account.username.already_exist.error') : ('account.email.already_exist.error');
   }
 }
 

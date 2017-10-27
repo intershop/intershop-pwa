@@ -76,7 +76,6 @@ export class ProductTileComponent implements OnInit {
 
     // this.calculatePriceParameters();
     this.calculateAverageRating();
-    // TODO: read product compare list from local cache if user is REMEMBERED
   }
 
   /**
@@ -114,12 +113,12 @@ export class ProductTileComponent implements OnInit {
       }
     }
 
-    // if (this.mockData.listPrice.value) {
-    //   this.displayCondition = true;
-    //   if (this.mockData.salePrice.value && !(this.mockData.listPrice.value > this.mockData.salePrice.value)) {
-    //     this.displayCondition = false;
-    //   }
-    // }
+    if (this.mockData.listPrice.value) {
+      this.displayCondition = true;
+      if (this.mockData.salePrice.value && !(this.mockData.listPrice.value > this.mockData.salePrice.value)) {
+        this.displayCondition = false;
+      }
+    }
 
 
     if (this.mockData.listPrice.range && !(this.mockData.listPrice.range.minimumPrice === this.mockData.listPrice.range.maximumPrice)) {
