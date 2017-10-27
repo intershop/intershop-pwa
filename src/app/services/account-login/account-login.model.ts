@@ -57,6 +57,7 @@ export class UserDetail {
   phoneMobile: string;
   fax: string;
   email: string;
+  userName?: string;
 }
 
 

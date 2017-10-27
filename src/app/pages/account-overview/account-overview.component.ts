@@ -10,10 +10,10 @@ export class AccountOverviewComponent {
   customerName: string;
 
   constructor(private accountLoginService: AccountLoginService,
-              private localize: LocalizeRouterService) {
+    private localize: LocalizeRouterService) {
     this.accountLoginService.subscribe(customerData => {
       if (customerData) {
-        this.customerName = customerData.firstName;
+        this.customerName = customerData.firstName || customerData.userName;
       }
     });
   }
@@ -21,7 +21,6 @@ export class AccountOverviewComponent {
   logout() {
     this.accountLoginService.logout();
     this.localize.navigateToRoute('/home');
-    return false;
   }
 
 }

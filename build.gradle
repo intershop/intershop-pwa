@@ -72,9 +72,14 @@ gretty {
     serverConfigFile = "$projectDir/e2e/geb/jetty9.xml"
 }
 
-task dist(type: NodeTask, dependsOn:npmInstall, description: 'build npm distribution to directory `dist`', group:'Node') {
-    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
-    args = ['build', '--progress=false']
+task prepareDist {
+    doFirst {
+        file("$projectDir/dist").mkdirs()
+    }
+}
+npmInstall.finalizedBy(prepareDist)
+task dist(type: NpmTask, dependsOn:npmInstall, description: 'build npm distribution to directory `dist`', group:'Node') {
+    args = ['run', 'build', '--silent', '--', '--progress=false']
     inputs.dir('src')
     inputs.files(fileTree(dir: projectDir, includes : ['*.js', '*.json']))
     outputs.dir('dist')

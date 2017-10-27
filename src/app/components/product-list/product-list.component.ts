@@ -25,9 +25,6 @@ export class ProductListComponent implements OnInit {
     private productListService: ProductListService) {
   }
 
-  /*
-  * Gets the data from Cache and shows products
-   */
   ngOnInit() {
     this.activatedRoute.url.subscribe((urlSegment: UrlSegment[]) => {
       // TODO: REST urls do not belong into any component but into the service
