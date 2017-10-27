@@ -76,7 +76,6 @@ export class ProductTileComponent implements OnInit {
 
     // this.calculatePriceParameters();
     this.calculateAverageRating();
-    // TODO: read product compare list from local cache if user is REMEMBERED
   }
 
   /**
