@@ -9,7 +9,7 @@ module.exports = merge(require('./webpack.server.config.js'), {
       sourceMap: false,
       compress: {
         warnings: false,
-        drop_console: true
+        //drop_console: true
       }
     }),
     new webpack.optimize.AggressiveMergingPlugin()
