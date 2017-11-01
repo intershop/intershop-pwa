@@ -30,6 +30,7 @@ class ProductAndCatalogSpec extends GebReportingSpec {
      * Old Smoke Test:
      * testCatalogCategoryBrowsing(...)
      */
+    @Ignore // https://jira.intershop.de/browse/ISREST-157
     def "Browse in Catalogs"() {
 
         when: "I go to the home page and click on a catalog..."
@@ -67,7 +68,6 @@ class ProductAndCatalogSpec extends GebReportingSpec {
         to HomePage
         at HomePage
         selectCatalog(categoryTerm)
-
 
         then: "... now I'm at the Category-Page...."
         at CategoryPage
