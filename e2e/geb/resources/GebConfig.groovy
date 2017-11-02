@@ -23,13 +23,14 @@ driver = {
 }
 
 environments {
-    // when system property 'geb.env' is set to 'ci' use a PhantomJS driver
+    // when system property 'geb.env' is set to 'ci' use a headless Chrome driver
     ci {
         driver = {
-            io.github.bonigarcia.wdm.PhantomJsDriverManager.getInstance().setup()
-            def d = new org.openqa.selenium.phantomjs.PhantomJSDriver()
-            d.manage().window().size = new org.openqa.selenium.Dimension(1200, 720)
-            d
+            io.github.bonigarcia.wdm.ChromeDriverManager.getInstance().setup()
+
+            def opt = new org.openqa.selenium.chrome.ChromeOptions()
+            opt.addArguments("headless", "disable-gpu", "--window-size=1024,768")
+            new org.openqa.selenium.chrome.ChromeDriver(opt)
         }
     }
 }
