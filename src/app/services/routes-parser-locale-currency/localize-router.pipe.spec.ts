@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Injector } from '@angular/core';
-import { getTestBed, TestBed } from '@angular/core/testing';
+import { getTestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs/Subject';
 import { anyString, instance, mock, when } from 'ts-mockito';
 import { equals, LocalizeRouterPipe } from './localize-router.pipe';
@@ -7,9 +7,8 @@ import { LocalizeRouterService } from './localize-router.service';
 
 describe('LocalizeRouterPipe', () => {
   let injector: Injector;
-  let localize: LocalizeRouterService;
   let localizePipe: LocalizeRouterPipe;
-  let mockedRef: ChangeDetectorRef;
+  let mockedRef: any;
   let ref: any;
   const localizeRouterServiceMock: any = mock(LocalizeRouterService);
   const mockLocalizeRouterService = instance(localizeRouterServiceMock);
@@ -19,59 +18,47 @@ describe('LocalizeRouterPipe', () => {
   });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [LocalizeRouterPipe],
-      providers: [
-        {
-          provide: LocalizeRouterService, useFactory: () => mockLocalizeRouterService
-        }
-      ]
-    });
     injector = getTestBed();
-    localize = injector.get(LocalizeRouterService);
     mockedRef = mock(ChangeDetectorRef);
     ref = instance(mockedRef);
-    // ref = new FakeChangeDetectorRef();
-    localizePipe = new LocalizeRouterPipe(localize, ref);
+    localizePipe = new LocalizeRouterPipe(mockLocalizeRouterService, ref);
   });
 
   afterEach(() => {
     injector = undefined;
-    localize = undefined;
     localizePipe = undefined;
   });
 
   it('should be created', () => {
-    expect(LocalizeRouterPipe).toBeTruthy();
     expect(localizePipe).toBeTruthy();
     expect(localizePipe instanceof LocalizeRouterPipe).toBeTruthy();
   });
 
   it('should translate a route when called', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
 
     expect(localizePipe.transform('route')).toEqual('route_TR');
   });
 
   it('should translate a multi segment route when called', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
 
     expect(localizePipe.transform('path/to/my/route')).toEqual('path/to/my/route_TR');
   });
 
   it('should translate a complex segment route if it changed', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
     spyOn(ref, 'markForCheck').and.callThrough();
 
-    localizePipe.transform(['/path', null, 'my', 5]);
-    ref.markForCheck.calls.reset();
+        localizePipe.transform(['/path', null, 'my', 5]);
+        ref.markForCheck.calls.reset();
 
-    localizePipe.transform(['/path', 4, 'my', 5]);
-    expect(ref.markForCheck).toHaveBeenCalled();
+        localizePipe.transform(['/path', 4, 'my', 5]);
+        expect(ref.markForCheck).toHaveBeenCalled();
   });
 
   it('should not translate a complex segment route if it`s not changed', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform(['/path', 4, 'my', 5]);
@@ -82,7 +69,7 @@ describe('LocalizeRouterPipe', () => {
   });
 
   it('should call markForChanges when it translates a string', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform('route');
@@ -90,7 +77,7 @@ describe('LocalizeRouterPipe', () => {
   });
 
   it('should not call markForChanges when query is not string', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform(null);
@@ -98,7 +85,7 @@ describe('LocalizeRouterPipe', () => {
   });
 
   it('should not call markForChanges when query is empty string', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform('');
@@ -106,7 +93,7 @@ describe('LocalizeRouterPipe', () => {
   });
 
   it('should not call markForChanges when no language selected', () => {
-    localize.parser.currentLang = null;
+    mockLocalizeRouterService.parser.currentLang = null;
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform('route');
@@ -114,7 +101,7 @@ describe('LocalizeRouterPipe', () => {
   });
 
   it('should not call markForChanges if same route already translated', () => {
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
     spyOn(ref, 'markForCheck').and.callThrough();
     localizePipe.transform('route');
     localizePipe.transform('route');
@@ -123,7 +110,7 @@ describe('LocalizeRouterPipe', () => {
 
   it('should subscribe to service`s routerEvents when emitted', () => {
     const query = 'MY_TEXT';
-    localize.parser.currentLang = 'en';
+    mockLocalizeRouterService.parser.currentLang = 'en';
     spyOn(localizePipe, 'transform').and.callThrough();
     spyOn(ref, 'markForCheck').and.callThrough();
 
@@ -131,8 +118,8 @@ describe('LocalizeRouterPipe', () => {
     ref.markForCheck.calls.reset();
     (<any>localizePipe.transform)['calls'].reset();
 
-    localize.parser.currentLang = 'de';
-    localize.routerEvents.next('de');
+    mockLocalizeRouterService.parser.currentLang = 'de';
+    mockLocalizeRouterService.routerEvents.next('de');
     expect(localizePipe.transform).toHaveBeenCalled();
     expect(ref.markForCheck).toHaveBeenCalled();
   });
