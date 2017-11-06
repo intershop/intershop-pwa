@@ -28,23 +28,25 @@ describe('BreadCrumb Component', () => {
         element = fixture.nativeElement;
     });
 
-    it('should be created', () => {
+  // tslint:disable:meaningful-naming-in-tests TODO: enable once ISREST-19 is merged
+
+  it('should be created', () => {
         expect(component).toBeTruthy();
         expect(element).toBeTruthy();
     });
-    // tslint:disable-next-line:meaningful-naming-in-tests
+
     it('should call the generateBreadcrumbTrail method of component from ngOnInit and confirm that the length of _urls is 2', () => {
         when(routerMock.events).thenReturn(Observable.of(new NavigationEnd(2, '/category/Computers', '/category/Computers')));
         fixture.detectChanges();
         expect(component._urls.length).toBe(2);
     });
-    // tslint:disable-next-line:meaningful-naming-in-tests
+
     it('should confirm the length of the _urls to be 4', () => {
         expect(component._urls.length).toBe(0);
         component.generateBreadcrumbTrail('category/Home-Entertainment/220/1584');
         expect(component._urls.length).toBe(4);
     });
-    // tslint:disable-next-line:meaningful-naming-in-tests
+
     it('should confirm that navigateByUrl method is called with provided arguments when navigateTo method is called', () => {
         component.navigateTo('category/Home%20Entertainment');
 
@@ -53,7 +55,7 @@ describe('BreadCrumb Component', () => {
         const [navigateToArgument] = capture(routerMock.navigateByUrl).last();
         expect(navigateToArgument).toEqual('category/Home%20Entertainment');
     });
-    // tslint:disable-next-line:meaningful-naming-in-tests
+
     it('should call the getFriendlyNameForRoute of breadcrumbServiceMock and should return "Welcome!"', () => {
         when(breadcrumbServiceMock.getFriendlyNameForRoute('home')).thenReturn('Welcome!');
 

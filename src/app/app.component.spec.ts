@@ -51,23 +51,25 @@ describe('AppComponent', () => {
     translate.use('en');
   });
 
+  // tslint:disable:meaningful-naming-in-tests TODO: enable once ISREST-19 is merged
+
   it('should be created', async(() => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
-  // tslint:disable-next-line:meaningful-naming-in-tests
+
   it('should match the text passed in Header Component', async(() => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('is-header').textContent).toEqual('Header Component');
   }));
-  // tslint:disable-next-line:meaningful-naming-in-tests
+
   it('should call ngOnInit and showBreadcrumbs should be true', () => {
     when(routerMock.events).thenReturn(Observable.of(new NavigationEnd(2, '/category/Computers', '/category/Computers')));
     fixture.detectChanges();
 
     expect(fixture.componentInstance.showBreadCrumb).toBe(true);
   });
-  // tslint:disable-next-line:meaningful-naming-in-tests
+
   it('should call ngOnInit and showBreadcrumbs should be false', () => {
     when(routerMock.events).thenReturn(Observable.of(new NavigationEnd(2, '/login', 'login')));
     fixture.detectChanges();
