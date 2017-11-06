@@ -1,8 +1,9 @@
 import * as Lint from 'tslint';
-import { getNextToken } from 'tsutils';
+import { getNextToken, getPreviousToken } from 'tsutils';
 import { Identifier, SourceFile } from 'typescript';
+import { RuleHelpers } from './ruleHelpers';
 
-const DESCRIPTION_REGEX = /^('|`)should(.* (when|if|until|on) .*| be created)('|`)$/;
+const DESCRIPTION_REGEX = /^('|`)should(.* (when|if|until|on|for|to) .*| be created)('|`)$/;
 
 class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
 
@@ -17,7 +18,10 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
     if (node.getText() === 'it') {
       const descriptionToken = getNextToken(getNextToken(node));
       if (!!descriptionToken) {
-        const description = descriptionToken.getText();
+        let description = descriptionToken.getText();
+        if (description.indexOf('${') >= 0) {
+          description = descriptionToken.parent.getText();
+        }
         if (!DESCRIPTION_REGEX.test(description)) {
           this.addFailureAtNode(node, '"' + description + '" does not match ' + DESCRIPTION_REGEX);
         }
