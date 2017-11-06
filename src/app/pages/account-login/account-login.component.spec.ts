@@ -103,7 +103,7 @@ describe('AccountLogin Component', () => {
     expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/home']);
   });
 
-  xit('should assign value to Email field to test Email validator', () => {
+  it('should assign value to Email field to test Email validator', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
     expect(component.loginForm.controls['userName'].value).toEqual('test@test.com');
   });

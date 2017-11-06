@@ -56,13 +56,6 @@ describe('EmailPassword Component', () => {
     expect(component.emailForm.valid).toBe(true);
   });
 
-  xit('should test all the conditions of the matchWordsValidator', () => {
-    component.emailForm.get('emailDetails.password').setValue('!nterShop');
-    component.emailForm.get('emailDetails.confirmPassword').setValue('!nterShop');
-    expect(component.emailForm.get('emailDetails.confirmPassword').value).toEqual('!nterShop');
-  });
-
-
   it('should check if controls are rendered on the HTML', () => {
     const elem = element.getElementsByClassName('form-control');
     expect(elem.length).toBe(6);
