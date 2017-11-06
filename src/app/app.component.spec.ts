@@ -41,12 +41,12 @@ describe('AppComponent', () => {
     translate.use('en');
   });
 
-  it('should create the app', async(() => {
+  it('should be created', async(() => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
 
-  it('should match the text passed in Header Component', async(() => {
+  it('should check if header component is getting rendered properly', async(() => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('is-header').textContent).toEqual('Header Component');
   }));
