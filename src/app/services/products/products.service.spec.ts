@@ -10,7 +10,7 @@ describe('ProuctList Service', () => {
     productListService = new ProductListService(instance(apiService));
   });
 
-  it('should call getProductList method and confirm apiService.get method is called once', () => {
+  it('should get product list when called', () => {
     const products = ['Product1', 'Product2'];
     const apiUrl = 'categories/Cameras-Camcorders/584/products';
     when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(Observable.of(products));

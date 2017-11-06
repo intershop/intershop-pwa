@@ -7,55 +7,55 @@ import { AccountLoginService } from './account-login.service';
 import { UserDetailService } from './user-detail.service';
 
 describe('AccountLogin Service', () => {
-    const userData = {
-        'firstName': 'Patricia',
-        'lastName': 'Miller'
-    };
+  const userData = {
+    'firstName': 'Patricia',
+    'lastName': 'Miller'
+  };
 
-    let accountLoginService: AccountLoginService;
-    const jwtServiceMock = mock(JwtService);
-    const userDetailService = mock(UserDetailService);
-    const apiServiceMock = mock(ApiService);
+  let accountLoginService: AccountLoginService;
+  const jwtServiceMock = mock(JwtService);
+  const userDetailService = mock(UserDetailService);
+  const apiServiceMock = mock(ApiService);
 
-    beforeEach(() => {
-        when(userDetailService.current).thenReturn(userData as UserDetail);
-        accountLoginService = new AccountLoginService(instance(jwtServiceMock), instance(userDetailService), instance(apiServiceMock));
+  beforeEach(() => {
+    when(userDetailService.current).thenReturn(userData as UserDetail);
+    accountLoginService = new AccountLoginService(instance(jwtServiceMock), instance(userDetailService), instance(apiServiceMock));
+  });
+
+  it('should login the user when correct credentials are entered', () => {
+    const loginDetail = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
+    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.of({ authorized: true }));
+    let loggedInDetail;
+    accountLoginService.singinUser(loginDetail).subscribe(data => {
+      loggedInDetail = data;
     });
 
-    it('should login user', () => {
-        const loginDetail = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
-        when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.of({ authorized: true }));
-        let loggedInDetail;
-        accountLoginService.singinUser(loginDetail).subscribe(data => {
-            loggedInDetail = data;
-        });
+    verify(userDetailService.setUserDetail(anything())).called();
+    expect(loggedInDetail).not.toBe({ authorized: true });
+  });
 
-        verify(userDetailService.setUserDetail(anything())).called();
-        expect(loggedInDetail).not.toBe({ authorized: true });
-    });
+  it('should destroy token when user logs out', () => {
+    accountLoginService.logout();
+    verify(jwtServiceMock.destroyToken()).called();
+  });
 
-    it('should confirm destroyToken method of jwt service is called', () => {
-        accountLoginService.logout();
-        verify(jwtServiceMock.destroyToken()).called();
+  it('should return error message when wrong credentials are entered', () => {
+    const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
+    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.of('401 and Unauthorized'));
+    accountLoginService.singinUser(userDetails).subscribe((data) => {
+      expect(data).toBe('401 and Unauthorized');
     });
+  });
 
-    it(`shouldn't login user as the credentials passed are incorrect`, () => {
-        const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
-        when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.of('401 and Unauthorized'));
-        accountLoginService.singinUser(userDetails).subscribe((data) => {
-            expect(data).toBe('401 and Unauthorized');
-        });
-    });
+  it('should return false when user is unauthorized', () => {
+    when(jwtServiceMock.getToken()).thenReturn('');
+    const result = accountLoginService.isAuthorized();
+    expect(result).toBe(false);
+  });
 
-    it('should call isAuthorized method and and return false when token does not exist', () => {
-        when(jwtServiceMock.getToken()).thenReturn('');
-        const result = accountLoginService.isAuthorized();
-        expect(result).toBe(false);
-    });
-
-    it('should confirm isAuthorized method of jwt service is called when isAuthorized method is called', () => {
-        when(jwtServiceMock.getToken()).thenReturn('Authorised');
-        const authorized = accountLoginService.isAuthorized();
-        expect(authorized).toBe(true);
-    });
+  it('should return true when user is authorized', () => {
+    when(jwtServiceMock.getToken()).thenReturn('Authorised');
+    const authorized = accountLoginService.isAuthorized();
+    expect(authorized).toBe(true);
+  });
 });

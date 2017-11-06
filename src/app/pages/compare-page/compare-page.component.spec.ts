@@ -22,7 +22,7 @@ describe('ComparePageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component', async(() => {
+  it('should be created', async(() => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));

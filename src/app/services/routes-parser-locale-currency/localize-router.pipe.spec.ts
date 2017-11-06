@@ -41,19 +41,19 @@ describe('LocalizeRouterPipe', () => {
     localizePipe = undefined;
   });
 
-  it('is defined', () => {
+  it('should be created', () => {
     expect(LocalizeRouterPipe).toBeTruthy();
     expect(localizePipe).toBeTruthy();
     expect(localizePipe instanceof LocalizeRouterPipe).toBeTruthy();
   });
 
-  it('should translate a route', () => {
+  it('should translate a route when called', () => {
     localize.parser.currentLang = 'en';
 
     expect(localizePipe.transform('route')).toEqual('route_TR');
   });
 
-  it('should translate a multi segment route', () => {
+  it('should translate a multi segment route when called', () => {
     localize.parser.currentLang = 'en';
 
     expect(localizePipe.transform('path/to/my/route')).toEqual('path/to/my/route_TR');
@@ -121,7 +121,7 @@ describe('LocalizeRouterPipe', () => {
     expect(ref.markForCheck.calls.count()).toEqual(1);
   });
 
-  it('should subscribe to service`s routerEvents', () => {
+  it('should subscribe to service`s routerEvents when emitted', () => {
     const query = 'MY_TEXT';
     localize.parser.currentLang = 'en';
     spyOn(localizePipe, 'transform').and.callThrough();

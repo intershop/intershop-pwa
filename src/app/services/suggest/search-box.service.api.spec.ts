@@ -16,12 +16,12 @@ describe('Search Box Api Service', () => {
     });
   });
 
-  it('should call search method', inject([SearchBoxApiService], (searchBoxApiService: SearchBoxApiService) => {
+  it('should search when search term is passed', inject([SearchBoxApiService], (searchBoxApiService: SearchBoxApiService) => {
     const searchTerm = searchBoxApiService.search(Observable.of('g'));
     expect(searchTerm).toBeTruthy();
   }));
 
-  it('should call searchEntries method and verify the url passed', inject([SearchBoxApiService], (searchBoxApiService: SearchBoxApiService) => {
+  it('should call api service on receiving search term', inject([SearchBoxApiService], (searchBoxApiService: SearchBoxApiService) => {
     searchBoxApiService.searchEntries('url');
     verify(apiServiceMock.get(anything())).once();
   }));

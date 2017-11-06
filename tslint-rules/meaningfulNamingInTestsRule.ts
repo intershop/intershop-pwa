@@ -2,7 +2,7 @@ import * as Lint from 'tslint';
 import { getNextToken } from 'tsutils';
 import { Identifier, SourceFile } from 'typescript';
 
-const DESCRIPTION_REGEX = /^'should(.* (when|if|until|on) .*| be created)'$/;
+const DESCRIPTION_REGEX = /^('|`)should(.* (when|if|until|on) .*| be created)('|`)$/;
 
 class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
 
