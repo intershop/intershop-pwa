@@ -35,7 +35,7 @@ describe('BreadCrumb Component', () => {
     expect(element).toBeTruthy();
   });
 
-  it('should call the generateBreadcrumbTrail method of component from ngOnInit and confirm that the length of _urls is 2', () => {
+  it('should push data to _urls array according to the currently activated url when initialized', () => {
     when(routerMock.events).thenReturn(Observable.of(new NavigationEnd(2, '/category/Computers', '/category/Computers')));
     when(routerMock.url).thenReturn('/category/Computers');
     component.categoryNames = [];
@@ -45,19 +45,19 @@ describe('BreadCrumb Component', () => {
     expect(component._urls.length).toBe(2);
   });
 
-  it('should return url by replacing the IDs with their names provided in friendlyPath', () => {
+  it('should return url by replacing the IDs with their names provided in friendlyPath when inputs have been provided', () => {
     component.categoryNames = ['Cameras', 'camcorders'];
     component.startAfter = '/category/';
     const url = component.getUrlWithNames('home/category/12/256');
     expect(url).toBe('home/category/Cameras/camcorders');
   });
 
-  it('should return last part of the url', () => {
+  it('should trim the url to last segment on receiving', () => {
     const breadcrumName = component.friendlyName('home/category/cameras');
     expect(breadcrumName).toBe('cameras');
   });
 
-  it('should remove the last segment of the url', () => {
+  it('should trim the last segment of url on receiving', () => {
     const breadcrumName = component.removeLastSegment('home/category/cameras');
     expect(breadcrumName).toBe('home/category');
   });
