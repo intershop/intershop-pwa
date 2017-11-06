@@ -35,19 +35,19 @@ describe('Search Box Component', () => {
     });
   }));
 
-  it('should create the component', async(() => {
+  it('should be created', async(() => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
 
-  it('should call search method of searchBox service and verify that it returns data when suggestions are available', fakeAsync(() => {
+  it('should set result array when suggestions are available', fakeAsync(() => {
     component.searchTerm$.next('c');
     component.doSearch();
     tick(400);
     expect(component.results).not.toBeNull();
   }));
 
-  it('should call search method of searchBox service and verify that search results should be a blank array when no suggestions are found', fakeAsync(() => {
+  it('should set result array to blank when no suggestions are found', fakeAsync(() => {
     when(mockSearchBoxService.search(anything())).thenReturn(Observable.of([]));
     component.searchTerm$.next('Test');
 
@@ -57,7 +57,7 @@ describe('Search Box Component', () => {
     expect(component.results).toEqual([]);
   }));
 
-  it('should call hidePopeup method and expect isHide to be true', fakeAsync(() => {
+  it('should hide popup when no search results are found', fakeAsync(() => {
     component.results = [];
     component.hidePopup();
     expect(component.isHide).toBe(true);

@@ -43,11 +43,10 @@ describe('Mock Interceptor', () => {
     }
 
     using(dataProvider, (dataSlice) => {
-      it('should ' + (dataSlice.willBeMocked ? '' : 'not ') + 'mock request to ' + dataSlice.url, () => {
+      it(`should ${dataSlice.willBeMocked ? '' : 'not '}mock request to ${dataSlice.url}`, () => {
         expect(mockInterceptor.requestHasToBeMocked(request.clone({ url: dataSlice.url }))).toBe(dataSlice.willBeMocked);
       });
-
-      it('should ' + (dataSlice.willBeMocked ? '' : 'not ') + 'change url for ' + dataSlice.url, () => {
+      it(`should ${dataSlice.willBeMocked ? '' : 'not '}change url for ${dataSlice.url}`, () => {
         if (dataSlice.willBeMocked) {
           expect(mockInterceptor.getMockUrl(dataSlice)).not.toBe(dataSlice.url);
         } else {
@@ -76,7 +75,7 @@ describe('Mock Interceptor', () => {
     }
 
     using(dataProvider, (dataSlice) => {
-      it(`should${dataSlice.expect ? '' : ' not'} find \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
+      it(`should${dataSlice.expect ? '' : ' not'} when \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
         const mockInterceptor = new MockInterceptor();
         expect(mockInterceptor.matchPath(dataSlice.item, dataSlice.in)).toBe(dataSlice.expect);
       });

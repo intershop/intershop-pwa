@@ -40,9 +40,10 @@ describe('Product List Component', () => {
     when(productListService.getProductList(anything())).thenReturn(Observable.of([new Product()]));
   });
 
-  it('should call ngOnInit and confirm that getProductList is called once', () => {
+  it('should retrieve products when created', () => {
     verify(productListService.getProductList(anything())).never();
     fixture.detectChanges();
+    expect(component.products).not.toBe(null);
     verify(productListService.getProductList(anything())).once();
   });
 

@@ -51,7 +51,9 @@ describe('AppComponent', () => {
     translate.use('en');
   });
 
-  it('should create the app', async(() => {
+  // tslint:disable:meaningful-naming-in-tests TODO: enable once ISREST-19 is merged
+
+  it('should be created', async(() => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));

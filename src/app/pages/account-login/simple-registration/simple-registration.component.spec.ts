@@ -60,11 +60,11 @@ describe('Simple Registration Component', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call createAccount when the form is Invalid and verify if router.navigate is not being called', () => {
+  it('should set isDirty to true when form is invalid', () => {
     fixture.detectChanges();
     component.simpleRegistrationForm.controls['userName'].setValue('invalid@email');
     component.simpleRegistrationForm.controls['password'].setValue('12121');
@@ -73,7 +73,7 @@ describe('Simple Registration Component', () => {
     verify(localizeRouterServiceMock.navigateToRoute(anything())).never();
   });
 
-  xit('should call createAccount when the form is valid and verify if router.navigate is being called', () => {
+  xit('should navigate to homepage when user is created', () => {
     component.simpleRegistrationForm.controls['userName'].setValue('valid@email.com');
     component.simpleRegistrationForm.controls['password'].setValue('aaaaaa1');
     component.simpleRegistrationForm.controls['confirmPassword'].setValue('aaaaaa1');

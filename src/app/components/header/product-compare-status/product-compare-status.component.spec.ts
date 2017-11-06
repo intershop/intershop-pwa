@@ -45,7 +45,7 @@ describe('Product Compare Status Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should go to URL "compare"', inject([Router, Location], (router: Router, location: Location) => {
+  it('should navigate to compare page when compare icon is clicked', inject([Router, Location], (router: Router, location: Location) => {
     element.querySelector('a').click();
     fixture.whenStable().then(() => {
       expect(location.path()).toContain('compare');

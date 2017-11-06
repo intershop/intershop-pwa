@@ -28,7 +28,9 @@ describe('BreadCrumb Component', () => {
         element = fixture.nativeElement;
     });
 
-    it('should be created', () => {
+  // tslint:disable:meaningful-naming-in-tests TODO: enable once ISREST-19 is merged
+
+  it('should be created', () => {
         expect(component).toBeTruthy();
         expect(element).toBeTruthy();
     });
