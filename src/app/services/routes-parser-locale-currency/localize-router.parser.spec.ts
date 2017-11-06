@@ -107,7 +107,7 @@ describe('LocalizeParser', () => {
     loader = undefined;
   });
 
-  it('is defined', () => {
+  it('should be created', () => {
     expect(ManualParserLoader).toBeTruthy();
     expect(loader).toBeTruthy();
     expect(loader instanceof LocalizeParser).toEqual(true);

@@ -10,7 +10,7 @@ describe('Categories Service', () => {
     categoriesService = new CategoriesService(instance(apiService));
   });
 
-  it(`should verify that api service's get method is called when getTopLevelCategories method is called`, () => {
+  it('should get top level categories when called', () => {
     categoriesService.getTopLevelCategories(0);
     verify(apiService.get(anything(), anything(), anything(), anything())).once();
   });

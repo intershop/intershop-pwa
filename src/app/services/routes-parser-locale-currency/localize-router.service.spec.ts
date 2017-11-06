@@ -75,12 +75,12 @@ describe('LocalizeRouterService', () => {
     localizeRouterService = void 0;
   });
 
-  it('is defined', () => {
+  it('should be created', () => {
     expect(localizeRouterService).toBeTruthy();
     expect(localizeRouterService instanceof LocalizeRouterService).toBeTruthy();
   });
 
-  it('should initialize routerEvents', () => {
+  it('should initialize routerEvents when created', () => {
     expect(localizeRouterService.routerEvents).toBeTruthy();
   });
 
@@ -93,7 +93,7 @@ describe('LocalizeRouterService', () => {
     expect(router.resetConfig).toHaveBeenCalledWith(routes);
   });
 
-  it('should call parser translateRoute', () => {
+  it('should translate route when received', () => {
     const testString = 'result/path';
     spyOn(parser, 'translateRoute').and.returnValue(testString);
 
@@ -115,7 +115,7 @@ describe('LocalizeRouterService', () => {
     expect(parser.translateRoute).toHaveBeenCalledWith('/my/path');
   });
 
-  it('should translate complex route', () => {
+  it('should translate complex route when received', () => {
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;

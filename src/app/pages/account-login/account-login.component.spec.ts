@@ -69,18 +69,22 @@ describe('AccountLogin Component', () => {
     fixture.detectChanges();
   });
 
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+  });
+
   it('should check if controls are rendered on Login page', () => {
     expect(element.querySelector('#ShopLoginForm_Login')).toBeTruthy();
     expect(element.querySelector('#ShopLoginForm_Password')).toBeTruthy();
     expect(element.getElementsByClassName('btn btn-primary')).toBeTruthy();
   });
 
-  it(`should call onSignIn when loginForm is invalid`, () => {
+  it('should set isDirty to true when form is invalid', () => {
     const userDetails = { userName: 'intershop@123.com', password: '12346' };
     component.onSignin(userDetails);
   });
 
-  it(`should call onSignIn when loginForm is valid but credentials are incorrect`, () => {
+  it('should set errorUser when user enters wrong credentials', () => {
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('!InterShop0');
@@ -88,7 +92,7 @@ describe('AccountLogin Component', () => {
     expect(component.errorUser).toEqual('Incorrect Credentials');
   });
 
-  it(`should call onSignIn when loginForm is valid with correct credentials`, () => {
+  it('should navigate to homepage when user enters valid credentials', () => {
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('!InterShop0');
@@ -99,11 +103,7 @@ describe('AccountLogin Component', () => {
     expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/home']);
   });
 
-  it('should call ngOnInit method', () => {
-    expect(component.loginForm).toBeTruthy();
-  });
-
-  it('should assign value to Email field to test Email validator', () => {
+  xit('should assign value to Email field to test Email validator', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
     expect(component.loginForm.controls['userName'].value).toEqual('test@test.com');
   });
