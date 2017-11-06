@@ -5,7 +5,7 @@ describe('Breadcrumb Service', () => {
     beforeEach(() => {
         breadcrumbService = new BreadcrumbService();
     });
-    // tslint:disable-next-line:meaningful-naming-in-tests
+
     it('should confirm that call back for a regular expression is called and regular expression is executed for the matching route  ', () => {
         breadcrumbService.addCallbackForRouteRegex('.*%.*', (route) => {
             return route.replace(/%20/g, ' ').replace(/%26/g, '&');
@@ -16,7 +16,6 @@ describe('Breadcrumb Service', () => {
     });
 
     describe(' Hide a url in breadcrumbs', () => {
-      // tslint:disable-next-line:meaningful-naming-in-tests
         it('should confirm the length of hideRoutesRegex to be 1', () => {
             expect(breadcrumbService.hideRoutesRegex.length).toBe(0);
 
@@ -32,7 +31,7 @@ describe('Breadcrumb Service', () => {
 
             expect(toBeHidden).toBe(true);
         });
-        // tslint:disable-next-line:meaningful-naming-in-tests
+
         it('should return false if regular expression does not matche a url', () => {
             breadcrumbService.hideRouteRegex('/category$');
 
