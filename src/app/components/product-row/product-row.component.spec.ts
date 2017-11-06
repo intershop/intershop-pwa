@@ -203,7 +203,7 @@ describe('Product Row Component', () => {
     element = fixture.nativeElement;
   });
 
-  it('should call ngOnInit', () => {
+  it('should modify mockData when received', () => {
     environment.needMock = false;
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
@@ -239,7 +239,7 @@ describe('Product Row Component', () => {
   })
   ));
 
-  it('should call calculateAverageRating and satisfy all conditions', () => {
+  it('should set averageRatingClass based on averageRating passed', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.averagRating = 0.5;
@@ -268,7 +268,7 @@ describe('Product Row Component', () => {
   });
 
 
-  it('should call calculatePriceParameters and satisfy all conditions', () => {
+  it('should set finalPrice,greaterPrice,displayCondition and oldPrice based on mockData', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.showInformationalPrice = true;

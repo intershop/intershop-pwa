@@ -13,7 +13,7 @@ describe('Search Box Service', () => {
 
     });
 
-    it('SearchBox service should return the matched terms when search term matches one or more products in the available product list', () => {
+    it('should return the matched terms when search term matches one or more products in the available product list', () => {
         when(apiService.get(anything())).thenReturn(Observable.of('Goods'));
         let searchResults;
         searchBoxService.search(Observable.of('g')).subscribe((results) => {
@@ -22,7 +22,7 @@ describe('Search Box Service', () => {
         expect(searchResults).toBe('Goods');
     });
 
-    it('SearchBox service should return a blank array when nothing is entered as searchterm', () => {
+    it('should return a blank array when nothing is entered as searchterm', () => {
         let searchResults;
         searchBoxService.search(Observable.of('')).subscribe((results) => {
             searchResults = results;

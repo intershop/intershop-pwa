@@ -39,7 +39,7 @@ describe('RegistrationPage Component', () => {
     element = fixture.nativeElement;
   });
 
-  it('should call cancelClicked method', () => {
+  it('should navigate to homepage when cancel is clicked', () => {
       component.cancelClicked();
     // check if it was called
     verify(localizeRouterServiceMock.navigateToRoute(anything())).once();

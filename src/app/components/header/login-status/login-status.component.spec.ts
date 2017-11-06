@@ -59,7 +59,7 @@ describe('Login Status Component', () => {
     expect(element).toBeTruthy();
   }));
 
-  it('should log in mocked user', fakeAsync(() => {
+  it('should set isLogged to true and set userDetail when user is authorized', fakeAsync(() => {
     fixture.detectChanges();
     tick();
     expect(component.isLoggedIn).toBeTruthy();
