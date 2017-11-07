@@ -48,17 +48,19 @@ describe('LocalizeRouterPipe', () => {
 
   it('should translate a complex segment route if it changed', () => {
     mockLocalizeRouterService.parser.currentLang = 'en';
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
 
-        localizePipe.transform(['/path', null, 'my', 5]);
-        ref.markForCheck.calls.reset();
+    localizePipe.transform(['/path', null, 'my', 5]);
+    ref.markForCheck.calls.reset();
 
-        localizePipe.transform(['/path', 4, 'my', 5]);
-        expect(ref.markForCheck).toHaveBeenCalled();
+    localizePipe.transform(['/path', 4, 'my', 5]);
+    expect(ref.markForCheck).toHaveBeenCalled();
   });
 
   it('should not translate a complex segment route if it`s not changed', () => {
     mockLocalizeRouterService.parser.currentLang = 'en';
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform(['/path', 4, 'my', 5]);
@@ -70,6 +72,7 @@ describe('LocalizeRouterPipe', () => {
 
   it('should call markForChanges when it translates a string', () => {
     mockLocalizeRouterService.parser.currentLang = 'en';
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform('route');
@@ -78,6 +81,7 @@ describe('LocalizeRouterPipe', () => {
 
   it('should not call markForChanges when query is not string', () => {
     mockLocalizeRouterService.parser.currentLang = 'en';
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform(null);
@@ -86,6 +90,7 @@ describe('LocalizeRouterPipe', () => {
 
   it('should not call markForChanges when query is empty string', () => {
     mockLocalizeRouterService.parser.currentLang = 'en';
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform('');
@@ -94,6 +99,7 @@ describe('LocalizeRouterPipe', () => {
 
   it('should not call markForChanges when no language selected', () => {
     mockLocalizeRouterService.parser.currentLang = null;
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform('route');
@@ -102,6 +108,7 @@ describe('LocalizeRouterPipe', () => {
 
   it('should not call markForChanges if same route already translated', () => {
     mockLocalizeRouterService.parser.currentLang = 'en';
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
     localizePipe.transform('route');
     localizePipe.transform('route');
@@ -111,7 +118,9 @@ describe('LocalizeRouterPipe', () => {
   it('should subscribe to service`s routerEvents when emitted', () => {
     const query = 'MY_TEXT';
     mockLocalizeRouterService.parser.currentLang = 'en';
+    // tslint:disable-next-line:ban
     spyOn(localizePipe, 'transform').and.callThrough();
+    // tslint:disable-next-line:ban
     spyOn(ref, 'markForCheck').and.callThrough();
 
     localizePipe.transform(query);
