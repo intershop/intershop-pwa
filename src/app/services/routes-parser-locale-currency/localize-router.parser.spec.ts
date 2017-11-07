@@ -153,6 +153,7 @@ describe('LocalizeParser', () => {
 
   it('should call translateRoutes on init if languages passed', fakeAsync(() => {
     loader = new ManualParserLoader(translate, location, settings, langs, locales, prefix);
+    // tslint:disable-next-line:ban
     spyOn(loader, 'translateRoutes').and.callThrough();
 
     loader.load([]);
@@ -162,6 +163,7 @@ describe('LocalizeParser', () => {
 
   it('should not call translateRoutes on init if no languages', fakeAsync(() => {
     loader = new ManualParserLoader(translate, location, settings, [], [], prefix);
+    // tslint:disable-next-line:ban
     spyOn(loader, 'translateRoutes').and.callThrough();
 
     loader.load(routes);
