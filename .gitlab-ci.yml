@@ -1,7 +1,41 @@
+stages:
+  - build
+  - publish
+
 build:
+  stage: build
   tags:
   - docker-executor
   image: selenium/standalone-chrome
   script:
   - ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
   - bash .gitlab-ci-test-universal.sh
+
+.job-template: &job_definition
+  stage: publish
+  retry: 2
+  only:
+    refs:
+      - develop
+  tags:
+  - shell-executor
+  - docker
+  script:
+  - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH}-${ENVIRONMENT}:latest
+           --build-arg env=${ENVIRONMENT}
+           --label environment="${ENVIRONMENT}"
+           --label revision="${CI_BUILD_REF}"
+           --label project="${CI_PROJECT_URL}"
+           .
+  - docker login -u ${BUILD_USER} -p ${BUILD_PASSWORD} ${CI_REGISTRY}
+  - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}-${ENVIRONMENT}:latest
+
+push_dev:
+  <<: *job_definition
+  variables:
+    ENVIRONMENT: "dev"
+
+push_prod:
+  <<: *job_definition
+  variables:
+    ENVIRONMENT: "prod"
