@@ -87,6 +87,7 @@ describe('LocalizeRouterService', () => {
   it('should reset route config on init', () => {
     expect((<any>router)['routes']).toEqual(void 0);
     parser.routes = routes;
+    // tslint:disable-next-line:ban
     spyOn(router, 'resetConfig').and.callThrough();
 
     localizeRouterService.init();
@@ -95,6 +96,7 @@ describe('LocalizeRouterService', () => {
 
   it('should translate route when received', () => {
     const testString = 'result/path';
+    // tslint:disable-next-line:ban
     spyOn(parser, 'translateRoute').and.returnValue(testString);
 
     const res = localizeRouterService.translateRoute('my/path');
@@ -108,6 +110,7 @@ describe('LocalizeRouterService', () => {
     parser.localesCollection = locales;
 
     const testString = '/my/path';
+    // tslint:disable-next-line:ban
     spyOn(parser, 'translateRoute').and.returnValue(testString);
 
     const res = localizeRouterService.translateRoute(testString);
@@ -120,6 +123,7 @@ describe('LocalizeRouterService', () => {
     parser.langs = langs;
     parser.localesCollection = locales;
 
+    // tslint:disable-next-line:ban
     spyOn(parser, 'translateRoute').and.callFake((val: any) => val);
 
     const res = localizeRouterService.translateRoute(['/my/path', 123, 'about']);
@@ -134,6 +138,7 @@ describe('LocalizeRouterService', () => {
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
+    // tslint:disable-next-line:ban
     spyOn(parser, 'translateRoutes').and.returnValue(Observable.of(void 0));
 
     (<any>router).fakeRouterEvents.next(new NavigationStart(1, '/en/new/path'));
@@ -144,6 +149,7 @@ describe('LocalizeRouterService', () => {
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
+    // tslint:disable-next-line:ban
     spyOn(parser, 'translateRoutes').and.stub();
 
     (<any>router).fakeRouterEvents.next(new NavigationStart(1, '/bla/new/path'));
@@ -154,6 +160,7 @@ describe('LocalizeRouterService', () => {
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
+    // tslint:disable-next-line:ban
     spyOn(parser, 'translateRoutes').and.stub();
 
     (<any>router).fakeRouterEvents.next(new NavigationStart(1, '/de/new/path'));
@@ -164,6 +171,7 @@ describe('LocalizeRouterService', () => {
     parser.currentLang = 'de';
     parser.langs = langs;
     parser.localesCollection = locales;
+    // tslint:disable-next-line:ban
     spyOn(parser, 'translateRoutes').and.stub();
 
     (<any>router).fakeRouterEvents.next(new NavigationEnd(1, '/en/new/path', '/en/new/path'));

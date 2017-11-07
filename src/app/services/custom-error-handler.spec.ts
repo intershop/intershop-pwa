@@ -8,6 +8,7 @@ describe('CustomErrorHandler test', () => {
   });
 
   it('should log the message when received', () => {
+    // tslint:disable-next-line:ban
     spyOn(console, 'log');
     customError.handleError({'message': 'error'});
 
@@ -15,6 +16,7 @@ describe('CustomErrorHandler test', () => {
   });
 
   it('should log the status and statusText when received', () => {
+    // tslint:disable-next-line:ban
     spyOn(console, 'log');
     customError.handleApiErrors({'status': 'error', 'statusText': 'status'});
 
