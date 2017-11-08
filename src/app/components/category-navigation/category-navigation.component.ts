@@ -1,30 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input } from '@angular/core';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-category-navigation',
   templateUrl: './category-navigation.component.html'
 })
 
-export class CategoryNavigationComponent implements OnInit {
+export class CategoryNavigationComponent {
 
   @Input() category: Category;
-  categoryPath: Category[] = [];
+  @Input() categoryPath: Category[];
+  @Input() categoryNavigationLevel: number;
 
   constructor(
-    private categoriesService: CategoriesService,
-    private route: ActivatedRoute
+    public categoriesService: CategoriesService,
+    public localizeRouter: LocalizeRouterService
   ) { }
 
-  ngOnInit() {
-    // the subscription to the route.data is only needed to retrigger the getCategoryPath call,
-    // the routeCategory is not actually needed since it is tha same as the @Input category
-    this.route.data.subscribe((data: { routeCategory: Category }) => {
-      this.categoriesService.getCategoryPath(this.category, this.route.snapshot).subscribe((categoryPath: Category[]) => {
-        this.categoryPath = categoryPath;
-      });
-    });
-  }
 }
