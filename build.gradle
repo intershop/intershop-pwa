@@ -31,6 +31,8 @@ Geb+Spock. The steps are as follows:
    execution. `karma` can be run separately to only run jasmine tests.
    Interactive development should be done using npm.
 
+6. `tsformat` is a task for formatting the code with typescript-formatter
+
 Utility tasks:
 `reset` - delete node binaries and output from npm install
 
@@ -42,6 +44,12 @@ Utility tasks:
 `tslint` - runs static code analysis via angular cli on the project
 `tslint -Pfix` - run tslint and fix fixable problems
 */
+
+buildscript {
+    dependencies {
+        classpath group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    }
+}
 
 plugins {
     /** https://github.com/srs/gradle-node-plugin */
@@ -194,6 +202,17 @@ task tsdependencygraph(type:NodeTask, description:'create dependency graph with 
         exec {
             executable 'dot'
             args '-Tpng', "$projectDir/build/reports/dependencies/dependencies.dot", '-o', "$projectDir/build/reports/dependencies/dependencies.png"
+        }
+    }
+}
+
+task tsformat(type:NodeTask, description:'format files using typescript-formatter', group:'Node Utility', dependsOn: npmInstall) {
+    script = file("$projectDir/node_modules/typescript-formatter/bin/tsfmt")
+    args = ['-r']
+    inputs.files('src')
+    doFirst {
+        if (org.apache.commons.lang.SystemUtils.IS_OS_LINUX) {
+            file("$projectDir/tsfmt.json").text = '{ "newLineCharacter": "\\n" }'
         }
     }
 }
