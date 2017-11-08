@@ -1,6 +1,7 @@
 stages:
   - build
   - publish
+  - deploy
 
 build:
   stage: build
@@ -21,14 +22,15 @@ build:
   - shell-executor
   - docker
   script:
-  - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH}-${ENVIRONMENT}:latest
+  - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH}-${ENVIRONMENT}:${CI_BUILD_REF}
            --build-arg env=${ENVIRONMENT}
            --label environment="${ENVIRONMENT}"
            --label revision="${CI_BUILD_REF}"
            --label project="${CI_PROJECT_URL}"
            .
+  - timeout 10m sh .gitlab-ci-wait-registry.sh
   - docker login -u ${BUILD_USER} -p ${BUILD_PASSWORD} ${CI_REGISTRY}
-  - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}-${ENVIRONMENT}:latest || sleep 60
+  - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH}-${ENVIRONMENT}:${CI_BUILD_REF}
 
 push_dev:
   <<: *job_definition
@@ -39,3 +41,16 @@ push_prod:
   <<: *job_definition
   variables:
     ENVIRONMENT: "prod"
+
+deploy_demo:
+  stage: deploy
+  only:
+    refs:
+      - develop
+  tags:
+  - shell-executor
+  - docker
+  - chuck-norris-swarm-manager
+  script:
+  - docker service rm poc || true
+  - docker service create --replicas 10 --publish mode=host,target=4000,published=4321 --name poc ${CI_REGISTRY}/${CI_PROJECT_PATH}-dev:${CI_BUILD_REF}
