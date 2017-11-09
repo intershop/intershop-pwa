@@ -1,10 +1,8 @@
-import { Location } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
-import { Routes } from '@angular/router';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable } from 'rxjs/Observable';
@@ -12,8 +10,6 @@ import { Observer } from 'rxjs/Observer';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { UniversalMockInterceptor } from './interceptors/universal-mock-interceptor';
-import { LocalizeRouterLoader } from './services/router-parser-loader';
-import { LocalizeRouterSettings } from './services/routes-parser-locale-currency/localize-router.config';
 
 export class TranslateUniversalLoader implements TranslateLoader {
   public getTranslation(lang: string): Observable<any> {
