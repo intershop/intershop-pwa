@@ -1,14 +1,7 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-import {
-  ActivatedRoute, Router
-} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  Category
-} from '../../services/categories/categories.model';
+import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 
 @Component({
@@ -36,6 +29,7 @@ export class CategoryPageComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: { category: Category }) => {
       this.category = data.category;
+
       this.categoriesService.getFriendlyPathOfCurrentCategory(this.router.url.split('/category/')[1]).subscribe((response: string[]) => {
         this.urlSegmentsArray = response;
       });
