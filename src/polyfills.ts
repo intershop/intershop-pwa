@@ -62,11 +62,15 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  */
 
 /**
+ * Conditionally load polyfills for Intl
  * Date, currency, decimal and percent pipes.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
  */
-// import 'intl';  // Run `npm install --save intl`.
-/**
- * Need to import at least one locale-data with intl.
- */
-// import 'intl/locale-data/jsonp/en';
+declare  var  System;
+if (!window['Intl']) {
+  System.import('intl'); // Run `npm install --save intl`.
+  /**
+   * Need to import at least one locale-data with intl.
+   */
+  System.import('intl/locale-data/jsonp/en');
+}

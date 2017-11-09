@@ -7,26 +7,26 @@ describe('CustomErrorHandler test', () => {
     customError = new CustomErrorHandler();
   });
 
-  it('should test for the handleError console output', () => {
+  it('should log the message when received', () => {
+    // tslint:disable-next-line:ban
     spyOn(console, 'log');
     customError.handleError({'message': 'error'});
 
     expect(console.log).toHaveBeenCalledWith('error');
   });
 
-  it('should test for the handleAPIError console output', () => {
+  it('should log the status and statusText when received', () => {
+    // tslint:disable-next-line:ban
     spyOn(console, 'log');
     customError.handleApiErrors({'status': 'error', 'statusText': 'status'});
 
     expect(console.log).toHaveBeenCalledWith('error and status');
   });
 
-  it('should test for null observable when call handleAPIError', () => {
+  it('should return an observable on receiving status', () => {
     customError.handleApiErrors({'status': 'error', 'statusText': 'status'})
       .subscribe((retVal) => {
       expect(retVal).toEqual('error and status');
       });
   });
-
-
 });

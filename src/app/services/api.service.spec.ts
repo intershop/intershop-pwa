@@ -6,15 +6,14 @@ import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
 import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
-class LocalizeRouterServiceMock {
-  parser = {
-    currentLocale: { lang: 'en', currency: 'USD' }
-  };
-}
-
 describe('ApiService', () => {
   let customErrorHandler: CustomErrorHandler;
   let httpClient: HttpClient;
+  const mockLoalizeRouterService: any = mock(LocalizeRouterService);
+  const loalizeRouterServiceMock = instance(mockLoalizeRouterService);
+  loalizeRouterServiceMock.parser = {
+    currentLocale: { lang: 'en', currency: 'USD' }
+  };
 
   beforeEach(() => {
     customErrorHandler = mock(CustomErrorHandler);
@@ -24,7 +23,7 @@ describe('ApiService', () => {
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
-        { provide: LocalizeRouterService, useClass: LocalizeRouterServiceMock },
+        { provide: LocalizeRouterService, useValue: loalizeRouterServiceMock },
         ApiService
       ]
     });
@@ -37,35 +36,26 @@ describe('ApiService', () => {
 
   it('should call the httpClient.get method when apiService.get method is called.', inject([ApiService], (apiService: ApiService) => {
     verify(httpClient.get(anything())).never();
-    apiService.get('', null).subscribe((res) => {
-
-    });
+    apiService.get('', null);
     verify(httpClient.get(anything())).once();
   }));
 
   it('should call the httpClient.put method when apiService.put method is called.', inject([ApiService], (apiService: ApiService) => {
     verify(httpClient.put(anything(), anything())).never();
-    apiService.put('', null).subscribe((res) => {
-
-    });
+    apiService.put('', null);
     verify(httpClient.put(anything(), anything())).once();
   }));
 
 
   it('should call the httpClient.post method when apiService.post method is called.', inject([ApiService], (apiService: ApiService) => {
     verify(httpClient.post(anything(), anything())).never();
-    apiService.post('', null).subscribe((res) => {
-
-    });
+    apiService.post('', null);
     verify(httpClient.post(anything(), anything())).once();
   }));
 
   it('should call the httpClient.delete method when apiService.delete method is called.', inject([ApiService], (apiService: ApiService) => {
     verify(httpClient.delete(anything())).never();
-
-    apiService.delete('').subscribe((res) => {
-
-    });
+    apiService.delete('');
     verify(httpClient.delete(anything())).once();
   }));
 });

@@ -36,22 +36,21 @@ describe('Mock Interceptor', () => {
 
     function dataProvider() {
       return [
-        { url: environment.rest_url + '/categories', willBeMocked: true },
-        { url: environment.rest_url + ';loc=en_US;cur=USD/categories', willBeMocked: true },
-        { url: './assets/picture.png', willBeMocked: false }
+        { url: environment.rest_url + '/categories', willBeMocked: true, method: 'GET' },
+        { url: environment.rest_url + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
+        { url: './assets/picture.png', willBeMocked: false, method: 'GET' }
       ];
     }
 
     using(dataProvider, (dataSlice) => {
-      it('should ' + (dataSlice.willBeMocked ? '' : 'not ') + 'mock request to ' + dataSlice.url, () => {
+      it(`should ${dataSlice.willBeMocked ? '' : 'not '}mock request to ${dataSlice.url}`, () => {
         expect(mockInterceptor.requestHasToBeMocked(request.clone({ url: dataSlice.url }))).toBe(dataSlice.willBeMocked);
       });
-
-      it('should ' + (dataSlice.willBeMocked ? '' : 'not ') + 'change url for ' + dataSlice.url, () => {
+      it(`should ${dataSlice.willBeMocked ? '' : 'not '}change url for ${dataSlice.url}`, () => {
         if (dataSlice.willBeMocked) {
-          expect(mockInterceptor.getMockUrl(dataSlice.url)).not.toBe(dataSlice.url);
+          expect(mockInterceptor.getMockUrl(dataSlice)).not.toBe(dataSlice.url);
         } else {
-          expect(mockInterceptor.getMockUrl(dataSlice.url)).toBe(dataSlice.url);
+          expect(mockInterceptor.getMockUrl(dataSlice)).toBe(dataSlice.url);
         }
       });
     });
@@ -61,6 +60,9 @@ describe('Mock Interceptor', () => {
 
     function dataProvider() {
       return [
+        { item: 'categories', in: undefined, expect: false },
+        { item: 'categories', in: null, expect: false },
+        { item: 'categories', in: [], expect: false },
         { item: 'categories', in: ['categories'], expect: true },
         { item: 'catego', in: ['categories'], expect: false },
         { item: 'categories', in: ['cat.*'], expect: true },
@@ -76,7 +78,7 @@ describe('Mock Interceptor', () => {
     }
 
     using(dataProvider, (dataSlice) => {
-      it(`should${dataSlice.expect ? '' : ' not'} find \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
+      it(`should${dataSlice.expect ? '' : ' not'} when \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
         const mockInterceptor = new MockInterceptor();
         expect(mockInterceptor.matchPath(dataSlice.item, dataSlice.in)).toBe(dataSlice.expect);
       });

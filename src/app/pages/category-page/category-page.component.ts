@@ -12,8 +12,10 @@ import { CategoriesService } from '../../services/categories/categories.service'
 export class CategoryPageComponent implements OnInit {
 
   category: Category = null;
+  categoryPath: Category[] = [];
+
   // TODO: these properties were copied from family-page.component and their relevance needs to be evaluated
-  isListView: Boolean;
+  listView: Boolean;
   sortBy;
   totalItems: number;
   urlSegmentsArray: string[]; // Get friendly Name for current URL
@@ -29,6 +31,9 @@ export class CategoryPageComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: { category: Category }) => {
       this.category = data.category;
+      this.categoriesService.getCategoryPath(this.category, this.route.snapshot).subscribe((categoryPath: Category[]) => {
+        this.categoryPath = categoryPath;
+      });
 
       this.categoriesService.getFriendlyPathOfCurrentCategory(this.router.url.split('/category/')[1]).subscribe((response: string[]) => {
         this.urlSegmentsArray = response;
