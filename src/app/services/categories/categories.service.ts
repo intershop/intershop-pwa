@@ -57,16 +57,20 @@ export class CategoriesService implements Resolve<Category> {
       observableArray.push(this.getCategory(categoryId));
       categoryId = categoryId + '/';
     }
+    // TODO: optimization option: do not get the category itself again (the last element in the activatedRoute.url)
+    // but use the provided category as input for the array (wraped in an Observable)
 
     return forkJoin(observableArray);
-    // TODO: optimazation option: do not get the category itself again but use the provided category as input for the array (wraped in an Observable)
   }
 
   /**
    * Helper function to compare two categories
    * @param category1  The first category to be compared with the second.
    * @param category2  The second category to be compared with the first.
-   * @returns          True if the categories are the equal, false if not.
+   * @returns          True if the categories are equal, false if not.
+   *                   'equal' means
+   *                   - both categories are defined
+   *                   - the id of the categories is the same
    */
   isCategoryEqual(category1: Category, category2: Category): boolean {
     return category1 && category2 && category1.id === category2.id;
