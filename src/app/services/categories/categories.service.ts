@@ -53,13 +53,14 @@ export class CategoriesService implements Resolve<Category> {
     let categoryId = '';
 
     for (const urlSegment of activatedRoute.url) {
-      categoryId = categoryId + urlSegment.path;
-      observableArray.push(this.getCategory(categoryId));
-      categoryId = categoryId + '/';
+      if (urlSegment.path === category.id) {
+        observableArray.push(Observable.of(category));
+      } else {
+        categoryId = categoryId + urlSegment.path;
+        observableArray.push(this.getCategory(categoryId));
+        categoryId = categoryId + '/';
+      }
     }
-    // TODO: optimization option: do not get the category itself again (the last element in the activatedRoute.url)
-    // but use the provided category as input for the array (wraped in an Observable)
-
     return forkJoin(observableArray);
   }
 
