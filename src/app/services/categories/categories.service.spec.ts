@@ -39,6 +39,7 @@ describe('Categories Service', () => {
     verify(apiService.get(anything(), anything(), anything(), anything())).once();
   });
 
+  // tslint:disable:meaningful-naming-in-tests TODO: enable once ISREST-19 is merged
   it('should verify getFriendlyPathOfCurrentCategory method returns categoryNamesArray containing names of the categories instead of their IDs', () => {
     when(apiService.get(anything(), anything(), anything(), anything())).thenReturn(Observable.of(categoriesData.elements));
     let categoryNamesArray;
