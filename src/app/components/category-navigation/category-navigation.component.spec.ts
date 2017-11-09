@@ -1,54 +1,34 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { instance, mock} from 'ts-mockito/lib/ts-mockito';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { MockComponent } from '../mock.component';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { CategoryNavigationComponent } from './category-navigation.component';
 
 describe('Category Navigation Component', () => {
   let component: CategoryNavigationComponent;
   let fixture: ComponentFixture<CategoryNavigationComponent>;
-  let categoriesServiceMock: CategoriesService;
-  let category: Category;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
-    categoriesServiceMock = mock(CategoriesService);
-    category = new Category();
-    const activatedRoute = {
-      snapshot: {
-        url: ['']
-      },
-      data: Observable.of({ category: '' })
-    };
-    category = new Category();
     TestBed.configureTestingModule({
-      declarations: [CategoryNavigationComponent,
-        MockComponent({ selector: 'is-subcategory-navigation', template: 'Subcategory Navigation Template' })],
-      imports: [RouterTestingModule],
+      declarations: [CategoryNavigationComponent],
       providers: [
-        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: ActivatedRoute, useValue: activatedRoute }
+        { provide: CategoriesService, useFactory: () => instance(mock(CategoriesService)) },
+        { provide: LocalizeRouterService, useFactory: () => instance(mock(LocalizeRouterService)) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(CategoryNavigationComponent);
       component = fixture.componentInstance;
-      when(categoriesServiceMock.getCategory(anything())).thenReturn(Observable.of(category));
+      component.categoryPath = [new Category()];
+      element = fixture.nativeElement;
     });
   }));
 
-  xit('should be created', () => {
-    fixture.detectChanges();
+  it('should be created', () => {
     expect(component).toBeTruthy();
-  });
-
-  xit('should call CategoriesService.getCategory', () => {
-    fixture.detectChanges();
-    verify(categoriesServiceMock.getCategory(anything())).once();
+    expect(element).toBeTruthy();
   });
 });
