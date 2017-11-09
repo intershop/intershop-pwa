@@ -13,7 +13,6 @@ module.exports = function (config) {
       require('karma-html-reporter'),
       require('karma-junit-reporter'),
       require('karma-spec-reporter'),
-      require('karma-phantomjs-launcher'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular/cli/plugins/karma')
     ],
@@ -64,7 +63,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'PhantomJS'],
+    browsers: ['Chrome'],
     singleRun: false
   });
 };

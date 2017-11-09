@@ -11,18 +11,14 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "types": [
-      "crypto-js",
-      "jasmine",
-      "lodash"
-    ],
     "lib": [
       "es2017",
       "dom"
     ]
   },
-  "angularCompilerOptions": {
-    "genDir": "./dist/ngfactory",
-    "entryModule": "./src/app/app.module#AppModule"
-  }
+  "exclude": [
+    "tslint-rules",
+    "e2e",
+    "node_modules"
+  ]
 }

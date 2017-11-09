@@ -26,7 +26,7 @@ describe('Mini Cart Component', () => {
     });
   }));
 
-  it('should create the component', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 

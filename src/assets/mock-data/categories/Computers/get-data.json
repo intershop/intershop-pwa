@@ -9,7 +9,7 @@
     "id": "Computers",
     "subCategories": [
         {
-            "name": "Mock Hardware Components",
+            "name": "Hardware Components",
             "type": "Category",
             "hasOnlineProducts": false,
             "hasOnlineSubCategories": true,

@@ -1,6 +1,17 @@
 <div class="product-list row">
-  <is-product-tile *ngFor="let thumb of thumbnails" [mockData]="thumb" [isListView]="isListView"></is-product-tile>
-</div>
-<div *ngIf="thumbnails?.length==0">
-  <h1>No Data Found!</h1>
+
+  <!--List View-->
+  <ng-template [ngIf]="listView" [ngIfElse]="gridView">
+      <div *ngFor="let product of products" class="product-list-item col-md-12 list-view">
+        <is-product-row [mockData]="product"></is-product-row>
+      </div>
+  </ng-template>
+
+  <!--Grid View -->
+  <ng-template #gridView>
+      <div *ngFor="let product of products" class="product-list-item col-md-4 col-xs-6 grid-view">
+        <is-product-tile [mockData]="product"></is-product-tile>
+      </div>
+  </ng-template>
+
 </div>

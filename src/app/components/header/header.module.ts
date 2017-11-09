@@ -8,7 +8,7 @@ import { CategoriesService } from '../../services/categories/categories.service'
 import { SearchBoxService } from '../../services/suggest/search-box.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 import { HeaderNavigationComponent } from './header-navigation/header-navigation.component';
-import { SubCategoryNavigationComponent } from './header-navigation/sub-category/subcategory-navigation.component';
+import { SubCategoryNavigationComponent } from './header-navigation/subcategory-navigation/subcategory-navigation.component';
 import { HeaderComponent } from './header.component';
 import { LanguageSwitchComponent } from './language-switch/language-switch.component';
 import { LoginStatusComponent } from './login-status/login-status.component';

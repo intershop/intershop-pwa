@@ -4,9 +4,10 @@ import { DisableIconDirective } from '../../directives/disable-icon.directive';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { CartStatusService } from '../../services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../services/product-compare/product-compare.service';
+import { Product } from '../../services/products/products.model';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
-import { ProductTileModel } from './product-tile.model';
+
 
 @Component({
   selector: 'is-product-tile',
@@ -14,14 +15,14 @@ import { ProductTileModel } from './product-tile.model';
 })
 
 export class ProductTileComponent implements OnInit {
-  @Input() mockData: ProductTileModel;
-  @Input() isListView: false;
+  @Input() mockData: Product;
   finalPrice = 1;
   greaterPrice = 0;
   displayCondition: boolean;
   oldPrice: any;
   shownSavings: number;
   @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
+  base_url = environment.base_url;
 
   constructor(
     private accountLoginService: AccountLoginService,
@@ -68,16 +69,13 @@ export class ProductTileComponent implements OnInit {
     this.mockData['id'] = '1';
     this.mockData['averageRatingClass'] = '';
     this.mockData['isProductMaster'] = true;
-    this.mockData.listPrice['range'] = {
-      'minimumPrice': 110,
-      'maximumPrice': 380
-    };
-    this.mockData.images[2].effectiveUrl = environment.base_url + this.mockData.images[2].effectiveUrl;
-    this.mockData.images[0].effectiveUrl = environment.base_url + this.mockData.images[0].effectiveUrl;
+    // this.mockData.listPrice['range'] = {
+    //   'minimumPrice': 110,
+    //   'maximumPrice': 380
+    // };
 
-    this.calculatePriceParameters();
+    // this.calculatePriceParameters();
     this.calculateAverageRating();
-    // TODO: read product compare list from local cache if user is REMEMBERED
   }
 
   /**

@@ -32,11 +32,11 @@ describe('Account Overview Component', () => {
     accountLoginService = TestBed.get(AccountLoginService);
   });
 
-  it('should create the component', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call router.navigate and change user state when logout is called', () => {
+  it('should navigate to homepage when user logs out', () => {
     component.logout();
     // check if it was called
     verify(localizeRouterServiceMock.navigateToRoute(anything())).once();

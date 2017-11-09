@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
- 
+
 <Configure id="FileServer" class="org.eclipse.jetty.server.Server">
     <Set name="handler">
         <New class="org.eclipse.jetty.server.handler.HandlerList">
@@ -14,7 +14,7 @@
                                     <Item>index.html</Item>
                                 </Array>
                             </Set>
-                            <Set name="resourceBase">dist</Set>
+                            <Set name="resourceBase">dist/browser</Set>
                         </New>
                     </Item>
                     <Item>

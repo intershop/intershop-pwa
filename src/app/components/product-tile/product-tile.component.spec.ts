@@ -17,7 +17,7 @@ import { ProductTileComponent } from './product-tile.component';
 /*
   TODO: commented out tests fail with "ReferenceError: Can't find variable: Intl in vendor.bundle.js (line 56892)"
  */
-describe('ProductTile Component', () => {
+describe('Product Tile Component', () => {
   let fixture: ComponentFixture<ProductTileComponent>;
   let component: ProductTileComponent;
   let element: HTMLElement;
@@ -187,9 +187,9 @@ describe('ProductTile Component', () => {
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: WishListService, useFactory: () => instance(wishListServiceMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
         { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) },
-        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) }
+        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) },
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -203,7 +203,7 @@ describe('ProductTile Component', () => {
     element = fixture.nativeElement;
   });
 
-  xit('should call ngOnInit', () => {
+  it('should modify mockData when received', () => {
     environment.needMock = false;
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
@@ -239,7 +239,7 @@ describe('ProductTile Component', () => {
   })
   ));
 
-  xit('should call calculateAverageRating and satisfy all conditions', () => {
+  it('should set averageRatingClass based on averageRating passed', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.averagRating = 0.5;
@@ -268,7 +268,7 @@ describe('ProductTile Component', () => {
   });
 
 
-  xit('should call calculatePriceParameters and satisfy all conditions', () => {
+  it('should set finalPrice,greaterPrice,displayCondition and oldPrice based on mockData', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.showInformationalPrice = true;
@@ -323,7 +323,7 @@ describe('ProductTile Component', () => {
     expect(component.oldPrice).toBe('N/A');
   });
 
-  xit('should test if the tags are getting rendered', () => {
+  it('should test if the tags are getting rendered', () => {
     component.mockData = ProductList[0].Cameras[0];
     fixture.detectChanges();
     expect(element.getElementsByTagName('img')).toBeTruthy();

@@ -91,13 +91,15 @@ export class ApiService {
     } else {
 
       let elements = (_.has(data, 'elements') ? data['elements'] : data);
+      if (!elements.length || !_.find(elements, ['type', 'Link'])) {
+        return Observable.of(elements);
+      }
       return Observable.forkJoin(this.getLinkUri(elements)).map(results => {
         elements = _.map(elements, (item, key) => {
           return results[key];
         });
-        return { ...data, elements };
+        return elements;
       });
-
     }
   }
 

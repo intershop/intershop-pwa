@@ -6,6 +6,9 @@
 /out-tsc
 /bin
 
+# unsupported yarn files
+/yarn.lock
+
 # dependencies
 /node_modules
 

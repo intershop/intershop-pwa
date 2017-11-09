@@ -6,7 +6,7 @@
     <div class="col-sm-3">
       <div class="navigation-panel">
         <h1>{{category.name}}</h1>
-        <is-category-navigation></is-category-navigation>
+        <is-category-navigation [category]="category" [categoryPath]="categoryPath" [categoryNavigationLevel]="0"></is-category-navigation>
       </div>
     </div>
 
@@ -34,12 +34,12 @@
           </div>
           <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
             <div class="pull-right sort-by">
-              <a class="list-view-link" [ngClass]="isListView ? 'list-active' : ''" data-testing-id="list-view-link" href="javascript:void(0)"
-                (click)="isListView = true">
+              <a class="list-view-link" [ngClass]="listView ? 'list-active' : ''" data-testing-id="list-view-link" href="javascript:void(0)"
+                (click)="listView = true">
                     <span class="glyphicon glyphicon-list"></span>
                   </a>
-              <a class="grid-view-link" [ngClass]="!isListView ? 'grid-active' : ''" data-testing-id="grid-view-link" href="javascript:void(0)"
-                (click)="isListView = false">
+              <a class="grid-view-link" [ngClass]="!listView ? 'grid-active' : ''" data-testing-id="grid-view-link" href="javascript:void(0)"
+                (click)="listView = false">
                     <span class="glyphicon glyphicon-th"></span>
                   </a>
             </div>
@@ -61,7 +61,7 @@
             </form>
           </div>
         </div>
-        <is-product-list [sortBy]="sortBy" [isListView]="isListView" (totalItems)="totalItems = $event"></is-product-list>
+        <is-product-list [listView]="listView" [sortBy]="sortBy" (totalItems)="totalItems = $event"></is-product-list>
       </ng-template>
     </div>
   </div>
