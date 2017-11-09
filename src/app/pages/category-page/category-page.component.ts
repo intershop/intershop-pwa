@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../services/categories/categories.model';
+import { CategoriesService } from '../../services/categories/categories.service';
 
 @Component({
   selector: 'is-category-page',
@@ -10,6 +11,7 @@ import { Category } from '../../services/categories/categories.model';
 export class CategoryPageComponent implements OnInit {
 
   category: Category = null;
+  categoryPath: Category[] = [];
 
   // TODO: these properties were copied from family-page.component and their relevance needs to be evaluated
   listView: Boolean;
@@ -17,10 +19,16 @@ export class CategoryPageComponent implements OnInit {
   totalItems: number;
 
   constructor(
+    private categoriesService: CategoriesService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data: { category: Category }) => this.category = data.category);
+    this.route.data.subscribe((data: { category: Category }) => {
+      this.category = data.category;
+      this.categoriesService.getCategoryPath(this.category, this.route.snapshot).subscribe((categoryPath: Category[]) => {
+        this.categoryPath = categoryPath;
+      });
+    });
   }
 }
