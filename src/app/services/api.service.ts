@@ -89,8 +89,7 @@ export class ApiService {
     if (!linkTranslation) {
       return Observable.of(data);
     } else {
-
-      let elements = (_.has(data, 'elements') ? data['elements'] : data);
+      let elements = data.elements ? data.elements : data;
       if (!elements.length || !_.find(elements, ['type', 'Link'])) {
         return Observable.of(elements);
       }
@@ -98,6 +97,10 @@ export class ApiService {
         elements = _.map(elements, (item, key) => {
           return results[key];
         });
+        if (data.elements) {
+          data.elements = elements;
+          return data;
+        }
         return elements;
       });
     }
