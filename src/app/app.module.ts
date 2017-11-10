@@ -1,8 +1,9 @@
-import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
 import { JsonpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
@@ -32,7 +33,9 @@ import { PageModule } from './pages/pages.module';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor( @Inject(PLATFORM_ID) platformId) {
+  constructor( @Inject(PLATFORM_ID) platformId, translateService: TranslateService) {
     environment.platformId = platformId;
+    translateService.setDefaultLang('en_US');
+    translateService.use('en_US');
   }
 }

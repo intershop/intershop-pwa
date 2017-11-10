@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './registration-page.component.html'
@@ -10,11 +10,7 @@ export class RegistrationPageComponent {
   isAddressFormValid = false;
   isEmailFormValid = false;
 
-  /**
-   * Constructor
-   * @param {LocalizeRouterService} localize
-   */
-  constructor(private localize: LocalizeRouterService) {
+  constructor(private router: Router) {
   }
 
   /**
@@ -22,7 +18,7 @@ export class RegistrationPageComponent {
    * @returns void
    */
   cancelClicked(): void {
-    this.localize.navigateToRoute('');
+    this.router.navigate(['/home']);
   }
 
   /**

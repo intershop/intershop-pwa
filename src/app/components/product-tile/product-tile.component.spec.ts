@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { async, inject } from '@angular/core/testing';
@@ -10,7 +11,6 @@ import { DisableIconDirective } from '../../directives/disable-icon.directive';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { CartStatusService } from '../../services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../services/product-compare/product-compare.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 import { ProductTileComponent } from './product-tile.component';
 
@@ -21,11 +21,11 @@ describe('Product Tile Component', () => {
   let fixture: ComponentFixture<ProductTileComponent>;
   let component: ProductTileComponent;
   let element: HTMLElement;
-  let localizeRouterServiceMock: LocalizeRouterService;
   let productCompareServiceMock: ProductCompareService;
   let cartStatusServiceMock: CartStatusService;
   let wishListServiceMock: WishListService;
   let accountLoginServiceMock: AccountLoginService;
+  let location: Location;
 
   const ProductList = [
     {
@@ -172,7 +172,6 @@ describe('Product Tile Component', () => {
   ];
 
   beforeEach(async(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
     productCompareServiceMock = mock(ProductCompareService);
     when(productCompareServiceMock.current).thenReturn([]);
     cartStatusServiceMock = mock(CartStatusService);
@@ -181,15 +180,16 @@ describe('Product Tile Component', () => {
     accountLoginServiceMock = mock(AccountLoginService);
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(),
-        RouterTestingModule
+      RouterTestingModule.withRoutes([
+        { path: 'login', component: ProductTileComponent }
+      ])
       ],
       declarations: [ProductTileComponent, DisableIconDirective],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: WishListService, useFactory: () => instance(wishListServiceMock) },
         { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) },
-        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -201,6 +201,7 @@ describe('Product Tile Component', () => {
     fixture = TestBed.createComponent(ProductTileComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    location = TestBed.get(Location);
   });
 
   it('should modify mockData when received', () => {
@@ -225,12 +226,15 @@ describe('Product Tile Component', () => {
     verify(cartStatusServiceMock.addSKU(anything())).once();
   });
 
-  it('should call addToWishList method and verify if router.navigate is called', () => {
+  it('should call addToWishList method and verify if router.navigate is called', async(() => {
+    expect(location.path()).toBe('');
     component.addToWishList();
-    // check if it was called
-    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
+
+    fixture.whenStable().then(() => {
+      expect(location.path()).toBe('/login');
+    });
     verify(wishListServiceMock.update()).never();
-  });
+  }));
 
   it('should call addToWishList method and verify if getWishList method of Wishlistservice is called', async(inject([WishListService], (wishListService: WishListService) => {
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);

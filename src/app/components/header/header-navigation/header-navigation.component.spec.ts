@@ -4,7 +4,6 @@ import { async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { CategoriesService } from '../../../services/categories/categories.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { HeaderNavigationComponent } from './header-navigation.component';
 
 describe('Header Navigation Component', () => {
@@ -23,7 +22,6 @@ describe('Header Navigation Component', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(mock(LocalizeRouterService)) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

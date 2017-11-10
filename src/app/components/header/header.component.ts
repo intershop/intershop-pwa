@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CartStatusService } from '../../services/cart-status/cart-status.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-header',
@@ -12,7 +11,6 @@ export class HeaderComponent implements OnInit {
   navbarCollapsed = true;
 
   constructor(
-    public localize: LocalizeRouterService,
     private cartStatusService: CartStatusService
   ) { }
 

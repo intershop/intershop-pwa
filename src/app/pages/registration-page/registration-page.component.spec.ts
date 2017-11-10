@@ -1,24 +1,17 @@
-import { DebugElement } from '@angular/core';
+import { Location } from '@angular/common';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from '../../components/mock.component';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { RegistrationPageComponent } from './registration-page.component';
 
 describe('RegistrationPage Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
   let component: RegistrationPageComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
-  let localizeRouterServiceMock: LocalizeRouterService;
+  let location: Location;
 
   beforeEach(async(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
-    when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
-      return arg1;
-    });
-
     TestBed.configureTestingModule({
       declarations: [RegistrationPageComponent,
         MockComponent({ selector: 'is-email-password', template: 'Email Template' }),
@@ -26,7 +19,11 @@ describe('RegistrationPage Component', () => {
         MockComponent({ selector: 'is-captcha', template: 'Captcha Template' }),
       ],
       providers: [
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+      ],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'home', component: RegistrationPageComponent }
+        ])
       ]
     })
       .compileComponents();
@@ -35,17 +32,17 @@ describe('RegistrationPage Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RegistrationPageComponent);
     component = fixture.componentInstance;
-    debugEl = fixture.debugElement;
     element = fixture.nativeElement;
+    location = TestBed.get(Location);
   });
 
-  it('should navigate to homepage when cancel is clicked', () => {
+  it('should navigate to homepage when cancel is clicked', async(() => {
+    expect(location.path()).toBe('');
     component.cancelClicked();
-    // check if it was called
-    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
-    // capture last arguments and verify.
-    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['']);
-  });
+    fixture.whenStable().then(() => {
+      expect(location.path()).toBe('/home');
+    });
+  }));
 
   it('should check if controls are getting rendered on the page', () => {
     expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');
