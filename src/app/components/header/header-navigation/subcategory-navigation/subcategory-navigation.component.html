@@ -1,6 +1,6 @@
 <ul *ngIf="category.subCategories" class="category-level{{subCategoriesDepth}}" [ngClass]="subCategoriesDepth == 1 ? 'dropdown-menu' : ''">
   <li *ngFor="let subcategory of category.subCategories" class="main-navigation-level{{subCategoriesDepth}}-item" [ngClass]="subcategory.isOpenedToggle ? 'open' : ''">
-    <a [routerLink]="localize.translateRoute(categoriesService.generateCategoryRoute(subcategory))" [style.width]="subcategory.hasOnlineSubCategories ? '' : '100%'">{{subcategory.name}}</a>
+    <a [routerLink]="[categoriesService.generateCategoryRoute(subcategory)]" [style.width]="subcategory.hasOnlineSubCategories ? '' : '100%'">{{subcategory.name}}</a>
     <a *ngIf="subcategory.subCategories" (click)="subcategory.isOpenedToggle = !subcategory.isOpenedToggle" class="dropdown-toggle visible-xs">
       <span class="glyphicon" [ngClass]="subcategory.isOpenedToggle ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
     </a>

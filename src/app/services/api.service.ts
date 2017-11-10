@@ -6,7 +6,6 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
 import { CustomErrorHandler } from './custom-error-handler';
-import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 @Injectable()
 export class ApiService {
@@ -16,8 +15,7 @@ export class ApiService {
    * @param  {Http} privatehttp
    */
   constructor(private httpClient: HttpClient,
-    private customErrorHandler: CustomErrorHandler,
-    private localize: LocalizeRouterService) {
+    private customErrorHandler: CustomErrorHandler) {
   }
 
   /**
@@ -37,8 +35,7 @@ export class ApiService {
 
   get(path: string, params?: HttpParams, headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
-    const loc = this.localize.parser.currentLocale;
-    const url = `${environment.rest_url};loc=${loc.lang};cur=${loc.currency}/${path}`;
+    const url = `${environment.rest_url};loc=en;cur=USD/${path}`;
 
     return this.httpClient.get(url, { params: params, headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))

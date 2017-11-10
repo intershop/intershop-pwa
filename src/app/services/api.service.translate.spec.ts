@@ -5,17 +5,11 @@ import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockit
 import { environment } from '../../environments/environment';
 import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
-import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
 
 describe('ApiService Translation', () => {
   let customErrorHandler: CustomErrorHandler;
   let httpClient: HttpClient;
   let apiService: ApiService;
-  const mockLoalizeRouterService: any = mock(LocalizeRouterService);
-  const loalizeRouterServiceMock = instance(mockLoalizeRouterService);
-  loalizeRouterServiceMock.parser = {
-    currentLocale: { lang: 'en', currency: 'USD' }
-  };
 
   const categoriesPath = `${environment.rest_url};loc=en;cur=USD/categories`;
   const webcamsPath = `${categoriesPath}/Cameras-Camcorders/577`;
@@ -49,7 +43,6 @@ describe('ApiService Translation', () => {
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
-        { provide: LocalizeRouterService, useValue: loalizeRouterServiceMock },
         ApiService
       ]
     });

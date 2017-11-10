@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { CategoryNavigationComponent } from './category-navigation.component';
 
 describe('Category Navigation Component', () => {
@@ -15,8 +14,7 @@ describe('Category Navigation Component', () => {
     TestBed.configureTestingModule({
       declarations: [CategoryNavigationComponent],
       providers: [
-        { provide: CategoriesService, useFactory: () => instance(mock(CategoriesService)) },
-        { provide: LocalizeRouterService, useFactory: () => instance(mock(LocalizeRouterService)) }
+        { provide: CategoriesService, useFactory: () => instance(mock(CategoriesService)) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents().then(() => {

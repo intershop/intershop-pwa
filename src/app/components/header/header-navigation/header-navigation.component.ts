@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from '../../../services/categories/categories.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-header-navigation',
@@ -14,8 +13,7 @@ export class HeaderNavigationComponent implements OnInit {
   categories: Category[];
 
   constructor(
-    public localize: LocalizeRouterService,
-    private categoriesService: CategoriesService
+    public categoriesService: CategoriesService
   ) { }
 
   ngOnInit() {

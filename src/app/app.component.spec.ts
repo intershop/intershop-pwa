@@ -2,18 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
-import { instance, mock } from 'ts-mockito';
 import { AppComponent } from './app.component';
 import { MockComponent } from './components/mock.component';
-import { LocalizeRouterService } from './services/routes-parser-locale-currency/localize-router.service';
 
 let translate: TranslateService;
 
 describe('AppComponent', () => {
-  let localizeRouterServiceMock: LocalizeRouterService;
   let fixture: ComponentFixture<AppComponent>;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -21,18 +18,16 @@ describe('AppComponent', () => {
         MockComponent({ selector: 'is-footer', template: 'Footer Component' })
       ],
       providers: [
-        TranslateService,
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+        TranslateService
       ],
       imports: [
         TranslateModule.forRoot(),
         RouterTestingModule
       ]
     }).compileComponents();
-  });
+  }));
 
   beforeEach(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
     translate = TestBed.get(TranslateService);
     fixture = TestBed.createComponent(AppComponent);
 

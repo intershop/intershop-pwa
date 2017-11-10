@@ -4,7 +4,6 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
 describe('BreadCrumb Component', () => {
@@ -18,8 +17,7 @@ describe('BreadCrumb Component', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: CategoriesService, useFactory: () => instance(mock(CategoriesService)) },
-        { provide: LocalizeRouterService, useFactory: () => instance(mock(LocalizeRouterService)) }
+        { provide: CategoriesService, useFactory: () => instance(mock(CategoriesService)) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
