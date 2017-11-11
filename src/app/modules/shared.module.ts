@@ -24,8 +24,7 @@ import { FormValidationDirective } from '../directives/form-validation.directive
   ],
   entryComponents: [FormControlErrorComponent],
   imports: [
-    CommonModule,
-    RouterModule
+    CommonModule
   ],
   providers: []
 })
