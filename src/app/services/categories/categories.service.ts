@@ -46,7 +46,7 @@ export class CategoriesService implements Resolve<Category> {
    * Helper function to get the category path for a given category with the help of the current route.
    * @param category        The category the category path should be gotten for.
    * @param activatedRoute  The currently activated route that is used to determine the category path.
-   * @returns               A Category array that represents the categroy path from root to the category.
+   * @returns               A Category array that represents the category path from root to the category.
    */
   getCategoryPath(category: Category, activatedRoute: ActivatedRouteSnapshot): Observable<Category[]> {
     const observableArray: Observable<Category>[] = [];
@@ -79,10 +79,23 @@ export class CategoriesService implements Resolve<Category> {
 
   /**
    * Helper function to generate the applications category route from the categories REST API uri
-   * @param category  The category the application route should be generated for.
-   * @returns         The application /category route string for the given category.
+   * or from a optionally given categoryPath if no uri is available.
+   * @param category      The category the application route should be generated for.
+   * @param categoryPath  The categroy path from root to the category as Category array.
+   * @returns             The application /category route string for the given category.
    */
-  generateCategoryRoute(category: Category): string {
-    return '/category/' + category.uri.split('/categories/')[1];
+  generateCategoryRoute(category: Category, categoryPath: Category[]): string {
+    let categoryIdPath = '';
+    if (category.uri) {
+      categoryIdPath = category.uri.split('/categories')[1];
+    } else if (categoryPath) {
+      for (const pathCategory of categoryPath) {
+        categoryIdPath = categoryIdPath + '/' + pathCategory.id;
+        if (this.isCategoryEqual(pathCategory, category)) {
+          break;
+        }
+      }
+    }
+    return '/category' + categoryIdPath;
   }
 }
