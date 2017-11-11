@@ -69,7 +69,7 @@
   "account.register.link": "Registrieren",
 
   "ROUTES.home": "home",
-  "ROUTES.category": "Kategory",
+  "ROUTES.category": "category",
   "ROUTES.compare": "compare",
   "ROUTES.login": "login",
   "ROUTES.register": "register",
