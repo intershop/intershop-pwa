@@ -1,58 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { BreadcrumbService } from './breadcrumb.service';
+import { Component, Input } from '@angular/core';
+import { Category } from '../../services/categories/categories.model';
+import { CategoriesService } from '../../services/categories/categories.service';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 
-/**
- * ng2-breadcrumb reference
- * This component shows a breadcrumb trail for available routes the router can navigate to.
- * It subscribes to the router in order to update the breadcrumb trail as you navigate to a component.
- */
 @Component({
   selector: 'is-breadcrumb',
   templateUrl: './breadcrumb.component.html'
 })
-export class BreadcrumbComponent implements OnInit, OnDestroy {
 
-  public _urls: string[] = [];
-  public _routerSubscription: any;
+export class BreadcrumbComponent {
+
+  @Input() separator = '/';
+  @Input() showHome = true;
+  @Input() category: Category;
+  @Input() categoryPath: Category[]; // TODO: only category should be needed as input once the REST call returns the categoryPath as part of the category
+  @Input() product: string; // TODO: product implementation
+
 
   constructor(
-    private router: Router,
-    private breadcrumbService: BreadcrumbService
+    public categoriesService: CategoriesService,
+    public localizeRouter: LocalizeRouterService
   ) { }
 
-  ngOnInit(): void {
-    this._routerSubscription = this.router.events.subscribe((navigationEnd: NavigationEnd) => {
-      if (navigationEnd instanceof NavigationEnd) {
-        this._urls.length = 0; // Fastest way to clear out array
-        this.generateBreadcrumbTrail(navigationEnd.urlAfterRedirects ? navigationEnd.urlAfterRedirects : navigationEnd.url);
-      }
-    });
-  }
-
-  generateBreadcrumbTrail(url: string): void {
-    if (!this.breadcrumbService.isRouteHidden(url)) {
-      // Add url to beginning of array (since the url is being recursively broken down from full url to its parent)
-      this._urls.unshift(url);
-    }
-
-    if (url.lastIndexOf('/') > 0) {
-      this.generateBreadcrumbTrail(url.substr(0, url.lastIndexOf('/'))); // Find last '/' and add everything before it as a parent route
-    }
-  }
-
-  navigateTo(url: string) {
-    this.router.navigateByUrl(url);
-    return false;
-  }
-
-  friendlyName(url: string): string {
-    return !url ? '' : this.breadcrumbService.getFriendlyNameForRoute(url);
-  }
-
-  ngOnDestroy(): void {
-    if (this._routerSubscription) {
-      this._routerSubscription.unsubscribe();
-    }
-  }
 }

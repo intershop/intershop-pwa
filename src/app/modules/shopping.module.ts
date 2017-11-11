@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 import { CategoryListComponent } from '../components/category-list/category-list.component';
 import { CategoryNavigationComponent } from '../components/category-navigation/category-navigation.component';
 import { ProductListComponent } from '../components/product-list/product-list.component';
@@ -16,6 +17,7 @@ import { SharedModule } from './shared.module';
     SharedModule
   ],
   declarations: [
+    BreadcrumbComponent,
     CategoryListComponent,
     CategoryNavigationComponent,
     DisableIconDirective,
@@ -24,6 +26,7 @@ import { SharedModule } from './shared.module';
     ProductTileComponent
   ],
   exports: [
+    BreadcrumbComponent,
     CategoryListComponent,
     CategoryNavigationComponent,
     DisableIconDirective,

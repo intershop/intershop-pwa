@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { PopoverConfig } from 'ngx-bootstrap/popover';
 import { LocalizeRouterService } from './services/routes-parser-locale-currency/localize-router.service';
 
@@ -15,28 +14,9 @@ export function getPopoverConfig(): PopoverConfig {
   ]
 })
 
-export class AppComponent implements OnInit {
-  public showBreadCrumb = false;
-
+export class AppComponent {
   // TODO: is this the right place to handle the global application translation?
-  constructor(private localize: LocalizeRouterService, private _router: Router) {
+  constructor(private localize: LocalizeRouterService) {
     console.log('ROUTES', this.localize.parser.routes);
-  }
-
-  showRoute(activatedUrl: string): boolean {
-    const pages = ['/category'];
-    return pages.some((page) => {
-      return activatedUrl.indexOf(page) > -1;
-    });
-  }
-
-  ngOnInit() {
-    // Decides whether Breadcrumbs are to be shown on a page or not.
-    this._router.events.subscribe((event) => {
-      this.showBreadCrumb = false;
-      if (event instanceof NavigationEnd && this.showRoute(event.urlAfterRedirects)) {
-        this.showBreadCrumb = true;
-      }
-    });
   }
 }
