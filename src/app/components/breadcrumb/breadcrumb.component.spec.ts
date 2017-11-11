@@ -1,21 +1,25 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
+import { CategoriesService } from '../../services/categories/categories.service';
+import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
 describe('BreadCrumb Component', () => {
   let fixture: ComponentFixture<BreadcrumbComponent>;
   let component: BreadcrumbComponent;
   let element: HTMLElement;
-  let routerMock: Router;
   beforeEach(() => {
-    routerMock = mock(Router);
     TestBed.configureTestingModule({
       declarations: [BreadcrumbComponent],
+      imports: [
+        TranslateModule.forRoot(),
+      ],
       providers: [
-        { provide: Router, useFactory: () => instance(routerMock) },
+        { provide: CategoriesService, useFactory: () => instance(mock(CategoriesService)) },
+        { provide: LocalizeRouterService, useFactory: () => instance(mock(LocalizeRouterService)) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
