@@ -46,7 +46,7 @@ export class CategoriesService implements Resolve<Category> {
    * Helper function to get the category path for a given category with the help of the current route.
    * @param category        The category the category path should be gotten for.
    * @param activatedRoute  The currently activated route that is used to determine the category path.
-   * @returns               A Category array that represents the categroy path from root to the category.
+   * @returns               A Category array that represents the category path from root to the category.
    */
   getCategoryPath(category: Category, activatedRoute: ActivatedRouteSnapshot): Observable<Category[]> {
     const observableArray: Observable<Category>[] = [];
@@ -79,43 +79,23 @@ export class CategoriesService implements Resolve<Category> {
 
   /**
    * Helper function to generate the applications category route from the categories REST API uri
-   * @param category  The category the application route should be generated for.
-   * @returns         The application /category route string for the given category.
+   * or from a optionally given categoryPath if no uri is available.
+   * @param category      The category the application route should be generated for.
+   * @param categoryPath  The categroy path from root to the category as Category array.
+   * @returns             The application /category route string for the given category.
    */
-  generateCategoryRoute(category: Category): string {
-    return '/category/' + category.uri.split('/categories/')[1];
-  }
-
-  /**
-   * This functionality will be done at API in future. Takes uri of the current category and iterates through all the * subcategories to replace the IDs to their names and returns url with names instead of IDs.
-   *
-   * Takes current category's uri and returns url with names
-   * @param  {string} currentUri
-   * @returns Observable
-   */
-  getFriendlyPathOfCurrentCategory(currentUri: string): Observable<string[]> {
-    return this.getTopLevelCategories(2).flatMap((categoryData: any) => {
-      const topLevelCategory = new Category();
-      topLevelCategory.subCategories = categoryData;
-      return Observable.of(this.createFriendlyPath(topLevelCategory, currentUri.split('/'), []));
-    });
-  }
-
-  /**
-   * Helper function to convert ids to names in category uri
-   * @param  {Category} categoriesData
-   * @param  {string[]} categoryIdsArray
-   * @param  {string[]} categoryNamesArray
-   * @returns string
-   */
-  createFriendlyPath(categoriesData: Category, categoryIdsArray: string[], categoryNamesArray: string[]): string[] {
-    if (!categoryIdsArray.length) {
-      return categoryNamesArray;
+  generateCategoryRoute(category: Category, categoryPath: Category[]): string {
+    let categoryIdPath = '';
+    if (category.uri) {
+      categoryIdPath = category.uri.split('/categories')[1];
+    } else if (categoryPath) {
+      for (const pathCategory of categoryPath) {
+        categoryIdPath = categoryIdPath + '/' + pathCategory.id;
+        if (this.isCategoryEqual(pathCategory, category)) {
+          break;
+        }
+      }
     }
-    const matchedCategory = categoriesData.subCategories.find((category) => {
-      return category.id === categoryIdsArray[0];
-    });
-    categoryNamesArray.push(matchedCategory.name);
-    return this.createFriendlyPath(matchedCategory, categoryIdsArray.splice(1), categoryNamesArray);
+    return '/category' + categoryIdPath;
   }
 }
