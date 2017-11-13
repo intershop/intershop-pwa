@@ -17,7 +17,7 @@ export class CategoryListComponent implements OnInit {
   constructor(
     public localize: LocalizeRouterService,
     public categoriesService: CategoriesService
-  ) {}
+  ) { }
 
   ngOnInit() {
   }

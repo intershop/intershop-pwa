@@ -32,7 +32,7 @@ import { PageModule } from './pages/pages.module';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(@Inject(PLATFORM_ID) platformId) {
+  constructor( @Inject(PLATFORM_ID) platformId) {
     environment.platformId = platformId;
   }
 }

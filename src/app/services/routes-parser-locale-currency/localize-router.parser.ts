@@ -40,8 +40,8 @@ export abstract class LocalizeParser {
    * @param settings
    */
   constructor(private translate: TranslateService,
-              private location: Location,
-              private settings: LocalizeRouterSettings) {
+    private location: Location,
+    private settings: LocalizeRouterSettings) {
   }
 
   /**
@@ -235,8 +235,8 @@ export abstract class LocalizeParser {
 
     /** collect observables  */
     return pathSegments
-        .map((part: string) => part.length ? this.translateText(part) : part)
-        .join('/') +
+      .map((part: string) => part.length ? this.translateText(part) : part)
+      .join('/') +
       (queryParts.length > 1 ? `?${queryParts[1]}` : '');
   }
 

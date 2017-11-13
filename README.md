@@ -85,6 +85,8 @@ Run `ng lint --type-check` to check the application of the default tslint rules 
 
 For development make sure the used IDE or Editor follows the [EditorConfig](http://editorconfig.org/) configuration of the project to help maintain consistent coding styles (see `.editorconfig`).
 
+Use `gradlew tsformat` to run typescript-formatter.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.

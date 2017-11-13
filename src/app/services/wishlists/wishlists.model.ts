@@ -1,27 +1,27 @@
 export class WishListModel {
-    type: string;
-    preferred: boolean;
-    items: WishListItem[];
-    itemsCount: number;
-    title: string;
-    creationDate: number;
-    public: boolean;
+  type: string;
+  preferred: boolean;
+  items: WishListItem[];
+  itemsCount: number;
+  title: string;
+  creationDate: number;
+  public: boolean;
 }
 
 class Value {
-    type: string;
-    value: string;
-    unit: string;
+  type: string;
+  value: string;
+  unit: string;
 }
 
 class Attribute {
-    name: string;
-    type: string;
-    value: Value;
+  name: string;
+  type: string;
+  value: Value;
 }
 
 export class WishListItem {
-    type: string;
-    attributes: Attribute[];
-    uri: string;
+  type: string;
+  attributes: Attribute[];
+  uri: string;
 }

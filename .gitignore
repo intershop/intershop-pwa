@@ -22,6 +22,7 @@
 *.sublime-workspace
 /.nb-gradle
 /nbproject/
+/tsfmt.json
 
 # IDE - VSCode
 .vscode/*
