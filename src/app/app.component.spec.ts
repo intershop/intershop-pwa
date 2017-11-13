@@ -22,7 +22,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         TranslateService,
-        {provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
       ],
       imports: [
         TranslateModule.forRoot(),

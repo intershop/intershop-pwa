@@ -16,7 +16,7 @@ export class HeaderNavigationComponent implements OnInit {
   constructor(
     public localize: LocalizeRouterService,
     private categoriesService: CategoriesService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {

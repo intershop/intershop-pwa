@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 
 export class RemoveHostDirective implements OnInit {
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   // wait for the component to render completely
   ngOnInit() {

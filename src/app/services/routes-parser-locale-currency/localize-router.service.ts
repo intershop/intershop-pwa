@@ -132,7 +132,7 @@ export class LocalizeRouterService {
       // This value does not exist in Router before version 4
       // so we have to find it indirectly
       if (event.toString().match(/RouteConfigLoadEnd/)) {
-        Observable.of(event.route).toPromise().then(function (route) {
+        Observable.of(event.route).toPromise().then(function(route) {
           self.parser.initChildRoutes(route._loadedConfig.routes);
         });
       }

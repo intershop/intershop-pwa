@@ -8,8 +8,8 @@ import { LocalizeParser } from './routes-parser-locale-currency/localize-router.
 
 export class LocalizeRouterLoader extends LocalizeParser {
   constructor(translate: TranslateService,
-              location: Location,
-              settings: LocalizeRouterSettings) {
+    location: Location,
+    settings: LocalizeRouterSettings) {
     super(translate, location, settings);
   }
 
