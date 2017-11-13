@@ -29,13 +29,13 @@ const BROWSER_FOLDER = join(process.cwd(), 'browser');
 const index = readFileSync(join('browser', 'index.html'), 'utf8');
 
 // Iterate each route path
-PATHS.forEach(function (route) {
+PATHS.forEach(function(route) {
   // Changes current directory to ./dist/browser
   chdir(BROWSER_FOLDER);
 
   // Creates new directories (if not exists) and changes current directory for the nested one
   route.split('/').filter(val => val !== '')
-    .forEach(function (dir) {
+    .forEach(function(dir) {
       if (!existsSync(dir)) {
         mkdirSync(dir);
       }

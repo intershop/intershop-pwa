@@ -40,12 +40,12 @@ describe('RegistrationPage Component', () => {
   });
 
   it('should navigate to homepage when cancel is clicked', () => {
-      component.cancelClicked();
+    component.cancelClicked();
     // check if it was called
     verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
     // capture last arguments and verify.
     expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['']);
-    });
+  });
 
   it('should check if controls are getting rendered on the page', () => {
     expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');

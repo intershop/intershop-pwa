@@ -13,7 +13,7 @@ export function HttpLoaderFactory(translate: TranslateService, location: Locatio
 }
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/home', pathMatch: 'full' }
+  { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
 
 @NgModule({

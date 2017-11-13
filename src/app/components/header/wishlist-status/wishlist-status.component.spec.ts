@@ -19,7 +19,7 @@ describe('Wish List Component', () => {
   let localizeRouterServiceMock: LocalizeRouterService;
 
   beforeEach(() => {
-    wishListServiceMock = new BehaviorSubject({itemsCount: 1} as WishListModel);
+    wishListServiceMock = new BehaviorSubject({ itemsCount: 1 } as WishListModel);
     localizeRouterServiceMock = mock(LocalizeRouterService);
 
     TestBed.configureTestingModule({
@@ -58,7 +58,7 @@ describe('Wish List Component', () => {
   });
 
   it('should not display counter when item count is 0', () => {
-    wishListServiceMock.next({itemsCount: 0} as WishListModel);
+    wishListServiceMock.next({ itemsCount: 0 } as WishListModel);
     fixture.detectChanges();
 
     const itemCountElement = element.querySelector('#preferred-wishlist-counter');

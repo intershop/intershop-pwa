@@ -27,7 +27,7 @@ export class RegistrationGuard implements CanActivate {
   modifyExisitingRoute(routes) {
     const register = 'register';
     if (routes.children) {
-      routes.children.forEach(function (children, index) {
+      routes.children.forEach(function(children, index) {
         if (children.path === register) {
           routes.children.splice(index, 1);
           routes.children[index] = { path: register, loadChildren: 'app/pages/account-login/account-login.module#AccountLoginModule' };
