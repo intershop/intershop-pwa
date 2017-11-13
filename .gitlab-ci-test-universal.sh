@@ -13,7 +13,7 @@ function universalTest {
   res=$?
   echo -n "TEST $NUM: searching '$GREP' in '$URL': " >&2
   [ "$res" -eq "0" ] && echo "SUCCESS" >&2 || echo "FAILURE" >&2
-  [ "$res" -ne "0" ] && curl "$URL"
+  [ "$res" -ne "0" ] && wget -O - -q "$URL"
   return $res
 }
 
