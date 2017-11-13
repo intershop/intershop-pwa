@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     public localize: LocalizeRouterService,
     private cartStatusService: CartStatusService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.cartStatusService.subscribe((cartItems: string[]) => {

@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { instance, mock} from 'ts-mockito/lib/ts-mockito';
+import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';

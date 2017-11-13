@@ -16,5 +16,5 @@ export class SubCategoryNavigationComponent {
   constructor(
     public localize: LocalizeRouterService,
     public categoriesService: CategoriesService
-  ) {}
+  ) { }
 }

@@ -19,13 +19,13 @@ describe('Category List Component', () => {
       imports: [
         RouterTestingModule
       ],
-      declarations: [ CategoryListComponent ],
+      declarations: [CategoryListComponent],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: LocalizeRouterService, useFactory: () => instance(localizeServiceMock) }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -28,7 +28,7 @@ describe('Wish list Page Component', () => {
     });
   }));
 
-  it ('should be created', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
