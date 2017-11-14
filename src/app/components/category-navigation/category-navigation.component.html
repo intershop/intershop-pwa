@@ -3,7 +3,7 @@
     <ul class="filter-list">
       <li *ngFor="let subCategory of categoryPath[categoryNavigationLevel].subCategories" class="filter-item">
         <a class="filter-item-name" [ngClass]="{'filter-selected': categoriesService.isCategoryEqual(subCategory, category)}"
-          [routerLink]="localizeRouter.translateRoute(categoriesService.generateCategoryRoute(subCategory))">
+          [routerLink]="[categoriesService.generateCategoryRoute(subCategory)]">
           {{subCategory.name}}
         </a>
         <is-category-navigation *ngIf="categoriesService.isCategoryEqual(subCategory, categoryPath[categoryNavigationLevel+1])" [category]="category" [categoryPath]="categoryPath" [categoryNavigationLevel]="categoryNavigationLevel+1"></is-category-navigation>

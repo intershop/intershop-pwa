@@ -1,11 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { instance, mock } from 'ts-mockito';
-import { verify } from 'ts-mockito/lib/ts-mockito';
-import { SharedModule } from '../../../modules/shared.module';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { WishListModel } from '../../../services/wishlists/wishlists.model';
 import { WishListService } from '../../../services/wishlists/wishlists.service';
 import { WishListComponent } from './wishlist-status.component';
@@ -16,23 +13,20 @@ describe('Wish List Component', () => {
   let component: WishListComponent;
   let element: HTMLElement;
   let wishListServiceMock: BehaviorSubject<WishListModel>;
-  let localizeRouterServiceMock: LocalizeRouterService;
+  let location: Location;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     wishListServiceMock = new BehaviorSubject({ itemsCount: 1 } as WishListModel);
-    localizeRouterServiceMock = mock(LocalizeRouterService);
 
     TestBed.configureTestingModule({
       imports: [
-        SharedModule,
         RouterTestingModule.withRoutes([
-          { path: 'wishlist', redirectTo: 'fakePath' }
+          { path: 'wishlist', component: WishListComponent }
         ]),
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: WishListService, useValue: wishListServiceMock },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+        { provide: WishListService, useValue: wishListServiceMock }
       ],
       declarations: [WishListComponent]
     }).compileComponents();
@@ -40,11 +34,14 @@ describe('Wish List Component', () => {
     fixture = TestBed.createComponent(WishListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    location = TestBed.get(Location);
+
     fixture.detectChanges();
-  });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
   });
 
   it('should have itemCount of 1 when mock data supplies 1', () => {
@@ -65,11 +62,12 @@ describe('Wish List Component', () => {
     expect(itemCountElement).toBeFalsy();
   });
 
-  it('should go to URL "wishlist" when clicked', () => {
+  it('should go to URL "wishlist" when clicked', async(() => {
+    expect(location.path()).toBe('');
     element.querySelector('a').click();
 
     fixture.whenStable().then(() => {
-      verify(localizeRouterServiceMock.navigateToRoute('/wishlist')).once();
+      expect(location.path()).toBe('/wishlist');
     });
-  });
+  }));
 });

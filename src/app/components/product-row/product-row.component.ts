@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { CartStatusService } from '../../services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../services/product-compare/product-compare.service';
 import { Product } from '../../services/products/products.model';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 
 @Component({
@@ -28,7 +28,8 @@ export class ProductRowComponent implements OnInit {
     private wishListService: WishListService,
     private productCompareService: ProductCompareService,
     private cartStatusService: CartStatusService,
-    private localize: LocalizeRouterService) {
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -158,7 +159,7 @@ export class ProductRowComponent implements OnInit {
    */
   addToWishList(): void {
     if (!this.accountLoginService.isAuthorized()) {
-      this.localize.navigateToRoute('/login');
+      this.router.navigate(['/login']);
     } else {
       this.wishListService.update();
     }

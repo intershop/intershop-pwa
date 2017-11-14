@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-login-status',
@@ -13,8 +13,8 @@ export class LoginStatusComponent {
   userDetail: UserDetail = null;
 
   constructor(
-    private accountLoginService: AccountLoginService,
-    public localizeRouter: LocalizeRouterService
+    private router: Router,
+    private accountLoginService: AccountLoginService
   ) {
     accountLoginService.subscribe(userDetail => this.userDetail = userDetail);
   }
@@ -29,6 +29,6 @@ export class LoginStatusComponent {
    */
   logout() {
     this.accountLoginService.logout();
-    this.localizeRouter.navigateToRoute('/home');
+    this.router.navigate(['/home']);
   }
 }

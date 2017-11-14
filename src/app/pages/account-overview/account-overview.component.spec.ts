@@ -1,8 +1,9 @@
+import { Location } from '@angular/common';
 import { async } from '@angular/core/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { anything, instance, mock, verify } from 'ts-mockito';
+import { RouterTestingModule } from '@angular/router/testing';
+import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountOverviewComponent } from './account-overview.component';
 
 describe('Account Overview Component', () => {
@@ -10,17 +11,20 @@ describe('Account Overview Component', () => {
   let component: AccountOverviewComponent;
   let element: HTMLElement;
   let accountLoginService: AccountLoginService;
-  let localizeRouterServiceMock: LocalizeRouterService;
+  let location: Location;
 
   beforeEach(async(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
     const accountLoginServiceMock = mock(AccountLoginService);
 
     TestBed.configureTestingModule({
       declarations: [AccountOverviewComponent],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
+      ],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'home', component: AccountOverviewComponent }
+        ])
       ]
     }).compileComponents();
   }));
@@ -30,16 +34,19 @@ describe('Account Overview Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     accountLoginService = TestBed.get(AccountLoginService);
+    location = TestBed.get(Location);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to homepage when user logs out', () => {
+  it('should navigate to homepage when user logs out', async(() => {
+    expect(location.path()).toBe('');
     component.logout();
-    // check if it was called
-    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
-    expect(accountLoginService.isAuthorized()).toBeFalsy();
-  });
+    fixture.whenStable().then(() => {
+      expect(location.path()).toBe('/home');
+      expect(accountLoginService.isAuthorized()).toBeFalsy();
+    });
+  }));
 });

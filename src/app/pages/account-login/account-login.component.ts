@@ -5,7 +5,6 @@ import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { UserDetail } from '../../services/account-login/account-login.model';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 @Component({
   templateUrl: './account-login.component.html'
 })
@@ -22,8 +21,7 @@ export class AccountLoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private accountLoginService: AccountLoginService,
     private globalConfiguration: GlobalConfiguration,
-    public localizeRouterService: LocalizeRouterService,
-    private route: Router) {
+    private router: Router) {
 
     accountLoginService.subscribe(() => {
       this.isLoggedIn = this.accountLoginService.isAuthorized();
@@ -43,7 +41,7 @@ export class AccountLoginComponent implements OnInit {
         password: ['', Validators.required]
       });
     });
-    if (this.route.url.indexOf('register') > -1) {
+    if (this.router.url.indexOf('register') > -1) {
       this.isSimpleRegistration = true;
     }
   }
@@ -63,7 +61,7 @@ export class AccountLoginComponent implements OnInit {
         this.errorUser = userData;
         return;
       }
-      this.localizeRouterService.navigateToRoute('/home');
+      this.router.navigate(['/home']);
     });
   }
 }

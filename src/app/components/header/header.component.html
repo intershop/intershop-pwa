@@ -1,7 +1,7 @@
 <div class="top-header">
   <nav class="container">
     <div class="row">
-      <a rel="home" [routerLink]="localize.translateRoute('/home')" class="visible-xs mobile-logo"><img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41"></a>
+      <a rel="home" [routerLink]="['/home']" class="visible-xs mobile-logo"><img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41"></a>
       <div class="visible-xs pull-right">
         <button class="navbar-toggle" type="button" (click)="navbarCollapsed = !navbarCollapsed">
           <span class="sr-only">{{'common.button.navbarCollapsed.text' | translate}}</span>
@@ -44,7 +44,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-3 logo-wrapper hidden-xs">
-        <a rel="home" [routerLink]="localize.translateRoute('/home')"><img src="assets/img/logo.png" alt="Logo"></a>
+        <a rel="home" [routerLink]="['/home']"><img src="assets/img/logo.png" alt="Logo"></a>
       </div>
       <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
       <div class="col-sm-4 search-container header-search-container">

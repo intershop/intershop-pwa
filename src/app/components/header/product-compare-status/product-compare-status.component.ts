@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-product-compare-status',
@@ -8,7 +7,7 @@ import { LocalizeRouterService } from '../../../services/routes-parser-locale-cu
 })
 export class ProductCompareStatusComponent {
 
-  constructor(public localize: LocalizeRouterService, private productCompareService: ProductCompareService) {
+  constructor(private productCompareService: ProductCompareService) {
   }
 
   get productCompareCount(): number {

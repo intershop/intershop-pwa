@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 
 @Component({
   selector: 'is-simple-registration',
@@ -16,15 +16,8 @@ export class SimpleRegistrationComponent implements OnInit {
   errorUser: string;
   isDirty: boolean;
 
-  /**
-   * Constructor
-   * @param {FormBuilder} formBuilder
-   * @param {LocalizeRouterService} localize
-   * @param {GlobalConfiguration} globalConfiguration
-   * @param {SimpleRegistrationService} simpleRegistrationService
-   */
   constructor(private formBuilder: FormBuilder,
-    private localizeRouter: LocalizeRouterService,
+    private router: Router,
     private globalConfiguration: GlobalConfiguration,
     private accountLoginService: AccountLoginService) {
   }
@@ -58,7 +51,7 @@ export class SimpleRegistrationComponent implements OnInit {
     this.accountLoginService.createUser(userData).subscribe(response => {
       // TODO: Check should be in accordance with rest call response
       if (response) {
-        this.localizeRouter.navigateToRoute('/home');
+        this.router.navigate(['/home']);
       }
     });
   }
