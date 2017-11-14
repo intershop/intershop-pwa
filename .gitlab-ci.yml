@@ -2,6 +2,7 @@ stages:
   - build
   - publish
   - deploy
+  - check
 
 build:
   stage: build
@@ -54,3 +55,10 @@ deploy_demo:
   script:
   - docker service rm poc || true
   - docker service create --replicas 10 --publish mode=host,target=4000,published=4321 --name poc ${CI_REGISTRY}/${CI_PROJECT_PATH}-dev:${CI_BUILD_REF}
+
+check_format:
+  stage: check
+  tags:
+  - docker-executor
+  image: gradle
+  script: gradle checkFormatted
