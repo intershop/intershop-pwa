@@ -1,7 +1,8 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { instance, mock } from 'ts-mockito';
+import { environment } from '../../../../environments/environment';
 import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 import { LanguageSwitchComponent } from './language-switch.component';
 
@@ -14,27 +15,33 @@ describe('Language Switch Component', () => {
     TestBed.configureTestingModule({
       imports: [
         BsDropdownModule.forRoot(),
-        RouterTestingModule
+        RouterTestingModule,
+        TranslateModule.forRoot()
       ],
       providers: [
-        { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
+        CurrentLocaleService
       ],
       declarations: [LanguageSwitchComponent]
     }).compileComponents();
   });
+
+  function findLang(displayValue: string) {
+    return environment.locales.find(l => l.displayValue === displayValue);
+  }
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LanguageSwitchComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fixture.detectChanges();
+    TestBed.get(CurrentLocaleService).setLang(findLang('en'));
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should show the available language options when language dropdown is clicked', fakeAsync(() => {
+  it('should show the available language options when language dropdown is clicked', fakeAsync(() => {
     const anchorTag = fixture.debugElement.nativeElement.querySelectorAll('[dropdownToggle]')[0];
     anchorTag.click();
     tick();
@@ -47,10 +54,10 @@ describe('Language Switch Component', () => {
     expect(selectedLanguage[0].textContent.trim()).toEqual('en');
   }));
 
-  xit('should check language is changed when languageChange menthod is called', () => {
-    // component.languageChange({ 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' });
+  it('should check language is changed when languageChange menthod is called', () => {
+    component.languageChange(findLang('de'));
     fixture.detectChanges();
     const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
-    expect(selectedLanguage[0].textContent.trim()).toEqual('en');
+    expect(selectedLanguage[0].textContent.trim()).toEqual('de');
   });
 });

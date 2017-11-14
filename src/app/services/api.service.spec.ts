@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
+import { CurrentLocaleService } from './locale/current-locale.service';
 
 describe('ApiService', () => {
   let customErrorHandler: CustomErrorHandler;
@@ -17,6 +18,7 @@ describe('ApiService', () => {
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
+        { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
         ApiService
       ]
     });

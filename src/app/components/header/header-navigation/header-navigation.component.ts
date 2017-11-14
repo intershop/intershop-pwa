@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from '../../../services/categories/categories.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
+import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 
 @Component({
   selector: 'is-header-navigation',
@@ -13,14 +14,17 @@ export class HeaderNavigationComponent implements OnInit {
   categories: Category[];
 
   constructor(
-    public categoriesService: CategoriesService
+    public categoriesService: CategoriesService,
+    private currentLocaleService: CurrentLocaleService
   ) { }
 
   ngOnInit() {
-    this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
-      if (typeof (response) === 'object') {
-        this.categories = response;
-      }
+    this.currentLocaleService.subscribe(() => {
+      this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
+        if (typeof (response) === 'object') {
+          this.categories = response;
+        }
+      });
     });
   }
 }
