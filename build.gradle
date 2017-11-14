@@ -54,6 +54,7 @@ buildscript {
 plugins {
     /** https://github.com/srs/gradle-node-plugin */
     id "com.moowork.node" version "1.1.1"
+    id 'org.ajoberstar.grgit' version '1.7.2'
 }
 
 repositories {
@@ -215,4 +216,10 @@ task tsformat(type:NodeTask, description:'format files using typescript-formatte
             file("$projectDir/tsfmt.json").text = '{ "newLineCharacter": "\\n" }'
         }
     }
+}
+
+task checkFormatted(dependsOn:tsformat) {
+  doFirst {
+    assert grgit.status().isClean(), 'there are uncommited changes -- seems like you need to run "gradlew tsformat" before committing'
+  }
 }
