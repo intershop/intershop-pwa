@@ -2,8 +2,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/Rx';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { CategoriesService } from '../../../services/categories/categories.service';
+import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 import { HeaderNavigationComponent } from './header-navigation.component';
 
 describe('Header Navigation Component', () => {
@@ -11,10 +13,13 @@ describe('Header Navigation Component', () => {
   let component: HeaderNavigationComponent;
   let element: HTMLElement;
   let categoriesServiceMock: CategoriesService;
+  let currentLocaleServiceMock: BehaviorSubject<any>;
 
   beforeEach(async(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anything())).thenReturn(Observable.of([]));
+
+    currentLocaleServiceMock = new BehaviorSubject({ dummy: null });
 
     TestBed.configureTestingModule({
       declarations: [
@@ -22,6 +27,7 @@ describe('Header Navigation Component', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: CurrentLocaleService, useValue: currentLocaleServiceMock }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

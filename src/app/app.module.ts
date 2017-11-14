@@ -11,6 +11,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { MockInterceptor } from './interceptors/mock-interceptor';
 import { CoreModule } from './modules/core.module';
 import { PageModule } from './pages/pages.module';
+import { CurrentLocaleService } from './services/locale/current-locale.service';
 
 @NgModule({
   declarations: [
@@ -33,9 +34,11 @@ import { PageModule } from './pages/pages.module';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor( @Inject(PLATFORM_ID) platformId, translateService: TranslateService) {
+  constructor( @Inject(PLATFORM_ID) platformId, translateService: TranslateService, currentLocaleService: CurrentLocaleService) {
     environment.platformId = platformId;
-    translateService.setDefaultLang('en_US');
-    translateService.use('en_US');
+
+    const currentLang = environment.locales[0];
+    translateService.setDefaultLang(currentLang.lang);
+    currentLocaleService.setLang(currentLang);
   }
 }

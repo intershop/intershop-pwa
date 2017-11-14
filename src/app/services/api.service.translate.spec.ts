@@ -5,13 +5,14 @@ import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockit
 import { environment } from '../../environments/environment';
 import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
+import { CurrentLocaleService } from './locale/current-locale.service';
 
 describe('ApiService Translation', () => {
   let customErrorHandler: CustomErrorHandler;
   let httpClient: HttpClient;
   let apiService: ApiService;
 
-  const categoriesPath = `${environment.rest_url};loc=en;cur=USD/categories`;
+  const categoriesPath = `${environment.rest_url}/categories`;
   const webcamsPath = `${categoriesPath}/Cameras-Camcorders/577`;
   const webcamResponse = {
     'name': 'Webcams',
@@ -43,6 +44,7 @@ describe('ApiService Translation', () => {
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
+        { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
         ApiService
       ]
     });
