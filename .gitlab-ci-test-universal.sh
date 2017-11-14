@@ -20,17 +20,19 @@ function universalTest {
 
 testmatrix[1,0]="http://localhost:4000/"
 testmatrix[1,1]="router-outlet><is-home-page>"
-testmatrix[2,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders/584"
+testmatrix[2,0]="http://localhost:4000/category/Cameras-Camcorders/584"
 testmatrix[2,1]="router-outlet><is-category-page>"
-testmatrix[3,0]="http://localhost:4000/en_US/USD/login"
+testmatrix[3,0]="http://localhost:4000/login"
 testmatrix[3,1]="Forgot your password?"
-testmatrix[4,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
-testmatrix[4,1]="<h1>Cameras</h1>"
-testmatrix[5,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders"
-testmatrix[5,1]="<h3>Webcams Mock</h3>"
-testmatrix[6,0]="http://localhost:4000/en_US/USD/category/Cameras-Camcorders/584"
-testmatrix[6,1]="add-to-compare"
-lasttest=6
+testmatrix[4,0]="http://localhost:4000/register"
+testmatrix[4,1]="Forgot your password?"
+testmatrix[5,0]="http://localhost:4000/category/Cameras-Camcorders"
+testmatrix[5,1]="<h1>Cameras</h1>"
+testmatrix[6,0]="http://localhost:4000/category/Cameras-Camcorders"
+testmatrix[6,1]="<h3>Webcams Mock</h3>"
+testmatrix[7,0]="http://localhost:4000/category/Cameras-Camcorders/584"
+testmatrix[7,1]="add-to-compare"
+lasttest=7
 
 
 testno=1

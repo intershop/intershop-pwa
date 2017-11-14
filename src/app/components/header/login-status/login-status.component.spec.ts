@@ -1,12 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
 import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../configurations/global.configuration';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
@@ -15,7 +15,7 @@ describe('Login Status Component', () => {
   let element: HTMLElement;
   let accountLoginServiceMock: AccountLoginService;
   let globalConfigurationMock: GlobalConfiguration;
-  let localizeRouterServiceMock: LocalizeRouterService;
+  let routerMock: Router;
   const userData = {
     'firstName': 'Patricia',
     'lastName': 'Miller'
@@ -25,10 +25,11 @@ describe('Login Status Component', () => {
     accountLoginServiceMock = mock(AccountLoginService);
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
     when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: UserDetail) => void) => callback(userData as UserDetail));
-    localizeRouterServiceMock = mock(LocalizeRouterService);
 
     globalConfigurationMock = mock(GlobalConfiguration);
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(false));
+
+    routerMock = mock(Router);
 
     TestBed.configureTestingModule({
       imports: [
@@ -40,7 +41,7 @@ describe('Login Status Component', () => {
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+        { provide: Router, useFactory: () => instance(routerMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -52,12 +53,10 @@ describe('Login Status Component', () => {
     element = fixture.nativeElement;
   });
 
-  it('should be created', fakeAsync(() => {
-    fixture.detectChanges();
-    tick();
+  it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-  }));
+  });
 
   it('should set isLogged to true and set userDetail when user is authorized', fakeAsync(() => {
     fixture.detectChanges();
@@ -68,10 +67,8 @@ describe('Login Status Component', () => {
 
   it('should navigate to "home" and unset userDetails when logout is called', () => {
     component.logout();
-    // check if it was called
-    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
-    // capture last arguments and verify.
-    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/home']);
+    verify(routerMock.navigate(anything())).once();
+    expect(capture(routerMock.navigate).last()).toEqual([['/home']]);
   });
 
   it('should render full name on template when user is logged in', () => {

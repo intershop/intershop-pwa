@@ -14,6 +14,5 @@ export const environment = {
     { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },
     { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
   ],
-  prefix: 'ROUTES',
-  pattern: '{LANG}/{CURRENCY}'
+  prefix: 'ROUTES'
 };

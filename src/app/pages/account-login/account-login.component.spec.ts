@@ -6,11 +6,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Rx';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { SharedModule } from '../../modules/shared.module';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
-import { LocalizeRouterService } from '../../services/routes-parser-locale-currency/localize-router.service';
 import { AccountLoginComponent } from './account-login.component';
 
 describe('AccountLogin Component', () => {
@@ -18,14 +17,8 @@ describe('AccountLogin Component', () => {
   let component: AccountLoginComponent;
   let element: HTMLElement;
   let debugEl: DebugElement;
-  let localizeRouterServiceMock: LocalizeRouterService;
 
   beforeEach(async(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
-    when(localizeRouterServiceMock.translateRoute(anyString())).thenCall((arg1: string) => {
-      return arg1;
-    });
-
     const accountLoginServiceMock = mock(AccountLoginService);
     when(accountLoginServiceMock.singinUser(anything())).thenCall((userDetails) => {
       if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
@@ -47,13 +40,14 @@ describe('AccountLogin Component', () => {
       ],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) }
+        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) }
       ],
       imports: [
         SharedModule,
         TranslateModule.forRoot(),
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: 'home', component: AccountLoginComponent }
+        ]),
         CustomFormsModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -92,16 +86,13 @@ describe('AccountLogin Component', () => {
     expect(component.errorUser).toEqual('Incorrect Credentials');
   });
 
-  it('should navigate to homepage when user enters valid credentials', () => {
+  it('should navigate to homepage when user enters valid credentials', async(() => {
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('!InterShop0');
     component.onSignin(userDetails);
-    // check if it was called
-    verify(localizeRouterServiceMock.navigateToRoute(anything())).once();
-    // capture last arguments and verify.
-    expect(capture(localizeRouterServiceMock.navigateToRoute).last()).toEqual(['/home']);
-  });
+
+  }));
 
   it('should assign value to Email field to test Email validator', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');

@@ -1,26 +1,22 @@
 import { Location } from '@angular/common';
-import { inject, TestBed } from '@angular/core/testing';
+import { async, inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
-import { LocalizeRouterService } from '../../../services/routes-parser-locale-currency/localize-router.service';
 import { ProductCompareStatusComponent } from './product-compare-status.component';
 
 describe('Product Compare Status Component', () => {
   let fixture;
   let component: ProductCompareStatusComponent;
   let element: HTMLElement;
-  let localizeRouterServiceMock: LocalizeRouterService;
 
-  beforeEach(() => {
-    localizeRouterServiceMock = mock(LocalizeRouterService);
-
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'compare', redirectTo: 'fakePath' }
+          { path: 'compare', component: ProductCompareStatusComponent }
         ]),
         TranslateModule.forRoot()
       ],
@@ -28,7 +24,6 @@ describe('Product Compare Status Component', () => {
         ProductCompareStatusComponent
       ],
       providers: [
-        { provide: LocalizeRouterService, useFactory: () => instance(localizeRouterServiceMock) },
         { provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }
       ],
 
@@ -39,16 +34,16 @@ describe('Product Compare Status Component', () => {
     element = fixture.nativeElement;
     fixture.detectChanges();
 
-  });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to compare page when compare icon is clicked', inject([Router, Location], (router: Router, location: Location) => {
+  it('should navigate to compare page when compare icon is clicked', async(inject([Router, Location], (router: Router, location: Location) => {
     element.querySelector('a').click();
     fixture.whenStable().then(() => {
       expect(location.path()).toContain('compare');
     });
-  }));
+  })));
 });

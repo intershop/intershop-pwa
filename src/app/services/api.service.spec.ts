@@ -4,16 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
-import { LocalizeRouterService } from './routes-parser-locale-currency/localize-router.service';
+import { CurrentLocaleService } from './locale/current-locale.service';
 
 describe('ApiService', () => {
   let customErrorHandler: CustomErrorHandler;
   let httpClient: HttpClient;
-  const mockLoalizeRouterService: any = mock(LocalizeRouterService);
-  const loalizeRouterServiceMock = instance(mockLoalizeRouterService);
-  loalizeRouterServiceMock.parser = {
-    currentLocale: { lang: 'en', currency: 'USD' }
-  };
 
   beforeEach(() => {
     customErrorHandler = mock(CustomErrorHandler);
@@ -23,7 +18,7 @@ describe('ApiService', () => {
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
-        { provide: LocalizeRouterService, useValue: loalizeRouterServiceMock },
+        { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
         ApiService
       ]
     });
