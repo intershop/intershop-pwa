@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from './api.service';
@@ -8,49 +8,51 @@ import { CurrentLocaleService } from './locale/current-locale.service';
 
 describe('ApiService', () => {
   let customErrorHandler: CustomErrorHandler;
-  let httpClient: HttpClient;
+  let httpClientMock: HttpClient;
+  let apiService: ApiService;
 
   beforeEach(() => {
     customErrorHandler = mock(CustomErrorHandler);
-    httpClient = mock(HttpClient);
+    httpClientMock = mock(HttpClient);
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: HttpClient, useFactory: () => instance(httpClient) },
+        { provide: HttpClient, useFactory: () => instance(httpClientMock) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
         { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
         ApiService
       ]
     });
 
-    when(httpClient.get(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
-    when(httpClient.put(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
-    when(httpClient.post(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
-    when(httpClient.delete(anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    apiService = TestBed.get(ApiService);
   });
 
-  it('should call the httpClient.get method when apiService.get method is called.', inject([ApiService], (apiService: ApiService) => {
-    verify(httpClient.get(anything())).never();
-    apiService.get('', null);
-    verify(httpClient.get(anything())).once();
-  }));
+  it('should call the httpClient.get method when apiService.get method is called.', () => {
+    when(httpClientMock.get(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    verify(httpClientMock.get(anything(), anything())).never();
+    apiService.get('');
+    verify(httpClientMock.get(anything(), anything())).once();
+  });
 
-  it('should call the httpClient.put method when apiService.put method is called.', inject([ApiService], (apiService: ApiService) => {
-    verify(httpClient.put(anything(), anything())).never();
-    apiService.put('', null);
-    verify(httpClient.put(anything(), anything())).once();
-  }));
+  it('should call the httpClient.put method when apiService.put method is called.', () => {
+    when(httpClientMock.put(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    verify(httpClientMock.put(anything(), anything())).never();
+    apiService.put('');
+    verify(httpClientMock.put(anything(), anything())).once();
+  });
 
 
-  it('should call the httpClient.post method when apiService.post method is called.', inject([ApiService], (apiService: ApiService) => {
-    verify(httpClient.post(anything(), anything())).never();
-    apiService.post('', null);
-    verify(httpClient.post(anything(), anything())).once();
-  }));
+  it('should call the httpClient.post method when apiService.post method is called.', () => {
+    when(httpClientMock.post(anything(), anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    verify(httpClientMock.post(anything(), anything())).never();
+    apiService.post('');
+    verify(httpClientMock.post(anything(), anything())).once();
+  });
 
-  it('should call the httpClient.delete method when apiService.delete method is called.', inject([ApiService], (apiService: ApiService) => {
-    verify(httpClient.delete(anything())).never();
+  it('should call the httpClient.delete method when apiService.delete method is called.', () => {
+    when(httpClientMock.delete(anything())).thenReturn(Observable.of(new ArrayBuffer(3)));
+    verify(httpClientMock.delete(anything())).never();
     apiService.delete('');
-    verify(httpClient.delete(anything())).once();
-  }));
+    verify(httpClientMock.delete(anything())).once();
+  });
 });
