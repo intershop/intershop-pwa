@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
+import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
@@ -40,6 +40,7 @@ export function translateLoaderFactory() {
   imports: [
     AppModule,
     ServerModule,
+    ServerTransferStateModule,
     ModuleMapLoaderModule,
     TranslateModule.forRoot({
       loader: {
