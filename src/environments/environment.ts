@@ -11,8 +11,8 @@ export const environment = {
   base_url: 'http://localhost',
 
   locales: [
-    { 'lang': 'en_US', 'currency': 'USD', value: 'English', displayValue: 'en' },
-    { 'lang': 'de_DE', 'currency': 'EUR', value: 'German', displayValue: 'de' }
-  ],
-  prefix: 'ROUTES'
+    { 'lang': 'en_US', 'currency': 'USD', value: 'en', displayName: 'English' },
+    { 'lang': 'de_DE', 'currency': 'EUR', value: 'de', displayName: 'German' },
+    { 'lang': 'fr_FR', 'currency': 'EUR', value: 'fr', displayName: 'French' }
+  ]
 };
