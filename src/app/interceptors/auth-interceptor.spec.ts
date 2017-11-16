@@ -1,7 +1,7 @@
 import { HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { instance, mock, when } from 'ts-mockito';
 import { JwtService } from '../services/jwt.service';
 import { AuthInterceptor } from './auth-interceptor';

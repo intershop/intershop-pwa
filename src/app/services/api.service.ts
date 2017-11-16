@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import { environment } from '../../environments/environment';
 import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
@@ -97,7 +99,7 @@ export class ApiService {
       if (!elements.length || !_.find(elements, ['type', 'Link'])) {
         return Observable.of(elements);
       }
-      return Observable.forkJoin(this.getLinkUri(elements)).map(results => {
+      return forkJoin(this.getLinkUri(elements)).map(results => {
         elements = _.map(elements, (item, key) => {
           return results[key];
         });

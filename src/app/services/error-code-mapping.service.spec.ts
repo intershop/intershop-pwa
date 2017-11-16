@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { inject } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { ErrorCodeMappingService } from './error-code-mapping.service';
 

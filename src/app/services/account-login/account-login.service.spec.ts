@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../api.service';
 import { JwtService } from '../jwt.service';
@@ -42,7 +43,7 @@ describe('AccountLogin Service', () => {
   it('should return error message when wrong credentials are entered', () => {
     const errorMessage = '401 and Unauthorized';
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
-    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.throw(new Error(errorMessage)));
+    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(ErrorObservable.create(new Error(errorMessage)));
     accountLoginService.singinUser(userDetails).subscribe((data) => {
       expect(data).toBe(null);
     }, (error) => {
