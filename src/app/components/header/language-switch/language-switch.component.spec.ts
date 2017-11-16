@@ -25,8 +25,8 @@ describe('Language Switch Component', () => {
     }).compileComponents();
   });
 
-  function findLang(displayValue: string) {
-    return environment.locales.find(l => l.displayValue === displayValue);
+  function findLang(value: string) {
+    return environment.locales.find(l => l.value === value);
   }
 
   beforeEach(() => {
