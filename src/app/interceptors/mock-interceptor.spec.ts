@@ -1,4 +1,4 @@
-import { HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
 import { HttpEventType } from '@angular/common/http';
 import * as using from 'jasmine-data-provider';
 import { Observable } from 'rxjs/Observable';
@@ -94,7 +94,7 @@ describe('Mock Interceptor', () => {
     beforeEach(() => {
       mockInterceptor = new MockInterceptor();
       request = new HttpRequest('GET', `${environment.rest_url}/some`);
-      const handlerMock = mock(HttpHandler);
+      const handlerMock = mock(HttpXhrBackend);
       when(handlerMock.handle(anything())).thenReturn(Observable.of(new HttpResponse<any>()));
       handler = instance(handlerMock);
     });

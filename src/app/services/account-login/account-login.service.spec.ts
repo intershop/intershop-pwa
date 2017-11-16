@@ -40,10 +40,14 @@ describe('AccountLogin Service', () => {
   });
 
   it('should return error message when wrong credentials are entered', () => {
+    const errorMessage = '401 and Unauthorized';
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
-    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.of('401 and Unauthorized'));
+    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.throw(new Error(errorMessage)));
     accountLoginService.singinUser(userDetails).subscribe((data) => {
-      expect(data).toBe('401 and Unauthorized');
+      expect(data).toBe(null);
+    }, (error) => {
+      expect(error).toBeTruthy();
+      expect(error.message).toBe(errorMessage);
     });
   });
 

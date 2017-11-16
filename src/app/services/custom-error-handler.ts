@@ -5,14 +5,6 @@ import { Observable } from 'rxjs/Rx';
 export class CustomErrorHandler extends ErrorHandler {
 
   /**
-   * Constructor
-   */
-  constructor() {
-    super(true);
-  }
-
-
-  /**
    * handle error
    * @param  {any} error
    */

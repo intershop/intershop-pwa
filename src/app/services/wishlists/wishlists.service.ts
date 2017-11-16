@@ -11,19 +11,19 @@ export class WishListService extends GlobalStateAwareService<WishListModel> {
 
   constructor(private apiService: ApiService, private accountLoginService: AccountLoginService) {
     super('wishListStatus', true, false);
-    accountLoginService.subscribe(this.update);
+    accountLoginService.subscribe(() => this.updateState(accountLoginService));
   }
 
-  update = () => {
-    if (this.accountLoginService.isAuthorized()) {
+  update() {
+    this.updateState(this.accountLoginService);
+  }
+
+  private updateState(service: AccountLoginService) {
+    if (service.isAuthorized()) {
       this.retrieveWishListFromServer();
     } else {
       this.next(null);
     }
-  }
-
-  subscribe(callback: (model: WishListModel) => void) {
-    super.subscribe(callback);
   }
 
   private retrieveWishListFromServer() {
