@@ -1,5 +1,5 @@
 <div class="language-switch" dropdown placement="bottom right">
-  <a dropdownToggle (click)="false" class="language-switch-link" href='{{router.url}}#languageSwitch'>
+  <a dropdownToggle (click)="false" class="language-switch-link">
     <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
     <span class="language-switch-current-selection hidden-xs">{{lang?.displayValue}}<span class="switch_arrow"></span></span>
   </a>
@@ -7,7 +7,7 @@
     <div class="language-switch-menu-container">
       <ul>
         <li *ngFor="let locale of localizationArray">
-          <a *ngIf="locale.lang !== lang?.lang" (click)="languageChange(locale)" href=''>
+          <a *ngIf="locale.lang !== lang?.lang" (click)="languageChange(locale)" [href]="router.url+'#'+locale.displayValue">
             {{locale.value}}
           </a>
         </li>
