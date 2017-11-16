@@ -1,5 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/do';
 import { Observable } from 'rxjs/Observable';
 import { JwtService } from '../services/jwt.service';
 

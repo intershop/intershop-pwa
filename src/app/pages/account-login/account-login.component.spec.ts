@@ -5,7 +5,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../configurations/global.configuration';
 import { SharedModule } from '../../modules/shared.module';
