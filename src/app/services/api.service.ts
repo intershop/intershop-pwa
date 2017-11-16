@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { environment } from '../../environments/environment';
 import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
+import { REST_ENDPOINT } from './state-transfer/factories';
 
 @Injectable()
 export class ApiService {
@@ -17,7 +17,9 @@ export class ApiService {
    * Constructor
    * @param  {Http} privatehttp
    */
-  constructor(private httpClient: HttpClient,
+  constructor(
+    @Inject(REST_ENDPOINT) private restEndpoint: string,
+    private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
     private currentLocaleService: CurrentLocaleService
   ) {
@@ -44,7 +46,7 @@ export class ApiService {
     if (!!this.currentLocaleService.current) {
       localeAndCurrency = `;loc=${this.currentLocaleService.current.lang};cur=${this.currentLocaleService.current.currency}`;
     }
-    const url = `${environment.rest_url}${localeAndCurrency}/${path}`;
+    const url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
 
     return this.httpClient.get(url, { params: params, headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
@@ -60,7 +62,7 @@ export class ApiService {
    */
   put(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.put(
-      `${environment.rest_url}/${path}`,
+      `${this.restEndpoint}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -73,7 +75,7 @@ export class ApiService {
    */
   post(path: string, body: Object = {}): Observable<any> {
     return this.httpClient.post(
-      `${environment.rest_url}/${path}`,
+      `${this.restEndpoint}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
   }
@@ -86,7 +88,7 @@ export class ApiService {
   delete(path): Observable<any> {
 
     return this.httpClient.delete(
-      `${environment.rest_url}/${path}`
+      `${this.restEndpoint}/${path}`
     ).catch(this.formatErrors);
 
   }

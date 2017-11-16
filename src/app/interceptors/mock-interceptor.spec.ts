@@ -3,25 +3,26 @@ import { HttpEventType } from '@angular/common/http';
 import * as using from 'jasmine-data-provider';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { environment } from '../../environments/environment';
 import { MockInterceptor } from './mock-interceptor';
 
 describe('Mock Interceptor', () => {
+
+  const BASE_URL = 'http://example.org';
 
   describe('REST Path Extraction', () => {
 
     let mockInterceptor: MockInterceptor;
 
     beforeEach(() => {
-      mockInterceptor = new MockInterceptor();
+      mockInterceptor = new MockInterceptor(BASE_URL);
     });
 
     it('should extract the correct path when rest URL is given', () => {
-      expect(mockInterceptor.getRestPath(environment.rest_url + '/categories/Cameras')).toBe('categories/Cameras');
+      expect(mockInterceptor.getRestPath(BASE_URL + '/categories/Cameras')).toBe('categories/Cameras');
     });
 
     it('should extract the correct path when rest URL is given with currency and locale', () => {
-      expect(mockInterceptor.getRestPath(environment.rest_url + ';loc=en_US;cur=USD/categories/Cameras')).toBe('categories/Cameras');
+      expect(mockInterceptor.getRestPath(BASE_URL + ';loc=en_US;cur=USD/categories/Cameras')).toBe('categories/Cameras');
     });
   });
 
@@ -31,13 +32,13 @@ describe('Mock Interceptor', () => {
     const request: HttpRequest<any> = new HttpRequest('GET', '');
 
     beforeEach(() => {
-      mockInterceptor = new MockInterceptor();
+      mockInterceptor = new MockInterceptor(BASE_URL);
     });
 
     function dataProvider() {
       return [
-        { url: environment.rest_url + '/categories', willBeMocked: true, method: 'GET' },
-        { url: environment.rest_url + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
+        { url: BASE_URL + '/categories', willBeMocked: true, method: 'GET' },
+        { url: BASE_URL + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
         { url: './assets/picture.png', willBeMocked: false, method: 'GET' }
       ];
     }
@@ -79,7 +80,7 @@ describe('Mock Interceptor', () => {
 
     using(dataProvider, (dataSlice) => {
       it(`should${dataSlice.expect ? '' : ' not'} when \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
-        const mockInterceptor = new MockInterceptor();
+        const mockInterceptor = new MockInterceptor(BASE_URL);
         expect(mockInterceptor.matchPath(dataSlice.item, dataSlice.in)).toBe(dataSlice.expect);
       });
     });
@@ -92,8 +93,8 @@ describe('Mock Interceptor', () => {
     let handler: HttpHandler;
 
     beforeEach(() => {
-      mockInterceptor = new MockInterceptor();
-      request = new HttpRequest('GET', `${environment.rest_url}/some`);
+      mockInterceptor = new MockInterceptor(BASE_URL);
+      request = new HttpRequest('GET', `${BASE_URL}/some`);
       const handlerMock = mock(HttpXhrBackend);
       when(handlerMock.handle(anything())).thenReturn(Observable.of(new HttpResponse<any>()));
       handler = instance(handlerMock);

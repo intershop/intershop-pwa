@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { DisableIconDirective } from '../../directives/disable-icon.directive';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { CartStatusService } from '../../services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../services/product-compare/product-compare.service';
 import { Product } from '../../services/products/products.model';
+import { ICM_BASE_URL } from '../../services/state-transfer/factories';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 
 
@@ -22,14 +22,15 @@ export class ProductTileComponent implements OnInit {
   oldPrice: any;
   shownSavings: number;
   @ViewChild(DisableIconDirective) disableIconDirective: DisableIconDirective = null;
-  base_url = environment.base_url;
 
   constructor(
     private accountLoginService: AccountLoginService,
     private wishListService: WishListService,
     private productCompareService: ProductCompareService,
     private cartStatusService: CartStatusService,
-    private router: Router) {
+    private router: Router,
+    @Inject(ICM_BASE_URL) public icmBaseURL
+  ) {
   }
 
   ngOnInit() {
