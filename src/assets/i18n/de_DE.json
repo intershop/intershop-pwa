@@ -66,13 +66,5 @@
   "account.login_status.myaccount.link": "Mein Konto",
   "account.logout.link": "Abmelden",
   "account.login.link": "Anmelden",
-  "account.register.link": "Registrieren",
-
-  "ROUTES.home": "home",
-  "ROUTES.category": "category",
-  "ROUTES.compare": "compare",
-  "ROUTES.login": "login",
-  "ROUTES.register": "register",
-  "ROUTES.wishlist": "wishlist",
-  "ROUTES.error": "error"
+  "account.register.link": "Registrieren"
 }
