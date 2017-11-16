@@ -62,13 +62,5 @@
   "account.cancel.link":"Cancel",
   "account.login.username.label":"Username",
   "account.login.email.label":"Email",
-  "account.login.password.label":"Password",
-
-  "ROUTES.home": "home",
-  "ROUTES.category": "category",
-  "ROUTES.compare": "compare",
-  "ROUTES.login": "login",
-  "ROUTES.register": "register",
-  "ROUTES.wishlist": "wishlist",
-  "ROUTES.error": "error"
+  "account.login.password.label":"Password"
 }
