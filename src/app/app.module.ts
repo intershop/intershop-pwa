@@ -12,6 +12,8 @@ import { MockInterceptor } from './interceptors/mock-interceptor';
 import { CoreModule } from './modules/core.module';
 import { PageModule } from './pages/pages.module';
 import { CurrentLocaleService } from './services/locale/current-locale.service';
+import { getICMBaseURL, getRestEndPoint, ICM_BASE_URL, REST_ENDPOINT } from './services/state-transfer/factories';
+import { StatePropertiesService } from './services/state-transfer/state-properties.service';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { CurrentLocaleService } from './services/locale/current-locale.service';
     CoreModule
   ],
   providers: [
+    { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },
+    { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
   ],

@@ -11,6 +11,7 @@ import { DisableIconDirective } from '../../directives/disable-icon.directive';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { CartStatusService } from '../../services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../services/product-compare/product-compare.service';
+import { ICM_BASE_URL } from '../../services/state-transfer/factories';
 import { WishListService } from '../../services/wishlists/wishlists.service';
 import { ProductTileComponent } from './product-tile.component';
 
@@ -189,7 +190,8 @@ describe('Product Tile Component', () => {
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: WishListService, useFactory: () => instance(wishListServiceMock) },
         { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) },
-        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) }
+        { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) },
+        { provide: ICM_BASE_URL, useValue: 'http://www.example.org' }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

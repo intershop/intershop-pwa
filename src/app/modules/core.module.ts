@@ -20,6 +20,7 @@ import { ErrorCodeMappingService } from '../services/error-code-mapping.service'
 import { JwtService } from '../services/jwt.service';
 import { CurrentLocaleService } from '../services/locale/current-locale.service';
 import { ProductCompareService } from '../services/product-compare/product-compare.service';
+import { StatePropertiesService } from '../services/state-transfer/state-properties.service';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { ProductCompareService } from '../services/product-compare/product-compa
     CurrentLocaleService,
     CartStatusService,
     GlobalConfiguration,
-    ErrorCodeMappingService
+    ErrorCodeMappingService,
+    StatePropertiesService
   ],
   exports: [
     FooterModule,
