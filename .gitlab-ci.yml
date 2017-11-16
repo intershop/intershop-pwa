@@ -51,9 +51,7 @@ deploy_demo:
   - shell-executor
   - docker
   - chuck-norris-swarm-manager
-  script:
-  - docker service rm poc || true
-  - docker service create --replicas 10 --publish mode=host,target=4000,published=4321 --name poc ${CI_REGISTRY}/${CI_PROJECT_PATH}-dev:${CI_BUILD_REF}
+  script: bash .gitlab-ci-deploy.sh
 
 check_format:
   stage: build
