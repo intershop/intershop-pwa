@@ -12,5 +12,5 @@ FROM node:8-alpine
 COPY --from=buildstep /workspace/dist /
 EXPOSE 4000
 USER nobody
-HEALTHCHECK CMD wget -qO- http://localhost:4000/
+#HEALTHCHECK CMD wget -qO- http://localhost:4000/
 ENTRYPOINT ["node", "server"]
