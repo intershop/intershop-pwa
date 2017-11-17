@@ -2,7 +2,6 @@ stages:
   - build
   - publish
   - deploy
-  - check
 
 build:
   stage: build
@@ -57,8 +56,17 @@ deploy_demo:
   - docker service create --replicas 10 --publish mode=host,target=4000,published=4321 --name poc ${CI_REGISTRY}/${CI_PROJECT_PATH}-dev:${CI_BUILD_REF}
 
 check_format:
-  stage: check
+  stage: build
   tags:
   - docker-executor
   image: gradle
-  script: gradle checkFormatted
+  script: gradle --no-daemon --max-workers 1 --continue checkFormatted
+
+check_prod_build:
+  stage: build
+  tags:
+  - docker-executor
+  image: node:8-alpine
+  script:
+  - npm install
+  - npm run build:dynamic:prod

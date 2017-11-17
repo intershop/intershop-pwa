@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/Rx';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
