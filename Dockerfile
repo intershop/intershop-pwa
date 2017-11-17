@@ -8,7 +8,7 @@ ENV PATH=$PATH:/workspace/node_modules/.bin
 ARG env=dev
 RUN ./gradlew --no-daemon --max-workers 1 npmRun -Pnpmargs="run build:dynamic:${env}"
 
-FROM node:6-alpine
+FROM node:8-alpine
 COPY --from=buildstep /workspace/dist /
 EXPOSE 4000
 USER nobody
