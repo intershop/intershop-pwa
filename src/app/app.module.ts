@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { MockInterceptor } from './interceptors/mock-interceptor';
+import { RestStateAggregatorInterceptor } from './interceptors/rest-state-aggregator-interceptor';
 import { CoreModule } from './modules/core.module';
 import { PageModule } from './pages/pages.module';
 import { CurrentLocaleService } from './services/locale/current-locale.service';
@@ -35,6 +36,7 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
