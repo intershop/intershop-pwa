@@ -1,12 +1,11 @@
-FROM openjdk:8-jdk as buildstep
-COPY gradle /workspace/gradle/
-COPY package.json package-lock.json build.gradle settings.gradle gradlew /workspace/
+FROM node:8-alpine as buildstep
+COPY package.json package-lock.json /workspace/
 WORKDIR /workspace
-RUN ./gradlew --no-daemon --max-workers 1 npmInstall
+RUN npm install
 COPY . /workspace
 ENV PATH=$PATH:/workspace/node_modules/.bin
 ARG env=dev
-RUN ./gradlew --no-daemon --max-workers 1 npmRun -Pnpmargs="run build:dynamic:${env}"
+RUN npm run build:dynamic:${env}
 
 FROM node:8-alpine
 COPY --from=buildstep /workspace/dist /workspace/healthcheck.js /
