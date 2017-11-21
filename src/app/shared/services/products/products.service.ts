@@ -6,7 +6,7 @@ import { ApiService } from '../../../core/services/api.service';
 export class ProductListService {
 
   /**
-   * @param  {ApiService} privateapiService
+   * @param  {ApiService} private apiService
    */
   constructor(
     private apiService: ApiService
