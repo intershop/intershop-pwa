@@ -1,13 +1,14 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
+import { REST_ENDPOINT } from '../services/state-transfer/factories';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
-  constructor() { }
+  constructor( @Inject(REST_ENDPOINT) private restEndpoint: string) { }
 
   /**
    * Intercepts out going request and changes url to mock url if needed.
@@ -60,7 +61,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   private urlHasToBeMocked(url: string): boolean {
-    if (url.startsWith(environment.rest_url)) {
+    if (url.startsWith(this.restEndpoint)) {
       const path = this.getRestPath(url);
       return this.pathHasToBeMocked(path);
     }
@@ -75,7 +76,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   public getRestPath(url: string): string {
-    const withoutApplication = url.substring(environment.rest_url.length);
+    const withoutApplication = url.substring(this.restEndpoint.length);
     return withoutApplication.substring(withoutApplication.indexOf('/') + 1);
   }
 

@@ -5,6 +5,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockit
 import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
+import { REST_ENDPOINT } from './state-transfer/factories';
 
 describe('ApiService', () => {
   let customErrorHandler: CustomErrorHandler;
@@ -20,6 +21,7 @@ describe('ApiService', () => {
         { provide: HttpClient, useFactory: () => instance(httpClientMock) },
         { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
         { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
+        { provide: REST_ENDPOINT, useValue: 'undefined' },
         ApiService
       ]
     });

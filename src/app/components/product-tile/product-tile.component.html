@@ -7,7 +7,7 @@
     </div>
     <a href="">
       <!--ProductImage.isml start-->
-      <img *ngIf="mockData && mockData.images" [src]="base_url + mockData.images[2].effectiveUrl"
+      <img *ngIf="mockData && mockData.images" [src]="icmBaseURL + mockData.images[2].effectiveUrl"
         data-test="true" class="product-image" [attr.data-type]="mockData.images[2].typeID ? mockData.images[2].typeID : null"
         [attr.alt]="mockData.name ? mockData.name : null" [attr.view-value]="mockData.images[2].viewID ? mockData.images[2].viewID : null"
         [attr.title]="mockData.title ? mockData.title : null" [attr.height]="mockData.images[2].imageActualHeight ? mockData.images[2].imageActualHeight : null"

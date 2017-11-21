@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { instance, mock } from 'ts-mockito';
 import { CategoriesService } from '../../services/categories/categories.service';
+import { ICM_BASE_URL } from '../../services/state-transfer/factories';
 import { CategoryListComponent } from './category-list.component';
 
 describe('Category List Component', () => {
@@ -18,7 +19,8 @@ describe('Category List Component', () => {
       ],
       declarations: [CategoryListComponent],
       providers: [
-        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) }
+        { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: ICM_BASE_URL, useValue: 'http://www.example.org' }
       ]
     })
       .compileComponents();
