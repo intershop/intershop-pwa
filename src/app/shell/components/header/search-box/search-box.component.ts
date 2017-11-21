@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { SearchBoxModel, SuggestedElement } from '../../../../models/search-box.model';
-import { SearchBoxService } from '../../../../shared/services/suggest/search-box.service';
+import { SuggestService } from '../../../../shared/services/suggest/suggest.service';
 
 @Component({
   selector: 'is-search-box',
@@ -15,9 +15,8 @@ export class SearchBoxComponent implements OnInit {
   searchTerm$ = new Subject<string>();
   isHide = false;
   searchButtonText: string;
-
   constructor(
-    private searchBoxService: SearchBoxService
+    private suggestService: SuggestService
   ) { }
 
   hidePopup() {
@@ -27,7 +26,7 @@ export class SearchBoxComponent implements OnInit {
   }
 
   doSearch() {
-    this.searchBoxService.search(this.searchTerm$)
+    this.suggestService.search(this.searchTerm$)
       .subscribe((searchResults: SearchBoxModel) => {
 
         if (searchResults && searchResults.elements && searchResults.elements.length > 0) {

@@ -5,7 +5,7 @@ import { AccountLoginService } from '../../../core/services/account-login/accoun
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
 import { RemoveHostDirective } from '../../../shared/directives/remove-host.directive';
 import { CategoriesService } from '../../../shared/services/categories/categories.service';
-import { SearchBoxService } from '../../../shared/services/suggest/search-box.service';
+import { SuggestService } from '../../../shared/services/suggest/suggest.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { HeaderNavigationComponent } from './header-navigation/header-navigation.component';
 import { SubCategoryNavigationComponent } from './header-navigation/subcategory-navigation/subcategory-navigation.component';
@@ -39,7 +39,7 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
     SubCategoryNavigationComponent,
     RemoveHostDirective
   ],
-  providers: [AccountLoginService, CategoriesService, SearchBoxService,
+  providers: [AccountLoginService, CategoriesService, SuggestService,
     WishListService
   ]
 })

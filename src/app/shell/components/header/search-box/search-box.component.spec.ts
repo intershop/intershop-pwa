@@ -3,15 +3,15 @@ import { async, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { SearchBoxService } from '../../../../shared/services/suggest/search-box.service';
+import { SuggestService } from '../../../../shared/services/suggest/suggest.service';
 import { SearchBoxComponent } from './search-box.component';
 
 describe('Search Box Component', () => {
   let fixture: ComponentFixture<SearchBoxComponent>;
   let component: SearchBoxComponent;
   let element: HTMLElement;
-  const mockSearchBoxService: SearchBoxService = mock(SearchBoxService);
-  when(mockSearchBoxService.search(anything())).thenCall(() => {
+  const mockSuggestService: SuggestService = mock(SuggestService);
+  when(mockSuggestService.search(anything())).thenCall(() => {
     const result = {
       'elements': [
         'Camera', 'Camcoder'
@@ -26,7 +26,7 @@ describe('Search Box Component', () => {
         SearchBoxComponent
       ],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: SearchBoxService, useFactory: () => instance(mockSearchBoxService) }]
+      providers: [{ provide: SuggestService, useFactory: () => instance(mockSuggestService) }]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(SearchBoxComponent);
       component = fixture.componentInstance;
@@ -48,7 +48,7 @@ describe('Search Box Component', () => {
   }));
 
   it('should set result array to blank when no suggestions are found', fakeAsync(() => {
-    when(mockSearchBoxService.search(anything())).thenReturn(Observable.of([]));
+    when(mockSuggestService.search(anything())).thenReturn(Observable.of([]));
     component.searchTerm$.next('Test');
 
     component.doSearch();
