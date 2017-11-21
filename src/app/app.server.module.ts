@@ -11,7 +11,7 @@ import { Observer } from 'rxjs/Observer';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { ICM_APPLICATION_SK, ICM_BASE_URL_SK, StatePropertiesService } from './core/services/state-transfer/state-properties.service';
-import { UniversalMockInterceptor } from './mocking/interceptors/universal-mock-interceptor';
+import { UniversalMockInterceptor } from './mocking/interceptors/universal-mock.interceptor';
 
 export class TranslateUniversalLoader implements TranslateLoader {
   public getTranslation(lang: string): Observable<any> {

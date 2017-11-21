@@ -1,7 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
-import { JsonpModule } from '@angular/http';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieModule } from 'ngx-cookie';
@@ -10,11 +9,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator-interceptor';
+import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
 import { CurrentLocaleService } from './core/services/locale/current-locale.service';
 import { getICMBaseURL, getRestEndPoint, ICM_BASE_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
-import { MockInterceptor } from './mocking/interceptors/mock-interceptor';
+import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
 import { PageModule } from './shell/pages.module';
 
 @NgModule({
@@ -27,7 +26,6 @@ import { PageModule } from './shell/pages.module';
     }),
     HttpClientModule,
     BrowserTransferStateModule,
-    JsonpModule,
     AppRoutingModule,
     PageModule,
     CoreModule,
