@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
+import { ICM_BASE_URL } from '../../services/state-transfer/factories';
 
 @Component({
   selector: 'is-category-list',
@@ -11,10 +11,10 @@ import { CategoriesService } from '../../services/categories/categories.service'
 export class CategoryListComponent implements OnInit {
 
   @Input() categories: Category[];
-  base_url = environment.base_url;
 
   constructor(
-    public categoriesService: CategoriesService
+    public categoriesService: CategoriesService,
+    @Inject(ICM_BASE_URL) public icmBaseURL
   ) { }
 
   ngOnInit() {

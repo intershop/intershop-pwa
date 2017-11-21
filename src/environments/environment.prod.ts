@@ -6,8 +6,8 @@ export const environment = {
     'categories/Specials',
     'createUser'
   ],
-  rest_url: 'http://192.168.99.100:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-',
-  base_url: 'http://192.168.99.100:8081',
+  icmBaseURL: 'http://192.168.99.100:8081',
+  icmApplication: 'inSPIRED-inTRONICS-Site',
 
   locales: [
     { 'lang': 'en_US', 'currency': 'USD', value: 'en', displayName: 'English' },

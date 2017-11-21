@@ -1,5 +1,7 @@
 #!/bin/bash
 
+unset ICM_BASE_URL
+
 ./gradlew npmRun -Pnpmargs='run start:dynamic' &
 trap 'jobs -p | xargs -r kill' EXIT
 
@@ -32,7 +34,11 @@ testmatrix[6,0]="http://localhost:4000/category/Cameras-Camcorders"
 testmatrix[6,1]="<h3>Webcams Mock</h3>"
 testmatrix[7,0]="http://localhost:4000/category/Cameras-Camcorders/584"
 testmatrix[7,1]="add-to-compare"
-lasttest=7
+testmatrix[8,0]="http://localhost:4000/category/Cameras-Camcorders/584"
+testmatrix[8,1]="proof-of-concept-state"
+testmatrix[9,0]="http://localhost:4000/category/Cameras-Camcorders/584"
+testmatrix[9,1]="&q;icmBaseURL&q;:&q;http://localhost:4000"
+lasttest=9
 
 
 testno=1
