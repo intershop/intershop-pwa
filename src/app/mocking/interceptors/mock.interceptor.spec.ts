@@ -3,7 +3,7 @@ import { HttpEventType } from '@angular/common/http';
 import * as using from 'jasmine-data-provider';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { MockInterceptor } from './mock-interceptor';
+import { MockInterceptor } from './mock.interceptor';
 
 describe('Mock Interceptor', () => {
 
