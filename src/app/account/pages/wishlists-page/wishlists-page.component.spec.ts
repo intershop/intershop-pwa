@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { instance, mock } from 'ts-mockito';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { WishListService } from '../../../core/services/wishlists/wishlists.service';
 import { WishListPageComponent } from './wishlists-page.component';
 
 describe('Wish list Page Component', () => {

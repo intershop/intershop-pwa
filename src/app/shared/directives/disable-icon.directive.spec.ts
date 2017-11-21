@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock, when } from 'ts-mockito';
-import { ProductCompareService } from '../services/product-compare/product-compare.service';
+import { ProductCompareService } from '../../core/services/product-compare/product-compare.service';
 import { DisableIconDirective } from './disable-icon.directive';
 
 describe('DisableIconDirective', () => {

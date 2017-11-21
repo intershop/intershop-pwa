@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
-import { ProductCompareService } from '../../services/product-compare/product-compare.service';
+import { ProductCompareService } from '../../../core/services/product-compare/product-compare.service';
 import { ComparePageComponent } from './compare-page.component';
 
 

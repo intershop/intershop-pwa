@@ -4,8 +4,8 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { ApiService } from '../api.service';
-import { Category } from './categories.model';
+import { ApiService } from '../../../core/services/api.service';
+import { Category } from '../../../models/categories.model';
 
 @Injectable()
 export class CategoriesService implements Resolve<Category> {
@@ -46,7 +46,7 @@ export class CategoriesService implements Resolve<Category> {
   }
 
 
-  // TODO: this method should become obsolete as soon as the categrory REST call will return the category path too
+  // TODO: this method should become obsolete as soon as the category REST call will return the category path too
   /**
    * Helper function to get the category path for a given category with the help of the current route.
    * @param category        The category the category path should be gotten for.

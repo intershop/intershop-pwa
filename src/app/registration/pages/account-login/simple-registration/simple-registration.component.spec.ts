@@ -8,9 +8,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { GlobalConfiguration } from '../../../configurations/global.configuration';
-import { UserDetail } from '../../../services/account-login/account-login.model';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
+import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+import { UserDetail } from '../../../../models/account-login.model';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 
 describe('Simple Registration Component', () => {

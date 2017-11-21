@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { Observable } from 'rxjs/Observable';
-import { ApiService } from '../api.service';
+import { ApiService } from '../../../core/services/api.service';
+
 
 @Injectable()
 export class SearchBoxService {

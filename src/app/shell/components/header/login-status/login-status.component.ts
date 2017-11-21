@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserDetail } from '../../../services/account-login/account-login.model';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+import { UserDetail } from '../../../../models/account-login.model';
 
 @Component({
   selector: 'is-login-status',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
+import { UserDetail } from '../../../models/account-login.model';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
-import { UserDetail } from './account-login.model';
 
 @Injectable()
 export class UserDetailService extends GlobalStateAwareService<UserDetail> {

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
-import { GlobalConfiguration } from '../../configurations/global.configuration';
-import { UserDetail } from '../../services/account-login/account-login.model';
-import { AccountLoginService } from '../../services/account-login/account-login.service';
+import { GlobalConfiguration } from '../../../core/configurations/global.configuration';
+import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
+import { UserDetail } from '../../../models/account-login.model';
 @Component({
   templateUrl: './account-login.component.html'
 })

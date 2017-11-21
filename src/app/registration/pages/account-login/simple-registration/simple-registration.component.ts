@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
-import { GlobalConfiguration } from '../../../configurations/global.configuration';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
+import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+
 
 @Component({
   selector: 'is-simple-registration',

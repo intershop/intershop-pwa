@@ -2,7 +2,7 @@ import { HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { AuthInterceptor } from './auth-interceptor';
+import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor Service', () => {
   const responseData = `{"name":"test","age":"34"}`;

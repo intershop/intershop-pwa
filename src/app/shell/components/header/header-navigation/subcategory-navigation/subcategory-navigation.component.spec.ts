@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
-import { CategoriesService } from '../../../../services/categories/categories.service';
+import { CategoriesService } from '../../../../../shared/services/categories/categories.service';
 import { SubCategoryNavigationComponent } from './subcategory-navigation.component';
 
 describe('SubCategory Navigation Component', () => {

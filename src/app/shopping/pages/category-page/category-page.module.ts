@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../../modules/shared.module';
-import { ShoppingModule } from '../../modules/shopping.module';
-import { ProductListService } from '../../services/products/products.service';
+import { ProductListService } from '../../../shared/services/products/products.service';
+import { SharedModule } from '../../../shared/shared.module';
+import { ShoppingModule } from '../../shopping.module';
 import { CategoryPageComponent } from './category-page.component';
 import { CategoryPageRoute } from './category-page.routes';
 

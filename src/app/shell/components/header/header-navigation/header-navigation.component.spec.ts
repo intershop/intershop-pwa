@@ -4,8 +4,8 @@ import { async } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { CategoriesService } from '../../../services/categories/categories.service';
-import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
+import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
+import { CategoriesService } from '../../../../shared/services/categories/categories.service';
 import { HeaderNavigationComponent } from './header-navigation.component';
 
 describe('Header Navigation Component', () => {

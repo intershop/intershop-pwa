@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { WishListItem, WishListModel } from '../../services/wishlists/wishlists.model';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { WishListService } from '../../../core/services/wishlists/wishlists.service';
+import { WishListItem, WishListModel } from '../../../models/wishlists.model';
 
 @Component({
   templateUrl: './wishlists-page.component.html'

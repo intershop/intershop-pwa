@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { Category } from '../../services/categories/categories.model';
-import { CategoriesService } from '../../services/categories/categories.service';
+import { ActivatedRoute } from '@angular/router';
+import { Category } from '../../../models/categories.model';
+import { CategoriesService } from '../../../shared/services/categories/categories.service';
 
 @Component({
   selector: 'is-category-page',
@@ -21,9 +20,7 @@ export class CategoryPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private categoriesService: CategoriesService,
-    private translateService: TranslateService
   ) { }
 
   ngOnInit() {

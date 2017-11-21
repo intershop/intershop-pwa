@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { Product } from '../../services/products/products.model';
-import { ProductListService } from '../../services/products/products.service';
-
+import { Product } from '../../../../models/products.model';
+import { ProductListService } from '../../../../shared/services/products/products.service';
 
 @Component({
   selector: 'is-product-list',

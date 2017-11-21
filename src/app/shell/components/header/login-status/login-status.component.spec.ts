@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { GlobalConfiguration } from '../../../configurations/global.configuration';
-import { UserDetail } from '../../../services/account-login/account-login.model';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
+import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+import { UserDetail } from '../../../../models/account-login.model';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {

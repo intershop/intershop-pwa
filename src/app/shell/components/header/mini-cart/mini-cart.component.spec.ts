@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
-import { CartStatusService } from '../../../services/cart-status/cart-status.service';
+import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
 import { MiniCartComponent } from './mini-cart.component';
 
 describe('Mini Cart Component', () => {

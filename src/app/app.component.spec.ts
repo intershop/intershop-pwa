@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
-import { MockComponent } from './components/mock.component';
+import { MockComponent } from './mocking/components/mock.component';
 
 let translate: TranslateService;
 

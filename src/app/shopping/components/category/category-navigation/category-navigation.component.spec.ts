@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
-import { Category } from '../../services/categories/categories.model';
-import { CategoriesService } from '../../services/categories/categories.service';
+import { Category } from '../../../../models/categories.model';
+import { CategoriesService } from '../../../../shared/services/categories/categories.service';
 import { CategoryNavigationComponent } from './category-navigation.component';
 
 describe('Category Navigation Component', () => {
