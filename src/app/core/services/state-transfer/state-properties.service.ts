@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { StateKey } from '@angular/platform-browser/src/browser/transfer_state';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 export const ICM_BASE_URL_SK = makeStateKey<string>('icmBaseURL');
 export const ICM_APPLICATION_SK = makeStateKey<string>('icmApplication');

@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import * as crosstablib from 'crosstab';
 import { CookieService } from 'ngx-cookie';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 export abstract class GlobalStateAwareService<T> {
 

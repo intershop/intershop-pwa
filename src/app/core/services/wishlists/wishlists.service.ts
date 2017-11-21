@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { WishListModel } from '../../../models/wishlists.model';
 import { ApiService } from '../../services/api.service';
 import { AccountLoginService } from '../account-login/account-login.service';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
-import { WishListModel } from './wishlists.model';
 
 @Injectable()
 export class WishListService extends GlobalStateAwareService<WishListModel> {

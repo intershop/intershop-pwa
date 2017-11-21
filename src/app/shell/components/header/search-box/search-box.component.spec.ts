@@ -3,7 +3,7 @@ import { async, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { SearchBoxService } from '../../../services/suggest/search-box.service';
+import { SearchBoxService } from '../../../../shared/services/suggest/search-box.service';
 import { SearchBoxComponent } from './search-box.component';
 
 describe('Search Box Component', () => {

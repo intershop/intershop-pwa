@@ -2,8 +2,8 @@ import { Location } from '@angular/common';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent } from '../../components/mock.component';
-import { SharedModule } from '../../modules/shared.module';
+import { MockComponent } from '../../../mocking/components/mock.component';
+import { SharedModule } from '../../../shared/shared.module';
 import { RegistrationPageComponent } from './registration-page.component';
 
 describe('RegistrationPage Component', () => {

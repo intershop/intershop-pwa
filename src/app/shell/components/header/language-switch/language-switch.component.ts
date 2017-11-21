@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../../environments/environment';
-import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
+import { environment } from '../../../../../environments/environment';
+import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
 
 @Component({
   selector: 'is-language-switch',

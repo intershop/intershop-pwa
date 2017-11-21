@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RecaptchaModule } from 'ng-recaptcha';
-import { FormsModule } from '../../modules/forms.module';
-import { SharedModule } from '../../modules/shared.module';
+import { FormsModule } from '../../../shared/forms.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { AddressComponent } from './address/address.component';
 import { CaptchaComponent } from './captcha/captcha.component';
 import { EmailPasswordComponent } from './email-password/email-password.component';

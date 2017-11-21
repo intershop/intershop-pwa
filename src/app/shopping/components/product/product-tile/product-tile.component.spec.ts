@@ -6,13 +6,13 @@ import { ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { environment } from '../../../environments/environment';
-import { DisableIconDirective } from '../../directives/disable-icon.directive';
-import { AccountLoginService } from '../../services/account-login/account-login.service';
-import { CartStatusService } from '../../services/cart-status/cart-status.service';
-import { ProductCompareService } from '../../services/product-compare/product-compare.service';
-import { ICM_BASE_URL } from '../../services/state-transfer/factories';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { environment } from '../../../../../environments/environment';
+import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
+import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
+import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
+import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
+import { DisableIconDirective } from '../../../../shared/directives/disable-icon.directive';
 import { ProductTileComponent } from './product-tile.component';
 
 /*

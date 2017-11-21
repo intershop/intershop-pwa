@@ -8,14 +8,14 @@ import { CookieModule } from 'ngx-cookie';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
-import { AuthInterceptor } from './interceptors/auth-interceptor';
-import { MockInterceptor } from './interceptors/mock-interceptor';
-import { RestStateAggregatorInterceptor } from './interceptors/rest-state-aggregator-interceptor';
-import { CoreModule } from './modules/core.module';
-import { PageModule } from './pages/pages.module';
-import { CurrentLocaleService } from './services/locale/current-locale.service';
-import { getICMBaseURL, getRestEndPoint, ICM_BASE_URL, REST_ENDPOINT } from './services/state-transfer/factories';
-import { StatePropertiesService } from './services/state-transfer/state-properties.service';
+import { CoreModule } from './core/core.module';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator-interceptor';
+import { CurrentLocaleService } from './core/services/locale/current-locale.service';
+import { getICMBaseURL, getRestEndPoint, ICM_BASE_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
+import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
+import { MockInterceptor } from './mocking/interceptors/mock-interceptor';
+import { PageModule } from './shell/pages.module';
 
 @NgModule({
   declarations: [

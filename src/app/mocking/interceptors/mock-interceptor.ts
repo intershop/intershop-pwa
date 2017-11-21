@@ -1,8 +1,8 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../environments/environment';
-import { REST_ENDPOINT } from '../services/state-transfer/factories';
+import { environment } from '../../../environments/environment';
+import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 

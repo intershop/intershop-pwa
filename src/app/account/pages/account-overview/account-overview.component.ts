@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountLoginService } from '../../services/account-login/account-login.service';
+import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 
 @Component({
   templateUrl: './account-overview.component.html'

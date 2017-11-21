@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from '../../../modules/shared.module';
+import { SharedModule } from '../../../../shared/shared.module';
 import { EmailPasswordComponent } from './email-password.component';
 
 describe('EmailPassword Component', () => {

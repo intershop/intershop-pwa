@@ -1,8 +1,6 @@
-import { Location } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { HomePageModule } from './pages/home-page/home-page.module';
+import { HomePageModule } from './shopping/pages/home-page/home-page.module';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }

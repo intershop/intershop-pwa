@@ -2,8 +2,8 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { environment } from '../../../../environments/environment';
-import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
+import { environment } from '../../../../../environments/environment';
+import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
 import { LanguageSwitchComponent } from './language-switch.component';
 
 describe('Language Switch Component', () => {

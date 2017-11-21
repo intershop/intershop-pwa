@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Directive, ElementRef, OnInit } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 // see https://stackoverflow.com/questions/34280475/remove-the-host-html-element-selectors-created-by-angular-component
 

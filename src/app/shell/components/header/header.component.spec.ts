@@ -3,8 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { instance, mock } from 'ts-mockito';
-import { CartStatusService } from '../../services/cart-status/cart-status.service';
-import { MockComponent } from '../mock.component';
+import { CartStatusService } from '../../../core/services/cart-status/cart-status.service';
+import { MockComponent } from '../../../mocking/components/mock.component';
 import { HeaderComponent } from './header.component';
 
 describe('Header Component', () => {

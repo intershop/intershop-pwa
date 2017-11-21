@@ -1,12 +1,13 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DisableIconDirective } from '../../directives/disable-icon.directive';
-import { AccountLoginService } from '../../services/account-login/account-login.service';
-import { CartStatusService } from '../../services/cart-status/cart-status.service';
-import { ProductCompareService } from '../../services/product-compare/product-compare.service';
-import { Product } from '../../services/products/products.model';
-import { ICM_BASE_URL } from '../../services/state-transfer/factories';
-import { WishListService } from '../../services/wishlists/wishlists.service';
+import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
+import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
+import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
+import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
+import { Product } from '../../../../models/products.model';
+import { DisableIconDirective } from '../../../../shared/directives/disable-icon.directive';
+
 
 @Component({
   selector: 'is-product-row',

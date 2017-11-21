@@ -1,15 +1,15 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { GlobalConfiguration } from '../../configurations/global.configuration';
-import { SharedModule } from '../../modules/shared.module';
-import { AccountLoginService } from '../../services/account-login/account-login.service';
+import { GlobalConfiguration } from '../../../core/configurations/global.configuration';
+import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
+import { SharedModule } from '../../../shared/shared.module';
 import { AccountLoginComponent } from './account-login.component';
 
 describe('AccountLogin Component', () => {

@@ -3,8 +3,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import * as using from 'jasmine-data-provider';
 import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { ApiService } from '../api.service';
-import { Category } from './categories.model';
+import { ApiService } from '../../../core/services/api.service';
+import { Category } from '../../../models/categories.model';
 import { CategoriesService } from './categories.service';
 
 describe('Categories Service', () => {
