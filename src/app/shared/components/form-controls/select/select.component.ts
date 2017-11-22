@@ -20,7 +20,9 @@ export class SelectComponent implements OnInit {
                                                  'on' (label is always marked as required),
                                                  'off' (label is never marked as required) */
 
-  constructor(private translate: TranslateService) { }
+  constructor(
+    private translate: TranslateService
+  ) { }
 
   ngOnInit() {
     if (!this.form) {

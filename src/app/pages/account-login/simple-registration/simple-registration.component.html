@@ -1,23 +1,19 @@
 <div *ngIf="errorUser === 'LoginAlreadyInUse'" role="alert" class="alert alert-danger">
   {{errorMessage() | translate}}
 </div>
-<form isFormValidation [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form"
-  (ngSubmit)="createAccount()">
-  <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ''
-    }} {{('account.create_user.email_password.message' | translate)}}</p>
+<form isFormValidation [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form" (ngSubmit)="createAccount()">
+  <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ''}} {{('account.create_user.email_password.message' | translate)}}</p>
 
-  <ng-template [ngIf]="isUsername">
-    <is-input
-      [form]="simpleRegistrationForm"
-      [formName]="'simpleRegistrationForm'"
-      [controlName]="'userName'"
-      [label]="'account.create_user.login.label'"
-      [labelClass]="'col-sm-3'"
-      [inputClass]="'col-sm-6'"
-      [markRequiredLabel]="'off'"
-      [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></is-input>
-  </ng-template>
+  <is-input *ngIf="isUsername"
+    [form]="simpleRegistrationForm"
+    [formName]="'simpleRegistrationForm'"
+    [controlName]="'userName'"
+    [label]="'account.create_user.login.label'"
+    [labelClass]="'col-sm-3'"
+    [inputClass]="'col-sm-6'"
+    [markRequiredLabel]="'off'"
+    [errorMessages]="{'required':'account.login.username.error.required'}"
+  ></is-input>
 
   <is-input
     [form]="simpleRegistrationForm"
@@ -41,7 +37,8 @@
     [inputClass]="'col-sm-6'"
     [markRequiredLabel]="'off'"
     [errorMessages]="{'required':'account.update_password.new_password.error.required','pattern':'account.update_password.new_password.error.regexp','minlength':'account.update_password.new_password.error.length'}"
-  ><small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
+  >
+    <small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
   </is-input>
 
   <is-input

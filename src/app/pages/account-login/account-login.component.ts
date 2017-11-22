@@ -18,20 +18,21 @@ export class AccountLoginComponent implements OnInit {
   isDirty: boolean;
   isSimpleRegistration: boolean;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private accountLoginService: AccountLoginService,
     private globalConfiguration: GlobalConfiguration,
-    private router: Router) {
-
-    accountLoginService.subscribe(() => {
-      this.isLoggedIn = this.accountLoginService.isAuthorized();
-    });
-  }
+    private router: Router
+  ) { }
 
   /**
    * Creates Login Form
    */
   ngOnInit() {
+    this.accountLoginService.subscribe(() => {
+      this.isLoggedIn = this.accountLoginService.isAuthorized();
+    });
+
     this.globalConfiguration.getApplicationSettings().subscribe(data => {
       if (data) {
         this.userRegistrationLoginType = data.userRegistrationLoginType;
@@ -41,6 +42,7 @@ export class AccountLoginComponent implements OnInit {
         password: ['', Validators.required]
       });
     });
+
     if (this.router.url.indexOf('register') > -1) {
       this.isSimpleRegistration = true;
     }
