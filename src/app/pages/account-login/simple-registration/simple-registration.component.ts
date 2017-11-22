@@ -16,11 +16,12 @@ export class SimpleRegistrationComponent implements OnInit {
   errorUser: string;
   isDirty: boolean;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private router: Router,
     private globalConfiguration: GlobalConfiguration,
-    private accountLoginService: AccountLoginService) {
-  }
+    private accountLoginService: AccountLoginService
+  ) { }
 
   /**
      * Creates Login Form
