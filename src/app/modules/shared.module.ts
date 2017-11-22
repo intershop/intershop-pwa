@@ -3,9 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { FormControlErrorComponent } from '../components/global-form-validation/form-control-error.component';
 import { FormGroupValidationComponent } from '../components/global-form-validation/form-group-validation.component';
 import { FormValidationDirective } from '../directives/form-validation.directive';
+import { InputComponent } from '../shared/components/form-controls/input/input.component';
+import { SelectComponent } from '../shared/components/form-controls/select/select.component';
 
 @NgModule({
   exports: [
@@ -15,16 +18,21 @@ import { FormValidationDirective } from '../directives/form-validation.directive
     RouterModule,
     ReactiveFormsModule,
     FormGroupValidationComponent,
-    FormValidationDirective
+    FormValidationDirective,
+    InputComponent,
+    SelectComponent
   ],
   declarations: [
     FormGroupValidationComponent,
     FormControlErrorComponent,
-    FormValidationDirective
+    FormValidationDirective,
+    InputComponent,
+    SelectComponent
   ],
   entryComponents: [FormControlErrorComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   providers: []
 })
