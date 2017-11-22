@@ -1,0 +1,15 @@
+
+<is-form-group-validation [errorMessages]="{'required':'account.login.username.error.required'}"><!-- ToDo: -->
+  <div class="form-group has-feedback" [formGroup]="form">
+    <label for="{{formName}}_{{controlName}}" class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label><!-- ToDo: label -->
+    <div [ngClass]="inputClass">
+      <select class="form-control"
+          id="{{formName}}_{{controlName}}"
+          [formControlName]="controlName"
+          #dynamicError>
+        <option value="" *ngIf="showEmptyOption">Please select</option>
+        <option *ngFor="let option of options" [value]="option.value">{{option.label}}</option>
+      </select>
+    </div>
+  </div>
+</is-form-group-validation>

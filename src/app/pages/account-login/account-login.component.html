@@ -4,6 +4,7 @@
       <div *ngIf="!isLoggedIn">
         <h2>{{'account.login.returning_user.heading' | translate}}</h2>
         <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.addresses.message' | translate}}</p>
+        <!-- ToDo: server side error messages -->
         <div *ngIf="((errorUser && errorUser !== 'UserNotLoggedIn' && errorUser !== 'LoginAlreadyInUse'))" role="alert" class="alert alert-danger">
           {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (userRegistrationLoginType
           && userRegistrationLoginType === 'username') ? ('account.login.username_password.error.invalid' | translate) :
@@ -16,26 +17,41 @@
           <!-- Hidden Fields in ISML -->
           <p>{{'account.login.message' | translate}}</p>
 
-          <is-form-group-validation [errorMessages]="userRegistrationLoginType === 'email'? {'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}:{'required':'account.login.username.error.required' }">
-            <div class="form-group has-feedback">
-              <label for="ShopLoginForm_Login" class="col-sm-3 control-label">{{userRegistrationLoginType && userRegistrationLoginType === 'username' ?'Username' : 'Email'}}</label>
-              <div class="col-sm-6">
+          <ng-template [ngIf]="userRegistrationLoginType === 'email'" [ngIfElse]="userLoginWithUserName">
+            <is-input
+              [form]="loginForm"
+              [controlName]="'userName'"
+              [type]="'email'"
+              [label]="'Email'"
+              [labelClass]="'col-sm-3'"
+              [inputClass]="'col-sm-6'"
+              [markRequiredLabel]="'off'"
+              [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}"
+            ></is-input>
+          </ng-template>
+          <ng-template #userLoginWithUserName>
+            <is-input
+              [form]="loginForm"
+              [controlName]="'userName'"
+              [label]="'Username'"
+              [labelClass]="'col-sm-3'"
+              [inputClass]="'col-sm-6'"
+              [markRequiredLabel]="'off'"
+              [errorMessages]="{'required':'account.login.username.error.required'}"
+            ></is-input>
+          </ng-template>
 
-                <input class="form-control" #dynamicError formControlName="userName" name="ShopLoginForm_Login" type="{{userRegistrationLoginType === 'username' ? 'text' : 'email'}}"
-                  id="ShopLoginForm_Login">
-              </div>
-              <i class="form-control-feedback" data-bv-icon-for="ShopLoginForm_Login"></i>
-            </div>
-          </is-form-group-validation>
-          <is-form-group-validation [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}">
-            <div class="form-group has-feedback">
-              <label for="ShopLoginForm_Password" class="col-sm-3 control-label">Password</label>
-              <div class="col-sm-6">
-                <input #dynamicError formControlName="password" class="form-control" name="ShopLoginForm_Password" type="password" id="ShopLoginForm_Password">
-              </div>
+          <is-input
+            [form]="loginForm"
+            [controlName]="'password'"
+            [type]="'password'"
+            [label]="'Password'"
+            [labelClass]="'col-sm-3'"
+            [inputClass]="'col-sm-6'"
+            [markRequiredLabel]="'off'"
+            [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}"
+          ></is-input>
 
-            </div>
-          </is-form-group-validation>
           <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
               <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="loginForm.invalid && isDirty">{{'account.signin.button.label' | translate}}</button>
