@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CategoryResolver } from '../../../shared/resolvers/category.resolver';
 import { ProductListService } from '../../../shared/services/products/products.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { ShoppingModule } from '../../shopping.module';
@@ -15,9 +16,12 @@ import { CategoryPageRoute } from './category-page.routes';
     SharedModule
   ],
   providers: [
+    CategoryResolver,
     ProductListService
   ],
-  declarations: [CategoryPageComponent]
+  declarations: [
+    CategoryPageComponent
+  ]
 })
 
 export class CategoryPageModule {

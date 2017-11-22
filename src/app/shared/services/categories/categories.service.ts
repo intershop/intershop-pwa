@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
@@ -8,13 +8,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { Category } from '../../../models/categories.model';
 
 @Injectable()
-export class CategoriesService implements Resolve<Category> {
-
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Category> {
-    const categoryPath = route.url.map(x => x.path).join('/');
-    // TODO: redirect to /error when category not found
-    return this.getCategory(categoryPath);
-  }
+export class CategoriesService {
 
   constructor(
     private apiService: ApiService
