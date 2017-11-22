@@ -4,6 +4,7 @@ import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
 import { JsonpModule } from '@angular/http';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { CookieModule } from 'ngx-cookie';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
@@ -29,7 +30,8 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     JsonpModule,
     AppRoutingModule,
     PageModule,
-    CoreModule
+    CoreModule,
+    CookieModule.forRoot()
   ],
   providers: [
     { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },

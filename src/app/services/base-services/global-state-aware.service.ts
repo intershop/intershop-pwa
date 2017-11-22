@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import * as crosstablib from 'crosstab';
+import { CookieService } from 'ngx-cookie';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { environment } from '../../../environments/environment';
 
@@ -7,7 +8,8 @@ export abstract class GlobalStateAwareService<T> {
 
   private subject: BehaviorSubject<T>;
 
-  constructor(private name: string, private crosstab: boolean, private persistInSessionCookie: boolean, defaultValue: T = null) {
+  constructor(private name: string, private crosstab: boolean, private persistInSessionCookie: boolean,
+    defaultValue: T = null, private cookieService?: CookieService) {
     if (isPlatformBrowser(environment.platformId) && this.crosstab) {
       crosstablib.on(this.name, (message) => {
         // console.log(crosstab.id + ' received ' + message.data + ' from ' + message.origin);
@@ -18,8 +20,7 @@ export abstract class GlobalStateAwareService<T> {
     }
 
     if (isPlatformBrowser(environment.platformId) && persistInSessionCookie) {
-      // TODO: session cookie ISREST-90
-      const savedItem = window.localStorage.getItem(this.name);
+      const savedItem = this.cookieService.get(this.name);
       try {
         this.subject = new BehaviorSubject(JSON.parse(savedItem));
       } catch (err) {
@@ -44,8 +45,7 @@ export abstract class GlobalStateAwareService<T> {
     this.subject.next(data);
 
     if (isPlatformBrowser(environment.platformId) && this.persistInSessionCookie) {
-      // TODO: session cookie ISREST-90
-      window.localStorage.setItem(this.name, JSON.stringify(data));
+      this.cookieService.put(this.name, JSON.stringify(data));
     }
 
     if (isPlatformBrowser(environment.platformId) && this.crosstab) {
