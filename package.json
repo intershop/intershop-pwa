@@ -49,6 +49,7 @@
     "ng2-completer": "^1.6.3",
     "ng2-validation": "^4.2.0",
     "ngx-bootstrap": "^1.8.1",
+    "ngx-cookie": "^1.0.1",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.18"
   },

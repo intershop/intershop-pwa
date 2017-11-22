@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
+import { CookieService } from 'ngx-cookie';
 import { GlobalStateAwareService } from './global-state-aware.service';
 
 export abstract class SKUListService extends GlobalStateAwareService<string[]> {
 
-  constructor(name: string, persistInSession: boolean) {
-    super(name, true, persistInSession, []);
+  constructor(name: string, persistInSession: boolean, cookieService?: CookieService) {
+    super(name, true, persistInSession, [], cookieService);
   }
 
   containsSKU(sku: string): boolean {
