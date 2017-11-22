@@ -87,7 +87,7 @@ export class CategoriesService implements Resolve<Category> {
   generateCategoryRoute(category: Category, categoryPath: Category[]): string {
     let categoryIdPath = '';
     if (category.uri) {
-      categoryIdPath = category.uri.split('/categories')[1];
+      categoryIdPath = category.uri.split(/\/categories[^\/]*/)[1];
     } else if (categoryPath) {
       for (const pathCategory of categoryPath) {
         categoryIdPath = categoryIdPath + '/' + pathCategory.id;
