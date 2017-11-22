@@ -9,10 +9,11 @@ import { CategoryListComponent } from './components/category/category-list/categ
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
-
+import { ShoppingRoutingModule } from './shopping-routing.module';
 
 @NgModule({
   imports: [
+    ShoppingRoutingModule,
     CommonModule,
     RouterModule,
     SharedModule
