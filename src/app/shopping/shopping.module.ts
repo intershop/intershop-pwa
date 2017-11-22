@@ -1,25 +1,18 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { BreadcrumbComponent } from '../shared/components/breadcrumb/breadcrumb.component';
-import { DisableIconDirective } from '../shared/directives/disable-icon.directive';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
-import { ShoppingRoutingModule } from './shopping-routing.module';
+import { DisableIconDirective } from './directives/disable-icon.directive';
 
 @NgModule({
   imports: [
-    ShoppingRoutingModule,
-    CommonModule,
-    RouterModule,
-    SharedModule
+    SharedModule,
+    // ShoppingRoutingModule // TODO: remove this import since it leads to recursive routes with category page (see Augury)
   ],
   declarations: [
-    BreadcrumbComponent,
     CategoryListComponent,
     CategoryNavigationComponent,
     DisableIconDirective,
@@ -28,7 +21,6 @@ import { ShoppingRoutingModule } from './shopping-routing.module';
     ProductTileComponent
   ],
   exports: [
-    BreadcrumbComponent,
     CategoryListComponent,
     CategoryNavigationComponent,
     DisableIconDirective,
@@ -37,4 +29,5 @@ import { ShoppingRoutingModule } from './shopping-routing.module';
     ProductTileComponent
   ]
 })
+
 export class ShoppingModule { }

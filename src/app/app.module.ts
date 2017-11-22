@@ -5,6 +5,7 @@ import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-bro
 import { TranslateService } from '@ngx-translate/core';
 import { CookieModule } from 'ngx-cookie';
 import { environment } from '../environments/environment';
+import { AccountRoutingModule } from './account/account-routing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -14,7 +15,9 @@ import { CurrentLocaleService } from './core/services/locale/current-locale.serv
 import { getICMBaseURL, getRestEndPoint, ICM_BASE_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
+import { RegistrationRoutingModule } from './registration/registration-routing.module';
 import { ShellModule } from './shell/shell.module';
+import { ShoppingRoutingModule } from './shopping/shopping-routing.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { ShellModule } from './shell/shell.module';
     CookieModule.forRoot(),
     CoreModule,
     ShellModule,
+    ShoppingRoutingModule,
+    RegistrationRoutingModule,
+    AccountRoutingModule,
     // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
     AppRoutingModule
   ],

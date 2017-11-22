@@ -3,7 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { FormElementComponent } from './components/form-controls/form-element/form-element.component';
 import { InputComponent } from './components/form-controls/input/input.component';
 import { SelectComponent } from './components/form-controls/select/select.component';
@@ -13,31 +18,46 @@ import { FormValidationDirective } from './directives/form-validation.directive'
 
 @NgModule({
   imports: [
+    RouterModule,
+    TranslateModule,
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
-    PopoverModule
+    BsDropdownModule.forRoot(),
+    CarouselModule.forRoot(),
+    CollapseModule.forRoot(),
+    ModalModule.forRoot(),
+    PopoverModule.forRoot(),
+  ],
+  exports: [
+    RouterModule,
+    TranslateModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BsDropdownModule,
+    CarouselModule,
+    CollapseModule,
+    ModalModule,
+    PopoverModule,
+    FormGroupValidationComponent,
+    FormValidationDirective,
+    InputComponent,
+    SelectComponent,
+    BreadcrumbComponent
   ],
   declarations: [
     FormGroupValidationComponent,
     FormControlErrorComponent,
+    FormValidationDirective,
     FormElementComponent,
-    FormValidationDirective,
     InputComponent,
     SelectComponent,
+    BreadcrumbComponent
   ],
-  entryComponents: [FormControlErrorComponent],
-  providers: [],
-  exports: [
-    TranslateModule,
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    ReactiveFormsModule,
-    FormGroupValidationComponent,
-    FormValidationDirective,
-    InputComponent,
-    SelectComponent,
-    PopoverModule
-  ],
+  entryComponents: [
+    FormControlErrorComponent
+  ]
 })
+
 export class SharedModule { }

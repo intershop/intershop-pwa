@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
-import { AccountModule } from '../account/account.module';
-import { RegistrationModule } from '../registration/registration.module';
-import { ShoppingModule } from '../shopping/shopping.module';
+import { FooterModule } from './components/footer/footer.module';
+import { HeaderModule } from './components/header/header.module';
 import { ShellRoutingModule } from './shell-routing.module';
 
 @NgModule({
   imports: [
-    ShellRoutingModule,
-    ShoppingModule,
-    RegistrationModule,
-    AccountModule
+    HeaderModule,
+    FooterModule,
+    ShellRoutingModule
   ],
-  providers: []
+  exports: [
+    HeaderModule,
+    FooterModule
+  ]
 })
 
 export class ShellModule { }

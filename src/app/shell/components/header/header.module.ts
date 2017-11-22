@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
 import { RemoveHostDirective } from '../../../shared/directives/remove-host.directive';
@@ -19,9 +17,7 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
 
 @NgModule({
   imports: [
-    SharedModule,
-    CollapseModule,
-    BsDropdownModule
+    SharedModule
   ],
   exports: [
     HeaderComponent,
@@ -44,6 +40,4 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
   ]
 })
 
-export class HeaderModule {
-
-}
+export class HeaderModule { }
