@@ -6,45 +6,55 @@
   <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ''
     }} {{('account.create_user.email_password.message' | translate)}}</p>
 
-  <is-form-group-validation [errorMessages]="{'required':'account.login.username.error.required'}">
-    <div *ngIf="isUsername" class="form-group clearfix has-feedback">
-      <label for="simpleRegistrationForm_username" class="col-sm-3 control-label">{{'account.create_user.login.label' | translate}}</label>
-      <div class="col-sm-6">
-        <input formControlName="userName" id="simpleRegistrationForm_username" #dynamicError class="form-control" type="text">
-      </div>
-    </div>
-  </is-form-group-validation>
+  <ng-template [ngIf]="isUsername">
+    <is-input
+      [form]="simpleRegistrationForm"
+      [formName]="'simpleRegistrationForm'"
+      [controlName]="'userName'"
+      [label]="'account.create_user.login.label'"
+      [labelClass]="'col-sm-3'"
+      [inputClass]="'col-sm-6'"
+      [markRequiredLabel]="'off'"
+      [errorMessages]="{'required':'account.login.username.error.required'}"
+    ></is-input>
+  </ng-template>
 
-  <is-form-group-validation [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}">
-    <div class="form-group clearfix has-feedback">
-      <label for="simpleRegistrationForm_Login" class="col-sm-3 control-label">{{'account.register.email.label' | translate}}</label>
-      <div class="col-sm-6">
-        <input formControlName="email" id="simpleRegistrationForm_Login" #dynamicError class="form-control" type="email">
-      </div>
-      <i class="form-control-feedback" data-bv-icon-for="Username"></i>
-    </div>
-  </is-form-group-validation>
+  <is-input
+    [form]="simpleRegistrationForm"
+    [formName]="'simpleRegistrationForm'"
+    [controlName]="'email'"
+    [type]="'email'"
+    [label]="'account.register.email.label'"
+    [labelClass]="'col-sm-3'"
+    [inputClass]="'col-sm-6'"
+    [markRequiredLabel]="'off'"
+    [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}"
+  ></is-input>
 
-  <is-form-group-validation [errorMessages]="{'required':'account.update_password.new_password.error.required','pattern':'account.update_password.new_password.error.regexp','minlength':'account.update_password.new_password.error.length'}">
-    <div class="form-group clearfix has-feedback">
-      <label for="simpleRegistrationForm_Password" class="col-sm-3 control-label">{{'account.register.password.label' | translate}}</label>
-      <div class="col-sm-6">
-        <input formControlName="password" id="simpleRegistrationForm_Password" #dynamicError class="form-control" type="password">
-      </div>
-      <div class="col-sm-offset-3 col-sm-10">
-        <small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
-      </div>
-    </div>
-  </is-form-group-validation>
+  <is-input
+    [form]="simpleRegistrationForm"
+    [formName]="'simpleRegistrationForm'"
+    [controlName]="'password'"
+    [type]="'password'"
+    [label]="'account.register.password.label'"
+    [labelClass]="'col-sm-3'"
+    [inputClass]="'col-sm-6'"
+    [markRequiredLabel]="'off'"
+    [errorMessages]="{'required':'account.update_password.new_password.error.required','pattern':'account.update_password.new_password.error.regexp','minlength':'account.update_password.new_password.error.length'}"
+  ><small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
+  </is-input>
 
-  <is-form-group-validation [errorMessages]="{'required':'account.register.password_confirmation.error.default','equalTo':'account.update_password.confirm_password.error.stringcompare'}">
-    <div class="form-group clearfix has-feedback">
-      <label class="col-sm-3 control-label" for="simpleRegistrationForm_ConfirmPassword">{{'account.register.password_confirmation.label' | translate}}</label>
-      <div class="col-sm-6">
-        <input formControlName="confirmPassword" id="simpleRegistrationForm_ConfirmPassword" #dynamicError class="form-control" type="password" autocomplete="off">
-      </div>
-    </div>
-  </is-form-group-validation>
+  <is-input
+    [form]="simpleRegistrationForm"
+    [formName]="'simpleRegistrationForm'"
+    [controlName]="'confirmPassword'"
+    [type]="'password'"
+    [label]="'account.register.password_confirmation.label'"
+    [labelClass]="'col-sm-3'"
+    [inputClass]="'col-sm-6'"
+    [markRequiredLabel]="'off'"
+    [errorMessages]="{'required':'account.register.password_confirmation.error.default','equalTo':'account.update_password.confirm_password.error.stringcompare'}"
+  ></is-input>
 
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
