@@ -2,13 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
-import { FooterModule } from '../shell/components/footer/footer.module';
-import { HeaderModule } from '../shell/components/header/header.module';
 import { GlobalConfiguration } from './configurations/global.configuration';
 import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { UserDetailService } from './services/account-login/user-detail.service';
@@ -21,16 +14,8 @@ import { CurrentLocaleService } from './services/locale/current-locale.service';
 import { ProductCompareService } from './services/product-compare/product-compare.service';
 import { StatePropertiesService } from './services/state-transfer/state-properties.service';
 
-
 @NgModule({
   imports: [
-    FooterModule,
-    HeaderModule,
-    BsDropdownModule.forRoot(),
-    CarouselModule.forRoot(),
-    CollapseModule.forRoot(),
-    ModalModule.forRoot(),
-    PopoverModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -55,8 +40,6 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     StatePropertiesService
   ],
   exports: [
-    FooterModule,
-    HeaderModule,
     StyleWrapperDirective
   ]
 })

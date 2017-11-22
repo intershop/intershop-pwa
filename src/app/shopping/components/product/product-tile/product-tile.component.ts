@@ -6,7 +6,7 @@ import { ProductCompareService } from '../../../../core/services/product-compare
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
 import { Product } from '../../../../models/products.model';
-import { DisableIconDirective } from '../../../../shared/directives/disable-icon.directive';
+import { DisableIconDirective } from '../../../directives/disable-icon.directive';
 
 
 @Component({

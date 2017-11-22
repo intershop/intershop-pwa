@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CategoryResolver } from '../../../shared/resolvers/category.resolver';
@@ -11,9 +10,8 @@ import { CategoryPageRoute } from './category-page.routes';
 @NgModule({
   imports: [
     RouterModule.forChild(CategoryPageRoute),
-    CommonModule,
-    ShoppingModule,
-    SharedModule
+    SharedModule,
+    ShoppingModule
   ],
   providers: [
     CategoryResolver,
