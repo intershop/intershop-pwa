@@ -5,8 +5,8 @@ import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-bro
 import { TranslateService } from '@ngx-translate/core';
 import { CookieModule } from 'ngx-cookie';
 import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routing.module';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
@@ -14,7 +14,7 @@ import { CurrentLocaleService } from './core/services/locale/current-locale.serv
 import { getICMBaseURL, getRestEndPoint, ICM_BASE_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
-import { PageModule } from './shell/pages.module';
+import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   declarations: [
@@ -26,10 +26,11 @@ import { PageModule } from './shell/pages.module';
     }),
     HttpClientModule,
     BrowserTransferStateModule,
-    AppRoutingModule,
-    PageModule,
+    CookieModule.forRoot(),
     CoreModule,
-    CookieModule.forRoot()
+    ShellModule,
+    // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
+    AppRoutingModule
   ],
   providers: [
     { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },
@@ -38,8 +39,11 @@ import { PageModule } from './shell/pages.module';
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
+
 export class AppModule {
 
   constructor(
