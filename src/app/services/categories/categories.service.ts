@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ApiService } from '../api.service';
 import { Category } from './categories.model';
@@ -37,6 +38,9 @@ export class CategoriesService implements Resolve<Category> {
    * @returns           Category information.
    */
   getCategory(categoryId: string): Observable<Category> {
+    if (!categoryId) {
+      return ErrorObservable.create('getCategory() called without categoryId');
+    }
     return this.apiService.get('categories/' + categoryId, null, null, false);
   }
 
