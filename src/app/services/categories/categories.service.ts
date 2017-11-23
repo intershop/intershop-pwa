@@ -53,6 +53,10 @@ export class CategoriesService implements Resolve<Category> {
    * @returns               A Category array that represents the category path from root to the category.
    */
   getCategoryPath(category: Category, activatedRoute: ActivatedRouteSnapshot): Observable<Category[]> {
+    if (!category || !activatedRoute || !activatedRoute.url) {
+      return ErrorObservable.create('getCategoryPath cannot act with missing or empty category or route snapshot');
+    }
+
     const observableArray: Observable<Category>[] = [];
     let categoryId = '';
 
