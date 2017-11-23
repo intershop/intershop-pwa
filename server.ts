@@ -10,6 +10,8 @@ import { join } from 'path';
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
+const logging: boolean = !!process.env['LOGGING'];
+
 // Express server
 const app = express();
 
@@ -49,6 +51,9 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 
 // ALl regular routes use the Universal engine
 app.get('*', (req, res) => {
+  if (logging) {
+    console.log(`GET ${req.url}`);
+  }
   res.render('index', { req });
 });
 
