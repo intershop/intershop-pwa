@@ -163,4 +163,65 @@ describe('Categories Service', () => {
       });
     });
   });
+
+  describe('generateCategoryRoute', () => {
+
+    const TOP = { id: 'top' } as Category;
+    const SUB = { id: 'sub' } as Category;
+    const LEAF = { id: 'leaf' } as Category;
+
+    it('should extract correct path from category.uri when supplied', () => {
+      expect(categoriesService.generateCategoryRoute({ uri: 'inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577' } as Category))
+        .toBe('/category/Cameras-Camcorders/577');
+    });
+
+    it('should extract correct path from category.uri when supplied with spgid', () => {
+      expect(categoriesService.generateCategoryRoute({ uri: 'inSPIRED-inTRONICS-Site/-/categories;spgid=rtf54sth/Cameras-Camcorders/577' } as Category))
+        .toBe('/category/Cameras-Camcorders/577');
+    });
+
+    it('should generate empty result when category.uri is empty', () => {
+      expect(categoriesService.generateCategoryRoute({ uri: '' } as Category)).toBe('');
+    });
+
+    it('should generate empty result when category.uri is not provided', () => {
+      expect(categoriesService.generateCategoryRoute({ name: '' } as Category)).toBe('');
+    });
+
+    it('should generate empty result when category is not provided', () => {
+      expect(categoriesService.generateCategoryRoute(null)).toBe('');
+    });
+
+    it('should generate route from simple category path when provided', () => {
+      expect(categoriesService.generateCategoryRoute(null, [TOP]))
+        .toBe(`/category/${TOP.id}`);
+    });
+
+    it('should generate route from complex category path when provided', () => {
+      expect(categoriesService.generateCategoryRoute(null, [TOP, SUB, LEAF]))
+        .toBe(`/category/${TOP.id}/${SUB.id}/${LEAF.id}`);
+    });
+
+    it('should stop after provided category when using category path to generate the route', () => {
+      expect(categoriesService.generateCategoryRoute(SUB, [TOP, SUB, LEAF]))
+        .toBe(`/category/${TOP.id}/${SUB.id}`);
+    });
+
+    it('should ignore provided category when not part of provided category path', () => {
+      expect(categoriesService.generateCategoryRoute({ id: 'dummy' } as Category, [TOP, SUB, LEAF]))
+        .toBe(`/category/${TOP.id}/${SUB.id}/${LEAF.id}`);
+    });
+
+    it('should not generate route when category path is missing', () => {
+      expect(categoriesService.generateCategoryRoute(null, null)).toBe('');
+    });
+
+    it('should not generate route when category path is empty', () => {
+      expect(categoriesService.generateCategoryRoute(null, [])).toBe('');
+    });
+
+    it('should not generate route when category path has empty categories', () => {
+      expect(categoriesService.generateCategoryRoute(null, [{}, {}] as Category[])).toBe('');
+    });
+  });
 });

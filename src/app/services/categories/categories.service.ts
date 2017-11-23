@@ -92,18 +92,25 @@ export class CategoriesService implements Resolve<Category> {
    * @param categoryPath  The categroy path from root to the category as Category array.
    * @returns             The application /category route string for the given category.
    */
-  generateCategoryRoute(category: Category, categoryPath: Category[]): string {
+  generateCategoryRoute(category: Category, categoryPath?: Category[]): string {
     let categoryIdPath = '';
-    if (category.uri) {
+    if (!!category && !!category.uri) {
       categoryIdPath = category.uri.split(/\/categories[^\/]*/)[1];
-    } else if (categoryPath) {
+    } else if (!!categoryPath && categoryPath.length) {
       for (const pathCategory of categoryPath) {
-        categoryIdPath = categoryIdPath + '/' + pathCategory.id;
-        if (this.isCategoryEqual(pathCategory, category)) {
-          break;
+        if (!!pathCategory && !!pathCategory.id) {
+          categoryIdPath = categoryIdPath + '/' + pathCategory.id;
+          if (this.isCategoryEqual(pathCategory, category)) {
+            break;
+          }
         }
       }
     }
-    return '/category' + categoryIdPath;
+
+    if (categoryIdPath) {
+      return '/category' + categoryIdPath;
+    } else {
+      return '';
+    }
   }
 }
