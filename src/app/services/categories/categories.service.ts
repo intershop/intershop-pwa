@@ -82,7 +82,7 @@ export class CategoriesService implements Resolve<Category> {
    *                   - the id of the categories is the same
    */
   isCategoryEqual(category1: Category, category2: Category): boolean {
-    return category1 && category2 && category1.id === category2.id;
+    return !!category1 && !!category2 && category1.id === category2.id;
   }
 
   /**

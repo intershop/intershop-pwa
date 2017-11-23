@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
+import * as using from 'jasmine-data-provider';
 import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../api.service';
@@ -129,6 +130,37 @@ describe('Categories Service', () => {
         .subscribe(data => fail(), err => expect(err).toBeTruthy());
 
       verify(apiServiceMock.get(anything(), anything(), anything(), anything())).never();
+    });
+  });
+
+  describe('isCategoryEqual', () => {
+
+    function dataProvider() {
+      return [
+        { cat1: undefined, cat2: undefined, result: false },
+        { cat1: undefined, cat2: null, result: false },
+        { cat1: null, cat2: undefined, result: false },
+        { cat1: null, cat2: null, result: false },
+        { cat1: undefined, cat2: {}, result: false },
+        { cat1: null, cat2: {}, result: false },
+        { cat1: {}, cat2: undefined, result: false },
+        { cat1: {}, cat2: null, result: false },
+        { cat1: {}, cat2: {}, result: true },
+        { cat1: { id: '1' }, cat2: { id: '1' }, result: true },
+        { cat1: { id: '2' }, cat2: { id: '1' }, result: false },
+        { cat1: {}, cat2: { id: '1' }, result: false },
+        { cat1: { id: '1' }, cat2: {}, result: false },
+        { cat1: { d: 'dummy' }, cat2: { id: '1' }, result: false },
+        { cat1: { id: '1' }, cat2: { d: 'dummy' }, result: false },
+        { cat1: { id: '1' }, cat2: { id: '1', d: 'dummy' }, result: true },
+        { cat1: { id: '1', d: 'other' }, cat2: { id: '1', d: 'dummy' }, result: true },
+      ];
+    }
+
+    using(dataProvider, (slice) => {
+      it(`should return ${slice.result} when comparing '${JSON.stringify(slice.cat1)}' and '${JSON.stringify(slice.cat2)}'`, () => {
+        expect(categoriesService.isCategoryEqual(slice.cat1, slice.cat2)).toBe(slice.result);
+      });
     });
   });
 });
