@@ -2,7 +2,6 @@ import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../api.service';
-import { JwtService } from '../jwt.service';
 import { UserDetail } from './account-login.model';
 import { AccountLoginService } from './account-login.service';
 import { UserDetailService } from './user-detail.service';
@@ -14,13 +13,12 @@ describe('AccountLogin Service', () => {
   };
 
   let accountLoginService: AccountLoginService;
-  const jwtServiceMock = mock(JwtService);
   const userDetailService = mock(UserDetailService);
   const apiServiceMock = mock(ApiService);
 
   beforeEach(() => {
     when(userDetailService.current).thenReturn(userData as UserDetail);
-    accountLoginService = new AccountLoginService(instance(jwtServiceMock), instance(userDetailService), instance(apiServiceMock));
+    accountLoginService = new AccountLoginService(instance(userDetailService), instance(apiServiceMock));
   });
 
   it('should login the user when correct credentials are entered', () => {
@@ -37,7 +35,7 @@ describe('AccountLogin Service', () => {
 
   it('should destroy token when user logs out', () => {
     accountLoginService.logout();
-    verify(jwtServiceMock.destroyToken()).called();
+    verify(userDetailService.setUserDetail(null)).called();
   });
 
   it('should return error message when wrong credentials are entered', () => {
@@ -53,13 +51,12 @@ describe('AccountLogin Service', () => {
   });
 
   it('should return false when user is unauthorized', () => {
-    when(jwtServiceMock.getToken()).thenReturn('');
+    when(userDetailService.current).thenReturn(null);
     const result = accountLoginService.isAuthorized();
     expect(result).toBe(false);
   });
 
   it('should return true when user is authorized', () => {
-    when(jwtServiceMock.getToken()).thenReturn('Authorised');
     const authorized = accountLoginService.isAuthorized();
     expect(authorized).toBe(true);
   });
