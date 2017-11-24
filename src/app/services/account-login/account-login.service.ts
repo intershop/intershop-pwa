@@ -2,7 +2,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../services/api.service';
-import { JwtService } from '../../services/jwt.service';
 import { AccountLogin } from './account-login';
 import { UserDetail } from './account-login.model';
 import { UserDetailService } from './user-detail.service';
@@ -16,7 +15,7 @@ export interface IAccountLoginService {
 @Injectable()
 export class AccountLoginService implements IAccountLoginService {
 
-  constructor(private jwtService: JwtService, private userDetailService: UserDetailService, private apiService: ApiService) { }
+  constructor(private userDetailService: UserDetailService, private apiService: ApiService) { }
 
   /**
    * Calls signin function of concerned service
@@ -48,7 +47,7 @@ export class AccountLoginService implements IAccountLoginService {
    * @returns boolean
    */
   isAuthorized(): boolean {
-    return (!!this.jwtService.getToken()) && (!!this.userDetailService.current);
+    return !!this.userDetailService.current;
   }
 
   /**
@@ -56,7 +55,6 @@ export class AccountLoginService implements IAccountLoginService {
   * @returns void
   */
   logout(): void {
-    this.jwtService.destroyToken();
     this.userDetailService.setUserDetail(null);
   }
 

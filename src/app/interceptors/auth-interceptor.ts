@@ -2,19 +2,15 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/do';
 import { Observable } from 'rxjs/Observable';
-import { JwtService } from '../services/jwt.service';
+
+let TOKEN: string;
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  /**
-   * Constructor
-   * @param  {JwtService} privatejwtService
-   */
-  constructor(private jwtService: JwtService) { }
 
   /**
-   * Intercepts out going request and set authentication-token header provided by jwtService.
-   * Intercepts incoming response and update authentication-token header returned from sever in jwtService.
+   * Intercepts out going request and set authentication-token.
+   * Intercepts incoming response and update authentication-token.
    * @param  {HttpRequest<any>} req
    * @param  {HttpHandler} next
    * @returns  Observable<HttpEvent<any>>
@@ -22,10 +18,9 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const tokenHeaderKeyName = 'authentication-token';
     const authorizationHeaderKey = 'Authorization';
-    const token = this.jwtService.getToken();
 
-    if (token && !req.headers.has(authorizationHeaderKey)) {
-      req = req.clone({ headers: req.headers.set(tokenHeaderKeyName, token) });
+    if (TOKEN && !req.headers.has(authorizationHeaderKey)) {
+      req = req.clone({ headers: req.headers.set(tokenHeaderKeyName, TOKEN) });
     }
 
     return next.handle(req).do(event => {
@@ -33,9 +28,14 @@ export class AuthInterceptor implements HttpInterceptor {
         const response = <HttpResponse<any>>event;
         const tokenReturned = response.headers.get(tokenHeaderKeyName);
         if (tokenReturned) {
-          this.jwtService.saveToken(tokenReturned);
+          this._setToken(tokenReturned);
         }
       }
     });
+  }
+
+  // visible for testing
+  _setToken(token: string): void {
+    TOKEN = token;
   }
 }
