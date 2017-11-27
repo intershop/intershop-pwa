@@ -1,0 +1,34 @@
+<!-- for debugging purposes -->
+<p>Form value: {{ addressForm.value | json }}</p>
+<p>Form status: {{ addressForm.status | json }}</p>
+
+<div [formGroup]="addressForm" data-address-form="data-address-form">
+  <p class="indicates-required"><span class="required">*</span>Required field</p>
+
+  <!-- country select -->
+  <fieldset>
+    <is-select
+      [controlName]="'countryCode'"
+      [form]="addressForm"
+      [label]="'Country'"
+      [errorMessages]="{'required':'account.login.username.error.required'}"
+      [options]="countries"
+    ></is-select>
+  </fieldset>
+
+  <!-- country dependent address forms -->
+  <div [ngSwitch]="countryCode?.value">
+    <is-address-de [addressForm]="addressForm" *ngSwitchCase="'DE'"></is-address-de>
+    <is-address-fr [addressForm]="addressForm" *ngSwitchCase="'FR'"></is-address-fr>
+    <is-address-us [addressForm]="addressForm" *ngSwitchCase="'US'"></is-address-us>
+    <is-address-default [addressForm]="addressForm" *ngSwitchDefault></is-address-default>
+  </div>
+
+  <!-- phone number -->
+  <is-input
+    [controlName]="'phoneHome'"
+    [form]="addressForm"
+    [label]="'Phone'"
+  ></is-input>
+
+</div>

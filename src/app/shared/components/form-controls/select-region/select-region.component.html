@@ -1,0 +1,12 @@
+<div *ngIf="states?.length > 0">
+  <is-select
+    [controlName]="controlName"
+    [form]="form"
+    [label]="'State/Province'"
+    [options]="states"
+    [formName]="formName"
+    [labelClass]="labelClass"
+    [inputClass]="inputClass"
+    [markRequiredLabel]="markRequiredLabel"
+  ></is-select>
+</div>

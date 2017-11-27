@@ -1,0 +1,12 @@
+<div *ngIf="titles?.length > 0">
+  <is-select
+    [controlName]="controlName"
+    [form]="form"
+    [label]="'Title'"
+    [options]="titles"
+    [formName]="formName"
+    [labelClass]="labelClass"
+    [inputClass]="inputClass"
+    [markRequiredLabel]="markRequiredLabel"
+  ></is-select>
+</div>

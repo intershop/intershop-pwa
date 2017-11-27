@@ -10,7 +10,6 @@ export class SelectComponent implements OnInit {
   @Input() form: FormGroup;           // required
   @Input() controlName: string;       // required
   @Input() options: SelectOption[];   // required
-  @Input() showEmptyOption: boolean;  // default: false
   @Input() errorMessages: any;
   @Input() formName: string;          // should be set, if the same form exists twice on one page in order to have unique ids, ToDo: is there any other possibility to get an id
   @Input() label: string;             // localization key or a string
@@ -19,6 +18,8 @@ export class SelectComponent implements OnInit {
   @Input() markRequiredLabel: string; /* values: 'auto' (default) - label is marked, if an required validator is set
                                                  'on' (label is always marked as required),
                                                  'off' (label is never marked as required) */
+
+  showEmptyOption: boolean;           // is automatically set if the control value is empty
 
   constructor(
     private translate: TranslateService
@@ -37,6 +38,9 @@ export class SelectComponent implements OnInit {
 
     // determine / translate label
     this.determineLabel();
+
+    // show empty option if the control value is empty
+    this.showEmptyOption = (this.form.get(this.controlName).value) ? false : true;
   }
 
   /*

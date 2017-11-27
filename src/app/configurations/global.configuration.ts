@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class GlobalConfiguration {
   private accountSettings = {
-    useSimpleAccount: true,
+    useSimpleAccount: false,
     userRegistrationLoginType: 'email'
   };
   /**
