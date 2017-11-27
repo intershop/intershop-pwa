@@ -87,27 +87,29 @@ export class CategoriesService implements Resolve<Category> {
 
   /**
    * Helper function to generate the applications category route from the categories REST API uri
-   * or from a optionally given categoryPath if no uri is available.
-   * @param category      The category the application route should be generated for.
-   * @param categoryPath  The categroy path from root to the category as Category array.
+   * or alternatively from an additionally given categoryPath if no uri is available.
+   * @param category      [required] The category the application route should be generated for.
+   * @param categoryPath  [optional] The category path from root to the category as Category array. - This should be obsolete once the category REST call provided the category path itself.
    * @returns             The application /category route string for the given category.
    */
   generateCategoryRoute(category: Category, categoryPath?: Category[]): string {
     let categoryIdPath = '';
-    if (!!category && !!category.uri) {
-      categoryIdPath = category.uri.split(/\/categories[^\/]*/)[1];
-    } else if (!!categoryPath && categoryPath.length) {
-      for (const pathCategory of categoryPath) {
-        if (!!pathCategory && !!pathCategory.id) {
+    let categoryIdPathIsValid = false;
+    if (category) {
+      if (category.uri) {
+        categoryIdPath = category.uri.split(/\/categories[^\/]*/)[1];
+        categoryIdPathIsValid = true;
+      } else if (categoryPath && categoryPath.length) {
+        for (const pathCategory of categoryPath) {
           categoryIdPath = categoryIdPath + '/' + pathCategory.id;
           if (this.isCategoryEqual(pathCategory, category)) {
+            categoryIdPathIsValid = true;
             break;
           }
         }
       }
     }
-
-    if (categoryIdPath) {
+    if (categoryIdPath && categoryIdPathIsValid) {
       return '/category' + categoryIdPath;
     } else {
       return '';
