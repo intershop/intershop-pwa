@@ -1,3 +1,5 @@
+import {Image} from './image.model';
+
 export class Category {
   name: string;
   type: string;
@@ -9,16 +11,5 @@ export class Category {
   images?: Image[];
   id: string;
   subCategories?: Category[];
-  uri: string;
-}
-
-class Image {
-  name: string;
-  type: string;
-  effectiveUrl: string;
-  viewID: string;
-  typeID: string;
-  imageActualHeight: number;
-  imageActualWidth: number;
-  primaryImage: boolean;
+  uri?: string;
 }

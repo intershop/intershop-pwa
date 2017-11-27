@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
-import { Category } from '../../../../models/categories.model';
+import { Category } from '../../../../models/category.model';
 import { CategoriesService } from '../../../../shared/services/categories/categories.service';
 
 @Component({
