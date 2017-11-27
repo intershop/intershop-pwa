@@ -2,7 +2,7 @@
   <div class="product-tile-list row" data-dynamic-block="" [attr.data-dynamic-block-call-parameters]="'CID'" [attr.data-dynamic-block-product-id]="mockData.id">
     <div class="col-sm-2 col-xs-3">
       <div class="product-image-container">
-        <a href="javascript:void(0)">
+        <a>
           <img *ngIf="mockData && mockData.images" [src]="icmBaseURL + mockData.images[2].effectiveUrl"
             data-test="true" Class="product-image" [attr.data-type]="mockData.images[0].typeID ? mockData.images[0].typeID : null"
             [attr.alt]="mockData.name ? mockData.name : mockData?.sku" [attr.view-value]="mockData.images[0].viewID ? mockData.images[0].viewID : null"
@@ -15,7 +15,7 @@
     <div class="col-sm-10 col-xs-9">
       <div class="row">
         <div class="col-xs-8 text-left">
-          <a class="product-title" href="javascript:void(0)">{{mockData.name}}</a>
+          <a class="product-title">{{mockData.name}}</a>
           <div *ngIf="mockData.ShowProductRating && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="product-rating clearfix">
             <ul class="rating-display clearfix" [ngClass]="mockData.averageRatingClass">
               <li class="star-one"><span class="glyphicon glyphicon-star"></span></li>
@@ -167,7 +167,7 @@
                     <!--  CurrentCustomerBO.ISMl End-->
                     <!--  GetProductPrice.ISMl Start-->
                     <!--  GetProductPrice.ISMl End-->
-                    <a *ngIf="mockData.digitalGiftCard" href="" class="btn btn-primary"> </a>
+                    <a *ngIf="mockData.digitalGiftCard" class="btn btn-primary"> </a>
                     <button type="submit" name="addProduct" *ngIf="!mockData.digitalGiftCard" class="btn btn-primary" title="Add to Cart" data-testing-id="addToCartButton"
                       (click)="addToCart(mockData)">
                       {{(mockData.mockListView.displayType != 'glyphicon' && mockData.mockListView.isRetailSet) ? 'Add item(s) to Cart' : null}}
@@ -184,8 +184,7 @@
                   title="Compare" rel="nofollow">
                   <span class="glyphicon glyphicon-equalizer"></span>
                 </button>
-                <a *ngIf="mockData.mockListView.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)"
-                  rel="nofollow">
+                <a *ngIf="mockData.mockListView.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" rel="nofollow">
                   <span class="glyphicon glyphicon-equalizer"></span>
                   <span class="share-label">Compare</span>
                 </a>
