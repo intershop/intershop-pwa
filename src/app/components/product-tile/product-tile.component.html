@@ -5,7 +5,7 @@
       {{ (mockData && mockData.label) ? mockData.label : null }}
       <span *ngIf="!mockData.label" class="glyphicon-eye-open glyphicon"></span>
     </div>
-    <a href="">
+    <a>
       <!--ProductImage.isml start-->
       <img *ngIf="mockData && mockData.images" [src]="icmBaseURL + mockData.images[2].effectiveUrl"
         data-test="true" class="product-image" [attr.data-type]="mockData.images[2].typeID ? mockData.images[2].typeID : null"
@@ -15,7 +15,7 @@
     </a>
     <span *ngIf="mockData" class="product-label" [ngClass]="{'product-label-topseller' : true, 'product-label-new': false, 'product-label-sale' : false}"></span>
   </div>
-  <a class="product-title" href="javascript:void(0)">
+  <a class="product-title">
     <span *ngIf="mockData.richSnippetsEnabled">{{mockData.name}}</span>
     <!--name of the product -->
   </a>
@@ -172,7 +172,7 @@
           <span class="share-label">Compare</span>
         </a>
         <a *ngIf="mockData.displayType != 'glyphicon' && mockData.displayType != 'share-tool'" class="btn add-to-compare btn-link"
-          attr.data-testing-id="compare-{{mockData.sku}}" href="javascript:void(0)" rel="nofollow"> Compare
+          attr.data-testing-id="compare-{{mockData.sku}}" rel="nofollow"> Compare
         </a>
       </ng-container>
       <!-- AddToProductCompare.isml End-->

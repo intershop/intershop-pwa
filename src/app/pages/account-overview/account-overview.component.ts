@@ -21,6 +21,7 @@ export class AccountOverviewComponent {
   logout() {
     this.accountLoginService.logout();
     this.router.navigate(['/home']);
+    return false;
   }
 
 }
