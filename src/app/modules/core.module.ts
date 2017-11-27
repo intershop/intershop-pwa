@@ -17,7 +17,6 @@ import { CartStatusService } from '../services/cart-status/cart-status.service';
 import { CustomErrorHandler } from '../services/custom-error-handler';
 import { translateFactory } from '../services/custom-translate-loader';
 import { ErrorCodeMappingService } from '../services/error-code-mapping.service';
-import { JwtService } from '../services/jwt.service';
 import { CurrentLocaleService } from '../services/locale/current-locale.service';
 import { ProductCompareService } from '../services/product-compare/product-compare.service';
 import { StatePropertiesService } from '../services/state-transfer/state-properties.service';
@@ -46,7 +45,6 @@ import { StatePropertiesService } from '../services/state-transfer/state-propert
   ],
   providers: [
     ApiService,
-    JwtService,
     CustomErrorHandler,
     ProductCompareService,
     UserDetailService,
