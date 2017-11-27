@@ -2,8 +2,6 @@ import { HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import { instance, mock, when } from 'ts-mockito';
-import { JwtService } from '../services/jwt.service';
 import { AuthInterceptor } from './auth-interceptor';
 
 describe('Auth Interceptor Service', () => {
@@ -14,12 +12,10 @@ describe('Auth Interceptor Service', () => {
 
   let authInterceptor: AuthInterceptor;
 
-  let jwtServiceMock: JwtService;
   let mockInterceptor: any;
   beforeEach(() => {
     getRequest = new HttpRequest<any>('GET', ' ');
     mockRequest = null;
-    jwtServiceMock = mock(JwtService);
     mockInterceptor = {
       handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
         const headers = new HttpHeaders();
@@ -30,8 +26,7 @@ describe('Auth Interceptor Service', () => {
     };
     TestBed.configureTestingModule({
       providers: [
-        AuthInterceptor,
-        { provide: JwtService, useFactory: () => instance(jwtServiceMock) }
+        AuthInterceptor
       ]
     });
     authInterceptor = TestBed.get(AuthInterceptor);
@@ -45,9 +40,11 @@ describe('Auth Interceptor Service', () => {
   });
 
   it(`should set request's header token on receiving from jwt service`, () => {
-    when(jwtServiceMock.getToken()).thenReturn('testtoken');
+    const TOKEN = 'testtoken';
+    authInterceptor._setToken(TOKEN);
+
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
-      expect(mockRequest.headers.get('authentication-token')).toEqual('testtoken');
+      expect(mockRequest.headers.get('authentication-token')).toEqual(TOKEN);
     });
   });
 
@@ -60,7 +57,8 @@ describe('Auth Interceptor Service', () => {
   });
 
   it('should not set token when token is empty', () => {
-    when(jwtServiceMock.getToken()).thenReturn('');
+    authInterceptor._setToken('');
+
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
     });
