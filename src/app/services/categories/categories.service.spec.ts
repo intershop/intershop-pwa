@@ -192,13 +192,13 @@ describe('Categories Service', () => {
       expect(categoriesService.generateCategoryRoute(null)).toBe('');
     });
 
-    it('should generate route from simple category path when provided', () => {
-      expect(categoriesService.generateCategoryRoute(null, [TOP]))
+    it('should generate route from category and simple category path when provided', () => {
+      expect(categoriesService.generateCategoryRoute(TOP, [TOP]))
         .toBe(`/category/${TOP.id}`);
     });
 
-    it('should generate route from complex category path when provided', () => {
-      expect(categoriesService.generateCategoryRoute(null, [TOP, SUB, LEAF]))
+    it('should generate route from category and complex category path when provided', () => {
+      expect(categoriesService.generateCategoryRoute(LEAF, [TOP, SUB, LEAF]))
         .toBe(`/category/${TOP.id}/${SUB.id}/${LEAF.id}`);
     });
 
@@ -207,21 +207,17 @@ describe('Categories Service', () => {
         .toBe(`/category/${TOP.id}/${SUB.id}`);
     });
 
-    it('should ignore provided category when not part of provided category path', () => {
-      expect(categoriesService.generateCategoryRoute({ id: 'dummy' } as Category, [TOP, SUB, LEAF]))
-        .toBe(`/category/${TOP.id}/${SUB.id}/${LEAF.id}`);
+    it('should not generate route when category.uri is not provided and category path is missing', () => {
+      expect(categoriesService.generateCategoryRoute(LEAF, null)).toBe('');
     });
 
-    it('should not generate route when category path is missing', () => {
-      expect(categoriesService.generateCategoryRoute(null, null)).toBe('');
+    it('should not generate route when category.uri is not provided and category path is empty', () => {
+      expect(categoriesService.generateCategoryRoute(LEAF, [])).toBe('');
     });
 
-    it('should not generate route when category path is empty', () => {
-      expect(categoriesService.generateCategoryRoute(null, [])).toBe('');
+    it('should not generate route when category without a category.uri is not part of provided category path', () => {
+      expect(categoriesService.generateCategoryRoute({ id: 'dummy' } as Category, [TOP, SUB, LEAF])).toBe('');
     });
 
-    it('should not generate route when category path has empty categories', () => {
-      expect(categoriesService.generateCategoryRoute(null, [{}, {}] as Category[])).toBe('');
-    });
   });
 });
