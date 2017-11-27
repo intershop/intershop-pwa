@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { Product } from '../../../../models/products.model';
+import { Product } from '../../../../models/product.model';
 import { ProductListService } from '../../../../shared/services/products/products.service';
 
 @Component({
