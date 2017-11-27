@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
-import { Category } from '../../../../models/categories.model';
+import { Category } from '../../../../models/category.model';
 import { CategoriesService } from '../../../../shared/services/categories/categories.service';
 
 @Component({

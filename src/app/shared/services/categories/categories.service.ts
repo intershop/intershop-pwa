@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ApiService } from '../../../core/services/api.service';
-import { Category } from '../../../models/categories.model';
+import { Category } from '../../../models/category.model';
 
 @Injectable()
 export class CategoriesService {
