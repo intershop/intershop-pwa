@@ -37,6 +37,7 @@ export class SelectRegionComponent implements OnInit {
   */
   private setDefaultValues() {
     if (!this.controlName) { this.controlName = 'state'; }
+    if (!this.label) { this.label = 'State/Province'; }     // ToDo: Translation key
   }
 
   // get states for the country of the address form
