@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
-import { WishListItem, WishListModel } from '../../../models/wishlists.model';
+import { WishlistItem } from '../../../models/wishlist-item.model';
+import { Wishlist } from '../../../models/wishlist.model';
 
 @Component({
   templateUrl: './wishlists-page.component.html'
 })
 export class WishListPageComponent implements OnInit {
 
-  wishList: WishListItem[] = [];
+  wishList: WishlistItem[] = [];
 
   constructor(
     private wishListService: WishListService
@@ -17,7 +18,7 @@ export class WishListPageComponent implements OnInit {
     this.wishListService.subscribe(this.updateWishList);
   }
 
-  private updateWishList = (wishListData: WishListModel) => {
+  private updateWishList = (wishListData: Wishlist) => {
     this.wishList = (wishListData) ? wishListData.items : [];
   }
 }

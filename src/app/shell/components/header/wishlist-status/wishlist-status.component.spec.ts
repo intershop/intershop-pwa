@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
-import { WishListModel } from '../../../../models/wishlists.model';
+import { Wishlist } from '../../../../models/wishlist.model';
 import { WishListComponent } from './wishlist-status.component';
 
 
@@ -12,11 +12,11 @@ describe('Wish List Component', () => {
   let fixture: ComponentFixture<WishListComponent>;
   let component: WishListComponent;
   let element: HTMLElement;
-  let wishListServiceMock: BehaviorSubject<WishListModel>;
+  let wishListServiceMock: BehaviorSubject<Wishlist>;
   let location: Location;
 
   beforeEach(async(() => {
-    wishListServiceMock = new BehaviorSubject({ itemsCount: 1 } as WishListModel);
+    wishListServiceMock = new BehaviorSubject({ itemsCount: 1 } as Wishlist);
 
     TestBed.configureTestingModule({
       imports: [
@@ -55,7 +55,7 @@ describe('Wish List Component', () => {
   });
 
   it('should not display counter when item count is 0', () => {
-    wishListServiceMock.next({ itemsCount: 0 } as WishListModel);
+    wishListServiceMock.next({ itemsCount: 0 } as Wishlist);
     fixture.detectChanges();
 
     const itemCountElement = element.querySelector('#preferred-wishlist-counter');
