@@ -39,10 +39,16 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   /**
-   * Submit form values
+   * Creates Account
+   * @method onCreateAccount
    * @returns void
    */
-  fnSubmit(): void {
+  onCreateAccount(): void {
+    if (this.registrationForm.valid) {
+      // this.register();
+    } else {
+      this.isDirty = true;
+    }
   }
 }
 

@@ -28,7 +28,9 @@
         [form]="addressForm"
         [label]="'Address Line 2'"
       ></is-input>
+    </fieldset>
 
+    <fieldset>
       <is-input
         [controlName]="'city'"
         [form]="addressForm"
@@ -48,6 +50,7 @@
       <is-select-region
         [form]="addressForm"
         [countryCode]="countryCode"
+        [label]="'State'"
       ></is-select-region>
 
       <is-input

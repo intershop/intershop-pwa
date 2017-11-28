@@ -40,7 +40,7 @@ export class RegionService {
         return this.REGIONS_BG;
       }
       default: {
-        return new Array<Region>();
+        return null;
       }
     }
   }

@@ -10,8 +10,8 @@ export class AddressGbComponent implements OnInit, OnDestroy {
 
   constructor() { }
 
-   // add additional form controls and validators
-   ngOnInit() {
+  // add additional form controls and validators
+  ngOnInit() {
     this.addressForm.addControl('title', new FormControl(''));
     this.addressForm.addControl('addressLine3', new FormControl(''));
 

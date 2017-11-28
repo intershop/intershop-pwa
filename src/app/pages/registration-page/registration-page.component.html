@@ -25,8 +25,7 @@
   <div class="row">
     <div class="col-sm-offset-2 col-sm-4">
       <div class="form-group">
-        <input type="submit" [disabled]="registrationForm.invalid && isFormDirty" class="btn btn-primary" value="Create Account"
-          (click)="fnSubmit()" />
+        <input type="submit" [disabled]="registrationForm.invalid && isDirty" class="btn btn-primary" value="Create Account" />
         <input type="button" class="btn btn-default" value="Cancel" (click)="cancelClicked()" />
       </div>
     </div>
