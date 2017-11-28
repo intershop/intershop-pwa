@@ -17,7 +17,7 @@ export class AccountOverviewComponent implements OnInit {
   ngOnInit() {
     this.accountLoginService.subscribe(customerData => {
       if (customerData) {
-        this.customerName = customerData.firstName || customerData.userName;
+        this.customerName = customerData.firstName || customerData.credentials.login;
       }
     });
   }

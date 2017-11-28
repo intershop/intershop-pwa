@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { UserDetail } from '../../../models/account-login.model';
+import { Customer } from '../../../models/customer.model';
 import { ApiService } from '../api.service';
 import { AccountLoginService } from './account-login.service';
 import { UserDetailService } from './user-detail.service';
@@ -17,7 +17,7 @@ describe('AccountLogin Service', () => {
   const apiServiceMock = mock(ApiService);
 
   beforeEach(() => {
-    when(userDetailService.current).thenReturn(userData as UserDetail);
+    when(userDetailService.current).thenReturn(userData as Customer);
     accountLoginService = new AccountLoginService(instance(userDetailService), instance(apiServiceMock));
   });
 

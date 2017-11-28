@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
-import { UserDetail } from '../../../models/account-login.model';
+import { Customer } from '../../../models/customer.model';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 
 @Injectable()
-export class UserDetailService extends GlobalStateAwareService<UserDetail> {
+export class UserDetailService extends GlobalStateAwareService<Customer> {
 
   constructor(
     cookieService: CookieService
@@ -12,7 +12,7 @@ export class UserDetailService extends GlobalStateAwareService<UserDetail> {
     super('currentUserDetail', true, true, null, cookieService);
   }
 
-  setUserDetail(newUserDetail: UserDetail): void {
+  setUserDetail(newUserDetail: Customer): void {
     this.next(newUserDetail);
   }
 }

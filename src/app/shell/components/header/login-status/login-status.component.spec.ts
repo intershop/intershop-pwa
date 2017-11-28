@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
-import { UserDetail } from '../../../../models/account-login.model';
+import { Customer } from '../../../../models/customer.model';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
@@ -24,7 +24,7 @@ describe('Login Status Component', () => {
   beforeEach(() => {
     accountLoginServiceMock = mock(AccountLoginService);
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
-    when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: UserDetail) => void) => callback(userData as UserDetail));
+    when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: Customer) => void) => callback(userData as Customer));
 
     globalConfigurationMock = mock(GlobalConfiguration);
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(false));

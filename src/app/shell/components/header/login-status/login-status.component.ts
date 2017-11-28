@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
-import { UserDetail } from '../../../../models/account-login.model';
+import { Customer } from '../../../../models/customer.model';
 
 @Component({
   selector: 'is-login-status',
@@ -10,7 +10,7 @@ import { UserDetail } from '../../../../models/account-login.model';
 
 export class LoginStatusComponent implements OnInit {
 
-  userDetail: UserDetail = null;
+  userDetail: Customer = null;
 
   constructor(
     private router: Router,
