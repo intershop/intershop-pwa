@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../../core/configurations/global.configuration';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { UserDetail } from '../../../models/account-login.model';
+import { Customer } from '../../../models/customer.model';
+
 @Component({
   templateUrl: './account-login.component.html'
 })
@@ -57,7 +58,7 @@ export class AccountLoginComponent implements OnInit {
       this.isDirty = true;
       return;
     }
-    this.accountLoginService.singinUser(userCredentials).subscribe((userData: UserDetail) => {
+    this.accountLoginService.singinUser(userCredentials).subscribe((userData: Customer) => {
       if (typeof (userData) !== 'object') {
         this.loginForm.get('password').reset();
         this.errorUser = userData;

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
-import { UserDetail } from '../../../../models/account-login.model';
+import { Customer } from '../../../../models/customer.model';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 
 describe('Simple Registration Component', () => {
@@ -31,7 +31,7 @@ describe('Simple Registration Component', () => {
     accountLoginServiceMock = mock(AccountLoginService);
 
     when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(accountSettings));
-    when(accountLoginServiceMock.createUser(anything())).thenReturn(Observable.of(new UserDetail()));
+    when(accountLoginServiceMock.createUser(anything())).thenReturn(Observable.of(new Customer()));
 
     TestBed.configureTestingModule({
       declarations: [SimpleRegistrationComponent],

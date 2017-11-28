@@ -1,3 +1,5 @@
+// TODO: are form models necessary
+
 export class CreateAccountModel {
   emailDetails: {
     emailAddress: string;
