@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { WishListModel } from '../../../models/wishlists.model';
+import { Wishlist } from '../../../models/wishlist.model';
 import { ApiService } from '../../services/api.service';
 import { AccountLoginService } from '../account-login/account-login.service';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 
 @Injectable()
-export class WishListService extends GlobalStateAwareService<WishListModel> {
+export class WishListService extends GlobalStateAwareService<Wishlist> {
 
   baseUrl = 'customers/-/wishlists/';
 

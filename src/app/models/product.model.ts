@@ -1,6 +1,6 @@
 import { Attribute } from './attribute.model';
-import {Image} from './image.model';
-import {Price} from './price.model';
+import { Image } from './image.model';
+import { Price } from './price.model';
 import { ShippingMethod } from './shipping-method.model';
 import { Warranty } from './warranty.model';
 
