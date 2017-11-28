@@ -20,6 +20,7 @@
   <div [ngSwitch]="countryCode?.value">
     <is-address-de [addressForm]="addressForm" *ngSwitchCase="'DE'"></is-address-de>
     <is-address-fr [addressForm]="addressForm" *ngSwitchCase="'FR'"></is-address-fr>
+    <is-address-gb [addressForm]="addressForm" *ngSwitchCase="'GB'"></is-address-gb>
     <is-address-us [addressForm]="addressForm" *ngSwitchCase="'US'"></is-address-us>
     <is-address-default [addressForm]="addressForm" *ngSwitchDefault></is-address-default>
   </div>

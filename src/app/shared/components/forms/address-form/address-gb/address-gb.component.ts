@@ -2,21 +2,20 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'is-address-de',
-  templateUrl: './address-de.component.html'
+  selector: 'is-address-gb',
+  templateUrl: './address-gb.component.html'
 })
-export class AddressDeComponent implements OnInit, OnDestroy {
+export class AddressGbComponent implements OnInit, OnDestroy {
   @Input() addressForm: FormGroup;
 
-  constructor() {
-  }
+  constructor() { }
 
-  // add additional form controls and validators
-  ngOnInit() {
+   // add additional form controls and validators
+   ngOnInit() {
     this.addressForm.addControl('title', new FormControl(''));
     this.addressForm.addControl('addressLine3', new FormControl(''));
 
-    this.addressForm.get('postalCode').setValidators([Validators.required, Validators.pattern('[0-9]{5}')]);
+    this.addressForm.get('postalCode').setValidators([Validators.required, Validators.pattern('^(GIR ?0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]([0-9ABEHMNPRV-Y])?)|[0-9][A-HJKPS-UW]) ?[0-9][ABD-HJLNP-UW-Z]{2})$')]);
   }
 
   // remove additional form controls and validators

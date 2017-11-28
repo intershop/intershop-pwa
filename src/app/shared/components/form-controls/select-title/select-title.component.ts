@@ -34,6 +34,7 @@ export class SelectTitleComponent implements OnInit {
  */
   private setDefaultValues() {
     if (!this.controlName) { this.controlName = 'title'; }
+    if (!this.label) { this.label = 'Salutation'; }     // ToDo: Translation key
   }
 
   // get titles for the country of the address form

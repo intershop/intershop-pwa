@@ -1,7 +1,7 @@
 
-<is-form-group-validation [errorMessages]="{'required':'account.login.username.error.required'}"><!-- ToDo: -->
+<is-form-group-validation [errorMessages]="errorMessages">
   <div class="form-group has-feedback" [formGroup]="form">
-    <label for="{{formName}}_{{controlName}}" class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label><!-- ToDo: label -->
+    <label for="{{formName}}_{{controlName}}" class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
       <select class="form-control"
           id="{{formName}}_{{controlName}}"
