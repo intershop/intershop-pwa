@@ -26,12 +26,10 @@ export class AddressDefaultComponent implements OnInit, OnDestroy {
 
   /*
     get countryCode value for regions display
-    reset state if country changes
+    set required validator, state if country changes; will be removed by select-regions component if there is no state for this country
   */
   get countryCode(): string {
     if (this.addressForm.get('state')) {
-      this.addressForm.get('state').reset();
-      this.addressForm.get('state').setValue('');
       this.addressForm.get('state').setValidators(Validators.required);
     }
     return this.addressForm.get('countryCode').value;

@@ -1,40 +1,38 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
+import { FormElementComponent } from '../form-element/form-element.component';
 import { SelectOption } from '../select/select.component';
 
 @Component({
   selector: 'is-select-title',
   templateUrl: './select-title.component.html'
 })
-export class SelectTitleComponent implements OnInit {
-  @Input() form: FormGroup;     // required
+export class SelectTitleComponent extends FormElementComponent implements OnInit {
   @Input() countryCode: string; // component will only be rendered if set
-  @Input() controlName: string;
-  @Input() formName: string;
-  @Input() label: string;
-  @Input() labelClass: string;  // default: 'col-sm-4'
-  @Input() inputClass: string;  // default: 'col-sm-8'
-  @Input() markRequiredLabel: string; /* values: 'auto' (default) - label is marked, if an required validator is set
-                                                 'on' (label is always marked as required),
-                                                 'off' (label is never marked as required) */
 
-
-  constructor() { }
+  constructor(
+    protected translate: TranslateService
+  ) { super(translate); }
 
   ngOnInit() {
-    if (!this.form) {
-      throw new Error('required input parameter <form> is missing for SelectTitleComponent');
-    }
     this.setDefaultValues();
+
+    // tslint:disable-next-line:ban
+    super.ngOnInit();
+
   }
 
   /*
    set default values for empty input parameters
  */
-  private setDefaultValues() {
+  protected setDefaultValues() {
     if (!this.controlName) { this.controlName = 'title'; }
     if (!this.label) { this.label = 'Salutation'; }     // ToDo: Translation key
+    if (!this.errorMessages) {
+      this.errorMessages = { 'required': 'Please select a salutation' };  // ToDo: Translation key
+    }
   }
 
   // get titles for the country of the address form
