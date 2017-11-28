@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { SearchBoxModel, SuggestedElement } from '../../../../models/search-box.model';
+import { SuggestTerm } from '../../../../models/suggest-term.model';
 import { SuggestService } from '../../../../shared/services/suggest/suggest.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { SuggestService } from '../../../../shared/services/suggest/suggest.serv
 
 export class SearchBoxComponent implements OnInit {
 
-  results: SuggestedElement[];
+  results: SuggestTerm[];
   searchTerm$ = new Subject<string>();
   isHide = false;
   searchButtonText: string;
@@ -27,10 +27,9 @@ export class SearchBoxComponent implements OnInit {
 
   doSearch() {
     this.suggestService.search(this.searchTerm$)
-      .subscribe((searchResults: SearchBoxModel) => {
-
-        if (searchResults && searchResults.elements && searchResults.elements.length > 0) {
-          this.results = searchResults.elements;
+      .subscribe((searchResults: SuggestTerm[]) => {
+        if (searchResults && searchResults.length > 0) {
+          this.results = searchResults;
           this.isHide = false;
         } else {
           this.results = [];
