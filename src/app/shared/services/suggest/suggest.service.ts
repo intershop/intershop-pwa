@@ -1,41 +1,36 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../../core/services/api.service';
+import { SuggestTerm } from '../../../models/suggest-term.model';
 
 
 @Injectable()
 export class SuggestService {
 
-  url = 'suggest?SearchTerm=';
+  private serviceIdentifier = 'suggest';
 
-  /**
-   * @param  {ApiService} private apiService
-   */
   constructor(
     private apiService: ApiService
   ) { }
 
   /**
    * Returns the list of items matching the search term
-   * @param  {} terms
+   * @param searchTerm  The search term to get suggestions for.
+   * @returns           List of suggested search terms.
    */
-  public search(terms: Observable<string>) {
-    return terms.debounceTime(400)
+  public search(searchTerm: Observable<string>): Observable<SuggestTerm[]> {
+    return searchTerm.debounceTime(400)
       .distinctUntilChanged()
       .switchMap((value) => {
-        return value.length === 0 ?
-          Observable.of([]) :
-          this.searchEntries(value);
+        if (value.length === 0) {
+          return Observable.of([]);
+        } else {
+          const params = new HttpParams().set('SearchTerm', value);
+          return this.apiService.get(this.serviceIdentifier, params, null, true, false);
+        }
       });
-  }
-
-  /**
-   * Calls the get method of api
-   * @param  {} value
-   */
-  public searchEntries(value) {
-    return this.apiService.get(this.url + value);
   }
 }

@@ -10,6 +10,8 @@ import { Category } from '../../../models/category.model';
 @Injectable()
 export class CategoriesService {
 
+  private serviceIdentifier = 'categories';
+
   constructor(
     private apiService: ApiService
   ) { }
@@ -24,7 +26,7 @@ export class CategoriesService {
     if (limit > 0) {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
-    return this.apiService.get('categories', params, null, true);
+    return this.apiService.get(this.serviceIdentifier, params, null, true);
   }
 
   /**
@@ -36,7 +38,7 @@ export class CategoriesService {
     if (!categoryId) {
       return ErrorObservable.create('getCategory() called without categoryId');
     }
-    return this.apiService.get('categories/' + categoryId, null, null, false);
+    return this.apiService.get(this.serviceIdentifier + '/' + categoryId, null, null, false);
   }
 
 
