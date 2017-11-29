@@ -1,25 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Country } from '../../../../models/country';
-import { CountryService } from '../../../../services/countries/country.service';
 import { SpecialValidators } from '../../../../shared/validators/special-validators';
-import { SelectOption } from '../../form-controls/select/select.component';
 
 @Component({
   selector: 'is-address-form',
-  templateUrl: './address-form.component.html',
-  providers: [CountryService]
+  templateUrl: './address-form.component.html'
 })
 export class AddressFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
   addressForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private countryService: CountryService
-  ) {
-  }
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.createForm();
