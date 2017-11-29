@@ -2,22 +2,21 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { FormGroup } from '@angular/forms';
-import { Region } from '../../../../models/region';
-import { RegionService } from '../../../../services/countries/region.service';
+import { Country } from '../../../../models/country';
+import { CountryService } from '../../../../services/countries/country.service';
 import { FormElementComponent } from '../form-element/form-element.component';
 import { SelectOption } from '../select/select.component';
 
 @Component({
-  selector: 'is-select-region',
-  templateUrl: './select-region.component.html',
-  providers: [RegionService]
+  selector: 'is-select-country',
+  templateUrl: './select-country.component.html',
+  providers: [CountryService]
 })
-export class SelectRegionComponent extends FormElementComponent implements OnInit {
-  @Input() countryCode: string; // required: component will only be rendered if set
+export class SelectCountryComponent extends FormElementComponent implements OnInit {
 
   constructor(
     protected translate: TranslateService,
-    private regionService: RegionService
+    private countryService: CountryService
   ) { super(translate); }
 
   ngOnInit() {
@@ -31,24 +30,24 @@ export class SelectRegionComponent extends FormElementComponent implements OnIni
     set default values for empty input parameters
   */
   protected setDefaultValues() {
-    if (!this.controlName) { this.controlName = 'state'; }
-    if (!this.label) { this.label = 'State/Province'; }     // ToDo: Translation key
+    if (!this.controlName) { this.controlName = 'country'; }
+    if (!this.label) { this.label = 'Country'; }     // ToDo: Translation key
     if (!this.errorMessages) {
-      this.errorMessages = { 'required': 'Please select a region' };  // ToDo: Translation key
+      this.errorMessages = { 'required': 'Please select a country' };  // ToDo: Translation key
     }
   }
 
-  // get states for the given country
-  get states(): SelectOption[] {
+  // get countries
+  get countries(): SelectOption[] {
     let options: SelectOption[] = [];
-    const regions = this.regionService.getRegions(this.countryCode);
-    if (regions && regions.length) {
+    const countries = this.countryService.getCountries();
+    if (countries && countries.length) {
 
       // Map region array to an array of type SelectOption
-      options = regions.map((region: Region) => {
+      options = countries.map((country: Country) => {
         return {
-          'label': region.name,
-          'value': region.regionCode
+          'label': country.name,
+          'value': country.countryCode
         };
       });
     } else {

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from './shared.module';
 
+import { SelectCountryComponent } from './../shared/components/form-controls/select-country/select-country.component';
 import { SelectRegionComponent } from './../shared/components/form-controls/select-region/select-region.component';
 import { SelectTitleComponent } from './../shared/components/form-controls/select-title/select-title.component';
 import { AddressDeComponent } from './../shared/components/forms/address-form/address-de/address-de.component';
@@ -23,11 +24,13 @@ import { AddressUsComponent } from './../shared/components/forms/address-form/ad
     AddressFrComponent,
     AddressGbComponent,
     AddressUsComponent,
+    SelectCountryComponent,
     SelectRegionComponent,
     SelectTitleComponent
   ],
   exports: [
     AddressFormComponent,
+    SelectCountryComponent,
     SelectRegionComponent,
     SelectTitleComponent
   ]
