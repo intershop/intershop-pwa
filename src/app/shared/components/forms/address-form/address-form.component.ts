@@ -44,22 +44,6 @@ export class AddressFormComponent implements OnInit {
     this.parentForm.addControl('address', this.addressForm);
   }
 
-  // get countries of the address form
-  get countries(): SelectOption[] {
-    let options: SelectOption[] = [];
-    const countries = this.countryService.getCountries();
-    if (countries) {
-      // Map region array to an array of type SelectOption
-      options = countries.map(function(country: Country) {
-        return {
-          'label': country.name,
-          'value': country.countryCode
-        };
-      });
-    }
-    return options;
-  }
-
   // get countryCode for showing a country dependent sub address form component
   get countryCode() { return this.addressForm.get('countryCode'); }
 }

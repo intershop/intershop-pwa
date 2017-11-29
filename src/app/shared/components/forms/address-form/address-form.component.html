@@ -1,19 +1,17 @@
 <!-- for debugging purposes -->
-<p>Form value: {{ addressForm.value | json }}</p>
-<p>Form status: {{ addressForm.status | json }}</p>
+<!-- <p>Form value: {{ addressForm.value | json }}</p>
+<p>Form status: {{ addressForm.status | json }}</p> -->
 
 <div [formGroup]="addressForm" data-address-form="data-address-form">
   <p class="indicates-required"><span class="required">*</span>Required field</p>
 
   <!-- country select -->
   <fieldset>
-    <is-select
+    <is-select-country
       [controlName]="'countryCode'"
       [form]="addressForm"
       [label]="'Country'"
-      [errorMessages]="{'required':'account.login.username.error.required'}"
-      [options]="countries"
-    ></is-select>
+    ></is-select-country>
   </fieldset>
 
   <!-- country dependent address forms -->
@@ -31,5 +29,4 @@
     [form]="addressForm"
     [label]="'Phone'"
   ></is-input>
-
 </div>
