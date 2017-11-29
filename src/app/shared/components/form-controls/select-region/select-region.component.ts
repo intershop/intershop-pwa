@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormGroup } from '@angular/forms';
 import { Region } from '../../../../models/region';
 import { RegionService } from '../../../../services/countries/region.service';
 import { FormElementComponent } from '../form-element/form-element.component';

@@ -71,7 +71,6 @@ export class FormElementComponent implements OnInit {
         return false;
       }
       default: {
-        if (this.controlName === 'state') { console.log('getRequired'); }
         // determine, if the control has the required attribute
         let required = false;
         const formControl = new FormControl();

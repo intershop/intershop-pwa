@@ -1,25 +1,31 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AddressGbComponent } from './address-gb.component';
 
-describe('AddressGbComponent', () => {
+describe('British Address Component', () => {
   let component: AddressGbComponent;
   let fixture: ComponentFixture<AddressGbComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressGbComponent]
+      declarations: [AddressGbComponent],
+      providers: [
+        { provide: TranslateService }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+      .compileComponents().then(() => {
+        fixture = TestBed.createComponent(AddressGbComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AddressGbComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
   });
 });
