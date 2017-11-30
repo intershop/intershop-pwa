@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { FormsModule } from '../../modules/forms.module';
 import { SharedModule } from '../../modules/shared.module';
 import { AddressComponent } from './address/address.component';
 import { CaptchaComponent } from './captcha/captcha.component';
@@ -13,7 +14,8 @@ import { RegistrationPageRoute } from './registration-page.routes';
   imports: [
     RouterModule.forChild(RegistrationPageRoute),
     RecaptchaModule.forRoot(),
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   declarations: [RegistrationPageComponent, CaptchaComponent, EmailPasswordComponent, AddressComponent],
   providers: []
