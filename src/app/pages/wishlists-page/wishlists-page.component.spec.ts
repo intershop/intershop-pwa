@@ -30,6 +30,7 @@ describe('Wish list Page Component', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
   });
 
   it('should check if "Add to Wishlist" button is rendered', () => {

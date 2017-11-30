@@ -1,18 +1,33 @@
 <h1>Create a New Account</h1>
 <p>To take full advantage of account features & benefits, please provide all the information below.</p>
-<!--is-email-password component-->
-<div>
-  <is-email-password (isValid)="isEmailFormValid = $event"></is-email-password>
-</div>
-<br>
-<is-address (isValid)="isAddressFormValid = $event"></is-address>
-<is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
-<div class="row">
-  <div class="col-sm-offset-2 col-sm-4">
-    <div class="form-group">
-      <input type="submit" [disabled]="!isEmailFormValid ||  !isAddressFormValid || !isCaptchaValid" class="btn btn-primary" value="Create Account"
-        (click)="fnSubmit()" />
-      <input type="button" class="btn btn-default" value="Cancel" (click)="cancelClicked()" />
+<form isFormValidation [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
+  <!--is-email-password component-->
+  <div>
+    <is-email-password (isValid)="isEmailFormValid = $event"></is-email-password>
+  </div>
+  <br>
+
+  <h2>Address</h2>
+  <div>
+    <p>
+        To save time when placing an order, please provide your primary invoice or shipping address below. We will maintain this
+        information so you won't have to enter it again.
+    </p>
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <is-address-form [parentForm]="registrationForm"></is-address-form>
+      </div>
     </div>
   </div>
-</div>
+
+  <!--<is-address (isValid)="isAddressFormValid = $event"></is-address>-->
+  <is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
+  <div class="row">
+    <div class="col-sm-offset-2 col-sm-4">
+      <div class="form-group">
+        <input type="submit" [disabled]="registrationForm.invalid && isDirty" class="btn btn-primary" value="Create Account" />
+        <input type="button" class="btn btn-default" value="Cancel" (click)="cancelClicked()" />
+      </div>
+    </div>
+  </div>
+</form>

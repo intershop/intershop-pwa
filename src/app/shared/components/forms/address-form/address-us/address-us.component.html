@@ -1,0 +1,65 @@
+<div [formGroup]="addressForm">
+    <fieldset>
+      <is-input
+        [controlName]="'firstName'"
+        [form]="addressForm"
+        [label]="'First Name'"
+        [errorMessages]="{'required':'account.login.username.error.required'}"
+      ></is-input>
+
+      <is-input
+        [controlName]="'lastName'"
+        [form]="addressForm"
+        [label]="'Last Name'"
+        [errorMessages]="{'required':'account.login.username.error.required'}"
+      ></is-input>
+    </fieldset>
+
+    <fieldset>
+      <is-input
+        [controlName]="'addressLine1'"
+        [form]="addressForm"
+        [label]="'Address Line 1'"
+        [errorMessages]="{'required':'account.login.username.error.required'}"
+      ></is-input>
+
+      <is-input
+        [controlName]="'addressLine2'"
+        [form]="addressForm"
+        [label]="'Address Line 2'"
+      ></is-input>
+    </fieldset>
+
+    <fieldset>
+      <is-input
+        [controlName]="'city'"
+        [form]="addressForm"
+        [label]="'City'"
+        [errorMessages]="{'required':'account.login.username.error.required'}"
+      >
+        <ng-template #AddressApoFpo>
+            Enter APO or FPO in the &quot;City&quot;
+            field and select one of the following three choices from the &quot;State&quot;
+            pull-down menu: AA for Armed Forces of America, AE for Armed Forces Europe, AP for Armed Forces Pacific.
+        </ng-template>
+        <a [popover]="AddressApoFpo" popoverTitle="APO and FPO addresses" placement="top">APO/FPO
+          <span class="glyphicon glyphicon-info-sign"></span>
+        </a>
+      </is-input>
+
+      <is-select-region
+        [form]="addressForm"
+        [countryCode]="countryCode"
+        [label]="'State'"
+      ></is-select-region>
+
+      <is-input
+        [controlName]="'postalCode'"
+        [form]="addressForm"
+        [label]="'ZIP/Postal Code'"
+        [errorMessages]="{'required':'account.login.username.error.required'}"
+      ></is-input>
+
+    </fieldset>
+  </div>
+

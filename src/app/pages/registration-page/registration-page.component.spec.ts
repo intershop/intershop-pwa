@@ -3,6 +3,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from '../../components/mock.component';
+import { SharedModule } from '../../modules/shared.module';
 import { RegistrationPageComponent } from './registration-page.component';
 
 describe('RegistrationPage Component', () => {
@@ -15,12 +16,13 @@ describe('RegistrationPage Component', () => {
     TestBed.configureTestingModule({
       declarations: [RegistrationPageComponent,
         MockComponent({ selector: 'is-email-password', template: 'Email Template' }),
-        MockComponent({ selector: 'is-address', template: 'Address Template' }),
+        MockComponent({ selector: 'is-address-form', template: 'Address Template', inputs: ['parentForm'] }),
         MockComponent({ selector: 'is-captcha', template: 'Captcha Template' }),
       ],
       providers: [
       ],
       imports: [
+        SharedModule,
         RouterTestingModule.withRoutes([
           { path: 'home', component: RegistrationPageComponent }
         ])
@@ -48,7 +50,7 @@ describe('RegistrationPage Component', () => {
     expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');
     expect(element.getElementsByTagName('is-email-password')[0].innerHTML).toEqual('Email Template');
     expect(element.getElementsByTagName('is-captcha')[0].innerHTML).toEqual('Captcha Template');
-    expect(element.getElementsByTagName('is-address')[0].innerHTML).toEqual('Address Template');
+    expect(element.getElementsByTagName('is-address-form')[0].innerHTML).toEqual('Address Template');
   });
 
 });

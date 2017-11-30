@@ -1,0 +1,51 @@
+<div [formGroup]="addressForm">
+  <fieldset>
+    <is-input
+      [controlName]="'firstName'"
+      [form]="addressForm"
+      [label]="'First Name'"
+      [errorMessages]="{'required':'account.login.username.error.required'}"
+    ></is-input>
+
+    <is-input
+      [controlName]="'lastName'"
+      [form]="addressForm"
+      [label]="'Last Name'"
+      [errorMessages]="{'required':'account.login.username.error.required'}"
+    ></is-input>
+  </fieldset>
+
+  <fieldset>
+    <is-input
+      [controlName]="'addressLine1'"
+      [form]="addressForm"
+      [label]="'Address Line 1'"
+      [errorMessages]="{'required':'account.login.username.error.required'}"
+    ></is-input>
+
+    <is-input
+      [controlName]="'addressLine2'"
+      [form]="addressForm"
+      [label]="'Address Line 2'"
+    ></is-input>
+  </fieldset>
+
+  <fieldset>
+    <is-input
+      [controlName]="'postalCode'"
+      [form]="addressForm"
+      [label]="'ZIP/Postal Code'"
+    ></is-input>
+
+    <is-input
+      [controlName]="'city'"
+      [form]="addressForm"
+      [label]="'City'"
+    ></is-input>
+
+    <is-select-region
+      [form]="addressForm"
+      [countryCode]="countryCode"
+    ></is-select-region>
+  </fieldset>
+</div>
