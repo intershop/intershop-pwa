@@ -16,8 +16,8 @@ export class RegistrationPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private fb: FormBuilder) {
-  }
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.isDirty = false;
