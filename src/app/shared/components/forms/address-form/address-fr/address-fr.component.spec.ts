@@ -2,23 +2,23 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AddressFrComponent } from './address-fr.component';
+import { AddressFRComponent } from './address-fr.component';
 
 describe('French Address Component', () => {
-  let component: AddressFrComponent;
-  let fixture: ComponentFixture<AddressFrComponent>;
+  let component: AddressFRComponent;
+  let fixture: ComponentFixture<AddressFRComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressFrComponent],
+      declarations: [AddressFRComponent],
       providers: [
         { provide: TranslateService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AddressFrComponent);
+        fixture = TestBed.createComponent(AddressFRComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
       });

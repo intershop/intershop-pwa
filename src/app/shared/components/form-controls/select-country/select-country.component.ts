@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Country } from '../../../../models/country';
+import { Country } from '../../../../models/country.model';
 import { CountryService } from '../../../../services/countries/country.service';
 import { FormElementComponent } from '../form-element/form-element.component';
 import { SelectOption } from '../select/select.component';

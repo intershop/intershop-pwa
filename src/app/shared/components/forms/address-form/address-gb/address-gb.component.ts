@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   selector: 'is-address-gb',
   templateUrl: './address-gb.component.html'
 })
-export class AddressGbComponent implements OnInit, OnDestroy {
+export class AddressGBComponent implements OnInit, OnDestroy {
   @Input() addressForm: FormGroup;
 
   constructor() { }
