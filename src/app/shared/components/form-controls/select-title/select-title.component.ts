@@ -9,11 +9,14 @@ import { SelectOption } from '../select/select.component';
   templateUrl: './select-title.component.html'
 })
 export class SelectTitleComponent extends FormElementComponent implements OnInit {
+
   @Input() countryCode: string; // component will only be rendered if set
 
   constructor(
     protected translate: TranslateService
-  ) { super(translate); }
+  ) {
+    super(translate);
+  }
 
   ngOnInit() {
     this.setDefaultValues();

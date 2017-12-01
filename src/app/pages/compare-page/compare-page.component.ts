@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductCompareService } from '../../services/product-compare/product-compare.service';
 
 @Component({
   selector: 'is-compare-page',
   templateUrl: './compare-page.component.html'
 })
-export class ComparePageComponent {
+export class ComparePageComponent implements OnInit {
   comparedProducts = [];
-  constructor(productCompareService: ProductCompareService) {
 
-    productCompareService.subscribe(data => {
+  constructor(
+    private productCompareService: ProductCompareService
+  ) { }
+
+  ngOnInit() {
+    this.productCompareService.subscribe(data => {
       this.comparedProducts = data;
     });
   }

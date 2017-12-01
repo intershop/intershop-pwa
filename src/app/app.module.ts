@@ -43,7 +43,12 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor( @Inject(PLATFORM_ID) platformId, translateService: TranslateService, currentLocaleService: CurrentLocaleService) {
+
+  constructor(
+    @Inject(PLATFORM_ID) platformId,
+    translateService: TranslateService,
+    currentLocaleService: CurrentLocaleService
+  ) {
     environment.platformId = platformId;
 
     const currentLang = environment.locales[0];

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserDetail } from '../../../services/account-login/account-login.model';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
@@ -8,15 +8,17 @@ import { AccountLoginService } from '../../../services/account-login/account-log
   templateUrl: './login-status.component.html'
 })
 
-export class LoginStatusComponent {
+export class LoginStatusComponent implements OnInit {
 
   userDetail: UserDetail = null;
 
   constructor(
     private router: Router,
     private accountLoginService: AccountLoginService
-  ) {
-    accountLoginService.subscribe(userDetail => this.userDetail = userDetail);
+  ) { }
+
+  ngOnInit() {
+    this.accountLoginService.subscribe(userDetail => this.userDetail = userDetail);
   }
 
   get isLoggedIn() {

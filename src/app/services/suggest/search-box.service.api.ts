@@ -4,10 +4,13 @@ import { ApiService } from '../api.service';
 
 @Injectable()
 export class SearchBoxApiService {
-  url = 'suggest?SearchTerm=';
-  constructor(private apiService: ApiService) {
 
-  }
+  url = 'suggest?SearchTerm=';
+
+  constructor(
+    private apiService: ApiService
+  ) { }
+
   /**
    * Returns the list of items matching the search term
    * @param  {} terms

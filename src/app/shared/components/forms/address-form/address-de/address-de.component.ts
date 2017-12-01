@@ -6,10 +6,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './address-de.component.html'
 })
 export class AddressDEComponent implements OnInit, OnDestroy {
+
   @Input() addressForm: FormGroup;
 
-  constructor() {
-  }
+  constructor() { }
 
   // add additional form controls and validators
   ngOnInit() {
