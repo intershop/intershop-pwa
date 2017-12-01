@@ -16,7 +16,9 @@ export class SelectCountryComponent extends FormElementComponent implements OnIn
   constructor(
     protected translate: TranslateService,
     private countryService: CountryService
-  ) { super(translate); }
+  ) {
+    super(translate);
+  }
 
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent ngOnInit

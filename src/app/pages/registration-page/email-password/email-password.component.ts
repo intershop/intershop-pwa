@@ -15,7 +15,9 @@ export class EmailPasswordComponent implements OnInit {
    * Constructor
    * @param  {FormBuilder} private_formbuilder
    */
-  constructor(private _formbuilder: FormBuilder) { }
+  constructor(
+    private _formbuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     const emailAddress = new FormControl(null, [Validators.compose([Validators.required, CustomValidators.email, Validators.maxLength(256)])]);

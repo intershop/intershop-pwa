@@ -15,7 +15,10 @@ export interface IAccountLoginService {
 @Injectable()
 export class AccountLoginService implements IAccountLoginService {
 
-  constructor(private userDetailService: UserDetailService, private apiService: ApiService) { }
+  constructor(
+    private userDetailService: UserDetailService,
+    private apiService: ApiService
+  ) { }
 
   /**
    * Calls signin function of concerned service

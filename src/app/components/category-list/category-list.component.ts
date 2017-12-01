@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Category } from '../../services/categories/categories.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { ICM_BASE_URL } from '../../services/state-transfer/factories';
@@ -8,7 +8,7 @@ import { ICM_BASE_URL } from '../../services/state-transfer/factories';
   templateUrl: './category-list.component.html'
 })
 
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent {
 
   @Input() categories: Category[];
 
@@ -16,8 +16,5 @@ export class CategoryListComponent implements OnInit {
     public categoriesService: CategoriesService,
     @Inject(ICM_BASE_URL) public icmBaseURL
   ) { }
-
-  ngOnInit() {
-  }
 
 }

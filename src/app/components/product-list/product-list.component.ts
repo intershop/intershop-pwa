@@ -22,8 +22,8 @@ export class ProductListComponent implements OnInit {
    */
   constructor(
     private activatedRoute: ActivatedRoute,
-    private productListService: ProductListService) {
-  }
+    private productListService: ProductListService
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.url.subscribe((urlSegment: UrlSegment[]) => {

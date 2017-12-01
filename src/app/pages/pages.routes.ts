@@ -22,7 +22,10 @@ const routes: Routes = [
 })
 export class PagesRoutingModule {
 
-  constructor(globalConfiguration: GlobalConfiguration, router: Router) {
+  constructor(
+    globalConfiguration: GlobalConfiguration,
+    router: Router
+  ) {
     globalConfiguration.getApplicationSettings().toPromise().then(settings => {
       if (settings.useSimpleAccount) {
         const registerRoute: Route = router.config.find(r => r.path === 'register');
