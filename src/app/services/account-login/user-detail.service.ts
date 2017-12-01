@@ -6,7 +6,9 @@ import { UserDetail } from './account-login.model';
 @Injectable()
 export class UserDetailService extends GlobalStateAwareService<UserDetail> {
 
-  constructor(cookieService: CookieService) {
+  constructor(
+    cookieService: CookieService
+  ) {
     super('currentUserDetail', true, true, null, cookieService);
   }
 

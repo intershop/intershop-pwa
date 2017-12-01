@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartStatusService } from '../../../services/cart-status/cart-status.service';
 
 @Component({
@@ -6,14 +6,18 @@ import { CartStatusService } from '../../../services/cart-status/cart-status.ser
   templateUrl: './mini-cart.component.html',
 })
 
-export class MiniCartComponent {
+export class MiniCartComponent implements OnInit {
 
   public isCollapsed = true;
   cartPrice: number;
   cartLength: number;
 
-  constructor(cartStatusService: CartStatusService) {
-    cartStatusService.subscribe(this.calculateCartValues);
+  constructor(
+    private cartStatusService: CartStatusService
+  ) { }
+
+  ngOnInit() {
+    this.cartStatusService.subscribe(this.calculateCartValues);
   }
 
   /**

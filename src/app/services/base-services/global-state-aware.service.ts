@@ -8,8 +8,12 @@ export abstract class GlobalStateAwareService<T> {
 
   private subject: BehaviorSubject<T>;
 
-  constructor(private name: string, private crosstab: boolean, private persistInSessionCookie: boolean,
-    defaultValue: T = null, private cookieService?: CookieService) {
+  constructor(
+    private name: string,
+    private crosstab: boolean,
+    private persistInSessionCookie: boolean,
+    defaultValue: T = null, private cookieService?: CookieService
+  ) {
     if (isPlatformBrowser(environment.platformId) && this.crosstab) {
       crosstablib.on(this.name, (message) => {
         // console.log(crosstab.id + ' received ' + message.data + ' from ' + message.origin);

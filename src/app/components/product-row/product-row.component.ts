@@ -29,8 +29,7 @@ export class ProductRowComponent implements OnInit {
     private cartStatusService: CartStatusService,
     private router: Router,
     @Inject(ICM_BASE_URL) public icmBaseURL
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
 

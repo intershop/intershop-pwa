@@ -16,8 +16,9 @@ export class CategoriesService implements Resolve<Category> {
     return this.getCategory(categoryPath);
   }
 
-  constructor(private apiService: ApiService) {
-  }
+  constructor(
+    private apiService: ApiService
+  ) { }
 
   /**
    * REST API - Get top level categories

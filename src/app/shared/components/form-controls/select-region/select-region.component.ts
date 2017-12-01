@@ -12,12 +12,15 @@ import { SelectOption } from '../select/select.component';
   providers: [RegionService]
 })
 export class SelectRegionComponent extends FormElementComponent implements OnInit {
+
   @Input() countryCode: string; // required: component will only be rendered if set
 
   constructor(
     protected translate: TranslateService,
     private regionService: RegionService
-  ) { super(translate); }
+  ) {
+    super(translate);
+  }
 
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent ngOnInit

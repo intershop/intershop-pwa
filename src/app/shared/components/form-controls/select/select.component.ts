@@ -13,7 +13,9 @@ export class SelectComponent extends FormElementComponent implements OnInit {
 
   constructor(
     protected translate: TranslateService
-  ) { super(translate); }
+  ) {
+    super(translate);
+  }
 
   ngOnInit() {
     // tslint:disable-next-line:ban

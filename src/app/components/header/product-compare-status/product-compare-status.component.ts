@@ -7,8 +7,9 @@ import { ProductCompareService } from '../../../services/product-compare/product
 })
 export class ProductCompareStatusComponent {
 
-  constructor(private productCompareService: ProductCompareService) {
-  }
+  constructor(
+    private productCompareService: ProductCompareService
+  ) { }
 
   get productCompareCount(): number {
     return this.productCompareService.current ? this.productCompareService.current.length : 0;

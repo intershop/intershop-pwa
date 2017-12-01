@@ -4,7 +4,10 @@ import { GlobalStateAwareService } from './global-state-aware.service';
 
 export abstract class SKUListService extends GlobalStateAwareService<string[]> {
 
-  constructor(name: string, persistInSession: boolean, cookieService?: CookieService) {
+  constructor(
+    name: string, persistInSession: boolean,
+    cookieService?: CookieService
+  ) {
     super(name, true, persistInSession, [], cookieService);
   }
 

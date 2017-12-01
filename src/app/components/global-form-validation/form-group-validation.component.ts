@@ -24,7 +24,10 @@ export class FormGroupValidationComponent {
   @ContentChild('dynamicError', { read: ViewContainerRef }) dynamicError: ViewContainerRef;
   @Input() errorMessages: object;
 
-  constructor(private translate: TranslateService, private cfResolver: ComponentFactoryResolver) { }
+  constructor(
+    private translate: TranslateService,
+    private cfResolver: ComponentFactoryResolver
+  ) { }
 
   getErrorList() {
     return _.reduce(this.formControlName.errors, (result, value, key) => {
