@@ -7,13 +7,14 @@ import { ProductCompareService } from '../services/product-compare/product-compa
   selector: '[isDisableIcon]'
 })
 export class DisableIconDirective {
+
   @Input() property: string;
 
-  constructor(private renderer: Renderer2,
+  constructor(
+    private renderer: Renderer2,
     private el: ElementRef,
     private injector: Injector
-  ) {
-  }
+  ) { }
 
   private update = compareListItems => {
     if (compareListItems) {

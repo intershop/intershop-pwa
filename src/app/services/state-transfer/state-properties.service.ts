@@ -13,7 +13,9 @@ export const ICM_APPLICATION_SK = makeStateKey<string>('icmApplication');
 @Injectable()
 export class StatePropertiesService {
 
-  constructor(private transferState: TransferState) { }
+  constructor(
+    private transferState: TransferState
+  ) { }
 
   /**
    * Retrieve property from first set property of server state, system environment or environment.ts

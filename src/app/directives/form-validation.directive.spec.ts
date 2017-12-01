@@ -16,8 +16,12 @@ import { FormValidationDirective } from './form-validation.directive';
 
 // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
 class MockComponent {
+
   loginForm: FormGroup;
-  constructor(private formBuilder: FormBuilder) {
+
+  constructor(
+    private formBuilder: FormBuilder
+  ) {
     this.loginForm = this.formBuilder.group({
       userName: ['', Validators.required]
     });

@@ -8,7 +8,9 @@ export class ProductListService {
   /**
    * @param  {ApiService} privateapiService
    */
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService
+  ) { }
 
   /**
    * @returns List of products as observable

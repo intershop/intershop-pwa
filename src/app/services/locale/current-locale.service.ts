@@ -5,7 +5,9 @@ import { GlobalStateAwareService } from '../base-services/global-state-aware.ser
 @Injectable()
 export class CurrentLocaleService extends GlobalStateAwareService<any> {
 
-  constructor(private translateService: TranslateService) {
+  constructor(
+    private translateService: TranslateService
+  ) {
     super('currentLocale', false, false);
   }
 

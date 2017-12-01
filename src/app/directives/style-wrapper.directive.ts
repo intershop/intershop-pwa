@@ -13,11 +13,13 @@ import 'rxjs/add/operator/mergeMap';
 export class StyleWrapperDirective implements OnInit {
 
   @HostBinding('class') classesString = '';
-  constructor(private router: Router,
-    private route: ActivatedRoute) {
-  }
 
-  public ngOnInit(): void {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit() {
     this.router.events
       .filter((event) => event instanceof NavigationEnd)
       .map(() => this.route)

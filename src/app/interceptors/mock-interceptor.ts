@@ -8,7 +8,10 @@ const MOCK_DATA_ROOT = './assets/mock-data';
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
-  constructor( @Inject(REST_ENDPOINT) private restEndpoint: string) { }
+
+  constructor(
+    @Inject(REST_ENDPOINT) private restEndpoint: string
+  ) { }
 
   /**
    * Intercepts out going request and changes url to mock url if needed.

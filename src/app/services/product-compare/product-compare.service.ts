@@ -5,7 +5,9 @@ import { SKUListService } from '../base-services/sku-list.service';
 @Injectable()
 export class ProductCompareService extends SKUListService {
 
-  constructor(cookieService: CookieService) {
+  constructor(
+    cookieService: CookieService
+  ) {
     super('productCompareStatus', true, cookieService);
   }
 }

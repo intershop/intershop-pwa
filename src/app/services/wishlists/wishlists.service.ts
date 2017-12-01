@@ -9,7 +9,10 @@ export class WishListService extends GlobalStateAwareService<WishListModel> {
 
   baseUrl = 'customers/-/wishlists/';
 
-  constructor(private apiService: ApiService, private accountLoginService: AccountLoginService) {
+  constructor(
+    private apiService: ApiService,
+    private accountLoginService: AccountLoginService
+  ) {
     super('wishListStatus', true, false);
     accountLoginService.subscribe(() => this.updateState(accountLoginService));
   }

@@ -8,7 +8,10 @@ const ErrorCodeMapping = {
 
 @Injectable()
 export class ErrorCodeMappingService {
-  constructor(private translate: TranslateService) { }
+
+  constructor(
+    private translate: TranslateService
+  ) { }
 
   getErrorMapping(errorInfo: any): string {
     let errorMessage = 'No Error Mapping';

@@ -15,8 +15,10 @@ export class SearchBoxComponent implements OnInit {
   searchTerm$ = new Subject<string>();
   isHide = false;
   searchButtonText: string;
-  constructor(private searchBoxService: SearchBoxService) {
-  }
+
+  constructor(
+    private searchBoxService: SearchBoxService
+  ) { }
 
   hidePopup() {
     if (this.results) {

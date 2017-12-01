@@ -22,8 +22,7 @@ export class ApiService {
     private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
     private currentLocaleService: CurrentLocaleService
-  ) {
-  }
+  ) { }
 
   /**
    * format api errors and send errors to custom handler

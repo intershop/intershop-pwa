@@ -9,6 +9,7 @@ import { FormElementComponent } from '../form-element/form-element.component';
   templateUrl: './input.component.html'
 })
 export class InputComponent extends FormElementComponent implements OnInit {
+
   @Input() type: string;        // values: 'text' (default), 'password', 'email'
   @Input() maxlength: string;   // default: 60
   @Input() autocomplete: string; /* values: 'on' (default for input type 'text' and 'email'),
@@ -16,7 +17,9 @@ export class InputComponent extends FormElementComponent implements OnInit {
 
   constructor(
     protected translate: TranslateService
-  ) { super(translate); }
+  ) {
+    super(translate);
+  }
 
   ngOnInit() {
     // tslint:disable-next-line:ban
