@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { PopoverConfig } from 'ngx-bootstrap/popover';
 
 export function getPopoverConfig(): PopoverConfig {
@@ -14,5 +15,8 @@ export function getPopoverConfig(): PopoverConfig {
 })
 
 export class AppComponent {
-  // TODO: is this the right place to handle the global application translation?
+
+  // DEBUG: prints the configured routes for routing analysis
+  constructor(private router: Router) { console.log('ROUTES: ', this.router.config); }
+
 }
