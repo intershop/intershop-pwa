@@ -16,7 +16,7 @@ export class EmailPasswordComponent implements OnInit {
    * @param  {FormBuilder} private_formbuilder
    */
   constructor(
-    private _formbuilder: FormBuilder
+    private formbuilder: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -25,8 +25,8 @@ export class EmailPasswordComponent implements OnInit {
     const password = new FormControl(null, [Validators.compose([Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/),
     Validators.maxLength(256)])]);
     const confirmPasswordControl = new FormControl('', [Validators.compose([Validators.required, CustomValidators.equalTo(password)])]);
-    this.emailForm = this._formbuilder.group({
-      emailDetails: this._formbuilder.group({
+    this.emailForm = this.formbuilder.group({
+      emailDetails: this.formbuilder.group({
         emailAddress: emailAddress,
         confirmEmailAddress: confirmEmailAddressControl,
         password: password,
