@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
-import { RemoveHostDirective } from '../../../shared/directives/remove-host.directive';
 import { CategoriesService } from '../../../shared/services/categories/categories.service';
 import { SuggestService } from '../../../shared/services/suggest/suggest.service';
 import { SharedModule } from '../../../shared/shared.module';
@@ -32,8 +31,7 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
     LanguageSwitchComponent,
     HeaderNavigationComponent,
     LoginStatusComponent,
-    SubCategoryNavigationComponent,
-    RemoveHostDirective
+    SubCategoryNavigationComponent
   ],
   providers: [AccountLoginService, CategoriesService, SuggestService,
     WishListService
