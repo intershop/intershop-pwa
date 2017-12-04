@@ -58,6 +58,14 @@
 						}
 					}
 				}
+
+				&.open {
+					ul {
+						&.category-level1 {
+							display: block;
+						}
+					}
+				}
 				
 				a {
 					color: @text-color-primary;
@@ -88,11 +96,12 @@
 					}
 				}
 				
-				> ul {
+				ul {
 					
 					&.category-level1 {
 						border-top: (@space-default / 2) solid @border-color-default;
 						left: 0;
+						margin: 0px;
 						padding: 25px 25px (@grid-gutter-width / 2) 25px;
 						top: 40px;
 						width: 100%;
@@ -204,7 +213,7 @@
 				}
 				
 				@media (max-width:@screen-xs-max) {
-
+					
 					ul {
 						display: none;
 					}

@@ -4,6 +4,6 @@
     <a *ngIf="subcategory.subCategories" (click)="subcategory.isOpenedToggle = !subcategory.isOpenedToggle" class="dropdown-toggle visible-xs">
       <span class="glyphicon" [ngClass]="subcategory.isOpenedToggle ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
     </a>
-    <is-subcategory-navigation [category]="subcategory" [subCategoriesDepth]="subCategoriesDepth+1" isRemoveHost></is-subcategory-navigation>
+    <is-subcategory-navigation [category]="subcategory" [subCategoriesDepth]="subCategoriesDepth+1"></is-subcategory-navigation>
   </li>
 </ul>
