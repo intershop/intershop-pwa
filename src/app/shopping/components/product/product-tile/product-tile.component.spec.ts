@@ -157,7 +157,7 @@ describe('Product Tile Component', () => {
               'externalDetailsUrl': 'www.testUrl.com'
             }
           ],
-          'name_override': 'Test_override',
+          'nameOverride': 'Test_override',
           'mockListView': {
             'displayType': 'test',
             'isRetailSet': false

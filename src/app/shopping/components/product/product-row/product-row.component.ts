@@ -59,7 +59,7 @@ export class ProductRowComponent implements OnInit {
         'externalDetailsUrl': 'www.testUrl.com'
       }
     ];
-    this.mockData['name_override'] = 'Test_override';
+    this.mockData['nameOverride'] = 'Test_override';
     this.mockData['mockListView'] = {
       'displayType': 'test',
       'isRetailSet': false

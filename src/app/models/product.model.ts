@@ -39,7 +39,7 @@ export class Product {
   isRetailSet: boolean;
   displayType: string;
   applicablePromotions: any[];
-  name_override: string;
+  nameOverride: string;
   showInformationalPrice: boolean;
   isEndOfLife: boolean;
   id: string;
