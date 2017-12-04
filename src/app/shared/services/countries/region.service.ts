@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-
-import { Region } from '../../models/region.model';
+import { Region } from '../../../models/region.model';
 
 @Injectable()
 export class RegionService {

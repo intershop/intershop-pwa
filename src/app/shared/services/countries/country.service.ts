@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-
-import { Country } from '../../models/country.model';
+import { Country } from '../../../models/country.model';
 
 @Injectable()
 export class CountryService {
