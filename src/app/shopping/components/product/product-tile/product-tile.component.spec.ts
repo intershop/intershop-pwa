@@ -174,9 +174,9 @@ describe('Product Tile Component', () => {
 
   beforeEach(async(() => {
     productCompareServiceMock = mock(ProductCompareService);
-    when(productCompareServiceMock.value).thenReturn([]);
+    when(productCompareServiceMock.getValue()).thenReturn([]);
     cartStatusServiceMock = mock(CartStatusService);
-    when(cartStatusServiceMock.value).thenReturn([]);
+    when(cartStatusServiceMock.getValue()).thenReturn([]);
     wishListServiceMock = mock(WishListService);
     accountLoginServiceMock = mock(AccountLoginService);
     TestBed.configureTestingModule({
