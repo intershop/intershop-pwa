@@ -36,7 +36,7 @@ export class ProductTileComponent implements OnInit {
 
     this.mockData['enableExpressShop'] = true;
     this.mockData['richSnippetsEnabled'] = true;
-    this.mockData['ShowProductRating'] = true;
+    this.mockData['showProductRating'] = true;
     this.mockData['showAddToCart'] = true;
     this.mockData['totalRatingCount'] = 2;
     this.mockData['simpleRatingView'] = true;

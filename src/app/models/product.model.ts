@@ -31,7 +31,7 @@ export class Product {
   variationAttributes?: Attribute[];
   enableExpressShop: boolean;
   richSnippetsEnabled: boolean;
-  ShowProductRating: boolean;
+  showProductRating: boolean;
   showAddToCart: boolean;
   totalRatingCount: number;
   simpleRatingView: boolean;

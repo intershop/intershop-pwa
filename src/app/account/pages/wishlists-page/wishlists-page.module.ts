@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router';
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { WishListPageComponent } from './wishlists-page.component';
-import { WishlistPageRoutes } from './wishlists-page.routes';
+import { wishlistPageRoutes } from './wishlists-page.routes';
 
 @NgModule({
   imports: [
-    RouterModule.forChild(WishlistPageRoutes),
+    RouterModule.forChild(wishlistPageRoutes),
     SharedModule
   ],
   declarations: [WishListPageComponent],

@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AccountOverviewComponent } from './account-overview.component';
-import { AccountOverviewRoute } from './account-overview.routes';
+import { accountOverviewRoutes } from './account-overview.routes';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(AccountOverviewRoute)
+    RouterModule.forChild(accountOverviewRoutes)
   ],
   declarations: [AccountOverviewComponent]
 })
