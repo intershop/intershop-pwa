@@ -17,7 +17,7 @@ describe('AccountLogin Service', () => {
   const apiServiceMock = mock(ApiService);
 
   beforeEach(() => {
-    when(userDetailService.current).thenReturn(userData as Customer);
+    when(userDetailService.value).thenReturn(userData as Customer);
     accountLoginService = new AccountLoginService(instance(userDetailService), instance(apiServiceMock));
   });
 
@@ -51,7 +51,7 @@ describe('AccountLogin Service', () => {
   });
 
   it('should return false when user is unauthorized', () => {
-    when(userDetailService.current).thenReturn(null);
+    when(userDetailService.value).thenReturn(null);
     const result = accountLoginService.isAuthorized();
     expect(result).toBe(false);
   });

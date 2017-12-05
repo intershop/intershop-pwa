@@ -12,6 +12,6 @@ export class ProductCompareStatusComponent {
   ) { }
 
   get productCompareCount(): number {
-    return this.productCompareService.current ? this.productCompareService.current.length : 0;
+    return !!this.productCompareService.value ? this.productCompareService.value.length : 0;
   }
 }

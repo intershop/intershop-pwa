@@ -42,8 +42,8 @@ export class ApiService {
   get(path: string, params?: HttpParams, headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
     let localeAndCurrency = '';
-    if (!!this.currentLocaleService.current) {
-      localeAndCurrency = `;loc=${this.currentLocaleService.current.lang};cur=${this.currentLocaleService.current.currency}`;
+    if (!!this.currentLocaleService.value) {
+      localeAndCurrency = `;loc=${this.currentLocaleService.value.lang};cur=${this.currentLocaleService.value.currency}`;
     }
     const url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
 

@@ -50,7 +50,7 @@ export class AccountLoginService implements IAccountLoginService {
    * @returns boolean
    */
   isAuthorized(): boolean {
-    return !!this.userDetailService.current;
+    return !!this.userDetailService.value;
   }
 
   /**
