@@ -5,11 +5,11 @@ import { ProductListService } from '../../../shared/services/products/products.s
 import { SharedModule } from '../../../shared/shared.module';
 import { ShoppingModule } from '../../shopping.module';
 import { CategoryPageComponent } from './category-page.component';
-import { CategoryPageRoute } from './category-page.routes';
+import { categoryPageRoutes } from './category-page.routes';
 
 @NgModule({
   imports: [
-    RouterModule.forChild(CategoryPageRoute),
+    RouterModule.forChild(categoryPageRoutes),
     SharedModule,
     ShoppingModule
   ],

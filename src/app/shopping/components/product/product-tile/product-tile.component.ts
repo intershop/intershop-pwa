@@ -36,7 +36,7 @@ export class ProductTileComponent implements OnInit {
 
     this.mockData['enableExpressShop'] = true;
     this.mockData['richSnippetsEnabled'] = true;
-    this.mockData['ShowProductRating'] = true;
+    this.mockData['showProductRating'] = true;
     this.mockData['showAddToCart'] = true;
     this.mockData['totalRatingCount'] = 2;
     this.mockData['simpleRatingView'] = true;
@@ -59,7 +59,7 @@ export class ProductTileComponent implements OnInit {
         'externalDetailsUrl': 'www.testUrl.com'
       }
     ];
-    this.mockData['name_override'] = 'Test_override';
+    this.mockData['nameOverride'] = 'Test_override';
     this.mockData['mockListView'] = {
       'displayType': 'test',
       'isRetailSet': false

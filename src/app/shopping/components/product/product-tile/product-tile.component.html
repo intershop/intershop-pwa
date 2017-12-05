@@ -19,7 +19,7 @@
     <span *ngIf="mockData.richSnippetsEnabled">{{mockData.name}}</span>
     <!--name of the product -->
   </a>
-  <div *ngIf="mockData.ShowProductRating && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="product-rating clearfix">
+  <div *ngIf="mockData.showProductRating && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="product-rating clearfix">
     <ul class="rating-display clearfix" [ngClass]="mockData.averageRatingClass">
       <li class="star-one">
         <span class="glyphicon glyphicon-star"></span>
