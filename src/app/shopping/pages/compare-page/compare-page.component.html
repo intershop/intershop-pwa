@@ -1,9 +1,11 @@
 <div>
-  <h3 *ngIf="!comparedProducts || comparedProducts.length === 0; else listTemplate">There are no items listed for comparison</h3>
+  <ng-template [ngIf]="!comparedProducts || comparedProducts.length === 0" [ngIfElse]="listTemplate">
+    <h3>There are no items listed for comparison</h3>
+  </ng-template>
   <ng-template #listTemplate>
     <h3>Below are the SKUs of the items added to comparison list</h3>
+    <ul *ngFor="let sku of comparedProducts">
+      <li><a>{{sku}}</a></li>
+    </ul>
   </ng-template>
-  <ul *ngFor="let sku of comparedProducts">
-    <li><a>{{sku}}</a></li>
-  </ul>
 </div>
