@@ -1,7 +1,6 @@
 import * as Lint from 'tslint';
-import { getNextToken, getPreviousToken } from 'tsutils';
+import { getNextToken } from 'tsutils';
 import { Identifier, SourceFile } from 'typescript';
-import { RuleHelpers } from './ruleHelpers';
 
 const DESCRIPTION_REGEX = /^('|`)should(.* (when|if|until|on|for|to) .*| be created)('|`)$/;
 

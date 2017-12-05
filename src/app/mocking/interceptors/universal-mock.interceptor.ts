@@ -5,7 +5,7 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { environment } from './../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class UniversalMockInterceptor implements HttpInterceptor {
