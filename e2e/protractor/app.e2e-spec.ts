@@ -3,14 +3,13 @@ import { ProofOfConceptPage } from './app.po';
 
 describe('proof-of-concept App', () => {
   let page: ProofOfConceptPage;
-  let text: String;
+  const telephoneNumber: String = '1300 032 032';
 
   beforeEach(() => {
     page = new ProofOfConceptPage();
-    text = '1300 032 032';
   });
 
-  it('check telephone number is "1300 032 032"', done => {
+  it(`should display telephone number "${telephoneNumber}" on home page`, done => {
     page.navigateTo();
 
     // disable waiting for Angular to finish page changes since the Carousel on the homepage will not finish
@@ -19,7 +18,7 @@ describe('proof-of-concept App', () => {
     browser.waitForAngularEnabled(false);
 
     page.getCustomerInfo()
-      .then(msg => expect(msg).toEqual(text))
+      .then(msg => expect(msg).toEqual(telephoneNumber))
       .then(done, done.fail);
   });
 });
