@@ -5,7 +5,7 @@ export const environment = {
     'categories/Specials',
     'createUser'
   ],
-  icmBaseURL: 'http://192.168.99.100:8081',
+  icmBaseURL: 'http://10.0.79.1:81',
   icmApplication: 'inSPIRED-inTRONICS-Site',
 
   locales: [

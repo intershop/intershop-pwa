@@ -29,12 +29,10 @@ export class SelectCountryComponent extends FormElementComponent implements OnIn
   /*
     set default values for empty input parameters
   */
-  protected setDefaultValues() {
-    if (!this.controlName) { this.controlName = 'country'; }
-    if (!this.label) { this.label = 'Country'; }     // ToDo: Translation key
-    if (!this.errorMessages) {
-      this.errorMessages = { 'required': 'Please select a country' };  // ToDo: Translation key
-    }
+  private setDefaultValues() {
+    this.controlName = this.controlName || 'country';
+    this.label = this.label || 'Country';      // ToDo: Translation key
+    this.errorMessages = this.errorMessages || { 'required': 'Please select a country' };  // ToDo: Translation key
   }
 
   // get countries

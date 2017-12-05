@@ -21,9 +21,6 @@ export class SelectComponent extends FormElementComponent implements OnInit {
     // tslint:disable-next-line:ban
     super.ngOnInit();
 
-    // set default values for empty component parameters
-    super.setDefaultValues();
-
     // determine / translate label
     this.determineLabel();
 
