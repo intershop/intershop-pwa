@@ -9,7 +9,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
-import { FormElementComponent } from './components/form-controls/form-element/form-element.component';
 import { InputComponent } from './components/form-controls/input/input.component';
 import { SelectComponent } from './components/form-controls/select/select.component';
 import { FormControlErrorComponent } from './components/global-form-validation/form-control-error.component';
@@ -50,7 +49,6 @@ import { FormValidationDirective } from './directives/form-validation.directive'
     FormGroupValidationComponent,
     FormControlErrorComponent,
     FormValidationDirective,
-    FormElementComponent,
     InputComponent,
     SelectComponent,
     BreadcrumbComponent

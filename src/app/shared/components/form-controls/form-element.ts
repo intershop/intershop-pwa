@@ -1,18 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-@Component({
-  template: ``
-})
-export class FormElementComponent implements OnInit {
+export class FormElement {
   @Input() form: FormGroup;             // required
   @Input() controlName: string;         // required
   @Input() errorMessages: any;
   @Input() label: string;               // localization key or a string
   @Input() labelClass = 'col-sm-4';
   @Input() inputClass = 'col-sm-8';
-  @Input() formName  = 'form';          // should be set, if the same form exists twice on one page in order to have unique ids, ToDo: is there any other possibility to get an id
+  @Input() formName = 'form';          // should be set, if the same form exists twice on one page in order to have unique ids, ToDo: is there any other possibility to get an id
   @Input() markRequiredLabel = 'auto';  /* values: 'auto' (default) - label is marked, if an required validator is set
                                                   'on' (label is always marked as required),
                                                   'off' (label is never marked as required) */
@@ -21,7 +18,7 @@ export class FormElementComponent implements OnInit {
     protected translate: TranslateService
   ) { }
 
-  ngOnInit() {
+  init() {
     if (!this.form) {
       throw new Error('required input parameter <form> is missing for FormElementComponent');
     }

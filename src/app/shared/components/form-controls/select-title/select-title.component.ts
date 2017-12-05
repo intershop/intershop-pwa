@@ -1,15 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElementComponent } from '../form-element/form-element.component';
+import { FormElement } from '../form-element';
 import { SelectOption } from '../select/select.component';
 
 @Component({
   selector: 'is-select-title',
   templateUrl: './select-title.component.html'
 })
-export class SelectTitleComponent extends FormElementComponent implements OnInit {
-
+export class SelectTitleComponent extends FormElement implements OnInit {
   @Input() countryCode: string; // component will only be rendered if set
 
   constructor(
@@ -20,10 +19,7 @@ export class SelectTitleComponent extends FormElementComponent implements OnInit
 
   ngOnInit() {
     this.setDefaultValues();
-
-    // tslint:disable-next-line:ban
-    super.ngOnInit();
-
+    super.init();
   }
 
   /*
