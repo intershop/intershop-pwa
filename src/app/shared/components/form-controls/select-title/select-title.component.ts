@@ -29,12 +29,10 @@ export class SelectTitleComponent extends FormElementComponent implements OnInit
   /*
    set default values for empty input parameters
  */
-  protected setDefaultValues() {
-    if (!this.controlName) { this.controlName = 'title'; }
-    if (!this.label) { this.label = 'Salutation'; }     // ToDo: Translation key
-    if (!this.errorMessages) {
-      this.errorMessages = { 'required': 'Please select a salutation' };  // ToDo: Translation key
-    }
+  private setDefaultValues() {
+    this.controlName = this.controlName || 'title';
+    this.label = this.label || 'Salutation';      // ToDo: Translation key
+    this.errorMessages = this.errorMessages || { 'required': 'Please select a salutation' };  // ToDo: Translation key
   }
 
   // get titles for the country of the address form

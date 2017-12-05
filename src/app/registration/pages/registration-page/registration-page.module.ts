@@ -6,8 +6,10 @@ import { SharedModule } from '../../../shared/shared.module';
 import { AddressComponent } from './address/address.component';
 import { CaptchaComponent } from './captcha/captcha.component';
 import { EmailPasswordComponent } from './email-password/email-password.component';
+import { RegistrationCredentialsFormComponent } from './registration-credentials-form/registration-credentials-form.component';
 import { RegistrationPageComponent } from './registration-page.component';
 import { registrationPageRoutes } from './registration-page.routes';
+import { RegistrationPersonalFormComponent } from './registration-personal-form/registration-personal-form.component';
 
 
 @NgModule({
@@ -17,7 +19,7 @@ import { registrationPageRoutes } from './registration-page.routes';
     SharedModule,
     FormsModule
   ],
-  declarations: [RegistrationPageComponent, CaptchaComponent, EmailPasswordComponent, AddressComponent],
+  declarations: [RegistrationPageComponent, CaptchaComponent, EmailPasswordComponent, AddressComponent, RegistrationCredentialsFormComponent, RegistrationPersonalFormComponent],
   providers: []
 })
 

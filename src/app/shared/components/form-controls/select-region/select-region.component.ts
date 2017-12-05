@@ -32,11 +32,9 @@ export class SelectRegionComponent extends FormElementComponent implements OnIni
     set default values for empty input parameters
   */
   protected setDefaultValues() {
-    if (!this.controlName) { this.controlName = 'state'; }
-    if (!this.label) { this.label = 'State/Province'; }     // ToDo: Translation key
-    if (!this.errorMessages) {
-      this.errorMessages = { 'required': 'Please select a region' };  // ToDo: Translation key
-    }
+    this.controlName = this.controlName = 'state';
+    this.label = this.label || 'State/Province';      // ToDo: Translation key
+    this.errorMessages = this.errorMessages || { 'required': 'Please select a region' };  // ToDo: Translation key
   }
 
   // get states for the given country

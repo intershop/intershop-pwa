@@ -15,8 +15,9 @@ describe('RegistrationPage Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RegistrationPageComponent,
-        MockComponent({ selector: 'is-email-password', template: 'Email Template' }),
+        MockComponent({ selector: 'is-registration-credentials-form', template: 'Credentials Template', inputs: ['parentForm'] }),
         MockComponent({ selector: 'is-address-form', template: 'Address Template', inputs: ['parentForm'] }),
+        MockComponent({ selector: 'is-registration-personal-form', template: 'Personal Template', inputs: ['parentForm'] }),
         MockComponent({ selector: 'is-captcha', template: 'Captcha Template' }),
       ],
       providers: [
@@ -48,9 +49,10 @@ describe('RegistrationPage Component', () => {
 
   it('should check if controls are getting rendered on the page', () => {
     expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');
-    expect(element.getElementsByTagName('is-email-password')[0].innerHTML).toEqual('Email Template');
-    expect(element.getElementsByTagName('is-captcha')[0].innerHTML).toEqual('Captcha Template');
+    expect(element.getElementsByTagName('is-registration-credentials-form')[0].innerHTML).toEqual('Credentials Template');
     expect(element.getElementsByTagName('is-address-form')[0].innerHTML).toEqual('Address Template');
+    expect(element.getElementsByTagName('is-registration-personal-form')[0].innerHTML).toEqual('Personal Template');
+    expect(element.getElementsByTagName('is-captcha')[0].innerHTML).toEqual('Captcha Template');
   });
 
 });
