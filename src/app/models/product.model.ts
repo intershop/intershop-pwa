@@ -31,7 +31,7 @@ export class Product {
   variationAttributes?: Attribute[];
   enableExpressShop: boolean;
   richSnippetsEnabled: boolean;
-  ShowProductRating: boolean;
+  showProductRating: boolean;
   showAddToCart: boolean;
   totalRatingCount: number;
   simpleRatingView: boolean;
@@ -39,7 +39,7 @@ export class Product {
   isRetailSet: boolean;
   displayType: string;
   applicablePromotions: any[];
-  name_override: string;
+  nameOverride: string;
   showInformationalPrice: boolean;
   isEndOfLife: boolean;
   id: string;

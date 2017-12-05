@@ -7,12 +7,12 @@ import { AddressComponent } from './address/address.component';
 import { CaptchaComponent } from './captcha/captcha.component';
 import { EmailPasswordComponent } from './email-password/email-password.component';
 import { RegistrationPageComponent } from './registration-page.component';
-import { RegistrationPageRoute } from './registration-page.routes';
+import { registrationPageRoutes } from './registration-page.routes';
 
 
 @NgModule({
   imports: [
-    RouterModule.forChild(RegistrationPageRoute),
+    RouterModule.forChild(registrationPageRoutes),
     RecaptchaModule.forRoot(),
     SharedModule,
     FormsModule
