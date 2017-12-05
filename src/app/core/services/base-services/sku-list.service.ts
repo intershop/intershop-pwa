@@ -12,18 +12,18 @@ export abstract class SKUListService extends GlobalStateAwareService<string[]> {
   }
 
   containsSKU(sku: string): boolean {
-    return !!_.find(this.value, (item) => item === sku);
+    return !!_.find(this.getValue(), (item) => item === sku);
   }
 
   addSKU(sku: string): void {
-    const list = this.value || [];
+    const list = this.getValue() || [];
     list.push(sku);
     this.next(list);
   }
 
   removeSKU(sku: string): void {
-    if (!!this.value) {
-      const list = this.value.filter(value => value !== sku);
+    if (!!this.getValue()) {
+      const list = this.getValue().filter(value => value !== sku);
       this.next(list);
     }
   }

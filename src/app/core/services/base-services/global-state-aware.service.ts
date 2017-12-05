@@ -36,7 +36,7 @@ export abstract class GlobalStateAwareService<T> {
     }
   }
 
-  get value(): T {
+  getValue(): T {
     return this.subject.value;
   }
 

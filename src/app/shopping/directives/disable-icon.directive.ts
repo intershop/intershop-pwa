@@ -36,7 +36,7 @@ export class DisableIconDirective {
     }
 
     service.subscribe(this.update);
-    this.update(service.value);
+    this.update(service.getValue());
   }
 }
 
