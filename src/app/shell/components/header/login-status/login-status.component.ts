@@ -32,5 +32,6 @@ export class LoginStatusComponent implements OnInit {
   logout() {
     this.accountLoginService.logout();
     this.router.navigate(['/home']);
+    return false;
   }
 }

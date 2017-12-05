@@ -1,13 +1,23 @@
-<a [routerLink]="isLoggedIn ? ['/accountOverview'] : ['/login']" [attr.data-testing-id]="isLoggedIn?'link-myaccount' : null"
-  [attr.rel]="isLoggedIn ? null : 'nofollow'" [ngClass]="isLoggedIn? 'my-account-link' : 'my-account-links my-account-login'">
-  <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
-  <span class="hidden-xs" *ngIf="!(isLoggedIn && !userDetail?.lastName)" [ngClass]="userDetail?.lastName && isLoggedIn? 'login-name':''">{{userDetail?.lastName && isLoggedIn? (userDetail?.firstName + ' ' + userDetail?.lastName):'account.login.link' | translate}}</span>
-  <span *ngIf="isLoggedIn" class="hidden-xs">{{'account.login_status.myaccount.link' | translate}}</span>
-</a>
-<span class="hidden-xs seperator">&#124; </span>
-<a [routerLink]="userDetail?.lastName && isLoggedIn ? ['/logout'] : ['/register']"
-  [attr.data-testing-id]="isLoggedIn?'link-logout' : null" [attr.rel]="isLoggedIn ?  null : 'nofollow'" [attr.data-testing-id]="isLoggedIn?'link-logout' : null"
-  [attr.rel]="isLoggedIn ?  null : 'nofollow'" [ngClass]="isLoggedIn? 'my-account-link my-account-logout' : 'ish-siteHeader-myAccountUtilitiesMenu-myAccount-register'"
-  (click)="(userDetail?.lastName || userDetail?.email)  && isLoggedIn? logout() : null ; false">
-  <span class="hidden-xs">{{isLoggedIn? ('account.logout.link' | translate) : ('account.register.link' | translate)}}</span>
-</a>
+<!-- logged in -->
+<ng-template [ngIf]="isLoggedIn" [ngIfElse]="notLoggedIn" >
+  <a [routerLink]="['/accountOverview']" attr.data-testing-id="link-myaccount" class="my-account-link">
+    <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
+    <span *ngIf="userDetail?.lastName" class="hidden-xs login-name">{{userDetail?.firstName + ' ' + userDetail?.lastName}}</span>
+    <span class="hidden-xs">{{'account.login_status.myaccount.link' | translate}}</span>
+  </a>
+  <span class="hidden-xs seperator">&#124; </span>
+  <a [routerLink]="['/logout']" class="my-account-link my-account-logout" attr.data-testing-id="link-logout" (click)="logout();">
+    <span class="hidden-xs">{{'account.logout.link' | translate}}</span>
+  </a>
+</ng-template>
+<!-- not logged in -->
+<ng-template #notLoggedIn>
+  <a [routerLink]="['/login']" class="my-account-links my-account-login" attr.rel="nofollow">
+    <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
+    <span class="hidden-xs">{{'account.login.link' | translate}}</span>
+  </a>
+  <span class="hidden-xs seperator">&#124; </span>
+  <a [routerLink]="['/register']" attr.rel="nofollow" class="ish-siteHeader-myAccountUtilitiesMenu-myAccount-register">
+    <span class="hidden-xs">{{'account.register.link' | translate}}</span>
+  </a>
+</ng-template>
