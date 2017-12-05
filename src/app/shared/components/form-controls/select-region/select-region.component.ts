@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Region } from '../../../../models/region.model';
 import { RegionService } from '../../../services/countries/region.service';
-import { FormElementComponent } from '../form-element/form-element.component';
+import { FormElement } from '../form-element';
 import { SelectOption } from '../select/select.component';
 
 @Component({
@@ -10,8 +10,7 @@ import { SelectOption } from '../select/select.component';
   templateUrl: './select-region.component.html',
   providers: [RegionService]
 })
-export class SelectRegionComponent extends FormElementComponent implements OnInit {
-
+export class SelectRegionComponent extends FormElement implements OnInit {
   @Input() countryCode: string; // required: component will only be rendered if set
 
   constructor(
@@ -22,10 +21,8 @@ export class SelectRegionComponent extends FormElementComponent implements OnIni
   }
 
   ngOnInit() {
-    this.setDefaultValues(); // call this method before parent ngOnInit
-
-    // tslint:disable-next-line:ban
-    super.ngOnInit();
+    this.setDefaultValues(); // call this method before parent init
+    super.init();
   }
 
   /*
