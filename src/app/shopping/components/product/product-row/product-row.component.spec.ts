@@ -28,7 +28,7 @@ describe('Product Row Component', () => {
   let accountLoginServiceMock: AccountLoginService;
   let location: Location;
 
-  const ProductList = [
+  const productList = [
     {
       Cameras: [
         {
@@ -141,7 +141,7 @@ describe('Product Row Component', () => {
 
           'enableExpressShop': true,
           'richSnippetsEnabled': true,
-          'ShowProductRating': true,
+          'showProductRating': true,
           'showAddToCart': true,
           'totalRatingCount': 2,
           'simpleRatingView': true,
@@ -208,7 +208,7 @@ describe('Product Row Component', () => {
 
   it('should modify mockData when received', () => {
     environment.needMock = false;
-    component.mockData = ProductList[0].Cameras[0];
+    component.mockData = productList[0].Cameras[0];
     fixture.detectChanges();
     expect(component.mockData).not.toBeNull();
     environment.needMock = false;
@@ -216,14 +216,14 @@ describe('Product Row Component', () => {
 
   it('should call service when item added to compare', () => {
     environment.needMock = false;
-    component.mockData = ProductList[0].Cameras[0];
+    component.mockData = productList[0].Cameras[0];
     component.addToCompare();
     verify(productCompareServiceMock.addSKU(anything())).once();
   });
 
   it('should call service when added to cart', () => {
     environment.needMock = false;
-    component.mockData = ProductList[0].Cameras[0];
+    component.mockData = productList[0].Cameras[0];
     component.addToCart();
     verify(cartStatusServiceMock.addSKU(anything())).once();
   });
@@ -246,7 +246,7 @@ describe('Product Row Component', () => {
   ));
 
   it('should set averageRatingClass based on averageRating passed', () => {
-    component.mockData = ProductList[0].Cameras[0];
+    component.mockData = productList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.averagRating = 0.5;
     component.calculateAverageRating();
@@ -275,7 +275,7 @@ describe('Product Row Component', () => {
 
 
   it('should set finalPrice,greaterPrice,displayCondition and oldPrice based on mockData', () => {
-    component.mockData = ProductList[0].Cameras[0];
+    component.mockData = productList[0].Cameras[0];
     fixture.detectChanges();
     component.mockData.showInformationalPrice = true;
     component.mockData.isEndOfLife = false;
@@ -330,7 +330,7 @@ describe('Product Row Component', () => {
   });
 
   it('should test if the tags are getting rendered', () => {
-    component.mockData = ProductList[0].Cameras[0];
+    component.mockData = productList[0].Cameras[0];
     fixture.detectChanges();
     expect(element.getElementsByTagName('img')).toBeTruthy();
     const elem = element.getElementsByClassName('rating-display clearfix');
