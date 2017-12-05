@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ts-node node_modules/tslint/bin/tslint --project ./src/tsconfig.spec.json --type-check --format stylish",
+    "lint": "ts-node node_modules/tslint/bin/tslint --project ./tsconfig.tslint.json --format stylish",
     "e2e": "ng e2e",
     "build:client-and-server-bundles": "ng build --aot --progress=false && ng build --aot --app 1 --output-hashing=false --progress=false",
     "build:client-and-server-bundles:prod": "ng build --prod --progress=false && ng build --prod --app 1 --output-hashing=false --progress=false",

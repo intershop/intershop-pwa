@@ -10,8 +10,6 @@ import { enableProdMode } from '@angular/core';
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
-// Express Engine
-import { ngExpressEngine } from '@nguniversal/express-engine';
 // Import module map for lazy loading
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
