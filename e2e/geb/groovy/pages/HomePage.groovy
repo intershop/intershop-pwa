@@ -16,9 +16,9 @@ class HomePage extends StorefrontPage
 
     static content =
     {
-        signInLink(required:false){$("a",class:"my-account-links my-account-login")}
+        signInLink(required:false){$("a",class:"my-account-link my-account-login")}
         catalogBar {$("ul",class:contains("navbar-nav"))}
-        registerLink {$("a",class:"ish-siteHeader-myAccountUtilitiesMenu-myAccount-register")}
+        registerLink {$("a",class:"my-account-link my-account-register")}
         logoutLink {$("a",class:"my-account-link my-account-logout")}
 
     }
