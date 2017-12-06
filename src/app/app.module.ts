@@ -61,6 +61,6 @@ export class AppModule {
 
     const currentLang = environment.locales[0];
     translateService.setDefaultLang(currentLang.lang);
-    currentLocaleService.setLang(currentLang);
+    currentLocaleService.setValue(currentLang);
   }
 }

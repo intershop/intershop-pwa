@@ -174,9 +174,9 @@ describe('Product Row Component', () => {
 
   beforeEach(async(() => {
     productCompareServiceMock = mock(ProductCompareService);
-    when(productCompareServiceMock.current).thenReturn([]);
+    when(productCompareServiceMock.getValue()).thenReturn([]);
     cartStatusServiceMock = mock(CartStatusService);
-    when(cartStatusServiceMock.current).thenReturn([]);
+    when(cartStatusServiceMock.getValue()).thenReturn([]);
     wishListServiceMock = mock(WishListService);
     accountLoginServiceMock = mock(AccountLoginService);
     TestBed.configureTestingModule({
