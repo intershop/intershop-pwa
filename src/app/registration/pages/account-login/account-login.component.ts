@@ -34,14 +34,11 @@ export class AccountLoginComponent implements OnInit {
       this.isLoggedIn = this.accountLoginService.isAuthorized();
     });
 
-    this.globalConfiguration.getApplicationSettings().subscribe(data => {
-      if (data) {
-        this.userRegistrationLoginType = data.userRegistrationLoginType;
-      }
-      this.loginForm = this.formBuilder.group({
-        userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : Validators.nullValidator)])]],
-        password: ['', Validators.required]
-      });
+    this.userRegistrationLoginType = this.globalConfiguration.getApplicationSettings().userRegistrationLoginType || 'email';
+
+    this.loginForm = this.formBuilder.group({
+      userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : Validators.nullValidator)])]],
+      password: ['', Validators.required]
     });
 
     if (this.router.url.indexOf('register') > -1) {

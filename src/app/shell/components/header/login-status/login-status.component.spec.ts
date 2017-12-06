@@ -2,7 +2,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
 import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
@@ -27,7 +26,7 @@ describe('Login Status Component', () => {
     when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: Customer) => void) => callback(userData as Customer));
 
     globalConfigurationMock = mock(GlobalConfiguration);
-    when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(false));
+    when(globalConfigurationMock.getApplicationSettings()).thenReturn(false);
 
     routerMock = mock(Router);
 

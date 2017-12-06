@@ -30,7 +30,7 @@ describe('Simple Registration Component', () => {
     globalConfigurationMock = mock(GlobalConfiguration);
     accountLoginServiceMock = mock(AccountLoginService);
 
-    when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of(accountSettings));
+    when(globalConfigurationMock.getApplicationSettings()).thenReturn(accountSettings);
     when(accountLoginServiceMock.createUser(anything())).thenReturn(Observable.of(new Customer()));
 
     TestBed.configureTestingModule({
