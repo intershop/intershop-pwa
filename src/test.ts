@@ -15,6 +15,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from './environments/environment';
+import { NEED_MOCK, MUST_MOCK_PATHS } from './app/core/configurations/injection-keys';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare const __karma__: any;
@@ -28,7 +29,10 @@ beforeEach(() => {
   environment.needMock = true;
   getTestBed().initTestEnvironment(
     BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting()
+    platformBrowserDynamicTesting([
+      { provide: NEED_MOCK, useValue: true },
+      { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] }
+    ])
   );
 });
 afterEach(() => {

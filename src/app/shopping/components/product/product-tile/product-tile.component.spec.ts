@@ -6,7 +6,6 @@ import { ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { environment } from '../../../../../environments/environment';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
 import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
@@ -207,22 +206,18 @@ describe('Product Tile Component', () => {
   });
 
   it('should modify mockData when received', () => {
-    environment.needMock = false;
     component.mockData = productList[0].Cameras[0];
     fixture.detectChanges();
     expect(component.mockData).not.toBeNull();
-    environment.needMock = false;
   });
 
   it('should call service when item added to compare', () => {
-    environment.needMock = false;
     component.mockData = productList[0].Cameras[0];
     component.addToCompare();
     verify(productCompareServiceMock.addSKU(anything())).once();
   });
 
   it('should call service when added to cart', () => {
-    environment.needMock = false;
     component.mockData = productList[0].Cameras[0];
     component.addToCart();
     verify(cartStatusServiceMock.addSKU(anything())).once();
