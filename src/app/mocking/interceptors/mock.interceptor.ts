@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../../environments/environment';
+import { MUST_MOCK_PATHS, NEED_MOCK } from '../../core/configurations/injection-keys';
 import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
@@ -10,7 +10,9 @@ const MOCK_DATA_ROOT = './assets/mock-data';
 export class MockInterceptor implements HttpInterceptor {
 
   constructor(
-    @Inject(REST_ENDPOINT) private restEndpoint: string
+    @Inject(REST_ENDPOINT) private restEndpoint: string,
+    @Inject(NEED_MOCK) private needMock: boolean,
+    @Inject(MUST_MOCK_PATHS) private mustMockPaths: string[]
   ) { }
 
   /**
@@ -84,7 +86,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   private pathHasToBeMocked(path: string): boolean {
-    return environment.needMock || this.matchPath(path, environment['mustMockPaths']);
+    return this.needMock || this.matchPath(path, this.mustMockPaths);
   }
 
   private removeQueryStringParameter(path: string): string {
