@@ -71,9 +71,9 @@
   </div>
   <form *ngIf="mockData.showAddToCart" method="post" action="javascript:void(0)" name="">
     <input *ngIf="!mockData.isRetailSet" type="hidden" name="SKU" [value]="mockData.sku">
-    <ng-container *ngIf="true; else bundleInformationTemplate">
+    <ng-template [ngIf]="true" [ngIfElse]="bundleInformationTemplate">
       <input type="hidden" name="SKU" [value]="mockData.sku" />
-    </ng-container>
+    </ng-template>
     <ng-template #bundleInformationTemplate>
       <ng-container *ngFor="let retailSetProduct of mockData.bundledProductBOs">
         <input *ngIf="retailSetProduct.online" type="hidden" name="SKU" value="retailSetProduct.sku" />

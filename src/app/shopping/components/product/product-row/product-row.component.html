@@ -75,16 +75,20 @@
           <!--  ISProductPrice.ISML END-->
 
           <ng-container *ngIf="mockData.inStock">
-            <div *ngIf="mockData.isEndOfLife; else lifeRemainsTemplate" class="product-lifecycle-status">
-              <span class="product-lifecycle-status-title">Not available</span>
-              <span>The product cannot be currently ordered.</span>
-            </div>
+            <ng-template [ngIf]="mockData.isEndOfLife" [ngIfElse]="lifeRemainsTemplate">
+              <div class="product-lifecycle-status">
+                <span class="product-lifecycle-status-title">Not available</span>
+                <span>The product cannot be currently ordered.</span>
+              </div>
+            </ng-template>
             <ng-template #lifeRemainsTemplate>
-              <ng-container *ngIf="mockData.getLastOrderDate; else endOflifeTemplate">
-                <div *ngIf="mockData.lastOrderDate; else canOrderTemplate" class="product-lifecycle-status">
-                  <span class="product-lifecycle-status-title">Not available</span>
-                  <span>The product cannot be currently ordered.</span>
-                </div>
+              <ng-template [ngIf]="mockData.getLastOrderDate" [ngIfElse]="endOflifeTemplate">
+                <ng-template [ngIf]="mockData.lastOrderDate" [ngIfElse]="canOrderTemplate">
+                  <div class="product-lifecycle-status">
+                    <span class="product-lifecycle-status-title">Not available</span>
+                    <span>The product cannot be currently ordered.</span>
+                  </div>
+                </ng-template>
                 <ng-template #canOrderTemplate>
                   <div class="product-lifecycle-status">
                     <span class="product-lifecycle-status-title">Last Order Date</span>
@@ -94,7 +98,7 @@
                 <div *ngIf="mockData.getEndOfLife" class="product-end-of-live-status">
                   <span>The support for this product ends at {{isEndOfLife}} /></span>
                 </div>
-              </ng-container>
+              </ng-template>
               <ng-container #endOflifeTemplate>
                 <div *ngIf="mockData.getEndOfLife" class="product-end-of-live-status">
                   <span>The support for this product ends at {{isEndOfLife}} /></span>
@@ -112,9 +116,9 @@
           </div>
           <form method="post" name="productForm_{{mockData.sku}}" action="" method="post" class="product-form bv-form form-horizontal"
             novalidate="novalidate">
-            <ng-container *ngIf="true; else bundleInformationTemplate">
+            <ng-template [ngIf]="true" [ngIfElse]="bundleInformationTemplate">
               <input type="hidden" name="SKU" [value]="mockData.sku" />
-            </ng-container>
+            </ng-template>
             <ng-template #bundleInformationTemplate>
               <ng-container *ngFor="let retailSetProduct of mockData.bundledProductBOs">
                 <input *ngIf="retailSetProduct.online" type="hidden" name="SKU" value="retailSetProduct.sku" />
