@@ -4,7 +4,6 @@ import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieModule } from 'ngx-cookie';
-import { environment } from '../environments/environment';
 import { AccountRoutingModule } from './account/account-routing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +17,9 @@ import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
 import { RegistrationRoutingModule } from './registration/registration-routing.module';
 import { ShellModule } from './shell/shell.module';
 import { ShoppingRoutingModule } from './shopping/shopping-routing.module';
+
+// tslint:disable-next-line: do-not-import-environment
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
