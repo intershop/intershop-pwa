@@ -28,7 +28,7 @@ export class LanguageSwitchComponent implements OnInit {
   }
 
   languageChange(locale) {
-    this.currentLocaleService.setLang(locale);
+    this.currentLocaleService.setValue(locale);
     return false; // prevent actual navigation, only change localized values on the current page and set language state
   }
 }

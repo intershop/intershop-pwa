@@ -29,13 +29,13 @@ describe('AccountLogin Service', () => {
       loggedInDetail = data;
     });
 
-    verify(userDetailService.setUserDetail(anything())).called();
+    verify(userDetailService.setValue(anything())).called();
     expect(loggedInDetail).not.toBe({ authorized: true });
   });
 
   it('should destroy token when user logs out', () => {
     accountLoginService.logout();
-    verify(userDetailService.setUserDetail(null)).called();
+    verify(userDetailService.setValue(null)).called();
   });
 
   it('should return error message when wrong credentials are entered', () => {

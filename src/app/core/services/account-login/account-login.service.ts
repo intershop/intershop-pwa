@@ -29,7 +29,7 @@ export class AccountLoginService implements IAccountLoginService {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
     return this.apiService.get('customers/-', null, headers).map((data) => {
       if ((typeof (data) === 'object')) {
-        this.userDetailService.setUserDetail(data);
+        this.userDetailService.setValue(data);
       }
       return data;
     });
@@ -40,7 +40,7 @@ export class AccountLoginService implements IAccountLoginService {
    */
   createUser(userDetails): Observable<Customer> {
     return this.apiService.post('createUser', userDetails).map(data => {
-      this.userDetailService.setUserDetail(data);
+      this.userDetailService.setValue(data);
       return data;
     });
   }
@@ -58,7 +58,7 @@ export class AccountLoginService implements IAccountLoginService {
   * @returns void
   */
   logout(): void {
-    this.userDetailService.setUserDetail(null);
+    this.userDetailService.setValue(null);
   }
 
   subscribe(callback: (userDetail: Customer) => void) {
