@@ -23,7 +23,7 @@ describe('DisableIconDirective', () => {
 
   beforeEach(async(() => {
     productCompareServiceMock = mock(ProductCompareService);
-    when(productCompareServiceMock.current).thenReturn([]);
+    when(productCompareServiceMock.getValue()).thenReturn([]);
 
     TestBed.configureTestingModule({
       declarations: [DisableIconDirective, MockComponent],
@@ -45,7 +45,7 @@ describe('DisableIconDirective', () => {
   });
 
   it('should add is-selected class when current element in list', () => {
-    when(productCompareServiceMock.current).thenReturn(['123']);
+    when(productCompareServiceMock.getValue()).thenReturn(['123']);
     const div = fixture.nativeElement.firstElementChild;
     fixture.detectChanges();
     expect(div.className).toBe('is-selected');

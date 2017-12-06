@@ -17,7 +17,7 @@ describe('AccountLogin Service', () => {
   const apiServiceMock = mock(ApiService);
 
   beforeEach(() => {
-    when(userDetailService.current).thenReturn(userData as Customer);
+    when(userDetailService.getValue()).thenReturn(userData as Customer);
     accountLoginService = new AccountLoginService(instance(userDetailService), instance(apiServiceMock));
   });
 
@@ -29,13 +29,13 @@ describe('AccountLogin Service', () => {
       loggedInDetail = data;
     });
 
-    verify(userDetailService.setUserDetail(anything())).called();
+    verify(userDetailService.setValue(anything())).called();
     expect(loggedInDetail).not.toBe({ authorized: true });
   });
 
   it('should destroy token when user logs out', () => {
     accountLoginService.logout();
-    verify(userDetailService.setUserDetail(null)).called();
+    verify(userDetailService.setValue(null)).called();
   });
 
   it('should return error message when wrong credentials are entered', () => {
@@ -51,7 +51,7 @@ describe('AccountLogin Service', () => {
   });
 
   it('should return false when user is unauthorized', () => {
-    when(userDetailService.current).thenReturn(null);
+    when(userDetailService.getValue()).thenReturn(null);
     const result = accountLoginService.isAuthorized();
     expect(result).toBe(false);
   });

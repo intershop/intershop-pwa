@@ -11,7 +11,7 @@ export class CurrentLocaleService extends GlobalStateAwareService<any> {
     super('currentLocale', false, false);
   }
 
-  setLang(lang: any) {
+  setValue(lang: any) {
     this.translateService.use(lang.lang);
     this.next(lang);
   }
