@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieModule } from 'ngx-cookie';
@@ -55,12 +55,9 @@ import { environment } from '../environments/environment';
 export class AppModule {
 
   constructor(
-    @Inject(PLATFORM_ID) platformId,
     translateService: TranslateService,
     currentLocaleService: CurrentLocaleService
   ) {
-    environment.platformId = platformId;
-
     const currentLang = environment.locales[0];
     translateService.setDefaultLang(currentLang.lang);
     currentLocaleService.setValue(currentLang);
