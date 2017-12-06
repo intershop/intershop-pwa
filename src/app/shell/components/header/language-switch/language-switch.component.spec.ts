@@ -34,7 +34,7 @@ describe('Language Switch Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fixture.detectChanges();
-    TestBed.get(CurrentLocaleService).setLang(findLang('en'));
+    TestBed.get(CurrentLocaleService).setValue(findLang('en'));
   });
 
   it('should be created', () => {

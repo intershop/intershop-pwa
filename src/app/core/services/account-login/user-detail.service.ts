@@ -12,7 +12,7 @@ export class UserDetailService extends GlobalStateAwareService<Customer> {
     super('currentUserDetail', true, true, null, cookieService);
   }
 
-  setUserDetail(newUserDetail: Customer): void {
+  setValue(newUserDetail: Customer): void {
     this.next(newUserDetail);
   }
 }
