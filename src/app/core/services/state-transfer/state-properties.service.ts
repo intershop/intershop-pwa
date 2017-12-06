@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { StateKey } from '@angular/platform-browser/src/browser/transfer_state';
+// tslint:disable-next-line: do-not-import-environment
 import { environment } from '../../../../environments/environment';
 
 export const ICM_BASE_URL_SK = makeStateKey<string>('icmBaseURL');

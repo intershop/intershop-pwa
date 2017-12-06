@@ -13,6 +13,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
+// tslint:disable-next-line: do-not-import-environment
 import { environment } from './environments/environment';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
