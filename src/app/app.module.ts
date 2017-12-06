@@ -7,7 +7,7 @@ import { CookieModule } from 'ngx-cookie';
 import { AccountRoutingModule } from './account/account-routing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MUST_MOCK_PATHS, NEED_MOCK } from './core/configurations/injection-keys';
+import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK } from './core/configurations/injection-keys';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
@@ -46,6 +46,7 @@ import { environment } from '../environments/environment';
     { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
     { provide: NEED_MOCK, useValue: environment.needMock },
     { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
+    { provide: AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
