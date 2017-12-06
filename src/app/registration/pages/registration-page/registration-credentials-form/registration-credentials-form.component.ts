@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
 import { SelectOption } from '../../../../shared/components/form-controls/select/select.component';
-// import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
 import { SpecialValidators } from '../../../../shared/validators/special-validators';
 
 @Component({
@@ -13,18 +13,16 @@ import { SpecialValidators } from '../../../../shared/validators/special-validat
 export class RegistrationCredentialsFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
   credentialsForm: FormGroup;
-  emailOptIn = false;
+  emailOptIn: boolean;
 
   constructor(
     private fb: FormBuilder,                    // <--- inject FormBuilder
-    // private globalConfig: GlobalConfiguration
+    private globalConfig: GlobalConfiguration
   ) {
   }
 
   ngOnInit() {
-    // this.emailOptIn = this.globalConfig.getAccountSettings().emailOptIn;
-
-    this.emailOptIn = true;
+    this.emailOptIn = this.globalConfig.getApplicationSettings().emailOptIn || false;
     this.createForm();
   }
 
