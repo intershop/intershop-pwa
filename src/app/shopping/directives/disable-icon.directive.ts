@@ -1,5 +1,4 @@
 import { Directive, ElementRef, Injector, Input, Renderer2 } from '@angular/core';
-import * as _ from 'lodash';
 import { GlobalStateAwareService } from '../../core/services/base-services/global-state-aware.service';
 import { ProductCompareService } from '../../core/services/product-compare/product-compare.service';
 
@@ -18,7 +17,7 @@ export class DisableIconDirective {
 
   private update = compareListItems => {
     if (compareListItems) {
-      if (_.find(compareListItems, compareProduct => compareProduct === this.property)) {
+      if (compareListItems.find(compareProduct => compareProduct === this.property)) {
         this.renderer.addClass(this.el.nativeElement, 'is-selected');
       } else {
         this.renderer.removeClass(this.el.nativeElement, 'is-selected');

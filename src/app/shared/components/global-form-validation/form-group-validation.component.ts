@@ -1,7 +1,6 @@
 import { Component, ComponentFactoryResolver, ContentChild, HostBinding, Input, ViewContainerRef } from '@angular/core';
 import { FormControlName } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import * as _ from 'lodash';
 import { FormControlErrorComponent } from './form-control-error.component';
 
 @Component({
@@ -30,15 +29,20 @@ export class FormGroupValidationComponent {
   ) { }
 
   getErrorList() {
-    return _.reduce(this.formControlName.errors, (result, value, key) => {
+    const result = [];
+
+    if (!this.formControlName.errors) {
+      return result;
+    }
+
+    Object.keys(this.formControlName.errors).map((key) => {
       const localizedString = (this.errorMessages && key in this.errorMessages && this.errorMessages[key]) ? this.errorMessages[key] : this.formControlName.errors['customError'];
       if (localizedString) {
-        this.translate.get(localizedString).subscribe(data => {
-          result.push(data);
-        }).unsubscribe();
+        this.translate.get(localizedString).subscribe(data => { result.push(data); }).unsubscribe();
       }
-      return result;
-    }, []);
+    });
+
+    return result;
   }
   showError(errorList) {
     if (this.dynamicError) {
