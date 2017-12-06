@@ -14,12 +14,11 @@
     </div>
 
     <div class="col-sm-9">
-      <ng-container *ngIf="category.hasOnlineSubCategories; then categoryPage else familyPage"></ng-container>
-
-      <ng-template #categoryPage>
+      <!-- category with subcategories -->
+      <ng-template [ngIf]="category.hasOnlineSubCategories" [ngIfElse]="familyPage">
         <is-category-list [categories]="category.subCategories"></is-category-list>
       </ng-template>
-
+      <!-- category with products -->
       <ng-template #familyPage>
         <!-- TODO: Product List filter should be an own component -->
         <div class="filters-row row">
