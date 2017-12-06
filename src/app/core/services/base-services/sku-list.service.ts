@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { CookieService } from 'ngx-cookie';
 import { GlobalStateAwareService } from './global-state-aware.service';
 
@@ -12,7 +11,7 @@ export abstract class SKUListService extends GlobalStateAwareService<string[]> {
   }
 
   containsSKU(sku: string): boolean {
-    return !!_.find(this.getValue(), (item) => item === sku);
+    return !!this.getValue() && !!this.getValue().find((item) => item === sku);
   }
 
   addSKU(sku: string): void {

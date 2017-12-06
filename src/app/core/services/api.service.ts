@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -97,11 +96,11 @@ export class ApiService {
       return Observable.of(data);
     } else {
       let elements = data.elements ? data.elements : data;
-      if (!elements.length || !_.find(elements, ['type', 'Link'])) {
+      if (!elements || !elements.length || !elements.find(x => x.type === 'Link')) {
         return Observable.of(elements);
       }
       return forkJoin(this.getLinkUri(elements)).map(results => {
-        elements = _.map(elements, (item, key) => {
+        elements = elements.map((item, key) => {
           return results[key];
         });
         if (data.elements) {
@@ -120,7 +119,7 @@ export class ApiService {
    */
   getLinkUri(data: any[]): Observable<Object>[] {
     const uriList: Observable<Object>[] = [];
-    _.forEach(data, item => {
+    data.forEach(item => {
       if (item.type === 'Link' && item.uri) {
         // removes <site>/-;loc;cur/
         const linkUrl = (item.uri).replace(/inSPIRED-inTRONICS-Site\/-[^\/]*\//gi, '');
