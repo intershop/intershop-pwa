@@ -16,11 +16,22 @@ describe('Error code mapping service', () => {
         ErrorCodeMappingService
       ]
     });
-    when(translateService.get(anything(), anything())).thenReturn(Observable.of('mapped error tranlated string'));
+    when(translateService.get('account.register.password.extrainfo.message', anything())).thenCall((key, params) => {
+      if (params.hasOwnProperty('0')) {
+        return Observable.of('mapped error translated string with params');
+      } else {
+        return Observable.of('mapped error translated string');
+      }
+    });
   });
 
-  it('should return mapped error message when it is supplied by translate service', inject([ErrorCodeMappingService], (errorCodeMappingService: ErrorCodeMappingService) => {
+  it('should return mapped error message with parameter when it is supplied by translate service', inject([ErrorCodeMappingService], (errorCodeMappingService: ErrorCodeMappingService) => {
     const translatedMessage = errorCodeMappingService.getErrorMapping({ errorCode: 'Err001', parameter: [1] });
-    expect(translatedMessage).toBe('mapped error tranlated string');
+    expect(translatedMessage).toBe('mapped error translated string with params');
+  }));
+
+  it('should return mapped error message when it is supplied by translate service', inject([ErrorCodeMappingService], (errorCodeMappingService: ErrorCodeMappingService) => {
+    const translatedMessage = errorCodeMappingService.getErrorMapping({ errorCode: 'Err001' });
+    expect(translatedMessage).toBe('mapped error translated string');
   }));
 });
