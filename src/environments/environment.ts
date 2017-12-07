@@ -4,7 +4,6 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  platformId: '',
   production: false,
   needMock: true,
   icmBaseURL: 'http://localhost:4000',

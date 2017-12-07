@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 
@@ -6,9 +6,10 @@ import { GlobalStateAwareService } from '../base-services/global-state-aware.ser
 export class CurrentLocaleService extends GlobalStateAwareService<any> {
 
   constructor(
+    @Inject(PLATFORM_ID) platformId,
     private translateService: TranslateService
   ) {
-    super('currentLocale', false, false);
+    super(platformId, 'currentLocale', false, false);
   }
 
   setValue(lang: any) {

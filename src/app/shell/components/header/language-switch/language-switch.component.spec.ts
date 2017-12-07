@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { environment } from '../../../../../environments/environment';
+import { AVAILABLE_LOCALES } from '../../../../core/configurations/injection-keys';
 import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
 import { LanguageSwitchComponent } from './language-switch.component';
 
@@ -10,6 +10,7 @@ describe('Language Switch Component', () => {
   let fixture: ComponentFixture<LanguageSwitchComponent>;
   let component: LanguageSwitchComponent;
   let element: HTMLElement;
+  let locales: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -26,7 +27,7 @@ describe('Language Switch Component', () => {
   });
 
   function findLang(value: string) {
-    return environment.locales.find(l => l.value === value);
+    return locales.find(l => l.value === value);
   }
 
   beforeEach(() => {
@@ -34,6 +35,7 @@ describe('Language Switch Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fixture.detectChanges();
+    locales = TestBed.get(AVAILABLE_LOCALES);
     TestBed.get(CurrentLocaleService).setValue(findLang('en'));
   });
 

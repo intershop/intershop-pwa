@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
+import { AVAILABLE_LOCALES } from '../../../../core/configurations/injection-keys';
 import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
 
 @Component({
@@ -12,16 +12,15 @@ export class LanguageSwitchComponent implements OnInit {
 
   // TODO: is this default really a property of the language switch component or a global configuration
   lang: any;
-  localizationArray: any;
 
   constructor(
+    @Inject(AVAILABLE_LOCALES) public localizationArray,
     private currentLocaleService: CurrentLocaleService,
     public router: Router
   ) { }
 
   ngOnInit() {
     // TODO: discussion whether this information is coming from a service or is configured at development time
-    this.localizationArray = environment.locales;
     this.currentLocaleService.subscribe(locale => {
       this.lang = locale;
     });
