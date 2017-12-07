@@ -1,3 +1,9 @@
-<p>
-  registration-personal-form works!
-</p>
+<fieldset [formGroup]="parentForm">
+  <is-select-language
+    [form]="parentForm"
+  ></is-select-language>
+
+  <is-input-birthday
+    [form]="parentForm"
+  ></is-input-birthday>
+</fieldset>

@@ -27,6 +27,7 @@ export class RegistrationPageComponent implements OnInit {
   createForm() {
     this.registrationForm = this.fb.group({
       preferredLanguage: ['en_US', [Validators.required]],
+      birthday: ['']
     });
   }
 

@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
-import { SelectOption } from '../../../../shared/components/form-controls/select/select.component';
 import { SpecialValidators } from '../../../../shared/validators/special-validators';
 
 @Component({
@@ -46,33 +45,5 @@ export class RegistrationCredentialsFormComponent implements OnInit {
 
     // add newsletter check only if emailOptin = true
     this.parentForm.addControl('credentials', this.credentialsForm);
-  }
-
-  // get security questions
-  get securityQuestionOptions(): SelectOption[] {
-    let options: SelectOption[] = [];
-    const securityQuestions = this.getSecurityQuestions();
-
-    if (securityQuestions) {
-      // Map title array to an array of type SelectOption
-      options = securityQuestions.map(question => {
-        return {
-          'label': question,
-          'value': question
-        };
-      });
-    }
-    return options;
-  }
-
-  // define which security questions are shown - ToDo: should be done in a service
-  getSecurityQuestions() {
-    return [
-      'account.security_question.maiden_name.text',
-      'account.security_question.pet_name.text',
-      'account.security_question.street_name.text',
-      'account.security_question.elementary_school.text',
-      'account.security_question.first_employer.text'
-    ];
   }
 }
