@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class GlobalConfiguration {
   private accountSettings = {
     useSimpleAccount: false,
-    userRegistrationLoginType: 'email'
+    userRegistrationLoginType: 'email',
+    emailOptIn: true           // newsletter question on credentials form?
   };
   /**
    * returns applicationSettings
    * @returns Observable
    */
-  getApplicationSettings(): Observable<any> {
-    return Observable.of(this.accountSettings);
+  getApplicationSettings(): any {
+    return this.accountSettings;
   }
 }

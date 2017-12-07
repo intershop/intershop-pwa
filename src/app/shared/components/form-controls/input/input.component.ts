@@ -1,17 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElementComponent } from '../form-element/form-element.component';
+import { FormElement } from '../form-element';
 
 
 @Component({
   selector: 'is-input',
   templateUrl: './input.component.html'
 })
-export class InputComponent extends FormElementComponent implements OnInit {
-
-  @Input() type: string;        // values: 'text' (default), 'password', 'email'
-  @Input() maxlength: string;   // default: 60
+export class InputComponent extends FormElement implements OnInit {
+  @Input() type = 'text';        // values: 'text' (default), 'password', 'email'
+  @Input() maxlength = '60';
   @Input() autocomplete: string; /* values: 'on' (default for input type 'text' and 'email'),
                                            'off' (default for input type 'password') */
 
@@ -22,8 +21,7 @@ export class InputComponent extends FormElementComponent implements OnInit {
   }
 
   ngOnInit() {
-    // tslint:disable-next-line:ban
-    super.ngOnInit();
+    super.init();
 
     // set default values for empty component parameters
     this.setDefaultValues();
@@ -42,9 +40,6 @@ export class InputComponent extends FormElementComponent implements OnInit {
     set default values for empty input parameters
   */
   protected setDefaultValues() {
-    super.setDefaultValues();   // set general default values
-    if (!this.type) { this.type = 'text'; }
-    if (!this.maxlength) { this.maxlength = '60'; }
     if (!this.autocomplete) { this.autocomplete = (this.type === 'password' ? 'off' : ''); }
   }
 }

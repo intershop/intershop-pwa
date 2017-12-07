@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Country } from '../../../../models/country.model';
 import { CountryService } from '../../../services/countries/country.service';
-import { FormElementComponent } from '../form-element/form-element.component';
+import { FormElement } from '../form-element';
 import { SelectOption } from '../select/select.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { SelectOption } from '../select/select.component';
   templateUrl: './select-country.component.html',
   providers: [CountryService]
 })
-export class SelectCountryComponent extends FormElementComponent implements OnInit {
+export class SelectCountryComponent extends FormElement implements OnInit {
 
   constructor(
     protected translate: TranslateService,
@@ -20,21 +20,17 @@ export class SelectCountryComponent extends FormElementComponent implements OnIn
   }
 
   ngOnInit() {
-    this.setDefaultValues(); // call this method before parent ngOnInit
-
-    // tslint:disable-next-line:ban
-    super.ngOnInit();
+    this.setDefaultValues(); // call this method before parent init
+    super.init();
   }
 
   /*
     set default values for empty input parameters
   */
-  protected setDefaultValues() {
-    if (!this.controlName) { this.controlName = 'country'; }
-    if (!this.label) { this.label = 'Country'; }     // ToDo: Translation key
-    if (!this.errorMessages) {
-      this.errorMessages = { 'required': 'Please select a country' };  // ToDo: Translation key
-    }
+  private setDefaultValues() {
+    this.controlName = this.controlName || 'country';
+    this.label = this.label || 'Country';      // ToDo: Translation key
+    this.errorMessages = this.errorMessages || { 'required': 'Please select a country' };  // ToDo: Translation key
   }
 
   // get countries

@@ -22,11 +22,10 @@ export class RegistrationRoutingModule {
     globalConfiguration: GlobalConfiguration,
     router: Router
   ) {
-    globalConfiguration.getApplicationSettings().toPromise().then(settings => {
-      if (settings.useSimpleAccount) {
-        const registerRoute: Route = router.config.find(r => r.path === 'register');
-        registerRoute.loadChildren = 'app/registration/pages/account-login/account-login.module#AccountLoginModule';
-      }
-    });
+    const settings = globalConfiguration.getApplicationSettings();
+    if (settings.useSimpleAccount) {
+      const registerRoute: Route = router.config.find(r => r.path === 'register');
+      registerRoute.loadChildren = 'app/registration/pages/account-login/account-login.module#AccountLoginModule';
+    }
   }
 }
