@@ -1,0 +1,47 @@
+<is-form-group-validation [errorMessages]="errorMessages">
+  <div class="form-group has-feedback" [formGroup]="dateForm">
+    <label for="{{formName}}_{{controlName}}" class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
+    <div [ngClass]="inputClass">
+      <div class="clearfix row" #dynamicError>
+        <div class="col-xs-4">
+          <input
+            [type]="'number'"
+            class="form-control"
+            id="{{formName}}_{{controlName}}"
+            [formControlName]="'month'"
+            [maxlength]="2"
+            [attr.min]="minMonth"
+            [attr.max]="maxMonth"
+          >
+          <div class="input-help text-center">mm</div>
+        </div>
+        <div class="col-xs-4">
+          <input
+            [type]="'number'"
+            class="form-control"
+            id="{{formName}}_{{controlName}}"
+            [formControlName]="'day'"
+            [maxlength]="2"
+            [attr.min]="minDay"
+            [attr.max]="maxDay"
+          >
+          <div class="input-help text-center">dd</div>
+        </div>
+        <div class="col-xs-4">
+          <input
+            [type]="'number'"
+            class="form-control"
+            id="{{formName}}_{{controlName}}"
+            [formControlName]="'year'"
+            [maxlength]="4"
+            [attr.min]="minYear"
+            [attr.max]="maxYear"
+          >
+          <div class="input-help text-center">yyyy</div>
+        </div>
+      </div>
+    </div>
+    <ng-content></ng-content>
+  </div>
+</is-form-group-validation>
+

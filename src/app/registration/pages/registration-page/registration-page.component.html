@@ -2,10 +2,16 @@
 <p>To take full advantage of account features & benefits, please provide all the information below.</p>
 <form isFormValidation [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
   <!--is-email-password component-->
-  <div>
-    <is-email-password (isValid)="isEmailFormValid = $event"></is-email-password>
+  <h2>Email & Password</h2>
+  <p>You will use your email address and password to access your account on future visits.</p>
+  <div class="section">
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <p class="indicates-required"><span class="required">*</span>Required field</p>
+        <is-registration-credentials-form [parentForm]="registrationForm" #credentialsFormComponent></is-registration-credentials-form>
+      </div>
+    </div>
   </div>
-  <br>
 
   <h2>Address</h2>
   <div>
@@ -16,10 +22,13 @@
     <div class="row">
       <div class="col-lg-6 col-md-8 col-sm-10">
         <is-address-form [parentForm]="registrationForm"></is-address-form>
+
+        <is-registration-personal-form [parentForm]="registrationForm"></is-registration-personal-form>
       </div>
     </div>
   </div>
 
+  <!--<is-email-password (isValid)="isEmailFormValid = $event"></is-email-password> -->
   <!--<is-address (isValid)="isAddressFormValid = $event"></is-address>-->
   <is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
   <div class="row">
@@ -31,3 +40,5 @@
     </div>
   </div>
 </form>
+
+<!-- {{registrationForm.value | json}} -->

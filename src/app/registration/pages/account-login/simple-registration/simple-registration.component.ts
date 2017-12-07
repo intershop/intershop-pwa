@@ -28,16 +28,16 @@ export class SimpleRegistrationComponent implements OnInit {
      * Creates Login Form
   */
   ngOnInit() {
-    this.globalConfiguration.getApplicationSettings().subscribe(data => {
-      this.isUsername = data.userRegistrationLoginType === 'username';
-      const password = new FormControl('', [Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)]);
-      const confirmPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
-      this.simpleRegistrationForm = this.formBuilder.group({
-        userName: ['', Validators.compose([this.isUsername ? Validators.required : Validators.nullValidator])],
-        email: ['', [Validators.required, CustomValidators.email]],
-        password: password,
-        confirmPassword: confirmPassword
-      });
+    const applicationSettings = this.globalConfiguration.getApplicationSettings();
+
+    this.isUsername = applicationSettings.userRegistrationLoginType === 'username';
+    const password = new FormControl('', [Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)]);
+    const confirmPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
+    this.simpleRegistrationForm = this.formBuilder.group({
+      userName: ['', Validators.compose([this.isUsername ? Validators.required : Validators.nullValidator])],
+      email: ['', [Validators.required, CustomValidators.email]],
+      password: password,
+      confirmPassword: confirmPassword
     });
   }
 

@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElementComponent } from '../form-element/form-element.component';
+import { FormElement } from '../form-element';
 
 @Component({
   selector: 'is-select',
   templateUrl: './select.component.html'
 })
-export class SelectComponent extends FormElementComponent implements OnInit {
+export class SelectComponent extends FormElement implements OnInit {
   @Input() options: SelectOption[];   // required
   showEmptyOption: boolean;           // is automatically set if the control value is empty
 
@@ -18,11 +18,7 @@ export class SelectComponent extends FormElementComponent implements OnInit {
   }
 
   ngOnInit() {
-    // tslint:disable-next-line:ban
-    super.ngOnInit();
-
-    // set default values for empty component parameters
-    super.setDefaultValues();
+    super.init();
 
     // determine / translate label
     this.determineLabel();

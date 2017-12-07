@@ -29,10 +29,10 @@ describe('AccountLogin Component', () => {
     });
 
     const globalConfigurationMock = mock(GlobalConfiguration);
-    when(globalConfigurationMock.getApplicationSettings()).thenReturn(Observable.of({
+    when(globalConfigurationMock.getApplicationSettings()).thenReturn({
       useSimpleAccount: true,
       userRegistrationLoginType: 'email'
-    }));
+    });
 
     TestBed.configureTestingModule({
       declarations: [
