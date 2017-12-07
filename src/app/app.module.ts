@@ -19,6 +19,8 @@ import { RegistrationRoutingModule } from './registration/registration-routing.m
 import { ShellModule } from './shell/shell.module';
 import { ShoppingRoutingModule } from './shopping/shopping-routing.module';
 
+// TODO: this is needed to set properties from environment to providers.
+// In theory the platformBrowserDynamic method in main.ts could handle this but this breaks server-side rendering.
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from '../environments/environment';
 
