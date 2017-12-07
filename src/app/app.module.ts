@@ -1,13 +1,13 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieModule } from 'ngx-cookie';
-import { environment } from '../environments/environment';
 import { AccountRoutingModule } from './account/account-routing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK } from './core/configurations/injection-keys';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
@@ -18,6 +18,11 @@ import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
 import { RegistrationRoutingModule } from './registration/registration-routing.module';
 import { ShellModule } from './shell/shell.module';
 import { ShoppingRoutingModule } from './shopping/shopping-routing.module';
+
+// TODO: this is needed to set properties from environment to providers.
+// In theory the platformBrowserDynamic method in main.ts could handle this but this breaks server-side rendering.
+// tslint:disable-next-line: do-not-import-environment
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -41,6 +46,9 @@ import { ShoppingRoutingModule } from './shopping/shopping-routing.module';
   providers: [
     { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },
     { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
+    { provide: NEED_MOCK, useValue: environment.needMock },
+    { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
+    { provide: AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
@@ -53,12 +61,9 @@ import { ShoppingRoutingModule } from './shopping/shopping-routing.module';
 export class AppModule {
 
   constructor(
-    @Inject(PLATFORM_ID) platformId,
     translateService: TranslateService,
     currentLocaleService: CurrentLocaleService
   ) {
-    environment.platformId = platformId;
-
     const currentLang = environment.locales[0];
     translateService.setDefaultLang(currentLang.lang);
     currentLocaleService.setValue(currentLang);

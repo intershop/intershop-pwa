@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Wishlist } from '../../../models/wishlist.model';
 import { ApiService } from '../../services/api.service';
 import { AccountLoginService } from '../account-login/account-login.service';
@@ -10,10 +10,11 @@ export class WishListService extends GlobalStateAwareService<Wishlist> {
   baseUrl = 'customers/-/wishlists/';
 
   constructor(
+    @Inject(PLATFORM_ID) platformId,
     private apiService: ApiService,
     private accountLoginService: AccountLoginService
   ) {
-    super('wishListStatus', true, false);
+    super(platformId, 'wishListStatus', true, false);
     accountLoginService.subscribe(() => this.updateState(accountLoginService));
   }
 

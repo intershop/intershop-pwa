@@ -1,17 +1,18 @@
 import { isPlatformServer } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class UniversalMockInterceptor implements HttpInterceptor {
 
+  constructor( @Inject(PLATFORM_ID) private platformId) { }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!isPlatformServer(environment.platformId)) {
+    if (!isPlatformServer(this.platformId)) {
       console.warn('UniversalMockInterceptor is active for non-server platform');
     }
     if (!req.url.startsWith('http')) {
