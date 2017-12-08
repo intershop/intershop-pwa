@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
+import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
 import { Customer } from '../../../../models/customer.model';
 import { SimpleRegistrationComponent } from './simple-registration.component';
@@ -17,20 +17,12 @@ describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
   let element: HTMLElement;
-  let globalConfigurationMock: GlobalConfiguration;
   let accountLoginServiceMock: AccountLoginService;
   let location: Location;
 
-  const accountSettings = {
-    useSimpleAccount: true,
-    userRegistrationLoginType: 'email'
-  };
-
   beforeEach(async(() => {
-    globalConfigurationMock = mock(GlobalConfiguration);
     accountLoginServiceMock = mock(AccountLoginService);
 
-    when(globalConfigurationMock.getApplicationSettings()).thenReturn(accountSettings);
     when(accountLoginServiceMock.createUser(anything())).thenReturn(Observable.of(new Customer()));
 
     TestBed.configureTestingModule({
@@ -45,7 +37,8 @@ describe('Simple Registration Component', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) }
+        { provide: USE_SIMPLE_ACCOUNT, useValue: true },
+        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }
       ]
     }).overrideComponent(SimpleRegistrationComponent, {
       set: {

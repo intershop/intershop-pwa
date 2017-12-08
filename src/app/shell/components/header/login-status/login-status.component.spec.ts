@@ -3,7 +3,6 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
 import { Customer } from '../../../../models/customer.model';
 import { LoginStatusComponent } from './login-status.component';
@@ -13,7 +12,6 @@ describe('Login Status Component', () => {
   let component: LoginStatusComponent;
   let element: HTMLElement;
   let accountLoginServiceMock: AccountLoginService;
-  let globalConfigurationMock: GlobalConfiguration;
   let routerMock: Router;
   const userData = {
     'firstName': 'Patricia',
@@ -25,8 +23,6 @@ describe('Login Status Component', () => {
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
     when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: Customer) => void) => callback(userData as Customer));
 
-    globalConfigurationMock = mock(GlobalConfiguration);
-    when(globalConfigurationMock.getApplicationSettings()).thenReturn(false);
 
     routerMock = mock(Router);
 
@@ -39,7 +35,6 @@ describe('Login Status Component', () => {
       ],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) },
         { provide: Router, useFactory: () => instance(routerMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
