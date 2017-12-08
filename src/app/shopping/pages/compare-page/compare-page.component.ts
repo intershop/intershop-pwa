@@ -1,3 +1,4 @@
+// NEEDS_WORK: DUMMY COMPONENT
 import { Component, OnInit } from '@angular/core';
 import { ProductCompareService } from '../../../core/services/product-compare/product-compare.service';
 

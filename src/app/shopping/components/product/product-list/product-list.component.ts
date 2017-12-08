@@ -1,3 +1,4 @@
+// NEEDS_WORK: product listing components rework - service usage not compliant to style guide
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { Product } from '../../../../models/product.model';

@@ -32,7 +32,7 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   /**
-   * Redirects to Family page
+   * Redirects to home page
    * @returns void
    */
   cancelClicked(): void {

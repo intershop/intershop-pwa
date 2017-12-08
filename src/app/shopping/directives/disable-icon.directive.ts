@@ -1,3 +1,4 @@
+// NEEDS_WORK: directive not supposed to call the service, the basic functionality should probably be less compare specific, other wise adapt the name
 import { Directive, ElementRef, Injector, Input, Renderer2 } from '@angular/core';
 import { GlobalStateAwareService } from '../../core/services/base-services/global-state-aware.service';
 import { ProductCompareService } from '../../core/services/product-compare/product-compare.service';
