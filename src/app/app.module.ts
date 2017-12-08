@@ -12,7 +12,7 @@ import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
 import { CurrentLocaleService } from './core/services/locale/current-locale.service';
-import { getICMBaseURL, getRestEndPoint, ICM_BASE_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
+import { getICMApplication, getICMBaseURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
 import { RegistrationRoutingModule } from './registration/registration-routing.module';
@@ -46,6 +46,7 @@ import { environment } from '../environments/environment';
   providers: [
     { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },
     { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
+    { provide: ICM_APPLICATION, useFactory: getICMApplication(), deps: [StatePropertiesService] },
     { provide: NEED_MOCK, useValue: environment.needMock },
     { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
     { provide: AVAILABLE_LOCALES, useValue: environment.locales },

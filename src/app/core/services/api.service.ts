@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
-import { REST_ENDPOINT } from './state-transfer/factories';
+import { ICM_APPLICATION, REST_ENDPOINT } from './state-transfer/factories';
 
 @Injectable()
 export class ApiService {
@@ -18,6 +18,7 @@ export class ApiService {
    */
   constructor(
     @Inject(REST_ENDPOINT) private restEndpoint: string,
+    @Inject(ICM_APPLICATION) private icmApplication: string,
     private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
     private currentLocaleService: CurrentLocaleService
@@ -123,8 +124,8 @@ export class ApiService {
     data.forEach(item => {
       if (item.type === 'Link' && item.uri) {
         // removes <site>/-;loc;cur/
-        // TODO: hard coded site names cannot be right - this needs to be reworked
-        const linkUrl = (item.uri).replace(/inSPIRED-inTRONICS-Site\/-[^\/]*\//gi, '');
+        const regexp = new RegExp(`${this.icmApplication}/-[^/]*/`, 'gi');
+        const linkUrl = (item.uri).replace(regexp, '');
         // console.log(`link-translation ${item.uri} to ${linkUrl}`);
         uriList.push(this.get(linkUrl));
       }
