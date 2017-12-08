@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
-import { GlobalConfiguration } from '../../../core/configurations/global.configuration';
+import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { Customer } from '../../../models/customer.model';
 
@@ -14,15 +14,14 @@ export class AccountLoginComponent implements OnInit {
   loginForm: FormGroup;
   loginToUse = false;
   errorUser: any;
-  userRegistrationLoginType: string;
   isLoggedIn: boolean;
   isDirty: boolean;
   isSimpleRegistration: boolean;
 
   constructor(
+    @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,
     private formBuilder: FormBuilder,
     private accountLoginService: AccountLoginService,
-    private globalConfiguration: GlobalConfiguration,
     private router: Router
   ) { }
 
@@ -33,8 +32,6 @@ export class AccountLoginComponent implements OnInit {
     this.accountLoginService.subscribe(() => {
       this.isLoggedIn = this.accountLoginService.isAuthorized();
     });
-
-    this.userRegistrationLoginType = this.globalConfiguration.getApplicationSettings().userRegistrationLoginType || 'email';
 
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : Validators.nullValidator)])]],

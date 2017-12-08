@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
-import { GlobalConfiguration } from '../../../../core/configurations/global.configuration';
+import { USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
 
 
@@ -18,9 +18,9 @@ export class SimpleRegistrationComponent implements OnInit {
   isDirty: boolean;
 
   constructor(
+    @Inject(USER_REGISTRATION_LOGIN_TYPE) private userRegistrationLoginType: string,
     private formBuilder: FormBuilder,
     private router: Router,
-    private globalConfiguration: GlobalConfiguration,
     private accountLoginService: AccountLoginService
   ) { }
 
@@ -28,9 +28,7 @@ export class SimpleRegistrationComponent implements OnInit {
      * Creates Login Form
   */
   ngOnInit() {
-    const applicationSettings = this.globalConfiguration.getApplicationSettings();
-
-    this.isUsername = applicationSettings.userRegistrationLoginType === 'username';
+    this.isUsername = this.userRegistrationLoginType === 'username';
     const password = new FormControl('', [Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)]);
     const confirmPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
     this.simpleRegistrationForm = this.formBuilder.group({

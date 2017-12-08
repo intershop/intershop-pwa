@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
-import { GlobalConfiguration } from './configurations/global.configuration';
 import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { UserDetailService } from './services/account-login/user-detail.service';
 import { ApiService } from './services/api.service';
@@ -35,7 +34,6 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     UserDetailService,
     CurrentLocaleService,
     CartStatusService,
-    GlobalConfiguration,
     ErrorCodeMappingService,
     StatePropertiesService
   ],

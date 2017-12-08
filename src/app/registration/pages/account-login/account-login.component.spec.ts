@@ -1,13 +1,11 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { ComponentFixture } from '@angular/core/testing';
-import { async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { GlobalConfiguration } from '../../../core/configurations/global.configuration';
+import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { AccountLoginComponent } from './account-login.component';
@@ -28,19 +26,14 @@ describe('AccountLogin Component', () => {
       }
     });
 
-    const globalConfigurationMock = mock(GlobalConfiguration);
-    when(globalConfigurationMock.getApplicationSettings()).thenReturn({
-      useSimpleAccount: true,
-      userRegistrationLoginType: 'email'
-    });
-
     TestBed.configureTestingModule({
       declarations: [
         AccountLoginComponent
       ],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: GlobalConfiguration, useFactory: () => instance(globalConfigurationMock) }
+        { provide: USE_SIMPLE_ACCOUNT, useValue: true },
+        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }
       ],
       imports: [
         SharedModule,

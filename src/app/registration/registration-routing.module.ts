@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { Inject, NgModule } from '@angular/core';
 import { Route, Router, RouterModule, Routes } from '@angular/router';
-import { GlobalConfiguration } from '../core/configurations/global.configuration';
+import { USE_SIMPLE_ACCOUNT } from '../core/configurations/injection-keys';
 
 const routes: Routes = [
   { path: 'login', loadChildren: 'app/registration/pages/account-login/account-login.module#AccountLoginModule' },
@@ -19,11 +19,10 @@ const routes: Routes = [
 export class RegistrationRoutingModule {
 
   constructor(
-    globalConfiguration: GlobalConfiguration,
+    @Inject(USE_SIMPLE_ACCOUNT) useSimpleAccount: boolean,
     router: Router
   ) {
-    const settings = globalConfiguration.getApplicationSettings();
-    if (settings.useSimpleAccount) {
+    if (useSimpleAccount) {
       const registerRoute: Route = router.config.find(r => r.path === 'register');
       registerRoute.loadChildren = 'app/registration/pages/account-login/account-login.module#AccountLoginModule';
     }
