@@ -1,3 +1,4 @@
+// NEEDS_WORK: DUMMY COMPONENT
 import { Component, OnInit } from '@angular/core';
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
 import { WishlistItem } from '../../../models/wishlist-item.model';
