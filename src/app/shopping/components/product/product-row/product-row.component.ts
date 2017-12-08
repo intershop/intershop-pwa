@@ -1,3 +1,5 @@
+
+// NEEDS_WORK: product listing components rework
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';

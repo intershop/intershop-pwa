@@ -1,3 +1,4 @@
+// NEEDS_WORK: a general error handling needs to be established
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 

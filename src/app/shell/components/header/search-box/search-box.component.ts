@@ -1,3 +1,4 @@
+// NEEDS_WORK: review and adapt (search-box results in javascript error when used in french)
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { SuggestTerm } from '../../../../models/suggest-term.model';

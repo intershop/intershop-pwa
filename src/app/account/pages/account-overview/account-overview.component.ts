@@ -1,3 +1,4 @@
+// NEEDS_WORK: DUMMY COMPONENT
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';

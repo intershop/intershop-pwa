@@ -1,3 +1,4 @@
+// NEEDS_WORK: not yet getting the preferred wishlist
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Wishlist } from '../../../models/wishlist.model';
 import { ApiService } from '../../services/api.service';
