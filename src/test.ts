@@ -15,7 +15,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from './environments/environment';
-import { NEED_MOCK, MUST_MOCK_PATHS, AVAILABLE_LOCALES } from './app/core/configurations/injection-keys';
+import { NEED_MOCK, MUST_MOCK_PATHS, AVAILABLE_LOCALES, USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE, USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from './app/core/configurations/injection-keys';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare const __karma__: any;
@@ -33,6 +33,12 @@ beforeEach(() => {
       { provide: NEED_MOCK, useValue: true },
       { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
       { provide: AVAILABLE_LOCALES, useValue: environment.locales },
+      // TODO: get from REST call
+      { provide: USE_SIMPLE_ACCOUNT, useValue: false },
+      // TODO: get from REST call
+      { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+      // TODO: get from REST call
+      { provide: USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER, useValue: true },
     ])
   );
 });

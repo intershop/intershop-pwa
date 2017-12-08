@@ -7,7 +7,7 @@ import { CookieModule } from 'ngx-cookie';
 import { AccountRoutingModule } from './account/account-routing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK } from './core/configurations/injection-keys';
+import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK, USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE, USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from './core/configurations/injection-keys';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
@@ -49,6 +49,12 @@ import { environment } from '../environments/environment';
     { provide: NEED_MOCK, useValue: environment.needMock },
     { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
     { provide: AVAILABLE_LOCALES, useValue: environment.locales },
+    // TODO: get from REST call
+    { provide: USE_SIMPLE_ACCOUNT, useValue: false },
+    // TODO: get from REST call
+    { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+    // TODO: get from REST call
+    { provide: USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER, useValue: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
