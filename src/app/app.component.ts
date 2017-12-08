@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'is-root',
@@ -9,6 +8,6 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   // DEBUG: prints the configured routes for routing analysis
-  constructor(private router: Router) { console.log('ROUTES: ', this.router.config); }
+  // constructor(private router: Router) { console.log('ROUTES: ', this.router.config); }
 
 }

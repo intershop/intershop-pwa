@@ -14,7 +14,7 @@ export class ApiService {
 
   /**
    * Constructor
-   * @param  {Http} privatehttp
+   * @param  {Http} private http
    */
   constructor(
     @Inject(REST_ENDPOINT) private restEndpoint: string,
@@ -27,6 +27,7 @@ export class ApiService {
    * format api errors and send errors to custom handler
    * @param  {any} error
    */
+  // TODO: error handling needs to be reworked
   private formatErrors(error: any) {
     return this.customErrorHandler.handleApiErrors(error);
   }
@@ -122,6 +123,7 @@ export class ApiService {
     data.forEach(item => {
       if (item.type === 'Link' && item.uri) {
         // removes <site>/-;loc;cur/
+        // TODO: hard coded site names cannot be right - this needs to be reworked
         const linkUrl = (item.uri).replace(/inSPIRED-inTRONICS-Site\/-[^\/]*\//gi, '');
         // console.log(`link-translation ${item.uri} to ${linkUrl}`);
         uriList.push(this.get(linkUrl));

@@ -1,3 +1,4 @@
+// NEEDS_WORK: remove coupling of login and simple registration?
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';

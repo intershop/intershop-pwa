@@ -1,0 +1,154 @@
+|
++---account
+|   \---pages
+|       +---account-overview
+|       |       account-overview.component.html
+|       |       account-overview.component.spec.ts
+|       |       account-overview.component.ts
+|       |       account-overview.module.ts
+|       |       account-overview.routes.ts
+|       |
+|       \---wishlists-page
+|               wishlists-page.component.html
+|               wishlists-page.component.spec.ts
+|               wishlists-page.component.ts
+|               wishlists-page.module.ts
+|               wishlists-page.routes.ts
+|
++---core
+|   |
+|   \---services
+|       |   custom-error-handler.spec.ts
+|       |   custom-error-handler.ts
+|       |   error-code-mapping.service.spec.ts
+|       |   error-code-mapping.service.ts
+|       |
+|       +---account-login
+|       |       account-login.model.ts
+|       |       account-login.service.spec.ts
+|       |       account-login.service.ts
+|       |       user-detail.service.ts
+|       |
+|       \---wishlists
+|               wishlists.service.ts
+|
+|
++---registration
+|   |
+|   \---pages
+|       +---account-login
+|       |   |   account-login.component.html
+|       |   |   account-login.component.spec.ts
+|       |   |   account-login.component.ts
+|       |   |   account-login.module.ts
+|       |   |   account-login.routes.ts
+|       |   |
+|       |   \---simple-registration
+|       |           simple-registration.component.html
+|       |           simple-registration.component.spec.ts
+|       |           simple-registration.component.ts
+|       |
+|       \---registration-page
+|           |   registration-page.model.ts
+|           |
+|           +---address
+|           |       address.component.html
+|           |       address.component.spec.ts
+|           |       address.component.ts
+|           |
+|           +---captcha
+|           |       captcha.component.html
+|           |       captcha.component.spec.ts
+|           |       captcha.component.ts
+|           |
+|           +---email-password
+|           |       email-password.component.html
+|           |       email-password.component.spec.ts
+|           |       email-password.component.ts
+|
++---shared
+|   +---components
+|   |   +---forms
+|   |   |
+|   |   \---global-form-validation
+|   |           form-control-error.component.spec.ts
+|   |           form-control-error.component.ts
+|   |           form-group-validation.component.ts
+|   |
+|   +---directives
+|   |       form-validation.directive.spec.ts
+|   |       form-validation.directive.ts
+|   |
+|   +---services
+|   |   |
+|   |   +---products
+|   |   |       products.service.spec.ts
+|   |   |       products.service.ts
+|   |   |
+|   |   \---suggest
+|   |           suggest.service.spec.ts
+|   |           suggest.service.ts
+|
++---shell
+|   +---components
+|   |   +---footer
+|   |   |       footer.component.html
+|   |   |       footer.component.ts
+|   |   |       footer.module.ts
+|   |   |
+|   |   \---header
+|   |       |
+|   |       +---mini-cart
+|   |       |       mini-cart.component.html
+|   |       |       mini-cart.component.spec.ts
+|   |       |       mini-cart.component.ts
+|   |       |
+|   |       +---search-box
+|   |       |       search-box.component.html
+|   |       |       search-box.component.spec.ts
+|   |       |       search-box.component.ts
+|   |
+|   \---pages
+|       +---error-page
+|       |       error-page.component.html
+|       |       error-page.component.spec.ts
+|       |       error-page.component.ts
+|       |       error-page.module.ts
+|       |       error-page.routes.ts
+|       |
+|       \---home-page
+|               home-page.component.html
+|               home-page.component.spec.ts
+|               home-page.component.ts
+|               home-page.module.ts
+|               home-page.routes.ts
+|
+\---shopping
+    +---components
+    |   \---product
+    |       +---product-list
+    |       |       product-list.component.html
+    |       |       product-list.component.spec.ts
+    |       |       product-list.component.ts
+    |       |
+    |       +---product-row
+    |       |       product-row.component.html
+    |       |       product-row.component.spec.ts
+    |       |       product-row.component.ts
+    |       |
+    |       \---product-tile
+    |               product-tile.component.html
+    |               product-tile.component.spec.ts
+    |               product-tile.component.ts
+    |
+    +---directives
+    |       disable-icon.directive.spec.ts
+    |       disable-icon.directive.ts
+    |
+    \---pages
+        \---compare-page
+                compare-page.component.html
+                compare-page.component.spec.ts
+                compare-page.component.ts
+                compare-page.module.ts
+                compare-page.routes.ts

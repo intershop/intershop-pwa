@@ -1,3 +1,4 @@
+// NEEDS_WORK:
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({

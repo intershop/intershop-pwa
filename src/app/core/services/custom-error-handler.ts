@@ -1,3 +1,4 @@
+// NEEDS_WORK: a general error handling needs to be established
 import { ErrorHandler, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
