@@ -7,7 +7,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
+import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { InputComponent } from './components/form-controls/input/input.component';
 import { SelectComponent } from './components/form-controls/select/select.component';
@@ -58,4 +58,11 @@ import { FormValidationDirective } from './directives/form-validation.directive'
   ]
 })
 
-export class SharedModule { }
+export class SharedModule {
+
+  constructor(popoverConfig: PopoverConfig) {
+    popoverConfig.placement = 'top';
+    popoverConfig.triggers = 'hover';
+    popoverConfig.container = 'body';
+  }
+}
