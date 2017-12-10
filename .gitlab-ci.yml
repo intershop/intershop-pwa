@@ -52,6 +52,9 @@ deploy_demo:
   - docker
   - chuck-norris-swarm-manager
   script: bash .gitlab-ci-deploy.sh
+  environment:
+    name: demo
+    url: http://jdevpool15:4321
 
 check_format:
   stage: build
