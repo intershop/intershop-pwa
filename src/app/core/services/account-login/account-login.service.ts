@@ -1,4 +1,4 @@
-// NEEDS_WORK: is the Interface necessary, is the model necessary?
+// NEEDS_WORK: is the model necessary?
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -7,14 +7,8 @@ import { ApiService } from '../../services/api.service';
 import { AccountLogin } from './account-login.model';
 import { UserDetailService } from './user-detail.service';
 
-export interface IAccountLoginService {
-  singinUser(userDetails: AccountLogin): Observable<Customer>;
-  logout(): void;
-  isAuthorized(): boolean;
-}
-
 @Injectable()
-export class AccountLoginService implements IAccountLoginService {
+export class AccountLoginService {
 
   constructor(
     private userDetailService: UserDetailService,
