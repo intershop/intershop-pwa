@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   needMock: true,
   icmBaseURL: 'http://localhost:4000',
+  icmServer: 'INTERSHOP/rest/WFS',
   icmApplication: 'inSPIRED-inTRONICS-Site',
 
   locales: [
