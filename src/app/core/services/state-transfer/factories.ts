@@ -24,3 +24,15 @@ export function getICMBaseURL() {
     return service.getICMBaseURL();
   };
 }
+
+/**
+ * The injected property contains the name of the connected ICM Site.
+ * It is set by {@link StatePropertiesService#getICMApplication}
+ */
+export const ICM_APPLICATION = new InjectionToken<string>('icmApplication');
+
+export function getICMApplication() {
+  return (service: StatePropertiesService): string => {
+    return service.getICMApplication();
+  };
+}
