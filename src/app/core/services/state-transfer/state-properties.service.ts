@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 
 export const ICM_BASE_URL_SK = makeStateKey<string>('icmBaseURL');
 export const ICM_APPLICATION_SK = makeStateKey<string>('icmApplication');
+export const ICM_SERVER_SK = makeStateKey<string>('icmServer');
 
 /**
  * Service for retrieving injection properties {@link ICM_BASE_URL} and {@link REST_ENDPOINT}.
@@ -35,11 +36,19 @@ export class StatePropertiesService {
     return this.getStateOrEnvOrDefault(ICM_BASE_URL_SK, 'ICM_BASE_URL', 'icmBaseURL');
   }
 
+  getICMServer(): string {
+    return this.getStateOrEnvOrDefault(ICM_SERVER_SK, 'ICM_SERVER', 'icmServer');
+  }
+
   getICMApplication(): string {
     return this.getStateOrEnvOrDefault(ICM_APPLICATION_SK, 'ICM_APPLICATION', 'icmApplication');
   }
 
+  getICMServerURL(): string {
+    return `${this.getICMBaseURL()}/${this.getICMServer()}`;
+  }
+
   getRestEndPoint(): string {
-    return `${this.getICMBaseURL()}/INTERSHOP/rest/WFS/${this.getICMApplication()}/-`;
+    return `${this.getICMServerURL()}/${this.getICMApplication()}/-`;
   }
 }
