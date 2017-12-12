@@ -9,6 +9,7 @@ import { SelectOption } from '../../../../shared/components/form-controls/select
   templateUrl: './select-security-question.component.html'
 })
 export class SelectSecurityQuestionComponent extends FormElement implements OnInit {
+  securityQuestionOptions: SelectOption[];
 
   /*
     constructor
@@ -23,6 +24,7 @@ export class SelectSecurityQuestionComponent extends FormElement implements OnIn
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent init
     super.init();
+    this.securityQuestionOptions = this.getSecurityQuestionOptions();
   }
 
   /*
@@ -34,8 +36,11 @@ export class SelectSecurityQuestionComponent extends FormElement implements OnIn
     this.errorMessages = this.errorMessages || { 'required': 'Please select a security question' };  // ToDo: Translation key
   }
 
-  // get security questions
-  get securityQuestionOptions(): SelectOption[] {
+  /*
+    get security questions
+    returns (SelectOption[]) - security question options
+  */
+  private getSecurityQuestionOptions(): SelectOption[] {
     let options: SelectOption[] = [];
     const securityQuestions = this.getSecurityQuestions();
 
@@ -52,7 +57,7 @@ export class SelectSecurityQuestionComponent extends FormElement implements OnIn
   }
 
   // define which security questions are shown - ToDo: should be done in a service
-  getSecurityQuestions() {
+  private getSecurityQuestions() {
     return [
       'account.security_question.maiden_name.text',
       'account.security_question.pet_name.text',
