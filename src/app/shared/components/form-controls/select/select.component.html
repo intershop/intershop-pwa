@@ -1,11 +1,12 @@
 
 <is-form-group-validation [errorMessages]="errorMessages">
   <div class="form-group has-feedback" [formGroup]="form">
-    <label for="{{formName}}_{{controlName}}" class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
+    <label [attr.for]="controlName+'-'+uuid"  class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
       <select class="form-control"
-          id="{{formName}}_{{controlName}}"
+          [id]="controlName+'-'+uuid"
           [formControlName]="controlName"
+          [attr.data-testing-id]="controlName"
           #dynamicError>
         <option value="" *ngIf="showEmptyOption">Please select</option>
         <option *ngFor="let option of options" [value]="option.value">{{option.label}}</option>

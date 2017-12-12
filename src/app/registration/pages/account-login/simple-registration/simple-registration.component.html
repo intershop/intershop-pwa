@@ -7,7 +7,6 @@
 
   <is-input *ngIf="isUsername"
     [form]="simpleRegistrationForm"
-    [formName]="'simpleRegistrationForm'"
     [controlName]="'userName'"
     [label]="'account.create_user.login.label'"
     [labelClass]="'col-sm-3'"
@@ -18,7 +17,6 @@
 
   <is-input
     [form]="simpleRegistrationForm"
-    [formName]="'simpleRegistrationForm'"
     [controlName]="'email'"
     [type]="'email'"
     [label]="'account.register.email.label'"
@@ -30,7 +28,6 @@
 
   <is-input
     [form]="simpleRegistrationForm"
-    [formName]="'simpleRegistrationForm'"
     [controlName]="'password'"
     [type]="'password'"
     [label]="'account.register.password.label'"
@@ -44,7 +41,6 @@
 
   <is-input
     [form]="simpleRegistrationForm"
-    [formName]="'simpleRegistrationForm'"
     [controlName]="'confirmPassword'"
     [type]="'password'"
     [label]="'account.register.password_confirmation.label'"
