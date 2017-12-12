@@ -61,8 +61,8 @@ describe('AccountLogin Component', () => {
   });
 
   it('should check if controls are rendered on Login page', () => {
-    expect(element.querySelector('#form_userName')).toBeTruthy();
-    expect(element.querySelector('#form_password')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=userName]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy();
     expect(element.getElementsByClassName('btn btn-primary')).toBeTruthy();
   });
 

@@ -21,35 +21,35 @@
           <ng-template [ngIf]="userRegistrationLoginType === 'email'" [ngIfElse]="userLoginWithUserName">
             <is-input
               [form]="loginForm"
-              [controlName]="'userName'"
-              [type]="'email'"
-              [label]="'Email'"
-              [labelClass]="'col-sm-3'"
-              [inputClass]="'col-sm-6'"
-              [markRequiredLabel]="'off'"
+              controlName="userName"
+              type="email"
+              label="Email"
+              labelClass="col-sm-3"
+              inputClass="col-sm-6"
+              markRequiredLabel="off"
               [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}"
             ></is-input>
           </ng-template>
           <ng-template #userLoginWithUserName>
             <is-input
               [form]="loginForm"
-              [controlName]="'userName'"
-              [label]="'Username'"
-              [labelClass]="'col-sm-3'"
-              [inputClass]="'col-sm-6'"
-              [markRequiredLabel]="'off'"
+              controlName="userName"
+              label="Username"
+              labelClass="col-sm-3"
+              inputClass="col-sm-6"
+              markRequiredLabel="off"
               [errorMessages]="{'required':'account.login.username.error.required'}"
             ></is-input>
           </ng-template>
 
           <is-input
             [form]="loginForm"
-            [controlName]="'password'"
-            [type]="'password'"
-            [label]="'Password'"
-            [labelClass]="'col-sm-3'"
-            [inputClass]="'col-sm-6'"
-            [markRequiredLabel]="'off'"
+            controlName="password"
+            type="password"
+            label="'Password"
+            labelClass="col-sm-3"
+            inputClass="col-sm-6"
+            markRequiredLabel="off"
             [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}"
           ></is-input>
 
