@@ -11,6 +11,7 @@ import { SelectOption } from '../select/select.component';
   providers: [CountryService]
 })
 export class SelectCountryComponent extends FormElement implements OnInit {
+  countries: SelectOption[];
 
   constructor(
     protected translate: TranslateService,
@@ -22,6 +23,7 @@ export class SelectCountryComponent extends FormElement implements OnInit {
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent init
     super.init();
+    this.countries = this.getCountryOptions();
   }
 
   /*
@@ -33,8 +35,11 @@ export class SelectCountryComponent extends FormElement implements OnInit {
     this.errorMessages = this.errorMessages || { 'required': 'Please select a country' };  // ToDo: Translation key
   }
 
-  // get countries
-  get countries(): SelectOption[] {
+  /*
+    get countries
+    returns (SelectOptions) - countries
+  */
+  private getCountryOptions(): SelectOption[] {
     let options: SelectOption[] = [];
     const countries = this.countryService.getCountries();
     if (countries && countries.length) {

@@ -8,6 +8,7 @@ import { SelectOption } from '../../../../shared/components/form-controls/select
   templateUrl: './select-language.component.html'
 })
 export class SelectLanguageComponent extends FormElement implements OnInit {
+  languageOptions: SelectOption[];
 
   /*
     constructor
@@ -22,6 +23,7 @@ export class SelectLanguageComponent extends FormElement implements OnInit {
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent init
     super.init();
+    this.languageOptions = this.getLanguageOptions();
   }
 
   /*
@@ -33,8 +35,11 @@ export class SelectLanguageComponent extends FormElement implements OnInit {
     this.errorMessages = this.errorMessages || { 'required': 'Please select a preferred language' };  // ToDo: Translation key
   }
 
-  // get languages
-  get languageOptions(): SelectOption[] {
+  /*
+    get languages
+    returns (SelectOption[]) - language options
+  */
+  private getLanguageOptions(): SelectOption[] {
     let options: SelectOption[] = [];
     const languages = this.getlanguages();  // ToDo: has to be done by a service
 
