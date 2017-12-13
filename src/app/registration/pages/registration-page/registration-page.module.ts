@@ -4,9 +4,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { ExtraFormsModule } from '../../../shared/extra-forms.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { RegistrationModule } from '../../registration.module';
-import { AddressComponent } from './address/address.component';
 import { CaptchaComponent } from './captcha/captcha.component';
-import { EmailPasswordComponent } from './email-password/email-password.component';
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form/registration-credentials-form.component';
 import { RegistrationPageComponent } from './registration-page.component';
 import { registrationPageRoutes } from './registration-page.routes';
@@ -21,7 +19,7 @@ import { RegistrationPersonalFormComponent } from './registration-personal-form/
     RegistrationModule,
     ExtraFormsModule
   ],
-  declarations: [RegistrationPageComponent, CaptchaComponent, EmailPasswordComponent, AddressComponent, RegistrationCredentialsFormComponent, RegistrationPersonalFormComponent],
+  declarations: [RegistrationPageComponent, CaptchaComponent, RegistrationCredentialsFormComponent, RegistrationPersonalFormComponent],
   providers: []
 })
 
