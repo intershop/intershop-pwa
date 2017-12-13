@@ -189,12 +189,12 @@
                   title="Compare" rel="nofollow">
                   <span class="glyphicon glyphicon-equalizer"></span>
                 </button>
-                <a *ngIf="mockData.mockListView.displayType == 'share-tool'" attr.data-testing-id="compare-{{mockData.sku}}" rel="nofollow">
+                <a *ngIf="mockData.mockListView.displayType == 'share-tool'" [attr.data-testing-id]="'compare-' + mockData.sku" rel="nofollow">
                   <span class="glyphicon glyphicon-equalizer"></span>
                   <span class="share-label">Compare</span>
                 </a>
                 <a *ngIf="mockData.mockListView.displayType != 'glyphicon' && mockData.mockListView.displayType != 'share-tool'" class="btn add-to-compare btn-link"
-                  attr.data-testing-id="compare-{{mockData.sku}}" (click)="addToCompare(mockData.sku)" rel="nofollow"> Compare  </a>
+                  [attr.data-testing-id]="'compare-' + mockData.sku" (click)="addToCompare(mockData.sku)" rel="nofollow"> Compare  </a>
               </ng-container>
               <!-- AddToProductCompare.isml End-->
               <button *ngIf="true" type="submit" class="btn add-to-wishlist" [ngClass]="{'btn-link' : true}" rel="nofollow" name="addToWishlistProduct"

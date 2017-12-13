@@ -3,7 +3,7 @@
 
 <div class="marketing-area"></div>
 
-<div [ngClass]="category.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" attr.data-testing-id="{{category.id}}">
+<div [ngClass]="category.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" [attr.data-testing-id]="category.id">
   <div class="row">
 
     <div class="col-sm-3">
@@ -36,10 +36,10 @@
           </div>
           <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
             <div class="pull-right sort-by">
-              <a class="list-view-link" [ngClass]="listView ? 'list-active' : ''" data-testing-id="list-view-link" (click)="listView = true">
+              <a class="list-view-link" [ngClass]="{'list-active' : listView}" data-testing-id="list-view-link" (click)="listView = true">
                 <span class="glyphicon glyphicon-list"></span>
               </a>
-              <a class="grid-view-link" [ngClass]="!listView ? 'grid-active' : ''" data-testing-id="grid-view-link" (click)="listView = false">
+              <a class="grid-view-link" [ngClass]="{'grid-active' : !listView}" data-testing-id="grid-view-link" (click)="listView = false">
                 <span class="glyphicon glyphicon-th"></span>
               </a>
             </div>
