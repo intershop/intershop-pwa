@@ -1,7 +1,7 @@
 
 <is-form-group-validation [errorMessages]="errorMessages">
   <div class="form-group has-feedback" [formGroup]="form">
-    <label [attr.for]="controlName+'-'+uuid"  class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
+    <label [for]="controlName+'-'+uuid"  class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
       <select class="form-control"
           [id]="controlName+'-'+uuid"
