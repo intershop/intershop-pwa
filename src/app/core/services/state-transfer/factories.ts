@@ -36,3 +36,15 @@ export function getICMApplication() {
     return service.getICMApplication();
   };
 }
+
+/**
+ * The injected property contains the URL of the connected ICM Server.
+ * It is set by {@link StatePropertiesService#getICMServer}
+ */
+export const ICM_SERVER_URL = new InjectionToken<string>('icmServerURL');
+
+export function getICMServerURL() {
+  return (service: StatePropertiesService): string => {
+    return service.getICMServerURL();
+  };
+}

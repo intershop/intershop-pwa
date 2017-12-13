@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
-import { ICM_APPLICATION, REST_ENDPOINT } from './state-transfer/factories';
+import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 @Injectable()
 export class ApiService {
@@ -18,7 +18,7 @@ export class ApiService {
    */
   constructor(
     @Inject(REST_ENDPOINT) private restEndpoint: string,
-    @Inject(ICM_APPLICATION) private icmApplication: string,
+    @Inject(ICM_SERVER_URL) private icmServerUrl: string,
     private httpClient: HttpClient,
     private customErrorHandler: CustomErrorHandler,
     private currentLocaleService: CurrentLocaleService
@@ -46,7 +46,12 @@ export class ApiService {
     if (!!this.currentLocaleService.getValue()) {
       localeAndCurrency = `;loc=${this.currentLocaleService.getValue().lang};cur=${this.currentLocaleService.getValue().currency}`;
     }
-    const url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
+    let url;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      url = path;
+    } else {
+      url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
+    }
 
     return this.httpClient.get(url, { params: params, headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
@@ -93,7 +98,7 @@ export class ApiService {
 
   }
 
-  getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
+  private getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
     if (!linkTranslation) {
       return Observable.of(data);
     } else {
@@ -101,7 +106,7 @@ export class ApiService {
       if (!elements || !elements.length || !elements.find(x => x.type === 'Link')) {
         return Observable.of(elements);
       }
-      return forkJoin(this.getLinkUri(elements)).map(results => {
+      return forkJoin(this.getLinkedObjects(elements)).map(results => {
         elements = elements.map((item, key) => {
           return results[key];
         });
@@ -115,22 +120,15 @@ export class ApiService {
   }
 
 
-  /**
-   * @param  {any[]} data
-   * @returns Observable
-   */
-  getLinkUri(data: any[]): Observable<Object>[] {
-    const uriList: Observable<Object>[] = [];
+  private getLinkedObjects(data: any[]): Observable<any>[] {
+    const uriList: Observable<any>[] = [];
     data.forEach(item => {
       if (item.type === 'Link' && item.uri) {
-        // removes <site>/-;loc;cur/
-        const regexp = new RegExp(`${this.icmApplication}/-[^/]*/`, 'gi');
-        const linkUrl = (item.uri).replace(regexp, '');
+        const linkUrl = `${this.icmServerUrl}/${item.uri}`;
         // console.log(`link-translation ${item.uri} to ${linkUrl}`);
         uriList.push(this.get(linkUrl));
       }
     });
     return uriList;
   }
-
 }
