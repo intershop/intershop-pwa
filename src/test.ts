@@ -16,7 +16,7 @@ import {
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from './environments/environment';
 import { NEED_MOCK, MUST_MOCK_PATHS, AVAILABLE_LOCALES, USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE, USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from './app/core/configurations/injection-keys';
-import { ICM_APPLICATION } from './app/core/services/state-transfer/factories';
+import { ICM_APPLICATION, ICM_SERVER_URL, ICM_BASE_URL } from './app/core/services/state-transfer/factories';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare const __karma__: any;
@@ -34,7 +34,9 @@ beforeEach(() => {
       { provide: NEED_MOCK, useValue: true },
       { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
       { provide: AVAILABLE_LOCALES, useValue: environment.locales },
+      { provide: ICM_BASE_URL, useValue: environment.icmBaseURL },
       { provide: ICM_APPLICATION, useValue: environment.icmApplication },
+      { provide: ICM_SERVER_URL, useValue: `${environment.icmBaseURL}/${environment.icmServer}` },
       // TODO: get from REST call
       { provide: USE_SIMPLE_ACCOUNT, useValue: false },
       // TODO: get from REST call
