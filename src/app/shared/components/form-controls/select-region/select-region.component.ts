@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Region } from '../../../../models/region.model';
 import { RegionService } from '../../../services/countries/region.service';
 import { FormElement } from '../form-element';
-import { SelectOption } from '../select/select.component';
+import { SelectOption } from '../select/select-option.interface';
 
 @Component({
   selector: 'is-select-region',

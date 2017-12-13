@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
 import { FormElement } from '../form-element';
+import { SelectOption } from './select-option.interface';
 
 @Component({
   selector: 'is-select',
@@ -28,7 +28,3 @@ export class SelectComponent extends FormElement implements OnInit {
   }
 }
 
-export interface SelectOption {
-  value: string;
-  label: string;
-}
