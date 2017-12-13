@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Country } from '../../../../models/country.model';
 import { CountryService } from '../../../services/countries/country.service';
 import { FormElement } from '../form-element';
-import { SelectOption } from '../select/select.component';
+import { SelectOption } from '../select/select-option.interface';
 
 @Component({
   selector: 'is-select-country',

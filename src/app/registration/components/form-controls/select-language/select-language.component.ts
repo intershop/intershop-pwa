@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FormElement } from '../../../../shared/components/form-controls/form-element';
-import { SelectOption } from '../../../../shared/components/form-controls/select/select.component';
+import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
 
 @Component({
   selector: 'is-select-language',

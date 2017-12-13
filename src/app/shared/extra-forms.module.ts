@@ -34,4 +34,4 @@ import { SharedModule } from './shared.module';
     SelectTitleComponent
   ]
 })
-export class FormsModule { }
+export class ExtraFormsModule { }
