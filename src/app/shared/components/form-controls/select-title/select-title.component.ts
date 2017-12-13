@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { TranslateService } from '@ngx-translate/core';
 
 import { FormElement } from '../form-element';
-import { SelectOption } from '../select/select.component';
+import { SelectOption } from '../select/select-option.interface';
 
 @Component({
   selector: 'is-select-title',
