@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RecaptchaModule } from 'ng-recaptcha';
-import { FormsModule } from '../../../shared/forms.module';
+import { ExtraFormsModule } from '../../../shared/extra-forms.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { RegistrationModule } from '../../registration.module';
 import { AddressComponent } from './address/address.component';
@@ -19,7 +19,7 @@ import { RegistrationPersonalFormComponent } from './registration-personal-form/
     RecaptchaModule.forRoot(),
     SharedModule,
     RegistrationModule,
-    FormsModule
+    ExtraFormsModule
   ],
   declarations: [RegistrationPageComponent, CaptchaComponent, EmailPasswordComponent, AddressComponent, RegistrationCredentialsFormComponent, RegistrationPersonalFormComponent],
   providers: []
