@@ -5,9 +5,9 @@ import { ShellRoutingModule } from './shell-routing.module';
 
 @NgModule({
   imports: [
+    ShellRoutingModule,
     HeaderModule,
-    FooterModule,
-    ShellRoutingModule
+    FooterModule
   ],
   exports: [
     HeaderModule,
