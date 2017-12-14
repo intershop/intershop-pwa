@@ -4,7 +4,7 @@ import { AVAILABLE_LOCALES } from '../../../../core/configurations/injection-key
 import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
 
 @Component({
-  selector: 'is-language-switch',
+  selector: 'ish-language-switch',
   templateUrl: './language-switch.component.html'
 })
 

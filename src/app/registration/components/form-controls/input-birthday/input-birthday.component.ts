@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormElement } from '../../../../shared/components/form-controls/form-element';
 
 @Component({
-  selector: 'is-input-birthday',
+  selector: 'ish-input-birthday',
   templateUrl: './input-birthday.component.html'
 })
 export class InputBirthdayComponent extends FormElement implements OnInit {

@@ -1,5 +1,5 @@
 
-<is-form-group-validation [errorMessages]="errorMessages">
+<ish-form-group-validation [errorMessages]="errorMessages">
   <div class="form-group has-feedback" [formGroup]="form">
     <label [for]="controlName+'-'+uuid"  class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
@@ -13,4 +13,4 @@
       </select>
     </div>
   </div>
-</is-form-group-validation>
+</ish-form-group-validation>

@@ -5,7 +5,7 @@ import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../../core/conf
 import { SpecialValidators } from '../../../../shared/validators/special-validators';
 
 @Component({
-  selector: 'is-registration-credentials-form',
+  selector: 'ish-registration-credentials-form',
   templateUrl: './registration-credentials-form.component.html'
 })
 

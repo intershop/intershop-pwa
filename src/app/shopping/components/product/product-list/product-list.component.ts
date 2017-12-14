@@ -5,7 +5,7 @@ import { Product } from '../../../../models/product.model';
 import { ProductListService } from '../../../../shared/services/products/products.service';
 
 @Component({
-  selector: 'is-product-list',
+  selector: 'ish-product-list',
   templateUrl: './product-list.component.html',
 })
 

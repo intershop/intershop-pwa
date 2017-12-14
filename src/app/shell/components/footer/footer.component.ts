@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'is-footer',
+  selector: 'ish-footer',
   templateUrl: './footer.component.html'
 })
 

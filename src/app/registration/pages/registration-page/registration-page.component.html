@@ -1,14 +1,14 @@
 <h1>Create a New Account</h1>
 <p>To take full advantage of account features & benefits, please provide all the information below.</p>
-<form isFormValidation [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
-  <!--is-email-password component-->
+<form ishFormValidation [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
+  <!--ish-email-password component-->
   <h2>Email & Password</h2>
   <p>You will use your email address and password to access your account on future visits.</p>
   <div class="section">
     <div class="row">
       <div class="col-lg-6 col-md-8 col-sm-10">
         <p class="indicates-required"><span class="required">*</span>Required field</p>
-        <is-registration-credentials-form [parentForm]="registrationForm" #credentialsFormComponent></is-registration-credentials-form>
+        <ish-registration-credentials-form [parentForm]="registrationForm" #credentialsFormComponent></ish-registration-credentials-form>
       </div>
     </div>
   </div>
@@ -21,16 +21,16 @@
     </p>
     <div class="row">
       <div class="col-lg-6 col-md-8 col-sm-10">
-        <is-address-form [parentForm]="registrationForm"></is-address-form>
+        <ish-address-form [parentForm]="registrationForm"></ish-address-form>
 
-        <is-registration-personal-form [parentForm]="registrationForm"></is-registration-personal-form>
+        <ish-registration-personal-form [parentForm]="registrationForm"></ish-registration-personal-form>
       </div>
     </div>
   </div>
 
-  <!--<is-email-password (isValid)="isEmailFormValid = $event"></is-email-password> -->
-  <!--<is-address (isValid)="isAddressFormValid = $event"></is-address>-->
-  <is-captcha (isValid)="isCaptchaValid = $event"></is-captcha>
+  <!--<ish-email-password (isValid)="isEmailFormValid = $event"></ish-email-password> -->
+  <!--<ish-address (isValid)="isAddressFormValid = $event"></ish-address>-->
+  <ish-captcha (isValid)="isCaptchaValid = $event"></ish-captcha>
   <div class="row">
     <div class="col-sm-offset-2 col-sm-4">
       <div class="form-group">

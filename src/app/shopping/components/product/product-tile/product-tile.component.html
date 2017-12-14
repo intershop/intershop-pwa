@@ -164,7 +164,7 @@
       <!--condition=NOT(ProductBO:isEndOfLife) -->
       <ng-container *ngIf="true">
         <button *ngIf="mockData.displayType === 'glyphicon' " (click)="addToCompare(mockData.sku)" class="btn btn-link add-to-compare add-to-compare-trigger"
-          isDisableIcon [property]="mockData.sku" [globalStateKey]="'productCompareData'" title="Compare" rel="nofollow">
+          ishDisableIcon [property]="mockData.sku" [globalStateKey]="'productCompareData'" title="Compare" rel="nofollow">
           <span class="glyphicon glyphicon-equalizer"></span>
         </button>
         <a *ngIf="mockData.displayType === 'share-tool'" [attr.data-testing-id]="'compare-' + mockData.sku" href="javascript:void(0)"

@@ -1,4 +1,4 @@
-<is-form-group-validation [errorMessages]="errorMessages">
+<ish-form-group-validation [errorMessages]="errorMessages">
   <div class="form-group has-feedback" [formGroup]="dateForm">
     <label [attr.for]="'month-'+uuid" class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
@@ -43,5 +43,5 @@
     </div>
     <ng-content></ng-content>
   </div>
-</is-form-group-validation>
+</ish-form-group-validation>
 

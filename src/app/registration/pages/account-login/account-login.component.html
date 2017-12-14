@@ -14,12 +14,12 @@
           <!-- TODO  -->
           <!-- Apply condition for other possible inputs -->
         </div>
-        <form isFormValidation name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
+        <form ishFormValidation name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
           <!-- Hidden Fields in ISML -->
           <p>{{'account.login.message' | translate}}</p>
 
           <ng-template [ngIf]="userRegistrationLoginType === 'email'" [ngIfElse]="userLoginWithUserName">
-            <is-input
+            <ish-input
               [form]="loginForm"
               controlName="userName"
               type="email"
@@ -28,10 +28,10 @@
               inputClass="col-sm-6"
               markRequiredLabel="off"
               [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}"
-            ></is-input>
+            ></ish-input>
           </ng-template>
           <ng-template #userLoginWithUserName>
-            <is-input
+            <ish-input
               [form]="loginForm"
               controlName="userName"
               label="Username"
@@ -39,10 +39,10 @@
               inputClass="col-sm-6"
               markRequiredLabel="off"
               [errorMessages]="{'required':'account.login.username.error.required'}"
-            ></is-input>
+            ></ish-input>
           </ng-template>
 
-          <is-input
+          <ish-input
             [form]="loginForm"
             controlName="password"
             type="password"
@@ -51,7 +51,7 @@
             inputClass="col-sm-6"
             markRequiredLabel="off"
             [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}"
-          ></is-input>
+          ></ish-input>
 
           <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
@@ -80,7 +80,7 @@
       <a class="btn btn-primary" [routerLink]="['/register']">{{'account.create.button.label' | translate}}</a>
     </ng-template>
     <ng-template #simpleRegistration>
-      <is-simple-registration></is-simple-registration>
+      <ish-simple-registration></ish-simple-registration>
     </ng-template>
 
   </div>

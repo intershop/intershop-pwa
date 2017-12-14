@@ -4,7 +4,7 @@ import { GlobalStateAwareService } from '../../core/services/base-services/globa
 import { ProductCompareService } from '../../core/services/product-compare/product-compare.service';
 
 @Directive({
-  selector: '[isDisableIcon]'
+  selector: '[ishDisableIcon]'
 })
 export class DisableIconDirective {
 

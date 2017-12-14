@@ -5,7 +5,7 @@ import { FormElement } from '../form-element';
 import { SelectOption } from '../select/select-option.interface';
 
 @Component({
-  selector: 'is-select-title',
+  selector: 'ish-select-title',
   templateUrl: './select-title.component.html'
 })
 export class SelectTitleComponent extends FormElement implements OnChanges, OnInit {
