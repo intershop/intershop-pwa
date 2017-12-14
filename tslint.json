@@ -123,13 +123,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "is",
+      "ish",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "is",
+      "ish",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

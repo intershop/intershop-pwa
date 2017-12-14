@@ -6,7 +6,7 @@ import { FormElement } from '../form-element';
 import { SelectOption } from '../select/select-option.interface';
 
 @Component({
-  selector: 'is-select-country',
+  selector: 'ish-select-country',
   templateUrl: './select-country.component.html',
   providers: [CountryService]
 })

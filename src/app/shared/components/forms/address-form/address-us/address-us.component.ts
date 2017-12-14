@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'is-address-us',
+  selector: 'ish-address-us',
   templateUrl: './address-us.component.html'
 })
 export class AddressUSComponent implements OnInit, OnDestroy {

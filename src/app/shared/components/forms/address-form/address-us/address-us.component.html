@@ -1,37 +1,37 @@
 <div [formGroup]="addressForm">
     <fieldset>
-      <is-input
+      <ish-input
         [controlName]="'firstName'"
         [form]="addressForm"
         [label]="'First Name'"
         [errorMessages]="{'required':'account.login.username.error.required'}"
-      ></is-input>
+      ></ish-input>
 
-      <is-input
+      <ish-input
         [controlName]="'lastName'"
         [form]="addressForm"
         [label]="'Last Name'"
         [errorMessages]="{'required':'account.login.username.error.required'}"
-      ></is-input>
+      ></ish-input>
     </fieldset>
 
     <fieldset>
-      <is-input
+      <ish-input
         [controlName]="'addressLine1'"
         [form]="addressForm"
         [label]="'Address Line 1'"
         [errorMessages]="{'required':'account.login.username.error.required'}"
-      ></is-input>
+      ></ish-input>
 
-      <is-input
+      <ish-input
         [controlName]="'addressLine2'"
         [form]="addressForm"
         [label]="'Address Line 2'"
-      ></is-input>
+      ></ish-input>
     </fieldset>
 
     <fieldset>
-      <is-input
+      <ish-input
         [controlName]="'city'"
         [form]="addressForm"
         [label]="'City'"
@@ -45,20 +45,20 @@
         <a [popover]="AddressApoFpo" popoverTitle="APO and FPO addresses" placement="top">APO/FPO
           <span class="glyphicon glyphicon-info-sign"></span>
         </a>
-      </is-input>
+      </ish-input>
 
-      <is-select-region
+      <ish-select-region
         [form]="addressForm"
         [countryCode]="countryCode"
         [label]="'State'"
-      ></is-select-region>
+      ></ish-select-region>
 
-      <is-input
+      <ish-input
         [controlName]="'postalCode'"
         [form]="addressForm"
         [label]="'ZIP/Postal Code'"
         [errorMessages]="{'required':'account.login.username.error.required'}"
-      ></is-input>
+      ></ish-input>
 
     </fieldset>
   </div>

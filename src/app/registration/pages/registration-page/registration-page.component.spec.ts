@@ -15,10 +15,10 @@ describe('RegistrationPage Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RegistrationPageComponent,
-        MockComponent({ selector: 'is-registration-credentials-form', template: 'Credentials Template', inputs: ['parentForm'] }),
-        MockComponent({ selector: 'is-address-form', template: 'Address Template', inputs: ['parentForm'] }),
-        MockComponent({ selector: 'is-registration-personal-form', template: 'Personal Template', inputs: ['parentForm'] }),
-        MockComponent({ selector: 'is-captcha', template: 'Captcha Template' }),
+        MockComponent({ selector: 'ish-registration-credentials-form', template: 'Credentials Template', inputs: ['parentForm'] }),
+        MockComponent({ selector: 'ish-address-form', template: 'Address Template', inputs: ['parentForm'] }),
+        MockComponent({ selector: 'ish-registration-personal-form', template: 'Personal Template', inputs: ['parentForm'] }),
+        MockComponent({ selector: 'ish-captcha', template: 'Captcha Template' }),
       ],
       providers: [
       ],
@@ -49,10 +49,10 @@ describe('RegistrationPage Component', () => {
 
   it('should check if controls are getting rendered on the page', () => {
     expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');
-    expect(element.getElementsByTagName('is-registration-credentials-form')[0].innerHTML).toEqual('Credentials Template');
-    expect(element.getElementsByTagName('is-address-form')[0].innerHTML).toEqual('Address Template');
-    expect(element.getElementsByTagName('is-registration-personal-form')[0].innerHTML).toEqual('Personal Template');
-    expect(element.getElementsByTagName('is-captcha')[0].innerHTML).toEqual('Captcha Template');
+    expect(element.getElementsByTagName('ish-registration-credentials-form')[0].innerHTML).toEqual('Credentials Template');
+    expect(element.getElementsByTagName('ish-address-form')[0].innerHTML).toEqual('Address Template');
+    expect(element.getElementsByTagName('ish-registration-personal-form')[0].innerHTML).toEqual('Personal Template');
+    expect(element.getElementsByTagName('ish-captcha')[0].innerHTML).toEqual('Captcha Template');
   });
 
 });

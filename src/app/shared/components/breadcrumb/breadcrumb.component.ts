@@ -3,7 +3,7 @@ import { Category } from '../../../models/category.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 
 @Component({
-  selector: 'is-breadcrumb',
+  selector: 'ish-breadcrumb',
   templateUrl: './breadcrumb.component.html'
 })
 

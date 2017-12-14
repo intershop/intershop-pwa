@@ -1,5 +1,5 @@
 
-<is-breadcrumb [category]="category" [categoryPath]="categoryPath"></is-breadcrumb>
+<ish-breadcrumb [category]="category" [categoryPath]="categoryPath"></ish-breadcrumb>
 
 <div class="marketing-area"></div>
 
@@ -9,14 +9,14 @@
     <div class="col-sm-3">
       <div class="navigation-panel">
         <h1>{{category.name}}</h1>
-        <is-category-navigation [category]="category" [categoryPath]="categoryPath" [categoryNavigationLevel]="0"></is-category-navigation>
+        <ish-category-navigation [category]="category" [categoryPath]="categoryPath" [categoryNavigationLevel]="0"></ish-category-navigation>
       </div>
     </div>
 
     <div class="col-sm-9">
       <!-- category with subcategories -->
       <ng-template [ngIf]="category.hasOnlineSubCategories" [ngIfElse]="familyPage">
-        <is-category-list [categories]="category.subCategories"></is-category-list>
+        <ish-category-list [categories]="category.subCategories"></ish-category-list>
       </ng-template>
       <!-- category with products -->
       <ng-template #familyPage>
@@ -61,7 +61,7 @@
             </form>
           </div>
         </div>
-        <is-product-list [listView]="listView" [sortBy]="sortBy" (totalItems)="totalItems = $event"></is-product-list>
+        <ish-product-list [listView]="listView" [sortBy]="sortBy" (totalItems)="totalItems = $event"></ish-product-list>
       </ng-template>
     </div>
   </div>

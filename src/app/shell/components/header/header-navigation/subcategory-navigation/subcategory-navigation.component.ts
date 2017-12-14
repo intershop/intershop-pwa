@@ -3,7 +3,7 @@ import { Category } from '../../../../../models/category.model';
 import { CategoriesService } from '../../../../../shared/services/categories/categories.service';
 
 @Component({
-  selector: 'is-subcategory-navigation',
+  selector: 'ish-subcategory-navigation',
   templateUrl: './subcategory-navigation.component.html'
 })
 

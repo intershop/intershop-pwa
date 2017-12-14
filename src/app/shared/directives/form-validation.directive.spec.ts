@@ -7,7 +7,7 @@ import { FormValidationDirective } from './form-validation.directive';
 
 @Component({
   template: `
-            <form isFormValidation name="loginForm" [formGroup]="loginForm" >
+            <form ishFormValidation name="loginForm" [formGroup]="loginForm" >
               <input class="form-control" formControlName="userName" name="userName" />
               <button type="submit" class="btn btn-primary" >Submit</button>
             </form>
