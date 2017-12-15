@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AVAILABLE_LOCALES } from '../../../../core/configurations/injection-keys';
-import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
+import { AVAILABLE_LOCALES } from '../../../configurations/injection-keys';
+import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
 
 @Component({
   selector: 'ish-language-switch',

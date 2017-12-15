@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CartStatusService } from '../../../core/services/cart-status/cart-status.service';
+import { CartStatusService } from '../../services/cart-status/cart-status.service';
+
 
 @Component({
   selector: 'ish-header',

@@ -13,7 +13,7 @@ import { RegistrationPersonalFormComponent } from './registration-personal-form/
 @NgModule({
   imports: [
     RouterModule.forChild(registrationPageRoutes),
-    RecaptchaModule.forRoot(),
+    RecaptchaModule,
     SharedModule,
     RegistrationSharedModule,
     ExtraFormsModule

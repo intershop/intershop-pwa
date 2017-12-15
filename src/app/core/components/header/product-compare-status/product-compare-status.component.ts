@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
+import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
 
 @Component({
   selector: 'ish-product-compare-status',

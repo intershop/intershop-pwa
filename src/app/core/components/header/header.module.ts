@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { WishListService } from '../../../core/services/wishlists/wishlists.service';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { CollapseModule } from 'ngx-bootstrap/collapse/collapse.module';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown/bs-dropdown.module';
 import { CategoriesService } from '../../../shared/services/categories/categories.service';
 import { SuggestService } from '../../../shared/services/suggest/suggest.service';
-import { SharedModule } from '../../../shared/shared.module';
+import { AccountLoginService } from '../../services/account-login/account-login.service';
+import { WishListService } from '../../services/wishlists/wishlists.service';
 import { HeaderNavigationComponent } from './header-navigation/header-navigation.component';
 import { SubCategoryNavigationComponent } from './header-navigation/subcategory-navigation/subcategory-navigation.component';
 import { HeaderComponent } from './header.component';
@@ -16,11 +20,11 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
 
 @NgModule({
   imports: [
-    SharedModule
-  ],
-  exports: [
-    HeaderComponent,
-    ProductCompareStatusComponent
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    BsDropdownModule,
+    CollapseModule,
   ],
   declarations: [
     HeaderComponent,
@@ -33,8 +37,14 @@ import { WishListComponent } from './wishlist-status/wishlist-status.component';
     LoginStatusComponent,
     SubCategoryNavigationComponent
   ],
-  providers: [AccountLoginService, CategoriesService, SuggestService,
+  providers: [
+    AccountLoginService,
+    CategoriesService,
+    SuggestService,
     WishListService
+  ],
+  exports: [
+    HeaderComponent
   ]
 })
 

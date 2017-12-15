@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../../shared/shared.module';
+import { RouterModule } from '@angular/router';
+import { CollapseModule } from 'ngx-bootstrap/collapse/collapse.module';
 import { FooterComponent } from './footer.component';
 
 @NgModule({
   imports: [
-    SharedModule
-  ],
-  exports: [
-    FooterComponent
+    RouterModule,
+    CollapseModule
   ],
   declarations: [
+    FooterComponent
+  ],
+  exports: [
     FooterComponent
   ]
 })
