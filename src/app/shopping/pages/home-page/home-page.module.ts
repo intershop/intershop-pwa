@@ -9,6 +9,9 @@ import { homePageRoutes } from './home-page.routes';
     RouterModule.forChild(homePageRoutes),
     SharedModule
   ],
-  declarations: [HomePageComponent]
+  declarations: [
+    HomePageComponent
+  ]
 })
+
 export class HomePageModule { }
