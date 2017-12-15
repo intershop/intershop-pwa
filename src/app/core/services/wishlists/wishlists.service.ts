@@ -32,11 +32,11 @@ export class WishListService extends GlobalStateAwareService<Wishlist> {
   }
 
   private retrieveWishListFromServer() {
-    this.apiService.get(this.baseUrl).subscribe(data => {
+    this.apiService.get<any>(this.baseUrl).subscribe(data => {
       const preferredWishListUrl = (!!data.elements && data.elements.length > 0) ?
         data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
       if (!!preferredWishListUrl) {
-        this.apiService.get(this.baseUrl + preferredWishListUrl).subscribe((data2) => {
+        this.apiService.get<Wishlist>(this.baseUrl + preferredWishListUrl).subscribe((data2) => {
           this.next(data2);
         });
       }
