@@ -3,7 +3,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { CookieModule } from 'ngx-cookie';
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,7 +33,6 @@ import { environment } from '../environments/environment';
     }),
     HttpClientModule,
     BrowserTransferStateModule,
-    CookieModule.forRoot(),
     CoreModule,
     // import the feature modules that provide the application functionalities
     ShellModule,

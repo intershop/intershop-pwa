@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
 import { Wishlist } from '../../../../models/wishlist.model';
+import { WishListService } from '../../../services/wishlists/wishlists.service';
 
 @Component({
   selector: 'ish-wishlist-status',

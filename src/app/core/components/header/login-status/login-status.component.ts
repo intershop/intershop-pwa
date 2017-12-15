@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
 import { Customer } from '../../../../models/customer.model';
+import { AccountLoginService } from '../../../services/account-login/account-login.service';
 
 @Component({
   selector: 'ish-login-status',

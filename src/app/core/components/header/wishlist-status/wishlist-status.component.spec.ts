@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
 import { Wishlist } from '../../../../models/wishlist.model';
+import { WishListService } from '../../../services/wishlists/wishlists.service';
 import { WishListComponent } from './wishlist-status.component';
 
 
