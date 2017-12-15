@@ -40,6 +40,6 @@ export class InputComponent extends FormElement implements OnInit {
     set default values for empty input parameters
   */
   protected setDefaultValues() {
-    if (!this.autocomplete) { this.autocomplete = (this.type === 'password' ? 'off' : ''); }
+    if (!this.autocomplete) { this.autocomplete = (this.type === 'password' ? 'off' : null); }
   }
 }
