@@ -3,7 +3,7 @@ import { WishListService } from '../../../../core/services/wishlists/wishlists.s
 import { Wishlist } from '../../../../models/wishlist.model';
 
 @Component({
-  selector: 'is-wishlist-status',
+  selector: 'ish-wishlist-status',
   templateUrl: './wishlist-status.component.html'
 })
 

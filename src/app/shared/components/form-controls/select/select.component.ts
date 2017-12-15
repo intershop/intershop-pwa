@@ -4,7 +4,7 @@ import { FormElement } from '../form-element';
 import { SelectOption } from './select-option.interface';
 
 @Component({
-  selector: 'is-select',
+  selector: 'ish-select',
   templateUrl: './select.component.html'
 })
 export class SelectComponent extends FormElement implements OnInit {

@@ -5,7 +5,7 @@ import { SelectOption } from '../../../../shared/components/form-controls/select
 
 
 @Component({
-  selector: 'is-select-security-question',
+  selector: 'ish-select-security-question',
   templateUrl: './select-security-question.component.html'
 })
 export class SelectSecurityQuestionComponent extends FormElement implements OnInit {

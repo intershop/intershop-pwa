@@ -5,7 +5,7 @@ import { SuggestTerm } from '../../../../models/suggest-term.model';
 import { SuggestService } from '../../../../shared/services/suggest/suggest.service';
 
 @Component({
-  selector: 'is-search-box',
+  selector: 'ish-search-box',
   templateUrl: './search-box.component.html'
 })
 

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
 
 @Component({
-  selector: 'is-mini-cart',
+  selector: 'ish-mini-cart',
   templateUrl: './mini-cart.component.html',
 })
 

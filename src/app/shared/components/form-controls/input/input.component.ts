@@ -5,7 +5,7 @@ import { FormElement } from '../form-element';
 
 
 @Component({
-  selector: 'is-input',
+  selector: 'ish-input',
   templateUrl: './input.component.html'
 })
 export class InputComponent extends FormElement implements OnInit {

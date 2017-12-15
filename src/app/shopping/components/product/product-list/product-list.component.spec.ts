@@ -49,7 +49,7 @@ describe('Product List Component', () => {
 
   it('should check if the data is being rendered on the page', () => {
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('is-product-tile');
+    const thumbs = element.querySelectorAll('ish-product-tile');
     expect(thumbs.length).toBe(1);
   });
 });

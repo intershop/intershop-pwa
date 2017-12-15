@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartStatusService } from '../../../core/services/cart-status/cart-status.service';
 
 @Component({
-  selector: 'is-header',
+  selector: 'ish-header',
   templateUrl: './header.component.html',
 })
 

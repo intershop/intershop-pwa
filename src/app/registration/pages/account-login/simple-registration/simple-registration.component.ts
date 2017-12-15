@@ -8,7 +8,7 @@ import { AccountLoginService } from '../../../../core/services/account-login/acc
 
 
 @Component({
-  selector: 'is-simple-registration',
+  selector: 'ish-simple-registration',
   templateUrl: './simple-registration.component.html'
 })
 

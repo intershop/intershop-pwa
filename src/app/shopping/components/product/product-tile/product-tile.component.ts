@@ -11,7 +11,7 @@ import { DisableIconDirective } from '../../../directives/disable-icon.directive
 
 
 @Component({
-  selector: 'is-product-tile',
+  selector: 'ish-product-tile',
   templateUrl: './product-tile.component.html',
 })
 

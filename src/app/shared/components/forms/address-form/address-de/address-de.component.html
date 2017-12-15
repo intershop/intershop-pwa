@@ -1,60 +1,60 @@
 <div [formGroup]="addressForm">
   <fieldset>
-    <is-select-title
+    <ish-select-title
       [form]="addressForm"
       [countryCode]="countryCode"
-    ></is-select-title>
+    ></ish-select-title>
 
-    <is-input
+    <ish-input
       [controlName]="'firstName'"
       [form]="addressForm"
       [label]="'First Name'"
       [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></is-input>
+    ></ish-input>
 
-    <is-input
+    <ish-input
       [controlName]="'lastName'"
       [form]="addressForm"
       [label]="'Last Name'"
       [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></is-input>
+    ></ish-input>
   </fieldset>
 
   <fieldset>
-    <is-input
+    <ish-input
       [controlName]="'addressLine1'"
       [form]="addressForm"
       [label]="'Address Line 1'"
       [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></is-input>
+    ></ish-input>
 
-    <is-input
+    <ish-input
       [controlName]="'addressLine2'"
       [form]="addressForm"
       [label]="'Address Line 2'"
-    ></is-input>
+    ></ish-input>
 
-    <is-input
+    <ish-input
       [controlName]="'addressLine3'"
       [form]="addressForm"
       [label]="'Address Line 3'"
-    ></is-input>
+    ></ish-input>
   </fieldset>
 
   <fieldset>
-    <is-input
+    <ish-input
       [controlName]="'postalCode'"
       [form]="addressForm"
       [label]="'ZIP/Postal Code'"
       [maxlength]="'5'"
       [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></is-input>
+    ></ish-input>
 
-    <is-input
+    <ish-input
       [controlName]="'city'"
       [form]="addressForm"
       [label]="'City'"
       [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></is-input>
+    ></ish-input>
   </fieldset>
 </div>

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpecialValidators } from '../../../../shared/validators/special-validators';
 
 @Component({
-  selector: 'is-address-form',
+  selector: 'ish-address-form',
   templateUrl: './address-form.component.html'
 })
 export class AddressFormComponent implements OnInit {

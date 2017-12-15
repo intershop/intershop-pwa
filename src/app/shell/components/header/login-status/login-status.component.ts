@@ -4,7 +4,7 @@ import { AccountLoginService } from '../../../../core/services/account-login/acc
 import { Customer } from '../../../../models/customer.model';
 
 @Component({
-  selector: 'is-login-status',
+  selector: 'ish-login-status',
   templateUrl: './login-status.component.html'
 })
 

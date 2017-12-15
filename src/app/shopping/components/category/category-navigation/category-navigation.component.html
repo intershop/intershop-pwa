@@ -6,7 +6,7 @@
           [routerLink]="[categoriesService.generateCategoryRoute(subCategory)]">
           {{subCategory.name}}
         </a>
-        <is-category-navigation *ngIf="categoriesService.isCategoryEqual(subCategory, categoryPath[categoryNavigationLevel+1])" [category]="category" [categoryPath]="categoryPath" [categoryNavigationLevel]="categoryNavigationLevel+1"></is-category-navigation>
+        <ish-category-navigation *ngIf="categoriesService.isCategoryEqual(subCategory, categoryPath[categoryNavigationLevel+1])" [category]="category" [categoryPath]="categoryPath" [categoryNavigationLevel]="categoryNavigationLevel+1"></ish-category-navigation>
       </li>
     </ul>
   </div>

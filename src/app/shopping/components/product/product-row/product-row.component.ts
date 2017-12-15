@@ -12,7 +12,7 @@ import { DisableIconDirective } from '../../../directives/disable-icon.directive
 
 
 @Component({
-  selector: 'is-product-row',
+  selector: 'ish-product-row',
   templateUrl: './product-row.component.html',
 })
 
