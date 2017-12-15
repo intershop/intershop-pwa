@@ -4,7 +4,7 @@ import { Category } from '../../../models/category.model';
 import { CategoriesService } from '../../../shared/services/categories/categories.service';
 
 @Component({
-  selector: 'is-category-page',
+  selector: 'ish-category-page',
   templateUrl: './category-page.component.html'
 })
 

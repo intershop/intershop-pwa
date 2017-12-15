@@ -4,7 +4,7 @@ import { Category } from '../../../../models/category.model';
 import { CategoriesService } from '../../../../shared/services/categories/categories.service';
 
 @Component({
-  selector: 'is-category-list',
+  selector: 'ish-category-list',
   templateUrl: './category-list.component.html'
 })
 

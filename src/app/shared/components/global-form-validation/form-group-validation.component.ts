@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormControlErrorComponent } from './form-control-error.component';
 
 @Component({
-  selector: 'is-form-group-validation',
+  selector: 'ish-form-group-validation',
   template: `<ng-content></ng-content>`
 })
 

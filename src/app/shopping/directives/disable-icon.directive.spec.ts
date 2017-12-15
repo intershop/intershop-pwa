@@ -6,7 +6,7 @@ import { DisableIconDirective } from './disable-icon.directive';
 
 describe('DisableIconDirective', () => {
   @Component({
-    template: `<div class="is-selected" isDisableIcon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
+    template: `<div class="is-selected" ishDisableIcon [property]="'123'" [globalStateKey]="'productCompareData'">MockComponent</div>`
   })
 
   // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests

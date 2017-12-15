@@ -7,26 +7,26 @@
 
   <!-- country select -->
   <fieldset>
-    <is-select-country
+    <ish-select-country
       [controlName]="'countryCode'"
       [form]="addressForm"
       [label]="'Country'"
-    ></is-select-country>
+    ></ish-select-country>
   </fieldset>
 
   <!-- country dependent address forms -->
   <div [ngSwitch]="countryCode?.value">
-    <is-address-de [addressForm]="addressForm" *ngSwitchCase="'DE'"></is-address-de>
-    <is-address-fr [addressForm]="addressForm" *ngSwitchCase="'FR'"></is-address-fr>
-    <is-address-gb [addressForm]="addressForm" *ngSwitchCase="'GB'"></is-address-gb>
-    <is-address-us [addressForm]="addressForm" *ngSwitchCase="'US'"></is-address-us>
-    <is-address-default [addressForm]="addressForm" *ngSwitchDefault></is-address-default>
+    <ish-address-de [addressForm]="addressForm" *ngSwitchCase="'DE'"></ish-address-de>
+    <ish-address-fr [addressForm]="addressForm" *ngSwitchCase="'FR'"></ish-address-fr>
+    <ish-address-gb [addressForm]="addressForm" *ngSwitchCase="'GB'"></ish-address-gb>
+    <ish-address-us [addressForm]="addressForm" *ngSwitchCase="'US'"></ish-address-us>
+    <ish-address-default [addressForm]="addressForm" *ngSwitchDefault></ish-address-default>
   </div>
 
   <!-- phone number -->
-  <is-input
+  <ish-input
     [controlName]="'phoneHome'"
     [form]="addressForm"
     [label]="'Phone'"
-  ></is-input>
+  ></ish-input>
 </div>

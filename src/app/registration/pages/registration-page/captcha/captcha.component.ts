@@ -2,7 +2,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'is-captcha',
+  selector: 'ish-captcha',
   templateUrl: './captcha.component.html'
 })
 

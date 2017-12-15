@@ -4,7 +4,7 @@ import { FormElement } from '../../../../shared/components/form-controls/form-el
 import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
 
 @Component({
-  selector: 'is-select-language',
+  selector: 'ish-select-language',
   templateUrl: './select-language.component.html'
 })
 export class SelectLanguageComponent extends FormElement implements OnInit {

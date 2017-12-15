@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
 
 @Component({
-  selector: 'is-product-compare-status',
+  selector: 'ish-product-compare-status',
   templateUrl: './product-compare-status.component.html'
 })
 export class ProductCompareStatusComponent {

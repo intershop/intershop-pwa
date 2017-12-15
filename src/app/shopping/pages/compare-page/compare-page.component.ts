@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductCompareService } from '../../../core/services/product-compare/product-compare.service';
 
 @Component({
-  selector: 'is-compare-page',
+  selector: 'ish-compare-page',
   templateUrl: './compare-page.component.html'
 })
 export class ComparePageComponent implements OnInit {
