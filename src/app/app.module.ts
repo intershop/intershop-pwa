@@ -15,7 +15,6 @@ import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
 import { RegistrationModule } from './registration/registration.module';
-import { ShellModule } from './shell/shell.module';
 import { ShoppingModule } from './shopping/shopping.module';
 
 // TODO: this is needed to set properties from environment to providers.
@@ -35,7 +34,6 @@ import { environment } from '../environments/environment';
     BrowserTransferStateModule,
     CoreModule,
     // import the feature modules that provide the application functionalities
-    ShellModule,
     ShoppingModule,
     RegistrationModule,
     AccountModule,
