@@ -21,7 +21,7 @@ describe('Wish List Component', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'wishlist', component: WishListComponent }
+          { path: 'account/wishlist', component: WishListComponent }
         ]),
         TranslateModule.forRoot()
       ],
@@ -62,12 +62,12 @@ describe('Wish List Component', () => {
     expect(itemCountElement).toBeFalsy();
   });
 
-  it('should go to URL "wishlist" when clicked', async(() => {
+  it('should go to URL "/account/wishlist" when clicked', async(() => {
     expect(location.path()).toBe('');
     element.querySelector('a').click();
 
     fixture.whenStable().then(() => {
-      expect(location.path()).toBe('/wishlist');
+      expect(location.path()).toBe('/account/wishlist');
     });
   }));
 });
