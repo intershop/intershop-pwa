@@ -8,11 +8,11 @@ import { anything, instance, mock, when } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { SharedModule } from '../../../shared/shared.module';
-import { AccountLoginComponent } from './account-login.component';
+import { LoginPageComponent } from './login-page.component';
 
 describe('AccountLogin Component', () => {
-  let fixture: ComponentFixture<AccountLoginComponent>;
-  let component: AccountLoginComponent;
+  let fixture: ComponentFixture<LoginPageComponent>;
+  let component: LoginPageComponent;
   let element: HTMLElement;
   let debugEl: DebugElement;
 
@@ -28,7 +28,7 @@ describe('AccountLogin Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        AccountLoginComponent
+        LoginPageComponent
       ],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
@@ -39,7 +39,7 @@ describe('AccountLogin Component', () => {
         SharedModule,
         TranslateModule.forRoot(),
         RouterTestingModule.withRoutes([
-          { path: 'home', component: AccountLoginComponent }
+          { path: 'home', component: LoginPageComponent }
         ]),
         CustomFormsModule
       ],
@@ -49,7 +49,7 @@ describe('AccountLogin Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountLoginComponent);
+    fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
     debugEl = fixture.debugElement;
     element = fixture.nativeElement;
