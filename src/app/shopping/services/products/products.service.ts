@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../../core/services/api.service';
 
 @Injectable()
-export class ProductListService {
+export class ProductsService {
 
   /**
    * @param  {ApiService} private apiService
