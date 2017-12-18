@@ -3,19 +3,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
 import { SharedModule } from '../../../shared/shared.module';
-import { WishListPageComponent } from './wishlists-page.component';
-import { wishlistPageRoutes } from './wishlists-page.routes';
+import { WishlistsPageComponent } from './wishlists-page.component';
+import { wishlistsPageRoutes } from './wishlists-page.routes';
 
 @NgModule({
   imports: [
-    RouterModule.forChild(wishlistPageRoutes),
+    RouterModule.forChild(wishlistsPageRoutes),
     SharedModule
   ],
-  declarations: [WishListPageComponent],
+  declarations: [
+    WishlistsPageComponent
+  ],
   providers: [
     WishListService
   ]
 })
 
-export class WishlistPageModule {
-}
+export class WishlistsPageModule { }

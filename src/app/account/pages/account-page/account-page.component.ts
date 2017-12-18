@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 
 @Component({
-  templateUrl: './account-overview.component.html'
+  templateUrl: './account-page.component.html'
 })
 
-export class AccountOverviewComponent implements OnInit {
+export class AccountPageComponent implements OnInit {
   customerName: string;
 
   constructor(
