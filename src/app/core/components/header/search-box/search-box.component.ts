@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { SuggestTerm } from '../../../../models/suggest-term.model';
-import { SuggestService } from '../../../../shared/services/suggest/suggest.service';
+import { SuggestService } from '../../../services/suggest/suggest.service';
 
 @Component({
   selector: 'ish-search-box',
