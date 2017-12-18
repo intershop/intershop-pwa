@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import * as using from 'jasmine-data-provider';
 import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { Category } from '../../../models/category.model';
+import { Category } from '../../../models/category/category.model';
 import { ApiService } from '../api.service';
 import { CategoriesService } from './categories.service';
 
