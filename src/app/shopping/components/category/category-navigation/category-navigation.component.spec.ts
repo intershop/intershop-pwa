@@ -20,7 +20,7 @@ describe('Category Navigation Component', () => {
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(CategoryNavigationComponent);
       component = fixture.componentInstance;
-      component.categoryPath = [new Category()];
+      component.categoryPath = [new Category('1', 'a')];
       element = fixture.nativeElement;
     });
   }));
