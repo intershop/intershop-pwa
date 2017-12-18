@@ -1,12 +1,12 @@
 |
 +---account
 |   \---pages
-|       +---account-overview
-|       |       account-overview.component.html
-|       |       account-overview.component.spec.ts
-|       |       account-overview.component.ts
-|       |       account-overview.module.ts
-|       |       account-overview.routes.ts
+|       +---account-page
+|       |       account-page.component.html
+|       |       account-page.component.spec.ts
+|       |       account-page.component.ts
+|       |       account-page.module.ts
+|       |       account-page.routes.ts
 |       |
 |       \---wishlists-page
 |               wishlists-page.component.html

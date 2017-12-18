@@ -3,11 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { instance, mock } from 'ts-mockito';
 import { WishListService } from '../../../core/services/wishlists/wishlists.service';
-import { WishListPageComponent } from './wishlists-page.component';
+import { WishlistsPageComponent } from './wishlists-page.component';
 
-describe('Wish list Page Component', () => {
-  let fixture: ComponentFixture<WishListPageComponent>;
-  let component: WishListPageComponent;
+describe('Wishlists Page Component', () => {
+  let fixture: ComponentFixture<WishlistsPageComponent>;
+  let component: WishlistsPageComponent;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -18,10 +18,10 @@ describe('Wish list Page Component', () => {
       providers: [
         { provide: WishListService, useFactory: () => instance(mock(WishListService)) }
       ],
-      declarations: [WishListPageComponent],
+      declarations: [WishlistsPageComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(WishListPageComponent);
+      fixture = TestBed.createComponent(WishlistsPageComponent);
       component = fixture.componentInstance;
       element = fixture.nativeElement;
       fixture.autoDetectChanges(true);

@@ -7,7 +7,7 @@ import { Wishlist } from '../../../models/wishlist.model';
 @Component({
   templateUrl: './wishlists-page.component.html'
 })
-export class WishListPageComponent implements OnInit {
+export class WishlistsPageComponent implements OnInit {
 
   wishList: WishlistItem[] = [];
 
@@ -16,10 +16,10 @@ export class WishListPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.wishListService.subscribe(this.updateWishList);
+    this.wishListService.subscribe(this.updateWishlist);
   }
 
-  private updateWishList = (wishListData: Wishlist) => {
-    this.wishList = (wishListData) ? wishListData.items : [];
+  private updateWishlist = (wishlistData: Wishlist) => {
+    this.wishList = (wishlistData) ? wishlistData.items : [];
   }
 }

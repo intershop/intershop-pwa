@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { AccountOverviewComponent } from './account-overview.component';
+import { AccountPageComponent } from './account-page.component';
 
 describe('Account Overview Component', () => {
-  let fixture: ComponentFixture<AccountOverviewComponent>;
-  let component: AccountOverviewComponent;
+  let fixture: ComponentFixture<AccountPageComponent>;
+  let component: AccountPageComponent;
   let element: HTMLElement;
   let accountLoginService: AccountLoginService;
   let location: Location;
@@ -17,20 +17,20 @@ describe('Account Overview Component', () => {
     const accountLoginServiceMock = mock(AccountLoginService);
 
     TestBed.configureTestingModule({
-      declarations: [AccountOverviewComponent],
+      declarations: [AccountPageComponent],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
       ],
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'home', component: AccountOverviewComponent }
+          { path: 'home', component: AccountPageComponent }
         ])
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountOverviewComponent);
+    fixture = TestBed.createComponent(AccountPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     accountLoginService = TestBed.get(AccountLoginService);
