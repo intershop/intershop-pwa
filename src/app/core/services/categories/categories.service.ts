@@ -4,6 +4,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { categoryFromRaw } from '../../../models/category/category.factory';
+import { RawCategory } from '../../../models/category/category.interface';
 import { Category } from '../../../models/category/category.model';
 import { ApiService } from '../api.service';
 
@@ -26,7 +28,15 @@ export class CategoriesService {
     if (limit > 0) {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
-    return this.apiService.get(this.serviceIdentifier, params, null, true);
+    const rawCategories$ = this.apiService.get<RawCategory[]>(this.serviceIdentifier, params, null, true);
+    if (rawCategories$) {
+      return rawCategories$.map(
+        (rawCategoryArray: RawCategory[]) => {
+          return rawCategoryArray.map(
+            (rowCategory: RawCategory) => categoryFromRaw(rowCategory));
+        }
+      );
+    }
   }
 
   /**
@@ -38,7 +48,8 @@ export class CategoriesService {
     if (!categoryId) {
       return ErrorObservable.create('getCategory() called without categoryId');
     }
-    return this.apiService.get(this.serviceIdentifier + '/' + categoryId, null, null, false);
+    const rawCategories$ = this.apiService.get<RawCategory>(this.serviceIdentifier + '/' + categoryId, null, null, false);
+    return rawCategories$.map(rawCategory => categoryFromRaw(rawCategory));
   }
 
 
@@ -99,7 +110,7 @@ export class CategoriesService {
       } else if (categoryPath && categoryPath.length) {
         for (const pathCategory of categoryPath) {
           categoryIdPath = categoryIdPath + '/' + pathCategory.id;
-          if (this.isCategoryEqual(pathCategory, category)) {
+          if (!!pathCategory && this.isCategoryEqual(pathCategory, category)) {
             categoryIdPathIsValid = true;
             break;
           }
