@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
-import { Category } from '../../../models/category.model';
+import { Category } from '../../../models/category/category.model';
 
 @Component({
   selector: 'ish-category-page',

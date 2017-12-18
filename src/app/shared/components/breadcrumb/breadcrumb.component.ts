@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
-import { Category } from '../../../models/category.model';
+import { Category } from '../../../models/category/category.model';
 
 @Component({
   selector: 'ish-breadcrumb',

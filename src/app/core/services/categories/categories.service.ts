@@ -4,9 +4,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { Category } from '../../../models/category.model';
+import { Category } from '../../../models/category/category.model';
 import { ApiService } from '../api.service';
-
 
 @Injectable()
 export class CategoriesService {
