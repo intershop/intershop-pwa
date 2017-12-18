@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Category } from '../../../../../models/category.model';
-import { CategoriesService } from '../../../../../shared/services/categories/categories.service';
+import { CategoriesService } from '../../../../services/categories/categories.service';
 
 @Component({
   selector: 'ish-subcategory-navigation',

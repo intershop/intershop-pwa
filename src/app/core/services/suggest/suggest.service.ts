@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { Observable } from 'rxjs/Observable';
-import { ApiService } from '../../../core/services/api.service';
 import { SuggestTerm } from '../../../models/suggest-term.model';
+import { ApiService } from '../api.service';
 
 
 @Injectable()
