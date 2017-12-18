@@ -40,8 +40,8 @@ export class ApiService {
    * @returns Observable
    */
 
-  get(path: string, params?: HttpParams, headers?: HttpHeaders,
-    elementsTranslation?: boolean, linkTranslation?: boolean): Observable<any> {
+  get<T>(path: string, params?: HttpParams, headers?: HttpHeaders,
+    elementsTranslation?: boolean, linkTranslation?: boolean): Observable<T> {
     let localeAndCurrency = '';
     if (!!this.currentLocaleService.getValue()) {
       localeAndCurrency = `;loc=${this.currentLocaleService.getValue().lang};cur=${this.currentLocaleService.getValue().currency}`;
@@ -53,7 +53,7 @@ export class ApiService {
       url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
     }
 
-    return this.httpClient.get(url, { params: params, headers: headers })
+    return this.httpClient.get<T>(url, { params: params, headers: headers })
       .map(data => data = (elementsTranslation ? data['elements'] : data))
       .flatMap((data) => this.getLinkedData(data, linkTranslation))
       .catch(this.formatErrors.bind(this));
@@ -65,8 +65,8 @@ export class ApiService {
    * @param  {Object={}} body
    * @returns Observable
    */
-  put(path: string, body: Object = {}): Observable<any> {
-    return this.httpClient.put(
+  put<T>(path: string, body: Object = {}): Observable<T> {
+    return this.httpClient.put<T>(
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
@@ -78,8 +78,8 @@ export class ApiService {
    * @param  {Object={}} body
    * @returns Observable
    */
-  post(path: string, body: Object = {}): Observable<any> {
-    return this.httpClient.post(
+  post<T>(path: string, body: Object = {}): Observable<T> {
+    return this.httpClient.post<T>(
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body)
     ).catch(this.formatErrors);
@@ -90,9 +90,9 @@ export class ApiService {
    * @param  {} path
    * @returns Observable
    */
-  delete(path): Observable<any> {
+  delete<T>(path): Observable<T> {
 
-    return this.httpClient.delete(
+    return this.httpClient.delete<T>(
       `${this.restEndpoint}/${path}`
     ).catch(this.formatErrors);
 

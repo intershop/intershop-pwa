@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http/src/params';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import * as using from 'jasmine-data-provider';
@@ -36,7 +37,7 @@ describe('Categories Service', () => {
       verify(apiServiceMock.get('categories', anything(), anything(), anything())).once();
       const args = capture(apiServiceMock.get).last();
       expect(args[0]).toBe('categories');
-      const params = args[1];
+      const params = args[1] as HttpParams;
       expect(params).toBeTruthy();
       expect(params.get('view')).toBe('tree');
       expect(params.get('limit')).toBe('1');
