@@ -37,11 +37,11 @@
 |   |
 |   \---pages
 |       +---account-login
-|       |   |   account-login.component.html
-|       |   |   account-login.component.spec.ts
-|       |   |   account-login.component.ts
-|       |   |   account-login.module.ts
-|       |   |   account-login.routes.ts
+|       |   |   login-page.component.html
+|       |   |   login-page.component.spec.ts
+|       |   |   login-page.component.ts
+|       |   |   login-page.module.ts
+|       |   |   login-page.routes.ts
 |       |   |
 |       |   \---simple-registration
 |       |           simple-registration.component.html

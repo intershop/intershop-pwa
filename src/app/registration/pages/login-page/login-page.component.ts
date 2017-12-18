@@ -8,10 +8,10 @@ import { AccountLoginService } from '../../../core/services/account-login/accoun
 import { Customer } from '../../../models/customer.model';
 
 @Component({
-  templateUrl: './account-login.component.html'
+  templateUrl: './login-page.component.html'
 })
 
-export class AccountLoginComponent implements OnInit {
+export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
   loginToUse = false;
   errorUser: any;

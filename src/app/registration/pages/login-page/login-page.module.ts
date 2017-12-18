@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
-import { AccountLoginComponent } from './account-login.component';
-import { accountLoginRoutes } from './account-login.routes';
+import { LoginPageComponent } from './login-page.component';
+import { loginPageRoutes } from './login-page.routes';
 import { SimpleRegistrationComponent } from './simple-registration/simple-registration.component';
 
 @NgModule({
   imports: [
-    RouterModule.forChild(accountLoginRoutes),
+    RouterModule.forChild(loginPageRoutes),
     SharedModule
   ],
-  declarations: [AccountLoginComponent, SimpleRegistrationComponent],
-  providers: []
+  declarations: [
+    LoginPageComponent,
+    SimpleRegistrationComponent
+  ]
 })
 
-export class AccountLoginModule {
-
-}
-
+export class LoginPageModule { }
