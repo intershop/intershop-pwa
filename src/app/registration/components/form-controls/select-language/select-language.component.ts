@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FormElement } from '../../../../shared/components/form-controls/form-element';
 import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
+import { SelectComponent } from '../../../../shared/components/form-controls/select/select.component';
 
 @Component({
   selector: 'ish-select-language',
-  templateUrl: './select-language.component.html'
+  templateUrl: '../../../../shared/components/form-controls/select/select.component.html'
 })
-export class SelectLanguageComponent extends FormElement implements OnInit {
-  languageOptions: SelectOption[];
+export class SelectLanguageComponent extends SelectComponent implements OnInit {
 
   /*
     constructor
@@ -22,8 +21,8 @@ export class SelectLanguageComponent extends FormElement implements OnInit {
   */
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent init
-    super.init();
-    this.languageOptions = this.getLanguageOptions();
+    super.componentInit();
+    this.options = this.options || this.getLanguageOptions();
   }
 
   /*

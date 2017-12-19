@@ -151,4 +151,9 @@ describe('Input Component', () => {
     component.controlName = null;
     expect(function() { fixture.detectChanges(); }).toThrow();
   });
+
+  it('should throw an error if there is no control with controlName in the given form', () => {
+    component.controlName = 'xxx';
+    expect(function() { fixture.detectChanges(); }).toThrow();
+  });
 });

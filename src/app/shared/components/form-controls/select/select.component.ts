@@ -18,6 +18,10 @@ export class SelectComponent extends FormElement implements OnInit {
   }
 
   ngOnInit() {
+    this.componentInit();
+  }
+
+  protected componentInit() {
     super.init();
 
     // determine / translate label

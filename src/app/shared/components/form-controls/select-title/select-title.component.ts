@@ -1,17 +1,14 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
-import { FormElement } from '../form-element';
 import { SelectOption } from '../select/select-option.interface';
+import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-title',
-  templateUrl: './select-title.component.html'
+  templateUrl: '../select/select.component.html',
 })
-export class SelectTitleComponent extends FormElement implements OnChanges, OnInit {
-  @Input() countryCode: string; // component will only be rendered if set
-
-  titles: SelectOption[];
+export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
+  @Input() countryCode: string;                     // required: component will only be rendered if set
 
   constructor(
     protected translate: TranslateService
@@ -20,15 +17,18 @@ export class SelectTitleComponent extends FormElement implements OnChanges, OnIn
   }
 
   ngOnInit() {
+    if (!this.countryCode) {
+      throw new Error('required input parameter <countryCode> is missing for SelectRegionComponent');
+    }
     this.setDefaultValues();
-    super.init();
+    super.componentInit();
   }
 
   /*
     refresh regions if country input changes
   */
   ngOnChanges(changes: SimpleChanges) {
-    this.titles = this.getTitleOptions();
+    this.options = this.getTitleOptions();
   }
 
   /*

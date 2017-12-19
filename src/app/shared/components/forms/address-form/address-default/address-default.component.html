@@ -43,9 +43,11 @@
       [label]="'City'"
     ></ish-input>
 
-    <ish-select-region
-      [form]="addressForm"
-      [countryCode]="countryCode"
-    ></ish-select-region>
+    <ng-container *ngIf="countryCode?.length > 0">
+      <ish-select-region
+        [form]="addressForm"
+        [countryCode]="countryCode"
+      ></ish-select-region>
+    </ng-container>
   </fieldset>
 </div>
