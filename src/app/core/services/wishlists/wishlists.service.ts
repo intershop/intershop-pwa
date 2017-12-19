@@ -6,7 +6,7 @@ import { AccountLoginService } from '../account-login/account-login.service';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 
 @Injectable()
-export class WishListService extends GlobalStateAwareService<Wishlist> {
+export class WishlistsService extends GlobalStateAwareService<Wishlist> {
 
   baseUrl = 'customers/-/wishlists/';
 
@@ -15,7 +15,7 @@ export class WishListService extends GlobalStateAwareService<Wishlist> {
     private apiService: ApiService,
     private accountLoginService: AccountLoginService
   ) {
-    super(platformId, 'wishListStatus', true, false);
+    super(platformId, 'wishlistStatus', true, false);
     accountLoginService.subscribe(() => this.updateState(accountLoginService));
   }
 
@@ -25,18 +25,18 @@ export class WishListService extends GlobalStateAwareService<Wishlist> {
 
   private updateState(service: AccountLoginService) {
     if (service.isAuthorized()) {
-      this.retrieveWishListFromServer();
+      this.retrieveWishlistFromServer();
     } else {
       this.next(null);
     }
   }
 
-  private retrieveWishListFromServer() {
+  private retrieveWishlistFromServer() {
     this.apiService.get<any>(this.baseUrl).subscribe(data => {
-      const preferredWishListUrl = (!!data.elements && data.elements.length > 0) ?
+      const preferredWishlistUrl = (!!data.elements && data.elements.length > 0) ?
         data.elements[0].uri.substring(data.elements[0].uri.lastIndexOf('/') + 1) : null;
-      if (!!preferredWishListUrl) {
-        this.apiService.get<Wishlist>(this.baseUrl + preferredWishListUrl).subscribe((data2) => {
+      if (!!preferredWishlistUrl) {
+        this.apiService.get<Wishlist>(this.baseUrl + preferredWishlistUrl).subscribe((data2) => {
           this.next(data2);
         });
       }

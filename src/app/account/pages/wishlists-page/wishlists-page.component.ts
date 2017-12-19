@@ -1,6 +1,6 @@
 // NEEDS_WORK: DUMMY COMPONENT
 import { Component, OnInit } from '@angular/core';
-import { WishListService } from '../../../core/services/wishlists/wishlists.service';
+import { WishlistsService } from '../../../core/services/wishlists/wishlists.service';
 import { WishlistItem } from '../../../models/wishlist-item.model';
 import { Wishlist } from '../../../models/wishlist.model';
 
@@ -9,17 +9,17 @@ import { Wishlist } from '../../../models/wishlist.model';
 })
 export class WishlistsPageComponent implements OnInit {
 
-  wishList: WishlistItem[] = [];
+  wishlist: WishlistItem[] = [];
 
   constructor(
-    private wishListService: WishListService
+    private wishlistsService: WishlistsService
   ) { }
 
   ngOnInit() {
-    this.wishListService.subscribe(this.updateWishlist);
+    this.wishlistsService.subscribe(this.updateWishlist);
   }
 
   private updateWishlist = (wishlistData: Wishlist) => {
-    this.wishList = (wishlistData) ? wishlistData.items : [];
+    this.wishlist = (wishlistData) ? wishlistData.items : [];
   }
 }
