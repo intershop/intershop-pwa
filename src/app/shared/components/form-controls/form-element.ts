@@ -14,7 +14,6 @@ export class FormElement {
                                                   'on' (label is always marked as required),
                                                   'off' (label is never marked as required) */
   uuid: string;
-  required: boolean;
 
   constructor(
     protected translate: TranslateService
@@ -27,8 +26,10 @@ export class FormElement {
     if (!this.controlName) {
       throw new Error('required input parameter <controlName> is missing for FormElementComponent');
     }
+    if (!this.form.get(this.controlName)) {
+      throw new Error('input parameter <controlName> does not exist in the given form for FormElementComponent');
+    }
     this.uuid = UUID.UUID(); // uuid to make the id of the control unique
-    this.required = this.getRequired();   // check if required validator is set
   }
 
   /*
@@ -55,7 +56,7 @@ export class FormElement {
      returns false, if markRequiredLabel= 'off',
      returns whether the control is a required field and markRequiredLabel = 'auto'
   */
-  private getRequired(): boolean {
+  get required(): boolean {
     switch (this.markRequiredLabel) {
       case 'on': {
         return true;
