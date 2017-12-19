@@ -37,6 +37,7 @@ export class CategoriesService {
         }
       );
     }
+    return null;
   }
 
   /**
@@ -51,7 +52,6 @@ export class CategoriesService {
     const rawCategories$ = this.apiService.get<RawCategory>(this.serviceIdentifier + '/' + categoryId, null, null, false);
     return rawCategories$.map(rawCategory => categoryFromRaw(rawCategory));
   }
-
 
   // TODO: this method should become obsolete as soon as the category REST call will return the category path too
   /**
@@ -81,19 +81,6 @@ export class CategoriesService {
   }
 
   /**
-   * Helper function to compare two categories
-   * @param category1  The first category to be compared with the second.
-   * @param category2  The second category to be compared with the first.
-   * @returns          True if the categories are equal, false if not.
-   *                   'equal' means
-   *                   - both categories are defined
-   *                   - the id of the categories is the same
-   */
-  isCategoryEqual(category1: Category, category2: Category): boolean {
-    return !!category1 && !!category2 && category1.id === category2.id;
-  }
-
-  /**
    * Helper function to generate the applications category route from the categories REST API uri
    * or alternatively from an additionally given categoryPath if no uri is available.
    * @param category      [required] The category the application route should be generated for.
@@ -110,7 +97,7 @@ export class CategoriesService {
       } else if (categoryPath && categoryPath.length) {
         for (const pathCategory of categoryPath) {
           categoryIdPath = categoryIdPath + '/' + pathCategory.id;
-          if (!!pathCategory && this.isCategoryEqual(pathCategory, category)) {
+          if (!!pathCategory && pathCategory.equals(category)) {
             categoryIdPathIsValid = true;
             break;
           }

@@ -143,37 +143,6 @@ describe('Categories Service', () => {
     });
   });
 
-  describe('isCategoryEqual', () => {
-
-    function dataProvider() {
-      return [
-        { cat1: undefined, cat2: undefined, result: false },
-        { cat1: undefined, cat2: null, result: false },
-        { cat1: null, cat2: undefined, result: false },
-        { cat1: null, cat2: null, result: false },
-        { cat1: undefined, cat2: {}, result: false },
-        { cat1: null, cat2: {}, result: false },
-        { cat1: {}, cat2: undefined, result: false },
-        { cat1: {}, cat2: null, result: false },
-        { cat1: {}, cat2: {}, result: true },
-        { cat1: { id: '1' }, cat2: { id: '1' }, result: true },
-        { cat1: { id: '2' }, cat2: { id: '1' }, result: false },
-        { cat1: {}, cat2: { id: '1' }, result: false },
-        { cat1: { id: '1' }, cat2: {}, result: false },
-        { cat1: { d: 'dummy' }, cat2: { id: '1' }, result: false },
-        { cat1: { id: '1' }, cat2: { d: 'dummy' }, result: false },
-        { cat1: { id: '1' }, cat2: { id: '1', d: 'dummy' }, result: true },
-        { cat1: { id: '1', d: 'other' }, cat2: { id: '1', d: 'dummy' }, result: true },
-      ];
-    }
-
-    using(dataProvider, (slice) => {
-      it(`should return ${slice.result} when comparing '${JSON.stringify(slice.cat1)}' and '${JSON.stringify(slice.cat2)}'`, () => {
-        expect(categoriesService.isCategoryEqual(slice.cat1, slice.cat2)).toBe(slice.result);
-      });
-    });
-  });
-
   describe('generateCategoryRoute', () => {
 
     const TOP = categoryFromRaw({ id: 'top' } as RawCategory);
