@@ -4,34 +4,34 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Wishlist } from '../../../../models/wishlist.model';
-import { WishListService } from '../../../services/wishlists/wishlists.service';
-import { WishListComponent } from './wishlist-status.component';
+import { WishlistsService } from '../../../services/wishlists/wishlists.service';
+import { WishlistComponent } from './wishlist-status.component';
 
 
 describe('Wish List Component', () => {
-  let fixture: ComponentFixture<WishListComponent>;
-  let component: WishListComponent;
+  let fixture: ComponentFixture<WishlistComponent>;
+  let component: WishlistComponent;
   let element: HTMLElement;
-  let wishListServiceMock: BehaviorSubject<Wishlist>;
+  let wishlistsServiceMock: BehaviorSubject<Wishlist>;
   let location: Location;
 
   beforeEach(async(() => {
-    wishListServiceMock = new BehaviorSubject({ itemsCount: 1 } as Wishlist);
+    wishlistsServiceMock = new BehaviorSubject({ itemsCount: 1 } as Wishlist);
 
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          { path: 'account/wishlist', component: WishListComponent }
+          { path: 'account/wishlist', component: WishlistComponent }
         ]),
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: WishListService, useValue: wishListServiceMock }
+        { provide: WishlistsService, useValue: wishlistsServiceMock }
       ],
-      declarations: [WishListComponent]
+      declarations: [WishlistComponent]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WishListComponent);
+    fixture = TestBed.createComponent(WishlistComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     location = TestBed.get(Location);
@@ -55,7 +55,7 @@ describe('Wish List Component', () => {
   });
 
   it('should not display counter when item count is 0', () => {
-    wishListServiceMock.next({ itemsCount: 0 } as Wishlist);
+    wishlistsServiceMock.next({ itemsCount: 0 } as Wishlist);
     fixture.detectChanges();
 
     const itemCountElement = element.querySelector('#preferred-wishlist-counter');

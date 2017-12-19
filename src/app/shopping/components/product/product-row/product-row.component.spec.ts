@@ -10,7 +10,7 @@ import { AccountLoginService } from '../../../../core/services/account-login/acc
 import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
-import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
+import { WishlistsService } from '../../../../core/services/wishlists/wishlists.service';
 import { DisableIconDirective } from '../../../directives/disable-icon.directive';
 import { ProductRowComponent } from './product-row.component';
 
@@ -23,7 +23,7 @@ describe('Product Row Component', () => {
   let element: HTMLElement;
   let productCompareServiceMock: ProductCompareService;
   let cartStatusServiceMock: CartStatusService;
-  let wishListServiceMock: WishListService;
+  let wishlistsServiceMock: WishlistsService;
   let accountLoginServiceMock: AccountLoginService;
   let location: Location;
 
@@ -176,7 +176,7 @@ describe('Product Row Component', () => {
     when(productCompareServiceMock.getValue()).thenReturn([]);
     cartStatusServiceMock = mock(CartStatusService);
     when(cartStatusServiceMock.getValue()).thenReturn([]);
-    wishListServiceMock = mock(WishListService);
+    wishlistsServiceMock = mock(WishlistsService);
     accountLoginServiceMock = mock(AccountLoginService);
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(),
@@ -187,7 +187,7 @@ describe('Product Row Component', () => {
       declarations: [ProductRowComponent, DisableIconDirective],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: WishListService, useFactory: () => instance(wishListServiceMock) },
+        { provide: WishlistsService, useFactory: () => instance(wishlistsServiceMock) },
         { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) },
         { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) },
         { provide: ICM_BASE_URL, useValue: 'http://www.example.org' }
@@ -223,20 +223,20 @@ describe('Product Row Component', () => {
     verify(cartStatusServiceMock.addSKU(anything())).once();
   });
 
-  it('should call addToWishList method and verify if router.navigate is called', async(() => {
+  it('should call addToWishlist method and verify if router.navigate is called', async(() => {
     expect(location.path()).toBe('');
-    component.addToWishList();
+    component.addToWishlist();
 
     fixture.whenStable().then(() => {
       expect(location.path()).toBe('/login');
     });
-    verify(wishListServiceMock.update()).never();
+    verify(wishlistsServiceMock.update()).never();
   }));
 
-  it('should call addToWishList method and verify if getWishList method of Wishlistservice is called', async(inject([WishListService], (wishListService: WishListService) => {
+  it('should call addToWishlist method and verify if getWishlist method of WishlistsService is called', async(inject([WishlistsService], (wishlistsService: WishlistsService) => {
     when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
-    component.addToWishList();
-    verify(wishListServiceMock.update()).once();
+    component.addToWishlist();
+    verify(wishlistsServiceMock.update()).once();
   })
   ));
 

@@ -151,7 +151,7 @@
         <!--  GetProductPrice.ISMl End-->
 
         <button *ngIf="true" type="submit" class="btn add-to-wishlist" [ngClass]="{'btn-link' : true}" rel="nofollow" name="addToWishlistProduct"
-          data-dialog="" (click)="addToWishList(mockData)" data-testing-class="button-addToWishlistProduct" title="Add to Wish List">
+          data-dialog="" (click)="addToWishlist(mockData)" data-testing-class="button-addToWishlistProduct" title="Add to Wish List">
           <span *ngIf="mockData.displayType === 'glyphicon'" class="glyphicon glyphicon-heart"></span>
           <span *ngIf="mockData.displayType === 'share-tool'" class="glyphicon glyphicon-heart"></span>
           <span *ngIf="mockData.displayType === 'share-tool'" class="share-label">Add to Wish List</span> {{(mockData.displayType !== 'share-tool' && mockData.displayType !== 'glyphicon') ? 'Add

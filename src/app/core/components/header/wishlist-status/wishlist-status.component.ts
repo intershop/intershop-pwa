@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Wishlist } from '../../../../models/wishlist.model';
-import { WishListService } from '../../../services/wishlists/wishlists.service';
+import { WishlistsService } from '../../../services/wishlists/wishlists.service';
 
 @Component({
   selector: 'ish-wishlist-status',
   templateUrl: './wishlist-status.component.html'
 })
 
-export class WishListComponent implements OnInit {
+export class WishlistComponent implements OnInit {
 
   itemCount = 0;
 
   constructor(
-    private wishListService: WishListService
+    private wishlistsService: WishlistsService
   ) { }
 
   ngOnInit() {
-    this.wishListService.subscribe((wishListData: Wishlist) => {
-      this.itemCount = (wishListData) ? wishListData.itemsCount : 0;
+    this.wishlistsService.subscribe((wishlistData: Wishlist) => {
+      this.itemCount = (wishlistData) ? wishlistData.itemsCount : 0;
     });
   }
 }

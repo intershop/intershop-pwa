@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { instance, mock } from 'ts-mockito';
-import { WishListService } from '../../../core/services/wishlists/wishlists.service';
+import { WishlistsService } from '../../../core/services/wishlists/wishlists.service';
 import { WishlistsPageComponent } from './wishlists-page.component';
 
 describe('Wishlists Page Component', () => {
@@ -16,7 +16,7 @@ describe('Wishlists Page Component', () => {
         ModalModule.forRoot()
       ],
       providers: [
-        { provide: WishListService, useFactory: () => instance(mock(WishListService)) }
+        { provide: WishlistsService, useFactory: () => instance(mock(WishlistsService)) }
       ],
       declarations: [WishlistsPageComponent],
       schemas: [NO_ERRORS_SCHEMA]

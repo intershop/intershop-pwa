@@ -5,7 +5,7 @@
     </div>
     <div class="col-sm-9">
       <div class="wishlist">
-        <ng-template #wishListsPopover>
+        <ng-template #wishlistsPopover>
           Every list has its own settings:<br><br><b>Make Public</b> allows other consumers to search and view the wishlist.
           However it is possible to set individual items to "do not share". These items are only visible for you even if
           the list is public or shared with a friend.<br /><br /><b>Set as Preferred</b> makes a wish list your preferred
@@ -16,7 +16,7 @@
           />On your wish list you can see if (and how many) items have already been purchased by yourself and by your friends.
           Your friends can see this information on shared and public lists, too. This prevents double purchases of items.
         </ng-template>
-        <a [popover]="wishListsPopover" popoverTitle="WISH LISTS" placement="bottom">How do Wish Lists work?
+        <a [popover]="wishlistsPopover" popoverTitle="WISH LISTS" placement="bottom">How do Wish Lists work?
           <span class="glyphicon glyphicon-info-sign"></span>
         </a>
       </div>
@@ -26,7 +26,7 @@
       </h1>
 
       <div class="section">
-        Wish List Items: {{wishList?.length}}
+        Wish List Items: {{wishlist?.length}}
       </div>
       <h2>Find a Wish List</h2>
       <div class="wishlist-form">
@@ -96,10 +96,10 @@
 								/>
 								Make List Public
               </label>
-                <ng-template #publicWishListsPopover>
+                <ng-template #publicWishlistsPopover>
                   Selection will make the wish list public and allow other consumers to search and view it.
                 </ng-template>
-                <a [popover]="publicWishListsPopover" popoverTitle="Make Public">Details
+                <a [popover]="publicWishlistsPopover" popoverTitle="Make Public">Details
                   <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
               </div>
@@ -112,11 +112,11 @@
 								/>
 								Preferred List
               </label>
-                <ng-template #preferedWishListsPopover>
+                <ng-template #preferedWishlistsPopover>
                   Selection will make the wish list your preferred wish list and sets all other (if any) back to normal. All added products
                   will be added by default to this wish list.
                 </ng-template>
-                <a [popover]="preferedWishListsPopover" popoverTitle="Set as Preferred">Details
+                <a [popover]="preferedWishlistsPopover" popoverTitle="Set as Preferred">Details
                   <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
               </div>

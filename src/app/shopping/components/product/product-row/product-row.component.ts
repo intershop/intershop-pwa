@@ -6,7 +6,7 @@ import { AccountLoginService } from '../../../../core/services/account-login/acc
 import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
 import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
-import { WishListService } from '../../../../core/services/wishlists/wishlists.service';
+import { WishlistsService } from '../../../../core/services/wishlists/wishlists.service';
 import { Product } from '../../../../models/product.model';
 import { DisableIconDirective } from '../../../directives/disable-icon.directive';
 
@@ -27,7 +27,7 @@ export class ProductRowComponent implements OnInit {
 
   constructor(
     private accountLoginService: AccountLoginService,
-    private wishListService: WishListService,
+    private wishlistsService: WishlistsService,
     private productCompareService: ProductCompareService,
     private cartStatusService: CartStatusService,
     private router: Router,
@@ -159,11 +159,11 @@ export class ProductRowComponent implements OnInit {
   /**
    * Adds product to wishlist
    */
-  addToWishList(): void {
+  addToWishlist(): void {
     if (!this.accountLoginService.isAuthorized()) {
       this.router.navigate(['/login']);
     } else {
-      this.wishListService.update();
+      this.wishlistsService.update();
     }
   }
 
