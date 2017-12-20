@@ -31,9 +31,9 @@ export class CategoriesService {
     const rawCategories$ = this.apiService.get<RawCategory[]>(this.serviceIdentifier, params, null, true);
     if (rawCategories$) {
       return rawCategories$.map(
-        (rawCategoryArray: RawCategory[]) => {
-          return rawCategoryArray.map(
-            (rowCategory: RawCategory) => categoryFromRaw(rowCategory));
+        (rawCategories: RawCategory[]) => {
+          return rawCategories.map(
+            (rawCategory: RawCategory) => categoryFromRaw(rawCategory));
         }
       );
     }
@@ -49,8 +49,8 @@ export class CategoriesService {
     if (!categoryId) {
       return ErrorObservable.create('getCategory() called without categoryId');
     }
-    const rawCategories$ = this.apiService.get<RawCategory>(this.serviceIdentifier + '/' + categoryId, null, null, false);
-    return rawCategories$.map(rawCategory => categoryFromRaw(rawCategory));
+    const rawCategory$ = this.apiService.get<RawCategory>(this.serviceIdentifier + '/' + categoryId, null, null, false);
+    return rawCategory$.map(rawCategory => categoryFromRaw(rawCategory));
   }
 
   // TODO: this method should become obsolete as soon as the category REST call will return the category path too
@@ -97,7 +97,7 @@ export class CategoriesService {
       } else if (categoryPath && categoryPath.length) {
         for (const pathCategory of categoryPath) {
           categoryIdPath = categoryIdPath + '/' + pathCategory.id;
-          if (!!pathCategory && pathCategory.equals(category)) {
+          if (pathCategory && pathCategory.equals(category)) {
             categoryIdPathIsValid = true;
             break;
           }

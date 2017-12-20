@@ -6,7 +6,7 @@ export function categoryFromRaw(rawCategory: RawCategory): Category {
   let subCategories: Category[] = null;
   if (rawCategory) {
     if (rawCategory.subCategories) {
-      subCategories = rawCategory.subCategories.map(c => categoryFromRaw(c));
+      subCategories = rawCategory.subCategories.map(rawSubCategory => categoryFromRaw(rawSubCategory));
     }
     const category: Category = new Category(rawCategory.id, rawCategory.name);
 
@@ -22,6 +22,6 @@ export function categoryFromRaw(rawCategory: RawCategory): Category {
 
     return category;
   } else {
-    throw new Error('\'raw\' is required');
+    throw new Error('\'rawCategory\' is required');
   }
 }
