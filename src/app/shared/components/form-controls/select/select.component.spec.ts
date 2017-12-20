@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { SelectOption } from '../select/select-option.interface';
 import { SelectComponent } from './select.component';
@@ -24,7 +24,8 @@ describe('Select Component', () => {
         element = fixture.nativeElement;
 
         const form = new FormGroup({
-          simpleField: new FormControl()
+          simpleField: new FormControl(),
+          requiredField: new FormControl('', [Validators.required])
         });
         const options: SelectOption[] = [{ 'label': 'optionLabel', 'value': 'optionValue' }, { 'label': 'optionLabel2', 'value': 'optionValue2' }];
 
@@ -45,6 +46,18 @@ describe('Select Component', () => {
     expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]')).toBeTruthy('option with the correct value is rendered');
     expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]').innerHTML).toContain('optionLabel', 'option with the correct value and label is rendered');
     expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue2 ]').innerHTML).toContain('optionLabel2', '2nd option with the correct value and label is rendered');
+  });
+
+  it('should not be rendered if there are no options and no required validator', () => {
+    component.options = null;
+    fixture.detectChanges();
+    expect(element.querySelector('select[data-testing-id=simpleField]')).toBeFalsy();
+  });
+
+  it('should be rendered if there are no options but a required validator', () => {
+    component.controlName = 'requiredField';
+    fixture.detectChanges();
+    expect(element.querySelector('select[data-testing-id=requiredField]')).toBeTruthy();
   });
 
   it('should show empty option if no value is set', () => {

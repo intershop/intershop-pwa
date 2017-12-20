@@ -14,6 +14,8 @@ import { SelectComponent } from './components/form-controls/select/select.compon
 import { FormControlErrorComponent } from './components/global-form-validation/form-control-error.component';
 import { FormGroupValidationComponent } from './components/global-form-validation/form-group-validation.component';
 import { FormValidationDirective } from './directives/form-validation.directive';
+import { CountryService } from './services/countries/country.service';
+import { RegionService } from './services/countries/region.service';
 
 @NgModule({
   imports: [
@@ -55,6 +57,10 @@ import { FormValidationDirective } from './directives/form-validation.directive'
   ],
   entryComponents: [
     FormControlErrorComponent
+  ],
+  providers: [
+    CountryService,
+    RegionService
   ]
 })
 

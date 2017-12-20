@@ -7,8 +7,7 @@ import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-country',
-  templateUrl: '../select/select.component.html',
-  providers: [CountryService]
+  templateUrl: '../select/select.component.html'
 })
 export class SelectCountryComponent extends SelectComponent implements OnInit {
 
@@ -29,7 +28,7 @@ export class SelectCountryComponent extends SelectComponent implements OnInit {
     set default values for empty input parameters
   */
   private setDefaultValues() {
-    this.controlName = this.controlName || 'country';
+    this.controlName = this.controlName || 'countryCode';
     this.label = this.label || 'Country';      // ToDo: Translation key
     this.errorMessages = this.errorMessages || { 'required': 'Please select a country' };  // ToDo: Translation key
   }
@@ -50,10 +49,12 @@ export class SelectCountryComponent extends SelectComponent implements OnInit {
           'value': country.countryCode
         };
       });
-    } else {
-      this.form.get('state').clearValidators();
-      this.form.get('state').reset();
-      this.form.get('state').setValue('');
+    } else {        // should never happen
+      if (this.form.get('state')) {
+        this.form.get('state').clearValidators();
+        this.form.get('state').reset();
+        this.form.get('state').setValue('');
+      }
     }
     return options;
   }

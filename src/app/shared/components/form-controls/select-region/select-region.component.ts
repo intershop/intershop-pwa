@@ -7,8 +7,7 @@ import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-region',
-  templateUrl: '../select/select.component.html',
-  providers: [RegionService]
+  templateUrl: '../select/select.component.html'
 })
 export class SelectRegionComponent extends SelectComponent implements OnChanges, OnInit {
   @Input() countryCode: string;                     // required: component will only be rendered if set
