@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CategoryResolver } from '../../../shared/resolvers/category.resolver';
-import { ProductListService } from '../../../shared/services/products/products.service';
 import { SharedModule } from '../../../shared/shared.module';
-import { ShoppingModule } from '../../shopping.module';
+import { CategoryResolver } from '../../resolvers/category.resolver';
+import { ProductsService } from '../../services/products/products.service';
+import { ShoppingSharedModule } from '../../shopping-shared.module';
 import { CategoryPageComponent } from './category-page.component';
 import { categoryPageRoutes } from './category-page.routes';
 
@@ -11,17 +11,15 @@ import { categoryPageRoutes } from './category-page.routes';
   imports: [
     RouterModule.forChild(categoryPageRoutes),
     SharedModule,
-    ShoppingModule
+    ShoppingSharedModule
   ],
   providers: [
     CategoryResolver,
-    ProductListService
+    ProductsService
   ],
   declarations: [
     CategoryPageComponent
   ]
 })
 
-export class CategoryPageModule {
-
-}
+export class CategoryPageModule { }

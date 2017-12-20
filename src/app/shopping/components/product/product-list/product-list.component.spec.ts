@@ -5,14 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { Product } from '../../../../models/product.model';
-import { ProductListService } from '../../../../shared/services/products/products.service';
+import { ProductsService } from '../../../services/products/products.service';
 import { ProductListComponent } from './product-list.component';
 
 describe('Product List Component', () => {
   let fixture: ComponentFixture<ProductListComponent>;
   let component: ProductListComponent;
   let element: HTMLElement;
-  let productListService: ProductListService;
+  let productsService: ProductsService;
   const activatedRouteMock = {
     'url': Observable.of(
       [{ 'path': 'cameras', 'parameters': {} },
@@ -21,12 +21,12 @@ describe('Product List Component', () => {
   };
 
   beforeEach(async(() => {
-    productListService = mock(ProductListService);
+    productsService = mock(ProductsService);
     TestBed.configureTestingModule({
       declarations: [ProductListComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: ProductListService, useFactory: () => instance(productListService) }
+        { provide: ProductsService, useFactory: () => instance(productsService) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -37,14 +37,14 @@ describe('Product List Component', () => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(productListService.getProductList(anything())).thenReturn(Observable.of([new Product()]));
+    when(productsService.getProductList(anything())).thenReturn(Observable.of([new Product()]));
   });
 
   it('should retrieve products when created', () => {
-    verify(productListService.getProductList(anything())).never();
+    verify(productsService.getProductList(anything())).never();
     fixture.detectChanges();
     expect(component.products).not.toBe(null);
-    verify(productListService.getProductList(anything())).once();
+    verify(productsService.getProductList(anything())).once();
   });
 
   it('should check if the data is being rendered on the page', () => {

@@ -7,7 +7,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { InputComponent } from './components/form-controls/input/input.component';
 import { SelectComponent } from './components/form-controls/select/select.component';
@@ -22,11 +22,19 @@ import { FormValidationDirective } from './directives/form-validation.directive'
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    BsDropdownModule.forRoot(),
-    CarouselModule.forRoot(),
-    CollapseModule.forRoot(),
-    ModalModule.forRoot(),
-    PopoverModule.forRoot(),
+    BsDropdownModule,
+    CarouselModule,
+    CollapseModule,
+    ModalModule,
+    PopoverModule,
+  ],
+  declarations: [
+    FormGroupValidationComponent,
+    FormControlErrorComponent,
+    FormValidationDirective,
+    InputComponent,
+    SelectComponent,
+    BreadcrumbComponent
   ],
   exports: [
     RouterModule,
@@ -45,24 +53,9 @@ import { FormValidationDirective } from './directives/form-validation.directive'
     SelectComponent,
     BreadcrumbComponent
   ],
-  declarations: [
-    FormGroupValidationComponent,
-    FormControlErrorComponent,
-    FormValidationDirective,
-    InputComponent,
-    SelectComponent,
-    BreadcrumbComponent
-  ],
   entryComponents: [
     FormControlErrorComponent
   ]
 })
 
-export class SharedModule {
-
-  constructor(popoverConfig: PopoverConfig) {
-    popoverConfig.placement = 'top';
-    popoverConfig.triggers = 'hover';
-    popoverConfig.container = 'body';
-  }
-}
+export class SharedModule { }

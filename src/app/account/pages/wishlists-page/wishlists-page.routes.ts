@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { WishListPageComponent } from './wishlists-page.component';
+import { WishlistsPageComponent } from './wishlists-page.component';
 
-export const wishlistPageRoutes: Routes = [
-  { path: '', component: WishListPageComponent }
+export const wishlistsPageRoutes: Routes = [
+  { path: '', component: WishlistsPageComponent }
 ];

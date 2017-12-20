@@ -2,7 +2,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { Product } from '../../../../models/product.model';
-import { ProductListService } from '../../../../shared/services/products/products.service';
+import { ProductsService } from '../../../services/products/products.service';
 
 @Component({
   selector: 'ish-product-list',
@@ -18,18 +18,18 @@ export class ProductListComponent implements OnInit {
   /**
    * Construcotr
    * @param  {ActivatedRoute} activatedRoute
-   * @param  {ProductListService} privateproductListService
+   * @param  {ProductsService} private productsService
    */
   constructor(
     private activatedRoute: ActivatedRoute,
-    private productListService: ProductListService
+    private productsService: ProductsService
   ) { }
 
   ngOnInit() {
     this.activatedRoute.url.subscribe((urlSegment: UrlSegment[]) => {
       // TODO: REST urls do not belong into any component but into the service
       const productListUrl = `categories/${urlSegment.map(x => x.path).join('/')}/products`;
-      this.productListService.getProductList(productListUrl).subscribe((data: any) => {
+      this.productsService.getProductList(productListUrl).subscribe((data: any) => {
         this.products = data;
         this.totalItems.emit(this.products.length);
       });

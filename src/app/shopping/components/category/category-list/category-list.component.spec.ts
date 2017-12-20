@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { instance, mock } from 'ts-mockito';
+import { CategoriesService } from '../../../../core/services/categories/categories.service';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
-import { CategoriesService } from '../../../../shared/services/categories/categories.service';
 import { CategoryListComponent } from './category-list.component';
 
 describe('Category List Component', () => {
