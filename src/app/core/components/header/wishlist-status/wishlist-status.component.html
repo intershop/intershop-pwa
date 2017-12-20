@@ -1,0 +1,7 @@
+<a class="wishlist-count" [routerLink]="['/account/wishlist']" rel="nofollow">
+  <span class="glyphicon-heart glyphicon glyphicon-header-icon"></span>
+  <span class="wishlist-count-text">
+    <div *ngIf="itemCount > 0" id="preferred-wishlist-counter">{{itemCount}}</div>
+    <span class="hidden-xs">{{ 'header.wishlists.text' | translate }}</span>
+  </span>
+</a>

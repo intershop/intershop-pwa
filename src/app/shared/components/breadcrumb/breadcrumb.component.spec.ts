@@ -3,7 +3,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
-import { CategoriesService } from '../../services/categories/categories.service';
+import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
 describe('BreadCrumb Component', () => {

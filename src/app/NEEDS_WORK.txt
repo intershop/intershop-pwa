@@ -1,12 +1,12 @@
 |
 +---account
 |   \---pages
-|       +---account-overview
-|       |       account-overview.component.html
-|       |       account-overview.component.spec.ts
-|       |       account-overview.component.ts
-|       |       account-overview.module.ts
-|       |       account-overview.routes.ts
+|       +---account-page
+|       |       account-page.component.html
+|       |       account-page.component.spec.ts
+|       |       account-page.component.ts
+|       |       account-page.module.ts
+|       |       account-page.routes.ts
 |       |
 |       \---wishlists-page
 |               wishlists-page.component.html
@@ -37,11 +37,11 @@
 |   |
 |   \---pages
 |       +---account-login
-|       |   |   account-login.component.html
-|       |   |   account-login.component.spec.ts
-|       |   |   account-login.component.ts
-|       |   |   account-login.module.ts
-|       |   |   account-login.routes.ts
+|       |   |   login-page.component.html
+|       |   |   login-page.component.spec.ts
+|       |   |   login-page.component.ts
+|       |   |   login-page.module.ts
+|       |   |   login-page.routes.ts
 |       |   |
 |       |   \---simple-registration
 |       |           simple-registration.component.html
