@@ -37,6 +37,7 @@
 /coverage
 *.log
 /typings
+/src/environments/environment.local.ts
 
 # e2e
 /e2e/*.js
