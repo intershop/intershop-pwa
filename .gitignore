@@ -60,3 +60,6 @@ Thumbs.db
 
 # gitlab-runner
 /builds
+
+# batch file for personal development purposes
+/dev.bat

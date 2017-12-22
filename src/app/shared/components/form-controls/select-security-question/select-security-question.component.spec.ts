@@ -4,11 +4,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { SelectTitleComponent } from './select-title.component';
+import { SelectSecurityQuestionComponent } from './select-security-question.component';
 
-describe('Select Title Component', () => {
-  let component: SelectTitleComponent;
-  let fixture: ComponentFixture<SelectTitleComponent>;
+describe('Select Security Question Component', () => {
+  let component: SelectSecurityQuestionComponent;
+  let fixture: ComponentFixture<SelectSecurityQuestionComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -20,25 +20,22 @@ describe('Select Title Component', () => {
         return Observable.of(null);
       }
     });
-
     TestBed.configureTestingModule({
-      declarations: [SelectTitleComponent],
+      declarations: [SelectSecurityQuestionComponent],
       providers: [
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents().then(() => {
-        fixture = TestBed.createComponent(SelectTitleComponent);
+        fixture = TestBed.createComponent(SelectSecurityQuestionComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 
         const form = new FormGroup({
-          countryCode: new FormControl('BG'),
-          title: new FormControl()
+          securityQuestion: new FormControl()
         });
         component.form = form;
-        component.countryCode = 'BG';
       });
   }));
 
@@ -49,19 +46,13 @@ describe('Select Title Component', () => {
 
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
-    expect(component.controlName).toEqual('title', 'control Name should be <title>');
-    expect(component.label).toEqual('Salutation', 'label should be <Salutation>');
+    expect(component.controlName).toEqual('securityQuestion', 'control Name should be <securityQuestion>');
+    expect(component.label).toEqual('Security Question', 'label should be <Security Question>');
   });
 
-  it('should throw an error if input parameter countryCode is not set', () => {
-    component.countryCode = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
-  });
-
-  it('should get and display titles for a certain country', () => {
-    component.options = component.getTitleOptions();
+  it('should get and display security questions on creation', () => {
     fixture.detectChanges();
-    expect(component.options.length).toEqual(3, '3 titles are in the options array'); // ToDo: Adapt test if title service is active
-    expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy('title select is rendered');
+    expect(component.options.length).toEqual(5, '5 questions are in the options array'); // ToDo: questions are retrieved from a service
+    expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy('security question select is rendered');
   });
 });
