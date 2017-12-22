@@ -44,7 +44,7 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     get salutation for the given country
     returns (SelectOption[]) - salutation options
   */
-  private getTitleOptions(): SelectOption[] {
+  public getTitleOptions(): SelectOption[] {
     let options: SelectOption[] = [];
     const titles = this.getSalutations(this.countryCode);
 
