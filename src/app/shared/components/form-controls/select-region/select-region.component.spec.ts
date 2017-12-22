@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core/';
+import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -70,9 +70,7 @@ describe('Select Region Component', () => {
   });
 
   it('should get and display regions for a certain country', () => {
-    component.ngOnChanges({
-      name: new SimpleChange(null, 'BG', true)
-    });
+    component.options = component.getStateOptions();
 
     fixture.detectChanges();
     expect(component.options.length).toEqual(2, '2 regions are in the options array');
@@ -81,10 +79,7 @@ describe('Select Region Component', () => {
 
   it('should reset state validator and value if no regions are found', () => {
     component.countryCode = 'DE';
-    component.ngOnChanges({
-      name: new SimpleChange(null, 'DE', true)
-    });
-
+    component.options = component.getStateOptions();
     fixture.detectChanges();
     expect(component.options.length).toEqual(0, '0 regions are in the options array');
     expect(component.form.get('state').validator).toBeNull('state validator is empty');

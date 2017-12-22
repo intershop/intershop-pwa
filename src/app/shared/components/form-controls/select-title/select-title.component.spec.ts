@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core/';
+import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -59,10 +59,7 @@ describe('Select Title Component', () => {
   });
 
   it('should get and display titles for a certain country', () => {
-    component.ngOnChanges({
-      name: new SimpleChange(null, 'BG', true)
-    });
-
+    component.options = component.getTitleOptions();
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 titles are in the options array'); // ToDo: Adapt test if title service is active
     expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy('title select is rendered');

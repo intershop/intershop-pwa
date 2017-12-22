@@ -50,7 +50,7 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges,
     get states for the given country
     returns: (SelectOption[]) States for the given country
   */
-  private getStateOptions(): SelectOption[] {
+  public getStateOptions(): SelectOption[] {
     let options: SelectOption[] = [];
     const regions = this.regionService.getRegions(this.countryCode);
     if (regions && regions.length) {
