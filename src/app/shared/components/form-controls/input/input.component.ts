@@ -11,8 +11,9 @@ import { FormElement } from '../form-element';
 export class InputComponent extends FormElement implements OnInit {
   @Input() type = 'text';        // values: 'text' (default), 'password', 'email'
   @Input() maxlength = '60';
-  @Input() autocomplete: string; /* values: 'on' (default for input type 'text' and 'email'),
-                                           'off' (default for input type 'password') */
+  @Input() autocomplete: string;  /* default = null  for input type 'text' and 'email' (autocomplete not set)
+                                             = 'off' for input type 'password' */
+
 
   constructor(
     protected translate: TranslateService
@@ -40,6 +41,6 @@ export class InputComponent extends FormElement implements OnInit {
     set default values for empty input parameters
   */
   protected setDefaultValues() {
-    if (!this.autocomplete) { this.autocomplete = (this.type === 'password' ? 'off' : ''); }
+    if (!this.autocomplete) { this.autocomplete = (this.type === 'password' ? 'off' : null); }
   }
 }

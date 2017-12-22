@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Country } from '../../../../models/country.model';
 import { CountryService } from '../../../services/countries/country.service';
-import { FormElement } from '../form-element';
 import { SelectOption } from '../select/select-option.interface';
+import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-country',
-  templateUrl: './select-country.component.html',
-  providers: [CountryService]
+  templateUrl: '../select/select.component.html'
 })
-export class SelectCountryComponent extends FormElement implements OnInit {
-  countries: SelectOption[];
+export class SelectCountryComponent extends SelectComponent implements OnInit {
 
   constructor(
     protected translate: TranslateService,
@@ -22,15 +20,15 @@ export class SelectCountryComponent extends FormElement implements OnInit {
 
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent init
-    super.init();
-    this.countries = this.getCountryOptions();
+    super.componentInit();
+    this.options = this.options || this.getCountryOptions();
   }
 
   /*
     set default values for empty input parameters
   */
   private setDefaultValues() {
-    this.controlName = this.controlName || 'country';
+    this.controlName = this.controlName || 'countryCode';
     this.label = this.label || 'Country';      // ToDo: Translation key
     this.errorMessages = this.errorMessages || { 'required': 'Please select a country' };  // ToDo: Translation key
   }
@@ -51,10 +49,12 @@ export class SelectCountryComponent extends FormElement implements OnInit {
           'value': country.countryCode
         };
       });
-    } else {
-      this.form.get('state').clearValidators();
-      this.form.get('state').reset();
-      this.form.get('state').setValue('');
+    } else {        // should never happen
+      if (this.form.get('state')) {
+        this.form.get('state').clearValidators();
+        this.form.get('state').reset();
+        this.form.get('state').setValue('');
+      }
     }
     return options;
   }

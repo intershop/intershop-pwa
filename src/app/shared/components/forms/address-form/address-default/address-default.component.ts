@@ -15,6 +15,13 @@ export class AddressDefaultComponent implements OnInit, OnDestroy {
     this.addressForm.addControl('state', new FormControl(''));
 
     this.addressForm.get('postalCode').setValidators(Validators.required);
+
+    // set required validator, state if country changes; will be removed by select-regions component if there is no state for this country
+    this.addressForm.get('countryCode').valueChanges.subscribe(value => {
+      if (this.addressForm.get('state')) {
+        this.addressForm.get('state').setValidators(Validators.required);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -26,12 +33,8 @@ export class AddressDefaultComponent implements OnInit, OnDestroy {
 
   /*
     get countryCode value for regions display
-    set required validator, state if country changes; will be removed by select-regions component if there is no state for this country
   */
   get countryCode(): string {
-    if (this.addressForm.get('state')) {
-      this.addressForm.get('state').setValidators(Validators.required);
-    }
     return this.addressForm.get('countryCode').value;
   }
 }

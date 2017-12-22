@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FormElement } from '../../../../shared/components/form-controls/form-element';
-import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
+import { SelectOption } from '../select/select-option.interface';
+import { SelectComponent } from '../select/select.component';
 
 
 @Component({
   selector: 'ish-select-security-question',
-  templateUrl: './select-security-question.component.html'
+  templateUrl: '../select/select.component.html'
 })
-export class SelectSecurityQuestionComponent extends FormElement implements OnInit {
-  securityQuestionOptions: SelectOption[];
+export class SelectSecurityQuestionComponent extends SelectComponent implements OnInit {
 
   /*
     constructor
@@ -23,8 +22,8 @@ export class SelectSecurityQuestionComponent extends FormElement implements OnIn
   */
   ngOnInit() {
     this.setDefaultValues(); // call this method before parent init
-    super.init();
-    this.securityQuestionOptions = this.getSecurityQuestionOptions();
+    super.componentInit();
+    this.options = this.options || this.getSecurityQuestionOptions();
   }
 
   /*
