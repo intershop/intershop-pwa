@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
-import { SelectComponent } from '../../../../shared/components/form-controls/select/select.component';
+import { SelectOption } from '../select/select-option.interface';
+import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-language',
-  templateUrl: '../../../../shared/components/form-controls/select/select.component.html'
+  templateUrl: '../select/select.component.html'
 })
 export class SelectLanguageComponent extends SelectComponent implements OnInit {
 
