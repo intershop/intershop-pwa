@@ -40,18 +40,15 @@ class DollarForObservablesWalker extends Lint.RuleWalker {
 
   private checkDeclaration(identifier: string, type: ts.TypeNode, node: ts.Node) {
     if (type && identifier) {
-
       // console.log('Variable: ' + identifier + ': ' + type.getText() + ' (' + node.getText() + ')');
-      if ( type.getText().search('Observable') >= 0 && !identifier.endsWith('$')) {
+      if ( (type.getText().search('Observable') >= 0 ||
+            type.getText().search('Subject') >= 0) && !identifier.endsWith('$')) {
         this.addFailureAtNode(node, FAILURE_STRING + node.getText());
       }
     }
   }
 }
 
-/**
- * Implementation of the do-not-import-environment rule.
- */
 export class Rule extends Lint.Rules.AbstractRule {
 
   public apply(sourceFile: SourceFile): Lint.RuleFailure[] {

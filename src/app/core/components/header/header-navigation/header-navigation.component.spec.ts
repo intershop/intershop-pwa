@@ -13,13 +13,13 @@ describe('Header Navigation Component', () => {
   let component: HeaderNavigationComponent;
   let element: HTMLElement;
   let categoriesServiceMock: CategoriesService;
-  let currentLocaleServiceMock: BehaviorSubject<any>;
+  let currentLocaleServiceMock$: BehaviorSubject<any>;
 
   beforeEach(async(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anything())).thenReturn(Observable.of([]));
 
-    currentLocaleServiceMock = new BehaviorSubject({ dummy: null });
+    currentLocaleServiceMock$ = new BehaviorSubject({ dummy: null });
 
     TestBed.configureTestingModule({
       declarations: [
@@ -27,7 +27,7 @@ describe('Header Navigation Component', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: CurrentLocaleService, useValue: currentLocaleServiceMock }
+        { provide: CurrentLocaleService, useValue: currentLocaleServiceMock$ }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
