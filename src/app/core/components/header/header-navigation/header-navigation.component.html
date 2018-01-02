@@ -3,7 +3,7 @@
     <a routerLink="/home" title="home"><span class="glyphicon glyphicon-home"></span></a>
   </li>
   <li *ngFor="let category of categories" class="dropdown" [ngClass]="{'open' : category.isOpenedToggle}">
-    <a [routerLink]="[categoriesService.generateCategoryRoute(category)]" [attr.data-testing-id]="category.id + '-' + link" [style.width]="{'100%': category.hasOnlineSubCategories}">{{category.name}}</a>
+    <a [routerLink]="[categoriesService.generateCategoryRoute(category)]" [attr.data-testing-id]="category.id + '-link'" [style.width]="{'100%': category.hasOnlineSubCategories}">{{category.name}}</a>
     <a *ngIf="category.subCategories" (click)="category.isOpenedToggle = !category.isOpenedToggle" class="dropdown-toggle visible-xs">
       <span class="glyphicon" [ngClass]="category.isOpenedToggle ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
     </a>
