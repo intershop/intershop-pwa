@@ -77,7 +77,7 @@
     </ul>
 
     <ng-template [ngIf]="!isSimpleRegistration" [ngIfElse]="simpleRegistration">
-      <a class="btn btn-primary" [routerLink]="['/register']">{{'account.create.button.label' | translate}}</a>
+      <a class="btn btn-primary" routerLink="/register">{{'account.create.button.label' | translate}}</a>
     </ng-template>
     <ng-template #simpleRegistration>
       <ish-simple-registration></ish-simple-registration>
