@@ -12,11 +12,11 @@ describe('Wish List Component', () => {
   let fixture: ComponentFixture<WishlistComponent>;
   let component: WishlistComponent;
   let element: HTMLElement;
-  let wishlistsServiceMock: BehaviorSubject<Wishlist>;
+  let wishlistsServiceMock$: BehaviorSubject<Wishlist>;
   let location: Location;
 
   beforeEach(async(() => {
-    wishlistsServiceMock = new BehaviorSubject({ itemsCount: 1 } as Wishlist);
+    wishlistsServiceMock$ = new BehaviorSubject({ itemsCount: 1 } as Wishlist);
 
     TestBed.configureTestingModule({
       imports: [
@@ -26,7 +26,7 @@ describe('Wish List Component', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        { provide: WishlistsService, useValue: wishlistsServiceMock }
+        { provide: WishlistsService, useValue: wishlistsServiceMock$ }
       ],
       declarations: [WishlistComponent]
     }).compileComponents();
@@ -55,7 +55,7 @@ describe('Wish List Component', () => {
   });
 
   it('should not display counter when item count is 0', () => {
-    wishlistsServiceMock.next({ itemsCount: 0 } as Wishlist);
+    wishlistsServiceMock$.next({ itemsCount: 0 } as Wishlist);
     fixture.detectChanges();
 
     const itemCountElement = element.querySelector('#preferred-wishlist-counter');
