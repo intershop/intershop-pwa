@@ -25,11 +25,11 @@ export class SuggestService {
   public search(searchTerm: Observable<string>): Observable<SuggestTerm[]> {
     return searchTerm.debounceTime(400)
       .distinctUntilChanged()
-      .switchMap((value) => {
-        if (value.length === 0) {
+      .switchMap((value$) => {
+        if (value$.length === 0) {
           return Observable.of([]);
         } else {
-          const params = new HttpParams().set('SearchTerm', value);
+          const params = new HttpParams().set('SearchTerm', value$);
           return this.apiService.get(this.serviceIdentifier, params, null, true, false);
         }
       });
