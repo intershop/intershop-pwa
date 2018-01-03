@@ -14,9 +14,11 @@
     </a>
   </div>
 
-  <a class="product-title" [routerLink]="['/product/' + product.sku]">
-    <span>{{product.name}}</span>
-  </a>
+  <a class="product-title" [routerLink]="['/product/' + product.sku]">{{product.name}}</a>
+
+  <div class="price-container">
+    <ish-product-price [product]="product"></ish-product-price>
+  </div>
 
   <!-- TODO: this functionality needs to go into reusable components -->
   <div class="product-tile-actions btn-group">
