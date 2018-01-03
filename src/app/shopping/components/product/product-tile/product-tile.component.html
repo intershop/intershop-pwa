@@ -16,7 +16,7 @@
     </a>
     <span *ngIf="mockData" class="product-label" [ngClass]="{'product-label-topseller' : true, 'product-label-new': false, 'product-label-sale' : false}"></span>
   </div>
-  <a class="product-title">
+  <a class="product-title" [routerLink]="['/product/' + mockData.sku]">
     <span *ngIf="mockData.richSnippetsEnabled">{{mockData.name}}</span>
     <!--name of the product -->
   </a>
