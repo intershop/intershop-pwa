@@ -30,7 +30,7 @@ export class MiniCartComponent implements OnInit {
     this.cartLength = 0;
     if (cartItems && cartItems.length) {
       cartItems.forEach(item => {
-        this.cartPrice = this.cartPrice + item.salePrice.value;
+        // this.cartPrice = this.cartPrice + item.salePrice.value;
       });
       this.cartLength = cartItems.length;
     }
