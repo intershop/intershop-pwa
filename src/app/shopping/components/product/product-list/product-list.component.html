@@ -4,14 +4,14 @@
   <!--List View-->
   <ng-template [ngIf]="listView" [ngIfElse]="gridView">
       <div *ngFor="let product of products" class="product-list-item col-md-12 list-view">
-        <ish-product-row [mockData]="product"></ish-product-row>
+        <ish-product-row [product]="product"></ish-product-row>
       </div>
   </ng-template>
 
   <!--Grid View -->
   <ng-template #gridView>
       <div *ngFor="let product of products" class="product-list-item col-md-4 col-xs-6 grid-view">
-        <ish-product-tile [mockData]="product"></ish-product-tile>
+        <ish-product-tile [product]="product"></ish-product-tile>
       </div>
   </ng-template>
 
