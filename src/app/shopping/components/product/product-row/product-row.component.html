@@ -2,7 +2,7 @@
   <div class="product-tile-list row">
     <div class="col-sm-2 col-xs-3">
       <div class="product-image-container">
-        <a  [routerLink]="['/product/' + product.sku]">
+        <a [routerLink]="['/product/' + product.sku]">
           <!-- TODO: the image handling needs a rework (separate component) -->
           <img class="product-image" [src]="icmBaseURL + product.images[2].effectiveUrl"
             [attr.alt]="product.name ? product.name : null"
@@ -18,7 +18,7 @@
     <div class="col-sm-10 col-xs-9">
       <div class="row">
         <div class="col-xs-8 text-left">
-          <a class="product-title">{{product.name}}</a>
+          <a class="product-title" [routerLink]="['/product/' + product.sku]">{{product.name}}</a>
           <div class="product-description">
             {{product.shortDescription}}
           </div>
@@ -28,6 +28,8 @@
           </div>
         </div>
         <div class="col-sm-4 col-xs-12 pull-right text-right text-left-xs">
+          <ish-product-price [product]="product"></ish-product-price>
+
           <!-- TODO: this functionality needs to go into reusable components -->
           <div class="product-list-actions-container">
               <div class="addtocart-container">
