@@ -160,6 +160,7 @@
     "prefer-mocks-instead-of-stubs-in-tests": true,
     "no-barrel-files": true,
     "do-not-import-environment": true,
-    "use-camel-case-environment-properties": true
+    "use-camel-case-environment-properties": true,
+    "dollar-for-observables": true
   }
 }
