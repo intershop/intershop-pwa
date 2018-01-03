@@ -65,19 +65,19 @@ export class CategoriesService {
       return ErrorObservable.create('getCategoryPath cannot act with missing or empty category or route snapshot');
     }
 
-    const observableArray: Observable<Category>[] = [];
+    const categories$: Observable<Category>[] = [];
     let categoryId = '';
 
     for (const urlSegment of activatedRoute.url) {
       if (urlSegment.path === category.id) {
-        observableArray.push(Observable.of(category));
+        categories$.push(Observable.of(category));
       } else {
         categoryId = categoryId + urlSegment.path;
-        observableArray.push(this.getCategory(categoryId));
+        categories$.push(this.getCategory(categoryId));
         categoryId = categoryId + '/';
       }
     }
-    return forkJoin(observableArray);
+    return forkJoin(categories$);
   }
 
   /**
