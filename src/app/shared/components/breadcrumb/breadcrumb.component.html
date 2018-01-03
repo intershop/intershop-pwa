@@ -2,7 +2,7 @@
   <ol class="breadcrumbs-list">
 
     <li *ngIf="showHome" class="breadcrumbs-list breadcrumbs-list-home">
-      <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" [routerLink]="['/home']">{{'common.home.link' | translate}}</a><span class="breadcrumb-list-separator">{{separator}}</span>
+      <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{'common.home.link' | translate}}</a><span class="breadcrumb-list-separator">{{separator}}</span>
     </li>
 
     <ng-container *ngIf="category">
