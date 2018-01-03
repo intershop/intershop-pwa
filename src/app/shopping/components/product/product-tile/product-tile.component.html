@@ -1,183 +1,38 @@
-  <!-- NEEDS_WORK: product listing components rework - separate product property components are needed -->
-<div class="product-tile" data-dynamic-block [attr.data-dynamic-block-call-parameters]="'CID'" [attr.data-dynamic-block-product-id]="mockData.id">
+<!-- NEEDS_WORK: product listing components rework - separate product property components are needed -->
+<div class="product-tile">
   <div class="product-image-container">
-    <div *ngIf="mockData.enableExpressShop" class="express-shop-trigger hidden-xs" data-dialog="" data-dialog-href="javascript:void(0)"
-      title="Express Shop">
-      {{ (mockData && mockData.label) ? mockData.label : null }}
-      <span *ngIf="!mockData.label" class="glyphicon-eye-open glyphicon"></span>
-    </div>
-    <a>
-      <!--ProductImage.isml start-->
-      <img *ngIf="mockData && mockData.images" [src]="icmBaseURL + mockData.images[2].effectiveUrl"
-        data-test="true" class="product-image" [attr.data-type]="mockData.images[2].typeID ? mockData.images[2].typeID : null"
-        [attr.alt]="mockData.name ? mockData.name : null" [attr.view-value]="mockData.images[2].viewID ? mockData.images[2].viewID : null"
-        [attr.title]="mockData.title ? mockData.title : null" [attr.height]="mockData.images[2].imageActualHeight ? mockData.images[2].imageActualHeight : null"
-        [attr.width]="mockData.images[2].imageActualWidth ? mockData.images[2].imageActualWidth : null">
+    <a  [routerLink]="['/product/' + product.sku]">
+      <!-- TODO: the image handling needs a rework (separate component) -->
+      <img class="product-image" [src]="icmBaseURL + product.images[2].effectiveUrl"
+        [attr.alt]="product.name ? product.name : null"
+        [attr.title]="product.name ? product.name : null"
+        [attr.height]="product.images[2].imageActualHeight ? product.images[2].imageActualHeight : null"
+        [attr.width]="product.images[2].imageActualWidth ? product.images[2].imageActualWidth : null"
+        [attr.data-type]="product.images[2].typeID ? product.images[2].typeID : null"
+        [attr.view-value]="product.images[2].viewID ? product.images[2].viewID : null"
+      >
     </a>
-    <span *ngIf="mockData" class="product-label" [ngClass]="{'product-label-topseller' : true, 'product-label-new': false, 'product-label-sale' : false}"></span>
   </div>
-  <a class="product-title">
-    <span *ngIf="mockData.richSnippetsEnabled">{{mockData.name}}</span>
-    <!--name of the product -->
-  </a>
-  <div *ngIf="mockData.showProductRating && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="product-rating clearfix">
-    <ul class="rating-display clearfix" [ngClass]="mockData.averageRatingClass">
-      <li class="star-one">
-        <span class="glyphicon glyphicon-star"></span>
-      </li>
-      <li class="star-two">
-        <span class="glyphicon glyphicon-star"></span>
-      </li>
-      <li class="star-three">
-        <span class="glyphicon glyphicon-star"></span>
-      </li>
-      <li class="star-four">
-        <span class="glyphicon glyphicon-star"></span>
-      </li>
-      <li class="star-five">
-        <span class="glyphicon glyphicon-star"></span>
-      </li>
-      <li *ngIf="mockData.totalRatingCount && mockData.totalRatingCount > 0 && mockData.richSnippetsEnabled" class="rating-total">
-        ({{mockData.totalRatingCount}})
-      </li>
-      <li *ngIf="mockData.richSnippetsEnabled && (mockData.averagRating > 0)" class="rating-average hidden"> {{mockData.averagRating}} out of 5 </li>
 
-      <li *ngIf="mockData.richSnippetsEnabled && !(mockData.averagRating > 0)" class="rating-average hidden"> This product hasn't been rated yet. </li>
-    </ul>
-    <span *ngIf="!mockData.simpleRatingView && mockData.totalRatingCount === 0  " class="rating-rated hidden-xs">This product hasn't been rated yet.</span>
+  <a class="product-title" [routerLink]="['/product/' + product.sku]">{{product.name}}</a>
+
+  <div class="price-container">
+    <ish-product-price [product]="product"></ish-product-price>
   </div>
-  <div *ngIf="mockData.richSnippetsEnabled" class="price-container">
-    <!--ProductPrice.isml start-->
-    <div class="current-price" [ngClass]="finalPrice === 0 ? 'sale-price' : (greaterPrice === 1 ? 'sale-price-higher' : null)">
-      {{((mockData.salePrice?.range && !(mockData.salePrice?.priceRange.minimumPrice === mockData.salePrice?.priceRange.maximumPrice))
-      ? mockData.salePrice?.priceRange.minimumPrice - mockData.salePrice?.priceRange.maximumPrice : (mockData.salePrice?.value
-      && finalPrice === 0 ? mockData.salePrice?.value : (mockData.salePrice?.value ? mockData.salePrice?.value : 'N/A'))
-      ) }}
+
+  <!-- TODO: this functionality needs to go into reusable components -->
+  <div class="product-tile-actions btn-group">
+    <div class="add-to-cart">
+      <button (click)="addToCart()" class="btn btn-link" title="Add to Cart">
+        <span class="glyphicon glyphicon-shopping-cart"></span>
+      </button>
     </div>
-    <!--TODO  ISProductPriceAdditionalText.ISML Start-->
-    <!--  ISProductPriceAdditionalText.ISML End-->
-    <div *ngIf="mockData.salePrice?.scaledPrices" class="scale-prices">
-      <span *ngFor="let scale of mockData.salePrice?.scaledPrices">
-        {{scale.quantity.value > 1 ? 'Buy '+scale.quantity.value+' items ('+ scale.totalPrice +' each)' : null}}
-        <br />
-      </span>
-    </div>
-    <div *ngIf="displayCondition && mockData.listPrice?.value" class="old-price">
-      {{ oldPrice | currency : mockData.listPrice?.currencyMnemonic : true }}
-    </div>
-    <span *ngIf="shownSavings" class="price-savings">
-      You save {{shownSavings}}
-    </span>
-    <!--ProductPrice.isml end-->
+    <button (click)="addToWishlist()" class="btn btn-link add-to-wishlist" title="Add to Wish List">
+      <span class="glyphicon glyphicon-heart"></span>
+    </button>
+    <button (click)="addToCompare()" class="btn btn-link add-to-compare" title="Compare"
+      ishDisableIcon [property]="product.sku" [globalStateKey]="'productCompareData'">
+      <span class="glyphicon glyphicon-equalizer"></span>
+    </button>
   </div>
-  <form *ngIf="mockData.showAddToCart" method="post" action="javascript:void(0)" name="">
-    <input *ngIf="!mockData.isRetailSet" type="hidden" name="SKU" [value]="mockData.sku">
-    <ng-template [ngIf]="true" [ngIfElse]="bundleInformationTemplate">
-      <input type="hidden" name="SKU" [value]="mockData.sku" />
-    </ng-template>
-    <ng-template #bundleInformationTemplate>
-      <ng-container *ngFor="let retailSetProduct of mockData.bundledProductBOs">
-        <input *ngIf="retailSetProduct.online" type="hidden" name="SKU" value="retailSetProduct.sku" />
-      </ng-container>
-    </ng-template>
-
-    <div *ngIf="mockData.mastered && mockData.variationAttributes" class="product-variation-container">
-      <div *ngFor="let attribute of mockData.variationAttributes" class="product-variation">
-        <div class="form-group">
-          <label class="control-label" [for]="'id_' + attribute.variationAttributes.name">
-            {{attribute.variationAttributes.displayName}}
-          </label>
-          <div *ngIf="false">
-            <!--Check conditions and Template from "ProductVAriationSelect.ISML"-->
-            <!-- Include Template -->
-          </div>
-          <div *ngIf="false">
-            <!--Check conditions and Template from "ProductVAriationSelect.ISML"-->
-            <!-- Include Template -->
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="product-tile-actions btn-group">
-      <!-- AddToCart.ISMl Start -->
-      <div role="alert" class="server-error btn-link" [ngClass]="">
-        <!-- fieldErrorMessage.isml Start-->
-        <!-- class to be found for ngClass -->
-        <div *ngIf="false" role="alert">
-          <!--To Do -->
-          <!-- Condition based text -->
-        </div>
-        <div *ngIf="false" role="alert" class="server-error">
-          <!-- fieldErrorList.isml start-->
-          <small *ngIf="false">
-            <!--To Do -->
-            <!--Condition based text-->
-          </small>
-          <small *ngIf="false">
-            <!-- *ngFor="" -->
-            <!--To Do -->
-            <!--Condition based text-->
-          </small>
-        </div>
-        <!-- fieldErrorList.isml End-->
-      </div>
-      <!-- fieldErrorMessage.isml End-->
-
-      <!-- Conditions on Addtocart.isml start line 15 -->
-      <span *ngIf="true">
-        <div *ngIf="mockData.retailSet" role="alert" class="kor-form-error-message-placeholder"></div>
-        <!--  CurrentCustomerBO.ISMl Start-->
-        <!--  CurrentCustomerBO.ISMl End-->
-        <!--  GetProductPrice.ISMl Start-->
-        <!--  GetProductPrice.ISMl End-->
-        <div class="add-to-cart">
-          <a *ngIf="mockData.digitalGiftCard" href="" class="btn btn-primary"> </a>
-          <button *ngIf="!mockData.digitalGiftCard" type="submit" name="addProduct" class="btn btn-link" [ngClass]="{'btn-primary' : mockData.displayType !== 'glyphicon'}"
-            title="Add to Cart" (click)="addToCart(mockData)">
-            <span *ngIf="mockData.displayType === 'glyphicon'" class="glyphicon glyphicon-shopping-cart"></span> {{(mockData.displayType !== 'glyphicon' && mockData.isRetailSet) ? 'Add item(s) to Cart' : null}} {{(mockData.displayType
-            !== 'glyphicon' && !mockData.isRetailSet) ? 'Add to Cart' : null}}
-          </button>
-        </div>
-      </span>
-      <!-- AddToCart.ISMl End -->
-
-      <!--AddToWishlist.isml start-->
-      <span *ngIf="true">
-        <!-- Conditions on line 15 -->
-        <!--To Do -->
-        <!--  CurrentCustomerBO.ISMl Start-->
-        <!--  CurrentCustomerBO.ISMl End-->
-        <!--  GetProductPrice.ISMl Start-->
-        <!--  GetProductPrice.ISMl End-->
-
-        <button *ngIf="true" type="submit" class="btn add-to-wishlist" [ngClass]="{'btn-link' : true}" rel="nofollow" name="addToWishlistProduct"
-          data-dialog="" (click)="addToWishlist(mockData)" data-testing-class="button-addToWishlistProduct" title="Add to Wish List">
-          <span *ngIf="mockData.displayType === 'glyphicon'" class="glyphicon glyphicon-heart"></span>
-          <span *ngIf="mockData.displayType === 'share-tool'" class="glyphicon glyphicon-heart"></span>
-          <span *ngIf="mockData.displayType === 'share-tool'" class="share-label">Add to Wish List</span> {{(mockData.displayType !== 'share-tool' && mockData.displayType !== 'glyphicon') ? 'Add
-          to Wish List' : null}}
-        </button>
-      </span>
-      <!--AddToWishlist.isml End-->
-
-      <!-- AddToProductCompare.isml start-->
-      <!--condition=NOT(ProductBO:isEndOfLife) -->
-      <ng-container *ngIf="true">
-        <button *ngIf="mockData.displayType === 'glyphicon' " (click)="addToCompare(mockData.sku)" class="btn btn-link add-to-compare add-to-compare-trigger"
-          ishDisableIcon [property]="mockData.sku" [globalStateKey]="'productCompareData'" title="Compare" rel="nofollow">
-          <span class="glyphicon glyphicon-equalizer"></span>
-        </button>
-        <a *ngIf="mockData.displayType === 'share-tool'" [attr.data-testing-id]="'compare-' + mockData.sku" href="javascript:void(0)"
-          rel="nofollow">
-          <span class="glyphicon glyphicon-equalizer"></span>
-          <span class="share-label">Compare</span>
-        </a>
-        <a *ngIf="mockData.displayType !== 'glyphicon' && mockData.displayType !== 'share-tool'"
-           class="btn add-to-compare btn-link"
-           [attr.data-testing-id]="'compare-' + mockData.sku" rel="nofollow"> Compare
-        </a>
-      </ng-container>
-      <!-- AddToProductCompare.isml End-->
-    </div>
-  </form>
 </div>

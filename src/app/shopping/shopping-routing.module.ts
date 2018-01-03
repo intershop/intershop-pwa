@@ -5,6 +5,7 @@ const routes: Routes = [
   { path: 'home', loadChildren: 'app/shopping/pages/home-page/home-page.module#HomePageModule' },
   { path: 'error', loadChildren: 'app/shopping/pages/error-page/error-page.module#ErrorPageModule' },
   { path: 'category', loadChildren: 'app/shopping/pages/category-page/category-page.module#CategoryPageModule' },
+  { path: 'product', loadChildren: 'app/shopping/pages/product-page/product-page.module#ProductPageModule' },
   { path: 'compare', loadChildren: 'app/shopping/pages/compare-page/compare-page.module#ComparePageModule' }
 ];
 

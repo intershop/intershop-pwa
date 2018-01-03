@@ -205,20 +205,20 @@ describe('Product Tile Component', () => {
     location = TestBed.get(Location);
   });
 
-  it('should modify mockData when received', () => {
-    component.mockData = productList[0].Cameras[0];
+  it('should modify product when received', () => {
+    component.product = productList[0].Cameras[0];
     fixture.detectChanges();
-    expect(component.mockData).not.toBeNull();
+    expect(component.product).not.toBeNull();
   });
 
   it('should call service when item added to compare', () => {
-    component.mockData = productList[0].Cameras[0];
+    component.product = productList[0].Cameras[0];
     component.addToCompare();
     verify(productCompareServiceMock.addSKU(anything())).once();
   });
 
   it('should call service when added to cart', () => {
-    component.mockData = productList[0].Cameras[0];
+    component.product = productList[0].Cameras[0];
     component.addToCart();
     verify(cartStatusServiceMock.addSKU(anything())).once();
   });
@@ -240,95 +240,9 @@ describe('Product Tile Component', () => {
   })
   ));
 
-  it('should set averageRatingClass based on averageRating passed', () => {
-    component.mockData = productList[0].Cameras[0];
-    fixture.detectChanges();
-    component.mockData.averagRating = 0.5;
-    component.calculateAverageRating();
-    expect(component.mockData.averageRatingClass).toEqual('rating-one');
-
-    component.mockData.averagRating = 2.0;
-    component.calculateAverageRating();
-    expect(component.mockData.averageRatingClass).toEqual('rating-two');
-
-    component.mockData.averagRating = 3.0;
-    component.calculateAverageRating();
-    expect(component.mockData.averageRatingClass).toEqual('rating-three');
-
-    component.mockData.averagRating = 4.0;
-    component.calculateAverageRating();
-    expect(component.mockData.averageRatingClass).toEqual('rating-four');
-
-    component.mockData.averagRating = 4.6;
-    component.calculateAverageRating();
-    expect(component.mockData.averageRatingClass).toEqual('rating-five');
-
-    component.mockData.averagRating = -3.5;
-    component.calculateAverageRating();
-    expect(component.mockData.averageRatingClass).toEqual('');
-  });
-
-
-  it('should set finalPrice,greaterPrice,displayCondition and oldPrice based on mockData', () => {
-    component.mockData = productList[0].Cameras[0];
-    fixture.detectChanges();
-    component.mockData.showInformationalPrice = true;
-    component.mockData.isEndOfLife = false;
-    component.mockData.listPrice.value = 12;
-    component.mockData.salePrice.value = 10;
-    component.calculatePriceParameters();
-    expect(component.finalPrice).toEqual(0);
-    expect(component.greaterPrice).toEqual(0);
-
-    component.mockData.listPrice.value = 10;
-    component.mockData.salePrice.value = 12;
-    component.calculatePriceParameters();
-    expect(component.displayCondition).toEqual(false);
-
-    component.mockData.listPrice.range = {};
-    component.mockData.listPrice.range.minimumPrice = 100;
-    component.mockData.listPrice.range.maximumPrice = 200;
-    component.calculatePriceParameters();
-    expect(component.oldPrice).toBe(100);
-
-    component.mockData.listPrice.range = {};
-    component.mockData.listPrice.range.minimumPrice = 100;
-    component.mockData.listPrice.range.maximumPrice = 100;
-    component.mockData.listPrice.value = 15;
-    component.mockData.isProductMaster = true;
-    component.calculatePriceParameters();
-    expect(component.oldPrice).toBe('100');
-
-    component.mockData.listPrice.range = {};
-    component.mockData.listPrice.range.minimumPrice = 100;
-    component.mockData.listPrice.range.maximumPrice = 100;
-    component.mockData.listPrice.value = 15;
-    component.mockData.isProductMaster = true;
-    component.calculatePriceParameters();
-    expect(component.oldPrice).toBe('100');
-
-    component.mockData.listPrice.range = {};
-    component.mockData.listPrice.range.minimumPrice = 100;
-    component.mockData.listPrice.range.maximumPrice = 100;
-    component.mockData.listPrice.value = 15;
-    component.mockData.isProductMaster = false;
-    component.calculatePriceParameters();
-    expect(component.oldPrice).toBe('15');
-
-    component.mockData.listPrice.range = {};
-    component.mockData.listPrice.range.minimumPrice = 100;
-    component.mockData.listPrice.range.maximumPrice = 100;
-    component.mockData.listPrice.value = null;
-    component.mockData.isProductMaster = false;
-    component.calculatePriceParameters();
-    expect(component.oldPrice).toBe('N/A');
-  });
-
   it('should test if the tags are getting rendered', () => {
-    component.mockData = productList[0].Cameras[0];
+    component.product = productList[0].Cameras[0];
     fixture.detectChanges();
     expect(element.getElementsByTagName('img')).toBeTruthy();
-    const elem = element.getElementsByClassName('rating-display clearfix');
-    expect(elem[0].children.length).toBe(7);
   });
 });

@@ -26,13 +26,6 @@
             <div class="col-md-3 col-sm-3 col-xs-4">
               <div class="pagination-total text-nowrap"> {{totalItems}} List Item{{totalItems > 1 ? 's':''}}</div>
             </div>
-            <div class="pagination-sites col-md-9 col-sm-9 col-xs-8">
-              <ul class="pagination-site-list">
-                <li class="pagination-site-list-previous">«</li>
-                <li class=" pagination-site-active">1</li>
-                <li class="pagination-list-next">»</li>
-              </ul>
-            </div>
           </div>
           <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
             <div class="pull-right sort-by">
@@ -46,11 +39,6 @@
           </div>
           <div class="col-md-3 col-sm-12 col-xs-8 pull-right sort-by">
             <form class="sort-by-filter" method="post" name="sortByForm" novalidate="">
-              <input name="CategoryName" type="hidden" value="832">
-              <input name="SearchParameter" type="hidden" value="&amp;@QueryTerm=*&amp;ContextCategoryUUID=D1rAqDgB0ykAAAFcKPNVLIKL&amp;OnlineFlag=1">
-              <input name="CatalogID" type="hidden" value="Cameras-Camcorders">
-              <input name="PageSize" type="hidden" value="12">
-              <input name="PageNumber" type="hidden" value="0">
               <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value">
                 <option selected="selected" value="">Default Sorting</option>
                 <option value="name-asc">Name asc</option>
