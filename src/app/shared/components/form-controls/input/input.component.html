@@ -1,5 +1,5 @@
 <ish-form-group-validation [errorMessages]="errorMessages">
-  <div class="form-group has-feedback" [formGroup]="form">
+  <div class="form-group has-feedback" [formGroup]="form" [ishVisualizeErrors]="formControl">
     <label *ngIf="label" [for]="controlName+'-'+uuid" class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
       <input
