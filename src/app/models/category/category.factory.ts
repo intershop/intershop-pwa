@@ -1,27 +1,29 @@
-import { RawCategory } from './category.interface';
+import { CategoryData } from './category.interface';
 import { Category } from './category.model';
 
 
-export function categoryFromRaw(rawCategory: RawCategory): Category {
-  let subCategories: Category[] = null;
-  if (rawCategory) {
-    if (rawCategory.subCategories) {
-      subCategories = rawCategory.subCategories.map(rawSubCategory => categoryFromRaw(rawSubCategory));
+export class CategoryFactory {
+  static fromData(categoryData: CategoryData): Category {
+    let subCategories: Category[] = null;
+    if (categoryData) {
+      if (categoryData.subCategories) {
+        subCategories = categoryData.subCategories.map(rawSubCategory => CategoryFactory.fromData(rawSubCategory));
+      }
+      const category: Category = new Category(categoryData.id, categoryData.name);
+
+      category.type = categoryData.type;
+      category.hasOnlineProducts = categoryData.hasOnlineProducts;
+      category.hasOnlineSubCategories = categoryData.hasOnlineSubCategories;
+      category.online = categoryData.online;
+      category.description = categoryData.description;
+      category.subCategoriesCount = categoryData.subCategoriesCount;
+      category.images = categoryData.images;
+      category.subCategories = subCategories;
+      category.uri = categoryData.uri;
+
+      return category;
+    } else {
+      throw new Error('\'categoryData\' is required');
     }
-    const category: Category = new Category(rawCategory.id, rawCategory.name);
-
-    category.type = rawCategory.type;
-    category.hasOnlineProducts = rawCategory.hasOnlineProducts;
-    category.hasOnlineSubCategories = rawCategory.hasOnlineSubCategories;
-    category.online = rawCategory.online;
-    category.description = rawCategory.description;
-    category.subCategoriesCount = rawCategory.subCategoriesCount;
-    category.images = rawCategory.images;
-    category.subCategories = subCategories;
-    category.uri = rawCategory.uri;
-
-    return category;
-  } else {
-    throw new Error('\'rawCategory\' is required');
   }
 }
