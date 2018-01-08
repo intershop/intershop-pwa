@@ -1,17 +1,17 @@
 import * as using from 'jasmine-data-provider';
-import { categoryFromRaw } from './category.factory';
-import { RawCategory } from './category.interface';
+import { CategoryFactory } from './category.factory';
+import { CategoryData } from './category.interface';
 
 describe('Category', () => {
   describe('equals', () => {
 
     function dataProvider() {
-      const emptyCategory = categoryFromRaw({} as RawCategory);
-      const category1 = categoryFromRaw({ id: '1' } as RawCategory);
-      const category2 = categoryFromRaw({ id: '2' } as RawCategory);
-      const category3 = categoryFromRaw({ name: 'dummy', id: '1' } as RawCategory);
-      const category4 = categoryFromRaw({ name: 'other', id: '1' } as RawCategory);
-      const category5 = categoryFromRaw({ name: 'd', id: '0' } as RawCategory);
+      const emptyCategory = CategoryFactory.fromData({} as CategoryData);
+      const category1 = CategoryFactory.fromData({ id: '1' } as CategoryData);
+      const category2 = CategoryFactory.fromData({ id: '2' } as CategoryData);
+      const category3 = CategoryFactory.fromData({ name: 'dummy', id: '1' } as CategoryData);
+      const category4 = CategoryFactory.fromData({ name: 'other', id: '1' } as CategoryData);
+      const category5 = CategoryFactory.fromData({ name: 'd', id: '0' } as CategoryData);
       return [
         { cat1: emptyCategory, cat2: undefined, result: false },
         { cat1: emptyCategory, cat2: null, result: false },
