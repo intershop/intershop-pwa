@@ -14,6 +14,7 @@ import { SelectComponent } from './components/form-controls/select/select.compon
 import { FormControlErrorComponent } from './components/global-form-validation/form-control-error.component';
 import { FormGroupValidationComponent } from './components/global-form-validation/form-group-validation.component';
 import { FormValidationDirective } from './directives/form-validation.directive';
+import { FormVisualizeErrorsDirective } from './directives/form-visualize-errors.directive';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
 
@@ -34,6 +35,7 @@ import { RegionService } from './services/countries/region.service';
     FormGroupValidationComponent,
     FormControlErrorComponent,
     FormValidationDirective,
+    FormVisualizeErrorsDirective,
     InputComponent,
     SelectComponent,
     BreadcrumbComponent

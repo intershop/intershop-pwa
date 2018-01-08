@@ -1,7 +1,18 @@
 // NEEDS_WORK: needs review and evaluation
-import { Component, ComponentFactoryResolver, ContentChild, HostBinding, Input, ViewContainerRef } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ComponentFactoryResolver,
+    ContentChild,
+    HostBinding,
+    Input,
+    OnDestroy,
+    ViewContainerRef
+} from '@angular/core';
 import { FormControlName } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs/Subscription';
+
 import { FormControlErrorComponent } from './form-control-error.component';
 
 @Component({
@@ -9,25 +20,21 @@ import { FormControlErrorComponent } from './form-control-error.component';
   template: `<ng-content></ng-content>`
 })
 
-export class FormGroupValidationComponent {
+export class FormGroupValidationComponent implements AfterViewInit, OnDestroy {
   @ContentChild(FormControlName) formControlName: FormControlName;
-  @HostBinding('class.has-error') get hasErrors() {
-    if (this.formControlName && this.formControlName.dirty) {
-      this.showError(this.getErrorList());
-      return this.formControlName.invalid;
-    }
-  }
-  @HostBinding('class.has-success') get hasSuccess() {
-    return this.formControlName ? (this.formControlName.valid && this.formControlName.dirty) : false;
-  }
-
   @ContentChild('dynamicError', { read: ViewContainerRef }) dynamicError: ViewContainerRef;
   @Input() errorMessages: object;
+  subscription: Subscription;
 
   constructor(
     private translate: TranslateService,
     private cfResolver: ComponentFactoryResolver
   ) { }
+
+  ngAfterViewInit() {
+    this.subscription = this.formControlName.statusChanges
+      .subscribe(() => this.showError(this.getErrorList()));
+  }
 
   getErrorList() {
     const result = [];
@@ -55,5 +62,9 @@ export class FormGroupValidationComponent {
       formControlMessages.formControl = this.formControlName;
       componentRef.changeDetectorRef.detectChanges();
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
