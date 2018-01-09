@@ -1,4 +1,4 @@
-import { Attribute } from './attribute.model';
+import { Attribute } from './attribute/attribute.model';
 
 export class Warranty {
   type: string;

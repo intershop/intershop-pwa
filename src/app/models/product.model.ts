@@ -1,4 +1,4 @@
-import { Attribute } from './attribute.model';
+import { Attribute } from './attribute/attribute.model';
 import { Image } from './image.model';
 import { Price } from './price.model';
 import { ShippingMethod } from './shipping-method.model';

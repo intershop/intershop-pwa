@@ -1,4 +1,4 @@
-import { WishlistItem } from './wishlist-item.model';
+import { WishlistItem } from '../wishlist-item/wishlist-item.model';
 
 export class Wishlist {
   type: string;
@@ -8,4 +8,6 @@ export class Wishlist {
   title: string;
   creationDate: number;
   public: boolean;
+
+  constructor() { }
 }
