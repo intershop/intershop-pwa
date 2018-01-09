@@ -12,6 +12,12 @@ export class AddressFRComponent implements OnInit, OnDestroy {
 
   // add additional form controls and validators
   ngOnInit() {
+    if (!this.addressForm) {
+      throw new Error('required input parameter <addressForm> is missing for AddressFRComponent');
+    }
+    if (!this.addressForm.get('postalCode')) {
+      throw new Error('required form control <postalCode> is missing for addressForm of AddressFRComponent');
+    }
     this.addressForm.addControl('title', new FormControl(''));
 
     this.addressForm.get('postalCode').setValidators([Validators.required, Validators.pattern('[0-9]{5}')]);
@@ -19,9 +25,11 @@ export class AddressFRComponent implements OnInit, OnDestroy {
 
   // remove additional form controls and validators
   ngOnDestroy() {
-    this.addressForm.removeControl('title');
+    if (this.addressForm) {
+      this.addressForm.removeControl('title');
 
-    this.addressForm.get('postalCode').clearValidators();
+      this.addressForm.get('postalCode').clearValidators();
+    }
   }
 
   // get countryCode value for title display
