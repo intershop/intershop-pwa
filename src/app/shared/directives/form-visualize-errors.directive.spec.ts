@@ -1,9 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
-import { FormValidationDirective } from './form-validation.directive';
 import { FormVisualizeErrorsDirective } from './form-visualize-errors.directive';
 
 @Component({
@@ -22,9 +20,7 @@ describe('FormVisualizeErrorsDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserModule,
-      ],
+      imports: [BrowserModule],
       declarations: [
         TestComponent,
         FormVisualizeErrorsDirective
@@ -36,14 +32,13 @@ describe('FormVisualizeErrorsDirective', () => {
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
   });
 
   function getClasses() {
     return fixture.debugElement.query(By.css('div')).classes;
   }
 
-  it('should set none of the classes when form is pristine', () => {
+  it('should set no class when form is pristine', () => {
     component.control.setValue('');
     fixture.detectChanges();
     expect(getClasses()[errorClass]).toBeFalsy();
