@@ -39,6 +39,18 @@ describe('RegistrationPage Component', () => {
     location = TestBed.get(Location);
   });
 
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+  });
+
+  it('should create a registration form on creation', () => {
+    expect(component.registrationForm).toBeUndefined('registration form has not been created before init');
+    fixture.detectChanges();
+    expect(component.registrationForm.get('preferredLanguage')).toBeTruthy('registration form contains a preferredLanguage control');
+    expect(component.registrationForm.get('birthday')).toBeTruthy('registration form contains a birthday control');
+  });
+
   it('should navigate to homepage when cancel is clicked', async(() => {
     expect(location.path()).toBe('');
     component.cancelClicked();
@@ -47,7 +59,7 @@ describe('RegistrationPage Component', () => {
     });
   }));
 
-  it('should check if controls are getting rendered on the page', () => {
+  it('should check if controls and components are getting rendered on the page', () => {
     expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');
     expect(element.getElementsByTagName('ish-registration-credentials-form')[0].innerHTML).toEqual('Credentials Template');
     expect(element.getElementsByTagName('ish-address-form')[0].innerHTML).toEqual('Address Template');
