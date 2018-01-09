@@ -1,27 +1,25 @@
-import { RawCategory } from './category.interface';
+import { FactoryHelper } from '../factory-helper';
+import { CategoryData } from './category.interface';
 import { Category } from './category.model';
 
 
-export function categoryFromRaw(rawCategory: RawCategory): Category {
-  let subCategories: Category[] = null;
-  if (rawCategory) {
-    if (rawCategory.subCategories) {
-      subCategories = rawCategory.subCategories.map(rawSubCategory => categoryFromRaw(rawSubCategory));
+export class CategoryFactory {
+
+  static fromData(categoryData: CategoryData): Category {
+    if (categoryData) {
+      const category: Category = new Category(categoryData.id, categoryData.name);
+
+      FactoryHelper.primitiveMapping<CategoryData, Category>(categoryData, category);
+
+      if (categoryData.subCategories) {
+        category.subCategories = categoryData.subCategories.map(rawSubCategory => CategoryFactory.fromData(rawSubCategory));
+      }
+      if (categoryData.images) {
+        category.images = categoryData.images;
+      }
+      return category;
+    } else {
+      throw new Error('\'categoryData\' is required');
     }
-    const category: Category = new Category(rawCategory.id, rawCategory.name);
-
-    category.type = rawCategory.type;
-    category.hasOnlineProducts = rawCategory.hasOnlineProducts;
-    category.hasOnlineSubCategories = rawCategory.hasOnlineSubCategories;
-    category.online = rawCategory.online;
-    category.description = rawCategory.description;
-    category.subCategoriesCount = rawCategory.subCategoriesCount;
-    category.images = rawCategory.images;
-    category.subCategories = subCategories;
-    category.uri = rawCategory.uri;
-
-    return category;
-  } else {
-    throw new Error('\'rawCategory\' is required');
   }
 }
