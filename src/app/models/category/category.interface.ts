@@ -1,6 +1,6 @@
 import { Image } from '../image.model';
 
-export interface RawCategory {
+export interface CategoryData {
   name: string;
   type: string;
   hasOnlineProducts: boolean;
@@ -10,6 +10,6 @@ export interface RawCategory {
   subCategoriesCount?: number;
   images?: Image[];
   id: string;
-  subCategories?: RawCategory[];
+  subCategories?: CategoryData[];
   uri?: string;
 }

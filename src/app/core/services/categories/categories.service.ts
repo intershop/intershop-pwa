@@ -4,8 +4,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { categoryFromRaw } from '../../../models/category/category.factory';
-import { RawCategory } from '../../../models/category/category.interface';
+import { CategoryFactory } from '../../../models/category/category.factory';
+import { CategoryData } from '../../../models/category/category.interface';
 import { Category } from '../../../models/category/category.model';
 import { ApiService } from '../api.service';
 
@@ -28,12 +28,12 @@ export class CategoriesService {
     if (limit > 0) {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
-    const rawCategories$ = this.apiService.get<RawCategory[]>(this.serviceIdentifier, params, null, true);
+    const rawCategories$ = this.apiService.get<CategoryData[]>(this.serviceIdentifier, params, null, true);
     if (rawCategories$) {
       return rawCategories$.map(
-        (rawCategories: RawCategory[]) => {
+        (rawCategories: CategoryData[]) => {
           return rawCategories.map(
-            (rawCategory: RawCategory) => categoryFromRaw(rawCategory));
+            (rawCategory: CategoryData) => CategoryFactory.fromData(rawCategory));
         }
       );
     }
@@ -49,8 +49,8 @@ export class CategoriesService {
     if (!categoryId) {
       return ErrorObservable.create('getCategory() called without categoryId');
     }
-    const rawCategory$ = this.apiService.get<RawCategory>(this.serviceIdentifier + '/' + categoryId, null, null, false);
-    return rawCategory$.map(rawCategory => categoryFromRaw(rawCategory));
+    const categoryData$ = this.apiService.get<CategoryData>(this.serviceIdentifier + '/' + categoryId, null, null, false);
+    return categoryData$.map(rawCategory => CategoryFactory.fromData(rawCategory));
   }
 
   // TODO: this method should become obsolete as soon as the category REST call will return the category path too

@@ -3,8 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { categoryFromRaw } from '../../../models/category/category.factory';
-import { RawCategory } from '../../../models/category/category.interface';
+import { CategoryFactory } from '../../../models/category/category.factory';
+import { CategoryData } from '../../../models/category/category.interface';
 import { Category } from '../../../models/category/category.model';
 import { ApiService } from '../api.service';
 import { CategoriesService } from './categories.service';
@@ -15,8 +15,8 @@ describe('Categories Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
-    when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(Observable.of({ id: 'blubb' } as RawCategory));
-    when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(Observable.of({ id: 'blubb' } as RawCategory));
+    when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(Observable.of({ id: 'blubb' } as CategoryData));
+    when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(Observable.of({ id: 'blubb' } as CategoryData));
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
@@ -78,13 +78,13 @@ describe('Categories Service', () => {
 
   describe('getCategoryPath()', () => {
 
-    const RAW_TOP = { id: 'top' } as RawCategory;
-    const RAW_SUB = { id: 'sub' } as RawCategory;
-    const RAW_LEAF = { id: 'leaf' } as RawCategory;
+    const RAW_TOP = { id: 'top' } as CategoryData;
+    const RAW_SUB = { id: 'sub' } as CategoryData;
+    const RAW_LEAF = { id: 'leaf' } as CategoryData;
 
-    const TOP = categoryFromRaw(RAW_TOP);
-    const SUB = categoryFromRaw(RAW_SUB);
-    const LEAF = categoryFromRaw(RAW_LEAF);
+    const TOP = CategoryFactory.fromData(RAW_TOP);
+    const SUB = CategoryFactory.fromData(RAW_SUB);
+    const LEAF = CategoryFactory.fromData(RAW_LEAF);
 
     beforeEach(() => {
       when(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).thenReturn(Observable.of(RAW_TOP));
@@ -145,24 +145,24 @@ describe('Categories Service', () => {
 
   describe('generateCategoryRoute', () => {
 
-    const TOP = categoryFromRaw({ id: 'top' } as RawCategory);
-    const SUB = categoryFromRaw({ id: 'sub' } as RawCategory);
-    const LEAF = categoryFromRaw({ id: 'leaf' } as RawCategory);
+    const TOP = CategoryFactory.fromData({ id: 'top' } as CategoryData);
+    const SUB = CategoryFactory.fromData({ id: 'sub' } as CategoryData);
+    const LEAF = CategoryFactory.fromData({ id: 'leaf' } as CategoryData);
 
     it('should extract correct path from category.uri when supplied', () => {
-      expect(categoriesService.generateCategoryRoute(categoryFromRaw({ uri: 'inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577' } as RawCategory))).toBe('/category/Cameras-Camcorders/577');
+      expect(categoriesService.generateCategoryRoute(CategoryFactory.fromData({ uri: 'inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/577' } as CategoryData))).toBe('/category/Cameras-Camcorders/577');
     });
 
     it('should extract correct path from category.uri when supplied with spgid', () => {
-      expect(categoriesService.generateCategoryRoute(categoryFromRaw({ uri: 'inSPIRED-inTRONICS-Site/-/categories;spgid=rtf54sth/Cameras-Camcorders/577' } as RawCategory))).toBe('/category/Cameras-Camcorders/577');
+      expect(categoriesService.generateCategoryRoute(CategoryFactory.fromData({ uri: 'inSPIRED-inTRONICS-Site/-/categories;spgid=rtf54sth/Cameras-Camcorders/577' } as CategoryData))).toBe('/category/Cameras-Camcorders/577');
     });
 
     it('should generate empty result when category.uri is empty', () => {
-      expect(categoriesService.generateCategoryRoute(categoryFromRaw({ id: '0', name: '', uri: '' } as RawCategory))).toBe('');
+      expect(categoriesService.generateCategoryRoute(CategoryFactory.fromData({ id: '0', name: '', uri: '' } as CategoryData))).toBe('');
     });
 
     it('should generate empty result when category.uri is not provided', () => {
-      expect(categoriesService.generateCategoryRoute(categoryFromRaw({ id: '0', name: '' } as RawCategory))).toBe('');
+      expect(categoriesService.generateCategoryRoute(CategoryFactory.fromData({ id: '0', name: '' } as CategoryData))).toBe('');
     });
 
     it('should generate route from category and simple category path when provided', () => {
@@ -189,7 +189,7 @@ describe('Categories Service', () => {
     });
 
     it('should not generate route when category without a category.uri is not part of provided category path', () => {
-      expect(categoriesService.generateCategoryRoute(categoryFromRaw({ id: 'dummy' } as RawCategory), [TOP, SUB, LEAF])).toBe('');
+      expect(categoriesService.generateCategoryRoute(CategoryFactory.fromData({ id: 'dummy' } as CategoryData), [TOP, SUB, LEAF])).toBe('');
     });
 
   });
