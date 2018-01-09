@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Wishlist } from '../../../../models/wishlist.model';
+import { Wishlist } from '../../../../models/wishlist/wishlist.model';
 import { WishlistsService } from '../../../services/wishlists/wishlists.service';
 
 @Component({
