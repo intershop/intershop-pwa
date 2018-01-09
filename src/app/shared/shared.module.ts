@@ -12,7 +12,6 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { InputComponent } from './components/form-controls/input/input.component';
 import { SelectComponent } from './components/form-controls/select/select.component';
 import { FormControlErrorComponent } from './components/global-form-validation/form-control-error.component';
-import { FormGroupValidationComponent } from './components/global-form-validation/form-group-validation.component';
 import { FormValidationDirective } from './directives/form-validation.directive';
 import { FormVisualizeErrorsDirective } from './directives/form-visualize-errors.directive';
 import { CountryService } from './services/countries/country.service';
@@ -32,7 +31,6 @@ import { RegionService } from './services/countries/region.service';
     PopoverModule,
   ],
   declarations: [
-    FormGroupValidationComponent,
     FormControlErrorComponent,
     FormValidationDirective,
     FormVisualizeErrorsDirective,
@@ -51,19 +49,16 @@ import { RegionService } from './services/countries/region.service';
     CollapseModule,
     ModalModule,
     PopoverModule,
-    FormGroupValidationComponent,
     FormValidationDirective,
     InputComponent,
     SelectComponent,
-    BreadcrumbComponent
-  ],
-  entryComponents: [
-    FormControlErrorComponent
+    BreadcrumbComponent,
+    FormControlErrorComponent,
+    FormVisualizeErrorsDirective,
   ],
   providers: [
     CountryService,
     RegionService
   ]
 })
-
 export class SharedModule { }
