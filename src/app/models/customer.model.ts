@@ -1,4 +1,4 @@
-import { Address } from './address.model';
+import { Address } from './address/address.model';
 import { Credentials } from './credentials.model';
 
 export class Customer {

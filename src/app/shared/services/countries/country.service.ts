@@ -1,29 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Country } from '../../../models/country.model';
+import { Observable } from 'rxjs/Observable';
+import { CountryFactory } from '../../../models/country/country.factory';
+import { CountryData } from '../../../models/country/country.interface';
+import { Country } from '../../../models/country/country.model';
 
 @Injectable()
 export class CountryService {
-  COUNTRIES: Country[];
+  countries$: Observable<CountryData>;
 
   /*
     ToDo: get Countries via REST, result should be locale dependent
   */
   constructor() {
-    this.COUNTRIES = [
-      { countryCode: 'BG', name: 'Bulgaria' },
-      { countryCode: 'DE', name: 'Germany' },
-      { countryCode: 'FR', name: 'France' },
-      { countryCode: 'IN', name: 'India' },
-      { countryCode: 'GB', name: 'United Kingdom' },
-      { countryCode: 'US', name: 'United States' },
-    ];
+    this.countries$ = Observable.of(
+      ({ countryCode: 'BG', name: 'Bulgaria' } as CountryData),
+      ({ countryCode: 'DE', name: 'Germany' } as CountryData),
+      ({ countryCode: 'FR', name: 'France' } as CountryData),
+      ({ countryCode: 'IN', name: 'India' } as CountryData),
+      ({ countryCode: 'GB', name: 'United Kingdom' } as CountryData),
+      ({ countryCode: 'US', name: 'United States' } as CountryData)
+    );
   }
 
   /*
     gets the available countries
-    @returns (Country []), ToDo: should be an observable
+    @returns (Observable<Country>)
   */
-  getCountries(): Country[] {
-    return this.COUNTRIES;
+  getCountries(): Observable<Country> {
+    return this.countries$.map(data => CountryFactory.fromData(data));
   }
 }
