@@ -85,5 +85,6 @@ describe('Select Region Component', () => {
     expect(component.options.length).toEqual(0, '0 regions are in the options array');
     expect(component.form.get('state').validator).toBeNull('state validator is empty');
     expect(component.form.get('state').value).toEqual('', 'state validator is empty');
+    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is not rendered');
   });
 });
