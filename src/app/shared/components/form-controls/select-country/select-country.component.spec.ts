@@ -23,11 +23,11 @@ describe('Select Country Component', () => {
     });
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(
-      [
+      Observable.of(
         { countryCode: 'BG', name: 'Bulgaria' },
         { countryCode: 'DE', name: 'Germany' },
         { countryCode: 'FR', name: 'France' }
-      ]);
+      ));
 
     TestBed.configureTestingModule({
       declarations: [SelectCountryComponent],

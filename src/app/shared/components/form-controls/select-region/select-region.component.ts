@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Region } from '../../../../models/region.model';
+import { Region } from '../../../../models/region/region.model';
 import { RegionService } from '../../../services/countries/region.service';
 import { SelectOption } from '../select/select-option.interface';
 import { SelectComponent } from '../select/select.component';
@@ -51,16 +51,21 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges,
     returns: (SelectOption[]) States for the given country
   */
   public getStateOptions(): SelectOption[] {
-    let options: SelectOption[] = [];
-    const regions = this.regionService.getRegions(this.countryCode);
-    if (regions && regions.length) {
+    const options: SelectOption[] = [];
+    const regions$ = this.regionService.getRegions(this.countryCode);
+    if (regions$) {
       // Map region array to an array of type SelectOption
-      options = regions.map((region: Region) => {
+      regions$.map((region: Region) => {
         return {
           'label': region.name,
           'value': region.regionCode
-        };
-      });
+        } as SelectOption;
+      }).subscribe(option => options.push(option));
+      if (options.length === 0) {
+        this.form.get('state').clearValidators();
+        this.form.get('state').reset();
+        this.form.get('state').setValue('');
+      }
     } else {
       this.form.get('state').clearValidators();
       this.form.get('state').reset();

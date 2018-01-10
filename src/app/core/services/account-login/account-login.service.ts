@@ -2,7 +2,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Customer } from '../../../models/customer.model';
+import { Customer } from '../../../models/customer/customer.model';
 import { ApiService } from '../../services/api.service';
 import { AccountLogin } from './account-login.model';
 import { UserDetailService } from './user-detail.service';
@@ -22,11 +22,11 @@ export class AccountLoginService {
    */
   singinUser(userDetails: AccountLogin): Observable<Customer> {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
-    return this.apiService.get<Customer>('customers/-', null, headers).map((data$) => {
-      if ((typeof (data$) === 'object')) {
-        this.userDetailService.setValue(data$);
+    return this.apiService.get<Customer>('customers/-', null, headers).map((data) => {
+      if ((typeof (data) === 'object')) {
+        this.userDetailService.setValue(data);
       }
-      return data$;
+      return data;
     });
   }
   /**
@@ -34,9 +34,9 @@ export class AccountLoginService {
    * @param  {} userDetails
    */
   createUser(userDetails): Observable<Customer> {
-    return this.apiService.post<Customer>('createUser', userDetails).map(data$ => {
-      this.userDetailService.setValue(data$);
-      return data$;
+    return this.apiService.post<Customer>('createUser', userDetails).map(data => {
+      this.userDetailService.setValue(data);
+      return data;
     });
   }
 

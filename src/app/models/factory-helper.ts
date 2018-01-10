@@ -12,10 +12,20 @@ export class FactoryHelper {
       if (only && only.indexOf(key) === -1) {
         return;
       }
-      if (typeof input[key] !== 'object') {
+      if (!output[key] && typeof input[key] !== 'object') {
         output[key] = input[key];
       }
     });
+  }
+
+  /**
+   * Maps a object to an other. Only fills the fields of the output Object if it has this field
+   * @param input
+   * @param output
+   */
+  static primitiveMappingFullOutput<T, S>(input: T, output: S) {
+
+    this.primitiveMapping(input, output, Object.keys(output));
   }
 
 }

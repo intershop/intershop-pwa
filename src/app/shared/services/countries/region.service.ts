@@ -1,42 +1,45 @@
 import { Injectable } from '@angular/core';
-import { Region } from '../../../models/region.model';
+import { Observable } from 'rxjs/Observable';
+import { RegionFactory } from '../../../models/region/region.factory';
+import { RegionData } from '../../../models/region/region.interface';
+import { Region } from '../../../models/region/region.model';
 
 @Injectable()
 export class RegionService {
-  REGIONS_US: Region[];
-  REGIONS_BG: Region[];
 
+  regionDataUS$: Observable<RegionData>;
+  regionDataBG$: Observable<RegionData>;
   /*
     ToDo: get Regions via REST, result should be locale dependent
   */
   constructor() {
-    this.REGIONS_US = [
-      { countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
-      { countryCode: 'US', regionCode: 'FL', name: 'Florida' },
-      { countryCode: 'US', regionCode: 'IN', name: 'Indiana' },
-      { countryCode: 'US', regionCode: 'MN', name: 'Michigan' },
-      { countryCode: 'US', regionCode: 'NY', name: 'New York' },
-      { countryCode: 'US', regionCode: 'TX', name: 'Texas' }
-    ];
-    this.REGIONS_BG = [
-      { countryCode: 'BG', regionCode: '02', name: 'Burgas' },
-      { countryCode: 'BG', regionCode: '23', name: 'Sofia' },
-      { countryCode: 'BG', regionCode: '03', name: 'Varna' }
-    ];
+    this.regionDataUS$ = Observable.of(
+      { countryCode: 'US', regionCode: 'AL', name: 'Alabama' } as RegionData,
+      { countryCode: 'US', regionCode: 'FL', name: 'Florida' } as RegionData,
+      { countryCode: 'US', regionCode: 'IN', name: 'Indiana' } as RegionData,
+      { countryCode: 'US', regionCode: 'MN', name: 'Michigan' } as RegionData,
+      { countryCode: 'US', regionCode: 'NY', name: 'New York' } as RegionData,
+      { countryCode: 'US', regionCode: 'TX', name: 'Texas' } as RegionData
+    );
+    this.regionDataBG$ = Observable.of(
+      { countryCode: 'BG', regionCode: '02', name: 'Burgas' } as RegionData,
+      { countryCode: 'BG', regionCode: '23', name: 'Sofia' } as RegionData,
+      { countryCode: 'BG', regionCode: '03', name: 'Varna' } as RegionData
+    );
   }
 
   /*
     gets all regions of country
     @params (String) country code
-    @returns (Region[]) Array of regions, ToDo: should be an observable
+    @returns (Observable<Region>) Observable of regions
   */
-  getRegions(countryCode: string): Region[] {
+  getRegions(countryCode: string): Observable<Region> {
     switch (countryCode) {
       case 'US': {
-        return this.REGIONS_US;
+        return this.regionDataUS$.map(regionData => RegionFactory.fromData(regionData));
       }
       case 'BG': {
-        return this.REGIONS_BG;
+        return this.regionDataBG$.map(regionData => RegionFactory.fromData(regionData));
       }
       default: {
         return null;

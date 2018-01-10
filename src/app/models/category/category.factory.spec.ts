@@ -4,7 +4,7 @@ import { Category } from './category.model';
 
 
 describe('CategoryFactory', () => {
-  describe('categoryFromRaw', () => {
+  describe('fromData', () => {
     it(`should return Category when getting a RawCategory`, () => {
       expect(CategoryFactory.fromData({ id: '1' } as CategoryData)).toBeTruthy();
 

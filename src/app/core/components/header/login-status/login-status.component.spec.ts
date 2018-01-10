@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { Customer } from '../../../../models/customer.model';
+import { Customer } from '../../../../models/customer/customer.model';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
 import { LoginStatusComponent } from './login-status.component';
 
