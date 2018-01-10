@@ -1,7 +1,7 @@
 import { AttributeData } from '../attribute/attribute.interface';
 import { ImageData } from '../image/image.interface';
-import { Price } from '../price.model';
-import { ShippingMethod } from '../shipping-method.model';
+import { PriceData } from '../price/price.interface';
+import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 export interface ProductData {
   name: string;
@@ -11,15 +11,15 @@ export interface ProductData {
   minOrderQuantity: number;
   longDescription: string;
   productMaster: boolean;
-  listPrice: Price;
+  listPrice: PriceData;
   productBundle: boolean;
-  shippingMethods: ShippingMethod[];
+  shippingMethods: ShippingMethodData[];
   availableWarranties: WarrantyData[];
   productName: string;
   roundedAverageRating: string;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
-  salePrice: Price;
+  salePrice: PriceData;
   sku: string;
   images: ImageData[];
   manufacturer: string;
@@ -27,7 +27,7 @@ export interface ProductData {
   retailSet: boolean;
   inStock: boolean;
   mastered: boolean;
-  variationAttributes ?: AttributeData[];
+  variationAttributes?: AttributeData[];
   enableExpressShop: boolean;
   richSnippetsEnabled: boolean;
   showProductRating: boolean;

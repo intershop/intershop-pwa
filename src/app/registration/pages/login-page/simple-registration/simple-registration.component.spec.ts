@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
-import { Customer } from '../../../../models/customer.model';
+import { Customer } from '../../../../models/customer/customer.model';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 
 describe('Simple Registration Component', () => {
