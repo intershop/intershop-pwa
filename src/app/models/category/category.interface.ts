@@ -1,4 +1,4 @@
-import { Image } from '../image.model';
+import { ImageData } from '../image/image.interface';
 
 export interface CategoryData {
   name: string;
@@ -8,7 +8,7 @@ export interface CategoryData {
   online: string;
   description: string;
   subCategoriesCount?: number;
-  images?: Image[];
+  images?: ImageData[];
   id: string;
   subCategories?: CategoryData[];
   uri?: string;

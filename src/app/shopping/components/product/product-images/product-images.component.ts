@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Product } from '../../../../models/product.model';
+import { Product } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-images',

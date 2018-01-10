@@ -1,4 +1,4 @@
-import { Image } from '../image.model';
+import { Image } from '../image/image.model';
 
 export class Category {
 

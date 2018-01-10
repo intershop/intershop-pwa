@@ -1,8 +1,8 @@
 // NEEDS_WORK: DUMMY COMPONENT
 import { Component, OnInit } from '@angular/core';
 import { WishlistsService } from '../../../core/services/wishlists/wishlists.service';
-import { WishlistItem } from '../../../models/wishlist-item.model';
-import { Wishlist } from '../../../models/wishlist.model';
+import { WishlistItem } from '../../../models/wishlist-item/wishlist-item.model';
+import { Wishlist } from '../../../models/wishlist/wishlist.model';
 
 @Component({
   templateUrl: './wishlists-page.component.html'
