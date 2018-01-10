@@ -1,6 +1,7 @@
 import { AttributeData } from '../attribute/attribute.interface';
 import { ImageData } from '../image/image.interface';
 import { PriceData } from '../price/price.interface';
+import { WarrantyData } from '../warranty/warranty.interface';
 
 export interface ProductData {
 
@@ -55,12 +56,4 @@ export interface ProductData {
   manufacturer: string;
   mastered: boolean;
 
-}
-
-interface WarrantyData {
-  type: string;
-  description: string;
-  title: string;
-  uri: string;
-  attributes: AttributeData[];
 }
