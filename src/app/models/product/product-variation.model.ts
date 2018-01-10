@@ -4,6 +4,8 @@ import { Product } from './product.model';
 export class VariationProduct extends Product {
 
   variationAttributes?: Attribute[];
-  mastered: boolean;
 
+  constructor(sku: string, masterSKU: string) {
+    super(sku);
+  }
 }
