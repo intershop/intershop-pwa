@@ -1,41 +1,21 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 import { Price } from '../price/price.model';
-import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
 export class Product {
 
-  id: string;
-  sku: string;
+
   name: string;
-  productName: string;
-  type: string;
-
-  salePrice: Price;
-  listPrice: Price;
-
-  minOrderQuantity: number;
-
   shortDescription: string;
   longDescription: string;
-  attributes: Attribute[];
-
-  shippingMethods: ShippingMethod[];
-  readyForShipmentMin: number;
-  readyForShipmentMax: number;
-
+  availability: boolean;
+  inStock: boolean;
+  minOrderQuantity: number;
+  attributes?: Attribute[];
   images: Image[];
-
+  listPrice: Price;
+  salePrice: Price;
   manufacturer: string;
 
-  availability: boolean;
-
-  inStock: boolean;
-
-  showAddToCart: boolean;
-
-  applicablePromotions: any[];
-
-  nameOverride: string;
-  showInformationalPrice: boolean;
+  constructor(public sku: string) { }
 }

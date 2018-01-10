@@ -37,7 +37,7 @@ describe('Product List Component', () => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(productsService.getProductList(anything())).thenReturn(Observable.of([new Product()]));
+    when(productsService.getProductList(anything())).thenReturn(Observable.of([new Product('1')]));
   });
 
   it('should retrieve products when created', () => {

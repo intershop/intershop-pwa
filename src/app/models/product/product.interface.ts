@@ -1,48 +1,60 @@
 import { AttributeData } from '../attribute/attribute.interface';
 import { ImageData } from '../image/image.interface';
 import { PriceData } from '../price/price.interface';
-import { ShippingMethodData } from '../shipping-method/shipping-method.interface';
 
 export interface ProductData {
-  name: string;
-  type: string;
-  attributes: AttributeData[];
+
+  sku: string;
+  productName: string;
   shortDescription: string;
-  minOrderQuantity: number;
   longDescription: string;
+
+  availability: boolean;
+  averageRating: string;
+  roundedAverageRating: string;
+
+  images: ImageData[];
+
+  availableWarranties?: WarrantyData[];
+  availableGiftWraps?: any[];
+  availableGiftMessages?: any[];
+  bundles: any[];
+  retailSet: boolean;
+
+  inStock: boolean;
+
+  // If warranty {
+  price?: PriceData;
+  currency?: any;
+  // }
+
+
+  productMasterSKU?: string;
+  minOrderQuantity: number;
+  // If Variation Master and Retail Set {
+  minListPrice?: number;
+  maxListPrice?: number;
+  minSalePrice?: number;
+  maxSalePrice?: number;
+  // }
+  variationAttributeValues?: AttributeData[];
+  variableVariationAttributes?: AttributeData[];
+  partOfRetailSet: boolean;
+  // If  Retail Set {
+  summedUpListPrice?: number;
+  summedUpSalePrice?: number;
+  // }
+
+  attachments?: any;
+  variations?: any;
+  crosssells?: any;
   productMaster: boolean;
   listPrice: PriceData;
   productBundle: boolean;
-  shippingMethods: ShippingMethodData[];
-  availableWarranties: WarrantyData[];
-  productName: string;
-  roundedAverageRating: string;
-  readyForShipmentMin: number;
-  readyForShipmentMax: number;
   salePrice: PriceData;
-  sku: string;
-  images: ImageData[];
   manufacturer: string;
-  availability: boolean;
-  retailSet: boolean;
-  inStock: boolean;
   mastered: boolean;
-  variationAttributes?: AttributeData[];
-  enableExpressShop: boolean;
-  richSnippetsEnabled: boolean;
-  showProductRating: boolean;
-  showAddToCart: boolean;
-  totalRatingCount: number;
-  simpleRatingView: boolean;
-  averagRating: number;
-  isRetailSet: boolean;
-  displayType: string;
-  applicablePromotions: any[];
-  nameOverride: string;
-  isEndOfLife: boolean;
-  id: string;
-  averageRatingClass: string;
-  isProductMaster: boolean;
+
 }
 
 interface WarrantyData {
