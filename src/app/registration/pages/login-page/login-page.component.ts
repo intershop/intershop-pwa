@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { Customer } from '../../../models/customer.model';
+import { Customer } from '../../../models/customer/customer.model';
 
 @Component({
   templateUrl: './login-page.component.html'

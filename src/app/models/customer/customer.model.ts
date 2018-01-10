@@ -1,5 +1,6 @@
-import { Address } from './address/address.model';
-import { Credentials } from './credentials.model';
+import { Address } from '../address/address.model';
+import { Credentials } from '../credentials/credentials.model';
+
 
 export class Customer {
   id: string;

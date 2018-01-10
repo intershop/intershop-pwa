@@ -1,7 +1,7 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
-import { Price } from '../price.model';
-import { ShippingMethod } from '../shipping-method.model';
+import { Price } from '../price/price.model';
+import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
 export class Product {
 

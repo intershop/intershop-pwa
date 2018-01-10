@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
-import { Customer } from '../../../models/customer.model';
+import { Customer } from '../../../models/customer/customer.model';
 import { GlobalStateAwareService } from '../base-services/global-state-aware.service';
 
 @Injectable()
