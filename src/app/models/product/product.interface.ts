@@ -1,13 +1,12 @@
-import { Attribute } from './attribute/attribute.model';
-import { Image } from './image.model';
-import { Price } from './price.model';
-import { ShippingMethod } from './shipping-method.model';
-import { Warranty } from './warranty.model';
+import { AttributeData } from '../attribute/attribute.interface';
+import { ImageData } from '../image/image.interface';
+import { Price } from '../price.model';
+import { ShippingMethod } from '../shipping-method.model';
 
-export class Product {
+export interface ProductData {
   name: string;
   type: string;
-  attributes: Attribute[];
+  attributes: AttributeData[];
   shortDescription: string;
   minOrderQuantity: number;
   longDescription: string;
@@ -15,20 +14,20 @@ export class Product {
   listPrice: Price;
   productBundle: boolean;
   shippingMethods: ShippingMethod[];
-  availableWarranties: Warranty[];
+  availableWarranties: WarrantyData[];
   productName: string;
   roundedAverageRating: string;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
   salePrice: Price;
   sku: string;
-  images: Image[];
+  images: ImageData[];
   manufacturer: string;
   availability: boolean;
   retailSet: boolean;
   inStock: boolean;
   mastered: boolean;
-  variationAttributes?: Attribute[];
+  variationAttributes ?: AttributeData[];
   enableExpressShop: boolean;
   richSnippetsEnabled: boolean;
   showProductRating: boolean;
@@ -40,9 +39,16 @@ export class Product {
   displayType: string;
   applicablePromotions: any[];
   nameOverride: string;
-  showInformationalPrice: boolean;
   isEndOfLife: boolean;
   id: string;
   averageRatingClass: string;
   isProductMaster: boolean;
+}
+
+interface WarrantyData {
+  type: string;
+  description: string;
+  title: string;
+  uri: string;
+  attributes: AttributeData[];
 }

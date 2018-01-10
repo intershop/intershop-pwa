@@ -18,4 +18,14 @@ export class FactoryHelper {
     });
   }
 
+  /**
+   * Maps a object to an other. Only fills the fields of the output Object if it has this field
+   * @param input
+   * @param output
+   */
+  static primitiveMappingFullOutput<T, S>(input: T, output: S) {
+
+    this.primitiveMapping(input, output, Object.keys(output));
+  }
+
 }
