@@ -61,15 +61,15 @@ export class CategoriesService {
    * @returns               A Category array that represents the category path from root to the category.
    */
   getCategoryPath(category: Category, activatedRoute: ActivatedRouteSnapshot): Observable<Category[]> {
-    if (!category || !activatedRoute || !activatedRoute.url) {
-      return ErrorObservable.create('getCategoryPath cannot act with missing or empty category or route snapshot');
+    if (!activatedRoute || !activatedRoute.url) {
+      return ErrorObservable.create('getCategoryPath cannot act with missing or empty route snapshot');
     }
 
     const categories$: Observable<Category>[] = [];
     let categoryId = '';
 
     for (const urlSegment of activatedRoute.url) {
-      if (urlSegment.path === category.id) {
+      if (category && urlSegment.path === category.id) {
         categories$.push(Observable.of(category));
       } else {
         categoryId = categoryId + urlSegment.path;
