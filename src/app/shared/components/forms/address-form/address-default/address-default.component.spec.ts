@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
+import { RegionData } from '../../../../../models/region/region.interface';
 import { RegionService } from '../../../../services/countries/region.service';
 import { InputComponent } from '../../../form-controls/input/input.component';
 import { SelectRegionComponent } from '../../../form-controls/select-region/select-region.component';
@@ -26,13 +27,13 @@ describe('Default Address Component', () => {
     });
     const regionServiceMock = mock(RegionService);
     when(regionServiceMock.getRegions('BG')).thenReturn(
-      [
-        { countryCode: 'BG', regionCode: '02', name: 'Burgas' },
-        { countryCode: 'BG', regionCode: '23', name: 'Sofia' }
-      ]
+      Observable.of(
+        { countryCode: 'BG', regionCode: '02', name: 'Burgas' } as RegionData,
+        { countryCode: 'BG', regionCode: '23', name: 'Sofia' } as RegionData
+      )
     );
     when(regionServiceMock.getRegions('IN')).thenReturn(
-      []
+      Observable.of()
     );
     TestBed.configureTestingModule({
       declarations: [AddressDefaultComponent, InputComponent, SelectRegionComponent],

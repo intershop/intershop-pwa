@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
+import { RegionData } from '../../../../../models/region/region.interface';
 import { RegionService } from '../../../../services/countries/region.service';
 import { InputComponent } from '../../../form-controls/input/input.component';
 import { SelectRegionComponent } from '../../../form-controls/select-region/select-region.component';
@@ -26,10 +27,10 @@ describe('American Address Component', () => {
     });
     const regionServiceMock = mock(RegionService);
     when(regionServiceMock.getRegions('US')).thenReturn(
-      [
-        { countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
-        { countryCode: 'US', regionCode: 'TX', name: 'Texas' }
-      ]
+      Observable.of(
+        { countryCode: 'US', regionCode: 'AL', name: 'Alabama' } as RegionData,
+        { countryCode: 'US', regionCode: 'TX', name: 'Texas' } as RegionData
+      )
     );
     TestBed.configureTestingModule({
       declarations: [AddressUSComponent, InputComponent, SelectRegionComponent],
