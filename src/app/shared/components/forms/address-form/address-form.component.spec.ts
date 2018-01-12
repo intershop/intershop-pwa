@@ -2,6 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import * as using from 'jasmine-data-provider';
 import { AddressFormComponent } from './address-form.component';
 
 describe('Address Form Component', () => {
@@ -78,4 +79,27 @@ describe('Address Form Component', () => {
     expect(element.querySelector('ish-address-default')).toBeTruthy('Default address template is rendered if country has no specific address template ');
   });
 
+  describe('dataprovider', () => {
+    function dataProvider() {
+      return [
+        { countryCode: '', cmp: 'ish-address-default'},
+        { countryCode: 'DE', cmp: 'ish-address-de'},
+        { countryCode: 'FR', cmp: 'ish-address-fr'},
+        { countryCode: 'GB', cmp: 'ish-address-gb'},
+        { countryCode: 'US', cmp: 'ish-address-us'},
+        { countryCode: 'BG', cmp: 'ish-address-default'},
+      ];
+    }
+
+    using(dataProvider, (dataSlice ) => {
+      it('should render ' + dataSlice.cmp + 'if countryCode equals ' + dataSlice.countryCode, () => {
+        expect(component.addressForm).toBeUndefined('address form has not been created before detectChanges');
+        fixture.detectChanges();
+        expect(component.addressForm).toBeTruthy('address form has been created');
+        component.addressForm.get('countryCode').setValue(dataSlice.countryCode);
+        fixture.detectChanges();
+        expect(element.querySelector(dataSlice.cmp)).toBeTruthy('country specific address form is rendered');
+      });
+    });
+  });
 });
