@@ -12,9 +12,14 @@ export class ProductResolver implements Resolve<Product> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product> {
-    const sku = route.paramMap.get('sku');
+    let sku: string = null;
+    if (route.paramMap && route.paramMap.get('sku')) {
+      sku = route.paramMap.get('sku');
+    } else {
+      sku = route.url[route.url.length - 1].path;
+    }
     // TODO: redirect to /error when product not found
-    return this.productsService.getProduct(sku);
+    return sku ? this.productsService.getProduct(sku) : null;
   }
 
 }
