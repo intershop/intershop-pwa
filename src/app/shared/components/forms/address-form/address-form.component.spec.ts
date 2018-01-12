@@ -52,31 +52,6 @@ describe('Address Form Component', () => {
     expect(component.addressForm.get('phoneHome')).toBeTruthy('address form contains a phoneHome control');
   });
 
-  it('should render country specific address forms if country changes', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('ish-address-default')).toBeTruthy('default address template is rendered if country is empty');
-
-    component.addressForm.get('countryCode').setValue('DE');
-    fixture.detectChanges();
-    expect(element.querySelector('ish-address-de')).toBeTruthy('German address template is rendered if country is DE');
-
-    component.addressForm.get('countryCode').setValue('FR');
-    fixture.detectChanges();
-    expect(element.querySelector('ish-address-fr')).toBeTruthy('French address template is rendered if country is FR');
-
-    component.addressForm.get('countryCode').setValue('GB');
-    fixture.detectChanges();
-    expect(element.querySelector('ish-address-gb')).toBeTruthy('British address template is rendered if country is GB');
-
-    component.addressForm.get('countryCode').setValue('US');
-    fixture.detectChanges();
-    expect(element.querySelector('ish-address-us')).toBeTruthy('US address template is rendered if country is US');
-
-    component.addressForm.get('countryCode').setValue('BG');
-    fixture.detectChanges();
-    expect(element.querySelector('ish-address-default')).toBeTruthy('Default address template is rendered if country has no specific address template ');
-  });
-
   describe('dataprovider', () => {
     function dataProvider() {
       return [
