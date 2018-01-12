@@ -15,11 +15,7 @@ describe('Select Country Component', () => {
   beforeEach(async(() => {
     const translateServiceMock = mock(TranslateService);
     when(translateServiceMock.get(anything())).thenCall((data) => {
-      if (data === 'labelKey') {
-        return Observable.of('LabelName');
-      } else {
-        return Observable.of(null);
-      }
+      return Observable.of(data);
     });
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(

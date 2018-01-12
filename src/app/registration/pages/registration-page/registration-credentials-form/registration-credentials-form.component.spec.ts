@@ -16,13 +16,7 @@ describe('Credentials Form Component', () => {
 
   beforeEach(async(() => {
     const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenCall((data) => {
-      if (data === 'labelKey') {
-        return Observable.of('LabelName');
-      } else {
-        return Observable.of(null);
-      }
-    });
+    when(translateServiceMock.get(anything())).thenReturn(Observable.of(null));
 
     TestBed.configureTestingModule({
       declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
@@ -30,7 +24,6 @@ describe('Credentials Form Component', () => {
         { provide: USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER, useValue: true },
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         FormBuilder
-
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
