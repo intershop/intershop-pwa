@@ -12,7 +12,7 @@ export class CategoryPathResolver implements Resolve<Category[]> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Category[]> {
-    return this.categoriesService.getCategoryPath(null, route);
+    return this.categoriesService.getCategoryPathFromRoute(route);
   }
 
 }
