@@ -20,6 +20,9 @@ export class RegistrationCredentialsFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.parentForm) {
+      throw new Error('required input parameter <parentForm> is missing for CredentialsFormComponent');
+    }
     this.createForm();
   }
 

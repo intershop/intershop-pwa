@@ -28,6 +28,7 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges,
     }
     this.setDefaultValues(); // call this method before parent init
     super.componentInit();
+    this.options = this.getStateOptions();
   }
 
   /*

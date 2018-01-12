@@ -11,24 +11,32 @@ export class AddressDefaultComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
+    if (!this.addressForm) {
+      throw new Error('required input parameter <addressForm> is missing for AddressDefaultComponent');
+    }
+    if (!this.addressForm.get('postalCode')) {
+      throw new Error('required form control <postalCode> is missing for addressForm of AddressDefaultComponent');
+    }
     // add additional form controls and validators
-    this.addressForm.addControl('state', new FormControl(''));
+    this.addressForm.addControl('state', new FormControl('', Validators.required));
 
     this.addressForm.get('postalCode').setValidators(Validators.required);
 
     // set required validator, state if country changes; will be removed by select-regions component if there is no state for this country
     this.addressForm.get('countryCode').valueChanges.subscribe(value => {
-      if (this.addressForm.get('state')) {
+      if (this.addressForm.get('state') && this.addressForm.get('countryCode')) {
         this.addressForm.get('state').setValidators(Validators.required);
       }
     });
   }
 
   ngOnDestroy() {
-    // remove additional form controls and validators
-    this.addressForm.removeControl('state');
+    if (this.addressForm) {
+      // remove additional form controls and validators
+      this.addressForm.removeControl('state');
 
-    this.addressForm.get('postalCode').clearValidators();
+      this.addressForm.get('postalCode').clearValidators();
+    }
   }
 
   /*

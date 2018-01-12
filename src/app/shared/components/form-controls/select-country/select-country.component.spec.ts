@@ -1,9 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 import { CountryService } from '../../../services/countries/country.service';
 import { SelectCountryComponent } from './select-country.component';
 
@@ -13,14 +13,6 @@ describe('Select Country Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenCall((data) => {
-      if (data === 'labelKey') {
-        return Observable.of('LabelName');
-      } else {
-        return Observable.of(null);
-      }
-    });
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(
       Observable.of(
@@ -32,8 +24,10 @@ describe('Select Country Component', () => {
     TestBed.configureTestingModule({
       declarations: [SelectCountryComponent],
       providers: [
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) }
+      ],
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

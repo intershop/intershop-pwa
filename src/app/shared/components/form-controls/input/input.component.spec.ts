@@ -1,7 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -25,9 +24,6 @@ describe('Input Component', () => {
       declarations: [InputComponent],
       providers: [
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
-      ],
-      imports: [
-        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

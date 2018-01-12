@@ -14,13 +14,13 @@
   </fieldset>
 
   <!-- country dependent address forms -->
-  <div [ngSwitch]="countryCode?.value">
+  <ng-container [ngSwitch]="countryCode?.value">
     <ish-address-de [addressForm]="addressForm" *ngSwitchCase="'DE'"></ish-address-de>
     <ish-address-fr [addressForm]="addressForm" *ngSwitchCase="'FR'"></ish-address-fr>
     <ish-address-gb [addressForm]="addressForm" *ngSwitchCase="'GB'"></ish-address-gb>
     <ish-address-us [addressForm]="addressForm" *ngSwitchCase="'US'"></ish-address-us>
     <ish-address-default [addressForm]="addressForm" *ngSwitchDefault></ish-address-default>
-  </div>
+  </ng-container>
 
   <!-- phone number -->
   <ish-input
