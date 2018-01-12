@@ -14,11 +14,7 @@ describe('Select Security Question Component', () => {
   beforeEach(async(() => {
     const translateServiceMock = mock(TranslateService);
     when(translateServiceMock.get(anything())).thenCall((data) => {
-      if (data === 'labelKey') {
-        return Observable.of('LabelName');
-      } else {
-        return Observable.of(null);
-      }
+      return Observable.of(data);
     });
     TestBed.configureTestingModule({
       declarations: [SelectSecurityQuestionComponent],
