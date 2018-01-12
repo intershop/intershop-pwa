@@ -1,9 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { TranslateModule } from '@ngx-translate/core';
 import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../../core/configurations/injection-keys';
 import { InputComponent } from '../../../../shared/components/form-controls/input/input.component';
 import { SelectSecurityQuestionComponent } from '../../../../shared/components/form-controls/select-security-question/select-security-question.component';
@@ -15,15 +13,14 @@ describe('Credentials Form Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenReturn(Observable.of(null));
-
     TestBed.configureTestingModule({
       declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
       providers: [
         { provide: USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER, useValue: true },
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         FormBuilder
+      ],
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

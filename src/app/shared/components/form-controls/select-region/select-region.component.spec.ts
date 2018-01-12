@@ -1,9 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 import { RegionData } from '../../../../models/region/region.interface';
 import { RegionService } from '../../../services/countries/region.service';
 import { SelectRegionComponent } from './select-region.component';
@@ -14,10 +14,6 @@ describe('Select Region Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenCall((data) => {
-      return Observable.of(data);
-    });
     const regionServiceMock = mock(RegionService);
     when(regionServiceMock.getRegions('BG')).thenReturn(
 
@@ -31,8 +27,10 @@ describe('Select Region Component', () => {
     TestBed.configureTestingModule({
       declarations: [SelectRegionComponent],
       providers: [
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         { provide: RegionService, useFactory: () => instance(regionServiceMock) }
+      ],
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

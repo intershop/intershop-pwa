@@ -1,9 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { TranslateModule } from '@ngx-translate/core';
 import { InputComponent } from '../../../form-controls/input/input.component';
 import { SelectTitleComponent } from '../../../form-controls/select-title/select-title.component';
 import { AddressDEComponent } from './address-de.component';
@@ -14,12 +12,11 @@ describe('German Address Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenReturn(Observable.of(null));
+
     TestBed.configureTestingModule({
       declarations: [AddressDEComponent, InputComponent, SelectTitleComponent],
-      providers: [
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -1,9 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { instance, mock, when } from 'ts-mockito';
 import { RegionData } from '../../../../../models/region/region.interface';
 import { RegionService } from '../../../../services/countries/region.service';
 import { InputComponent } from '../../../form-controls/input/input.component';
@@ -16,8 +16,6 @@ describe('Default Address Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenReturn(Observable.of(null));
     const regionServiceMock = mock(RegionService);
     when(regionServiceMock.getRegions('BG')).thenReturn(
       Observable.of(
@@ -31,8 +29,10 @@ describe('Default Address Component', () => {
     TestBed.configureTestingModule({
       declarations: [AddressDefaultComponent, InputComponent, SelectRegionComponent],
       providers: [
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
         { provide: RegionService, useFactory: () => instance(regionServiceMock) }
+      ],
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

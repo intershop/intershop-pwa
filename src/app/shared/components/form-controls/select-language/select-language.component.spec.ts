@@ -1,9 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { TranslateModule } from '@ngx-translate/core';
 import { SelectLanguageComponent } from './select-language.component';
 
 describe('Select Language Component', () => {
@@ -12,14 +10,10 @@ describe('Select Language Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenCall((data) => {
-      return Observable.of(data);
-    });
     TestBed.configureTestingModule({
       declarations: [SelectLanguageComponent],
-      providers: [
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) }
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
