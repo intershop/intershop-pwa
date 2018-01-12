@@ -1,7 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { RegistrationPersonalFormComponent } from './registration-personal-form.component';
 
 describe('RegistrationPersonalFormComponent', () => {
@@ -12,9 +11,6 @@ describe('RegistrationPersonalFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RegistrationPersonalFormComponent],
-      providers: [
-        { provide: TranslateService }
-      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents().then(() => {
