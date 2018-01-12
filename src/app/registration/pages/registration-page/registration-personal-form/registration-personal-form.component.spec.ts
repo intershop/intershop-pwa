@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { RegistrationPersonalFormComponent } from './registration-personal-form.component';
 
@@ -22,7 +22,10 @@ describe('RegistrationPersonalFormComponent', () => {
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 
-        const parentForm = new FormGroup({});
+        const parentForm = new FormGroup({
+          preferredLanguage: new FormControl(),
+          birthday: new FormControl()
+        });
         component.parentForm = parentForm;
       });
   }));
@@ -38,11 +41,13 @@ describe('RegistrationPersonalFormComponent', () => {
   });
 
   it('should throw an error if control preferredLanguage does not exist', () => {
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    component.parentForm.removeControl('preferredLanguage');
+    expect(function() { fixture.detectChanges(); }).toThrowError(/.*required.*preferredLanguage.*/);
   });
 
   it('should throw an error if control birthday does not exist', () => {
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    component.parentForm.removeControl('birthday');
+    expect(function() { fixture.detectChanges(); }).toThrowError(/.*required.*birthday.*/);
   });
 
 });
