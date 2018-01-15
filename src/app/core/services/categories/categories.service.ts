@@ -53,24 +53,25 @@ export class CategoriesService {
     return categoryData$.map(rawCategory => CategoryFactory.fromData(rawCategory));
   }
 
-  // TODO: this method should become obsolete as soon as the category REST call will return the category path too
+  // TODO: this method might become obsolete as soon as the category REST call will return the category path too
   /**
-   * Helper function to get the category path for a given category with the help of the current route.
-   * @param category        The category the category path should be gotten for.
+   * Helper function to get the category path from the current route.
    * @param activatedRoute  The currently activated route that is used to determine the category path.
    * @returns               A Category array that represents the category path from root to the category.
    */
-  getCategoryPath(category: Category, activatedRoute: ActivatedRouteSnapshot): Observable<Category[]> {
-    if (!category || !activatedRoute || !activatedRoute.url) {
-      return ErrorObservable.create('getCategoryPath cannot act with missing or empty category or route snapshot');
+  getCategoryPathFromRoute(activatedRoute: ActivatedRouteSnapshot): Observable<Category[]> {
+    if (!activatedRoute || !activatedRoute.url) {
+      return ErrorObservable.create('getCategoryPathFromRoute cannot act with missing or empty route snapshot');
     }
 
     const categories$: Observable<Category>[] = [];
     let categoryId = '';
 
     for (const urlSegment of activatedRoute.url) {
-      if (urlSegment.path === category.id) {
-        categories$.push(Observable.of(category));
+      // if the route reaches a 'product' segment, finish category path accumulation
+      if (urlSegment.path === 'product') {
+        break;
+        // for all other segments fetch the according category information and add it to the category path
       } else {
         categoryId = categoryId + urlSegment.path;
         categories$.push(this.getCategory(categoryId));

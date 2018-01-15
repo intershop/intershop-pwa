@@ -1,7 +1,7 @@
 <!-- NEEDS_WORK: product listing components rework - separate product property components are needed -->
 <div class="product-tile">
   <div class="product-image-container">
-    <a  [routerLink]="['/product/' + product.sku]">
+    <a  [routerLink]="['./product/' + product.sku]">
       <!-- TODO: the image handling needs a rework (separate component) -->
       <img class="product-image" [src]="icmBaseURL + product.images[2].effectiveUrl"
         [attr.alt]="product.name ? product.name : null"
@@ -14,7 +14,7 @@
     </a>
   </div>
 
-  <a class="product-title" [routerLink]="['/product/' + product.sku]">{{product.name}}</a>
+  <a class="product-title" [routerLink]="['./product/' + product.sku]">{{product.name}}</a>
 
   <div class="price-container">
     <ish-product-price [product]="product"></ish-product-price>

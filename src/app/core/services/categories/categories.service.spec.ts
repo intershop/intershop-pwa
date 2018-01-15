@@ -76,7 +76,7 @@ describe('Categories Service', () => {
     });
   });
 
-  describe('getCategoryPath()', () => {
+  describe('getCategoryPathFromRoute()', () => {
 
     const RAW_TOP = { id: 'top' } as CategoryData;
     const RAW_SUB = { id: 'sub' } as CategoryData;
@@ -92,51 +92,44 @@ describe('Categories Service', () => {
       when(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}/${RAW_LEAF.id}`, anything(), anything(), anything())).thenReturn(Observable.of(RAW_LEAF));
     });
 
-    it('should generate the path without calling ApiService when query is a top category', () => {
+    it('should generate the path with calling ApiService when query is a top category', () => {
       const snapshot = { url: [{ path: RAW_TOP.id }] } as ActivatedRouteSnapshot;
 
-      categoriesService.getCategoryPath(TOP, snapshot)
+      categoriesService.getCategoryPathFromRoute(snapshot)
         .subscribe((path: Category[]) => expect(path).toEqual([TOP]));
-      verify(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).never();
+      verify(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).once();
     });
 
     it('should generate the path with calling ApiService when query is for a sub category', () => {
       const snapshot = { url: [{ path: RAW_TOP.id }, { path: RAW_SUB.id }] } as ActivatedRouteSnapshot;
 
-      categoriesService.getCategoryPath(SUB as Category, snapshot)
+      categoriesService.getCategoryPathFromRoute(snapshot)
         .subscribe((path: Category[]) => { console.log(path); expect(path).toEqual([TOP, SUB]); });
 
       verify(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).once();
-      verify(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}`, anything(), anything(), anything())).never();
+      verify(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}`, anything(), anything(), anything())).once();
     });
 
     it('should generate the path with calling ApiService when query is for a leaf category', () => {
       const snapshot = { url: [{ path: RAW_TOP.id }, { path: RAW_SUB.id }, { path: RAW_LEAF.id }] } as ActivatedRouteSnapshot;
 
-      categoriesService.getCategoryPath(LEAF, snapshot)
+      categoriesService.getCategoryPathFromRoute(snapshot)
         .subscribe((path: Category[]) => expect(path).toEqual([TOP, SUB, LEAF]));
 
       verify(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).once();
       verify(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}`, anything(), anything(), anything())).once();
-      verify(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}/${RAW_LEAF.id}`, anything(), anything(), anything())).never();
+      verify(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}/${RAW_LEAF.id}`, anything(), anything(), anything())).once();
     });
 
     it('should return error when called without route snapshot', () => {
-      categoriesService.getCategoryPath(TOP, null)
-        .subscribe(data => fail(), err => expect(err).toBeTruthy());
-
-      verify(apiServiceMock.get(anything(), anything(), anything(), anything())).never();
-    });
-
-    it('should return error when called without category', () => {
-      categoriesService.getCategoryPath(null, { url: [{ path: RAW_TOP.id }] } as ActivatedRouteSnapshot)
+      categoriesService.getCategoryPathFromRoute(null)
         .subscribe(data => fail(), err => expect(err).toBeTruthy());
 
       verify(apiServiceMock.get(anything(), anything(), anything(), anything())).never();
     });
 
     it('should return error when called with empty route', () => {
-      categoriesService.getCategoryPath(TOP, { url: [] } as ActivatedRouteSnapshot)
+      categoriesService.getCategoryPathFromRoute({ url: [] } as ActivatedRouteSnapshot)
         .subscribe(data => fail(), err => expect(err).toBeTruthy());
 
       verify(apiServiceMock.get(anything(), anything(), anything(), anything())).never();
