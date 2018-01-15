@@ -5,13 +5,13 @@
       <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{'common.home.link' | translate}}</a><span class="breadcrumb-list-separator">{{separator}}</span>
     </li>
 
-    <ng-container *ngIf="category">
+    <ng-container *ngIf="categoryPath">
       <li *ngFor="let pathCategory of categoryPath; let last = last" class="breadcrumbs-list" [ngClass]="{'breadcrumbs-list-active' : last}">
         <ng-template [ngIf]="!last || product" [ngIfElse]="lastEntry">
-            <a class="breadcrumbs-list-link" [routerLink]="[categoriesService.generateCategoryRoute(pathCategory, categoryPath)]">{{pathCategory.name}}</a><span class="breadcrumb-list-separator">{{separator}}</span>
+          <a class="breadcrumbs-list-link" [routerLink]="[categoriesService.generateCategoryRoute(pathCategory, categoryPath)]">{{pathCategory.name}}</a><span class="breadcrumb-list-separator">{{separator}}</span>
         </ng-template>
         <ng-template #lastEntry>
-            {{pathCategory.name}}
+          {{pathCategory.name}}
         </ng-template>
       </li>
     </ng-container>
