@@ -12,6 +12,10 @@ import { SpecialValidators } from '../../../../shared/validators/special-validat
 export class RegistrationCredentialsFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
   credentialsForm: FormGroup;
+  tValues = {
+    newsletterText: { 0: '/PrivacyPolicy' },     // ToDo: routerLink to the privacy policy link
+    passwordMessage: { 0: '7' }
+  };
 
   constructor(
     @Inject(USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER) public emailOptIn: boolean,
