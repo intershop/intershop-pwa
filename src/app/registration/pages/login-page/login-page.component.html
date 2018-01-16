@@ -1,10 +1,12 @@
 <!-- NEEDS_WORK: condition handling & error handling & simple registration -->
+
+<h1>{{'account.login.heading' | translate}}</h1>
 <div class="row" data-testing-id="account-login-page">
   <div class="col-md-6">
     <div class="section">
       <div *ngIf="!isLoggedIn">
         <h2>{{'account.login.returning_user.heading' | translate}}</h2>
-        <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.addresses.message' | translate}}</p>
+        <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.returning_user.heading' | translate}}</p>
         <!-- ToDo: server side error messages -->
         <div *ngIf="((errorUser && errorUser !== 'UserNotLoggedIn' && errorUser !== 'LoginAlreadyInUse'))" role="alert" class="alert alert-danger">
           {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (userRegistrationLoginType

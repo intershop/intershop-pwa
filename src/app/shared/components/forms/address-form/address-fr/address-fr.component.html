@@ -8,7 +8,7 @@
       <ish-input
         [form]="addressForm"
         controlName="firstName"
-        [label]="'account.default_address.firstname.label' | translate"
+        label="account.default_address.firstname.label"
         [errorMessages]="{'required':'account.address.firstname.missing.error',
                           'noSpecialChars':'account.name.error.forbidden.chars'}"
       ></ish-input>
@@ -16,7 +16,7 @@
       <ish-input
         [form]="addressForm"
         controlName="lastName"
-        [label]="'account.default_address.lastname.label' | translate"
+        label="account.default_address.lastname.label"
         [errorMessages]="{'required':'account.address.lastname.missing.error',
                           'noSpecialChars':'account.name.error.forbidden.chars'}"
       ></ish-input>
@@ -26,14 +26,14 @@
       <ish-input
         [form]="addressForm"
         controlName="addressLine1"
-        [label]="'account.default_address.street.label' | translate"
+        label="account.default_address.street.label"
         [errorMessages]="{'required':'account.address.address1.missing.error'}"
       ></ish-input>
 
       <ish-input
         [form]="addressForm"
         controlName="addressLine2"
-        [label]="'account.default_address.street2.label' | translate"
+        label="account.default_address.street2.label"
       ></ish-input>
     </fieldset>
 
@@ -42,7 +42,7 @@
         [form]="addressForm"
         controlName="postalCode"
         maxlength="5"
-        [label]="'account.default_address.postalcode.label' | translate"
+        label="account.default_address.postalcode.label"
         [errorMessages]="{'required':'account.address.postalcode.missing.error',
                           'pattern':'account.address.fr.postalcode.error.regexp'}"
       ></ish-input>
@@ -50,7 +50,7 @@
       <ish-input
         [form]="addressForm"
         controlName="city"
-        [label]="'account.default_address.city.label' | translate"
+        label="account.default_address.city.label"
         [errorMessages]="{'required':'account.address.city.missing.error'}"
       ></ish-input>
 
