@@ -7,46 +7,46 @@
 
   <ish-input *ngIf="isUsername"
     [form]="simpleRegistrationForm"
-    [controlName]="'userName'"
-    [label]="'account.create_user.login.label'"
-    [labelClass]="'col-sm-3'"
-    [inputClass]="'col-sm-6'"
-    [markRequiredLabel]="'off'"
+    controlName="userName"
+    label="account.create_user.login.label"
+    labelClass="col-sm-3"
+    inputClass="col-sm-6"
+    markRequiredLabel="off"
     [errorMessages]="{'required':'account.login.username.error.required'}"
   ></ish-input>
 
   <ish-input
     [form]="simpleRegistrationForm"
-    [controlName]="'email'"
-    [type]="'email'"
-    [label]="'account.register.email.label'"
-    [labelClass]="'col-sm-3'"
-    [inputClass]="'col-sm-6'"
-    [markRequiredLabel]="'off'"
+    controlName="email"
+    type="email"
+    label="account.register.email.label"
+    labelClass="col-sm-3"
+    inputClass="col-sm-6"
+    markRequiredLabel="off"
     [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}"
   ></ish-input>
 
   <ish-input
     [form]="simpleRegistrationForm"
-    [controlName]="'password'"
-    [type]="'password'"
-    [label]="'account.register.password.label'"
-    [labelClass]="'col-sm-3'"
-    [inputClass]="'col-sm-6'"
-    [markRequiredLabel]="'off'"
+    controlName="password"
+    type="password"
+    label="account.register.password.label"
+    labelClass="col-sm-3"
+    inputClass="col-sm-6"
+    markRequiredLabel="off"
     [errorMessages]="{'required':'account.update_password.new_password.error.required','pattern':'account.update_password.new_password.error.regexp','minlength':'account.update_password.new_password.error.length'}"
   >
-    <small class="input-help">{{'account.register.password.extrainfo.message' | translate}}</small>
+    <small class="input-help">{{'account.register.password.extrainfo.message' | translate:tValues.passwordMessage}}</small>
   </ish-input>
 
   <ish-input
     [form]="simpleRegistrationForm"
-    [controlName]="'confirmPassword'"
-    [type]="'password'"
-    [label]="'account.register.password_confirmation.label'"
-    [labelClass]="'col-sm-3'"
-    [inputClass]="'col-sm-6'"
-    [markRequiredLabel]="'off'"
+    controlName="confirmPassword"
+    type="password"
+    label="account.register.password_confirmation.label"
+    labelClass="col-sm-3"
+    inputClass="col-sm-6"
+    markRequiredLabel="off"
     [errorMessages]="{'required':'account.register.password_confirmation.error.default','equalTo':'account.update_password.confirm_password.error.stringcompare'}"
   ></ish-input>
 
