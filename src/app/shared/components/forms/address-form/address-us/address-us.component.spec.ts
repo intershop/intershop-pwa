@@ -86,7 +86,7 @@ describe('American Address Component', () => {
 
   it('should display an apo/fpo popover link on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('a[popovertitle]')).toBeTruthy('popover link is shown');
+    expect(element.querySelector('a[placement]')).toBeTruthy('popover link is shown');
   });
 });
 

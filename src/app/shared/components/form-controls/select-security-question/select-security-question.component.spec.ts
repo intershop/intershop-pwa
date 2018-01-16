@@ -37,7 +37,7 @@ describe('Select Security Question Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('securityQuestion', 'control Name should be <securityQuestion>');
-    expect(component.label).toEqual('Security Question', 'label should be <Security Question>');
+    expect(component.label).toEqual('account.security_question.label', 'label key should be <account.security_question.label>');
   });
 
   it('should get and display security questions on creation', () => {

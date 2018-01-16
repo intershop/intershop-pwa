@@ -43,8 +43,8 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges,
   */
   private setDefaultValues() {
     this.controlName = this.controlName = 'state';
-    this.label = this.label || 'State/Province';      // ToDo: Translation key
-    this.errorMessages = this.errorMessages || { 'required': 'Please select a region' };  // ToDo: Translation key
+    this.label = this.label || 'account.default_address.state.label';
+    this.errorMessages = this.errorMessages || { 'required': 'account.default_address.state.default.error' };
   }
 
   /*
