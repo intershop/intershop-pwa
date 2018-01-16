@@ -24,9 +24,6 @@ export class SelectComponent extends FormElement implements OnInit {
   protected componentInit() {
     super.init();
 
-    // determine / translate label
-    this.determineLabel();
-
     // show empty option if the control value is empty
     this.showEmptyOption = (this.form.get(this.controlName).value) ? false : true;
   }

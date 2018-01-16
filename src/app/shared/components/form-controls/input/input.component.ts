@@ -27,9 +27,6 @@ export class InputComponent extends FormElement implements OnInit {
     // set default values for empty component parameters
     this.setDefaultValues();
 
-    // determine / translate label
-    super.determineLabel();
-
     // check type is valid
     const types = 'text|password|email';
     if (!types.includes(this.type)) {
