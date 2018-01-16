@@ -25,7 +25,7 @@
               [form]="loginForm"
               controlName="userName"
               type="email"
-              label="Email"
+              label="account.login.email.label"
               labelClass="col-sm-3"
               inputClass="col-sm-6"
               markRequiredLabel="off"
@@ -36,7 +36,7 @@
             <ish-input
               [form]="loginForm"
               controlName="userName"
-              label="Username"
+              label="account.login.username.label"
               labelClass="col-sm-3"
               inputClass="col-sm-6"
               markRequiredLabel="off"
@@ -48,11 +48,11 @@
             [form]="loginForm"
             controlName="password"
             type="password"
-            label="'Password"
+            label="account.login.password.label"
             labelClass="col-sm-3"
             inputClass="col-sm-6"
             markRequiredLabel="off"
-            [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'Your password must include both numeric and alphabetic characters. It must not contain whitespace characters','minlength':'Your password must be at least 7 characters in length','maxlength':'Your password can not be more than 256 characters in length'}"
+            [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'account.update_password.new_password.error.regexp','minlength':'account.password.error.regexp'}"
           ></ish-input>
 
           <div class="form-group">
