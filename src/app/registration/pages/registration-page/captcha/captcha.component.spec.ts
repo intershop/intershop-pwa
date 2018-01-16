@@ -37,9 +37,7 @@ describe('Captcha Component', () => {
     });
   });
 
-  it(`should check if controls are rendered on the HTML`, () => {
-    const elem = element.getElementsByClassName('form-group');
-    expect(elem[0].innerHTML).toContain('re-captcha');
+  it(`should render re-captcha html element on creation`, () => {
+    expect(element.querySelector('re-captcha')).toBeTruthy();
   });
-
 });
