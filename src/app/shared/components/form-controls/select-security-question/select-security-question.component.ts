@@ -31,8 +31,9 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
   */
   private setDefaultValues() {
     this.controlName = this.controlName || 'securityQuestion';
-    this.label = this.label || 'Security Question';      // ToDo: Translation key
-    this.errorMessages = this.errorMessages || { 'required': 'Please select a security question' };  // ToDo: Translation key
+    this.label = this.label || 'account.security_question.label';
+    this.errorMessages = this.errorMessages || { 'required': 'account.security_question.error.required' };
+
   }
 
   /*

@@ -30,8 +30,7 @@ export class SelectLanguageComponent extends SelectComponent implements OnInit {
   */
   private setDefaultValues() {
     this.controlName = this.controlName || 'preferredLanguage';
-    this.label = this.label || 'Preferred Language';      // ToDo: Translation key
-    this.errorMessages = this.errorMessages || { 'required': 'Please select a preferred language' };  // ToDo: Translation key
+    this.label = this.label || 'account.default_address.preferred_language.label';
   }
 
   /*

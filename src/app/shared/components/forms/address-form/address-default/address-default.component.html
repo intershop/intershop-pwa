@@ -1,46 +1,50 @@
 <div [formGroup]="addressForm">
   <fieldset>
     <ish-input
-      [controlName]="'firstName'"
       [form]="addressForm"
-      [label]="'First Name'"
-      [errorMessages]="{'required':'account.login.username.error.required'}"
+      controlName="firstName"
+      [label]="'account.default_address.firstname.label' | translate"
+      [errorMessages]="{'required':'account.address.firstname.missing.error',
+                        'noSpecialChars':'account.name.error.forbidden.chars'}"
     ></ish-input>
 
     <ish-input
-      [controlName]="'lastName'"
       [form]="addressForm"
-      [label]="'Last Name'"
-      [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></ish-input>
-  </fieldset>
-
-  <fieldset>
-    <ish-input
-      [controlName]="'addressLine1'"
-      [form]="addressForm"
-      [label]="'Address Line 1'"
-      [errorMessages]="{'required':'account.login.username.error.required'}"
-    ></ish-input>
-
-    <ish-input
-      [controlName]="'addressLine2'"
-      [form]="addressForm"
-      [label]="'Address Line 2'"
+      controlName="lastName"
+      [label]="'account.default_address.lastname.label' | translate"
+      [errorMessages]="{'required':'account.address.lastname.missing.error',
+                        'noSpecialChars':'account.name.error.forbidden.chars'}"
     ></ish-input>
   </fieldset>
 
   <fieldset>
     <ish-input
-      [controlName]="'postalCode'"
       [form]="addressForm"
-      [label]="'ZIP/Postal Code'"
+      controlName="addressLine1"
+      [label]="'account.default_address.street.label' | translate"
+      [errorMessages]="{'required':'account.address.address1.missing.error'}"
     ></ish-input>
 
     <ish-input
-      [controlName]="'city'"
       [form]="addressForm"
-      [label]="'City'"
+      controlName="addressLine2"
+      [label]="'account.default_address.street2.label' | translate"
+    ></ish-input>
+  </fieldset>
+
+  <fieldset>
+    <ish-input
+      [form]="addressForm"
+      controlName="postalCode"
+      [label]="'account.default_address.postalcode.label' | translate"
+      [errorMessages]="{'required':'account.address.postalcode.missing.error'}"
+    ></ish-input>
+
+    <ish-input
+      [form]="addressForm"
+      controlName="city"
+      [label]="'account.default_address.city.label' | translate"
+      [errorMessages]="{'required':'account.address.city.missing.error'}"
     ></ish-input>
 
     <ng-container *ngIf="countryCode?.length > 0">

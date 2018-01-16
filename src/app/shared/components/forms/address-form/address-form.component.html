@@ -3,13 +3,12 @@
 <p>Form status: {{ addressForm.status | json }}</p> -->
 
 <div [formGroup]="addressForm" data-address-form="data-address-form">
-  <p class="indicates-required"><span class="required">*</span>Required field</p>
+  <p class="indicates-required"><span class="required">*</span>{{'account.required_field.message' | translate}}</p>
 
   <!-- country select -->
   <fieldset>
     <ish-select-country
       [form]="addressForm"
-      [label]="'Country'"
     ></ish-select-country>
   </fieldset>
 
@@ -24,8 +23,8 @@
 
   <!-- phone number -->
   <ish-input
-    [controlName]="'phoneHome'"
     [form]="addressForm"
-    [label]="'Phone'"
+    controlName="phoneHome"
+    [label]="'account.default_address.phonehome.label' | translate"
   ></ish-input>
 </div>
