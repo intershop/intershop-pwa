@@ -8,7 +8,7 @@ describe('Suggest Service', () => {
     formUtils = new FormUtilsService();
   });
 
-  describe('markDirtyRecursive', () => {
+  describe('markAsDirtyRecursive', () => {
     it('should mark flat form group dirty', () => {
       const group = new FormGroup({
         ctrl: new FormControl('')
