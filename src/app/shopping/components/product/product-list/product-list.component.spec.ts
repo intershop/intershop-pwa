@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { Product } from '../../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
@@ -14,7 +14,7 @@ describe('Product List Component', () => {
   let element: HTMLElement;
   let productsService: ProductsService;
   const activatedRouteMock = {
-    'url': Observable.of(
+    'url': of(
       [{ 'path': 'cameras', 'parameters': {} },
       { 'path': 'cameras', 'parameters': {} }
       ])
@@ -37,7 +37,7 @@ describe('Product List Component', () => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(productsService.getProductList(anything())).thenReturn(Observable.of([new Product('1')]));
+    when(productsService.getProductList(anything())).thenReturn(of([new Product('1')]));
   });
 
   it('should retrieve products when created', () => {

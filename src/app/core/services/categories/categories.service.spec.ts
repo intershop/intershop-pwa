@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http/src/params';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { CategoryFactory } from '../../../models/category/category.factory';
 import { CategoryData } from '../../../models/category/category.interface';
@@ -15,8 +15,8 @@ describe('Categories Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
-    when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(Observable.of({ id: 'blubb' } as CategoryData));
-    when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(Observable.of({ id: 'blubb' } as CategoryData));
+    when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(of({ id: 'blubb' } as CategoryData));
+    when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(of({ id: 'blubb' } as CategoryData));
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
@@ -87,9 +87,9 @@ describe('Categories Service', () => {
     const LEAF = CategoryFactory.fromData(RAW_LEAF);
 
     beforeEach(() => {
-      when(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).thenReturn(Observable.of(RAW_TOP));
-      when(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}`, anything(), anything(), anything())).thenReturn(Observable.of(RAW_SUB));
-      when(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}/${RAW_LEAF.id}`, anything(), anything(), anything())).thenReturn(Observable.of(RAW_LEAF));
+      when(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).thenReturn(of(RAW_TOP));
+      when(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}`, anything(), anything(), anything())).thenReturn(of(RAW_SUB));
+      when(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}/${RAW_LEAF.id}`, anything(), anything(), anything())).thenReturn(of(RAW_LEAF));
     });
 
     it('should generate the path with calling ApiService when query is a top category', () => {

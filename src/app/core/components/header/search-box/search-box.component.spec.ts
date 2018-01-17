@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { async, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { SuggestService } from '../../../services/suggest/suggest.service';
 import { SearchBoxComponent } from './search-box.component';
@@ -17,7 +17,7 @@ describe('Search Box Component', () => {
         'Camera', 'Camcoder'
       ]
     };
-    return Observable.of(result);
+    return of(result);
   });
 
   beforeEach(async(() => {
@@ -48,7 +48,7 @@ describe('Search Box Component', () => {
   }));
 
   it('should set result array to blank when no suggestions are found', fakeAsync(() => {
-    when(mockSuggestService.search(anything())).thenReturn(Observable.of([]));
+    when(mockSuggestService.search(anything())).thenReturn(of([]));
     component.searchTerm$.next('Test');
 
     component.doSearch();

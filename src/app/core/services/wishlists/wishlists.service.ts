@@ -51,8 +51,9 @@ export class WishlistsService extends GlobalStateAwareService<Wishlist> {
   }
 
   private getWishlistByUrl(url: string): Observable<Wishlist> {
-    return this.apiService.get<WishlistData>(url)
-      .map(wishlistData => WishlistFactory.fromData(wishlistData));
+    return this.apiService.get<WishlistData>(url).pipe(
+      map(wishlistData => WishlistFactory.fromData(wishlistData))
+    );
   }
 }
 

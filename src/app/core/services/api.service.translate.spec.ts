@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from './api.service';
 import { CustomErrorHandler } from './custom-error-handler';
@@ -31,7 +32,7 @@ describe('ApiService Translation', () => {
 
   // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
   function deepCopyObservable(obj): Observable<any> {
-    return Observable.of(JSON.parse(JSON.stringify(obj)));
+    return of(JSON.parse(JSON.stringify(obj)));
   }
 
   beforeEach(() => {
@@ -44,7 +45,7 @@ describe('ApiService Translation', () => {
       } else if (path === webcamsPath) {
         return deepCopyObservable(webcamResponse);
       } else {
-        return Observable.of(`path '${path}' does not exist`);
+        return of(`path '${path}' does not exist`);
       }
     });
 
