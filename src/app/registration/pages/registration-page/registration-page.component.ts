@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerRegistrationService } from '../../services/customer-registration.service';
+import { FormUtilsService } from "../../../core/services/utils/form-utils.service";
 
 @Component({
   templateUrl: './registration-page.component.html'
@@ -19,7 +20,8 @@ export class RegistrationPageComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private customerService: CustomerRegistrationService
+    private customerService: CustomerRegistrationService,
+    private formUtils: FormUtilsService
   ) { }
 
   ngOnInit() {
@@ -63,6 +65,7 @@ export class RegistrationPageComponent implements OnInit {
 
     } else {
       this.isDirty = true;
+      this.formUtils.markAsDirtyRecursive(this.registrationForm);
     }
   }
 

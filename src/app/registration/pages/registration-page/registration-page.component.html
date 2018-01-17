@@ -1,7 +1,7 @@
 <h1>{{'account.register.heading' | translate}}</h1>
 <p>{{'account.register.message' | translate}}</p>
-<div class="section" data-testing-id="account-create-full-page">
-  <form ishFormValidation [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
+<div class="section" data-testing-id="account-create-full-page"></div>
+  <form [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
     <!--ish-email-password component-->
     <h2>{{'account.register.email_password.heading' | translate}}</h2>
     <p>{{'account.register.email_password.message' | translate}}</p>

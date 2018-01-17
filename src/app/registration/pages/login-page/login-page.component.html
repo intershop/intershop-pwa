@@ -16,7 +16,7 @@
           <!-- TODO  -->
           <!-- Apply condition for other possible inputs -->
         </div>
-        <form ishFormValidation name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
+        <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
           <!-- Hidden Fields in ISML -->
           <p>{{'account.login.message' | translate}}</p>
 
