@@ -17,9 +17,6 @@ export class SimpleRegistrationComponent implements OnInit {
   isUsername: boolean;
   errorUser: string;
   isDirty: boolean;
-  tValues = {
-    passwordMessage: { 0: '7' }
-  };
 
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) private userRegistrationLoginType: string,
