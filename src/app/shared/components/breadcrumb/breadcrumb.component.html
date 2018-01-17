@@ -16,6 +16,10 @@
       </li>
     </ng-container>
 
+    <li *ngIf="category && categoryPath.length === 0" class="breadcrumbs-list breadcrumbs-list-active">
+      {{category.name}}
+    </li>
+
     <li *ngIf="product" class="breadcrumbs-list breadcrumbs-list-active">
       {{product.name}}
     </li>
