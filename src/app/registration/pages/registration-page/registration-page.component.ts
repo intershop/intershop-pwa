@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerRegistrationService } from '../../services/customer-registration.service';
-import { FormUtilsService } from "../../../core/services/utils/form-utils.service";
+import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
 
 @Component({
   templateUrl: './registration-page.component.html'
@@ -13,9 +13,9 @@ export class RegistrationPageComponent implements OnInit {
   isCaptchaValid = false;
   isAddressFormValid = false;
   isEmailFormValid = false;
+  isDirty = false;
 
   registrationForm: FormGroup;
-  isDirty: Boolean;
 
   constructor(
     private router: Router,
@@ -25,11 +25,6 @@ export class RegistrationPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isDirty = false;
-    this.createForm();
-  }
-
-  createForm() {
     this.registrationForm = this.fb.group({
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: ['']
@@ -37,36 +32,36 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   /**
-   * Redirects to home page
+   * Cancels form and redirects to home page
+   * @method cancelForm
    * @returns void
    */
-  cancelClicked(): void {
+  cancelForm() {
     this.router.navigate(['/home']);
   }
 
   /**
-   * Creates Account
-   * @method onCreateAccount
+   * Submits form and creates account when valid
+   * @method submitForm
    * @returns void
    */
-  onCreateAccount(): void {
-    // console.log(JSON.stringify(this.registrationForm.value));
 
-    if (this.registrationForm.valid) {
-      const customerData = CustomerFactory.fromFormToData(this.registrationForm);
-      // console.log(JSON.stringify(customer));
-      if (customerData.birthday === '') { customerData.birthday = null; }   // ToDo see IS-22276
-      this.customerService.registerPrivateCustomer(customerData).subscribe(response => {
-
-        if (response) {
-          this.router.navigate(['/home']);
-        }
-      });
-
-    } else {
+  submitForm() {
+    if (this.registrationForm.invalid) {
       this.isDirty = true;
       this.formUtils.markAsDirtyRecursive(this.registrationForm);
+      return;
     }
+
+    const customerData = CustomerFactory.fromFormToData(this.registrationForm);
+    // console.log(JSON.stringify(customer));
+    if (customerData.birthday === '') { customerData.birthday = null; }   // ToDo see IS-22276
+    this.customerService.registerPrivateCustomer(customerData).subscribe(response => {
+
+      if (response) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
 }
