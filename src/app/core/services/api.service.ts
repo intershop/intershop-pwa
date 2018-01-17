@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators';
 import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
@@ -100,22 +102,24 @@ export class ApiService {
 
   private getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
     if (!linkTranslation) {
-      return Observable.of(data);
+      return of(data);
     } else {
       let elements = data.elements ? data.elements : data;
       if (!elements || !elements.length || !elements.find(x => x.type === 'Link')) {
-        return Observable.of(elements);
+        return of(elements);
       }
-      return forkJoin(this.getLinkedObjects(elements)).map(results => {
-        elements = elements.map((item, key) => {
-          return results[key];
-        });
-        if (data.elements) {
-          data.elements = elements;
-          return data;
-        }
-        return elements;
-      });
+      return forkJoin(this.getLinkedObjects(elements)).pipe(
+        map(results => {
+          elements = elements.map((item, key) => {
+            return results[key];
+          });
+          if (data.elements) {
+            data.elements = elements;
+            return data;
+          }
+          return elements;
+        })
+      );
     }
   }
 

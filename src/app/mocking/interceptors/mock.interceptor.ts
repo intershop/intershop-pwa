@@ -1,6 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { MUST_MOCK_PATHS, NEED_MOCK } from '../../core/configurations/injection-keys';
 import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 
@@ -29,13 +30,14 @@ export class MockInterceptor implements HttpInterceptor {
     const newUrl = this.getMockUrl(req);
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
-    return next.handle(req.clone({ url: newUrl, method: 'GET' })).map(event => {
-      if (event instanceof HttpResponse) {
-        const response = <HttpResponse<any>>event;
-        return this.attachTokenIfNecessary(req, response);
-      }
-      return event;
-    });
+    return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
+      map(event => {
+        if (event instanceof HttpResponse) {
+          const response = <HttpResponse<any>>event;
+          return this.attachTokenIfNecessary(req, response);
+        }
+        return event;
+      }));
   }
 
   /**

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { map } from 'rxjs/operators';
 import { Country } from '../../../../models/country/country.model';
 import { CountryService } from '../../../services/countries/country.service';
 import { SelectOption } from '../select/select-option.interface';
@@ -43,12 +44,12 @@ export class SelectCountryComponent extends SelectComponent implements OnInit {
     if (countries$) {
 
       // Map region array to an array of type SelectOption
-      countries$.map((country: Country) => {
+      countries$.pipe(map((country: Country) => {
         return {
           'label': country.name,
           'value': country.countryCode
         };
-      }).subscribe(option => options.push(option));
+      })).subscribe(option => options.push(option));
       if (options.length === 0) {
         this.form.get('state').clearValidators();
         this.form.get('state').reset();

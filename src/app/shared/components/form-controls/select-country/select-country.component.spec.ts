@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { instance, mock, when } from 'ts-mockito';
 import { CountryService } from '../../../services/countries/country.service';
 import { SelectCountryComponent } from './select-country.component';
@@ -15,7 +15,7 @@ describe('Select Country Component', () => {
   beforeEach(async(() => {
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(
-      Observable.of(
+      of(
         { countryCode: 'BG', name: 'Bulgaria' },
         { countryCode: 'DE', name: 'Germany' },
         { countryCode: 'FR', name: 'France' }

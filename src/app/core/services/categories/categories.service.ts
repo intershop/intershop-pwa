@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { map } from 'rxjs/operators';
 import { CategoryFactory } from '../../../models/category/category.factory';
 import { CategoryData } from '../../../models/category/category.interface';
 import { Category } from '../../../models/category/category.model';
@@ -30,11 +31,12 @@ export class CategoriesService {
     }
     const rawCategories$ = this.apiService.get<CategoryData[]>(this.serviceIdentifier, params, null, true);
     if (rawCategories$) {
-      return rawCategories$.map(
-        (rawCategories: CategoryData[]) => {
-          return rawCategories.map(
-            (rawCategory: CategoryData) => CategoryFactory.fromData(rawCategory));
-        }
+      return rawCategories$.pipe(
+        map(
+          (rawCategories: CategoryData[]) => {
+            return rawCategories.map(
+              (rawCategory: CategoryData) => CategoryFactory.fromData(rawCategory));
+          })
       );
     }
     return null;
@@ -50,7 +52,9 @@ export class CategoriesService {
       return ErrorObservable.create('getCategory() called without categoryId');
     }
     const categoryData$ = this.apiService.get<CategoryData>(this.serviceIdentifier + '/' + categoryId, null, null, false);
-    return categoryData$.map(rawCategory => CategoryFactory.fromData(rawCategory));
+    return categoryData$.pipe(
+      map(rawCategory => CategoryFactory.fromData(rawCategory))
+    );
   }
 
   // TODO: this method might become obsolete as soon as the category REST call will return the category path too
