@@ -24,6 +24,7 @@ import { ErrorCodeMappingService } from './services/error-code-mapping.service';
 import { CurrentLocaleService } from './services/locale/current-locale.service';
 import { ProductCompareService } from './services/product-compare/product-compare.service';
 import { StatePropertiesService } from './services/state-transfer/state-properties.service';
+import { FormUtilsService } from './services/utils/form-utils.service';
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     CurrentLocaleService,
     CartStatusService,
     ErrorCodeMappingService,
-    StatePropertiesService
+    StatePropertiesService,
+    FormUtilsService
   ],
   exports: [
     StyleWrapperDirective,
