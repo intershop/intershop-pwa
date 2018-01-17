@@ -64,7 +64,7 @@ describe('RegistrationPage Component', () => {
 
   it('should navigate to homepage when cancel is clicked', async(() => {
     expect(location.path()).toBe('', 'start location');
-    component.cancelClicked();
+    component.cancelForm();
     fixture.whenStable().then(() => {
       expect(location.path()).toBe('/home');
     });
