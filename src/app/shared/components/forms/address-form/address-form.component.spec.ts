@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { AddressFormComponent } from './address-form.component';
 
@@ -15,6 +16,9 @@ describe('Address Form Component', () => {
 
       providers: [
         FormBuilder
+      ],
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

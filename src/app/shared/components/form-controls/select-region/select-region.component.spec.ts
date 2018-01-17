@@ -56,7 +56,7 @@ describe('Select Region Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('state', 'control Name should be <state>');
-    expect(component.label).toEqual('State/Province', 'label should be <State/Province>');
+    expect(component.label).toEqual('account.default_address.state.label', 'label key should be <account.default_address.state.label>');
   });
 
   it('should throw an error if input parameter countryCode is not set', () => {

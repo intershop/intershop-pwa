@@ -33,24 +33,6 @@ export class FormElement {
   }
 
   /*
-    determine label:
-     label input = empty: label = control name
-     label input = localization key: label = translation for this key
-     else: label = unchanged input string
-  */
-  protected determineLabel() {
-    if (this.label) {
-      this.translate.get(this.label).subscribe(data => {
-        if (data) {
-          this.label = data;
-        }
-      }).unsubscribe();
-    } else {
-      this.label = this.controlName;
-    }
-  }
-
-  /*
    decides whether to show a required sign after the label in dependence of the markRequiredLabel
      returns true, if markRequiredLabel= 'on'
      returns false, if markRequiredLabel= 'off',

@@ -39,7 +39,7 @@ describe('Select Title Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('title', 'control Name should be <title>');
-    expect(component.label).toEqual('Salutation', 'label should be <Salutation>');
+    expect(component.label).toEqual('account.default_address.title.label', 'label key should be <account.default_address.title.label>');
   });
 
   it('should throw an error if input parameter countryCode is not set', () => {

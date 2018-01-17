@@ -1,9 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { TranslateModule } from '@ngx-translate/core';
 import { InputComponent } from './input.component';
 
 describe('Input Component', () => {
@@ -12,18 +10,10 @@ describe('Input Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anything())).thenCall((data) => {
-      if (data === 'labelKey') {
-        return Observable.of('LabelName');
-      } else {
-        return Observable.of(null);
-      }
-    });
     TestBed.configureTestingModule({
       declarations: [InputComponent],
-      providers: [
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -36,7 +26,7 @@ describe('Input Component', () => {
           requiredField: new FormControl('', [Validators.required]),
           simpleField: new FormControl()
         });
-
+        component.label = 'label';
         component.form = form;
         component.controlName = 'requiredField';
       });
@@ -103,7 +93,7 @@ describe('Input Component', () => {
     component.markRequiredLabel = 'on';
     component.controlName = 'simpleField';
     fixture.detectChanges();
-    expect(element.querySelector('span.required')).toBeTruthy('markRequired label auto without required validator');
+    expect(element.querySelector('span.required')).toBeTruthy('markRequired label on without required validator');
   });
 
   it('should not set required asterix if markRequiredLabel = off', () => {
@@ -119,22 +109,10 @@ describe('Input Component', () => {
     expect(element.querySelector('span.required')).toBeFalsy('markRequired label auto without required validator');
   });
 
-  // label tests
-  it('should set label with controlName if label input parameter is missing', () => {
+  it('should not render a label if label input parameter is missing', () => {
+    component.label = '';
     fixture.detectChanges();
-    expect(component.label).toEqual('requiredField');
-  });
-
-  it('should set label with a translation if translation key is set as label input parameter', () => {
-    component.label = 'labelKey';
-    fixture.detectChanges();
-    expect(component.label).toEqual('LabelName');
-  });
-
-  it('should set label with label input parameter, if translation is not found', () => {
-    component.label = 'label';
-    fixture.detectChanges();
-    expect(component.label).toEqual('label');
+    expect(element.querySelector('label')).toBeFalsy();
   });
 
   // error are thrown if required input parameters are missing

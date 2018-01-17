@@ -1,44 +1,42 @@
-<h1>Create a New Account</h1>
-<p>To take full advantage of account features & benefits, please provide all the information below.</p>
-<form ishFormValidation [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
-  <!--ish-email-password component-->
-  <h2>Email & Password</h2>
-  <p>You will use your email address and password to access your account on future visits.</p>
-  <div class="section">
-    <div class="row">
-      <div class="col-lg-6 col-md-8 col-sm-10">
-        <p class="indicates-required"><span class="required">*</span>Required field</p>
-        <ish-registration-credentials-form [parentForm]="registrationForm" #credentialsFormComponent></ish-registration-credentials-form>
+<h1>{{'account.register.heading' | translate}}</h1>
+<p>{{'account.register.message' | translate}}</p>
+<div class="section" data-testing-id="account-create-full-page">
+  <form ishFormValidation [formGroup]="registrationForm" class="form-horizontal bv-form" novalidate="novalidate" (ngSubmit)="onCreateAccount()">
+    <!--ish-email-password component-->
+    <h2>{{'account.register.email_password.heading' | translate}}</h2>
+    <p>{{'account.register.email_password.message' | translate}}</p>
+    <div class="section">
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+          <ish-registration-credentials-form [parentForm]="registrationForm" #credentialsFormComponent></ish-registration-credentials-form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <h2>Address</h2>
-  <div>
-    <p>
-        To save time when placing an order, please provide your primary invoice or shipping address below. We will maintain this
-        information so you won't have to enter it again.
-    </p>
-    <div class="row">
-      <div class="col-lg-6 col-md-8 col-sm-10">
-        <ish-address-form [parentForm]="registrationForm"></ish-address-form>
+    <h2>{{'account.register.address.headding' | translate}}</h2>
+    <div class="section">
+      <p>{{'account.register.address.message' | translate}}</p>
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+          <ish-address-form [parentForm]="registrationForm"></ish-address-form>
 
-        <ish-registration-personal-form [parentForm]="registrationForm"></ish-registration-personal-form>
+          <ish-registration-personal-form [parentForm]="registrationForm"></ish-registration-personal-form>
+
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <ish-captcha (isValid)="isCaptchaValid = $event"></ish-captcha>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <input type="submit" [disabled]="registrationForm.invalid && isDirty" class="btn btn-primary" value="{{'account.create.button.label' | translate}}" />
+              <input type="button" class="btn btn-default" value="{{'account.cancel.link' | translate}}" (click)="cancelClicked()" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!--<ish-email-password (isValid)="isEmailFormValid = $event"></ish-email-password> -->
-  <!--<ish-address (isValid)="isAddressFormValid = $event"></ish-address>-->
-  <ish-captcha (isValid)="isCaptchaValid = $event"></ish-captcha>
-  <div class="row">
-    <div class="col-sm-offset-2 col-sm-4">
-      <div class="form-group">
-        <input type="submit" [disabled]="registrationForm.invalid && isDirty" class="btn btn-primary" value="Create Account" />
-        <input type="button" class="btn btn-default" value="Cancel" (click)="cancelClicked()" />
-      </div>
-    </div>
-  </div>
-</form>
-
+  </form>
+</div>
 <!-- {{registrationForm.value | json}} -->
