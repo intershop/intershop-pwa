@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
@@ -14,7 +16,9 @@ import { DisableIconDirective } from './directives/disable-icon.directive';
 
 @NgModule({
   imports: [
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature('shopping', []),
+    EffectsModule.forFeature([])
   ],
   declarations: [
     CategoryListComponent,

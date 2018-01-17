@@ -2,7 +2,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { EffectsModule } from '@ngrx/effects';
+import { MetaReducer, StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { TranslateService } from '@ngx-translate/core';
+import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +26,9 @@ import { ShoppingModule } from './shopping/shopping.module';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from '../environments/environment';
 
+
+export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
+
 @NgModule({
   declarations: [
     AppComponent
@@ -38,7 +45,10 @@ import { environment } from '../environments/environment';
     RegistrationModule,
     AccountModule,
     // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot({}, { metaReducers }),
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
     { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },
