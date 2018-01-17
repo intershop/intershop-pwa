@@ -13,12 +13,13 @@ import { ProductRowComponent } from './components/product/product-row/product-ro
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { DisableIconDirective } from './directives/disable-icon.directive';
+import { effects, reducers } from './store';
 
 @NgModule({
   imports: [
     SharedModule,
-    StoreModule.forFeature('shopping', []),
-    EffectsModule.forFeature([])
+    StoreModule.forFeature('shopping', reducers),
+    EffectsModule.forFeature(effects)
   ],
   declarations: [
     CategoryListComponent,
