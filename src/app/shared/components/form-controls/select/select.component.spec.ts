@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SelectOption } from '../select/select-option.interface';
 import { SelectComponent } from './select.component';
 
@@ -13,8 +13,8 @@ describe('Select Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SelectComponent],
-      providers: [
-        { provide: TranslateService }
+      imports: [
+        TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -29,6 +29,7 @@ describe('Select Component', () => {
         });
         const options: SelectOption[] = [{ 'label': 'optionLabel', 'value': 'optionValue' }, { 'label': 'optionLabel2', 'value': 'optionValue2' }];
 
+        component.label = 'label';
         component.form = form;
         component.controlName = 'simpleField';
         component.options = options;
@@ -71,6 +72,12 @@ describe('Select Component', () => {
     fixture.detectChanges();
     expect(component.showEmptyOption).toBeFalsy('showEmptyOption is set to false');
     expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeFalsy('empty option is not displayed');
+  });
+
+  it('should not render a label if label input parameter is missing', () => {
+    component.label = '';
+    fixture.detectChanges();
+    expect(element.querySelector('label')).toBeFalsy();
   });
 
   it('should set input parameter labelClass on html element', () => {

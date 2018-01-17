@@ -36,8 +36,8 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
   */
   private setDefaultValues() {
     this.controlName = this.controlName || 'title';
-    this.label = this.label || 'Salutation';      // ToDo: Translation key
-    this.errorMessages = this.errorMessages || { 'required': 'Please select a salutation' };  // ToDo: Translation key
+    this.label = this.label || 'account.default_address.title.label';
+    this.errorMessages = this.errorMessages || { 'required': 'account.address.title.error.required' };
   }
 
   /*

@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from '../../../mocking/components/mock.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { RegistrationPageComponent } from './registration-page.component';
@@ -26,7 +27,8 @@ describe('RegistrationPage Component', () => {
         SharedModule,
         RouterTestingModule.withRoutes([
           { path: 'home', component: RegistrationPageComponent }
-        ])
+        ]),
+        TranslateModule.forRoot()
       ]
     })
       .compileComponents();
@@ -52,7 +54,7 @@ describe('RegistrationPage Component', () => {
   });
 
   it('should navigate to homepage when cancel is clicked', async(() => {
-    expect(location.path()).toBe('');
+    expect(location.path()).toBe('', 'start location');
     component.cancelClicked();
     fixture.whenStable().then(() => {
       expect(location.path()).toBe('/home');
@@ -60,7 +62,7 @@ describe('RegistrationPage Component', () => {
   }));
 
   it('should check if controls and components are getting rendered on the page', () => {
-    expect(element.getElementsByTagName('h1')[0].innerHTML).toEqual('Create a New Account');
+    expect(element.getElementsByTagName('h1')).toBeTruthy('h1 exists on page');
     expect(element.getElementsByTagName('ish-registration-credentials-form')[0].innerHTML).toEqual('Credentials Template');
     expect(element.getElementsByTagName('ish-address-form')[0].innerHTML).toEqual('Address Template');
     expect(element.getElementsByTagName('ish-registration-personal-form')[0].innerHTML).toEqual('Personal Template');

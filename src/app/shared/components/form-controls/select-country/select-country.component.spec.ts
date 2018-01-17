@@ -52,7 +52,7 @@ describe('Select Country Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('countryCode', 'control Name should be <countryCode>');
-    expect(component.label).toEqual('Country', 'label should be <Country>');
+    expect(component.label).toEqual('account.default_address.country.label', 'label key should be <account.default_address.country.label>');
   });
 
   it('should get and display countries on creation', () => {

@@ -29,8 +29,8 @@ export class SelectCountryComponent extends SelectComponent implements OnInit {
   */
   private setDefaultValues() {
     this.controlName = this.controlName || 'countryCode';
-    this.label = this.label || 'Country';      // ToDo: Translation key
-    this.errorMessages = this.errorMessages || { 'required': 'Please select a country' };  // ToDo: Translation key
+    this.label = this.label || 'account.default_address.country.label';
+    this.errorMessages = this.errorMessages || { 'required': 'account.address.country.missing.error' };
   }
 
   /*

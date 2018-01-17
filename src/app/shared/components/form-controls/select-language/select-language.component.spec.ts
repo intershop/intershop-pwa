@@ -37,7 +37,7 @@ describe('Select Language Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('preferredLanguage', 'control Name should be <preferredLanguage>');
-    expect(component.label).toEqual('Preferred Language', 'label should be <Preferred Language>');
+    expect(component.label).toEqual('account.default_address.preferred_language.label', 'label key should be <account.default_address.preferred_language.label>');
   });
 
   it('should get and display languages on creation', () => {
