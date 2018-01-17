@@ -1,4 +1,7 @@
 {
+  "extends": [
+    "rxjs-tslint-rules"
+  ],
   "rulesDirectory": [
     "node_modules/codelyzer",
     "tslint-rules"
@@ -93,6 +96,8 @@
       "single"
     ],
     "radix": true,
+    "rxjs-add": { "severity": "error" },
+    "rxjs-no-operator": true,
     "semicolon": [
       true,
       "always"
@@ -111,7 +116,6 @@
         "variable-declaration": "nospace"
       }
     ],
-    "typeof-compare": true,
     "unified-signatures": true,
     "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
@@ -144,8 +148,6 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "no-access-missing-member": false,
-    "templates-use-public": true,
-    "invoke-injectable": true,
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": true,
     "ban": [
