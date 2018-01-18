@@ -6,18 +6,18 @@
     <span class="hidden-xs">{{'account.login_status.myaccount.link' | translate}}</span>
   </a>
   <span class="hidden-xs seperator">&#124; </span>
-  <a (click)="logout()" class="my-account-link my-account-logout" attr.data-testing-id="link-logout">
+  <a routerLink="/logout" class="my-account-link my-account-logout" attr.data-testing-id="link-logout">
     <span class="hidden-xs">{{'account.logout.link' | translate}}</span>
   </a>
 </ng-template>
 <!-- not logged in -->
 <ng-template #notLoggedIn>
-  <a [routerLink]="['/login']" class="my-account-link my-account-login" attr.rel="nofollow">
+  <a routerLink="/login" class="my-account-link my-account-login" attr.rel="nofollow">
     <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
     <span class="hidden-xs">{{'account.login.link' | translate}}</span>
   </a>
   <span class="hidden-xs seperator">&#124; </span>
-  <a [routerLink]="['/register']" class="my-account-link my-account-register" attr.rel="nofollow">
+  <a routerLink="/register" class="my-account-link my-account-register" attr.rel="nofollow">
     <span class="hidden-xs">{{'account.register.link' | translate}}</span>
   </a>
 </ng-template>

@@ -20,4 +20,8 @@ export class Customer {
   address?: Address;
   preferredInvoiceToAddress?: Address;
   preferredShipToAddress?: Address;
+
+  getDisplayName(): string {
+    return this.firstName || this.credentials.login;
+  }
 }
