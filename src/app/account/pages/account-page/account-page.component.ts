@@ -1,6 +1,5 @@
 // NEEDS_WORK: DUMMY COMPONENT
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 
 @Component({
@@ -11,22 +10,14 @@ export class AccountPageComponent implements OnInit {
   customerName: string;
 
   constructor(
-    private accountLoginService: AccountLoginService,
-    private router: Router
+    private accountLoginService: AccountLoginService
   ) { }
 
   ngOnInit() {
-    this.accountLoginService.subscribe(customerData => {
-      if (customerData) {
-        this.customerName = customerData.firstName || customerData.credentials.login;
+    this.accountLoginService.subscribe(customer => {
+      if (customer) {
+        this.customerName = customer.firstName || customer.credentials.login;
       }
     });
   }
-
-  logout() {
-    this.accountLoginService.logout();
-    this.router.navigate(['/home']);
-    return false;
-  }
-
 }

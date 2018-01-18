@@ -41,12 +41,4 @@ describe('Account Overview Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to homepage when user logs out', async(() => {
-    expect(location.path()).toBe('');
-    component.logout();
-    fixture.whenStable().then(() => {
-      expect(location.path()).toBe('/home');
-      expect(accountLoginService.isAuthorized()).toBeFalsy();
-    });
-  }));
 });
