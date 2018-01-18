@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
@@ -17,7 +17,7 @@ describe('Header Navigation Component', () => {
 
   beforeEach(async(() => {
     categoriesServiceMock = mock(CategoriesService);
-    when(categoriesServiceMock.getTopLevelCategories(anything())).thenReturn(Observable.of([]));
+    when(categoriesServiceMock.getTopLevelCategories(anything())).thenReturn(of([]));
 
     currentLocaleServiceMock$ = new BehaviorSubject({ dummy: null });
 

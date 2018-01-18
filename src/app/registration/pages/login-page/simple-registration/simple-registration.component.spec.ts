@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
@@ -23,7 +23,7 @@ describe('Simple Registration Component', () => {
   beforeEach(async(() => {
     accountLoginServiceMock = mock(AccountLoginService);
 
-    when(accountLoginServiceMock.createUser(anything())).thenReturn(Observable.of(new Customer()));
+    when(accountLoginServiceMock.createUser(anything())).thenReturn(of(new Customer()));
 
     TestBed.configureTestingModule({
       declarations: [SimpleRegistrationComponent],

@@ -4,6 +4,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { REST_ENDPOINT } from '../services/state-transfer/factories';
 
 const REST_CALL_CACHE = makeStateKey<any>('restCallCache');
@@ -59,7 +60,7 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
           // console.log(`returning cached entry for '${key}'`);
           this.cache[key] = null;
           this.persistCacheInState();
-          return Observable.of(new HttpResponse<any>({ body: content }));
+          return of(new HttpResponse<any>({ body: content }));
         }
       }
     }

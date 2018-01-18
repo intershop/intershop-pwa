@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { ProductFactory } from '../../../models/product/product.factory';
 import { ProductData } from '../../../models/product/product.interface';
@@ -24,7 +25,9 @@ export class ProductsService {
     if (!productSku) {
       return ErrorObservable.create('getProduct() called without a productSku');
     }
-    return this.apiService.get<ProductData>(this.serviceIdentifier + '/' + productSku, null, null, false, false).map(productData => ProductFactory.fromData(productData));
+    return this.apiService.get<ProductData>(this.serviceIdentifier + '/' + productSku, null, null, false, false).pipe(
+      map(productData => ProductFactory.fromData(productData))
+    );
   }
 
   // NEEDS_WORK: service should be parameterized with the category ID and not some URL, it should know its endpoint itself, it should not return an Observable of <any>

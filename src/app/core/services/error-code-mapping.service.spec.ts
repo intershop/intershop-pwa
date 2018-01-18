@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { inject } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { ErrorCodeMappingService } from './error-code-mapping.service';
 
@@ -18,9 +18,9 @@ describe('Error code mapping service', () => {
     });
     when(translateService.get('account.register.password.extrainfo.message', anything())).thenCall((key, params) => {
       if (params.hasOwnProperty('0')) {
-        return Observable.of('mapped error translated string with params');
+        return of('mapped error translated string with params');
       } else {
-        return Observable.of('mapped error translated string');
+        return of('mapped error translated string');
       }
     });
   });

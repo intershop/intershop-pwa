@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators';
 import { CountryFactory } from '../../../models/country/country.factory';
 import { CountryData } from '../../../models/country/country.interface';
 import { Country } from '../../../models/country/country.model';
@@ -12,7 +14,7 @@ export class CountryService {
     ToDo: get Countries via REST, result should be locale dependent
   */
   constructor() {
-    this.countries$ = Observable.of(
+    this.countries$ = of(
       ({ countryCode: 'BG', name: 'Bulgaria' } as CountryData),
       ({ countryCode: 'DE', name: 'Germany' } as CountryData),
       ({ countryCode: 'FR', name: 'France' } as CountryData),
@@ -27,6 +29,8 @@ export class CountryService {
     @returns (Observable<Country>)
   */
   getCountries(): Observable<Country> {
-    return this.countries$.map(data => CountryFactory.fromData(data));
+    return this.countries$.pipe(
+      map(data => CountryFactory.fromData(data))
+    );
   }
 }
