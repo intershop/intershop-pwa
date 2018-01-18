@@ -16,7 +16,7 @@ export class AccountPageComponent implements OnInit {
   ngOnInit() {
     this.accountLoginService.subscribe(customer => {
       if (customer) {
-        this.customerName = customer.firstName || customer.credentials.login;
+        this.customerName = customer.getDisplayName();
       }
     });
   }
