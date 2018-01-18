@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { anyFunction, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyFunction, instance, mock, when } from 'ts-mockito';
 import { Customer } from '../../../../models/customer/customer.model';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
 import { LoginStatusComponent } from './login-status.component';
@@ -58,12 +58,6 @@ describe('Login Status Component', () => {
     expect(component.isLoggedIn).toBeTruthy();
     expect(component.userDetail).toBeTruthy();
   }));
-
-  it('should navigate to "home" and unset userDetails when logout is called', () => {
-    component.logout();
-    verify(routerMock.navigate(anything())).once();
-    expect(capture(routerMock.navigate).last()).toEqual([['/home']]);
-  });
 
   it('should render full name on template when user is logged in', () => {
     fixture.detectChanges();

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Customer } from '../../../../models/customer/customer.model';
 import { AccountLoginService } from '../../../services/account-login/account-login.service';
 
@@ -13,7 +12,6 @@ export class LoginStatusComponent implements OnInit {
   userDetail: Customer = null;
 
   constructor(
-    private router: Router,
     private accountLoginService: AccountLoginService
   ) { }
 
@@ -23,15 +21,5 @@ export class LoginStatusComponent implements OnInit {
 
   get isLoggedIn() {
     return this.accountLoginService.isAuthorized();
-  }
-
-  /**
-   * navigates to login page
-   * @returns void
-   */
-  logout() {
-    this.accountLoginService.logout();
-    this.router.navigate(['/home']);
-    return false;
   }
 }
