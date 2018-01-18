@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from '../../../models/customer/customer.model';
 import { ApiService } from '../api.service';
@@ -23,7 +23,7 @@ describe('AccountLogin Service', () => {
 
   it('should login the user when correct credentials are entered', () => {
     const loginDetail = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
-    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(Observable.of({ authorized: true }));
+    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(of({ authorized: true }));
     let loggedInDetail;
     accountLoginService.singinUser(loginDetail).subscribe(data => {
       loggedInDetail = data;

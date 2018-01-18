@@ -2,6 +2,7 @@ import { HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor Service', () => {
@@ -21,7 +22,7 @@ describe('Auth Interceptor Service', () => {
         const headers = new HttpHeaders();
         const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers: headers });
         mockRequest = req;
-        return Observable.of(res);
+        return of(res);
       }
     };
     TestBed.configureTestingModule({

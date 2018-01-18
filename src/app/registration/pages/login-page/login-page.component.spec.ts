@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
@@ -20,9 +20,9 @@ describe('AccountLogin Component', () => {
     const accountLoginServiceMock = mock(AccountLoginService);
     when(accountLoginServiceMock.singinUser(anything())).thenCall((userDetails) => {
       if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
-        return Observable.of({ data: 'Correct Details' });
+        return of({ data: 'Correct Details' });
       } else {
-        return Observable.of('Incorrect Credentials');
+        return of('Incorrect Credentials');
       }
     });
 

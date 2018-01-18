@@ -2,7 +2,7 @@ import { HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular
 import { HttpEventType } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 import { MockInterceptor } from './mock.interceptor';
@@ -127,7 +127,7 @@ describe('Mock Interceptor', () => {
       mockInterceptor = TestBed.get(MockInterceptor);
       request = new HttpRequest('GET', `${BASE_URL}/some`);
       const handlerMock = mock(HttpXhrBackend);
-      when(handlerMock.handle(anything())).thenReturn(Observable.of(new HttpResponse<any>()));
+      when(handlerMock.handle(anything())).thenReturn(of(new HttpResponse<any>()));
       handler = instance(handlerMock);
     });
 

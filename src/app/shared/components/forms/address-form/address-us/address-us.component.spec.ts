@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { instance, mock, when } from 'ts-mockito';
 import { RegionData } from '../../../../../models/region/region.interface';
 import { RegionService } from '../../../../services/countries/region.service';
@@ -18,7 +18,7 @@ describe('American Address Component', () => {
   beforeEach(async(() => {
     const regionServiceMock = mock(RegionService);
     when(regionServiceMock.getRegions('US')).thenReturn(
-      Observable.of(
+      of(
         { countryCode: 'US', regionCode: 'AL', name: 'Alabama' } as RegionData,
         { countryCode: 'US', regionCode: 'TX', name: 'Texas' } as RegionData
       )

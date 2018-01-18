@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { map } from 'rxjs/operators';
 import { Region } from '../../../../models/region/region.model';
 import { RegionService } from '../../../services/countries/region.service';
 import { SelectOption } from '../select/select-option.interface';
@@ -56,12 +57,15 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges,
     const regions$ = this.regionService.getRegions(this.countryCode);
     if (regions$) {
       // Map region array to an array of type SelectOption
-      regions$.map((region: Region) => {
-        return {
-          'label': region.name,
-          'value': region.regionCode
-        } as SelectOption;
-      }).subscribe(option => options.push(option));
+      regions$.pipe(
+        map((region: Region) => {
+          return {
+            'label': region.name,
+            'value': region.regionCode
+          } as SelectOption;
+        })
+      ).subscribe(option => options.push(option));
+
       if (options.length === 0) {
         this.form.get('state').clearValidators();
         this.form.get('state').reset();

@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { instance, mock, when } from 'ts-mockito';
 import { RegionData } from '../../../../models/region/region.interface';
 import { RegionService } from '../../../services/countries/region.service';
@@ -17,11 +17,11 @@ describe('Select Region Component', () => {
     const regionServiceMock = mock(RegionService);
     when(regionServiceMock.getRegions('BG')).thenReturn(
 
-      Observable.of({ countryCode: 'BG', regionCode: '02', name: 'Burgas' } as RegionData,
+      of({ countryCode: 'BG', regionCode: '02', name: 'Burgas' } as RegionData,
         { countryCode: 'BG', regionCode: '23', name: 'Sofia' } as RegionData)
     );
     when(regionServiceMock.getRegions('DE')).thenReturn(
-      Observable.of()
+      of()
     );
 
     TestBed.configureTestingModule({
