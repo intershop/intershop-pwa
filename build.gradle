@@ -69,8 +69,8 @@ apply from:'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.pl
 apply plugin:'groovy'
 
 node {
-    version = '8.9.1'
-    npmVersion = '5.5.1'
+    version = '8.9.4'
+    npmVersion = '5.6.0'
     download = true
 }
 
