@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Category } from '../../../models/category/category.model';
@@ -21,15 +20,10 @@ export class CategoryPageComponent implements OnInit {
   totalItems: number;
 
   constructor(
-    private route: ActivatedRoute,
     private store: Store<fromStore.ShoppingState>
   ) { }
 
   ngOnInit() {
-    this.route.data
-      .map(data => data.categoryId)
-      .subscribe(categoryId => this.store.dispatch(new fromStore.LoadCategory(categoryId)));
-
     this.category$ = this.store.select(fromStore.getCategory);
 
     // this.route.data
