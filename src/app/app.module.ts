@@ -18,7 +18,7 @@ import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-a
 import { CurrentLocaleService } from './core/services/locale/current-locale.service';
 import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
-import { CustomSerializer, reducers } from './core/store';
+import { CustomSerializer, effects, reducers } from './core/store';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';
@@ -48,7 +48,7 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
     // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
     AppRoutingModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
