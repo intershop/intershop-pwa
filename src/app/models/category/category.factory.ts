@@ -6,14 +6,18 @@ import { Category } from './category.model';
 
 export class CategoryFactory {
 
-  static fromData(categoryData: CategoryData): Category {
+  static fromData(categoryData: CategoryData, categoryUniqueId?: string): Category {
     if (categoryData) {
-      const category: Category = new Category(categoryData.id, categoryData.name);
+
+      categoryUniqueId = categoryUniqueId ? categoryUniqueId : categoryData.id;
+
+      const category: Category = new Category(categoryData.id, categoryData.name, categoryUniqueId);
 
       FactoryHelper.primitiveMapping<CategoryData, Category>(categoryData, category);
 
       if (categoryData.subCategories) {
-        category.subCategories = categoryData.subCategories.map(rawSubCategory => CategoryFactory.fromData(rawSubCategory));
+        category.subCategories = categoryData.subCategories
+          .map(subCategoryData => CategoryFactory.fromData(subCategoryData, categoryUniqueId + '.' + subCategoryData.id));
       }
       if (categoryData.images) {
         category.images = categoryData.images.map(imageData => ImageFactory.fromData(imageData));
