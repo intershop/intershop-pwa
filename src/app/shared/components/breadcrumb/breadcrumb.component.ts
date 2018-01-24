@@ -15,7 +15,8 @@ export class BreadcrumbComponent {
   @Input() category: Category; // TODO: the category is not used for now, but should be used instead of the categoryPath once it includes the category path itself
   @Input() categoryPath: Category[]; // TODO: only category should be needed as input once the REST call returns the categoryPath as part of the category
   @Input() product: Product;
-
+  @Input() account: boolean;
+  @Input() trailText: string;
 
   constructor(
     public categoriesService: CategoriesService
