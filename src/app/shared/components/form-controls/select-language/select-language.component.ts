@@ -1,64 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+
 import { SelectOption } from '../select/select-option.interface';
 import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-language',
-  templateUrl: '../select/select.component.html'
+  templateUrl: './select-language.component.html'
 })
-export class SelectLanguageComponent extends SelectComponent implements OnInit {
+export class SelectLanguageComponent implements OnChanges {
 
-  /*
-    constructor
-  */
-  constructor(
-    protected translate: TranslateService
-  ) { super(translate); }
+  @Input() form: FormGroup;
+  @Input() languages: any[]; // TODO: type
+  @Input() controlName = 'preferredLanguage';
+  @Input() label = 'Preferred Language';
+  @Input() errorMessages = { required: 'Please select a preferred language' };  // ToDo: Translation key
 
-  /*
-    on Init
-  */
-  ngOnInit() {
-    this.setDefaultValues(); // call this method before parent init
-    super.componentInit();
-    this.options = this.options || this.getLanguageOptions();
-  }
+  options: SelectOption[] = [];
 
-  /*
-    set default values for empty input parameters
-  */
-  private setDefaultValues() {
-    this.controlName = this.controlName || 'preferredLanguage';
-    this.label = this.label || 'account.default_address.preferred_language.label';
-  }
-
-  /*
-    get languages
-    returns (SelectOption[]) - language options
-  */
-  private getLanguageOptions(): SelectOption[] {
-    let options: SelectOption[] = [];
-    const languages = this.getlanguages();  // ToDo: has to be done by a service
-
-    if (languages) {
-      // Map title array to an array of type SelectOption
-      options = languages.map(language => {
-        return {
-          'label': language.name,
-          'value': language.localeid
-        };
-      });
+  ngOnChanges(c: SimpleChanges) {
+    console.log(c);
+    if (c.languages) {
+      this.options = this.mapToOptions(this.languages);
     }
-    return options;
   }
 
-  // define which security questions are shown - ToDo: should be done in a service
-  private getlanguages() {
-    return [
-      { localeid: 'en_US', name: 'English (United States)' },
-      { localeid: 'fr_FR', name: 'French (France)' },
-      { localeid: 'de_DE', name: 'German (Germany)' }
-    ];
+  private mapToOptions(languages: any[]): SelectOption[] { // TODO: type
+    if (!languages) { return; }
+    return languages.map(lang => ({
+      label: lang.name,
+      value: lang.localeid
+    } as SelectOption));
   }
 }

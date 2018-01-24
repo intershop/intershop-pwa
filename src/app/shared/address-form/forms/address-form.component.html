@@ -1,0 +1,24 @@
+<div [formGroup]="parentForm" data-address-form="data-address-form">
+  <p class="indicates-required"><span class="required">*</span>Required field</p>
+
+  <!-- country select -->
+  <fieldset>
+    <ish-select-country
+      [countries]="countries"
+      [form]="parentForm"
+      controlName="countryCode"
+      label="Country"
+    ></ish-select-country>
+  </fieldset>
+
+  <!-- country dependent address forms -->
+  <ng-container [ngSwitch]="countryCode">
+    <ish-address-de *ngSwitchCase="'DE'" [addressForm]="addressForm" [countryCode]="countryCode"></ish-address-de>
+    <ish-address-fr *ngSwitchCase="'FR'" [addressForm]="addressForm" [countryCode]="countryCode"></ish-address-fr>
+    <ish-address-gb *ngSwitchCase="'GB'" [addressForm]="addressForm" [countryCode]="countryCode"></ish-address-gb>
+    <ish-address-us *ngSwitchCase="'US'" [addressForm]="addressForm" [countryCode]="countryCode" [regions]="regions"></ish-address-us>
+    <ish-address-default *ngSwitchDefault [addressForm]="addressForm" [countryCode]="countryCode" [regions]="regions"></ish-address-default>
+  </ng-container>
+
+
+</div>

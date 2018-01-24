@@ -1,0 +1,11 @@
+<h1>REV: Create a New Account</h1>
+<p>To take full advantage of account features & benefits, please provide all the information below.</p>
+
+<ish-registration-form
+  [countries]="countries$ | async"
+  [languages]="languages$ | async"
+  [regions]="regionsForSelectedCountry$ | async"
+  [emailOptIn]="emailOptIn"
+  (create)="onCreate($event)"
+  (cancel)="onCancel()"
+  (countryChange)="updateRegions($event)"></ish-registration-form>
