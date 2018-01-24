@@ -3,6 +3,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+import { CustomerFactory } from '../../../models/customer/customer.factory';
+import { CustomerData } from '../../../models/customer/customer.interface';
 import { Customer } from '../../../models/customer/customer.model';
 import { ApiService } from '../../services/api.service';
 import { AccountLogin } from './account-login.model';
@@ -23,13 +25,15 @@ export class AccountLoginService {
    */
   singinUser(userDetails: AccountLogin): Observable<Customer> {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
-    return this.apiService.get<Customer>('customers/-', null, headers).pipe(
+    return this.apiService.get<CustomerData>('customers/-', null, headers).pipe(
+      map(data => CustomerFactory.fromData(data)),
       map((data) => {
         if ((typeof (data) === 'object')) {
           this.userDetailService.setValue(data);
         }
         return data;
       })
+
     );
   }
   /**
