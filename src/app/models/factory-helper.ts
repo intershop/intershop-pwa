@@ -7,12 +7,11 @@ export class FactoryHelper {
    * @param only - list of keys which should be mapped to object. All keys will be mapped if not specified.
    */
   static primitiveMapping<T, S>(input: T, output: S, only: string[] = null) {
-
     Object.keys(input).forEach(key => {
       if (only && only.indexOf(key) === -1) {
         return;
       }
-      if (!output[key] && typeof input[key] !== 'object') {
+      if (input[key] && !output[key] && typeof input[key] !== 'object') {
         output[key] = input[key];
       }
     });
