@@ -10,11 +10,18 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { InputComponent } from './components/form-controls/input/input.component';
+import { SelectCountryComponent } from './components/form-controls/select-country/select-country.component';
 import { SelectComponent } from './components/form-controls/select/select.component';
 import { FormControlErrorComponent } from './components/global-form-validation/form-control-error.component';
 import { FormVisualizeErrorsDirective } from './directives/form-visualize-errors.directive';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
+
+import { AddressFormModule } from './address-form';
+import { SelectLanguageComponent } from './components/form-controls/select-language/select-language.component';
+import { SelectRegionComponent } from './components/form-controls/select-region/select-region.component';
+import { SelectSecurityQuestionComponent } from './components/form-controls/select-security-question/select-security-question.component';
+import { SelectTitleComponent } from './components/form-controls/select-title/select-title.component';
 
 @NgModule({
   imports: [
@@ -34,6 +41,11 @@ import { RegionService } from './services/countries/region.service';
     FormVisualizeErrorsDirective,
     InputComponent,
     SelectComponent,
+    SelectCountryComponent,
+    SelectTitleComponent,
+    SelectRegionComponent,
+    SelectSecurityQuestionComponent,
+    SelectLanguageComponent,
     BreadcrumbComponent
   ],
   exports: [
@@ -49,6 +61,11 @@ import { RegionService } from './services/countries/region.service';
     PopoverModule,
     InputComponent,
     SelectComponent,
+    SelectCountryComponent,
+    SelectTitleComponent,
+    SelectSecurityQuestionComponent,
+    SelectLanguageComponent,
+    SelectRegionComponent,
     BreadcrumbComponent,
     FormControlErrorComponent,
     FormVisualizeErrorsDirective,

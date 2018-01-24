@@ -1,5 +1,11 @@
 <div [formGroup]="addressForm">
   <fieldset>
+    <ish-select-title
+      [form]="addressForm"
+      controlName="title"
+      [countryCode]="countryCode"
+    ></ish-select-title>
+
     <ish-input
       [form]="addressForm"
       controlName="firstName"
@@ -30,16 +36,15 @@
       controlName="addressLine2"
       label="account.default_address.street2.label"
     ></ish-input>
+
+    <ish-input
+      [form]="addressForm"
+      controlName="addressLine3"
+      label="account.default_address.uk.locality.label"
+    ></ish-input>
   </fieldset>
 
   <fieldset>
-    <ish-input
-      [form]="addressForm"
-      controlName="postalCode"
-      label="account.default_address.postalcode.label"
-      [errorMessages]="{'required':'account.address.postalcode.missing.error'}"
-    ></ish-input>
-
     <ish-input
       [form]="addressForm"
       controlName="city"
@@ -47,11 +52,12 @@
       [errorMessages]="{'required':'account.address.city.missing.error'}"
     ></ish-input>
 
-    <ng-container *ngIf="countryCode?.length > 0">
-      <ish-select-region
-        [form]="addressForm"
-        [countryCode]="countryCode"
-      ></ish-select-region>
-    </ng-container>
+    <ish-input
+      [form]="addressForm"
+      controlName="postalCode"
+      label="account.default_address.postalcode.label"
+      [errorMessages]="{'required':'account.address.postalcode.missing.error',
+                        'pattern':'account.address.uk.postalcode.error.regexp'}"
+    ></ish-input>
   </fieldset>
 </div>
