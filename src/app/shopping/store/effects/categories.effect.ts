@@ -5,9 +5,6 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import * as categoriesActions from '../actions/categories.action';
 
-
-
-
 @Injectable()
 export class CategoriesEffects {
   constructor(
@@ -16,16 +13,13 @@ export class CategoriesEffects {
   ) { }
 
   @Effect()
-  loadCategory$ = this.actions$.ofType(categoriesActions.LOAD_CATEGORY)
-    .pipe(
+  loadCategory$ = this.actions$.ofType(categoriesActions.LOAD_CATEGORY).pipe(
     map((action: categoriesActions.LoadCategory) => action.payload),
-    switchMap(categoryId => {
-      return this.categoryService
-        .getCategory(categoryId)
-        .pipe(
+    switchMap(categoryUniqueId => {
+      return this.categoryService.getCategory(categoryUniqueId).pipe(
         map(category => new categoriesActions.LoadCategorySuccess(category)),
         catchError(error => of(new categoriesActions.LoadCategoryFail(error)))
-        );
+      );
     })
-    );
+  );
 }

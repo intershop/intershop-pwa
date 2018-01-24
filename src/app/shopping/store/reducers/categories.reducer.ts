@@ -2,13 +2,13 @@ import { Category } from '../../../models/category/category.model';
 import * as fromCategories from '../actions/categories.action';
 
 export interface CategoriesState {
-  data: Category;
+  entities: { [categoryUniqueId: string]: Category };
   loaded: boolean;
   loading: boolean;
 }
 
 export const initialState: CategoriesState = {
-  data: null,
+  entities: {},
   loaded: false,
   loading: false,
 };
@@ -18,6 +18,7 @@ export function reducer(
   action: fromCategories.CategoriesAction
 ): CategoriesState {
   switch (action.type) {
+
     case fromCategories.LOAD_CATEGORY: {
       return {
         ...state,
@@ -34,12 +35,16 @@ export function reducer(
     }
 
     case fromCategories.LOAD_CATEGORY_SUCCESS: {
-      const data = action.payload;
+      const loadedCategory = action.payload;
+      const entities = {
+        ...state.entities,
+        [loadedCategory.uniqueId]: loadedCategory,
+      };
       return {
         ...state,
         loading: false,
         loaded: true,
-        data
+        entities
       };
     }
 
@@ -48,6 +53,6 @@ export function reducer(
   return state;
 }
 
+export const getCategoryEntities = (state: CategoriesState) => state.entities;
 export const getCategoryLoading = (state: CategoriesState) => state.loading;
 export const getCategoryLoaded = (state: CategoriesState) => state.loaded;
-export const getCategory = (state: CategoriesState) => state.data;

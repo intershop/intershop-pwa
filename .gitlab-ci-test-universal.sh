@@ -22,7 +22,7 @@ function universalTest {
 
 testmatrix[1,0]="http://localhost:4000/"
 testmatrix[1,1]="router-outlet><ish-home-page>"
-testmatrix[2,0]="http://localhost:4000/category/Cameras-Camcorders/584"
+testmatrix[2,0]="http://localhost:4000/category/Cameras-Camcorders.584"
 testmatrix[2,1]="router-outlet><ish-category-page>"
 testmatrix[3,0]="http://localhost:4000/login"
 testmatrix[3,1]="Forgot your password?"
@@ -32,11 +32,11 @@ testmatrix[5,0]="http://localhost:4000/category/Cameras-Camcorders"
 testmatrix[5,1]="<h1>Cameras</h1>"
 testmatrix[6,0]="http://localhost:4000/category/Cameras-Camcorders"
 testmatrix[6,1]="<h3>Webcams</h3>"
-testmatrix[7,0]="http://localhost:4000/category/Cameras-Camcorders/584"
+testmatrix[7,0]="http://localhost:4000/category/Cameras-Camcorders.584"
 testmatrix[7,1]="add-to-compare"
-testmatrix[8,0]="http://localhost:4000/category/Cameras-Camcorders/584"
+testmatrix[8,0]="http://localhost:4000/home"
 testmatrix[8,1]="proof-of-concept-state"
-testmatrix[9,0]="http://localhost:4000/category/Cameras-Camcorders/584"
+testmatrix[9,0]="http://localhost:4000/home"
 testmatrix[9,1]="&q;icmBaseURL&q;:&q;http://localhost:4000"
 lasttest=9
 

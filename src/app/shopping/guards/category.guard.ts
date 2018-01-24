@@ -1,32 +1,31 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
-
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, take, tap } from 'rxjs/operators';
 
 import * as fromStore from '../store';
 
 @Injectable()
 export class CategoryGuard implements CanActivate {
-  constructor(private store: Store<fromStore.ShoppingState>) {}
+
+  constructor(
+    private store: Store<fromStore.ShoppingState>
+  ) { }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    return this.checkStore(route.url.map(x => x.path).join('/')).pipe(
-      switchMap(() => of(true)),
-      catchError(() => of(false))
-    );
+    return this.checkStore(route.params.categoryUniqueId);
   }
 
-  checkStore(categoryId: string): Observable<boolean> {
-    return this.store.select(fromStore.getCategoryLoaded).pipe(
-      tap(loaded => {
-        if (!loaded) {
-          this.store.dispatch(new fromStore.LoadCategory(categoryId));
+  checkStore(categoryUniqueId: string): Observable<boolean> {
+    return this.store.select(fromStore.getCategoryEntities).pipe(
+      map((entities: { [key: number]: any }) => !!entities[categoryUniqueId]),
+      tap(inStore => {
+        if (!inStore) {
+          this.store.dispatch(new fromStore.LoadCategory(categoryUniqueId));
         }
       }),
-      filter(loaded => loaded),
+      filter(inStore => inStore),
       take(1)
     );
   }

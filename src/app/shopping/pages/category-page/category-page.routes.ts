@@ -4,7 +4,7 @@ import { CategoryPageComponent } from './category-page.component';
 
 export const categoryPageRoutes: Routes = [
   {
-    path: '**', component: CategoryPageComponent,
+    path: ':categoryUniqueId', component: CategoryPageComponent,
     canActivate: [CategoryGuard]
   }
 ];
