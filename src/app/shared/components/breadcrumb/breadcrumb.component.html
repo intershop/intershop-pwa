@@ -20,5 +20,13 @@
       {{product.name}}
     </li>
 
+    <li *ngIf="account" class="breadcrumbs-list">
+      <a class="breadcrumbs-list-link" routerLink="/account">{{'account.my_account.link' | translate}}</a><span class="breadcrumb-list-separator">{{separator}}</span>
+    </li>
+
+    <li *ngIf="trailText" class="breadcrumbs-list breadcrumbs-list-active">
+        {{trailText}}
+    </li>
+
   </ol>
 </div>
