@@ -4,6 +4,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { ExtraFormsModule } from '../../../shared/extra-forms.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { RegistrationSharedModule } from '../../registration-shared.module';
+import { CustomerRegistrationService } from '../../services/customer-registration.service';
 import { CaptchaComponent } from './captcha/captcha.component';
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form/registration-credentials-form.component';
 import { RegistrationPageComponent } from './registration-page.component';
@@ -23,7 +24,10 @@ import { RegistrationPersonalFormComponent } from './registration-personal-form/
     CaptchaComponent,
     RegistrationCredentialsFormComponent,
     RegistrationPersonalFormComponent
-  ]
+  ],
+  providers: [
+    CustomerRegistrationService
+  ],
 })
 
 export class RegistrationPageModule { }

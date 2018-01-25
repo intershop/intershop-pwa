@@ -1,10 +1,14 @@
 import { Location } from '@angular/common';
-import { ComponentFixture } from '@angular/core/testing';
-import { async, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs/observable/of';
+import { anything, instance, mock, when } from 'ts-mockito';
 import { MockComponent } from '../../../mocking/components/mock.component';
+import { Customer } from '../../../models/customer/customer.model';
 import { SharedModule } from '../../../shared/shared.module';
+import { CustomerRegistrationService } from '../../services/customer-registration.service';
 import { RegistrationPageComponent } from './registration-page.component';
 
 describe('RegistrationPage Component', () => {
@@ -14,6 +18,9 @@ describe('RegistrationPage Component', () => {
   let location: Location;
 
   beforeEach(async(() => {
+    const customerRegistrationServiceMock = mock(CustomerRegistrationService);
+    when(customerRegistrationServiceMock.registerPrivateCustomer(anything())).thenReturn(of(new Customer()));
+
     TestBed.configureTestingModule({
       declarations: [RegistrationPageComponent,
         MockComponent({ selector: 'ish-registration-credentials-form', template: 'Credentials Template', inputs: ['parentForm'] }),
@@ -22,9 +29,11 @@ describe('RegistrationPage Component', () => {
         MockComponent({ selector: 'ish-captcha', template: 'Captcha Template' }),
       ],
       providers: [
+        { provide: CustomerRegistrationService, useFactory: () => instance(customerRegistrationServiceMock) },
       ],
       imports: [
         SharedModule,
+        RouterTestingModule,
         RouterTestingModule.withRoutes([
           { path: 'home', component: RegistrationPageComponent }
         ]),
@@ -58,6 +67,17 @@ describe('RegistrationPage Component', () => {
     component.cancelClicked();
     fixture.whenStable().then(() => {
       expect(location.path()).toBe('/home');
+    });
+  }));
+
+  it('should set isDirty variable if submit is clicked and form is not valid', async(() => {
+    component.registrationForm = new FormGroup({
+      preferredLanguage: new FormControl('', Validators.required),
+    });
+    expect(component.isDirty).toBeFalsy('isDirty is false after component init');
+    component.onCreateAccount();
+    fixture.whenStable().then(() => {
+      expect(component.isDirty).toBeTruthy('isDirty is true after submitting an invalid form');
     });
   }));
 
