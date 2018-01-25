@@ -10,9 +10,9 @@ export class Customer {
   title?: string;
   phoneHome?: string;
   phoneBusiness?: string;
+  phoneMobile?: string;
   fax?: string;
   email: string;
-  phoneMobile?: string;
   customerNo: string;
   birthday?: string;
   preferredLanguage?: string;

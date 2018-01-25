@@ -2,6 +2,6 @@ export class Credentials {
   login: string;
   password: any;
   securityQuestion: string;
-  answer: string;
+  securityQuestionAnswer: string;
   receivePromotions?: boolean;
 }
