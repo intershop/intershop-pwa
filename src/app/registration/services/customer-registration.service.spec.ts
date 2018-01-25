@@ -28,7 +28,7 @@ describe('Customer Registration Service', () => {
 
   it('should register a customer and when successful log him in', () => {
     when(apiServiceMock.post(anything(), anything())).thenReturn(of({ 'id': '1224' }));
-    when(accountLoginServiceMock.singinUser(anything())).thenReturn(of(newCustomer));
+    when(accountLoginServiceMock.signinUser(anything())).thenReturn(of(newCustomer));
 
     customerRegistrationService.registerPrivateCustomer(newCustomer).subscribe(data => {
       const registeredCustomer = data;

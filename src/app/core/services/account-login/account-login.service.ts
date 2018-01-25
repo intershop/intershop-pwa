@@ -23,7 +23,7 @@ export class AccountLoginService {
    * @param  {} userDetails
    * @returns Observable
    */
-  singinUser(userDetails: AccountLogin): Observable<Customer> {
+  signinUser(userDetails: AccountLogin): Observable<Customer> {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
     return this.apiService.get<CustomerData>('customers/-', null, headers).pipe(
       map(data => CustomerFactory.fromData(data)),
