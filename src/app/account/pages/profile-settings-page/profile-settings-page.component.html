@@ -1,3 +1,175 @@
-<p>
-  Profile Settings Page is Here!
-</p>
+<ish-breadcrumb account="true" trailText="{{'account.profile.link' | translate}}"></ish-breadcrumb>
+
+<!-- Marketing slot -->
+<div class="marketing-area"></div>
+
+<div class="account-wrapper" data-testing-id="profile-settings-page">
+  <div class="row account-main">
+    <!-- Left Navigation Panel -->
+    <div class="col-md-3 account-nav-box">
+      <!-- TODO -->
+      <!--<isAccountNavigation selecteditem="PROFILE">-->
+    </div>
+
+    <div class="col-md-9 user-profile">
+      <div class="marketing-area"></div>
+
+      <h1>{{'account.profile.heading' | translate }}</h1>
+
+      <!-- Success Message Template -->
+      <!-- TODO -->
+      <div *ngIf="showSuccessMessage" class="alert alert-success alert-fade">
+        <p *ngIf="showSuccessMessage==='UpdateEmail'">
+          {{'account.profile.update_email.message' | translate}}
+        </p>
+        <p *ngIf="showSuccessMessage==='UpdateProfile'">
+          {{'account.profile.update_profile.message' | translate}}
+        </p>
+        <p *ngIf="showSuccessMessage==='UpdatePassword'">
+          {{'account.profile.update_password.message' | translate}}
+        </p>
+        <p *ngIf="showSuccessMessage==='UpdateNewsletter'">
+          {{'account.profile.update_newsletter.message' | translate}}
+        </p>
+      </div>
+
+      <!-- Email Template -->
+      <!-- TODO ROUTING-->
+      <div class="row section">
+        <div class="col-md-4 pull-right col-xs-2">
+          <a class="btn-tool" title=" {{'account.profile.update.link' | translate }} ">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="col-md-8 col-xs-10">
+          <h3>
+            {{ 'account.profile.email.heading' | translate }}
+          </h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <dl class="dl-horizontal dl-separator">
+                <dt>
+                  {{ 'account.profile.email.label' | translate }}
+                </dt>
+                <dd data-testing-id="email-field">
+                  {{customer.email}}
+                </dd>
+                <dt>
+                  {{ 'account.profile.order_confirmation_subscription.text' | translate }}
+                </dt>
+                <dd>
+                  <!-- TODO -->
+                  <!--<isif condition="#Preferences:OrderConfirmationEmails#">
+                      {{ 'account.profile.order_confirmation_email.text' | translate }}&nbsp;
+                    </isif>
+
+                    <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#">
+                        {{ 'account.profile.newsletter.text' | translate }}
+                    </isif>-->
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Password Template -->
+      <!-- TODO ROUTING-->
+      <div class="row section">
+        <div class="col-md-4 pull-right col-xs-2">
+          <a class="btn-tool" title=" {{'account.profile.update.link' | translate }} ">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="col-md-8 col-xs-10">
+          <h3>
+            {{'account.profile.password.heading' | translate }}
+          </h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <dl class="dl-horizontal dl-separator">
+                <dt>
+                  {{'account.profile.password.label' | translate }}
+                </dt>
+                <dd>
+                  ******
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TODO -->
+      <!--<isinclude extensionpoint="AccountProfileDepartmentExtensions"> -->
+
+      <!-- Profile Template -->
+      <!-- TODO ROUTING-->
+      <div class="row section">
+        <div class="col-md-4 pull-right col-xs-2">
+          <a class="btn-tool" title="{{'account.profile.update.link' | translate }}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="col-md-8 col-xs-10">
+          <h3>
+            {{'account.profile.detail.heading' | translate }}
+          </h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <dl class="dl-horizontal dl-separator">
+                <dt>
+                  {{'account.profile.name.label' | translate }}
+                </dt>
+                <dd>
+                    {{ customer.getFullDisplayName() }}
+                </dd>
+                <!-- Phone Template -->
+                <dt>
+                  {{'account.profile.phone.label' | translate }}
+                </dt>
+                <dd>
+                  {{customer.phoneHome}}
+                </dd>
+                <dt>
+                  {{'account.profile.fax.label' | translate }}
+                </dt>
+                <dd>
+                  {{customer.fax}}
+                </dd>
+                <dt>
+                  {{'account.profile.birthday.label' | translate }}
+                </dt>
+                <dd *ngIf="customer.birthday !== null; else birthDay">
+                  {{customer.birthday}}
+                </dd>
+                <ng-template #birthDay>
+                  <dd>
+                      {{'account.profile.birthday.not_available' | translate }}
+                  </dd>
+                </ng-template>
+                <dt>
+                  {{'account.profile.language.label' | translate }}
+                </dt>
+                <dd>
+                  <!-- TODO -->
+                  <!--<isprint value="#PreferredLocale:DisplayName(PreferredLocale)#"> -->
+                </dd>
+                <dt>
+                  {{'account.newsletter.label' | translate }}
+                </dt>
+                <dd>
+                  <!-- TODO -->
+                  <!--<isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"> -->
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Note -->
+      <p class="help-block">{{'account.overview.note.heading' | translate }}: {{'account.overview.note.text' | translate }}</p>
+      <!-- TODO: istext key="account.overview.note.text" parameter0="#URL(Action('ViewContent-Start'),Parameter('PageletEntryPointID','systempage.privacyPolicy.pagelet2-Page'))#" encoding="off" / -->
+    </div>
+  </div>
+</div>
