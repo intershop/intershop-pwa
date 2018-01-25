@@ -28,6 +28,6 @@ export class CustomerRegistrationService {
     accountLogin.password = newCustomer.credentials.password;
 
     return this.apiService.post<Customer>('customers', newCustomer)
-      .flatMap((data) => this.accountLoginService.singinUser(accountLogin));
+      .flatMap((data) => this.accountLoginService.signinUser(accountLogin));
   }
 }

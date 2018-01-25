@@ -25,7 +25,7 @@ describe('AccountLogin Service', () => {
     const loginDetail = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
     when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(of({ authorized: true }));
     let loggedInDetail;
-    accountLoginService.singinUser(loginDetail).subscribe(data => {
+    accountLoginService.signinUser(loginDetail).subscribe(data => {
       loggedInDetail = data;
     });
 
@@ -42,7 +42,7 @@ describe('AccountLogin Service', () => {
     const errorMessage = '401 and Unauthorized';
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
     when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(ErrorObservable.create(new Error(errorMessage)));
-    accountLoginService.singinUser(userDetails).subscribe((data) => {
+    accountLoginService.signinUser(userDetails).subscribe((data) => {
       expect(data).toBe(null);
     }, (error) => {
       expect(error).toBeTruthy();

@@ -18,7 +18,7 @@ describe('AccountLogin Component', () => {
 
   beforeEach(async(() => {
     const accountLoginServiceMock = mock(AccountLoginService);
-    when(accountLoginServiceMock.singinUser(anything())).thenCall((userDetails) => {
+    when(accountLoginServiceMock.signinUser(anything())).thenCall((userDetails) => {
       if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
         return of({ data: 'Correct Details' });
       } else {
