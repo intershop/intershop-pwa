@@ -1,111 +1,43 @@
-<!-- NEEDS_WORK: DUMMY COMPONENT -->
 <ish-breadcrumb account="true" trailText="{{'account.overview.link' | translate}}"></ish-breadcrumb>
+
+<div class="marketing-area"></div>
 
 <div class="account-wrapper" data-testing-id="account-page">
   <div class="row account-main">
+
     <div class="col-md-3 account-nav-box">
-      <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation" style="display: block;">
-        <li class="active">
-          <a>My Account</a>
-        </li>
-        <li class="">
-          <a data-testing-id="myaccount-subscriptions-link">Subscriptions</a>
-        </li>
-        <li class="">
-          <a>Order History</a>
-        </li>
-        <li class="">
-          <a>Wish Lists</a>
-        </li>
-        <li class="">
-          <a>Gift Cards &amp; Certificates</a>
-        </li>
-        <li class="">
-          <a>Gift Card Balance Lookup</a>
-        </li>
-        <li class="">
-          <a>Payment</a>
-        </li>
-        <li class="">
-          <a>Addresses</a>
-        </li>
-        <li class="">
-          <a>Profile Settings</a>
-        </li>
-        <li class="">
-          <a>Product Notifications</a>
-        </li>
-        <li>
-          <a routerLink="/logout">Logout</a>
-        </li>
-      </ul>
+      <!-- TODO: isAccountNavigation selecteditem="OVERVIEW" -->
     </div>
+
     <div class="col-md-9">
-      <div class="marketing-area">
-      </div>
-      <h1>Hi, {{customerName}}.<br>Welcome back!</h1>
-      <p>Everything you need to track your orders, update your address book, edit your account information and more is right
-        here.
-      </p>
+
+      <div class="marketing-area"></div>
+
+      <h1 [innerHTML]="'account.overview.personal_message.text' | translate:{ '0':customer.getDisplayName() }"></h1>
+      <p>{{'account.overview.message.text' | translate }}</p>
+
       <div class="row account-dashboard">
         <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
+          <a routerLink="./orders">
             <div class="circle-icon">
               <span class="glyphicon glyphicon-list-alt"></span>
-            </div>Order History</a>
+            </div>
+            {{'account.order_history.link' | translate }}
+          </a>
         </div>
         <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
-            <div class="circle-icon">
-              <span class="glyphicon glyphicon-heart"></span>
-            </div>Wish Lists</a>
-        </div>
-        <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
-            <div class="circle-icon">
-              <span class="glyphicon glyphicon-gift"></span>
-            </div>Gift Cards &amp; Certificates</a>
-        </div>
-        <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
-            <div class="circle-icon">
-              <span class="glyphicon glyphicon-flash"></span>
-            </div>Gift Card Balance Lookup</a>
-        </div>
-        <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
-            <div class="circle-icon">
-              <span class="glyphicon glyphicon-credit-card"></span>
-            </div>Payment</a>
-        </div>
-        <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
-            <div class="circle-icon">
-              <span class="glyphicon glyphicon-book"></span>
-            </div>Addresses</a>
-        </div>
-        <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
+          <a routerLink="./profile">
             <div class="circle-icon">
               <span class="glyphicon glyphicon-cog"></span>
-            </div>Profile Settings</a>
-        </div>
-        <div class="col-sm-3 col-xs-6 dashboard-item">
-          <a>
-            <div class="circle-icon">
-              <span class="glyphicon glyphicon-bell"></span>
-            </div>Product Notifications</a>
+            </div>
+            {{'account.profile.link' | translate }}
+          </a>
         </div>
       </div>
-      <h2>Most Recent Orders</h2>
-      <div class="section">
-        <p>You have not placed an order with inTRONICS.</p><a>View All Orders</a>
-      </div>
-      <h2>Wish List</h2>
-      <div class="section">
-        <p>You do not currently have any wish list items.</p>
-      </div>
-      <p class="help-block">Note: Your account information will only be used in accordance with our <a>Privacy Policy</a>.</p>
+
+      <p class="help-block">{{'account.overview.note.heading' | translate }}: {{'account.overview.note.text' | translate }}</p>
+      <!-- TODO: istext key="account.overview.note.text" parameter0="#URL(Action('ViewContent-Start'),Parameter('PageletEntryPointID','systempage.privacyPolicy.pagelet2-Page'))#" encoding="off" / -->
+
     </div>
   </div>
 </div>
