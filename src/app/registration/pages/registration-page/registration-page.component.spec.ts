@@ -26,7 +26,7 @@ describe('RegistrationPage Component', () => {
         MockComponent({ selector: 'ish-registration-credentials-form', template: 'Credentials Template', inputs: ['parentForm'] }),
         MockComponent({ selector: 'ish-address-form', template: 'Address Template', inputs: ['parentForm'] }),
         MockComponent({ selector: 'ish-registration-personal-form', template: 'Personal Template', inputs: ['parentForm'] }),
-        MockComponent({ selector: 'ish-captcha', template: 'Captcha Template' }),
+        // MockComponent({ selector: 'ish-captcha', template: 'Captcha Template' }),
       ],
       providers: [
         { provide: CustomerRegistrationService, useFactory: () => instance(customerRegistrationServiceMock) },
@@ -86,7 +86,7 @@ describe('RegistrationPage Component', () => {
     expect(element.getElementsByTagName('ish-registration-credentials-form')[0].innerHTML).toEqual('Credentials Template');
     expect(element.getElementsByTagName('ish-address-form')[0].innerHTML).toEqual('Address Template');
     expect(element.getElementsByTagName('ish-registration-personal-form')[0].innerHTML).toEqual('Personal Template');
-    expect(element.getElementsByTagName('ish-captcha')[0].innerHTML).toEqual('Captcha Template');
+    // expect(element.getElementsByTagName('ish-captcha')[0].innerHTML).toEqual('Captcha Template');
   });
 
 });
