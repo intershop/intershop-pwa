@@ -21,7 +21,7 @@
     </ng-template>
   </button>
 
-  <ul *ngIf="results" class="search-suggest-results" [style.display]="isHide ? 'none' : 'block'">
+  <ul *ngIf="results" class="search-suggest-results" [ngStyle]="{'display' : isHide ? 'none' : 'block'}">
     <li *ngFor="let result of results | slice:0:9">
       <button type="button" class="search-result">
       <span class="searchTerm">{{ result.term }}</span>
