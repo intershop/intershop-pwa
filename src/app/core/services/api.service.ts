@@ -26,6 +26,9 @@ export class ApiService {
     private currentLocaleService: CurrentLocaleService
   ) { }
 
+  // declare default http header
+  private defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
+
   /**
    * format api errors and send errors to custom handler
    * @param  {any} error
@@ -56,7 +59,7 @@ export class ApiService {
     }
 
     return this.httpClient.get<T>(url, { params: params, headers: headers })
-      .map(data => data = (elementsTranslation ? data['elements'] : data))
+      .map(data => (elementsTranslation ? data['elements'] : data))
       .flatMap((data) => this.getLinkedData(data, linkTranslation))
       .catch(this.formatErrors.bind(this));
   }
@@ -70,7 +73,8 @@ export class ApiService {
   put<T>(path: string, body: Object = {}): Observable<T> {
     return this.httpClient.put<T>(
       `${this.restEndpoint}/${path}`,
-      JSON.stringify(body)
+      JSON.stringify(body),
+      { headers: this.defaultHeaders }
     ).catch(this.formatErrors);
   }
 
@@ -83,7 +87,8 @@ export class ApiService {
   post<T>(path: string, body: Object = {}): Observable<T> {
     return this.httpClient.post<T>(
       `${this.restEndpoint}/${path}`,
-      JSON.stringify(body)
+      JSON.stringify(body),
+      { headers: this.defaultHeaders }
     ).catch(this.formatErrors);
   }
 

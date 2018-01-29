@@ -20,13 +20,15 @@
         <div class="col-lg-6 col-md-8 col-sm-10">
           <ish-address-form [parentForm]="registrationForm"></ish-address-form>
 
-          <ish-registration-personal-form [parentForm]="registrationForm"></ish-registration-personal-form>
+          <!-- ToDo: preferredLanguage = preferredLocale, birthday form control -->
+          <!--<ish-registration-personal-form [parentForm]="registrationForm"></ish-registration-personal-form>-->
 
-          <div class="form-group">
+          <!-- open task: see #ISREST-77 -->
+          <!--<div class="form-group">
             <div class="col-sm-offset-4 col-sm-8">
               <ish-captcha (isValid)="isCaptchaValid = $event"></ish-captcha>
             </div>
-          </div>
+          </div>-->
 
           <div class="form-group">
             <div class="col-sm-offset-4 col-sm-8">

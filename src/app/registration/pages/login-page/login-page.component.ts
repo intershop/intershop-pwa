@@ -53,7 +53,7 @@ export class LoginPageComponent implements OnInit {
       this.isDirty = true;
       return;
     }
-    this.accountLoginService.singinUser(userCredentials).subscribe((userData: Customer) => {
+    this.accountLoginService.signinUser(userCredentials).subscribe((userData: Customer) => {
       if (typeof (userData) !== 'object') {
         this.loginForm.get('password').reset();
         this.errorUser = userData;

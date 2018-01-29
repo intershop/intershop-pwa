@@ -29,8 +29,8 @@ export class RegistrationCredentialsFormComponent implements OnInit {
   // create the credentials form and add it to the parent form
   createForm() {
     const formGroup = {
-      login: ['', [Validators.required, Validators.email]],
-      loginConfirmation: ['', [Validators.required, Validators.email]],
+      login: ['', [Validators.required, CustomValidators.email]],
+      loginConfirmation: ['', [Validators.required, CustomValidators.email]],
       password: ['', [Validators.required, SpecialValidators.password]],
       passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
       securityQuestion: ['', [Validators.required]],

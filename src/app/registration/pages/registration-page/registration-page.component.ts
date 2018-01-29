@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CustomerFactory } from '../../../models/customer/customer.factory';
+import { CustomerRegistrationService } from '../../services/customer-registration.service';
 
 @Component({
   templateUrl: './registration-page.component.html'
@@ -16,7 +18,8 @@ export class RegistrationPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private customerService: CustomerRegistrationService
   ) { }
 
   ngOnInit() {
@@ -45,15 +48,22 @@ export class RegistrationPageComponent implements OnInit {
    * @returns void
    */
   onCreateAccount(): void {
+    // console.log(JSON.stringify(this.registrationForm.value));
+
     if (this.registrationForm.valid) {
-      // this.register();
+      const customerData = CustomerFactory.fromFormToData(this.registrationForm);
+      // console.log(JSON.stringify(customer));
+      if (customerData.birthday === '') { customerData.birthday = null; }   // ToDo see IS-22276
+      this.customerService.registerPrivateCustomer(customerData).subscribe(response => {
+
+        if (response) {
+          this.router.navigate(['/home']);
+        }
+      });
+
     } else {
       this.isDirty = true;
     }
   }
+
 }
-
-
-
-
-
