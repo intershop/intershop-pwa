@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { AccountLogin } from '../../core/services/account-login/account-login.model';
 import { AccountLoginService } from '../../core/services/account-login/account-login.service';
 import { ApiService } from '../../core/services/api.service';
+import { CustomerData } from '../../models/customer/customer.interface';
 import { Customer } from '../../models/customer/customer.model';
 
 @Injectable()
@@ -18,16 +19,18 @@ export class CustomerRegistrationService {
     * Creates the User and saves the User details
     * @param  {} userDetails
     */
-  registerPrivateCustomer(newCustomer: Customer): Observable<Customer> {
-    if (!newCustomer) {
+  registerPrivateCustomer(newCustomerData: CustomerData): Observable<Customer> {
+    if (!newCustomerData) {
       return null;
     }
     // determine user credentials for login
     const accountLogin = new (AccountLogin);
-    accountLogin.userName = newCustomer.credentials.login;
-    accountLogin.password = newCustomer.credentials.password;
+    accountLogin.userName = newCustomerData.credentials.login;
+    accountLogin.password = newCustomerData.credentials.password;
 
-    return this.apiService.post<Customer>('customers', newCustomer)
-      .flatMap((data) => this.accountLoginService.signinUser(accountLogin));
+    return this.apiService.post<Customer>('customers', newCustomerData)
+      .flatMap((data) => {
+        return this.accountLoginService.signinUser(accountLogin);
+      });
   }
 }
