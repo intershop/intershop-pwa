@@ -52,8 +52,8 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
       // Map title array to an array of type SelectOption
       options = titles.map(title => {
         return {
-          'label': title,
-          'value': title
+          'label': title.label,
+          'value': title.value
         };
       });
     } else {
@@ -63,13 +63,20 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
   }
 
   // ToDo: replace this code, return titles from a service
+  // ToDo: react on locale switch and close observables onDestroy
   private getSalutations(countrycode) {
+    const salutations = [];
     if (countrycode) {
-      return [
-        'account.salutation.ms.text',
-        'account.salutation.mr.text',
-        'account.salutation.mrs.text'
-      ];
+      this.translate.get('account.salutation.ms.text').subscribe(data => {
+        salutations[0] = { 'label': 'account.salutation.ms.text', 'value': data };
+      }).unsubscribe();
+      this.translate.get('account.salutation.mr.text').subscribe(data => {
+        salutations[1] = { 'label': 'account.salutation.mr.text', 'value': data };
+      }).unsubscribe();
+      this.translate.get('account.salutation.mrs.text').subscribe(data => {
+        salutations[2] = { 'label': 'account.salutation.mrs.text', 'value': data };
+      }).unsubscribe();
+      return salutations;
     }
     return [];
   }

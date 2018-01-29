@@ -39,18 +39,18 @@ describe('ApiService', () => {
   });
 
   it('should call the httpClient.put method when apiService.put method is called.', () => {
-    when(httpClientMock.put(anything(), anything())).thenReturn(of(new ArrayBuffer(3)));
-    verify(httpClientMock.put(anything(), anything())).never();
+    when(httpClientMock.put(anything(), anything(), anything())).thenReturn(of(new ArrayBuffer(3)));
+    verify(httpClientMock.put(anything(), anything(), anything())).never();
     apiService.put('');
-    verify(httpClientMock.put(anything(), anything())).once();
+    verify(httpClientMock.put(anything(), anything(), anything())).once();
   });
 
 
   it('should call the httpClient.post method when apiService.post method is called.', () => {
-    when(httpClientMock.post(anything(), anything())).thenReturn(of(new ArrayBuffer(3)));
-    verify(httpClientMock.post(anything(), anything())).never();
+    when(httpClientMock.post(anything(), anything(), anything())).thenReturn(of(new ArrayBuffer(3)));
+    verify(httpClientMock.post(anything(), anything(), anything())).never();
     apiService.post('');
-    verify(httpClientMock.post(anything(), anything())).once();
+    verify(httpClientMock.post(anything(), anything(), anything())).once();
   });
 
   it('should call the httpClient.delete method when apiService.delete method is called.', () => {
