@@ -5,22 +5,23 @@ import { CredentialsData } from './credentials.interface';
 describe('Credentials Factory', () => {
   describe('fromData', () => {
     it(`should return Credentials when getting a RawCredential`, () => {
-      expect(CredentialsFactory.fromData({ login: '1' } as CredentialsData)).toBeTruthy();
+      const credentials = CredentialsFactory.fromData({ login: 'login' } as CredentialsData);
+      expect(credentials.login).toEqual('login');
     });
   });
 
-  describe('fromForm', () => {
+  describe('fromFormToData', () => {
     const form = new FormGroup({
-      login: new FormControl('login'),
-      password: new FormControl('1234')
+      login: new FormControl('login')
     });
 
-    it(`should return Credentials when getting a credentials form`, () => {
-      expect(CredentialsFactory.fromForm(form)).toBeTruthy();
+    it(`should return Credentials data when getting a credentials form`, () => {
+      const credentials = CredentialsFactory.fromFormToData(form);
+      expect(credentials.login).toEqual('login');
     });
 
     it(`should return null when getting no credentials form`, () => {
-      expect(CredentialsFactory.fromForm(null)).toBeFalsy();
+      expect(CredentialsFactory.fromFormToData(null)).toBeFalsy();
     });
   });
 });

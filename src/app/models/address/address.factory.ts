@@ -15,12 +15,12 @@ export class AddressFactory {
     return address;
   }
 
-  static fromForm(form: FormGroup) {
+  static fromFormToData(form: FormGroup) {
     if (!form) {
       return null;
     }
-    const address: Address = new Address();
-    FactoryHelper.primitiveMapping<FormGroup, Address>(form.value, address);
-    return address;
+    const addressData = new Object as AddressData;
+    FactoryHelper.primitiveMapping<FormGroup, AddressData>(form.value, addressData);
+    return addressData;
   }
 }

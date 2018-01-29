@@ -51,10 +51,10 @@ export class RegistrationPageComponent implements OnInit {
     // console.log(JSON.stringify(this.registrationForm.value));
 
     if (this.registrationForm.valid) {
-      const customer = CustomerFactory.fromForm(this.registrationForm);
+      const customerData = CustomerFactory.fromFormToData(this.registrationForm);
       // console.log(JSON.stringify(customer));
-      if (customer.birthday === '') { customer.birthday = null; }   // ToDo see IS-22276
-      this.customerService.registerPrivateCustomer(customer).subscribe(response => {
+      if (customerData.birthday === '') { customerData.birthday = null; }   // ToDo see IS-22276
+      this.customerService.registerPrivateCustomer(customerData).subscribe(response => {
 
         if (response) {
           this.router.navigate(['/home']);

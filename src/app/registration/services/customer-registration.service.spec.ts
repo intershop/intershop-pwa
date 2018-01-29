@@ -2,7 +2,8 @@ import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { AccountLoginService } from '../../core/services/account-login/account-login.service';
 import { ApiService } from '../../core/services/api.service';
-import { Customer } from '../../models/customer/customer.model';
+import { CustomerFactory } from '../../models/customer/customer.factory';
+import { CustomerData } from '../../models/customer/customer.interface';
 import { CustomerRegistrationService } from './customer-registration.service';
 
 describe('Customer Registration Service', () => {
@@ -16,7 +17,7 @@ describe('Customer Registration Service', () => {
     customerRegistrationService = new CustomerRegistrationService(instance(accountLoginServiceMock), instance(apiServiceMock));
   });
 
-  const newCustomer = <Customer>{
+  const customerData = <CustomerData>{
     id: '1224',
     firstName: 'John',
     lastName: 'Doe',
@@ -25,12 +26,13 @@ describe('Customer Registration Service', () => {
       login: 'john.doe@test.test.xx'
     }
   };
+  const customer = CustomerFactory.fromData(customerData);
 
   it('should register a customer and when successful log him in', () => {
     when(apiServiceMock.post(anything(), anything())).thenReturn(of({ 'id': '1224' }));
-    when(accountLoginServiceMock.signinUser(anything())).thenReturn(of(newCustomer));
+    when(accountLoginServiceMock.signinUser(anything())).thenReturn(of(customer));
 
-    customerRegistrationService.registerPrivateCustomer(newCustomer).subscribe(data => {
+    customerRegistrationService.registerPrivateCustomer(customerData).subscribe(data => {
       const registeredCustomer = data;
       expect(registeredCustomer.id).toEqual('1224');
     }).unsubscribe();
@@ -40,6 +42,4 @@ describe('Customer Registration Service', () => {
   it('should return null if no customer is given', () => {
     expect(customerRegistrationService.registerPrivateCustomer(null)).toBeNull();
   });
-
-
 });

@@ -15,12 +15,12 @@ export class CredentialsFactory {
     return credentials;
   }
 
-  static fromForm(form: FormGroup) {
+  static fromFormToData(form: FormGroup) {
     if (!form) {
       return null;
     }
-    const credentials: Credentials = new Credentials();
-    FactoryHelper.primitiveMapping<FormGroup, Credentials>(form.value, credentials, ['login', 'password', 'securityQuestion', 'securityQuestionAnswer']);
-    return credentials;
+    const credentialsData = new Object as CredentialsData;
+    FactoryHelper.primitiveMapping<FormGroup, CredentialsData>(form.value, credentialsData, ['login', 'password', 'securityQuestion', 'securityQuestionAnswer']);
+    return credentialsData;
   }
 }
