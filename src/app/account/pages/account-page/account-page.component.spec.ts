@@ -21,7 +21,8 @@ describe('Account Overview Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountPageComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trailText'] })
+        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trailText'] }),
+        MockComponent({ selector: 'ish-account-navigation', template: 'Account Naviation Component' })
       ],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
