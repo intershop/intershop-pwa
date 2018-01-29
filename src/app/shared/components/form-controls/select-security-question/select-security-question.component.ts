@@ -45,11 +45,11 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
     const securityQuestions = this.getSecurityQuestions();
 
     if (securityQuestions) {
-      // Map title array to an array of type SelectOption
+      // Map questions array to an array of type SelectOption
       options = securityQuestions.map(question => {
         return {
-          'label': question,
-          'value': question
+          'label': question.label,
+          'value': question.value
         };
       });
     }
@@ -58,12 +58,23 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
 
   // define which security questions are shown - ToDo: should be done in a service
   private getSecurityQuestions() {
-    return [
-      'account.security_question.maiden_name.text',
-      'account.security_question.pet_name.text',
-      'account.security_question.street_name.text',
-      'account.security_question.elementary_school.text',
-      'account.security_question.first_employer.text'
-    ];
+    const questions = [];
+
+    this.translate.get('account.security_question.maiden_name.text').subscribe(data => {
+      questions[0] = { 'label': 'account.security_question.maiden_name.text', 'value': data };
+    }).unsubscribe();
+    this.translate.get('account.security_question.pet_name.text').subscribe(data => {
+      questions[1] = { 'label': 'account.security_question.pet_name.text', 'value': data };
+    }).unsubscribe();
+    this.translate.get('account.security_question.street_name.text').subscribe(data => {
+      questions[2] = { 'label': 'account.security_question.street_name.text', 'value': data };
+    }).unsubscribe();
+    this.translate.get('account.security_question.elementary_school.text').subscribe(data => {
+      questions[3] = { 'label': 'account.security_question.elementary_school.text', 'value': data };
+    }).unsubscribe();
+    this.translate.get('account.security_question.first_employer.text').subscribe(data => {
+      questions[4] = { 'label': 'account.security_question.first_employer.text', 'value': data };
+    }).unsubscribe();
+    return questions;
   }
 }
