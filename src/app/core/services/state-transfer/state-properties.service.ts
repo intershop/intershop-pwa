@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { StateKey } from '@angular/platform-browser/src/browser/transfer_state';
+import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
+
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from '../../../../environments/environment';
 
