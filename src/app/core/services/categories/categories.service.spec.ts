@@ -1,4 +1,4 @@
-import { HttpParams } from '@angular/common/http/src/params';
+import { HttpParams } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { of } from 'rxjs/observable/of';

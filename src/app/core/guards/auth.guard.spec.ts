@@ -1,6 +1,5 @@
 import { async, TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
-import { RouterStateSnapshot } from '@angular/router/src/router_state';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { AccountLoginService } from '../services/account-login/account-login.service';
