@@ -1,4 +1,4 @@
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,7 +14,6 @@ describe('AccountLogin Component', () => {
   let fixture: ComponentFixture<LoginPageComponent>;
   let component: LoginPageComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
 
   beforeEach(async(() => {
     const accountLoginServiceMock = mock(AccountLoginService);
@@ -51,7 +50,6 @@ describe('AccountLogin Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
-    debugEl = fixture.debugElement;
     element = fixture.nativeElement;
     fixture.detectChanges();
   });

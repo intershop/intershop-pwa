@@ -10,7 +10,6 @@ xdescribe('AuthGuard', () => {
 
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
-    let accountLoginService: AccountLoginService;
     const accountLoginServiceMock = mock(AccountLoginService);
 
     beforeEach(async(() => {
@@ -26,7 +25,6 @@ xdescribe('AuthGuard', () => {
 
     beforeEach(() => {
       authGuard = TestBed.get(AuthGuard);
-      accountLoginService = TestBed.get(AccountLoginService);
     });
 
     it('should return true when called as authorized', () => {

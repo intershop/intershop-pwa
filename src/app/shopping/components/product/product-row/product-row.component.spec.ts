@@ -36,93 +36,93 @@ describe('Product Row Component', () => {
           'longDescription': '- 61 (24”) 16:9 LED display. - Full HD (1920 x 1080 pixels).- DVB-T function. - Common Interface (CI). - Personal video recorder. - Supports analogue and cable TV. - Multi TV system: PAL & SECAM. - Supports NICAM stereo. - Multiple OSD languages. - Electronic Program Guide (EPG). - Teletext. - Sleeptimer. - Built-in Stereospeakers 3W. - Suitable for wall  ounting (VESA 100).',
           'productMaster': false,
           'listPrice':
-          {
-            'type': 'ProductPrice',
-            'value': 375.24,
-            'currencyMnemonic': 'USD',
-            'range': {
-              'minimumPrice': 110,
-              'maximumPrice': 440
-            }
-          },
+            {
+              'type': 'ProductPrice',
+              'value': 375.24,
+              'currencyMnemonic': 'USD',
+              'range': {
+                'minimumPrice': 110,
+                'maximumPrice': 440
+              }
+            },
           'productBundle': false,
           'shippingMethods':
-          [
-            {
-              'name': '2-Business Day',
-              'type': 'ShippingMethod',
-              'id': 'STD_2DAY',
-              'shippingTimeMin': 1,
-              'shippingTimeMax': 2
-            }
-          ],
+            [
+              {
+                'name': '2-Business Day',
+                'type': 'ShippingMethod',
+                'id': 'STD_2DAY',
+                'shippingTimeMin': 1,
+                'shippingTimeMax': 2
+              }
+            ],
           'availableWarranties':
-          [
-            {
-              'type': 'Link',
-              'description': 'Insurance against breakdown. Warranty period: 1 year.',
-              'title': '1-year LED TV Support',
-              'uri': 'inSPIRED-inTRONICS-Site/-/products/1YLEDTVSUP',
-              'attributes':
-              [
-                {
-                  'name': 'WarrantyPrice',
-                  'type': 'MoneyRO',
-                  'value':
-                  {
-                    'type': 'Money',
-                    'value': 106,
-                    'currencyMnemonic': 'USD'
-                  }
-                }
-              ]
-            }
-          ],
+            [
+              {
+                'type': 'Link',
+                'description': 'Insurance against breakdown. Warranty period: 1 year.',
+                'title': '1-year LED TV Support',
+                'uri': 'inSPIRED-inTRONICS-Site/-/products/1YLEDTVSUP',
+                'attributes':
+                  [
+                    {
+                      'name': 'WarrantyPrice',
+                      'type': 'MoneyRO',
+                      'value':
+                        {
+                          'type': 'Money',
+                          'value': 106,
+                          'currencyMnemonic': 'USD'
+                        }
+                    }
+                  ]
+              }
+            ],
           'productName': 'Lenco LED-2412',
           'roundedAverageRating': '0.0',
           'readyForShipmentMin': 3,
           'readyForShipmentMax': 7,
           'salePrice':
-          {
-            'type': 'ProductPrice',
-            'value': 122,
-            'currencyMnemonic': 'USD',
-            'scaledPrices': []
-          },
+            {
+              'type': 'ProductPrice',
+              'value': 122,
+              'currencyMnemonic': 'USD',
+              'scaledPrices': []
+            },
           'sku': '8706917',
           'images':
-          [
-            {
-              'name': 'front S',
-              'type': 'Image',
-              'imageActualHeight': 110,
-              'imageActualWidth': 110,
-              'viewID': 'front',
-              'effectiveUrl': '../../assets/product_img/a.jpg',
-              'typeID': 'S',
-              'primaryImage': true
-            },
-            {
-              'name': 'front S',
-              'type': 'Image',
-              'imageActualHeight': 110,
-              'imageActualWidth': 110,
-              'viewID': 'front',
-              'effectiveUrl': '../../assets/product_img/a.jpg',
-              'typeID': 'S',
-              'primaryImage': true
-            },
-            {
-              'name': 'front S',
-              'type': 'Image',
-              'imageActualHeight': 110,
-              'imageActualWidth': 110,
-              'viewID': 'front',
-              'effectiveUrl': '../../assets/product_img/a.jpg',
-              'typeID': 'S',
-              'primaryImage': true
-            }
-          ],
+            [
+              {
+                'name': 'front S',
+                'type': 'Image',
+                'imageActualHeight': 110,
+                'imageActualWidth': 110,
+                'viewID': 'front',
+                'effectiveUrl': '../../assets/product_img/a.jpg',
+                'typeID': 'S',
+                'primaryImage': true
+              },
+              {
+                'name': 'front S',
+                'type': 'Image',
+                'imageActualHeight': 110,
+                'imageActualWidth': 110,
+                'viewID': 'front',
+                'effectiveUrl': '../../assets/product_img/a.jpg',
+                'typeID': 'S',
+                'primaryImage': true
+              },
+              {
+                'name': 'front S',
+                'type': 'Image',
+                'imageActualHeight': 110,
+                'imageActualWidth': 110,
+                'viewID': 'front',
+                'effectiveUrl': '../../assets/product_img/a.jpg',
+                'typeID': 'S',
+                'primaryImage': true
+              }
+            ],
           'manufacturer': 'Lenco',
           'availability': true,
           'retailSet': false,
