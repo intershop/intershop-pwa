@@ -10,13 +10,5 @@ export const productPageRoutes: Routes = [
     resolve: {
       product: ProductResolver
     }
-  },
-  {
-    path: '**',
-    component: ProductPageComponent,
-    resolve: {
-      product: ProductResolver,
-      categoryPath: CategoryPathResolver
-    }
   }
 ];
