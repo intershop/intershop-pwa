@@ -1,14 +1,11 @@
-import { DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
 import { ErrorPageComponent } from './error-page.component';
 
 
-describe('ErrorPage Component', () => {
+describe('Error Page Component', () => {
   let fixture: ComponentFixture<ErrorPageComponent>;
-  let component: ErrorPageComponent;
   let element: HTMLElement;
-  let debugEl: DebugElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ErrorPageComponent]
@@ -18,8 +15,6 @@ describe('ErrorPage Component', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ErrorPageComponent);
-    component = fixture.componentInstance;
-    debugEl = fixture.debugElement;
     element = fixture.nativeElement;
   });
 
