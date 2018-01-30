@@ -9,7 +9,6 @@ import { HeaderComponent } from './header.component';
 
 describe('Header Component', () => {
   let fixture: ComponentFixture<HeaderComponent>;
-  let component: HeaderComponent;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -35,7 +34,6 @@ describe('Header Component', () => {
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(HeaderComponent);
-      component = fixture.componentInstance;
       element = fixture.nativeElement;
     });
 

@@ -15,8 +15,6 @@ describe('DisableIconDirective', () => {
   }
 
   let fixture: ComponentFixture<MockComponent>;
-  let component: MockComponent;
-  let element: HTMLElement;
   let productCompareServiceMock: ProductCompareService;
   const elementRefMock: ElementRef = mock(ElementRef);
   const rendererMock: Renderer2 = mock(Renderer2);
@@ -33,8 +31,6 @@ describe('DisableIconDirective', () => {
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(MockComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
     });
   }));
 
