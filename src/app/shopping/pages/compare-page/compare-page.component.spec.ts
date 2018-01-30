@@ -4,8 +4,7 @@ import { ProductCompareService } from '../../../core/services/product-compare/pr
 import { ComparePageComponent } from './compare-page.component';
 
 
-describe('ComparePageComponent', () => {
-  let component: ComparePageComponent;
+describe('Compare Page Component', () => {
   let fixture: ComponentFixture<ComparePageComponent>;
 
   beforeEach(async(() => {
@@ -18,7 +17,6 @@ describe('ComparePageComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComparePageComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 

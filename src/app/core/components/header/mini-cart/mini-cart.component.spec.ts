@@ -7,7 +7,6 @@ import { MiniCartComponent } from './mini-cart.component';
 describe('Mini Cart Component', () => {
   let fixture: ComponentFixture<MiniCartComponent>;
   let component: MiniCartComponent;
-  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,7 +21,6 @@ describe('Mini Cart Component', () => {
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(MiniCartComponent);
       component = fixture.componentInstance;
-      element = fixture.nativeElement;
     });
   }));
 

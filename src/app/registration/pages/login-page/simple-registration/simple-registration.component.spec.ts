@@ -16,7 +16,6 @@ import { SimpleRegistrationComponent } from './simple-registration.component';
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
-  let element: HTMLElement;
   let accountLoginServiceMock: AccountLoginService;
   let location: Location;
 
@@ -51,7 +50,6 @@ describe('Simple Registration Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SimpleRegistrationComponent);
     component = fixture.componentInstance;
-    element = fixture.nativeElement;
     location = TestBed.get(Location);
     fixture.autoDetectChanges(true);
   });
