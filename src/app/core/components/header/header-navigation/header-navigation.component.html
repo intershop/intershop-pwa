@@ -2,7 +2,7 @@
   <li class="home hidden-xs">
     <a routerLink="/home" title="home"><span class="glyphicon glyphicon-home"></span></a>
   </li>
-  <li *ngFor="let category of categories" class="dropdown" [ngClass]="{'open' : category.isOpenedToggle}">
+  <li *ngFor="let category of categories" class="dropdown" [ngClass]="{'open' : category.isOpenedToggle}" #submenu (mouseover)="subMenuShow(submenu)" (mouseout)="subMenuHide(submenu)" (click)="subMenuHide(submenu)">
     <a [routerLink]="[categoriesService.generateCategoryRoute(category)]" [attr.data-testing-id]="category.id + '-link'" [ngStyle]="{'width' : (!category.hasOnlineSubCategories) ? '100%' : ''}">{{category.name}}</a>
     <a *ngIf="category.subCategories" (click)="category.isOpenedToggle = !category.isOpenedToggle" class="dropdown-toggle visible-xs">
       <span class="glyphicon" [ngClass]="category.isOpenedToggle ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
