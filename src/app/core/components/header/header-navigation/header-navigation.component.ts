@@ -27,4 +27,12 @@ export class HeaderNavigationComponent implements OnInit {
       });
     });
   }
+
+  subMenuShow(submenu) {
+    submenu.classList.add('hover');
+  }
+  subMenuHide(submenu) {
+    submenu.classList.remove('hover');
+  }
+
 }
