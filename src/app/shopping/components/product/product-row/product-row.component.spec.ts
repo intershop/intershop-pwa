@@ -96,4 +96,9 @@ describe('Product Row Component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('ish-product-image')).toBeTruthy();
   });
+
+  it('should test if product inventory component is getting rendered', () => {
+    fixture.detectChanges();
+    expect(element.getElementsByTagName('ish-product-inventory')).toBeTruthy();
+  });
 });

@@ -4,6 +4,7 @@ import { CategoryNavigationComponent } from './components/category//category-nav
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
+import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
@@ -23,8 +24,9 @@ import { DisableIconDirective } from './directives/disable-icon.directive';
     ProductListComponent,
     ProductPriceComponent,
     ProductRowComponent,
-    ProductTileComponent
-
+    ProductTileComponent,
+    ProductPriceComponent,
+    ProductInventoryComponent
   ],
   exports: [
     CategoryListComponent,
@@ -35,7 +37,8 @@ import { DisableIconDirective } from './directives/disable-icon.directive';
     ProductListComponent,
     ProductRowComponent,
     ProductTileComponent,
-    ProductPriceComponent
+    ProductPriceComponent,
+    ProductInventoryComponent
   ]
 })
 
