@@ -30,7 +30,6 @@ class ProductAndCatalogSpec extends GebReportingSpec {
      * Old Smoke Test:
      * testCatalogCategoryBrowsing(...)
      */
-    @Ignore // https://jira.intershop.de/browse/ISREST-157
     def "Browse in Catalogs"() {
 
         when: "I go to the home page and click on a catalog..."
