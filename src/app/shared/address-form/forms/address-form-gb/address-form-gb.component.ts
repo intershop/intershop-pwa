@@ -2,10 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'ish-address-gb',
-  templateUrl: './address-gb.component.html'
+  selector: 'ish-address-form-gb',
+  templateUrl: './address-form-gb.component.html'
 })
-export class AddressGBComponent implements OnInit {
+export class AddressFormGBComponent implements OnInit {
 
   @Input() addressForm: FormGroup;
   @Input() countryCode: string;

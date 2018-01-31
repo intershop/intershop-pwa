@@ -4,23 +4,23 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { InputComponent } from '../../../form-controls/input/input.component';
 import { SelectTitleComponent } from '../../../form-controls/select-title/select-title.component';
-import { AddressGBComponent } from './address-gb.component';
+import { AddressFormGBComponent } from './address-form-gb.component';
 
 describe('British Address Component', () => {
-  let component: AddressGBComponent;
-  let fixture: ComponentFixture<AddressGBComponent>;
+  let component: AddressFormGBComponent;
+  let fixture: ComponentFixture<AddressFormGBComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressGBComponent, InputComponent, SelectTitleComponent],
+      declarations: [AddressFormGBComponent, InputComponent, SelectTitleComponent],
       imports: [
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AddressGBComponent);
+        fixture = TestBed.createComponent(AddressFormGBComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 

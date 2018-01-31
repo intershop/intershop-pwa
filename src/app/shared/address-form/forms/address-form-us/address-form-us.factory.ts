@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AddressFormFactory } from '../address-form.factory';
 
 @Injectable()
-export class AddressUSFactory extends AddressFormFactory {
+export class AddressFormUSFactory extends AddressFormFactory {
 
   countryCode = 'US';
 

@@ -32,6 +32,10 @@ export class FormElement {
     this.uuid = UUID.UUID(); // uuid to make the id of the control unique
   }
 
+  get formControl(): AbstractControl {
+    return this.form.get(this.controlName);
+  }
+
   /*
    decides whether to show a required sign after the label in dependence of the markRequiredLabel
      returns true, if markRequiredLabel= 'on'

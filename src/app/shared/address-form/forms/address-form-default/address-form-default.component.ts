@@ -4,10 +4,10 @@ import { FormGroup } from '@angular/forms';
 import { Region } from '../../../../models/region/region.model';
 
 @Component({
-  selector: 'ish-address-default',
-  templateUrl: './address-default.component.html'
+  selector: 'ish-address-form-default',
+  templateUrl: './address-form-default.component.html'
 })
-export class AddressDefaultComponent implements OnInit {
+export class AddressFormDefaultComponent implements OnInit {
 
   @Input() addressForm: FormGroup;
   @Input() countryCode: string;

@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs/observable/of';
@@ -8,23 +8,26 @@ import { RegionData } from '../../../../../models/region/region.interface';
 import { RegionService } from '../../../../services/countries/region.service';
 import { InputComponent } from '../../../form-controls/input/input.component';
 import { SelectRegionComponent } from '../../../form-controls/select-region/select-region.component';
-import { AddressUSComponent } from './address-us.component';
+import { AddressFormDefaultComponent } from './address-form-default.component';
 
-describe('American Address Component', () => {
-  let component: AddressUSComponent;
-  let fixture: ComponentFixture<AddressUSComponent>;
+describe('Default Address Component', () => {
+  let component: AddressFormDefaultComponent;
+  let fixture: ComponentFixture<AddressFormDefaultComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     const regionServiceMock = mock(RegionService);
-    when(regionServiceMock.getRegions('US')).thenReturn(
+    when(regionServiceMock.getRegions('BG')).thenReturn(
       of(
-        { countryCode: 'US', regionCode: 'AL', name: 'Alabama' } as RegionData,
-        { countryCode: 'US', regionCode: 'TX', name: 'Texas' } as RegionData
+        { countryCode: 'BG', regionCode: '02', name: 'Burgas' } as RegionData,
+        { countryCode: 'BG', regionCode: '23', name: 'Sofia' } as RegionData
       )
     );
+    when(regionServiceMock.getRegions('IN')).thenReturn(
+      of()
+    );
     TestBed.configureTestingModule({
-      declarations: [AddressUSComponent, InputComponent, SelectRegionComponent],
+      declarations: [AddressFormDefaultComponent, InputComponent, SelectRegionComponent],
       providers: [
         { provide: RegionService, useFactory: () => instance(regionServiceMock) }
       ],
@@ -34,12 +37,12 @@ describe('American Address Component', () => {
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AddressUSComponent);
+        fixture = TestBed.createComponent(AddressFormDefaultComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 
         const addressForm = new FormGroup({
-          countryCode: new FormControl('US'),
+          countryCode: new FormControl('BG'),
           firstName: new FormControl(''),
           lastName: new FormControl(''),
           addressLine1: new FormControl(''),
@@ -82,11 +85,22 @@ describe('American Address Component', () => {
     expect(element.querySelector('input[data-testing-id=city]')).toBeTruthy('city is rendered');
     expect(element.querySelector('select[data-testing-id=state]')).toBeTruthy('state is rendered');
     expect(element.querySelector('input[data-testing-id=postalCode]')).toBeTruthy('postalCode is rendered');
+    expect(element.querySelector('ish-select-region')).toBeTruthy('region component is rendered');
   });
 
-  it('should display an apo/fpo popover link on creation', () => {
+  it('should set/unset required validator for state if countryCode has changed', fakeAsync(() => {
     fixture.detectChanges();
-    expect(element.querySelector('a[placement]')).toBeTruthy('popover link is shown');
+    tick();
+    expect(component.addressForm.get('state').validator).toBeTruthy('state control has a validator after countryCode has changed');
+    component.addressForm.get('countryCode').setValue('IN');
+    fixture.detectChanges();
+    tick();
+    expect(component.addressForm.get('state').validator).toBeFalsy('state control has no validator if countryCode is empty');
+  }));
+
+  it('should not render region component if no country is selected', () => {
+    component.addressForm.get('countryCode').setValue('');
+    fixture.detectChanges();
+    expect(element.querySelector('ish-select-region')).toBeFalsy('region component is not rendered');
   });
 });
-

@@ -1,13 +1,9 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-<<<<<<< HEAD
-import { map } from 'rxjs/operators';
-=======
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
->>>>>>> Complete rework of registration page
 import { Country } from '../../../../models/country/country.model';
 import { CountryService } from '../../../services/countries/country.service';
 import { SelectOption } from '../select/select-option.interface';

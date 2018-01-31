@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-export const ADDRESS_FACTORY = new InjectionToken<AddressFormFactory>('Address Form Factory');
+export const ADDRESS_FORM_FACTORY = new InjectionToken<AddressFormFactory>('Address Form Factory');
 
 export abstract class AddressFormFactory {
   countryCode = 'default';
