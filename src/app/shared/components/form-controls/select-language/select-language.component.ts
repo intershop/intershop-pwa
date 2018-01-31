@@ -1,9 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 
 import { SelectOption } from '../select/select-option.interface';
-import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-language',
@@ -14,7 +12,7 @@ export class SelectLanguageComponent implements OnChanges {
   @Input() form: FormGroup;
   @Input() languages: any[]; // TODO: type
   @Input() controlName = 'preferredLanguage';
-  @Input() label = 'Preferred Language';
+  @Input() label = 'account.default_address.preferred_language.label';
   @Input() errorMessages = { required: 'Please select a preferred language' };  // ToDo: Translation key
 
   options: SelectOption[] = [];

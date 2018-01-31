@@ -5,24 +5,13 @@ import { ADDRESS_FORM_FACTORY, AddressFormFactory } from './forms/address-form.f
 @Injectable()
 export class AddressFormService {
 
-  private countriesForDefault = [
-    {
-      countryCode: 'CN',
-      countryLabel: 'China'
-    },
-    {
-      countryCode: 'IN',
-      countryLabel: 'Indien'
-    }
-  ];
-
   constructor( @Inject(ADDRESS_FORM_FACTORY) private factories: AddressFormFactory[]) { }
 
   replaceGroupForCountry(group: FormGroup, controlName: string, countryCode: string) {
     const oldFormValue = group.get(controlName).value;
     const addressGroup = this.getFactory(countryCode).getGroup(oldFormValue);
 
-    group.setControl(controlName, group);
+    group.setControl(controlName, addressGroup);
   }
 
   getFactory(countryCode: string = 'default'): AddressFormFactory {

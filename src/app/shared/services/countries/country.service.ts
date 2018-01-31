@@ -15,7 +15,7 @@ export class CountryService {
     ToDo: get Countries via REST, result should be locale dependent
   */
   constructor() {
-    this.countries$ = Observable.of([
+    this.countries$ = of([
       { countryCode: 'BG', name: 'Bulgaria' } as CountryData,
       { countryCode: 'DE', name: 'Germany' } as CountryData,
       { countryCode: 'FR', name: 'France' } as CountryData,

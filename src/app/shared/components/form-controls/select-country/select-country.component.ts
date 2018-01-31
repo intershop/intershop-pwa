@@ -1,13 +1,8 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 
 import { Country } from '../../../../models/country/country.model';
-import { CountryService } from '../../../services/countries/country.service';
 import { SelectOption } from '../select/select-option.interface';
-import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-country',

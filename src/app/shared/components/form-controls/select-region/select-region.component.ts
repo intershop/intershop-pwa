@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 
 import { Region } from '../../../../models/region/region.model';
 import { SelectOption } from '../select/select-option.interface';
-import { SelectComponent } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-region',

@@ -7,7 +7,7 @@ import { InputComponent } from '../../../../shared/components/form-controls/inpu
 import { SelectSecurityQuestionComponent } from '../../../../shared/components/form-controls/select-security-question/select-security-question.component';
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form.component';
 
-/*describe('Credentials Form Component', () => {
+describe('Credentials Form Component', () => {
   let component: RegistrationCredentialsFormComponent;
   let fixture: ComponentFixture<RegistrationCredentialsFormComponent>;
   let element: HTMLElement;
@@ -44,7 +44,7 @@ import { RegistrationCredentialsFormComponent } from './registration-credentials
     expect(function() { fixture.detectChanges(); }).toThrow();
   });
 
-  it('should create credentials form on creation', () => {
+  xit('should create credentials form on creation', () => {
     expect(component.credentialsForm).toBeUndefined('credentials form has not been created before init');
     fixture.detectChanges();
     expect(component.credentialsForm.get('login')).toBeTruthy('credentials form contains a login control');
@@ -56,7 +56,7 @@ import { RegistrationCredentialsFormComponent } from './registration-credentials
     expect(component.credentialsForm.get('newsletter')).toBeTruthy('credentials form contains a newsletter control');
   });
 
-  it('should display form input fields on creation', () => {
+  xit('should display form input fields on creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('input[data-testing-id=login]')).toBeTruthy('login is rendered');
     expect(element.querySelector('input[data-testing-id=loginConfirmation]')).toBeTruthy('loginConfirmation is rendered');
@@ -66,4 +66,3 @@ import { RegistrationCredentialsFormComponent } from './registration-credentials
     expect(element.querySelector('input[data-testing-id=securityQuestionAnswer]')).toBeTruthy('securityQuestionAnswer is rendered');
   });
 });
-*/
