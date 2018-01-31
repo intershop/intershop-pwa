@@ -1,4 +1,4 @@
-<div class="form-group has-feedback" [formGroup]="form" [ishVisualizeErrors]="formControl">
+<div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
   <label *ngIf="label" [for]="controlName+'-'+uuid" class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
   <div [ngClass]="inputClass">
     <input
@@ -10,7 +10,7 @@
       [maxlength]="maxlength"
       [attr.autocomplete]="autocomplete">
       <ng-content></ng-content>
-      <ish-form-control-error [messages]="errorMessages" [control]="formControl"></ish-form-control-error>
+      <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
   </div>
 </div>
 

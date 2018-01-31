@@ -2,16 +2,16 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
-import { FormVisualizeErrorsDirective } from './form-visualize-errors.directive';
+import { ShowFormFeedbackDirective } from './show-form-feedback.directive';
 
 @Component({
-  template: `<div [ishVisualizeErrors]="control"></div>`
+  template: `<div [ishShowFormFeedback]="control"></div>`
 })
 class TestComponent {
   control = new FormControl('', Validators.required);
 }
 
-describe('FormVisualizeErrorsDirective', () => {
+describe('ShowFormFeedbackDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
 
@@ -23,7 +23,7 @@ describe('FormVisualizeErrorsDirective', () => {
       imports: [BrowserModule],
       declarations: [
         TestComponent,
-        FormVisualizeErrorsDirective
+        ShowFormFeedbackDirective
       ]
     });
   });

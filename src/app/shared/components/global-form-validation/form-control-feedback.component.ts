@@ -10,10 +10,10 @@ import { FormErrorMessages } from './form-error-messages.interface';
 
 
 @Component({
-  selector: 'ish-form-control-error',
-  templateUrl: './form-control-error.component.html'
+  selector: 'ish-form-control-feedback',
+  templateUrl: './form-control-feedback.component.html'
 })
-export class FormControlErrorComponent implements DoCheck {
+export class FormControlFeedbackComponent implements DoCheck {
   @Input() messages: FormErrorMessages = {};
   @Input() control: AbstractControl;
 

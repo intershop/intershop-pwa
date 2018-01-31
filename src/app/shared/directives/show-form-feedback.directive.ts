@@ -2,12 +2,12 @@ import { Directive, HostBinding, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
 @Directive({
-  selector: '[ishVisualizeErrors]'
+  selector: '[ishShowFormFeedback]'
 })
-export class FormVisualizeErrorsDirective {
+export class ShowFormFeedbackDirective {
 
   // tslint:disable-next-line:no-input-rename
-  @Input('ishVisualizeErrors') control: AbstractControl;
+  @Input('ishShowFormFeedback') control: AbstractControl;
 
   @HostBinding('class.has-error') get hasErrors() {
     return this.control.invalid && this.control.dirty;
