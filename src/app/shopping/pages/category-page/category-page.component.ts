@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import * as fromStore from '../../store';
@@ -13,7 +14,7 @@ import * as fromStore from '../../store';
 export class CategoryPageComponent implements OnInit {
 
   category$: Observable<Category>;
-  categoryPath: Category[] = []; // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
+  categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
 
   // TODO: these properties were copied from family-page.component and their relevance needs to be evaluated
   listView: Boolean;
@@ -29,5 +30,8 @@ export class CategoryPageComponent implements OnInit {
     this.category$ = this.store.select(fromStore.getSelectedCategory).pipe(
       filter(category => !!category)
     );
+
+    // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
+    this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
   }
 }
