@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
-import { CategoryPathResolver } from '../../resolvers/category-path.resolver';
-import { ProductResolver } from '../../resolvers/product.resolver';
+import { ProductGuard } from '../../guards/product.guard';
 import { ProductPageComponent } from './product-page.component';
 
 export const productPageRoutes: Routes = [
   {
     path: ':sku',
-    component: ProductPageComponent,
-    resolve: {
-      product: ProductResolver
-    }
+    canActivate: [ProductGuard],
+    component: ProductPageComponent
   }
 ];
