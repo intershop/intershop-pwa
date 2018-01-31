@@ -1,7 +1,7 @@
-import { CategoriesEffects } from './categories.effect';
+import { CategoriesEffects } from './categories.effects';
 import { ProductsEffects } from './products.effects';
 
 export const effects: any[] = [CategoriesEffects, ProductsEffects];
 
-export * from './categories.effect';
+export * from './categories.effects';
 export * from './products.effects';
