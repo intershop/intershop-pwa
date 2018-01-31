@@ -19,7 +19,7 @@ export class FormControlErrorComponent implements DoCheck {
 
   errors: Observable<string>[];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
   ngDoCheck() {
     if (this.control.dirty) {

@@ -11,7 +11,7 @@ export abstract class AddressFormFactory {
     return new FormGroup({});
   }
 
-  getGroup(value?: {[key: string]: any}): FormGroup {
+  getGroup(value?: { [key: string]: any }): FormGroup {
     const newGroup = this.group();
     if (value) { newGroup.patchValue(value); }
     return newGroup;

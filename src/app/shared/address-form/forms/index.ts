@@ -22,16 +22,11 @@ export const components = [
   AddressFormUSComponent,
 ];
 
-const factories = [
-  AddressFormDefaultFactory,
-  AddressFormDEFactory,
-  AddressFormFRFactory,
-  AddressFormGBFactory,
-  AddressFormUSFactory,
+
+export const factoryProviders = [
+  { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormDefaultFactory, multi: true },
+  { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormDEFactory, multi: true },
+  { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormFRFactory, multi: true },
+  { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormGBFactory, multi: true },
+  { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormUSFactory, multi: true },
 ];
-
-/**********************************/
-
-export const factoryProviders = factories.map(f => (
-  { provide: ADDRESS_FORM_FACTORY, useClass: f, multi: true }
-));

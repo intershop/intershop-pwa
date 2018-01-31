@@ -13,6 +13,6 @@ import { SharedModule } from '../shared.module';
   imports: [CommonModule, ReactiveFormsModule, SharedModule],
   declarations: [...components],
   exports: [...components],
-  providers: [...factoryProviders, AddressFormService]
+  providers: [AddressFormService, ...factoryProviders]
 })
 export class AddressFormModule { }

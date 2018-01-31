@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal bv-form" novalidate="novalidate">
+
+  <!--ish-email-password component-->
+  <h2>{{'account.register.email_password.heading' | translate}}</h2>
+  <p>{{'account.register.email_password.message' | translate}}</p>
+  <div class="section">
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <ish-registration-credentials-form
+          [parentForm]="form"
+          controlName="credentials"
+          [emailOptIn]="emailOptIn"></ish-registration-credentials-form>
+      </div>
+    </div>
+  </div>
+
+
+  <h2>{{'account.register.address.headding' | translate}}</h2>
+  <div class="section">
+    <p>{{'account.register.address.message' | translate}}</p>
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <ish-address-form
+          [parentForm]="form"
+          controlName="address"
+          [countryCode]="countryCode"
+          [regions]="regions"
+          [countries]="countries"></ish-address-form>
+
+        <!--
+        <ish-input
+          controlName="phoneHome"
+          [form]="form"
+          label="Phone"></ish-input>
+
+        <ish-registration-personal-form
+        [parentForm]="form"
+        [languages]="languages"></ish-registration-personal-form>
+
+        <ish-captcha [parentForm]="form" controlName="captcha"></ish-captcha>
+        -->
+
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-8">
+            <input type="submit" [disabled]="formDisabled" class="btn btn-primary" value="{{'account.create.button.label' | translate}}" />
+            <input type="button" class="btn btn-default" value="{{'account.cancel.link' | translate}}" (click)="cancelForm()" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
