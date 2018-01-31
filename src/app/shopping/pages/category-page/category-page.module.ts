@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
+import { CategoryPathGuard } from '../../guards/category-path.guard';
 import { CategoryGuard } from '../../guards/category.guard';
 import { ProductsService } from '../../services/products/products.service';
 import { ShoppingSharedModule } from '../../shopping-shared.module';
@@ -15,6 +16,7 @@ import { categoryPageRoutes } from './category-page.routes';
   ],
   providers: [
     CategoryGuard,
+    CategoryPathGuard,
     ProductsService
   ],
   declarations: [
