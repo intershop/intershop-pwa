@@ -1,2 +1,2 @@
-export * from './categories.selector';
+export * from './categories.selectors';
 export * from './products.selectors';

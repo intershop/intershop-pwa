@@ -21,7 +21,7 @@ export class LoadCategorySuccess implements Action {
   constructor(public payload: Category) { }
 }
 
-export type CategoriesAction =
+export type CategoryAction =
   LoadCategory |
   LoadCategoryFail |
   LoadCategorySuccess;

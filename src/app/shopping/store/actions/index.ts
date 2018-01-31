@@ -1,2 +1,2 @@
-export * from './categories.action';
+export * from './categories.actions';
 export * from './products.actions';

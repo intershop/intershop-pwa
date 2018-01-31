@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
-import * as categoriesActions from '../actions/categories.action';
+import * as categoriesActions from '../actions/categories.actions';
 
 @Injectable()
 export class CategoriesEffects {

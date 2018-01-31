@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 import * as fromRoot from '../../../core/store';
 import { Product } from '../../../models/product/product.model';
 import * as fromFeature from '../reducers';
-import * as fromProducts from '../reducers/products.reducers';
+import * as fromProducts from '../reducers/products.reducer';
 
 export const getProductsState = createSelector(
   fromFeature.getShoppingState, (state: fromFeature.ShoppingState) => state.products

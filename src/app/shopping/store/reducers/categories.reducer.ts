@@ -1,5 +1,5 @@
 import { Category } from '../../../models/category/category.model';
-import * as fromCategories from '../actions/categories.action';
+import * as fromCategories from '../actions/categories.actions';
 
 export interface CategoriesState {
   entities: { [categoryUniqueId: string]: Category };
@@ -15,7 +15,7 @@ export const initialState: CategoriesState = {
 
 export function reducer(
   state = initialState,
-  action: fromCategories.CategoriesAction
+  action: fromCategories.CategoryAction
 ): CategoriesState {
   switch (action.type) {
 

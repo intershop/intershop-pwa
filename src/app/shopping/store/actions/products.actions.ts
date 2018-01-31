@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
 
-
 // load product
 export const LOAD_PRODUCT = '[Shopping] Load Product';
 export const LOAD_PRODUCT_FAIL = '[Shopping] Load Product Fail';
@@ -22,7 +21,7 @@ export class LoadProductSuccess implements Action {
   constructor(public payload: Product) { }
 }
 
-export type ProductsActions =
+export type ProductAction =
   LoadProduct |
   LoadProductFail |
   LoadProductSuccess;
