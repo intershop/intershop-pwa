@@ -28,7 +28,6 @@ export class AddressFormService {
   getFactory(countryCode: string = 'default'): AddressFormFactory {
     let factory = this.findFactory(countryCode);
     if (!factory) { factory = this.findFactory('default'); }
-    console.log('selected factory', factory.countryCode, 'for countryCode', countryCode);
     return factory;
   }
 

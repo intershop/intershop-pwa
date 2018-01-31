@@ -20,7 +20,6 @@ export class SelectLanguageComponent implements OnChanges {
   options: SelectOption[] = [];
 
   ngOnChanges(c: SimpleChanges) {
-    console.log(c);
     if (c.languages) {
       this.options = this.mapToOptions(this.languages);
     }
