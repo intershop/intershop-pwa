@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
@@ -13,7 +13,8 @@ export class CategoriesEffects {
   ) { }
 
   @Effect()
-  loadCategory$ = this.actions$.ofType(categoriesActions.LOAD_CATEGORY).pipe(
+  loadCategory$ = this.actions$.pipe(
+    ofType(categoriesActions.LOAD_CATEGORY),
     map((action: categoriesActions.LoadCategory) => action.payload),
     switchMap(categoryUniqueId => {
       return this.categoryService.getCategory(categoryUniqueId).pipe(
