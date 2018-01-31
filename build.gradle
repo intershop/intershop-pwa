@@ -212,7 +212,8 @@ task tsformat(type:NodeTask, description:'format files using typescript-formatte
     args = ['-r']
     inputs.files('src')
     doFirst {
-        if (org.apache.commons.lang.SystemUtils.IS_OS_LINUX) {
+        if (org.apache.commons.lang.SystemUtils.IS_OS_LINUX ||
+            org.apache.commons.lang.SystemUtils.IS_OS_MAC_OSX) {
             file("$projectDir/tsfmt.json").text = '{ "newLineCharacter": "\\n" }'
         }
     }
