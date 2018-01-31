@@ -4,9 +4,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AddressFormFactory } from '../address-form.factory';
 
 @Injectable()
-export class AddressDEFactory extends AddressFormFactory {
+export class AddressFormFRFactory extends AddressFormFactory {
 
-  countryCode = 'DE';
+  countryCode = 'FR';
 
   constructor(private fb: FormBuilder) {
     super();
@@ -19,7 +19,6 @@ export class AddressDEFactory extends AddressFormFactory {
       lastName: ['', Validators.required],
       addressLine1: ['', Validators.required],
       addressLine2: [],
-      addressLine3: [],
       postalCode: ['', [Validators.required, Validators.pattern('[0-9]{5}')]],
       city: ['', Validators.required]
     });

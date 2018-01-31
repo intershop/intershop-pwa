@@ -1,37 +1,37 @@
-import { ADDRESS_FACTORY } from './address-form.factory';
+import { ADDRESS_FORM_FACTORY } from './address-form.factory';
 
-import { AddressDEComponent } from './address-de/address-de.component';
-import { AddressDefaultComponent } from './address-default/address-default.component';
+import { AddressFormDEComponent } from './address-form-de/address-form-de.component';
+import { AddressFormDefaultComponent } from './address-form-default/address-form-default.component';
+import { AddressFormFRComponent } from './address-form-fr/address-form-fr.component';
+import { AddressFormGBComponent } from './address-form-gb/address-form-gb.component';
+import { AddressFormUSComponent } from './address-form-us/address-form-us.component';
 import { AddressFormComponent } from './address-form.component';
-import { AddressFRComponent } from './address-fr/address-fr.component';
-import { AddressGBComponent } from './address-gb/address-gb.component';
-import { AddressUSComponent } from './address-us/address-us.component';
 
-import { AddressDEFactory } from './address-de/address-de.factory';
-import { AddressDefaultFactory } from './address-default/address-default.factory';
-import { AddressFRFactory } from './address-fr/address-fr.factory';
-import { AddressGBFactory } from './address-gb/address-gb.factory';
-import { AddressUSFactory } from './address-us/address-us.factory';
+import { AddressFormDEFactory } from './address-form-de/address-form-de.factory';
+import { AddressFormDefaultFactory } from './address-form-default/address-form-default.factory';
+import { AddressFormFRFactory } from './address-form-fr/address-form-fr.factory';
+import { AddressFormGBFactory } from './address-form-gb/address-form-gb.factory';
+import { AddressFormUSFactory } from './address-form-us/address-form-us.factory';
 
 export const components = [
   AddressFormComponent,
-  AddressDefaultComponent,
-  AddressDEComponent,
-  AddressFRComponent,
-  AddressGBComponent,
-  AddressUSComponent,
+  AddressFormDefaultComponent,
+  AddressFormDEComponent,
+  AddressFormFRComponent,
+  AddressFormGBComponent,
+  AddressFormUSComponent,
 ];
 
 const factories = [
-  AddressDefaultFactory,
-  AddressDEFactory,
-  AddressFRFactory,
-  AddressGBFactory,
-  AddressUSFactory,
+  AddressFormDefaultFactory,
+  AddressFormDEFactory,
+  AddressFormFRFactory,
+  AddressFormGBFactory,
+  AddressFormUSFactory,
 ];
 
 /**********************************/
 
 export const factoryProviders = factories.map(f => (
-  { provide: ADDRESS_FACTORY, useClass: f, multi: true }
+  { provide: ADDRESS_FORM_FACTORY, useClass: f, multi: true }
 ));
