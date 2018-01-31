@@ -1,7 +1,7 @@
 <ng-container *ngIf="category$ | async as category;">
 
 
-<ish-breadcrumb [category]="category" [categoryPath]="categoryPath"></ish-breadcrumb>
+<ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
 <div class="marketing-area"></div>
 
@@ -11,7 +11,7 @@
     <div class="col-sm-3">
       <div class="navigation-panel">
         <h1>{{category.name}}</h1>
-        <ish-category-navigation [category]="category" [categoryPath]="categoryPath" [categoryNavigationLevel]="0"></ish-category-navigation>
+        <ish-category-navigation [category]="category" [categoryPath]="categoryPath$ | async" [categoryNavigationLevel]="0"></ish-category-navigation>
       </div>
     </div>
 

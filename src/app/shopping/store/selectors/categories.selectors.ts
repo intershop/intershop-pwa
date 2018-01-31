@@ -21,6 +21,26 @@ export const getSelectedCategory = createSelector(
   }
 );
 
+export const getSelectedCategoryPath = createSelector(
+  getCategoryEntities,
+  fromRoot.getRouterState,
+  (entities, router): Category[] => {
+    const categories: Category[] = [];
+    const categoryUniqueId = router.state.params.categoryUniqueId;
+    if (categoryUniqueId) {
+      let categoryPathId = '';
+      for (const categoryId of categoryUniqueId.split('.')) {
+        categoryPathId = categoryPathId + categoryId;
+        if (entities[categoryPathId]) {
+          categories.push(entities[categoryPathId]);
+        }
+        categoryPathId = categoryPathId + '.';
+      }
+    }
+    return categories;
+  }
+);
+
 export const getCategoryLoaded = createSelector(
   getCategoryState,
   fromCategories.getCategoryLoaded
