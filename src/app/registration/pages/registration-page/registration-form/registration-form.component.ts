@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 
 import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../../core/configurations/injection-keys';
 import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
@@ -7,7 +8,6 @@ import { Country } from '../../../../models/country/country.model';
 import { Region } from '../../../../models/region/region.model';
 import { AddressFormService } from '../../../../shared/address-form';
 import { SpecialValidators } from '../../../../shared/validators/special-validators';
-import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'ish-registration-form',
@@ -37,8 +37,8 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.form = this.fb.group({
       credentials: this.fb.group({
-        login: ['', [Validators.required, Validators.email]],
-        loginConfirmation: ['', [Validators.required, Validators.email]],
+        login: ['', [Validators.required, CustomValidators.email]],
+        loginConfirmation: ['', [Validators.required, CustomValidators.email]],
         password: ['', [Validators.required, SpecialValidators.password]],
         passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
         securityQuestion: ['', [Validators.required]],

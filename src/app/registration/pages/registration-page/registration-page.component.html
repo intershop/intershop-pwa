@@ -1,44 +1,14 @@
 <h1>{{'account.register.heading' | translate}}</h1>
 <p>{{'account.register.message' | translate}}</p>
+
 <div class="section" data-testing-id="account-create-full-page">
-  <form [formGroup]="registrationForm" (ngSubmit)="submitForm()" class="form-horizontal bv-form" novalidate="novalidate">
-    <!--ish-email-password component-->
-    <h2>{{'account.register.email_password.heading' | translate}}</h2>
-    <p>{{'account.register.email_password.message' | translate}}</p>
-    <div class="section">
-      <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10">
-          <ish-registration-credentials-form [parentForm]="registrationForm"></ish-registration-credentials-form>
-        </div>
-      </div>
-    </div>
-
-    <h2>{{'account.register.address.headding' | translate}}</h2>
-    <div class="section">
-      <p>{{'account.register.address.message' | translate}}</p>
-      <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10">
-          <ish-address-form [parentForm]="registrationForm"></ish-address-form>
-
-          <!-- ToDo: preferredLanguage = preferredLocale, birthday form control -->
-          <!--<ish-registration-personal-form [parentForm]="registrationForm"></ish-registration-personal-form>-->
-
-          <!-- open task: see #ISREST-77 -->
-          <!--<div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
-              <ish-captcha (isValid)="isCaptchaValid = $event"></ish-captcha>
-            </div>
-          </div>-->
-
-          <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
-              <input type="submit" [disabled]="registrationForm.invalid && isDirty" class="btn btn-primary" value="{{'account.create.button.label' | translate}}" />
-              <input type="button" class="btn btn-default" value="{{'account.cancel.link' | translate}}" (click)="cancelForm()" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
+  <ish-registration-form
+    [countries]="countries$ | async"
+    [languages]="languages$ | async"
+    [regions]="regionsForSelectedCountry$ | async"
+    [emailOptIn]="emailOptIn"
+    (create)="onCreate($event)"
+    (cancel)="onCancel()"
+    (countryChange)="updateRegions($event)">
+  </ish-registration-form>
 </div>
-<!-- {{registrationForm.value | json}} -->

@@ -7,7 +7,7 @@ import { InputComponent } from '../../../../shared/components/form-controls/inpu
 import { SelectSecurityQuestionComponent } from '../../../../shared/components/form-controls/select-security-question/select-security-question.component';
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form.component';
 
-describe('Credentials Form Component', () => {
+/*describe('Credentials Form Component', () => {
   let component: RegistrationCredentialsFormComponent;
   let fixture: ComponentFixture<RegistrationCredentialsFormComponent>;
   let element: HTMLElement;
@@ -66,3 +66,4 @@ describe('Credentials Form Component', () => {
     expect(element.querySelector('input[data-testing-id=securityQuestionAnswer]')).toBeTruthy('securityQuestionAnswer is rendered');
   });
 });
+*/

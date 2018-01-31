@@ -4,7 +4,7 @@ import { USE_SIMPLE_ACCOUNT } from '../core/configurations/injection-keys';
 import { LogoutGuard } from '../core/guards/logout.guard';
 
 const routes: Routes = [
-  { path: 'register', loadChildren: 'app/registration/pages/registration-page-revised/registration-page.module#RegistrationPageModule' },
+  { path: 'register', loadChildren: 'app/registration/pages/registration-page/registration-page.module#RegistrationPageModule' },
   { path: 'login', loadChildren: 'app/registration/pages/login-page/login-page.module#LoginPageModule' },
   { path: 'logout', loadChildren: 'app/shopping/pages/home-page/home-page.module#HomePageModule', canActivate: [LogoutGuard] },
 ];
