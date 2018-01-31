@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
-import { CategoryPathResolver } from '../../resolvers/category-path.resolver';
-import { ProductResolver } from '../../resolvers/product.resolver';
+import { ProductGuard } from '../../guards/product.guard';
 import { ProductsService } from '../../services/products/products.service';
 import { ShoppingSharedModule } from '../../shopping-shared.module';
 import { ProductPageComponent } from './product-page.component';
@@ -18,8 +17,7 @@ import { productPageRoutes } from './product-page.routes';
     ProductPageComponent
   ],
   providers: [
-    ProductResolver,
-    CategoryPathResolver,
+    ProductGuard,
     ProductsService
   ]
 })

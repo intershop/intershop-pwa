@@ -1,4 +1,6 @@
-<ish-breadcrumb [product]="product" [categoryPath]="categoryPath"></ish-breadcrumb>
+<ng-container *ngIf="product$ | async as product;">
+
+<ish-breadcrumb [product]="product" [category]="category$ | async" [categoryPath]="categoryPath"></ish-breadcrumb>
 
 <h1>{{product.name}}</h1>
 
@@ -9,3 +11,5 @@
 <ish-product-inventory [product]="product"></ish-product-inventory>
 
 <ish-product-shipment [product]="product"></ish-product-shipment>
+
+</ng-container>
