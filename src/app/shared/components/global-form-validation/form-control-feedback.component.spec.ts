@@ -6,11 +6,11 @@ import { BrowserModule, By } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { FormControlErrorComponent } from './form-control-error.component';
+import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
-describe('FormControlErrorComponent', () => {
-  let fixture: ComponentFixture<FormControlErrorComponent>;
-  let component: FormControlErrorComponent;
+describe('FormControlFeedbackComponent', () => {
+  let fixture: ComponentFixture<FormControlFeedbackComponent>;
+  let component: FormControlFeedbackComponent;
   let translateService: TranslateService;
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('FormControlErrorComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BrowserModule],
-      declarations: [FormControlErrorComponent],
+      declarations: [FormControlFeedbackComponent],
       providers: [
         { provide: TranslateService, useFactory: () => instance(translateService) }
       ]
@@ -34,7 +34,7 @@ describe('FormControlErrorComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormControlErrorComponent);
+    fixture = TestBed.createComponent(FormControlFeedbackComponent);
     component = fixture.componentInstance;
 
     component.control = new FormControl('', [

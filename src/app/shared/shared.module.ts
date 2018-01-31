@@ -12,8 +12,8 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { InputComponent } from './components/form-controls/input/input.component';
 import { SelectCountryComponent } from './components/form-controls/select-country/select-country.component';
 import { SelectComponent } from './components/form-controls/select/select.component';
-import { FormControlErrorComponent } from './components/global-form-validation/form-control-error.component';
-import { FormVisualizeErrorsDirective } from './directives/form-visualize-errors.directive';
+import { FormControlFeedbackComponent } from './components/global-form-validation/form-control-feedback.component';
+import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
 
@@ -37,8 +37,8 @@ import { SelectTitleComponent } from './components/form-controls/select-title/se
     PopoverModule,
   ],
   declarations: [
-    FormControlErrorComponent,
-    FormVisualizeErrorsDirective,
+    FormControlFeedbackComponent,
+    ShowFormFeedbackDirective,
     InputComponent,
     SelectComponent,
     SelectCountryComponent,
@@ -67,8 +67,8 @@ import { SelectTitleComponent } from './components/form-controls/select-title/se
     SelectLanguageComponent,
     SelectRegionComponent,
     BreadcrumbComponent,
-    FormControlErrorComponent,
-    FormVisualizeErrorsDirective,
+    FormControlFeedbackComponent,
+    ShowFormFeedbackDirective,
   ],
   providers: [
     CountryService,
