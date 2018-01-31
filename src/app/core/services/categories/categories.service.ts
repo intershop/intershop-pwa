@@ -85,6 +85,7 @@ export class CategoriesService {
     return forkJoin(categories$);
   }
 
+  // TODO: needs to be reworked in regards to the category routing
   /**
    * Helper function to generate the applications category route from the categories REST API uri
    * or alternatively from an additionally given categoryPath if no uri is available.
@@ -96,7 +97,10 @@ export class CategoriesService {
     let categoryIdPath = '';
     let categoryIdPathIsValid = false;
     if (category) {
-      if (category.uri) {
+      if (category.uniqueId) {
+        categoryIdPath = '/' + category.uniqueId;
+        categoryIdPathIsValid = true;
+      } else if (category.uri) {
         categoryIdPath = category.uri.split(/\/categories[^\/]*/)[1];
         categoryIdPathIsValid = true;
       } else if (categoryPath && categoryPath.length) {
