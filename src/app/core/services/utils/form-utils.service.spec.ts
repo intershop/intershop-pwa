@@ -9,7 +9,7 @@ describe('Form Utils Service', () => {
   });
 
   describe('array utils', () => {
-    it('should diff arrays', () => {
+    it('should return diff for two arrays', () => {
       const a = [1, 2, 3, 4, 5, 6];
       const b = [4, 5, 6, 7, 8, 9];
       const expected = [1, 2, 3];
@@ -18,7 +18,7 @@ describe('Form Utils Service', () => {
       expect(result).toEqual(expected);
     });
 
-    it('should intersect arrays', () => {
+    it('should return intersection for two arrays', () => {
       const a = [1, 2, 3, 4, 5, 6];
       const b = [4, 5, 6, 7, 8, 9];
       const expected = [4, 5, 6];
@@ -30,7 +30,7 @@ describe('Form Utils Service', () => {
 
 
   describe('markAsDirtyRecursive', () => {
-    it('should mark flat form group dirty', () => {
+    it('should mark all controls dirty for flat form group', () => {
       const group = new FormGroup({
         ctrl: new FormControl('')
       });
@@ -41,7 +41,7 @@ describe('Form Utils Service', () => {
       expect(ctrl.dirty).toBeTruthy();
     });
 
-    it('should mark nested form group dirty', () => {
+    it('should mark all controls dirty for nested form group', () => {
       const group = new FormGroup({
         foo: new FormGroup({
           ctrlA: new FormControl(''),

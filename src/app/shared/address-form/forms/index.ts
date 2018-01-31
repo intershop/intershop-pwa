@@ -1,3 +1,4 @@
+/* tslint:disable:no-barrel-files */
 import { ADDRESS_FORM_FACTORY } from './address-form.factory';
 
 import { AddressFormDEComponent } from './address-form-de/address-form-de.component';

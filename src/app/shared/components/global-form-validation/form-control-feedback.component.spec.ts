@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { of } from 'rxjs/observable/of';
+import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
 describe('FormControlFeedbackComponent', () => {
@@ -17,10 +16,10 @@ describe('FormControlFeedbackComponent', () => {
     translateService = mock(TranslateService);
 
     when(translateService.get('requiredkey'))
-      .thenReturn(Observable.of('requiredmessage'));
+      .thenReturn(of('requiredmessage'));
 
     when(translateService.get('lengthkey'))
-      .thenReturn(Observable.of('lengthmessage'));
+      .thenReturn(of('lengthmessage'));
   });
 
   beforeEach(() => {
@@ -86,7 +85,7 @@ describe('FormControlFeedbackComponent', () => {
     return fixture.debugElement.query(By.css('i.glyphicon'));
   }
 
-  it('should display contextual icons', () => {
+  it('should display contextual icons for control', () => {
     let icon;
 
     // form invalid and pristine

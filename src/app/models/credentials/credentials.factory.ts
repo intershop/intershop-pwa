@@ -1,4 +1,3 @@
-import { FormGroup } from '@angular/forms';
 import { FactoryHelper } from '../factory-helper';
 import { CredentialsData } from './credentials.interface';
 import { Credentials } from './credentials.model';

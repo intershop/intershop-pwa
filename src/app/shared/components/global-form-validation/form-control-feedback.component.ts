@@ -1,10 +1,7 @@
-import { Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, DoCheck, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { from } from 'rxjs/observable/from';
-import { map, mergeAll, switchMap } from 'rxjs/operators';
 
 import { FormErrorMessages } from './form-error-messages.interface';
 
@@ -17,7 +14,8 @@ export class FormControlFeedbackComponent implements DoCheck {
   @Input() messages: FormErrorMessages = {};
   @Input() control: AbstractControl;
 
-  errors: Observable<string>[];
+  /* tslint:disable-next-line:dollar-for-observables */
+  errors: Array<Observable<string>>;
 
   constructor(private translate: TranslateService) { }
 

@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AddressFormService } from './address-form.service';
 import { components, factoryProviders } from './forms';
-import { AddressFormComponent } from './forms/address-form.component';
 
 import { SharedModule } from '../shared.module';
 

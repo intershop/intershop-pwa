@@ -1,9 +1,10 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { ShowFormFeedbackDirective } from './show-form-feedback.directive';
 
+/* tslint:disable:prefer-mocks-instead-of-stubs-in-tests */
 @Component({
   template: `<div [ishShowFormFeedback]="control"></div>`
 })

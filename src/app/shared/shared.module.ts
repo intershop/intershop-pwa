@@ -17,7 +17,6 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
 
-import { AddressFormModule } from './address-form';
 import { SelectLanguageComponent } from './components/form-controls/select-language/select-language.component';
 import { SelectRegionComponent } from './components/form-controls/select-region/select-region.component';
 import { SelectSecurityQuestionComponent } from './components/form-controls/select-security-question/select-security-question.component';
