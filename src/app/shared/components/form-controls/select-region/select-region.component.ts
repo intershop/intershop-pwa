@@ -19,7 +19,6 @@ export class SelectRegionComponent implements OnChanges {
   options: SelectOption[] = [];
 
   ngOnChanges(c: SimpleChanges) {
-    console.log(c);
     if (c.regions) {
       this.options = this.mapToOptions(this.regions);
     }
