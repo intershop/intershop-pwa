@@ -1,11 +1,11 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { SelectOption } from '../select/select-option.interface';
-import { SelectComponent } from '../select/select.component';
+import { SelectOption } from '../select-option.interface';
+import { SelectComponent } from '../select.component';
 
 @Component({
   selector: 'ish-select-title',
-  templateUrl: '../select/select.component.html',
+  templateUrl: '../select.component.html',
 })
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
   @Input() countryCode: string;                     // required: component will only be rendered if set

@@ -70,7 +70,7 @@
 |   +---components
 |   |   +---forms
 |   |   |
-|   |   \---global-form-validation
+|   |   \---form-control-feedback
 |   |           form-control-feedback.component.spec.ts
 |   |           form-control-feedback.component.ts
 |   |           form-group-validation.component.ts
