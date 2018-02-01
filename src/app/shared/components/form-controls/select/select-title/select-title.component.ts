@@ -1,5 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs/Subscription';
 import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';
 
@@ -7,8 +12,10 @@ import { SelectComponent } from '../select.component';
   selector: 'ish-select-title',
   templateUrl: '../select.component.html',
 })
-export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
-  @Input() countryCode: string;                     // required: component will only be rendered if set
+export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit, OnDestroy {
+  @Input() countryCode: string;
+
+  optionsSubscription: Subscription;
 
   constructor(
     protected translate: TranslateService
@@ -25,10 +32,15 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
   }
 
   /*
-    refresh regions if country input changes
+    refresh titles if country input changes
   */
   ngOnChanges(changes: SimpleChanges) {
-    this.options = this.getTitleOptions();
+    this.optionsSubscription = this.getSalutations(this.countryCode)
+      .subscribe(opts => this.options = opts);
+  }
+
+  ngOnDestroy() {
+    this.optionsSubscription.unsubscribe();
   }
 
   /*
@@ -40,44 +52,37 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     this.errorMessages = this.errorMessages || { 'required': 'account.address.title.error.required' };
   }
 
-  /*
-    get salutation for the given country
-    returns (SelectOption[]) - salutation options
-  */
-  public getTitleOptions(): SelectOption[] {
-    let options: SelectOption[] = [];
-    const titles = this.getSalutations(this.countryCode);
 
-    if (titles) {
-      // Map title array to an array of type SelectOption
-      options = titles.map(title => {
-        return {
-          'label': title.label,
-          'value': title.value
-        };
-      });
+  // ToDo: replace this code, get titles from input property
+  // ToDo: react on locale switch
+  private getSalutations(countryCode): Observable<SelectOption[]> {
+    let salutationLabels = [
+      'account.salutation.ms.text',
+      'account.salutation.mr.text',
+      'account.salutation.mrs.text'
+    ];
+
+    // example for different sets of salutations for different countries
+    if (countryCode === 'FR') {
+      salutationLabels = [
+        'account.salutation.ms.text',
+        'account.salutation.mr.text'
+      ];
+    }
+
+    if (countryCode && salutationLabels.length) {
+      return combineLatest(
+        salutationLabels.map(label => this.translate.get(label))
+      ).pipe(
+        map(translations => translations.map(
+          (tr, i) => ({
+            label: salutationLabels[i],
+            value: tr
+          })
+        ))
+      );
     } else {
-      this.form.get('title').clearValidators();
+      return of([]);
     }
-    return options;
-  }
-
-  // ToDo: replace this code, return titles from a service
-  // ToDo: react on locale switch and close observables onDestroy
-  private getSalutations(countrycode) {
-    const salutations = [];
-    if (countrycode) {
-      this.translate.get('account.salutation.ms.text').subscribe(data => {
-        salutations[0] = { 'label': 'account.salutation.ms.text', 'value': data };
-      }).unsubscribe();
-      this.translate.get('account.salutation.mr.text').subscribe(data => {
-        salutations[1] = { 'label': 'account.salutation.mr.text', 'value': data };
-      }).unsubscribe();
-      this.translate.get('account.salutation.mrs.text').subscribe(data => {
-        salutations[2] = { 'label': 'account.salutation.mrs.text', 'value': data };
-      }).unsubscribe();
-      return salutations;
-    }
-    return [];
   }
 }
