@@ -13,8 +13,8 @@
 
       <div class="marketing-area"></div>
 
-      <h1 [innerHTML]="'account.overview.personal_message.text' | translate:{ '0':customer.getDisplayName() }"></h1>
-      <p>{{'account.overview.message.text' | translate }}</p>
+      <h1 [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (customer.firstName || customer.credentials.login)}"></h1>
+      <p>{{'account.overview.message.text' | translate}}</p>
 
       <div class="row account-dashboard">
         <div class="col-sm-3 col-xs-6 dashboard-item">
@@ -22,7 +22,7 @@
             <div class="circle-icon">
               <span class="glyphicon glyphicon-list-alt"></span>
             </div>
-            {{'account.order_history.link' | translate }}
+            {{'account.order_history.link' | translate}}
           </a>
         </div>
         <div class="col-sm-3 col-xs-6 dashboard-item">
@@ -30,13 +30,12 @@
             <div class="circle-icon">
               <span class="glyphicon glyphicon-cog"></span>
             </div>
-            {{'account.profile.link' | translate }}
+            {{'account.profile.link' | translate}}
           </a>
         </div>
       </div>
 
-      <p class="help-block">{{'account.overview.note.heading' | translate }}: {{'account.overview.note.text' | translate }}</p>
-      <!-- TODO: istext key="account.overview.note.text" parameter0="#URL(Action('ViewContent-Start'),Parameter('PageletEntryPointID','systempage.privacyPolicy.pagelet2-Page'))#" encoding="off" / -->
+      <p class="help-block">{{'account.overview.note.heading' | translate}}: <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span></p>
 
     </div>
   </div>
