@@ -24,12 +24,4 @@ export class Customer {
   getDisplayName(): string {
     return this.firstName || this.credentials.login;
   }
-
-  getFullDisplayName(): string {
-    if (this.title !== null) {
-      return this.title + ' ' + this.firstName + ' ' + this.lastName;
-    }
-
-    return this.firstName + ' ' + this.lastName;
-  }
 }
