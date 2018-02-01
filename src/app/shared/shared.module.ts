@@ -13,8 +13,6 @@ import { FormControlFeedbackComponent } from './components/form-control-feedback
 import { InputComponent } from './components/form-controls/input/input.component';
 import { selectComponents } from './components/form-controls/select/index';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
-import { CountryService } from './services/countries/country.service';
-import { RegionService } from './services/countries/region.service';
 
 @NgModule({
   imports: [
@@ -52,10 +50,6 @@ import { RegionService } from './services/countries/region.service';
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
     ...selectComponents
-  ],
-  providers: [
-    CountryService,
-    RegionService
   ]
 })
 export class SharedModule { }
