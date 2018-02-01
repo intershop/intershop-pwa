@@ -1,21 +1,19 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 
-import { Region } from '../../../../models/region/region.model';
-import { SelectOption } from '../select/select-option.interface';
+import { Region } from '../../../../../models/region/region.model';
+import { SelectOption } from '../../select/select-option.interface';
+import { SelectComponent } from '../select.component';
 
 @Component({
   selector: 'ish-select-region',
-  templateUrl: './select-region.component.html'
+  templateUrl: '../select.component.html'
 })
-export class SelectRegionComponent implements OnChanges {
-  @Input() form: FormGroup;
+export class SelectRegionComponent extends SelectComponent implements OnChanges {
+
   @Input() regions: Region[];
   @Input() controlName = 'state';
   @Input() label = 'State/Province';
   @Input() errorMessages = { 'required': 'Please select a region' };  // ToDo: Translation key
-
-  options: SelectOption[] = [];
 
   ngOnChanges(c: SimpleChanges) {
     if (c.regions) {

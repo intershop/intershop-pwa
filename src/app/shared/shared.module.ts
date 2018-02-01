@@ -9,18 +9,12 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputComponent } from './components/form-controls/input/input.component';
-import { SelectCountryComponent } from './components/form-controls/select-country/select-country.component';
-import { SelectComponent } from './components/form-controls/select/select.component';
-import { FormControlFeedbackComponent } from './components/global-form-validation/form-control-feedback.component';
+import { selectComponents } from './components/form-controls/select/index';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
-
-import { SelectLanguageComponent } from './components/form-controls/select-language/select-language.component';
-import { SelectRegionComponent } from './components/form-controls/select-region/select-region.component';
-import { SelectSecurityQuestionComponent } from './components/form-controls/select-security-question/select-security-question.component';
-import { SelectTitleComponent } from './components/form-controls/select-title/select-title.component';
 
 @NgModule({
   imports: [
@@ -39,13 +33,8 @@ import { SelectTitleComponent } from './components/form-controls/select-title/se
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
     InputComponent,
-    SelectComponent,
-    SelectCountryComponent,
-    SelectTitleComponent,
-    SelectRegionComponent,
-    SelectSecurityQuestionComponent,
-    SelectLanguageComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ...selectComponents
   ],
   exports: [
     RouterModule,
@@ -59,15 +48,10 @@ import { SelectTitleComponent } from './components/form-controls/select-title/se
     ModalModule,
     PopoverModule,
     InputComponent,
-    SelectComponent,
-    SelectCountryComponent,
-    SelectTitleComponent,
-    SelectSecurityQuestionComponent,
-    SelectLanguageComponent,
-    SelectRegionComponent,
     BreadcrumbComponent,
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
+    ...selectComponents
   ],
   providers: [
     CountryService,
