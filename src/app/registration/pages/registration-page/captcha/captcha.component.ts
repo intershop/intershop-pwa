@@ -1,20 +1,24 @@
 // NEEDS_WORK:
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'ish-captcha',
   templateUrl: './captcha.component.html'
 })
 
-export class CaptchaComponent {
-  @Output() isValid: EventEmitter<boolean> = new EventEmitter();
+export class CaptchaComponent implements OnInit {
+  @Input() parentForm: FormGroup;
+  @Input() controlName: string;
+
+  ngOnInit() { }
 
   /**
    * Emits true when captcha is resolved as true
    * @param  {string} captchaResponse
    */
   resolved(captchaResponse: string) {
-    this.isValid.emit(true);
+    this.parentForm.get(this.controlName).setValue(true);
   }
 
 }

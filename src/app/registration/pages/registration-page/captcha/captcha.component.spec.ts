@@ -27,14 +27,9 @@ describe('Captcha Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`should emit 'true' when resolved`, () => {
-    component.resolved('Resolved');
-    component.isValid.subscribe(data => {
-      expect(data).toBe(true);
-    });
+  it(`should check if controls are rendered on the HTML`, () => {
+    const elem = element.getElementsByClassName('form-group');
+    expect(elem[0].innerHTML).toContain('re-captcha');
   });
 
-  it(`should render re-captcha html element on creation`, () => {
-    expect(element.querySelector('re-captcha')).toBeTruthy();
-  });
 });

@@ -1,4 +1,3 @@
-import { FormGroup } from '@angular/forms';
 import { CountryFactory } from '../country/country.factory';
 import { FactoryHelper } from '../factory-helper';
 import { AddressData } from './address.interface';
@@ -15,12 +14,12 @@ export class AddressFactory {
     return address;
   }
 
-  static fromFormToData(form: FormGroup) {
-    if (!form) {
+  static fromFormValueToData(formValue: any) {
+    if (!formValue) {
       return null;
     }
     const addressData = new Object as AddressData;
-    FactoryHelper.primitiveMapping<FormGroup, AddressData>(form.value, addressData);
+    FactoryHelper.primitiveMapping<any, AddressData>(formValue, addressData);
     return addressData;
   }
 }

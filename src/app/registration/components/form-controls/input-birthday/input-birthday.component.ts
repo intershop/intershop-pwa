@@ -8,8 +8,8 @@ import { FormElement } from '../../../../shared/components/form-controls/form-el
   templateUrl: './input-birthday.component.html'
 })
 export class InputBirthdayComponent extends FormElement implements OnInit {
-  @Input() minYear: number;
-  @Input() maxYear: number;
+  @Input() minYear = 0;
+  @Input() maxYear = 9999;
   dateForm: FormGroup;
   minDay = 1;
   maxDay = 31;
@@ -31,6 +31,9 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     this.setDefaultValues(); // call this method before parent init
     super.init();
     this.createForm();
+
+    // FM: temporary
+    this.dateForm.valueChanges.subscribe(() => this.writeBirthday());
   }
 
   /*
@@ -57,14 +60,15 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     });
 
     // Add form group temporarily to the parent form to prevent a form submit with an invalid birth date
-    this.form.addControl('birthday-form', this.dateForm);
+    // FM: commented out because child components don't change parent components' stuff
+    // this.form.addControl('birthday-form', this.dateForm);
   }
 
   /*
     calculates the birthday in form 'yyyy-mm-dd' on base of the input fields
     writes the result to the given parent form control (controlName)
   */
-  get birthday(): string {
+  writeBirthday() {
     let day = this.dateForm.get('day').value;
     let month = this.dateForm.get('month').value;
     const year = this.dateForm.get('year').value;
@@ -76,6 +80,5 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     }
 
     this.form.get(this.controlName).setValue(birthday);
-    return birthday;
   }
 }

@@ -1,17 +1,15 @@
 <ng-container *ngIf="options?.length > 0 || required">
-  <ish-form-group-validation [errorMessages]="errorMessages">
-    <div class="form-group has-feedback" [formGroup]="form">
-      <label *ngIf="label" [for]="controlName+'-'+uuid"  class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
-      <div [ngClass]="inputClass">
-        <select class="form-control"
-            [id]="controlName+'-'+uuid"
-            [formControlName]="controlName"
-            [attr.data-testing-id]="controlName"
-            #dynamicError>
-          <option value="" *ngIf="showEmptyOption">{{'account.option.select.text' | translate}}</option>
-          <option *ngFor="let option of options" [value]="option.value">{{option.label | translate}}</option>
-        </select>
-      </div>
+  <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
+    <label *ngIf="label" [for]="controlName+'-'+uuid"  class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
+    <div [ngClass]="inputClass">
+      <select class="form-control"
+          [id]="controlName+'-'+uuid"
+          [formControlName]="controlName"
+          [attr.data-testing-id]="controlName">
+        <option value="" *ngIf="showEmptyOption">{{'account.option.select.text' | translate}}</option>
+        <option *ngFor="let option of options" [value]="option.value">{{option.label | translate}}</option>
+      </select>
+      <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
     </div>
-  </ish-form-group-validation>
+  </div>
 </ng-container>

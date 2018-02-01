@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class SimpleRegistrationComponent implements OnInit {
     @Inject(USER_REGISTRATION_LOGIN_TYPE) private userRegistrationLoginType: string,
     private formBuilder: FormBuilder,
     private router: Router,
-    private accountLoginService: AccountLoginService
+    private accountLoginService: AccountLoginService,
+    private formUtils: FormUtilsService
   ) { }
 
   /**
@@ -46,6 +48,7 @@ export class SimpleRegistrationComponent implements OnInit {
   createAccount() {
     if (this.simpleRegistrationForm.invalid) {
       this.isDirty = true;
+      this.formUtils.markAsDirtyRecursive(this.simpleRegistrationForm);
       return;
     }
     const userData = this.simpleRegistrationForm.value;

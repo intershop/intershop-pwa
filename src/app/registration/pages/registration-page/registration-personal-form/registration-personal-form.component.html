@@ -1,9 +1,12 @@
 <fieldset [formGroup]="parentForm">
   <ish-select-language
     [form]="parentForm"
+    controlName="preferredLanguage"
+    [languages]="languages"
   ></ish-select-language>
 
   <ish-input-birthday
     [form]="parentForm"
+    controlName="birthday"
   ></ish-input-birthday>
 </fieldset>

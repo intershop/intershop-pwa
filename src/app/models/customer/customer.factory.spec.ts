@@ -27,18 +27,18 @@ describe('Customer Factory', () => {
     regForm.addControl('address', addressForm);
 
     it(`should return customer data when getting a customer (registration) form`, () => {
-      expect(CustomerFactory.fromFormToData(regForm)).toBeTruthy();
+      expect(CustomerFactory.fromFormValueToData(regForm.value)).toBeTruthy();
     });
 
     it(`should preset some fields on customerData when getting a customer (registration) form with an address`, () => {
-      const customerData = CustomerFactory.fromFormToData(regForm);
+      const customerData = CustomerFactory.fromFormValueToData(regForm.value);
       expect(customerData.firstName).toEqual('John', 'First name is written to customer, if it is empty');
       expect(customerData.lastName).toEqual('Doe', 'Last name is written to customer, if it is empty');
       expect(customerData.phoneHome).toEqual('1234567890', 'Phone home is written to customer, if it is empty');
     });
 
     it(`should return null when getting no customer (registration) form`, () => {
-      expect(CustomerFactory.fromFormToData(null)).toBeFalsy();
+      expect(CustomerFactory.fromFormValueToData(null)).toBeFalsy();
     });
   });
 });

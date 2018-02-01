@@ -1,5 +1,5 @@
 import { Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 
@@ -26,10 +26,14 @@ export class FormElement {
     if (!this.controlName) {
       throw new Error('required input parameter <controlName> is missing for FormElementComponent');
     }
-    if (!this.form.get(this.controlName)) {
-      throw new Error('input parameter <controlName> does not exist in the given form for FormElementComponent');
+    if (!this.formControl) {
+      throw new Error(`input parameter <controlName> with value '${this.controlName}' does not exist in the given form for FormElementComponent`);
     }
     this.uuid = UUID.UUID(); // uuid to make the id of the control unique
+  }
+
+  get formControl(): AbstractControl {
+    return this.form.get(this.controlName);
   }
 
   /*
