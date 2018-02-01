@@ -16,12 +16,12 @@ describe('Credentials Factory', () => {
     });
 
     it(`should return Credentials data when getting a credentials form`, () => {
-      const credentials = CredentialsFactory.fromFormToData(form);
+      const credentials = CredentialsFactory.fromFormValueToData(form.value);
       expect(credentials.login).toEqual('login');
     });
 
     it(`should return null when getting no credentials form`, () => {
-      expect(CredentialsFactory.fromFormToData(null)).toBeFalsy();
+      expect(CredentialsFactory.fromFormValueToData(null)).toBeFalsy();
     });
   });
 });

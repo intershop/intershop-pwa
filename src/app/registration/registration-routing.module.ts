@@ -6,7 +6,7 @@ import { LogoutGuard } from '../core/guards/logout.guard';
 const routes: Routes = [
   { path: 'register', loadChildren: 'app/registration/pages/registration-page/registration-page.module#RegistrationPageModule' },
   { path: 'login', loadChildren: 'app/registration/pages/login-page/login-page.module#LoginPageModule' },
-  { path: 'logout', loadChildren: 'app/shopping/pages/home-page/home-page.module#HomePageModule', canActivate: [LogoutGuard] }
+  { path: 'logout', loadChildren: 'app/shopping/pages/home-page/home-page.module#HomePageModule', canActivate: [LogoutGuard] },
 ];
 
 @NgModule({

@@ -7,6 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
+import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { LoginPageComponent } from './login-page.component';
 
@@ -32,7 +33,8 @@ describe('AccountLogin Component', () => {
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: USE_SIMPLE_ACCOUNT, useValue: true },
-        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }
+        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+        FormUtilsService
       ],
       imports: [
         SharedModule,

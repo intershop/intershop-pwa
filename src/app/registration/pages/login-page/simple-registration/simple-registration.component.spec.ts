@@ -10,6 +10,7 @@ import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../../core/services/account-login/account-login.service';
+import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
 import { Customer } from '../../../../models/customer/customer.model';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 
@@ -37,7 +38,8 @@ describe('Simple Registration Component', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: USE_SIMPLE_ACCOUNT, useValue: true },
-        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }
+        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+        FormUtilsService
       ]
     }).overrideComponent(SimpleRegistrationComponent, {
       set: {

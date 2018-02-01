@@ -16,12 +16,12 @@ describe('Address Factory', () => {
     });
 
     it(`should return address data when getting an address form`, () => {
-      const address = AddressFactory.fromFormToData(form);
+      const address = AddressFactory.fromFormValueToData(form.value);
       expect(address.firstName).toEqual('John');
     });
 
     it(`should return null when getting no address form`, () => {
-      expect(AddressFactory.fromFormToData(null)).toBeFalsy();
+      expect(AddressFactory.fromFormValueToData(null)).toBeFalsy();
     });
   });
 });

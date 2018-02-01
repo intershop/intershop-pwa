@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CustomValidators } from 'ng2-validation';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
+import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
 import { Customer } from '../../../models/customer/customer.model';
 
 @Component({
@@ -23,7 +24,8 @@ export class LoginPageComponent implements OnInit {
     @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,
     private formBuilder: FormBuilder,
     private accountLoginService: AccountLoginService,
-    private router: Router
+    private router: Router,
+    private formUtils: FormUtilsService
   ) { }
 
   /**
@@ -51,6 +53,7 @@ export class LoginPageComponent implements OnInit {
   onSignin(userCredentials) {
     if (this.loginForm.invalid) {
       this.isDirty = true;
+      this.formUtils.markAsDirtyRecursive(this.loginForm);
       return;
     }
     this.accountLoginService.signinUser(userCredentials).subscribe((userData: Customer) => {

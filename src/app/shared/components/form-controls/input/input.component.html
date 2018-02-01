@@ -1,17 +1,16 @@
-<ish-form-group-validation [errorMessages]="errorMessages">
-  <div class="form-group has-feedback" [formGroup]="form">
-    <label *ngIf="label" [for]="controlName+'-'+uuid" class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
-    <div [ngClass]="inputClass">
-      <input
-        [type]="type"
-        class="form-control"
-        [id]="controlName+'-'+uuid"
-        [formControlName]="controlName"
-        [attr.data-testing-id]="controlName"
-        [maxlength]="maxlength"
-        [attr.autocomplete]="autocomplete"
-        #dynamicError>
-        <ng-content></ng-content>
-    </div>
+<div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
+  <label *ngIf="label" [for]="controlName+'-'+uuid" class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
+  <div [ngClass]="inputClass">
+    <input
+      [type]="type"
+      class="form-control"
+      [id]="controlName+'-'+uuid"
+      [formControlName]="controlName"
+      [attr.data-testing-id]="controlName"
+      [maxlength]="maxlength"
+      [attr.autocomplete]="autocomplete">
+      <ng-content></ng-content>
+      <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
   </div>
-</ish-form-group-validation>
+</div>
+

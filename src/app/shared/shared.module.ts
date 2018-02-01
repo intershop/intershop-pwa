@@ -9,13 +9,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputComponent } from './components/form-controls/input/input.component';
-import { SelectComponent } from './components/form-controls/select/select.component';
-import { FormControlErrorComponent } from './components/global-form-validation/form-control-error.component';
-import { FormGroupValidationComponent } from './components/global-form-validation/form-group-validation.component';
-import { FormValidationDirective } from './directives/form-validation.directive';
-import { CountryService } from './services/countries/country.service';
-import { RegionService } from './services/countries/region.service';
+import { selectComponents } from './components/form-controls/select/index';
+import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
 @NgModule({
   imports: [
@@ -31,12 +28,11 @@ import { RegionService } from './services/countries/region.service';
     PopoverModule,
   ],
   declarations: [
-    FormGroupValidationComponent,
-    FormControlErrorComponent,
-    FormValidationDirective,
+    FormControlFeedbackComponent,
+    ShowFormFeedbackDirective,
     InputComponent,
-    SelectComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ...selectComponents
   ],
   exports: [
     RouterModule,
@@ -49,19 +45,11 @@ import { RegionService } from './services/countries/region.service';
     CollapseModule,
     ModalModule,
     PopoverModule,
-    FormGroupValidationComponent,
-    FormValidationDirective,
     InputComponent,
-    SelectComponent,
-    BreadcrumbComponent
-  ],
-  entryComponents: [
-    FormControlErrorComponent
-  ],
-  providers: [
-    CountryService,
-    RegionService
+    BreadcrumbComponent,
+    FormControlFeedbackComponent,
+    ShowFormFeedbackDirective,
+    ...selectComponents
   ]
 })
-
 export class SharedModule { }
