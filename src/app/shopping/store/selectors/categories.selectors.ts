@@ -8,17 +8,21 @@ export const getCategoryState = createSelector(
   fromFeature.getShoppingState, (state: fromFeature.ShoppingState) => state.categories
 );
 
-export const getCategoryEntities = createSelector(
-  getCategoryState,
-  fromCategories.getCategoryEntities
+export const {
+  selectEntities: getCategoryEntities,
+  selectAll: getCategories,
+} = fromCategories.categoryAdapter.getSelectors(getCategoryState);
+
+
+export const getSelectedCategoryId = createSelector(
+  fromRouter.getRouterState,
+  router => router.state && router.state.params.categoryUniqueId
 );
 
 export const getSelectedCategory = createSelector(
   getCategoryEntities,
-  fromRouter.getRouterState,
-  (entities, router): Category => {
-    return router.state && entities[router.state.params.categoryUniqueId];
-  }
+  getSelectedCategoryId,
+  (entities, id): Category => entities[id]
 );
 
 export const getSelectedCategoryPath = createSelector(
@@ -50,3 +54,8 @@ export const getCategoryLoading = createSelector(
   getCategoryState,
   fromCategories.getCategoryLoading
 );
+
+
+
+
+
