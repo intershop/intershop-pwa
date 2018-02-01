@@ -1,14 +1,16 @@
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Category } from '../../../models/category/category.model';
 import * as fromCategories from '../actions/categories.actions';
 
-export interface CategoriesState {
-  entities: { [categoryUniqueId: string]: Category };
+export interface CategoriesState extends EntityState<Category> {
   loaded: boolean;
   loading: boolean;
 }
 
+export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>();
+
 export const initialState: CategoriesState = {
-  entities: {},
+  ...categoryAdapter.getInitialState(),
   loaded: false,
   loading: false,
 };
@@ -36,15 +38,11 @@ export function reducer(
 
     case fromCategories.LOAD_CATEGORY_SUCCESS: {
       const loadedCategory = action.payload;
-      const entities = {
-        ...state.entities,
-        [loadedCategory.uniqueId]: loadedCategory,
-      };
+
       return {
-        ...state,
+        ...categoryAdapter.addOne(loadedCategory, state),
         loading: false,
         loaded: true,
-        entities
       };
     }
 
@@ -53,6 +51,6 @@ export function reducer(
   return state;
 }
 
-export const getCategoryEntities = (state: CategoriesState) => state.entities;
+
 export const getCategoryLoading = (state: CategoriesState) => state.loading;
 export const getCategoryLoaded = (state: CategoriesState) => state.loaded;
