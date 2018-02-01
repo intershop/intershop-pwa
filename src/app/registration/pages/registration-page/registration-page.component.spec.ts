@@ -4,9 +4,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito';
+import { CountryService } from '../../../core/services/countries/country.service';
+import { RegionService } from '../../../core/services/countries/region.service';
 import { MockComponent } from '../../../mocking/components/mock.component';
 import { Customer } from '../../../models/customer/customer.model';
-import { SharedModule } from '../../../shared/shared.module';
 import { CustomerRegistrationService } from '../../services/customer-registration.service';
 import { RegistrationPageComponent } from './registration-page.component';
 
@@ -19,6 +20,11 @@ describe('RegistrationPage Component', () => {
   beforeEach(async(() => {
     const customerRegistrationServiceMock = mock(CustomerRegistrationService);
     when(customerRegistrationServiceMock.registerPrivateCustomer(anything())).thenReturn(of(new Customer()));
+
+    const countryServiceMock = mock(CountryService);
+    when(countryServiceMock.getCountries()).thenReturn(of([]));
+    const regionServiceMock = mock(RegionService);
+    when(regionServiceMock.getRegions(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
       declarations: [RegistrationPageComponent,
@@ -35,9 +41,10 @@ describe('RegistrationPage Component', () => {
       ],
       providers: [
         { provide: CustomerRegistrationService, useFactory: () => instance(customerRegistrationServiceMock) },
+        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
+        { provide: RegionService, useFactory: () => instance(regionServiceMock) },
       ],
       imports: [
-        SharedModule,
         RouterTestingModule,
         RouterTestingModule.withRoutes([
           { path: 'home', component: RegistrationPageComponent }

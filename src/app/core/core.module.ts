@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
@@ -18,6 +18,8 @@ import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { UserDetailService } from './services/account-login/user-detail.service';
 import { ApiService } from './services/api.service';
 import { CartStatusService } from './services/cart-status/cart-status.service';
+import { CountryService } from './services/countries/country.service';
+import { RegionService } from './services/countries/region.service';
 import { CustomErrorHandler } from './services/custom-error-handler';
 import { translateFactory } from './services/custom-translate-loader';
 import { ErrorCodeMappingService } from './services/error-code-mapping.service';
@@ -60,6 +62,8 @@ import { FormUtilsService } from './services/utils/form-utils.service';
     CartStatusService,
     ErrorCodeMappingService,
     StatePropertiesService,
+    CountryService,
+    RegionService,
     FormUtilsService
   ],
   exports: [
@@ -69,13 +73,6 @@ import { FormUtilsService } from './services/utils/form-utils.service';
   ]
 })
 export class CoreModule {
-
-  public static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: CoreModule,
-      providers: []
-    };
-  }
 
   constructor(
     @Optional() @SkipSelf() parentModule: CoreModule,

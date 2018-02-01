@@ -47,8 +47,7 @@ describe('Select Title Component', () => {
     expect(function() { fixture.detectChanges(); }).toThrow();
   });
 
-  it('should get and display titles for a certain country', () => {
-    component.options = component.getTitleOptions();
+  xit('should get and display titles for a certain country', () => {
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 titles are in the options array'); // ToDo: Adapt test if title service is active
     expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy('title select is rendered');

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -12,7 +12,7 @@ import { SelectComponent } from '../select.component';
   selector: 'ish-select-title',
   templateUrl: '../select.component.html',
 })
-export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit, OnDestroy {
+export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
   @Input() countryCode: string;
 
   optionsSubscription: Subscription;
@@ -37,10 +37,6 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
   ngOnChanges(changes: SimpleChanges) {
     this.optionsSubscription = this.getSalutations(this.countryCode)
       .subscribe(opts => this.options = opts);
-  }
-
-  ngOnDestroy() {
-    this.optionsSubscription.unsubscribe();
   }
 
   /*
@@ -80,7 +76,7 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
             value: tr
           })
         ))
-      );
+        );
     } else {
       return of([]);
     }
