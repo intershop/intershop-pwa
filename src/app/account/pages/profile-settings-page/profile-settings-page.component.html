@@ -1,3 +1,157 @@
-<p>
-  Profile Settings Page is Here!
-</p>
+<ish-breadcrumb account="true" trailText="{{'account.profile.link' | translate}}"></ish-breadcrumb>
+
+<div class="marketing-area"></div>
+
+<div class="account-wrapper" data-testing-id="profile-settings-page">
+  <div class="row account-main">
+
+    <div class="col-md-3 account-nav-box">
+      <ish-account-navigation selectedItem='PROFILE'></ish-account-navigation>
+    </div>
+
+    <div class="col-md-9 user-profile">
+      <div class="marketing-area"></div>
+
+      <h1>{{'account.profile.heading' | translate}}</h1>
+
+      <!-- SuccessMessage Template -->
+      <!-- TODO: implement showSuccessMessage handling -->
+      <div *ngIf="showSuccessMessage" class="alert alert-success alert-fade">
+        <p *ngIf="showSuccessMessage === 'UpdateEmail'">
+          {{'account.profile.update_email.message' | translate}}
+        </p>
+        <p *ngIf="showSuccessMessage === 'UpdateProfile'">
+          {{'account.profile.update_profile.message' | translate}}
+        </p>
+        <p *ngIf="showSuccessMessage === 'UpdatePassword'">
+          {{'account.profile.update_password.message' | translate}}
+        </p>
+        <p *ngIf="showSuccessMessage === 'UpdateNewsletter'">
+          {{'account.profile.update_newsletter.message' | translate}}
+        </p>
+      </div>
+
+      <!-- Email Template -->
+      <div class="row section">
+        <div class="col-md-4 pull-right col-xs-2">
+          <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="col-md-8 col-xs-10">
+          <h3>{{'account.profile.email.heading' | translate}}</h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <dl class="dl-horizontal dl-separator">
+                <dt>{{'account.profile.email.label' | translate}}</dt>
+                <dd data-testing-id="email-field">
+                  {{customer.email}}
+                </dd>
+                <dt>{{'account.profile.order_confirmation_subscription.text' | translate}}</dt>
+                <dd>
+                  <!-- TODO: implement logic (extend REST response) to present email subscriptions
+                    <isif condition="#Preferences:OrderConfirmationEmails#">
+                      {{'account.profile.order_confirmation_email.text' | translate}}&nbsp;
+                    </isif>
+                    <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#">
+                      {{'account.profile.newsletter.text' | translate}}
+                    </isif>
+                  -->
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Password Template -->
+      <div class="row section">
+        <div class="col-md-4 pull-right col-xs-2">
+          <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="col-md-8 col-xs-10">
+          <h3>{{'account.profile.password.heading' | translate}}</h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <dl class="dl-horizontal dl-separator">
+                <dt>{{'account.profile.password.label' | translate}}</dt>
+                <dd>
+                  ******
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TODO: handle functionality of <isinclude extensionpoint="AccountProfileDepartmentExtensions"> -->
+
+      <!-- Profile Template -->
+      <div class="row section">
+        <div class="col-md-4 pull-right col-xs-2">
+          <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="col-md-8 col-xs-10">
+          <h3>{{'account.profile.detail.heading' | translate}}</h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <dl class="dl-horizontal dl-separator">
+                <dt>{{'account.profile.name.label' | translate}}</dt>
+                <dd>
+                  {{(customer.title) ? (customer.title + ' ') : ''}}{{customer.firstName + ' ' + customer.lastName}}
+                </dd>
+                <!-- Phone Template -->
+                <dt>{{'account.profile.phone.label' | translate}}</dt>
+                <dd>
+                  {{customer.phoneHome}}
+                </dd>
+                <dt>{{'account.profile.fax.label' | translate}}</dt>
+                <dd>
+                  {{customer.fax}}
+                </dd>
+                <dt>{{'account.profile.birthday.label' | translate}}</dt>
+                <dd>
+                  {{(customer.birthday) ? (customer.birthday | date) : ('account.profile.birthday.not_available' | translate)}}
+                </dd>
+                <dt>{{'account.profile.language.label' | translate}}</dt>
+                <dd>
+                  <!-- TODO: get information for <isprint value="#PreferredLocale:DisplayName(PreferredLocale)#"> -->
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter Template -->
+      <div class="row section">
+        <div class="col-md-4 pull-right col-xs-2">
+          <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
+        <div class="col-md-8 col-xs-10">
+          <h3>{{'account.newsletter.label' | translate}}</h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <dl class="dl-horizontal dl-separator">
+                <dt>{{'account.newsletter.label' | translate}}</dt>
+                <dd>
+                  <!-- TODO: get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif> -->
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Note -->
+      <p class="help-block">{{'account.overview.note.heading' | translate}}: <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span></p>
+
+    </div>
+  </div>
+</div>

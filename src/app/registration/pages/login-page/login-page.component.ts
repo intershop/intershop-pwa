@@ -48,7 +48,7 @@ export class LoginPageComponent implements OnInit {
 
 
   /**
-   * Redirects to Home Page when user is logged in successfully
+   * Redirects to Account Page when user is logged in successfully
    */
   onSignin(userCredentials) {
     if (this.loginForm.invalid) {
@@ -62,7 +62,7 @@ export class LoginPageComponent implements OnInit {
         this.errorUser = userData;
         return;
       }
-      this.router.navigate(['/home']);
+      this.router.navigate(['/account']);
     });
   }
 }
