@@ -11,7 +11,7 @@ import { FormUtilsService } from '../../../core/services/utils/form-utils.servic
 import { SharedModule } from '../../../shared/shared.module';
 import { LoginPageComponent } from './login-page.component';
 
-describe('AccountLogin Component', () => {
+describe('Login Component', () => {
   let fixture: ComponentFixture<LoginPageComponent>;
   let component: LoginPageComponent;
   let element: HTMLElement;
@@ -40,7 +40,7 @@ describe('AccountLogin Component', () => {
         SharedModule,
         TranslateModule.forRoot(),
         RouterTestingModule.withRoutes([
-          { path: 'home', component: LoginPageComponent }
+          { path: 'account', component: LoginPageComponent }
         ]),
         CustomFormsModule
       ],
@@ -79,7 +79,7 @@ describe('AccountLogin Component', () => {
     expect(component.errorUser).toEqual('Incorrect Credentials');
   });
 
-  it('should navigate to homepage when user enters valid credentials', async(() => {
+  it('should navigate to the Account page when user enters valid credentials', async(() => {
     const userDetails = { userName: 'intershop@123.com', password: '123456' };
     component.loginForm.controls['userName'].setValue('test@test.com');
     component.loginForm.controls['password'].setValue('!InterShop0');
