@@ -7,13 +7,6 @@
 |       |       account-page.component.ts
 |       |       account-page.module.ts
 |       |       account-page.routes.ts
-|       |
-|       \---wishlists-page
-|               wishlists-page.component.html
-|               wishlists-page.component.spec.ts
-|               wishlists-page.component.ts
-|               wishlists-page.module.ts
-|               wishlists-page.routes.ts
 |
 +---core
 |   |
@@ -28,9 +21,6 @@
 |       |       account-login.service.spec.ts
 |       |       account-login.service.ts
 |       |       user-detail.service.ts
-|       |
-|       \---wishlists
-|               wishlists.service.ts
 |
 |
 +---registration
