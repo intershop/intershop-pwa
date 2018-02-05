@@ -1,13 +1,4 @@
-|
-+---account
-|   \---pages
-|       +---account-page
-|       |       account-page.component.html
-|       |       account-page.component.spec.ts
-|       |       account-page.component.ts
-|       |       account-page.module.ts
-|       |       account-page.routes.ts
-|
+
 +---core
 |   |
 |   \---services
@@ -26,7 +17,7 @@
 +---registration
 |   |
 |   \---pages
-|       +---account-login
+|       +---login-page
 |       |   |   login-page.component.html
 |       |   |   login-page.component.spec.ts
 |       |   |   login-page.component.ts
@@ -57,17 +48,6 @@
 |           |       email-password.component.ts
 |
 +---shared
-|   +---components
-|   |   +---forms
-|   |   |
-|   |   \---form-control-feedback
-|   |           form-control-feedback.component.spec.ts
-|   |           form-control-feedback.component.ts
-|   |           form-group-validation.component.ts
-|   |
-|   +---directives
-|   |       form-validation.directive.spec.ts
-|   |       form-validation.directive.ts
 |   |
 |   +---services
 |   |   |
