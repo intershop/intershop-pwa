@@ -26,7 +26,6 @@ describe('Header Component', () => {
         HeaderComponent,
         MockComponent({ selector: 'ish-login-status', template: 'Login Status Template' }),
         MockComponent({ selector: 'ish-product-compare-status', template: 'Product Compare Status Template' }),
-        MockComponent({ selector: 'ish-wishlist-status', template: 'Wish List Template' }),
         MockComponent({ selector: 'ish-language-switch', template: 'Language Switch Template' }),
         MockComponent({ selector: 'ish-search-box', template: 'Search Box Template' }),
         MockComponent({ selector: 'ish-header-navigation', template: 'Header Navigation Template' }),
@@ -40,10 +39,8 @@ describe('Header Component', () => {
   }));
 
   it('should check "User Links" are rendered on template', () => {
-    expect(element.getElementsByClassName('user-links')[0].childElementCount).toBe(4);
     expect(element.getElementsByTagName('ish-login-status')[0].textContent).toContain('Login Status Template');
     expect(element.getElementsByTagName('ish-product-compare-status')[0].textContent).toContain('Product Compare Status Template');
-    expect(element.getElementsByTagName('ish-wishlist-status')[0].textContent).toContain('Wish List Template');
   });
 
   it('should check "LanguageSwitchComponent" is rendered on template', () => {

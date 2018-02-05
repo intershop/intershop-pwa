@@ -4,6 +4,5 @@ import { AccountPageComponent } from './account-page.component';
 export const accountPageRoutes: Routes = [
   { path: '', component: AccountPageComponent },
   { path: 'profile', loadChildren: 'app/account/pages/profile-settings-page/profile-settings-page.module#ProfileSettingsPageModule' },
-  { path: 'orders', loadChildren: 'app/account/pages/order-history-page/order-history-page.module#OrderHistoryPageModule' },
-  { path: 'wishlist', loadChildren: 'app/account/pages/wishlists-page/wishlists-page.module#WishlistsPageModule' }
+  { path: 'orders', loadChildren: 'app/account/pages/order-history-page/order-history-page.module#OrderHistoryPageModule' }
 ];
