@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { Action } from '@ngrx/store';
 import { AccountLogin } from '../../../core/services/account-login/account-login.model';
 import { Customer } from '../../../models/customer/customer.model';
@@ -14,7 +15,7 @@ export class LoginUser implements Action {
 
 export class LoginUserFail implements Action {
   readonly type = LOGIN_USER_FAIL;
-  constructor(public payload: any) { }
+  constructor(public payload: HttpErrorResponse) { }
 }
 
 export class LoginUserSuccess implements Action {

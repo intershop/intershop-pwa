@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
@@ -58,7 +59,7 @@ describe('Login Status Component', () => {
   }));
 
   it('should render nothing on template when user is not logged in', async(() => {
-    store.dispatch(new LoginUserFail('dummy error'));
+    store.dispatch(new LoginUserFail(new HttpErrorResponse({})));
 
     fixture.detectChanges();
 
