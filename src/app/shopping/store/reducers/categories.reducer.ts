@@ -11,11 +11,10 @@ export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Cate
   selectId: category => category.uniqueId
 });
 
-export const initialState: CategoriesState = {
-  ...categoryAdapter.getInitialState(),
+export const initialState: CategoriesState = categoryAdapter.getInitialState({
   loaded: false,
   loading: false,
-};
+});
 
 export function reducer(
   state = initialState,
