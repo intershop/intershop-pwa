@@ -20,7 +20,8 @@ export class AddressFormFRFactory extends AddressFormFactory {
       addressLine1: ['', Validators.required],
       addressLine2: [],
       postalCode: ['', [Validators.required, Validators.pattern('[0-9]{5}')]],
-      city: ['', Validators.required]
+      city: ['', Validators.required],
+      phoneHome: ['']
     });
   }
 

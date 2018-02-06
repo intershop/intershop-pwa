@@ -1,4 +1,3 @@
-import { CountryData } from '../country/country.interface';
 
 export interface AddressData {
   urn: string;
@@ -15,6 +14,6 @@ export interface AddressData {
   postalCode: string;
   city: string;
   mainDivision?: string;
-  country: CountryData;
+  countryCode: string;
   phoneHome: string;
 }

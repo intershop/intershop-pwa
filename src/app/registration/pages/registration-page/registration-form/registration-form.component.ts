@@ -44,8 +44,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
         securityQuestionAnswer: ['', [Validators.required]],
         newsletter: [this.emailOptIn]
       }),
-      countryCode: ['', [Validators.required]],
-      phoneHome: [''],
+      countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
       captcha: [false, [Validators.required]],
@@ -53,8 +52,8 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     });
 
     // build and register new address form when country code changed
-    this.form.get('countryCode').valueChanges
-      .subscribe(countryCode => this.handleCountryChange(countryCode));
+    this.form.get('countryCodeSwitch').valueChanges
+      .subscribe(countryCodeSwitch => this.handleCountryChange(countryCodeSwitch));
 
     // set validators for credentials form
     const credForm = this.form.get('credentials');
@@ -99,6 +98,9 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     const oldFormValue = this.form.get('address').value;
     const group = this.afs.getFactory(countryCode).getGroup(oldFormValue);
     this.form.setControl('address', group);
+    if (countryCode && this.form.get('address').get('countryCode')) {
+      this.form.get('address').get('countryCode').setValue(countryCode);
+    }
 
     this.countryChange.emit(countryCode);
   }
@@ -108,11 +110,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   }
 
   get countryCode() {
-    return this.form.get('countryCode').value;
+    return this.form.get('countryCodeSwitch').value;
   }
 }
-
-
-
-
-
