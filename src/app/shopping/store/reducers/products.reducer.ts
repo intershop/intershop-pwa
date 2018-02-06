@@ -11,11 +11,10 @@ export interface ProductsState extends EntityState<Product> {
   loading: boolean;
 }
 
-export const initialState: ProductsState = {
-  ...productAdapter.getInitialState(),
+export const initialState: ProductsState = productAdapter.getInitialState({
   loaded: false,
-  loading: false,
-};
+  loading: false
+});
 
 export function reducer(
   state = initialState,
