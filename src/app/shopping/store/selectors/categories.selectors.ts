@@ -16,7 +16,7 @@ export const {
 
 export const getSelectedCategoryId = createSelector(
   fromRouter.getRouterState,
-  router => router.state && router.state.params.categoryUniqueId
+  router => router && router.state && router.state.params.categoryUniqueId
 );
 
 export const getSelectedCategory = createSelector(
@@ -27,19 +27,17 @@ export const getSelectedCategory = createSelector(
 
 export const getSelectedCategoryPath = createSelector(
   getCategoryEntities,
-  fromRouter.getRouterState,
-  (entities, router): Category[] => {
+  getSelectedCategoryId,
+  (entities, categoryUniqueId): Category[] => {
     const categories: Category[] = [];
-    const categoryUniqueId = router.state.params.categoryUniqueId;
     if (categoryUniqueId) {
-      let categoryPathId = '';
-      for (const categoryId of categoryUniqueId.split('.')) {
-        categoryPathId = categoryPathId + categoryId;
-        if (entities[categoryPathId]) {
-          categories.push(entities[categoryPathId]);
+      categoryUniqueId.split('.').reduce((acc, item) => {
+        const nextPath = `${acc}.${item}`;
+        if (entities[nextPath]) {
+          categories.push(entities[nextPath]);
         }
-        categoryPathId = categoryPathId + '.';
-      }
+        return nextPath;
+      });
     }
     return categories;
   }
@@ -47,12 +45,12 @@ export const getSelectedCategoryPath = createSelector(
 
 export const getCategoryLoaded = createSelector(
   getCategoryState,
-  fromCategories.getCategoryLoaded
+  categories => categories.loaded
 );
 
 export const getCategoryLoading = createSelector(
   getCategoryState,
-  fromCategories.getCategoryLoading
+  categories => categories.loading
 );
 
 

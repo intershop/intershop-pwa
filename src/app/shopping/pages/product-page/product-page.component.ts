@@ -14,6 +14,7 @@ import * as fromStore from '../../store';
 export class ProductPageComponent implements OnInit {
 
   product$: Observable<Product>;
+  productLoading$: Observable<boolean>;
   category$: Observable<Category>;
   categoryPath: Category[] = [];
 
@@ -31,6 +32,8 @@ export class ProductPageComponent implements OnInit {
     this.category$ = this.store.select(fromStore.getSelectedCategory).pipe(
       filter(category => !!category)
     );
+
+    this.productLoading$ = this.store.select(fromStore.getProductLoading);
   }
 
 }
