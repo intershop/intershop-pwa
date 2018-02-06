@@ -1,11 +1,10 @@
-<img  [ngClass]="class" [src]="productImage.effectiveUrl ? icmBaseURL + productImage.effectiveUrl : '/assets/img/not_available.png'"
-[attr.alt]="altText ? altText : (product.name ? product.name : product.sku) + ' ' + ('product.image.text.alttext' | translate)
-+
-(imageView ? ' ' + imageView + ' ' + productImage.typeID : '' )"
-[attr.height]="productImage.imageActualHeight"
-[attr.width]="productImage.imageActualWidth"
-[attr.data-type]="productImage.typeID"
-[attr.data-view-value]="productImage.viewID"
-data-test="true"
-itemprop="image"
+<img [src]="productImage.effectiveUrl ? icmBaseURL + productImage.effectiveUrl : '/assets/img/not_available.png'"
+  [ngClass]="class"
+  [attr.alt]="altText ? altText : (product.name ? product.name : product.sku) + ' ' + ('product.image.text.alttext' | translate) + (imageView ? ' ' + imageView + ' ' + productImage.typeID : '')"
+  [attr.height]="productImage.imageActualHeight"
+  [attr.width]="productImage.imageActualWidth"
+  [attr.data-type]="productImage.typeID"
+  [attr.data-view-value]="productImage.viewID"
+  data-test="true"
+  itemprop="image"
 >

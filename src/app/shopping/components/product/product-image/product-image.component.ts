@@ -14,22 +14,16 @@ export class ProductImageComponent implements OnInit {
   @Input() imageView?: string;
   @Input() class?: string;
   @Input() altText?: string;
+
   productImage: Image;
 
-  /**
-   * Constructor
-   * @param  {} @Inject(ICM_BASE_URL
-   * @param  {} publicicmBaseURL
-   */
-  constructor( @Inject(ICM_BASE_URL) public icmBaseURL) {
+  constructor(
+    @Inject(ICM_BASE_URL) public icmBaseURL
+  ) { }
 
-  }
-
-  /**
-   * Component event ngOninit
-   */
   ngOnInit() {
-    this.productImage = this.imageView ? this.product.getImageByImageTypeAndImageView(this.imageType, this.imageView)
+    this.productImage = this.imageView
+      ? this.product.getImageByImageTypeAndImageView(this.imageType, this.imageView)
       : this.product.getPrimaryImage(this.imageType);
   }
 
