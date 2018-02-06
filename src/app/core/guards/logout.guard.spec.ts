@@ -1,23 +1,26 @@
 import { async, TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
-import { AccountLoginService } from '../services/account-login/account-login.service';
+import { Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
+import { LOGOUT_USER, State } from '../store';
 import { LogoutGuard } from './logout.guard';
 
 describe('LogoutGuard', () => {
 
   describe('canActivate()', () => {
     let logoutGuard: LogoutGuard;
-    const accountLoginServiceMock = mock(AccountLoginService);
+    let storeMock: Store<State>;
 
     beforeEach(async(() => {
+      storeMock = mock(Store);
+
       TestBed.configureTestingModule({
         imports: [
           RouterTestingModule
         ],
         providers: [LogoutGuard,
-          { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) }
+          { provide: Store, useFactory: () => instance(storeMock) }
         ]
 
       }).compileComponents();
@@ -28,9 +31,11 @@ describe('LogoutGuard', () => {
     });
 
     it('should log out when called', () => {
-      const snapshot = { url: [{ path: '' }] } as ActivatedRouteSnapshot;
-      logoutGuard.canActivate(snapshot, null);
-      verify(accountLoginServiceMock.logout()).called();
+      logoutGuard.canActivate(null, null);
+      verify(storeMock.dispatch(anything())).called();
+
+      const [arg] = capture(storeMock.dispatch).last();
+      expect((arg as Action).type).toBe(LOGOUT_USER);
     });
 
   });
