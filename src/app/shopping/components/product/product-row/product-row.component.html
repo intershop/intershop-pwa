@@ -3,15 +3,7 @@
     <div class="col-sm-2 col-xs-3">
       <div class="product-image-container">
         <a [routerLink]="['./product/' + product.sku]">
-          <!-- TODO: the image handling needs a rework (separate component) -->
-          <img class="product-image" [src]="icmBaseURL + product.images[2].effectiveUrl"
-            [attr.alt]="product.name ? product.name : null"
-            [attr.title]="product.name ? product.name : null"
-            [attr.height]="product.images[2].imageActualHeight ? product.images[2].imageActualHeight : null"
-            [attr.width]="product.images[2].imageActualWidth ? product.images[2].imageActualWidth : null"
-            [attr.data-type]="product.images[2].typeID ? product.images[2].typeID : null"
-            [attr.view-value]="product.images[2].viewID ? product.images[2].viewID : null"
-          >
+          <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
         </a>
       </div>
     </div>
