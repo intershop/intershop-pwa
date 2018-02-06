@@ -1,13 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
-import { of } from 'rxjs/observable/of';
-import { anything, instance, mock, when } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
-import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
+import { LoginUserFail, reducers, State } from '../../../core/store';
 import { SharedModule } from '../../../shared/shared.module';
 import { LoginPageComponent } from './login-page.component';
 
@@ -15,23 +16,14 @@ describe('Login Component', () => {
   let fixture: ComponentFixture<LoginPageComponent>;
   let component: LoginPageComponent;
   let element: HTMLElement;
+  let store: Store<State>;
 
   beforeEach(async(() => {
-    const accountLoginServiceMock = mock(AccountLoginService);
-    when(accountLoginServiceMock.signinUser(anything())).thenCall((userDetails) => {
-      if (userDetails.userName === 'intershop@123.com' && userDetails.password === '123456') {
-        return of({ data: 'Correct Details' });
-      } else {
-        return of('Incorrect Credentials');
-      }
-    });
-
     TestBed.configureTestingModule({
       declarations: [
         LoginPageComponent
       ],
       providers: [
-        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: USE_SIMPLE_ACCOUNT, useValue: true },
         { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
         FormUtilsService
@@ -42,11 +34,13 @@ describe('Login Component', () => {
         RouterTestingModule.withRoutes([
           { path: 'account', component: LoginPageComponent }
         ]),
-        CustomFormsModule
+        CustomFormsModule,
+        StoreModule.forRoot(reducers),
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
+
+    store = TestBed.get(Store);
   }));
 
   beforeEach(() => {
@@ -66,29 +60,35 @@ describe('Login Component', () => {
     expect(element.getElementsByClassName('btn btn-primary')).toBeTruthy();
   });
 
-  it('should set isDirty to true when form is invalid', () => {
-    const userDetails = { userName: 'intershop@123.com', password: '12346' };
-    component.onSignin(userDetails);
+  it('should not have any error when initialized', () => {
+    expect(component.isDirty).toBeFalsy();
+    component.loginError$.subscribe(val => expect(val).toBeUndefined());
   });
 
-  it('should set errorUser when user enters wrong credentials', () => {
-    const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
-    component.loginForm.controls['userName'].setValue('test@test.com');
-    component.loginForm.controls['password'].setValue('!InterShop0');
-    component.onSignin(userDetails);
-    expect(component.errorUser).toEqual('Incorrect Credentials');
+  describe('error detection', () => {
+    beforeEach(() => {
+      store.dispatch(new LoginUserFail(new HttpErrorResponse({ status: 401 })));
+
+      const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
+      component.onSignin(userDetails);
+    });
+
+    it('should set isDirty to true when form is invalid', () => {
+      expect(component.isDirty).toBe(true);
+    });
+
+    it('should set errorUser when user enters wrong credentials', () => {
+      component.loginError$.subscribe(val => expect(val).toBeTruthy());
+    });
   });
 
-  it('should navigate to the Account page when user enters valid credentials', async(() => {
-    const userDetails = { userName: 'intershop@123.com', password: '123456' };
+  it('should not detect error if email is well formed', () => {
     component.loginForm.controls['userName'].setValue('test@test.com');
-    component.loginForm.controls['password'].setValue('!InterShop0');
-    component.onSignin(userDetails);
+    expect(component.loginForm.controls['userName'].valid).toBeTruthy();
+  });
 
-  }));
-
-  it('should assign value to Email field to test Email validator', () => {
-    component.loginForm.controls['userName'].setValue('test@test.com');
-    expect(component.loginForm.controls['userName'].value).toEqual('test@test.com');
+  it('should detect error if email is malformed', () => {
+    component.loginForm.controls['userName'].setValue('testtest.com');
+    expect(component.loginForm.controls['userName'].valid).toBeFalsy();
   });
 });
