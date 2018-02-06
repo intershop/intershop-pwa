@@ -7,7 +7,9 @@ export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
 }
 
-export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>();
+export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
+  selectId: category => category.uniqueId
+});
 
 export const initialState: CategoriesState = {
   ...categoryAdapter.getInitialState(),
