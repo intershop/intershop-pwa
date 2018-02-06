@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import { Customer } from '../../../../models/customer/customer.model';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { getLoggedInUser, State } from '../../../store';
 
 @Component({
   selector: 'ish-login-status',
@@ -9,17 +11,13 @@ import { AccountLoginService } from '../../../services/account-login/account-log
 
 export class LoginStatusComponent implements OnInit {
 
-  userDetail: Customer = null;
+  customer$: Observable<Customer>;
 
   constructor(
-    private accountLoginService: AccountLoginService
+    private store: Store<State>
   ) { }
 
   ngOnInit() {
-    this.accountLoginService.subscribe(userDetail => this.userDetail = userDetail);
-  }
-
-  get isLoggedIn() {
-    return this.accountLoginService.isAuthorized();
+    this.customer$ = this.store.select(getLoggedInUser);
   }
 }
