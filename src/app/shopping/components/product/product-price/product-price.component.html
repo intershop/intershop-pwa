@@ -1,3 +1,20 @@
-<div class="current-price">
-  {{product.listPrice?.value}}
+<div class="current-price" [class.sale-price]="showInformationalPrice && listPrice?.value > salePrice.value" [class.sale-price-higher]="showInformationalPrice && listPrice?.value < salePrice.value"
+  data-testing-id="current-price">
+  <ng-template [ngIf]="!salePrice" [ngIfElse]="salePriceAvailable">
+    {{ 'product.price.na.text' | translate}}
+  </ng-template>
+  <ng-template #salePriceAvailable>
+    {{ (listPrice?.value > salePrice.value ? 'product.price.salePricePrefix.text' : 'product.price.salePriceFallback.text') |
+    translate:{'0': salePrice.value | currency:salePrice.currencyMnemonic} }}
+    <meta itemprop="price" [attr.content]="salePrice.value | number: '1.2-2':'en_US'" />
+    <meta itemprop="priceCurrency" [attr.content]="salePrice.currencyMnemonic" />
+  </ng-template>
 </div>
+
+<div *ngIf="showInformationalPrice && listPrice && listPrice.value > salePrice?.value" class="old-price" data-testing-id="old-price">
+  {{ 'product.price.listPriceFallback.text' | translate:{'0': listPrice.value | currency:listPrice.currencyMnemonic} }}
+</div>
+
+<span *ngIf="showPriceSavings && listPrice && salePrice && listPrice.value > salePrice.value" class="price-savings">
+  {{ 'product.price.savingsFallback.text' | translate:{'0': listPrice.value - salePrice.value | currency:listPrice.currencyMnemonic}  }}
+</span>

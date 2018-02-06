@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Price } from '../../../../models/price/price.model';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
@@ -6,10 +7,15 @@ import { Product } from '../../../../models/product/product.model';
   templateUrl: './product-price.component.html'
 })
 
-export class ProductPriceComponent {
-
+export class ProductPriceComponent implements OnInit {
+  @Input() showInformationalPrice: boolean;
+  @Input() showPriceSavings: boolean;
   @Input() product: Product;
+  salePrice: Price;
+  listPrice: Price;
 
-  constructor() { }
-
+  ngOnInit() {
+    this.salePrice = this.product.salePrice;
+    this.listPrice = this.product.listPrice;
+  }
 }

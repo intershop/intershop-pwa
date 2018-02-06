@@ -9,7 +9,7 @@
   <a class="product-title" [routerLink]="['./product/' + product.sku]">{{product.name}}</a>
 
   <div class="price-container">
-    <ish-product-price [product]="product"></ish-product-price>
+    <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
   </div>
 
   <!-- TODO: this functionality needs to go into reusable components -->
