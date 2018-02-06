@@ -18,8 +18,8 @@ export class ProductsService {
   ) { }
 
   /**
-   * REST API - Get product data with all images
-   * @param productSku  The category id path for the category of interest.
+   * REST API - Get full product data
+   * @param productSku  The product SKU for the product of interest.
    * @returns           Product information.
    */
   getProduct(productSku: string): Observable<Product> {
@@ -32,7 +32,7 @@ export class ProductsService {
     );
   }
 
-  // NEEDS_WORK: service should be parameterized with the category ID and not some URL, it should know its endpoint itself, it should not return an Observable of <any>
+  // NEEDS_WORK: service should be parameterized with the category ID and not some URL, it should know its endpoint itself
   /**
      * REST API - Get product list data
      * @param  {string} url category url
@@ -41,8 +41,8 @@ export class ProductsService {
   getProductList(url: string): Observable<Product[]> {
     return this.apiService.get<ProductData[]>(url, null, null, true, true).pipe(
       map(
-        (rawCategories: ProductData[]) => {
-          return rawCategories.map(
+        (productsData: ProductData[]) => {
+          return productsData.map(
             (product: ProductData) => ProductFactory.fromData(product));
         })
     );
