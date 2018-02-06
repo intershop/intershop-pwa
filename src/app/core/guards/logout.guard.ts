@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { AccountLoginService } from '../services/account-login/account-login.service';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { LogoutUser, State } from '../store';
 
 
 @Injectable()
 export class LogoutGuard implements CanActivate {
 
-  constructor(private router: Router,
-    private accountLoginService: AccountLoginService) { }
+  constructor(private store: Store<State>) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    this.accountLoginService.logout();
-    this.router.navigate(['/home']);
+    this.store.dispatch(new LogoutUser());
     return true;
   }
 }

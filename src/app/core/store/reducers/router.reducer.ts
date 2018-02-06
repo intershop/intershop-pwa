@@ -5,3 +5,5 @@ export interface RouterStateUrl {
   queryParams: Params;
   params: Params;
 }
+
+export const getURL = (state: RouterStateUrl): string => state.url;

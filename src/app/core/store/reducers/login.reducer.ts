@@ -5,12 +5,14 @@ export interface LoginState {
   entity: Customer;
   authorized: boolean;
   loggingIn: boolean;
+  loginError: string;
 }
 
 export const initialState: LoginState = {
-  entity: { id: 'value' } as Customer,
+  entity: null,
   authorized: false,
   loggingIn: false,
+  loginError: undefined,
 };
 
 export function reducer(
@@ -20,31 +22,28 @@ export function reducer(
   switch (action.type) {
 
     case fromAccount.LOGIN_USER: {
-      return {
-        ...state,
-        loggingIn: true
-      };
+      return initialState;
     }
 
     case fromAccount.LOGIN_USER_FAIL: {
       return {
-        ...state,
-        entity: null,
-        authorized: false,
-        loggingIn: false,
+        ...initialState,
+        loginError: action.payload
       };
     }
 
     case fromAccount.LOGIN_USER_SUCCESS: {
       const entity = action.payload;
       return {
-        ...state,
+        ...initialState,
         authorized: true,
-        loggingIn: false,
         entity
       };
     }
 
+    case fromAccount.LOGOUT_USER: {
+      return initialState;
+    }
   }
 
   return state;
