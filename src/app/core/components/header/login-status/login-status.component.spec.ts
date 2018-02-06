@@ -1,44 +1,38 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { anyFunction, instance, mock, when } from 'ts-mockito';
 import { Customer } from '../../../../models/customer/customer.model';
-import { AccountLoginService } from '../../../services/account-login/account-login.service';
+import { LoginUserFail, LoginUserSuccess, reducers, State } from '../../../store';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
   let fixture: ComponentFixture<LoginStatusComponent>;
   let component: LoginStatusComponent;
   let element: HTMLElement;
-  let accountLoginServiceMock: AccountLoginService;
-  let routerMock: Router;
+  let store: Store<State>;
   const userData = {
     'firstName': 'Patricia',
     'lastName': 'Miller'
-  };
+  } as Customer;
 
   beforeEach(() => {
-    accountLoginServiceMock = mock(AccountLoginService);
-    when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
-    when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: Customer) => void) => callback(userData as Customer));
-
-
-    routerMock = mock(Router);
-
     TestBed.configureTestingModule({
       imports: [
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        StoreModule.forRoot(reducers)
       ],
       declarations: [
         LoginStatusComponent
       ],
       providers: [
-        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
-        { provide: Router, useFactory: () => instance(routerMock) }
+
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
+
+    store = TestBed.get(Store);
   });
 
   beforeEach(() => {
@@ -52,24 +46,23 @@ describe('Login Status Component', () => {
     expect(element).toBeTruthy();
   });
 
-  it('should set isLogged to true and set userDetail when user is authorized', fakeAsync(() => {
-    fixture.detectChanges();
-    tick();
-    expect(component.isLoggedIn).toBeTruthy();
-    expect(component.userDetail).toBeTruthy();
-  }));
+  it('should render full name on template when user is logged in', async(() => {
+    store.dispatch(new LoginUserSuccess(userData));
 
-  it('should render full name on template when user is logged in', () => {
     fixture.detectChanges();
+
     const loggedInDetails = element.getElementsByClassName('login-name');
     expect(loggedInDetails).toBeTruthy();
     expect(loggedInDetails.length).toBeGreaterThan(0);
     expect(loggedInDetails[0].textContent).toEqual('Patricia Miller');
-  });
+  }));
 
-  it('should verify that isLoggedIn returns false when user is not authorized', () => {
-    when(accountLoginServiceMock.isAuthorized()).thenReturn(false);
+  it('should render nothing on template when user is not logged in', async(() => {
+    store.dispatch(new LoginUserFail('dummy error'));
+
     fixture.detectChanges();
-    expect(component.isLoggedIn).toBe(false);
-  });
+
+    const loggedInDetails = element.getElementsByClassName('login-name');
+    expect(loggedInDetails.length).toBe(0);
+  }));
 });
