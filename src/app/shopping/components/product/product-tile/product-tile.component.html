@@ -19,9 +19,6 @@
         <span class="glyphicon glyphicon-shopping-cart"></span>
       </button>
     </div>
-    <button (click)="addToWishlist()" class="btn btn-link add-to-wishlist" title="Add to Wish List">
-      <span class="glyphicon glyphicon-heart"></span>
-    </button>
     <button (click)="addToCompare()" class="btn btn-link add-to-compare" title="Compare"
       ishDisableIcon [property]="product.sku" [globalStateKey]="'productCompareData'">
       <span class="glyphicon glyphicon-equalizer"></span>
