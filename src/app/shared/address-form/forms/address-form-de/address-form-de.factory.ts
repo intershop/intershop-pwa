@@ -21,7 +21,8 @@ export class AddressFormDEFactory extends AddressFormFactory {
       addressLine2: [],
       addressLine3: [],
       postalCode: ['', [Validators.required, Validators.pattern('[0-9]{5}')]],
-      city: ['', Validators.required]
+      city: ['', Validators.required],
+      phoneHome: ['']
     });
   }
 
