@@ -47,12 +47,7 @@ export function reducer(
         loaded: true,
       };
     }
-
   }
 
   return state;
 }
-
-export const getProductEntities = (state: ProductsState) => state.entities;
-export const getProductLoading = (state: ProductsState) => state.loading;
-export const getProductLoaded = (state: ProductsState) => state.loaded;

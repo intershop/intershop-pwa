@@ -8,7 +8,6 @@ export const getProductsState = createSelector(
   fromFeature.getShoppingState, (state: fromFeature.ShoppingState) => state.products
 );
 
-
 export const {
   selectEntities: getProductEntities,
   selectAll: getProducts,
@@ -16,7 +15,7 @@ export const {
 
 export const getSelectedProductId = createSelector(
   fromRouter.getRouterState,
-  router => router.state && router.state.params.sku
+  router => router && router.state && router.state.params.sku
 );
 
 export const getSelectedProduct = createSelector(
@@ -27,10 +26,10 @@ export const getSelectedProduct = createSelector(
 
 export const getProductLoaded = createSelector(
   getProductsState,
-  fromProducts.getProductLoaded
+  products => products.loaded
 );
 
 export const getProductLoading = createSelector(
   getProductsState,
-  fromProducts.getProductLoading
+  products => products.loading
 );

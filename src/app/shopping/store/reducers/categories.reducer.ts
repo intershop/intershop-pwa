@@ -46,12 +46,7 @@ export function reducer(
         loaded: true,
       };
     }
-
   }
 
   return state;
 }
-
-
-export const getCategoryLoading = (state: CategoriesState) => state.loading;
-export const getCategoryLoaded = (state: CategoriesState) => state.loaded;

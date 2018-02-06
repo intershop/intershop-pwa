@@ -1,61 +1,63 @@
-<ng-container *ngIf="category$ | async as category;">
+<h1 *ngIf="categoryLoading$ | async">KATEGORIE LADEN...</h1>
 
 
-<ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
+<ng-container *ngIf="category$ | async as category else loading">
 
-<div class="marketing-area"></div>
+  <ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
-<div [ngClass]="category.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" [attr.data-testing-id]="category.id">
-  <div class="row">
+  <div class="marketing-area"></div>
 
-    <div class="col-sm-3">
-      <div class="navigation-panel">
-        <h1>{{category.name}}</h1>
-        <ish-category-navigation [category]="category" [categoryPath]="categoryPath$ | async" [categoryNavigationLevel]="0"></ish-category-navigation>
+  <div [ngClass]="category.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" [attr.data-testing-id]="category.id">
+    <div class="row">
+
+      <div class="col-sm-3">
+        <div class="navigation-panel">
+          <h1>{{category.name}}</h1>
+          <ish-category-navigation [category]="category" [categoryPath]="categoryPath$ | async" [categoryNavigationLevel]="0"></ish-category-navigation>
+        </div>
+      </div>
+
+      <div class="col-sm-9">
+        <!-- category with subcategories -->
+        <ng-template [ngIf]="category.hasOnlineSubCategories" [ngIfElse]="familyPage">
+          <ish-category-list [categories]="category.subCategories"></ish-category-list>
+        </ng-template>
+        <!-- category with products -->
+        <ng-template #familyPage>
+          <!-- TODO: Product List filter should be an own component -->
+          <div class="filters-row row">
+            <div class="col-md-7 col-sm-9 col-xs-12 switch-layout">
+              <div class="col-md-3 col-sm-3 col-xs-4">
+                <div class="pagination-total text-nowrap"> {{totalItems}} List Item{{totalItems > 1 ? 's':''}}</div>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
+              <div class="pull-right sort-by">
+                <a class="list-view-link" [ngClass]="{'list-active' : listView}" data-testing-id="list-view-link" (click)="listView = true">
+                  <span class="glyphicon glyphicon-list"></span>
+                </a>
+                <a class="grid-view-link" [ngClass]="{'grid-active' : !listView}" data-testing-id="grid-view-link" (click)="listView = false">
+                  <span class="glyphicon glyphicon-th"></span>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-8 pull-right sort-by">
+              <form class="sort-by-filter" method="post" name="sortByForm" novalidate="">
+                <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value">
+                  <option selected="selected" value="">Default Sorting</option>
+                  <option value="name-asc">Name asc</option>
+                  <option value="name-desc">Name desc</option>
+                  <option value="SalesRankUnitsIndex-desc">Topsellers</option>
+                  <option value="ArrivalDate-desc">Newest Arrivals</option>
+                </select>
+              </form>
+            </div>
+          </div>
+          <ish-product-list [listView]="listView" [sortBy]="sortBy" (totalItems)="totalItems = $event"></ish-product-list>
+        </ng-template>
       </div>
     </div>
-
-    <div class="col-sm-9">
-      <!-- category with subcategories -->
-      <ng-template [ngIf]="category.hasOnlineSubCategories" [ngIfElse]="familyPage">
-        <ish-category-list [categories]="category.subCategories"></ish-category-list>
-      </ng-template>
-      <!-- category with products -->
-      <ng-template #familyPage>
-        <!-- TODO: Product List filter should be an own component -->
-        <div class="filters-row row">
-          <div class="col-md-7 col-sm-9 col-xs-12 switch-layout">
-            <div class="col-md-3 col-sm-3 col-xs-4">
-              <div class="pagination-total text-nowrap"> {{totalItems}} List Item{{totalItems > 1 ? 's':''}}</div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
-            <div class="pull-right sort-by">
-              <a class="list-view-link" [ngClass]="{'list-active' : listView}" data-testing-id="list-view-link" (click)="listView = true">
-                <span class="glyphicon glyphicon-list"></span>
-              </a>
-              <a class="grid-view-link" [ngClass]="{'grid-active' : !listView}" data-testing-id="grid-view-link" (click)="listView = false">
-                <span class="glyphicon glyphicon-th"></span>
-              </a>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-12 col-xs-8 pull-right sort-by">
-            <form class="sort-by-filter" method="post" name="sortByForm" novalidate="">
-              <select class="form-control" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute" (change)="sortBy = $event.target.value">
-                <option selected="selected" value="">Default Sorting</option>
-                <option value="name-asc">Name asc</option>
-                <option value="name-desc">Name desc</option>
-                <option value="SalesRankUnitsIndex-desc">Topsellers</option>
-                <option value="ArrivalDate-desc">Newest Arrivals</option>
-              </select>
-            </form>
-          </div>
-        </div>
-        <ish-product-list [listView]="listView" [sortBy]="sortBy" (totalItems)="totalItems = $event"></ish-product-list>
-      </ng-template>
-    </div>
   </div>
-</div>
 
 
 </ng-container>
