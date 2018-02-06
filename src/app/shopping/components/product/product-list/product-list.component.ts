@@ -29,7 +29,7 @@ export class ProductListComponent implements OnInit {
     this.activatedRoute.url.subscribe((urlSegment: UrlSegment[]) => {
       // TODO: REST urls do not belong into any component but into the service
       const productListUrl = `categories/${urlSegment.map(x => x.path).join('/')}/products`;
-      this.productsService.getProductList(productListUrl).subscribe((data: any) => {
+      this.productsService.getProductList(productListUrl).subscribe((data: Product[]) => {
         this.products = data;
         this.totalItems.emit(this.products.length);
       });
