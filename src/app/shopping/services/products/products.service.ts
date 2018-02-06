@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
@@ -17,7 +18,7 @@ export class ProductsService {
   ) { }
 
   /**
-   * REST API - Get product data
+   * REST API - Get product data with all images
    * @param productSku  The category id path for the category of interest.
    * @returns           Product information.
    */
@@ -25,16 +26,26 @@ export class ProductsService {
     if (!productSku) {
       return ErrorObservable.create('getProduct() called without a productSku');
     }
-    return this.apiService.get<ProductData>(this.serviceIdentifier + '/' + productSku, null, null, false, false).pipe(
+    const params: HttpParams = new HttpParams().set('allImages', 'true');
+    return this.apiService.get<ProductData>(this.serviceIdentifier + '/' + productSku, params, null, false, false).pipe(
       map(productData => ProductFactory.fromData(productData))
     );
   }
 
   // NEEDS_WORK: service should be parameterized with the category ID and not some URL, it should know its endpoint itself, it should not return an Observable of <any>
   /**
-   * @returns List of products as observable
-   */
-  getProductList(url: string): Observable<any> {
-    return this.apiService.get(url, null, null, true, true);
+     * REST API - Get product list data
+     * @param  {string} url category url
+     * @returns List of products as observable
+     */
+  getProductList(url: string): Observable<Product[]> {
+    return this.apiService.get<ProductData[]>(url, null, null, true, true).pipe(
+      map(
+        (rawCategories: ProductData[]) => {
+          return rawCategories.map(
+            (product: ProductData) => ProductFactory.fromData(product));
+        })
+    );
   }
+
 }
