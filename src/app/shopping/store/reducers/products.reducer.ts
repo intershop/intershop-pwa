@@ -1,14 +1,18 @@
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Product } from '../../../models/product/product.model';
 import * as fromProducts from '../actions/products.actions';
 
-export interface ProductsState {
-  entities: { [sku: string]: Product };
+export const productAdapter: EntityAdapter<Product> = createEntityAdapter<Product>({
+  selectId: product => product.sku
+});
+
+export interface ProductsState extends EntityState<Product> {
   loaded: boolean;
   loading: boolean;
 }
 
 export const initialState: ProductsState = {
-  entities: {},
+  ...productAdapter.getInitialState(),
   loaded: false,
   loading: false,
 };
@@ -37,15 +41,11 @@ export function reducer(
 
     case fromProducts.LOAD_PRODUCT_SUCCESS: {
       const loadedProduct = action.payload;
-      const entities = {
-        ...state.entities,
-        [loadedProduct.sku]: loadedProduct,
-      };
+
       return {
-        ...state,
+        ...productAdapter.addOne(loadedProduct, state),
         loading: false,
         loaded: true,
-        entities
       };
     }
 
