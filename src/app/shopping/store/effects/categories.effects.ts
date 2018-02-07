@@ -17,6 +17,12 @@ export class CategoriesEffects {
   ) { }
 
   @Effect()
+  selectedCategory$ = this.store.select(categoriesSelectors.getSelectedCategoryId).pipe(
+    filter(id => !!id),
+    map(id => new categoriesActions.LoadCategory(id)),
+  );
+
+  @Effect()
   loadCategory$ = this.actions$.pipe(
     ofType(categoriesActions.LOAD_CATEGORY),
     map((action: categoriesActions.LoadCategory) => action.payload),
@@ -30,8 +36,10 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  selectedCategory$ = this.store.select(categoriesSelectors.getSelectedCategoryId).pipe(
-    filter(id => !!id),
-    map(id => new categoriesActions.LoadCategory(id)),
+  saveSubCategories$ = this.actions$.pipe(
+    ofType(categoriesActions.LOAD_CATEGORY_SUCCESS),
+    map((action: categoriesActions.LoadCategorySuccess) => action.payload.subCategories),
+    filter(sc => !!sc),
+    map(sc => new categoriesActions.SaveSubCategories(sc))
   );
 }
