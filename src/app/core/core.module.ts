@@ -20,7 +20,6 @@ import { ApiService } from './services/api.service';
 import { CartStatusService } from './services/cart-status/cart-status.service';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
-import { CustomErrorHandler } from './services/custom-error-handler';
 import { translateFactory } from './services/custom-translate-loader';
 import { ErrorCodeMappingService } from './services/error-code-mapping.service';
 import { CurrentLocaleService } from './services/locale/current-locale.service';
@@ -55,7 +54,6 @@ import { FormUtilsService } from './services/utils/form-utils.service';
   ],
   providers: [
     ApiService,
-    CustomErrorHandler,
     ProductCompareService,
     UserDetailService,
     CurrentLocaleService,
