@@ -4,6 +4,9 @@ import { Address } from './address.model';
 
 export class AddressFactory {
 
+  /*
+    Converts addressData interface to address object
+  */
   static fromData(data: AddressData): Address {
     const address: Address = new Address();
     FactoryHelper.primitiveMapping<AddressData, Address>(data, address);
@@ -14,12 +17,29 @@ export class AddressFactory {
     return address;
   }
 
-  static fromFormValueToData(formValue: any) {
-    if (!formValue) {
+  /*
+    Converts address object to addressData interface
+  */
+  static toData(address: Address): AddressData {
+    if (!address) {
       return null;
     }
     const addressData = new Object as AddressData;
-    FactoryHelper.primitiveMapping<any, AddressData>(formValue, addressData);
+    FactoryHelper.primitiveMapping<Address, AddressData>(address, addressData);
     return addressData;
+  }
+
+  /*
+    Converts (form) value to address object
+  */
+  static fromValue(value: any): Address {
+    if (!value) {
+      return null;
+    }
+
+    const address = new Address();
+    FactoryHelper.primitiveMapping<any, Address>(value, address);
+
+    return address;
   }
 }

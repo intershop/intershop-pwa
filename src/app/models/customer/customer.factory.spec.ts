@@ -1,6 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { CustomerFactory } from './customer.factory';
 import { CustomerData } from './customer.interface';
+import { Customer } from './customer.model';
 
 describe('Customer Factory', () => {
   describe('fromData', () => {
@@ -9,7 +10,16 @@ describe('Customer Factory', () => {
     });
   });
 
-  describe('fromFormToData', () => {
+  describe('toData', () => {
+    it(`should return CustomerData when getting a Customer`, () => {
+      const customer = new (Customer);
+      customer.id = '12345';
+      const customerdata = CustomerFactory.toData(customer);
+      expect(customerdata.id).toEqual('12345', 'customerData id is returned');
+    });
+  });
+
+  describe('fromValue', () => {
     const regForm = new FormGroup({
       birthday: new FormControl(''),
     });
@@ -26,19 +36,29 @@ describe('Customer Factory', () => {
 
     regForm.addControl('address', addressForm);
 
-    it(`should return customer data when getting a customer (registration) form`, () => {
-      expect(CustomerFactory.fromFormValueToData(regForm.value)).toBeTruthy();
+    it(`should return customer data when getting a customer (registration) form value`, () => {
+      expect(CustomerFactory.fromValue(regForm.value)).toBeTruthy();
     });
 
     it(`should preset some fields on customerData when getting a customer (registration) form with an address`, () => {
-      const customerData = CustomerFactory.fromFormValueToData(regForm.value);
-      expect(customerData.firstName).toEqual('John', 'First name is written to customer, if it is empty');
-      expect(customerData.lastName).toEqual('Doe', 'Last name is written to customer, if it is empty');
-      expect(customerData.phoneHome).toEqual('1234567890', 'Phone home is written to customer, if it is empty');
+      const customer = CustomerFactory.fromValue(regForm.value);
+      expect(customer.firstName).toEqual('John', 'First name is written to customer, if it is empty');
+      expect(customer.lastName).toEqual('Doe', 'Last name is written to customer, if it is empty');
+      expect(customer.phoneHome).toEqual('1234567890', 'Phone home is written to customer, if it is empty');
+      expect(customer instanceof Customer).toBeTruthy('customer is an object of class Customer');
     });
 
     it(`should return null when getting no customer (registration) form`, () => {
       expect(CustomerFactory.fromFormValueToData(null)).toBeFalsy();
+    });
+  });
+
+  describe('fromFormValueToData', () => {
+    it(`should return CustomerData when getting form value`, () => {
+      const regForm = new FormGroup({
+        birthday: new FormControl(''),
+      });
+      expect(CustomerFactory.fromFormValueToData(regForm.value)).toBeTruthy();
     });
   });
 });
