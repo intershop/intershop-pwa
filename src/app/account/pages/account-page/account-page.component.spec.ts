@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
@@ -22,11 +22,9 @@ describe('Account Overview Component', () => {
       ],
       providers: [
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
+        { provide: Store, useFactory: () => instance(mock(Store)) },
       ],
       imports: [
-        RouterTestingModule.withRoutes([
-          { path: 'home', component: AccountPageComponent }
-        ]),
         TranslateModule.forRoot(),
       ]
     }).compileComponents();
