@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { State } from '../../../core/store/reducers';
+import { getLoggedInUser } from '../../../core/store/selectors';
 import { Customer } from '../../../models/customer/customer.model';
 
 @Component({
@@ -7,17 +10,14 @@ import { Customer } from '../../../models/customer/customer.model';
 })
 
 export class AccountPageComponent implements OnInit {
-  customer: Customer;
+
+  customer$: Observable<Customer>;
 
   constructor(
-    private accountLoginService: AccountLoginService
+    private store: Store<State>
   ) { }
 
   ngOnInit() {
-    this.accountLoginService.subscribe(customer => {
-      if (customer) {
-        this.customer = customer;
-      }
-    });
+    this.customer$ = this.store.select(getLoggedInUser);
   }
 }

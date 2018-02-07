@@ -13,7 +13,7 @@
 
       <div class="marketing-area"></div>
 
-      <h1 [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (customer.firstName || customer.credentials.login)}"></h1>
+      <h1 *ngIf="customer$ | async as customer" [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (customer.firstName || customer.credentials.login)}"></h1>
       <p>{{'account.overview.message.text' | translate}}</p>
 
       <div class="row account-dashboard">
