@@ -1,10 +1,10 @@
 <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
-  <label *ngIf="label" [for]="controlName+'-'+uuid" class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
+  <label *ngIf="label" [for]="uuid" class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
   <div [ngClass]="inputClass">
     <input
       [type]="type"
       class="form-control"
-      [id]="controlName+'-'+uuid"
+      [id]="uuid"
       [formControlName]="controlName"
       [attr.data-testing-id]="controlName"
       [maxlength]="maxlength"

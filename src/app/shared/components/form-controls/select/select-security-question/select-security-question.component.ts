@@ -24,6 +24,8 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
     this.setDefaultValues(); // call this method before parent init
     super.componentInit();
     this.options = this.options || this.getSecurityQuestionOptions();
+    this.translateOptionLabels = true;
+    this.translateOptionValues = true;
   }
 
   /*
@@ -33,7 +35,6 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
     this.controlName = this.controlName || 'securityQuestion';
     this.label = this.label || 'account.security_question.label';
     this.errorMessages = this.errorMessages || { 'required': 'account.security_question.error.required' };
-
   }
 
   /*
@@ -48,8 +49,8 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
       // Map questions array to an array of type SelectOption
       options = securityQuestions.map(question => {
         return {
-          'label': question.label,
-          'value': question.value
+          'label': question,
+          'value': question
         };
       });
     }
@@ -58,23 +59,13 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
 
   // define which security questions are shown - ToDo: should be done in a service
   private getSecurityQuestions() {
-    const questions = [];
-
-    this.translate.get('account.security_question.maiden_name.text').subscribe(data => {
-      questions[0] = { 'label': 'account.security_question.maiden_name.text', 'value': data };
-    }).unsubscribe();
-    this.translate.get('account.security_question.pet_name.text').subscribe(data => {
-      questions[1] = { 'label': 'account.security_question.pet_name.text', 'value': data };
-    }).unsubscribe();
-    this.translate.get('account.security_question.street_name.text').subscribe(data => {
-      questions[2] = { 'label': 'account.security_question.street_name.text', 'value': data };
-    }).unsubscribe();
-    this.translate.get('account.security_question.elementary_school.text').subscribe(data => {
-      questions[3] = { 'label': 'account.security_question.elementary_school.text', 'value': data };
-    }).unsubscribe();
-    this.translate.get('account.security_question.first_employer.text').subscribe(data => {
-      questions[4] = { 'label': 'account.security_question.first_employer.text', 'value': data };
-    }).unsubscribe();
+    const questions = [
+      'account.security_question.maiden_name.text',
+      'account.security_question.pet_name.text',
+      'account.security_question.street_name.text',
+      'account.security_question.elementary_school.text',
+      'account.security_question.first_employer.text'
+    ];
     return questions;
   }
 }
