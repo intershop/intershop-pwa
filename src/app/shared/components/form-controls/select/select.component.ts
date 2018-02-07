@@ -9,6 +9,9 @@ import { SelectOption } from './select-option.interface';
 })
 export class SelectComponent extends FormElement implements OnInit {
   @Input() options: SelectOption[];   // required
+  @Input() translateOptionLabels = false;
+  @Input() translateOptionValues = false;
+
   showEmptyOption: boolean;           // is automatically set if the control value is empty
 
   constructor(
