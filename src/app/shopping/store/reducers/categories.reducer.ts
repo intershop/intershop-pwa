@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { Category } from '../../../models/category/category.model';
 import * as fromCategories from '../actions/categories.actions';
 
@@ -50,6 +50,20 @@ export function reducer(
     case fromCategories.SAVE_SUBCATEGORIES: {
       const subCategories = action.payload;
       return categoryAdapter.addMany(subCategories, state);
+    }
+
+    case fromCategories.SET_PRODUCT_SKUS_FOR_CATEGORY: {
+      const skus = action.payload;
+      const categoryUniqueId = action.categoryUniqueId;
+
+      const update: Update<Category> = {
+        id: categoryUniqueId,
+        changes: {
+          productSkus: skus
+        }
+      };
+
+      return categoryAdapter.updateOne(update, state);
     }
   }
 
