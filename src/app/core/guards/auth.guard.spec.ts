@@ -1,44 +1,51 @@
 import { async, TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { AccountLoginService } from '../services/account-login/account-login.service';
+import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
+import { Store, StoreModule } from '@ngrx/store';
+import { Customer } from '../../models/customer/customer.model';
+import { LoginUserSuccess, reducers, State } from '../store';
 import { AuthGuard } from './auth.guard';
 
-xdescribe('AuthGuard', () => {
+describe('AuthGuard', () => {
 
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
-    const accountLoginServiceMock = mock(AccountLoginService);
+    let store: Store<State>;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [
-          RouterTestingModule
+          RouterTestingModule,
+          StoreModule.forRoot(reducers)
         ],
-        providers: [AuthGuard,
-          { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) }
-        ]
+        providers: [AuthGuard]
       }).compileComponents();
     }));
 
     beforeEach(() => {
       authGuard = TestBed.get(AuthGuard);
+      store = TestBed.get(Store);
+      store.dispatch({
+        payload: {
+          routerState: { url: '/any' },
+          event: { id: 1 }
+        },
+        type: ROUTER_NAVIGATION
+      } as RouterNavigationAction);
     });
 
-    it('should return true when called as authorized', () => {
-      const snapshot = { url: [{ path: 'a' }] } as ActivatedRouteSnapshot;
-      const routerStateSnapshot = { url: 'b' } as RouterStateSnapshot;
-      when(accountLoginServiceMock.isAuthorized()).thenReturn(true);
-      expect(authGuard.canActivate(snapshot, routerStateSnapshot)).toBeTruthy();
+    it('should return true when user is authorized', () => {
+      store.dispatch(new LoginUserSuccess({} as Customer));
+
+      authGuard.canActivate().subscribe(authorized =>
+        expect(authorized).toBeTruthy()
+      );
     });
 
     it('should return false when called as unauthorized', () => {
-      const snapshot = { url: [{ path: 'a' }] } as ActivatedRouteSnapshot;
-      const routerStateSnapshot = { url: 'b' } as RouterStateSnapshot;
-      when(accountLoginServiceMock.isAuthorized()).thenReturn(false);
-      expect(authGuard.canActivate(snapshot, routerStateSnapshot)).toBeFalsy();
+      authGuard.canActivate().subscribe(authorized =>
+        expect(authorized).toBeFalsy()
+      );
     });
-
   });
 });
