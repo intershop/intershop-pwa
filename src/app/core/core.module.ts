@@ -15,7 +15,6 @@ import { CookieModule } from 'ngx-cookie';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { StyleWrapperDirective } from './directives/style-wrapper.directive';
-import { UserDetailService } from './services/account-login/user-detail.service';
 import { ApiService } from './services/api.service';
 import { CartStatusService } from './services/cart-status/cart-status.service';
 import { CountryService } from './services/countries/country.service';
@@ -55,7 +54,6 @@ import { FormUtilsService } from './services/utils/form-utils.service';
   providers: [
     ApiService,
     ProductCompareService,
-    UserDetailService,
     CurrentLocaleService,
     CartStatusService,
     ErrorCodeMappingService,
