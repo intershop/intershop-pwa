@@ -46,6 +46,11 @@ export function reducer(
         loaded: true,
       };
     }
+
+    case fromCategories.SAVE_SUBCATEGORIES: {
+      const subCategories = action.payload;
+      return categoryAdapter.addMany(subCategories, state);
+    }
   }
 
   return state;
