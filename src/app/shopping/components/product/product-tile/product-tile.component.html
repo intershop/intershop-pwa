@@ -19,7 +19,7 @@
         <span class="glyphicon glyphicon-shopping-cart"></span>
       </button>
     </div>
-    <button (click)="addToCompare()" class="btn btn-link add-to-compare" title="Compare"
+    <button (click)="toggleCompare()" class="btn btn-link add-to-compare" title="Compare"
       ishDisableIcon [property]="product.sku" [globalStateKey]="'productCompareData'">
       <span class="glyphicon glyphicon-equalizer"></span>
     </button>

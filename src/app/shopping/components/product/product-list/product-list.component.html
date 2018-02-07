@@ -17,7 +17,10 @@
       <ng-template #loading>
         <div style="text-align: center"><h2>LADEN...</h2></div>
       </ng-template>
-      <ish-product-tile [product]="product" *ngIf="product else loading"></ish-product-tile>
+      <ish-product-tile
+        [product]="product"
+        *ngIf="product else loading"
+        (compareToggle)="toggleCompare($event)"></ish-product-tile>
     </div>
   </ng-template>
 
