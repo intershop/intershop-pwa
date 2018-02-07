@@ -3,6 +3,7 @@ import * as fromRouter from '../../../core/store/router';
 import { Category } from '../../../models/category/category.model';
 import * as fromFeature from '../reducers';
 import * as fromCategories from '../reducers/categories.reducer';
+import * as productsSelectors from './products.selectors';
 
 export const getCategoryState = createSelector(
   fromFeature.getShoppingState, (state: fromFeature.ShoppingState) => state.categories
@@ -41,6 +42,19 @@ export const getSelectedCategoryPath = createSelector(
     }
     return categories;
   }
+);
+
+
+export const getProductsForSelectedCategory = createSelector(
+  getSelectedCategory,
+  productsSelectors.getProductEntities,
+  (category, products) => category && category.productSkus
+    && category.productSkus.map(sku => products[sku])
+);
+
+export const getProductCountForSelectedCategory = createSelector(
+  getProductsForSelectedCategory,
+  products => products && products.length
 );
 
 export const getCategoryLoaded = createSelector(

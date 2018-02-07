@@ -9,6 +9,7 @@ export class Category {
   public description: string;
   public subCategoriesCount?: number;
   public subCategories?: Category[];
+  public productSkus?: string[];
   public images?: Image[];
   public uri?: string;
 
