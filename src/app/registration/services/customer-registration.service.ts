@@ -24,7 +24,7 @@ export class CustomerRegistrationService {
       return null;
     }
     // determine user credentials for login
-    const accountLogin = new (AccountLogin);
+    const accountLogin = new AccountLogin();
     accountLogin.userName = newCustomerData.credentials.login;
     accountLogin.password = newCustomerData.credentials.password;
 

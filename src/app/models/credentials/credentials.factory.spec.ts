@@ -13,7 +13,7 @@ describe('Credentials Factory', () => {
 
   describe('toData', () => {
     it(`should return CredentialsData when getting a Credentials`, () => {
-      const credentials = new (Credentials);
+      const credentials = new Credentials();
       credentials.login = '12345';
       const credentialsdata = CredentialsFactory.toData(credentials);
       expect(credentialsdata.login).toEqual('12345', 'credentialsData login is returned');
