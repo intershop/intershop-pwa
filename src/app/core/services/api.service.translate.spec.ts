@@ -4,12 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from './api.service';
-import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 describe('ApiService Translation', () => {
-  let customErrorHandler: CustomErrorHandler;
   let httpClient: HttpClient;
   let apiService: ApiService;
 
@@ -36,7 +34,6 @@ describe('ApiService Translation', () => {
   }
 
   beforeEach(() => {
-    customErrorHandler = mock(CustomErrorHandler);
     httpClient = mock(HttpClient);
 
     when(httpClient.get(anyString(), new Object(anything()))).thenCall((path: string, obj) => {
@@ -52,7 +49,6 @@ describe('ApiService Translation', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClient) },
-        { provide: CustomErrorHandler, useFactory: () => instance(customErrorHandler) },
         { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
         { provide: REST_ENDPOINT, useValue: `${BASE_URL}/site` },
         { provide: ICM_SERVER_URL, useValue: BASE_URL },

@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operators';
-import { CustomErrorHandler } from './custom-error-handler';
 import { CurrentLocaleService } from './locale/current-locale.service';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
@@ -22,21 +21,11 @@ export class ApiService {
     @Inject(REST_ENDPOINT) private restEndpoint: string,
     @Inject(ICM_SERVER_URL) private icmServerUrl: string,
     private httpClient: HttpClient,
-    private customErrorHandler: CustomErrorHandler,
     private currentLocaleService: CurrentLocaleService
   ) { }
 
   // declare default http header
   private defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
-
-  /**
-   * format api errors and send errors to custom handler
-   * @param  {any} error
-   */
-  // TODO: error handling needs to be reworked
-  private formatErrors(error: any) {
-    return this.customErrorHandler.handleApiErrors(error);
-  }
 
   /**
    * http get request
@@ -60,8 +49,7 @@ export class ApiService {
 
     return this.httpClient.get<T>(url, { params: params, headers: headers })
       .map(data => (elementsTranslation ? data['elements'] : data))
-      .flatMap((data) => this.getLinkedData(data, linkTranslation))
-      .catch(this.formatErrors.bind(this));
+      .flatMap((data) => this.getLinkedData(data, linkTranslation));
   }
 
   /**
@@ -75,7 +63,7 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
-    ).catch(this.formatErrors);
+    );
   }
 
   /**
@@ -89,7 +77,7 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
-    ).catch(this.formatErrors);
+    );
   }
 
   /**
@@ -101,7 +89,7 @@ export class ApiService {
 
     return this.httpClient.delete<T>(
       `${this.restEndpoint}/${path}`
-    ).catch(this.formatErrors);
+    );
 
   }
 
