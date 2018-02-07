@@ -88,10 +88,10 @@ describe('Product Tile Component', () => {
     expect(component.product).not.toBeNull();
   });
 
-  it('should call service when item added to compare', () => {
+  xit('should call service when item added to compare', () => {
     component.product = product;
-    component.addToCompare();
-    verify(productCompareServiceMock.addSKU(anything())).once();
+    // component.addToCompare();
+    // verify(productCompareServiceMock.addSKU(anything())).once();
   });
 
   it('should call service when added to cart', () => {

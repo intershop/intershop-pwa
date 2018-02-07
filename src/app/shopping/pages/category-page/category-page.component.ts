@@ -7,6 +7,7 @@ import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewMode } from '../../../models/types';
 import * as fromStore from '../../store';
+import * as compareListActions from '../../store/actions/compare-list.actions';
 import * as fromCategories from '../../store/reducers/categories.reducer';
 
 
@@ -53,5 +54,9 @@ export class CategoryPageComponent implements OnInit {
     this.sortBy = sortBy;
     // TODO: Dispatch action
     console.log('Sort changed to', sortBy);
+  }
+
+  toggleCompare(sku: string) {
+    this.store.dispatch(new compareListActions.ToggleCompare(sku));
   }
 }
