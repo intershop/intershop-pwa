@@ -8,7 +8,7 @@ import { DisableIconDirective } from '../../../directives/disable-icon.directive
 
 @Component({
   selector: 'ish-product-tile',
-  templateUrl: './product-tile.component.html',
+  templateUrl: './product-tile.component.html'
 })
 
 export class ProductTileComponent {
