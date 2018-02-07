@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
-import * as fromRoot from '../../../core/store';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
+import { ViewMode } from '../../../models/types';
 import * as fromStore from '../../store';
 import * as fromCategories from '../../store/reducers/categories.reducer';
 
@@ -20,18 +20,12 @@ export class CategoryPageComponent implements OnInit {
   category$: Observable<Category>;
   categoryLoading$: Observable<boolean>;
   categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
-  productsForCategory$: Observable<Product[]>;
+  products$: Observable<Product[]>;
 
-  // TODO: these properties were copied from family-page.component and their relevance needs to be evaluated
-  listView: boolean;
-  sortBy: any;
+  // TODO: get viewMode and sortBy from Store
+  viewMode: ViewMode = 'grid';
+  sortBy = 'default';
   totalItems$: Observable<number>;
-
-  itemsPluralMapping = {
-    '=0': 'No Items',
-    '=1': '1 List Item',
-    'other': '# List Items'
-  };
 
   constructor(
     private store: Store<fromCategories.CategoriesState>
@@ -42,10 +36,22 @@ export class CategoryPageComponent implements OnInit {
     this.category$ = this.store.select(fromStore.getSelectedCategory).pipe(filter(e => !!e));
     this.categoryLoading$ = this.store.select(fromStore.getCategoryLoading);
 
-    this.productsForCategory$ = this.store.select(fromStore.getProductsForSelectedCategory);
+    this.products$ = this.store.select(fromStore.getProductsForSelectedCategory);
     this.totalItems$ = this.store.select(fromStore.getProductCountForSelectedCategory);
 
     // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
     this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
+  }
+
+  changeViewMode(mode: ViewMode) {
+    this.viewMode = mode;
+    // TODO: Dispatch action
+    console.log('ViewMode changed to', mode);
+  }
+
+  changeSort(sortBy: string) {
+    this.sortBy = sortBy;
+    // TODO: Dispatch action
+    console.log('Sort changed to', sortBy);
   }
 }

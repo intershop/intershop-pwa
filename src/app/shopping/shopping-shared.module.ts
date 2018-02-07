@@ -8,6 +8,7 @@ import { ProductDetailComponent } from './components/product/product-detail/prod
 import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
+import { ProductListFilterComponent } from './components/product/product-list-filter/product-list-filter.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
@@ -35,7 +36,8 @@ import { effects, reducers } from './store';
     ProductPriceComponent,
     ProductInventoryComponent,
     ProductShipmentComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    ProductListFilterComponent
   ],
   exports: [
     CategoryListComponent,
@@ -49,7 +51,8 @@ import { effects, reducers } from './store';
     ProductPriceComponent,
     ProductInventoryComponent,
     ProductShipmentComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    ProductListFilterComponent
   ]
 })
 
