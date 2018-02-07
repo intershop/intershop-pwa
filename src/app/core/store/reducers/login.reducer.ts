@@ -43,6 +43,13 @@ export function reducer(
     case fromAccount.LOGOUT_USER: {
       return initialState;
     }
+
+    case fromAccount.CREATE_USER_FAIL: {
+      return {
+        ...state,
+        error: action.payload
+      };
+    }
   }
 
   return state;

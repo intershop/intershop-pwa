@@ -3,6 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators/switchMap';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerData } from '../../../models/customer/customer.interface';
 import { Customer } from '../../../models/customer/customer.model';
@@ -16,6 +17,13 @@ export class AccountLoginService {
     private apiService: ApiService
   ) { }
 
+  private accountLoginFromCustomer(customer: CustomerData): AccountLogin {
+    return {
+      userName: customer.credentials.login,
+      password: customer.credentials.password
+    };
+  }
+
   signinUser(userDetails: AccountLogin): Observable<Customer> {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
     return this.apiService.get<CustomerData>('customers/-', null, headers).pipe(
@@ -23,16 +31,12 @@ export class AccountLoginService {
     );
   }
 
-  // /**
-  //  * Creates the User and saves the User details
-  //  * @param  {} userDetails
-  //  */
-  // createUser(userDetails): Observable<Customer> {
-  //   return this.apiService.post<Customer>('createUser', userDetails).pipe(
-  //     map(data => {
-  //       this.userDetailService.setValue(data);
-  //       return data;
-  //     })
-  //   );
-  // }
+  createUser(newCustomer: CustomerData): Observable<Customer> {
+    return this.apiService.post<CustomerData>('customers', newCustomer).pipe(
+      // TODO: normally this should work but I get 500 from ICM
+      // switchMap(() => this.apiService.get<CustomerData>('customers/-')),
+      // map(data => CustomerFactory.fromData(data))
+      switchMap(() => this.signinUser(this.accountLoginFromCustomer(newCustomer)))
+    );
+  }
 }
