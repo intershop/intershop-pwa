@@ -96,11 +96,11 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   private handleCountryChange(countryCode: string) {
     const oldFormValue = this.form.get('address').value;
-    const group = this.afs.getFactory(countryCode).getGroup(oldFormValue);
+    const group = this.afs.getFactory(countryCode).getGroup({
+      ...oldFormValue,
+      countryCode
+    });
     this.form.setControl('address', group);
-    if (countryCode && this.form.get('address').get('countryCode')) {
-      this.form.get('address').get('countryCode').setValue(countryCode);
-    }
 
     this.countryChange.emit(countryCode);
   }

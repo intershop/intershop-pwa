@@ -13,7 +13,7 @@ describe('Address Factory', () => {
 
   describe('toData', () => {
     it(`should return AddressData when getting an Address`, () => {
-      const address = new (Address);
+      const address = new Address();
       address.firstName = 'John';
       const addressdata = AddressFactory.toData(address);
       expect(addressdata.firstName).toEqual('John', 'addressData first name is returned');

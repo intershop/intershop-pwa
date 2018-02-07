@@ -12,7 +12,7 @@ describe('Customer Factory', () => {
 
   describe('toData', () => {
     it(`should return CustomerData when getting a Customer`, () => {
-      const customer = new (Customer);
+      const customer = new Customer();
       customer.id = '12345';
       const customerdata = CustomerFactory.toData(customer);
       expect(customerdata.id).toEqual('12345', 'customerData id is returned');
@@ -42,9 +42,9 @@ describe('Customer Factory', () => {
 
     it(`should preset some fields on customerData when getting a customer (registration) form with an address`, () => {
       const customer = CustomerFactory.fromValue(regForm.value);
-      expect(customer.firstName).toEqual('John', 'First name is written to customer, if it is empty');
-      expect(customer.lastName).toEqual('Doe', 'Last name is written to customer, if it is empty');
-      expect(customer.phoneHome).toEqual('1234567890', 'Phone home is written to customer, if it is empty');
+      expect(customer.firstName).toEqual('John', 'First name is written from address to customer, if it is empty');
+      expect(customer.lastName).toEqual('Doe', 'Last name is written from address to customer, if it is empty');
+      expect(customer.phoneHome).toEqual('1234567890', 'Phone home from address is written to customer, if it is empty');
       expect(customer instanceof Customer).toBeTruthy('customer is an object of class Customer');
     });
 
