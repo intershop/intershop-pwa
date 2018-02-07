@@ -1,6 +1,6 @@
 <!-- NEEDS_WORK: error handling -->
-<div *ngIf="errorUser === 'LoginAlreadyInUse'" role="alert" class="alert alert-danger">
-  {{errorMessage() | translate}}
+<div *ngIf="userCreateError$ | async as error" role="alert" class="alert alert-danger">
+  {{ error | json }}
 </div>
 <form [formGroup]="simpleRegistrationForm" class="form-horizontal bv-form" (ngSubmit)="createAccount()">
   <p>{{'account.create_user.message' | translate}} {{ isUsername ? ('account.create_user.username.message' | translate) : ''}} {{('account.create_user.email_password.message' | translate)}}</p>
