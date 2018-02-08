@@ -18,9 +18,10 @@ export class AddressFormDefaultFactory extends AddressFormFactory {
       lastName: ['', Validators.required],
       addressLine1: ['', Validators.required],
       addressLine2: [],
-      postalCode: ['', [Validators.required, Validators.pattern('[0-9]{5}')]],
+      postalCode: ['', [Validators.required]],
       city: ['', Validators.required],
-      state: ['']
+      state: [''],
+      phoneHome: ['']
     });
   }
 
