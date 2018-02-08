@@ -1,0 +1,10 @@
+<div class="product-availability">
+  <ng-template [ngIf]="product.inStock" [ngIfElse]="outOfStock">
+    {{ 'product.instock.text' | translate }}
+    <link itemprop="availability" href="http://schema.org/InStock" />
+  </ng-template>
+  <ng-template #outOfStock>
+    {{ 'product.out_of_stock.text' | translate }}
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />
+  </ng-template>
+</div>
