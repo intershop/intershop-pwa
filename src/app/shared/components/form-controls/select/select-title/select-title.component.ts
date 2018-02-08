@@ -1,10 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
-import { map } from 'rxjs/operators';
-import { Subscription } from 'rxjs/Subscription';
 import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';
 
@@ -14,8 +9,6 @@ import { SelectComponent } from '../select.component';
 })
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
   @Input() countryCode: string;
-
-  optionsSubscription: Subscription;
 
   constructor(
     protected translate: TranslateService
@@ -29,14 +22,15 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     }
     this.setDefaultValues();
     super.componentInit();
+    this.translateOptionLabels = true;
+    this.translateOptionValues = true;
   }
 
   /*
     refresh titles if country input changes
   */
   ngOnChanges(changes: SimpleChanges) {
-    this.optionsSubscription = this.getSalutations(this.countryCode)
-      .subscribe(opts => this.options = opts);
+    this.options = this.getSalutations(this.countryCode);
   }
 
   /*
@@ -51,34 +45,48 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
 
   // ToDo: replace this code, get titles from input property
   // ToDo: react on locale switch
-  private getSalutations(countryCode): Observable<SelectOption[]> {
-    let salutationLabels = [
-      'account.salutation.ms.text',
-      'account.salutation.mr.text',
-      'account.salutation.mrs.text'
-    ];
+  private getSalutations(countryCode): SelectOption[] {
+    let salutationlabels = [];
+    let options: SelectOption[] = [];
 
-    // example for different sets of salutations for different countries
-    if (countryCode === 'FR') {
-      salutationLabels = [
-        'account.salutation.ms.text',
-        'account.salutation.mr.text'
-      ];
+    switch (countryCode) {
+      case 'DE': {
+        salutationlabels = [
+          'account.salutation.ms.text',
+          'account.salutation.mr.text',
+          'account.salutation.dr.text'
+        ];
+        break;
+      }
+      case 'FR': {
+        salutationlabels = [
+          'account.salutation.ms.text',
+          'account.salutation.mr.text',
+          'account.salutation.dr.text'
+        ];
+        break;
+      }
+      case 'GB': {
+        salutationlabels = [
+          'account.salutation.ms.text',
+          'account.salutation.miss.text',
+          'account.salutation.mrs.text',
+          'account.salutation.mr.text',
+          'account.salutation.dr.text'
+        ];
+        break;
+      }
     }
 
-    if (countryCode && salutationLabels.length) {
-      return combineLatest(
-        salutationLabels.map(label => this.translate.get(label))
-      ).pipe(
-        map(translations => translations.map(
-          (tr, i) => ({
-            label: salutationLabels[i],
-            value: tr
-          })
-        ))
-        );
-    } else {
-      return of([]);
+    if (salutationlabels) {
+      // Map questions array to an array of type SelectOption
+      options = salutationlabels.map(salutation => {
+        return {
+          'label': salutation,
+          'value': salutation
+        };
+      });
     }
+    return options;
   }
 }

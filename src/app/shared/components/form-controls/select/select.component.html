@@ -1,13 +1,28 @@
 <ng-container *ngIf="options?.length > 0 || required">
   <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
-    <label *ngIf="label" [for]="controlName+'-'+uuid"  class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
+    <label *ngIf="label" [for]="uuid"  class="control-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
       <select class="form-control"
-          [id]="controlName+'-'+uuid"
+          [id]="uuid"
           [formControlName]="controlName"
           [attr.data-testing-id]="controlName">
         <option value="" *ngIf="showEmptyOption">{{'account.option.select.text' | translate}}</option>
-        <option *ngFor="let option of options" [value]="option.value">{{option.label | translate}}</option>
+
+        <!-- translate option values -->
+        <ng-template [ngIf]="translateOptionValues" [ngIfElse]="notTranslateOptionValues">
+            <option *ngFor="let option of options" [value]="option.value | translate">
+                <span *ngIf="translateOptionLabels">{{option.label | translate}}</span>
+                <span *ngIf="!translateOptionLabels">{{option.label}}</span>
+              </option>
+          </ng-template>
+          <!-- does not translate values -->
+          <ng-template #notTranslateOptionValues>
+              <option *ngFor="let option of options" [value]="option.value">
+                  <span *ngIf="translateOptionLabels">{{option.label | translate}}</span>
+                  <span *ngIf="!translateOptionLabels">{{option.label}}</span>
+                </option>
+          </ng-template>
+
       </select>
       <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
     </div>

@@ -1,6 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { AddressFactory } from '../address/address.factory';
 import { AddressData } from './address.interface';
+import { Address } from './address.model';
 
 describe('Address Factory', () => {
   describe('fromData', () => {
@@ -10,18 +11,28 @@ describe('Address Factory', () => {
     });
   });
 
-  describe('fromFormToData', () => {
+  describe('toData', () => {
+    it(`should return AddressData when getting an Address`, () => {
+      const address = new Address();
+      address.firstName = 'John';
+      const addressdata = AddressFactory.toData(address);
+      expect(addressdata.firstName).toEqual('John', 'addressData first name is returned');
+    });
+  });
+
+  describe('fromValue', () => {
     const form = new FormGroup({
       firstName: new FormControl('John')
     });
 
     it(`should return address data when getting an address form`, () => {
-      const address = AddressFactory.fromFormValueToData(form.value);
+      const address = AddressFactory.fromValue(form.value);
       expect(address.firstName).toEqual('John');
+      expect(address instanceof Address).toBeTruthy('address is an object of class Address');
     });
 
     it(`should return null when getting no address form`, () => {
-      expect(AddressFactory.fromFormValueToData(null)).toBeFalsy();
+      expect(AddressFactory.fromValue(null)).toBeFalsy();
     });
   });
 });

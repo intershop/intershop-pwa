@@ -6,7 +6,7 @@
     <ish-select-country
       [countries]="countries"
       [form]="parentForm"
-      controlName="countryCode"
+      controlName="countryCodeSwitch"
       label="Country"
     ></ish-select-country>
   </fieldset>
@@ -20,5 +20,10 @@
     <ish-address-form-default *ngSwitchDefault [addressForm]="addressForm" [countryCode]="countryCode" [regions]="regions"></ish-address-form-default>
   </ng-container>
 
+  <ish-input
+    controlName="phoneHome"
+    [form]="addressForm"
+    label="Phone"
+  ></ish-input>
 
 </div>

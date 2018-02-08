@@ -14,14 +14,15 @@ export class AddressFormDEFactory extends AddressFormFactory {
 
   group() {
     return this.fb.group({
-      title: [],
+      title: [''],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       addressLine1: ['', Validators.required],
       addressLine2: [],
       addressLine3: [],
       postalCode: ['', [Validators.required, Validators.pattern('[0-9]{5}')]],
-      city: ['', Validators.required]
+      city: ['', Validators.required],
+      phoneHome: ['']
     });
   }
 
