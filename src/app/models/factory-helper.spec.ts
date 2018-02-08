@@ -24,5 +24,14 @@ describe('FactoryHepler', () => {
       expect(output['b']).toBeFalsy();
     });
 
+    it(`should map values if they are falsy (0, '')`, () => {
+      const input = { a: 0, b: '' };
+      const output = {};
+      FactoryHelper.primitiveMapping<any, any>(input, output);
+      expect(output).toBeTruthy();
+      expect(output['a']).toEqual(0);
+      expect(output['b']).toEqual('');
+    });
+
   });
 });
