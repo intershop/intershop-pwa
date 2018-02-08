@@ -9,7 +9,14 @@ import { Product } from '../../../../models/product/product.model';
 export class ProductPriceComponent {
 
   @Input() product: Product;
+  @Input() showInformationalPrice: boolean;
+  @Input() showPriceSavings: boolean;
 
-  constructor() { }
+  isListPriceGreaterThanSalePrice(): boolean {
+    return this.product.listPrice && this.product.salePrice && this.product.listPrice.value > this.product.salePrice.value;
+  }
 
+  isListPriceLessThanSalePrice(): boolean {
+    return this.product.listPrice && this.product.salePrice && this.product.listPrice.value < this.product.salePrice.value;
+  }
 }

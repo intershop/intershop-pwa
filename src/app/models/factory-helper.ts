@@ -11,7 +11,7 @@ export class FactoryHelper {
       if (only && only.indexOf(key) === -1) {
         return;
       }
-      if (input[key] && !output[key] && typeof input[key] !== 'object') {
+      if (!output[key] && typeof input[key] !== 'object') {
         output[key] = input[key];
       }
     });
