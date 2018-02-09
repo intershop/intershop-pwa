@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Customer } from '../../../models/customer/customer.model';
-import * as fromAccount from '../actions/login.actions';
+import { LoginActions, LoginActionTypes } from '../actions/login.actions';
 
 export interface LoginState {
   entity: Customer;
@@ -16,35 +16,34 @@ export const initialState: LoginState = {
 
 export function reducer(
   state = initialState,
-  action: fromAccount.LoginUserAction
+  action: LoginActions
 ): LoginState {
   switch (action.type) {
 
-    case fromAccount.LOGIN_USER: {
+    case LoginActionTypes.LoginUser: {
       return initialState;
     }
 
-    case fromAccount.LOGIN_USER_FAIL: {
+    case LoginActionTypes.LoginUserFail: {
       return {
         ...initialState,
         error: action.payload
       };
     }
 
-    case fromAccount.LOGIN_USER_SUCCESS: {
-      const entity = action.payload;
+    case LoginActionTypes.LoginUserSuccess: {
       return {
         ...initialState,
         authorized: true,
-        entity
+        entity: action.payload
       };
     }
 
-    case fromAccount.LOGOUT_USER: {
+    case LoginActionTypes.LogoutUser: {
       return initialState;
     }
 
-    case fromAccount.CREATE_USER_FAIL: {
+    case LoginActionTypes.CreateUserFail: {
       return {
         ...state,
         error: action.payload
