@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
@@ -6,13 +6,7 @@ import { Product } from '../../../../models/product/product.model';
   templateUrl: './product-images.component.html'
 })
 
-export class ProductImagesComponent implements OnInit {
-
+export class ProductImagesComponent {
   @Input() product: Product;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  activeSlide = 0;
 }
