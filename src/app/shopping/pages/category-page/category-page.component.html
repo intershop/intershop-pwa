@@ -1,7 +1,4 @@
-<h1 *ngIf="categoryLoading$ | async">KATEGORIE LADEN...</h1>
-
-
-<ng-container *ngIf="category$ | async as category else loading">
+<ng-container *ngIf="category$ | async as category">
 
   <ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
@@ -41,5 +38,6 @@
     </div>
   </div>
 
-
 </ng-container>
+
+<ish-loading *ngIf="categoryLoading$ | async"></ish-loading>
