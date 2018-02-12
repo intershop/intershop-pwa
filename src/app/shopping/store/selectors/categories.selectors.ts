@@ -14,7 +14,6 @@ export const {
   selectAll: getCategories,
 } = fromCategories.categoryAdapter.getSelectors(getCategoryState);
 
-
 export const getSelectedCategoryId = createSelector(
   fromRouter.getRouterState,
   router => router && router.state && router.state.params.categoryUniqueId
@@ -32,18 +31,17 @@ export const getSelectedCategoryPath = createSelector(
   (entities, categoryUniqueId): Category[] => {
     const categories: Category[] = [];
     if (categoryUniqueId) {
+      categoryUniqueId = categoryUniqueId + '.';
       categoryUniqueId.split('.').reduce((acc, item) => {
-        const nextPath = `${acc}.${item}`;
-        if (entities[nextPath]) {
-          categories.push(entities[nextPath]);
+        if (entities[acc]) {
+          categories.push(entities[acc]);
         }
-        return nextPath;
+        return `${acc}.${item}`;
       });
     }
     return categories;
   }
 );
-
 
 export const getProductsForSelectedCategory = createSelector(
   getSelectedCategory,
@@ -61,8 +59,3 @@ export const getCategoryLoading = createSelector(
   getCategoryState,
   categories => categories.loading
 );
-
-
-
-
-
