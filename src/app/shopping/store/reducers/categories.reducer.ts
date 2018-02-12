@@ -3,7 +3,6 @@ import { Category } from '../../../models/category/category.model';
 import * as fromCategories from '../actions/categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
-  loaded: boolean;
   loading: boolean;
 }
 
@@ -12,7 +11,6 @@ export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Cate
 });
 
 export const initialState: CategoriesState = categoryAdapter.getInitialState({
-  loaded: false,
   loading: false,
 });
 
@@ -32,8 +30,7 @@ export function reducer(
     case fromCategories.LOAD_CATEGORY_FAIL: {
       return {
         ...state,
-        loading: false,
-        loaded: false
+        loading: false
       };
     }
 
@@ -42,8 +39,7 @@ export function reducer(
 
       return {
         ...categoryAdapter.addOne(loadedCategory, state),
-        loading: false,
-        loaded: true,
+        loading: false
       };
     }
 
