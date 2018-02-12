@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { ProductsService } from '../../services/products/products.service';
 import * as categoriesReducers from '../../store/reducers/categories.reducer';
@@ -22,7 +22,20 @@ export class CategoriesEffects {
   @Effect()
   selectedCategory$ = this.store.select(categoriesSelectors.getSelectedCategoryId).pipe(
     filter(id => !!id),
-    map(id => new categoriesActions.LoadCategory(id)),
+    switchMap(id => {
+      return this.store.select(categoriesSelectors.getCategoryEntities).pipe(
+        take(1),
+        map(entities => entities[id]),
+        map(entity => {
+          if (entity && entity.hasOnlineSubCategories && !!entity.subCategories) {
+            return new categoriesActions.LoadCategorySuccess(entity);
+          } else {
+            return new categoriesActions.LoadCategory(id);
+          }
+        }
+        )
+      );
+    })
   );
 
   @Effect()
