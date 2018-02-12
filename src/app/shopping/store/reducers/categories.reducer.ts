@@ -37,8 +37,11 @@ export function reducer(
     case fromCategories.LOAD_CATEGORY_SUCCESS: {
       const loadedCategory = action.payload;
 
+      // TODO: @Ferdinand: better way to update an existing entity
+      const cleanedState = categoryAdapter.removeOne(loadedCategory.uniqueId, state);
+
       return {
-        ...categoryAdapter.addOne(loadedCategory, state),
+        ...categoryAdapter.addOne(loadedCategory, cleanedState),
         loading: false
       };
     }
