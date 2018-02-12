@@ -40,4 +40,15 @@ export class Product {
     return this.images.find((image: Image) => image.typeID === imageType && image.primaryImage);
   }
 
+  /**
+  * Get all images excluding primary images
+  * @param  {string} imageType
+  * @returns string[]
+  */
+  getImageViewIDsExcludePrimary(imageType: string): string[] {
+    return this.images.filter((image: Image) => image.typeID === imageType && !image.primaryImage).map((image: Image) => {
+      return image.viewID;
+    });
+  }
+
 }

@@ -1,3 +1,23 @@
-<div>
-  product images: {{product.images}}
+<div class="col-md-2 hidden-xs hidden-sm">
+  <div class="product-img-thumbs" data-type="S">
+    <div [class.active]="activeSlide === 0" class="product-thumb-set" (click)="activeSlide=0">
+      <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+    </div>
+    <div [class.active]="activeSlide === thumbnailIndex + 1" *ngFor="let imageView of product.getImageViewIDsExcludePrimary('S');let thumbnailIndex = index;"
+      class="product-thumb-set" (click)="activeSlide = thumbnailIndex + 1">
+      <ish-product-image [product]="product" imageType="S" class="product-image" [imageView]="imageView"></ish-product-image>
+    </div>
+  </div>
+</div>
+<div class="col-sm-6 col-xs-12 product-detail-img clearfix">
+  <div class="product-image-container">
+    <carousel [activeSlide]="activeSlide" [showIndicators]="false">
+      <slide>
+        <ish-product-image [product]="product" imageType="L"></ish-product-image>
+      </slide>
+      <slide *ngFor="let imageView of product.getImageViewIDsExcludePrimary('L')">
+        <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
+      </slide>
+    </carousel>
+  </div>
 </div>
