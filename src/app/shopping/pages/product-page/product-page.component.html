@@ -1,6 +1,4 @@
 
-<h1 *ngIf="productLoading$ | async">PRODUKT LADEN...</h1> <!-- TODO: ProductDetailLoadingComponent? -->
-
 <ng-container *ngIf="product$ | async as product">
 
   <ish-breadcrumb [product]="product" [category]="category$ | async" [categoryPath]="categoryPath"></ish-breadcrumb>
@@ -8,3 +6,5 @@
   <ish-product-detail [product]="product"></ish-product-detail>
 
 </ng-container>
+
+<ish-loading *ngIf="productLoading$ | async"></ish-loading>
