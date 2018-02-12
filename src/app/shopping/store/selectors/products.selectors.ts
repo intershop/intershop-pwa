@@ -24,11 +24,6 @@ export const getSelectedProduct = createSelector(
   (entities, id): Product => entities[id]
 );
 
-export const getProductLoaded = createSelector(
-  getProductsState,
-  products => products.loaded
-);
-
 export const getProductLoading = createSelector(
   getProductsState,
   products => products.loading

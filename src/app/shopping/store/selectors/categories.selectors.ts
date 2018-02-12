@@ -57,11 +57,6 @@ export const getProductCountForSelectedCategory = createSelector(
   products => products && products.length
 );
 
-export const getCategoryLoaded = createSelector(
-  getCategoryState,
-  categories => categories.loaded
-);
-
 export const getCategoryLoading = createSelector(
   getCategoryState,
   categories => categories.loading

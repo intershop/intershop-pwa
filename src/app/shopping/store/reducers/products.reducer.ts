@@ -7,12 +7,10 @@ export const productAdapter: EntityAdapter<Product> = createEntityAdapter<Produc
 });
 
 export interface ProductsState extends EntityState<Product> {
-  loaded: boolean;
   loading: boolean;
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
-  loaded: false,
   loading: false
 });
 
@@ -33,8 +31,7 @@ export function reducer(
     case fromProducts.LOAD_PRODUCT_FAIL: {
       return {
         ...state,
-        loading: false,
-        loaded: false
+        loading: false
       };
     }
 
@@ -43,8 +40,7 @@ export function reducer(
 
       return {
         ...productAdapter.addOne(loadedProduct, state),
-        loading: false,
-        loaded: true,
+        loading: false
       };
     }
   }
