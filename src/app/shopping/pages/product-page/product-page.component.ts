@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
@@ -16,7 +17,7 @@ export class ProductPageComponent implements OnInit {
   product$: Observable<Product>;
   productLoading$: Observable<boolean>;
   category$: Observable<Category>;
-  categoryPath: Category[] = [];
+  categoryPath$: Observable<Category[]> = of([]);
 
   constructor(
     private store: Store<fromStore.ShoppingState>
@@ -34,6 +35,9 @@ export class ProductPageComponent implements OnInit {
     );
 
     this.productLoading$ = this.store.select(fromStore.getProductLoading);
+
+    // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
+    this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
   }
 
 }

@@ -1,7 +1,7 @@
 
 <ng-container *ngIf="product$ | async as product">
 
-  <ish-breadcrumb [product]="product" [category]="category$ | async" [categoryPath]="categoryPath"></ish-breadcrumb>
+  <ish-breadcrumb [product]="product" [category]="category$ | async" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
   <ish-product-detail [product]="product"></ish-product-detail>
 
