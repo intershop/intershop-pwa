@@ -7,5 +7,10 @@ export const getCompareListState = createSelector(
 
 export const getCompareList = createSelector(
   getCompareListState,
-  list => list.skus
+  state => state.skus
+);
+
+export const isInCompareList = (sku: string) => createSelector(
+  getCompareList,
+  list => list.includes(sku)
 );

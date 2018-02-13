@@ -13,7 +13,9 @@ import { ProductListComponent } from './components/product/product-list/product-
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
+import { ProductTileActionsComponent } from './components/product/product-tile-actions/product-tile-actions.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
+import { ProductTileActionsContainerComponent } from './containers/product-tile-actions-container/product-tile-actions-container.component';
 import { DisableIconDirective } from './directives/disable-icon.directive';
 import { effects, reducers } from './store';
 
@@ -37,7 +39,9 @@ import { effects, reducers } from './store';
     ProductInventoryComponent,
     ProductShipmentComponent,
     ProductDetailComponent,
-    ProductListFilterComponent
+    ProductListFilterComponent,
+    ProductTileActionsContainerComponent,
+    ProductTileActionsComponent
   ],
   exports: [
     CategoryListComponent,
@@ -52,7 +56,9 @@ import { effects, reducers } from './store';
     ProductInventoryComponent,
     ProductShipmentComponent,
     ProductDetailComponent,
-    ProductListFilterComponent
+    ProductListFilterComponent,
+    ProductTileActionsContainerComponent,
+    ProductTileActionsComponent
   ]
 })
 

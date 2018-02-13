@@ -9,11 +9,8 @@ import { ViewMode } from '../../../../models/types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductListComponent {
+
   @Input() viewMode: ViewMode;
   @Input() products: Product[];
-  @Output() compareToggle = new EventEmitter<string>();
 
-  toggleCompare(sku: string) {
-    this.compareToggle.emit(sku);
-  }
 }
