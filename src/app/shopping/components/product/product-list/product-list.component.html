@@ -14,7 +14,7 @@
   <!--Grid View -->
   <ng-template [ngIf]="viewMode === 'grid'">
     <div *ngFor="let product of products" class="product-list-item col-md-4 col-xs-6 grid-view" style="position: relative; min-height: 100px;">
-      <ish-product-tile [product]="product" *ngIf="product else loading" (compareToggle)="toggleCompare($event)"></ish-product-tile>
+      <ish-product-tile [product]="product" *ngIf="product else loading"></ish-product-tile>
       <ng-template #loading>
         <ish-loading></ish-loading>
       </ng-template>

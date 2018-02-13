@@ -1,5 +1,5 @@
 // NEEDS_WORK: product listing components rework
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product } from '../../../../models/product/product.model';
@@ -11,7 +11,6 @@ import { Product } from '../../../../models/product/product.model';
 
 export class ProductTileComponent {
   @Input() product: Product;
-  @Output() compareToggle = new EventEmitter<string>();
 
   constructor(
     private cartStatusService: CartStatusService,
@@ -23,12 +22,5 @@ export class ProductTileComponent {
    */
   addToCart(): void {
     this.cartStatusService.addSKU(this.product.sku);
-  }
-
-  /**
-   * Adds product to comparison
-   */
-  toggleCompare() {
-    this.compareToggle.emit(this.product.sku);
   }
 }

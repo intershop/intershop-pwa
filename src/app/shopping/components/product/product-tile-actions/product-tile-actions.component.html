@@ -1,0 +1,14 @@
+<div class="product-tile-actions btn-group">
+  <div class="add-to-cart">
+    <button class="btn btn-link" title="Add to Cart">
+      <span class="glyphicon glyphicon-shopping-cart"></span>
+    </button>
+  </div>
+  <button
+    (click)="toggleCompare()"
+    class="btn btn-link add-to-compare"
+    title="Compare"
+    [ngClass]="{ 'is-selected': isInCompareList }">
+    <span class="glyphicon glyphicon-equalizer"></span>
+  </button>
+</div>

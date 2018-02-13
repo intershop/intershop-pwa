@@ -55,8 +55,4 @@ export class CategoryPageComponent implements OnInit {
     // TODO: Dispatch action
     console.log('Sort changed to', sortBy);
   }
-
-  toggleCompare(sku: string) {
-    this.store.dispatch(new compareListActions.ToggleCompare(sku));
-  }
 }
