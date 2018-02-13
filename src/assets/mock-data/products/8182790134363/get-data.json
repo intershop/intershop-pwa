@@ -1,0 +1,330 @@
+{
+  "name": "GoPro HERO5 Session",
+  "type": "Product",
+  "attributes": [
+    {
+      "name": "USB connector type",
+      "type": "String",
+      "value": "Mini-USB"
+    },
+    {
+      "name": "Still image resolutions",
+      "type": "String",
+      "value": "4000 x 3000|3000 x 2250|2560 x 1920"
+    },
+    {
+      "name": "Waterproof up to",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "value": 10,
+        "unit": "m"
+      }
+    },
+    {
+      "name": "Waterproof",
+      "type": "String",
+      "value": "Yes"
+    },
+    {
+      "name": "Maximum video resolution",
+      "type": "String",
+      "value": "3840 x 2160 pixels"
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "GoPro App|GoPro Studio"
+    },
+    {
+      "name": "Video formats supported",
+      "type": "String",
+      "value": "H.264|MP4"
+    },
+    {
+      "name": "Weight",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "value": 83,
+        "unit": "g"
+      }
+    },
+    {
+      "name": "Supported video modes",
+      "type": "String",
+      "value": "1080p|1440p|720p|960p"
+    },
+    {
+      "name": "White balance",
+      "type": "String",
+      "value": "Auto|Manual"
+    },
+    {
+      "name": "Cables included",
+      "type": "String",
+      "value": "USB"
+    },
+    {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion (Li-Ion)"
+    },
+    {
+      "name": "Wireless LAN (WLAN) connection",
+      "type": "String",
+      "value": "Yes"
+    },
+    {
+      "name": "Full HD",
+      "type": "String",
+      "value": "Yes"
+    },
+    {
+      "name": "Compatible memory cards",
+      "type": "String",
+      "value": "MicroSD (TransFlash)"
+    },
+    {
+      "name": "Maximum frame rate",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "value": 240,
+        "unit": "fps"
+      }
+    },
+    {
+      "name": "Battery life (max)",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "value": 2,
+        "unit": "h"
+      }
+    },
+    {
+      "name": "Total megapixels",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "value": 10,
+        "unit": "MP"
+      }
+    },
+    {
+      "name": "Colour_of_product",
+      "type": "String",
+      "value": "Black"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "Ohne"
+    }
+  ],
+  "sku": "8182790134363",
+  "productName": "GoPro HERO5 Session",
+  "shortDescription": "The best, only smaller. HERO5 Session combines 4K video, one-button simplicity and voice control all in a small, waterproof design.",
+  "longDescription": "<b>The best, only smaller.</b>\n<br/>Capture different with HERO5 Session. With its stunning 4K video, one-button simplicity and voice control, HERO5 Session may be the ultimate combination of performance and small size. Liquid-smooth image stabilization, waterproof design and go-anywhere durability help capture life as you live it. And when it’s time to edit and share, HERO5 Session can automatically upload footage to your GoPro Plus cloud account, providing easy access on your phone. Then you can use Quik, the GoPro editing app, to automatically create videos that wow. HERO5 Session—your life, from a new perspective.\n<br/><br/>\n<b>Features:</b>\n<br/>- Video In 4 K, video stabilisation and 1 button design make the Hero5 session for the ultimate combination of performance and ease of use.\n<br/>- Stunning videos with 4 K and photos size 10 MP to single photos, continuous shooting and time lapse.\n<br/>- The built to last Hero5 session is without casing waterproof up to 10 m (33 ft).\n<br/>- With a simple press on the shutter release Man, the camera and will automatically start recording.\n<br/><br/>\n<b>What's included?</b>\n<br/>- HERO5 Session Camera\n<br/>- Standard Frame\n<br/>- Curved Adhesive Mount\n<br/>- Flat Adhesive Mount\n<br/>- Mounting Buckle\n<br/>- USB-C Cable",
+  "availability": true,
+  "retailSet": false,
+  "inStock": true,
+  "productMaster": false,
+  "mastered": false,
+  "roundedAverageRating": "0.0",
+  "readyForShipmentMin": 3,
+  "readyForShipmentMax": 7,
+  "minOrderQuantity": 1,
+  "productBundle": false,
+  "manufacturer": "GoPro",
+  "listPrice": {
+    "type": "ProductPrice",
+    "value": 391.98,
+    "currencyMnemonic": "USD"
+  },
+  "salePrice": {
+    "type": "ProductPrice",
+    "value": 391.98,
+    "currencyMnemonic": "USD"
+  },
+  "crosssells": "inSPIRED-inTRONICS-Site/-/products/8182790134363/crosssells",
+  "shippingMethods": [
+    {
+      "name": "5-Business Day",
+      "type": "ShippingMethod",
+      "id": "STD_5DAY",
+      "shippingTimeMin": 2,
+      "shippingTimeMax": 5
+    },
+    {
+      "name": "2-Business Day",
+      "type": "ShippingMethod",
+      "id": "STD_2DAY",
+      "shippingTimeMin": 1,
+      "shippingTimeMax": 2
+    },
+    {
+      "name": "Saturday Delivery",
+      "type": "ShippingMethod",
+      "id": "SATURDAY",
+      "shippingTimeMin": 0,
+      "shippingTimeMax": 6
+    },
+    {
+      "name": "Standard Ground",
+      "type": "ShippingMethod",
+      "id": "STD_GROUND",
+      "shippingTimeMin": 3,
+      "shippingTimeMax": 7
+    }
+  ],
+  "availableGiftWraps": [
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature",
+      "title": "Gift Wrap Nature",
+      "description": "Wrapping paper with ornamental pattern."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy",
+      "title": "Gift Wrap Phantasy",
+      "description": "Gift Wrap with phantasy pattern."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers",
+      "title": "Gift Wrap Pink Flowers",
+      "description": "Gift Wrap with a beautiful pink floral pattern"
+    }
+  ],
+  "availableGiftMessages": [
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue",
+      "title": "Gift Message Blue",
+      "description": "A blue gift card message."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen",
+      "title": "Gift Message Green",
+      "description": "A green message card."
+    },
+    {
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink",
+      "title": "Gift Message Pink",
+      "description": "A gift message card."
+    }
+  ],
+  "images": [
+    {
+      "name": "side S",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "side",
+      "typeID": "S",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "primaryImage": false
+    },
+    {
+      "name": "back S",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "back",
+      "typeID": "S",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "primaryImage": false
+    },
+    {
+      "name": "front S",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "front",
+      "typeID": "S",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "primaryImage": true
+    },
+    {
+      "name": "side L",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "side",
+      "typeID": "L",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "primaryImage": false
+    },
+    {
+      "name": "back L",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "back",
+      "typeID": "L",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "primaryImage": false
+    },
+    {
+      "name": "front L",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "front",
+      "typeID": "L",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "primaryImage": true
+    },
+    {
+      "name": "side M",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "side",
+      "typeID": "M",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "primaryImage": false
+    },
+    {
+      "name": "back M",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "back",
+      "typeID": "M",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "primaryImage": false
+    },
+    {
+      "name": "front M",
+      "type": "Image",
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "viewID": "front",
+      "typeID": "M",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "primaryImage": true
+    }
+  ],
+  "attachments": [
+    {
+      "name": "Quick Start Guide",
+      "type": "Manual",
+      "key": "AC_Manual_2_",
+      "value": "inSPIRED:/manuals/QSG_H4Silver_ENG_REVF_WEB.pdf",
+      "uri": false
+    },
+    {
+      "name": "User Manual",
+      "type": "Manual",
+      "key": "AC_Manual_1_",
+      "value": "inSPIRED:/manuals/UM_H4Silver_ENG_REVF_WEB.pdf",
+      "uri": false
+    }
+  ]
+}

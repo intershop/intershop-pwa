@@ -1,88 +1,88 @@
 {
-    "name": "Specials",
-    "type": "Category",
-    "hasOnlineProducts": false,
-    "hasOnlineSubCategories": true,
-    "online": "1",
-    "description": "Special products and services.",
-    "subCategoriesCount": 4,
-    "id": "Specials",
-    "subCategories": [
+  "name": "Specials",
+  "type": "Category",
+  "hasOnlineProducts": false,
+  "hasOnlineSubCategories": true,
+  "online": "1",
+  "description": "Special products and services.",
+  "subCategoriesCount": 4,
+  "id": "Specials",
+  "subCategories": [
+    {
+      "name": "Hot Deals",
+      "type": "Category",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "online": "1",
+      "description": "Hot Deals",
+      "images": [
         {
-            "name": "Hot Deals Mock",
-            "type": "Category",
-            "hasOnlineProducts": true,
-            "hasOnlineSubCategories": false,
-            "online": "1",
-            "description": "Hot Deals",
-            "images": [
-                {
-                    "name": "front M",
-                    "type": "Image",
-                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/1612143-4414.jpg",
-                    "viewID": "front",
-                    "typeID": "M",
-                    "imageActualHeight": 270,
-                    "imageActualWidth": 270,
-                    "primaryImage": true
-                }
-            ],
-            "id": "HotDeals",
-            "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
-        },
-        {
-            "name": "Gift Cards & Certificates",
-            "type": "Category",
-            "hasOnlineProducts": true,
-            "hasOnlineSubCategories": false,
-            "online": "1",
-            "description": "Gift Cards & Certificates",
-            "images": [
-                {
-                    "name": "front M",
-                    "type": "Image",
-                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/gc.jpg",
-                    "viewID": "front",
-                    "typeID": "M",
-                    "imageActualHeight": 270,
-                    "imageActualWidth": 270,
-                    "primaryImage": true
-                }
-            ],
-            "id": "GiftCardsCertificates",
-            "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
-        },
-        {
-            "name": "New Products",
-            "type": "Category",
-            "hasOnlineProducts": false,
-            "hasOnlineSubCategories": false,
-            "online": "1",
-            "description": "Neue Produkte",
-            "id": "NewProducts",
-            "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
-        },
-        {
-            "name": "Top Sellers",
-            "type": "Category",
-            "hasOnlineProducts": true,
-            "hasOnlineSubCategories": false,
-            "online": "1",
-            "description": "Top Sellers",
-            "images": [
-                {
-                    "name": "front M",
-                    "type": "Image",
-                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/4776790-7786.jpg",
-                    "viewID": "front",
-                    "typeID": "M",
-                    "imageActualHeight": 270,
-                    "imageActualWidth": 270,
-                    "primaryImage": true
-                }
-            ],
-            "id": "TopSellers",
-            "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
+          "name": "front M",
+          "type": "Image",
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "viewID": "front",
+          "typeID": "M",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "primaryImage": true
         }
-    ]
+      ],
+      "id": "HotDeals",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
+    },
+    {
+      "name": "Gift Cards & Certificates",
+      "type": "Category",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "online": "1",
+      "description": "Gift Cards & Certificates",
+      "images": [
+        {
+          "name": "front M",
+          "type": "Image",
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "viewID": "front",
+          "typeID": "M",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "primaryImage": true
+        }
+      ],
+      "id": "GiftCardsCertificates",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
+    },
+    {
+      "name": "Top Sellers",
+      "type": "Category",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "online": "1",
+      "description": "Top Sellers",
+      "images": [
+        {
+          "name": "front M",
+          "type": "Image",
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "viewID": "front",
+          "typeID": "M",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "primaryImage": true
+        }
+      ],
+      "id": "TopSellers",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
+    },
+    {
+      "name": "New Products",
+      "type": "Category",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "online": "1",
+      "description": "Neue Produkte",
+      "id": "NewProducts",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
+    }
+  ]
 }
