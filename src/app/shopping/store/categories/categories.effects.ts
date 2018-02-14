@@ -5,9 +5,9 @@ import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { ProductsService } from '../../services/products/products.service';
-import * as fromStore from '../../store/shopping.state';
 import * as productsActions from '../products/products.actions';
 import * as productsSelectors from '../products/products.selectors';
+import { ShoppingState } from '../shopping.state';
 import * as categoriesActions from './categories.actions';
 import { CategoriesActionTypes } from './categories.actions';
 import * as categoriesSelectors from './categories.selectors';
@@ -16,7 +16,7 @@ import * as categoriesSelectors from './categories.selectors';
 export class CategoriesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<fromStore.ShoppingState>,
+    private store: Store<ShoppingState>,
     private categoryService: CategoriesService,
     private productsService: ProductsService
   ) { }

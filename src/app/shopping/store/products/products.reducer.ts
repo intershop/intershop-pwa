@@ -1,7 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Product } from '../../../models/product/product.model';
-import * as fromProducts from '../actions/products.actions';
-import { ProductsActionTypes } from './products.actions';
+import { ProductAction, ProductsActionTypes } from './products.actions';
 
 export const productAdapter: EntityAdapter<Product> = createEntityAdapter<Product>({
   selectId: product => product.sku
@@ -17,7 +16,7 @@ export const initialState: ProductsState = productAdapter.getInitialState({
 
 export function reducer(
   state = initialState,
-  action: fromProducts.ProductAction
+  action: ProductAction
 ): ProductsState {
   switch (action.type) {
 

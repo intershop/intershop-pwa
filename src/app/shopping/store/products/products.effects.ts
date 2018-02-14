@@ -5,8 +5,8 @@ import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, mergeMap } from 'rxjs/operators';
 import { randomDelay } from '../../../dev-utils/operators';
 import { ProductsService } from '../../services/products/products.service';
-import * as productsActions from './products.actions';
 import { ShoppingState } from '../shopping.state';
+import * as productsActions from './products.actions';
 import { ProductsActionTypes } from './products.actions';
 import * as productsSelectors from './products.selectors';
 

@@ -1,7 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { Category } from '../../../models/category/category.model';
-import * as fromCategories from './categories.actions';
-import { CategoriesActionTypes } from './categories.actions';
+import { CategoriesActionTypes, CategoryAction } from './categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
@@ -17,7 +16,7 @@ export const initialState: CategoriesState = categoryAdapter.getInitialState({
 
 export function reducer(
   state = initialState,
-  action: fromCategories.CategoryAction
+  action: CategoryAction
 ): CategoriesState {
   switch (action.type) {
 
