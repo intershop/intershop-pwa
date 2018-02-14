@@ -4,19 +4,19 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, filter, map, mergeMap, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
+import { log } from '../../../dev-utils/log.operator';
 import { ProductsService } from '../../services/products/products.service';
-import * as categoriesReducers from '../../store/reducers/categories.reducer';
+import * as fromStore from '../../store';
 import * as categoriesActions from '../actions/categories.actions';
 import * as productsActions from '../actions/products.actions';
 import * as categoriesSelectors from '../selectors/categories.selectors';
 import * as productsSelectors from '../selectors/products.selectors';
-import { log } from '../../../dev-utils/log.operator';
 
 @Injectable()
 export class CategoriesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<categoriesReducers.CategoriesState>,
+    private store: Store<fromStore.ShoppingState>,
     private categoryService: CategoriesService,
     private productsService: ProductsService
   ) { }
@@ -24,20 +24,9 @@ export class CategoriesEffects {
   @Effect()
   selectedCategory$ = this.store.select(categoriesSelectors.getSelectedCategoryId).pipe(
     filter(id => !!id),
-    switchMap(id => {
-      return this.store.select(categoriesSelectors.getCategoryEntities).pipe(
-        take(1),
-        map(entities => entities[id]),
-        map(entity => {
-          if (entity && entity.hasOnlineSubCategories && !!entity.subCategories) {
-            return new categoriesActions.LoadCategorySuccess(entity);
-          } else {
-            return new categoriesActions.LoadCategory(id);
-          }
-        }
-        )
-      );
-    })
+    withLatestFrom(this.store.select(categoriesSelectors.getSelectedCategory)),
+    filter(([id, c]) => !c || (c.hasOnlineSubCategories && !c.subCategories)),
+    map(([id, c]) => new categoriesActions.LoadCategory(id))
   );
 
   @Effect()
