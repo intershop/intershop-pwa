@@ -13,7 +13,7 @@ describe('log operator', () => {
 
   it('should call console.log with custom message for each emitted value', () => {
     subject$.pipe(log('message'))
-      .subscribe(() => {});
+      .subscribe(() => { });
 
     subject$.next('a');
     expect(console.log).toHaveBeenCalledWith('message', 'a');
@@ -26,13 +26,13 @@ describe('log operator', () => {
 
   it('should leave message blank if none given', () => {
     subject$.pipe(log())
-      .subscribe(() => {});
+      .subscribe(() => { });
 
     subject$.next('a');
     expect(console.log).toHaveBeenCalledWith('', 'a');
   });
 
-  it('should leave emitted values unchanged', () => {
+  it('should leave emitted values for stream unchanged', () => {
     let result;
     subject$.pipe(log())
       .subscribe(e => result = e);
@@ -44,7 +44,7 @@ describe('log operator', () => {
     expect(result).toEqual('b');
   });
 
-  it('should leave emitted values unchanged (marble test)', () => {
+  it('should leave emitted values for stream unchanged (marble test)', () => {
     const source$ = hot('-a-a-bc', { a: 'a', b: 'b', c: 'c' });
     const piped$ = source$.pipe(log());
     const expected$ = cold('-a-a-bc', { a: 'a', b: 'b', c: 'c' });

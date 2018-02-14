@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import { catchError, delay, filter, map, mergeMap } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap } from 'rxjs/operators';
 import { ShoppingState } from '../';
 import { randomDelay } from '../../../dev-utils/operators';
 import { ProductsService } from '../../services/products/products.service';

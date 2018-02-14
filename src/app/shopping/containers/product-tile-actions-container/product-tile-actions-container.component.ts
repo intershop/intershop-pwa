@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { Product } from '../../../models/product/product.model';
 import * as fromStore from '../../store';
 import * as compareListActions from '../../store/actions/compare-list.actions';

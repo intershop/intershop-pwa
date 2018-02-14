@@ -4,7 +4,7 @@ import { CategoriesActionTypes } from './categories.actions';
 
 describe('Categories Actions', () => {
   describe('LoadCategory Actions', () => {
-    it('LoadCategory should create a new action', () => {
+    it('should create new action for LoadCategory', () => {
       const payload = '123';
       const action = new fromActions.LoadCategory(payload);
 
@@ -14,7 +14,7 @@ describe('Categories Actions', () => {
       });
     });
 
-    it('LoadCategoryFail should create a new action', () => {
+    it('should create new action for LoadCategoryFail', () => {
       const payload = { a: 'a' };
       const action = new fromActions.LoadCategoryFail(payload);
 
@@ -24,7 +24,7 @@ describe('Categories Actions', () => {
       });
     });
 
-    it('LoadCategorySuccess should create a new action', () => {
+    it('should create new action for LoadCategorySuccess', () => {
       const payload = { uniqueId: '123' } as Category;
       const action = new fromActions.LoadCategorySuccess(payload);
 
@@ -35,11 +35,11 @@ describe('Categories Actions', () => {
     });
   });
 
-  it('SaveSubCategories should create a new action', () => {
+  it('should create new action for SaveSubCategories', () => {
     const payload = [
       { uniqueId: '123' },
       { uniqueId: '456' }
-     ] as Category[];
+    ] as Category[];
 
     const action = new fromActions.SaveSubCategories(payload);
 
@@ -49,7 +49,7 @@ describe('Categories Actions', () => {
     });
   });
 
-  it('SetProductSkusForCategory should create a new action', () => {
+  it('should create new action for SetProductSkusForCategory', () => {
     const payload = ['123', '456'];
     const categoryUniqueId = '789';
 

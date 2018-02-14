@@ -2,7 +2,7 @@ import * as fromActions from './compare-list.actions';
 import { CompareListActionTypes } from './compare-list.actions';
 
 describe('CompareList Actions', () => {
-  it('AddToCompareList should create a new action', () => {
+  it('should create new action for AddToCompareList', () => {
     const payload = '123';
     const action = new fromActions.AddToCompareList(payload);
 
@@ -12,7 +12,7 @@ describe('CompareList Actions', () => {
     });
   });
 
-  it('RemoveFromCompareList should create a new action', () => {
+  it('should create new action for RemoveFromCompareList', () => {
     const payload = '123';
     const action = new fromActions.RemoveFromCompareList(payload);
 

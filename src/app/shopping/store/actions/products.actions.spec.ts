@@ -4,7 +4,7 @@ import { ProductsActionTypes } from './products.actions';
 
 describe('Products Actions', () => {
   describe('LoadProduct Actions', () => {
-    it('LoadProduct should create a new action', () => {
+    it('should create new action for LoadProduct', () => {
       const payload = '123';
       const action = new fromActions.LoadProduct(payload);
 
@@ -14,7 +14,7 @@ describe('Products Actions', () => {
       });
     });
 
-    it('LoadProductFail should create a new action', () => {
+    it('should create new action for LoadProductFail', () => {
       const payload = '123';
       const action = new fromActions.LoadProductFail(payload);
 
@@ -24,7 +24,7 @@ describe('Products Actions', () => {
       });
     });
 
-    it('LoadProductSuccess should create a new action', () => {
+    it('should create new action for LoadProductSuccess', () => {
       const payload = { sku: '123' } as Product;
       const action = new fromActions.LoadProductSuccess(payload);
 
