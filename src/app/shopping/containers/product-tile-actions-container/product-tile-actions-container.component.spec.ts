@@ -15,10 +15,10 @@ describe('ProductTileActionsContainerComponent', () => {
           shopping: combineReducers(reducers)
         })
       ],
-      declarations: [ ProductTileActionsContainerComponent ],
+      declarations: [ProductTileActionsContainerComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

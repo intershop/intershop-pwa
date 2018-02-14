@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs/observable/of';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as fromStore from '../';
 import * as compareListActions from '../actions/compare-list.actions';

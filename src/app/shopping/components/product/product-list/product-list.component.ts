@@ -1,5 +1,5 @@
 // NEEDS_WORK: product listing components rework - service usage not compliant to style guide
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 import { ViewMode } from '../../../../models/types';
 
