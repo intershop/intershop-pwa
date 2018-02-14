@@ -12,6 +12,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputComponent } from './components/form-controls/input/input.component';
 import { selectComponents } from './components/form-controls/select/index';
+import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
 @NgModule({
@@ -32,6 +33,7 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     ShowFormFeedbackDirective,
     InputComponent,
     BreadcrumbComponent,
+    ModalDialogComponent,
     ...selectComponents
   ],
   exports: [
@@ -49,6 +51,7 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     BreadcrumbComponent,
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
+    ModalDialogComponent,
     ...selectComponents
   ]
 })
