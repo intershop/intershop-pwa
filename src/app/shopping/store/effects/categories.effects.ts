@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, filter, map, mergeMap, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
-import { log } from '../../../dev-utils/log.operator';
+import { log } from '../../../dev-utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import * as fromStore from '../../store';
 import * as categoriesActions from '../actions/categories.actions';
