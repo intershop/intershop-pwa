@@ -36,19 +36,18 @@ export function reducer(
 
     case fromCategories.LOAD_CATEGORY_SUCCESS: {
       const loadedCategory = action.payload;
-
-      // TODO: @Ferdinand: better way to update an existing entity
-      const cleanedState = categoryAdapter.removeOne(loadedCategory.uniqueId, state);
+      const upsert: Update<Category> = { id: loadedCategory.uniqueId, changes: loadedCategory };
 
       return {
-        ...categoryAdapter.addOne(loadedCategory, cleanedState),
+        ...categoryAdapter.upsertOne(upsert, state),
         loading: false
       };
     }
 
     case fromCategories.SAVE_SUBCATEGORIES: {
       const subCategories = action.payload;
-      return categoryAdapter.addMany(subCategories, state);
+      const upserts: Update<Category>[] = subCategories.map(c => ({ id: c.uniqueId, changes: c }));
+      return categoryAdapter.upsertMany(upserts, state);
     }
 
     case fromCategories.SET_PRODUCT_SKUS_FOR_CATEGORY: {

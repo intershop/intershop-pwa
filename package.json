@@ -36,7 +36,7 @@
     "@angular/platform-server": "^5.2.2",
     "@angular/router": "^5.2.2",
     "@ngrx/effects": "^5.0.1",
-    "@ngrx/entity": "^5.0.1",
+    "@ngrx/entity": "^5.1.0",
     "@ngrx/router-store": "^5.0.1",
     "@ngrx/store": "^5.0.0",
     "@ngrx/store-devtools": "^5.0.1",
