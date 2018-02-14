@@ -5,6 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as fromStore from '../';
 import * as compareListActions from '../actions/compare-list.actions';
+import { CompareListActionTypes } from '../actions/compare-list.actions';
 import * as compareListSelectors from '../selectors/compare-list.selectors';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class CompareListEffects {
 
   @Effect()
   toggleCompare$ = this.actions$.pipe(
-    ofType(compareListActions.TOGGLE_COMPARE),
+    ofType(CompareListActionTypes.TOGGLE_COMPARE),
     map((action: compareListActions.ToggleCompare) => action.payload),
     withLatestFrom(this.store.select(compareListSelectors.getCompareList)),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),

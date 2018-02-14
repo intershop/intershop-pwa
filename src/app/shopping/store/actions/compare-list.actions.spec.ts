@@ -1,4 +1,5 @@
 import * as fromActions from './compare-list.actions';
+import { CompareListActionTypes } from './compare-list.actions';
 
 describe('CompareList Actions', () => {
   it('AddToCompareList should create a new action', () => {
@@ -6,7 +7,7 @@ describe('CompareList Actions', () => {
     const action = new fromActions.AddToCompareList(payload);
 
     expect({ ...action }).toEqual({
-      type: fromActions.ADD_TO_COMPARE_LIST,
+      type: CompareListActionTypes.ADD_TO_COMPARE_LIST,
       payload
     });
   });
@@ -16,7 +17,7 @@ describe('CompareList Actions', () => {
     const action = new fromActions.RemoveFromCompareList(payload);
 
     expect({ ...action }).toEqual({
-      type: fromActions.REMOVE_FROM_COMPARE_LIST,
+      type: CompareListActionTypes.REMOVE_FROM_COMPARE_LIST,
       payload
     });
   });

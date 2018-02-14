@@ -8,6 +8,7 @@ import { log } from '../../../dev-utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import * as fromStore from '../../store';
 import * as categoriesActions from '../actions/categories.actions';
+import { CategoriesActionTypes } from '../actions/categories.actions';
 import * as productsActions from '../actions/products.actions';
 import * as categoriesSelectors from '../selectors/categories.selectors';
 import * as productsSelectors from '../selectors/products.selectors';
@@ -31,11 +32,10 @@ export class CategoriesEffects {
 
   @Effect()
   loadCategory$ = this.actions$.pipe(
-    ofType(categoriesActions.LOAD_CATEGORY),
+    ofType(CategoriesActionTypes.LOAD_CATEGORY),
     map((action: categoriesActions.LoadCategory) => action.payload),
     mergeMap(categoryUniqueId => {
       return this.categoryService.getCategory(categoryUniqueId).pipe(
-        // delay(2000), // DEBUG
         map(category => new categoriesActions.LoadCategorySuccess(category)),
         catchError(error => of(new categoriesActions.LoadCategoryFail(error)))
       );
@@ -57,7 +57,7 @@ export class CategoriesEffects {
   // TODO: @Ferdinand: non full categories might not be to helpfull
   @Effect()
   saveSubCategories$ = this.actions$.pipe(
-    ofType(categoriesActions.LOAD_CATEGORY_SUCCESS),
+    ofType(CategoriesActionTypes.LOAD_CATEGORY_SUCCESS),
     map((action: categoriesActions.LoadCategorySuccess) => action.payload.subCategories),
     filter(sc => !!sc),
     map(sc => new categoriesActions.SaveSubCategories(sc))

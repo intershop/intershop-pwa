@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { Category } from '../../../models/category/category.model';
 import * as fromCategories from '../actions/categories.actions';
+import { CategoriesActionTypes } from '../actions/categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
@@ -20,21 +21,21 @@ export function reducer(
 ): CategoriesState {
   switch (action.type) {
 
-    case fromCategories.LOAD_CATEGORY: {
+    case CategoriesActionTypes.LOAD_CATEGORY: {
       return {
         ...state,
         loading: true
       };
     }
 
-    case fromCategories.LOAD_CATEGORY_FAIL: {
+    case CategoriesActionTypes.LOAD_CATEGORY_FAIL: {
       return {
         ...state,
         loading: false
       };
     }
 
-    case fromCategories.LOAD_CATEGORY_SUCCESS: {
+    case CategoriesActionTypes.LOAD_CATEGORY_SUCCESS: {
       const loadedCategory = action.payload;
       const upsert: Update<Category> = { id: loadedCategory.uniqueId, changes: loadedCategory };
 
@@ -44,13 +45,13 @@ export function reducer(
       };
     }
 
-    case fromCategories.SAVE_SUBCATEGORIES: {
+    case CategoriesActionTypes.SAVE_SUBCATEGORIES: {
       const subCategories = action.payload;
       const upserts: Update<Category>[] = subCategories.map(c => ({ id: c.uniqueId, changes: c }));
       return categoryAdapter.upsertMany(upserts, state);
     }
 
-    case fromCategories.SET_PRODUCT_SKUS_FOR_CATEGORY: {
+    case CategoriesActionTypes.SET_PRODUCT_SKUS_FOR_CATEGORY: {
       const skus = action.payload;
       const categoryUniqueId = action.categoryUniqueId;
 
