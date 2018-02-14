@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { State } from '../../../core/store/reducers';
-import { getLoggedInUser } from '../../../core/store/selectors';
+import { getLoggedInUser, State } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
 
 @Component({

@@ -7,7 +7,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { anything, instance, mock, verify } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
-import { State } from '../../../../core/store';
+import { State } from '../../../../core/store/core.state';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 
 describe('Simple Registration Component', () => {

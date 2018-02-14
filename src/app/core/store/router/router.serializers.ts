@@ -1,9 +1,9 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
-import * as fromRouter from '../reducers/router.reducer';
+import { RouterStateUrl } from './router.reducer';
 
-export class CustomSerializer implements RouterStateSerializer<fromRouter.RouterStateUrl> {
-  serialize(routerState: RouterStateSnapshot): fromRouter.RouterStateUrl {
+export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
+  serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     const { url } = routerState;
     const { queryParams } = routerState.root;
     let params = {};

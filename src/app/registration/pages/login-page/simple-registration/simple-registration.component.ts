@@ -7,7 +7,7 @@ import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
-import { CreateUser, getLoginError, State } from '../../../../core/store';
+import { CreateUser, getLoginError, State } from '../../../../core/store/user';
 import { CustomerFactory } from '../../../../models/customer/customer.factory';
 import { CustomerData } from '../../../../models/customer/customer.interface';
 

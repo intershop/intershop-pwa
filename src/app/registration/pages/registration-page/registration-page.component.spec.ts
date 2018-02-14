@@ -5,7 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { CountryService } from '../../../core/services/countries/country.service';
 import { RegionService } from '../../../core/services/countries/region.service';
-import { RouterActions, RouterActionTypes, State } from '../../../core/store';
+import { RouterActions, RouterActionTypes, State } from '../../../core/store/router';
 import { MockComponent } from '../../../mocking/components/mock.component';
 import { RegistrationPageComponent } from './registration-page.component';
 

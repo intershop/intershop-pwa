@@ -3,7 +3,9 @@ import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map, take, tap, withLatestFrom } from 'rxjs/operators';
-import { getRouterURL, getUserAuthorized, Go, State } from '../store';
+import { State } from '../store/core.state';
+import { getRouterURL, Go } from '../store/router';
+import { getUserAuthorized } from '../store/user';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
