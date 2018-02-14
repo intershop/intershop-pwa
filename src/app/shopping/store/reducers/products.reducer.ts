@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Product } from '../../../models/product/product.model';
 import * as fromProducts from '../actions/products.actions';
+import { ProductsActionTypes } from '../actions/products.actions';
 
 export const productAdapter: EntityAdapter<Product> = createEntityAdapter<Product>({
   selectId: product => product.sku
@@ -21,21 +22,21 @@ export function reducer(
   switch (action.type) {
 
     // TODO: set loading for specific entities (from payload/sku) and check if this is loading/loaded
-    case fromProducts.LOAD_PRODUCT: {
+    case ProductsActionTypes.LOAD_PRODUCT: {
       return {
         ...state,
         loading: true
       };
     }
 
-    case fromProducts.LOAD_PRODUCT_FAIL: {
+    case ProductsActionTypes.LOAD_PRODUCT_FAIL: {
       return {
         ...state,
         loading: false
       };
     }
 
-    case fromProducts.LOAD_PRODUCT_SUCCESS: {
+    case ProductsActionTypes.LOAD_PRODUCT_SUCCESS: {
       const loadedProduct = action.payload;
 
       return {

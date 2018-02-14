@@ -1,5 +1,6 @@
 import { Product } from '../../../models/product/product.model';
 import * as fromActions from './products.actions';
+import { ProductsActionTypes } from './products.actions';
 
 describe('Products Actions', () => {
   describe('LoadProduct Actions', () => {
@@ -8,7 +9,7 @@ describe('Products Actions', () => {
       const action = new fromActions.LoadProduct(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.LOAD_PRODUCT,
+        type: ProductsActionTypes.LOAD_PRODUCT,
         payload
       });
     });
@@ -18,7 +19,7 @@ describe('Products Actions', () => {
       const action = new fromActions.LoadProductFail(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.LOAD_PRODUCT_FAIL,
+        type: ProductsActionTypes.LOAD_PRODUCT_FAIL,
         payload
       });
     });
@@ -28,7 +29,7 @@ describe('Products Actions', () => {
       const action = new fromActions.LoadProductSuccess(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.LOAD_PRODUCT_SUCCESS,
+        type: ProductsActionTypes.LOAD_PRODUCT_SUCCESS,
         payload
       });
     });
