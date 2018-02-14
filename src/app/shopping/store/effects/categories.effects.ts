@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { ProductsService } from '../../services/products/products.service';
 import * as categoriesReducers from '../../store/reducers/categories.reducer';
@@ -42,7 +42,7 @@ export class CategoriesEffects {
   loadCategory$ = this.actions$.pipe(
     ofType(categoriesActions.LOAD_CATEGORY),
     map((action: categoriesActions.LoadCategory) => action.payload),
-    switchMap(categoryUniqueId => {
+    mergeMap(categoryUniqueId => {
       return this.categoryService.getCategory(categoryUniqueId).pipe(
         // delay(2000), // DEBUG
         map(category => new categoriesActions.LoadCategorySuccess(category)),
@@ -54,7 +54,7 @@ export class CategoriesEffects {
   @Effect()
   loadProductsForCategory$ = this.store.select(categoriesSelectors.getSelectedCategory).pipe(
     filter(c => c && c.hasOnlineProducts && !c.productSkus),
-    switchMap(c => this.productsService.getProductSkuListForCategory(c.uniqueId)),
+    concatMap(c => this.productsService.getProductSkuListForCategory(c.uniqueId)),
     switchMap(res => [
       new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
       ...res.skus.map(sku => new productsActions.LoadProduct(sku)),
