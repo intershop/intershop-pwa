@@ -1,78 +1,78 @@
 {
-    "name": "Home Entertainment",
-    "type": "Category",
-    "hasOnlineProducts": false,
-    "hasOnlineSubCategories": true,
-    "online": "1",
-    "description": "The TV & Home Entertainment products and services catalog.",
-    "subCategoriesCount": 3,
-    "id": "Home-Entertainment",
-    "subCategories": [
+  "name": "Home Entertainment",
+  "type": "Category",
+  "hasOnlineProducts": false,
+  "hasOnlineSubCategories": true,
+  "online": "1",
+  "description": "The TV & Home Entertainment products and services catalog.",
+  "subCategoriesCount": 3,
+  "id": "Home-Entertainment",
+  "subCategories": [
+    {
+      "name": "TVs & Projectors",
+      "type": "Category",
+      "hasOnlineProducts": false,
+      "hasOnlineSubCategories": true,
+      "online": "1",
+      "description": "The TV & Home Entertainment products and services catalog.",
+      "images": [
         {
-            "name": "Gaming Mock",
-            "type": "Category",
-            "hasOnlineProducts": false,
-            "hasOnlineSubCategories": true,
-            "online": "1",
-            "description": "The TV & Home Entertainment products and services catalog.",
-            "images": [
-                {
-                    "name": "front M",
-                    "type": "Image",
-                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/5748752-3433.jpg",
-                    "viewID": "front",
-                    "typeID": "M",
-                    "imageActualHeight": 270,
-                    "imageActualWidth": 270,
-                    "primaryImage": true
-                }
-            ],
-            "id": "84214",
-            "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214"
-        },
-        {
-            "name": "Audio & Video",
-            "type": "Category",
-            "hasOnlineProducts": false,
-            "hasOnlineSubCategories": true,
-            "online": "1",
-            "description": "The TV & Home Entertainment products and services catalog.",
-            "images": [
-                {
-                    "name": "front M",
-                    "type": "Image",
-                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/3961074-8437.jpg",
-                    "viewID": "front",
-                    "typeID": "M",
-                    "imageActualHeight": 270,
-                    "imageActualWidth": 270,
-                    "primaryImage": true
-                }
-            ],
-            "id": "1058",
-            "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058"
-        },
-        {
-            "name": "TVs & Projectors",
-            "type": "Category",
-            "hasOnlineProducts": false,
-            "hasOnlineSubCategories": true,
-            "online": "1",
-            "description": "The TV & Home Entertainment products and services catalog.",
-            "images": [
-                {
-                    "name": "front M",
-                    "type": "Image",
-                    "effectiveUrl": "/INTERSHOP/static/WFS/inSPIRED-inTRONICS-Site/-/inSPIRED/en_US/M/5920217-5050.jpg",
-                    "viewID": "front",
-                    "typeID": "M",
-                    "imageActualHeight": 270,
-                    "imageActualWidth": 270,
-                    "primaryImage": true
-                }
-            ],
-            "id": "220",
-            "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220"
+          "name": "front M",
+          "type": "Image",
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "viewID": "front",
+          "typeID": "M",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "primaryImage": true
         }
-    ]
+      ],
+      "id": "220",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220"
+    },
+    {
+      "name": "Audio & Video",
+      "type": "Category",
+      "hasOnlineProducts": false,
+      "hasOnlineSubCategories": true,
+      "online": "1",
+      "description": "The TV & Home Entertainment products and services catalog.",
+      "images": [
+        {
+          "name": "front M",
+          "type": "Image",
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "viewID": "front",
+          "typeID": "M",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "primaryImage": true
+        }
+      ],
+      "id": "1058",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/1058"
+    },
+    {
+      "name": "Gaming",
+      "type": "Category",
+      "hasOnlineProducts": false,
+      "hasOnlineSubCategories": true,
+      "online": "1",
+      "description": "The TV & Home Entertainment products and services catalog.",
+      "images": [
+        {
+          "name": "front M",
+          "type": "Image",
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "viewID": "front",
+          "typeID": "M",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "primaryImage": true
+        }
+      ],
+      "id": "84214",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/84214"
+    }
+  ]
 }
