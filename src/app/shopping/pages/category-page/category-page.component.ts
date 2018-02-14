@@ -6,8 +6,7 @@ import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewMode } from '../../../models/types';
-import * as fromStore from '../../store';
-import * as fromCategories from '../../store/reducers/categories.reducer';
+import * as fromStore from '../../store/categories';
 
 
 @Component({
@@ -28,7 +27,7 @@ export class CategoryPageComponent implements OnInit {
   totalItems$: Observable<number>;
 
   constructor(
-    private store: Store<fromCategories.CategoriesState>
+    private store: Store<fromStore.ShoppingState>
   ) { }
 
   ngOnInit() {
