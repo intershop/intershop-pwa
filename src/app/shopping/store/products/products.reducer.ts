@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Product } from '../../../models/product/product.model';
 import * as fromProducts from '../actions/products.actions';
-import { ProductsActionTypes } from '../actions/products.actions';
+import { ProductsActionTypes } from './products.actions';
 
 export const productAdapter: EntityAdapter<Product> = createEntityAdapter<Product>({
   selectId: product => product.sku

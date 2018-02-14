@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { Category } from '../../../models/category/category.model';
-import * as fromCategories from '../actions/categories.actions';
-import { CategoriesActionTypes } from '../actions/categories.actions';
+import * as fromCategories from './categories.actions';
+import { CategoriesActionTypes } from './categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
   loading: boolean;

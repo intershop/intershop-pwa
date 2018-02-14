@@ -1,5 +1,5 @@
 import { Category } from '../../../models/category/category.model';
-import * as fromActions from '../actions/categories.actions';
+import * as fromActions from './categories.actions';
 import * as fromReducer from './categories.reducer';
 
 

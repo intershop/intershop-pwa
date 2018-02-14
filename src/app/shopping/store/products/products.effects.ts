@@ -3,12 +3,12 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, mergeMap } from 'rxjs/operators';
-import { ShoppingState } from '../';
 import { randomDelay } from '../../../dev-utils/operators';
 import { ProductsService } from '../../services/products/products.service';
-import * as productsActions from '../actions/products.actions';
-import { ProductsActionTypes } from '../actions/products.actions';
-import * as productsSelectors from '../selectors/products.selectors';
+import * as productsActions from './products.actions';
+import { ShoppingState } from '../shopping.state';
+import { ProductsActionTypes } from './products.actions';
+import * as productsSelectors from './products.selectors';
 
 @Injectable()
 export class ProductsEffects {

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
-import * as fromStore from '../';
-import * as compareListActions from '../actions/compare-list.actions';
-import { CompareListActionTypes } from '../actions/compare-list.actions';
-import * as compareListSelectors from '../selectors/compare-list.selectors';
+import * as fromStore from '../shopping.state';
+import * as compareListActions from './compare-list.actions';
+import { CompareListActionTypes } from './compare-list.actions';
+import * as compareListSelectors from './compare-list.selectors';
 
 @Injectable()
 export class CompareListEffects {

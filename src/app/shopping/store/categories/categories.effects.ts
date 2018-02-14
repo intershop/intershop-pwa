@@ -5,12 +5,12 @@ import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { ProductsService } from '../../services/products/products.service';
-import * as fromStore from '../../store';
-import * as categoriesActions from '../actions/categories.actions';
-import { CategoriesActionTypes } from '../actions/categories.actions';
-import * as productsActions from '../actions/products.actions';
-import * as categoriesSelectors from '../selectors/categories.selectors';
-import * as productsSelectors from '../selectors/products.selectors';
+import * as fromStore from '../../store/shopping.state';
+import * as productsActions from '../products/products.actions';
+import * as productsSelectors from '../products/products.selectors';
+import * as categoriesActions from './categories.actions';
+import { CategoriesActionTypes } from './categories.actions';
+import * as categoriesSelectors from './categories.selectors';
 
 @Injectable()
 export class CategoriesEffects {
