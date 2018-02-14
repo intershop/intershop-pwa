@@ -1,4 +1,4 @@
-import * as fromActions from '../actions/compare-list.actions';
+import * as fromActions from './compare-list.actions';
 import * as fromReducer from './compare-list.reducer';
 
 describe('CompareListReducer', () => {

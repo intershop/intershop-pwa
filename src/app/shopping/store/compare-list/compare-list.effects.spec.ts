@@ -3,9 +3,9 @@ import { Actions } from '@ngrx/effects';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
-import * as fromActions from '../actions/compare-list.actions';
-import { ShoppingState } from '../index';
-import { reducers } from '../reducers';
+import { ShoppingState } from '../shopping.state';
+import { reducers } from '../shopping.system';
+import * as fromActions from './compare-list.actions';
 import { CompareListEffects } from './compare-list.effects';
 
 describe('CompareListEffects', () => {

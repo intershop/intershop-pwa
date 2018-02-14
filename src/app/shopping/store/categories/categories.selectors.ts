@@ -1,9 +1,9 @@
 import { createSelector } from '@ngrx/store';
 import * as fromRouter from '../../../core/store/router';
 import { Category } from '../../../models/category/category.model';
-import * as fromFeature from '../reducers';
-import * as fromCategories from '../reducers/categories.reducer';
-import * as productsSelectors from './products.selectors';
+import * as productsSelectors from '../products/products.selectors';
+import * as fromFeature from '../shopping.state';
+import * as fromCategories from './categories.reducer';
 
 export const getCategoryState = createSelector(
   fromFeature.getShoppingState, (state: fromFeature.ShoppingState) => state.categories

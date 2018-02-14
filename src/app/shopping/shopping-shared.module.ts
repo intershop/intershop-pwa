@@ -17,7 +17,7 @@ import { ProductTileActionsComponent } from './components/product/product-tile-a
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { ProductTileActionsContainerComponent } from './containers/product-tile-actions-container/product-tile-actions-container.component';
 import { DisableIconDirective } from './directives/disable-icon.directive';
-import { effects, reducers } from './store';
+import { effects, reducers } from './store/shopping.system';
 
 @NgModule({
   imports: [

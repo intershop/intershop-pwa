@@ -1,5 +1,5 @@
-import * as fromCompareList from '../actions/compare-list.actions';
-import { CompareListActionTypes } from '../actions/compare-list.actions';
+import * as fromCompareList from './compare-list.actions';
+import { CompareListActionTypes } from './compare-list.actions';
 
 export interface CompareListState {
   skus: string[];

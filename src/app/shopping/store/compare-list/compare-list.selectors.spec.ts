@@ -1,4 +1,4 @@
-import { CompareListState } from '../reducers/compare-list.reducer';
+import { CompareListState } from './compare-list.reducer';
 import * as fromSelectors from './compare-list.selectors';
 
 describe('CompareListSelectors', () => {
