@@ -28,7 +28,7 @@ export class Product {
    * @returns Image
    */
   getImageByImageTypeAndImageView(imageType: string, imageView: string): Image {
-    return this.images.find((image: Image) => image.typeID === imageType && image.viewID === imageView);
+    return this.images.find(image => image.typeID === imageType && image.viewID === imageView);
   }
 
   /**
@@ -37,7 +37,7 @@ export class Product {
    * @returns Image
    */
   getPrimaryImage(imageType: string): Image {
-    return this.images.find((image: Image) => image.typeID === imageType && image.primaryImage);
+    return this.images.find(image => image.typeID === imageType && image.primaryImage);
   }
 
   /**
@@ -46,9 +46,9 @@ export class Product {
   * @returns string[]
   */
   getImageViewIDsExcludePrimary(imageType: string): string[] {
-    return this.images.filter((image: Image) => image.typeID === imageType && !image.primaryImage).map((image: Image) => {
-      return image.viewID;
-    });
+    return this.images
+      .filter(image => image.typeID === imageType && !image.primaryImage)
+      .map(image => image.viewID);
   }
 
 }
