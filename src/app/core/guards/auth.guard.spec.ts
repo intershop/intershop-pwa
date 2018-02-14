@@ -3,7 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { Store, StoreModule } from '@ngrx/store';
 import { Customer } from '../../models/customer/customer.model';
-import { LoginUserSuccess, reducers, State } from '../store';
+import { reducers, State } from '../store/core.state';
+import { LoginUserSuccess } from '../store/user';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {

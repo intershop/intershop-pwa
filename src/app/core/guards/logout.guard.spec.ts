@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { Action } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
-import { LoginActionTypes, State } from '../store';
+import { State, UserActionTypes } from '../store/user';
 import { LogoutGuard } from './logout.guard';
 
 describe('LogoutGuard', () => {
@@ -35,7 +35,7 @@ describe('LogoutGuard', () => {
       verify(storeMock.dispatch(anything())).called();
 
       const [arg] = capture(storeMock.dispatch).last();
-      expect((arg as Action).type).toBe(LoginActionTypes.LogoutUser);
+      expect((arg as Action).type).toBe(UserActionTypes.LogoutUser);
     });
 
   });

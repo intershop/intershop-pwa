@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import * as fromRoot from '../../../core/store';
+import * as fromRouter from '../../../core/store/router';
 import { Category } from '../../../models/category/category.model';
 import * as fromFeature from '../reducers';
 import * as fromCategories from '../reducers/categories.reducer';
@@ -15,7 +15,7 @@ export const getCategoryEntities = createSelector(
 
 export const getSelectedCategory = createSelector(
   getCategoryEntities,
-  fromRoot.getRouterState,
+  fromRouter.getRouterState,
   (entities, router): Category => {
     return router.state && entities[router.state.params.categoryUniqueId];
   }
@@ -23,7 +23,7 @@ export const getSelectedCategory = createSelector(
 
 export const getSelectedCategoryPath = createSelector(
   getCategoryEntities,
-  fromRoot.getRouterState,
+  fromRouter.getRouterState,
   (entities, router): Category[] => {
     const categories: Category[] = [];
     const categoryUniqueId = router.state.params.categoryUniqueId;

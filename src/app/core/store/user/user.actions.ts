@@ -4,7 +4,7 @@ import { AccountLogin } from '../../../core/services/account-login/account-login
 import { CustomerData } from '../../../models/customer/customer.interface';
 import { Customer } from '../../../models/customer/customer.model';
 
-export enum LoginActionTypes {
+export enum UserActionTypes {
   LoginUser = '[Account] Login User',
   LoginUserSuccess = '[Account] Login User Success',
   LoginUserFail = '[Account] Login User Failed',
@@ -16,37 +16,37 @@ export enum LoginActionTypes {
 
 
 export class LoginUser implements Action {
-  readonly type = LoginActionTypes.LoginUser;
+  readonly type = UserActionTypes.LoginUser;
   constructor(public payload: AccountLogin) { }
 }
 
 export class LoginUserFail implements Action {
-  readonly type = LoginActionTypes.LoginUserFail;
+  readonly type = UserActionTypes.LoginUserFail;
   constructor(public payload: HttpErrorResponse) { }
 }
 
 export class LoginUserSuccess implements Action {
-  readonly type = LoginActionTypes.LoginUserSuccess;
+  readonly type = UserActionTypes.LoginUserSuccess;
   constructor(public payload: Customer) { }
 }
 
 export class LogoutUser implements Action {
-  readonly type = LoginActionTypes.LogoutUser;
+  readonly type = UserActionTypes.LogoutUser;
 }
 
 export class CreateUser implements Action {
-  readonly type = LoginActionTypes.CreateUser;
+  readonly type = UserActionTypes.CreateUser;
   constructor(public payload: CustomerData) { }
 }
 
 export class CreateUserSuccess implements Action {
-  readonly type = LoginActionTypes.CreateUserSuccess;
+  readonly type = UserActionTypes.CreateUserSuccess;
   constructor(public payload: Customer) { }
 }
 
 export class CreateUserFail implements Action {
-  readonly type = LoginActionTypes.CreateUserFail;
+  readonly type = UserActionTypes.CreateUserFail;
   constructor(public payload: HttpErrorResponse) { }
 }
 
-export type LoginActions = LoginUser | LoginUserFail | LoginUserSuccess | LogoutUser | CreateUser | CreateUserFail | CreateUserSuccess;
+export type UserActions = LoginUser | LoginUserFail | LoginUserSuccess | LogoutUser | CreateUser | CreateUserFail | CreateUserSuccess;

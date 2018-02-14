@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { LogoutUser, State } from '../store';
+import { LogoutUser, State } from '../store/user';
 
 
 @Injectable()
