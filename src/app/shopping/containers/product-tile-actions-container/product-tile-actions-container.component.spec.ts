@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, StoreModule } from '@ngrx/store';
-import { reducers } from '../../store/reducers';
+import { reducers } from '../../store/shopping.system';
 import { ProductTileActionsContainerComponent } from './product-tile-actions-container.component';
 
 describe('ProductTileActionsContainerComponent', () => {

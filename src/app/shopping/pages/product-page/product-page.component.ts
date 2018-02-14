@@ -5,7 +5,9 @@ import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
-import * as fromStore from '../../store';
+import { getSelectedCategory, getSelectedCategoryPath } from '../../store/categories';
+import { getProductLoading, getSelectedProduct } from '../../store/products';
+import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-product-page',
@@ -20,24 +22,24 @@ export class ProductPageComponent implements OnInit {
   categoryPath$: Observable<Category[]> = of([]);
 
   constructor(
-    private store: Store<fromStore.ShoppingState>
+    private store: Store<ShoppingState>
   ) { }
 
   ngOnInit() {
     // TODO: find a nicer way to filter out the case of an 'undefined' product when the router state change is not waiting for the guard to actually do the routing
-    this.product$ = this.store.select(fromStore.getSelectedProduct).pipe(
+    this.product$ = this.store.select(getSelectedProduct).pipe(
       filter(product => !!product)
     );
 
     // TODO: find a nicer way to filter out the case of an 'undefined' category when the router state change is not waiting for the guard to actually do the routing
-    this.category$ = this.store.select(fromStore.getSelectedCategory).pipe(
+    this.category$ = this.store.select(getSelectedCategory).pipe(
       filter(category => !!category)
     );
 
-    this.productLoading$ = this.store.select(fromStore.getProductLoading);
+    this.productLoading$ = this.store.select(getProductLoading);
 
     // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
-    this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
+    this.categoryPath$ = this.store.select(getSelectedCategoryPath);
   }
 
 }
