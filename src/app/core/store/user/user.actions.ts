@@ -49,4 +49,4 @@ export class CreateUserFail implements Action {
   constructor(public payload: HttpErrorResponse) { }
 }
 
-export type UserActions = LoginUser | LoginUserFail | LoginUserSuccess | LogoutUser | CreateUser | CreateUserFail | CreateUserSuccess;
+export type UserAction = LoginUser | LoginUserFail | LoginUserSuccess | LogoutUser | CreateUser | CreateUserFail | CreateUserSuccess;

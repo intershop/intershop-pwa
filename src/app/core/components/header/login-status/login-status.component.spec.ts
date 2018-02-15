@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { Customer } from '../../../../models/customer/customer.model';
-import { reducers, State } from '../../../store/core.state';
-import { LoginUserFail, LoginUserSuccess } from '../../../store/user';
+import { reducers } from '../../../store/core.system';
+import { LoginUserFail, LoginUserSuccess, State } from '../../../store/user';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
