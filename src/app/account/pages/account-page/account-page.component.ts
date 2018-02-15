@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { getLoggedInUser, State } from '../../../core/store/user';
+import { CoreState, getLoggedInUser } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
 
 @Component({
@@ -13,7 +13,7 @@ export class AccountPageComponent implements OnInit {
   customer$: Observable<Customer>;
 
   constructor(
-    private store: Store<State>
+    private store: Store<CoreState>
   ) { }
 
   ngOnInit() {

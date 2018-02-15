@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
-import { State } from '../core.state';
+import { CoreState } from '../core.state';
 import { getAuthorized, getCustomer, getError } from './user.reducer';
 
-const getUserState = (state: State) => state.user;
+const getUserState = (state: CoreState) => state.user;
 
 export const getLoggedInUser = createSelector(getUserState, getCustomer);
 export const getUserAuthorized = createSelector(getUserState, getAuthorized);

@@ -7,7 +7,7 @@ import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
 import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
-import { CreateUser, getLoginError, State } from '../../../../core/store/user';
+import { CoreState, CreateUser, getLoginError } from '../../../../core/store/user';
 import { CustomerFactory } from '../../../../models/customer/customer.factory';
 import { CustomerData } from '../../../../models/customer/customer.interface';
 
@@ -25,7 +25,7 @@ export class SimpleRegistrationComponent implements OnInit {
 
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) private userRegistrationLoginType: string,
-    private store: Store<State>,
+    private store: Store<CoreState>,
     private formBuilder: FormBuilder,
     private formUtils: FormUtilsService
   ) { }

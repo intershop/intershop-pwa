@@ -7,7 +7,7 @@ import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
-import { getLoginError, getUserAuthorized, LoginUser, State } from '../../../core/store/user';
+import { CoreState, getLoginError, getUserAuthorized, LoginUser } from '../../../core/store/user';
 
 @Component({
   templateUrl: './login-page.component.html'
@@ -25,7 +25,7 @@ export class LoginPageComponent implements OnInit {
     @Inject(USE_SIMPLE_ACCOUNT) public isSimpleRegistration: boolean,
     private formBuilder: FormBuilder,
     private formUtils: FormUtilsService,
-    private store: Store<State>
+    private store: Store<CoreState>
   ) { }
 
   /**

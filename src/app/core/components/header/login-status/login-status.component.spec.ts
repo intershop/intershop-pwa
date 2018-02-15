@@ -6,14 +6,14 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { Customer } from '../../../../models/customer/customer.model';
 import { reducers } from '../../../store/core.system';
-import { LoginUserFail, LoginUserSuccess, State } from '../../../store/user';
+import { CoreState, LoginUserFail, LoginUserSuccess } from '../../../store/user';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
   let fixture: ComponentFixture<LoginStatusComponent>;
   let component: LoginStatusComponent;
   let element: HTMLElement;
-  let store: Store<State>;
+  let store: Store<CoreState>;
   const userData = {
     'firstName': 'Patricia',
     'lastName': 'Miller'

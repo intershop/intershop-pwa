@@ -1,12 +1,12 @@
 import { routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap } from '@ngrx/store';
-import { State } from './core.state';
+import { CoreState } from './core.state';
 import { RouterEffects } from './router/router.effects';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<CoreState> = {
   routerReducer: routerReducer,
   user: userReducer,
 };
