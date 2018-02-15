@@ -55,5 +55,6 @@ export interface ProductData {
   salePrice: PriceData;
   manufacturer: string;
   mastered: boolean;
-
+  readyForShipmentMin: number;
+  readyForShipmentMax: number;
 }
