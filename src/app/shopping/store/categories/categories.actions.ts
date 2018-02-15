@@ -2,39 +2,39 @@ import { Action } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 
 export enum CategoriesActionTypes {
-  LOAD_CATEGORY = '[Shopping] Load Category',
-  LOAD_CATEGORY_FAIL = '[Shopping] Load Category Fail',
-  LOAD_CATEGORY_SUCCESS = '[Shopping] Load Category Success',
-  SAVE_SUBCATEGORIES = '[Shopping] Save SubCategories',
-  SET_PRODUCT_SKUS_FOR_CATEGORY = '[Shopping] Set product skus For Category'
+  LoadCategory = '[Shopping] Load Category',
+  LoadCategoryFail = '[Shopping] Load Category Fail',
+  LoadCategorySuccess = '[Shopping] Load Category Success',
+  SaveSubCategories = '[Shopping] Save SubCategories',
+  SetProductSkusForCategory = '[Shopping] Set product skus For Category'
 }
 
 export class LoadCategory implements Action {
-  readonly type = CategoriesActionTypes.LOAD_CATEGORY;
+  readonly type = CategoriesActionTypes.LoadCategory;
   constructor(public payload: string) { }
 }
 
 export class LoadCategoryFail implements Action {
-  readonly type = CategoriesActionTypes.LOAD_CATEGORY_FAIL;
+  readonly type = CategoriesActionTypes.LoadCategoryFail;
   constructor(public payload: any) { }
 }
 
 export class LoadCategorySuccess implements Action {
-  readonly type = CategoriesActionTypes.LOAD_CATEGORY_SUCCESS;
+  readonly type = CategoriesActionTypes.LoadCategorySuccess;
   constructor(public payload: Category) { }
 }
 
 export class SaveSubCategories implements Action {
-  readonly type = CategoriesActionTypes.SAVE_SUBCATEGORIES;
+  readonly type = CategoriesActionTypes.SaveSubCategories;
   constructor(public payload: Category[]) { }
 }
 
 export class SetProductSkusForCategory implements Action {
-  readonly type = CategoriesActionTypes.SET_PRODUCT_SKUS_FOR_CATEGORY;
+  readonly type = CategoriesActionTypes.SetProductSkusForCategory;
   constructor(public categoryUniqueId: string, public payload: string[]) { }
 }
 
-export type CategoryAction =
+export type CategoriesAction =
   LoadCategory |
   LoadCategoryFail |
   LoadCategorySuccess |

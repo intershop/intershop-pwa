@@ -9,7 +9,7 @@ describe('Categories Actions', () => {
       const action = new fromActions.LoadCategory(payload);
 
       expect({ ...action }).toEqual({
-        type: CategoriesActionTypes.LOAD_CATEGORY,
+        type: CategoriesActionTypes.LoadCategory,
         payload
       });
     });
@@ -19,7 +19,7 @@ describe('Categories Actions', () => {
       const action = new fromActions.LoadCategoryFail(payload);
 
       expect({ ...action }).toEqual({
-        type: CategoriesActionTypes.LOAD_CATEGORY_FAIL,
+        type: CategoriesActionTypes.LoadCategoryFail,
         payload
       });
     });
@@ -29,7 +29,7 @@ describe('Categories Actions', () => {
       const action = new fromActions.LoadCategorySuccess(payload);
 
       expect({ ...action }).toEqual({
-        type: CategoriesActionTypes.LOAD_CATEGORY_SUCCESS,
+        type: CategoriesActionTypes.LoadCategorySuccess,
         payload
       });
     });
@@ -44,7 +44,7 @@ describe('Categories Actions', () => {
     const action = new fromActions.SaveSubCategories(payload);
 
     expect({ ...action }).toEqual({
-      type: CategoriesActionTypes.SAVE_SUBCATEGORIES,
+      type: CategoriesActionTypes.SaveSubCategories,
       payload
     });
   });
@@ -58,7 +58,7 @@ describe('Categories Actions', () => {
     );
 
     expect({ ...action }).toEqual({
-      type: CategoriesActionTypes.SET_PRODUCT_SKUS_FOR_CATEGORY,
+      type: CategoriesActionTypes.SetProductSkusForCategory,
       payload,
       categoryUniqueId
     });

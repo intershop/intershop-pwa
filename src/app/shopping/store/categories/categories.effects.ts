@@ -31,7 +31,7 @@ export class CategoriesEffects {
 
   @Effect()
   loadCategory$ = this.actions$.pipe(
-    ofType(CategoriesActionTypes.LOAD_CATEGORY),
+    ofType(CategoriesActionTypes.LoadCategory),
     map((action: categoriesActions.LoadCategory) => action.payload),
     mergeMap(categoryUniqueId => {
       return this.categoryService.getCategory(categoryUniqueId).pipe(
@@ -56,7 +56,7 @@ export class CategoriesEffects {
   // TODO: @Ferdinand: non full categories might not be to helpfull
   @Effect()
   saveSubCategories$ = this.actions$.pipe(
-    ofType(CategoriesActionTypes.LOAD_CATEGORY_SUCCESS),
+    ofType(CategoriesActionTypes.LoadCategorySuccess),
     map((action: categoriesActions.LoadCategorySuccess) => action.payload.subCategories),
     filter(sc => !!sc),
     map(sc => new categoriesActions.SaveSubCategories(sc))
