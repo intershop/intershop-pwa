@@ -3,14 +3,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { Action } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
-import { State, UserActionTypes } from '../store/user';
+import { CoreState, UserActionTypes } from '../store/user';
 import { LogoutGuard } from './logout.guard';
 
 describe('LogoutGuard', () => {
 
   describe('canActivate()', () => {
     let logoutGuard: LogoutGuard;
-    let storeMock: Store<State>;
+    let storeMock: Store<CoreState>;
 
     beforeEach(async(() => {
       storeMock = mock(Store);

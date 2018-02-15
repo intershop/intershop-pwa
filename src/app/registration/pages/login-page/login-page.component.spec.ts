@@ -9,7 +9,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
 import { reducers } from '../../../core/store/core.system';
-import { LoginUserFail, State } from '../../../core/store/user';
+import { CoreState, LoginUserFail } from '../../../core/store/user';
 import { SharedModule } from '../../../shared/shared.module';
 import { LoginPageComponent } from './login-page.component';
 
@@ -17,7 +17,7 @@ describe('Login Component', () => {
   let fixture: ComponentFixture<LoginPageComponent>;
   let component: LoginPageComponent;
   let element: HTMLElement;
-  let store: Store<State>;
+  let store: Store<CoreState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

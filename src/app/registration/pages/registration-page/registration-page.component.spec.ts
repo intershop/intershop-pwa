@@ -5,7 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { CountryService } from '../../../core/services/countries/country.service';
 import { RegionService } from '../../../core/services/countries/region.service';
-import { RouterAction, RouterActionTypes, State } from '../../../core/store/router';
+import { CoreState, RouterAction, RouterActionTypes } from '../../../core/store/router';
 import { MockComponent } from '../../../mocking/components/mock.component';
 import { RegistrationPageComponent } from './registration-page.component';
 
@@ -13,7 +13,7 @@ describe('RegistrationPage Component', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
   let component: RegistrationPageComponent;
   let element: HTMLElement;
-  let storeMock: Store<State>;
+  let storeMock: Store<CoreState>;
 
   beforeEach(async(() => {
     const countryServiceMock = mock(CountryService);

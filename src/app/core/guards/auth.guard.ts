@@ -3,7 +3,7 @@ import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map, take, tap, withLatestFrom } from 'rxjs/operators';
-import { State } from '../store/core.state';
+import { CoreState } from '../store/core.state';
 import { getRouterURL, Go } from '../store/router';
 import { getUserAuthorized } from '../store/user';
 
@@ -11,7 +11,7 @@ import { getUserAuthorized } from '../store/user';
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private store: Store<State>
+    private store: Store<CoreState>
   ) { }
 
   canActivate(): Observable<boolean> {
