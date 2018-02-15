@@ -1,12 +1,12 @@
 import { createFeatureSelector } from '@ngrx/store';
-import * as fromCategories from './categories/categories.reducer';
-import * as fromCompareList from './compare-list/compare-list.reducer';
-import * as fromProducts from './products/products.reducer';
+import { CategoriesState } from './categories/categories.reducer';
+import { CompareListState } from './compare-list/compare-list.reducer';
+import { ProductsState } from './products/products.reducer';
 
 export interface ShoppingState {
-  categories: fromCategories.CategoriesState;
-  products: fromProducts.ProductsState;
-  compareList: fromCompareList.CompareListState;
+  categories: CategoriesState;
+  products: ProductsState;
+  compareList: CompareListState;
 }
 
 export const getShoppingState = createFeatureSelector<ShoppingState>('shopping');

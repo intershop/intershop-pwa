@@ -10,13 +10,13 @@ export const initialState: CompareListState = {
   skus: []
 };
 
-export function reducer(
+export function compareListReducer(
   state = initialState,
   action: fromCompareList.CompareListAction
 ): CompareListState {
   switch (action.type) {
 
-    case CompareListActionTypes.ADD_TO_COMPARE_LIST: {
+    case CompareListActionTypes.AddToCompareList: {
       const newSku = action.payload;
       const skus = state.skus.includes(newSku) ?
         [...state.skus] :
@@ -25,7 +25,7 @@ export function reducer(
       return { ...state, skus };
     }
 
-    case CompareListActionTypes.REMOVE_FROM_COMPARE_LIST: {
+    case CompareListActionTypes.RemoveFromCompareList: {
       const sku = action.payload;
       const skus = state.skus.filter(e => e !== sku);
 

@@ -2,27 +2,27 @@ import { Action } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
 
 export enum ProductsActionTypes {
-  LOAD_PRODUCT = '[Shopping] Load Product',
-  LOAD_PRODUCT_FAIL = '[Shopping] Load Product Fail',
-  LOAD_PRODUCT_SUCCESS = '[Shopping] Load Product Success'
+  LoadProduct = '[Shopping] Load Product',
+  LoadProductFail = '[Shopping] Load Product Fail',
+  LoadProductSuccess = '[Shopping] Load Product Success'
 }
 
 export class LoadProduct implements Action {
-  readonly type = ProductsActionTypes.LOAD_PRODUCT;
+  readonly type = ProductsActionTypes.LoadProduct;
   constructor(public payload: string) { }
 }
 
 export class LoadProductFail implements Action {
-  readonly type = ProductsActionTypes.LOAD_PRODUCT_FAIL;
+  readonly type = ProductsActionTypes.LoadProductFail;
   constructor(public payload: any) { }
 }
 
 export class LoadProductSuccess implements Action {
-  readonly type = ProductsActionTypes.LOAD_PRODUCT_SUCCESS;
+  readonly type = ProductsActionTypes.LoadProductSuccess;
   constructor(public payload: Product) { }
 }
 
-export type ProductAction =
+export type ProductsAction =
   LoadProduct |
   LoadProductFail |
   LoadProductSuccess;

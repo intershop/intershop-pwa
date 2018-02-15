@@ -9,7 +9,7 @@ describe('Products Actions', () => {
       const action = new fromActions.LoadProduct(payload);
 
       expect({ ...action }).toEqual({
-        type: ProductsActionTypes.LOAD_PRODUCT,
+        type: ProductsActionTypes.LoadProduct,
         payload
       });
     });
@@ -19,7 +19,7 @@ describe('Products Actions', () => {
       const action = new fromActions.LoadProductFail(payload);
 
       expect({ ...action }).toEqual({
-        type: ProductsActionTypes.LOAD_PRODUCT_FAIL,
+        type: ProductsActionTypes.LoadProductFail,
         payload
       });
     });
@@ -29,7 +29,7 @@ describe('Products Actions', () => {
       const action = new fromActions.LoadProductSuccess(payload);
 
       expect({ ...action }).toEqual({
-        type: ProductsActionTypes.LOAD_PRODUCT_SUCCESS,
+        type: ProductsActionTypes.LoadProductSuccess,
         payload
       });
     });

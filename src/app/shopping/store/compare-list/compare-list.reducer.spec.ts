@@ -6,7 +6,7 @@ describe('CompareListReducer', () => {
     it('should return the default state when queried with undefined state', () => {
       const { initialState } = fromReducer;
       const action = {} as any;
-      const state = fromReducer.reducer(undefined, action);
+      const state = fromReducer.compareListReducer(undefined, action);
 
       expect(state).toBe(initialState);
     });
@@ -16,7 +16,7 @@ describe('CompareListReducer', () => {
     it('should add SKU to compare list', () => {
       const sku = '1234567';
       const action = new fromActions.AddToCompareList(sku);
-      const state = fromReducer.reducer(fromReducer.initialState, action);
+      const state = fromReducer.compareListReducer(fromReducer.initialState, action);
 
       expect(state.skus).toContain(sku);
     });
@@ -31,7 +31,7 @@ describe('CompareListReducer', () => {
         skus: ['123', sku]
       };
       const action = new fromActions.RemoveFromCompareList(sku);
-      const state = fromReducer.reducer(initialState, action);
+      const state = fromReducer.compareListReducer(initialState, action);
 
       expect(state.skus).not.toContain(sku);
     });

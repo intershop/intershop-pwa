@@ -20,7 +20,7 @@ export class ProductsEffects {
 
   @Effect()
   loadProduct$ = this.actions$.pipe(
-    ofType(ProductsActionTypes.LOAD_PRODUCT),
+    ofType(ProductsActionTypes.LoadProduct),
     map((action: productsActions.LoadProduct) => action.payload),
     mergeMap(sku => {
       return this.productsService.getProduct(sku).pipe(

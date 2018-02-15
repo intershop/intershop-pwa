@@ -8,7 +8,7 @@ describe('Categories Reducer', () => {
     it('should return the default state when previous state is undefined', () => {
       const { initialState } = fromReducer;
       const action = {} as any;
-      const state = fromReducer.reducer(undefined, action);
+      const state = fromReducer.categoriesReducer(undefined, action);
 
       expect(state).toBe(initialState);
     });
@@ -19,7 +19,7 @@ describe('Categories Reducer', () => {
       it('should set loading to true', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.LoadCategory('123');
-        const state = fromReducer.reducer(initialState, action);
+        const state = fromReducer.categoriesReducer(initialState, action);
 
         expect(state.loading).toEqual(true);
         expect(state.entities).toEqual({});
@@ -30,7 +30,7 @@ describe('Categories Reducer', () => {
       it('should set loading to false', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.LoadCategoryFail({});
-        const state = fromReducer.reducer(initialState, action);
+        const state = fromReducer.categoriesReducer(initialState, action);
 
         expect(state.loading).toEqual(false);
         expect(state.entities).toEqual({});
@@ -54,7 +54,7 @@ describe('Categories Reducer', () => {
       xit('should insert category if not exists', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.LoadCategorySuccess(category);
-        const state = fromReducer.reducer(initialState, action);
+        const state = fromReducer.categoriesReducer(initialState, action);
 
         expect(state.ids.length).toBe(1);
         expect(state.entities[category.uniqueId]).toEqual(category);
@@ -63,7 +63,7 @@ describe('Categories Reducer', () => {
       it('should update category if already exists', () => {
         const { initialState } = fromReducer;
         const action1 = new fromActions.LoadCategorySuccess(category);
-        const state1 = fromReducer.reducer(initialState, action1);
+        const state1 = fromReducer.categoriesReducer(initialState, action1);
 
         const updatedCategory = {
           ...category,
@@ -72,7 +72,7 @@ describe('Categories Reducer', () => {
         } as Category;
 
         const action2 = new fromActions.LoadCategorySuccess(updatedCategory);
-        const state2 = fromReducer.reducer(state1, action2);
+        const state2 = fromReducer.categoriesReducer(state1, action2);
 
         expect(state2.ids.length).toBe(1);
         expect(state2.entities[category.uniqueId]).toEqual(updatedCategory);
@@ -81,7 +81,7 @@ describe('Categories Reducer', () => {
       it('should set loading to false', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.LoadCategorySuccess(category);
-        const state = fromReducer.reducer(initialState, action);
+        const state = fromReducer.categoriesReducer(initialState, action);
 
         expect(state.loading).toEqual(false);
       });
@@ -102,7 +102,7 @@ describe('Categories Reducer', () => {
       xit('should add a bunch of categories', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.SaveSubCategories(categories);
-        const state = fromReducer.reducer(initialState, action);
+        const state = fromReducer.categoriesReducer(initialState, action);
 
         expect(state.ids.length).toBe(3);
         expect(state.entities['Foo.123']).toBe(categories[0]);

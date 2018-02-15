@@ -7,7 +7,7 @@ describe('CompareList Actions', () => {
     const action = new fromActions.AddToCompareList(payload);
 
     expect({ ...action }).toEqual({
-      type: CompareListActionTypes.ADD_TO_COMPARE_LIST,
+      type: CompareListActionTypes.AddToCompareList,
       payload
     });
   });
@@ -17,7 +17,7 @@ describe('CompareList Actions', () => {
     const action = new fromActions.RemoveFromCompareList(payload);
 
     expect({ ...action }).toEqual({
-      type: CompareListActionTypes.REMOVE_FROM_COMPARE_LIST,
+      type: CompareListActionTypes.RemoveFromCompareList,
       payload
     });
   });
