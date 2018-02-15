@@ -1,22 +1,25 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',
-  templateUrl: './product-price.component.html'
+  templateUrl: './product-price.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ProductPriceComponent {
+export class ProductPriceComponent implements OnChanges {
 
   @Input() product: Product;
   @Input() showInformationalPrice: boolean;
   @Input() showPriceSavings: boolean;
 
-  isListPriceGreaterThanSalePrice(): boolean {
-    return this.product.listPrice && this.product.salePrice && this.product.listPrice.value > this.product.salePrice.value;
-  }
+  isListPriceGreaterThanSalePrice = false;
+  isListPriceLessThanSalePrice = false;
 
-  isListPriceLessThanSalePrice(): boolean {
-    return this.product.listPrice && this.product.salePrice && this.product.listPrice.value < this.product.salePrice.value;
+  ngOnChanges() {
+    if (this.product.listPrice && this.product.salePrice) {
+      this.isListPriceGreaterThanSalePrice = this.product.listPrice.value > this.product.salePrice.value;
+      this.isListPriceLessThanSalePrice = this.product.listPrice.value < this.product.salePrice.value;
+    }
   }
 }
