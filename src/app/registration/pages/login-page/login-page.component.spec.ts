@@ -8,8 +8,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
-import { reducers, State } from '../../../core/store/core.state';
-import { LoginUserFail } from '../../../core/store/user';
+import { reducers } from '../../../core/store/core.system';
+import { LoginUserFail, State } from '../../../core/store/user';
 import { SharedModule } from '../../../shared/shared.module';
 import { LoginPageComponent } from './login-page.component';
 

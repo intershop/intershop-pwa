@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Customer } from '../../../models/customer/customer.model';
-import { UserActions, UserActionTypes } from './user.actions';
+import { UserAction, UserActionTypes } from './user.actions';
 
 export interface UserState {
   customer: Customer;
@@ -18,9 +18,9 @@ export const initialState: UserState = {
   error: undefined,
 };
 
-export function userStateReducer(
+export function userReducer(
   state = initialState,
-  action: UserActions
+  action: UserAction
 ): UserState {
   switch (action.type) {
 

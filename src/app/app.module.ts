@@ -18,7 +18,7 @@ import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-a
 import { CurrentLocaleService } from './core/services/locale/current-locale.service';
 import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
-import { CustomSerializer, effects, reducers } from './core/store/core.state';
+import { CustomSerializer, effects, reducers } from './core/store/core.system';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';

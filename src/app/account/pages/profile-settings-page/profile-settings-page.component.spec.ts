@@ -3,7 +3,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { reducers } from '../../../core/store/core.state';
+import { reducers } from '../../../core/store/core.system';
 import { LoginUserSuccess } from '../../../core/store/user';
 import { MockComponent } from '../../../mocking/components/mock.component';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
