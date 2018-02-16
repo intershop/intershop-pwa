@@ -14,6 +14,8 @@ export class Product {
   listPrice: Price;
   salePrice: Price;
   manufacturer: string;
+  readyForShipmentMin: number;
+  readyForShipmentMax: number;
 
   /**
     * Constructor
