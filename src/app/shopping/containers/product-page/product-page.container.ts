@@ -10,11 +10,11 @@ import { getProductLoading, getSelectedProduct } from '../../store/products';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
-  selector: 'ish-product-page',
-  templateUrl: './product-page.component.html'
+  selector: 'ish-product-page-container',
+  templateUrl: './product-page.container.html'
 })
 
-export class ProductPageComponent implements OnInit {
+export class ProductPageContainerComponent implements OnInit {
 
   product$: Observable<Product>;
   productLoading$: Observable<boolean>;
