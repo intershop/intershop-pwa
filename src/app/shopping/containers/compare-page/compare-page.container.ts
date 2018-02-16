@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { ProductCompareService } from '../../../core/services/product-compare/product-compare.service';
 
 @Component({
-  selector: 'ish-compare-page',
-  templateUrl: './compare-page.component.html'
+  selector: 'ish-compare-page-container',
+  templateUrl: './compare-page.container.html'
 })
-export class ComparePageComponent implements OnInit {
+export class ComparePageContainerComponent implements OnInit {
   comparedProducts = [];
 
   constructor(

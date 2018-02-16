@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ComparePageComponent } from './compare-page.component';
+import { ComparePageContainerComponent } from './compare-page.container';
 import { comparePageRoutes } from './compare-page.routes';
 
 @NgModule({
@@ -9,6 +9,9 @@ import { comparePageRoutes } from './compare-page.routes';
     RouterModule.forChild(comparePageRoutes),
     CommonModule
   ],
-  declarations: [ComparePageComponent]
+  declarations: [
+    ComparePageContainerComponent
+  ]
 })
+
 export class ComparePageModule { }
