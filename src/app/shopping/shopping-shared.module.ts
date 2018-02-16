@@ -8,6 +8,7 @@ import { ProductInventoryComponent } from './components/product/product-inventor
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
+import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { DisableIconDirective } from './directives/disable-icon.directive';
 
@@ -26,7 +27,8 @@ import { DisableIconDirective } from './directives/disable-icon.directive';
     ProductRowComponent,
     ProductTileComponent,
     ProductPriceComponent,
-    ProductInventoryComponent
+    ProductInventoryComponent,
+    ProductShipmentComponent
   ],
   exports: [
     CategoryListComponent,
@@ -38,7 +40,8 @@ import { DisableIconDirective } from './directives/disable-icon.directive';
     ProductRowComponent,
     ProductTileComponent,
     ProductPriceComponent,
-    ProductInventoryComponent
+    ProductInventoryComponent,
+    ProductShipmentComponent
   ]
 })
 
