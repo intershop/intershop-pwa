@@ -104,7 +104,7 @@ describe('Categories Service', () => {
       const snapshot = { url: [{ path: RAW_TOP.id }, { path: RAW_SUB.id }] } as ActivatedRouteSnapshot;
 
       categoriesService.getCategoryPathFromRoute(snapshot)
-        .subscribe((path: Category[]) => { console.log(path); expect(path).toEqual([TOP, SUB]); });
+        .subscribe((path: Category[]) => { expect(path).toEqual([TOP, SUB]); });
 
       verify(apiServiceMock.get(`categories/${RAW_TOP.id}`, anything(), anything(), anything())).once();
       verify(apiServiceMock.get(`categories/${RAW_TOP.id}/${RAW_SUB.id}`, anything(), anything(), anything())).once();
