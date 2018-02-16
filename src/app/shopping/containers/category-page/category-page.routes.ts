@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { CategoryPageComponent } from './category-page.component';
+import { CategoryPageContainerComponent } from './category-page.container';
 
 export const categoryPageRoutes: Routes = [
   {
     path: ':categoryUniqueId',
-    component: CategoryPageComponent
+    component: CategoryPageContainerComponent
   },
   {
     path: ':categoryUniqueId/product',

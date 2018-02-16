@@ -8,13 +8,12 @@ import { Product } from '../../../models/product/product.model';
 import { ViewMode } from '../../../models/types';
 import * as fromStore from '../../store/categories';
 
-
 @Component({
-  selector: 'ish-category-page',
-  templateUrl: './category-page.component.html'
+  selector: 'ish-category-page-container',
+  templateUrl: './category-page.container.html'
 })
 
-export class CategoryPageComponent implements OnInit {
+export class CategoryPageContainerComponent implements OnInit {
 
   category$: Observable<Category>;
   categoryLoading$: Observable<boolean>;
