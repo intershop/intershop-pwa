@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'home', loadChildren: 'app/shopping/containers/home-page/home-page.module#HomePageModule' },
-  { path: 'error', loadChildren: 'app/shopping/pages/error-page/error-page.module#ErrorPageModule' },
+  { path: 'error', loadChildren: 'app/shopping/containers/error-page/error-page.module#ErrorPageModule' },
   { path: 'product', loadChildren: 'app/shopping/containers/product-page/product-page.module#ProductPageModule' },
   { path: 'category', loadChildren: 'app/shopping/containers/category-page/category-page.module#CategoryPageModule' },
   { path: 'compare', loadChildren: 'app/shopping/containers/compare-page/compare-page.module#ComparePageModule' }
