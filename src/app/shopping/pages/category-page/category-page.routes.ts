@@ -8,6 +8,6 @@ export const categoryPageRoutes: Routes = [
   },
   {
     path: ':categoryUniqueId/product',
-    loadChildren: 'app/shopping/pages/product-page/product-page.module#ProductPageModule'
+    loadChildren: 'app/shopping/containers/product-page/product-page.module#ProductPageModule'
   }
 ];
