@@ -1,22 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
 import { ProductCompareService } from '../../../core/services/product-compare/product-compare.service';
-import { ComparePageComponent } from './compare-page.component';
+import { ComparePageContainerComponent } from './compare-page.container';
 
-
-describe('Compare Page Component', () => {
-  let fixture: ComponentFixture<ComparePageComponent>;
+describe('Compare Page Container', () => {
+  let fixture: ComponentFixture<ComparePageContainerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ComparePageComponent],
+      declarations: [ComparePageContainerComponent],
       providers: [{ provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComparePageComponent);
+    fixture = TestBed.createComponent(ComparePageContainerComponent);
     fixture.detectChanges();
   });
 
