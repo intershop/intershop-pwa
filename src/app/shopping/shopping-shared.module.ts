@@ -15,7 +15,7 @@ import { ProductRowComponent } from './components/product/product-row/product-ro
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileActionsComponent } from './components/product/product-tile-actions/product-tile-actions.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
-import { ProductTileActionsContainerComponent } from './containers/product-tile-actions-container/product-tile-actions-container.component';
+import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
 import { DisableIconDirective } from './directives/disable-icon.directive';
 import { effects, reducers } from './store/shopping.system';
 
