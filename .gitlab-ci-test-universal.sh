@@ -23,7 +23,7 @@ function universalTest {
 testmatrix[1,0]="http://localhost:4000/"
 testmatrix[1,1]="router-outlet><ish-home-page>"
 testmatrix[2,0]="http://localhost:4000/category/Cameras-Camcorders.584"
-testmatrix[2,1]="router-outlet><ish-category-page>"
+testmatrix[2,1]="router-outlet><ish-category-page-container>"
 testmatrix[3,0]="http://localhost:4000/login"
 testmatrix[3,1]="Forgot your password?"
 testmatrix[4,0]="http://localhost:4000/register"

@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 import { ProductsService } from '../../services/products/products.service';
 import { ShoppingSharedModule } from '../../shopping-shared.module';
-import { CategoryPageComponent } from './category-page.component';
+import { CategoryPageContainerComponent } from './category-page.container';
 import { categoryPageRoutes } from './category-page.routes';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { categoryPageRoutes } from './category-page.routes';
     ProductsService
   ],
   declarations: [
-    CategoryPageComponent
+    CategoryPageContainerComponent
   ]
 })
 
