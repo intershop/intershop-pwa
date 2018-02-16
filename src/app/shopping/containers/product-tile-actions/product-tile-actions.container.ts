@@ -5,7 +5,7 @@ import { isInCompareList, ShoppingState, ToggleCompare } from '../../store/compa
 
 @Component({
   selector: 'ish-product-tile-actions-container',
-  templateUrl: './product-tile-actions-container.component.html',
+  templateUrl: './product-tile-actions.container.html',
 })
 export class ProductTileActionsContainerComponent implements OnInit {
 
