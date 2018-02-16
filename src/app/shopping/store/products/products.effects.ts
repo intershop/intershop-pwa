@@ -3,7 +3,6 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, mergeMap } from 'rxjs/operators';
-import { randomDelay } from '../../../dev-utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { ShoppingState } from '../shopping.state';
 import * as productsActions from './products.actions';
@@ -24,7 +23,6 @@ export class ProductsEffects {
     map((action: productsActions.LoadProduct) => action.payload),
     mergeMap(sku => {
       return this.productsService.getProduct(sku).pipe(
-        randomDelay(), // DEBUG
         map(product => new productsActions.LoadProductSuccess(product)),
         catchError(error => of(new productsActions.LoadProductFail(error)))
       );
