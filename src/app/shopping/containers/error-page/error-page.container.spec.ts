@@ -1,20 +1,19 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { async, TestBed } from '@angular/core/testing';
-import { ErrorPageComponent } from './error-page.component';
+import { ErrorPageContainerComponent } from './error-page.container';
 
-
-describe('Error Page Component', () => {
-  let fixture: ComponentFixture<ErrorPageComponent>;
+describe('Error Page Container', () => {
+  let fixture: ComponentFixture<ErrorPageContainerComponent>;
   let element: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ErrorPageComponent]
+      declarations: [ErrorPageContainerComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ErrorPageComponent);
+    fixture = TestBed.createComponent(ErrorPageContainerComponent);
     element = fixture.nativeElement;
   });
 
