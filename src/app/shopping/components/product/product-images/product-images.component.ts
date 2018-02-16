@@ -1,18 +1,26 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-images',
-  templateUrl: './product-images.component.html'
+  templateUrl: './product-images.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ProductImagesComponent implements OnInit {
+export class ProductImagesComponent {
 
   @Input() product: Product;
 
-  constructor() { }
+  activeSlide = 0;
 
-  ngOnInit() {
+  setActiveSlide(slideIndex: number) {
+    console.log('setActiveSlide');
+    this.activeSlide = slideIndex;
+  }
+
+  isActiveSlide(slideIndex: number): boolean {
+    console.log('isActiveSlide');
+    return this.activeSlide === slideIndex;
   }
 
 }
