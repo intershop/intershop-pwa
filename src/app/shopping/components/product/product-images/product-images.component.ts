@@ -14,12 +14,10 @@ export class ProductImagesComponent {
   activeSlide = 0;
 
   setActiveSlide(slideIndex: number) {
-    console.log('setActiveSlide');
     this.activeSlide = slideIndex;
   }
 
   isActiveSlide(slideIndex: number): boolean {
-    console.log('isActiveSlide');
     return this.activeSlide === slideIndex;
   }
 
