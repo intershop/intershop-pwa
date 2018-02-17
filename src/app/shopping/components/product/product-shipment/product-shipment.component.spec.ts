@@ -72,17 +72,4 @@ describe('Product Shipment Component', () => {
       });
     });
   });
-
-  it('should show modal dialog when detail link clicked', () => {
-    product.readyForShipmentMin = 1;
-    product.readyForShipmentMax = 3;
-    translate.set('shopping.product.readyforshipment.details.title', 'modal title');
-    translate.set('shopping.product.readyforshipment.details.text', 'modal body text');
-    component.ngOnChanges();
-    fixture.detectChanges();
-    (<HTMLElement>element.querySelector('.details-link')).click();
-    expect(element.querySelector('.modal-body').innerHTML).toContain('modal body text');
-    expect(element.querySelector('.modal-title').innerHTML).toContain('modal title');
-  });
-
 });

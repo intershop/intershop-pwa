@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { ModalDialogComponent } from './modal-dialog.component';
 
 describe('Modal Dialog Component', () => {
   let component: ModalDialogComponent;
   let fixture: ComponentFixture<ModalDialogComponent>;
-  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -16,7 +16,8 @@ describe('Modal Dialog Component', () => {
         TranslateModule.forRoot()
       ],
       providers: [
-        TranslateService
+        TranslateService,
+        BsModalService
       ],
       declarations: [ModalDialogComponent]
     })
@@ -26,7 +27,6 @@ describe('Modal Dialog Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ModalDialogComponent);
     component = fixture.componentInstance;
-    element = fixture.nativeElement;
     component.title = 'title';
   });
 
@@ -35,22 +35,15 @@ describe('Modal Dialog Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display modal popup when show function is called', () => {
+  it('should display modal dialog when show function is called', () => {
     fixture.detectChanges();
     component.show();
-    expect(component.modalDialog.isShown).toBe(true);
+    expect(component.bsModalDialog).toBeTruthy();
   });
 
-  it('should not display modal popup when show function is not called', () => {
+  it('should not display modal dialog when show function is not called', () => {
     fixture.detectChanges();
-    expect(component.modalDialog.isShown).toBe(false);
+    expect(component.bsModalDialog).toBeFalsy();
   });
 
-  it('should close modal popup when close button clicked', () => {
-    fixture.detectChanges();
-    component.show();
-    (<HTMLElement>element.querySelector('.close')).click();
-    component.modalDialog.hide();
-    expect(component.modalDialog.isShown).toBe(false);
-  });
 });
