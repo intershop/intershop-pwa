@@ -16,7 +16,6 @@ import { ProductShipmentComponent } from './components/product/product-shipment/
 import { ProductTileActionsComponent } from './components/product/product-tile-actions/product-tile-actions.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
-import { DisableIconDirective } from './directives/disable-icon.directive';
 import { effects, reducers } from './store/shopping.system';
 
 @NgModule({
@@ -28,7 +27,6 @@ import { effects, reducers } from './store/shopping.system';
   declarations: [
     CategoryListComponent,
     CategoryNavigationComponent,
-    DisableIconDirective,
     ProductImagesComponent,
     ProductImageComponent,
     ProductListComponent,
@@ -46,7 +44,6 @@ import { effects, reducers } from './store/shopping.system';
   exports: [
     CategoryListComponent,
     CategoryNavigationComponent,
-    DisableIconDirective,
     ProductImageComponent,
     ProductImagesComponent,
     ProductListComponent,

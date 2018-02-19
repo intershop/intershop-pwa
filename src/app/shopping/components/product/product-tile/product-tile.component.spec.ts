@@ -8,7 +8,6 @@ import { CartStatusService } from '../../../../core/services/cart-status/cart-st
 import { ProductCompareService } from '../../../../core/services/product-compare/product-compare.service';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product } from '../../../../models/product/product.model';
-import { DisableIconDirective } from '../../../directives/disable-icon.directive';
 import { ProductTileComponent } from './product-tile.component';
 
 /*
@@ -64,7 +63,7 @@ describe('Product Tile Component', () => {
     when(cartStatusServiceMock.getValue()).thenReturn([]);
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ProductTileComponent, DisableIconDirective],
+      declarations: [ProductTileComponent],
       providers: [
         { provide: ProductCompareService, useFactory: () => instance(productCompareServiceMock) },
         { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) },
