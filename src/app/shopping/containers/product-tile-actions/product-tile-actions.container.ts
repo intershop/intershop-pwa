@@ -1,18 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
-import { isInCompareList, ShoppingState, ToggleCompare } from '../../store/compare-list';
+import { isInCompareList, ShoppingState, ToggleCompare } from '../../store/compare';
 
 @Component({
   selector: 'ish-product-tile-actions-container',
   templateUrl: './product-tile-actions.container.html',
 })
+
 export class ProductTileActionsContainerComponent implements OnInit {
 
   @Input() product: Product;
   isInCompareList$: Store<boolean>;
 
-  constructor(private store: Store<ShoppingState>) { }
+  constructor(
+    private store: Store<ShoppingState>
+  ) { }
 
   ngOnInit() {
     this.isInCompareList$ = this.store.select(

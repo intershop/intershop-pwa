@@ -1,12 +1,12 @@
 import { createSelector } from '@ngrx/store';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
-export const getCompareListState = createSelector(
-  getShoppingState, (state: ShoppingState) => state.compareList
+export const getCompareState = createSelector(
+  getShoppingState, (state: ShoppingState) => state.compare
 );
 
 export const getCompareList = createSelector(
-  getCompareListState,
+  getCompareState,
   state => state.skus
 );
 
