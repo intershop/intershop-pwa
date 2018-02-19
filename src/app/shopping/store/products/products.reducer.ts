@@ -20,7 +20,6 @@ export function productsReducer(
 ): ProductsState {
   switch (action.type) {
 
-    // TODO: set loading for specific entities (from payload/sku) and check if this is loading/loaded
     case ProductsActionTypes.LoadProduct: {
       return {
         ...state,
@@ -38,8 +37,13 @@ export function productsReducer(
     case ProductsActionTypes.LoadProductSuccess: {
       const loadedProduct = action.payload;
 
+      // TODO: @Ferdinand: for some reason the upsert way did not work as expected
+      const cleanedState = productAdapter.removeOne(loadedProduct.sku, state);
+      // const upsert: Update<Product> = { id: loadedProduct.sku, changes: loadedProduct };
+
       return {
-        ...productAdapter.addOne(loadedProduct, state),
+        // ...productAdapter.upsertOne(upsert, state),
+        ...productAdapter.addOne(loadedProduct, cleanedState),
         loading: false
       };
     }
