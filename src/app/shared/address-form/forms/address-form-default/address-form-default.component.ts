@@ -10,7 +10,6 @@ import { Region } from '../../../../models/region/region.model';
 export class AddressFormDefaultComponent implements OnInit {
 
   @Input() addressForm: FormGroup;
-  @Input() countryCode: string;
   @Input() regions: Region[];
 
   constructor() { }

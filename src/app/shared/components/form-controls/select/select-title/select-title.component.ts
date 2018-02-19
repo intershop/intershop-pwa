@@ -8,7 +8,7 @@ import { SelectComponent } from '../select.component';
   templateUrl: '../select.component.html',
 })
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
-  @Input() countryCode: string;
+  @Input() titles: any[];
 
   constructor(
     protected translate: TranslateService
@@ -17,9 +17,6 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
   }
 
   ngOnInit() {
-    if (!this.countryCode) {
-      throw new Error('required input parameter <countryCode> is missing for SelectRegionComponent');
-    }
     this.setDefaultValues();
     super.componentInit();
     this.translateOptionLabels = true;
@@ -27,10 +24,12 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
   }
 
   /*
-    refresh titles if country input changes
+    refresh titles if they changed
   */
-  ngOnChanges(changes: SimpleChanges) {
-    this.options = this.getSalutations(this.countryCode);
+  ngOnChanges(c: SimpleChanges) {
+    if (c.titles) {
+      this.options = this.mapToOptions(this.titles);
+    }
   }
 
   /*
@@ -42,51 +41,11 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     this.errorMessages = this.errorMessages || { 'required': 'account.address.title.error.required' };
   }
 
-
-  // ToDo: replace this code, get titles from input property
-  // ToDo: react on locale switch
-  private getSalutations(countryCode): SelectOption[] {
-    let salutationlabels = [];
-    let options: SelectOption[] = [];
-
-    switch (countryCode) {
-      case 'DE': {
-        salutationlabels = [
-          'account.salutation.ms.text',
-          'account.salutation.mr.text',
-          'account.salutation.dr.text'
-        ];
-        break;
-      }
-      case 'FR': {
-        salutationlabels = [
-          'account.salutation.ms.text',
-          'account.salutation.mr.text',
-          'account.salutation.dr.text'
-        ];
-        break;
-      }
-      case 'GB': {
-        salutationlabels = [
-          'account.salutation.ms.text',
-          'account.salutation.miss.text',
-          'account.salutation.mrs.text',
-          'account.salutation.mr.text',
-          'account.salutation.dr.text'
-        ];
-        break;
-      }
-    }
-
-    if (salutationlabels) {
-      // Map questions array to an array of type SelectOption
-      options = salutationlabels.map(salutation => {
-        return {
-          'label': salutation,
-          'value': salutation
-        };
-      });
-    }
-    return options;
+  private mapToOptions(titles: any[]): SelectOption[] {
+    if (!titles) { return; }
+    return titles.map(t => ({
+      label: t,
+      value: t
+    } as SelectOption));
   }
 }
