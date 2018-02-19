@@ -7,7 +7,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { CartStatusService } from '../../../../core/services/cart-status/cart-status.service';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product } from '../../../../models/product/product.model';
-import { DisableIconDirective } from '../../../directives/disable-icon.directive';
 import { ProductRowComponent } from './product-row.component';
 
 /*
@@ -59,7 +58,7 @@ describe('Product Row Component', () => {
     when(cartStatusServiceMock.getValue()).thenReturn([]);
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [ProductRowComponent, DisableIconDirective],
+      declarations: [ProductRowComponent],
       providers: [
         { provide: CartStatusService, useFactory: () => instance(cartStatusServiceMock) },
         { provide: ICM_BASE_URL, useValue: 'http://www.example.org' }
