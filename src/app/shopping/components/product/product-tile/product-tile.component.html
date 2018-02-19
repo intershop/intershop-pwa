@@ -12,16 +12,5 @@
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
   </div>
 
-  <!-- TODO: this functionality needs to go into reusable components -->
-  <div class="product-tile-actions btn-group">
-    <div class="add-to-cart">
-      <button (click)="addToCart()" class="btn btn-link" title="Add to Cart">
-        <span class="glyphicon glyphicon-shopping-cart"></span>
-      </button>
-    </div>
-    <button (click)="addToCompare()" class="btn btn-link add-to-compare" title="Compare"
-      ishDisableIcon [property]="product.sku" [globalStateKey]="'productCompareData'">
-      <span class="glyphicon glyphicon-equalizer"></span>
-    </button>
-  </div>
+  <ish-product-tile-actions-container [product]="product"></ish-product-tile-actions-container>
 </div>

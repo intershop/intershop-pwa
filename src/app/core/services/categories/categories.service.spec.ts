@@ -76,7 +76,7 @@ describe('Categories Service', () => {
     });
   });
 
-  describe('getCategoryPathFromRoute()', () => {
+  xdescribe('getCategoryPathFromRoute()', () => {
 
     const RAW_TOP = { id: 'top' } as CategoryData;
     const RAW_SUB = { id: 'sub' } as CategoryData;
@@ -136,7 +136,7 @@ describe('Categories Service', () => {
     });
   });
 
-  describe('generateCategoryRoute', () => {
+  xdescribe('generateCategoryRoute', () => {
 
     const TOP = CategoryFactory.fromData({ id: 'top' } as CategoryData);
     const SUB = CategoryFactory.fromData({ id: 'sub' } as CategoryData);

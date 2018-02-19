@@ -4,17 +4,16 @@
 <div class="row" data-testing-id="account-login-page">
   <div class="col-md-6">
     <div class="section">
-      <div *ngIf="!isLoggedIn">
+      <div *ngIf="!(isLoggedIn$ | async)">
         <h2>{{'account.login.returning_user.heading' | translate}}</h2>
         <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.returning_user.heading' | translate}}</p>
         <!-- ToDo: server side error messages -->
-        <div *ngIf="((errorUser && errorUser !== 'UserNotLoggedIn' && errorUser !== 'LoginAlreadyInUse'))" role="alert" class="alert alert-danger">
-          {{ errorUser && (errorUser === '401 and Unauthorized' || errorUser === 'UnableToFindMembershipData') ? (userRegistrationLoginType
-          && userRegistrationLoginType === 'username') ? ('account.login.username_password.error.invalid' | translate) :
-          ('account.login.email_password.error.invalid' | translate) : ''}}
-
-          <!-- TODO  -->
-          <!-- Apply condition for other possible inputs -->
+        <div *ngIf="loginError$ | async as loginError" role="alert" class="alert alert-danger">
+          <ng-container *ngIf="loginError.status == 401">
+            {{(userRegistrationLoginType === 'email') ? ('account.login.email_password.error.invalid' | translate) :
+              ('account.login.username_password.error.invalid' | translate) }}
+          </ng-container>
+          <!-- TODO: Apply condition for other possible inputs -->
         </div>
         <form name="LoginUserForm" [formGroup]="loginForm" class="form-horizontal bv-form" (ngSubmit)="onSignin(loginForm.value)">
           <!-- Hidden Fields in ISML -->

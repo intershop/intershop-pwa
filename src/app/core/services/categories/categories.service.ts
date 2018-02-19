@@ -35,7 +35,7 @@ export class CategoriesService {
         map(
           (rawCategories: CategoryData[]) => {
             return rawCategories.map(
-              (rawCategory: CategoryData) => CategoryFactory.fromData(rawCategory));
+              (rawCategory: CategoryData) => CategoryFactory.fromData(rawCategory, rawCategory.id));
           })
       );
     }
@@ -44,16 +44,16 @@ export class CategoriesService {
 
   /**
    * REST API - Get info on (sub-)category
-   * @param categoryId  The category id path for the category of interest.
-   * @returns           Category information.
+   * @param categoryUniqueId  The unique category id for the category of interest (encodes the category path).
+   * @returns                 Category information.
    */
-  getCategory(categoryId: string): Observable<Category> {
-    if (!categoryId) {
-      return ErrorObservable.create('getCategory() called without categoryId');
+  getCategory(categoryUniqueId: string): Observable<Category> {
+    if (!categoryUniqueId) {
+      return ErrorObservable.create('getCategory() called without categoryUniqueId');
     }
-    const categoryData$ = this.apiService.get<CategoryData>(this.serviceIdentifier + '/' + categoryId, null, null, false);
-    return categoryData$.pipe(
-      map(rawCategory => CategoryFactory.fromData(rawCategory))
+    const categoryResourceIdentifier = categoryUniqueId.replace(/\./g, '/');
+    return this.apiService.get<CategoryData>(this.serviceIdentifier + '/' + categoryResourceIdentifier, null, null, false).pipe(
+      map(categoryData => CategoryFactory.fromData(categoryData, categoryUniqueId))
     );
   }
 
@@ -85,6 +85,7 @@ export class CategoriesService {
     return forkJoin(categories$);
   }
 
+  // TODO: needs to be reworked in regards to the category routing
   /**
    * Helper function to generate the applications category route from the categories REST API uri
    * or alternatively from an additionally given categoryPath if no uri is available.
@@ -96,7 +97,10 @@ export class CategoriesService {
     let categoryIdPath = '';
     let categoryIdPathIsValid = false;
     if (category) {
-      if (category.uri) {
+      if (category.uniqueId) {
+        categoryIdPath = '/' + category.uniqueId;
+        categoryIdPathIsValid = true;
+      } else if (category.uri) {
         categoryIdPath = category.uri.split(/\/categories[^\/]*/)[1];
         categoryIdPathIsValid = true;
       } else if (categoryPath && categoryPath.length) {
@@ -110,7 +114,8 @@ export class CategoriesService {
       }
     }
     if (categoryIdPath && categoryIdPathIsValid) {
-      return '/category' + categoryIdPath;
+      categoryIdPath = categoryIdPath.substring(1).replace(/\//g, '.');
+      return '/category/' + categoryIdPath;
     } else {
       return '';
     }

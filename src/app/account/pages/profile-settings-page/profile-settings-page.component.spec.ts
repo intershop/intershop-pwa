@@ -1,11 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { anyFunction, instance, mock, when } from 'ts-mockito';
+import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
+import { reducers } from '../../../core/store/core.system';
+import { LoginUserSuccess } from '../../../core/store/user';
 import { MockComponent } from '../../../mocking/components/mock.component';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerData } from '../../../models/customer/customer.interface';
-import { Customer } from '../../../models/customer/customer.model';
 import { ProfileSettingsPageComponent } from './profile-settings-page.component';
 
 describe('Profile Settings Page Component', () => {
@@ -19,7 +21,8 @@ describe('Profile Settings Page Component', () => {
     'credentials': {
       'login': ''
     }
-  };
+  } as CustomerData;
+  const customer = CustomerFactory.fromData(userData);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,16 +35,17 @@ describe('Profile Settings Page Component', () => {
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
       ],
       imports: [
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        StoreModule.forRoot(reducers)
       ]
-    })
-      .compileComponents();
+    }).compileComponents().then(() => {
+      TestBed.get(Store).dispatch(new LoginUserSuccess(customer));
+    });
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileSettingsPageComponent);
     component = fixture.componentInstance;
-    when(accountLoginServiceMock.subscribe(anyFunction())).thenCall((callback: (d: Customer) => void) => callback(CustomerFactory.fromData(userData as CustomerData)));
   });
 
   it('should be created', () => {

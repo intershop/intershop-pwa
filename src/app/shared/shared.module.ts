@@ -12,6 +12,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputComponent } from './components/form-controls/input/input.component';
 import { selectComponents } from './components/form-controls/select/index';
+import { LoadingComponent } from './components/loading/loading.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
@@ -34,6 +35,7 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     InputComponent,
     BreadcrumbComponent,
     ModalDialogComponent,
+    LoadingComponent,
     ...selectComponents
   ],
   exports: [
@@ -49,6 +51,7 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     PopoverModule,
     InputComponent,
     BreadcrumbComponent,
+    LoadingComponent,
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
     ModalDialogComponent,

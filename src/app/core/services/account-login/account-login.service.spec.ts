@@ -1,41 +1,25 @@
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { of } from 'rxjs/observable/of';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { Customer } from '../../../models/customer/customer.model';
+import { anything, instance, mock, when } from 'ts-mockito';
 import { ApiService } from '../api.service';
 import { AccountLoginService } from './account-login.service';
-import { UserDetailService } from './user-detail.service';
 
 describe('AccountLogin Service', () => {
-  const userData = {
-    'firstName': 'Patricia',
-    'lastName': 'Miller'
-  };
-
   let accountLoginService: AccountLoginService;
-  const userDetailService = mock(UserDetailService);
   const apiServiceMock = mock(ApiService);
 
   beforeEach(() => {
-    when(userDetailService.getValue()).thenReturn(userData as Customer);
-    accountLoginService = new AccountLoginService(instance(userDetailService), instance(apiServiceMock));
+    accountLoginService = new AccountLoginService(instance(apiServiceMock));
   });
 
   it('should login the user when correct credentials are entered', () => {
     const loginDetail = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
     when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(of({ authorized: true }));
-    let loggedInDetail;
+
     accountLoginService.signinUser(loginDetail).subscribe(data => {
-      loggedInDetail = data;
+      expect(data['authorized']).toBe(true);
     });
 
-    verify(userDetailService.setValue(anything())).called();
-    expect(loggedInDetail).not.toBe({ authorized: true });
-  });
-
-  it('should destroy token when user logs out', () => {
-    accountLoginService.logout();
-    verify(userDetailService.setValue(null)).called();
   });
 
   it('should return error message when wrong credentials are entered', () => {
@@ -43,21 +27,10 @@ describe('AccountLogin Service', () => {
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
     when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(ErrorObservable.create(new Error(errorMessage)));
     accountLoginService.signinUser(userDetails).subscribe((data) => {
-      expect(data).toBe(null);
+      fail('no data in this path is expected');
     }, (error) => {
       expect(error).toBeTruthy();
       expect(error.message).toBe(errorMessage);
     });
-  });
-
-  it('should return false when user is unauthorized', () => {
-    when(userDetailService.getValue()).thenReturn(null);
-    const result = accountLoginService.isAuthorized();
-    expect(result).toBe(false);
-  });
-
-  it('should return true when user is authorized', () => {
-    const authorized = accountLoginService.isAuthorized();
-    expect(authorized).toBe(true);
   });
 });

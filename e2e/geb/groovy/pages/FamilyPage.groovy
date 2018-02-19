@@ -7,7 +7,7 @@ class FamilyPage extends StorefrontPage
 {
     static at =
     {
-        waitFor{productList.size()>0}
+        waitFor{productList.size()>0} && contentSlot.displayed
     }
 
     static content =

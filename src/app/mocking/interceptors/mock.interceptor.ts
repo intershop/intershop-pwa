@@ -53,7 +53,7 @@ export class MockInterceptor implements HttpInterceptor {
    * Decides if token needs to be attached and attaches it
    */
   private attachTokenIfNecessary(req: HttpRequest<any>, response: HttpResponse<any>): HttpResponse<any> {
-    if (this.mockUserIsLoggingIn(req) || req.url.indexOf('createUser') > -1) {
+    if (this.mockUserIsLoggingIn(req) || req.url.indexOf('customers') > -1) {
       console.log('attaching dummy token');
       return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
     }

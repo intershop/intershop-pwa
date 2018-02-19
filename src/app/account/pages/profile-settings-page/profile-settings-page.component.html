@@ -2,7 +2,7 @@
 
 <div class="marketing-area"></div>
 
-<div class="account-wrapper" data-testing-id="profile-settings-page">
+<div class="account-wrapper" data-testing-id="profile-settings-page" *ngIf="customer$ | async as customer">
   <div class="row account-main">
 
     <div class="col-md-3 account-nav-box">
