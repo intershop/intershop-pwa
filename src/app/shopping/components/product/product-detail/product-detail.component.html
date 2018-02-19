@@ -1,9 +1,29 @@
-<h1>{{product.name}}</h1>
+<div class="row product-details-top-line">
+	<div class="col-md-12 pull-right"></div>
+</div>
 
-<ish-product-images [product]="product"></ish-product-images>
+<div class="row product-details">
 
-<ish-product-price [product]="product" [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
+  <ish-product-images [product]="product"></ish-product-images>
 
-<ish-product-inventory [product]="product"></ish-product-inventory>
+  <div class="col-md-4 col-sm-6 col-xs-12">
 
-<ish-product-shipment [product]="product"></ish-product-shipment>
+    <h1><span itemprop="name">{{product.name}}</span></h1>
+
+    <div class="product-info">
+
+      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+
+        <ish-product-price [product]="product" [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
+
+        <ish-product-inventory [product]="product"></ish-product-inventory>
+
+      </div>
+
+      <ish-product-shipment [product]="product"></ish-product-shipment>
+
+    </div>
+
+  </div>
+
+</div>
