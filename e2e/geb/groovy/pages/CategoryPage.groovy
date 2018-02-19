@@ -8,7 +8,7 @@ class CategoryPage extends StorefrontPage
 
     static at=
     {
-        familyTiles.size()>0
+        familyTiles.size()>0 && contentSlot.displayed
     }
 
     static content=

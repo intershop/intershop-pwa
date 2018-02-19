@@ -16,6 +16,16 @@
       </li>
     </ng-container>
 
+    <!-- TODO: this is temporary code that needs to go once the categoryPath handling works again -->
+    <li *ngIf="category && categoryPath.length === 0" class="breadcrumbs-list" [ngClass]="{'breadcrumbs-list-active' : !product}">
+      <ng-template [ngIf]="product" [ngIfElse]="categoryOnly">
+        <a class="breadcrumbs-list-link" [routerLink]="[categoriesService.generateCategoryRoute(category)]">{{category.name}}</a><span class="breadcrumb-list-separator">{{separator}}</span>
+      </ng-template>
+      <ng-template #categoryOnly>
+        {{category.name}}
+      </ng-template>
+    </li>
+
     <li *ngIf="product" class="breadcrumbs-list breadcrumbs-list-active">
       {{product.name}}
     </li>

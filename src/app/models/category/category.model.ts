@@ -8,11 +8,12 @@ export class Category {
   public online: string;
   public description: string;
   public subCategoriesCount?: number;
-  public images?: Image[];
   public subCategories?: Category[];
+  public productSkus?: string[];
+  public images?: Image[];
   public uri?: string;
 
-  constructor(public id: string, public name: string) { }
+  constructor(public id: string, public name: string, public uniqueId: string) { }
 
   /**
    * Helper function to compare two categories
@@ -23,6 +24,6 @@ export class Category {
    *                   - the id of the categories is the same
    */
   equals(category: Category): boolean {
-    return !!category && this.id === category.id;
+    return !!category && this.uniqueId === category.uniqueId;
   }
 }

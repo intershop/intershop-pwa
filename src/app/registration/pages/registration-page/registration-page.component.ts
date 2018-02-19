@@ -1,15 +1,17 @@
+import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-
 import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../core/configurations/injection-keys';
 import { CountryService } from '../../../core/services/countries/country.service';
 import { RegionService } from '../../../core/services/countries/region.service';
+import { CoreState } from '../../../core/store/core.state';
+import { Go } from '../../../core/store/router';
+import { CreateUser, getLoginError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { Region } from '../../../models/region/region.model';
-import { CustomerRegistrationService } from '../../services/customer-registration.service';
 
 @Component({
   templateUrl: './registration-page.component.html'
@@ -20,18 +22,19 @@ export class RegistrationPageComponent implements OnInit {
   countries$: Observable<Country[]>;
   languages$: Observable<any[]>;
   regionsForSelectedCountry$: Observable<Region[]>;
+  userCreateError$: Observable<HttpErrorResponse>;
 
   constructor(
     @Inject(USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER) public emailOptIn: boolean,
-    private router: Router,
+    private store: Store<CoreState>,
     private cs: CountryService,
     private rs: RegionService,
-    private customerService: CustomerRegistrationService
   ) { }
 
   ngOnInit() {
     this.countries$ = this.cs.getCountries();
     this.languages$ = this.getLanguages();
+    this.userCreateError$ = this.store.select(getLoginError);
   }
 
   updateRegions(countryCode: string) {
@@ -39,18 +42,16 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/home']);
+    this.store.dispatch(new Go({ path: ['/home'] }));
   }
 
   onCreate(value: any) {
+    console.log('before', value);
     const customerData = CustomerFactory.fromFormValueToData(value);
+    console.log('after', customerData);
     if (customerData.birthday === '') { customerData.birthday = null; }   // ToDo see IS-22276
-    this.customerService.registerPrivateCustomer(customerData).subscribe(response => {
 
-      if (response) {
-        this.router.navigate(['/home']);
-      }
-    });
+    this.store.dispatch(new CreateUser(customerData));
   }
 
   // TODO: this is just a temporary workaround! these information must come from the store (or from a service)

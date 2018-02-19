@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { CoreState, getLoggedInUser } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
 
 @Component({
   templateUrl: './profile-settings-page.component.html'
 })
 export class ProfileSettingsPageComponent implements OnInit {
-  customer: Customer;
+
   showSuccessMessage: string;
+  customer$: Observable<Customer>;
 
   constructor(
-    private accountLoggingService: AccountLoginService
+    private store: Store<CoreState>
   ) { }
 
   ngOnInit() {
-    this.accountLoggingService.subscribe(customer => {
-      if (customer) {
-        this.customer = customer;
-      }
-    });
+    this.customer$ = this.store.select(getLoggedInUser);
   }
 
 }

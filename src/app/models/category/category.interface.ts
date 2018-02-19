@@ -1,6 +1,7 @@
 import { ImageData } from '../image/image.interface';
 
 export interface CategoryData {
+  id: string;
   name: string;
   type: string;
   hasOnlineProducts: boolean;
@@ -8,8 +9,7 @@ export interface CategoryData {
   online: string;
   description: string;
   subCategoriesCount?: number;
-  images?: ImageData[];
-  id: string;
   subCategories?: CategoryData[];
+  images?: ImageData[];
   uri?: string;
 }

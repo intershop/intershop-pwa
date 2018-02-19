@@ -48,4 +48,14 @@ export class ProductsService {
     );
   }
 
+  getProductSkuListForCategory(categoryUniqueId: string): Observable<{ skus: string[], categoryUniqueId: string }> {
+    const url = `categories/${categoryUniqueId.replace(/\./g, '/')}/products`;
+    return this.apiService.get<any>(url, null, null, true, false).pipe(
+      map(list => ({
+        skus: list.map(el => el.uri.split('/').pop()),
+        categoryUniqueId: categoryUniqueId
+      }))
+    );
+  }
+
 }
