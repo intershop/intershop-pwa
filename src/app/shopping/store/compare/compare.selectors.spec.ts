@@ -1,16 +1,15 @@
-import { CompareListState } from './compare-list.reducer';
-import * as fromSelectors from './compare-list.selectors';
+import { CompareState } from './compare.reducer';
+import * as fromSelectors from './compare.selectors';
 
 describe('CompareListSelectors', () => {
 
   describe('getCompareList', () => {
     it('should return the SKU list when queried', () => {
-      const state: CompareListState = {
+      const state: CompareState = {
         skus: ['123', '456']
       };
       const result = fromSelectors.getCompareList.projector(state);
       const expected = state.skus;
-
       expect(result).toBe(expected);
     });
   });
