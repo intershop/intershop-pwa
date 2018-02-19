@@ -22,6 +22,7 @@ export class RegistrationPageComponent implements OnInit {
   countries$: Observable<Country[]>;
   languages$: Observable<any[]>;
   regionsForSelectedCountry$: Observable<Region[]>;
+  titlesForSelectedCountry$: Observable<Region[]>;
   userCreateError$: Observable<HttpErrorResponse>;
 
   constructor(
@@ -37,8 +38,9 @@ export class RegistrationPageComponent implements OnInit {
     this.userCreateError$ = this.store.pipe(select(getLoginError));
   }
 
-  updateRegions(countryCode: string) {
+  updateData(countryCode: string) {
     this.regionsForSelectedCountry$ = this.rs.getRegions(countryCode);
+    this.titlesForSelectedCountry$ = this.getTitles(countryCode);
   }
 
   onCancel() {
@@ -61,6 +63,40 @@ export class RegistrationPageComponent implements OnInit {
       { localeid: 'fr_FR', name: 'French (France)' },
       { localeid: 'de_DE', name: 'German (Germany)' }
     ]);
+  }
+
+  getTitles(countryCode: string): Observable<any[]> {
+    let salutationlabels = [];
+
+    switch (countryCode) {
+      case 'DE': {
+        salutationlabels = [
+          'account.salutation.ms.text',
+          'account.salutation.mr.text',
+          'account.salutation.dr.text'
+        ];
+        break;
+      }
+      case 'FR': {
+        salutationlabels = [
+          'account.salutation.ms.text',
+          'account.salutation.mr.text',
+          'account.salutation.dr.text'
+        ];
+        break;
+      }
+      case 'GB': {
+        salutationlabels = [
+          'account.salutation.ms.text',
+          'account.salutation.miss.text',
+          'account.salutation.mrs.text',
+          'account.salutation.mr.text',
+          'account.salutation.dr.text'
+        ];
+        break;
+      }
+    }
+    return of(salutationlabels);
   }
 }
 

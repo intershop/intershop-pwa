@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
 export class AddressFormDEComponent implements OnInit {
 
   @Input() addressForm: FormGroup;
-  @Input() countryCode: string;
+  @Input() titles: any[];
 
   ngOnInit() {
     if (!this.addressForm) {

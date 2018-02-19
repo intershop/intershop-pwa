@@ -31,6 +31,7 @@ describe('RegistrationPage Component', () => {
             'countries',
             'languages',
             'regions',
+            'titles',
             'emailOptIn'
           ]
         }),
