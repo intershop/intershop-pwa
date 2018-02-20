@@ -17,9 +17,9 @@
       [categoryPath]="categoryPath$ | async"
       [products]="products$ | async"
       [totalItems]="totalItems$ | async"
-      [viewMode]="viewMode"
+      [viewType]="viewType"
       [sortBy]="sortBy"
-      (viewModeChange)="changeViewMode($event)"
+      (viewTypeChange)="changeViewType($event)"
       (sortByChange)="changeSortBy($event)"
     ></ish-family-page>
   </ng-template>

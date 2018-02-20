@@ -5,7 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
-import { ViewMode } from '../../../models/types';
+import { ViewType } from '../../../models/types';
 import * as fromStore from '../../store/categories';
 
 @Component({
@@ -20,8 +20,8 @@ export class CategoryPageContainerComponent implements OnInit {
   categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
   products$: Observable<Product[]>;
   totalItems$: Observable<number>;
-  // TODO: get viewMode and sortBy from Store
-  viewMode: ViewMode = 'grid';
+  // TODO: get viewType and sortBy from Store
+  viewType: ViewType = 'grid';
   sortBy = 'default';
 
 
@@ -40,10 +40,10 @@ export class CategoryPageContainerComponent implements OnInit {
     this.totalItems$ = this.store.select(fromStore.getProductCountForSelectedCategory);
   }
 
-  changeViewMode(viewMode: ViewMode) {
-    this.viewMode = viewMode;
+  changeViewType(viewType: ViewType) {
+    this.viewType = viewType;
     // TODO: Dispatch action
-    console.log('ViewMode changed to', viewMode);
+    console.log('ViewType changed to', viewType);
   }
 
   changeSortBy(sortBy: string) {
