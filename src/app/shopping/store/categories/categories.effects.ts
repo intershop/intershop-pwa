@@ -23,7 +23,8 @@ export class CategoriesEffects {
   ) { }
 
   @Effect()
-  selectedCategory$ = this.store.select(categoriesSelectors.getSelectedCategoryId).pipe(
+  selectedCategory$ = this.store.pipe(
+    select(categoriesSelectors.getSelectedCategoryId),
     filter(id => !!id),
     withLatestFrom(this.store.select(categoriesSelectors.getSelectedCategory)),
     filter(([id, c]) => !c || (c.hasOnlineSubCategories && !c.subCategories)),
