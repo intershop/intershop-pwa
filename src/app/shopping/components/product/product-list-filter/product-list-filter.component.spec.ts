@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { ProductListFilterComponent } from './product-list-filter.component';
 
 describe('ProductListFilterComponent', () => {
@@ -8,7 +9,12 @@ describe('ProductListFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProductListFilterComponent]
+      declarations: [ProductListFilterComponent],
+      imports: [
+        TranslateModule.forRoot(),
+        FormsModule,
+        ReactiveFormsModule
+      ],
     })
       .compileComponents();
   }));
@@ -19,7 +25,7 @@ describe('ProductListFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should be created', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 });

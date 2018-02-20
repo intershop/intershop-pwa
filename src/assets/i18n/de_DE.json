@@ -1926,7 +1926,7 @@
   "product.image.text.alttext": "Produktbild",
   "product.instock.text": "Verfügbar",
   "product.itemNumber.label": "Produkt-ID:",
-  "product.items.label": "{0, choice, 0#0 Elemente|1#1 Element|1<{0,number,integer} Elemente}",
+  "product.items.label": {"=0":"0 Elemente", "=1": "1 Element", "other": "# Elemente"},
   "product.items.view_all.link": "Alle anzeigen",
   "product.lifecycle.afterLastOrderDateEndOfSupportMessage": "Der Service für dieses Produkt endet am {{0}}.",
   "product.lifecycle.afterLastOrderDateMessage": "Das Produkt kann derzeit nicht bestellt werden.",
@@ -2442,5 +2442,5 @@
   "subscription.tooltip": "Abonnement",
   "COMMENT.ADDITIONAL_LOCALIZATIONS": "below",
   "shopping.product.readyforshipment.details.title": "Versandfertig",
-  "shopping.product.readyforshipment.details.text": "<p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>Sub Heading</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"  
+  "shopping.product.readyforshipment.details.text": "<p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>Sub Heading</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>"
 }

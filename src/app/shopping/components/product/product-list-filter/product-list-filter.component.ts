@@ -11,13 +11,14 @@ import { SelectOption } from '../../../../shared/components/form-controls/select
 export class ProductListFilterComponent implements OnInit, OnChanges {
 
   @Input() itemCount: number;
-  @Input() sortBy: string;
-  @Input() viewMode: ViewMode = 'list';
-  @Output() sortByChange = new EventEmitter<string>();
+  @Input() viewMode: ViewMode = 'grid';
+  @Input() sortBy: 'default';
   @Output() viewModeChange = new EventEmitter<string>();
+  @Output() sortByChange = new EventEmitter<string>();
 
   sortForm: FormControl;
 
+  // TODO: comes from a REST call or has to go somewhere else
   sortOptions: SelectOption[] = [
     { value: 'default', label: 'Default Sorting' },
     { value: 'name-asc', label: 'Name asc' },
@@ -26,18 +27,10 @@ export class ProductListFilterComponent implements OnInit, OnChanges {
     { value: 'ArrivalDate-desc', label: 'Newest Arrivals' },
   ];
 
-  itemCountPluralMapping = {
-    '=0': 'No Items',
-    '=1': '1 List Item',
-    'other': '# List Items'
-  };
-
-
   ngOnInit() {
     this.sortForm = new FormControl(this.sortBy);
     this.sortForm.valueChanges.subscribe(this.sortByChange);
   }
-
 
   ngOnChanges(c: SimpleChanges) {
     if (c.sortBy && this.sortForm) {

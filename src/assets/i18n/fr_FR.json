@@ -1839,7 +1839,7 @@
   "product.image.text.alttext": "photo du produit",
   "product.instock.text": "En stock",
   "product.itemNumber.label": "ID produit :",
-  "product.items.label": "{0, choice, 0#0 éléments|1#1 élément|1<{0,number,integer} éléments}",
+  "product.items.label": {"=0":"0 éléments", "=1": "1 élément", "other": "# éléments"},
   "product.items.view_all.link": "Afficher tout",
   "product.lifecycle.afterLastOrderDateEndOfSupportMessage": "Le support pour ce produit expire le {{0}}.",
   "product.lifecycle.afterLastOrderDateMessage": "Impossible de commander ce produit au moment.",
