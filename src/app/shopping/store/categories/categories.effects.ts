@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
@@ -42,8 +43,10 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  loadProductsForCategory$ = this.store.select(categoriesSelectors.getSelectedCategory).pipe(
-    withLatestFrom(this.store.select(productsSelectors.getSelectedProductId)),
+  loadProductsForCategory$ = combineLatest(
+    this.store.pipe(select(categoriesSelectors.getSelectedCategory)),
+    this.store.pipe(select(productsSelectors.getSelectedProductId))
+  ).pipe(
     filter(([c, selectedProductSku]) => !selectedProductSku),
     filter(([c, sku]) => !sku && c && c.hasOnlineProducts && !c.productSkus),
     concatMap(([c, sku]) => this.productsService.getProductSkuListForCategory(c.uniqueId)),
@@ -52,6 +55,7 @@ export class CategoriesEffects {
       ...res.skus.map(sku => new productsActions.LoadProduct(sku)),
     ])
   );
+
 
   // TODO: @Ferdinand: non full categories might not be to helpfull
   @Effect()
