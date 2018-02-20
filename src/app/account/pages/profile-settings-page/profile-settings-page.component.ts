@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CoreState, getLoggedInUser } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
@@ -17,7 +17,7 @@ export class ProfileSettingsPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.customer$ = this.store.select(getLoggedInUser);
+    this.customer$ = this.store.pipe(select(getLoggedInUser));
   }
 
 }

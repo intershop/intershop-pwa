@@ -26,7 +26,7 @@ export class CategoriesEffects {
   selectedCategory$ = this.store.pipe(
     select(categoriesSelectors.getSelectedCategoryId),
     filter(id => !!id),
-    withLatestFrom(this.store.select(categoriesSelectors.getSelectedCategory)),
+    withLatestFrom(this.store.pipe(select(categoriesSelectors.getSelectedCategory))),
     filter(([id, c]) => !c || (c.hasOnlineSubCategories && !c.subCategories)),
     map(([id, c]) => new categoriesActions.LoadCategory(id))
   );

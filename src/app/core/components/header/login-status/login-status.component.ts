@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Customer } from '../../../../models/customer/customer.model';
 import { CoreState, getLoggedInUser } from '../../../store/user';
@@ -18,6 +18,6 @@ export class LoginStatusComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.customer$ = this.store.select(getLoggedInUser);
+    this.customer$ = this.store.pipe(select(getLoggedInUser));
   }
 }

@@ -2,7 +2,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
@@ -34,7 +34,8 @@ export class SimpleRegistrationComponent implements OnInit {
      * Creates Login Form
   */
   ngOnInit() {
-    this.userCreateError$ = this.store.select(getLoginError);
+    this.userCreateError$ = this.store.pipe(select(getLoginError));
+
     this.isUsername = this.userRegistrationLoginType === 'username';
     const password = new FormControl('', [Validators.required, Validators.minLength(7), Validators.pattern(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9!@#$%^&*()_+}{?><:"\S]{7,})$/)]);
     const confirmPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
