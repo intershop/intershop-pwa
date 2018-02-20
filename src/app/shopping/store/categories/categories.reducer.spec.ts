@@ -97,7 +97,7 @@ describe('Categories Reducer', () => {
         ];
       });
 
-      it('should add a bunch of categories', () => {
+      it('should add a bunch of categories to the state', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.SaveSubCategories(categories);
         const state = fromReducer.categoriesReducer(initialState, action);
