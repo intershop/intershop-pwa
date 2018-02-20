@@ -11,7 +11,7 @@ xdescribe('Family Page Component', () => {
       declarations: [
         FamilyPageComponent,
         MockComponent({ selector: 'ish-category-navigation', template: 'Category Navigation Component', inputs: ['category', 'categoryPath', 'categoryNavigationLevel'] }),
-        MockComponent({ selector: 'ish-product-list-filter', template: 'Products List Filter Component', inputs: ['itemCount', 'viewMode', 'sortBy']}),
+        MockComponent({ selector: 'ish-product-list-toolbar', template: 'Products List Toolbar Component', inputs: ['itemCount', 'viewMode', 'sortBy'] }),
         MockComponent({ selector: 'ish-product-list', template: 'Products List Component', inputs: ['products', 'viewMode'] })
       ]
     })

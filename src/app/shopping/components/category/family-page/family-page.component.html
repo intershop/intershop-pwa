@@ -13,13 +13,13 @@
     </div>
 
     <div class="col-sm-9">
-        <ish-product-list-filter
+        <ish-product-list-toolbar
           [itemCount]="totalItems"
           [viewMode]="viewMode"
           [sortBy]="sortBy"
           (viewModeChange)="changeViewMode($event)"
           (sortByChange)="changeSortBy($event)"
-        ></ish-product-list-filter>
+        ></ish-product-list-toolbar>
 
         <ish-product-list
           [products]="products"

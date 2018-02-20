@@ -7,7 +7,7 @@ import { CategoryListComponent } from './components/category/category-list/categ
 import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
-import { ProductListFilterComponent } from './components/product/product-list-filter/product-list-filter.component';
+import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
@@ -35,7 +35,7 @@ import { effects, reducers } from './store/shopping.system';
     ProductPriceComponent,
     ProductInventoryComponent,
     ProductShipmentComponent,
-    ProductListFilterComponent,
+    ProductListToolbarComponent,
     ProductTileActionsContainerComponent,
     ProductTileActionsComponent
   ],
@@ -50,7 +50,7 @@ import { effects, reducers } from './store/shopping.system';
     ProductPriceComponent,
     ProductInventoryComponent,
     ProductShipmentComponent,
-    ProductListFilterComponent,
+    ProductListToolbarComponent,
     ProductTileActionsContainerComponent,
     ProductTileActionsComponent
   ]

@@ -4,11 +4,11 @@ import { ViewMode } from '../../../../models/types';
 import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
 
 @Component({
-  selector: 'ish-product-list-filter',
-  templateUrl: './product-list-filter.component.html'
+  selector: 'ish-product-list-toolbar',
+  templateUrl: './product-list-toolbar.component.html'
 })
 
-export class ProductListFilterComponent implements OnInit, OnChanges {
+export class ProductListToolbarComponent implements OnInit, OnChanges {
 
   @Input() itemCount: number;
   @Input() viewMode: ViewMode = 'grid';
