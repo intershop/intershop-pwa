@@ -19,11 +19,11 @@ export class CategoryPageContainerComponent implements OnInit {
   categoryLoading$: Observable<boolean>;
   categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
   products$: Observable<Product[]>;
-
+  totalItems$: Observable<number>;
   // TODO: get viewMode and sortBy from Store
   viewMode: ViewMode = 'grid';
   sortBy = 'default';
-  totalItems$: Observable<number>;
+
 
   constructor(
     private store: Store<fromStore.ShoppingState>
@@ -33,23 +33,22 @@ export class CategoryPageContainerComponent implements OnInit {
     // TODO: find a nicer way to filter out the case of an 'undefined' category
     this.category$ = this.store.select(fromStore.getSelectedCategory).pipe(filter(e => !!e));
     this.categoryLoading$ = this.store.select(fromStore.getCategoryLoading);
+    // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
+    this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
 
     this.products$ = this.store.select(fromStore.getProductsForSelectedCategory);
     this.totalItems$ = this.store.select(fromStore.getProductCountForSelectedCategory);
-
-    // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
-    this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
   }
 
-  changeViewMode(mode: ViewMode) {
-    this.viewMode = mode;
+  changeViewMode(viewMode: ViewMode) {
+    this.viewMode = viewMode;
     // TODO: Dispatch action
-    console.log('ViewMode changed to', mode);
+    console.log('ViewMode changed to', viewMode);
   }
 
-  changeSort(sortBy: string) {
+  changeSortBy(sortBy: string) {
     this.sortBy = sortBy;
     // TODO: Dispatch action
-    console.log('Sort changed to', sortBy);
+    console.log('SortBy changed to', sortBy);
   }
 }
