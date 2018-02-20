@@ -13,7 +13,7 @@ export class ProductListFilterComponent implements OnInit, OnChanges {
   @Input() itemCount: number;
   @Input() sortBy: string;
   @Input() viewMode: ViewMode = 'list';
-  @Output() sortChange = new EventEmitter<string>();
+  @Output() sortByChange = new EventEmitter<string>();
   @Output() viewModeChange = new EventEmitter<string>();
 
   sortForm: FormControl;
@@ -35,7 +35,7 @@ export class ProductListFilterComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.sortForm = new FormControl(this.sortBy);
-    this.sortForm.valueChanges.subscribe(this.sortChange);
+    this.sortForm.valueChanges.subscribe(this.sortByChange);
   }
 
 
