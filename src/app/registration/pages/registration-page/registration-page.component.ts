@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../core/configurations/injection-keys';
@@ -34,7 +34,7 @@ export class RegistrationPageComponent implements OnInit {
   ngOnInit() {
     this.countries$ = this.cs.getCountries();
     this.languages$ = this.getLanguages();
-    this.userCreateError$ = this.store.select(getLoginError);
+    this.userCreateError$ = this.store.pipe(select(getLoginError));
   }
 
   updateRegions(countryCode: string) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { ShoppingState } from '../shopping.state';
 import * as compareActions from './compare.actions';
@@ -18,7 +18,7 @@ export class CompareEffects {
   toggleCompare$ = this.actions$.pipe(
     ofType(CompareActionTypes.ToggleCompare),
     map((action: compareActions.ToggleCompare) => action.payload),
-    withLatestFrom(this.store.select(compareSelectors.getCompareList)),
+    withLatestFrom(this.store.pipe(select(compareSelectors.getCompareList))),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
     map(({ sku, isInList }) => {
       return isInList ?

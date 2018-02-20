@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map, take, tap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../store/core.state';
@@ -15,9 +15,10 @@ export class AuthGuard implements CanActivate {
   ) { }
 
   canActivate(): Observable<boolean> {
-    return this.store.select(getUserAuthorized).pipe(
+    return this.store.pipe(
+      select(getUserAuthorized),
       take(1),
-      withLatestFrom(this.store.select(getRouterURL)),
+      withLatestFrom(this.store.pipe(select(getRouterURL))),
       tap(([authorized, url]) => {
         if (!authorized) {
           // not logged in so redirect to login page with the return url

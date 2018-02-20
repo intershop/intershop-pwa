@@ -50,8 +50,7 @@ describe('Categories Reducer', () => {
         } as Category;
       });
 
-      // TODO: waiting for https://github.com/ngrx/platform/issues/817
-      xit('should insert category if not exists', () => {
+      fit('should insert category if not exists', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.LoadCategorySuccess(category);
         const state = fromReducer.categoriesReducer(initialState, action);
