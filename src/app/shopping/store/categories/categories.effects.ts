@@ -55,7 +55,7 @@ export class CategoriesEffects {
       new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
       ...res.skus.map(sku => new productsActions.LoadProduct(sku)),
     ])
-  );
+    );
 
 
   // TODO: @Ferdinand: non full categories might not be to helpfull

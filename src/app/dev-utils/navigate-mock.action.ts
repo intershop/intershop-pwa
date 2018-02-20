@@ -1,4 +1,3 @@
-import { NavigationExtras } from '@angular/router';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 
 interface ActionPayload {
