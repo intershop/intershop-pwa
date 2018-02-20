@@ -1,15 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { ProductListFilterComponent } from './product-list-filter.component';
+import { ProductListToolbarComponent } from './product-list-toolbar.component';
 
-describe('ProductListFilterComponent', () => {
-  let component: ProductListFilterComponent;
-  let fixture: ComponentFixture<ProductListFilterComponent>;
+describe('Product List Toolbar Component', () => {
+  let component: ProductListToolbarComponent;
+  let fixture: ComponentFixture<ProductListToolbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProductListFilterComponent],
+      declarations: [ProductListToolbarComponent],
       imports: [
         TranslateModule.forRoot(),
         FormsModule,
@@ -20,7 +20,7 @@ describe('ProductListFilterComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductListFilterComponent);
+    fixture = TestBed.createComponent(ProductListToolbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
