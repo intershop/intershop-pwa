@@ -1,18 +1,12 @@
-<div class="modal fade" bsModal #modalDialog="bs-modal" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h2 *ngIf="title" class="modal-title pull-left">{{title}}</h2>
-        <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="modalDialog.hide()">
-          <span aria-hidden="true" [attr.title]="'dialog.close.text' | translate">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <ng-content></ng-content>
-      </div>
-
-    </div>
+<ng-template #template>
+  <div class="modal-header">
+    <h2 *ngIf="title" class="modal-title pull-left">{{title}}</h2>
+    <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()">
+      <span aria-hidden="true" [attr.title]="'dialog.close.text' | translate">&times;</span>
+    </button>
   </div>
-</div>
+
+  <div class="modal-body">
+    <ng-content></ng-content>
+  </div>
+</ng-template>
