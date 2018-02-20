@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ViewMode } from '../../../../models/types';
+import { ViewType } from '../../../../models/types';
 import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
 
 @Component({
@@ -11,9 +11,9 @@ import { SelectOption } from '../../../../shared/components/form-controls/select
 export class ProductListToolbarComponent implements OnInit, OnChanges {
 
   @Input() itemCount: number;
-  @Input() viewMode: ViewMode = 'grid';
+  @Input() viewType: ViewType = 'grid';
   @Input() sortBy: 'default';
-  @Output() viewModeChange = new EventEmitter<string>();
+  @Output() viewTypeChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<string>();
 
   sortForm: FormControl;
@@ -39,15 +39,15 @@ export class ProductListToolbarComponent implements OnInit, OnChanges {
   }
 
   get listView() {
-    return this.viewMode === 'list';
+    return this.viewType === 'list';
   }
 
   get gridView() {
-    return this.viewMode === 'grid';
+    return this.viewType === 'grid';
   }
 
-  setViewMode(mode: ViewMode) {
-    this.viewMode = mode;
-    this.viewModeChange.emit(mode);
+  setViewType(mode: ViewType) {
+    this.viewType = mode;
+    this.viewTypeChange.emit(mode);
   }
 }

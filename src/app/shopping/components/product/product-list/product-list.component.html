@@ -1,7 +1,7 @@
 <div class="product-list row">
 
   <!--Grid View -->
-  <ng-template [ngIf]="viewMode === 'grid'">
+  <ng-template [ngIf]="viewType === 'grid'">
     <div *ngFor="let product of products" class="product-list-item col-md-4 col-xs-6 grid-view" style="position: relative; min-height: 100px;">
       <ish-product-tile [product]="product" *ngIf="product else loading"></ish-product-tile>
       <ng-template #loading>
@@ -11,7 +11,7 @@
   </ng-template>
 
   <!--List View-->
-  <ng-template [ngIf]="viewMode === 'list'">
+  <ng-template [ngIf]="viewType === 'list'">
     <div *ngFor="let product of products" class="product-list-item col-md-12 list-view" style="position: relative; min-height: 100px;">
       <ish-product-row [product]="product" *ngIf="product else loading"></ish-product-row>
       <ng-template #loading>

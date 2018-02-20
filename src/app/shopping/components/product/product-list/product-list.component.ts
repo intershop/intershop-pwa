@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
-import { ViewMode } from '../../../../models/types';
+import { ViewType } from '../../../../models/types';
 
 @Component({
   selector: 'ish-product-list',
@@ -11,6 +11,6 @@ import { ViewMode } from '../../../../models/types';
 export class ProductListComponent {
 
   @Input() products: Product[];
-  @Input() viewMode: ViewMode = 'grid';
+  @Input() viewType: ViewType = 'grid';
 
 }

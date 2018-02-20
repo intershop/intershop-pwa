@@ -6,10 +6,10 @@
   </div>
   <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
     <div class="pull-right sort-by">
-      <a class="list-view-link" [ngClass]="{'list-active' : listView}" data-testing-id="list-view-link" (click)="setViewMode('list')">
+      <a class="list-view-link" [ngClass]="{'list-active' : listView}" data-testing-id="list-view-link" (click)="setViewType('list')">
         <span class="glyphicon glyphicon-list"></span>
       </a>
-      <a class="grid-view-link" [ngClass]="{'grid-active' : gridView}" data-testing-id="grid-view-link" (click)="setViewMode('grid')">
+      <a class="grid-view-link" [ngClass]="{'grid-active' : gridView}" data-testing-id="grid-view-link" (click)="setViewType('grid')">
         <span class="glyphicon glyphicon-th"></span>
       </a>
     </div>

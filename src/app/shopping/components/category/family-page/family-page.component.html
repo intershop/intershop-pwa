@@ -15,15 +15,15 @@
     <div class="col-sm-9">
         <ish-product-list-toolbar
           [itemCount]="totalItems"
-          [viewMode]="viewMode"
+          [viewType]="viewType"
           [sortBy]="sortBy"
-          (viewModeChange)="changeViewMode($event)"
+          (viewTypeChange)="changeViewType($event)"
           (sortByChange)="changeSortBy($event)"
         ></ish-product-list-toolbar>
 
         <ish-product-list
           [products]="products"
-          [viewMode]="viewMode"
+          [viewType]="viewType"
         ></ish-product-list>
     </div>
   </div>

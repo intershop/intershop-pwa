@@ -1,1 +1,1 @@
-export type ViewMode = 'list' | 'grid';
+export type ViewType = 'grid' | 'list';
