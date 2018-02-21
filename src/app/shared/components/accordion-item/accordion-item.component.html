@@ -1,0 +1,11 @@
+<div class="panel-heading" [attr.data-testing-id]="dataTestingId" role="tab" (click)="toggleOpen()">
+  <a class="accordion-toggle" [attr.aria-expanded]="isOpen">
+    {{heading}}
+    <span class="glyphicon pull-right" [ngClass]="{'glyphicon-plus' : !isOpen,'glyphicon-minus' : isOpen}"></span>
+  </a>
+</div>
+<div class="panel-collapse collapse" role="tabpanel" [collapse]="!isOpen">
+  <div class="panel-body">
+    <ng-content></ng-content>
+  </div>
+</div>

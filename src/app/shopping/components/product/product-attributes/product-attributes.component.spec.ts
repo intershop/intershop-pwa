@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Attribute, StringValue } from '../../../models/attribute/attribute.model';
-import { Product } from '../../../models/product/product.model';
+import { Attribute, StringValue } from '../../../../models/attribute/attribute.model';
+import { Product } from '../../../../models/product/product.model';
 import { ProductAttributesComponent } from './product-attributes.component';
 
 describe('Product Attributes Component', () => {
