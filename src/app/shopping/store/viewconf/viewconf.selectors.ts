@@ -7,3 +7,4 @@ export const getViewconfState = createSelector(
 
 export const getViewType = createSelector(getViewconfState, state => state.viewType);
 export const getSortBy = createSelector(getViewconfState, state => state.sortBy);
+export const getSortKeys = createSelector(getViewconfState, state => state.sortKeys);

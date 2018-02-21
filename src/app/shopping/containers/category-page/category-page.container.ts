@@ -24,6 +24,7 @@ export class CategoryPageContainerComponent implements OnInit {
   totalItems$: Observable<number>;
   viewType$: Observable<ViewType>;
   sortBy$: Observable<string>;
+  sortKeys$: Observable<string[]>;
 
   constructor(
     private store: Store<fromStore.ShoppingState>
@@ -41,6 +42,7 @@ export class CategoryPageContainerComponent implements OnInit {
     this.totalItems$ = this.store.pipe(select(fromStore.getProductCountForSelectedCategory));
     this.viewType$ = this.store.pipe(select(fromViewconf.getViewType));
     this.sortBy$ = this.store.pipe(select(fromViewconf.getSortBy));
+    this.sortKeys$ = this.store.pipe(select(fromViewconf.getSortKeys));
 
     // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
     this.categoryPath$ = this.store.pipe(select(fromStore.getSelectedCategoryPath));

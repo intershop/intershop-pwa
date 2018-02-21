@@ -1,17 +1,16 @@
 import { ViewType } from '../../../models/types';
 import * as fromViewconf from './viewconf.actions';
-import { ViewconfActionTypes } from './viewconf.actions';
 
 export interface ViewconfState {
   viewType: ViewType;
   sortBy: string;
-  sortByOptions: any[]; // TODO type
+  sortKeys: string[];
 }
 
 export const initialState: ViewconfState = {
   viewType: 'grid',
-  sortBy: 'default',
-  sortByOptions: [],
+  sortBy: '',
+  sortKeys: [],
 };
 
 export function viewconfReducer(
@@ -20,14 +19,22 @@ export function viewconfReducer(
 ): ViewconfState {
   switch (action.type) {
 
-    case ViewconfActionTypes.ChangeViewType: {
+    case fromViewconf.ViewconfActionTypes.ChangeViewType: {
       const viewType = action.payload;
       return { ...state, viewType };
     }
 
-    case ViewconfActionTypes.ChangeSortBy: {
+    case fromViewconf.ViewconfActionTypes.ChangeSortBy: {
       const sortBy = action.payload;
       return { ...state, sortBy };
+    }
+
+    case fromViewconf.ViewconfActionTypes.SetSortKeys: {
+      const sortKeys = action.payload;
+      return {
+        ...state,
+        sortKeys: [...sortKeys]
+      };
     }
   }
 

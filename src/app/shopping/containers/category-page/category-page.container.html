@@ -19,6 +19,7 @@
       [totalItems]="totalItems$ | async"
       [viewType]="viewType$ | async"
       [sortBy]="sortBy$ | async"
+      [sortKeys]="sortKeys$ | async"
       (viewTypeChange)="changeViewType($event)"
       (sortByChange)="changeSortBy($event)"
     ></ish-family-page>
