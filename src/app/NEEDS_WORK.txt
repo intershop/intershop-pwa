@@ -96,11 +96,6 @@
 \---shopping
     +---components
     |   \---product
-    |       +---product-list
-    |       |       product-list.component.html
-    |       |       product-list.component.spec.ts
-    |       |       product-list.component.ts
-    |       |
     |       +---product-row
     |       |       product-row.component.html
     |       |       product-row.component.spec.ts
