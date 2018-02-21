@@ -2,7 +2,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
@@ -32,8 +32,8 @@ export class LoginPageComponent implements OnInit {
    * Creates Login Form
    */
   ngOnInit() {
-    this.isLoggedIn$ = this.store.select(getUserAuthorized);
-    this.loginError$ = this.store.select(getLoginError);
+    this.isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
+    this.loginError$ = this.store.pipe(select(getLoginError));
 
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.compose([Validators.required, (this.userRegistrationLoginType === 'email' ? CustomValidators.email : Validators.nullValidator)])]],

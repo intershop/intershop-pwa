@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
 import { isInCompareList, ShoppingState, ToggleCompare } from '../../store/compare';
 
@@ -11,15 +12,15 @@ import { isInCompareList, ShoppingState, ToggleCompare } from '../../store/compa
 export class ProductTileActionsContainerComponent implements OnInit {
 
   @Input() product: Product;
-  isInCompareList$: Store<boolean>;
+  isInCompareList$: Observable<boolean>;
 
   constructor(
     private store: Store<ShoppingState>
   ) { }
 
   ngOnInit() {
-    this.isInCompareList$ = this.store.select(
-      isInCompareList(this.product.sku)
+    this.isInCompareList$ = this.store.pipe(
+      select(isInCompareList(this.product.sku))
     );
   }
 
