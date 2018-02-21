@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { TestBed } from '@angular/core/testing';
-import { Store, StoreModule } from '@ngrx/store';
+import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Customer } from '../../../models/customer/customer.model';
 import { CoreState } from '../core.state';
@@ -25,9 +25,9 @@ describe('User State Selectors', () => {
 
     store = TestBed.get(Store);
 
-    userAuthorized$ = store.select(getUserAuthorized);
-    loggedInUser$ = store.select(getLoggedInUser);
-    loginError$ = store.select(getLoginError);
+    userAuthorized$ = store.pipe(select(getUserAuthorized));
+    loggedInUser$ = store.pipe(select(getLoggedInUser));
+    loginError$ = store.pipe(select(getLoginError));
   });
 
   it('should select no customer when no event was sent', () => {

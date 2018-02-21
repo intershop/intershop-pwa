@@ -36,18 +36,33 @@ export function categoriesReducer(
 
     case CategoriesActionTypes.LoadCategorySuccess: {
       const loadedCategory = action.payload;
-      const upsert: Update<Category> = { id: loadedCategory.uniqueId, changes: loadedCategory };
+
+      /* WORKAROUND: upsert overrides the `id` property and doesn't work as expected
+       * see https://github.com/ngrx/platform/issues/817
+       * we will use remove and add until then
+       * const upsert: Update<Category> = { id: loadedCategory.uniqueId, changes: loadedCategory };
+       * ...categoryAdapter.upsertOne(upsert, state),
+       */
+
+      const cleanedState = categoryAdapter.removeOne(loadedCategory.uniqueId, state);
 
       return {
-        ...categoryAdapter.upsertOne(upsert, state),
+        ...categoryAdapter.addOne(loadedCategory, cleanedState),
         loading: false
       };
+
     }
 
     case CategoriesActionTypes.SaveSubCategories: {
       const subCategories = action.payload;
-      const upserts: Update<Category>[] = subCategories.map(c => ({ id: c.uniqueId, changes: c }));
-      return categoryAdapter.upsertMany(upserts, state);
+
+      /* WORKAROUND: upsert doen't work as expected
+       * see https://github.com/ngrx/platform/issues/817
+       * const upserts: Update<Category>[] = subCategories.map(c => ({ id: c.uniqueId, changes: c }));
+       * return categoryAdapter.upsertMany(upserts, state);
+       */
+
+      return categoryAdapter.addMany(subCategories, state);
     }
 
     case CategoriesActionTypes.SetProductSkusForCategory: {

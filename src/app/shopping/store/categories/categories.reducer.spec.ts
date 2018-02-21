@@ -50,8 +50,7 @@ describe('Categories Reducer', () => {
         } as Category;
       });
 
-      // TODO: waiting for https://github.com/ngrx/platform/issues/817
-      xit('should insert category if not exists', () => {
+      it('should insert category if not exists', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.LoadCategorySuccess(category);
         const state = fromReducer.categoriesReducer(initialState, action);
@@ -98,8 +97,7 @@ describe('Categories Reducer', () => {
         ];
       });
 
-      // TODO: waiting for https://github.com/ngrx/platform/issues/817
-      xit('should add a bunch of categories', () => {
+      it('should add a bunch of categories to the state', () => {
         const { initialState } = fromReducer;
         const action = new fromActions.SaveSubCategories(categories);
         const state = fromReducer.categoriesReducer(initialState, action);
