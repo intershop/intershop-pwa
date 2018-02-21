@@ -1,23 +1,24 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ViewMode } from '../../../../models/types';
+import { ViewType } from '../../../../models/types';
 import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
 
 @Component({
-  selector: 'ish-product-list-filter',
-  templateUrl: './product-list-filter.component.html'
+  selector: 'ish-product-list-toolbar',
+  templateUrl: './product-list-toolbar.component.html'
 })
 
-export class ProductListFilterComponent implements OnInit, OnChanges {
+export class ProductListToolbarComponent implements OnInit, OnChanges {
 
   @Input() itemCount: number;
-  @Input() sortBy: string;
-  @Input() viewMode: ViewMode = 'list';
-  @Output() sortChange = new EventEmitter<string>();
-  @Output() viewModeChange = new EventEmitter<string>();
+  @Input() viewType: ViewType = 'grid';
+  @Input() sortBy: 'default';
+  @Output() viewTypeChange = new EventEmitter<string>();
+  @Output() sortByChange = new EventEmitter<string>();
 
   sortForm: FormControl;
 
+  // TODO: comes from a REST call or has to go somewhere else
   sortOptions: SelectOption[] = [
     { value: 'default', label: 'Default Sorting' },
     { value: 'name-asc', label: 'Name asc' },
@@ -26,18 +27,10 @@ export class ProductListFilterComponent implements OnInit, OnChanges {
     { value: 'ArrivalDate-desc', label: 'Newest Arrivals' },
   ];
 
-  itemCountPluralMapping = {
-    '=0': 'No Items',
-    '=1': '1 List Item',
-    'other': '# List Items'
-  };
-
-
   ngOnInit() {
     this.sortForm = new FormControl(this.sortBy);
-    this.sortForm.valueChanges.subscribe(this.sortChange);
+    this.sortForm.valueChanges.subscribe(this.sortByChange);
   }
-
 
   ngOnChanges(c: SimpleChanges) {
     if (c.sortBy && this.sortForm) {
@@ -46,15 +39,15 @@ export class ProductListFilterComponent implements OnInit, OnChanges {
   }
 
   get listView() {
-    return this.viewMode === 'list';
+    return this.viewType === 'list';
   }
 
   get gridView() {
-    return this.viewMode === 'grid';
+    return this.viewType === 'grid';
   }
 
-  setViewMode(mode: ViewMode) {
-    this.viewMode = mode;
-    this.viewModeChange.emit(mode);
+  setViewType(mode: ViewType) {
+    this.viewType = mode;
+    this.viewTypeChange.emit(mode);
   }
 }

@@ -1926,7 +1926,7 @@
   "product.image.text.alttext": "product photo",
   "product.instock.text": "In Stock",
   "product.itemNumber.label": "Product ID:",
-  "product.items.label": "{0, choice, 0#0 list items|1#1 list item|1<{0,number,integer} list items}",
+  "product.items.label": {"=0":"0 list items", "=1": "1 list item", "other": "# list items"},
   "product.items.view_all.link": "View All",
   "product.lifecycle.afterLastOrderDateEndOfSupportMessage": "The support for this product ends at {{0}}.",
   "product.lifecycle.afterLastOrderDateMessage": "The product cannot be currently ordered.",
