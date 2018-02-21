@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -46,7 +46,11 @@ describe('Select Language Component', () => {
     expect(component.label).toEqual('account.default_address.preferred_language.label', 'label key should be <account.default_address.preferred_language.label>');
   });
 
-  xit('should get and display languages on creation', () => {
+  it('should get and display languages on creation', () => {
+    const changes: SimpleChanges = {
+      languages: new SimpleChange(null, component.languages, false)
+    };
+    component.ngOnChanges(changes);
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 languages are in the options array'); // ToDo: languages are retrieved from a service
     expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy('language select is rendered');
