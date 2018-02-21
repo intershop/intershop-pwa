@@ -39,7 +39,7 @@ describe('Categories Effects', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(reducers),
-          routerReducer: routerReducer
+          routerReducer
         }),
       ],
       providers: [
