@@ -23,14 +23,4 @@ export class AddressFormDefaultComponent implements OnInit {
   get hasRegions(): boolean {
     return this.regions && !!this.regions.length;
   }
-
-  // set required validator, state if country changes; will be removed by select-regions component if there is no state for this country
-  // TODO
-  /*this.addressForm.get('countryCode').valueChanges.subscribe(value => {
-    if (this.addressForm.get('state') && this.addressForm.get('countryCode')) {
-      this.addressForm.get('state').setValidators(Validators.required);
-    }
-  });*/
-
-
 }

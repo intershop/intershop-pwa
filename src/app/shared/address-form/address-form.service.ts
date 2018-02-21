@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ADDRESS_FORM_FACTORY, AddressFormFactory } from './forms/address-form.factory';
 
 @Injectable()
@@ -7,13 +6,9 @@ export class AddressFormService {
 
   constructor( @Inject(ADDRESS_FORM_FACTORY) private factories: AddressFormFactory[]) { }
 
-  replaceGroupForCountry(group: FormGroup, controlName: string, countryCode: string) {
-    const oldFormValue = group.get(controlName).value;
-    const addressGroup = this.getFactory(countryCode).getGroup(oldFormValue);
-
-    group.setControl(controlName, addressGroup);
-  }
-
+  /*
+    gets the appropriate address factory for the given countryCode
+  */
   getFactory(countryCode: string = 'default'): AddressFormFactory {
     let factory = this.findFactory(countryCode);
     if (!factory) { factory = this.findFactory('default'); }
