@@ -5,7 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
-import { ViewMode } from '../../../models/types';
+import { ViewType } from '../../../models/types';
 import * as fromStore from '../../store/categories';
 
 @Component({
@@ -19,11 +19,11 @@ export class CategoryPageContainerComponent implements OnInit {
   categoryLoading$: Observable<boolean>;
   categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
   products$: Observable<Product[]>;
-
-  // TODO: get viewMode and sortBy from Store
-  viewMode: ViewMode = 'grid';
-  sortBy = 'default';
   totalItems$: Observable<number>;
+  // TODO: get viewType and sortBy from Store
+  viewType: ViewType = 'grid';
+  sortBy = 'default';
+
 
   constructor(
     private store: Store<fromStore.ShoppingState>
@@ -33,23 +33,22 @@ export class CategoryPageContainerComponent implements OnInit {
     // TODO: find a nicer way to filter out the case of an 'undefined' category
     this.category$ = this.store.select(fromStore.getSelectedCategory).pipe(filter(e => !!e));
     this.categoryLoading$ = this.store.select(fromStore.getCategoryLoading);
+    // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
+    this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
 
     this.products$ = this.store.select(fromStore.getProductsForSelectedCategory);
     this.totalItems$ = this.store.select(fromStore.getProductCountForSelectedCategory);
-
-    // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
-    this.categoryPath$ = this.store.select(fromStore.getSelectedCategoryPath);
   }
 
-  changeViewMode(mode: ViewMode) {
-    this.viewMode = mode;
+  changeViewType(viewType: ViewType) {
+    this.viewType = viewType;
     // TODO: Dispatch action
-    console.log('ViewMode changed to', mode);
+    console.log('ViewType changed to', viewType);
   }
 
-  changeSort(sortBy: string) {
+  changeSortBy(sortBy: string) {
     this.sortBy = sortBy;
     // TODO: Dispatch action
-    console.log('Sort changed to', sortBy);
+    console.log('SortBy changed to', sortBy);
   }
 }

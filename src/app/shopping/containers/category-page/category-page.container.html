@@ -2,40 +2,33 @@
 
   <ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
-  <div class="marketing-area"></div>
+  <!-- category with subcategories -->
+  <ng-container *ngIf="category.hasOnlineSubCategories">
+    <ish-category-page
+      [category]="category"
+      [categoryPath]="categoryPath$ | async"
+    ></ish-category-page>
+  </ng-container>
 
-  <div [ngClass]="category.hasOnlineSubCategories ? 'category-page' : 'family-page product-search-result'" [attr.data-testing-id]="category.id">
-    <div class="row">
+  <!-- category with products -->
+  <ng-container *ngIf="category.hasOnlineProducts">
+    <ish-family-page
+      [category]="category"
+      [categoryPath]="categoryPath$ | async"
+      [products]="products$ | async"
+      [totalItems]="totalItems$ | async"
+      [viewType]="viewType"
+      [sortBy]="sortBy"
+      (viewTypeChange)="changeViewType($event)"
+      (sortByChange)="changeSortBy($event)"
+    ></ish-family-page>
+  </ng-container>
 
-      <div class="col-sm-3">
-        <div class="navigation-panel">
-          <h1>{{category.name}}</h1>
-          <ish-category-navigation [category]="category" [categoryPath]="categoryPath$ | async" [categoryNavigationLevel]="0"></ish-category-navigation>
-        </div>
-      </div>
-
-      <div class="col-sm-9">
-        <!-- category with subcategories -->
-        <ng-template [ngIf]="category.hasOnlineSubCategories" [ngIfElse]="familyPage">
-          <ish-category-list [categories]="category.subCategories"></ish-category-list>
-        </ng-template>
-        <!-- category with products -->
-        <ng-template #familyPage>
-          <!-- TODO: Product List filter should be an own component -->
-          <ish-product-list-filter
-            [itemCount]="totalItems$ | async"
-            [sortBy]="sortBy"
-            [viewMode]="viewMode"
-            (viewModeChange)="changeViewMode($event)"
-            (sortChange)="changeSort($event)"></ish-product-list-filter>
-
-          <ish-product-list
-            [products]="products$ | async"
-            [viewMode]="viewMode"></ish-product-list>
-        </ng-template>
-      </div>
-    </div>
-  </div>
+  <!-- empty category without subcategories and without products -->
+  <ng-container *ngIf="!category.hasOnlineSubCategories && !category.hasOnlineProducts">
+    <!-- TODO: decide how to handle empty categories -->
+    <h1>{{category.name}}</h1>
+  </ng-container>
 
 </ng-container>
 
