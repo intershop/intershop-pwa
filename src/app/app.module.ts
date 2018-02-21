@@ -1,12 +1,12 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { Inject, NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { Store } from '@ngrx/store';
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
-import { TranslateService } from '@ngx-translate/core';
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,11 +15,13 @@ import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK, USE_SIMPLE_ACCOUNT, USER
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
-import { CurrentLocaleService } from './core/services/locale/current-locale.service';
 import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
+import { CoreState } from './core/store/core.state';
 import { CustomSerializer, effects, reducers } from './core/store/core.system';
+import { SetLocale } from './core/store/locale';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
+import { Locale } from './models/locale/locale.interface';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';
 
@@ -79,11 +81,9 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
 export class AppModule {
 
   constructor(
-    translateService: TranslateService,
-    currentLocaleService: CurrentLocaleService
+    @Inject(AVAILABLE_LOCALES) localizationArray: Locale[],
+    store: Store<CoreState>
   ) {
-    const currentLang = environment.locales[0];
-    translateService.setDefaultLang(currentLang.lang);
-    currentLocaleService.setValue(currentLang);
+    store.dispatch(new SetLocale(localizationArray[0]));
   }
 }

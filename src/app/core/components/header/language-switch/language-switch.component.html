@@ -1,13 +1,13 @@
-<div class="language-switch" dropdown placement="bottom right">
+<div class="language-switch" dropdown placement="bottom right" *ngIf="lang$ | async as lang">
   <a dropdownToggle (click)="false" class="language-switch-link">
     <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
-    <span class="language-switch-current-selection hidden-xs">{{lang?.value}}<span class="switch_arrow"></span></span>
+    <span class="language-switch-current-selection hidden-xs">{{lang.value}}<span class="switch_arrow"></span></span>
   </a>
   <div *dropdownMenu class="language-switch-container dropdown-menu dropdown-menu-right">
     <div class="language-switch-menu-container">
       <ul>
         <li *ngFor="let locale of localizationArray">
-          <a *ngIf="locale.lang !== lang?.lang" (click)="languageChange(locale)">
+          <a *ngIf="locale.lang !== lang.lang" (click)="languageChange(locale)">
             {{locale.displayName}}
           </a>
         </li>
