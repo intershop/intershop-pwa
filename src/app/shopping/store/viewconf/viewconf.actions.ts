@@ -3,7 +3,8 @@ import { ViewType } from '../../../models/types';
 
 
 export enum ViewconfActionTypes {
-  ChangeViewType = '[Shopping] Change ViewType'
+  ChangeViewType = '[Shopping] Change ViewType setting',
+  ChangeSortBy = '[Shopping] Change SortBy setting'
 }
 
 export class ChangeViewType implements Action {
@@ -11,5 +12,11 @@ export class ChangeViewType implements Action {
   constructor(public payload: ViewType) { }
 }
 
-export type CompareAction =
-  | ChangeViewType;
+export class ChangeSortBy implements Action {
+  readonly type = ViewconfActionTypes.ChangeSortBy;
+  constructor(public payload: string) { }
+}
+
+export type ViewconfAction =
+  | ChangeViewType
+  | ChangeSortBy;

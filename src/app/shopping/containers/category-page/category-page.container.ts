@@ -7,6 +7,8 @@ import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/types';
 import * as fromStore from '../../store/categories';
+import * as fromViewconf from '../../store/viewconf';
+
 
 @Component({
   selector: 'ish-category-page-container',
@@ -20,10 +22,8 @@ export class CategoryPageContainerComponent implements OnInit {
   categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
   products$: Observable<Product[]>;
   totalItems$: Observable<number>;
-  // TODO: get viewType and sortBy from Store
-  viewType: ViewType = 'grid';
-  sortBy = 'default';
-
+  viewType$: Observable<ViewType>;
+  sortBy$: Observable<string>;
 
   constructor(
     private store: Store<fromStore.ShoppingState>
@@ -39,20 +39,18 @@ export class CategoryPageContainerComponent implements OnInit {
 
     this.products$ = this.store.pipe(select(fromStore.getProductsForSelectedCategory));
     this.totalItems$ = this.store.pipe(select(fromStore.getProductCountForSelectedCategory));
+    this.viewType$ = this.store.pipe(select(fromViewconf.getViewType));
+    this.sortBy$ = this.store.pipe(select(fromViewconf.getSortBy));
 
     // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
     this.categoryPath$ = this.store.pipe(select(fromStore.getSelectedCategoryPath));
   }
 
   changeViewType(viewType: ViewType) {
-    this.viewType = viewType;
-    // TODO: Dispatch action
-    console.log('ViewType changed to', viewType);
+    this.store.dispatch(new fromViewconf.ChangeViewType(viewType));
   }
 
   changeSortBy(sortBy: string) {
-    this.sortBy = sortBy;
-    // TODO: Dispatch action
-    console.log('SortBy changed to', sortBy);
+    this.store.dispatch(new fromViewconf.ChangeSortBy(sortBy));
   }
 }
