@@ -48,16 +48,14 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   onCreate(value: any) {
-    console.log('before', value);
     const customerData = CustomerFactory.fromFormValueToData(value);
-    console.log('after', customerData);
     if (customerData.birthday === '') { customerData.birthday = null; }   // ToDo see IS-22276
 
     this.store.dispatch(new CreateUser(customerData));
   }
 
   // TODO: this is just a temporary workaround! these information must come from the store (or from a service)
-  getLanguages(): Observable<any[]> {
+  private getLanguages(): Observable<any[]> {
     return of([
       { localeid: 'en_US', name: 'English (United States)' },
       { localeid: 'fr_FR', name: 'French (France)' },
@@ -65,7 +63,7 @@ export class RegistrationPageComponent implements OnInit {
     ]);
   }
 
-  getTitles(countryCode: string): Observable<any[]> {
+  private getTitles(countryCode: string): Observable<any[]> {
     let salutationlabels = [];
 
     switch (countryCode) {

@@ -17,9 +17,15 @@ describe('RegistrationPage Component', () => {
 
   beforeEach(async(() => {
     const countryServiceMock = mock(CountryService);
-    when(countryServiceMock.getCountries()).thenReturn(of([]));
+    when(countryServiceMock.getCountries()).thenReturn(of([
+      { countryCode: 'BG', name: 'Bulgaria' },
+      { countryCode: 'DE', name: 'Germany' }
+    ]));
     const regionServiceMock = mock(RegionService);
-    when(regionServiceMock.getRegions(anything())).thenReturn(of([]));
+    when(regionServiceMock.getRegions(anything())).thenReturn(of([
+      { countryCode: 'DE', regionCode: 'AL', name: 'Alabama' },
+      { countryCode: 'DE', regionCode: 'FL', name: 'Florida' }
+    ]));
     storeMock = mock(Store);
 
     TestBed.configureTestingModule({
@@ -56,6 +62,18 @@ describe('RegistrationPage Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+  });
+
+  it('should retrieve countries and languages on creation', () => {
+    fixture.detectChanges();
+    component.countries$.subscribe(result => expect(result.length).toBeGreaterThan(0));
+    component.languages$.subscribe(result => expect(result.length).toBeGreaterThan(0));
+  });
+
+  it('should retrieve regions and titles if country changes', () => {
+    component.updateData('DE');
+    component.regionsForSelectedCountry$.subscribe(result => expect(result.length).toBeGreaterThan(0));
+    component.titlesForSelectedCountry$.subscribe(result => expect(result.length).toBeGreaterThan(0));
   });
 
   it('should navigate to homepage when cancel is clicked', async(() => {
