@@ -1,10 +1,11 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { cold } from 'jasmine-marbles';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AVAILABLE_LOCALES } from '../../../configurations/injection-keys';
 import { reducers } from '../../../store/core.system';
-import { SelectLocale } from '../../../store/locale';
+import { SelectLocale, SetAvailableLocales } from '../../../store/locale';
 import { LanguageSwitchComponent } from './language-switch.component';
 
 describe('Language Switch Component', () => {
@@ -36,6 +37,7 @@ describe('Language Switch Component', () => {
     element = fixture.nativeElement;
     fixture.detectChanges();
     locales = TestBed.get(AVAILABLE_LOCALES);
+    TestBed.get(Store).dispatch(new SetAvailableLocales(locales));
     TestBed.get(Store).dispatch(new SelectLocale(findLang('en')));
     fixture.autoDetectChanges(true);
   });
@@ -52,7 +54,8 @@ describe('Language Switch Component', () => {
     const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
 
     expect(languageOptions.length).toBeGreaterThan(1);
-    expect(component.localizationArray.length).toBeGreaterThan(1);
+    expect(component.lang$).toBeObservable(cold('a', { a: findLang('en') }));
+    expect(component.availableLocales$).toBeObservable(cold('a', { a: locales }));
     expect(selectedLanguage[0].textContent.trim()).toEqual('en');
   }));
 

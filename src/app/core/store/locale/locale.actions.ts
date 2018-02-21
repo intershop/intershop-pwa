@@ -2,7 +2,8 @@ import { Action } from '@ngrx/store';
 import { Locale } from '../../../models/locale/locale.interface';
 
 export enum LocaleActionTypes {
-  SelectLocale = '[Locale] Set Locale'
+  SelectLocale = '[Locale] Set Locale',
+  SetAvailableLocales = '[Locale] Set Available Locales',
 }
 
 export class SelectLocale implements Action {
@@ -10,4 +11,9 @@ export class SelectLocale implements Action {
   constructor(public payload: Locale) { }
 }
 
-export type LocaleAction = SelectLocale;
+export class SetAvailableLocales implements Action {
+  readonly type = LocaleActionTypes.SetAvailableLocales;
+  constructor(public payload: Locale[]) { }
+}
+
+export type LocaleAction = SelectLocale | SetAvailableLocales;
