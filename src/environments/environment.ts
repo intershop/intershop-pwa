@@ -11,8 +11,8 @@ export const environment = {
   icmApplication: 'inSPIRED-inTRONICS-Site',
 
   locales: [
-    { 'lang': 'en_US', 'currency': 'USD', value: 'en', displayName: 'English' },
-    { 'lang': 'de_DE', 'currency': 'EUR', value: 'de', displayName: 'German' },
-    { 'lang': 'fr_FR', 'currency': 'EUR', value: 'fr', displayName: 'French' }
+    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English' },
+    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German' },
+    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French' }
   ]
 };
