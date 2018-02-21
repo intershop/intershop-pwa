@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -7,11 +8,14 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operators';
-import { CurrentLocaleService } from './locale/current-locale.service';
+import { Locale } from '../../models/locale/locale.interface';
+import { CoreState, getCurrentLocale } from '../store/locale';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 @Injectable()
 export class ApiService {
+
+  private currentLocale: Locale;
 
   /**
    * Constructor
@@ -21,8 +25,10 @@ export class ApiService {
     @Inject(REST_ENDPOINT) private restEndpoint: string,
     @Inject(ICM_SERVER_URL) private icmServerUrl: string,
     private httpClient: HttpClient,
-    private currentLocaleService: CurrentLocaleService
-  ) { }
+    store: Store<CoreState>,
+  ) {
+    store.pipe(select(getCurrentLocale)).subscribe(locale => this.currentLocale = locale);
+  }
 
   // declare default http header
   private defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
@@ -37,8 +43,8 @@ export class ApiService {
   get<T>(path: string, params?: HttpParams, headers?: HttpHeaders,
     elementsTranslation?: boolean, linkTranslation?: boolean): Observable<T> {
     let localeAndCurrency = '';
-    if (!!this.currentLocaleService.getValue()) {
-      localeAndCurrency = `;loc=${this.currentLocaleService.getValue().lang};cur=${this.currentLocaleService.getValue().currency}`;
+    if (!!this.currentLocale) {
+      localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
     }
     let url;
     if (path.startsWith('http://') || path.startsWith('https://')) {

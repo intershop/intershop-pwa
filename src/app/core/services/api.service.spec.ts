@@ -1,25 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { CoreState } from '../store/user';
 import { ApiService } from './api.service';
-import { CurrentLocaleService } from './locale/current-locale.service';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 describe('ApiService', () => {
   const BASE_URL = 'http://www.example.org/';
   let httpClientMock: HttpClient;
   let apiService: ApiService;
+  let storeMock: Store<CoreState>;
 
   beforeEach(() => {
     httpClientMock = mock(HttpClient);
+    storeMock = mock(Store);
+    when(storeMock.pipe(anything())).thenReturn(empty());
 
     TestBed.configureTestingModule({
       providers: [
         { provide: HttpClient, useFactory: () => instance(httpClientMock) },
-        { provide: CurrentLocaleService, useFactory: () => instance(mock(CurrentLocaleService)) },
         { provide: REST_ENDPOINT, useValue: BASE_URL },
         { provide: ICM_SERVER_URL, useValue: BASE_URL },
+        { provide: Store, useFactory: () => instance(storeMock) },
         ApiService
       ]
     });
