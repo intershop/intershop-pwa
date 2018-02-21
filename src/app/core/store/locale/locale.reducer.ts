@@ -1,19 +1,24 @@
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Locale } from '../../../models/locale/locale.interface';
 import { LocaleAction, LocaleActionTypes, SetAvailableLocales } from './locale.actions';
 
-export interface LocaleState {
-  current: number;
-  available: Locale[];
+export interface LocaleState extends EntityState<Locale> {
+  current: string | null;
 }
 
-export const getCurrent = (state: LocaleState) => (state.available && state.current >= 0) ? state.available[state.current] : undefined;
+export const adapter: EntityAdapter<Locale> = createEntityAdapter<Locale>({
+  selectId: l => l.lang
+});
 
-export const getAvailable = (state: LocaleState) => state.available;
+export const getCurrent = (state: LocaleState) => (state.entities && state.current) ? state.entities[state.current] : undefined;
 
-export const initialState: LocaleState = {
-  current: undefined,
-  available: undefined,
-};
+export const {
+  selectAll: getAvailable
+} = adapter.getSelectors();
+
+export const initialState: LocaleState = adapter.getInitialState({
+  current: null,
+});
 
 export function localeReducer(
   state = initialState,
@@ -21,17 +26,13 @@ export function localeReducer(
 ): LocaleState {
   switch (action.type) {
     case LocaleActionTypes.SelectLocale: {
-      const currentLocale = action.payload;
-      const idx = state.available.findIndex(it => it.lang === currentLocale.lang);
-      if (idx >= 0) {
-        return { ...state, current: idx };
-      }
-      // silently drop when language cannot be found
-      break;
+      const idx = action.payload.lang;
+      return { ...state, current: idx };
     }
     case LocaleActionTypes.SetAvailableLocales: {
       const available = (action as SetAvailableLocales).payload;
-      return { ...state, available };
+      const clearState = adapter.removeAll(state);
+      return adapter.addMany(available, clearState);
     }
   }
   return state;
