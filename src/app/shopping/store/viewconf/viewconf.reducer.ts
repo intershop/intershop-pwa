@@ -3,25 +3,31 @@ import * as fromViewconf from './viewconf.actions';
 import { ViewconfActionTypes } from './viewconf.actions';
 
 export interface ViewconfState {
+  viewType: ViewType;
   sortBy: string;
   sortByOptions: any[]; // TODO type
-  viewType: ViewType;
 }
 
 export const initialState: ViewconfState = {
-  sortBy: '',
+  viewType: 'grid',
+  sortBy: 'default',
   sortByOptions: [],
-  viewType: 'grid'
 };
 
 export function viewconfReducer(
   state = initialState,
-  action: fromViewconf.CompareAction
+  action: fromViewconf.ViewconfAction
 ): ViewconfState {
   switch (action.type) {
 
     case ViewconfActionTypes.ChangeViewType: {
-      return state;
+      const viewType = action.payload;
+      return { ...state, viewType };
+    }
+
+    case ViewconfActionTypes.ChangeSortBy: {
+      const sortBy = action.payload;
+      return { ...state, sortBy };
     }
   }
 
