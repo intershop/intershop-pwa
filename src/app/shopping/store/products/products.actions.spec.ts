@@ -32,5 +32,15 @@ describe('Products Actions', () => {
         payload
       });
     });
+
+    it('should create new action for LoadProductsForCategory', () => {
+      const payload = '123';
+      const action = new fromActions.LoadProductsForCategory(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.ProductsActionTypes.LoadProductsForCategory,
+        payload
+      });
+    });
   });
 });

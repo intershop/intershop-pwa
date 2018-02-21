@@ -6,6 +6,7 @@ import { compareReducer } from './compare/compare.reducer';
 import { ProductsEffects } from './products/products.effects';
 import { productsReducer } from './products/products.reducer';
 import { ShoppingState } from './shopping.state';
+import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
 
 export const reducers: ActionReducerMap<ShoppingState> = {
@@ -18,5 +19,6 @@ export const reducers: ActionReducerMap<ShoppingState> = {
 export const effects: any[] = [
   CategoriesEffects,
   ProductsEffects,
-  CompareEffects
+  CompareEffects,
+  ViewconfEffects
 ];

@@ -1,5 +1,4 @@
 import * as fromActions from './viewconf.actions';
-import { ViewconfActionTypes } from './viewconf.actions';
 
 describe('Viewconf Actions', () => {
   it('should create new action for ChangeViewType', () => {
@@ -7,7 +6,7 @@ describe('Viewconf Actions', () => {
     const action = new fromActions.ChangeViewType(payload);
 
     expect({ ...action }).toEqual({
-      type: ViewconfActionTypes.ChangeViewType,
+      type: fromActions.ViewconfActionTypes.ChangeViewType,
       payload
     });
   });
@@ -17,7 +16,17 @@ describe('Viewconf Actions', () => {
     const action = new fromActions.ChangeSortBy(payload);
 
     expect({ ...action }).toEqual({
-      type: ViewconfActionTypes.ChangeSortBy,
+      type: fromActions.ViewconfActionTypes.ChangeSortBy,
+      payload
+    });
+  });
+
+  it('should create new action for SetSortKeys', () => {
+    const payload = ['name-asc', 'name-desc'];
+    const action = new fromActions.SetSortKeys(payload);
+
+    expect({ ...action }).toEqual({
+      type: fromActions.ViewconfActionTypes.SetSortKeys,
       payload
     });
   });
