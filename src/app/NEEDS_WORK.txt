@@ -100,11 +100,6 @@
     |       |       product-row.component.html
     |       |       product-row.component.spec.ts
     |       |       product-row.component.ts
-    |       |
-    |       \---product-tile
-    |               product-tile.component.html
-    |               product-tile.component.spec.ts
-    |               product-tile.component.ts
     |
     +---directives
     |       disable-icon.directive.spec.ts
