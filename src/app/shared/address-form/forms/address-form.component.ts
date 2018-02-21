@@ -11,7 +11,7 @@ export class AddressFormComponent implements OnInit {
 
   @Input() parentForm: FormGroup;
   @Input() controlName = 'address';
-  @Input() countryCode: any;
+  @Input() countryCode: string;
   @Input() countries: Country[];
   @Input() regions: Region[];
   @Input() titles: any[];
