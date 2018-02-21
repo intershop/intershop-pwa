@@ -1,14 +1,18 @@
-import { LocaleAction, LocaleActionTypes } from './locale.actions';
 import { Locale } from '../../../models/locale/locale.interface';
+import { LocaleAction, LocaleActionTypes, SetAvailableLocales } from './locale.actions';
 
 export interface LocaleState {
-  locale: Locale;
+  current: number;
+  available: Locale[];
 }
 
-export const getLocale = (state: LocaleState) => state.locale;
+export const getCurrent = (state: LocaleState) => (state.available && state.current >= 0) ? state.available[state.current] : undefined;
+
+export const getAvailable = (state: LocaleState) => state.available;
 
 export const initialState: LocaleState = {
-  locale: null
+  current: undefined,
+  available: undefined,
 };
 
 export function localeReducer(
@@ -17,8 +21,17 @@ export function localeReducer(
 ): LocaleState {
   switch (action.type) {
     case LocaleActionTypes.SelectLocale: {
-      const locale = action.payload;
-      return { locale };
+      const currentLocale = action.payload;
+      const idx = state.available.findIndex(it => it.lang === currentLocale.lang);
+      if (idx >= 0) {
+        return { ...state, current: idx };
+      }
+      // silently drop when language cannot be found
+      break;
+    }
+    case LocaleActionTypes.SetAvailableLocales: {
+      const available = (action as SetAvailableLocales).payload;
+      return { ...state, available };
     }
   }
   return state;

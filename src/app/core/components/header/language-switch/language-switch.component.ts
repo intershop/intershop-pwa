@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Locale } from '../../../../models/locale/locale.interface';
-import { AVAILABLE_LOCALES } from '../../../configurations/injection-keys';
 import { CoreState } from '../../../store/core.state';
-import { getCurrentLocale, SelectLocale } from '../../../store/locale';
+import { getAvailableLocales, getCurrentLocale, SelectLocale } from '../../../store/locale';
 
 @Component({
   selector: 'ish-language-switch',
@@ -14,14 +13,15 @@ import { getCurrentLocale, SelectLocale } from '../../../store/locale';
 export class LanguageSwitchComponent implements OnInit {
 
   lang$: Observable<Locale>;
+  availableLocales$: Observable<Locale[]>;
 
   constructor(
-    @Inject(AVAILABLE_LOCALES) public localizationArray,
     private store: Store<CoreState>
   ) { }
 
   ngOnInit() {
     this.lang$ = this.store.pipe(select(getCurrentLocale));
+    this.availableLocales$ = this.store.pipe(select(getAvailableLocales));
   }
 
   languageChange(locale) {

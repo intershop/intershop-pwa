@@ -5,8 +5,8 @@
   </a>
   <div *dropdownMenu class="language-switch-container dropdown-menu dropdown-menu-right">
     <div class="language-switch-menu-container">
-      <ul>
-        <li *ngFor="let locale of localizationArray">
+      <ul *ngIf="availableLocales$ | async as availableLocales">
+        <li *ngFor="let locale of availableLocales">
           <a *ngIf="locale.lang !== lang.lang" (click)="languageChange(locale)">
             {{locale.displayName}}
           </a>

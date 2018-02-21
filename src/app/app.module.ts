@@ -1,10 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Inject, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
-import { Store } from '@ngrx/store';
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
@@ -17,11 +16,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
 import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
-import { CoreState } from './core/store/core.state';
 import { CustomSerializer, effects, reducers } from './core/store/core.system';
-import { SetLocale } from './core/store/locale';
 import { MockInterceptor } from './mocking/interceptors/mock.interceptor';
-import { Locale } from './models/locale/locale.interface';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';
 
@@ -80,10 +76,5 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
 
 export class AppModule {
 
-  constructor(
-    @Inject(AVAILABLE_LOCALES) localizationArray: Locale[],
-    store: Store<CoreState>
-  ) {
-    store.dispatch(new SetLocale(localizationArray[0]));
-  }
+  constructor() { }
 }
