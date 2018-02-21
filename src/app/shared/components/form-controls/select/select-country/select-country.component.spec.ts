@@ -1,10 +1,7 @@
-/*import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs/observable/of';
-import { instance, mock, when } from 'ts-mockito';
-import { CountryService } from '../../../services/countries/country.service';
 import { SelectCountryComponent } from './select-country.component';
 
 describe('Select Country Component', () => {
@@ -13,19 +10,8 @@ describe('Select Country Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const countryServiceMock = mock(CountryService);
-    when(countryServiceMock.getCountries()).thenReturn(
-      of(
-        { countryCode: 'BG', name: 'Bulgaria' },
-        { countryCode: 'DE', name: 'Germany' },
-        { countryCode: 'FR', name: 'France' }
-      ));
-
     TestBed.configureTestingModule({
       declarations: [SelectCountryComponent],
-      providers: [
-        { provide: CountryService, useFactory: () => instance(countryServiceMock) }
-      ],
       imports: [
         TranslateModule.forRoot()
       ],
@@ -41,6 +27,11 @@ describe('Select Country Component', () => {
           state: new FormControl('Region1', [Validators.required])
         });
         component.form = form;
+        component.countries = [
+          { countryCode: 'BG', name: 'Bulgaria' },
+          { countryCode: 'DE', name: 'Germany' },
+          { countryCode: 'FR', name: 'France' }
+        ];
       });
   }));
 
@@ -52,12 +43,17 @@ describe('Select Country Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('countryCode', 'control Name should be <countryCode>');
-    expect(component.label).toEqual('account.default_address.country.label', 'label key should be <account.default_address.country.label>');
+    expect(component.label).toEqual('Country', 'label key should be Country');
   });
 
-  it('should get and display countries on creation', () => {
+  it('should display countries if component input changes', () => {
+    const changes: SimpleChanges = {
+      countries: new SimpleChange(null, component.countries, false)
+    };
+    component.ngOnChanges(changes);
+
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 countries are in the options array');
     expect(element.querySelector('select[data-testing-id=countryCode]')).toBeTruthy('country select is rendered');
   });
-});*/
+});
