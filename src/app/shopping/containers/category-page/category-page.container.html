@@ -3,15 +3,15 @@
   <ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
   <!-- category with subcategories -->
-  <ng-template [ngIf]="category.hasOnlineSubCategories" [ngIfElse]="familyPage">
+  <ng-container *ngIf="category.hasOnlineSubCategories">
     <ish-category-page
       [category]="category"
       [categoryPath]="categoryPath$ | async"
     ></ish-category-page>
-  </ng-template>
+  </ng-container>
 
   <!-- category with products -->
-  <ng-template #familyPage>
+  <ng-container *ngIf="category.hasOnlineProducts">
     <ish-family-page
       [category]="category"
       [categoryPath]="categoryPath$ | async"
@@ -22,7 +22,13 @@
       (viewTypeChange)="changeViewType($event)"
       (sortByChange)="changeSortBy($event)"
     ></ish-family-page>
-  </ng-template>
+  </ng-container>
+
+  <!-- empty category without subcategories and without products -->
+  <ng-container *ngIf="!category.hasOnlineSubCategories && !category.hasOnlineProducts">
+    <!-- TODO: decide how to handle empty categories -->
+    <h1>{{category.name}}</h1>
+  </ng-container>
 
 </ng-container>
 
