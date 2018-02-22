@@ -5,7 +5,7 @@ import * as productsSelectors from '../products/products.selectors';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 import { categoryAdapter } from './categories.reducer';
 
-export const getCategoryState = createSelector(
+const getCategoryState = createSelector(
   getShoppingState, (state: ShoppingState) => state.categories
 );
 
@@ -47,12 +47,12 @@ export const getProductsForSelectedCategory = createSelector(
   getSelectedCategory,
   productsSelectors.getProductEntities,
   (category, products) => category && category.productSkus
-    && category.productSkus.map(sku => products[sku])
+    && category.productSkus.map(sku => products[sku]) || []
 );
 
 export const getProductCountForSelectedCategory = createSelector(
   getProductsForSelectedCategory,
-  products => products && products.length
+  products => products && products.length || 0
 );
 
 export const getCategoryLoading = createSelector(
