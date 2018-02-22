@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../../core/configurations/injection-keys';
 import { InputComponent } from '../../../../shared/components/form-controls/input/input.component';
@@ -30,6 +30,16 @@ describe('Credentials Form Component', () => {
         element = fixture.nativeElement;
 
         const parentForm = new FormGroup({});
+        const credentialsForm = new FormGroup({
+          login: new FormControl(''),
+          loginConfirmation: new FormControl(''),
+          password: new FormControl(''),
+          passwordConfirmation: new FormControl(''),
+          securityQuestion: new FormControl(''),
+          securityQuestionAnswer: new FormControl(''),
+          newsletter: new FormControl('')
+        });
+        parentForm.addControl('credentials', credentialsForm);
         component.parentForm = parentForm;
       });
   }));
@@ -44,19 +54,7 @@ describe('Credentials Form Component', () => {
     expect(function() { fixture.detectChanges(); }).toThrow();
   });
 
-  xit('should create credentials form on creation', () => {
-    expect(component.credentialsForm).toBeUndefined('credentials form has not been created before init');
-    fixture.detectChanges();
-    expect(component.credentialsForm.get('login')).toBeTruthy('credentials form contains a login control');
-    expect(component.credentialsForm.get('loginConfirmation')).toBeTruthy('credentials form contains a loginConfirmation control');
-    expect(component.credentialsForm.get('password')).toBeTruthy('credentials form contains a password control');
-    expect(component.credentialsForm.get('passwordConfirmation')).toBeTruthy('credentials form contains a passwordConfirmation control');
-    expect(component.credentialsForm.get('securityQuestion')).toBeTruthy('credentials form contains a securityQuestion control');
-    expect(component.credentialsForm.get('securityQuestionAnswer')).toBeTruthy('credentials form contains a securityQuestionAnswer control');
-    expect(component.credentialsForm.get('newsletter')).toBeTruthy('credentials form contains a newsletter control');
-  });
-
-  xit('should display form input fields on creation', () => {
+  it('should display form input fields on creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('input[data-testing-id=login]')).toBeTruthy('login is rendered');
     expect(element.querySelector('input[data-testing-id=loginConfirmation]')).toBeTruthy('loginConfirmation is rendered');

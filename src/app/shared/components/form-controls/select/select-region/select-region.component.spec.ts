@@ -1,11 +1,7 @@
-/*import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs/observable/of';
-import { instance, mock, when } from 'ts-mockito';
-import { RegionData } from '../../../../models/region/region.interface';
-import { RegionService } from '../../../services/countries/region.service';
 import { SelectRegionComponent } from './select-region.component';
 
 describe('Select Region Component', () => {
@@ -14,21 +10,8 @@ describe('Select Region Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const regionServiceMock = mock(RegionService);
-    when(regionServiceMock.getRegions('BG')).thenReturn(
-
-      of({ countryCode: 'BG', regionCode: '02', name: 'Burgas' } as RegionData,
-        { countryCode: 'BG', regionCode: '23', name: 'Sofia' } as RegionData)
-    );
-    when(regionServiceMock.getRegions('DE')).thenReturn(
-      of()
-    );
-
     TestBed.configureTestingModule({
       declarations: [SelectRegionComponent],
-      providers: [
-        { provide: RegionService, useFactory: () => instance(regionServiceMock) }
-      ],
       imports: [
         TranslateModule.forRoot()
       ],
@@ -44,7 +27,10 @@ describe('Select Region Component', () => {
           state: new FormControl('Region1', [Validators.required])
         });
         component.form = form;
-        component.countryCode = 'BG';
+        component.regions = [
+          { countryCode: 'BG', regionCode: '02', name: 'Burgas' },
+          { countryCode: 'BG', regionCode: '23', name: 'Sofia' }
+        ];
       });
   }));
 
@@ -56,29 +42,17 @@ describe('Select Region Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('state', 'control Name should be <state>');
-    expect(component.label).toEqual('account.default_address.state.label', 'label key should be <account.default_address.state.label>');
-  });
-
-  it('should throw an error if input parameter countryCode is not set', () => {
-    component.countryCode = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(component.label).toEqual('State/Province', 'label should be <State/Province>');
   });
 
   it('should get and display regions for a certain country', () => {
-    component.options = component.getStateOptions();
+    const changes: SimpleChanges = {
+      regions: new SimpleChange(null, component.regions, false)
+    };
+    component.ngOnChanges(changes);
 
     fixture.detectChanges();
     expect(component.options.length).toEqual(2, '2 regions are in the options array');
     expect(element.querySelector('select[data-testing-id=state]')).toBeTruthy('state select is rendered');
   });
-
-  it('should reset state validator and value if no regions are found', () => {
-    component.countryCode = 'DE';
-    component.options = component.getStateOptions();
-    fixture.detectChanges();
-    expect(component.options.length).toEqual(0, '0 regions are in the options array');
-    expect(component.form.get('state').validator).toBeNull('state validator is empty');
-    expect(component.form.get('state').value).toEqual('', 'state validator is empty');
-    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is not rendered');
-  });
-});*/
+});

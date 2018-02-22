@@ -10,9 +10,10 @@
     [countries]="countries$ | async"
     [languages]="languages$ | async"
     [regions]="regionsForSelectedCountry$ | async"
+    [titles]="titlesForSelectedCountry$ | async"
     [emailOptIn]="emailOptIn"
     (create)="onCreate($event)"
     (cancel)="onCancel()"
-    (countryChange)="updateRegions($event)">
+    (countryChange)="updateData($event)">
   </ish-registration-form>
 </div>
