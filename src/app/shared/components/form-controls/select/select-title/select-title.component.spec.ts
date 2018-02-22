@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -27,7 +27,11 @@ describe('Select Title Component', () => {
           title: new FormControl()
         });
         component.form = form;
-        component.countryCode = 'BG';
+        component.titles = [
+          'account.salutation.ms.text',
+          'account.salutation.mr.text',
+          'account.salutation.dr.text'
+        ];
       });
   }));
 
@@ -42,14 +46,14 @@ describe('Select Title Component', () => {
     expect(component.label).toEqual('account.default_address.title.label', 'label key should be <account.default_address.title.label>');
   });
 
-  it('should throw an error if input parameter countryCode is not set', () => {
-    component.countryCode = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
-  });
+  it('should get and display titles for a certain country', () => {
+    const changes: SimpleChanges = {
+      titles: new SimpleChange(null, component.titles, false)
+    };
+    component.ngOnChanges(changes);
 
-  xit('should get and display titles for a certain country', () => {
     fixture.detectChanges();
-    expect(component.options.length).toEqual(3, '3 titles are in the options array'); // ToDo: Adapt test if title service is active
+    expect(component.options.length).toEqual(3, '3 titles are in the options array');
     expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy('title select is rendered');
   });
 });

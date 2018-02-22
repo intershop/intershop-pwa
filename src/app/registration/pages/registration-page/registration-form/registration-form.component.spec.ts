@@ -34,7 +34,7 @@ describe('RegistrationForm Component', () => {
         MockComponent({
           selector: 'ish-address-form',
           template: 'Address Template',
-          inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries']
+          inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles']
         }),
         // MockComponent({ selector: 'ish-registration-personal-form', template: 'Personal Template', inputs: ['parentForm'] }),
         // MockComponent({ selector: 'ish-captcha', template: 'Captcha Template' }),

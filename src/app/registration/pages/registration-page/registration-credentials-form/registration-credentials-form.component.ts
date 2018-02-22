@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
 
 export class RegistrationCredentialsFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
-  @Input() controlName: string;
+  @Input() controlName = 'credentials';
   @Input() emailOptIn = false;
 
   ngOnInit() {
