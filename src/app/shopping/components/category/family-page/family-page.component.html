@@ -13,18 +13,18 @@
     </div>
 
     <div class="col-sm-9">
-        <ish-product-list-toolbar
-          [itemCount]="totalItems"
-          [viewType]="viewType"
-          [sortBy]="sortBy"
-          (viewTypeChange)="changeViewType($event)"
-          (sortByChange)="changeSortBy($event)"
-        ></ish-product-list-toolbar>
+      <ish-product-list-toolbar
+        [itemCount]="totalItems"
+        [viewType]="viewType"
+        [sortBy]="sortBy"
+        (viewTypeChange)="changeViewType($event)"
+        (sortByChange)="changeSortBy($event)"
+      ></ish-product-list-toolbar>
 
-        <ish-product-list
-          [products]="products"
-          [viewType]="viewType"
-        ></ish-product-list>
+      <ish-product-list
+        [products]="products"
+        [viewType]="viewType"
+      ></ish-product-list>
     </div>
   </div>
 </div>
