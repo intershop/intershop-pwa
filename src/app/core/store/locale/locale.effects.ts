@@ -37,6 +37,6 @@ export class LocaleEffects {
   setFirstAvailableLocale$ = this.actions$.pipe(
     ofType(fromActions.LocaleActionTypes.SetAvailableLocales),
     concatMap((action: fromActions.SetAvailableLocales) =>
-      of(new fromActions.SelectLocale(action.payload[0])))
+      of(new fromActions.SelectLocale((action.payload && action.payload[0]) ? action.payload[0] : null)))
   );
 }
