@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CurrentLocaleService } from '../../../../core/services/locale/current-locale.service';
+import { select, Store } from '@ngrx/store';
 import { Category } from '../../../../models/category/category.model';
 import { CategoriesService } from '../../../services/categories/categories.service';
+import { CoreState, getCurrentLocale } from '../../../store/locale';
 
 @Component({
   selector: 'ish-header-navigation',
@@ -14,12 +15,13 @@ export class HeaderNavigationComponent implements OnInit {
   categories: Category[];
 
   constructor(
-    public categoriesService: CategoriesService,
-    private currentLocaleService: CurrentLocaleService
+    private store: Store<CoreState>,
+    public categoriesService: CategoriesService
   ) { }
 
   ngOnInit() {
-    this.currentLocaleService.subscribe(() => {
+    // TODO: this should be an effect
+    this.store.pipe(select(getCurrentLocale)).subscribe(() => {
       this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
         if (typeof (response) === 'object') {
           this.categories = response;

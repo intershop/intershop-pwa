@@ -21,7 +21,6 @@ import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
 import { translateFactory } from './services/custom-translate-loader';
 import { ErrorCodeMappingService } from './services/error-code-mapping.service';
-import { CurrentLocaleService } from './services/locale/current-locale.service';
 import { ProductCompareService } from './services/product-compare/product-compare.service';
 import { StatePropertiesService } from './services/state-transfer/state-properties.service';
 import { FormUtilsService } from './services/utils/form-utils.service';
@@ -54,7 +53,6 @@ import { FormUtilsService } from './services/utils/form-utils.service';
   providers: [
     ApiService,
     ProductCompareService,
-    CurrentLocaleService,
     CartStatusService,
     ErrorCodeMappingService,
     StatePropertiesService,
