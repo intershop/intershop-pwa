@@ -1,12 +1,14 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, StoreModule } from '@ngrx/store';
+import { MockComponent } from '../../../dev-utils/mock.component';
+import { Product } from '../../../models/product/product.model';
 import { reducers } from '../../store/shopping.system';
 import { ProductTileActionsContainerComponent } from './product-tile-actions.container';
 
-describe('ProductTileActionsContainerComponent', () => {
+describe('Product Tile Actions Container', () => {
   let component: ProductTileActionsContainerComponent;
   let fixture: ComponentFixture<ProductTileActionsContainerComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,19 +17,23 @@ describe('ProductTileActionsContainerComponent', () => {
           shopping: combineReducers(reducers)
         })
       ],
-      declarations: [ProductTileActionsContainerComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      declarations: [
+        ProductTileActionsContainerComponent,
+        MockComponent({ selector: 'ish-product-tile-actions', template: 'Product Tile Actions Component', inputs: ['isInCompareList'] }),
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductTileActionsContainerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    element = fixture.nativeElement;
+    component.product = new Product('SKU');
   });
 
-  xit('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });

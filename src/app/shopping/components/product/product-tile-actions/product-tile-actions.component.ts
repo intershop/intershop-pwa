@@ -1,19 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'ish-product-tile-actions',
-  templateUrl: './product-tile-actions.component.html'
+  templateUrl: './product-tile-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductTileActionsComponent implements OnInit {
+
+export class ProductTileActionsComponent {
 
   @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<any>();
-
-  ngOnInit() {
-  }
+  @Output() productToCart = new EventEmitter<any>();
 
   toggleCompare() {
     this.compareToggle.emit();
+  }
+
+  addToCart() {
+    this.productToCart.emit();
   }
 
 }
