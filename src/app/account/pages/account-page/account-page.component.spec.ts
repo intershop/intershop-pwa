@@ -1,5 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
@@ -10,6 +9,7 @@ import { AccountPageComponent } from './account-page.component';
 describe('Account Overview Component', () => {
   let fixture: ComponentFixture<AccountPageComponent>;
   let component: AccountPageComponent;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     const accountLoginServiceMock = mock(AccountLoginService);
@@ -33,10 +33,12 @@ describe('Account Overview Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountPageComponent);
     component = fixture.componentInstance;
+    element = fixture.nativeElement;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
-
 });

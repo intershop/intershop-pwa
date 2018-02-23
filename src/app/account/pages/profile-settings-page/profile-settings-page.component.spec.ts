@@ -13,6 +13,7 @@ import { ProfileSettingsPageComponent } from './profile-settings-page.component'
 describe('Profile Settings Page Component', () => {
   let component: ProfileSettingsPageComponent;
   let fixture: ComponentFixture<ProfileSettingsPageComponent>;
+  let element: HTMLElement;
   const accountLoginServiceMock = mock(AccountLoginService);
   const userData = {
     'firstName': 'Patricia',
@@ -46,11 +47,12 @@ describe('Profile Settings Page Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileSettingsPageComponent);
     component = fixture.componentInstance;
+    element = fixture.nativeElement;
   });
 
   it('should be created', () => {
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
-    fixture.detectChanges();
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });
