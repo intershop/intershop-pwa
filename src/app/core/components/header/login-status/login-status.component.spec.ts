@@ -46,6 +46,7 @@ describe('Login Status Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should render full name on template when user is logged in', async(() => {

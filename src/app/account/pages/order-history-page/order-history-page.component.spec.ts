@@ -6,6 +6,7 @@ import { OrderHistoryPageComponent } from './order-history-page.component';
 describe('Order History Page Component', () => {
   let component: OrderHistoryPageComponent;
   let fixture: ComponentFixture<OrderHistoryPageComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,17 +16,18 @@ describe('Order History Page Component', () => {
         MockComponent({ selector: 'ish-account-navigation', template: 'Account Navigation Component' })
       ],
       imports: [TranslateModule.forRoot()]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderHistoryPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });
