@@ -17,28 +17,28 @@ describe('Select Component', () => {
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(SelectComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents().then(() => {
+      fixture = TestBed.createComponent(SelectComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
 
-        const form = new FormGroup({
-          simpleField: new FormControl(),
-          requiredField: new FormControl('', [Validators.required])
-        });
-        const options: SelectOption[] = [{ 'label': 'optionLabel', 'value': 'optionValue' }, { 'label': 'optionLabel2', 'value': 'optionValue2' }];
-
-        component.label = 'label';
-        component.form = form;
-        component.controlName = 'simpleField';
-        component.options = options;
+      const form = new FormGroup({
+        simpleField: new FormControl(),
+        requiredField: new FormControl('', [Validators.required])
       });
+      const options: SelectOption[] = [{ 'label': 'optionLabel', 'value': 'optionValue' }, { 'label': 'optionLabel2', 'value': 'optionValue2' }];
+
+      component.label = 'label';
+      component.form = form;
+      component.controlName = 'simpleField';
+      component.options = options;
+    });
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should be rendered on creation and show options', () => {

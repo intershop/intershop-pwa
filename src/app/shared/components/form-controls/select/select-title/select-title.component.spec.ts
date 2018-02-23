@@ -16,28 +16,28 @@ describe('Select Title Component', () => {
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(SelectTitleComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents().then(() => {
+      fixture = TestBed.createComponent(SelectTitleComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
 
-        const form = new FormGroup({
-          countryCode: new FormControl('BG'),
-          title: new FormControl()
-        });
-        component.form = form;
-        component.titles = [
-          'account.salutation.ms.text',
-          'account.salutation.mr.text',
-          'account.salutation.dr.text'
-        ];
+      const form = new FormGroup({
+        countryCode: new FormControl('BG'),
+        title: new FormControl()
       });
+      component.form = form;
+      component.titles = [
+        'account.salutation.ms.text',
+        'account.salutation.mr.text',
+        'account.salutation.dr.text'
+      ];
+    });
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should set default values properly on creation', () => {

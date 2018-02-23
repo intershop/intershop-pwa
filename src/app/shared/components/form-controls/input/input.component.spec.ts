@@ -16,25 +16,25 @@ describe('Input Component', () => {
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(InputComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents().then(() => {
+      fixture = TestBed.createComponent(InputComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
 
-        const form = new FormGroup({
-          requiredField: new FormControl('', [Validators.required]),
-          simpleField: new FormControl()
-        });
-        component.label = 'label';
-        component.form = form;
-        component.controlName = 'requiredField';
+      const form = new FormGroup({
+        requiredField: new FormControl('', [Validators.required]),
+        simpleField: new FormControl()
       });
+      component.label = 'label';
+      component.form = form;
+      component.controlName = 'requiredField';
+    });
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should be rendered on creation', () => {

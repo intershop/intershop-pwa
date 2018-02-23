@@ -36,8 +36,6 @@ describe('RegistrationForm Component', () => {
           template: 'Address Template',
           inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles']
         }),
-        // MockComponent({ selector: 'ish-registration-personal-form', template: 'Personal Template', inputs: ['parentForm'] }),
-        // MockComponent({ selector: 'ish-captcha', template: 'Captcha Template' }),
       ],
       providers: [
         FormUtilsService,
@@ -47,8 +45,7 @@ describe('RegistrationForm Component', () => {
         SharedModule,
         TranslateModule.forRoot()
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -60,6 +57,7 @@ describe('RegistrationForm Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should create a registration form on creation', () => {
