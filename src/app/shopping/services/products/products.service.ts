@@ -34,10 +34,10 @@ export class ProductsService {
 
   // NEEDS_WORK: service should be parameterized with the category ID and not some URL, it should know its endpoint itself
   /**
-     * REST API - Get product list data
-     * @param  {string} url category url
-     * @returns List of products as observable
-     */
+   * REST API - Get product list data
+   * @param  {string} url category url
+   * @returns List of products as observable
+  */
   getProductList(url: string): Observable<Product[]> {
     return this.apiService.get<ProductData[]>(url, null, null, true, true).pipe(
       map(productsData => productsData.map(
@@ -46,6 +46,12 @@ export class ProductsService {
     );
   }
 
+  /**
+   * returns a sorted list of all skus of products belonging to a given category
+   * @param  {string} categoryUniqueId the category id
+   * @param  {string} [sortKey=''] the sortKey used to sort the list, default value is ''
+   * @returns List of product skus, the category id and the sort keys as observable
+   */
   getProductSkuListForCategory(categoryUniqueId: string, sortKey = ''): Observable<{ skus: string[], categoryUniqueId: string, sortKeys: string[] }> {
     let url = `categories/${categoryUniqueId.replace(/\./g, '/')}/products?returnSortKeys=true`;
     if (sortKey) { url += `&sortKey=${sortKey}`; }
