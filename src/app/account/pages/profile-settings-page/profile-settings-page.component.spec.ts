@@ -5,7 +5,7 @@ import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { reducers } from '../../../core/store/core.system';
 import { LoginUserSuccess } from '../../../core/store/user';
-import { MockComponent } from '../../../mocking/components/mock.component';
+import { MockComponent } from '../../../dev-utils/mock.component';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerData } from '../../../models/customer/customer.interface';
 import { ProfileSettingsPageComponent } from './profile-settings-page.component';

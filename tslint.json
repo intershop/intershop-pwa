@@ -165,6 +165,7 @@
     "no-barrel-files": true,
     "do-not-import-environment": true,
     "use-camel-case-environment-properties": true,
-    "dollar-for-observables": true
+    "dollar-for-observables": true,
+    "dev-util-imports": true
   }
 }

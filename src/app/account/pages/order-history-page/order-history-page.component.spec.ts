@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from '../../../mocking/components/mock.component';
+import { MockComponent } from '../../../dev-utils/mock.component';
 import { OrderHistoryPageComponent } from './order-history-page.component';
 
 describe('Order History Page Component', () => {
