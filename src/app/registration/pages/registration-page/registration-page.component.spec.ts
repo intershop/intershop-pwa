@@ -6,7 +6,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { CountryService } from '../../../core/services/countries/country.service';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState, RouterAction, RouterActionTypes } from '../../../core/store/router';
-import { MockComponent } from '../../../mocking/components/mock.component';
+import { MockComponent } from '../../../dev-utils/mock.component';
 import { RegistrationPageComponent } from './registration-page.component';
 
 describe('RegistrationPage Component', () => {
