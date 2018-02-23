@@ -23,30 +23,30 @@ describe('Credentials Form Component', () => {
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents().then(() => {
+      fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
 
-        const parentForm = new FormGroup({});
-        const credentialsForm = new FormGroup({
-          login: new FormControl(''),
-          loginConfirmation: new FormControl(''),
-          password: new FormControl(''),
-          passwordConfirmation: new FormControl(''),
-          securityQuestion: new FormControl(''),
-          securityQuestionAnswer: new FormControl(''),
-          newsletter: new FormControl('')
-        });
-        parentForm.addControl('credentials', credentialsForm);
-        component.parentForm = parentForm;
+      const parentForm = new FormGroup({});
+      const credentialsForm = new FormGroup({
+        login: new FormControl(''),
+        loginConfirmation: new FormControl(''),
+        password: new FormControl(''),
+        passwordConfirmation: new FormControl(''),
+        securityQuestion: new FormControl(''),
+        securityQuestionAnswer: new FormControl(''),
+        newsletter: new FormControl('')
       });
+      parentForm.addControl('credentials', credentialsForm);
+      component.parentForm = parentForm;
+    });
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter parentForm is not set', () => {
