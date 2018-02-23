@@ -1,11 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { CategoriesService } from '../../../services/categories/categories.service';
-import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
+import { CoreState } from '../../../store/core.state';
 import { HeaderNavigationComponent } from './header-navigation.component';
 
 describe('Header Navigation Component', () => {
@@ -13,13 +13,14 @@ describe('Header Navigation Component', () => {
   let component: HeaderNavigationComponent;
   let element: HTMLElement;
   let categoriesServiceMock: CategoriesService;
-  let currentLocaleServiceMock$: BehaviorSubject<any>;
+  let storeMock: Store<CoreState>;
 
   beforeEach(async(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anything())).thenReturn(of([]));
 
-    currentLocaleServiceMock$ = new BehaviorSubject({ dummy: null });
+    storeMock = mock(Store);
+    when(storeMock.pipe(anything())).thenReturn(of({}) as any);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -27,7 +28,7 @@ describe('Header Navigation Component', () => {
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: CurrentLocaleService, useValue: currentLocaleServiceMock$ }
+        { provide: Store, useFactory: () => instance(storeMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

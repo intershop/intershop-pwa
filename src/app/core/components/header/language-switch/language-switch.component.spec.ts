@@ -1,9 +1,11 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { cold } from 'jasmine-marbles';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AVAILABLE_LOCALES } from '../../../configurations/injection-keys';
-import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
+import { reducers } from '../../../store/core.system';
+import { SelectLocale, SetAvailableLocales } from '../../../store/locale';
 import { LanguageSwitchComponent } from './language-switch.component';
 
 describe('Language Switch Component', () => {
@@ -16,11 +18,10 @@ describe('Language Switch Component', () => {
     TestBed.configureTestingModule({
       imports: [
         BsDropdownModule.forRoot(),
-        RouterTestingModule,
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        StoreModule.forRoot(reducers)
       ],
       providers: [
-        CurrentLocaleService
       ],
       declarations: [LanguageSwitchComponent]
     }).compileComponents();
@@ -36,7 +37,9 @@ describe('Language Switch Component', () => {
     element = fixture.nativeElement;
     fixture.detectChanges();
     locales = TestBed.get(AVAILABLE_LOCALES);
-    TestBed.get(CurrentLocaleService).setValue(findLang('en'));
+    TestBed.get(Store).dispatch(new SetAvailableLocales(locales));
+    TestBed.get(Store).dispatch(new SelectLocale(findLang('en')));
+    fixture.autoDetectChanges(true);
   });
 
   it('should be created', () => {
@@ -47,12 +50,12 @@ describe('Language Switch Component', () => {
     const anchorTag = fixture.debugElement.nativeElement.querySelectorAll('[dropdownToggle]')[0];
     anchorTag.click();
     tick();
-    fixture.detectChanges();
     const languageOptions = element.getElementsByTagName('li');
     const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
 
     expect(languageOptions.length).toBeGreaterThan(1);
-    expect(component.localizationArray.length).toBeGreaterThan(1);
+    expect(component.lang$).toBeObservable(cold('a', { a: findLang('en') }));
+    expect(component.availableLocales$).toBeObservable(cold('a', { a: locales }));
     expect(selectedLanguage[0].textContent.trim()).toEqual('en');
   }));
 

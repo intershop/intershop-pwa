@@ -1,7 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AVAILABLE_LOCALES } from '../../../configurations/injection-keys';
-import { CurrentLocaleService } from '../../../services/locale/current-locale.service';
+import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Locale } from '../../../../models/locale/locale.interface';
+import { CoreState } from '../../../store/core.state';
+import { getAvailableLocales, getCurrentLocale, SelectLocale } from '../../../store/locale';
 
 @Component({
   selector: 'ish-language-switch',
@@ -10,24 +12,20 @@ import { CurrentLocaleService } from '../../../services/locale/current-locale.se
 
 export class LanguageSwitchComponent implements OnInit {
 
-  // TODO: is this default really a property of the language switch component or a global configuration
-  lang: any;
+  lang$: Observable<Locale>;
+  availableLocales$: Observable<Locale[]>;
 
   constructor(
-    @Inject(AVAILABLE_LOCALES) public localizationArray,
-    private currentLocaleService: CurrentLocaleService,
-    public router: Router
+    private store: Store<CoreState>
   ) { }
 
   ngOnInit() {
-    // TODO: discussion whether this information is coming from a service or is configured at development time
-    this.currentLocaleService.subscribe(locale => {
-      this.lang = locale;
-    });
+    this.lang$ = this.store.pipe(select(getCurrentLocale));
+    this.availableLocales$ = this.store.pipe(select(getAvailableLocales));
   }
 
   languageChange(locale) {
-    this.currentLocaleService.setValue(locale);
+    this.store.dispatch(new SelectLocale(locale));
     return false; // prevent actual navigation, only change localized values on the current page and set language state
   }
 }
