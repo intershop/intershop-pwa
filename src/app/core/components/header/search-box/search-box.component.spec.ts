@@ -35,10 +35,11 @@ describe('Search Box Component', () => {
     });
   }));
 
-  it('should be created', async(() => {
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
+  });
 
   it('should set result array when suggestions are available', fakeAsync(() => {
     component.searchTerm$.next('c');
