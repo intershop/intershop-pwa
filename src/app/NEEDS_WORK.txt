@@ -94,16 +94,6 @@
 |               home-page.routes.ts
 |
 \---shopping
-    +---components
-    |   \---product
-    |       +---product-row
-    |       |       product-row.component.html
-    |       |       product-row.component.spec.ts
-    |       |       product-row.component.ts
-    |
-    +---directives
-    |       disable-icon.directive.spec.ts
-    |       disable-icon.directive.ts
     |
     \---pages
         \---compare-page
