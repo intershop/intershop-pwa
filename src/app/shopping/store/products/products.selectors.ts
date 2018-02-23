@@ -4,7 +4,7 @@ import { Product } from '../../../models/product/product.model';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 import { productAdapter } from './products.reducer';
 
-export const getProductsState = createSelector(
+const getProductsState = createSelector(
   getShoppingState, (state: ShoppingState) => state.products
 );
 
