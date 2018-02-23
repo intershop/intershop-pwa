@@ -81,11 +81,17 @@ Run `gradlew reset` to delete node binaries and the node_modules downloaded from
 
 ## Code formatting
 
-Run `ng lint --type-check` to check the application of the default tslint rules configuration. `npm run lint` will additionaly check custom tslint rules.
+Run `ng lint` to check the application of the default tslint rules configuration. `npm run lint` will additionaly check custom tslint rules.
 
 For development make sure the used IDE or Editor follows the [EditorConfig](http://editorconfig.org/) configuration of the project to help maintain consistent coding styles (see `.editorconfig`).
 
-Use `gradlew tsformat` to run typescript-formatter.
+Use `npm run format` or `gradlew tsformat` to run a typescript-formatter on all you .ts files.
+
+## Pre-Commit Check
+
+`ng check` is a combination task of `lint`, `format`, `test` and `e2e` that performs some of the checks that will be performed in GitLab too. 
+
+This task might be helpful to prevent the most common causes for red builds in GitLab. After a succesfull run, one needs to check for local file modifications done by `lint` or `format` that need to be added to the intended commit.
 
 ## Code scaffolding
 
