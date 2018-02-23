@@ -1,39 +1,28 @@
-  <!-- NEEDS_WORK: product listing components rework - separate product property components are needed -->
-  <div class="product-tile-list row">
-    <div class="col-sm-2 col-xs-3">
-      <div class="product-image-container">
-        <a [routerLink]="['./product/' + product.sku]">
-          <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
-        </a>
-      </div>
+<div class="product-tile-list row">
+  <div class="col-sm-2 col-xs-3">
+    <div class="product-image-container">
+      <a [routerLink]="['./product/' + product.sku]">
+        <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+      </a>
     </div>
-    <div class="col-sm-10 col-xs-9">
-      <div class="row">
-        <div class="col-xs-8 text-left">
-          <a class="product-title" [routerLink]="['./product/' + product.sku]">{{product.name}}</a>
-          <div class="product-description">
-            {{product.shortDescription}}
-          </div>
-          <div class="product-number">
-            <span class="product-number-label">Product ID:</span>
-            <span>{{product.sku}}</span>
-          </div>
+  </div>
+  <div class="col-sm-10 col-xs-9">
+    <div class="row">
+      <div class="col-xs-8 text-left">
+        <a class="product-title" [routerLink]="['./product/' + product.sku]">{{product.name}}</a>
+        <div class="product-description">
+          {{product.shortDescription}}
         </div>
-        <div class="col-sm-4 col-xs-12 pull-right text-right text-left-xs">
-          <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
-          <ish-product-inventory [product]="product"></ish-product-inventory>
-
-          <!-- TODO: this functionality needs to go into reusable components -->
-          <div class="product-list-actions-container">
-              <div class="addtocart-container">
-                <div class="add-to-cart">
-                    <button class="btn btn-primary" (click)="addToCart()" title="Add to Cart" data-testing-id="addToCartButton">
-                      Add to Cart
-                    </button>
-                </div>
-              </div>
-            </div>
+        <div class="product-number">
+          <span class="product-number-label">{{ 'product.itemNumber.label' | translate }}</span>
+          <span itemprop="sku">{{product.sku}}</span>
         </div>
+      </div>
+      <div class="col-sm-4 col-xs-12 pull-right text-right text-left-xs">
+        <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
+        <ish-product-inventory [product]="product"></ish-product-inventory>
+        <ish-product-row-actions-container [product]="product"></ish-product-row-actions-container>
       </div>
     </div>
   </div>
+</div>
