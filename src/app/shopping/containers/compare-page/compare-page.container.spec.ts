@@ -1,6 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { instance, mock } from 'ts-mockito';
-import { ProductCompareService } from '../../../core/services/product-compare/product-compare.service';
 import { ComparePageContainerComponent } from './compare-page.container';
 
 describe('Compare Page Container', () => {
@@ -11,7 +9,6 @@ describe('Compare Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ComparePageContainerComponent],
-      providers: [{ provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }]
     }).compileComponents();
   }));
 
