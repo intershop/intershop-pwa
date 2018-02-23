@@ -19,8 +19,7 @@ describe('Product Inventory Component', () => {
         TranslateService
       ],
       declarations: [ProductInventoryComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,6 +35,8 @@ describe('Product Inventory Component', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set properly', () => {

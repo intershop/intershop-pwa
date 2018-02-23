@@ -26,21 +26,22 @@ describe('Product Compare Status Component', () => {
       providers: [
         { provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }
       ],
-
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductCompareStatusComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fixture.detectChanges();
 
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should navigate to compare page when compare icon is clicked', async(inject([Router, Location], (router: Router, location: Location) => {
+    fixture.detectChanges();
     element.querySelector('a').click();
     fixture.whenStable().then(() => {
       expect(location.path()).toContain('compare');
