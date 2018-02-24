@@ -1,10 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from '../../../../dev-utils/mock.component';
+import { Category } from '../../../../models/category/category.model';
 import { CategoryPageComponent } from './category-page.component';
 
-xdescribe('Category Page Component', () => {
+describe('Category Page Component', () => {
   let component: CategoryPageComponent;
   let fixture: ComponentFixture<CategoryPageComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -13,17 +15,19 @@ xdescribe('Category Page Component', () => {
         MockComponent({ selector: 'ish-category-navigation', template: 'Category Navigation Component', inputs: ['category', 'categoryPath', 'categoryNavigationLevel'] }),
         MockComponent({ selector: 'ish-category-list', template: 'Category List Component', inputs: ['categories'] })
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    element = fixture.nativeElement;
+    component.category = new Category('ID', 'Name', 'uniqueID');
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });

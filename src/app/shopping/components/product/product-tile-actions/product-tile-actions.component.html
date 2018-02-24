@@ -1,14 +1,19 @@
 <div class="product-tile-actions btn-group">
   <div class="add-to-cart">
-    <button class="btn btn-link" title="Add to Cart">
+    <button 
+      (click)="addToCart()"
+      class="btn btn-link"
+      title="{{ 'product.add_to_cart.link' | translate }}"
+    >
       <span class="glyphicon glyphicon-shopping-cart"></span>
     </button>
   </div>
   <button
     (click)="toggleCompare()"
     class="btn btn-link add-to-compare"
-    title="Compare"
-    [ngClass]="{ 'is-selected': isInCompareList }">
+    [ngClass]="{ 'is-selected': isInCompareList }"
+    title="{{ 'product.compare.link' | translate }}"
+  >
     <span class="glyphicon glyphicon-equalizer"></span>
   </button>
 </div>

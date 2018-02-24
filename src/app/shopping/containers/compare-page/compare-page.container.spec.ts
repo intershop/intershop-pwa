@@ -5,22 +5,25 @@ import { ComparePageContainerComponent } from './compare-page.container';
 
 describe('Compare Page Container', () => {
   let fixture: ComponentFixture<ComparePageContainerComponent>;
+  let component: ComparePageContainerComponent;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ComparePageContainerComponent],
       providers: [{ provide: ProductCompareService, useFactory: () => instance(mock(ProductCompareService)) }]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComparePageContainerComponent);
-    fixture.detectChanges();
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
   });
 
-  it('should be created', async(() => {
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
+  });
 });

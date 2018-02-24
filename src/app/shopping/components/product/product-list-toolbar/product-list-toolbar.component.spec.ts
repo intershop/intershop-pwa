@@ -6,6 +6,7 @@ import { ProductListToolbarComponent } from './product-list-toolbar.component';
 describe('Product List Toolbar Component', () => {
   let component: ProductListToolbarComponent;
   let fixture: ComponentFixture<ProductListToolbarComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,17 +16,18 @@ describe('Product List Toolbar Component', () => {
         FormsModule,
         ReactiveFormsModule
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListToolbarComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });

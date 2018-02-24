@@ -62,6 +62,7 @@ describe('RegistrationPage Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should retrieve countries and languages on creation', () => {

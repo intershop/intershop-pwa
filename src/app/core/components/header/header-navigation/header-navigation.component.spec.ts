@@ -31,8 +31,7 @@ describe('Header Navigation Component', () => {
         { provide: Store, useFactory: () => instance(storeMock) }
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -44,6 +43,7 @@ describe('Header Navigation Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should retrieve categories when created', () => {

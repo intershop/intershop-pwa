@@ -48,20 +48,23 @@ describe('Login Component', () => {
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should check if controls are rendered on Login page', () => {
+    fixture.detectChanges();
     expect(element.querySelector('input[data-testing-id=userName]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy();
     expect(element.getElementsByClassName('btn btn-primary')).toBeTruthy();
   });
 
   it('should not have any error when initialized', () => {
+    fixture.detectChanges();
     expect(component.isDirty).toBeFalsy();
     component.loginError$.subscribe(val => expect(val).toBeUndefined());
   });
@@ -71,6 +74,8 @@ describe('Login Component', () => {
       store.dispatch(new LoginUserFail(new HttpErrorResponse({ status: 401 })));
 
       const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
+      fixture.detectChanges();
+
       component.onSignin(userDetails);
     });
 
@@ -83,13 +88,20 @@ describe('Login Component', () => {
     });
   });
 
-  it('should not detect error if email is well formed', () => {
-    component.loginForm.controls['userName'].setValue('test@test.com');
-    expect(component.loginForm.controls['userName'].valid).toBeTruthy();
-  });
+  describe('email format', () => {
 
-  it('should detect error if email is malformed', () => {
-    component.loginForm.controls['userName'].setValue('testtest.com');
-    expect(component.loginForm.controls['userName'].valid).toBeFalsy();
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should not detect error if email is well formed', () => {
+      component.loginForm.controls['userName'].setValue('test@test.com');
+      expect(component.loginForm.controls['userName'].valid).toBeTruthy();
+    });
+
+    it('should detect error if email is malformed', () => {
+      component.loginForm.controls['userName'].setValue('testtest.com');
+      expect(component.loginForm.controls['userName'].valid).toBeFalsy();
+    });
   });
 });

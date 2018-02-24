@@ -10,10 +10,12 @@ import { ProductInventoryComponent } from './components/product/product-inventor
 import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
+import { ProductRowActionsComponent } from './components/product/product-row-actions/product-row-actions.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileActionsComponent } from './components/product/product-tile-actions/product-tile-actions.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
+import { ProductRowActionsContainerComponent } from './containers/product-row-actions/product-row-actions.container';
 import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
 import { effects, reducers } from './store/shopping.system';
 
@@ -37,7 +39,9 @@ import { effects, reducers } from './store/shopping.system';
     ProductShipmentComponent,
     ProductListToolbarComponent,
     ProductTileActionsContainerComponent,
-    ProductTileActionsComponent
+    ProductTileActionsComponent,
+    ProductRowActionsContainerComponent,
+    ProductRowActionsComponent
   ],
   exports: [
     CategoryListComponent,
@@ -52,7 +56,9 @@ import { effects, reducers } from './store/shopping.system';
     ProductShipmentComponent,
     ProductListToolbarComponent,
     ProductTileActionsContainerComponent,
-    ProductTileActionsComponent
+    ProductTileActionsComponent,
+    ProductRowActionsContainerComponent,
+    ProductRowActionsComponent
   ]
 })
 

@@ -8,6 +8,7 @@ import { ModalDialogComponent } from './modal-dialog.component';
 describe('Modal Dialog Component', () => {
   let component: ModalDialogComponent;
   let fixture: ComponentFixture<ModalDialogComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,19 +21,20 @@ describe('Modal Dialog Component', () => {
         BsModalService
       ],
       declarations: [ModalDialogComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ModalDialogComponent);
     component = fixture.componentInstance;
+    element = fixture.nativeElement;
     component.title = 'title';
   });
 
   it('should be created', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should display modal dialog when show function is called', () => {

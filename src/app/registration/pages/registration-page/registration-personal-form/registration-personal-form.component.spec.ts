@@ -29,6 +29,7 @@ describe('RegistrationPersonalFormComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter parentForm is not set', () => {
