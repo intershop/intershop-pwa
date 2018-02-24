@@ -16,22 +16,22 @@ describe('Select Security Question Component', () => {
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(SelectSecurityQuestionComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents().then(() => {
+      fixture = TestBed.createComponent(SelectSecurityQuestionComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
 
-        const form = new FormGroup({
-          securityQuestion: new FormControl()
-        });
-        component.form = form;
+      const form = new FormGroup({
+        securityQuestion: new FormControl()
       });
+      component.form = form;
+    });
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should set default values properly on creation', () => {

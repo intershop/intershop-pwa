@@ -17,24 +17,24 @@ describe('Select Component', () => {
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AddressFormComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+    }).compileComponents().then(() => {
+      fixture = TestBed.createComponent(AddressFormComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
 
-        const form = new FormGroup({
-          countryCodeSwitch: new FormControl(),
-          phoneHome: new FormControl(),
-        });
-
-        component.parentForm = form;
+      const form = new FormGroup({
+        countryCodeSwitch: new FormControl(),
+        phoneHome: new FormControl(),
       });
+
+      component.parentForm = form;
+    });
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter parentForm is missing', () => {

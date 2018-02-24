@@ -77,8 +77,9 @@ describe('Product Images Component', () => {
   });
 
   it('should be created', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set properly', () => {
@@ -108,5 +109,4 @@ describe('Product Images Component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('ish-product-image')).toBeTruthy();
   });
-
 });

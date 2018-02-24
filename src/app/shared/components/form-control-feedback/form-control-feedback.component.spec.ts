@@ -10,6 +10,7 @@ import { FormControlFeedbackComponent } from './form-control-feedback.component'
 describe('FormControlFeedbackComponent', () => {
   let fixture: ComponentFixture<FormControlFeedbackComponent>;
   let component: FormControlFeedbackComponent;
+  let element: HTMLElement;
   let translateService: TranslateService;
 
   beforeEach(() => {
@@ -35,6 +36,7 @@ describe('FormControlFeedbackComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FormControlFeedbackComponent);
     component = fixture.componentInstance;
+    element = fixture.nativeElement;
 
     component.control = new FormControl('', [
       Validators.required,
@@ -49,6 +51,12 @@ describe('FormControlFeedbackComponent', () => {
   function getErrorDisplay() {
     return fixture.debugElement.queryAll(By.css('small'));
   }
+
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
+  });
 
   it('should have errors, but should not show them when control is pristine', () => {
     component.control.setValue('');

@@ -52,8 +52,7 @@ describe('Product Image Component', () => {
         { provide: ICM_BASE_URL, useValue: '' },
         TranslateService
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -69,8 +68,9 @@ describe('Product Image Component', () => {
   });
 
   it('should be created', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set properly', () => {

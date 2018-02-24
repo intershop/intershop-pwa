@@ -23,8 +23,7 @@ describe('Product Shipment Component', () => {
         TranslateService
       ],
       declarations: [ProductShipmentComponent, ModalDialogComponent],
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,6 +40,8 @@ describe('Product Shipment Component', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set properly', () => {

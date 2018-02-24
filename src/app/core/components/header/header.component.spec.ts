@@ -10,6 +10,7 @@ import { HeaderComponent } from './header.component';
 describe('Header Component', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let element: HTMLElement;
+  let component: HeaderComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,10 +34,17 @@ describe('Header Component', () => {
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(HeaderComponent);
+      component = fixture.componentInstance;
       element = fixture.nativeElement;
     });
 
   }));
+
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
+  });
 
   it('should check "User Links" are rendered on template', () => {
     expect(element.getElementsByTagName('ish-login-status')[0].textContent).toContain('Login Status Template');

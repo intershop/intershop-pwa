@@ -1,27 +1,29 @@
 // the NO_ERRORS_SCHEMA import and configuration is needed for the Karma tests to run with <carousel> and <slide> tags
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { HomePageContainerComponent } from './home-page.container';
 
 describe('Home Page Container', () => {
   let component: HomePageContainerComponent;
   let fixture: ComponentFixture<HomePageContainerComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePageContainerComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      imports: [CarouselModule.forRoot()],
+      declarations: [HomePageContainerComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomePageContainerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });
