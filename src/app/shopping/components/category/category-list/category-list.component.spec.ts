@@ -8,6 +8,7 @@ import { CategoryListComponent } from './category-list.component';
 describe('Category List Component', () => {
   let component: CategoryListComponent;
   let fixture: ComponentFixture<CategoryListComponent>;
+  let element: HTMLElement;
   let categoriesServiceMock: CategoriesService;
 
   beforeEach(async(() => {
@@ -22,17 +23,18 @@ describe('Category List Component', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: ICM_BASE_URL, useValue: 'http://www.example.org' }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });

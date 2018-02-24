@@ -45,6 +45,7 @@ describe('German Address Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter addressForm is not set', () => {
