@@ -20,8 +20,7 @@ describe('Product Price Component', () => {
         TranslateService
       ],
       declarations: [ProductPriceComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -46,8 +45,9 @@ describe('Product Price Component', () => {
   });
 
   it('should be created', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set properly', () => {

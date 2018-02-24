@@ -9,6 +9,8 @@ let translate: TranslateService;
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
+  let component: AppComponent;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,22 +30,24 @@ describe('AppComponent', () => {
   }));
 
   beforeEach(() => {
-    translate = TestBed.get(TranslateService);
     fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
 
+    translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('en');
   });
 
-  it('should be created', async(() => {
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
+  });
 
   it('should check if header component is getting rendered properly', async(() => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('ish-header').textContent).toEqual('Header Component');
+    expect(element.querySelector('ish-header').textContent).toEqual('Header Component');
   }));
 });
 

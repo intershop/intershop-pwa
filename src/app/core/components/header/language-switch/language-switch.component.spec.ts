@@ -35,18 +35,19 @@ describe('Language Switch Component', () => {
     fixture = TestBed.createComponent(LanguageSwitchComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fixture.detectChanges();
     locales = TestBed.get(AVAILABLE_LOCALES);
     TestBed.get(Store).dispatch(new SetAvailableLocales(locales));
     TestBed.get(Store).dispatch(new SelectLocale(findLang('en')));
-    fixture.autoDetectChanges(true);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should show the available language options when language dropdown is clicked', fakeAsync(() => {
+    fixture.autoDetectChanges(true);
     const anchorTag = fixture.debugElement.nativeElement.querySelectorAll('[dropdownToggle]')[0];
     anchorTag.click();
     tick();

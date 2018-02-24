@@ -13,6 +13,7 @@ import { SimpleRegistrationComponent } from './simple-registration.component';
 describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
+  let element: HTMLElement;
   let storeMock: Store<CoreState>;
 
   beforeEach(async(() => {
@@ -35,15 +36,19 @@ describe('Simple Registration Component', () => {
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(SimpleRegistrationComponent);
       component = fixture.componentInstance;
-      fixture.autoDetectChanges(true);
+      element = fixture.nativeElement;
     });
   }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it('should set isDirty to true when form is invalid', () => {
+    fixture.detectChanges();
+
     component.simpleRegistrationForm.controls['email'].setValue('invalid@email');
     component.simpleRegistrationForm.controls['password'].setValue('12121');
 
@@ -57,6 +62,8 @@ describe('Simple Registration Component', () => {
   });
 
   it('should navigate to homepage when user is created', () => {
+    fixture.detectChanges();
+
     component.simpleRegistrationForm.controls['email'].setValue('valid@email.com');
     component.simpleRegistrationForm.controls['password'].setValue('aaaaaa1');
     component.simpleRegistrationForm.controls['confirmPassword'].setValue('aaaaaa1');

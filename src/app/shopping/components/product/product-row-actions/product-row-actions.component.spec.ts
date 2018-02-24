@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TranslateModule } from '@ngx-translate/core';
-import { ProductTileActionsComponent } from './product-tile-actions.component';
+import { ProductRowActionsComponent } from './product-row-actions.component';
 
-describe('Product Tile Actions Component', () => {
-  let component: ProductTileActionsComponent;
-  let fixture: ComponentFixture<ProductTileActionsComponent>;
+describe('Product Row Actions Component', () => {
+  let component: ProductRowActionsComponent;
+  let fixture: ComponentFixture<ProductRowActionsComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -14,13 +13,13 @@ describe('Product Tile Actions Component', () => {
         TranslateModule.forRoot()
       ],
       declarations: [
-        ProductTileActionsComponent
+        ProductRowActionsComponent
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductTileActionsComponent);
+    fixture = TestBed.createComponent(ProductRowActionsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

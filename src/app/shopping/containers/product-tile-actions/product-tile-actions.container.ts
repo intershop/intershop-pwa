@@ -27,4 +27,9 @@ export class ProductTileActionsContainerComponent implements OnInit {
   toggleCompare() {
     this.store.dispatch(new ToggleCompare(this.product.sku));
   }
+
+  addToCart() {
+    console.log('[ProductTileActionsContainer] Add ' + this.product.name + ' to Cart');
+  }
+
 }

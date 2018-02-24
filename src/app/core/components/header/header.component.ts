@@ -8,7 +8,7 @@ import { CartStatusService } from '../../services/cart-status/cart-status.servic
 })
 
 export class HeaderComponent implements OnInit {
-  cartItems: string[];
+  cartItems: string[] = [];
   navbarCollapsed = true;
 
   constructor(

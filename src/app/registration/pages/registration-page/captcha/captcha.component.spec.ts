@@ -1,5 +1,4 @@
-import { ComponentFixture } from '@angular/core/testing';
-import { async, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { CaptchaComponent } from './captcha.component';
 
@@ -12,22 +11,23 @@ describe('Captcha Component', () => {
     TestBed.configureTestingModule({
       declarations: [CaptchaComponent],
       imports: [RecaptchaModule.forRoot()]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CaptchaComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
   it(`should check if controls are rendered on the HTML`, () => {
+    fixture.detectChanges();
     const elem = element.getElementsByClassName('form-group');
     expect(elem[0].innerHTML).toContain('re-captcha');
   });
