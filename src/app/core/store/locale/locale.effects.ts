@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
-import { empty } from 'rxjs/observable/empty';
-import { of } from 'rxjs/observable/of';
-import { concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Locale } from '../../../models/locale/locale.interface';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import * as fromActions from './locale.actions';
@@ -16,24 +14,23 @@ export class LocaleEffects {
     @Inject(AVAILABLE_LOCALES) private availableLocales: Locale[],
   ) { }
 
-  @Effect()
+  @Effect({ dispatch: false })
   setLocale$ = this.actions$.pipe(
     ofType(fromActions.LocaleActionTypes.SelectLocale),
     map((action: fromActions.SelectLocale) => action.payload),
-    tap(locale => this.translateService.setDefaultLang(locale.lang)),
-    concatMap(() => empty())
+    tap(locale => this.translateService.setDefaultLang(locale.lang))
   );
 
   @Effect()
   loadAllLocales$ = this.actions$.pipe(
     ofType(ROOT_EFFECTS_INIT),
-    switchMap(() => of(new fromActions.SetAvailableLocales(this.availableLocales)))
+    map(() => new fromActions.SetAvailableLocales(this.availableLocales))
   );
 
   @Effect()
   setFirstAvailableLocale$ = this.actions$.pipe(
     ofType(fromActions.LocaleActionTypes.SetAvailableLocales),
-    concatMap((action: fromActions.SetAvailableLocales) =>
-      of(new fromActions.SelectLocale((action.payload && action.payload[0]) ? action.payload[0] : null)))
+    map((action: fromActions.SetAvailableLocales) =>
+      new fromActions.SelectLocale((action.payload && action.payload[0]) ? action.payload[0] : null))
   );
 }
