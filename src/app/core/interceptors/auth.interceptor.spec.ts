@@ -1,5 +1,4 @@
-import { HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';

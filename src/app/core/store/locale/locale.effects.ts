@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';

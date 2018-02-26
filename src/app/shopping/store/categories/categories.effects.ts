@@ -10,7 +10,6 @@ import * as productsActions from '../products/products.actions';
 import * as productsSelectors from '../products/products.selectors';
 import { ShoppingState } from '../shopping.state';
 import * as categoriesActions from './categories.actions';
-import { CategoriesActionTypes } from './categories.actions';
 import * as categoriesSelectors from './categories.selectors';
 
 @Injectable()
@@ -33,7 +32,7 @@ export class CategoriesEffects {
 
   @Effect()
   loadCategory$ = this.actions$.pipe(
-    ofType(CategoriesActionTypes.LoadCategory),
+    ofType(categoriesActions.CategoriesActionTypes.LoadCategory),
     map((action: categoriesActions.LoadCategory) => action.payload),
     mergeMap(categoryUniqueId => {
       return this.categoryService.getCategory(categoryUniqueId).pipe(
@@ -61,7 +60,7 @@ export class CategoriesEffects {
   // TODO: @Ferdinand: non full categories might not be to helpfull
   @Effect()
   saveSubCategories$ = this.actions$.pipe(
-    ofType(CategoriesActionTypes.LoadCategorySuccess),
+    ofType(categoriesActions.CategoriesActionTypes.LoadCategorySuccess),
     map((action: categoriesActions.LoadCategorySuccess) => action.payload.subCategories),
     filter(sc => !!sc),
     map(sc => new categoriesActions.SaveSubCategories(sc))

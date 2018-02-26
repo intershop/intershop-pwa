@@ -6,7 +6,6 @@ import { catchError, filter, map, mergeMap } from 'rxjs/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { ShoppingState } from '../shopping.state';
 import * as productsActions from './products.actions';
-import { ProductsActionTypes } from './products.actions';
 import * as productsSelectors from './products.selectors';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class ProductsEffects {
 
   @Effect()
   loadProduct$ = this.actions$.pipe(
-    ofType(ProductsActionTypes.LoadProduct),
+    ofType(productsActions.ProductsActionTypes.LoadProduct),
     map((action: productsActions.LoadProduct) => action.payload),
     mergeMap(sku => {
       return this.productsService.getProduct(sku).pipe(

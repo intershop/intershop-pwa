@@ -1,6 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { instance, mock } from 'ts-mockito';
 import { Category } from '../../../../../models/category/category.model';
 import { CategoriesService } from '../../../../services/categories/categories.service';
