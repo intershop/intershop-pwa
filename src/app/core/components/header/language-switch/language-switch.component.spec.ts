@@ -60,7 +60,7 @@ describe('Language Switch Component', () => {
     expect(selectedLanguage[0].textContent.trim()).toEqual('en');
   }));
 
-  it('should check language is changed when languageChange menthod is called', () => {
+  it('should change language when languageChange method is called', () => {
     component.languageChange(findLang('de'));
     fixture.detectChanges();
     const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');

@@ -26,7 +26,7 @@ describe('Captcha Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it(`should check if controls are rendered on the HTML`, () => {
+  it(`should render controls on the HTML`, () => {
     fixture.detectChanges();
     const elem = element.getElementsByClassName('form-group');
     expect(elem[0].innerHTML).toContain('re-captcha');

@@ -25,7 +25,7 @@ describe('Error Page Container', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should test if tags with their text are getting rendered on the HTML', () => {
+  it('should render error content on the HTML', () => {
     expect(element.getElementsByTagName('h3')[0].textContent).toContain('We are sorry');
     expect(element.getElementsByTagName('p')[0].textContent).toContain('The page you are looking for is currently not available');
     expect(element.getElementsByTagName('h4')[0].textContent).toContain('Please try one of the following:');

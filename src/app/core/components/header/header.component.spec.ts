@@ -40,24 +40,24 @@ describe('Header Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should check "User Links" are rendered on template', () => {
+  it('should render User Links on template', () => {
     expect(element.getElementsByTagName('ish-login-status')[0].textContent).toContain('Login Status Template');
     expect(element.getElementsByTagName('ish-product-compare-status')[0].textContent).toContain('Product Compare Status Template');
   });
 
-  it('should check "LanguageSwitchComponent" is rendered on template', () => {
+  it('should render Language Switch on template', () => {
     expect(element.getElementsByTagName('ish-language-switch')[0].textContent).toContain('Language Switch Template');
   });
 
-  it('should check "SearchBoxComponent" is rendered on template', () => {
+  it('should render Search Box on template', () => {
     expect(element.getElementsByTagName('ish-search-box')[0].textContent).toContain('Search Box Template');
   });
 
-  it('should check "HeaderNavigationComponent" is rendered on template', () => {
+  it('should render Header Navigation on template', () => {
     expect(element.getElementsByTagName('ish-header-navigation')[0].textContent).toContain('Header Navigation Template');
   });
 
-  it('should check "MiniCartComponent" is rendered on template', () => {
+  it('should render Mini Cart on template', () => {
     expect(element.getElementsByTagName('ish-mini-cart')[0].textContent).toContain('Mini Cart Template');
   });
 });

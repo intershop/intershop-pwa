@@ -64,7 +64,7 @@ describe('Search Box Component', () => {
     expect(component.isHide).toBe(true);
   }));
 
-  it('should check if both the search results are rendered on HTML', fakeAsync(() => {
+  it('should render search results on HTML', fakeAsync(() => {
     component.results = [{
       term: 'networking software',
       type: 'SuggestTerm'
