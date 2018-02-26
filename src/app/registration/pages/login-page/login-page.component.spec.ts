@@ -56,7 +56,7 @@ describe('Login Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should check if controls are rendered on Login page', () => {
+  it('should render login form on Login page', () => {
     fixture.detectChanges();
     expect(element.querySelector('input[data-testing-id=userName]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy();

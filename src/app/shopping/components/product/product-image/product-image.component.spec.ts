@@ -78,26 +78,26 @@ describe('Product Image Component', () => {
     expect(function() { fixture.detectChanges(); }).toThrow();
   });
 
-  it('should test if the img tag are getting rendered when imageView is not available', () => {
+  it('should render img tag when imageView is not available', () => {
     fixture.detectChanges();
     expect(element.querySelector('img').getAttribute('data-type')).toBe(component.imageType);
   });
 
-  it('should test if the img tag are getting rendered for S size and for image view front', () => {
+  it('should render img tag for S size and for image view front', () => {
     component.imageType = 'S';
     component.imageView = 'front';
     fixture.detectChanges();
     expect(element.querySelector('img').getAttribute('data-type')).toBe(component.imageType);
   });
 
-  it('should test if the img tag are getting rendered for L size and for image view front', () => {
+  it('should render img tag for L size and for image view front', () => {
     component.imageType = 'L';
     component.imageView = 'front';
     fixture.detectChanges();
     expect(element.querySelector('img').getAttribute('data-type')).toBe(component.imageType);
   });
 
-  it('should test if the image source not available should render no avialable image', () => {
+  it('should render N/A image when image source is not available', () => {
     product.images = [
       {
         'name': 'front S',
