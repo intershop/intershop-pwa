@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map, take, tap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../store/core.state';
-import { getRouterURL, Go } from '../store/router';
+import { getRouterURL } from '../store/router';
 import { getUserAuthorized } from '../store/user';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private store: Store<CoreState>
+    private store: Store<CoreState>,
+    private router: Router
   ) { }
 
   canActivate(): Observable<boolean> {
@@ -22,7 +23,8 @@ export class AuthGuard implements CanActivate {
       tap(([authorized, url]) => {
         if (!authorized) {
           // not logged in so redirect to login page with the return url
-          this.store.dispatch(new Go({ path: ['/login'], query: { returnUrl: url } }));
+          const queryParams = { returnUrl: url };
+          this.router.navigate(['/login'], { queryParams });
         }
       }),
       map(([authorized, url]) => authorized)
