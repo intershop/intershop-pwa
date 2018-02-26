@@ -1,6 +1,5 @@
 // NEEDS_WORK: DUMMY COMPONENT
 import { Component, OnInit } from '@angular/core';
-import { CartStatusService } from '../../../services/cart-status/cart-status.service';
 
 @Component({
   selector: 'ish-mini-cart',
@@ -13,12 +12,9 @@ export class MiniCartComponent implements OnInit {
   cartPrice: number;
   cartLength: number;
 
-  constructor(
-    private cartStatusService: CartStatusService
-  ) { }
-
   ngOnInit() {
-    this.cartStatusService.subscribe(this.calculateCartValues);
+    // TODO: fetch from store
+    this.calculateCartValues([]);
   }
 
   /**
