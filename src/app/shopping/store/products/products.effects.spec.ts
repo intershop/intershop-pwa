@@ -30,7 +30,6 @@ describe('ProductsEffects', () => {
         if (sku === 'invalid') {
           return _throw('');
         } else {
-          console.log('sdfdsf ');
           return of({ sku } as Product);
         }
       });
