@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ProductCompareService } from '../../../services/product-compare/product-compare.service';
 
 @Component({
   selector: 'ish-product-compare-status',
@@ -7,11 +6,8 @@ import { ProductCompareService } from '../../../services/product-compare/product
 })
 export class ProductCompareStatusComponent {
 
-  constructor(
-    private productCompareService: ProductCompareService
-  ) { }
-
   get productCompareCount(): number {
-    return !!this.productCompareService.getValue() ? this.productCompareService.getValue().length : 0;
+    // TODO: get from store
+    return 0;
   }
 }
