@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { reducers } from '../core.system';
-import { Go } from '../router/router.actions';
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';
 
@@ -16,8 +16,10 @@ describe('UserEffects', () => {
   let actions$: TestActions;
   let effects: UserEffects;
   let accountLoginServiceMock: AccountLoginService;
+  let routerMock: Router;
 
   beforeEach(() => {
+    routerMock = mock(Router);
     accountLoginServiceMock = mock(AccountLoginService);
     when(accountLoginServiceMock.signinUser(anything())).thenReturn(of({} as any));
     when(accountLoginServiceMock.createUser(anything())).thenReturn(of({} as any));
@@ -29,6 +31,7 @@ describe('UserEffects', () => {
       providers: [
         UserEffects,
         { provide: Actions, useFactory: testActionsFactory },
+        { provide: Router, useFactory: () => instance(routerMock) },
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
       ],
     });
@@ -72,26 +75,29 @@ describe('UserEffects', () => {
   });
 
   describe('goToHomeAfterLogout$', () => {
-    it('should dispatch a router event to /home after LogoutUser', () => {
+    it('should navigate to /home after LogoutUser', () => {
       const action = new ua.LogoutUser();
-      const completion = new Go({ path: ['/home'] });
-
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
 
-      expect(effects.goToHomeAfterLogout$).toBeObservable(expected);
+      effects.goToHomeAfterLogout$.subscribe(() => {
+        verify(routerMock.navigate(anything())).once();
+        const [param] = capture(routerMock.navigate).last();
+        expect(param).toEqual(['/home']);
+      });
     });
   });
 
   describe('goToAccountAfterLogin$', () => {
-    it('should dispatch a router event to /account after LoginUserSuccess', () => {
+    it('should navigate to /account after LoginUserSuccess', () => {
       const action = new ua.LoginUserSuccess({} as any);
-      const completion = new Go({ path: ['/account'] });
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
 
-      expect(effects.goToAccountAfterLogin$).toBeObservable(expected);
+      effects.goToAccountAfterLogin$.subscribe(() => {
+        verify(routerMock.navigate(anything())).once();
+        const [param] = capture(routerMock.navigate).last();
+        expect(param).toEqual(['/account']);
+      });
     });
   });
 

@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -7,7 +8,6 @@ import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../core/configu
 import { CountryService } from '../../../core/services/countries/country.service';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
-import { Go } from '../../../core/store/router';
 import { CreateUser, getLoginError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
@@ -30,6 +30,7 @@ export class RegistrationPageComponent implements OnInit {
     private store: Store<CoreState>,
     private cs: CountryService,
     private rs: RegionService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -44,7 +45,7 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   onCancel() {
-    this.store.dispatch(new Go({ path: ['/home'] }));
+    this.router.navigate(['/home']);
   }
 
   onCreate(value: any) {
