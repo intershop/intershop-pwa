@@ -183,6 +183,13 @@
     "do-not-import-environment": true,
     "use-camel-case-environment-properties": true,
     "dev-util-imports": true,
-    "component-creation-test": true
+    "component-creation-test": true,
+    "ccp-no-ngrx-in-components": { "severity": "warning" },
+    "ccp-no-markup-in-containers": {
+      "severity": "warning",
+      "options": {
+        "patterns": [ "<h", "<img", "<p", "<ul", "<li", "<table", "<[^>]*class" ]
+      }
+    }
   }
 }
