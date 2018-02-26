@@ -1,5 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-import { async, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
