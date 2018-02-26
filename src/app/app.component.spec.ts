@@ -46,7 +46,7 @@ describe('AppComponent', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should check if header component is getting rendered properly', async(() => {
+  it('should render header component on page', async(() => {
     expect(element.querySelector('ish-header').textContent).toEqual('Header Component');
   }));
 });

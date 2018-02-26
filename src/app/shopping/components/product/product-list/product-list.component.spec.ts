@@ -32,14 +32,14 @@ describe('Product List Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should check if one product tile (viewType = grid) is rendered', () => {
+  it('should render a product tile when viewType is grid', () => {
     component.viewType = 'grid';
     fixture.detectChanges();
     const thumbs = element.querySelectorAll('ish-product-tile');
     expect(thumbs.length).toBe(1);
   });
 
-  it('should check if one product row (viewType = list) is rendered', () => {
+  it('should render a product row when viewType is list', () => {
     component.viewType = 'list';
     fixture.detectChanges();
     const thumbs = element.querySelectorAll('ish-product-row');

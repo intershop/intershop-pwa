@@ -87,17 +87,17 @@ describe('Product Images Component', () => {
     expect(function() { fixture.detectChanges(); }).toThrow();
   });
 
-  it('should test if carousel are rendered correctly', () => {
+  it('should render carousel on component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('slide').length).toEqual(2);
   });
 
-  it('should test if tumbnails are rendered correctly', () => {
+  it('should render thumbnails on component', () => {
     fixture.detectChanges();
     expect(element.getElementsByClassName('product-thumb-set').length).toEqual(2);
   });
 
-  it('should test if click on tumbnail show that image in carousel and set active class on tumbnail', () => {
+  it('should show corresponding image in carousel and set active class on thumbnail when clicking on thumbnail image', () => {
     fixture.detectChanges();
     (element.getElementsByClassName('product-thumb-set')[1] as HTMLElement).click();
     fixture.detectChanges();
@@ -105,7 +105,7 @@ describe('Product Images Component', () => {
     expect(component.activeSlide).toEqual(1);
   });
 
-  it('should test if product image component is getting rendered', () => {
+  it('should render product image component on component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('ish-product-image')).toBeTruthy();
   });
