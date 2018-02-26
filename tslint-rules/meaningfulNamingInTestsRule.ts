@@ -4,6 +4,8 @@ import { Identifier, SourceFile } from 'typescript';
 
 const DESCRIPTION_REGEX = /^('|`)should(.* (when|if|until|on|for|to) .*| be created)('|`)$/;
 
+const DESCRIPTION_VIEWPOINT_ERROR_REGEX = /^('|`)should (check|test)/;
+
 class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: SourceFile) {
@@ -21,9 +23,13 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
         if (description.indexOf('${') >= 0) {
           description = descriptionToken.parent.getText();
         }
-        if (!DESCRIPTION_REGEX.test(description)) {
+        if (DESCRIPTION_VIEWPOINT_ERROR_REGEX.test(description)) {
+          this.addFailureAtNode(node, `describe what the component is doing, not what the test is doing (found "${description}")`);
+        } else if (!DESCRIPTION_REGEX.test(description)) {
           this.addFailureAtNode(node, '"' + description + '" does not match ' + DESCRIPTION_REGEX);
         }
+      } else {
+        this.addFailureAtNode(node, 'could not find a valid description');
       }
     }
     super.visitIdentifier(node);
