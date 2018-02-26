@@ -8,7 +8,7 @@ describe('CompareListSelectors', () => {
       const state: ViewconfState = {
         sortBy: 'name-asc',
         viewType: 'grid',
-        sortByOptions: []
+        sortKeys: []
       };
       const result = fromSelectors.getSortBy.projector(state);
       const expected = state.sortBy;
@@ -21,7 +21,7 @@ describe('CompareListSelectors', () => {
       const state: ViewconfState = {
         sortBy: 'name-asc',
         viewType: 'grid',
-        sortByOptions: []
+        sortKeys: []
       };
       const result = fromSelectors.getViewType.projector(state);
       const expected = state.viewType;

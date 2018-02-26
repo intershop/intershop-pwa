@@ -10,7 +10,6 @@ import { CategoriesService } from '../../../core/services/categories/categories.
 import { navigateMockAction } from '../../../dev-utils/navigate-mock.action';
 import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
 import { Category } from '../../../models/category/category.model';
-import { ProductsService } from '../../services/products/products.service';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { reducers } from '../shopping.system';
@@ -23,17 +22,11 @@ describe('Categories Effects', () => {
   let store: Store<ShoppingState>;
 
   let categoriesServiceMock: CategoriesService;
-  let productsServiceMock: ProductsService;
 
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
-    productsServiceMock = mock(ProductsService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(of({ uniqueId: '123' } as Category));
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(_throw(''));
-    when(productsServiceMock.getProductSkuListForCategory('123')).thenReturn(of({
-      skus: ['P222', 'P333'],
-      categoryUniqueId: '123'
-    }));
 
     TestBed.configureTestingModule({
       imports: [
@@ -46,7 +39,6 @@ describe('Categories Effects', () => {
         CategoriesEffects,
         { provide: Actions, useFactory: testActionsFactory },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
       ],
     });
 
@@ -139,7 +131,7 @@ describe('Categories Effects', () => {
     });
   });
 
-  describe('loadProductsForCategory$', () => {
+  describe('productOrCategoryChanged$', () => {
     let category: Category;
     let selectProduct;
     let selectCategory;
@@ -175,7 +167,7 @@ describe('Categories Effects', () => {
       store.dispatch(new fromActions.LoadCategorySuccess(category));
       selectProduct('123', 'P222');
 
-      expect(effects.loadProductsForCategory$).toBeObservable(cold('-'));
+      expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
     });
 
     describe('when product is not selected', () => {
@@ -183,59 +175,39 @@ describe('Categories Effects', () => {
         category.hasOnlineProducts = false;
         store.dispatch(new fromActions.LoadCategorySuccess(category));
         selectCategory(category.uniqueId);
-        expect(effects.loadProductsForCategory$).toBeObservable(cold('-'));
-      });
-
-      it('should not call service when category does not have online products', () => {
-        store.dispatch(new fromActions.LoadCategorySuccess(category));
-        category.hasOnlineProducts = false;
-        selectCategory(category.uniqueId);
-
-        effects.loadProductsForCategory$.subscribe();
-        verify(productsServiceMock.getProductSkuListForCategory(category.uniqueId)).never();
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
       it('should do nothing when category already has an SKU list', () => {
         category.productSkus = ['P222', 'P333'];
         store.dispatch(new fromActions.LoadCategorySuccess(category));
         selectCategory(category.uniqueId);
-        expect(effects.loadProductsForCategory$).toBeObservable(cold('-'));
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
       it('should do nothing when no category is selected', () => {
         store.dispatch(new fromActions.LoadCategorySuccess(category));
-        expect(effects.loadProductsForCategory$).toBeObservable(cold('-'));
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
       it('should do nothing when selected category is not in the store', () => {
         selectCategory(category.uniqueId);
-        expect(effects.loadProductsForCategory$).toBeObservable(cold('-'));
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
-      it('should call service for SKU list', () => {
-        store.dispatch(new fromActions.LoadCategorySuccess(category));
-        category.hasOnlineProducts = true;
-        selectCategory(category.uniqueId);
-
-        effects.loadProductsForCategory$.subscribe();
-        verify(productsServiceMock.getProductSkuListForCategory(category.uniqueId)).once();
-      });
-
-      it('should trigger actions of type SetProductSkusForCategory and LoadProduct for each product in the list', () => {
+      it('should trigger action of type LoadProductsForCategory when category is selected', () => {
         category.hasOnlineProducts = true;
         store.dispatch(new fromActions.LoadCategorySuccess(category));
         selectCategory(category.uniqueId);
 
-        const expectedValues = {
-          a: new fromActions.SetProductSkusForCategory(category.uniqueId, ['P222', 'P333']),
-          b: new productsActions.LoadProduct('P222'),
-          c: new productsActions.LoadProduct('P333'),
-        };
-        expect(effects.loadProductsForCategory$)
-          .toBeObservable(cold('(abc)', expectedValues));
+        const action = new productsActions.LoadProductsForCategory(category.uniqueId);
+        expect(effects.productOrCategoryChanged$).toBeObservable(
+          cold('a', { a: action })
+        );
       });
     });
   });
+
 
   describe('saveSubCategories$', () => {
     it('should map to action of type SaveSubCategories if subcategories exist', () => {

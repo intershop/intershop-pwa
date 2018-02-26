@@ -5,13 +5,15 @@ import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anyString, instance, mock, verify, when } from 'ts-mockito';
 import { navigateMockAction } from '../../../dev-utils/navigate-mock.action';
 import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
+import * as fromCategories from '../categories';
 import { ShoppingState } from '../shopping.state';
 import { reducers } from '../shopping.system';
+import * as fromViewconf from '../viewconf';
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
 
@@ -23,9 +25,22 @@ describe('ProductsEffects', () => {
 
   beforeEach(() => {
     productsServiceMock = mock(ProductsService);
-    when(productsServiceMock.getProduct('invalid')).thenReturn(_throw(''));
-    when(productsServiceMock.getProduct('P123'))
-      .thenReturn(of({ sku: 'P123' } as Product));
+    when(productsServiceMock.getProduct(anyString()))
+      .thenCall((sku: string) => {
+        if (sku === 'invalid') {
+          return _throw('');
+        } else {
+          console.log('sdfdsf ');
+          return of({ sku } as Product);
+        }
+      });
+
+    when(productsServiceMock.getProductSkuListForCategory('123', 'name-asc'))
+      .thenCall(() => of({
+        skus: ['P222', 'P333'],
+        categoryUniqueId: '123',
+        sortKeys: ['name-asc', 'name-desc']
+      }));
 
 
     TestBed.configureTestingModule({
@@ -78,6 +93,37 @@ describe('ProductsEffects', () => {
       expect(effects.loadProduct$).toBeObservable(expected$);
     });
   });
+
+  describe('loadProductsForCategory$', () => {
+
+    beforeEach(() => {
+      store.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
+
+      actions$.stream = hot('a', {
+        a: new fromActions.LoadProductsForCategory('123')
+      });
+    });
+
+    it('should call service for SKU list', () => {
+      effects.loadProductsForCategory$.subscribe(() => {
+        verify(productsServiceMock.getProductSkuListForCategory('123', 'name-asc')).once();
+      });
+    });
+
+    it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProduct for each product in the list', () => {
+      const expectedValues = {
+        a: new fromCategories.SetProductSkusForCategory('123', ['P222', 'P333']),
+        b: new fromViewconf.SetSortKeys(['name-asc', 'name-desc']),
+        c: new fromActions.LoadProduct('P222'),
+        d: new fromActions.LoadProduct('P333'),
+      };
+      expect(effects.loadProductsForCategory$)
+        .toBeObservable(cold('(abcd)', expectedValues));
+    });
+
+  });
+
+
 
   describe('selectedProduct$', () => {
     it('should map to LoadProduct when product is selected', () => {
