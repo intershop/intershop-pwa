@@ -1,6 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
+import { MockComponent } from '../../dev-utils/mock.component';
 import { navigateMockAction } from '../../dev-utils/navigate-mock.action';
 import { Customer } from '../../models/customer/customer.model';
 import { reducers } from '../store/core.system';
@@ -14,12 +15,17 @@ describe('AuthGuard', () => {
     let store: Store<CoreState>;
 
     beforeEach(async(() => {
+      const loginComponentMock = MockComponent({ selector: 'ish-login', template: 'Login Component' });
+
       TestBed.configureTestingModule({
         imports: [
-          RouterTestingModule,
+          RouterTestingModule.withRoutes([
+            { path: 'login', component: loginComponentMock }
+          ]),
           StoreModule.forRoot(reducers)
         ],
-        providers: [AuthGuard]
+        providers: [AuthGuard],
+        declarations: [loginComponentMock]
       }).compileComponents();
     }));
 

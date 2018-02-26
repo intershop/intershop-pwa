@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { CustomerData } from '../../../models/customer/customer.interface';
-import { Go } from '../router/router.actions';
 import * as userActions from './user.actions';
 
 @Injectable()
 export class UserEffects {
   constructor(
     private actions$: Actions,
-    private accountLoginService: AccountLoginService
+    private accountLoginService: AccountLoginService,
+    private router: Router
   ) { }
 
   @Effect()
@@ -26,16 +27,16 @@ export class UserEffects {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   goToHomeAfterLogout$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LogoutUser),
-    switchMap(() => of(new Go({ path: ['/home'] })))
+    tap(() => this.router.navigate(['/home']))
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   goToAccountAfterLogin$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoginUserSuccess),
-    switchMap(() => of(new Go({ path: ['/account'] })))
+    tap(() => this.router.navigate(['/account']))
   );
 
   @Effect()
