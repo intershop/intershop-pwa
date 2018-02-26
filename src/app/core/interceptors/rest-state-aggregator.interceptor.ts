@@ -2,9 +2,9 @@ import { isPlatformServer } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators';
 import { REST_ENDPOINT } from '../services/state-transfer/factories';
 
 const REST_CALL_CACHE = makeStateKey<any>('restCallCache');
@@ -44,16 +44,16 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
       const key = req.urlWithParams;
 
       if (isPlatformServer(this.platformId)) {
-        return next.handle(req)
+        return next.handle(req).pipe(
           // .map(data => { console.log(`returned ${JSON.stringify(data)}`); return data; })
-          .map(event => {
+          map(event => {
             if (event instanceof HttpResponse) {
               const response = <HttpResponse<any>>event;
               this.cache[key] = JSON.stringify(response.body);
               this.persistCacheInState();
             }
             return event;
-          });
+          }));
       } else {
         if (!!this.cache[key]) {
           const content = JSON.parse(this.cache[key]);

@@ -63,9 +63,9 @@ describe('ProductsEffects', () => {
       const action = new fromActions.LoadProduct(sku);
       const completion = new fromActions.LoadProductSuccess({ sku } as Product);
       actions$.stream = hot('-a-a-a', { a: action });
-      const expected = cold('-c-c-c', { c: completion });
+      const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadProduct$).toBeObservable(expected);
+      expect(effects.loadProduct$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadProductFail', () => {
@@ -73,9 +73,9 @@ describe('ProductsEffects', () => {
       const action = new fromActions.LoadProduct(sku);
       const completion = new fromActions.LoadProductFail('');
       actions$.stream = hot('-a-a-a', { a: action });
-      const expected = cold('-c-c-c', { c: completion });
+      const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadProduct$).toBeObservable(expected);
+      expect(effects.loadProduct$).toBeObservable(expected$);
     });
   });
 

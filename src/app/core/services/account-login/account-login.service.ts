@@ -2,8 +2,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import { switchMap } from 'rxjs/operators/switchMap';
+import { map, switchMap } from 'rxjs/operators';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerData } from '../../../models/customer/customer.interface';
 import { Customer } from '../../../models/customer/customer.model';

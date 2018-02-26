@@ -40,9 +40,9 @@ describe('CompareEffects', () => {
       const completion = new fromActions.AddToCompare(sku);
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+      const expected$ = cold('-b', { b: completion });
 
-      expect(effects.toggleCompare$).toBeObservable(expected);
+      expect(effects.toggleCompare$).toBeObservable(expected$);
     });
 
     it('should switch to REMOVE action', () => {
@@ -53,9 +53,9 @@ describe('CompareEffects', () => {
       const completion = new fromActions.RemoveFromCompare(sku);
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+      const expected$ = cold('-b', { b: completion });
 
-      expect(effects.toggleCompare$).toBeObservable(expected);
+      expect(effects.toggleCompare$).toBeObservable(expected$);
     });
 
   });
