@@ -82,11 +82,6 @@ describe('Product Images Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should throw an error if input parameter product is not set properly', () => {
-    component.product = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
-  });
-
   it('should render carousel on component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('slide').length).toEqual(2);

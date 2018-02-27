@@ -29,17 +29,11 @@ export class CategoriesService {
     if (limit > 0) {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
-    const rawCategories$ = this.apiService.get<CategoryData[]>(this.serviceIdentifier, params, null, true);
-    if (rawCategories$) {
-      return rawCategories$.pipe(
-        map(
-          (rawCategories: CategoryData[]) => {
-            return rawCategories.map(
-              (rawCategory: CategoryData) => CategoryFactory.fromData(rawCategory, rawCategory.id));
-          })
-      );
-    }
-    return null;
+    return this.apiService.get<CategoryData[]>(this.serviceIdentifier, params, null, true).pipe(
+      map(categoriesData => categoriesData.map(
+        categoryData => CategoryFactory.fromData(categoryData, categoryData.id)
+      ))
+    );
   }
 
   /**
