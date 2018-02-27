@@ -1,0 +1,9 @@
+<dl class="ish-productAttributes">
+  <ng-container *ngFor="let attribute of product.attributes | slice:0:1000">
+    <dt class="ish-ca-type">{{attribute.name}}</dt>
+    <dd class="ish-ca-value" [innerHTML]="attribute.value.printValue(attributeseperator)">
+      {{'test' + attributeseperator}}
+    </dd>
+    <dd style="clear:both;"></dd>
+  </ng-container>
+</dl>
