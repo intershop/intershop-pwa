@@ -21,7 +21,7 @@ describe('Header Component', () => {
         HeaderComponent,
         MockComponent({ selector: 'ish-login-status', template: 'Login Status Template' }),
         MockComponent({ selector: 'ish-product-compare-status', template: 'Product Compare Status Template' }),
-        MockComponent({ selector: 'ish-language-switch', template: 'Language Switch Template' }),
+        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
         MockComponent({ selector: 'ish-search-box', template: 'Search Box Template' }),
         MockComponent({ selector: 'ish-header-navigation', template: 'Header Navigation Template' }),
         MockComponent({ selector: 'ish-mini-cart', template: 'Mini Cart Template' }),
@@ -46,7 +46,7 @@ describe('Header Component', () => {
   });
 
   it('should render Language Switch on template', () => {
-    expect(element.getElementsByTagName('ish-language-switch')[0].textContent).toContain('Language Switch Template');
+    expect(element.getElementsByTagName('ish-language-switch-container')[0].textContent).toContain('Language Switch Container');
   });
 
   it('should render Search Box on template', () => {

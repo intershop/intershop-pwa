@@ -12,6 +12,7 @@ import { LoginStatusComponent } from './components/header/login-status/login-sta
 import { MiniCartComponent } from './components/header/mini-cart/mini-cart.component';
 import { ProductCompareStatusComponent } from './components/header/product-compare-status/product-compare-status.component';
 import { SearchBoxComponent } from './components/header/search-box/search-box.component';
+import { LanguageSwitchContainerComponent } from './containers/header/language-switch/language-switch.container';
 import { AccountLoginService } from './services/account-login/account-login.service';
 import { CategoriesService } from './services/categories/categories.service';
 import { SuggestService } from './services/suggest/suggest.service';
@@ -30,6 +31,7 @@ import { SuggestService } from './services/suggest/suggest.service';
     MiniCartComponent,
     SearchBoxComponent,
     LanguageSwitchComponent,
+    LanguageSwitchContainerComponent,
     HeaderNavigationComponent,
     LoginStatusComponent,
     SubCategoryNavigationComponent
