@@ -1,13 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
-import { map } from 'rxjs/operators';
+import { flatMap, map } from 'rxjs/operators';
 import { Locale } from '../../models/locale/locale.interface';
 import { CoreState, getCurrentLocale } from '../store/locale';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
@@ -53,9 +50,10 @@ export class ApiService {
       url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
     }
 
-    return this.httpClient.get<T>(url, { params: params, headers: headers })
-      .map(data => (elementsTranslation ? data['elements'] : data))
-      .flatMap((data) => this.getLinkedData(data, linkTranslation));
+    return this.httpClient.get<T>(url, { params: params, headers: headers }).pipe(
+      map(data => (elementsTranslation ? data['elements'] : data)),
+      flatMap((data) => this.getLinkedData(data, linkTranslation))
+    );
   }
 
   /**
