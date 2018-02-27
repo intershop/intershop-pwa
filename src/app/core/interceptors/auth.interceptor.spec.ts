@@ -2,7 +2,7 @@ import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/comm
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { AuthInterceptor } from './auth.interceptor';
+import { _setToken, AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor Service', () => {
   const responseData = `{"name":"test","age":"34"}`;
@@ -41,7 +41,7 @@ describe('Auth Interceptor Service', () => {
 
   it(`should set request's header token on receiving from jwt service`, () => {
     const TOKEN = 'testtoken';
-    authInterceptor._setToken(TOKEN);
+    _setToken(TOKEN);
 
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
       expect(mockRequest.headers.get('authentication-token')).toEqual(TOKEN);
@@ -57,7 +57,7 @@ describe('Auth Interceptor Service', () => {
   });
 
   it('should not set token when token is empty', () => {
-    authInterceptor._setToken('');
+    _setToken('');
 
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
