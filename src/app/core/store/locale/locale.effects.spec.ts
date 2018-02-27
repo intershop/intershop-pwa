@@ -42,10 +42,11 @@ describe('LocaleEffects', () => {
 
       actions$.stream = hot('-a', { a: action });
 
-      expect(effects.setLocale$).toBeObservable(cold('-'));
-      verify(translateServiceMock.setDefaultLang(anything())).once();
-      const params = capture(translateServiceMock.setDefaultLang).last();
-      expect(params[0]).toEqual('jp');
+      effects.setLocale$.subscribe(() => {
+        verify(translateServiceMock.setDefaultLang(anything())).once();
+        const params = capture(translateServiceMock.setDefaultLang).last();
+        expect(params[0]).toEqual('jp');
+      });
     });
   });
 

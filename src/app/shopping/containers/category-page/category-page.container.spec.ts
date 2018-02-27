@@ -20,7 +20,7 @@ describe('Category Page Container', () => {
         CategoryPageContainerComponent,
         MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['category', 'categoryPath'] }),
         MockComponent({ selector: 'ish-category-page', template: 'Category Page Component', inputs: ['category', 'categoryPath'] }),
-        MockComponent({ selector: 'ish-family-page', template: 'Family Page Component', inputs: ['category', 'categoryPath', 'products', 'totalItems', 'viewType', 'sortBy'] }),
+        MockComponent({ selector: 'ish-family-page', template: 'Family Page Component', inputs: ['category', 'categoryPath', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' })
       ]
     }).compileComponents();

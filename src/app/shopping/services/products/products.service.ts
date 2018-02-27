@@ -46,11 +46,14 @@ export class ProductsService {
     );
   }
 
-  getProductSkuListForCategory(categoryUniqueId: string): Observable<{ skus: string[], categoryUniqueId: string }> {
-    const url = `categories/${categoryUniqueId.replace(/\./g, '/')}/products`;
-    return this.apiService.get<any>(url, null, null, true, false).pipe(
-      map(list => ({
-        skus: list.map(el => el.uri.split('/').pop()),
+  getProductSkuListForCategory(categoryUniqueId: string, sortKey = ''): Observable<{ skus: string[], categoryUniqueId: string, sortKeys: string[] }> {
+    let url = `categories/${categoryUniqueId.replace(/\./g, '/')}/products?returnSortKeys=true`;
+    if (sortKey) { url += `&sortKey=${sortKey}`; }
+    console.log(url);
+    return this.apiService.get<any>(url, null, null, false, false).pipe(
+      map(response => ({
+        skus: response.elements.map(el => el.uri.split('/').pop()),
+        sortKeys: response.sortKeys,
         categoryUniqueId: categoryUniqueId
       }))
     );

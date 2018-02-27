@@ -17,6 +17,7 @@ export class FamilyPageComponent {
   @Input() totalItems: number;
   @Input() viewType: ViewType;
   @Input() sortBy: string;
+  @Input() sortKeys: string[];
   @Output() viewTypeChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<string>();
 
