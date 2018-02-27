@@ -1,4 +1,5 @@
-// NEEDS_WORK: DUMMY COMPONENT
+// NEEDS_WORK: DUMMY COMPONENT - container tslint rule disabled as long as it needs work
+// tslint:disable ccp-no-markup-in-containers
 import { Component, OnInit } from '@angular/core';
 
 @Component({
