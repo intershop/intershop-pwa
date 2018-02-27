@@ -89,8 +89,8 @@ describe('Categories Effects', () => {
     it('should trigger LoadCategory if not exists', () => {
       setSelectedCategoryId(category.uniqueId);
       const completion = new fromActions.LoadCategory(category.uniqueId);
-      const expected = cold('a', { a: completion });
-      expect(effects.selectedCategory$).toBeObservable(expected);
+      const expected$ = cold('a', { a: completion });
+      expect(effects.selectedCategory$).toBeObservable(expected$);
     });
 
     it('should trigger LoadCategory if category exists but subcategories have not been loaded', () => {
@@ -100,8 +100,8 @@ describe('Categories Effects', () => {
       setSelectedCategoryId(category.uniqueId);
 
       const completion = new fromActions.LoadCategory(category.uniqueId);
-      const expected = cold('a', { a: completion });
-      expect(effects.selectedCategory$).toBeObservable(expected);
+      const expected$ = cold('a', { a: completion });
+      expect(effects.selectedCategory$).toBeObservable(expected$);
     });
 
   });
@@ -123,9 +123,9 @@ describe('Categories Effects', () => {
       const action = new fromActions.LoadCategory(categoryId);
       const completion = new fromActions.LoadCategorySuccess({ uniqueId: categoryId } as Category);
       actions$.stream = hot('-a-a-a', { a: action });
-      const expected = cold('-c-c-c', { c: completion });
+      const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadCategory$).toBeObservable(expected);
+      expect(effects.loadCategory$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type LoadCategoryFail', () => {
@@ -133,9 +133,9 @@ describe('Categories Effects', () => {
       const action = new fromActions.LoadCategory(categoryId);
       const completion = new fromActions.LoadCategoryFail('');
       actions$.stream = hot('-a-a-a', { a: action });
-      const expected = cold('-c-c-c', { c: completion });
+      const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadCategory$).toBeObservable(expected);
+      expect(effects.loadCategory$).toBeObservable(expected$);
     });
   });
 
@@ -250,8 +250,8 @@ describe('Categories Effects', () => {
       const completion = new fromActions.SaveSubCategories(category.subCategories);
 
       actions$.stream = hot('-aa-a', { a: action });
-      const expected = cold('-cc-c', { c: completion });
-      expect(effects.saveSubCategories$).toBeObservable(expected);
+      const expected$ = cold('-cc-c', { c: completion });
+      expect(effects.saveSubCategories$).toBeObservable(expected$);
     });
 
     it('should do nothing if no subcategories exist', () => {
@@ -259,8 +259,8 @@ describe('Categories Effects', () => {
       const action = new fromActions.LoadCategorySuccess(category);
 
       actions$.stream = hot('-aa-a', { a: action });
-      const expected = cold('---');
-      expect(effects.saveSubCategories$).toBeObservable(expected);
+      const expected$ = cold('---');
+      expect(effects.saveSubCategories$).toBeObservable(expected$);
     });
   });
 

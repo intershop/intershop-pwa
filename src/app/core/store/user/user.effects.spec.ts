@@ -56,9 +56,9 @@ describe('UserEffects', () => {
       const completion = new ua.LoginUserSuccess({} as any);
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+      const expected$ = cold('-b', { b: completion });
 
-      expect(effects.loginUser$).toBeObservable(expected);
+      expect(effects.loginUser$).toBeObservable(expected$);
     });
 
     it('should dispatch a LoginUserFail action on failed login', () => {
@@ -68,9 +68,9 @@ describe('UserEffects', () => {
       const completion = new ua.LoginUserFail({} as any);
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+      const expected$ = cold('-b', { b: completion });
 
-      expect(effects.loginUser$).toBeObservable(expected);
+      expect(effects.loginUser$).toBeObservable(expected$);
     });
   });
 
@@ -117,9 +117,9 @@ describe('UserEffects', () => {
       const completion = new ua.CreateUserSuccess({} as any);
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+      const expected$ = cold('-b', { b: completion });
 
-      expect(effects.createUser$).toBeObservable(expected);
+      expect(effects.createUser$).toBeObservable(expected$);
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
@@ -129,9 +129,9 @@ describe('UserEffects', () => {
       const completion = new ua.CreateUserFail({} as any);
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+      const expected$ = cold('-b', { b: completion });
 
-      expect(effects.createUser$).toBeObservable(expected);
+      expect(effects.createUser$).toBeObservable(expected$);
     });
   });
 
@@ -141,9 +141,9 @@ describe('UserEffects', () => {
       const completion = new ua.LoginUserSuccess({} as any);
 
       actions$.stream = hot('-a', { a: action });
-      const expected = cold('-b', { b: completion });
+      const expected$ = cold('-b', { b: completion });
 
-      expect(effects.publishLoginEventAfterCreate$).toBeObservable(expected);
+      expect(effects.publishLoginEventAfterCreate$).toBeObservable(expected$);
     });
   });
 });
