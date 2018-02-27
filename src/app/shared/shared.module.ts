@@ -15,6 +15,7 @@ import { selectComponents } from './components/form-controls/select/index';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
+import { ProductAttributesComponent } from './components/product-attributes/product-attributes.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     BreadcrumbComponent,
     ModalDialogComponent,
     LoadingComponent,
-    ...selectComponents
+    ...selectComponents,
+    ProductAttributesComponent
   ],
   exports: [
     RouterModule,
@@ -55,7 +57,8 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
     ModalDialogComponent,
-    ...selectComponents
+    ...selectComponents,
+    ProductAttributesComponent
   ]
 })
 export class SharedModule { }

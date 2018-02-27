@@ -57,4 +57,5 @@ export interface ProductData {
   mastered: boolean;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
+  attributes?: AttributeData[];
 }
