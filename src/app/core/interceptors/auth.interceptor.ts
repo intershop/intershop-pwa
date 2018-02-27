@@ -32,13 +32,13 @@ export class AuthInterceptor implements HttpInterceptor {
       const response = <HttpResponse<any>>event;
       const tokenReturned = response.headers.get(tokenHeaderKeyName);
       if (tokenReturned) {
-        this._setToken(tokenReturned);
+        TOKEN = tokenReturned;
       }
     }
   }
+}
 
-  // visible for testing
-  _setToken(token: string): void {
-    TOKEN = token;
-  }
+// visible for testing
+export function _setToken(token: string): void {
+  TOKEN = token;
 }
