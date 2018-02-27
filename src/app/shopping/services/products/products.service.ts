@@ -40,11 +40,9 @@ export class ProductsService {
      */
   getProductList(url: string): Observable<Product[]> {
     return this.apiService.get<ProductData[]>(url, null, null, true, true).pipe(
-      map(
-        (productsData: ProductData[]) => {
-          return productsData.map(
-            (product: ProductData) => ProductFactory.fromData(product));
-        })
+      map(productsData => productsData.map(
+        product => ProductFactory.fromData(product)
+      ))
     );
   }
 
