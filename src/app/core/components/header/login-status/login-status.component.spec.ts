@@ -1,8 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { Customer } from '../../../../models/customer/customer.model';
 import { reducers } from '../../../store/core.system';
