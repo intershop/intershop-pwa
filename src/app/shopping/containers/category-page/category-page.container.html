@@ -17,8 +17,9 @@
       [categoryPath]="categoryPath$ | async"
       [products]="products$ | async"
       [totalItems]="totalItems$ | async"
-      [viewType]="viewType"
-      [sortBy]="sortBy"
+      [viewType]="viewType$ | async"
+      [sortBy]="sortBy$ | async"
+      [sortKeys]="sortKeys$ | async"
       (viewTypeChange)="changeViewType($event)"
       (sortByChange)="changeSortBy($event)"
     ></ish-family-page>

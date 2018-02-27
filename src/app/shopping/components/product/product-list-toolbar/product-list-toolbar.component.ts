@@ -12,20 +12,13 @@ export class ProductListToolbarComponent implements OnInit, OnChanges {
 
   @Input() itemCount: number;
   @Input() viewType: ViewType = 'grid';
-  @Input() sortBy: 'default';
+  @Input() sortBy = 'default';
+  @Input() sortKeys: string[];
   @Output() viewTypeChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<string>();
 
   sortForm: FormControl;
-
-  // TODO: comes from a REST call or has to go somewhere else
-  sortOptions: SelectOption[] = [
-    { value: 'default', label: 'Default Sorting' },
-    { value: 'name-asc', label: 'Name asc' },
-    { value: 'name-desc', label: 'Name desc' },
-    { value: 'SalesRankUnitsIndex-desc', label: 'Topsellers' },
-    { value: 'ArrivalDate-desc', label: 'Newest Arrivals' },
-  ];
+  sortOptions: SelectOption[] = [];
 
   ngOnInit() {
     this.sortForm = new FormControl(this.sortBy);
@@ -36,6 +29,15 @@ export class ProductListToolbarComponent implements OnInit, OnChanges {
     if (c.sortBy && this.sortForm) {
       this.sortForm.setValue(this.sortBy, { emitEvent: false });
     }
+
+    if (c.sortKeys) {
+      this.sortOptions = this.mapSortKeysToSelectOptions(this.sortKeys);
+    }
+  }
+
+  // TODO: probably it's good to map this in a selector, not here
+  private mapSortKeysToSelectOptions(sortKeys: string[]): SelectOption[] {
+    return sortKeys.map(sk => ({ value: sk, label: sk }));
   }
 
   get listView() {

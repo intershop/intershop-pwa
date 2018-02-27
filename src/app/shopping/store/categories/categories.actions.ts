@@ -6,7 +6,7 @@ export enum CategoriesActionTypes {
   LoadCategoryFail = '[Shopping] Load Category Fail',
   LoadCategorySuccess = '[Shopping] Load Category Success',
   SaveSubCategories = '[Shopping] Save SubCategories',
-  SetProductSkusForCategory = '[Shopping] Set product skus For Category'
+  SetProductSkusForCategory = '[Shopping] Set Product SKUs For Category'
 }
 
 export class LoadCategory implements Action {

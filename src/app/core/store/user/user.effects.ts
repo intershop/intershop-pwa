@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { CustomerData } from '../../../models/customer/customer.interface';
 import * as userActions from './user.actions';
@@ -19,7 +19,7 @@ export class UserEffects {
   loginUser$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoginUser),
     map((action: userActions.LoginUser) => action.payload),
-    switchMap(credentials => {
+    mergeMap(credentials => {
       return this.accountLoginService.signinUser(credentials).pipe(
         map(customer => new userActions.LoginUserSuccess(customer)),
         catchError(error => of(new userActions.LoginUserFail(error)))
@@ -43,7 +43,7 @@ export class UserEffects {
   createUser$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.CreateUser),
     map((action: userActions.CreateUser) => action.payload),
-    switchMap((customerData: CustomerData) => {
+    mergeMap((customerData: CustomerData) => {
       return this.accountLoginService.createUser(customerData).pipe(
         map(customer => new userActions.CreateUserSuccess(customer)),
         catchError(error => of(new userActions.CreateUserFail(error)))
@@ -54,7 +54,7 @@ export class UserEffects {
   @Effect()
   publishLoginEventAfterCreate$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.CreateUserSuccess),
-    switchMap((action: userActions.CreateUserSuccess) =>
-      of(new userActions.LoginUserSuccess(action.payload)))
+    map((action: userActions.CreateUserSuccess) =>
+      new userActions.LoginUserSuccess(action.payload))
   );
 }
