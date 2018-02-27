@@ -1,5 +1,4 @@
-import { ComponentFixture } from '@angular/core/testing';
-import { async, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ErrorPageContainerComponent } from './error-page.container';
 
 describe('Error Page Container', () => {

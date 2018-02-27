@@ -1,7 +1,6 @@
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 import { CoreState, UserActionTypes } from '../store/user';
 import { LogoutGuard } from './logout.guard';

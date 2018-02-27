@@ -166,6 +166,7 @@
     "no-access-missing-member": false,
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": true,
+    "no-duplicate-imports": true,
     "ban": [
       true,
       {"name": ["*", "ngOnInit"], "message": "Use fixture.detectChanges instead!"},

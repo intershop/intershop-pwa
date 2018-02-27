@@ -1,6 +1,5 @@
 import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
-import { CategoriesActionTypes } from './categories.actions';
 
 describe('Categories Actions', () => {
   describe('LoadCategory Actions', () => {
@@ -9,7 +8,7 @@ describe('Categories Actions', () => {
       const action = new fromActions.LoadCategory(payload);
 
       expect({ ...action }).toEqual({
-        type: CategoriesActionTypes.LoadCategory,
+        type: fromActions.CategoriesActionTypes.LoadCategory,
         payload
       });
     });
@@ -19,7 +18,7 @@ describe('Categories Actions', () => {
       const action = new fromActions.LoadCategoryFail(payload);
 
       expect({ ...action }).toEqual({
-        type: CategoriesActionTypes.LoadCategoryFail,
+        type: fromActions.CategoriesActionTypes.LoadCategoryFail,
         payload
       });
     });
@@ -29,7 +28,7 @@ describe('Categories Actions', () => {
       const action = new fromActions.LoadCategorySuccess(payload);
 
       expect({ ...action }).toEqual({
-        type: CategoriesActionTypes.LoadCategorySuccess,
+        type: fromActions.CategoriesActionTypes.LoadCategorySuccess,
         payload
       });
     });
@@ -44,7 +43,7 @@ describe('Categories Actions', () => {
     const action = new fromActions.SaveSubCategories(payload);
 
     expect({ ...action }).toEqual({
-      type: CategoriesActionTypes.SaveSubCategories,
+      type: fromActions.CategoriesActionTypes.SaveSubCategories,
       payload
     });
   });
@@ -58,7 +57,7 @@ describe('Categories Actions', () => {
     );
 
     expect({ ...action }).toEqual({
-      type: CategoriesActionTypes.SetProductSkusForCategory,
+      type: fromActions.CategoriesActionTypes.SetProductSkusForCategory,
       payload,
       categoryUniqueId
     });
