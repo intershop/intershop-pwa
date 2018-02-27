@@ -9,7 +9,7 @@ import { SelectComponent } from '../select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
-  @Input() titles: any[];
+  @Input() titles: string[];
 
   constructor(
     protected translate: TranslateService
@@ -42,7 +42,7 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
     this.errorMessages = this.errorMessages || { 'required': 'account.address.title.error.required' };
   }
 
-  private mapToOptions(titles: any[]): SelectOption[] {
+  private mapToOptions(titles: string[]): SelectOption[] {
     if (!titles) { return; }
     return titles.map(t => ({
       label: t,

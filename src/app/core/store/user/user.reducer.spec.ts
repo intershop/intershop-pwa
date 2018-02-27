@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { Action } from '@ngrx/store';
 import { Customer } from '../../../models/customer/customer.model';
 import { LoginUser, LoginUserFail, LoginUserSuccess, LogoutUser } from './user.actions';
 import { initialState, userReducer } from './user.reducer';
@@ -24,13 +26,13 @@ describe('User Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = userReducer(undefined, {} as any);
+      const newState = userReducer(undefined, {} as Action);
 
       expect(newState).toEqual(initialState);
     });
 
     it('should return initial state when undefined action is supplied', () => {
-      const newState = userReducer(initialState, {} as any);
+      const newState = userReducer(initialState, {} as Action);
 
       expect(newState).toEqual(initialState);
     });
@@ -50,7 +52,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when LoginUserFail action is reduced and error is resetted after route changed', () => {
-      const error = { message: 'error' } as any;
+      const error = { message: 'error' } as HttpErrorResponse;
       let newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });
@@ -60,7 +62,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when CreateUserFail action is reduced', () => {
-      const error = { message: 'error' } as any;
+      const error = { message: 'error' } as HttpErrorResponse;
       const newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -67,7 +68,7 @@ describe('Countries Selectors', () => {
     describe('and reporting failure', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadCountriesFail({ message: 'error' }));
+        store.dispatch(new LoadCountriesFail({ message: 'error' } as HttpErrorResponse));
       });
 
       it('should not have loaded category on error', () => {

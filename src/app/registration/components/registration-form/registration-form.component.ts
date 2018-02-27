@@ -21,11 +21,11 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() countries: Country[];
   @Input() regions: Region[];
   @Input() languages: any[]; // TODO: insert type
-  @Input() titles: any[]; // TODO: insert type
+  @Input() titles: string[];
   @Input() error: HttpErrorResponse;
 
-  @Output() create = new EventEmitter<any>();
-  @Output() cancel = new EventEmitter<any>();
+  @Output() create = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
   @Output() countryChange = new EventEmitter<string>();
 
   form: FormGroup;

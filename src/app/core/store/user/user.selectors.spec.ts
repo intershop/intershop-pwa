@@ -43,15 +43,15 @@ describe('User State Selectors', () => {
   });
 
   it('should select the customer when logging in successfully', () => {
-    const name = 'dummy';
-    store.dispatch(new LoginUserSuccess({ name } as any));
+    const firstName = 'dummy';
+    store.dispatch(new LoginUserSuccess({ firstName } as Customer));
 
     userAuthorized$.subscribe(authorized =>
       expect(authorized).toBe(true)
     );
     loggedInUser$.subscribe(customer => {
       expect(customer).toBeTruthy();
-      expect((customer as any).name).toEqual(name);
+      expect(customer.firstName).toEqual(firstName);
     });
     loginError$.subscribe(error =>
       expect(error).toBeFalsy()
@@ -59,7 +59,7 @@ describe('User State Selectors', () => {
   });
 
   it('should select no customer and an error when an error event was sent', () => {
-    const error: any = { message: 'dummy' };
+    const error = { message: 'dummy' } as HttpErrorResponse;
     store.dispatch(new LoginUserFail(error));
 
     userAuthorized$.subscribe(authorized =>

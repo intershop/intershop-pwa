@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { CategoryData } from '../../../models/category/category.interface';
 import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
@@ -7,7 +8,7 @@ import { categoriesReducer, flattenSubCategories, initialState } from './categor
 describe('Categories Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as any;
+      const action = {} as fromActions.CategoriesAction;
       const state = categoriesReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -27,7 +28,7 @@ describe('Categories Reducer', () => {
 
     describe('LoadCategoryFail action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.LoadCategoryFail({});
+        const action = new fromActions.LoadCategoryFail({} as HttpErrorResponse);
         const state = categoriesReducer(initialState, action);
 
         expect(state.loading).toEqual(false);

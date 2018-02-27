@@ -1,3 +1,4 @@
+// tslint:disable:no-any
 import { HttpEventType, HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';

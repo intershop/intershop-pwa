@@ -22,7 +22,7 @@ export class RegistrationPageContainerComponent implements OnInit {
   countries$: Observable<Country[]>;
   languages$: Observable<any[]>;
   regionsForSelectedCountry$: Observable<Region[]>;
-  titlesForSelectedCountry$: Observable<Region[]>;
+  titlesForSelectedCountry$: Observable<string[]>;
   userCreateError$: Observable<HttpErrorResponse>;
 
   constructor(
@@ -59,7 +59,7 @@ export class RegistrationPageContainerComponent implements OnInit {
     ]);
   }
 
-  private getTitles(countryCode: string): Observable<any[]> {
+  private getTitles(countryCode: string): Observable<string[]> {
     let salutationlabels = [];
 
     switch (countryCode) {

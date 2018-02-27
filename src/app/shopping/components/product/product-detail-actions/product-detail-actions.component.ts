@@ -10,7 +10,7 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 })
 export class ProductDetailActionsComponent {
   @Input() product: Product;
-  @Output() productToCompare = new EventEmitter<any>();
+  @Output() productToCompare = new EventEmitter<void>();
 
   // TODO: to be removed once channelName inforamtion available in system
   channelName = 'inTRONICS';

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
@@ -31,12 +32,12 @@ describe('Categories Effects', () => {
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(of({ uniqueId: '123' } as Category));
-    when(categoriesServiceMock.getCategory('invalid')).thenReturn(_throw(''));
+    when(categoriesServiceMock.getCategory('invalid')).thenReturn(_throw({ message: 'invalid category' } as HttpErrorResponse));
     when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of([
       { uniqueId: '123' } as Category,
       { uniqueId: '456' } as Category
     ]));
-    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(_throw(''));
+    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(_throw({ message: 'invalid number' } as HttpErrorResponse));
 
     TestBed.configureTestingModule({
       imports: [
@@ -167,7 +168,7 @@ describe('Categories Effects', () => {
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const categoryId = 'invalid';
       const action = new fromActions.LoadCategory(categoryId);
-      const completion = new fromActions.LoadCategoryFail('');
+      const completion = new fromActions.LoadCategoryFail({ message: 'invalid category' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -224,7 +225,7 @@ describe('Categories Effects', () => {
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const limit = -1;
       const action = new fromActions.LoadTopLevelCategories(limit);
-      const completion = new fromActions.LoadTopLevelCategoriesFail('');
+      const completion = new fromActions.LoadTopLevelCategoriesFail({ message: 'invalid number' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

@@ -3,7 +3,7 @@ import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import * as using from 'jasmine-data-provider';
 import { anything } from 'ts-mockito/lib/ts-mockito';
 import { CreateUserSuccess } from '../user';
-import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
+import { CommunicationTimeoutError, ErrorActionTypes, HttpError } from './error.actions';
 import { errorReducer, initialState } from './error.reducer';
 
 describe('Error Reducer', () => {
@@ -21,7 +21,7 @@ describe('Error Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = errorReducer(undefined, {} as any);
+      const newState = errorReducer(undefined, {} as HttpError);
 
       expect(newState).toEqual(initialState);
     });
@@ -32,7 +32,7 @@ describe('Error Reducer', () => {
     return [
       {
         state: initialState,
-        action: {} as any,
+        action: {} as HttpError,
         expected: initialState
       },
       {

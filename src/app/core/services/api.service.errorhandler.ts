@@ -12,7 +12,7 @@ export class ApiServiceErrorHandler {
 
   constructor(private store: Store<CoreState>) { }
 
-  dispatchCommunicationErrors(error: HttpErrorResponse): Observable<any> {
+  dispatchCommunicationErrors<T>(error: HttpErrorResponse): Observable<T> {
     switch (error.status) {
       case 0:
         this.store.dispatch(new errorActions.CommunicationTimeoutError(error));

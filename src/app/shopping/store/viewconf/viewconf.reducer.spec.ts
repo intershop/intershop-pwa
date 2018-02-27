@@ -5,7 +5,7 @@ describe('Viewconf Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
       const { initialState } = fromReducer;
-      const action = {} as any;
+      const action = {} as fromActions.ViewconfAction;
       const state = fromReducer.viewconfReducer(undefined, action);
 
       expect(state).toBe(initialState);

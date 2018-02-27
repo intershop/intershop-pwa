@@ -31,6 +31,7 @@ import { ShoppingModule } from './shopping/shopping.module';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from '../environments/environment';
 
+// tslint:disable-next-line: no-any
 export let metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
 if (!environment.production) {
   metaReducers = [...metaReducers, storeFreeze];

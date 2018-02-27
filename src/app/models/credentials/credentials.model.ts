@@ -1,6 +1,6 @@
 export interface Credentials {
   login: string;
-  password: any;
+  password: string;
   securityQuestion: string;
   securityQuestionAnswer: string;
   receivePromotions?: boolean;

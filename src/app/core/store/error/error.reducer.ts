@@ -1,5 +1,5 @@
-import { RouterAction } from '@ngrx/router-store';
 import { ErrorGroupTypes, HttpError } from './error.actions';
+
 export interface ErrorState {
   current: Error | null;
   type: String;
@@ -12,7 +12,7 @@ export const initialState: ErrorState = {
 
 export function errorReducer(
   state = initialState,
-  action: HttpError | RouterAction<any>
+  action: HttpError
 ): ErrorState {
   const httpAction = action as HttpError;
   switch (httpAction.errorGroup) {

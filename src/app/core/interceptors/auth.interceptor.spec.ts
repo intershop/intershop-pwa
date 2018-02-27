@@ -1,3 +1,4 @@
+// tslint:disable:no-any
 import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';

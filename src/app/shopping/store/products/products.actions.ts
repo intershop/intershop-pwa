@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
 
@@ -15,7 +16,7 @@ export class LoadProduct implements Action {
 
 export class LoadProductFail implements Action {
   readonly type = ProductsActionTypes.LoadProductFail;
-  constructor(public payload: any) { }
+  constructor(public payload: HttpErrorResponse) { }
 }
 
 export class LoadProductSuccess implements Action {

@@ -71,7 +71,7 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
-    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
+    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
   }
 
   /**
@@ -85,7 +85,7 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
-    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
+    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
   }
 
   /**
@@ -96,8 +96,10 @@ export class ApiService {
   delete<T>(path): Observable<T> {
     return this.httpClient.delete<T>(
       `${this.restEndpoint}/${path}`
-    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
+    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
   }
+
+  // tslint:disable:no-any
 
   private getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
     if (!linkTranslation) {
