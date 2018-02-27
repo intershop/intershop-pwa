@@ -1,22 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product } from '../../../models/product/product.model';
-import { Attribute } from '../../../models/attribute/attribute.model';
 
 @Component({
   selector: 'ish-product-attributes',
   templateUrl: './product-attributes.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductAttributesComponent implements OnInit {
+
+export class ProductAttributesComponent {
 
   @Input() product: Product;
-  @Input() attributeseperator: string = ',&nbsp';
-  constructor() { }
-
-  isObject(attribute: any) {
-    let test = this.product;
-    return attribute.value && typeof attribute.value === 'object' && attribute.value.constructor === Object;
-  }
-  ngOnInit() {
-  }
+  @Input() attributeseperator = ', ';
 
 }
