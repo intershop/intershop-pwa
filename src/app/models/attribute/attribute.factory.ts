@@ -1,24 +1,47 @@
-import { FactoryHelper } from '../factory-helper';
 import { AttributeData } from './attribute.interface';
-import { Attribute } from './attribute.model';
-import { StringValueFactory } from '../string-value/string-value.factory';
-import { QuantityValue } from '../quantity-value/quantity-value.model';
-import { ResourceAttributeValueData } from '../resource-attribute-value/resource-attribute-value.interface';
-import { StringValue } from '../string-value/string-value.model';
+import { Attribute, BooleanValue, MoneyValue, NumberValue, QuantityValue, StringValue } from './attribute.model';
 
 export class AttributeFactory {
 
   static fromData(data: AttributeData): Attribute {
-    const attribute: Attribute = <Attribute>data;
-    if (attribute.type === "ResourceAttribute") {
-      const rav: ResourceAttributeValueData = <QuantityValue>attribute.value;
-      if (attribute.value.type === "Quantity") {
-        attribute.value = new QuantityValue(rav.value, rav.unit);
-      }
-    } else {
-      attribute.value = new StringValue(attribute.value.toString());
-      // attribute.value = StringValueFactory.fromData(attribute);
+
+    let attrValue: StringValue | NumberValue | BooleanValue | QuantityValue | MoneyValue;
+
+    switch (data.type) {
+      case 'String':
+        attrValue = new StringValue(data.value);
+        break;
+      case 'Integer':
+      case 'Double':
+      case 'Long':
+      case 'BigDecimal':
+        attrValue = new NumberValue(data.value);
+        break;
+      case 'Boolean':
+        attrValue = new BooleanValue(data.value);
+        break;
+      // TODO: ISREST-222 - waiting for adaption of REST API response to return Date values not as 'String' so they can be handled accordingly
+      // case 'Date':
+      //   attrValue = new DateValue(data.value);
+      //   break;
+      case 'ResourceAttribute':
+        switch (data.value.type) {
+          case 'Quantity':
+            attrValue = new QuantityValue(data.value.value, data.value.unit);
+            break;
+          case 'Money':
+            attrValue = new MoneyValue(data.value.value, data.value.currencyMnemonic);
+            break;
+          default:
+            console.log('AttributeFactory: unsupported Attribute Value type', data.value);
+            attrValue = new StringValue(data.value.toString());
+        }
+        break;
+      default:
+        console.log('AttributeFactory: unsupported Attribute type', data);
+        attrValue = new StringValue(data.value.toString());
     }
-    return attribute;
+
+    return new Attribute(data.name, attrValue);
   }
 }
