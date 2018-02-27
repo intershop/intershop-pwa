@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
@@ -33,7 +34,7 @@ describe('ProductsEffects', () => {
     when(productsServiceMock.getProduct(anyString()))
       .thenCall((sku: string) => {
         if (sku === 'invalid') {
-          return _throw('');
+          return _throw({ message: 'invalid' } as HttpErrorResponse);
         } else {
           return of({ sku } as Product);
         }
@@ -93,7 +94,7 @@ describe('ProductsEffects', () => {
     it('should map invalid request to action of type LoadProductFail', () => {
       const sku = 'invalid';
       const action = new fromActions.LoadProduct(sku);
-      const completion = new fromActions.LoadProductFail('');
+      const completion = new fromActions.LoadProductFail({ message: 'invalid' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

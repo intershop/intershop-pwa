@@ -14,6 +14,7 @@ export class ErrorCodeMappingService {
   ) { }
 
   // TODO: async data must not be resolved synchronously. The method should return observable. Subscribe might need unsubscribe.
+  // tslint:disable-next-line:no-any
   getErrorMapping(errorInfo: any): string {
     let errorMessage = 'No Error Mapping';
     if (ERROR_CODE_MAPPING.hasOwnProperty(errorInfo.errorCode)) {

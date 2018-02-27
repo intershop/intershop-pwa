@@ -27,6 +27,7 @@ export function markAsDirtyRecursive(formGroup: FormGroup) {
  */
 export function updateValidatorsByDataLength(
   control: AbstractControl,
+  // tslint:disable-next-line:no-any
   array: any[],
   validators: ValidatorFn | ValidatorFn[] = Validators.required,
   async = false
@@ -56,10 +57,10 @@ export function asyncify(fn: Function) {
   return;
 }
 
-export function arrayDiff(a: any[], b: any[]): any[] {
+export function arrayDiff<T>(a: T[], b: T[]): T[] {
   return a.filter(i => !b.includes(i));
 }
 
-export function arrayIntersect(a: any[], b: any[]): any[] {
+export function arrayIntersect<T>(a: T[], b: T[]): T[] {
   return a.filter(i => b.includes(i));
 }

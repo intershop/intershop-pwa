@@ -51,7 +51,7 @@ export class ProductsService {
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
-    return this.apiService.get<any>(path, params, null, false, false).pipe(
+    return this.apiService.get<{ elements: { uri: string }[], sortKeys: string[], categoryUniqueId: string }>(path, params, null, false, false).pipe(
       map(response => ({
         skus: response.elements.map(el => el.uri.split('/').pop()),
         sortKeys: response.sortKeys,

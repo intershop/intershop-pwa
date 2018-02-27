@@ -18,6 +18,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   error: errorReducer
 };
 
+// tslint:disable-next-line:no-any
 export const coreEffects: any[] = [UserEffects, LocaleEffects, CountriesEffects, ErrorEffects];
 
 export * from './router/router.serializers';

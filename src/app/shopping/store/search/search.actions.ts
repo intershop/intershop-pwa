@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
@@ -31,7 +32,7 @@ export class SearchProductsAvailable implements Action {
 
 export class SearchProductFail implements Action {
   readonly type = SearchActionTypes.SearchProductFail;
-  constructor(public payload: any) { }
+  constructor(public payload: HttpErrorResponse) { }
 }
 
 export type SearchAction =

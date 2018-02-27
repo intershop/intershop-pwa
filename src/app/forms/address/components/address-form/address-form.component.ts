@@ -15,7 +15,7 @@ export class AddressFormComponent implements OnInit {
   @Input() countryCode: string;
   @Input() countries: Country[];
   @Input() regions: Region[];
-  @Input() titles: any[];
+  @Input() titles: string[];
 
   ngOnInit() {
     if (!this.parentForm) {

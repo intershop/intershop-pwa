@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 
@@ -19,7 +20,7 @@ export class LoadTopLevelCategories implements Action {
 
 export class LoadTopLevelCategoriesFail implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesFail;
-  constructor(public payload: any) { }
+  constructor(public payload: HttpErrorResponse) { }
 }
 
 export class LoadTopLevelCategoriesSuccess implements Action {
@@ -34,7 +35,7 @@ export class LoadCategory implements Action {
 
 export class LoadCategoryFail implements Action {
   readonly type = CategoriesActionTypes.LoadCategoryFail;
-  constructor(public payload: any) { }
+  constructor(public payload: HttpErrorResponse) { }
 }
 
 export class LoadCategorySuccess implements Action {

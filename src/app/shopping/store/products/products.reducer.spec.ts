@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../../../models/product/product.model';
 import * as fromActions from './products.actions';
 import { initialState, productsReducer } from './products.reducer';
@@ -5,7 +6,7 @@ import { initialState, productsReducer } from './products.reducer';
 describe('Products Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as any;
+      const action = {} as fromActions.ProductsAction;
       const state = productsReducer(undefined, action);
 
       expect(state).toBe(initialState);
@@ -25,7 +26,7 @@ describe('Products Reducer', () => {
 
     describe('LoadCategoryFail action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.LoadProductFail({});
+        const action = new fromActions.LoadProductFail({} as HttpErrorResponse);
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toEqual(false);

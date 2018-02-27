@@ -1,10 +1,10 @@
-import { DoSearch, SearchProductsAvailable } from './search.actions';
+import { DoSearch, SearchAction, SearchProductsAvailable } from './search.actions';
 import { initialState, searchReducer } from './search.reducer';
 
 describe('Products Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
-      const action = {} as any;
+      const action = {} as SearchAction;
       const state = searchReducer(undefined, action);
 
       expect(state).toBe(initialState);

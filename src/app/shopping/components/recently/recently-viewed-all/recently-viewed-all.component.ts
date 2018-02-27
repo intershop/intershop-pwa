@@ -9,7 +9,7 @@ import { Product } from '../../../../models/product/product.model';
 export class RecentlyViewedAllComponent {
 
   @Input() products: Product[];
-  @Output() clearRecently = new EventEmitter<any>();
+  @Output() clearRecently = new EventEmitter<void>();
 
   clearAll() {
     this.clearRecently.emit();
