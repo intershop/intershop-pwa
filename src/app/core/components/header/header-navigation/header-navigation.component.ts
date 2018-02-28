@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import { Category } from '../../../../models/category/category.model';
-import * as categoriesActions from '../../../../shopping/store/categories/categories.actions';
+import * as fromCategories from '../../../../shopping/store/categories';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { CoreState, getCurrentLocale } from '../../../store/locale';
 
@@ -14,7 +15,7 @@ import { CoreState, getCurrentLocale } from '../../../store/locale';
 export class HeaderNavigationComponent implements OnInit {
 
   @Input() maxSubCategoriesDepth = 0;
-  categories: Category[];
+  categories$: Observable<Category[]>;
 
   constructor(
     private store: Store<CoreState>,
@@ -22,16 +23,18 @@ export class HeaderNavigationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.categories$ = this.store.pipe(select(fromCategories.getTopLevelCategories));
+
     // TODO: this should be an effect
     this.store.pipe(select(getCurrentLocale)).subscribe(() => {
-      this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
+      /*this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
         if (typeof (response) === 'object') {
           this.categories = response;
         }
-      });
+      });*/
     });
 
-    this.store.dispatch(new categoriesActions.LoadTopLevelCategories(this.maxSubCategoriesDepth));
+    this.store.dispatch(new fromCategories.LoadTopLevelCategories(this.maxSubCategoriesDepth));
   }
 
   subMenuShow(submenu) {

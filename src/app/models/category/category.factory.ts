@@ -18,6 +18,11 @@ export class CategoryFactory {
         category.subCategories = categoryData.subCategories
           .map(subCategoryData => CategoryFactory.fromData(subCategoryData, categoryUniqueId + '.' + subCategoryData.id));
       }
+
+      if (categoryData.subCategoriesIds) {
+        category.subCategoriesIds = [...categoryData.subCategoriesIds];
+      }
+
       if (categoryData.images) {
         category.images = categoryData.images.map(imageData => ImageFactory.fromData(imageData));
       }

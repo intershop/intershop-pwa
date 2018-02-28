@@ -10,6 +10,7 @@ export interface CategoryData {
   description: string;
   subCategoriesCount?: number;
   subCategories?: CategoryData[];
+  subCategoriesIds?: string[];
   images?: ImageData[];
   uri?: string;
 }
