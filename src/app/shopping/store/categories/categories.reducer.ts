@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { CategoryFactory } from '../../../models/category/category.factory';
 import { Category } from '../../../models/category/category.model';
+import { adapterUpsertMany } from '../../../utils/adapter-upsert';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
@@ -90,8 +91,13 @@ export function categoriesReducer(
         .map(c => flattenSubCategories(c))
         .reduce((acc, p) => [...acc, ...p], []);
 
+      const upserts = allCategories.map(c => ({
+        id: c.uniqueId,
+        entity: c
+      }));
+
       return {
-        ...categoryAdapter.addMany(allCategories, state), // TODO: upsert
+        ...adapterUpsertMany(upserts, state, categoryAdapter),
         topLevelCategoriesIds
       };
     }
