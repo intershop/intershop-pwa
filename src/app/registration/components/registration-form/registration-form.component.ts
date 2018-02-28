@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { Country } from '../../../../models/country/country.model';
-import { Region } from '../../../../models/region/region.model';
-import { AddressFormService } from '../../../../shared/address-form';
-import { SpecialValidators } from '../../../../shared/validators/special-validators';
-import { markAsDirtyRecursive, updateValidatorsByDataLength } from '../../../../utils/form-utils';
+import { Country } from '../../../models/country/country.model';
+import { Region } from '../../../models/region/region.model';
+import { AddressFormService } from '../../../shared/address-form';
+import { SpecialValidators } from '../../../shared/validators/special-validators';
+import { markAsDirtyRecursive, updateValidatorsByDataLength } from '../../../utils/form-utils';
 
 @Component({
   selector: 'ish-registration-form',
