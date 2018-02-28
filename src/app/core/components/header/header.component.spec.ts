@@ -24,7 +24,7 @@ describe('Header Component', () => {
         MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
         MockComponent({ selector: 'ish-search-box', template: 'Search Box Template' }),
         MockComponent({ selector: 'ish-header-navigation', template: 'Header Navigation Template' }),
-        MockComponent({ selector: 'ish-mini-cart', template: 'Mini Cart Template' }),
+        MockComponent({ selector: 'ish-mini-cart-container', template: 'Mini Cart Container' }),
         MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
       ]
     }).compileComponents().then(() => {
@@ -60,6 +60,6 @@ describe('Header Component', () => {
 
   it('should render Cart on template', () => {
     expect(element.getElementsByTagName('ish-mobile-cart-container')[0].textContent).toContain('Mobile Cart Container');
-    expect(element.getElementsByTagName('ish-mini-cart')[0].textContent).toContain('Mini Cart Template');
+    expect(element.getElementsByTagName('ish-mini-cart-container')[0].textContent).toContain('Mini Cart Container');
   });
 });
