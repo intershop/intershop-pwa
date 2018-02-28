@@ -1,12 +1,15 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
-import { flatMap, map } from 'rxjs/operators';
+import { _throw } from 'rxjs/observable/throw';
+import { catchError, flatMap, map } from 'rxjs/operators';
 import { Locale } from '../../models/locale/locale.interface';
+import { CommunicationTimeoutError } from '../store/error';
 import { CoreState, getCurrentLocale } from '../store/locale';
+import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 @Injectable()
@@ -22,7 +25,8 @@ export class ApiService {
     @Inject(REST_ENDPOINT) private restEndpoint: string,
     @Inject(ICM_SERVER_URL) private icmServerUrl: string,
     private httpClient: HttpClient,
-    store: Store<CoreState>,
+    private store: Store<CoreState>,
+    private apiServiceErrorHandler: ApiServiceErrorHandler
   ) {
     store.pipe(select(getCurrentLocale)).subscribe(locale => this.currentLocale = locale);
   }
@@ -51,6 +55,7 @@ export class ApiService {
     }
 
     return this.httpClient.get<T>(url, { params: params, headers: headers }).pipe(
+      catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)),
       map(data => (elementsTranslation ? data['elements'] : data)),
       flatMap((data) => this.getLinkedData(data, linkTranslation))
     );
@@ -81,6 +86,8 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
+    ).pipe(
+      catchError((error: HttpErrorResponse) => this.apiServiceErrorHandler.dispatchCommunicationErrors(error))
     );
   }
 
@@ -126,7 +133,7 @@ export class ApiService {
     data.forEach(item => {
       if (item.type === 'Link' && item.uri) {
         const linkUrl = `${this.icmServerUrl}/${item.uri}`;
-        uriList$.push(this.get(linkUrl));
+        uriList$.push(this.get<any>(linkUrl));
       }
     });
     return uriList$;

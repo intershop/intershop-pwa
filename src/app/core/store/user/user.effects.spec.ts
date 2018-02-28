@@ -6,6 +6,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
+import { tap } from 'rxjs/operators';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { reducers } from '../core.system';
@@ -61,14 +62,13 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a LoginUserFail action on failed login', () => {
-      when(accountLoginServiceMock.signinUser(anything())).thenReturn(_throw({}));
+      when(accountLoginServiceMock.signinUser(anything())).thenReturn(_throw({ status: 401 }));
 
       const action = new ua.LoginUser({ userName: 'dummy' });
-      const completion = new ua.LoginUserFail({} as any);
+      const completion = new ua.LoginUserFail({ status: 401 } as any);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
-
       expect(effects.loginUser$).toBeObservable(expected$);
     });
   });
@@ -122,10 +122,10 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
-      when(accountLoginServiceMock.createUser(anything())).thenReturn(_throw({}));
+      when(accountLoginServiceMock.createUser(anything())).thenReturn(_throw({ status: 401 }));
 
       const action = new ua.CreateUser({} as any);
-      const completion = new ua.CreateUserFail({} as any);
+      const completion = new ua.CreateUserFail({ status: 401 } as any);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });

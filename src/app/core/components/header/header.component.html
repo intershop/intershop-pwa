@@ -1,6 +1,11 @@
+
+
 <div class="top-header">
   <nav class="container">
     <div class="row">
+        <div *ngIf="generalError$ | async as error" role="alert" class="alert alert-danger">
+          {{ error | json  }}
+        </div>
       <a rel="home" routerLink="/home" class="visible-xs mobile-logo"><img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41"></a>
       <div class="visible-xs pull-right">
         <button class="navbar-toggle" type="button" (click)="navbarCollapsed = !navbarCollapsed">
@@ -10,6 +15,7 @@
           <span class="icon-bar"></span>
         </button>
       </div>
+      
       <div class="col-md-12">
         <ul class="user-links">
           <li>
