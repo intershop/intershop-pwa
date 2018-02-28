@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ish-header',
   templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-export class HeaderComponent implements OnInit {
-  cartItems: string[] = [];
+export class HeaderComponent {
   navbarCollapsed = true;
-
-  ngOnInit() {
-    // TODO: fetch cartItems from store
-  }
 }

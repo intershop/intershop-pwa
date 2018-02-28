@@ -25,6 +25,7 @@ describe('Header Component', () => {
         MockComponent({ selector: 'ish-search-box', template: 'Search Box Template' }),
         MockComponent({ selector: 'ish-header-navigation', template: 'Header Navigation Template' }),
         MockComponent({ selector: 'ish-mini-cart', template: 'Mini Cart Template' }),
+        MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(HeaderComponent);
@@ -57,7 +58,8 @@ describe('Header Component', () => {
     expect(element.getElementsByTagName('ish-header-navigation')[0].textContent).toContain('Header Navigation Template');
   });
 
-  it('should render Mini Cart on template', () => {
+  it('should render Cart on template', () => {
+    expect(element.getElementsByTagName('ish-mobile-cart-container')[0].textContent).toContain('Mobile Cart Container');
     expect(element.getElementsByTagName('ish-mini-cart')[0].textContent).toContain('Mini Cart Template');
   });
 });
