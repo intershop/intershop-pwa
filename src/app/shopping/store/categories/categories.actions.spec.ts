@@ -2,6 +2,41 @@ import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
 
 describe('Categories Actions', () => {
+  describe('LoadTopLevelCategories Actions', () => {
+    it('should create new action for LoadTopLevelCategories', () => {
+      const payload = 3;
+      const action = new fromActions.LoadTopLevelCategories(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.CategoriesActionTypes.LoadTopLevelCategories,
+        payload
+      });
+    });
+
+    it('should create new action for LoadTopLevelCategoriesFail', () => {
+      const payload = { a: 'a' };
+      const action = new fromActions.LoadTopLevelCategoriesFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.CategoriesActionTypes.LoadTopLevelCategoriesFail,
+        payload
+      });
+    });
+
+    it('should create new action for LoadTopLevelCategoriesSuccess', () => {
+      const payload = [
+        { uniqueId: '123' } as Category,
+        { uniqueId: '456' } as Category
+      ];
+      const action = new fromActions.LoadTopLevelCategoriesSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.CategoriesActionTypes.LoadTopLevelCategoriesSuccess,
+        payload
+      });
+    });
+  });
+
   describe('LoadCategory Actions', () => {
     it('should create new action for LoadCategory', () => {
       const payload = '123';

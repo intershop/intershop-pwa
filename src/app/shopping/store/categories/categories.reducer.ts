@@ -97,9 +97,8 @@ export function categoriesReducer(
   return state;
 }
 
-
 export function flattenSubCategories(c: Category): Category[] {
-  if (!(c.hasOnlineSubCategories && c.subCategoriesIds && c.subCategoriesIds.length && c.subCategoriesCount > 0)) {
+  if (!(c.hasOnlineSubCategories && c.subCategoriesCount > 0)) {
     return [c];
   }
 

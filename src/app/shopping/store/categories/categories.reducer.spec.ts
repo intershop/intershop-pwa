@@ -1,6 +1,6 @@
 import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
-import { categoriesReducer, initialState } from './categories.reducer';
+import { categoriesReducer, flattenSubCategories, initialState } from './categories.reducer';
 
 describe('Categories Reducer', () => {
   describe('undefined action', () => {
@@ -99,6 +99,148 @@ describe('Categories Reducer', () => {
         expect(state.entities['Foo.456']).toBe(categories[1]);
         expect(state.entities['Foo.789']).toBe(categories[2]);
       });
+    });
+  });
+
+  describe('flattenSubCategories helper function', () => {
+    let category: Category;
+
+    beforeEach(() => {
+      category = {
+        id: '1',
+        hasOnlineSubCategories: true,
+        subCategoriesCount: 3,
+        subCategories: [
+          { id: '2', hasOnlineSubCategories: false } as Category,
+          { id: '3', hasOnlineSubCategories: false } as Category,
+          {
+            id: '4', hasOnlineSubCategories: true, subCategoriesCount: 2, subCategories: [
+              {
+                id: '5', hasOnlineSubCategories: true, subCategoriesCount: 2, subCategories: [
+                  { id: '6' } as Category,
+                  { id: '7' } as Category
+                ]
+              } as Category,
+              { id: '8' } as Category,
+            ]
+          } as Category
+        ]
+      } as Category;
+    });
+
+    it('should flatten nested subcategories for one top level category', () => {
+      const flat = flattenSubCategories(category);
+      const ids = flat.map(c => c.id);
+      const expectedIds = ['2', '3', '6', '7', '5', '8', '4', '1'];
+
+      expect(ids).toEqual(expectedIds);
+    });
+
+    it('should add all subCategoriesIds (uniqueIds) to each category', () => {
+      const flat = flattenSubCategories(category);
+      const subCategoriesIdsAll = flat.map(c => c.subCategoriesIds);
+      const expected = [
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        ['1.4.5.6', '1.4.5.7'],
+        undefined,
+        ['1.4.5', '1.4.8'],
+        ['1.2', '1.3', '1.4']
+      ];
+
+      expect(subCategoriesIdsAll).toEqual(expected);
+    });
+
+    it('should return the category unchanged in an array if it doesnt have subcategories', () => {
+      category = {
+        id: 'foo',
+        hasOnlineSubCategories: false,
+        subCategoriesCount: 0
+      } as Category;
+
+      const result = flattenSubCategories(category);
+      expect(result).toEqual([category]);
+    });
+  });
+
+
+  describe('LoadTopLevelCategoriesSuccess action', () => {
+    let categories: Category[];
+
+    beforeEach(() => {
+      categories = [
+        {
+          id: '1',
+          uniqueId: '1',
+          hasOnlineSubCategories: true,
+          subCategoriesCount: 3,
+          subCategories: [
+            { id: '2', uniqueId: '1.2', hasOnlineSubCategories: false, name: 'updated' } as Category,
+            { id: '3', uniqueId: '1.3', hasOnlineSubCategories: false } as Category,
+            {
+              id: '4', uniqueId: '1.4', hasOnlineSubCategories: true, subCategoriesCount: 2, subCategories: [
+                {
+                  id: '5', uniqueId: '1.4.5', hasOnlineSubCategories: true, subCategoriesCount: 2, subCategories: [
+                    { id: '6', uniqueId: '1.4.5.6', } as Category,
+                    { id: '7', uniqueId: '1.4.5.7', } as Category
+                  ]
+                } as Category,
+                { id: '8', uniqueId: '1.4.8', hasOnlineSubCategories: false } as Category,
+              ]
+            } as Category
+          ]
+        } as Category,
+        {
+          id: '9',
+          uniqueId: '9',
+          hasOnlineSubCategories: true,
+          subCategoriesCount: 3,
+          subCategories: [
+            { id: '10', uniqueId: '9.10', hasOnlineSubCategories: false } as Category,
+            { id: '11', uniqueId: '9.11', hasOnlineSubCategories: false } as Category,
+            {
+              id: '12', uniqueId: '9.12', hasOnlineSubCategories: true, subCategoriesCount: 2, subCategories: [
+                { id: '13', uniqueId: '9.12.13', hasOnlineSubCategories: false } as Category,
+                { id: '14', uniqueId: '9.12.14', hasOnlineSubCategories: false } as Category,
+              ]
+            } as Category
+          ]
+        } as Category
+      ];
+    });
+
+    it('should add all flattened categories to the entities state', () => {
+      const action = new fromActions.LoadTopLevelCategoriesSuccess(categories);
+      const state = categoriesReducer(initialState, action);
+
+      const expectedIds = ['1.2', '1.3', '1.4.5.6', '1.4.5.7', '1.4.5', '1.4.8', '1.4', '1', '9.10', '9.11', '9.12.13', '9.12.14', '9.12', '9'];
+
+      expect(state.ids).toEqual(expectedIds);
+      expect(state.entities['1.2'].name).toEqual(categories[0].subCategories[0].name);
+    });
+
+    it('should collect the IDs for all top level categories in the state', () => {
+      const action = new fromActions.LoadTopLevelCategoriesSuccess(categories);
+      const state = categoriesReducer(initialState, action);
+
+      const topLevelIds = ['1', '9'];
+
+      expect(state.topLevelCategoriesIds).toEqual(topLevelIds);
+    });
+
+    it('should update existing entities', () => {
+      const action = new fromActions.LoadTopLevelCategoriesSuccess(categories);
+      const newInitialState = {
+        ...initialState,
+        entities: {
+          '1.2': { id: '2', uniqueId: '1.2', name: 'mycategory', description: 'dsfdf' }
+        }
+      };
+      const state = categoriesReducer(initialState, action);
+
+      expect(state.entities['1.2'].name).toEqual('updated');
     });
   });
 });
