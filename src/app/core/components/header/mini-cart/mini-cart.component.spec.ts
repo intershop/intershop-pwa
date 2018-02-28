@@ -1,5 +1,5 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { MiniCartComponent } from './mini-cart.component';
 
 describe('Mini Cart Component', () => {
@@ -9,10 +9,12 @@ describe('Mini Cart Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        CollapseModule.forRoot(),
+      ],
       declarations: [
         MiniCartComponent
       ],
-      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(MiniCartComponent);
       component = fixture.componentInstance;
@@ -26,20 +28,15 @@ describe('Mini Cart Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  xit('should call calculateCartValues and verify if the correct calculations are made', () => {
+  it('should calculate the correct output for price and number of items', () => {
     const cartItems = [
-      {
-        salePrice: {
-          'value': 20
-        }
-      },
-      {
-        salePrice: {
-          'value': 40
-        }
-      },
+      { salePrice: { value: 20 } },
+      { salePrice: { value: 40 } },
     ];
-    component.calculateCartValues(cartItems);
+    component.cartItems = cartItems;
+
+    component.ngOnChanges();
+
     expect(component.cartPrice).toEqual(60);
     expect(component.cartLength).toEqual(2);
   });
