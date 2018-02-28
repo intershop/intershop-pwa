@@ -9,7 +9,7 @@ import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/
 import { reducers } from '../../../core/store/core.system';
 import { CoreState, LoginUserFail } from '../../../core/store/user';
 import { SharedModule } from '../../../shared/shared.module';
-import { LoginPageComponent } from './login-page.component';
+import { LoginPageComponent } from './login-page.container';
 
 describe('Login Component', () => {
   let fixture: ComponentFixture<LoginPageComponent>;

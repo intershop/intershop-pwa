@@ -10,7 +10,7 @@ import { CoreState, getLoginError, getUserAuthorized, LoginUser } from '../../..
 import { markAsDirtyRecursive } from '../../../utils/form-utils';
 
 @Component({
-  templateUrl: './login-page.component.html'
+  templateUrl: './login-page.container.html'
 })
 
 export class LoginPageComponent implements OnInit {
