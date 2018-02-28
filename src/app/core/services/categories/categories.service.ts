@@ -27,7 +27,9 @@ export class CategoriesService {
   getTopLevelCategories(limit: number): Observable<Category[]> {
     let params = new HttpParams().set('imageView', 'NO-IMAGE');
     if (limit > 0) {
-      params = params.set('view', 'tree').set('limit', limit.toString());
+      params = params
+        .set('view', 'tree')
+        .set('limit', limit.toString());
     }
     return this.apiService.get<CategoryData[]>(this.serviceIdentifier, params, null, true).pipe(
       map(categoriesData => categoriesData.map(
