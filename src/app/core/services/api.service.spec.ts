@@ -6,6 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { CoreState } from '../store/user';
 import { ApiService } from './api.service';
+import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 describe('ApiService', () => {
@@ -25,6 +26,7 @@ describe('ApiService', () => {
         { provide: REST_ENDPOINT, useValue: BASE_URL },
         { provide: ICM_SERVER_URL, useValue: BASE_URL },
         { provide: Store, useFactory: () => instance(storeMock) },
+        { provide: ApiServiceErrorHandler },
         ApiService
       ]
     });

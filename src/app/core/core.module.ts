@@ -15,6 +15,7 @@ import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { ApiService } from './services/api.service';
+import { ApiServiceErrorHandler } from './services/api.service.errorhandler';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
 import { translateFactory } from './services/custom-translate-loader';
@@ -47,6 +48,7 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
   ],
   providers: [
     ApiService,
+    ApiServiceErrorHandler,
     ErrorCodeMappingService,
     StatePropertiesService,
     CountryService,
