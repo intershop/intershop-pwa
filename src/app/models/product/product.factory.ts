@@ -1,3 +1,4 @@
+import { mergeObjectsMutably } from '../../utils/merge-objects';
 import { AttributeFactory } from '../attribute/attribute.factory';
 import { FactoryHelper } from '../factory-helper';
 import { ImageFactory } from '../image/image.factory';
@@ -34,5 +35,9 @@ export class ProductFactory {
     }
     product.name = data.productName;
     return product;
+  }
+
+  static updateImmutably(original: Product, change: Product): Product {
+    return mergeObjectsMutably(new Product(original.sku), ['sku'], original, change);
   }
 }

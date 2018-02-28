@@ -1,4 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { ProductFactory } from '../../../models/product/product.factory';
 import { Product } from '../../../models/product/product.model';
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
@@ -36,14 +37,22 @@ export function productsReducer(
 
     case ProductsActionTypes.LoadProductSuccess: {
       const loadedProduct = action.payload;
+      const { sku } = loadedProduct;
 
-      console.log('loaded', loadedProduct);
+      let updatedState;
 
-      const upsert = { id: loadedProduct.sku, entity: loadedProduct };
-      return {
-        ...adapterUpsertOne(upsert, state, productAdapter),
-        loading: false
-      };
+      if (state.entities[sku]) {
+        const updated = ProductFactory.updateImmutably(state.entities[sku], loadedProduct);
+        const entities = {
+          ...state.entities,
+          [sku]: updated
+        };
+        updatedState = { ...state, entities };
+      } else {
+        updatedState = productAdapter.addOne(loadedProduct, state);
+      }
+
+      return { ...updatedState, loading: false };
     }
   }
 
