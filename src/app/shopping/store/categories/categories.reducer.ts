@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { CategoryFactory } from '../../../models/category/category.factory';
 import { Category } from '../../../models/category/category.model';
-import { adapterUpsertMany } from '../../../utils/adapter-upsert';
+import { adapterUpsertMany, adapterUpsertOne } from '../../../utils/adapter-upsert';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
@@ -41,17 +41,9 @@ export function categoriesReducer(
     case CategoriesActionTypes.LoadCategorySuccess: {
       const loadedCategory = action.payload;
 
-      /* WORKAROUND: upsert overrides the `id` property and doesn't work as expected
-       * see https://github.com/ngrx/platform/issues/817
-       * we will use remove and add until then
-       * const upsert: Update<Category> = { id: loadedCategory.uniqueId, changes: loadedCategory };
-       * ...categoryAdapter.upsertOne(upsert, state),
-       */
-
-      const cleanedState = categoryAdapter.removeOne(loadedCategory.uniqueId, state);
-
+      const upsert = { id: loadedCategory.uniqueId, entity: loadedCategory };
       return {
-        ...categoryAdapter.addOne(loadedCategory, cleanedState),
+        ...adapterUpsertOne(upsert, state, categoryAdapter),
         loading: false
       };
 
@@ -60,13 +52,12 @@ export function categoriesReducer(
     case CategoriesActionTypes.SaveSubCategories: {
       const subCategories = action.payload;
 
-      /* WORKAROUND: upsert doen't work as expected
-       * see https://github.com/ngrx/platform/issues/817
-       * const upserts: Update<Category>[] = subCategories.map(c => ({ id: c.uniqueId, changes: c }));
-       * return categoryAdapter.upsertMany(upserts, state);
-       */
+      const upserts = subCategories.map(c => ({
+        id: c.uniqueId,
+        entity: c
+      }));
 
-      return categoryAdapter.addMany(subCategories, state);
+      return adapterUpsertMany(upserts, state, categoryAdapter);
     }
 
     case CategoriesActionTypes.SetProductSkusForCategory: {
@@ -108,7 +99,7 @@ export function categoriesReducer(
 
 
 export function flattenSubCategories(c: Category): Category[] {
-  if (!c.hasOnlineSubCategories || !c.subCategories || !c.subCategories.length || c.subCategoriesCount === 0) {
+  if (!(c.hasOnlineSubCategories && c.subCategoriesIds && c.subCategoriesIds.length && c.subCategoriesCount > 0)) {
     return [c];
   }
 
