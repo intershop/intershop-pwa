@@ -19,7 +19,7 @@ describe('Header Component', () => {
       ],
       declarations: [
         HeaderComponent,
-        MockComponent({ selector: 'ish-login-status', template: 'Login Status Template' }),
+        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
         MockComponent({ selector: 'ish-product-compare-status', template: 'Product Compare Status Template' }),
         MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
         MockComponent({ selector: 'ish-search-box', template: 'Search Box Template' }),
@@ -41,7 +41,7 @@ describe('Header Component', () => {
   });
 
   it('should render User Links on template', () => {
-    expect(element.getElementsByTagName('ish-login-status')[0].textContent).toContain('Login Status Template');
+    expect(element.getElementsByTagName('ish-login-status-container')[0].textContent).toContain('Login Status Container');
     expect(element.getElementsByTagName('ish-product-compare-status')[0].textContent).toContain('Product Compare Status Template');
   });
 
