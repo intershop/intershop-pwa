@@ -22,7 +22,7 @@ describe('Header Component', () => {
         MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
         MockComponent({ selector: 'ish-product-compare-status-container', template: 'Product Compare Status Container' }),
         MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
-        MockComponent({ selector: 'ish-search-box', template: 'Search Box Template' }),
+        MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' }),
         MockComponent({ selector: 'ish-header-navigation', template: 'Header Navigation Template' }),
         MockComponent({ selector: 'ish-mini-cart-container', template: 'Mini Cart Container' }),
         MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
@@ -51,7 +51,7 @@ describe('Header Component', () => {
   });
 
   it('should render Search Box on template', () => {
-    expect(element.getElementsByTagName('ish-search-box')[0].textContent).toContain('Search Box Template');
+    expect(element.getElementsByTagName('ish-search-box-container')[0].textContent).toContain('Search Box Container');
   });
 
   it('should render Header Navigation on template', () => {

@@ -18,6 +18,7 @@ import { LoginStatusContainerComponent } from './containers/header/login-status/
 import { MiniCartContainerComponent } from './containers/header/mini-cart/mini-cart.container';
 import { MobileCartContainerComponent } from './containers/header/mobile-cart/mobile-cart.container';
 import { ProductCompareStatusContainerComponent } from './containers/header/product-compare-status/product-compare-status.container';
+import { SearchBoxContainerComponent } from './containers/header/search-box/search-box.container';
 import { AccountLoginService } from './services/account-login/account-login.service';
 import { CategoriesService } from './services/categories/categories.service';
 import { SuggestService } from './services/suggest/suggest.service';
@@ -39,6 +40,7 @@ import { SuggestService } from './services/suggest/suggest.service';
     MobileCartComponent,
     MobileCartContainerComponent,
     SearchBoxComponent,
+    SearchBoxContainerComponent,
     LanguageSwitchComponent,
     LanguageSwitchContainerComponent,
     HeaderNavigationComponent,
