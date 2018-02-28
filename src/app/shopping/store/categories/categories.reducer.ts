@@ -4,6 +4,7 @@ import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
+  mainCategories: string[];
 }
 
 export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
@@ -12,6 +13,7 @@ export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Cate
 
 export const initialState: CategoriesState = categoryAdapter.getInitialState({
   loading: false,
+  mainCategories: []
 });
 
 export function categoriesReducer(
