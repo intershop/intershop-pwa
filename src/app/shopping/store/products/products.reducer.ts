@@ -37,16 +37,11 @@ export function productsReducer(
     case ProductsActionTypes.LoadProductSuccess: {
       const loadedProduct = action.payload;
 
-      /* WORKAROUND: upsert overrides the `id` property and doesn't work as expected
-       * see https://github.com/ngrx/platform/issues/817
-       * we will use remove and add until then
-       * const upsert: Update<Product> = { id: loadedProduct.sku, changes: loadedProduct };
-       * ...productAdapter.upsertOne(upsert, state),
-       */
-      const cleanedState = productAdapter.removeOne(loadedProduct.sku, state);
+      console.log('loaded', loadedProduct);
 
+      const upsert = { id: loadedProduct.sku, entity: loadedProduct };
       return {
-        ...productAdapter.addOne(loadedProduct, cleanedState),
+        ...adapterUpsertOne(upsert, state, productAdapter),
         loading: false
       };
     }
