@@ -26,4 +26,8 @@ export class CategoryFactory {
       throw new Error('\'categoryData\' is required');
     }
   }
+
+  static clone(c: Category) {
+    return CategoryFactory.fromData(c as CategoryData, c.uniqueId); // TODO
+  }
 }
