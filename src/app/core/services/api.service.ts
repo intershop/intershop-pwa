@@ -54,7 +54,7 @@ export class ApiService {
 
     return this.httpClient.get<T>(url, { params: params, headers: headers }).pipe(
       catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)),
-      map(data => (elementsTranslation ? data['elements'] : data)),
+      map(data => (elementsTranslation && data ? data['elements'] : data)),
       flatMap((data) => this.getLinkedData(data, linkTranslation))
     );
   }
