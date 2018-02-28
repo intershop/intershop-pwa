@@ -1,0 +1,7 @@
+<h1>{{ 'application.recentlyViewed.heading' | translate }}</h1>
+
+<ng-container *ngIf="products$ | async as products">
+
+  {{ products.length }}
+
+</ng-container>
