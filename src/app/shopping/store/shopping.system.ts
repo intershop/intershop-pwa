@@ -5,6 +5,8 @@ import { CompareEffects } from './compare/compare.effects';
 import { compareReducer } from './compare/compare.reducer';
 import { ProductsEffects } from './products/products.effects';
 import { productsReducer } from './products/products.reducer';
+import { RecentlyEffects } from './recently/recently.effects';
+import { recentlyReducer } from './recently/recently.reducer';
 import { SearchEffects } from './search/search.effects';
 import { searchReducer } from './search/search.reducer';
 import { ShoppingState } from './shopping.state';
@@ -15,14 +17,16 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
   products: productsReducer,
   compare: compareReducer,
-  viewconf: viewconfReducer,
-  search: searchReducer
+  recently: recentlyReducer,
+  search: searchReducer,
+  viewconf: viewconfReducer
 };
 
 export const shoppingEffects: any[] = [
   CategoriesEffects,
   ProductsEffects,
   CompareEffects,
-  ViewconfEffects,
-  SearchEffects
+  RecentlyEffects,
+  SearchEffects,
+  ViewconfEffects
 ];
