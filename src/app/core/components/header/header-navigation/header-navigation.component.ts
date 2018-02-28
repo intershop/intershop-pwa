@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Category } from '../../../../models/category/category.model';
+import * as categoriesActions from '../../../../shopping/store/categories/categories.actions';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { CoreState, getCurrentLocale } from '../../../store/locale';
+
 
 @Component({
   selector: 'ish-header-navigation',
@@ -28,6 +30,8 @@ export class HeaderNavigationComponent implements OnInit {
         }
       });
     });
+
+    this.store.dispatch(new categoriesActions.LoadTopLevelCategories(this.maxSubCategoriesDepth));
   }
 
   subMenuShow(submenu) {

@@ -1,10 +1,11 @@
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
+import { CategoryFactory } from '../../../models/category/category.factory';
 import { Category } from '../../../models/category/category.model';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 
 export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
-  mainCategories: string[];
+  topLevelCategoriesIds: string[];
 }
 
 export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
@@ -13,7 +14,7 @@ export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Cate
 
 export const initialState: CategoriesState = categoryAdapter.getInitialState({
   loading: false,
-  mainCategories: []
+  topLevelCategoriesIds: []
 });
 
 export function categoriesReducer(
@@ -80,7 +81,40 @@ export function categoriesReducer(
 
       return categoryAdapter.updateOne(update, state);
     }
+
+    case CategoriesActionTypes.LoadTopLevelCategoriesSuccess: {
+      const tlCategories = action.payload;
+      const topLevelCategoriesIds = tlCategories.map(c => c.uniqueId);
+
+      const allCategories = tlCategories
+        .map(c => flattenSubCategories(c))
+        .reduce((acc, p) => [...acc, ...p], []);
+
+      return {
+        ...categoryAdapter.addMany(allCategories, state), // TODO: upsert
+        topLevelCategoriesIds
+      };
+    }
   }
 
   return state;
+}
+
+
+export function flattenSubCategories(c: Category): Category[] {
+  if (!c.hasOnlineSubCategories || !c.subCategories || !c.subCategories.length || c.subCategoriesCount === 0) {
+    return [c];
+  }
+
+  const category = CategoryFactory.clone(c);
+  category.subCategoriesIds = category.subCategories.map(sc => sc.uniqueId);
+
+  const categories = category.subCategories
+    .map(sc => flattenSubCategories(sc))
+    .reduce((acc, p) => [...acc, ...p], [])
+    .filter(e => !!e);
+
+  delete category.subCategories;
+
+  return [...categories, category];
 }

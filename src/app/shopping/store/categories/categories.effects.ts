@@ -41,6 +41,18 @@ export class CategoriesEffects {
   );
 
   @Effect()
+  loadTopLevelCategories$ = this.actions$.pipe(
+    ofType(categoriesActions.CategoriesActionTypes.LoadTopLevelCategories),
+    map((action: categoriesActions.LoadTopLevelCategories) => action.payload),
+    mergeMap(limit => {
+      return this.categoryService.getTopLevelCategories(limit).pipe(
+        map(category => new categoriesActions.LoadTopLevelCategoriesSuccess(category)),
+        catchError(error => of(new categoriesActions.LoadTopLevelCategoriesFail(error)))
+      );
+    })
+  );
+
+  @Effect()
   productOrCategoryChanged$ = combineLatest(
     this.store.pipe(select(categoriesSelectors.getSelectedCategory)),
     this.store.pipe(select(productsSelectors.getSelectedProductId)),
