@@ -197,7 +197,7 @@
     "ccp-no-markup-in-containers": {
       "severity": "warning",
       "options": {
-        "patterns": [ "<h", "<img", "<p", "<ul", "<li", "<table", "<[^>]*class" ]
+        "patterns": [ "<h", "<img", "<p", "<ul", "<li", "<table", "<(?![^>]*(clearfix))[^>]*class" ]
       }
     }
   }
