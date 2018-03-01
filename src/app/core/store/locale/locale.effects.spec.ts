@@ -1,18 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { Actions, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
+import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
 import { SelectLocale, SetAvailableLocales } from '.';
-import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
 import { Locale } from '../../../models/locale/locale.interface';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import { reducers } from '../core.system';
 import { LocaleEffects } from './locale.effects';
 
 describe('LocaleEffects', () => {
-  let actions$: TestActions;
+  let actions$: Observable<Action>;
   let effects: LocaleEffects;
   let translateServiceMock: TranslateService;
   let defaultLocales: Locale[];
@@ -26,12 +27,11 @@ describe('LocaleEffects', () => {
       ],
       providers: [
         LocaleEffects,
-        { provide: Actions, useFactory: testActionsFactory },
+        provideMockActions(() => actions$),
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) }
       ],
     });
 
-    actions$ = TestBed.get(Actions);
     effects = TestBed.get(LocaleEffects);
     defaultLocales = TestBed.get(AVAILABLE_LOCALES);
   });
@@ -40,7 +40,7 @@ describe('LocaleEffects', () => {
     it('should call TranslateService when SetLocale action is handled', () => {
       const action = new SelectLocale({ lang: 'jp' } as Locale);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       effects.setLocale$.subscribe(() => {
         verify(translateServiceMock.setDefaultLang(anything())).once();
@@ -55,7 +55,7 @@ describe('LocaleEffects', () => {
       const action = { type: ROOT_EFFECTS_INIT } as Action;
       const expected = new SetAvailableLocales(defaultLocales);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       expect(effects.loadAllLocales$).toBeObservable(cold('-b', { b: expected }));
     });
@@ -67,7 +67,7 @@ describe('LocaleEffects', () => {
       const action = new SetAvailableLocales([japanese]);
       const expected = new SelectLocale(japanese);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
     });
@@ -76,7 +76,7 @@ describe('LocaleEffects', () => {
       const action = new SetAvailableLocales([]);
       const expected = new SelectLocale(null);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
     });
