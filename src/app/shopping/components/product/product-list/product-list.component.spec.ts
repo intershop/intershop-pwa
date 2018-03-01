@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from '../../../../dev-utils/mock.component';
 import { Product } from '../../../../models/product/product.model';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductListComponent } from './product-list.component';
 
 describe('Product List Component', () => {

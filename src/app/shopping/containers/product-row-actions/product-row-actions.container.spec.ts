@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from '../../../dev-utils/mock.component';
+import { MockComponent } from '../../../utils/dev/mock.component';
 import { ProductRowActionsContainerComponent } from './product-row-actions.container';
 
 describe('Product Row Actions Container', () => {

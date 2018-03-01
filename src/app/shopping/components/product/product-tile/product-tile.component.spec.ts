@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent } from '../../../../dev-utils/mock.component';
 import { Product } from '../../../../models/product/product.model';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductTileComponent } from './product-tile.component';
 
 describe('Product Tile Component', () => {

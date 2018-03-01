@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, StoreModule } from '@ngrx/store';
-import { MockComponent } from '../../../dev-utils/mock.component';
+import { MockComponent } from '../../../utils/dev/mock.component';
 import { reducers } from '../../store/shopping.system';
 import { CategoryPageContainerComponent } from './category-page.container';
 

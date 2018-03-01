@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-
-import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
 import { Country } from '../../../../models/country/country.model';
 import { Region } from '../../../../models/region/region.model';
 import { AddressFormService } from '../../../../shared/address-form';
 import { SpecialValidators } from '../../../../shared/validators/special-validators';
+import { markAsDirtyRecursive, updateValidatorsByDataLength } from '../../../../utils/form-utils';
 
 @Component({
   selector: 'ish-registration-form',
@@ -29,7 +28,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private formUtils: FormUtilsService,
     private afs: AddressFormService
   ) { }
 
@@ -67,7 +65,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     // update validators for "state" control in address form according to regions
     const stateControl = this.form && this.form.get('address.state');
     if (c.regions && stateControl) {
-      this.formUtils.updateValidatorsByDataLength(
+      updateValidatorsByDataLength(
         stateControl,
         this.regions,
         Validators.required,
@@ -88,7 +86,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   submitForm() {
     if (this.form.invalid) {
       this.submitted = true;
-      this.formUtils.markAsDirtyRecursive(this.form);
+      markAsDirtyRecursive(this.form);
       return;
     }
 

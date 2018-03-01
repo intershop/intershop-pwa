@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { MockComponent } from '../../../dev-utils/mock.component';
+import { MockComponent } from '../../../utils/dev/mock.component';
 import { AccountPageComponent } from './account-page.component';
 
 describe('Account Overview Component', () => {
