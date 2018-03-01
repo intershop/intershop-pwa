@@ -1,6 +1,5 @@
-import { Inject, NgModule } from '@angular/core';
-import { Route, Router, RouterModule, Routes } from '@angular/router';
-import { USE_SIMPLE_ACCOUNT } from '../core/configurations/injection-keys';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { LogoutGuard } from '../core/guards/logout.guard';
 
 const routes: Routes = [
@@ -20,16 +19,5 @@ const routes: Routes = [
     RouterModule
   ]
 })
-
 export class RegistrationRoutingModule {
-
-  constructor(
-    @Inject(USE_SIMPLE_ACCOUNT) useSimpleAccount: boolean,
-    router: Router
-  ) {
-    if (useSimpleAccount) {
-      const registerRoute: Route = router.config.find(r => r.path === 'register');
-      registerRoute.loadChildren = 'app/registration/pages/login-page/login-page.module#LoginPageModule';
-    }
-  }
 }

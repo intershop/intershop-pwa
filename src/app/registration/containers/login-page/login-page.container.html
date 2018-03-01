@@ -77,12 +77,6 @@
       <li>{{'account.create.benefit5.text' | translate}}</li>
     </ul>
 
-    <ng-template [ngIf]="!isSimpleRegistration" [ngIfElse]="simpleRegistration">
-      <a class="btn btn-primary" routerLink="/register">{{'account.create.button.label' | translate}}</a>
-    </ng-template>
-    <ng-template #simpleRegistration>
-      <ish-simple-registration></ish-simple-registration>
-    </ng-template>
-
+    <a class="btn btn-primary" routerLink="/register">{{'account.create.button.label' | translate}}</a>
   </div>
 </div>

@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
-import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
+import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { CoreState, getLoginError, getUserAuthorized, LoginUser } from '../../../core/store/user';
 import { markAsDirtyRecursive } from '../../../utils/form-utils';
 
@@ -22,7 +22,6 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,
-    @Inject(USE_SIMPLE_ACCOUNT) public isSimpleRegistration: boolean,
     private formBuilder: FormBuilder,
     private store: Store<CoreState>
   ) { }
