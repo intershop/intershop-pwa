@@ -2,6 +2,6 @@
 
 <ng-container *ngIf="products$ | async as products">
 
-  {{ products.length }}
+  <ish-recently-viewed [products]="products"></ish-recently-viewed>
 
 </ng-container>
