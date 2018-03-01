@@ -1,3 +1,4 @@
+import { Dictionary } from '@ngrx/entity/src/models';
 import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
 import { categoriesReducer, flattenSubCategories, initialState } from './categories.reducer';
@@ -165,7 +166,6 @@ describe('Categories Reducer', () => {
     });
   });
 
-
   describe('LoadTopLevelCategoriesSuccess action', () => {
     let categories: Category[];
 
@@ -217,6 +217,7 @@ describe('Categories Reducer', () => {
 
       const expectedIds = ['1.2', '1.3', '1.4.5.6', '1.4.5.7', '1.4.5', '1.4.8', '1.4', '1', '9.10', '9.11', '9.12.13', '9.12.14', '9.12', '9'];
 
+      expect(state.ids.length).toBe(14);
       expect(state.ids).toEqual(expectedIds);
       expect(state.entities['1.2'].name).toEqual(categories[0].subCategories[0].name);
     });
@@ -230,17 +231,18 @@ describe('Categories Reducer', () => {
       expect(state.topLevelCategoriesIds).toEqual(topLevelIds);
     });
 
-    it('should update existing entities', () => {
+    it('should update entities when they already exist', () => {
       const action = new fromActions.LoadTopLevelCategoriesSuccess(categories);
       const newInitialState = {
         ...initialState,
         entities: {
-          '1.2': { id: '2', uniqueId: '1.2', name: 'mycategory', description: 'dsfdf' }
-        }
+          '1.2': { id: '2', uniqueId: '1.2', name: 'mycategory', description: 'thedescription' } as Category
+        } as Dictionary<Category>
       };
-      const state = categoriesReducer(initialState, action);
+      const state = categoriesReducer(newInitialState, action);
 
       expect(state.entities['1.2'].name).toEqual('updated');
+      expect(state.entities['1.2'].description).toEqual('thedescription');
     });
   });
 });

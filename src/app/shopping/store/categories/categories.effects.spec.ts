@@ -27,6 +27,11 @@ describe('Categories Effects', () => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(of({ uniqueId: '123' } as Category));
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(_throw(''));
+    when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of([
+      { uniqueId: '123' } as Category,
+      { uniqueId: '456' } as Category
+    ]));
+    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(_throw(''));
 
     TestBed.configureTestingModule({
       imports: [
@@ -125,6 +130,41 @@ describe('Categories Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadTopLevelCategories$', () => {
+    it('should call the categoriesService for LoadTopLevelCategories action', () => {
+      const limit = 2;
+      const action = new fromActions.LoadTopLevelCategories(limit);
+      actions$ = hot('-a', { a: action });
+
+      effects.loadTopLevelCategories$.subscribe(() => {
+        verify(categoriesServiceMock.getTopLevelCategories(limit)).once();
+      });
+    });
+
+    it('should map to action of type LoadCategorySuccess', () => {
+      const limit = 2;
+      const action = new fromActions.LoadTopLevelCategories(limit);
+      const completion = new fromActions.LoadTopLevelCategoriesSuccess([
+        { uniqueId: '123' } as Category,
+        { uniqueId: '456' } as Category
+      ]);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadTopLevelCategories$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadCategoryFail', () => {
+      const limit = -1;
+      const action = new fromActions.LoadTopLevelCategories(limit);
+      const completion = new fromActions.LoadTopLevelCategoriesFail('');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadTopLevelCategories$).toBeObservable(expected$);
     });
   });
 
