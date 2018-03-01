@@ -1,0 +1,81 @@
+<!-- NEEDS_WORK: condition handling & error handling & simple registration -->
+
+<h1>{{'account.login.heading' | translate}}</h1>
+<div class="row" data-testing-id="account-login-page">
+  <div class="col-md-6">
+    <div class="section">
+      <div *ngIf="!isLoggedIn">
+        <h2>{{'account.login.returning_user.heading' | translate}}</h2>
+        <p *ngIf="loginToUse" class="alert alert-info">{{'account.login.returning_user.heading' | translate}}</p>
+        <!-- ToDo: server side error messages -->
+        <div *ngIf="error" role="alert" class="alert alert-danger">
+          <ng-container *ngIf="error.status == 401">
+            {{(userRegistrationLoginType === 'email') ? ('account.login.email_password.error.invalid' | translate) :
+              ('account.login.username_password.error.invalid' | translate) }}
+          </ng-container>
+          <!-- TODO: Apply condition for other possible inputs -->
+        </div>
+        <form name="LoginUserForm" [formGroup]="form" class="form-horizontal bv-form" (ngSubmit)="submitForm()">
+          <!-- Hidden Fields in ISML -->
+          <p>{{'account.login.message' | translate}}</p>
+
+          <ng-template [ngIf]="loginType === 'email'" [ngIfElse]="userLoginWithUserName">
+            <ish-input
+              [form]="form"
+              controlName="userName"
+              type="email"
+              label="account.login.email.label"
+              labelClass="col-sm-3"
+              inputClass="col-sm-6"
+              markRequiredLabel="off"
+              [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}"
+            ></ish-input>
+          </ng-template>
+          <ng-template #userLoginWithUserName>
+            <ish-input
+              [form]="form"
+              controlName="userName"
+              label="account.login.username.label"
+              labelClass="col-sm-3"
+              inputClass="col-sm-6"
+              markRequiredLabel="off"
+              [errorMessages]="{'required':'account.login.username.error.required'}"
+            ></ish-input>
+          </ng-template>
+
+          <ish-input
+            [form]="form"
+            controlName="password"
+            type="password"
+            label="account.login.password.label"
+            labelClass="col-sm-3"
+            inputClass="col-sm-6"
+            markRequiredLabel="off"
+            [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'account.update_password.new_password.error.regexp','minlength':'account.password.error.regexp'}"
+          ></ish-input>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="buttonDisabled">{{'account.signin.button.label' | translate}}</button>
+              <a class="btn btn-link">{{'account.send_password.heading' | translate}}</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <h2>{{'account.new_user.heading' | translate}}</h2>
+    <p>{{'account.create.benefit.text' | translate}}</p>
+    <ul>
+      <li>{{'account.create.benefit1.text' | translate}}</li>
+      <li>{{'account.create.benefit2.text' | translate}}</li>
+      <li>{{'account.create.benefit3.text' | translate}}</li>
+      <li>{{'account.create.benefit4.text' | translate}}</li>
+      <li>{{'account.create.benefit5.text' | translate}}</li>
+    </ul>
+
+    <a class="btn btn-primary" routerLink="/register">{{'account.create.button.label' | translate}}</a>
+  </div>
+</div>
