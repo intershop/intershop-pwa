@@ -2,10 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
-import { MockComponent } from '../../../../dev-utils/mock.component';
 import { AddressFormFactory, AddressFormService } from '../../../../shared/address-form/index';
 import { SharedModule } from '../../../../shared/shared.module';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { RegistrationFormComponent } from './registration-form.component';
 
 describe('RegistrationForm Component', () => {
@@ -38,7 +37,6 @@ describe('RegistrationForm Component', () => {
         }),
       ],
       providers: [
-        FormUtilsService,
         { provide: AddressFormService, useFactory: () => instance(addressFormServiceMock) }
       ],
       imports: [
