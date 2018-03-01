@@ -1,11 +1,10 @@
 import { AttributeData } from './attribute.interface';
-import { Attribute, BooleanValue, MoneyValue, NumberValue, QuantityValue, StringValue } from './attribute.model';
-
+import { Attribute, BooleanValue, MoneyValue, MultipleBooleanValue, MultipleDateValue, MultipleNumberValue, MultipleStringValue, NumberValue, QuantityValue, StringValue } from './attribute.model';
 export class AttributeFactory {
 
   static fromData(data: AttributeData): Attribute {
 
-    let attrValue: StringValue | NumberValue | BooleanValue | QuantityValue | MoneyValue;
+    let attrValue: StringValue | NumberValue | BooleanValue | QuantityValue | MoneyValue | MultipleStringValue | MultipleNumberValue | MultipleBooleanValue | MultipleDateValue;
 
     switch (data.type) {
       case 'String':
@@ -19,6 +18,21 @@ export class AttributeFactory {
         break;
       case 'Boolean':
         attrValue = new BooleanValue(data.value);
+        break;
+      case 'MultipleString':
+        attrValue = new MultipleStringValue(data.value);
+        break;
+      case 'MultipleInteger':
+      case 'MultipleDouble':
+      case 'MultipleLong':
+      case 'MultipleBigDecimal':
+        attrValue = new MultipleNumberValue(data.value);
+        break;
+      case 'MultipleBoolean':
+        attrValue = new MultipleBooleanValue(data.value);
+        break;
+      case 'MultipleDate':
+        attrValue = new MultipleDateValue(data.value);
         break;
       // TODO: ISREST-222 - waiting for adaption of REST API response to return Date values not as 'String' so they can be handled accordingly
       // case 'Date':

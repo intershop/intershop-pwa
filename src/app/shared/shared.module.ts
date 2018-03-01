@@ -14,8 +14,8 @@ import { InputComponent } from './components/form-controls/input/input.component
 import { selectComponents } from './components/form-controls/select/index';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
-import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 import { ProductAttributesComponent } from './components/product-attributes/product-attributes.component';
+import { ShowFormFeedbackDirective } from './directives/show-form-feedback.directive';
 
 @NgModule({
   imports: [
