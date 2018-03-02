@@ -4,13 +4,22 @@ import { RuleHelpers } from './ruleHelpers';
 
 class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
 
+  // TODO: excludes currently only supported for 'variable X is not re-initialized in beforeEach'
+  excludes: string[] = [];
   interestingVariables: ts.Node[];
   correctlyReinitializedVariables: string[];
 
-  public visitSourceFile(sourceFile: ts.SourceFile) {
+  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
+    super(sourceFile, options);
+
+    if (options['ruleArguments'] && options['ruleArguments'][0] && options['ruleArguments'][0]['exclude']) {
+      this.excludes = options['ruleArguments'][0]['exclude'];
+    }
     this.interestingVariables = [];
     this.correctlyReinitializedVariables = [];
+  }
 
+  public visitSourceFile(sourceFile: ts.SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
       // if (!sourceFile.fileName.endsWith('account-login.component.spec.ts')) {
       //     return;
@@ -33,7 +42,10 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
         }
       }
 
-      const missingReinit = this.interestingVariables.filter(node => this.correctlyReinitializedVariables.indexOf(RuleHelpers.extractVariableNameInDeclaration(node)) < 0);
+      const missingReinit = this.interestingVariables
+        .filter(node => this.correctlyReinitializedVariables.indexOf(RuleHelpers.extractVariableNameInDeclaration(node)) < 0)
+        .filter(node => this.excludes.indexOf(RuleHelpers.extractVariableNameInDeclaration(node)) < 0 );
+
       missingReinit.forEach(key => this.addFailureAtNode(key, 'variable "' + RuleHelpers.extractVariableNameInDeclaration(key) + '" is not re-initialized in beforeEach'));
     }
   }
