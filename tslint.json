@@ -175,7 +175,12 @@
       {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"},
       {"name": ["spyOn"], "message": "Use ts-mockito instead!"}
     ],
-    "no-suspicious-variable-init-in-tests": true,
+    "no-suspicious-variable-init-in-tests": {
+      "severity": "error",
+      "options": {
+        "exclude": [ "actions$" ]
+      }
+    },
     "meaningful-naming-in-tests": { "severity": "warning" },
     "no-commented-out-tests": true,
     "prefer-mocks-instead-of-stubs-in-tests": true,
