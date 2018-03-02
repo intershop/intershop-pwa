@@ -176,7 +176,7 @@
       {"name": ["spyOn"], "message": "Use ts-mockito instead!"}
     ],
     "no-suspicious-variable-init-in-tests": true,
-    "meaningful-naming-in-tests": true,
+    "meaningful-naming-in-tests": { "severity": "warning" },
     "no-commented-out-tests": true,
     "prefer-mocks-instead-of-stubs-in-tests": true,
     "no-barrel-files": true,
