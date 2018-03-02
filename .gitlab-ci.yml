@@ -5,6 +5,9 @@ stages:
 
 build:
   stage: build
+  except:
+    refs:
+      - develop
   tags:
   - docker-executor
   image: selenium/standalone-chrome
@@ -60,6 +63,9 @@ deploy_demo:
 
 check_format:
   stage: build
+  except:
+    refs:
+      - develop
   tags:
   - docker-executor
   image: gradle
@@ -67,6 +73,9 @@ check_format:
 
 check_prod_build:
   stage: build
+  except:
+    refs:
+      - develop
   tags:
   - docker-executor
   image: node:8-alpine
