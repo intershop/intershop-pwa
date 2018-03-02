@@ -15,6 +15,28 @@ build:
   - ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
   - bash .gitlab-ci-test-universal.sh
 
+check_format:
+  stage: build
+  except:
+    refs:
+      - develop
+  tags:
+  - docker-executor
+  image: gradle
+  script: gradle --no-daemon --max-workers 1 --continue checkFormatted
+
+check_prod_build:
+  stage: build
+  except:
+    refs:
+      - develop
+  tags:
+  - docker-executor
+  image: node:8-alpine
+  script:
+  - npm install
+  - npm run build:dynamic:prod
+
 .job-template: &job_definition
   stage: publish
   retry: 2
@@ -60,25 +82,3 @@ deploy_demo:
   environment:
     name: demo
     url: http://jdevpool15:4321
-
-check_format:
-  stage: build
-  except:
-    refs:
-      - develop
-  tags:
-  - docker-executor
-  image: gradle
-  script: gradle --no-daemon --max-workers 1 --continue checkFormatted
-
-check_prod_build:
-  stage: build
-  except:
-    refs:
-      - develop
-  tags:
-  - docker-executor
-  image: node:8-alpine
-  script:
-  - npm install
-  - npm run build:dynamic:prod
