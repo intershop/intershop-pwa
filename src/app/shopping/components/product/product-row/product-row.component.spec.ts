@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from '../../../../dev-utils/mock.component';
 import { Product } from '../../../../models/product/product.model';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductRowComponent } from './product-row.component';
 
 describe('Product Row Component', () => {

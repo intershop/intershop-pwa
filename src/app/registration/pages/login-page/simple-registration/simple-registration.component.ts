@@ -6,10 +6,10 @@ import { select, Store } from '@ngrx/store';
 import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
-import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
 import { CoreState, CreateUser, getLoginError } from '../../../../core/store/user';
 import { CustomerFactory } from '../../../../models/customer/customer.factory';
 import { CustomerData } from '../../../../models/customer/customer.interface';
+import { markAsDirtyRecursive } from '../../../../utils/form-utils';
 
 
 @Component({
@@ -26,8 +26,7 @@ export class SimpleRegistrationComponent implements OnInit {
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) private userRegistrationLoginType: string,
     private store: Store<CoreState>,
-    private formBuilder: FormBuilder,
-    private formUtils: FormUtilsService
+    private formBuilder: FormBuilder
   ) { }
 
   /**
@@ -53,7 +52,7 @@ export class SimpleRegistrationComponent implements OnInit {
   createAccount() {
     if (this.simpleRegistrationForm.invalid) {
       this.isDirty = true;
-      this.formUtils.markAsDirtyRecursive(this.simpleRegistrationForm);
+      markAsDirtyRecursive(this.simpleRegistrationForm);
       return;
     }
     const userData: CustomerData = CustomerFactory.fromFormValueToData(this.simpleRegistrationForm.value);

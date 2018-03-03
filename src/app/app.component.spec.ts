@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
-import { MockComponent } from './dev-utils/mock.component';
+import { MockComponent } from './utils/dev/mock.component';
 
 let translate: TranslateService;
 

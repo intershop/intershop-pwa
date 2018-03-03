@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { MockComponent } from '../../../dev-utils/mock.component';
+import { MockComponent } from '../../../utils/dev/mock.component';
 import { HeaderComponent } from './header.component';
 
 describe('Header Component', () => {

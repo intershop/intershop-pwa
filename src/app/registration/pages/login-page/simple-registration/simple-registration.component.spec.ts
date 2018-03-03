@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { anything, instance, mock, verify } from 'ts-mockito';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../../core/configurations/injection-keys';
-import { FormUtilsService } from '../../../../core/services/utils/form-utils.service';
 import { CoreState } from '../../../../core/store/core.state';
 import { SimpleRegistrationComponent } from './simple-registration.component';
 
@@ -14,6 +13,7 @@ describe('Simple Registration Component', () => {
   let fixture: ComponentFixture<SimpleRegistrationComponent>;
   let component: SimpleRegistrationComponent;
   let element: HTMLElement;
+
   let storeMock: Store<CoreState>;
 
   beforeEach(async(() => {
@@ -30,8 +30,7 @@ describe('Simple Registration Component', () => {
       providers: [
         { provide: USE_SIMPLE_ACCOUNT, useValue: true },
         { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-        { provide: Store, useFactory: () => instance(storeMock) },
-        FormUtilsService
+        { provide: Store, useFactory: () => instance(storeMock) }
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(SimpleRegistrationComponent);

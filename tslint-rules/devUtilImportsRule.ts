@@ -14,8 +14,8 @@ class DevUtilImportsWalker extends Lint.RuleWalker {
   public visitImportDeclaration(importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
     const fromStringText = fromStringToken.getText();
-    if (fromStringText.indexOf('dev-utils') > 0) {
-      this.addFailureAtNode(importStatement, 'Importing dev-utils is only allowed in tests.');
+    if (fromStringText.indexOf('utils/dev') > 0) {
+      this.addFailureAtNode(importStatement, 'Importing utils/dev is only allowed in tests.');
     }
   }
 }

@@ -6,8 +6,8 @@ import { select, Store } from '@ngrx/store';
 import { CustomValidators } from 'ng2-validation';
 import { Observable } from 'rxjs/Observable';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
-import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
 import { CoreState, getLoginError, getUserAuthorized, LoginUser } from '../../../core/store/user';
+import { markAsDirtyRecursive } from '../../../utils/form-utils';
 
 @Component({
   templateUrl: './login-page.component.html'
@@ -24,7 +24,6 @@ export class LoginPageComponent implements OnInit {
     @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,
     @Inject(USE_SIMPLE_ACCOUNT) public isSimpleRegistration: boolean,
     private formBuilder: FormBuilder,
-    private formUtils: FormUtilsService,
     private store: Store<CoreState>
   ) { }
 
@@ -48,7 +47,7 @@ export class LoginPageComponent implements OnInit {
   onSignin(userCredentials) {
     if (this.loginForm.invalid) {
       this.isDirty = true;
-      this.formUtils.markAsDirtyRecursive(this.loginForm);
+      markAsDirtyRecursive(this.loginForm);
       return;
     }
     this.store.dispatch(new LoginUser(userCredentials));
