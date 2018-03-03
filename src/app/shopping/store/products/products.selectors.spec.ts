@@ -3,12 +3,12 @@ import { Dictionary } from '@ngrx/entity/src/models';
 import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { LoadProduct, LoadProductFail, LoadProductSuccess } from '.';
 import { c } from '../../../dev-utils/marbles-utils';
 import { navigateMockAction } from '../../../dev-utils/navigate-mock.action';
 import { Product } from '../../../models/product/product.model';
 import { ShoppingState } from '../shopping.state';
 import { reducers } from '../shopping.system';
+import { LoadProduct, LoadProductFail, LoadProductSuccess } from './products.actions';
 import * as s from './products.selectors';
 
 describe('Products Selectors', () => {

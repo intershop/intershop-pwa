@@ -23,7 +23,8 @@
     "import-blacklist": [
       true,
       "rxjs",
-      "rxjs/Rx"
+      "rxjs/Rx",
+      "."
     ],
     "import-spacing": true,
     "indent": [
