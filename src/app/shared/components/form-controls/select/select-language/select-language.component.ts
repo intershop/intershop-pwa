@@ -9,7 +9,7 @@ import { SelectComponent } from '../select.component';
 })
 export class SelectLanguageComponent extends SelectComponent implements OnChanges {
 
-  @Input() languages: any[]; // TODO: type
+  @Input() languages: any[]; // TODO: insert type
   @Input() controlName = 'preferredLanguage';
   @Input() label = 'account.default_address.preferred_language.label';
   @Input() errorMessages = { required: 'Please select a preferred language' };  // ToDo: Translation key
@@ -20,7 +20,7 @@ export class SelectLanguageComponent extends SelectComponent implements OnChange
     }
   }
 
-  private mapToOptions(languages: any[]): SelectOption[] { // TODO: type
+  private mapToOptions(languages: any[]): SelectOption[] { // TODO: insert type
     if (!languages) { return; }
     return languages.map(lang => ({
       label: lang.name,

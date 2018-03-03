@@ -39,13 +39,11 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (req.url.startsWith(this.restEndpoint)) {
-      // console.log(`query ${req.method} ${req.url} params=${JSON.stringify(req.params)} headers=${JSON.stringify(req.headers)}`);
 
       const key = req.urlWithParams;
 
       if (isPlatformServer(this.platformId)) {
         return next.handle(req).pipe(
-          // .map(data => { console.log(`returned ${JSON.stringify(data)}`); return data; })
           map(event => {
             if (event instanceof HttpResponse) {
               const response = <HttpResponse<any>>event;
@@ -57,7 +55,6 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
       } else {
         if (!!this.cache[key]) {
           const content = JSON.parse(this.cache[key]);
-          // console.log(`returning cached entry for '${key}'`);
           this.cache[key] = null;
           this.persistCacheInState();
           return of(new HttpResponse<any>({ body: content }));
