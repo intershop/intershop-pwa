@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { Actions } from '@ngrx/effects';
+import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
+import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { instance, mock, verify, when } from 'ts-mockito';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { navigateMockAction } from '../../../dev-utils/navigate-mock.action';
-import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
 import { Category } from '../../../models/category/category.model';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
@@ -17,7 +17,7 @@ import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
 
 describe('Categories Effects', () => {
-  let actions$: TestActions;
+  let actions$: Observable<Action>;
   let effects: CategoriesEffects;
   let store: Store<ShoppingState>;
 
@@ -37,12 +37,11 @@ describe('Categories Effects', () => {
       ],
       providers: [
         CategoriesEffects,
-        { provide: Actions, useFactory: testActionsFactory },
+        provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
       ],
     });
 
-    actions$ = TestBed.get(Actions);
     effects = TestBed.get(CategoriesEffects);
     store = TestBed.get(Store);
   });
@@ -103,7 +102,7 @@ describe('Categories Effects', () => {
     it('should call the categoriesService for LoadCategory action', () => {
       const categoryId = '123';
       const action = new fromActions.LoadCategory(categoryId);
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       effects.loadCategory$.subscribe(() => {
         verify(categoriesServiceMock.getCategory(categoryId)).once();
@@ -114,7 +113,7 @@ describe('Categories Effects', () => {
       const categoryId = '123';
       const action = new fromActions.LoadCategory(categoryId);
       const completion = new fromActions.LoadCategorySuccess({ uniqueId: categoryId } as Category);
-      actions$.stream = hot('-a-a-a', { a: action });
+      actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
@@ -124,7 +123,7 @@ describe('Categories Effects', () => {
       const categoryId = 'invalid';
       const action = new fromActions.LoadCategory(categoryId);
       const completion = new fromActions.LoadCategoryFail('');
-      actions$.stream = hot('-a-a-a', { a: action });
+      actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
@@ -221,7 +220,7 @@ describe('Categories Effects', () => {
       const action = new fromActions.LoadCategorySuccess(category);
       const completion = new fromActions.SaveSubCategories(category.subCategories);
 
-      actions$.stream = hot('-aa-a', { a: action });
+      actions$ = hot('-aa-a', { a: action });
       const expected$ = cold('-cc-c', { c: completion });
       expect(effects.saveSubCategories$).toBeObservable(expected$);
     });
@@ -230,7 +229,7 @@ describe('Categories Effects', () => {
       const category = { uniqueId: '123' } as Category;
       const action = new fromActions.LoadCategorySuccess(category);
 
-      actions$.stream = hot('-aa-a', { a: action });
+      actions$ = hot('-aa-a', { a: action });
       const expected$ = cold('---');
       expect(effects.saveSubCategories$).toBeObservable(expected$);
     });

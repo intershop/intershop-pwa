@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { getAvailableLocales, getCurrentLocale, SelectLocale, SetAvailableLocales } from '.';
 import { Locale } from '../../../models/locale/locale.interface';
 import { CoreState } from '../core.state';
 import { reducers } from '../core.system';
+import { SelectLocale, SetAvailableLocales } from './locale.actions';
+import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
 
 describe('Locale Selectors', () => {
 

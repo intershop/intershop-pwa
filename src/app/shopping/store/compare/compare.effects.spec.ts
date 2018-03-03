@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { Actions } from '@ngrx/effects';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
+import { Observable } from 'rxjs/Observable';
 import { ShoppingState } from '../shopping.state';
 import { reducers } from '../shopping.system';
 import * as fromActions from './compare.actions';
 import { CompareEffects } from './compare.effects';
 
 describe('CompareEffects', () => {
-  let actions$: TestActions;
+  let actions$: Observable<Action>;
   let effects: CompareEffects;
   let store: Store<ShoppingState>;
 
@@ -22,11 +22,10 @@ describe('CompareEffects', () => {
       ],
       providers: [
         CompareEffects,
-        { provide: Actions, useFactory: testActionsFactory },
+        provideMockActions(() => actions$),
       ],
     });
 
-    actions$ = TestBed.get(Actions);
     effects = TestBed.get(CompareEffects);
     store = TestBed.get(Store);
   });
@@ -39,7 +38,7 @@ describe('CompareEffects', () => {
       const action = new fromActions.ToggleCompare(sku);
       const completion = new fromActions.AddToCompare(sku);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.toggleCompare$).toBeObservable(expected$);
@@ -52,7 +51,7 @@ describe('CompareEffects', () => {
       const action = new fromActions.ToggleCompare(sku);
       const completion = new fromActions.RemoveFromCompare(sku);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.toggleCompare$).toBeObservable(expected$);
