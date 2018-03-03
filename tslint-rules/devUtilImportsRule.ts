@@ -6,7 +6,6 @@ class DevUtilImportsWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search(/.spec.ts/) < 0) {
-      // console.log('####' + sourceFile.fileName);
       super.visitSourceFile(sourceFile);
     }
   }

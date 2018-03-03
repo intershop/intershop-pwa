@@ -18,8 +18,8 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   @Input() countries: Country[];
   @Input() regions: Region[];
-  @Input() languages: any[]; // TODO: type
-  @Input() titles: any[]; // TODO: type
+  @Input() languages: any[]; // TODO: insert type
+  @Input() titles: any[]; // TODO: insert type
   @Input() emailOptIn = false;
 
   @Output() create = new EventEmitter<any>();
