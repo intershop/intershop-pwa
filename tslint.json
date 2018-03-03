@@ -4,7 +4,8 @@
   ],
   "rulesDirectory": [
     "node_modules/codelyzer",
-    "tslint-rules"
+    "tslint-rules",
+    "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
     "arrow-return-shorthand": true,
@@ -171,8 +172,6 @@
     "ban": [
       true,
       {"name": ["*", "ngOnInit"], "message": "Use fixture.detectChanges instead!"},
-      {"name": ["fdescribe"], "message": "Do not commit focused tests!"},
-      {"name": ["fit"], "message": "Do not commit focused tests!"},
       {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"},
       {"name": ["spyOn"], "message": "Use ts-mockito instead!"}
     ],
@@ -184,6 +183,8 @@
     },
     "meaningful-naming-in-tests": { "severity": "warning" },
     "no-commented-out-tests": true,
+    "no-focused-tests": true,
+    "no-disabled-tests": { "severity": "warning" },
     "prefer-mocks-instead-of-stubs-in-tests": true,
     "no-barrel-files": true,
     "do-not-import-environment": true,
