@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { Actions } from '@ngrx/effects';
+import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
+import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
 import { navigateMockAction } from '../../../dev-utils/navigate-mock.action';
-import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
 import * as fromCategories from '../categories';
@@ -18,7 +18,7 @@ import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
 
 describe('ProductsEffects', () => {
-  let actions$: TestActions;
+  let actions$: Observable<Action>;
   let effects: ProductsEffects;
   let store: Store<ShoppingState>;
   let productsServiceMock: ProductsService;
@@ -51,12 +51,11 @@ describe('ProductsEffects', () => {
       ],
       providers: [
         ProductsEffects,
-        { provide: Actions, useFactory: testActionsFactory },
+        provideMockActions(() => actions$),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
       ],
     });
 
-    actions$ = TestBed.get(Actions);
     effects = TestBed.get(ProductsEffects);
     store = TestBed.get(Store);
   });
@@ -65,7 +64,7 @@ describe('ProductsEffects', () => {
     it('should call the productsService for LoadProduct action', () => {
       const sku = 'P123';
       const action = new fromActions.LoadProduct(sku);
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       effects.loadProduct$.subscribe(() => {
         verify(productsServiceMock.getProduct(sku)).once();
@@ -76,7 +75,7 @@ describe('ProductsEffects', () => {
       const sku = 'P123';
       const action = new fromActions.LoadProduct(sku);
       const completion = new fromActions.LoadProductSuccess({ sku } as Product);
-      actions$.stream = hot('-a-a-a', { a: action });
+      actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadProduct$).toBeObservable(expected$);
@@ -86,7 +85,7 @@ describe('ProductsEffects', () => {
       const sku = 'invalid';
       const action = new fromActions.LoadProduct(sku);
       const completion = new fromActions.LoadProductFail('');
-      actions$.stream = hot('-a-a-a', { a: action });
+      actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadProduct$).toBeObservable(expected$);
@@ -98,7 +97,7 @@ describe('ProductsEffects', () => {
     beforeEach(() => {
       store.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
 
-      actions$.stream = hot('a', {
+      actions$ = hot('a', {
         a: new fromActions.LoadProductsForCategory('123')
       });
     });

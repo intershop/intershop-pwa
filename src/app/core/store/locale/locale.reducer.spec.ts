@@ -1,5 +1,5 @@
-import { LocaleAction, SelectLocale, SetAvailableLocales } from '.';
 import { Locale } from '../../../models/locale/locale.interface';
+import { LocaleAction, SelectLocale, SetAvailableLocales } from './locale.actions';
 import { initialState, localeReducer } from './locale.reducer';
 
 describe('Locale Reducer', () => {

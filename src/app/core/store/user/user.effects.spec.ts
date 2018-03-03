@@ -1,19 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { Actions } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
+import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { TestActions, testActionsFactory } from '../../../dev-utils/test.actions';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { reducers } from '../core.system';
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';
 
 describe('UserEffects', () => {
-  let actions$: TestActions;
+  let actions$: Observable<Action>;
   let effects: UserEffects;
   let accountLoginServiceMock: AccountLoginService;
   let routerMock: Router;
@@ -30,13 +30,12 @@ describe('UserEffects', () => {
       ],
       providers: [
         UserEffects,
-        { provide: Actions, useFactory: testActionsFactory },
+        provideMockActions(() => actions$),
         { provide: Router, useFactory: () => instance(routerMock) },
         { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
       ],
     });
 
-    actions$ = TestBed.get(Actions);
     effects = TestBed.get(UserEffects);
   });
 
@@ -44,7 +43,7 @@ describe('UserEffects', () => {
     it('should call the api service when LoginUser event is called', () => {
       const action = new ua.LoginUser({ userName: 'dummy' });
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       effects.loginUser$.subscribe(() =>
         verify(accountLoginServiceMock.signinUser(anything())).once()
@@ -55,7 +54,7 @@ describe('UserEffects', () => {
       const action = new ua.LoginUser({ userName: 'dummy' });
       const completion = new ua.LoginUserSuccess({} as any);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.loginUser$).toBeObservable(expected$);
@@ -67,7 +66,7 @@ describe('UserEffects', () => {
       const action = new ua.LoginUser({ userName: 'dummy' });
       const completion = new ua.LoginUserFail({} as any);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.loginUser$).toBeObservable(expected$);
@@ -77,7 +76,7 @@ describe('UserEffects', () => {
   describe('goToHomeAfterLogout$', () => {
     it('should navigate to /home after LogoutUser', () => {
       const action = new ua.LogoutUser();
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       effects.goToHomeAfterLogout$.subscribe(() => {
         verify(routerMock.navigate(anything())).once();
@@ -91,7 +90,7 @@ describe('UserEffects', () => {
     it('should navigate to /account after LoginUserSuccess', () => {
       const action = new ua.LoginUserSuccess({} as any);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       effects.goToAccountAfterLogin$.subscribe(() => {
         verify(routerMock.navigate(anything())).once();
@@ -105,7 +104,7 @@ describe('UserEffects', () => {
     it('should call the api service when Create event is called', () => {
       const action = new ua.CreateUser({} as any);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
 
       effects.createUser$.subscribe(() => {
         verify(accountLoginServiceMock.createUser(anything())).once();
@@ -116,7 +115,7 @@ describe('UserEffects', () => {
       const action = new ua.CreateUser({} as any);
       const completion = new ua.CreateUserSuccess({} as any);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createUser$).toBeObservable(expected$);
@@ -128,7 +127,7 @@ describe('UserEffects', () => {
       const action = new ua.CreateUser({} as any);
       const completion = new ua.CreateUserFail({} as any);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createUser$).toBeObservable(expected$);
@@ -140,7 +139,7 @@ describe('UserEffects', () => {
       const action = new ua.CreateUserSuccess({} as any);
       const completion = new ua.LoginUserSuccess({} as any);
 
-      actions$.stream = hot('-a', { a: action });
+      actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.publishLoginEventAfterCreate$).toBeObservable(expected$);
