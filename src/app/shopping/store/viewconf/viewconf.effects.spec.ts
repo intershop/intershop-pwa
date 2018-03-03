@@ -4,7 +4,7 @@ import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
-import { navigateMockAction } from '../../../dev-utils/navigate-mock.action';
+import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import * as fromProducts from '../products';
 import { ShoppingState } from '../shopping.state';
 import { reducers } from '../shopping.system';

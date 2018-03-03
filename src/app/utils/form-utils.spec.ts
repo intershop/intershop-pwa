@@ -1,12 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormUtilsService } from './form-utils.service';
+import { arrayDiff, arrayIntersect, markAsDirtyRecursive } from './form-utils';
 
-describe('Form Utils Service', () => {
-  let formUtils: FormUtilsService;
-
-  beforeEach(() => {
-    formUtils = new FormUtilsService();
-  });
+describe('Form Utils', () => {
 
   describe('array utils', () => {
     it('should return diff for two arrays', () => {
@@ -14,7 +9,7 @@ describe('Form Utils Service', () => {
       const b = [4, 5, 6, 7, 8, 9];
       const expected = [1, 2, 3];
 
-      const result = formUtils.arrayDiff(a, b);
+      const result = arrayDiff(a, b);
       expect(result).toEqual(expected);
     });
 
@@ -23,7 +18,7 @@ describe('Form Utils Service', () => {
       const b = [4, 5, 6, 7, 8, 9];
       const expected = [4, 5, 6];
 
-      const result = formUtils.arrayIntersect(a, b);
+      const result = arrayIntersect(a, b);
       expect(result).toEqual(expected);
     });
   });
@@ -37,7 +32,7 @@ describe('Form Utils Service', () => {
 
       const ctrl = group.get('ctrl');
       expect(ctrl.dirty).toBeFalsy();
-      formUtils.markAsDirtyRecursive(group);
+      markAsDirtyRecursive(group);
       expect(ctrl.dirty).toBeTruthy();
     });
 
@@ -57,7 +52,7 @@ describe('Form Utils Service', () => {
       expect(ctrlA.dirty).toBeFalsy();
       expect(ctrlB.dirty).toBeFalsy();
 
-      formUtils.markAsDirtyRecursive(group);
+      markAsDirtyRecursive(group);
 
       expect(ctrlA.dirty).toBeTruthy();
       expect(ctrlB.dirty).toBeTruthy();

@@ -6,7 +6,6 @@ import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
 import { USE_SIMPLE_ACCOUNT, USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
-import { FormUtilsService } from '../../../core/services/utils/form-utils.service';
 import { reducers } from '../../../core/store/core.system';
 import { CoreState, LoginUserFail } from '../../../core/store/user';
 import { SharedModule } from '../../../shared/shared.module';
@@ -25,8 +24,7 @@ describe('Login Component', () => {
       ],
       providers: [
         { provide: USE_SIMPLE_ACCOUNT, useValue: true },
-        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-        FormUtilsService
+        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }
       ],
       imports: [
         SharedModule,

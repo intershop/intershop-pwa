@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from '../../../../dev-utils/mock.component';
 import { Category } from '../../../../models/category/category.model';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CategoryPageComponent } from './category-page.component';
 
 describe('Category Page Component', () => {

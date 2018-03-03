@@ -20,7 +20,6 @@ import { RegionService } from './services/countries/region.service';
 import { translateFactory } from './services/custom-translate-loader';
 import { ErrorCodeMappingService } from './services/error-code-mapping.service';
 import { StatePropertiesService } from './services/state-transfer/state-properties.service';
-import { FormUtilsService } from './services/utils/form-utils.service';
 
 @NgModule({
   imports: [
@@ -51,8 +50,7 @@ import { FormUtilsService } from './services/utils/form-utils.service';
     ErrorCodeMappingService,
     StatePropertiesService,
     CountryService,
-    RegionService,
-    FormUtilsService
+    RegionService
   ],
   exports: [
     StyleWrapperDirective,
