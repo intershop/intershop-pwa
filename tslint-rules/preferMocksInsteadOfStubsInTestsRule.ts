@@ -7,10 +7,6 @@ class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
-      // console.log('####' + sourceFile.fileName);
-      // if (!sourceFile.fileName.endsWith('registration-page.component.spec.ts')) {
-      //     return;
-      // }
       super.visitSourceFile(sourceFile);
     }
   }

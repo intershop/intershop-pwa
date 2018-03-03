@@ -22,7 +22,6 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
         this.reportMissingCreationTest(sourceFile);
       }
     } else if (sourceFile.fileName.search(/.(component|container).spec.ts/) > 0) {
-      // console.log('####' + sourceFile.fileName);
       const describe = RuleHelpers.getDescribeBody(sourceFile);
       if (describe) {
         const creationCheck = describe.getChildren().find(n => (n.kind === ts.SyntaxKind.ExpressionStatement && n.getText().startsWith(`it('${SHOULD_BE_CREATED_NAME}', () => {`)));

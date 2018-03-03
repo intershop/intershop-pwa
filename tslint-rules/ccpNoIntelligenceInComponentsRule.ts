@@ -10,7 +10,6 @@ class CCPNoIntelligenceInComponentsWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.match(/.*\/components\/(?!.*(interface|index|spec|module).ts$).*.ts/)) {
-      // console.log('####' + sourceFile.fileName);
       super.visitSourceFile(sourceFile);
     }
   }

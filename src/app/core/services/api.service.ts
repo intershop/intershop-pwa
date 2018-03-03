@@ -126,7 +126,6 @@ export class ApiService {
     data.forEach(item => {
       if (item.type === 'Link' && item.uri) {
         const linkUrl = `${this.icmServerUrl}/${item.uri}`;
-        // console.log(`link-translation ${item.uri} to ${linkUrl}`);
         uriList$.push(this.get(linkUrl));
       }
     });
