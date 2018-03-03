@@ -190,7 +190,7 @@
     "use-camel-case-environment-properties": true,
     "dev-util-imports": true,
     "component-creation-test": true,
-    "ccp-no-ngrx-in-components": { "severity": "warning" },
+    "ccp-no-intelligence-in-components": { "severity": "warning" },
     "ccp-no-markup-in-containers": {
       "severity": "warning",
       "options": {
