@@ -6,10 +6,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
-import { SelectLocale, SetAvailableLocales } from '.';
 import { Locale } from '../../../models/locale/locale.interface';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import { reducers } from '../core.system';
+import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { LocaleEffects } from './locale.effects';
 
 describe('LocaleEffects', () => {
