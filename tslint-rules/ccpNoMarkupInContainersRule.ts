@@ -15,7 +15,6 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.match(/.*\/containers\/(?!.*(routes|module|spec).ts$).*.ts/)) {
-      // console.log('####' + sourceFile.fileName);
 
       const fileName = sourceFile.fileName;
       const templateName = fileName.substring(0, fileName.length - 2) + 'html';

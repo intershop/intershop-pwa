@@ -21,10 +21,6 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: ts.SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
-      // if (!sourceFile.fileName.endsWith('account-login.component.spec.ts')) {
-      //     return;
-      // }
-      // console.log('####' + sourceFile.fileName);
       const describeBody = RuleHelpers.getDescribeBody(sourceFile);
       if (describeBody) {
         for (let i = 0; i < describeBody.getChildCount(); i++) {
@@ -53,10 +49,8 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
   private checkVariableStatementsInBeforeEach(node: ts.Node) {
     node.getChildren().forEach(child => {
       const statement = child.getChildAt(0);
-      // RuleHelpers.dumpNode(statement);
       if (statement.getChildCount() > 2 && statement.getChildAt(1).kind === ts.SyntaxKind.EqualsToken) {
         const varName = statement.getChildAt(0).getText();
-        // console.log('found assignment on "' + varName + '" in beforeEach');
         this.correctlyReinitializedVariables.push(varName);
       } else if (statement.getText().search('TestBed') >= 0) {
         const testBedStatement = statement.getChildAt(0);
@@ -69,7 +63,6 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
   }
 
   private checkVariableStatementInDescribe(statement: ts.Node) {
-    // helpers.dumpNode(statement);
     const newKeywordFound = RuleHelpers.getNextChildTokenOfKind(statement, ts.SyntaxKind.NewKeyword);
     if (newKeywordFound) {
       this.addFailureAtNode(statement, 'Complex statements should only be made in beforeEach.');
@@ -79,8 +72,6 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
     if (letKeywordFound && assignmentFound) {
       this.addFailureAtNode(statement, 'Statement should be const statement or re-initialized in beforeEach');
     } else if (letKeywordFound) {
-      // const varName = RuleHelpers.extractVariableNameInDeclaration(statement);
-      // console.log('interested in "' + varName + '"');
       this.interestingVariables.push(statement);
     }
   }
