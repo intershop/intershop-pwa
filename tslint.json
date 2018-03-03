@@ -1,6 +1,7 @@
 {
   "extends": [
-    "rxjs-tslint-rules"
+    "rxjs-tslint-rules",
+    "tslint-clean-code"
   ],
   "rulesDirectory": [
     "node_modules/codelyzer",
@@ -9,6 +10,7 @@
   ],
   "rules": {
     "arrow-return-shorthand": true,
+    "no-commented-out-code": { "severity": "warning" },
     "callable-types": true,
     "class-name": true,
     "comment-format": [
