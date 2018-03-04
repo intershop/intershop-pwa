@@ -12,7 +12,7 @@ build:
   - docker-executor
   image: selenium/standalone-chrome
   script:
-  - ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
+  - ./gradlew -q --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
   - bash .gitlab-ci-test-universal.sh
 
 check_format:
