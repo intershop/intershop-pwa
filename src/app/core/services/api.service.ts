@@ -72,7 +72,9 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
-    );
+    ).pipe(
+      catchError((error: HttpErrorResponse) => this.apiServiceErrorHandler.dispatchCommunicationErrors(error))
+      );
   }
 
   /**
@@ -88,7 +90,7 @@ export class ApiService {
       { headers: this.defaultHeaders }
     ).pipe(
       catchError((error: HttpErrorResponse) => this.apiServiceErrorHandler.dispatchCommunicationErrors(error))
-    );
+      );
   }
 
   /**
@@ -100,7 +102,9 @@ export class ApiService {
 
     return this.httpClient.delete<T>(
       `${this.restEndpoint}/${path}`
-    );
+    ).pipe(
+      catchError((error: HttpErrorResponse) => this.apiServiceErrorHandler.dispatchCommunicationErrors(error))
+      );;
 
   }
 
