@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
-import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { CommunicationTimeoutError, InternalServerError, NotImplementedError, BadGatewayError, ServiceUnavailableError, GatewayTimeoutError, HttpVersionNotSupportedError, NetworkAuthenticationRequiredError, NotExtendedError, BandwidthLimitExceededError, LoopDetectedError, InsufficientStorageError, VariantAlsoNegotiatesError, CoreState } from '../store/error';
+import { CoreState } from '../store/core.state';
+import * as errorActions from '../store/error/error.actions';
+
 @Injectable()
 export class ApiServiceErrorHandler {
 
@@ -14,43 +15,43 @@ export class ApiServiceErrorHandler {
   dispatchCommunicationErrors(error: HttpErrorResponse): Observable<any> {
     switch (error.status) {
       case 0:
-        this.store.dispatch(new CommunicationTimeoutError(error));
+        this.store.dispatch(new errorActions.CommunicationTimeoutError(error));
         return empty();
       case 500:
-        this.store.dispatch(new InternalServerError(error));
+        this.store.dispatch(new errorActions.InternalServerError(error));
         return empty();
       case 501:
-        this.store.dispatch(new NotImplementedError(error));
+        this.store.dispatch(new errorActions.NotImplementedError(error));
         return empty();
       case 502:
-        this.store.dispatch(new BadGatewayError(error));
+        this.store.dispatch(new errorActions.BadGatewayError(error));
         return empty();
       case 503:
-        this.store.dispatch(new ServiceUnavailableError(error));
+        this.store.dispatch(new errorActions.ServiceUnavailableError(error));
         return empty();
       case 504:
-        this.store.dispatch(new GatewayTimeoutError(error));
+        this.store.dispatch(new errorActions.GatewayTimeoutError(error));
         return empty();
       case 505:
-        this.store.dispatch(new HttpVersionNotSupportedError(error));
+        this.store.dispatch(new errorActions.HttpVersionNotSupportedError(error));
         return empty();
       case 506:
-        this.store.dispatch(new VariantAlsoNegotiatesError(error));
+        this.store.dispatch(new errorActions.VariantAlsoNegotiatesError(error));
         return empty();
       case 507:
-        this.store.dispatch(new InsufficientStorageError(error));
+        this.store.dispatch(new errorActions.InsufficientStorageError(error));
         return empty();
       case 508:
-        this.store.dispatch(new LoopDetectedError(error));
+        this.store.dispatch(new errorActions.LoopDetectedError(error));
         return empty();
       case 509:
-        this.store.dispatch(new BandwidthLimitExceededError(error));
+        this.store.dispatch(new errorActions.BandwidthLimitExceededError(error));
         return empty();
       case 510:
-        this.store.dispatch(new NotExtendedError(error));
+        this.store.dispatch(new errorActions.NotExtendedError(error));
         return empty();
       case 511:
-        this.store.dispatch(new NetworkAuthenticationRequiredError(error));
+        this.store.dispatch(new errorActions.NetworkAuthenticationRequiredError(error));
         return empty();
     }
     return _throw(error);
