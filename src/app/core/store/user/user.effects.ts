@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
@@ -65,13 +64,13 @@ export class UserEffects {
     if (error.status >= 400 && error.status <= 403) {
       return new userActions.LoginUserFail(error);
     }
-    return null;
+    return new errorActions.GeneralError(error);
   }
 
   dispatchCreation(error): Action {
     if (error.status >= 400 && error.status <= 403) {
       return new userActions.CreateUserFail(error);
     }
-    return null;
+    return new errorActions.GeneralError(error);
   }
 }
