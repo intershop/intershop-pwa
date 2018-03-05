@@ -8,9 +8,9 @@ import { CountryService } from '../../../core/services/countries/country.service
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { RegistrationPageComponent } from './registration-page.component';
+import { RegistrationPageComponent } from './registration-page.container';
 
-describe('RegistrationPage Component', () => {
+describe('Registration Page Container', () => {
   let fixture: ComponentFixture<RegistrationPageComponent>;
   let component: RegistrationPageComponent;
   let element: HTMLElement;

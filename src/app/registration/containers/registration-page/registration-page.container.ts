@@ -14,7 +14,7 @@ import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { Region } from '../../../models/region/region.model';
 
 @Component({
-  templateUrl: './registration-page.component.html'
+  templateUrl: './registration-page.container.html'
 })
 
 export class RegistrationPageComponent implements OnInit {
