@@ -1,4 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs/observable/of';
+import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { CoreState } from '../../../core/store/user';
 import { ErrorPageContainerComponent } from './error-page.container';
 
 describe('Error Page Container', () => {
@@ -6,9 +10,18 @@ describe('Error Page Container', () => {
   let element: HTMLElement;
   let component: ErrorPageContainerComponent;
 
+  let storeMock: Store<CoreState>;
+
   beforeEach(async(() => {
+    storeMock = mock(Store);
+
+    when(storeMock.pipe(anything())).thenReturn(of({}) as any);
+
     TestBed.configureTestingModule({
-      declarations: [ErrorPageContainerComponent]
+      declarations: [ErrorPageContainerComponent],
+      providers: [
+        { provide: Store, useFactory: () => instance(storeMock) }
+      ],
     }).compileComponents();
   }));
 
