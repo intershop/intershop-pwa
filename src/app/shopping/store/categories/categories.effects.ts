@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Dictionary } from '@ngrx/entity/src/models';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
+import { Category } from '../../../models/category/category.model';
 import * as productsActions from '../products/products.actions';
 import * as productsSelectors from '../products/products.selectors';
 import { ShoppingState } from '../shopping.state';
@@ -23,9 +25,10 @@ export class CategoriesEffects {
   selectedCategory$ = this.store.pipe(
     select(categoriesSelectors.getSelectedCategoryId),
     filter(id => !!id),
-    withLatestFrom(this.store.pipe(select(categoriesSelectors.getSelectedCategory))),
-    filter(([id, c]) => !c || (c.hasOnlineSubCategories && !c.subCategories)),
-    map(([id, c]) => new categoriesActions.LoadCategory(id))
+    map(expandCategoryId),
+    withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
+    map(([ids, entities]) => ids.filter(id => categoryNeedsToBeLoaded(entities, id))),
+    mergeMap((ids) => ids.map(id => new categoriesActions.LoadCategory(id))),
   );
 
   @Effect()
@@ -70,4 +73,18 @@ export class CategoriesEffects {
     filter(sc => !!sc),
     map(sc => new categoriesActions.SaveSubCategories(sc))
   );
+}
+
+function categoryNeedsToBeLoaded(entities: Dictionary<Category>, uniqueId: string): boolean {
+  const c = entities[uniqueId];
+  return !c || (c.hasOnlineSubCategories && !c.subCategories);
+}
+
+function expandCategoryId(uniqueId: string): string[] {
+  const r = [];
+  const ids = uniqueId.split('.');
+  for (let i = 0; i < ids.length; i++) {
+    r.push(ids.slice(0, i + 1).join('.'));
+  }
+  return r.reverse();
 }
