@@ -1,28 +1,50 @@
+<!-- add product details actions component here -->
 <div class="row product-details-top-line">
-  <div class="col-md-12 pull-right"></div>
+	<div class="col-md-12 pull-right"></div>
 </div>
 
+<!-- product details -->
 <div class="row product-details">
 
+  <!-- product images -->
   <ish-product-images [product]="product"></ish-product-images>
 
   <div class="col-md-4 col-sm-6 col-xs-12">
 
+    <!-- product name -->
     <h1>
       <span itemprop="name">{{product.name}}</span>
     </h1>
 
+    <!-- product info -->
     <div class="product-info">
 
-      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+      <!-- add product brand component here -->
 
+      <!-- add product number component here -->
+
+      <!-- product price -->
+      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price [product]="product" [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
 
+        <!-- product inventory -->
         <ish-product-inventory [product]="product"></ish-product-inventory>
-
       </div>
 
+      <!-- product shipment -->
       <ish-product-shipment [product]="product"></ish-product-shipment>
+
+      <!-- product form start -->
+
+        <!-- add product quantity component here -->
+
+        <!-- add to cart button here -->
+
+      <!-- product form end -->
+
+    </div>
+
+    <!-- product tabs -->
 
       <ish-accordion>
         <ish-accordion-item [heading]="'product.description.heading' | translate">
@@ -35,8 +57,7 @@
           <ish-product-shipment [product]="product"></ish-product-shipment>
         </ish-accordion-item>
       </ish-accordion>
-
-    </div>
+    <!-- <div id="accordion" class="panel-group"> placeholder to add accordion component here </div> -->
 
   </div>
 
