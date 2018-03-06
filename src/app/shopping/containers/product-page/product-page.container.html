@@ -1,11 +1,8 @@
 <div class="clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
 
   <ng-container *ngIf="product$ | async as product">
-
     <ish-breadcrumb [product]="product" [category]="category$ | async" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
-
     <ish-product-detail [product]="product"></ish-product-detail>
-
   </ng-container>
 
   <ish-loading *ngIf="productLoading$ | async"></ish-loading>
