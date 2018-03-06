@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs/observable/of';
-import { filter, switchMap } from 'rxjs/operators';
-import * as fromActions from './error.actions';
+import { Router } from '@angular/router';
+import { Effect } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
+import { filter, tap } from 'rxjs/operators';
+import { CoreState } from '../core.state';
+import * as errorSelectors from './error.selectors';
 
 @Injectable()
 export class ErrorEffects {
   constructor(
-    private actions$: Actions
+    private router: Router,
+    private store: Store<CoreState>
   ) { }
 
-  @Effect()
-  timeout$ = this.actions$.pipe(
-    ofType(fromActions.ErrorActionTypes.generalError),
-    filter((action: fromActions.GeneralError) => action.error && (action.error.status === 0)),
-    switchMap((action) => of(new fromActions.CommunicationTimeoutError(action.error)))
-
+  @Effect({ dispatch: false })
+  gotoErrorPageInCaseOfError$ = this.store.pipe(
+    select(errorSelectors.getErrorState),
+    filter((state) => !!state),
+    tap(() => this.router.navigate(['/error']))
   );
-
-
 }
