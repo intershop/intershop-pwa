@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { CoreState, getCurrentError } from '../../../core/store/error';
 
 
 @Component({
@@ -9,18 +7,10 @@ import { CoreState, getCurrentError } from '../../../core/store/error';
 })
 
 export class HeaderComponent implements OnInit {
-
-  constructor(
-    private store: Store<CoreState>
-  ) { }
-
   cartItems: string[] = [];
   navbarCollapsed = true;
 
-  generalError$;
-
   ngOnInit() {
     // TODO: fetch cartItems from store
-    this.generalError$ = this.store.pipe(select(getCurrentError));
   }
 }
