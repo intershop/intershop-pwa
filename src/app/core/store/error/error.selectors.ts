@@ -1,8 +1,3 @@
-import { createSelector } from '@ngrx/store';
 import { CoreState } from '../core.state';
-import { getCurrent } from './error.reducer';
 
-const getErrorState = (state: CoreState) => state.error;
-
-export const getCurrentError = createSelector(getErrorState, getCurrent);
-
+export const getErrorState = (state: CoreState) => (state.error && state.error.type) ? state.error : null;
