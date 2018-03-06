@@ -1,33 +1,32 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { reducers } from '../../store/shopping.system';
-import { CategoryPageContainerComponent } from './category-page.container';
+import { shoppingReducers } from '../../store/shopping.system';
+import { SearchPageContainerComponent } from './search-page.container';
 
-describe('Category Page Container', () => {
-  let component: CategoryPageContainerComponent;
-  let fixture: ComponentFixture<CategoryPageContainerComponent>;
+describe('Search Page Container', () => {
+  let component: SearchPageContainerComponent;
+  let fixture: ComponentFixture<SearchPageContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers)
+          shopping: combineReducers(shoppingReducers)
         })
       ],
       declarations: [
-        CategoryPageContainerComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['category', 'categoryPath'] }),
-        MockComponent({ selector: 'ish-category-page', template: 'Category Page Component', inputs: ['category', 'categoryPath'] }),
-        MockComponent({ selector: 'ish-family-page', template: 'Family Page Component', inputs: ['category', 'categoryPath', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'] }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' })
+        SearchPageContainerComponent,
+        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['searchTerm'] }),
+        MockComponent({ selector: 'ish-search-page', template: 'Search Page Component', inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'] }),
+        MockComponent({ selector: 'ish-loading', template: 'ish-loading', inputs: ['searchLoading'] }),
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CategoryPageContainerComponent);
+    fixture = TestBed.createComponent(SearchPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

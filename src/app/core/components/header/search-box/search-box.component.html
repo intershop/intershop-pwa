@@ -6,10 +6,16 @@
          type="text"
          class="form-control searchTerm"
          (keyup)="search($event.target.value); "
+         value="{{ searchTerm }}"
          (click)="hidePopup()"
          (blur)="isHide=true"
   >
-  <button class="btn-search btn btn-primary" type="submit" name="search" title="{{'search.searchbox.button.title' | translate}}">
+  <button class="btn-search btn btn-primary"
+          type="submit"
+          name="search"
+          title="{{'search.searchbox.button.title' | translate}}"
+          (click)="onSubmit($event.target.parentElement.children['SearchTerm'].value)"
+          >
   <!-- search button with icon -->
     <ng-template [ngIf]="!searchButtonText" [ngIfElse]="textBlock">
       <span class="glyphicon glyphicon-search"></span>
@@ -24,8 +30,8 @@
   <ul *ngIf="results" class="search-suggest-results" [ngStyle]="{'display' : isHide ? 'none' : 'block'}">
     <li *ngFor="let result of results | slice:0:9">
       <button type="button" class="search-result">
-      <span class="searchTerm">{{ result.term }}</span>
-    </button>
+        <span class="searchTerm">{{ result.term }}</span>
+      </button>
     </li>
   </ul>
 </form>
