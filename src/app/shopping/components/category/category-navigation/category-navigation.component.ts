@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CategoriesService } from '../../../../core/services/categories/categories.service';
 import { Category } from '../../../../models/category/category.model';
 
 @Component({
@@ -12,9 +11,4 @@ export class CategoryNavigationComponent {
   @Input() category: Category;
   @Input() categoryPath: Category[]; // TODO: only category should be needed as input once the REST call returns the categoryPath as part of the category
   @Input() categoryNavigationLevel: number;
-
-  constructor(
-    public categoriesService: CategoriesService
-  ) { }
-
 }
