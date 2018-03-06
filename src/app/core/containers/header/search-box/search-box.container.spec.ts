@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { SuggestService } from '../../../services/suggest/suggest.service';
@@ -11,16 +13,20 @@ describe('Search Box Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+      ],
       declarations: [
         MockComponent({
           selector: 'ish-search-box',
           template: 'Search Box',
-          inputs: ['results', 'searchButtonText'],
+          inputs: ['results', 'searchButtonText', 'searchTerm'],
         }),
         SearchBoxContainerComponent,
       ],
       providers: [
-        { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) }
+        { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
+        { provide: Store, useFactory: () => instance(mock(Store)) }
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(SearchBoxContainerComponent);

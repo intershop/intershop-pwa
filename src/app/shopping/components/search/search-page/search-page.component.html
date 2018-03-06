@@ -1,0 +1,27 @@
+<div class="row product-search-result" data-testing-id="search-result-page" >
+
+  <div class="col-sm-3">
+    <div class="search-product-list">
+      <!-- TODO: search filter list -->
+    </div>
+  </div>
+
+  <div class="col-sm-9">
+    <h1>{{'search.title.text' | translate:{'1': searchTerm, '2': totalItems | i18nPlural: ( 'search.title.items.text' | translate ) } }}</h1>
+
+    <ish-product-list-toolbar
+      [itemCount]="totalItems"
+      [viewType]="viewType"
+      [sortBy]="sortBy"
+      [sortKeys]="sortKeys"
+      (viewTypeChange)="changeViewType($event)"
+      (sortByChange)="changeSortBy($event)"
+    ></ish-product-list-toolbar>
+
+    <ish-product-list
+      [products]="products"
+      [viewType]="viewType"
+    ></ish-product-list>
+  </div>
+
+</div>

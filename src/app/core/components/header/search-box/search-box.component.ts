@@ -11,7 +11,9 @@ export class SearchBoxComponent implements OnChanges {
 
   @Input() results: SuggestTerm[];
   @Input() searchButtonText: string;
+  @Input() searchTerm: string;
   @Output() searchTermChange = new EventEmitter<string>();
+  @Output() performSearch = new EventEmitter<string>();
 
   isHide = true;
 
@@ -28,5 +30,12 @@ export class SearchBoxComponent implements OnChanges {
 
   search(searchTerm: string) {
     this.searchTermChange.emit(searchTerm);
+  }
+
+  onSubmit(searchTerm: string) {
+    if (searchTerm) {
+      this.performSearch.emit(searchTerm);
+    }
+    return false;
   }
 }
