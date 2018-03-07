@@ -32,7 +32,7 @@ describe('Accordion Panel Component', () => {
     (headingLinks[0] as HTMLElement).click();
     fixture.detectChanges();
     expect(element.querySelector('.glyphicon-minus')).toBeTruthy();
-    expect(component.isOpen).toBeTruthy();
+    expect(component.isCollapsed).toBeTruthy();
   });
 
   it('should hide panel body when click on panel header again', () => {
@@ -41,6 +41,6 @@ describe('Accordion Panel Component', () => {
     (headingLinks[0] as HTMLElement).click();
     fixture.detectChanges();
     expect(element.querySelector('.glyphicon-plus')).toBeTruthy();
-    expect(component.isOpen).toBeFalsy();
+    expect(component.isCollapsed).toBeFalsy();
   });
 });

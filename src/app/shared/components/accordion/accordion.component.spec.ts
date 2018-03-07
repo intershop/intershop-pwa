@@ -10,15 +10,13 @@ describe('Accordion Container Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccordionComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccordionComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {

@@ -9,13 +9,9 @@ export class AccordionItemComponent {
   @Input() heading: string;
   @Input() dataTestingId: string;
 
-  isOpen = false;
+  isCollapsed = false;
 
-  /**
-   * toggle accordion item
-   * @returns void
-   */
-  toggleOpen(): void {
-    this.isOpen = !this.isOpen;
+  toggleCollapse() {
+    this.isCollapsed = !this.isCollapsed;
   }
 }
