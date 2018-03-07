@@ -1,3 +1,4 @@
+<!-- add product details actions component here -->
 <div class="row product-details-top-line">
   <div class="col-md-12 pull-right"></div>
 </div>
@@ -14,29 +15,47 @@
 
     <div class="product-info">
 
-      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+      <div *ngIf="product.manufacturer" class="product-brand">
+        <!-- TODO: fit routerLink for manufacturer search once search is implemented -->
+        <a [routerLink]="'/search/'+product.manufacturer">
+          <span itemprop="brand">{{product.manufacturer}}</span>
+        </a>
+      </div>
 
+      <div class="product-number">
+        <label>{{ 'product.itemNumber.label' | translate }}</label>
+        <span itemprop="sku">{{product.sku}}</span>
+      </div>
+
+      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <ish-product-price [product]="product" [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
 
         <ish-product-inventory [product]="product"></ish-product-inventory>
-
       </div>
 
       <ish-product-shipment [product]="product"></ish-product-shipment>
 
-      <ish-accordion>
-        <ish-accordion-item [heading]="'product.description.heading' | translate">
-          <div [innerHTML]="product.longDescription"></div>
-        </ish-accordion-item>
-        <ish-accordion-item *ngIf="product.attributes && product.attributes.length" [heading]="'product.details.heading' | translate">
-          <ish-product-attributes [product]="product"></ish-product-attributes>
-        </ish-accordion-item>
-        <ish-accordion-item [heading]="'product.shipping.heading' | translate" dataTestingId="section-shipping-tab">
-          <ish-product-shipment [product]="product"></ish-product-shipment>
-        </ish-accordion-item>
-      </ish-accordion>
+      <!-- product form start -->
+
+        <!-- add product quantity component here -->
+
+        <!-- add to cart button here -->
+
+      <!-- product form end -->
 
     </div>
+
+    <ish-accordion>
+      <ish-accordion-item [heading]="'product.description.heading' | translate">
+        <div [innerHTML]="product.longDescription"></div>
+      </ish-accordion-item>
+      <ish-accordion-item *ngIf="product.attributes && product.attributes.length" [heading]="'product.details.heading' | translate">
+        <ish-product-attributes [product]="product"></ish-product-attributes>
+      </ish-accordion-item>
+      <ish-accordion-item [heading]="'product.shipping.heading' | translate" dataTestingId="section-shipping-tab">
+        <ish-product-shipment [product]="product"></ish-product-shipment>
+      </ish-accordion-item>
+    </ish-accordion>
 
   </div>
 
