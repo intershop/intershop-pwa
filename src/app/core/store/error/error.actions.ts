@@ -18,8 +18,11 @@ export enum ErrorActionTypes {
   NetworkAuthenticationRequiredError = '[Error] Network Authentication Required (511)',
 }
 
+export enum ErrorGroupTypes {
+  Http5XXError = '5xx Server error',
+}
 export abstract class Http5XXAction implements Action {
-  errorGroup = '5XX';
+  errorGroup = ErrorGroupTypes.Http5XXError;
   type = '';
   constructor(public error: HttpErrorResponse) { }
 }
