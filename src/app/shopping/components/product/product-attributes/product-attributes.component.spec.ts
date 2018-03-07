@@ -32,19 +32,14 @@ describe('Product Attributes Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should throw an error if input parameter product is not set properly', () => {
-    component.product = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
-  });
-
-  it('should test product attributes are getting rendered when product attributes available', () => {
+  it('should render product attributes when available', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('dt').length).toEqual(2);
     expect(element.getElementsByClassName('ish-ca-type').length).toEqual(2);
     expect(element.getElementsByClassName('ish-ca-value').length).toEqual(2);
   });
 
-  it('should test product attributes name and value are getting rendered when product attributes available', () => {
+  it('should render product attributes name and value when available', () => {
     product.attributes = [new Attribute('A', new StringValue('A'))];
     fixture.detectChanges();
     expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
