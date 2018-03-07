@@ -8,6 +8,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { AccordionItemComponent } from './components/accordion-item/accordion-item.component';
+import { AccordionComponent } from './components/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { FormControlFeedbackComponent } from './components/form-control-feedback/form-control-feedback.component';
 import { InputComponent } from './components/form-controls/input/input.component';
@@ -36,7 +38,9 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     BreadcrumbComponent,
     ModalDialogComponent,
     LoadingComponent,
-    ...selectComponents
+    ...selectComponents,
+    AccordionComponent,
+    AccordionItemComponent
   ],
   exports: [
     RouterModule,
@@ -55,7 +59,9 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
     ModalDialogComponent,
-    ...selectComponents
+    ...selectComponents,
+    AccordionComponent,
+    AccordionItemComponent
   ]
 })
 export class SharedModule { }
