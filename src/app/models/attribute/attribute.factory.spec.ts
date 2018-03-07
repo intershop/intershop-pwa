@@ -1,9 +1,10 @@
 import { AttributeFactory } from './attribute.factory';
 import { AttributeData } from './attribute.interface';
-import { BooleanValue, MoneyValue, MultipleBooleanValue, MultipleDateValue, MultipleNumberValue, MultipleStringValue, NumberValue, QuantityValue, StringValue } from './attribute.model';
+import { BooleanValue, DateValue, MoneyValue, MultipleBooleanValue, MultipleDateValue, MultipleNumberValue, MultipleStringValue, NumberValue, QuantityValue, StringValue } from './attribute.model';
 
 describe('Attribute Factory', () => {
-  const attributeseperator = ', ';
+  const valuesSeparator = ', ';
+
   it('should transform incoming String AttributeData to Attributes with StringValue', () => {
     const input = {
       'name': 'StringAttribute',
@@ -76,6 +77,18 @@ describe('Attribute Factory', () => {
     expect((<BooleanValue>output.value).print()).toEqual(input.value.toString());
   });
 
+  it('should transform incoming Date AttributeData to Attributes with DateValue', () => {
+    const input = {
+      'name': 'DateAttribute',
+      'type': 'Date',
+      'value': 1355270400000
+    } as AttributeData;
+    const output = AttributeFactory.fromData(input);
+    expect(output.name).toBe(input.name);
+    expect(output.value).toEqual(new DateValue(input.value));
+    expect((<DateValue>output.value).print()).toEqual(input.value.toString());
+  });
+
   it('should transform incoming Quantity AttributeData to Attributes with QuantityValue', () => {
     const input = {
       'name': 'QuantityAttribute',
@@ -145,7 +158,7 @@ describe('Attribute Factory', () => {
     const output = AttributeFactory.fromData(input);
     expect(output.name).toBe(input.name);
     expect(output.value).toEqual(new MultipleStringValue(input.value));
-    expect((<MultipleStringValue>output.value).print(attributeseperator)).toEqual(input.value.join(attributeseperator));
+    expect((<MultipleStringValue>output.value).print(valuesSeparator)).toEqual(input.value.join(valuesSeparator));
   });
 
   it('should transform incoming MultipleInteger AttributeData to Attributes with MultipleNumberValue', () => {
@@ -157,7 +170,7 @@ describe('Attribute Factory', () => {
     const output = AttributeFactory.fromData(input);
     expect(output.name).toBe(input.name);
     expect(output.value).toEqual(new MultipleNumberValue(input.value));
-    expect((<MultipleNumberValue>output.value).print(attributeseperator)).toEqual(input.value.join(attributeseperator));
+    expect((<MultipleNumberValue>output.value).print(valuesSeparator)).toEqual(input.value.join(valuesSeparator));
   });
 
   it('should transform incoming MultipleDouble AttributeData to Attributes with MultipleNumberValue', () => {
@@ -169,7 +182,7 @@ describe('Attribute Factory', () => {
     const output = AttributeFactory.fromData(input);
     expect(output.name).toBe(input.name);
     expect(output.value).toEqual(new MultipleNumberValue(input.value));
-    expect((<MultipleNumberValue>output.value).print(attributeseperator)).toEqual(input.value.join(attributeseperator));
+    expect((<MultipleNumberValue>output.value).print(valuesSeparator)).toEqual(input.value.join(valuesSeparator));
   });
 
   it('should transform incoming MultipleLong AttributeData to Attributes with MultipleNumberValue', () => {
@@ -181,7 +194,7 @@ describe('Attribute Factory', () => {
     const output = AttributeFactory.fromData(input);
     expect(output.name).toBe(input.name);
     expect(output.value).toEqual(new MultipleNumberValue(input.value));
-    expect((<MultipleNumberValue>output.value).print(attributeseperator)).toEqual(input.value.join(attributeseperator));
+    expect((<MultipleNumberValue>output.value).print(valuesSeparator)).toEqual(input.value.join(valuesSeparator));
   });
 
   it('should transform incoming MultipleBigDecimal AttributeData to Attributes with MultipleNumberValue', () => {
@@ -193,7 +206,7 @@ describe('Attribute Factory', () => {
     const output = AttributeFactory.fromData(input);
     expect(output.name).toBe(input.name);
     expect(output.value).toEqual(new MultipleNumberValue(input.value));
-    expect((<MultipleNumberValue>output.value).print(attributeseperator)).toEqual(input.value.join(attributeseperator));
+    expect((<MultipleNumberValue>output.value).print(valuesSeparator)).toEqual(input.value.join(valuesSeparator));
   });
 
   it('should transform incoming MultipleBoolean AttributeData to Attributes with MultipleBooleanValue', () => {
@@ -205,7 +218,7 @@ describe('Attribute Factory', () => {
     const output = AttributeFactory.fromData(input);
     expect(output.name).toBe(input.name);
     expect(output.value).toEqual(new MultipleBooleanValue(input.value));
-    expect((<MultipleBooleanValue>output.value).print(attributeseperator)).toEqual(input.value.join(attributeseperator));
+    expect((<MultipleBooleanValue>output.value).print(valuesSeparator)).toEqual(input.value.join(valuesSeparator));
   });
 
   it('should transform incoming MultipleDate AttributeData to Attributes with MultipleDateValue', () => {
@@ -217,6 +230,6 @@ describe('Attribute Factory', () => {
     const output = AttributeFactory.fromData(input);
     expect(output.name).toBe(input.name);
     expect(output.value).toEqual(new MultipleDateValue(input.value));
-    expect((<MultipleDateValue>output.value).print(attributeseperator)).toEqual(input.value.join(attributeseperator));
+    expect((<MultipleDateValue>output.value).print(valuesSeparator)).toEqual(input.value.join(valuesSeparator));
   });
 });

@@ -1,5 +1,5 @@
 export class Attribute {
-  constructor(public name: string, public value: StringValue | NumberValue | BooleanValue | QuantityValue | MoneyValue | MultipleStringValue | MultipleNumberValue | MultipleBooleanValue | MultipleDateValue) { }
+  constructor(public name: string, public value: StringValue | NumberValue | BooleanValue | DateValue | QuantityValue | MoneyValue | MultipleStringValue | MultipleNumberValue | MultipleBooleanValue | MultipleDateValue) { }
 }
 
 export class StringValue {
@@ -26,6 +26,14 @@ export class BooleanValue {
   }
 }
 
+export class DateValue {
+  constructor(public value: Date) { }
+
+  print(): string {
+    return this.value.toString();
+  }
+}
+
 export class QuantityValue {
   constructor(public value: number, public unit: string) { }
 
@@ -44,28 +52,32 @@ export class MoneyValue {
 
 export class MultipleStringValue {
   constructor(public value: string[]) { }
-  print(attributeseperator: string): string {
-    return this.value.join(attributeseperator);
+
+  print(valuesSeparator: string): string {
+    return this.value.join(valuesSeparator);
   }
 }
 
 export class MultipleNumberValue {
   constructor(public value: number[]) { }
-  print(attributeseperator: string): string {
-    return this.value.join(attributeseperator);
+
+  print(valuesSeparator: string): string {
+    return this.value.join(valuesSeparator);
   }
 }
 
 export class MultipleBooleanValue {
   constructor(public value: boolean[]) { }
-  print(attributeseperator: string): string {
-    return this.value.join(attributeseperator);
+
+  print(valuesSeparator: string): string {
+    return this.value.join(valuesSeparator);
   }
 }
 
 export class MultipleDateValue {
   constructor(public value: Date[]) { }
-  print(attributeseperator: string): string {
-    return this.value.join(attributeseperator);
+
+  print(valuesSeparator: string): string {
+    return this.value.join(valuesSeparator);
   }
 }

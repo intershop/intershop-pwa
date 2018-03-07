@@ -10,6 +10,6 @@ import { Product } from '../../../../models/product/product.model';
 export class ProductAttributesComponent {
 
   @Input() product: Product;
-  @Input() attributeseperator = ', ';
+  @Input() multipleValuesSeparator = ', ';
 
 }
