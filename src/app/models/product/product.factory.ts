@@ -30,6 +30,9 @@ export class ProductFactory {
     if (data.salePrice) {
       product.salePrice = PriceFactory.fromData(data.salePrice);
     }
+    if (data.attributes) {
+      product.attributes = data.attributes.map(attribute => AttributeFactory.fromData(attribute));
+    }
     product.name = data.productName;
     return product;
   }

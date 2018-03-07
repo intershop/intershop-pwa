@@ -1,5 +1,5 @@
 <div class="row product-details-top-line">
-	<div class="col-md-12 pull-right"></div>
+  <div class="col-md-12 pull-right"></div>
 </div>
 
 <div class="row product-details">
@@ -8,7 +8,9 @@
 
   <div class="col-md-4 col-sm-6 col-xs-12">
 
-    <h1><span itemprop="name">{{product.name}}</span></h1>
+    <h1>
+      <span itemprop="name">{{product.name}}</span>
+    </h1>
 
     <div class="product-info">
 
@@ -21,6 +23,18 @@
       </div>
 
       <ish-product-shipment [product]="product"></ish-product-shipment>
+
+      <ish-accordion>
+        <ish-accordion-item [heading]="'product.description.heading' | translate">
+          <div [innerHTML]="product.longDescription"></div>
+        </ish-accordion-item>
+        <ish-accordion-item *ngIf="product.attributes && product.attributes.length" [heading]="'product.details.heading' | translate">
+          <ish-product-attributes [product]="product"></ish-product-attributes>
+        </ish-accordion-item>
+        <ish-accordion-item [heading]="'product.shipping.heading' | translate" dataTestingId="section-shipping-tab">
+          <ish-product-shipment [product]="product"></ish-product-shipment>
+        </ish-accordion-item>
+      </ish-accordion>
 
     </div>
 

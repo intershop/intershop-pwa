@@ -1,7 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
 import { ProductDetailComponent } from './product-detail.component';
+
 
 describe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;
@@ -13,6 +15,9 @@ describe('ProductDetailComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ProductDetailComponent],
+      imports: [
+        TranslateModule.forRoot()
+      ],
       // TODO: prepare more detailed test
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents().then(() => {
