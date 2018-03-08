@@ -4,9 +4,10 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
-import { flatMap, map } from 'rxjs/operators';
+import { catchError, flatMap, map } from 'rxjs/operators';
 import { Locale } from '../../models/locale/locale.interface';
 import { CoreState, getCurrentLocale } from '../store/locale';
+import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 @Injectable()
@@ -23,6 +24,7 @@ export class ApiService {
     @Inject(ICM_SERVER_URL) private icmServerUrl: string,
     private httpClient: HttpClient,
     store: Store<CoreState>,
+    private apiServiceErrorHandler: ApiServiceErrorHandler
   ) {
     store.pipe(select(getCurrentLocale)).subscribe(locale => this.currentLocale = locale);
   }
@@ -51,6 +53,7 @@ export class ApiService {
     }
 
     return this.httpClient.get<T>(url, { params: params, headers: headers }).pipe(
+      catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)),
       map(data => (elementsTranslation ? data['elements'] : data)),
       flatMap((data) => this.getLinkedData(data, linkTranslation))
     );
@@ -67,7 +70,7 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
-    );
+    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
   }
 
   /**
@@ -81,7 +84,7 @@ export class ApiService {
       `${this.restEndpoint}/${path}`,
       JSON.stringify(body),
       { headers: this.defaultHeaders }
-    );
+    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
   }
 
   /**
@@ -90,11 +93,9 @@ export class ApiService {
    * @returns Observable
    */
   delete<T>(path): Observable<T> {
-
     return this.httpClient.delete<T>(
       `${this.restEndpoint}/${path}`
-    );
-
+    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
   }
 
   private getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
@@ -126,7 +127,7 @@ export class ApiService {
     data.forEach(item => {
       if (item.type === 'Link' && item.uri) {
         const linkUrl = `${this.icmServerUrl}/${item.uri}`;
-        uriList$.push(this.get(linkUrl));
+        uriList$.push(this.get<any>(linkUrl));
       }
     });
     return uriList$;
