@@ -31,7 +31,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     private afs: AddressFormService
   ) { }
 
-
   ngOnInit() {
     this.form = this.fb.group({
       credentials: this.fb.group({
@@ -59,7 +58,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     credForm.get('loginConfirmation').setValidators(CustomValidators.equalTo(credForm.get('login')));
     credForm.get('passwordConfirmation').setValidators(CustomValidators.equalTo(credForm.get('password')));
   }
-
 
   ngOnChanges(c: SimpleChanges) {
     // update validators for "state" control in address form according to regions

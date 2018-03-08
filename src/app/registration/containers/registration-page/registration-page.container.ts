@@ -98,8 +98,3 @@ export class RegistrationPageComponent implements OnInit {
     return of(salutationlabels);
   }
 }
-
-
-
-
-

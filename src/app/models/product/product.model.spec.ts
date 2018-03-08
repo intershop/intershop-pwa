@@ -60,7 +60,6 @@ describe('Product', () => {
     });
   });
 
-
   describe('getImageViewIDsExcludePrimary()', () => {
 
     it('should return list of image viewIDs  excluding primary image viewID when called with image type as L(Large size)', () => {

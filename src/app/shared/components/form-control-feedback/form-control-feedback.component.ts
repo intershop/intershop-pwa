@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { FormErrorMessages } from './form-error-messages.interface';
 
-
 @Component({
   selector: 'ish-form-control-feedback',
   templateUrl: './form-control-feedback.component.html'

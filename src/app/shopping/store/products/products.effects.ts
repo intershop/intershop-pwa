@@ -30,7 +30,6 @@ export class ProductsEffects {
     })
   );
 
-
   @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductsForCategory),

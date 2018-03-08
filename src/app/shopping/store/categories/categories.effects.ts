@@ -50,8 +50,6 @@ export class CategoriesEffects {
     map(([c, sku]) => new productsActions.LoadProductsForCategory(c.uniqueId))
     );
 
-
-
   // TODO: @Ferdinand: non full categories might not be to helpfull
   @Effect()
   saveSubCategories$ = this.actions$.pipe(

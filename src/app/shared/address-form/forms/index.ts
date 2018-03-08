@@ -23,7 +23,6 @@ export const components = [
   AddressFormUSComponent,
 ];
 
-
 export const factoryProviders = [
   { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormDefaultFactory, multi: true },
   { provide: ADDRESS_FORM_FACTORY, useClass: AddressFormDEFactory, multi: true },

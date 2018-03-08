@@ -87,7 +87,6 @@ describe('FormControlFeedbackComponent', () => {
     expect(getErrorDisplay().length).toBe(1);
   });
 
-
   function getIcon() {
     return fixture.debugElement.query(By.css('i.glyphicon'));
   }

@@ -61,4 +61,3 @@ describe('Header Component', () => {
     expect(element.getElementsByTagName('ish-mini-cart')[0].textContent).toContain('Mini Cart Template');
   });
 });
-

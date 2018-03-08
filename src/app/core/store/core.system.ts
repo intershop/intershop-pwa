@@ -8,7 +8,6 @@ import { localeReducer } from './locale/locale.reducer';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 
-
 export const reducers: ActionReducerMap<CoreState> = {
   routerReducer: routerReducer,
   user: userReducer,

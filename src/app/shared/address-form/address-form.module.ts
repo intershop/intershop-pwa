@@ -7,7 +7,6 @@ import { components, factoryProviders } from './forms';
 
 import { SharedModule } from '../shared.module';
 
-
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, SharedModule],
   declarations: [...components],

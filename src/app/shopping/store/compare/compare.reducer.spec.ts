@@ -36,4 +36,3 @@ describe('CompareReducer', () => {
     });
   });
 });
-

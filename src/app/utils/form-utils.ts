@@ -68,6 +68,3 @@ export function arrayDiff(a: any[], b: any[]): any[] {
 export function arrayIntersect(a: any[], b: any[]): any[] {
   return a.filter(i => b.includes(i));
 }
-
-
-

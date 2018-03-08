@@ -3,7 +3,6 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angul
 import { Store } from '@ngrx/store';
 import { CoreState, LogoutUser } from '../store/user';
 
-
 @Injectable()
 export class LogoutGuard implements CanActivate {
 
