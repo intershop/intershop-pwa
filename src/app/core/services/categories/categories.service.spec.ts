@@ -27,7 +27,6 @@ describe('Categories Service', () => {
     categoriesService = TestBed.get(CategoriesService);
   });
 
-
   describe('getTopLevelCategories()', () => {
 
     it('should call ApiService "categories" when called', () => {

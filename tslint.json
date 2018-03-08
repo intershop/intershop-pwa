@@ -12,6 +12,7 @@
   "rules": {
     "arrow-return-shorthand": true,
     "no-commented-out-code": { "severity": "warning" },
+    "no-consecutive-blank-lines": true,
     "callable-types": true,
     "class-name": true,
     "comment-format": [

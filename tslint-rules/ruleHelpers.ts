@@ -28,7 +28,6 @@ export class RuleHelpers {
     }
   }
 
-
   static extractVariableNameInDeclaration(statement: ts.Node): string {
     return statement.getChildAt(1).getFirstToken().getText();
   }

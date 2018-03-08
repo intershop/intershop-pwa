@@ -2,7 +2,6 @@ import { FactoryHelper } from '../factory-helper';
 import { CredentialsData } from './credentials.interface';
 import { Credentials } from './credentials.model';
 
-
 export class CredentialsFactory {
 
   /*

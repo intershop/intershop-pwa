@@ -1,7 +1,6 @@
 import { AddressData } from '../address/address.interface';
 import { CredentialsData } from '../credentials/credentials.interface';
 
-
 export interface CustomerData {
   id: string;
   type: string;

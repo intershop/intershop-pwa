@@ -3,7 +3,6 @@ import { ImageFactory } from '../image/image.factory';
 import { CategoryData } from './category.interface';
 import { Category } from './category.model';
 
-
 export class CategoryFactory {
 
   static fromData(categoryData: CategoryData, categoryUniqueId?: string): Category {

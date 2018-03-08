@@ -121,7 +121,6 @@ export class ApiService {
     }
   }
 
-
   private getLinkedObjects(data: any[]): Observable<any>[] {
     const uriList$: Observable<any>[] = [];
     data.forEach(item => {

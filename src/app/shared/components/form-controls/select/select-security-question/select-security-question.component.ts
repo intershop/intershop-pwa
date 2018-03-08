@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';
 
-
 @Component({
   selector: 'ish-select-security-question',
   templateUrl: '../select.component.html'

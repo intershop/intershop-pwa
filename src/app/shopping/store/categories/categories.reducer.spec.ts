@@ -2,7 +2,6 @@ import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
 import { categoriesReducer, initialState } from './categories.reducer';
 
-
 describe('Categories Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
@@ -103,4 +102,3 @@ describe('Categories Reducer', () => {
     });
   });
 });
-

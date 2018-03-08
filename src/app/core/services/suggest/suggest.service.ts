@@ -6,7 +6,6 @@ import { debounceTime, distinctUntilChanged, filter, map, switchMap, toArray } f
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { ApiService } from '../api.service';
 
-
 @Injectable()
 export class SuggestService {
 

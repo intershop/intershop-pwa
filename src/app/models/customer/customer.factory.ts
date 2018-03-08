@@ -5,7 +5,6 @@ import { FactoryHelper } from '../factory-helper';
 import { CustomerData } from './customer.interface';
 import { Customer } from './customer.model';
 
-
 export class CustomerFactory {
 
   /*

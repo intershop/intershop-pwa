@@ -4,9 +4,6 @@ import { ProductFactory } from './product.factory';
 import { ProductData } from './product.interface';
 import { Product } from './product.model';
 
-
-
-
 describe('ProductFactory', () => {
   describe('fromData', () => {
     it(`should return Product when getting a ProductData`, () => {
@@ -40,4 +37,3 @@ describe('ProductFactory', () => {
     });
   });
 });
-

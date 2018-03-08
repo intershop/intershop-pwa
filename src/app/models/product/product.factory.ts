@@ -7,7 +7,6 @@ import { VariationProduct } from './product-variation.model';
 import { ProductData } from './product.interface';
 import { Product } from './product.model';
 
-
 export class ProductFactory {
 
   static fromData(data: ProductData): Product {

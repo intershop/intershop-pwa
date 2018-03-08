@@ -2,7 +2,6 @@ import { Product } from '../../../models/product/product.model';
 import * as fromActions from './products.actions';
 import { initialState, productsReducer } from './products.reducer';
 
-
 describe('Products Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
@@ -80,4 +79,3 @@ describe('Products Reducer', () => {
 
   });
 });
-
