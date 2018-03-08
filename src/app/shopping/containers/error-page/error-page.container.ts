@@ -1,5 +1,4 @@
-// NEEDS_WORK: DUMMY COMPONENT - container tslint rule disabled as long as it needs work
-// tslint:disable ccp-no-markup-in-containers
+// NEEDS_WORK: DUMMY COMPONENT
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { CoreState } from '../../../core/store/core.state';
