@@ -1,6 +1,9 @@
-// NEEDS_WORK: DUMMY COMPONENT - container tslint rule disabled as long as it needs work
-// tslint:disable ccp-no-markup-in-containers
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { CoreState } from '../../../core/store/user';
+import { Product } from '../../../models/product/product.model';
+import { getCompareProducts } from '../../store/compare';
 
 @Component({
   selector: 'ish-compare-page-container',
@@ -8,11 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComparePageContainerComponent implements OnInit {
 
-  comparedProducts = [];
+  compareProducts$: Observable<Product[]>;
 
-  constructor() { }
+  constructor(
+    private store: Store<CoreState>
+  ) { }
 
   ngOnInit() {
-    // TODO: connect to store
+    this.compareProducts$ = this.store.pipe(select(getCompareProducts));
   }
 }
