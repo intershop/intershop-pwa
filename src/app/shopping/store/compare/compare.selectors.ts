@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
 export const getCompareState = createSelector(
@@ -13,4 +14,10 @@ export const getCompareList = createSelector(
 export const isInCompareList = (sku: string) => createSelector(
   getCompareList,
   list => list.includes(sku)
+);
+
+export const getCompareProducts = createSelector(
+  getCompareList,
+  getProductEntities,
+  (productSKUs, productEntities) => productSKUs.map(sku => productEntities[sku])
 );

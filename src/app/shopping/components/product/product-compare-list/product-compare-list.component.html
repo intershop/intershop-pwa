@@ -1,0 +1,15 @@
+<ng-container *ngIf="compareProducts.length else emptyCompareList">
+  <h3>{{'product.compare.selected_product_count.message' | translate:{'0': compareProducts.length} }}</h3>
+
+  <!-- TODO: implement rendering of product compare listing -->
+  <ul *ngFor="let product of compareProducts">
+    <li>
+      <a [routerLink]="['/product', product.sku]">{{product.name}}</a>
+    </li>
+  </ul>
+
+</ng-container>
+
+<ng-template #emptyCompareList>
+  <h3>{{'product.compare.no_product_selected.message' | translate}}</h3>
+</ng-template>
