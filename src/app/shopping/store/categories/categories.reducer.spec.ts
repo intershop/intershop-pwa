@@ -1,4 +1,3 @@
-import { Dictionary } from '@ngrx/entity/src/models';
 import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
 import { categoriesReducer, flattenSubCategories, initialState } from './categories.reducer';
@@ -237,7 +236,7 @@ describe('Categories Reducer', () => {
         ...initialState,
         entities: {
           '1.2': { id: '2', uniqueId: '1.2', name: 'mycategory', description: 'thedescription' } as Category
-        } as Dictionary<Category>
+        }
       };
       const state = categoriesReducer(newInitialState, action);
 
