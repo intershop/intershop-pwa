@@ -2,7 +2,6 @@ import { CategoryFactory } from './category.factory';
 import { CategoryData } from './category.interface';
 import { Category } from './category.model';
 
-
 describe('CategoryFactory', () => {
   describe('fromData', () => {
     it(`should return Category when getting a RawCategory`, () => {
@@ -22,4 +21,3 @@ describe('CategoryFactory', () => {
     });
   });
 });
-

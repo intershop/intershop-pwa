@@ -9,7 +9,6 @@ import { ViewType } from '../../../models/types';
 import * as fromStore from '../../store/categories';
 import * as fromViewconf from '../../store/viewconf';
 
-
 @Component({
   selector: 'ish-category-page-container',
   templateUrl: './category-page.container.html'

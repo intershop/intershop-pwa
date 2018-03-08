@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { ViewType } from '../../../models/types';
 
-
 export enum ViewconfActionTypes {
   ChangeViewType = '[Shopping] Change ViewType Setting',
   ChangeSortBy = '[Shopping] Change SortBy Setting',

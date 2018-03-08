@@ -102,7 +102,6 @@ describe('RegistrationForm Component', () => {
     expect(fired).toBeFalsy('invalid form does not trigger event');
   });
 
-
   it('should throw create event for valid form (and not when invalid)', () => {
     component.form = new FormGroup({
       control: new FormControl('foo', Validators.required)

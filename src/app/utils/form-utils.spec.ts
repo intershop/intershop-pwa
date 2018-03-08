@@ -23,7 +23,6 @@ describe('Form Utils', () => {
     });
   });
 
-
   describe('markAsDirtyRecursive', () => {
     it('should mark all controls dirty for flat form group', () => {
       const group = new FormGroup({

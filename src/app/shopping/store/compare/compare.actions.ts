@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
 
-
 export enum CompareActionTypes {
   AddToCompare = '[Shopping] Add Product to Compare',
   RemoveFromCompare = '[Shopping] Remove Product from Compare',

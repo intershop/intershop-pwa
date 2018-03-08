@@ -69,7 +69,6 @@ describe('ApiService', () => {
     expect(req.request.method).toEqual('PUT');
   });
 
-
   it('should call the httpClient.post method when apiService.post method is called.', () => {
     apiService.post('data').subscribe(data => expect(data).toBeTruthy());
 

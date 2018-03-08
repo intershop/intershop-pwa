@@ -20,7 +20,7 @@ import { ProductsEffects } from './products.effects';
 describe('ProductsEffects', () => {
   let actions$: Observable<Action>;
   let effects: ProductsEffects;
-  let store: Store<ShoppingState>;
+  let store$: Store<ShoppingState>;
   let productsServiceMock: ProductsService;
 
   beforeEach(() => {
@@ -41,7 +41,6 @@ describe('ProductsEffects', () => {
         sortKeys: ['name-asc', 'name-desc']
       }));
 
-
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
@@ -57,7 +56,7 @@ describe('ProductsEffects', () => {
     });
 
     effects = TestBed.get(ProductsEffects);
-    store = TestBed.get(Store);
+    store$ = TestBed.get(Store);
   });
 
   describe('loadProduct$', () => {
@@ -95,7 +94,7 @@ describe('ProductsEffects', () => {
   describe('loadProductsForCategory$', () => {
 
     beforeEach(() => {
-      store.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
+      store$.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
 
       actions$ = hot('a', {
         a: new fromActions.LoadProductsForCategory('123')
@@ -121,8 +120,6 @@ describe('ProductsEffects', () => {
 
   });
 
-
-
   describe('selectedProduct$', () => {
     it('should map to LoadProduct when product is selected', () => {
       const sku = 'P123';
@@ -133,7 +130,7 @@ describe('ProductsEffects', () => {
         url: `/category/${categoryUniqueId}/product/${sku}`,
         params: { categoryUniqueId, sku }
       });
-      store.dispatch(routerAction);
+      store$.dispatch(routerAction);
 
       const expectedValues = {
         a: new fromActions.LoadProduct(sku)

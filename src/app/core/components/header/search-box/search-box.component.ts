@@ -9,7 +9,6 @@ import { SuggestService } from '../../../services/suggest/suggest.service';
   templateUrl: './search-box.component.html'
 })
 
-
 export class SearchBoxComponent implements OnInit {
 
   results: SuggestTerm[];
@@ -42,5 +41,3 @@ export class SearchBoxComponent implements OnInit {
     this.doSearch();
   }
 }
-
-

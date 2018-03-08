@@ -2,7 +2,6 @@ import { PriceFactory } from './price.factory';
 import { PriceData } from './price.interface';
 import { Price } from './price.model';
 
-
 describe('PriceFactory', () => {
   describe('fromData', () => {
     it(`should return a Price when getting valid PriceData`, () => {

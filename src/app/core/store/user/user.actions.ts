@@ -14,7 +14,6 @@ export enum UserActionTypes {
   CreateUserFail = '[Account] Create User Failed',
 }
 
-
 export class LoginUser implements Action {
   readonly type = UserActionTypes.LoginUser;
   constructor(public payload: AccountLogin) { }

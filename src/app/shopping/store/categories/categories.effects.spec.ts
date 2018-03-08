@@ -19,7 +19,7 @@ import { CategoriesEffects } from './categories.effects';
 describe('Categories Effects', () => {
   let actions$: Observable<Action>;
   let effects: CategoriesEffects;
-  let store: Store<ShoppingState>;
+  let store$: Store<ShoppingState>;
 
   let categoriesServiceMock: CategoriesService;
 
@@ -43,7 +43,7 @@ describe('Categories Effects', () => {
     });
 
     effects = TestBed.get(CategoriesEffects);
-    store = TestBed.get(Store);
+    store$ = TestBed.get(Store);
   });
 
   describe('selectedCategory$', () => {
@@ -62,10 +62,9 @@ describe('Categories Effects', () => {
           url: `/category/${id}`,
           params: { categoryUniqueId: id }
         });
-        store.dispatch(routerAction);
+        store$.dispatch(routerAction);
       };
     });
-
 
     it('should do nothing for undefined category id', () => {
       expect(effects.selectedCategory$).toBeObservable(cold('-'));
@@ -73,7 +72,7 @@ describe('Categories Effects', () => {
 
     it('should do nothing if category exists', () => {
       setSelectedCategoryId(category.uniqueId);
-      store.dispatch(new fromActions.LoadCategorySuccess(category));
+      store$.dispatch(new fromActions.LoadCategorySuccess(category));
       expect(effects.selectedCategory$).toBeObservable(cold('-'));
     });
 
@@ -87,7 +86,7 @@ describe('Categories Effects', () => {
     it('should trigger LoadCategory if category exists but subcategories have not been loaded', () => {
       category.hasOnlineSubCategories = true;
       category.subCategories = undefined;
-      store.dispatch(new fromActions.LoadCategorySuccess(category));
+      store$.dispatch(new fromActions.LoadCategorySuccess(category));
       setSelectedCategoryId(category.uniqueId);
 
       const completion = new fromActions.LoadCategory(category.uniqueId);
@@ -96,7 +95,6 @@ describe('Categories Effects', () => {
     });
 
   });
-
 
   describe('loadCategory$', () => {
     it('should call the categoriesService for LoadCategory action', () => {
@@ -147,7 +145,7 @@ describe('Categories Effects', () => {
           url: `/category/${cid}`,
           params: { categoryUniqueId: cid }
         });
-        store.dispatch(routerAction);
+        store$.dispatch(routerAction);
       };
 
       selectProduct = function(cid: string, sku: string) {
@@ -158,12 +156,12 @@ describe('Categories Effects', () => {
             sku
           }
         });
-        store.dispatch(routerAction);
+        store$.dispatch(routerAction);
       };
     });
 
     it('should do nothing when product is selected', () => {
-      store.dispatch(new fromActions.LoadCategorySuccess(category));
+      store$.dispatch(new fromActions.LoadCategorySuccess(category));
       selectProduct('123', 'P222');
 
       expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
@@ -172,20 +170,20 @@ describe('Categories Effects', () => {
     describe('when product is not selected', () => {
       it('should do nothing when category doesnt have online products', () => {
         category.hasOnlineProducts = false;
-        store.dispatch(new fromActions.LoadCategorySuccess(category));
+        store$.dispatch(new fromActions.LoadCategorySuccess(category));
         selectCategory(category.uniqueId);
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
       it('should do nothing when category already has an SKU list', () => {
         category.productSkus = ['P222', 'P333'];
-        store.dispatch(new fromActions.LoadCategorySuccess(category));
+        store$.dispatch(new fromActions.LoadCategorySuccess(category));
         selectCategory(category.uniqueId);
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
       it('should do nothing when no category is selected', () => {
-        store.dispatch(new fromActions.LoadCategorySuccess(category));
+        store$.dispatch(new fromActions.LoadCategorySuccess(category));
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
@@ -196,7 +194,7 @@ describe('Categories Effects', () => {
 
       it('should trigger action of type LoadProductsForCategory when category is selected', () => {
         category.hasOnlineProducts = true;
-        store.dispatch(new fromActions.LoadCategorySuccess(category));
+        store$.dispatch(new fromActions.LoadCategorySuccess(category));
         selectCategory(category.uniqueId);
 
         const action = new productsActions.LoadProductsForCategory(category.uniqueId);
@@ -206,7 +204,6 @@ describe('Categories Effects', () => {
       });
     });
   });
-
 
   describe('saveSubCategories$', () => {
     it('should map to action of type SaveSubCategories if subcategories exist', () => {

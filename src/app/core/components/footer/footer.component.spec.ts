@@ -32,4 +32,3 @@ describe('Footer Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 });
-

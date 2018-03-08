@@ -5,7 +5,6 @@ import * as ts from 'typescript';
 const SINGLE_LINE_COMMENT_REGEX = /\/\/.*(?=(it|describe|xit|xdescribe|fit|fdescribe)\()/;
 const MULTI_LINE_COMMENT_REGEX = /\/\*[^(\*\/)]*(?=(it|describe|xit|xdescribe|fit|fdescribe)\()/;
 
-
 class NoCommentedOutTestsWalker extends Lint.RuleWalker {
 
   public visitSourceFile(sourceFile: ts.SourceFile) {
