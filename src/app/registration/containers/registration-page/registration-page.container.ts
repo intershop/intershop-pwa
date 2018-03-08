@@ -5,9 +5,9 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../core/configurations/injection-keys';
-import { CountryService } from '../../../core/services/countries/country.service';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
+import { getAllCountries } from '../../../core/store/countries/countries.selectors';
 import { CreateUser, getLoginError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
@@ -28,13 +28,12 @@ export class RegistrationPageComponent implements OnInit {
   constructor(
     @Inject(USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER) public emailOptIn: boolean,
     private store: Store<CoreState>,
-    private cs: CountryService,
     private rs: RegionService,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.countries$ = this.cs.getCountries();
+    this.countries$ = this.store.pipe(select(getAllCountries));
     this.languages$ = this.getLanguages();
     this.userCreateError$ = this.store.pipe(select(getLoginError));
   }
