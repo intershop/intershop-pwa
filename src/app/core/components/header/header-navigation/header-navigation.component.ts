@@ -1,34 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Category } from '../../../../models/category/category.model';
-import { CategoriesService } from '../../../services/categories/categories.service';
-import { CoreState, getCurrentLocale } from '../../../store/locale';
 
 @Component({
   selector: 'ish-header-navigation',
-  templateUrl: './header-navigation.component.html'
+  templateUrl: './header-navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class HeaderNavigationComponent {
 
-export class HeaderNavigationComponent implements OnInit {
-
-  @Input() maxSubCategoriesDepth = 0;
-  categories: Category[];
-
-  constructor(
-    private store: Store<CoreState>,
-    public categoriesService: CategoriesService
-  ) { }
-
-  ngOnInit() {
-    // TODO: this should be an effect
-    this.store.pipe(select(getCurrentLocale)).subscribe(() => {
-      this.categoriesService.getTopLevelCategories(this.maxSubCategoriesDepth).subscribe((response: Category[]) => {
-        if (typeof (response) === 'object') {
-          this.categories = response;
-        }
-      });
-    });
-  }
+  @Input() categories: Category[];
 
   subMenuShow(submenu) {
     submenu.classList.add('hover');
@@ -36,5 +16,4 @@ export class HeaderNavigationComponent implements OnInit {
   subMenuHide(submenu) {
     submenu.classList.remove('hover');
   }
-
 }

@@ -1,5 +1,5 @@
 <!-- logged in -->
-<ng-container *ngIf="customer$ | async as customer; else notLoggedIn">
+<ng-container *ngIf="customer; else notLoggedIn">
   <a routerLink="/account" class="my-account-link" attr.data-testing-id="link-myaccount">
     <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
     <span *ngIf="customer.lastName" class="hidden-xs login-name">{{customer.firstName + ' ' + customer.lastName}}</span>

@@ -2,7 +2,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { catchError, concatMap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { ApiService } from '../api.service';
 
@@ -24,11 +25,15 @@ export class SuggestService {
     return searchTerm$.pipe(
       debounceTime(400),
       distinctUntilChanged(),
-      filter((searchTerm) => searchTerm.length > 0),
-      map(searchTerm => new HttpParams().set('SearchTerm', searchTerm)),
-      switchMap(params => this.apiService.get<SuggestTerm>(this.serviceIdentifier, params, null, true, false)),
-      toArray()
+      concatMap(searchTerm => {
+        if (searchTerm && searchTerm.length > 0) {
+          const params = new HttpParams().set('SearchTerm', searchTerm);
+          return this.apiService.get<SuggestTerm[]>(this.serviceIdentifier, params, null, true, false);
+        } else {
+          return of([]);
+        }
+      }),
+      catchError(() => of([])),
     );
   }
-
 }

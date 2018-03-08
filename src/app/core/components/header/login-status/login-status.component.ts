@@ -1,23 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Customer } from '../../../../models/customer/customer.model';
-import { CoreState, getLoggedInUser } from '../../../store/user';
 
 @Component({
   selector: 'ish-login-status',
-  templateUrl: './login-status.component.html'
+  templateUrl: './login-status.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class LoginStatusComponent implements OnInit {
+export class LoginStatusComponent {
 
-  customer$: Observable<Customer>;
-
-  constructor(
-    private store: Store<CoreState>
-  ) { }
-
-  ngOnInit() {
-    this.customer$ = this.store.pipe(select(getLoggedInUser));
-  }
+  @Input() customer: Customer;
 }

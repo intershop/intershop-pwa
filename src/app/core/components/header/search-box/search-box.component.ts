@@ -1,23 +1,19 @@
 // NEEDS_WORK: review and adapt (search-box results in javascript error when used in french)
-import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
-import { SuggestService } from '../../../services/suggest/suggest.service';
 
 @Component({
   selector: 'ish-search-box',
-  templateUrl: './search-box.component.html'
+  templateUrl: './search-box.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class SearchBoxComponent implements OnChanges {
 
-export class SearchBoxComponent implements OnInit {
+  @Input() results: SuggestTerm[];
+  @Input() searchButtonText: string;
+  @Output() searchTermChange = new EventEmitter<string>();
 
-  results: SuggestTerm[];
-  searchTerm$ = new Subject<string>();
-  isHide = false;
-  searchButtonText: string;
-  constructor(
-    private suggestService: SuggestService
-  ) { }
+  isHide = true;
 
   hidePopup() {
     if (this.results) {
@@ -25,19 +21,12 @@ export class SearchBoxComponent implements OnInit {
     }
   }
 
-  doSearch() {
-    this.suggestService.search(this.searchTerm$)
-      .subscribe((searchResults: SuggestTerm[]) => {
-        if (searchResults && searchResults.length > 0) {
-          this.results = searchResults;
-          this.isHide = false;
-        } else {
-          this.results = [];
-        }
-      });
+  ngOnChanges() {
+    const resultsAvailable = !!this.results && this.results.length > 0;
+    this.isHide = !resultsAvailable;
   }
 
-  ngOnInit() {
-    this.doSearch();
+  search(searchTerm: string) {
+    this.searchTermChange.emit(searchTerm);
   }
 }

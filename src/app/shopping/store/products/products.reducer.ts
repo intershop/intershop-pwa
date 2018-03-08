@@ -1,4 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { ProductFactory } from '../../../models/product/product.factory';
 import { Product } from '../../../models/product/product.model';
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
@@ -36,19 +37,22 @@ export function productsReducer(
 
     case ProductsActionTypes.LoadProductSuccess: {
       const loadedProduct = action.payload;
+      const { sku } = loadedProduct;
 
-      /* WORKAROUND: upsert overrides the `id` property and doesn't work as expected
-       * see https://github.com/ngrx/platform/issues/817
-       * we will use remove and add until then
-       * const upsert: Update<Product> = { id: loadedProduct.sku, changes: loadedProduct };
-       * ...productAdapter.upsertOne(upsert, state),
-       */
-      const cleanedState = productAdapter.removeOne(loadedProduct.sku, state);
+      let updatedState;
 
-      return {
-        ...productAdapter.addOne(loadedProduct, cleanedState),
-        loading: false
-      };
+      if (state.entities[sku]) {
+        const updated = ProductFactory.updateImmutably(state.entities[sku], loadedProduct);
+        const entities = {
+          ...state.entities,
+          [sku]: updated
+        };
+        updatedState = { ...state, entities };
+      } else {
+        updatedState = productAdapter.addOne(loadedProduct, state);
+      }
+
+      return { ...updatedState, loading: false };
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ish-product-compare-status',
@@ -6,8 +6,5 @@ import { Component } from '@angular/core';
 })
 export class ProductCompareStatusComponent {
 
-  get productCompareCount(): number {
-    // TODO: get from store
-    return 0;
-  }
+  @Input() productCompareCount: number;
 }

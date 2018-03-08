@@ -1,36 +1,24 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs/observable/of';
-import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { SuggestService } from '../../../services/suggest/suggest.service';
 import { SearchBoxComponent } from './search-box.component';
 
 describe('Search Box Component', () => {
   let fixture: ComponentFixture<SearchBoxComponent>;
   let component: SearchBoxComponent;
   let element: HTMLElement;
-  const mockSuggestService: SuggestService = mock(SuggestService);
-  when(mockSuggestService.search(anything())).thenCall(() => {
-    const result = {
-      'elements': [
-        'Camera', 'Camcoder'
-      ]
-    };
-    return of(result);
-  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         SearchBoxComponent
       ],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: SuggestService, useFactory: () => instance(mockSuggestService) }]
+      imports: [
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(SearchBoxComponent);
       component = fixture.componentInstance;
       element = fixture.nativeElement;
-      fixture.detectChanges();
     });
   }));
 
@@ -40,41 +28,50 @@ describe('Search Box Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should set result array when suggestions are available', fakeAsync(() => {
-    component.searchTerm$.next('c');
-    component.doSearch();
-    tick(400);
-    expect(component.results).not.toBeNull();
-  }));
+  it('should fire event when search is called', () => {
+    let term: string;
+    component.searchTermChange.subscribe(searchTerm => term = searchTerm);
 
-  it('should set result array to blank when no suggestions are found', fakeAsync(() => {
-    when(mockSuggestService.search(anything())).thenReturn(of([]));
-    component.searchTerm$.next('Test');
+    component.search('test');
+    expect(term).toEqual('test');
+  });
 
-    component.doSearch();
-    tick(400);
+  describe('with no results', () => {
+    beforeEach(() => {
+      component.results = [];
+      fixture.detectChanges();
+      component.ngOnChanges();
+    });
 
-    expect(component.results).toEqual([]);
-  }));
+    it('should show no results when no suggestions are found', () => {
+      const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
 
-  it('should hide popup when no search results are found', fakeAsync(() => {
-    component.results = [];
-    component.hidePopup();
-    expect(component.isHide).toBe(true);
-  }));
+      expect(ul.querySelectorAll('li').length).toBe(0);
+    });
 
-  it('should render search results on HTML', fakeAsync(() => {
-    component.results = [{
-      term: 'networking software',
-      type: 'SuggestTerm'
-    },
-    {
-      term: 'netbooks',
-      type: 'SuggestTerm'
-    }];
+    it('should hide popup when no search results are found', () => {
+      expect(component.isHide).toBe(true);
+    });
+  });
 
-    fixture.detectChanges();
-    const listElements = element.getElementsByClassName('search-suggest-results');
-    expect(listElements[0].children.length).toEqual(2);
-  }));
+  describe('with results', () => {
+    beforeEach(() => {
+      component.results = [
+        { term: 'Cameras', type: undefined },
+        { term: 'Camcorders', type: undefined },
+      ];
+      fixture.detectChanges();
+      component.ngOnChanges();
+    });
+
+    it('should show results when suggestions are available', () => {
+      const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
+
+      expect(ul.querySelectorAll('li').length).toBe(2);
+    });
+
+    it('should show popup when search results are found', () => {
+      expect(component.isHide).toBe(false);
+    });
+  });
 });

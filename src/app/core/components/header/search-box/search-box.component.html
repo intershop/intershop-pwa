@@ -5,7 +5,7 @@
          name="SearchTerm"
          type="text"
          class="form-control searchTerm"
-         (keyup)="searchTerm$.next($event.target.value); "
+         (keyup)="search($event.target.value); "
          (click)="hidePopup()"
          (blur)="isHide=true"
   >
