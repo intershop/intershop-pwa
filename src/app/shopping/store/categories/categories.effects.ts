@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Dictionary } from '@ngrx/entity/src/models';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
-import { Category } from '../../../models/category/category.model';
 import * as productsActions from '../products/products.actions';
 import * as productsSelectors from '../products/products.selectors';
 import { ShoppingState } from '../shopping.state';
@@ -75,7 +73,7 @@ export class CategoriesEffects {
   );
 }
 
-function categoryNeedsToBeLoaded(entities: Dictionary<Category>, uniqueId: string): boolean {
+function categoryNeedsToBeLoaded(entities, uniqueId: string): boolean {
   const c = entities[uniqueId];
   return !c || (c.hasOnlineSubCategories && !c.subCategories);
 }
