@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { Dictionary } from '@ngrx/entity/src/models';
 import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -18,7 +17,7 @@ describe('Categories Selectors', () => {
   let store: Store<ShoppingState>;
 
   let categories$: Observable<Category[]>;
-  let categoryEntities$: Observable<Dictionary<Category>>;
+  let categoryEntities$: Observable<any>;
   let categoryLoading$: Observable<boolean>;
   let productCount$: Observable<number>;
   let products$: Observable<Product[]>;

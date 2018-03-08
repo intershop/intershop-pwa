@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http/src/response';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { AccountLogin } from '../../../core/services/account-login/account-login.model';
 import { CustomerData } from '../../../models/customer/customer.interface';

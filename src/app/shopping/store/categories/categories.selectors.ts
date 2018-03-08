@@ -1,4 +1,3 @@
-import { Dictionary } from '@ngrx/entity/src/models';
 import { createSelector } from '@ngrx/store';
 import * as fromRouter from '../../../core/store/router';
 import { CategoryFactory } from '../../../models/category/category.factory';
@@ -77,7 +76,7 @@ export const getTopLevelCategories = createSelector(
   }
 );
 
-function populateSubCategories(c: Category, entities: Dictionary<Category>): Category {
+function populateSubCategories(c: Category, entities): Category {
   if (!(c.hasOnlineSubCategories && c.subCategoriesIds && c.subCategoriesIds.length && c.subCategoriesCount > 0)) {
     return c;
   }

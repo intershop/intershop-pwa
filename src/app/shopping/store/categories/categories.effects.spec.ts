@@ -52,53 +52,88 @@ describe('Categories Effects', () => {
   });
 
   describe('selectedCategory$', () => {
-    let category: Category;
-    let setSelectedCategoryId;
 
-    beforeEach(() => {
-      category = {
-        uniqueId: '123',
-        id: '123',
-        hasOnlineSubCategories: false
-      } as Category;
-
-      setSelectedCategoryId = function(id: string) {
-        const routerAction = navigateMockAction({
-          url: `/category/${id}`,
-          params: { categoryUniqueId: id }
-        });
-        store$.dispatch(routerAction);
-      };
-    });
+    const setSelectedCategoryId = function(id: string) {
+      const routerAction = navigateMockAction({
+        url: `/category/${id}`,
+        params: { categoryUniqueId: id }
+      });
+      store$.dispatch(routerAction);
+    };
 
     it('should do nothing for undefined category id', () => {
       expect(effects.selectedCategory$).toBeObservable(cold('-'));
     });
 
-    it('should do nothing if category exists', () => {
-      setSelectedCategoryId(category.uniqueId);
-      store$.dispatch(new fromActions.LoadCategorySuccess(category));
-      expect(effects.selectedCategory$).toBeObservable(cold('-'));
+    describe('for root categories', () => {
+
+      let category: Category;
+
+      beforeEach(() => {
+        category = {
+          uniqueId: '123',
+          id: '123',
+          hasOnlineSubCategories: false
+        } as Category;
+      });
+
+      it('should do nothing if category exists', () => {
+        setSelectedCategoryId(category.uniqueId);
+        store$.dispatch(new fromActions.LoadCategorySuccess(category));
+        expect(effects.selectedCategory$).toBeObservable(cold('-'));
+      });
+
+      it('should trigger LoadCategory if not exists', () => {
+        setSelectedCategoryId(category.uniqueId);
+        const completion = new fromActions.LoadCategory(category.uniqueId);
+        const expected$ = cold('a', { a: completion });
+        expect(effects.selectedCategory$).toBeObservable(expected$);
+      });
+
+      it('should trigger LoadCategory if category exists but subcategories have not been loaded', () => {
+        category.hasOnlineSubCategories = true;
+        category.subCategories = undefined;
+        store$.dispatch(new fromActions.LoadCategorySuccess(category));
+        setSelectedCategoryId(category.uniqueId);
+
+        const completion = new fromActions.LoadCategory(category.uniqueId);
+        const expected$ = cold('a', { a: completion });
+        expect(effects.selectedCategory$).toBeObservable(expected$);
+      });
     });
 
-    it('should trigger LoadCategory if not exists', () => {
-      setSelectedCategoryId(category.uniqueId);
-      const completion = new fromActions.LoadCategory(category.uniqueId);
-      const expected$ = cold('a', { a: completion });
-      expect(effects.selectedCategory$).toBeObservable(expected$);
+    describe('for leaf categories', () => {
+
+      let category: Category;
+
+      beforeEach(() => {
+        category = {
+          uniqueId: '123.456.789',
+          id: '789',
+          hasOnlineSubCategories: false
+        } as Category;
+      });
+
+      it('should trigger multiple LoadCategory if they dont exist', () => {
+        setSelectedCategoryId(category.uniqueId);
+
+        const completionA = new fromActions.LoadCategory('123.456.789');
+        const completionB = new fromActions.LoadCategory('123.456');
+        const completionC = new fromActions.LoadCategory('123');
+        const expected$ = cold('(abc)', { a: completionA, b: completionB, c: completionC });
+        expect(effects.selectedCategory$).toBeObservable(expected$);
+      });
+
+      it('should not trigger LoadCategory for categories that exist', () => {
+        store$.dispatch(new fromActions.LoadCategorySuccess(category));
+        setSelectedCategoryId(category.uniqueId);
+
+        const completionB = new fromActions.LoadCategory('123.456');
+        const completionC = new fromActions.LoadCategory('123');
+        const expected$ = cold('(bc)', { b: completionB, c: completionC });
+        expect(effects.selectedCategory$).toBeObservable(expected$);
+      });
     });
-
-    it('should trigger LoadCategory if category exists but subcategories have not been loaded', () => {
-      category.hasOnlineSubCategories = true;
-      category.subCategories = undefined;
-      store$.dispatch(new fromActions.LoadCategorySuccess(category));
-      setSelectedCategoryId(category.uniqueId);
-
-      const completion = new fromActions.LoadCategory(category.uniqueId);
-      const expected$ = cold('a', { a: completion });
-      expect(effects.selectedCategory$).toBeObservable(expected$);
-    });
-
   });
 
   describe('loadCategory$', () => {
