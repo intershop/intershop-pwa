@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { Product } from '../../../../models/product/product.model';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductRowActionsComponent } from './product-row-actions.component';
 
 describe('Product Row Actions Component', () => {
@@ -13,14 +15,17 @@ describe('Product Row Actions Component', () => {
         TranslateModule.forRoot()
       ],
       declarations: [
-        ProductRowActionsComponent
-      ]
+        ProductRowActionsComponent,
+        MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart Component', inputs: ['product', 'quantity'] }),
+
+      ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductRowActionsComponent);
     component = fixture.componentInstance;
+    component.product = new Product('sku');
     element = fixture.nativeElement;
   });
 

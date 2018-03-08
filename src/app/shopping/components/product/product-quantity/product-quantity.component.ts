@@ -18,7 +18,7 @@ export class ProductQuantityComponent implements OnInit {
 
   readonly selectType = 'select';
   isTypeSelect: boolean;
-  // TODO: to be removed when rest reaponse is available for max quantity
+  // TODO: to be removed when REST response is available for max quantity
   maxOrderQuantityOptions = 10;
 
   ngOnInit() {
