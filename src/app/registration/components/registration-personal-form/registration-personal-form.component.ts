@@ -9,7 +9,6 @@ export class RegistrationPersonalFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
   @Input() languages: any[]; // TODO: insert type
 
-
   constructor() { }
 
   ngOnInit() {

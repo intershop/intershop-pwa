@@ -6,7 +6,6 @@ import { InputComponent } from '../../../components/form-controls/input/input.co
 import { SelectTitleComponent } from '../../../components/form-controls/select/select-title/select-title.component';
 import { AddressFormDefaultComponent } from './address-form-default.component';
 
-
 describe('German Address Component', () => {
   let component: AddressFormDefaultComponent;
   let fixture: ComponentFixture<AddressFormDefaultComponent>;

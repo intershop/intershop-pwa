@@ -29,7 +29,6 @@ export interface ProductData {
   currency?: any;
   // }
 
-
   productMasterSKU?: string;
   minOrderQuantity: number;
   // If Variation Master and Retail Set {

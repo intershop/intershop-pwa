@@ -49,4 +49,3 @@ describe('AppComponent', () => {
     expect(element.querySelector('ish-header').textContent).toEqual('Header Component');
   }));
 });
-

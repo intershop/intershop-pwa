@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { FormElement } from '../form-element';
 
-
 @Component({
   selector: 'ish-input',
   templateUrl: './input.component.html'
@@ -13,7 +12,6 @@ export class InputComponent extends FormElement implements OnInit {
   @Input() maxlength = '60';
   @Input() autocomplete: string;  /* default = null  for input type 'text' and 'email' (autocomplete not set)
                                              = 'off' for input type 'password' */
-
 
   constructor(
     protected translate: TranslateService
