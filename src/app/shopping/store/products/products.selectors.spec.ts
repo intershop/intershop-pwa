@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { Dictionary } from '@ngrx/entity/src/models';
 import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -16,7 +15,7 @@ describe('Products Selectors', () => {
   let store: Store<ShoppingState>;
 
   let products$: Observable<Product[]>;
-  let productEntities$: Observable<Dictionary<Product>>;
+  let productEntities$: Observable<any>;
   let productLoading$: Observable<boolean>;
   let selected$: Observable<Product>;
   let selectedId$: Observable<string>;

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Category } from '../../../../models/category/category.model';
-import { CategoriesService } from '../../../services/categories/categories.service';
 
 @Component({
   selector: 'ish-header-navigation',
@@ -10,10 +9,6 @@ import { CategoriesService } from '../../../services/categories/categories.servi
 export class HeaderNavigationComponent {
 
   @Input() categories: Category[];
-
-  constructor(
-    public categoriesService: CategoriesService
-  ) { }
 
   subMenuShow(submenu) {
     submenu.classList.add('hover');
