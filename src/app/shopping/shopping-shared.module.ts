@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
+import { ProductAddToCartComponent } from './components/product/product-add-to-cart/product-add-to-cart.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
@@ -9,6 +10,7 @@ import { ProductInventoryComponent } from './components/product/product-inventor
 import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
+import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
 import { ProductRowActionsComponent } from './components/product/product-row-actions/product-row-actions.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
@@ -38,7 +40,9 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductTileActionsContainerComponent,
     ProductTileActionsComponent,
     ProductRowActionsContainerComponent,
-    ProductRowActionsComponent
+    ProductRowActionsComponent,
+    ProductQuantityComponent,
+    ProductAddToCartComponent
   ],
   exports: [
     CategoryListComponent,
@@ -56,7 +60,9 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductTileActionsContainerComponent,
     ProductTileActionsComponent,
     ProductRowActionsContainerComponent,
-    ProductRowActionsComponent
+    ProductRowActionsComponent,
+    ProductQuantityComponent,
+    ProductAddToCartComponent
   ]
 })
 

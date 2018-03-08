@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
 import { ProductDetailComponent } from './product-detail.component';
@@ -13,10 +14,11 @@ describe('ProductDetailComponent', () => {
     const prod = new Product('sku');
 
     TestBed.configureTestingModule({
-      declarations: [ProductDetailComponent],
       imports: [
-        TranslateModule.forRoot()
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
       ],
+      declarations: [ProductDetailComponent],
       // TODO: prepare more detailed test
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents().then(() => {
