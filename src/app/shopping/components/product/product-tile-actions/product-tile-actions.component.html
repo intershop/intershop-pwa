@@ -1,13 +1,7 @@
 <div class="product-tile-actions btn-group">
-  <div class="add-to-cart">
-    <button 
-      (click)="addToCart()"
-      class="btn btn-link"
-      title="{{ 'product.add_to_cart.link' | translate }}"
-    >
-      <span class="glyphicon glyphicon-shopping-cart"></span>
-    </button>
-  </div>
+ <ish-product-add-to-cart class="btn-link" [product]="product"
+     [quantity]="product.minOrderQuantity" displayType = "glyphicon">
+  </ish-product-add-to-cart>
   <button
     (click)="toggleCompare()"
     class="btn btn-link add-to-compare"

@@ -19,7 +19,7 @@ describe('Product Tile Actions Container', () => {
       ],
       declarations: [
         ProductTileActionsContainerComponent,
-        MockComponent({ selector: 'ish-product-tile-actions', template: 'Product Tile Actions Component', inputs: ['isInCompareList'] }),
+        MockComponent({ selector: 'ish-product-tile-actions', template: 'Product Tile Actions Component', inputs: ['isInCompareList', 'product'] }),
       ]
     }).compileComponents();
   }));

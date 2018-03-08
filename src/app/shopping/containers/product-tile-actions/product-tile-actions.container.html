@@ -1,4 +1,4 @@
-<ish-product-tile-actions
+<ish-product-tile-actions [product] = "product"
   [isInCompareList]="isInCompareList$ | async"
   (compareToggle)="toggleCompare()"
   (productToCart)="addToCart()">

@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Product } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-row-actions',
@@ -7,11 +8,5 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
 })
 
 export class ProductRowActionsComponent {
-
-  @Output() productToCart = new EventEmitter<any>();
-
-  addToCart() {
-    this.productToCart.emit();
-  }
-
+  @Input() product: Product;
 }
