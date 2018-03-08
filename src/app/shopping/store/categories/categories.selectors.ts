@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import * as fromRouter from '../../../core/store/router';
+import { CategoryFactory } from '../../../models/category/category.factory';
 import { Category } from '../../../models/category/category.model';
 import * as productsSelectors from '../products/products.selectors';
 import { getShoppingState, ShoppingState } from '../shopping.state';
@@ -59,3 +60,30 @@ export const getCategoryLoading = createSelector(
   getCategoryState,
   categories => categories.loading
 );
+
+export const getTlCategoriesIds = createSelector(
+  getCategoryState,
+  categories => categories.topLevelCategoriesIds
+);
+
+export const getTopLevelCategories = createSelector(
+  getCategoryEntities,
+  getTlCategoriesIds,
+  (entities, tlCategoriesIds) => {
+    return tlCategoriesIds
+      .map(id => entities[id])
+      .map(category => populateSubCategories(category, entities));
+  }
+);
+
+function populateSubCategories(c: Category, entities): Category {
+  if (!(c.hasOnlineSubCategories && c.subCategoriesIds && c.subCategoriesIds.length && c.subCategoriesCount > 0)) {
+    return c;
+  }
+
+  const category = CategoryFactory.clone(c);
+  category.subCategories = category.subCategoriesIds
+    .map(id => entities[id])
+    .map(cc => populateSubCategories(cc, entities));
+  return category;
+}

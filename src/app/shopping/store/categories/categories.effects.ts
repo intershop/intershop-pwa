@@ -23,9 +23,10 @@ export class CategoriesEffects {
   selectedCategory$ = this.store.pipe(
     select(categoriesSelectors.getSelectedCategoryId),
     filter(id => !!id),
-    withLatestFrom(this.store.pipe(select(categoriesSelectors.getSelectedCategory))),
-    filter(([id, c]) => !c || (c.hasOnlineSubCategories && !c.subCategories)),
-    map(([id, c]) => new categoriesActions.LoadCategory(id))
+    map(expandCategoryId),
+    withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
+    map(([ids, entities]) => ids.filter(id => categoryNeedsToBeLoaded(entities, id))),
+    mergeMap((ids) => ids.map(id => new categoriesActions.LoadCategory(id))),
   );
 
   @Effect()
@@ -36,6 +37,18 @@ export class CategoriesEffects {
       return this.categoryService.getCategory(categoryUniqueId).pipe(
         map(category => new categoriesActions.LoadCategorySuccess(category)),
         catchError(error => of(new categoriesActions.LoadCategoryFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  loadTopLevelCategories$ = this.actions$.pipe(
+    ofType(categoriesActions.CategoriesActionTypes.LoadTopLevelCategories),
+    map((action: categoriesActions.LoadTopLevelCategories) => action.payload),
+    mergeMap(limit => {
+      return this.categoryService.getTopLevelCategories(limit).pipe(
+        map(category => new categoriesActions.LoadTopLevelCategoriesSuccess(category)),
+        catchError(error => of(new categoriesActions.LoadTopLevelCategoriesFail(error)))
       );
     })
   );
@@ -58,4 +71,18 @@ export class CategoriesEffects {
     filter(sc => !!sc),
     map(sc => new categoriesActions.SaveSubCategories(sc))
   );
+}
+
+function categoryNeedsToBeLoaded(entities, uniqueId: string): boolean {
+  const c = entities[uniqueId];
+  return !c || (c.hasOnlineSubCategories && !c.subCategories);
+}
+
+function expandCategoryId(uniqueId: string): string[] {
+  const r = [];
+  const ids = uniqueId.split('.');
+  for (let i = 0; i < ids.length; i++) {
+    r.push(ids.slice(0, i + 1).join('.'));
+  }
+  return r.reverse();
 }

@@ -56,11 +56,9 @@ describe('Products Reducer', () => {
         const action1 = new fromActions.LoadProductSuccess(product);
         const state1 = productsReducer(initialState, action1);
 
-        const updatedProduct = {
-          ...product,
-          name: 'Updated product',
-          inStock: false
-        } as Product;
+        const updatedProduct = new Product('111');
+        updatedProduct.name = 'Updated product';
+        updatedProduct.inStock = false;
 
         const action2 = new fromActions.LoadProductSuccess(updatedProduct);
         const state2 = productsReducer(state1, action2);

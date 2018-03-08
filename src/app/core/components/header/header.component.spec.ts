@@ -19,12 +19,13 @@ describe('Header Component', () => {
       ],
       declarations: [
         HeaderComponent,
-        MockComponent({ selector: 'ish-login-status', template: 'Login Status Template' }),
-        MockComponent({ selector: 'ish-product-compare-status', template: 'Product Compare Status Template' }),
-        MockComponent({ selector: 'ish-language-switch', template: 'Language Switch Template' }),
-        MockComponent({ selector: 'ish-search-box', template: 'Search Box Template' }),
-        MockComponent({ selector: 'ish-header-navigation', template: 'Header Navigation Template' }),
-        MockComponent({ selector: 'ish-mini-cart', template: 'Mini Cart Template' }),
+        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
+        MockComponent({ selector: 'ish-product-compare-status-container', template: 'Product Compare Status Container' }),
+        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
+        MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' }),
+        MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
+        MockComponent({ selector: 'ish-mini-cart-container', template: 'Mini Cart Container' }),
+        MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(HeaderComponent);
@@ -41,23 +42,24 @@ describe('Header Component', () => {
   });
 
   it('should render User Links on template', () => {
-    expect(element.getElementsByTagName('ish-login-status')[0].textContent).toContain('Login Status Template');
-    expect(element.getElementsByTagName('ish-product-compare-status')[0].textContent).toContain('Product Compare Status Template');
+    expect(element.getElementsByTagName('ish-login-status-container')[0].textContent).toContain('Login Status Container');
+    expect(element.getElementsByTagName('ish-product-compare-status-container')[0].textContent).toContain('Product Compare Status Container');
   });
 
   it('should render Language Switch on template', () => {
-    expect(element.getElementsByTagName('ish-language-switch')[0].textContent).toContain('Language Switch Template');
+    expect(element.getElementsByTagName('ish-language-switch-container')[0].textContent).toContain('Language Switch Container');
   });
 
   it('should render Search Box on template', () => {
-    expect(element.getElementsByTagName('ish-search-box')[0].textContent).toContain('Search Box Template');
+    expect(element.getElementsByTagName('ish-search-box-container')[0].textContent).toContain('Search Box Container');
   });
 
   it('should render Header Navigation on template', () => {
-    expect(element.getElementsByTagName('ish-header-navigation')[0].textContent).toContain('Header Navigation Template');
+    expect(element.getElementsByTagName('ish-header-navigation-container')[0].textContent).toContain('Header Navigation Container');
   });
 
-  it('should render Mini Cart on template', () => {
-    expect(element.getElementsByTagName('ish-mini-cart')[0].textContent).toContain('Mini Cart Template');
+  it('should render Cart on template', () => {
+    expect(element.getElementsByTagName('ish-mobile-cart-container')[0].textContent).toContain('Mobile Cart Container');
+    expect(element.getElementsByTagName('ish-mini-cart-container')[0].textContent).toContain('Mini Cart Container');
   });
 });

@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
-import { CategoriesService } from '../../../core/services/categories/categories.service';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 
 @Component({
   selector: 'ish-breadcrumb',
-  templateUrl: './breadcrumb.component.html'
+  templateUrl: './breadcrumb.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class BreadcrumbComponent {
@@ -17,9 +17,4 @@ export class BreadcrumbComponent {
   @Input() product: Product;
   @Input() account: boolean;
   @Input() trailText: string;
-
-  constructor(
-    public categoriesService: CategoriesService
-  ) { }
-
 }

@@ -1,7 +1,9 @@
 <div class="top-header">
   <nav class="container">
     <div class="row">
-      <a rel="home" routerLink="/home" class="visible-xs mobile-logo"><img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41"></a>
+      <a rel="home" routerLink="/home" class="visible-xs mobile-logo">
+        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
+      </a>
       <div class="visible-xs pull-right">
         <button class="navbar-toggle" type="button" (click)="navbarCollapsed = !navbarCollapsed">
           <span class="sr-only">{{'common.button.navbarCollapsed.text' | translate}}</span>
@@ -13,14 +15,13 @@
       <div class="col-md-12">
         <ul class="user-links">
           <li>
-            <ish-login-status></ish-login-status>
+            <ish-login-status-container></ish-login-status-container>
           </li>
           <li>
-            <ish-product-compare-status></ish-product-compare-status>
+            <ish-product-compare-status-container></ish-product-compare-status-container>
           </li>
           <li class="visible-xs">
-            <a><span class="glyphicon glyphicon-shopping-cart glyphicon-header-icon"></span></a>
-            <div class="mobile-cart-counter">{{cartItems.length}}</div>
+            <ish-mobile-cart-container></ish-mobile-cart-container>
           </li>
         </ul>
         <div class="header-utility">
@@ -30,7 +31,7 @@
               {{'common.header.contact_no.text' | translate}}
             </li>
           </ul>
-          <ish-language-switch></ish-language-switch>
+          <ish-language-switch-container></ish-language-switch-container>
         </div>
       </div>
     </div>
@@ -41,11 +42,13 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-3 logo-wrapper hidden-xs">
-        <a rel="home" routerLink="/home"><img src="assets/img/logo.png" alt="Logo"></a>
+        <a rel="home" routerLink="/home">
+          <img src="assets/img/logo.png" alt="Logo">
+        </a>
       </div>
       <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
       <div class="col-sm-4 search-container header-search-container">
-        <ish-search-box></ish-search-box>
+        <ish-search-box-container></ish-search-box-container>
       </div>
     </div>
   </div>
@@ -56,10 +59,10 @@
     <div class="container">
       <div class="row">
         <div class="main-navigation col-sm-8 col-md-9" role="navigation">
-          <ish-header-navigation maxSubCategoriesDepth="2"></ish-header-navigation>
+          <ish-header-navigation-container maxSubCategoriesDepth="2"></ish-header-navigation-container>
         </div>
         <div class="col-sm-4 col-md-3 pull-right main-navigation-right">
-          <ish-mini-cart></ish-mini-cart>
+          <ish-mini-cart-container></ish-mini-cart-container>
         </div>
       </div>
     </div>

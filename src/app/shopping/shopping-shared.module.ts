@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
@@ -18,13 +16,10 @@ import { ProductTileActionsComponent } from './components/product/product-tile-a
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { ProductRowActionsContainerComponent } from './containers/product-row-actions/product-row-actions.container';
 import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
-import { effects, reducers } from './store/shopping.system';
 
 @NgModule({
   imports: [
-    SharedModule,
-    StoreModule.forFeature('shopping', reducers),
-    EffectsModule.forFeature(effects)
+    SharedModule
   ],
   declarations: [
     CategoryListComponent,

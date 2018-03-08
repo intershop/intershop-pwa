@@ -1,7 +1,5 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { instance, mock } from 'ts-mockito/lib/ts-mockito';
-import { CategoriesService } from '../../../../core/services/categories/categories.service';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Category } from '../../../../models/category/category.model';
 import { CategoryNavigationComponent } from './category-navigation.component';
 
@@ -12,11 +10,10 @@ describe('Category Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CategoryNavigationComponent],
-      providers: [
-        { provide: CategoriesService, useFactory: () => instance(mock(CategoriesService)) }
+      imports: [
+        RouterTestingModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      declarations: [CategoryNavigationComponent]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(CategoryNavigationComponent);
       component = fixture.componentInstance;
