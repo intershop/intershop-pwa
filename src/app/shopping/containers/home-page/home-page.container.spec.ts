@@ -1,6 +1,5 @@
-// the NO_ERRORS_SCHEMA import and configuration is needed for the Karma tests to run with <carousel> and <slide> tags
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { MockComponent } from '../../../utils/dev/mock.component';
 import { HomePageContainerComponent } from './home-page.container';
 
 describe('Home Page Container', () => {
@@ -10,8 +9,10 @@ describe('Home Page Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CarouselModule.forRoot()],
-      declarations: [HomePageContainerComponent]
+      declarations: [
+        MockComponent({ selector: 'ish-home-page', template: 'Home Page Component' }),
+        HomePageContainerComponent,
+      ]
     }).compileComponents();
   }));
 
