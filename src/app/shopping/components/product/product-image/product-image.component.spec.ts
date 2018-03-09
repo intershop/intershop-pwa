@@ -73,9 +73,10 @@ describe('Product Image Component', () => {
     expect(function() { fixture.detectChanges(); }).not.toThrow();
   });
 
-  it('should throw an error if input parameter product is not set properly', () => {
-    component.product = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+  it('should render N/A image when images is not available', () => {
+    component.product.images = [];
+    fixture.detectChanges();
+    expect(element.querySelector('img').getAttribute('src')).toBe('/assets/img/not_available.png');
   });
 
   it('should render img tag when imageView is not available', () => {
