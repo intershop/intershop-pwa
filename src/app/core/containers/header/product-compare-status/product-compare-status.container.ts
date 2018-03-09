@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { pluck } from 'rxjs/operators';
-import { getCompareList, ShoppingState } from '../../../../shopping/store/compare';
+import { getCompareProductsSKUs, ShoppingState } from '../../../../shopping/store/compare';
 
 @Component({
   selector: 'ish-product-compare-status-container',
@@ -18,6 +18,6 @@ export class ProductCompareStatusContainerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.productCompareCount$ = this.store.pipe(select(getCompareList), pluck('length'));
+    this.productCompareCount$ = this.store.pipe(select(getCompareProductsSKUs), pluck('length'));
   }
 }
