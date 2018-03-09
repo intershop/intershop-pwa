@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
-import { isInCompareList, ShoppingState, ToggleCompare } from '../../store/compare';
+import { isInCompareProducts, ShoppingState, ToggleCompare } from '../../store/compare';
 
 @Component({
   selector: 'ish-product-tile-actions-container',
@@ -20,7 +20,7 @@ export class ProductTileActionsContainerComponent implements OnInit {
 
   ngOnInit() {
     this.isInCompareList$ = this.store.pipe(
-      select(isInCompareList(this.product.sku))
+      select(isInCompareProducts(this.product.sku))
     );
   }
 
