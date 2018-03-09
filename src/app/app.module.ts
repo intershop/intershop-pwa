@@ -22,6 +22,7 @@ import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-a
 import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers, CustomSerializer } from './core/store/core.system';
+import { localStorageSyncReducer } from './core/store/state.transfer';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';
 
@@ -30,7 +31,10 @@ import { ShoppingModule } from './shopping/shopping.module';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from '../environments/environment';
 
-export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
+export let metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
+if (!environment.production) {
+  metaReducers = [...metaReducers, storeFreeze];
+}
 
 @NgModule({
   declarations: [

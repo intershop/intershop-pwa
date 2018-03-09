@@ -2,6 +2,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { TransferState } from '@angular/platform-browser';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
+import { StoreModule } from '@ngrx/store';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
@@ -12,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { UniversalMockInterceptor } from './core/interceptors/universal-mock.interceptor';
 import { ICM_APPLICATION_SK, ICM_BASE_URL_SK, ICM_SERVER_SK, StatePropertiesService } from './core/services/state-transfer/state-properties.service';
+import { coreReducers } from './core/store/core.system';
 
 export class TranslateUniversalLoader implements TranslateLoader {
   public getTranslation(lang: string): Observable<any> {
@@ -49,7 +51,8 @@ export function translateLoaderFactory() {
         provide: TranslateLoader,
         useFactory: translateLoaderFactory
       }
-    })
+    }),
+    StoreModule.forRoot(coreReducers, {}),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
