@@ -3,7 +3,6 @@
   [languages]="languages$ | async"
   [regions]="regionsForSelectedCountry$ | async"
   [titles]="titlesForSelectedCountry$ | async"
-  [emailOptIn]="emailOptIn"
   (create)="onCreate($event)"
   (cancel)="onCancel()"
   (countryChange)="updateData($event)">
