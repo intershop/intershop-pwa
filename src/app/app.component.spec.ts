@@ -1,6 +1,9 @@
+import { Renderer2 } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { AppComponent } from './app.component';
 import { MockComponent } from './utils/dev/mock.component';
 
@@ -19,7 +22,9 @@ describe('AppComponent', () => {
         MockComponent({ selector: 'ish-footer', template: 'Footer Component' })
       ],
       providers: [
-        TranslateService
+        TranslateService,
+        { provide: Store, useFactory: () => instance(mock(Store)) },
+        Renderer2
       ],
       imports: [
         TranslateModule.forRoot(),
