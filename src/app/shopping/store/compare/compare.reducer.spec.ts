@@ -17,7 +17,7 @@ describe('CompareReducer', () => {
       const action = new fromActions.AddToCompare(sku);
       const state = compareReducer(initialState, action);
 
-      expect(state.skus).toContain(sku);
+      expect(state.products).toContain(sku);
     });
   });
 
@@ -27,12 +27,12 @@ describe('CompareReducer', () => {
 
       const previousState = {
         ...initialState,
-        skus: ['123', sku]
+        products: ['123', sku]
       };
       const action = new fromActions.RemoveFromCompare(sku);
       const state = compareReducer(previousState, action);
 
-      expect(state.skus).not.toContain(sku);
+      expect(state.products).not.toContain(sku);
     });
   });
 });

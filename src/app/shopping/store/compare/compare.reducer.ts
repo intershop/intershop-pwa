@@ -1,11 +1,11 @@
 import * as fromCompare from './compare.actions';
 
 export interface CompareState {
-  skus: string[];
+  products: string[];
 }
 
 export const initialState: CompareState = {
-  skus: []
+  products: []
 };
 
 export function compareReducer(
@@ -15,19 +15,19 @@ export function compareReducer(
   switch (action.type) {
 
     case fromCompare.CompareActionTypes.AddToCompare: {
-      const newSku = action.payload;
-      const skus = state.skus.includes(newSku) ?
-        [...state.skus] :
-        [...state.skus, newSku];
+      const productSKU = action.payload;
+      const products = state.products.includes(productSKU) ?
+        [...state.products] :
+        [...state.products, productSKU];
 
-      return { ...state, skus };
+      return { ...state, products };
     }
 
     case fromCompare.CompareActionTypes.RemoveFromCompare: {
-      const sku = action.payload;
-      const skus = state.skus.filter(e => e !== sku);
+      const productSKU = action.payload;
+      const products = state.products.filter(sku => sku !== productSKU);
 
-      return { ...state, skus };
+      return { ...state, products };
     }
   }
 

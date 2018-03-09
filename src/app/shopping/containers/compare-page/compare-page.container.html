@@ -1,12 +1,3 @@
-<!-- NEEDS_WORK: DUMMY COMPONENT -->
-<div>
-  <ng-template [ngIf]="!comparedProducts || comparedProducts.length === 0" [ngIfElse]="listTemplate">
-    <h3>There are no items listed for comparison</h3>
-  </ng-template>
-  <ng-template #listTemplate>
-    <h3>Below are the SKUs of the items added to comparison list</h3>
-    <ul *ngFor="let sku of comparedProducts">
-      <li><a>{{sku}}</a></li>
-    </ul>
-  </ng-template>
-</div>
+<h1>{{'product.compare.link' | translate}}</h1>
+
+<ish-product-compare-list [compareProducts]="compareProducts$ | async"></ish-product-compare-list>
