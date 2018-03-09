@@ -2,7 +2,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from '../../../core/configurations/injection-keys';
 import { InputComponent } from '../../../shared/components/form-controls/input/input.component';
 import { SelectSecurityQuestionComponent } from '../../../shared/components/form-controls/select/select-security-question/select-security-question.component';
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form.component';
@@ -16,7 +15,6 @@ describe('Credentials Form Component', () => {
     TestBed.configureTestingModule({
       declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
       providers: [
-        { provide: USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER, useValue: true },
         FormBuilder
       ],
       imports: [

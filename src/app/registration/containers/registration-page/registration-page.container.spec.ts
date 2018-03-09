@@ -35,8 +35,7 @@ describe('Registration Page Container', () => {
             'countries',
             'languages',
             'regions',
-            'titles',
-            'emailOptIn'
+            'titles'
           ]
         }),
       ],

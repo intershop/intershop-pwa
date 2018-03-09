@@ -9,7 +9,7 @@ import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK, USER_REGISTRATION_LOGIN_TYPE, USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from './core/configurations/injection-keys';
+import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK, USER_REGISTRATION_LOGIN_TYPE } from './core/configurations/injection-keys';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { MockInterceptor } from './core/interceptors/mock.interceptor';
@@ -60,8 +60,6 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
     { provide: AVAILABLE_LOCALES, useValue: environment.locales },
     // TODO: get from REST call
     { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-    // TODO: get from REST call
-    { provide: USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER, useValue: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },

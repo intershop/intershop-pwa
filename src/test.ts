@@ -15,7 +15,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from './environments/environment';
-import { NEED_MOCK, MUST_MOCK_PATHS, AVAILABLE_LOCALES, USER_REGISTRATION_LOGIN_TYPE, USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER } from './app/core/configurations/injection-keys';
+import { NEED_MOCK, MUST_MOCK_PATHS, AVAILABLE_LOCALES, USER_REGISTRATION_LOGIN_TYPE } from './app/core/configurations/injection-keys';
 import { ICM_APPLICATION, ICM_SERVER_URL, ICM_BASE_URL } from './app/core/services/state-transfer/factories';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
@@ -38,9 +38,7 @@ beforeEach(() => {
       { provide: ICM_APPLICATION, useValue: environment.icmApplication },
       { provide: ICM_SERVER_URL, useValue: `${environment.icmBaseURL}/${environment.icmServer}` },
       // TODO: get from REST call
-      { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-      // TODO: get from REST call
-      { provide: USER_REGISTRATION_SUBSCRIBE_TO_NEWSLETTER, useValue: true },
+      { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }
     ])
   );
 });
