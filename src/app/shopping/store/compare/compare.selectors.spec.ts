@@ -6,10 +6,10 @@ describe('CompareListSelectors', () => {
   describe('getCompareList', () => {
     it('should return the SKU list when queried', () => {
       const state: CompareState = {
-        skus: ['123', '456']
+        products: ['123', '456']
       };
-      const result = fromSelectors.getCompareList.projector(state);
-      const expected = state.skus;
+      const result = fromSelectors.getCompareProductsSKUs.projector(state);
+      const expected = state.products;
       expect(result).toBe(expected);
     });
   });
@@ -17,13 +17,13 @@ describe('CompareListSelectors', () => {
   describe('isInCompareList', () => {
     it('should say that SKU is in the list if it is', () => {
       const list = ['123', '456'];
-      const result = fromSelectors.isInCompareList('123').projector(list);
+      const result = fromSelectors.isInCompareProducts('123').projector(list);
       expect(result).toBe(true);
     });
 
     it('should say that SKU is not in the list if it isn\'t', () => {
       const list = ['123', '456'];
-      const result = fromSelectors.isInCompareList('789').projector(list);
+      const result = fromSelectors.isInCompareProducts('789').projector(list);
       expect(result).toBe(false);
     });
   });

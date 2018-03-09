@@ -6,18 +6,18 @@ export const getCompareState = createSelector(
   getShoppingState, (state: ShoppingState) => state.compare
 );
 
-export const getCompareList = createSelector(
+export const getCompareProductsSKUs = createSelector(
   getCompareState,
-  state => state.skus
+  state => state.products
 );
 
-export const isInCompareList = (sku: string) => createSelector(
-  getCompareList,
-  list => list.includes(sku)
+export const isInCompareProducts = (sku: string) => createSelector(
+  getCompareProductsSKUs,
+  productSKUs => productSKUs.includes(sku)
 );
 
 export const getCompareProducts = createSelector(
-  getCompareList,
+  getCompareProductsSKUs,
   getProductEntities,
   (productSKUs, productEntities) => productSKUs.map(sku => productEntities[sku])
 );
