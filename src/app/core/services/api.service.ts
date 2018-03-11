@@ -6,7 +6,8 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import { catchError, flatMap, map } from 'rxjs/operators';
 import { Locale } from '../../models/locale/locale.interface';
-import { CoreState, getCurrentLocale } from '../store/locale';
+import { CoreState } from '../store/core.state';
+import { getCurrentLocale } from '../store/locale';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 

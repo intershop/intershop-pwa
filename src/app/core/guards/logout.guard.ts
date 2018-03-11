@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CoreState, LogoutUser } from '../store/user';
+import { CoreState } from '../store/core.state';
+import { LogoutUser } from '../store/user';
 
 @Injectable()
 export class LogoutGuard implements CanActivate {

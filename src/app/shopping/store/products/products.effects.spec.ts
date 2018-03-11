@@ -12,7 +12,7 @@ import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { ProductsService } from '../../services/products/products.service';
 import * as fromCategories from '../categories';
 import { ShoppingState } from '../shopping.state';
-import { reducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping.system';
 import * as fromViewconf from '../viewconf';
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
@@ -44,7 +44,7 @@ describe('ProductsEffects', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers),
+          shopping: combineReducers(shoppingReducers),
           routerReducer
         }),
       ],

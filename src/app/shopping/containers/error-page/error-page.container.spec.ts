@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { CoreState } from '../../../core/store/user';
+import { CoreState } from '../../../core/store/core.state';
 import { ErrorPageContainerComponent } from './error-page.container';
 
 describe('Error Page Container', () => {

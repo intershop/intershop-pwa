@@ -12,7 +12,7 @@ import { Category } from '../../../models/category/category.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
-import { reducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping.system';
 import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
 
@@ -36,7 +36,7 @@ describe('Categories Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers),
+          shopping: combineReducers(shoppingReducers),
           routerReducer
         }),
       ],

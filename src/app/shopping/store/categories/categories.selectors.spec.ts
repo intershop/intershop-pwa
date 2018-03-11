@@ -8,7 +8,7 @@ import { c } from '../../../utils/dev/marbles-utils';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
-import { reducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping.system';
 import { LoadCategory, LoadCategoryFail, LoadCategorySuccess } from './categories.actions';
 import * as s from './categories.selectors';
 
@@ -37,7 +37,7 @@ describe('Categories Selectors', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers),
+          shopping: combineReducers(shoppingReducers),
           routerReducer
         })
       ]
