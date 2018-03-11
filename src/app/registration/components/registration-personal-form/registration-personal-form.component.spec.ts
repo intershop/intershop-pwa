@@ -29,22 +29,22 @@ describe('RegistrationPersonalFormComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should throw an error if input parameter parentForm is not set', () => {
     component.parentForm = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should throw an error if control preferredLanguage does not exist', () => {
     component.parentForm.removeControl('preferredLanguage');
-    expect(function() { fixture.detectChanges(); }).toThrowError(/.*required.*preferredLanguage.*/);
+    expect(() => fixture.detectChanges()).toThrowError(/.*required.*preferredLanguage.*/);
   });
 
   it('should throw an error if control birthday does not exist', () => {
     component.parentForm.removeControl('birthday');
-    expect(function() { fixture.detectChanges(); }).toThrowError(/.*required.*birthday.*/);
+    expect(() => fixture.detectChanges()).toThrowError(/.*required.*birthday.*/);
   });
 
 });
