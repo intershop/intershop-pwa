@@ -1,11 +1,12 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Image } from '../../../../models/image/image.model';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-image',
-  templateUrl: './product-image.component.html'
+  templateUrl: './product-image.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent implements OnInit {
 

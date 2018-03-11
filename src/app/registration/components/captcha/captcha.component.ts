@@ -1,10 +1,11 @@
 // NEEDS_WORK:
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'ish-captcha',
-  templateUrl: './captcha.component.html'
+  templateUrl: './captcha.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class CaptchaComponent implements OnInit {

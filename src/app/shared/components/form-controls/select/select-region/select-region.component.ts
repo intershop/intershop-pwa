@@ -1,12 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Region } from '../../../../../models/region/region.model';
 import { SelectOption } from '../../select/select-option.interface';
 import { SelectComponent } from '../select.component';
 
 @Component({
   selector: 'ish-select-region',
-  templateUrl: '../select.component.html'
+  templateUrl: '../select.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectRegionComponent extends SelectComponent implements OnChanges {
 

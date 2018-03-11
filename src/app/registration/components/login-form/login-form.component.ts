@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { AccountLogin } from '../../../core/services/account-login/account-login.model';
@@ -8,6 +8,7 @@ import { markAsDirtyRecursive } from '../../../utils/form-utils';
 @Component({
   selector: 'ish-login-form',
   templateUrl: './login-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnInit {
 

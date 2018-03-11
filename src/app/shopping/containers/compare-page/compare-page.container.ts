@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CoreState } from '../../../core/store/core.state';
@@ -7,7 +7,8 @@ import { getCompareProducts } from '../../store/compare';
 
 @Component({
   selector: 'ish-compare-page-container',
-  templateUrl: './compare-page.container.html'
+  templateUrl: './compare-page.container.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComparePageContainerComponent implements OnInit {
 

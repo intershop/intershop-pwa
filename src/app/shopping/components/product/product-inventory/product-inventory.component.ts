@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-inventory',
-  templateUrl: './product-inventory.component.html'
+  templateUrl: './product-inventory.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductInventoryComponent {
 
