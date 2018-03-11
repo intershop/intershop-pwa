@@ -107,10 +107,6 @@
     ],
     "one-variable-per-declaration": true,
     "prefer-const": true,
-    "quotemark": [
-      true,
-      "single"
-    ],
     "radix": true,
     "rxjs-no-add": true,
     "rxjs-no-operator": true,

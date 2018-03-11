@@ -31,7 +31,7 @@ Geb+Spock. The steps are as follows:
    execution. `karma` can be run separately to only run jasmine tests.
    Interactive development should be done using npm.
 
-6. `tsformat` is a task for formatting the code with typescript-formatter
+6. `format` is a task for formatting the code with Prettier
 
 Utility tasks:
 `reset` - delete node binaries and output from npm install
@@ -207,21 +207,15 @@ task tsdependencygraph(type:NodeTask, description:'create dependency graph with 
     }
 }
 
-task tsformat(type:NodeTask, description:'format files using typescript-formatter', group:'Node Utility', dependsOn: npmInstall) {
-    script = file("$projectDir/node_modules/typescript-formatter/bin/tsfmt")
-    args = ['-r']
-    inputs.files('src')
-    doFirst {
-        if (!file("$projectDir/tsfmt.json").file && (org.apache.commons.lang.SystemUtils.IS_OS_LINUX ||
-            org.apache.commons.lang.SystemUtils.IS_OS_MAC_OSX)) {
-            file("$projectDir/tsfmt.json").text = '{ "newLineCharacter": "\\n" }'
-        }
-    }
+task format(type:NodeTask, description:'format files using Prettier', group:'Node Utility', dependsOn: npmInstall) {
+    script = file("$projectDir/node_modules/prettier/bin-prettier.js")
+    args = ['--loglevel', 'warn', '--write', '**/*.*']
+    inputs.files('src', 'e2e', 'tslint-rules')
 }
 
-task checkFormatted(dependsOn:tsformat) {
+task checkFormatted(dependsOn:format) {
   doFirst {
-    assert grgit.status().isClean(), 'there are uncommited changes -- seems like you need to run "gradlew tsformat" before committing'
+    assert grgit.status().isClean(), 'there are uncommited changes -- seems like you need to run "npm run format" before committing. If you are using VSCode use the Prettier PlugIn with editor.formatOnSave activated'
   }
 }
 
