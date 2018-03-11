@@ -36,7 +36,7 @@ describe('Language Switch Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should show the available language options when language dropdown is clicked', fakeAsync(() => {

@@ -25,7 +25,7 @@ describe('Mini Cart Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should calculate the correct output for price and number of items', () => {

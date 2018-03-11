@@ -54,7 +54,7 @@ describe('FormControlFeedbackComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should have errors, but should not show them when control is pristine', () => {

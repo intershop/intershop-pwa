@@ -44,12 +44,12 @@ describe('Credentials Form Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should throw an error if input parameter parentForm is not set', () => {
     component.parentForm = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should display form input fields on creation', () => {

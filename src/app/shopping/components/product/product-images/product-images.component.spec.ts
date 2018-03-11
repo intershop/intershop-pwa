@@ -79,7 +79,7 @@ describe('Product Images Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should render carousel on component', () => {
