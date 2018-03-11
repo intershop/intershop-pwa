@@ -4,8 +4,9 @@ import { Store, StoreModule } from '@ngrx/store';
 import { Customer } from '../../models/customer/customer.model';
 import { MockComponent } from '../../utils/dev/mock.component';
 import { navigateMockAction } from '../../utils/dev/navigate-mock.action';
+import { CoreState } from '../store/core.state';
 import { coreReducers } from '../store/core.system';
-import { CoreState, LoginUserSuccess } from '../store/user';
+import { LoginUserSuccess } from '../store/user';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {

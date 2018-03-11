@@ -2,4 +2,3 @@
 // API to access ngrx compare state
 export * from './viewconf.actions';
 export * from './viewconf.selectors';
-export { ShoppingState } from '../shopping.state';
