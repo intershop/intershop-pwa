@@ -9,14 +9,14 @@ import { ShoppingState } from './shopping.state';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
 
-export const reducers: ActionReducerMap<ShoppingState> = {
+export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
   products: productsReducer,
   compare: compareReducer,
   viewconf: viewconfReducer,
 };
 
-export const effects: any[] = [
+export const shoppingEffects: any[] = [
   CategoriesEffects,
   ProductsEffects,
   CompareEffects,

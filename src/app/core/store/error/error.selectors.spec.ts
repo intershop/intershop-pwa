@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CoreState } from '../core.state';
-import { reducers } from '../core.system';
+import { coreReducers } from '../core.system';
 import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
 import { ErrorState } from './error.reducer';
 import { getErrorState } from './error.selectors';
@@ -16,7 +16,7 @@ describe('Error Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(coreReducers),
       ],
     });
 

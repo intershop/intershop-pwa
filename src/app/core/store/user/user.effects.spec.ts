@@ -8,7 +8,7 @@ import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
-import { reducers } from '../core.system';
+import { coreReducers } from '../core.system';
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';
 
@@ -26,7 +26,7 @@ describe('UserEffects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(coreReducers),
       ],
       providers: [
         UserEffects,

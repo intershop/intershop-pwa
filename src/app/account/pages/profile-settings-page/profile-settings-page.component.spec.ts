@@ -3,7 +3,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { reducers } from '../../../core/store/core.system';
+import { coreReducers } from '../../../core/store/core.system';
 import { LoginUserSuccess } from '../../../core/store/user';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerData } from '../../../models/customer/customer.interface';
@@ -37,7 +37,7 @@ describe('Profile Settings Page Component', () => {
       ],
       imports: [
         TranslateModule.forRoot(),
-        StoreModule.forRoot(reducers)
+        StoreModule.forRoot(coreReducers)
       ]
     }).compileComponents().then(() => {
       TestBed.get(Store).dispatch(new LoginUserSuccess(customer));

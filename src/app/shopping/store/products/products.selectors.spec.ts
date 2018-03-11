@@ -6,7 +6,7 @@ import { Product } from '../../../models/product/product.model';
 import { c } from '../../../utils/dev/marbles-utils';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { ShoppingState } from '../shopping.state';
-import { reducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping.system';
 import { LoadProduct, LoadProductFail, LoadProductSuccess } from './products.actions';
 import * as s from './products.selectors';
 
@@ -28,7 +28,7 @@ describe('Products Selectors', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers),
+          shopping: combineReducers(shoppingReducers),
           routerReducer
         })
       ]

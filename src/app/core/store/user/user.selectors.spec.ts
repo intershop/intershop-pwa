@@ -4,7 +4,7 @@ import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Customer } from '../../../models/customer/customer.model';
 import { CoreState } from '../core.state';
-import { reducers } from '../core.system';
+import { coreReducers } from '../core.system';
 import { LoginUserFail, LoginUserSuccess } from './user.actions';
 import { getLoggedInUser, getLoginError, getUserAuthorized } from './user.selectors';
 
@@ -19,7 +19,7 @@ describe('User State Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(coreReducers),
       ],
     });
 
