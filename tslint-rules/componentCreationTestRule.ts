@@ -75,7 +75,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
   }
 
   private findDetectChangesNotThrow(node: ts.ExpressionStatement): boolean {
-    return node.getText().search(/.*fixture.*detectChanges.*not\.toThrow.*/) >= 0;
+    return node.getText().search(/[\s\S]*fixture[\s\S]*detectChanges[\s\S]*not\.toThrow[\s\S]*/) >= 0;
   }
 
   private reportMissingCreationTest(sourceFile: ts.SourceFile) {

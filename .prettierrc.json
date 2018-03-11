@@ -1,0 +1,27 @@
+{
+  "printWidth": 120,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "parser": "typescript",
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "flow"
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "parser": "json",
+        "printWidth": 80
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "parser": "markdown"
+      }
+    }
+  ]
+}

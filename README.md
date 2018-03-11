@@ -22,6 +22,7 @@ cd proof-of-concept
 npm install
 ng serve --open
 ```
+
 The `ng ...` commands require Angular CLI to be installed globally. Run `npm install -g @angular/cli` once to globally install Angular CLI on your development mashine.
 
 The project can alternatively be run with `npm start`.
@@ -30,9 +31,9 @@ The project can alternatively be run with `npm start`.
 
 Run `ng serve` or `ng s` for a dev server that is configured via `environment.ts` to use mocked responses instead of actual REST calls.
 
-Running `ng serve --environment prod` or `ng s -e prod` will start a server that will comunicate via REST API with the Intershop Commerce Management. The used `environment.prod.ts` is configured to be used with the [`intershop7-devenv`](https://gitlab.intershop.de/rest-based-storefront/intershop7-devenv) in a docker toolbox with IP `192.168.99.100`. 
+Running `ng serve --environment prod` or `ng s -e prod` will start a server that will comunicate via REST API with the Intershop Commerce Management. The used `environment.prod.ts` is configured to be used with the [`intershop7-devenv`](https://gitlab.intershop.de/rest-based-storefront/intershop7-devenv) in a docker toolbox with IP `192.168.99.100`.
 
->If a different setup is used the IP address and port can be changed in the `environment.prod.ts` or the IP address could be mapped. For running the docker container native on Linux, one could do `sudo iptables -t nat -A OUTPUT -d 192.168.99.100 -j DNAT --to-destination 127.0.0.1` to enable this mapping.
+> If a different setup is used the IP address and port can be changed in the `environment.prod.ts` or the IP address could be mapped. For running the docker container native on Linux, one could do `sudo iptables -t nat -A OUTPUT -d 192.168.99.100 -j DNAT --to-destination 127.0.0.1` to enable this mapping.
 
 Once the server is running, navigate to `http://localhost:4200/` in your browser to see the application. The app will automatically reload if you change any of the source files.
 
@@ -87,15 +88,21 @@ Run `gradlew reset` to delete node binaries and the node_modules downloaded from
 
 Run `ng lint` to check the application of the default tslint rules configuration. `npm run lint` will additionaly check custom tslint rules.
 
-For development make sure the used IDE or Editor follows the [EditorConfig](http://editorconfig.org/) configuration of the project to help maintain consistent coding styles (see `.editorconfig`).
+For development make sure the used IDE or Editor follows the [EditorConfig](http://editorconfig.org/) configuration of the project and uses [Prettier](https://prettier.io/) to help maintain consistent coding styles (see `.editorconfig` and `.prettierrc.json`).
 
-Use `npm run format` or `gradlew tsformat` to run a typescript-formatter on all you .ts files.
+Use `npm run format` or `gradlew format` to run Prettier to apply a consistent code style to the source code.
 
 ## Pre-Commit Check
 
-`ng check` is a combination task of `lint`, `format`, `test` and `e2e` that performs some of the checks that will be performed in GitLab too. 
+`npm run check` is a combination task of `lint`, `format`, `test` and `e2e` that performs some of the checks that will be performed in GitLab too.
 
 This task might be helpful to prevent the most common causes for red builds in GitLab. After a succesfull run, one needs to check for local file modifications done by `lint` or `format` that need to be added to the intended commit.
+
+## Code Documentation
+
+The project is configured to use [Compodoc](https://compodoc.github.io/website) as documentation tool. The output folder for the documentation is set to `\docs\compodoc`.
+
+To generate the code documentation run `npm run docs`. To generate and serve the documentation at http://localhost:8080 run `npm run docs:serve`. Watching the source files to force documentation rebuild and serve run `npm run docs:watch`.
 
 ## Code scaffolding
 
