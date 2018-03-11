@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
 import { Locale } from '../../../models/locale/locale.interface';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
-import { reducers } from '../core.system';
+import { coreReducers } from '../core.system';
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { LocaleEffects } from './locale.effects';
 
@@ -23,7 +23,7 @@ describe('LocaleEffects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(coreReducers),
       ],
       providers: [
         LocaleEffects,

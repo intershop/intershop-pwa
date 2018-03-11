@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Locale } from '../../../../models/locale/locale.interface';
-import { CoreState, getAvailableLocales, getCurrentLocale, SelectLocale } from '../../../store/locale';
+import { CoreState } from '../../../store/core.state';
+import { getAvailableLocales, getCurrentLocale, SelectLocale } from '../../../store/locale';
 
 @Component({
   selector: 'ish-language-switch-container',

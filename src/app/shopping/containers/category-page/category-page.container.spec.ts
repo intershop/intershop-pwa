@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { reducers } from '../../store/shopping.system';
+import { shoppingReducers } from '../../store/shopping.system';
 import { CategoryPageContainerComponent } from './category-page.container';
 
 describe('Category Page Container', () => {
@@ -13,7 +13,7 @@ describe('Category Page Container', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers)
+          shopping: combineReducers(shoppingReducers)
         })
       ],
       declarations: [

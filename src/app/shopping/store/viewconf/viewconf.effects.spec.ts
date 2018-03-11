@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import * as fromProducts from '../products';
 import { ShoppingState } from '../shopping.state';
-import { reducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping.system';
 import * as fromActions from './viewconf.actions';
 import { ViewconfEffects } from './viewconf.effects';
 
@@ -21,7 +21,7 @@ describe('ViewconfEffects', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers),
+          shopping: combineReducers(shoppingReducers),
           routerReducer
         }),
       ],

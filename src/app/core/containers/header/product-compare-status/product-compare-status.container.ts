@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { pluck } from 'rxjs/operators';
-import { getCompareProductsSKUs, ShoppingState } from '../../../../shopping/store/compare';
+import { getCompareProductsSKUs } from '../../../../shopping/store/compare';
+import { ShoppingState } from '../../../../shopping/store/shopping.state';
 
 @Component({
   selector: 'ish-product-compare-status-container',

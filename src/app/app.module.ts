@@ -16,7 +16,7 @@ import { MockInterceptor } from './core/interceptors/mock.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
 import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
-import { CustomSerializer, effects, reducers } from './core/store/core.system';
+import { coreEffects, coreReducers, CustomSerializer } from './core/store/core.system';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';
 
@@ -44,8 +44,8 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
     AccountModule,
     // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
     AppRoutingModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot(effects),
+    StoreModule.forRoot(coreReducers, { metaReducers }),
+    EffectsModule.forRoot(coreEffects),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],

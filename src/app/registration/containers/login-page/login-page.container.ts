@@ -5,7 +5,8 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLogin } from '../../../core/services/account-login/account-login.model';
-import { CoreState, getLoginError, getUserAuthorized, LoginUser } from '../../../core/store/user';
+import { CoreState } from '../../../core/store/core.state';
+import { getLoginError, getUserAuthorized, LoginUser } from '../../../core/store/user';
 
 @Component({
   templateUrl: './login-page.container.html'

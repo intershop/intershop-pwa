@@ -3,7 +3,7 @@ import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Locale } from '../../../models/locale/locale.interface';
 import { CoreState } from '../core.state';
-import { reducers } from '../core.system';
+import { coreReducers } from '../core.system';
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
 
@@ -22,7 +22,7 @@ describe('Locale Selectors', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(coreReducers),
       ],
     });
 
