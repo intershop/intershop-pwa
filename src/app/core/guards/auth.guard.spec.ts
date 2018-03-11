@@ -4,7 +4,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { Customer } from '../../models/customer/customer.model';
 import { MockComponent } from '../../utils/dev/mock.component';
 import { navigateMockAction } from '../../utils/dev/navigate-mock.action';
-import { reducers } from '../store/core.system';
+import { coreReducers } from '../store/core.system';
 import { CoreState, LoginUserSuccess } from '../store/user';
 import { AuthGuard } from './auth.guard';
 
@@ -22,7 +22,7 @@ describe('AuthGuard', () => {
           RouterTestingModule.withRoutes([
             { path: 'login', component: loginComponentMock }
           ]),
-          StoreModule.forRoot(reducers)
+          StoreModule.forRoot(coreReducers)
         ],
         providers: [AuthGuard],
         declarations: [loginComponentMock]

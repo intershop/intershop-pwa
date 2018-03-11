@@ -8,13 +8,13 @@ import { localeReducer } from './locale/locale.reducer';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 
-export const reducers: ActionReducerMap<CoreState> = {
+export const coreReducers: ActionReducerMap<CoreState> = {
   routerReducer: routerReducer,
   user: userReducer,
   locale: localeReducer,
   error: generalErrorReducer
 };
 
-export const effects: any[] = [UserEffects, LocaleEffects, ErrorEffects];
+export const coreEffects: any[] = [UserEffects, LocaleEffects, ErrorEffects];
 
 export * from './router/router.serializers';

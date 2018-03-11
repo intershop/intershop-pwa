@@ -4,7 +4,7 @@ import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { ShoppingState } from '../shopping.state';
-import { reducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping.system';
 import * as fromActions from './compare.actions';
 import { CompareEffects } from './compare.effects';
 
@@ -17,7 +17,7 @@ describe('CompareEffects', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(reducers)
+          shopping: combineReducers(shoppingReducers)
         }),
       ],
       providers: [

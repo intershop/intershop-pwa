@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Store, StoreModule } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
 import { CoreState } from '../core.state';
-import { reducers } from '../core.system';
+import { coreReducers } from '../core.system';
 import { CommunicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';
 
@@ -19,7 +19,7 @@ describe('ErrorEffects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(coreReducers),
       ],
       providers: [
         ErrorEffects,
