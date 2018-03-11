@@ -7,6 +7,7 @@ import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/types';
 import * as fromStore from '../../store/categories';
+import { ShoppingState } from '../../store/shopping.state';
 import * as fromViewconf from '../../store/viewconf';
 
 @Component({
@@ -26,7 +27,7 @@ export class CategoryPageContainerComponent implements OnInit {
   sortKeys$: Observable<string[]>;
 
   constructor(
-    private store: Store<fromStore.ShoppingState>
+    private store: Store<ShoppingState>
   ) { }
 
   ngOnInit() {

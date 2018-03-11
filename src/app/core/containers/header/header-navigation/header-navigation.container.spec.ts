@@ -4,7 +4,7 @@ import { of } from 'rxjs/observable/of';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { CategoriesActionTypes } from '../../../../shopping/store/categories';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { CoreState } from '../../../store/user';
+import { CoreState } from '../../../store/core.state';
 import { HeaderNavigationContainerComponent } from './header-navigation.container';
 
 describe('Header Navigation Container', () => {

@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
-import { isInCompareProducts, ShoppingState, ToggleCompare } from '../../store/compare';
+import { isInCompareProducts, ToggleCompare } from '../../store/compare';
+import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-product-tile-actions-container',
