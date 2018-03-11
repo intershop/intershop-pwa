@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -12,7 +12,8 @@ import * as fromViewconf from '../../store/viewconf';
 
 @Component({
   selector: 'ish-category-page-container',
-  templateUrl: './category-page.container.html'
+  templateUrl: './category-page.container.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class CategoryPageContainerComponent implements OnInit {

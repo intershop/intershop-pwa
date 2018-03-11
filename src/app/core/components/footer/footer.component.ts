@@ -1,9 +1,10 @@
 // NEEDS_WORK: DUMMY COMPONENT
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ish-footer',
-  templateUrl: './footer.component.html'
+  templateUrl: './footer.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class FooterComponent {
