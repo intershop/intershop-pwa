@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
@@ -8,6 +8,7 @@ import { ShoppingState } from '../../store/shopping.state';
 @Component({
   selector: 'ish-product-tile-actions-container',
   templateUrl: './product-tile-actions.container.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class ProductTileActionsContainerComponent implements OnInit {

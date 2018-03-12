@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ish-accordion-item',
   templateUrl: './accordion-item.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccordionItemComponent {
 

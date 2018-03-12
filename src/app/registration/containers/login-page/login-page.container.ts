@@ -1,6 +1,6 @@
 // NEEDS_WORK: remove coupling of login and simple registration?
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
@@ -9,7 +9,8 @@ import { CoreState } from '../../../core/store/core.state';
 import { getLoginError, getUserAuthorized, LoginUser } from '../../../core/store/user';
 
 @Component({
-  templateUrl: './login-page.container.html'
+  templateUrl: './login-page.container.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class LoginPageComponent implements OnInit {
