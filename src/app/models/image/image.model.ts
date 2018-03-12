@@ -7,6 +7,4 @@ export class Image {
   imageActualHeight: number;
   imageActualWidth: number;
   primaryImage: boolean;
-
-  constructor() { }
 }

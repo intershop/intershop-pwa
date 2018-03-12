@@ -12,8 +12,6 @@ export class AddressFormDefaultComponent implements OnInit {
   @Input() addressForm: FormGroup;
   @Input() regions: Region[];
 
-  constructor() { }
-
   ngOnInit() {
     if (!this.addressForm) {
       throw new Error('required input parameter <addressForm> is missing for AddressDefaultComponent');

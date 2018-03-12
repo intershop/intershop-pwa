@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product } from '../../../models/product/product.model';
 
 @Component({
@@ -7,14 +7,9 @@ import { Product } from '../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class ProductRowActionsContainerComponent implements OnInit {
+export class ProductRowActionsContainerComponent {
 
   @Input() product: Product;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   addToCart() {
     console.log('[ProductRowActionsContainer] Add ' + this.product.name + ' to Cart');

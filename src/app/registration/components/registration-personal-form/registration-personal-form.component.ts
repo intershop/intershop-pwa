@@ -10,8 +10,6 @@ export class RegistrationPersonalFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
   @Input() languages: any[]; // TODO: insert type
 
-  constructor() { }
-
   ngOnInit() {
     if (!this.parentForm) {
       throw new Error('required input parameter <parentForm> is missing for RegistrationPersonalFormComponent');

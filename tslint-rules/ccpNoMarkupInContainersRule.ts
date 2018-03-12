@@ -27,7 +27,9 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
             this.addFailureAtNode(sourceFile, message);
           }
         });
-      } catch (err) {}
+      } catch (err) {
+        // ignored
+      }
     }
   }
 }
