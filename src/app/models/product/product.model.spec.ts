@@ -58,6 +58,12 @@ describe('Product', () => {
     it('should return no image when called with invalid image type', () => {
       expect(product.getPrimaryImage('W')).toBeUndefined();
     });
+
+    it('should return no image when images is not available', () => {
+      product.images = [];
+      expect(product.getPrimaryImage('L')).toBeUndefined();
+    });
+
   });
 
   describe('getImageViewIDsExcludePrimary()', () => {
@@ -69,6 +75,12 @@ describe('Product', () => {
     it('should return empty list when called with invalid image type', () => {
       expect(product.getImageViewIDsExcludePrimary('W').length).toEqual(0);
     });
+
+    it('should return empty list when images is not available', () => {
+      product.images = [];
+      expect(product.getImageViewIDsExcludePrimary('L').length).toEqual(0);
+    });
+
   });
 
   describe('getImageByImageTypeAndImageView()', () => {
@@ -80,6 +92,12 @@ describe('Product', () => {
     it('should return no image when called with invalid image type and invalid image view', () => {
       expect(product.getImageByImageTypeAndImageView('W', 'left')).toBeUndefined();
     });
+
+    it('should return no image when images is not available', () => {
+      product.images = [];
+      expect(product.getImageByImageTypeAndImageView('L', 'front')).toBeUndefined();
+    });
+
   });
 
 });

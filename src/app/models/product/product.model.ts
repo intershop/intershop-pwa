@@ -10,7 +10,7 @@ export class Product {
   inStock: boolean;
   minOrderQuantity: number;
   attributes?: Attribute[];
-  images: Image[];
+  images: Image[] = [];
   listPrice: Price;
   salePrice: Price;
   manufacturer: string;
