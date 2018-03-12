@@ -4,6 +4,7 @@ import { CategoryNavigationComponent } from './components/category//category-nav
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { ProductAddToCartComponent } from './components/product/product-add-to-cart/product-add-to-cart.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
+import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
 import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
@@ -16,6 +17,7 @@ import { ProductRowComponent } from './components/product/product-row/product-ro
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileActionsComponent } from './components/product/product-tile-actions/product-tile-actions.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
+import { ProductDetailActionsContainerComponent } from './containers/product-detail-actions/product-detail-actions.container';
 import { ProductRowActionsContainerComponent } from './containers/product-row-actions/product-row-actions.container';
 import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
 
@@ -42,7 +44,9 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductRowActionsContainerComponent,
     ProductRowActionsComponent,
     ProductQuantityComponent,
-    ProductAddToCartComponent
+    ProductAddToCartComponent,
+    ProductDetailActionsComponent,
+    ProductDetailActionsContainerComponent
   ],
   exports: [
     CategoryListComponent,
@@ -62,7 +66,9 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductRowActionsContainerComponent,
     ProductRowActionsComponent,
     ProductQuantityComponent,
-    ProductAddToCartComponent
+    ProductAddToCartComponent,
+    ProductDetailActionsComponent,
+    ProductDetailActionsContainerComponent
   ]
 })
 
