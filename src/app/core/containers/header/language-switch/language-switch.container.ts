@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Locale } from '../../../../models/locale/locale.interface';
@@ -7,7 +7,8 @@ import { getAvailableLocales, getCurrentLocale, SelectLocale } from '../../../st
 
 @Component({
   selector: 'ish-language-switch-container',
-  templateUrl: './language-switch.container.html'
+  templateUrl: './language-switch.container.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchContainerComponent implements OnInit {
 

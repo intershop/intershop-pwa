@@ -1,9 +1,10 @@
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'ish-modal-dialog',
-  templateUrl: './modal-dialog.component.html'
+  templateUrl: './modal-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class ModalDialogComponent {

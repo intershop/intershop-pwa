@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'ish-registration-credentials-form',
-  templateUrl: './registration-credentials-form.component.html'
+  templateUrl: './registration-credentials-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 
 export class RegistrationCredentialsFormComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { Country } from '../../../models/country/country.model';
@@ -9,7 +9,8 @@ import { markAsDirtyRecursive, updateValidatorsByDataLength } from '../../../uti
 
 @Component({
   selector: 'ish-registration-form',
-  templateUrl: './registration-form.component.html'
+  templateUrl: './registration-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class RegistrationFormComponent implements OnInit, OnChanges {

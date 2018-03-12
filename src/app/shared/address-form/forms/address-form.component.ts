@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Country } from '../../../models/country/country.model';
 import { Region } from '../../../models/region/region.model';
 
 @Component({
   selector: 'ish-address-form',
-  templateUrl: './address-form.component.html'
+  templateUrl: './address-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressFormComponent implements OnInit {
 

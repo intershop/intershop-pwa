@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'ish-registration-personal-form',
-  templateUrl: './registration-personal-form.component.html'
+  templateUrl: './registration-personal-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationPersonalFormComponent implements OnInit {
   @Input() parentForm: FormGroup;

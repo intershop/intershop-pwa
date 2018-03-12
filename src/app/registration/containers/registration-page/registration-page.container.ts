@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +13,8 @@ import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { Region } from '../../../models/region/region.model';
 
 @Component({
-  templateUrl: './registration-page.container.html'
+  templateUrl: './registration-page.container.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class RegistrationPageComponent implements OnInit {

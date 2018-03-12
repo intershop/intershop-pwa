@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Category } from '../../../../models/category/category.model';
 
 @Component({
   selector: 'ish-category-navigation',
-  templateUrl: './category-navigation.component.html'
+  templateUrl: './category-navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class CategoryNavigationComponent {

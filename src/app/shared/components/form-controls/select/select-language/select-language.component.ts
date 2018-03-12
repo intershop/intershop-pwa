@@ -1,11 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SelectOption } from '../../select/select-option.interface';
 import { SelectComponent } from '../select.component';
 
 @Component({
   selector: 'ish-select-language',
-  templateUrl: '../select.component.html'
+  templateUrl: '../select.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectLanguageComponent extends SelectComponent implements OnChanges {
 
