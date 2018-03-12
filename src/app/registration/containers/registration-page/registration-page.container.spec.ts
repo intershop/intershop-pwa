@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs/observable/of';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { CountryService } from '../../../core/services/countries/country.service';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
 import { MockComponent } from '../../../utils/dev/mock.component';
@@ -15,17 +14,12 @@ describe('Registration Page Container', () => {
   let component: RegistrationPageComponent;
   let element: HTMLElement;
   let routerMock: Router;
-  let storeMock: Store<CoreState>;
+  let storeMock$: Store<CoreState>;
 
   beforeEach(async(() => {
     routerMock = mock(Router);
-    storeMock = mock(Store);
+    storeMock$ = mock(Store);
 
-    const countryServiceMock = mock(CountryService);
-    when(countryServiceMock.getCountries()).thenReturn(of([
-      { countryCode: 'BG', name: 'Bulgaria' },
-      { countryCode: 'DE', name: 'Germany' }
-    ]));
     const regionServiceMock = mock(RegionService);
     when(regionServiceMock.getRegions(anything())).thenReturn(of([
       { countryCode: 'DE', regionCode: 'AL', name: 'Alabama' },
@@ -41,16 +35,14 @@ describe('Registration Page Container', () => {
             'countries',
             'languages',
             'regions',
-            'titles',
-            'emailOptIn'
+            'titles'
           ]
         }),
       ],
       providers: [
-        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: RegionService, useFactory: () => instance(regionServiceMock) },
         { provide: Router, useFactory: () => instance(routerMock) },
-        { provide: Store, useFactory: () => instance(storeMock) },
+        { provide: Store, useFactory: () => instance(storeMock$) },
       ],
       imports: [
         TranslateModule.forRoot()
@@ -72,7 +64,6 @@ describe('Registration Page Container', () => {
 
   it('should retrieve countries and languages on creation', () => {
     fixture.detectChanges();
-    component.countries$.subscribe(result => expect(result.length).toBeGreaterThan(0));
     component.languages$.subscribe(result => expect(result.length).toBeGreaterThan(0));
   });
 

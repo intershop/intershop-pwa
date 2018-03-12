@@ -28,7 +28,7 @@ describe('RegistrationForm Component', () => {
         MockComponent({
           selector: 'ish-registration-credentials-form',
           template: 'Credentials Template',
-          inputs: ['parentForm', 'controlName', 'emailOptIn']
+          inputs: ['parentForm', 'controlName']
         }),
         MockComponent({
           selector: 'ish-address-form',
