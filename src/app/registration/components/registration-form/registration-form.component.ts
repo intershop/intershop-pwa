@@ -20,7 +20,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   @Input() regions: Region[];
   @Input() languages: any[]; // TODO: insert type
   @Input() titles: any[]; // TODO: insert type
-  @Input() emailOptIn = false;
 
   @Output() create = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
@@ -39,8 +38,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
         password: ['', [Validators.required, SpecialValidators.password]],
         passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
         securityQuestion: ['', [Validators.required]],
-        securityQuestionAnswer: ['', [Validators.required]],
-        newsletter: [this.emailOptIn]
+        securityQuestionAnswer: ['', [Validators.required]]
       }),
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
