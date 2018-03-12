@@ -10,11 +10,11 @@ export class ShowFormFeedbackDirective {
   @Input('ishShowFormFeedback') control: AbstractControl;
 
   @HostBinding('class.has-error') get hasErrors() {
-    return this.control.invalid && this.control.dirty;
+    return this.control.validator && this.control.invalid && this.control.dirty;
   }
 
   @HostBinding('class.has-success') get hasSuccess() {
-    return this.control.valid && this.control.dirty;
+    return this.control.validator && this.control.valid && this.control.dirty;
   }
 
 }
