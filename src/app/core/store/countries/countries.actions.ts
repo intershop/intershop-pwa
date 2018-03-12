@@ -9,7 +9,6 @@ export enum CountryActionTypes {
 
 export class LoadCountries implements Action {
   readonly type = CountryActionTypes.LoadCountries;
-  constructor() { }
 }
 
 export class LoadCountriesFail implements Action {

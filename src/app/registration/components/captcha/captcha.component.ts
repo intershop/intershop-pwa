@@ -1,5 +1,5 @@
 // NEEDS_WORK:
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -8,11 +8,9 @@ import { FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class CaptchaComponent implements OnInit {
+export class CaptchaComponent {
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
-
-  ngOnInit() { }
 
   /**
    * Emits true when captcha is resolved as true

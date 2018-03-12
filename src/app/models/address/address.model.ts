@@ -17,6 +17,4 @@ export class Address {
   mainDivision?: string;
   country: Country;
   phoneHome: string;
-
-  constructor() { }
 }
