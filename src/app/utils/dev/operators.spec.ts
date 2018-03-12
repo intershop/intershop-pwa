@@ -12,8 +12,8 @@ describe('log operator', () => {
   });
 
   it('should call console.log with custom message for each emitted value', () => {
-    subject$.pipe(log('message'))
-      .subscribe(() => { });
+    // tslint:disable-next-line:no-empty
+    subject$.pipe(log('message')).subscribe(() => { });
 
     subject$.next('a');
     expect(console.log).toHaveBeenCalledWith('message', 'a');
@@ -25,8 +25,8 @@ describe('log operator', () => {
   });
 
   it('should leave message blank if none given', () => {
-    subject$.pipe(log())
-      .subscribe(() => { });
+    // tslint:disable-next-line:no-empty
+    subject$.pipe(log()).subscribe(() => { });
 
     subject$.next('a');
     expect(console.log).toHaveBeenCalledWith('', 'a');
