@@ -69,7 +69,4 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
   ]
 })
 
-export class AppModule {
-
-  constructor() { }
-}
+export class AppModule { }
