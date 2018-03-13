@@ -7,7 +7,7 @@
   [totalItems]="totalItems$ | async"
   [viewType]="viewType$ | async"
   [sortBy]="sortBy$ | async"
-  [sortKeys]="sortKeys$"
+  [sortKeys]="sortKeys$ | async"
   (viewTypeChange)="changeViewType($event)"
   (sortByChange)="changeSortBy($event)"
 ></ish-search-page>

@@ -8,6 +8,7 @@ import { RouterStateUrl } from '../../../core/store/router/router.reducer';
 import { SearchService } from '../../services/products/search.service';
 import { LoadProduct } from '../products';
 import { ShoppingState } from '../shopping.state';
+import { SetSortKeys } from '../viewconf';
 import { DoSearch, SearchActionTypes, SearchProductFail, SearchProductsAvailable } from './search.actions';
 
 @Injectable()
@@ -47,11 +48,13 @@ export class SearchEffects {
     switchMap(searchTerm => {
       // get products
       return this.searchService.searchForProductSkus(searchTerm).pipe(
-        mergeMap((skuArray: string[]) => of<Action>(
-          // fire action LoadProducts
-          ...skuArray.map(sku => new LoadProduct(sku)),
-          // fire action SearchProductsAvailable
-          new SearchProductsAvailable(skuArray)
+        mergeMap(res => of<Action>(
+          // fire actions for loading products
+          ...res.skus.map(sku => new LoadProduct(sku)),
+          // fire action for search page
+          new SearchProductsAvailable(res.skus),
+          // fire action for sorting toolbox
+          new SetSortKeys(res.sortKeys)
         )),
         catchError(error => of(new SearchProductFail(error)))
       );
