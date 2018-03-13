@@ -4,7 +4,7 @@ import { CoreState } from './core.state';
 import { CountriesEffects } from './countries/countries.effects';
 import { countriesReducer } from './countries/countries.reducer';
 import { ErrorEffects } from './error/error.effects';
-import { generalErrorReducer } from './error/error.reducer';
+import { errorReducer } from './error/error.reducer';
 import { LocaleEffects } from './locale/locale.effects';
 import { localeReducer } from './locale/locale.reducer';
 import { UserEffects } from './user/user.effects';
@@ -15,7 +15,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   user: userReducer,
   locale: localeReducer,
   countries: countriesReducer,
-  error: generalErrorReducer
+  error: errorReducer
 };
 
 export const coreEffects: any[] = [UserEffects, LocaleEffects, CountriesEffects, ErrorEffects];
