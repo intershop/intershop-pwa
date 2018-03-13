@@ -2,10 +2,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'ish-home-page-container',
-  templateUrl: './home-page.container.html',
+  selector: 'ish-home-page',
+  templateUrl: './home-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomePageContainerComponent {
+export class HomePageComponent {
 
 }
