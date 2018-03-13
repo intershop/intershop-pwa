@@ -253,7 +253,8 @@
           "/utils/dev/",
           ".*.actions.ts$",
           ".*.model.ts$",
-          "src/app/shared/address-form/"
+          "src/app/shared/address-form/",
+          "src/app/account/"
         ]
       }
     }
