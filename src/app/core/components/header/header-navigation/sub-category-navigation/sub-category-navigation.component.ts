@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Category } from '../../../../../models/category/category.model';
 
 @Component({
-  selector: 'ish-subcategory-navigation',
-  templateUrl: './subcategory-navigation.component.html',
+  selector: 'ish-sub-category-navigation',
+  templateUrl: './sub-category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
