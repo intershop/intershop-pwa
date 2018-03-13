@@ -17,7 +17,7 @@ import { Region } from '../../../models/region/region.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class RegistrationPageComponent implements OnInit {
+export class RegistrationPageContainerComponent implements OnInit {
 
   countries$: Observable<Country[]>;
   languages$: Observable<any[]>;
