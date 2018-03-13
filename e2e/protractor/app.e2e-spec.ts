@@ -1,5 +1,5 @@
 import { browser } from 'protractor';
-import { ProofOfConceptPage } from './app.po';
+import { ProofOfConceptPage } from './pages/proof-of-concept.page';
 
 describe('proof-of-concept App', () => {
   let page: ProofOfConceptPage;
