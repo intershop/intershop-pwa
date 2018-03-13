@@ -34,12 +34,12 @@ describe('Select Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should throw an error if input parameter parentForm is missing', () => {
     component.parentForm = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should set the default value \'address\' if input parameter controlName is missing', () => {

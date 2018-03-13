@@ -47,12 +47,12 @@ describe('Product Price Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set properly', () => {
     component.product = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   describe('price comparison', () => {
