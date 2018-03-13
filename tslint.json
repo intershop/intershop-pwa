@@ -252,7 +252,8 @@
           "/tslint-rules/",
           "/utils/dev/",
           ".*.actions.ts$",
-          ".*.model.ts$"
+          ".*.model.ts$",
+          "src/app/shared/address-form/"
         ]
       }
     }
