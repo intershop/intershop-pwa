@@ -214,6 +214,47 @@
       "options": {
         "patterns": [ "<img", "<p", "<ul", "<li", "<table", "<(?![^>]*(clearfix))[^>]*class" ]
       }
+    },
+    "project-structure": {
+      "severity": "warning",
+      "options": {
+        "warnUnmatched": false,
+        "patterns": [
+          { "name": "^(AppComponent)$", "file": "src/app/app\\.component\\.ts$" },
+          { "name": "^(AppServerModule)$", "file": "src/app/app\\.server\\.module\\.ts$" },
+          { "name": "^(.*)Service$", "file": "/services(/.*|)/<kebab>\\.service\\.ts$" },
+          { "name": "^(.*)ContainerComponent$", "file": ".*/containers(/.*|)/<kebab>/<kebab>\\.container\\.ts$" },
+          { "name": "^(.*Page)Routes$", "file": ".*/containers(/.*|)/<kebab>/<kebab>\\.routes\\.ts$" },
+          { "name": "^(routes)$", "file": ".*/.*\\-routing\\.module\\.ts$" },
+          { "name": "^(.*)Component$", "file": ".*/components(/.*|)/<kebab>/<kebab>\\.component\\.ts$" },
+          { "name": "^([A-Z].*)Factory$", "file": ".*/models/<kebab>/<kebab>\\.factory\\.ts$" },
+          { "name": "^(.*)Data$", "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$" },
+          { "name": "^(.*)Directive$", "file": ".*/directives/<kebab>\\.directive\\.ts$" },
+          { "name": "^(.*)Guard$", "file": ".*/guards/<kebab>\\.guard\\.ts$" },
+          { "name": "^(.*)Interceptor$", "file": ".*/interceptors/<kebab>\\.interceptor\\.ts$" },
+          { "name": "^([A-Z].*)Effects$", "file": ".*/store/<kebab>/<kebab>\\.effects\\.ts$" },
+          { "name": "^([a-z].*)Effects$", "file": ".*/store/<kebab>\\.system\\.ts$" },
+          { "name": "^get(.*)State$", "file": ".*/store/(<kebab>/<kebab>\\.selectors|<kebab>\\.state)\\.ts$" },
+          { "name": "^([A-Z].*)State$", "file": ".*/store/(<kebab>/<kebab>\\.reducer|<kebab>\\.state)\\.ts$" },
+          { "name": "^(initialState)$", "file": ".*/store/.*\\.reducer\\.ts$" },
+          { "name": "^((get|is)[A-Z].*)$", "file": ".*/(store/.*\\.(reducer|selectors)|factories)\\.ts$" },
+          { "name": "^(.*)Reducer$", "file": ".*/store/<kebab>/<kebab>\\.reducer\\.ts$" },
+          { "name": "^(metaReducers)$", "file": ".*\\.module\\.ts$" },
+          { "name": "^([a-z].*)Reducers$", "file": ".*/store/<kebab>\\.system\\.ts$" },
+          { "name": "^(.*)Module$", "file": ".*/<kebab>\\.module\\.ts$" },
+          { "name": "^(environment)$", "file": "src/environments/environment(\\.[a-z]+|)\\.ts$" },
+          { "name": "^(.*)Page$", "file": ".*/pages(/.*|)/<kebab>\\.page\\.ts$" }
+        ],
+        "ignoredFiles": [
+          "/(prerender|server).ts$",
+          "src/[^\/]*.ts$",
+          ".*.spec.ts$",
+          "/tslint-rules/",
+          "/utils/dev/",
+          ".*.actions.ts$",
+          ".*.model.ts$"
+        ]
+      }
     }
   }
 }
