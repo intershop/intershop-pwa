@@ -13,7 +13,7 @@ import { getLoginError, getUserAuthorized, LoginUser } from '../../../core/store
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class LoginPageComponent implements OnInit {
+export class LoginPageContainerComponent implements OnInit {
 
   loginToUse = false;
   loginError$: Observable<HttpErrorResponse>;

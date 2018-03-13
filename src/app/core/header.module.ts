@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse/collapse.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown/bs-dropdown.module';
 import { HeaderNavigationComponent } from './components/header/header-navigation/header-navigation.component';
-import { SubCategoryNavigationComponent } from './components/header/header-navigation/subcategory-navigation/subcategory-navigation.component';
+import { SubCategoryNavigationComponent } from './components/header/header-navigation/sub-category-navigation/sub-category-navigation.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LanguageSwitchComponent } from './components/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from './components/header/login-status/login-status.component';

@@ -4,7 +4,7 @@ import * as using from 'jasmine-data-provider';
 import { anything } from 'ts-mockito/lib/ts-mockito';
 import { CreateUserSuccess } from '../user';
 import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
-import { generalErrorReducer, initialState } from './error.reducer';
+import { errorReducer, initialState } from './error.reducer';
 
 describe('Error Reducer', () => {
 
@@ -21,7 +21,7 @@ describe('Error Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = generalErrorReducer(undefined, {} as any);
+      const newState = errorReducer(undefined, {} as any);
 
       expect(newState).toEqual(initialState);
     });
@@ -56,7 +56,7 @@ describe('Error Reducer', () => {
 
   using(dataProvider, (dataSlice) => {
     it(`should return ${dataSlice.expected === initialState ? ' initialState' : (' \'' + dataSlice.expected.type + '\' ')} when Action ${dataSlice.action.type} is reduced on state ${dataSlice.state.type}`, () => {
-      const newState = generalErrorReducer(dataSlice.state, dataSlice.action);
+      const newState = errorReducer(dataSlice.state, dataSlice.action);
       expect(newState).toEqual(dataSlice.expected);
     });
   });
