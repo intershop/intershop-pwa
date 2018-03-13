@@ -34,7 +34,7 @@ describe('Input Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should be rendered on creation', () => {
@@ -52,7 +52,7 @@ describe('Input Component', () => {
 
   it('should throw an error if input parameter type is not set properly', () => {
     component.type = 'xyz';
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should set input parameter type on html element', () => {
@@ -118,16 +118,16 @@ describe('Input Component', () => {
   // error are thrown if required input parameters are missing
   it('should throw an error if there is no form set as input parameter', () => {
     component.form = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should throw an error if there is no controlName set as input parameter', () => {
     component.controlName = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should throw an error if there is no control with controlName in the given form', () => {
     component.controlName = 'xxx';
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 });
