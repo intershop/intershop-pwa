@@ -35,7 +35,6 @@ export class SearchPageContainerComponent implements OnInit {
     this.totalItems$ = this.products$.pipe(map((products) => products.length));
     this.viewType$ = this.store.pipe(select(getViewType));
     this.sortBy$ = this.store.pipe(select(getSortBy));
-    // TODO: get sort keys
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
   }
 
