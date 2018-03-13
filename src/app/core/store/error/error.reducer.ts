@@ -10,7 +10,7 @@ export const initialState: ErrorState = {
   type: null
 };
 
-export function generalErrorReducer(
+export function errorReducer(
   state = initialState,
   action: HttpError | RouterAction<any>
 ): ErrorState {
