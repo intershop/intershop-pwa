@@ -7,11 +7,11 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { RegistrationPageComponent } from './registration-page.container';
+import { RegistrationPageContainerComponent } from './registration-page.container';
 
 describe('Registration Page Container', () => {
-  let fixture: ComponentFixture<RegistrationPageComponent>;
-  let component: RegistrationPageComponent;
+  let fixture: ComponentFixture<RegistrationPageContainerComponent>;
+  let component: RegistrationPageContainerComponent;
   let element: HTMLElement;
   let routerMock: Router;
   let storeMock$: Store<CoreState>;
@@ -27,7 +27,7 @@ describe('Registration Page Container', () => {
     ]));
 
     TestBed.configureTestingModule({
-      declarations: [RegistrationPageComponent,
+      declarations: [RegistrationPageContainerComponent,
         MockComponent({
           selector: 'ish-registration-form',
           template: 'Form Template',
@@ -51,7 +51,7 @@ describe('Registration Page Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegistrationPageComponent);
+    fixture = TestBed.createComponent(RegistrationPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
