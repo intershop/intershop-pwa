@@ -19,6 +19,7 @@ class ProjectStructureWalker extends Lint.RuleWalker {
   warnUnmatched = false;
   patterns: RuleDeclaration[] = [];
   ignoredFiles: string[];
+  pathPatterns: string[];
 
   fileName: string;
 
@@ -28,6 +29,9 @@ class ProjectStructureWalker extends Lint.RuleWalker {
       this.warnUnmatched = !!options['ruleArguments'][0]['warnUnmatched'];
       this.patterns = options['ruleArguments'][0]['patterns'];
       this.ignoredFiles = options['ruleArguments'][0]['ignoredFiles'] || [];
+      if (options['ruleArguments'][0]['pathPatterns']) {
+        this.pathPatterns = options['ruleArguments'][0]['pathPatterns'];
+      }
     }
   }
 
@@ -37,6 +41,10 @@ class ProjectStructureWalker extends Lint.RuleWalker {
 
     const isIgnored = this.ignoredFiles.map<boolean>(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName)).reduce((l, r) => l || r);
     if (!isIgnored) {
+      const matchesPathPattern = this.pathPatterns.map(pattern => new RegExp(pattern).test(this.fileName)).reduce((l, r) => l || r);
+      if (!matchesPathPattern) {
+        this.addFailureAtNode(sourceFile, `this file path does not match any defined patterns`);
+      }
       super.visitSourceFile(sourceFile);
     }
   }
