@@ -12,4 +12,10 @@ export class SpecialValidators {
     const noSpecialCharsPattern = /^[^\<\>\&\@\;\%\*\#\|\_\[\]\!\?\~\+\{\}\(\)\:]*$/;
     return noSpecialCharsPattern.test(control.value) ? null : { noSpecialChars: { valid: false } };
   }
+
+  // integer
+  static integer(control: FormControl): { [error: string]: any } {
+    const integerPattern = /^(?:-?(?:0|[1-9][0-9]*)|)$/;
+    return integerPattern.test(control.value) ? null : { integer: { valid: false } };
+  }
 }

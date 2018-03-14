@@ -1,31 +1,34 @@
 <div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity row">
 
-      <ng-template [ngIf]="type === selectType" [ngIfElse]="inputType">
-        <ish-select
-        [options]="quantityOptions"
-        [controlName]="controlName"
-        [form]="parentForm"
-        label="product.quantity.label"
-        labelClass="label-quantity col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left-xs text-right-lg text-right-md text-right-sm"
-        [inputClass]="'col-xs-12 col-sm-5 col-md-4 col-lg-4 form-group pull-left-xs ' + (class || '')"
-      ></ish-select>
-    </ng-template>
+  <ng-template [ngIf]="type === selectType" [ngIfElse]="inputType">
+    <ish-select
+      [options]="quantityOptions"
+      [form]="parentForm"
+      [controlName]="controlName"
+      label="product.quantity.label"
+      labelClass="label-quantity col-xs-6"
+      [inputClass]="'col-xs-6 form-group ' + (class || '')"
+    ></ish-select>
+  </ng-template>
 
-    <ng-template #inputType>
-        <ish-input
-        [form]="parentForm"
-        [controlName]="controlName"
-        type="number"
-        label="product.quantity.label"
-        labelClass="label-quantity col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left-xs text-right-lg text-right-md text-right-sm"
-        [inputClass]="'col-xs-12 col-sm-5 col-md-4 col-lg-4 form-group pull-left-xs ' + (class || '')"
-        markRequiredLabel="off"
-        [min]="product.minOrderQuantity"
-        [errorMessages]="{
-          'required':'product.quantity.notempty.text',
-          'pattern': 'product.quantity.integer.text',
-          'min': 'product.quantity.greaterthan.text' | translate:{ '0': product.minOrderQuantity }}"
-        ></ish-input>
-      </ng-template>
+  <ng-template #inputType>
+    <ish-input
+      [form]="parentForm"
+      [controlName]="controlName"
+      type="number"
+      label="product.quantity.label"
+      labelClass="label-quantity col-xs-6"
+      [inputClass]="'col-xs-6 form-group ' + (class || '')"
+      markRequiredLabel="off"
+      [min]="minOrderQuantity"
+      [max]="maxOrderQuantity"
+      [errorMessages]="{
+        'required':'product.quantity.notempty.text',
+        'integer': 'product.quantity.integer.text',
+        'min': 'product.quantity.greaterthan.text' | translate:{ '0': minOrderQuantity },
+        'max': 'product.quantity.lessthan.text' | translate:{ '0': maxOrderQuantity }
+      }"
+    ></ish-input>
+  </ng-template>
 
-  </div>
+</div>

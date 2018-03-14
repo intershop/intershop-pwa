@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
@@ -7,13 +7,16 @@ import { Product } from '../../../../models/product/product.model';
   templateUrl: './product-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductDetailComponent implements OnInit {
+
   @Input() product: Product;
-  readonly quantityControlName = 'quantity';
+
   productDetailForm: FormGroup;
+  readonly quantityControlName = 'quantity';
 
   ngOnInit(): void {
     this.productDetailForm = new FormGroup({});
+    this.productDetailForm.addControl(this.quantityControlName,
+      new FormControl(this.product.minOrderQuantity));
   }
 }

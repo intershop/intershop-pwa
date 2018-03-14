@@ -9,6 +9,7 @@ export class Product {
   availability: boolean;
   inStock: boolean;
   minOrderQuantity: number;
+  maxOrderQuantity?: number;
   attributes?: Attribute[];
   images: Image[] = [];
   listPrice: Price;
