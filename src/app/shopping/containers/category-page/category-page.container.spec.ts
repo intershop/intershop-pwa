@@ -64,7 +64,7 @@ describe('Category Page Container', () => {
   });
 
   it('should display category-page when category has sub categories', () => {
-    const category = new Category('dummy', 'dummy', 'dummy');
+    const category = { uniqueId: 'dummy' } as Category;
     category.hasOnlineSubCategories = true;
     store$.dispatch(new LoadCategorySuccess(category));
     const routerAction = navigateMockAction({
@@ -80,7 +80,7 @@ describe('Category Page Container', () => {
   });
 
   it('should display family-page when category has products', () => {
-    const category = new Category('dummy', 'dummy', 'dummy');
+    const category = { uniqueId: 'dummy' } as Category;
     category.hasOnlineProducts = true;
     store$.dispatch(new LoadCategorySuccess(category));
     const routerAction = navigateMockAction({

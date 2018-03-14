@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { map } from 'rxjs/operators';
-import { CategoryFactory } from '../../../models/category/category.factory';
 import { CategoryData } from '../../../models/category/category.interface';
+import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
 import { ApiService } from '../api.service';
 
@@ -31,7 +31,7 @@ export class CategoriesService {
     }
     return this.apiService.get<CategoryData[]>(this.serviceIdentifier, params, null, true).pipe(
       map(categoriesData => categoriesData.map(
-        categoryData => CategoryFactory.fromData(categoryData, categoryData.id)
+        categoryData => CategoryMapper.fromData(categoryData, categoryData.id)
       ))
     );
   }
@@ -47,7 +47,7 @@ export class CategoriesService {
     }
     const categoryResourceIdentifier = categoryUniqueId.replace(/\./g, '/');
     return this.apiService.get<CategoryData>(this.serviceIdentifier + '/' + categoryResourceIdentifier, null, null, false).pipe(
-      map(categoryData => CategoryFactory.fromData(categoryData, categoryUniqueId))
+      map(categoryData => CategoryMapper.fromData(categoryData, categoryUniqueId))
     );
   }
 }

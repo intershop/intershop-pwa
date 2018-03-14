@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
-import { CategoryFactory } from '../../../models/category/category.factory';
+import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
 import { adapterUpsertMany, adapterUpsertOne } from '../../../utils/adapter-upsert';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
@@ -102,7 +102,7 @@ export function flattenSubCategories(c: Category): Category[] {
     return [c];
   }
 
-  const category = CategoryFactory.clone(c);
+  const category = CategoryMapper.clone(c);
   category.subCategoriesIds = category.subCategories.map(sc => sc.uniqueId);
 
   const categories = category.subCategories
