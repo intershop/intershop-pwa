@@ -208,7 +208,21 @@
     "use-camel-case-environment-properties": true,
     "dev-util-imports": true,
     "component-creation-test": true,
-    "ccp-no-intelligence-in-components": { "severity": "warning" },
+    "ccp-no-intelligence-in-components": {
+      "severity": "warning",
+      "options": {
+        // forbid every logic in components
+        "component": {
+          "ngrx": false,
+          "service": false
+        },
+        "container": {
+          "ngrx": true,
+          // services should only be used by effects
+          "service": false
+        }
+      }
+    },
     "ccp-no-markup-in-containers": {
       "severity": "warning",
       "options": {
