@@ -32,7 +32,7 @@ export class AccountLoginService {
 
   createUser(newCustomer: CustomerData): Observable<Customer> {
     return this.apiService.post<CustomerData>('customers', newCustomer).pipe(
-      // TODO: normally this should work but I get 500 from ICM
+      // TODO: normally this should work, see also #IS-22750
       // switchMap(() => this.apiService.get<CustomerData>('customers/-')),
       // map(data => CustomerFactory.fromData(data))
       switchMap(() => this.signinUser(this.accountLoginFromCustomer(newCustomer)))
