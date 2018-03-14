@@ -7,7 +7,7 @@ import { of } from 'rxjs/observable/of';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
 import { getAllCountries } from '../../../core/store/countries/countries.selectors';
-import { CreateUser, getLoginError } from '../../../core/store/user';
+import { CreateUser, getUserError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { Region } from '../../../models/region/region.model';
@@ -34,7 +34,7 @@ export class RegistrationPageContainerComponent implements OnInit {
   ngOnInit() {
     this.countries$ = this.store.pipe(select(getAllCountries));
     this.languages$ = this.getLanguages();
-    this.userCreateError$ = this.store.pipe(select(getLoginError));
+    this.userCreateError$ = this.store.pipe(select(getUserError));
   }
 
   updateData(countryCode: string) {
