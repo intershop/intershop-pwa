@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-
+import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Product } from '../../../../models/product/product.model';
 import { SelectOption } from '../../../../shared/components/form-controls/select';
+import { SpecialValidators } from '../../../../shared/validators/special-validators';
 
 @Component({
   selector: 'ish-product-quantity',
@@ -17,27 +17,37 @@ export class ProductQuantityComponent implements OnInit {
   @Input() class?: string;
 
   readonly selectType = 'select';
-  isTypeSelect: boolean;
-  // TODO: to be removed when REST response is available for max quantity
-  maxOrderQuantityOptions = 10;
+
+  minOrderQuantity = 1;
+  maxOrderQuantity = 100;
 
   ngOnInit() {
-    this.parentForm.addControl(this.controlName,
-      new FormControl(this.product.minOrderQuantity, this.getValidations()));
+    if (this.product.minOrderQuantity) {
+      this.minOrderQuantity = this.product.minOrderQuantity;
+    }
+    if (this.product.maxOrderQuantity) {
+      this.maxOrderQuantity = this.product.maxOrderQuantity;
+    }
+    this.parentForm.get(this.controlName).setValidators(this.getValidations());
   }
 
   getValidations(): ValidatorFn {
     if (this.type !== this.selectType) {
-      return Validators.compose([Validators.required,
-      Validators.min(this.product.minOrderQuantity), Validators.pattern('^[0-9]*')]);
+      return Validators.compose([
+        Validators.required,
+        Validators.min(this.minOrderQuantity),
+        Validators.max(this.maxOrderQuantity),
+        SpecialValidators.integer
+      ]);
     }
   }
 
   get quantityOptions(): SelectOption[] {
-    return Array.from({ length: this.maxOrderQuantityOptions },
-      (v, k) => ({
-        label: (this.product.minOrderQuantity + k).toString(),
-        value: (this.product.minOrderQuantity + k).toString()
-      } as SelectOption));
+    return Array.from({ length: this.maxOrderQuantity - this.minOrderQuantity + 1 },
+      (value, index) => ({
+        label: (this.minOrderQuantity + index).toString(),
+        value: (this.minOrderQuantity + index).toString()
+      } as SelectOption)
+    );
   }
 }
