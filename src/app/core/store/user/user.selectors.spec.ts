@@ -6,7 +6,7 @@ import { Customer } from '../../../models/customer/customer.model';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 import { LoginUserFail, LoginUserSuccess } from './user.actions';
-import { getLoggedInUser, getLoginError, getUserAuthorized } from './user.selectors';
+import { getLoggedInUser, getUserAuthorized, getUserError } from './user.selectors';
 
 describe('User State Selectors', () => {
 
@@ -27,7 +27,7 @@ describe('User State Selectors', () => {
 
     userAuthorized$ = store.pipe(select(getUserAuthorized));
     loggedInUser$ = store.pipe(select(getLoggedInUser));
-    loginError$ = store.pipe(select(getLoginError));
+    loginError$ = store.pipe(select(getUserError));
   });
 
   it('should select no customer when no event was sent', () => {

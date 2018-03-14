@@ -6,4 +6,4 @@ const getUserState = (state: CoreState) => state.user;
 
 export const getLoggedInUser = createSelector(getUserState, getCustomer);
 export const getUserAuthorized = createSelector(getUserState, getAuthorized);
-export const getLoginError = createSelector(getUserState, getError);
+export const getUserError = createSelector(getUserState, getError);
