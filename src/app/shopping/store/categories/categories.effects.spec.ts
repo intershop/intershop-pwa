@@ -280,7 +280,7 @@ describe('Categories Effects', () => {
       });
 
       it('should do nothing when category already has an SKU list', () => {
-        category.productSkus = ['P222', 'P333'];
+        store$.dispatch(new fromActions.SetProductSkusForCategory(category.uniqueId, ['P222', 'P333']));
         store$.dispatch(new fromActions.LoadCategorySuccess(category));
         selectCategory(category.uniqueId);
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));

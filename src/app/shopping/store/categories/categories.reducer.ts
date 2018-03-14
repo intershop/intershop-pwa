@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
 import { adapterUpsertMany, adapterUpsertOne } from '../../../utils/adapter-upsert';
@@ -7,6 +7,7 @@ import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
   topLevelCategoriesIds: string[];
+  categoriesProductSKUs: { [uniqueId: string]: string[] };
 }
 
 export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
@@ -15,7 +16,8 @@ export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Cate
 
 export const initialState: CategoriesState = categoryAdapter.getInitialState({
   loading: false,
-  topLevelCategoriesIds: []
+  topLevelCategoriesIds: [],
+  categoriesProductSKUs: {}
 });
 
 export function categoriesReducer(
@@ -64,14 +66,12 @@ export function categoriesReducer(
       const skus = action.payload;
       const categoryUniqueId = action.categoryUniqueId;
 
-      const update: Update<Category> = {
-        id: categoryUniqueId,
-        changes: {
-          productSkus: skus
-        }
+      const categoriesProductSKUs = {
+        ...state.categoriesProductSKUs,
+        [categoryUniqueId]: skus
       };
 
-      return categoryAdapter.updateOne(update, state);
+      return { ...state, categoriesProductSKUs };
     }
 
     case CategoriesActionTypes.LoadTopLevelCategoriesSuccess: {
