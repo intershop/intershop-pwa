@@ -44,16 +44,36 @@ export const getSelectedCategoryPath = createSelector(
   }
 );
 
+export const getCategoriesProductSKUs = createSelector(getCategoryState, state => state.categoriesProductSKUs);
+
+export const getProductSKUsForSelectedCategory = createSelector(
+  getCategoriesProductSKUs,
+  getSelectedCategoryId,
+  (categoriesProductSKUs, uniqueId) => categoriesProductSKUs[uniqueId] || []
+);
+
 export const getProductsForSelectedCategory = createSelector(
   getSelectedCategory,
+  getProductSKUsForSelectedCategory,
   productsSelectors.getProductEntities,
-  (category, products) => category && category.productSkus
-    && category.productSkus.map(sku => products[sku]) || []
+  (category, skus, products) => category && skus
+    && skus.map(sku => products[sku]) || []
 );
 
 export const getProductCountForSelectedCategory = createSelector(
-  getProductsForSelectedCategory,
-  products => products && products.length || 0
+  getProductSKUsForSelectedCategory,
+  skus => skus && skus.length || 0
+);
+
+export const getSelectedCategoryProductsNeeded = createSelector(
+  getSelectedCategory,
+  productsSelectors.getSelectedProductId,
+  getProductSKUsForSelectedCategory,
+  (c, selectedProductSku, skus) => {
+    if (!selectedProductSku && c && c.hasOnlineProducts && !skus.length) {
+      return [c, selectedProductSku, skus];
+    }
+  }
 );
 
 export const getCategoryLoading = createSelector(
