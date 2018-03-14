@@ -1,7 +1,6 @@
 import { mergeObjectsMutably } from '../../utils/merge-objects';
 import { AttributeFactory } from '../attribute/attribute.factory';
 import { FactoryHelper } from '../factory-helper';
-import { ImageFactory } from '../image/image.factory';
 import { PriceFactory } from '../price/price.factory';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
@@ -16,7 +15,7 @@ export class ProductFactory {
     FactoryHelper.primitiveMapping<ProductData, Product>(data, product);
 
     if (data.images) {
-      product.images = data.images.map(image => ImageFactory.fromData(image));
+      product.images = data.images;
     }
     if (data.variationAttributeValues) {
       product.attributes = data.variationAttributeValues.map(attribute => AttributeFactory.fromData(attribute));

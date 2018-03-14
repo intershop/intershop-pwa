@@ -1,5 +1,5 @@
 import { AttributeData } from '../attribute/attribute.interface';
-import { ImageData } from '../image/image.interface';
+import { Image } from '../image/image.model';
 import { PriceData } from '../price/price.interface';
 import { WarrantyData } from '../warranty/warranty.interface';
 
@@ -14,7 +14,7 @@ export interface ProductData {
   averageRating: string;
   roundedAverageRating: string;
 
-  images: ImageData[];
+  images: Image[];
 
   availableWarranties?: WarrantyData[];
   availableGiftWraps?: any[];

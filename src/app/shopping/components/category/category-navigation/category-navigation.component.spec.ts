@@ -17,7 +17,7 @@ describe('Category Navigation Component', () => {
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(CategoryNavigationComponent);
       component = fixture.componentInstance;
-      component.categoryPath = [new Category('1', 'a', '1')];
+      component.categoryPath = [{}] as Category[];
       element = fixture.nativeElement;
     });
   }));

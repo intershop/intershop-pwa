@@ -23,7 +23,7 @@ describe('Family Page Component', () => {
     fixture = TestBed.createComponent(FamilyPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.category = new Category('ID', 'Name', 'uniqueID');
+    component.category = {} as Category;
   });
 
   it('should be created', () => {
