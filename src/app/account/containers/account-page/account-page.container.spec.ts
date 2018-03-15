@@ -2,26 +2,30 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
-import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { AccountPageComponent } from './account-page.component';
+import { AccountPageContainerComponent } from './account-page.container';
 
-describe('Account Overview Component', () => {
-  let fixture: ComponentFixture<AccountPageComponent>;
-  let component: AccountPageComponent;
+describe('Account Page Container', () => {
+  let fixture: ComponentFixture<AccountPageContainerComponent>;
+  let component: AccountPageContainerComponent;
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const accountLoginServiceMock = mock(AccountLoginService);
-
     TestBed.configureTestingModule({
       declarations: [
-        AccountPageComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['account', 'trailText'] }),
-        MockComponent({ selector: 'ish-account-navigation', template: 'Account Naviation Component' })
+        AccountPageContainerComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['account', 'trailText']
+        }),
+        MockComponent({
+          selector: 'ish-account-page',
+          template: 'Account Page Component',
+          inputs: ['customer']
+        })
       ],
       providers: [
-        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
         { provide: Store, useFactory: () => instance(mock(Store)) },
       ],
       imports: [
@@ -31,7 +35,7 @@ describe('Account Overview Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountPageComponent);
+    fixture = TestBed.createComponent(AccountPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
