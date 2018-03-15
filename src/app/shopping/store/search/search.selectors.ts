@@ -21,3 +21,8 @@ export const getSearchProducts = createSelector(
   getProductEntities,
   (searchState, productsEntities) => searchState.skus.map(sku => productsEntities[sku])
 );
+
+export const getSuggestSearchResults = createSelector(
+  getSearchState,
+  state => state.suggestSearchResults
+);

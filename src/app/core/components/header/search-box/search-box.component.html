@@ -1,21 +1,20 @@
 <!-- NEEDS_WORK: review and adapt -->
-<form role="search" class="search clearfix" name="SearchBox_Header">
-  <input placeholder="{{'search.searchbox.instructional_text' | translate}}"
+<form role="search" class="search clearfix" name="SearchBox_Header" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+  <input [placeholder]="'search.searchbox.instructional_text' | translate"
+         formControlName="search"
          autocomplete="off"
          name="SearchTerm"
          type="text"
          class="form-control searchTerm"
-         (keyup)="search($event.target.value); "
-         value="{{ searchTerm }}"
-         (click)="hidePopup()"
-         (blur)="isHide=true"
-  >
+         (focus)="hidePopup()"
+         (blur)="hidePopup()"
+         (keydown.esc)="hidePopup()">
+
   <button class="btn-search btn btn-primary"
           type="submit"
           name="search"
-          title="{{'search.searchbox.button.title' | translate}}"
-          (click)="onSubmit($event.target.parentElement.children['SearchTerm'].value)"
-          >
+          [title]="'search.searchbox.button.title' | translate">
+
   <!-- search button with icon -->
     <ng-template [ngIf]="!searchButtonText" [ngIfElse]="textBlock">
       <span class="glyphicon glyphicon-search"></span>
@@ -27,7 +26,7 @@
     </ng-template>
   </button>
 
-  <ul *ngIf="results" class="search-suggest-results" [ngStyle]="{'display' : isHide ? 'none' : 'block'}">
+  <ul *ngIf="results && !isHide" class="search-suggest-results">
     <li *ngFor="let result of results | slice:0:9">
       <button type="button" class="search-result">
         <span class="searchTerm">{{ result.term }}</span>

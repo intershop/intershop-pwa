@@ -1,15 +1,18 @@
+import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { SearchAction, SearchActionTypes } from './search.actions';
 
 export interface SearchState {
   searchTerm: string;
   skus: string[];
   searchLoading: boolean;
+  suggestSearchResults: SuggestTerm[];
 }
 
 export const initialState: SearchState = {
   searchTerm: undefined,
   skus: [],
-  searchLoading: false
+  searchLoading: false,
+  suggestSearchResults: [],
 };
 
 export function searchReducer(
@@ -30,6 +33,11 @@ export function searchReducer(
       const searchLoading = false;
 
       return { ...state, skus, searchLoading };
+    }
+
+    case SearchActionTypes.SuggestSearchSuccess: {
+      const suggestSearchResults = action.payload;
+      return { ...state, suggestSearchResults };
     }
 
   }
