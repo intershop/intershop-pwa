@@ -11,4 +11,4 @@ import { AccountNavigationComponent } from './components/account-navigation/acco
   declarations: [AccountNavigationComponent],
   exports: [AccountNavigationComponent]
 })
-export class AccountShareModule { }
+export class AccountSharedModule { }
