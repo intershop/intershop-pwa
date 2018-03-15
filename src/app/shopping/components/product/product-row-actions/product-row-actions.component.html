@@ -1,12 +1,8 @@
 <div class="product-list-actions-container">
   <div class="addtocart-container">
-    <div class="add-to-cart">
-      <button class="btn btn-primary" data-testing-id="addToCartButton"
-        title="{{ 'product.add_to_cart.link' | translate }}" 
-        (click)="addToCart()"
-      >
-        {{ 'product.add_to_cart.link' | translate }}
-      </button>
-    </div>
+    <ish-product-add-to-cart
+      [product]="product"
+      (productToCart)="addToCart()"
+    ></ish-product-add-to-cart>
   </div>
 </div>

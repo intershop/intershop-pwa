@@ -14,7 +14,6 @@ import { ShoppingState } from '../../store/shopping.state';
   templateUrl: './product-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductPageContainerComponent implements OnInit {
 
   product$: Observable<Product>;
@@ -43,6 +42,11 @@ export class ProductPageContainerComponent implements OnInit {
 
     // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
     this.categoryPath$ = this.store.pipe(select(getSelectedCategoryPath));
+  }
+
+  addToCart({ sku, quantity }) {
+    console.log('[ProductPageContainer] Add to Cart: SKU: ' + sku + ', Quantity: ' + quantity);
+    // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(sku, quantity));
   }
 
 }

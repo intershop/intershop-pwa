@@ -35,13 +35,22 @@
 
       <ish-product-shipment [product]="product"></ish-product-shipment>
 
-      <!-- product form start -->
+      <form [formGroup]="productDetailForm" class="product-form form-horizontal">
 
-        <!-- add product quantity component here -->
+        <ish-product-quantity
+          [product]="product"
+          [parentForm]="productDetailForm"
+          [controlName]="quantityControlName"
+        ></ish-product-quantity>
 
-        <!-- add to cart button here -->
+        <ish-product-add-to-cart
+          [product]="product"
+          [disabled]="!productDetailForm.valid"
+          (productToCart)="addToCart()"
+          class="btn-lg btn-block"
+        ></ish-product-add-to-cart>
 
-      <!-- product form end -->
+      </form>
 
     </div>
 

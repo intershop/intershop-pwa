@@ -1,0 +1,22 @@
+<div *ngIf="product.inStock && product.availability" class="add-to-cart">
+
+  <button type="submit" name="addProduct" class="btn"
+    [ngClass]="class"
+    [class.btn-primary]="!isDisplayTypeGlyphicon"
+    [disabled]="disabled"
+    [attr.title]="'product.add_to_cart.link' | translate"
+    data-testing-id="addToCartButton"
+    (click)="addToCart()"
+  >
+
+    <ng-template [ngIf]="isDisplayTypeGlyphicon" [ngIfElse]="defaultButton">
+      <span class="glyphicon glyphicon-shopping-cart"></span>
+    </ng-template>
+
+    <ng-template #defaultButton>
+      {{'product.add_to_cart.link' | translate}}
+    </ng-template>
+
+  </button>
+
+</div>

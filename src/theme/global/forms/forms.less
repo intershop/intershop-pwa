@@ -8,7 +8,7 @@
 		padding: @padding-base-vertical @padding-base-horizontal;
 	}
 	
-	.form-control[type="number"] + .form-control-feedback {
+	.form-control[type="number"] + * .form-control-feedback {
 		display: none !important;
 	}
 	
@@ -22,10 +22,7 @@
 }
 
 .form-horizontal {
-	.has-feedback .form-control[type="number"] + .form-control-feedback {
-		display: none !important;
-	}
-	
+		
 	&.form-horizontal-inline {
 		@media (max-width:@screen-xs-max) { 
 			label {
