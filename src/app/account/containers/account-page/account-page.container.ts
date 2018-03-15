@@ -6,11 +6,11 @@ import { getLoggedInUser } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
 
 @Component({
-  templateUrl: './account-page.component.html',
+  templateUrl: './account-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class AccountPageComponent implements OnInit {
+export class AccountPageContainerComponent implements OnInit {
 
   customer$: Observable<Customer>;
 
