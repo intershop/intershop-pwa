@@ -8,6 +8,7 @@ import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anyString, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
+import { SuggestService } from '../../../core/services/suggest/suggest.service';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { SearchService } from '../../services/products/search.service';
 import { ShoppingState } from '../shopping.state';
@@ -21,12 +22,14 @@ describe('SearchEffects', () => {
   let store$: Store<ShoppingState>;
   let apiMock: ApiService;
   let searchServiceMock: SearchService;
+  let suggestServiceMock: SuggestService;
 
   beforeEach(() => {
     apiMock = mock(ApiService);
     actions$ = new Observable<Action>();
 
     searchServiceMock = mock(SearchService);
+    suggestServiceMock = mock(SuggestService);
     when(searchServiceMock.searchForProductSkus(anyString()))
       .thenCall((searchTerm: string) => {
         if (!searchTerm) {
@@ -49,6 +52,7 @@ describe('SearchEffects', () => {
         provideMockActions(() => actions$),
         { provide: ApiService, useFactory: () => instance(apiMock) },
         { provide: SearchService, useFactory: () => instance(searchServiceMock) },
+        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
 
       ],
     });
