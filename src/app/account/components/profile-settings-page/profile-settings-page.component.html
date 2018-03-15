@@ -2,7 +2,7 @@
   <div class="row account-main">
 
     <div class="col-md-3 account-nav-box">
-      <ish-account-navigation selectedItem='PROFILE'></ish-account-navigation>
+      <ish-account-navigation selectedItem="PROFILE"></ish-account-navigation>
     </div>
 
     <div class="col-md-9 user-profile">
@@ -30,7 +30,7 @@
       <!-- Email Template -->
       <div class="row section">
         <div class="col-md-4 pull-right col-xs-2">
-          <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+          <a class="btn-tool" [title]="'account.profile.update.link' | translate">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
         </div>
