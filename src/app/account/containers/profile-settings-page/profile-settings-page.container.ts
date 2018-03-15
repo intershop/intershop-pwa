@@ -6,12 +6,11 @@ import { getLoggedInUser } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
 
 @Component({
-  templateUrl: './profile-settings-page.component.html',
+  templateUrl: './profile-settings-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileSettingsPageComponent implements OnInit {
+export class ProfileSettingsPageContainerComponent implements OnInit {
 
-  showSuccessMessage: string;
   customer$: Observable<Customer>;
 
   constructor(
@@ -21,5 +20,4 @@ export class ProfileSettingsPageComponent implements OnInit {
   ngOnInit() {
     this.customer$ = this.store.pipe(select(getLoggedInUser));
   }
-
 }
