@@ -67,15 +67,8 @@ describe('Product Add To Cart Component', () => {
     expect(element.querySelector('span').className).toContain('glyphicon');
   });
 
-  it('should show disable button when display quantity is not available ', () => {
-    component.quantity = null;
-    component.ngOnChanges();
-    fixture.detectChanges();
-    expect(element.querySelector('button').disabled).toBeTruthy();
-  });
-
-  it('should show disable button when display quantity is not available ', () => {
-    component.quantity = null;
+  it('should show disable button when "disabled" is set to "false" ', () => {
+    component.disabled = true;
     component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
@@ -8,16 +8,18 @@ import { Product } from '../../../../models/product/product.model';
 })
 export class ProductAddToCartComponent implements OnChanges {
   @Input() product: Product;
-  @Input() quantity: number;
+  @Input() disabled = false;
   @Input() displayType?: string;
   @Input() class?: string;
-  isDisplayTypeGlyphicon: boolean;
+  @Output() productToCart = new EventEmitter<any>();
 
-  addToCart() {
-    console.log('sku:' + this.product.sku + ' Quantity:' + this.quantity);
-  }
+  isDisplayTypeGlyphicon = false;
 
   ngOnChanges(): void {
     this.isDisplayTypeGlyphicon = this.displayType === 'glyphicon';
+  }
+
+  addToCart() {
+    this.productToCart.emit();
   }
 }

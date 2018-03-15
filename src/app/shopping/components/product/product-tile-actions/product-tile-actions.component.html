@@ -1,7 +1,10 @@
 <div class="product-tile-actions btn-group">
- <ish-product-add-to-cart class="btn-link" [product]="product"
-     [quantity]="product.minOrderQuantity" displayType = "glyphicon">
-  </ish-product-add-to-cart>
+  <ish-product-add-to-cart
+    [product]="product"
+    displayType="glyphicon"
+    class="btn-link"
+    (productToCart)="addToCart()"
+  ></ish-product-add-to-cart>
   <button
     (click)="toggleCompare()"
     class="btn btn-link add-to-compare"

@@ -37,9 +37,18 @@
 
       <form [formGroup]="productDetailForm" class="product-form form-horizontal">
 
-        <ish-product-quantity [product]="product" [parentForm]="productDetailForm" [controlName]="quantityControlName"></ish-product-quantity>
+        <ish-product-quantity
+          [product]="product"
+          [parentForm]="productDetailForm"
+          [controlName]="quantityControlName"
+        ></ish-product-quantity>
 
-        <ish-product-add-to-cart [product]="product" [quantity]="productDetailForm.valid && productDetailForm.get(quantityControlName)?.value" class="btn-lg btn-block"></ish-product-add-to-cart>
+        <ish-product-add-to-cart
+          [product]="product"
+          [disabled]="!productDetailForm.valid"
+          (productToCart)="addToCart()"
+          class="btn-lg btn-block"
+        ></ish-product-add-to-cart>
 
       </form>
 
