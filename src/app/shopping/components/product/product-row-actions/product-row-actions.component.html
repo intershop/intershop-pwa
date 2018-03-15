@@ -1,5 +1,8 @@
 <div class="product-list-actions-container">
   <div class="addtocart-container">
-    <ish-product-add-to-cart [product]="product" [quantity]="product.minOrderQuantity"></ish-product-add-to-cart>
+    <ish-product-add-to-cart
+      [product]="product"
+      (productToCart)="addToCart()"
+    ></ish-product-add-to-cart>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
@@ -6,7 +6,13 @@ import { Product } from '../../../../models/product/product.model';
   templateUrl: './product-row-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class ProductRowActionsComponent {
+
   @Input() product: Product;
+  @Output() productToCart = new EventEmitter<any>();
+
+  addToCart() {
+    this.productToCart.emit();
+  }
+
 }
