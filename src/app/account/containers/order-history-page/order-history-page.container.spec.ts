@@ -1,26 +1,33 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { OrderHistoryPageComponent } from './order-history-page.component';
+import { OrderHistoryPageContainerComponent } from './order-history-page.container';
 
-describe('Order History Page Component', () => {
-  let component: OrderHistoryPageComponent;
-  let fixture: ComponentFixture<OrderHistoryPageComponent>;
+describe('Order History Page Container', () => {
+  let component: OrderHistoryPageContainerComponent;
+  let fixture: ComponentFixture<OrderHistoryPageContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OrderHistoryPageComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['account', 'trailText'] }),
-        MockComponent({ selector: 'ish-account-navigation', template: 'Account Navigation Component' })
+        OrderHistoryPageContainerComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['account', 'trailText']
+        }),
+        MockComponent({
+          selector: 'ish-order-history-page',
+          template: 'Order History Page Component'
+        })
       ],
       imports: [TranslateModule.forRoot()]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderHistoryPageComponent);
+    fixture = TestBed.createComponent(OrderHistoryPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

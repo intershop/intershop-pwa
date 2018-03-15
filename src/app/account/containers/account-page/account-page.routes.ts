@@ -4,5 +4,5 @@ import { AccountPageContainerComponent } from './account-page.container';
 export const accountPageRoutes: Routes = [
   { path: '', component: AccountPageContainerComponent },
   { path: 'profile', loadChildren: 'app/account/pages/profile-settings-page/profile-settings-page.module#ProfileSettingsPageModule' },
-  { path: 'orders', loadChildren: 'app/account/pages/order-history-page/order-history-page.module#OrderHistoryPageModule' }
+  { path: 'orders', loadChildren: 'app/account/containers/order-history-page/order-history-page.module#OrderHistoryPageModule' }
 ];
