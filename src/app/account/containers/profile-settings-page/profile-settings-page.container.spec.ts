@@ -1,39 +1,40 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { instance, mock } from 'ts-mockito';
-import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { coreReducers } from '../../../core/store/core.system';
 import { LoginUserSuccess } from '../../../core/store/user';
 import { CustomerFactory } from '../../../models/customer/customer.factory';
 import { CustomerData } from '../../../models/customer/customer.interface';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { ProfileSettingsPageComponent } from './profile-settings-page.component';
+import { ProfileSettingsPageContainerComponent } from './profile-settings-page.container';
 
-describe('Profile Settings Page Component', () => {
-  let component: ProfileSettingsPageComponent;
-  let fixture: ComponentFixture<ProfileSettingsPageComponent>;
+describe('Profile Settings Page Container', () => {
+  let component: ProfileSettingsPageContainerComponent;
+  let fixture: ComponentFixture<ProfileSettingsPageContainerComponent>;
   let element: HTMLElement;
-  const accountLoginServiceMock = mock(AccountLoginService);
-  const userData = {
+  const customer = CustomerFactory.fromData({
     'firstName': 'Patricia',
     'lastName': 'Miller',
     'title': '',
     'credentials': {
       'login': ''
     }
-  } as CustomerData;
-  const customer = CustomerFactory.fromData(userData);
+  } as CustomerData);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ProfileSettingsPageComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['account', 'trailText'] }),
-        MockComponent({ selector: 'ish-account-navigation', template: 'Account Navigation Component' })
-      ],
-      providers: [
-        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
+        ProfileSettingsPageContainerComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['account', 'trailText']
+        }),
+        MockComponent({
+          selector: 'ish-profile-settings-page',
+          template: 'Profile Settings Component',
+          inputs: ['customer']
+        })
       ],
       imports: [
         TranslateModule.forRoot(),
@@ -45,7 +46,7 @@ describe('Profile Settings Page Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProfileSettingsPageComponent);
+    fixture = TestBed.createComponent(ProfileSettingsPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

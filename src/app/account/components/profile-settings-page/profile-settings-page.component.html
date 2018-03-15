@@ -1,12 +1,8 @@
-<ish-breadcrumb [account]="true" trailText="{{'account.profile.link' | translate}}"></ish-breadcrumb>
-
-<div class="marketing-area"></div>
-
-<div class="account-wrapper" data-testing-id="profile-settings-page" *ngIf="customer$ | async as customer">
+<div class="account-wrapper" data-testing-id="profile-settings-page">
   <div class="row account-main">
 
     <div class="col-md-3 account-nav-box">
-      <ish-account-navigation selectedItem='PROFILE'></ish-account-navigation>
+      <ish-account-navigation selectedItem="PROFILE"></ish-account-navigation>
     </div>
 
     <div class="col-md-9 user-profile">
@@ -34,7 +30,7 @@
       <!-- Email Template -->
       <div class="row section">
         <div class="col-md-4 pull-right col-xs-2">
-          <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+          <a class="btn-tool" [title]="'account.profile.update.link' | translate">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
         </div>
