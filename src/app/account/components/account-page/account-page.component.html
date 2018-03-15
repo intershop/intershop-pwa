@@ -1,19 +1,13 @@
-<ish-breadcrumb [account]="true" trailText="{{'account.overview.link' | translate}}"></ish-breadcrumb>
-
-<div class="marketing-area"></div>
-
 <div class="account-wrapper" data-testing-id="account-page">
   <div class="row account-main">
 
     <div class="col-md-3 account-nav-box">
-      <ish-account-navigation selectedItem='OVERVIEW'></ish-account-navigation>
+      <ish-account-navigation selectedItem="OVERVIEW"></ish-account-navigation>
     </div>
 
     <div class="col-md-9">
 
-      <div class="marketing-area"></div>
-
-      <h1 *ngIf="customer$ | async as customer" [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (customer.firstName || customer.credentials.login)}"></h1>
+      <h1 [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (customer.firstName || customer.credentials.login)}"></h1>
       <p>{{'account.overview.message.text' | translate}}</p>
 
       <div class="row account-dashboard">
