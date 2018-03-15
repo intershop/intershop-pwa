@@ -11,7 +11,7 @@ describe('Product Row Actions Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         ProductRowActionsContainerComponent,
-        MockComponent({ selector: 'ish-product-row-actions', template: 'Product Row Actions Component' }),
+        MockComponent({ selector: 'ish-product-row-actions', template: 'Product Row Actions Component', inputs: ['product'] }),
       ]
     }).compileComponents();
   }));

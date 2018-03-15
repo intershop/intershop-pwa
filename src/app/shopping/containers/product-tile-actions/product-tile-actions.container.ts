@@ -10,7 +10,6 @@ import { ShoppingState } from '../../store/shopping.state';
   templateUrl: './product-tile-actions.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductTileActionsContainerComponent implements OnInit {
 
   @Input() product: Product;
@@ -31,7 +30,8 @@ export class ProductTileActionsContainerComponent implements OnInit {
   }
 
   addToCart() {
-    console.log('[ProductTileActionsContainer] Add ' + this.product.name + ' to Cart');
+    console.log('[ProductTileActionsContainer] Add to Cart: SKU: ' + this.product.sku + ', Quantity: ' + this.product.minOrderQuantity);
+    // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(this.product.sku, this.product.minOrderQuantity));
   }
 
 }
