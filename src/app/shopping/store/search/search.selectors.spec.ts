@@ -19,7 +19,8 @@ describe('Search Selectors', () => {
   const state: SearchState = {
     searchTerm: 'a',
     skus: ['9780321934161', '0818279012576'],
-    searchLoading: false
+    searchLoading: false,
+    suggestSearchResults: []
   };
 
   beforeEach(() => {

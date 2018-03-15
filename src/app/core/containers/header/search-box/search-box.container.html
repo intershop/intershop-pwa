@@ -2,6 +2,6 @@
   [results]="searchResults$ | async"
   [searchButtonText]=""
   [searchTerm]="previousSearchTerm$ | async"
-  (searchTermChange)="search($event)"
+  (searchTermChange)="suggestSearch($event)"
   (performSearch)="performSearch($event)"
 ></ish-search-box>
