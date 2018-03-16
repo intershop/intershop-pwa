@@ -11,6 +11,7 @@ export class ProductDetailComponent implements OnInit {
 
   @Input() product: Product;
   @Output() productToCart = new EventEmitter<{ sku: string, quantity: number }>();
+  @Output() productToCompare = new EventEmitter<string>();
 
   productDetailForm: FormGroup;
   readonly quantityControlName = 'quantity';
@@ -28,5 +29,9 @@ export class ProductDetailComponent implements OnInit {
         quantity: this.productDetailForm.get(this.quantityControlName).value
       }
     );
+  }
+
+  addToCompare() {
+    this.productToCompare.emit(this.product.sku);
   }
 }

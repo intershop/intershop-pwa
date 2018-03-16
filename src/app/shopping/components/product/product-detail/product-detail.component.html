@@ -1,5 +1,7 @@
-<!-- add product details actions component here -->
-<ish-product-detail-actions-container [product]="product"></ish-product-detail-actions-container>
+<ish-product-detail-actions
+  [product]="product"
+  (productToCompare)="addToCompare()"
+></ish-product-detail-actions>
 
 <div class="row product-details">
 
