@@ -1,11 +1,13 @@
 <h1>{{'account.register.heading' | translate}}</h1>
 <p>{{'account.register.message' | translate}}</p>
 
-<!--
-TODO: get errors through property binding
-<div *ngIf="userCreateError$ | async as error" role="alert" class="alert alert-danger">
-  {{ error | json }}
-</div>-->
+<div *ngIf="error as error" role="alert" class="alert alert-danger">
+  <ng-container [ngSwitch]="error.status">
+    <span *ngSwitchCase="'401'">{{'captcha.incorrect' | translate}}</span>
+    <span *ngSwitchCase="'409'">{{'account.email.already_exist.error' | translate}}</span>
+    <span *ngSwitchDefault>{{error.error}}</span>
+  </ng-container>
+</div>
 
 <div class="section" data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
@@ -22,7 +24,6 @@ TODO: get errors through property binding
         </div>
       </div>
     </div>
-
 
     <h2>{{'account.register.address.headding' | translate}}</h2>
     <div class="section">
