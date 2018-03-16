@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
@@ -21,6 +22,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   @Input() regions: Region[];
   @Input() languages: any[]; // TODO: insert type
   @Input() titles: any[]; // TODO: insert type
+  @Input() error: HttpErrorResponse;
 
   @Output() create = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
