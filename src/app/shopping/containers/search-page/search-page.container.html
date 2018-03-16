@@ -1,0 +1,15 @@
+<ish-breadcrumb [searchTerm]="searchTerm$ | async"></ish-breadcrumb>
+
+<!-- search with products -->
+<ish-search-page
+  [searchTerm]="searchTerm$ | async"
+  [products]="products$ | async"
+  [totalItems]="totalItems$ | async"
+  [viewType]="viewType$ | async"
+  [sortBy]="sortBy$ | async"
+  [sortKeys]="sortKeys$ | async"
+  (viewTypeChange)="changeViewType($event)"
+  (sortByChange)="changeSortBy($event)"
+></ish-search-page>
+
+<ish-loading *ngIf="searchLoading$ | async"></ish-loading>

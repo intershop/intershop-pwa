@@ -26,4 +26,17 @@ describe('BreadCrumb Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
+  it('should render search term when available', () => {
+    component.searchTerm = 'Test Search Term';
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=breadcrumb-search-term]')).toBeTruthy();
+    expect(element.querySelector('[data-testing-id=breadcrumb-search-term]').textContent).toContain(component.searchTerm);
+  });
+
+  it('should not render search term when not available', () => {
+    component.searchTerm = null;
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id=breadcrumb-search-term]')).toBeFalsy();
+  });
 });

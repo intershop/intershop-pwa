@@ -6,7 +6,8 @@ const routes: Routes = [
   { path: 'error', loadChildren: 'app/shopping/containers/error-page/error-page.module#ErrorPageModule' },
   { path: 'product', loadChildren: 'app/shopping/containers/product-page/product-page.module#ProductPageModule' },
   { path: 'category', loadChildren: 'app/shopping/containers/category-page/category-page.module#CategoryPageModule' },
-  { path: 'compare', loadChildren: 'app/shopping/containers/compare-page/compare-page.module#ComparePageModule' }
+  { path: 'compare', loadChildren: 'app/shopping/containers/compare-page/compare-page.module#ComparePageModule' },
+  { path: 'search', loadChildren: 'app/shopping/containers/search-page/search-page.module#SearchPageModule' }
 ];
 
 @NgModule({
