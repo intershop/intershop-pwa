@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
-import { SuggestService } from '../../../services/suggest/suggest.service';
+import { DoSuggestSearch, getSearchTerm, getSuggestSearchResults } from '../../../../shopping/store/search';
+import { ShoppingState } from '../../../../shopping/store/shopping.state';
 
 @Component({
   selector: 'ish-search-box-container',
@@ -12,18 +14,26 @@ import { SuggestService } from '../../../services/suggest/suggest.service';
 export class SearchBoxContainerComponent implements OnInit {
 
   searchResults$: Observable<SuggestTerm[]>;
-
-  private searchTerm$ = new Subject<string>();
+  previousSearchTerm$: Observable<string>;
 
   constructor(
-    private suggestService: SuggestService
+    private store: Store<ShoppingState>,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.searchResults$ = this.suggestService.search(this.searchTerm$);
+    this.searchResults$ = this.store.pipe(select(getSuggestSearchResults));
+    this.previousSearchTerm$ = this.store.pipe(select(getSearchTerm));
   }
 
-  search(term: string) {
-    this.searchTerm$.next(term);
+  suggestSearch(term: string) {
+    this.store.dispatch(new DoSuggestSearch(term));
+  }
+
+  performSearch(searchTerm: string) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: { 'SearchTerm': searchTerm }
+    };
+    this.router.navigate(['/search'], navigationExtras);
   }
 }

@@ -1,5 +1,7 @@
 <ish-search-box
   [results]="searchResults$ | async"
   [searchButtonText]=""
-  (searchTermChange)="search($event)"
+  [searchTerm]="previousSearchTerm$ | async"
+  (searchTermChange)="suggestSearch($event)"
+  (performSearch)="performSearch($event)"
 ></ish-search-box>
