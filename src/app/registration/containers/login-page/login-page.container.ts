@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { AccountLogin } from '../../../core/services/account-login/account-login.model';
 import { CoreState } from '../../../core/store/core.state';
-import { getLoginError, getUserAuthorized, LoginUser } from '../../../core/store/user';
+import { getUserAuthorized, getUserError, LoginUser } from '../../../core/store/user';
 
 @Component({
   templateUrl: './login-page.container.html',
@@ -29,7 +29,7 @@ export class LoginPageContainerComponent implements OnInit {
    */
   ngOnInit() {
     this.isLoggedIn$ = this.store.pipe(select(getUserAuthorized));
-    this.loginError$ = this.store.pipe(select(getLoginError));
+    this.loginError$ = this.store.pipe(select(getUserError));
   }
 
   loginUser(userCredentials: AccountLogin) {

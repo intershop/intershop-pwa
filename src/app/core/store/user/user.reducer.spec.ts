@@ -1,3 +1,4 @@
+import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { Customer } from '../../../models/customer/customer.model';
 import { LoginUser, LoginUserFail, LoginUserSuccess, LogoutUser } from './user.actions';
 import { initialState, userReducer } from './user.reducer';
@@ -48,11 +49,14 @@ describe('User Reducer', () => {
       expect(newState).toEqual(initialState);
     });
 
-    it('should set error when LoginUserFail action is reduced', () => {
+    it('should set error when LoginUserFail action is reduced and error is resetted after route changed', () => {
       const error = { message: 'error' } as any;
-      const newState = userReducer(initialState, new LoginUserFail(error));
+      let newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });
+
+      newState = userReducer(newState, { type: ROUTER_NAVIGATION });
+      expect(newState.error).toBeUndefined();
     });
 
     it('should set error when CreateUserFail action is reduced', () => {

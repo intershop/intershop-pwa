@@ -68,7 +68,7 @@ export class UserEffects {
   }
 
   dispatchCreation(error): Action {
-    if (error.status >= 400 && error.status <= 403) {
+    if (error.status >= 400 && error.status <= 409) {
       return new userActions.CreateUserFail(error);
     }
     return new errorActions.GeneralError(error);

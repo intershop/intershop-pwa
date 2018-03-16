@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { Action } from '@ngrx/store';
 import { Customer } from '../../../models/customer/customer.model';
-import { UserAction, UserActionTypes } from './user.actions';
+import { CreateUserFail, LoginUserFail, LoginUserSuccess, UserActionTypes } from './user.actions';
 
 export interface UserState {
   customer: Customer;
@@ -20,9 +22,16 @@ export const initialState: UserState = {
 
 export function userReducer(
   state = initialState,
-  action: UserAction
+  action: Action
 ): UserState {
   switch (action.type) {
+
+    case ROUTER_NAVIGATION: {
+      return {
+        ...state,
+        error: undefined
+      };
+    }
 
     case UserActionTypes.LoginUser: {
       return initialState;
@@ -31,7 +40,7 @@ export function userReducer(
     case UserActionTypes.LoginUserFail: {
       return {
         ...initialState,
-        error: action.payload
+        error: (action as LoginUserFail).payload
       };
     }
 
@@ -39,7 +48,7 @@ export function userReducer(
       return {
         ...initialState,
         authorized: true,
-        customer: action.payload
+        customer: (action as LoginUserSuccess).payload
       };
     }
 
@@ -50,7 +59,7 @@ export function userReducer(
     case UserActionTypes.CreateUserFail: {
       return {
         ...state,
-        error: action.payload
+        error: (action as CreateUserFail).payload
       };
     }
   }
