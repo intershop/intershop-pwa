@@ -4,7 +4,11 @@
 
     <ish-breadcrumb [product]="product" [category]="category$ | async" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
-    <ish-product-detail [product]="product" (productToCart)="addToCart($event)"></ish-product-detail>
+    <ish-product-detail
+      [product]="product"
+      (productToCart)="addToCart($event)"
+      (productToCompare)="addToCompare($event)"
+    ></ish-product-detail>
 
   </ng-container>
 

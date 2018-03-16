@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { getSelectedCategory, getSelectedCategoryPath } from '../../store/categories';
+import { AddToCompare } from '../../store/compare';
 import { getProductLoading, getSelectedProduct } from '../../store/products';
 import { ShoppingState } from '../../store/shopping.state';
 
@@ -47,6 +48,10 @@ export class ProductPageContainerComponent implements OnInit {
   addToCart({ sku, quantity }) {
     console.log('[ProductPageContainer] Add to Cart: SKU: ' + sku + ', Quantity: ' + quantity);
     // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(sku, quantity));
+  }
+
+  addToCompare(sku) {
+    this.store.dispatch(new AddToCompare(sku));
   }
 
 }
