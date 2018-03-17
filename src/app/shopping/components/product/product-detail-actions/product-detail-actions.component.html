@@ -1,0 +1,31 @@
+<div class="row product-details-top-line">
+  <div class="col-md-12 pull-right">
+    <ul class="share-tools pull-right">
+
+      <li>
+        <a href="mailto:
+          ?subject={{ 'email.recommended_product.heading' | translate:{'0': channelName } }}
+          &body={{ 'email.recommended_product.text' | translate:{'0': product.name + '%0A', '1': currentUrl} }}"
+        >
+          <span class="glyphicon glyphicon-send"></span>
+          <span class="share-label">{{ 'product.email_a_friend.link' | translate }}</span>
+        </a>
+      </li>
+
+      <li class="hidden-xs">
+        <a href="javascript:window.print();" class="link-print" rel="nofollow">
+          <span class="glyphicon glyphicon-print"></span>
+          <span class="share-label">{{ 'product.print_page.link' | translate }}</span>
+        </a>
+      </li>
+
+      <li *ngIf="!product.productMaster" class="hidden-xs">
+        <a routerLink="/compare" (click)="addToCompare()" rel="nofollow" [attr.data-testing-id]="'compare-' + product.sku" >
+          <span class="glyphicon glyphicon-equalizer"></span>
+          <span class="share-label">{{ 'product.compare.link' | translate }}</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</div>

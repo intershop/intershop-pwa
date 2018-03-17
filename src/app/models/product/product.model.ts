@@ -17,6 +17,7 @@ export class Product {
   manufacturer: string;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
+  productMaster: boolean;
 
   /**
     * Constructor
