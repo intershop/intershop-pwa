@@ -43,17 +43,18 @@
                 <dd data-testing-id="email-field">
                   {{customer.email}}
                 </dd>
+                <!-- TODO: implement logic (extend REST response) to present email subscriptions
                 <dt>{{'account.profile.order_confirmation_subscription.text' | translate}}</dt>
                 <dd>
-                  <!-- TODO: implement logic (extend REST response) to present email subscriptions
+
                     <isif condition="#Preferences:OrderConfirmationEmails#">
                       {{'account.profile.order_confirmation_email.text' | translate}}&nbsp;
                     </isif>
                     <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#">
                       {{'account.profile.newsletter.text' | translate}}
                     </isif>
-                  -->
                 </dd>
+                -->
               </dl>
             </div>
           </div>
@@ -124,6 +125,7 @@
       </div>
 
       <!-- Newsletter Template -->
+      <!-- TODO: Newsletter configuration currently not available via REST API, need to get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif>
       <div class="row section">
         <div class="col-md-4 pull-right col-xs-2">
           <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
@@ -137,13 +139,14 @@
               <dl class="dl-horizontal dl-separator">
                 <dt>{{'account.newsletter.label' | translate}}</dt>
                 <dd>
-                  <!-- TODO: get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif> -->
+
                 </dd>
               </dl>
             </div>
           </div>
         </div>
       </div>
+      -->
 
       <!-- Note -->
       <p class="help-block">{{'account.overview.note.heading' | translate}}: <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span></p>
