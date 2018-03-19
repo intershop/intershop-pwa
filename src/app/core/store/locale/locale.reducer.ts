@@ -10,7 +10,7 @@ export const adapter: EntityAdapter<Locale> = createEntityAdapter<Locale>({
   selectId: l => l.lang
 });
 
-export const getCurrent = (state: LocaleState) => (state.entities && state.current) ? state.entities[state.current] : null;
+export const getCurrent = (state: LocaleState) => (state && state.entities && state.current) ? state.entities[state.current] : null;
 
 export const {
   selectAll: getAvailable
