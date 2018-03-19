@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import { catchError, concatMap, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { CoreState } from '../../../core/store/countries';
+import { getCurrentLocale } from '../../../core/store/locale';
 import { ProductsService } from '../../services/products/products.service';
 import * as categoriesActions from '../categories/categories.actions';
 import { ShoppingState } from '../shopping.state';
@@ -14,7 +16,7 @@ import * as productsSelectors from './products.selectors';
 export class ProductsEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState>,
+    private store: Store<ShoppingState | CoreState>,
     private productsService: ProductsService
   ) { }
 
@@ -48,5 +50,15 @@ export class ProductsEffects {
     select(productsSelectors.getSelectedProductId),
     filter(id => !!id),
     map(id => new productsActions.LoadProduct(id)),
+  );
+
+  @Effect()
+  languageChange$ = this.store.pipe(
+    select(getCurrentLocale),
+    filter(x => !!x),
+    distinctUntilChanged(),
+    withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
+    filter(([locale, sku]) => !!sku),
+    map(([locale, sku]) => new productsActions.LoadProduct(sku)),
   );
 }

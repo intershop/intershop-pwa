@@ -7,6 +7,10 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
+import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
+import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
+import { localeReducer } from '../../../core/store/locale/locale.reducer';
+import { Locale } from '../../../models/locale/locale.interface';
 import { Product } from '../../../models/product/product.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { ProductsService } from '../../services/products/products.service';
@@ -22,6 +26,7 @@ describe('ProductsEffects', () => {
   let effects: ProductsEffects;
   let store$: Store<ShoppingState>;
   let productsServiceMock: ProductsService;
+  let DE_DE: Locale;
 
   beforeEach(() => {
     productsServiceMock = mock(ProductsService);
@@ -45,7 +50,8 @@ describe('ProductsEffects', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer
+          routerReducer,
+          locale: localeReducer,
         }),
       ],
       providers: [
@@ -57,6 +63,10 @@ describe('ProductsEffects', () => {
 
     effects = TestBed.get(ProductsEffects);
     store$ = TestBed.get(Store);
+
+    const locales: Locale[] = TestBed.get(AVAILABLE_LOCALES);
+    store$.dispatch(new SetAvailableLocales(locales));
+    DE_DE = locales.find(v => v.lang.startsWith('de'));
   });
 
   describe('loadProduct$', () => {
@@ -137,6 +147,27 @@ describe('ProductsEffects', () => {
       };
 
       expect(effects.selectedProduct$).toBeObservable(cold('a', expectedValues));
+    });
+  });
+
+  describe('languageChange$', () => {
+    it('should refetch product when language is changed', () => {
+      const sku = 'P123';
+      const categoryUniqueId = '123';
+
+      // select product
+      const routerAction = navigateMockAction({
+        url: `/category/${categoryUniqueId}/product/${sku}`,
+        params: { categoryUniqueId, sku }
+      });
+      store$.dispatch(routerAction);
+      store$.dispatch(new SelectLocale(DE_DE));
+
+      const expectedValues = {
+        a: new fromActions.LoadProduct(sku)
+      };
+
+      expect(effects.languageChange$).toBeObservable(cold('a', expectedValues));
     });
   });
 });
