@@ -4,17 +4,9 @@
   <div class="footer-top">
     <div class="container">
       <div class="row">
-        <div class="col-md-4 storefinder clearfix">
-          <span class="glyphicon glyphicon-map-marker"></span>
-          <h4>Stores</h4>
-          <a routerLink="/error">Find a nearby Store</a>
+        <div class="col-md-4 clearfix">
         </div>
-        <div class="col-md-4 newsletter clearfix">
-          <h4>SIGN UP FOR OUR NEWSLETTER</h4>
-          <form class="newsletter-form" name="EmailSignupForm" action="javascript:void(0)" method="post">
-            <input class="newsletter-email-field" placeholder="Enter your email" id="newsletter_email" name="EmailSignupForm_Email" type="text">
-            <button title="Sign up" id="signup_button" name="signup" type="submit" (click)="addDUMMYModal.show()">SIGN UP</button>
-          </form>
+        <div class="col-md-4 clearfix">
         </div>
         <div class="social-links clearfix">
           <h4><strong>CONNECT</strong> WITH US</h4>
@@ -100,11 +92,11 @@
           <div id="GroupTopCat" class="mobile-collapse link-group" collapse #GroupTopCat="bs-collapse">
             <ul>
               <li><a routerLink="/category/Cameras-Camcorders.832">Action Cameras</a></li>
-              <li><a href="">TVs and Projectors</a></li>
-              <li><a href="">Monitors</a></li>
-              <li><a href="">Home Cinema Systems</a></li>
-              <li><a href="">Tablets</a></li>
-              <li><a href="">Notebooks</a></li>
+              <li><a routerLink="/category/Home-Entertainment.220">TVs and Projectors</a></li>
+              <li><a routerLink="/category/Computers.3001">Monitors</a></li>
+              <li><a routerLink="/category/Home-Entertainment.1058.1082">Home Cinema Systems</a></li>
+              <li><a routerLink="/category/Computers.897">Tablets</a></li>
+              <li><a routerLink="/category/Computers.1835.151">Notebooks</a></li>
             </ul>
           </div>
         </div>
@@ -115,11 +107,11 @@
           <h4 class="hidden-xs">TOP PRODUCTS</h4>
           <div id="GroupTopProd" class="mobile-collapse link-group" collapse #GroupTopProd="bs-collapse">
             <ul>
-              <li><a routerLink="/product/8182790134362">GoPro Hero 4 Silver</a></li>
+              <li><a routerLink="/category/Cameras-Camcorders.832/product/8182790134362">GoPro Hero 4 Silver</a></li>
               <li><a routerLink="/category/Home-Entertainment.220.1584/product/8806086011815">Samsung Full HD 3D Smart TV</a></li>
-              <li><a href="">Canon LEGRIA HF R16</a></li>
-              <li><a href="">Samsung Galaxy NotePRO 4G </a></li>
-              <li><a href="">Wrist Rest Fellowes</a></li>
+              <li><a routerLink="/product/3953312">Canon LEGRIA HF R16</a></li>
+              <li><a routerLink="/product/8806086070188">Samsung Galaxy NotePRO 4G </a></li>
+              <li><a routerLink="/product/689796">Wrist Rest Fellowes</a></li>
             </ul>
           </div>
         </div>
@@ -132,12 +124,15 @@
             <ul>
               <li><a href="" title="Demo Content provided by Icecat" class="cms-footer-longLinks">Icecat Content</a></li>
               <li><a href="" title="Demo Content Disclaimer">Demo Disclaimer</a></li>
+              <li><a (click)="addDUMMYModal.show()" title="Open Modal">Modal</a></li>
+              <li><a routerLink="/error" title="Error Page">Error</a></li>
+              <li><a routerLink="/" title="Root Route">Root</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="row text-center">
-        <p class="copyright">© 2017 INTERSHOP Communications AG. All rights reserved.</p>
+        <p class="copyright">© 2018 INTERSHOP Communications AG. All rights reserved.</p>
       </div>
     </div>
   </div>
