@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
-import { Product } from '../../../../models/product/product.model';
+import { Product, ProductType } from '../../../../models/product/product.model';
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
 describe('Product Detail Actions Component', () => {
@@ -34,7 +34,7 @@ describe('Product Detail Actions Component', () => {
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.availability = true;
     element = fixture.nativeElement;
     component.product = product;
@@ -63,7 +63,7 @@ describe('Product Detail Actions Component', () => {
     });
 
     it('should not show "compare" link when product inforamtion is available and productMaster = true', () => {
-      component.product.productMaster = true;
+      component.product.type = ProductType.VariationProductMaster;
       fixture.detectChanges();
       expect(element.querySelector('a[data-testing-id=\'compare-sku\']')).toBeFalsy();
     });

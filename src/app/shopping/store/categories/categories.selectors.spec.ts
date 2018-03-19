@@ -29,7 +29,7 @@ describe('Categories Selectors', () => {
   let prod: Product;
 
   beforeEach(() => {
-    prod = new Product('sku');
+    prod = { sku: 'sku' } as Product;
     cat = { id: 'a', uniqueId: 'Aa' } as Category;
     cat.hasOnlineProducts = true;
     cat.productSkus = [prod.sku];

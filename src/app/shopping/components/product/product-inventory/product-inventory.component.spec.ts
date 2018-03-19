@@ -28,7 +28,7 @@ describe('Product Inventory Component', () => {
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     element = fixture.nativeElement;
     component.product = product;
   });

@@ -28,7 +28,7 @@ describe('Product Tile Actions Container', () => {
     fixture = TestBed.createComponent(ProductTileActionsContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = new Product('SKU');
+    component.product = { sku: 'sku' } as Product;
   });
 
   it('should be created', () => {
