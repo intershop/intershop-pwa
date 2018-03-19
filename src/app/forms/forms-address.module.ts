@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { AddressFormService } from './address-form/address-form.service';
-import { components, factoryProviders } from './address-form/forms';
+import { components, factoryProviders } from './address/components';
+import { AddressFormService } from './address/services/address-form.service';
 
 import { SharedModule } from '../shared/shared.module';
 import { FormsSharedModule } from './forms-shared.module';
@@ -14,4 +13,4 @@ import { FormsSharedModule } from './forms-shared.module';
   exports: [...components, FormsSharedModule],
   providers: [AddressFormService, ...factoryProviders]
 })
-export class AddressFormModule { }
+export class FormsAddressModule { }

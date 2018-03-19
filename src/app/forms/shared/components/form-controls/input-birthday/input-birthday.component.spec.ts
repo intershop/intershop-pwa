@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { FormsSharedModule } from '../../../forms-shared.module';
+import { FormsSharedModule } from '../../../../forms-shared.module';
 import { InputBirthdayComponent } from './input-birthday.component';
 
 describe('Input Birthday Component', () => {
