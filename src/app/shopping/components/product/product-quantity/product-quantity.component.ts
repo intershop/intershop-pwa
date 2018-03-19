@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { SelectOption } from '../../../../forms/components/form-controls/select';
+import { SpecialValidators } from '../../../../forms/validators/special-validators';
 import { Product } from '../../../../models/product/product.model';
-import { SelectOption } from '../../../../shared/components/form-controls/select';
-import { SpecialValidators } from '../../../../shared/validators/special-validators';
 
 @Component({
   selector: 'ish-product-quantity',
