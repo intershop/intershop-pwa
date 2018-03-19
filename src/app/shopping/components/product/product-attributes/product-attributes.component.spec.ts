@@ -1,4 +1,7 @@
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
+import { AttributeToStringPipe } from '../../../../models/attribute/attribute.pipe';
 import { Product } from '../../../../models/product/product.model';
 import { ProductAttributesComponent } from './product-attributes.component';
 
@@ -14,7 +17,18 @@ describe('Product Attributes Component', () => {
       { name: 'B', type: 'String', value: 'B' },
     ];
     TestBed.configureTestingModule({
-      declarations: [ProductAttributesComponent]
+      imports: [
+        StoreModule.forRoot({})
+      ],
+      declarations: [
+        ProductAttributesComponent,
+        AttributeToStringPipe,
+      ],
+      providers: [
+        CurrencyPipe,
+        DatePipe,
+        DecimalPipe,
+      ]
     }).compileComponents();
   }));
 
@@ -43,5 +57,13 @@ describe('Product Attributes Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
     expect(element.querySelector('.ish-ca-value').textContent).toEqual('A');
+  });
+
+  it('should render product attributes name and multiple value when available', () => {
+    product.attributes = [{ name: 'A', type: 'MultipleString', value: ['hallo', 'welt'] }];
+    component.multipleValuesSeparator = ':::';
+    fixture.detectChanges();
+    expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
+    expect(element.querySelector('.ish-ca-value').textContent).toEqual('hallo:::welt');
   });
 });

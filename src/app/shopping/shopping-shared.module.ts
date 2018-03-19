@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsSharedModule } from '../forms/forms-shared.module';
+import { AttributeToStringPipe } from '../models/attribute/attribute.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
@@ -46,7 +47,8 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductRowActionsComponent,
     ProductQuantityComponent,
     ProductAddToCartComponent,
-    ProductDetailActionsComponent
+    ProductDetailActionsComponent,
+    AttributeToStringPipe,
   ],
   exports: [
     CategoryListComponent,
@@ -67,7 +69,8 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductRowActionsComponent,
     ProductQuantityComponent,
     ProductAddToCartComponent,
-    ProductDetailActionsComponent
+    ProductDetailActionsComponent,
+    AttributeToStringPipe,
   ]
 })
 

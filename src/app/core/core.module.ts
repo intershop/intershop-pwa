@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -52,7 +52,10 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     ErrorCodeMappingService,
     StatePropertiesService,
     CountryService,
-    RegionService
+    RegionService,
+    CurrencyPipe,
+    DatePipe,
+    DecimalPipe,
   ],
   exports: [
     StyleWrapperDirective,

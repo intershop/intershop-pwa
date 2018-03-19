@@ -1,4 +1,7 @@
+import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import localeDe from '@angular/common/locales/de';
+import localeFr from '@angular/common/locales/fr';
 import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
@@ -68,4 +71,10 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
     AppComponent
   ]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor() {
+    registerLocaleData(localeDe);
+    registerLocaleData(localeFr);
+  }
+}
