@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { AddressFormModule } from '../forms/address-form';
+import { FormsAddressModule } from '../forms/forms-address.module';
 import { SharedModule } from '../shared/shared.module';
 import { RegistrationCredentialsFormComponent } from './components/registration-credentials-form/registration-credentials-form.component';
 import { RegistrationFormComponent } from './components/registration-form/registration-form.component';
@@ -14,7 +14,7 @@ const sharedComponents = [
 @NgModule({
   imports: [
     SharedModule,
-    AddressFormModule
+    FormsAddressModule
   ],
   declarations: [
     ...sharedComponents

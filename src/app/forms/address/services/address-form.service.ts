@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { ADDRESS_FORM_FACTORY, AddressFormFactory } from './forms/address-form.factory';
+import { ADDRESS_FORM_FACTORY, AddressFormFactory } from '../components/address-form.factory';
 
 @Injectable()
 export class AddressFormService {

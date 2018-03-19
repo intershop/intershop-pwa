@@ -2,26 +2,26 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { InputComponent } from '../../../components/form-controls/input/input.component';
-import { SelectTitleComponent } from '../../../components/form-controls/select/select-title/select-title.component';
-import { AddressFormDefaultComponent } from './address-form-default.component';
+import { InputComponent } from '../../../shared/components/form-controls/input/input.component';
+import { SelectTitleComponent } from '../../../shared/components/form-controls/select/select-title/select-title.component';
+import { AddressFormUSComponent } from './address-form-us.component';
 
 describe('German Address Component', () => {
-  let component: AddressFormDefaultComponent;
-  let fixture: ComponentFixture<AddressFormDefaultComponent>;
+  let component: AddressFormUSComponent;
+  let fixture: ComponentFixture<AddressFormUSComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [AddressFormDefaultComponent, InputComponent, SelectTitleComponent],
+      declarations: [AddressFormUSComponent, InputComponent, SelectTitleComponent],
       imports: [
         TranslateModule.forRoot()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AddressFormDefaultComponent);
+        fixture = TestBed.createComponent(AddressFormUSComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 
@@ -63,9 +63,14 @@ describe('German Address Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is not rendered');
 
-    component.regions = [{ countryCode: 'BG', regionCode: '02', name: 'Burgas' },
-    { countryCode: 'BG', regionCode: '23', name: 'Sofia' }];
+    component.regions = [{ countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
+    { countryCode: 'US', regionCode: 'FL', name: 'Florida' }];
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is rendered');
+  });
+
+  it('should display an apo/fpo popover link on creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('a[placement]')).toBeTruthy('popover link is shown');
   });
 });

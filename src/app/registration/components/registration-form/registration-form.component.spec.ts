@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { AddressFormFactory, AddressFormService } from '../../../forms/address-form/index';
+import { AddressFormFactory, AddressFormService } from '../../../forms/address/index';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { RegistrationFormComponent } from './registration-form.component';

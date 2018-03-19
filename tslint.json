@@ -287,7 +287,8 @@
           "/utils/dev/",
           ".*.actions.ts$",
           ".*.model.ts$",
-          "src/app/forms/address-form/"
+          "src/app/forms/address/",
+          "src/app/forms/shared/"
         ]
       }
     }
