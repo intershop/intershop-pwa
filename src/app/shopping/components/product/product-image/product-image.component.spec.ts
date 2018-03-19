@@ -11,7 +11,7 @@ describe('Product Image Component', () => {
   let product: Product;
   let translate: TranslateService;
   beforeEach(async(() => {
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.name = 'Lenco';
     product.images = [
       {

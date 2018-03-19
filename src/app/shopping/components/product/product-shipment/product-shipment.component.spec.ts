@@ -32,7 +32,7 @@ describe('Product Shipment Component', () => {
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.availability = true;
     element = fixture.nativeElement;
     component.product = product;

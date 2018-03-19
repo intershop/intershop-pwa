@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Attribute, StringValue } from '../../../../models/attribute/attribute.model';
 import { Product } from '../../../../models/product/product.model';
 import { ProductAttributesComponent } from './product-attributes.component';
 
@@ -9,10 +8,10 @@ describe('Product Attributes Component', () => {
   let element: HTMLElement;
   let product: Product;
   beforeEach(async(() => {
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.attributes = [
-      new Attribute('A', new StringValue('A')),
-      new Attribute('B', new StringValue('B'))
+      { name: 'A', type: 'String', value: 'A' },
+      { name: 'B', type: 'String', value: 'B' },
     ];
     TestBed.configureTestingModule({
       declarations: [ProductAttributesComponent]
@@ -40,7 +39,7 @@ describe('Product Attributes Component', () => {
   });
 
   it('should render product attributes name and value when available', () => {
-    product.attributes = [new Attribute('A', new StringValue('A'))];
+    product.attributes = [{ name: 'A', type: 'String', value: 'A' }];
     fixture.detectChanges();
     expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
     expect(element.querySelector('.ish-ca-value').textContent).toEqual('A');

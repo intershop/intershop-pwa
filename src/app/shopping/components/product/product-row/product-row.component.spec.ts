@@ -30,7 +30,7 @@ describe('Product Row Component', () => {
     fixture = TestBed.createComponent(ProductRowComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = new Product('SKU');
+    component.product = { sku: 'sku' } as Product;
   });
 
   it('should be created', () => {

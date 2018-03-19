@@ -27,7 +27,7 @@ describe('Product Tile Component', () => {
     fixture = TestBed.createComponent(ProductTileComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = new Product('SKU');
+    component.product = { sku: 'sku' } as Product;
   });
 
   it('should be created', () => {
