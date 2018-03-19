@@ -243,7 +243,9 @@
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // enforce specific folder structure for modules
-          "^.*/src/app/\\w+/(components/|containers/|store/|directives/|validators/|services/|interceptors/|guards/|configurations/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
+          "^.*/src/app/\\w+/(components/|containers/|store/|directives/|validators/|services/|interceptors/|guards/|configurations/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$",
+          // forms may have submodules
+          "^.*/src/app/forms/\\w+/(components/||directives/|validators/|services/|interceptors/|guards/|configurations/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
         ],
         "patterns": [
           // root components
@@ -261,6 +263,8 @@
           { "name": "^(.*)Module$", "file": ".*/<kebab>\\.module\\.ts$" },
           { "name": "^(.*Page)Routes$", "file": ".*/containers(/.*|)/<kebab>/<kebab>\\.routes\\.ts$" },
           { "name": "^(routes)$", "file": ".*/.*\\-routing\\.module\\.ts$" },
+          // form specific factories
+          { "name": "^(AddressForm.*)Factory$", "file": ".*src/app/forms/.*/components/<kebab>/<kebab>\\.factory\\.ts$" },
           // factory pattern
           { "name": "^([A-Z].*)Factory$", "file": ".*/models/<kebab>/<kebab>\\.factory\\.ts$" },
           { "name": "^(.*)Data$", "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$" },
@@ -286,9 +290,7 @@
           "/tslint-rules/",
           "/utils/dev/",
           ".*.actions.ts$",
-          ".*.model.ts$",
-          "src/app/forms/address/",
-          "src/app/forms/shared/"
+          ".*.model.ts$"
         ]
       }
     }
