@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { AddressFormDefaultFactory } from './forms/address-form-default/address-form-default.factory';
-import { ADDRESS_FORM_FACTORY } from './forms/address-form.factory';
-
+import { AddressFormDEFactory } from '../components/address-form-de/address-form-de.factory';
+import { AddressFormDefaultFactory } from '../components/address-form-default/address-form-default.factory';
+import { ADDRESS_FORM_FACTORY } from '../components/address-form.factory';
 import { AddressFormService } from './address-form.service';
-import { AddressFormDEFactory } from './forms/address-form-de/address-form-de.factory';
 
-describe('Categories Service', () => {
+describe('Address Form Service', () => {
   let addressFormService: AddressFormService;
 
   beforeEach(() => {

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomFormsModule } from 'ng2-validation';
-import { SharedModule } from '../../../shared/shared.module';
+import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { LoginFormComponent } from './login-form.component';
 
 describe('LoginFormComponent', () => {
@@ -17,7 +17,7 @@ describe('LoginFormComponent', () => {
         LoginFormComponent
       ],
       imports: [
-        SharedModule,
+        FormsSharedModule,
         TranslateModule.forRoot(),
         CustomFormsModule,
         RouterTestingModule,

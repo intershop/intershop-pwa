@@ -2,8 +2,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { InputComponent } from '../../../components/form-controls/input/input.component';
-import { SelectTitleComponent } from '../../../components/form-controls/select/select-title/select-title.component';
+import { InputComponent } from '../../../shared/components/form-controls/input/input.component';
+import { SelectTitleComponent } from '../../../shared/components/form-controls/select/select-title/select-title.component';
 import { AddressFormGBComponent } from './address-form-gb.component';
 
 describe('German Address Component', () => {

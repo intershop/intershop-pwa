@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { SelectOption } from '../../../../forms/shared/components/form-controls/select/select-option.interface';
 import { ViewType } from '../../../../models/types';
-import { SelectOption } from '../../../../shared/components/form-controls/select/select-option.interface';
 
 @Component({
   selector: 'ish-product-list-toolbar',
