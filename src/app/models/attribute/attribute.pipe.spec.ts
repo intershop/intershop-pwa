@@ -7,7 +7,7 @@ import { AVAILABLE_LOCALES } from '../../core/configurations/injection-keys';
 import { coreReducers } from '../../core/store/core.system';
 import { CoreState } from '../../core/store/countries';
 import { SelectLocale, SetAvailableLocales } from '../../core/store/locale';
-import { Locale } from '../locale/locale.interface';
+import { Locale } from '../locale/locale.model';
 import { AttributeToStringPipe } from './attribute.pipe';
 
 describe('Attribute toString Pipe', () => {

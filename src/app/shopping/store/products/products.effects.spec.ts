@@ -10,7 +10,7 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
-import { Locale } from '../../../models/locale/locale.interface';
+import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { ProductsService } from '../../services/products/products.service';

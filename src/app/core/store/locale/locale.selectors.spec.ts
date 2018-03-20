@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Locale } from '../../../models/locale/locale.interface';
+import { Locale } from '../../../models/locale/locale.model';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
