@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
-import { Locale } from '../../../models/locale/locale.interface';
+import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import { coreReducers } from '../core.system';
 import { SelectLocale, SetAvailableLocales } from './locale.actions';

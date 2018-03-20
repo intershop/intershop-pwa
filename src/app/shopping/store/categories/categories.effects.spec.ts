@@ -13,7 +13,7 @@ import { CategoriesService } from '../../../core/services/categories/categories.
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Category } from '../../../models/category/category.model';
-import { Locale } from '../../../models/locale/locale.interface';
+import { Locale } from '../../../models/locale/locale.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';

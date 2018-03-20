@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Locale } from '../../../../models/locale/locale.interface';
+import { Locale } from '../../../../models/locale/locale.model';
 import { CoreState } from '../../../store/core.state';
 import { getAvailableLocales, getCurrentLocale, SelectLocale } from '../../../store/locale';
 
