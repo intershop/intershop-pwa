@@ -9,7 +9,7 @@ import { CoreState } from '../../../core/store/core.state';
 import { getAllCountries } from '../../../core/store/countries/countries.selectors';
 import { CreateUser, getUserError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
-import { CustomerFactory } from '../../../models/customer/customer.factory';
+import { Customer } from '../../../models/customer/customer.model';
 import { Region } from '../../../models/region/region.model';
 
 @Component({
@@ -46,11 +46,8 @@ export class RegistrationPageContainerComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  onCreate(value: any) {
-    const customerData = CustomerFactory.fromFormValueToData(value);
-    if (customerData.birthday === '') { customerData.birthday = null; }   // ToDo see IS-22276
-
-    this.store.dispatch(new CreateUser(customerData));
+  onCreate(customer: Customer) {
+    this.store.dispatch(new CreateUser(customer));
   }
 
   // TODO: this is just a temporary workaround! these information must come from the store (or from a service)

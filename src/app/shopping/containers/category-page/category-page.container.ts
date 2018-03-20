@@ -5,7 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
-import { ViewType } from '../../../models/types';
+import { ViewType } from '../../../models/viewtype/viewtype.types';
 import * as fromStore from '../../store/categories';
 import { ShoppingState } from '../../store/shopping.state';
 import * as fromViewconf from '../../store/viewconf';

@@ -1,7 +1,7 @@
 import { Address } from '../address/address.model';
 import { Credentials } from '../credentials/credentials.model';
 
-export class Customer {
+export interface Customer {
   id: string;
   type: string;
   firstName: string;

@@ -1,4 +1,4 @@
-export class Region {
+export interface Region {
   countryCode: string;
   regionCode: string;
   name: string;

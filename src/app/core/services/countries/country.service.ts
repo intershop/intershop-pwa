@@ -1,27 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { delay, map } from 'rxjs/operators';
-
-import { CountryFactory } from '../../../models/country/country.factory';
-import { CountryData } from '../../../models/country/country.interface';
+import { delay } from 'rxjs/operators';
 import { Country } from '../../../models/country/country.model';
 
 @Injectable()
 export class CountryService {
-  countries$: Observable<CountryData[]>;
+  countries$: Observable<Country[]>;
 
   /*
     ToDo: get Countries via REST, result should be locale dependent
   */
   constructor() {
     this.countries$ = of([
-      { countryCode: 'BG', name: 'Bulgaria' } as CountryData,
-      { countryCode: 'DE', name: 'Germany' } as CountryData,
-      { countryCode: 'FR', name: 'France' } as CountryData,
-      { countryCode: 'IN', name: 'India' } as CountryData,
-      { countryCode: 'GB', name: 'United Kingdom' } as CountryData,
-      { countryCode: 'US', name: 'United States' } as CountryData
+      { countryCode: 'BG', name: 'Bulgaria' },
+      { countryCode: 'DE', name: 'Germany' },
+      { countryCode: 'FR', name: 'France' },
+      { countryCode: 'IN', name: 'India' },
+      { countryCode: 'GB', name: 'United Kingdom' },
+      { countryCode: 'US', name: 'United States' }
     ]).pipe(delay(500));
   }
 
@@ -30,10 +27,6 @@ export class CountryService {
     @returns (Observable<Country[]>)
   */
   getCountries(): Observable<Country[]> {
-    return this.countries$.pipe(
-      map(cds => cds.map(
-        cd => CountryFactory.fromData(cd)
-      ))
-    );
+    return this.countries$;
   }
 }

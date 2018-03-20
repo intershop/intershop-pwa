@@ -2,9 +2,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map, switchMap } from 'rxjs/operators';
-import { CustomerFactory } from '../../../models/customer/customer.factory';
-import { CustomerData } from '../../../models/customer/customer.interface';
+import { switchMap } from 'rxjs/operators';
 import { Customer } from '../../../models/customer/customer.model';
 import { ApiService } from '../../services/api.service';
 import { AccountLogin } from './account-login.model';
@@ -16,7 +14,7 @@ export class AccountLoginService {
     private apiService: ApiService
   ) { }
 
-  private accountLoginFromCustomer(customer: CustomerData): AccountLogin {
+  private accountLoginFromCustomer(customer: Customer): AccountLogin {
     return {
       userName: customer.credentials.login,
       password: customer.credentials.password
@@ -25,13 +23,11 @@ export class AccountLoginService {
 
   signinUser(userDetails: AccountLogin): Observable<Customer> {
     const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
-    return this.apiService.get<CustomerData>('customers/-', null, headers).pipe(
-      map(data => CustomerFactory.fromData(data))
-    );
+    return this.apiService.get<Customer>('customers/-', null, headers);
   }
 
-  createUser(newCustomer: CustomerData): Observable<Customer> {
-    return this.apiService.post<CustomerData>('customers', newCustomer).pipe(
+  createUser(newCustomer: Customer): Observable<Customer> {
+    return this.apiService.post<Customer>('customers', newCustomer).pipe(
       // TODO:see #IS-22750 - user should actually be logged in after registration
       switchMap(() => this.signinUser(this.accountLoginFromCustomer(newCustomer)))
     );

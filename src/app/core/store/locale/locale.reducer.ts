@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Locale } from '../../../models/locale/locale.interface';
+import { Locale } from '../../../models/locale/locale.model';
 import { LocaleAction, LocaleActionTypes, SetAvailableLocales } from './locale.actions';
 
 export interface LocaleState extends EntityState<Locale> {

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { map, tap } from 'rxjs/operators';
-import { Locale } from '../../../models/locale/locale.interface';
+import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import * as fromActions from './locale.actions';
 
