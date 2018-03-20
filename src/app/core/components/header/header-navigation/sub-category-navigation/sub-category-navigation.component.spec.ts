@@ -21,7 +21,7 @@ describe('SubCategory Navigation Component', () => {
     fixture = TestBed.createComponent(SubCategoryNavigationComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.category = new Category('a', 'a', 'a');
+    component.category = {} as Category;
   });
 
   it('should be created', () => {

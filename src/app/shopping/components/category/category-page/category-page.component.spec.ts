@@ -22,7 +22,7 @@ describe('Category Page Component', () => {
     fixture = TestBed.createComponent(CategoryPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.category = new Category('ID', 'Name', 'uniqueID');
+    component.category = {} as Category;
   });
 
   it('should be created', () => {

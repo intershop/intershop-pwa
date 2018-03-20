@@ -29,8 +29,8 @@ describe('Categories Selectors', () => {
   let prod: Product;
 
   beforeEach(() => {
-    prod = new Product('sku');
-    cat = new Category('a', 'dummy', 'Aa');
+    prod = { sku: 'sku' } as Product;
+    cat = { id: 'a', uniqueId: 'Aa' } as Category;
     cat.hasOnlineProducts = true;
     cat.productSkus = [prod.sku];
 

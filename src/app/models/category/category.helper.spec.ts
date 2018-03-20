@@ -1,17 +1,18 @@
 import * as using from 'jasmine-data-provider';
-import { CategoryFactory } from './category.factory';
+import { CategoryHelper } from './category.helper';
 import { CategoryData } from './category.interface';
+import { CategoryMapper } from './category.mapper';
 
-describe('Category', () => {
+describe('Category Helper', () => {
   describe('equals', () => {
 
     function dataProvider() {
-      const emptyCategory = CategoryFactory.fromData({} as CategoryData);
-      const category1 = CategoryFactory.fromData({ id: '1' } as CategoryData);
-      const category2 = CategoryFactory.fromData({ id: '2' } as CategoryData);
-      const category3 = CategoryFactory.fromData({ name: 'dummy', id: '1' } as CategoryData);
-      const category4 = CategoryFactory.fromData({ name: 'other', id: '1' } as CategoryData);
-      const category5 = CategoryFactory.fromData({ name: 'd', id: '0' } as CategoryData);
+      const emptyCategory = CategoryMapper.fromData({} as CategoryData);
+      const category1 = CategoryMapper.fromData({ id: '1' } as CategoryData);
+      const category2 = CategoryMapper.fromData({ id: '2' } as CategoryData);
+      const category3 = CategoryMapper.fromData({ name: 'dummy', id: '1' } as CategoryData);
+      const category4 = CategoryMapper.fromData({ name: 'other', id: '1' } as CategoryData);
+      const category5 = CategoryMapper.fromData({ name: 'd', id: '0' } as CategoryData);
       return [
         { cat1: emptyCategory, cat2: undefined, result: false },
         { cat1: emptyCategory, cat2: null, result: false },
@@ -29,7 +30,7 @@ describe('Category', () => {
 
     using(dataProvider, (slice) => {
       it(`should return ${slice.result} when comparing '${JSON.stringify(slice.cat1)}' and '${JSON.stringify(slice.cat2)}'`, () => {
-        expect(slice.cat1.equals(slice.cat2)).toBe(slice.result);
+        expect(CategoryHelper.equals(slice.cat1, slice.cat2)).toBe(slice.result);
       });
     });
   });

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Product } from '../../../../models/product/product.model';
+import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-images',
@@ -11,6 +11,14 @@ export class ProductImagesComponent {
 
   @Input() product: Product;
 
+  /**
+   * defines a method to be called in the template
+   */
+  getImageViewIDsExcludePrimary = ProductHelper.getImageViewIDsExcludePrimary;
+
+  /**
+   * local variable for index of active image in the thumbnail slide
+   */
   activeSlide = 0;
 
   setActiveSlide(slideIndex: number) {

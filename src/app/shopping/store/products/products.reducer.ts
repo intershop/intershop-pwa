@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { ProductFactory } from '../../../models/product/product.factory';
+import { ProductMapper } from '../../../models/product/product.mapper';
 import { Product } from '../../../models/product/product.model';
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
@@ -42,7 +42,7 @@ export function productsReducer(
       let updatedState;
 
       if (state.entities[sku]) {
-        const updated = ProductFactory.updateImmutably(state.entities[sku], loadedProduct);
+        const updated = ProductMapper.updateImmutably(state.entities[sku], loadedProduct);
         const entities = {
           ...state.entities,
           [sku]: updated

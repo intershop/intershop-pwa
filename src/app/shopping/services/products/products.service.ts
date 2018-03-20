@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
-import { ProductFactory } from '../../../models/product/product.factory';
 import { ProductData } from '../../../models/product/product.interface';
+import { ProductMapper } from '../../../models/product/product.mapper';
 import { Product } from '../../../models/product/product.model';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class ProductsService {
     }
     const params: HttpParams = new HttpParams().set('allImages', 'true');
     return this.apiService.get<ProductData>(this.serviceIdentifier + '/' + productSku, params, null, false, false).pipe(
-      map(productData => ProductFactory.fromData(productData))
+      map(productData => ProductMapper.fromData(productData))
     );
   }
 
@@ -41,7 +41,7 @@ export class ProductsService {
   getProductList(url: string): Observable<Product[]> {
     return this.apiService.get<ProductData[]>(url, null, null, true, true).pipe(
       map(productsData => productsData.map(
-        product => ProductFactory.fromData(product)
+        product => ProductMapper.fromData(product)
       ))
     );
   }

@@ -29,7 +29,7 @@ describe('Product Price Component', () => {
     component = fixture.componentInstance;
     translate.setDefaultLang('en');
     translate.use('en');
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.listPrice = {
       'type': 'ProductPrice',
       'value': 11,
