@@ -13,7 +13,7 @@ import { async } from 'rxjs/scheduler/async';
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AVAILABLE_LOCALES, MUST_MOCK_PATHS, NEED_MOCK, USER_REGISTRATION_LOGIN_TYPE } from './core/configurations/injection-keys';
+import * as injectionKeys from './core/configurations/injection-keys';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { MockInterceptor } from './core/interceptors/mock.interceptor';
@@ -59,15 +59,16 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
     { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
     { provide: ICM_APPLICATION, useFactory: getICMApplication(), deps: [StatePropertiesService] },
     { provide: ICM_SERVER_URL, useFactory: getICMServerURL(), deps: [StatePropertiesService] },
-    { provide: NEED_MOCK, useValue: environment.needMock },
-    { provide: MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
-    { provide: AVAILABLE_LOCALES, useValue: environment.locales },
-    // TODO: get from REST call
-    { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+    { provide: injectionKeys.NEED_MOCK, useValue: environment.needMock },
+    { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
+    { provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: environment.mainNavigationMaxSubCategoriesDepth },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
     { provide: Scheduler, useValue: async },
+    // TODO: get from REST call
+    { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
+    { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
   ],
   bootstrap: [
     AppComponent
