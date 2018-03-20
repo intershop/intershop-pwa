@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { Product } from '../../../models/product/product.model';
-import { ViewType } from '../../../models/types';
+import { ViewType } from '../../../models/viewtype/viewtype.types';
 import { getSearchLoading, getSearchProducts, getSearchTerm } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { ChangeSortBy, ChangeViewType, getSortBy, getSortKeys, getViewType } from '../../store/viewconf';
