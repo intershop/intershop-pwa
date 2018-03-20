@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { Locale } from '../../models/locale/locale.interface';
+import { Locale } from '../../models/locale/locale.model';
 
 export const NEED_MOCK = new InjectionToken<boolean>('needMock');
 export const MUST_MOCK_PATHS = new InjectionToken<string[]>('mustMockPaths');

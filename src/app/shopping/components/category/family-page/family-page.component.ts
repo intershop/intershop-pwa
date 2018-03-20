@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Category } from '../../../../models/category/category.model';
 import { Product } from '../../../../models/product/product.model';
-import { ViewType } from '../../../../models/types';
+import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-family-page',

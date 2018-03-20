@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import { catchError, flatMap, map } from 'rxjs/operators';
-import { Locale } from '../../models/locale/locale.interface';
+import { Locale } from '../../models/locale/locale.model';
 import { CoreState } from '../store/core.state';
 import { getCurrentLocale } from '../store/locale';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';

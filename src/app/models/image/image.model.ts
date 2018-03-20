@@ -1,4 +1,4 @@
-export class Image {
+export interface Image {
   name: string;
   type: string;
   effectiveUrl: string;

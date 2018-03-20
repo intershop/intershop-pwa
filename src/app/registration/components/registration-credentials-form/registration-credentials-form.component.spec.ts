@@ -59,6 +59,6 @@ describe('Credentials Form Component', () => {
     expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy('password is rendered');
     expect(element.querySelector('input[data-testing-id=passwordConfirmation]')).toBeTruthy('passwordConfirmation is rendered');
     expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy('securityQuestion is rendered');
-    expect(element.querySelector('input[data-testing-id=securityQuestionAnswer]')).toBeTruthy('securityQuestionAnswer is rendered');
+    expect(element.querySelector('input[data-testing-id=securityQuestionAnswer]')).toBeTruthy('answer is rendered');
   });
 });

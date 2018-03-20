@@ -1,7 +1,7 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
-import { PriceData } from '../price/price.interface';
-import { WarrantyData } from '../warranty/warranty.interface';
+import { Price } from '../price/price.model';
+import { Warranty } from '../warranty/warranty.model';
 
 export interface ProductData {
 
@@ -16,7 +16,7 @@ export interface ProductData {
 
   images: Image[];
 
-  availableWarranties?: WarrantyData[];
+  availableWarranties?: Warranty[];
   availableGiftWraps?: any[];
   availableGiftMessages?: any[];
   bundles: any[];
@@ -25,7 +25,7 @@ export interface ProductData {
   inStock: boolean;
 
   // If warranty {
-  price?: PriceData;
+  price?: Price;
   currency?: any;
   // }
 
@@ -49,9 +49,9 @@ export interface ProductData {
   variations?: any;
   crosssells?: any;
   productMaster: boolean;
-  listPrice: PriceData;
+  listPrice: Price;
   productBundle: boolean;
-  salePrice: PriceData;
+  salePrice: Price;
   manufacturer: string;
   mastered: boolean;
   readyForShipmentMin: number;

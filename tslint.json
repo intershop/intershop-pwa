@@ -237,7 +237,9 @@
           "^.*/e2e/protractor/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           // unmanaged folders
-          "^.*/src/app/(utils/|models/).*\\.ts$",
+          "^.*/src/app/(utils/).*\\.ts$",
+          // model
+          "^.*/src/app/models/(.*)/\\1\\.(pipe|helper|interface|mapper|types)\\.ts$",
           // allow only module declaration in module folders
           "^.*/src/app/\\w+/[\\w\\.\\-]+\\.module\\.ts$",
           // allow only app related content directly in src/app
@@ -266,7 +268,8 @@
           // form specific factories
           { "name": "^(AddressForm.*)Factory$", "file": ".*src/app/forms/.*/components/<kebab>/<kebab>\\.factory\\.ts$" },
           // factory pattern
-          { "name": "^([A-Z].*)Factory$", "file": ".*/models/<kebab>/<kebab>\\.factory\\.ts$" },
+          { "name": "^([A-Z].*)Helper$", "file": ".*/models/<kebab>/<kebab>\\.helper\\.ts$" },
+          { "name": "^([A-Z].*)Mapper$", "file": ".*/models/<kebab>/<kebab>\\.mapper\\.ts$" },
           { "name": "^(.*)Data$", "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$" },
           // ngrx
           { "name": "^([A-Z].*)Effects$", "file": ".*/store/<kebab>/<kebab>\\.effects\\.ts$" },

@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { AccountLogin } from '../../../core/services/account-login/account-login.model';
-import { CustomerData } from '../../../models/customer/customer.interface';
 import { Customer } from '../../../models/customer/customer.model';
 
 export enum UserActionTypes {
@@ -35,7 +34,7 @@ export class LogoutUser implements Action {
 
 export class CreateUser implements Action {
   readonly type = UserActionTypes.CreateUser;
-  constructor(public payload: CustomerData) { }
+  constructor(public payload: Customer) { }
 }
 
 export class CreateUserSuccess implements Action {

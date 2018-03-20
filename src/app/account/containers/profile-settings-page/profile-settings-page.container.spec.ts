@@ -3,8 +3,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { coreReducers } from '../../../core/store/core.system';
 import { LoginUserSuccess } from '../../../core/store/user';
-import { CustomerFactory } from '../../../models/customer/customer.factory';
-import { CustomerData } from '../../../models/customer/customer.interface';
+import { Customer } from '../../../models/customer/customer.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { ProfileSettingsPageContainerComponent } from './profile-settings-page.container';
 
@@ -12,14 +11,14 @@ describe('Profile Settings Page Container', () => {
   let component: ProfileSettingsPageContainerComponent;
   let fixture: ComponentFixture<ProfileSettingsPageContainerComponent>;
   let element: HTMLElement;
-  const customer = CustomerFactory.fromData({
+  const customer = {
     'firstName': 'Patricia',
     'lastName': 'Miller',
     'title': '',
     'credentials': {
       'login': ''
     }
-  } as CustomerData);
+  } as Customer;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
