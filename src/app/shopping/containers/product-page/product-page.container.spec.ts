@@ -64,7 +64,7 @@ describe('Product Page Container', () => {
   });
 
   it('should display product-detail when product is available', () => {
-    const product = new Product('dummy');
+    const product = { sku: 'dummy' } as Product;
     store$.dispatch(new LoadProductSuccess(product));
     const routerAction = navigateMockAction({
       url: `/product/${product.sku}`,

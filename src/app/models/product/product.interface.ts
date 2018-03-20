@@ -1,5 +1,5 @@
-import { AttributeData } from '../attribute/attribute.interface';
-import { ImageData } from '../image/image.interface';
+import { Attribute } from '../attribute/attribute.model';
+import { Image } from '../image/image.model';
 import { PriceData } from '../price/price.interface';
 import { WarrantyData } from '../warranty/warranty.interface';
 
@@ -14,7 +14,7 @@ export interface ProductData {
   averageRating: string;
   roundedAverageRating: string;
 
-  images: ImageData[];
+  images: Image[];
 
   availableWarranties?: WarrantyData[];
   availableGiftWraps?: any[];
@@ -37,8 +37,8 @@ export interface ProductData {
   minSalePrice?: number;
   maxSalePrice?: number;
   // }
-  variationAttributeValues?: AttributeData[];
-  variableVariationAttributes?: AttributeData[];
+  variationAttributeValues?: Attribute[];
+  variableVariationAttributes?: Attribute[];
   partOfRetailSet: boolean;
   // If  Retail Set {
   summedUpListPrice?: number;
@@ -56,5 +56,5 @@ export interface ProductData {
   mastered: boolean;
   readyForShipmentMin: number;
   readyForShipmentMax: number;
-  attributes?: AttributeData[];
+  attributes?: Attribute[];
 }

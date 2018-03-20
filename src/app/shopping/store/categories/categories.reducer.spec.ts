@@ -1,3 +1,5 @@
+import { CategoryData } from '../../../models/category/category.interface';
+import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
 import { categoriesReducer, flattenSubCategories, initialState } from './categories.reducer';
@@ -39,7 +41,6 @@ describe('Categories Reducer', () => {
       beforeEach(() => {
         category = {
           name: 'Camcorders',
-          type: 'Category',
           description: 'The camera products and services catalog.',
           id: '584',
           uniqueId: 'Camcorders.584'
@@ -106,26 +107,26 @@ describe('Categories Reducer', () => {
     let category: Category;
 
     beforeEach(() => {
-      category = {
+      category = CategoryMapper.fromData({
         id: '1',
         hasOnlineSubCategories: true,
         subCategoriesCount: 3,
         subCategories: [
-          { id: '2', hasOnlineSubCategories: false } as Category,
-          { id: '3', hasOnlineSubCategories: false } as Category,
+          { id: '2', hasOnlineSubCategories: false } as CategoryData,
+          { id: '3', hasOnlineSubCategories: false } as CategoryData,
           {
             id: '4', hasOnlineSubCategories: true, subCategoriesCount: 2, subCategories: [
               {
                 id: '5', hasOnlineSubCategories: true, subCategoriesCount: 2, subCategories: [
-                  { id: '6' } as Category,
-                  { id: '7' } as Category
+                  { id: '6' } as CategoryData,
+                  { id: '7' } as CategoryData
                 ]
-              } as Category,
-              { id: '8' } as Category,
+              } as CategoryData,
+              { id: '8' } as CategoryData,
             ]
-          } as Category
+          } as CategoryData
         ]
-      } as Category;
+      } as CategoryData);
     });
 
     it('should flatten nested subcategories for one top level category', () => {
@@ -154,11 +155,11 @@ describe('Categories Reducer', () => {
     });
 
     it('should return the category unchanged in an array if it doesnt have subcategories', () => {
-      category = {
+      category = CategoryMapper.fromData({
         id: 'foo',
         hasOnlineSubCategories: false,
         subCategoriesCount: 0
-      } as Category;
+      } as CategoryData);
 
       const result = flattenSubCategories(category);
       expect(result).toEqual([category]);

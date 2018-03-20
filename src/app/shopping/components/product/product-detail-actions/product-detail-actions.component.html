@@ -19,7 +19,7 @@
         </a>
       </li>
 
-      <li *ngIf="!product.productMaster" class="hidden-xs">
+      <li *ngIf="!isMasterProduct(product)" class="hidden-xs">
         <a routerLink="/compare" (click)="addToCompare()" rel="nofollow" [attr.data-testing-id]="'compare-' + product.sku" >
           <span class="glyphicon glyphicon-equalizer"></span>
           <span class="share-label">{{ 'product.compare.link' | translate }}</span>

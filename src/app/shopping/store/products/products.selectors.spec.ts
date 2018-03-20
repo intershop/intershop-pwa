@@ -23,7 +23,7 @@ describe('Products Selectors', () => {
   let prod: Product;
 
   beforeEach(() => {
-    prod = new Product('sku');
+    prod = { sku: 'sku' } as Product;
 
     TestBed.configureTestingModule({
       imports: [

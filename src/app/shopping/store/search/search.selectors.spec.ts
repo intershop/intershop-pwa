@@ -62,8 +62,8 @@ describe('Search Selectors', () => {
         products = value
       );
 
-      store$.dispatch(new LoadProductSuccess(new Product('9780321934161')));
-      store$.dispatch(new LoadProductSuccess(new Product('0818279012576')));
+      store$.dispatch(new LoadProductSuccess({ sku: '9780321934161' } as Product));
+      store$.dispatch(new LoadProductSuccess({ sku: '0818279012576' } as Product));
       store$.dispatch(new SearchProductsAvailable(['9780321934161', '0818279012576']));
 
       expect(searchProducts$).toBeObservable(cold('a', { a: products }));

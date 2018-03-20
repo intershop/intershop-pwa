@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Image } from '../../../../models/image/image.model';
-import { Product } from '../../../../models/product/product.model';
+import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-image',
@@ -24,8 +24,8 @@ export class ProductImageComponent implements OnInit {
 
   ngOnInit() {
     this.productImage = this.imageView
-      ? this.product.getImageByImageTypeAndImageView(this.imageType, this.imageView)
-      : this.product.getPrimaryImage(this.imageType);
+      ? ProductHelper.getImageByImageTypeAndImageView(this.product, this.imageType, this.imageView)
+      : ProductHelper.getPrimaryImage(this.product, this.imageType);
   }
 
 }

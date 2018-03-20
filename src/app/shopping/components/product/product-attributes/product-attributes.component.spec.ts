@@ -1,5 +1,7 @@
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Attribute, StringValue } from '../../../../models/attribute/attribute.model';
+import { StoreModule } from '@ngrx/store';
+import { AttributeToStringPipe } from '../../../../models/attribute/attribute.pipe';
 import { Product } from '../../../../models/product/product.model';
 import { ProductAttributesComponent } from './product-attributes.component';
 
@@ -9,13 +11,24 @@ describe('Product Attributes Component', () => {
   let element: HTMLElement;
   let product: Product;
   beforeEach(async(() => {
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.attributes = [
-      new Attribute('A', new StringValue('A')),
-      new Attribute('B', new StringValue('B'))
+      { name: 'A', type: 'String', value: 'A' },
+      { name: 'B', type: 'String', value: 'B' },
     ];
     TestBed.configureTestingModule({
-      declarations: [ProductAttributesComponent]
+      imports: [
+        StoreModule.forRoot({})
+      ],
+      declarations: [
+        ProductAttributesComponent,
+        AttributeToStringPipe,
+      ],
+      providers: [
+        CurrencyPipe,
+        DatePipe,
+        DecimalPipe,
+      ]
     }).compileComponents();
   }));
 
@@ -40,9 +53,17 @@ describe('Product Attributes Component', () => {
   });
 
   it('should render product attributes name and value when available', () => {
-    product.attributes = [new Attribute('A', new StringValue('A'))];
+    product.attributes = [{ name: 'A', type: 'String', value: 'A' }];
     fixture.detectChanges();
     expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
     expect(element.querySelector('.ish-ca-value').textContent).toEqual('A');
+  });
+
+  it('should render product attributes name and multiple value when available', () => {
+    product.attributes = [{ name: 'A', type: 'MultipleString', value: ['hallo', 'welt'] }];
+    component.multipleValuesSeparator = ':::';
+    fixture.detectChanges();
+    expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
+    expect(element.querySelector('.ish-ca-value').textContent).toEqual('hallo:::welt');
   });
 });

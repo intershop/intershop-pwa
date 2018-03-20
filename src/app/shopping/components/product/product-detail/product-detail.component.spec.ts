@@ -11,7 +11,7 @@ describe('ProductDetailComponent', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
-    const prod = new Product('sku');
+    const prod = { sku: 'sku' } as Product;
 
     TestBed.configureTestingModule({
       imports: [

@@ -24,7 +24,7 @@ describe('Product Tile Actions Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductTileActionsComponent);
     component = fixture.componentInstance;
-    component.product = new Product('sku');
+    component.product = { sku: 'sku' } as Product;
     element = fixture.nativeElement;
   });
 

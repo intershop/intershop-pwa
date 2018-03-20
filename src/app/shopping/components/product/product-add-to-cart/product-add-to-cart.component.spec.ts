@@ -29,7 +29,7 @@ describe('Product Add To Cart Component', () => {
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.inStock = true;
     product.minOrderQuantity = 1;
     product.availability = true;

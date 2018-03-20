@@ -10,7 +10,7 @@ describe('Product Images Component', () => {
   let product: Product;
   let element: HTMLElement;
   beforeEach(async(() => {
-    product = new Product('sku');
+    product = { sku: 'sku' } as Product;
     product.name = 'Lenco';
     product.images = [
       {

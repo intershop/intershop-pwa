@@ -1,11 +1,9 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Product } from './product.model';
 
-export class VariationProduct extends Product {
+export interface VariationProduct extends Product {
 
   variationAttributes?: Attribute[];
+  productMasterSKU: string;
 
-  constructor(sku: string, masterSKU: string) {
-    super(sku);
-  }
 }
