@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { CountryData } from '../../../models/country/country.interface';
+import { Country } from '../../../models/country/country.model';
 import { CountryService } from '../../services/countries/country.service';
 import { coreReducers } from '../core.system';
 import { LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
@@ -21,7 +21,7 @@ describe('CountriesEffects', () => {
   const countries = [
     { countryCode: 'BG', name: 'Bulgaria' },
     { countryCode: 'DE', name: 'Germany' }
-  ] as CountryData[];
+  ] as Country[];
 
   beforeEach(() => {
     countryServiceMock = mock(CountryService);

@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
-import { CustomerData } from '../../../models/customer/customer.interface';
+import { Customer } from '../../../models/customer/customer.model';
 import * as errorActions from '../error/error.actions';
 import * as userActions from './user.actions';
 
@@ -45,7 +45,7 @@ export class UserEffects {
   createUser$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.CreateUser),
     map((action: userActions.CreateUser) => action.payload),
-    mergeMap((customerData: CustomerData) => {
+    mergeMap((customerData: Customer) => {
       return this.accountLoginService.createUser(customerData).pipe(
         map(customer => new userActions.CreateUserSuccess(customer)),
         catchError(error => of(this.dispatchCreation(error)))

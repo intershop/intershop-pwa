@@ -1,4 +1,4 @@
-export class ShippingMethod {
+export interface ShippingMethod {
   name: string;
   type: string;
   id: string;

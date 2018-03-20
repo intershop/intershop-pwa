@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { CustomerFactory } from '../../../models/customer/customer.factory';
-import { CustomerData } from '../../../models/customer/customer.interface';
+import { Customer } from '../../../models/customer/customer.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { ProfileSettingsPageComponent } from './profile-settings-page.component';
 
@@ -9,15 +8,14 @@ describe('Profile Settings Page Component', () => {
   let component: ProfileSettingsPageComponent;
   let fixture: ComponentFixture<ProfileSettingsPageComponent>;
   let element: HTMLElement;
-  const userData = {
+  const customer = {
     'firstName': 'Patricia',
     'lastName': 'Miller',
     'title': '',
     'credentials': {
       'login': ''
     }
-  } as CustomerData;
-  const customer = CustomerFactory.fromData(userData);
+  } as Customer;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

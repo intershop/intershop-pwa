@@ -1,4 +1,5 @@
 import { mergeObjectsMutably } from '../../utils/merge-objects';
+import { Price } from '../price/price.model';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { ProductData } from './product.interface';
@@ -6,8 +7,14 @@ import { Product, ProductType } from './product.model';
 
 export class ProductMapper {
 
-  static fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
+  private static filterPrice(price: Price): Price {
+    if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
+      return price;
+    }
+    return undefined;
+  }
 
+  static fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
     const product: Product = {
       type: ProductType.Product,
       name: data.productName,
@@ -19,8 +26,8 @@ export class ProductMapper {
       // maxOrderQuantity: data.maxOrderQuantity,
       attributes: data.attributes,
       images: data.images,
-      listPrice: data.listPrice,
-      salePrice: data.salePrice,
+      listPrice: this.filterPrice(data.listPrice),
+      salePrice: this.filterPrice(data.salePrice),
       manufacturer: data.manufacturer,
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,
