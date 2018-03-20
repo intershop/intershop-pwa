@@ -1,6 +1,6 @@
 import { Country } from '../country/country.model';
 
-export class Address {
+export interface Address {
   urn: string;
   type?: string;
   addressName: string;

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { AddressFormFactory, AddressFormService } from '../../../forms/address/index';
@@ -11,6 +11,7 @@ describe('RegistrationForm Component', () => {
   let fixture: ComponentFixture<RegistrationFormComponent>;
   let component: RegistrationFormComponent;
   let element: HTMLElement;
+  let fb: FormBuilder;
 
   beforeEach(async(() => {
     const addressFormFactoryMock = mock(AddressFormFactory);
@@ -50,6 +51,7 @@ describe('RegistrationForm Component', () => {
     fixture = TestBed.createComponent(RegistrationFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    fb = TestBed.get(FormBuilder);
   });
 
   it('should be created', () => {
@@ -103,8 +105,10 @@ describe('RegistrationForm Component', () => {
   });
 
   it('should throw create event for valid form (and not when invalid)', () => {
-    component.form = new FormGroup({
-      control: new FormControl('foo', Validators.required)
+    component.form = fb.group({
+      control: new FormControl('foo', Validators.required),
+      credentials: fb.group({}),
+      address: fb.group({})
     });
 
     let fired = false;

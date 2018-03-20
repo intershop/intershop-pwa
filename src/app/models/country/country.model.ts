@@ -1,6 +1,6 @@
 import { Region } from '../region/region.model';
 
-export class Country {
+export interface Country {
   countryCode: string;
   name: string;
   regions?: Region[];
