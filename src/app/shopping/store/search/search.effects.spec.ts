@@ -1,19 +1,22 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
+import { Scheduler } from 'rxjs/Scheduler';
 import { anyString, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
 import { SuggestService } from '../../../core/services/suggest/suggest.service';
+import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { SearchService } from '../../services/products/search.service';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { DoSearch } from './search.actions';
+import { DoSearch, DoSuggestSearch, SuggestSearchSuccess } from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('SearchEffects', () => {
@@ -53,7 +56,7 @@ describe('SearchEffects', () => {
         { provide: ApiService, useFactory: () => instance(apiMock) },
         { provide: SearchService, useFactory: () => instance(searchServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-
+        { provide: Scheduler, useFactory: getTestScheduler },
       ],
     });
 
@@ -83,4 +86,72 @@ describe('SearchEffects', () => {
     });
   });
 
+  describe('suggestSearch$', () => {
+    it('should not fire when search term is falsy', () => {
+      const action = new DoSuggestSearch(undefined);
+      actions$ = hot('a', { a: action });
+
+      expect(effects.suggestSearch$).toBeObservable(cold('-'));
+      verify(suggestServiceMock.search(anyString())).never();
+    });
+
+    it('should not fire when search term is empty', () => {
+      const action = new DoSuggestSearch('');
+      actions$ = hot('a', { a: action });
+
+      expect(effects.suggestSearch$).toBeObservable(cold('-'));
+      verify(suggestServiceMock.search(anyString())).never();
+    });
+
+    it('should return search terms when available', () => {
+      const result = [{ type: undefined, term: 'Goods' }];
+      when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
+
+      const action = new DoSuggestSearch('g');
+      actions$ = hot('a', { a: action });
+
+      expect(effects.suggestSearch$).toBeObservable(
+        cold('----------------------------------------a',
+          { a: new SuggestSearchSuccess(result) }));
+
+      verify(suggestServiceMock.search(anyString())).once();
+    });
+
+    it('should debounce correctly when search term is entered stepwise', () => {
+      const result = [{ type: undefined, term: 'Goods' }];
+      when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
+
+      actions$ = hot('--a---b----c', { a: new DoSuggestSearch('g'), b: new DoSuggestSearch('goo'), c: new DoSuggestSearch('good') });
+
+      expect(effects.suggestSearch$).toBeObservable(
+        cold('---------------------------------------------------a',
+          { a: new SuggestSearchSuccess(result) }));
+
+      verify(suggestServiceMock.search(anyString())).once();
+    });
+
+    it('should send only once if search term is entered multiple times', () => {
+      const result = [{ type: undefined, term: 'Goods' }];
+      when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
+
+      actions$ = hot('a------------------------------------------------------b', { a: new DoSuggestSearch('good'), b: new DoSuggestSearch('good') });
+
+      expect(effects.suggestSearch$).toBeObservable(
+        cold('----------------------------------------a-------------------------------------------------------',
+          { a: new SuggestSearchSuccess(result) }));
+
+      verify(suggestServiceMock.search(anyString())).once();
+    });
+
+    it('should not fire action when error is encountered at service level', () => {
+      when(suggestServiceMock.search(anyString())).thenReturn(_throw(new HttpErrorResponse({ status: 500 })));
+
+      actions$ = hot('a', { a: new DoSuggestSearch('good') });
+
+      expect(effects.suggestSearch$).toBeObservable(
+        cold('-----------------------------------------------------------------------------------------------'));
+
+      verify(suggestServiceMock.search(anyString())).once();
+    });
+  });
 });

@@ -9,6 +9,7 @@ export const environment = {
   icmBaseURL: 'http://localhost:4000',
   icmServer: 'INTERSHOP/rest/WFS',
   icmApplication: 'inSPIRED-inTRONICS-Site',
+  mainNavigationMaxSubCategoriesDepth: 2,
 
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English' },
