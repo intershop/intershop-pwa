@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { catchError, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { Scheduler } from 'rxjs/Scheduler';
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
+import { CoreState } from '../../../core/store/countries';
+import { getCurrentLocale } from '../../../core/store/locale';
 import * as productsActions from '../products/products.actions';
 import * as productsSelectors from '../products/products.selectors';
 import { ShoppingState } from '../shopping.state';
@@ -15,8 +19,10 @@ import * as categoriesSelectors from './categories.selectors';
 export class CategoriesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState>,
-    private categoryService: CategoriesService
+    private store: Store<ShoppingState | CoreState>,
+    private categoryService: CategoriesService,
+    private scheduler: Scheduler,
+    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number,
   ) { }
 
   @Effect()
@@ -39,6 +45,15 @@ export class CategoriesEffects {
         catchError(error => of(new categoriesActions.LoadCategoryFail(error)))
       );
     })
+  );
+
+  @Effect()
+  loadTopLevelCategoriesOnLanguageChange$ = this.store.pipe(
+    select(getCurrentLocale),
+    filter(locale => !!locale && !!locale.lang),
+    debounceTime(100, this.scheduler), // TODO @Ferdinand: why doesn't it work without this? :'(
+    distinctUntilChanged(),
+    map(() => new categoriesActions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth)),
   );
 
   @Effect()
