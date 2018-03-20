@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 import { SearchBoxComponent } from './search-box.component';
 
 describe('Search Box Component', () => {
@@ -17,18 +19,33 @@ describe('Search Box Component', () => {
         TranslateModule.forRoot(),
         ReactiveFormsModule
       ],
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(SearchBoxComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    });
+    }).overrideComponent(SearchBoxComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
+    }).compileComponents();
   }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SearchBoxComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
+  function triggerSearch(term: string, results: SuggestTerm[]) {
+    component.results = results;
+    component.searchTerm = term;
+    fixture.detectChanges();
+    component.ngOnChanges({
+      results: { currentValue: results } as SimpleChange,
+      searchTerm: { currentValue: term } as SimpleChange,
+    } as SimpleChanges);
+    fixture.detectChanges();
+  }
 
   it('should fire event when search is called', () => {
     let term: string;
@@ -38,17 +55,15 @@ describe('Search Box Component', () => {
     expect(term).toEqual('test');
   });
 
-  xdescribe('with no results', () => {
+  describe('with no results', () => {
     beforeEach(() => {
-      component.results = [];
-      fixture.detectChanges();
-      component.ngOnChanges({});
+      triggerSearch('', []);
     });
 
     it('should show no results when no suggestions are found', () => {
       const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
 
-      expect(ul.querySelectorAll('li').length).toBe(0);
+      expect(ul).toBeFalsy();
     });
 
     it('should hide popup when no search results are found', () => {
@@ -56,21 +71,19 @@ describe('Search Box Component', () => {
     });
   });
 
-  xdescribe('with results', () => {
+  describe('with results', () => {
     beforeEach(() => {
-      component.results = [
+      triggerSearch('cam', [
         { term: 'Cameras', type: undefined },
         { term: 'Camcorders', type: undefined },
-      ];
-      fixture.detectChanges();
-      component.ngOnChanges({});
+      ]);
     });
 
-    it('should show results when suggestions are available', () => {
+    it('should show results when suggestions are available', fakeAsync(() => {
       const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
 
       expect(ul.querySelectorAll('li').length).toBe(2);
-    });
+    }));
 
     it('should show popup when search results are found', () => {
       expect(component.isHide).toBe(false);
