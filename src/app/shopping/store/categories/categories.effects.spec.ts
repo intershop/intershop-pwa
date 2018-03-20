@@ -2,13 +2,18 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
+import { Scheduler } from 'rxjs/Scheduler';
 import { instance, mock, verify, when } from 'ts-mockito';
+import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
+import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
+import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Category } from '../../../models/category/category.model';
+import { Locale } from '../../../models/locale/locale.interface';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
@@ -37,6 +42,7 @@ describe('Categories Effects', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
+          locale: localeReducer,
           routerReducer
         }),
       ],
@@ -44,6 +50,7 @@ describe('Categories Effects', () => {
         CategoriesEffects,
         provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
+        { provide: Scheduler, useFactory: getTestScheduler },
       ],
     });
 
@@ -165,6 +172,28 @@ describe('Categories Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadTopLevelCategoriesOnLanguageChange$', () => {
+
+    let EN_US: Locale;
+    let depth: number;
+
+    beforeEach(() => {
+      depth = TestBed.get(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH);
+      const locales: Locale[] = TestBed.get(AVAILABLE_LOCALES);
+      EN_US = locales.find(v => v.lang.startsWith('en'));
+      store$.dispatch(new SetAvailableLocales(locales));
+    });
+
+    it('should trigger when language is changed', () => {
+      const action = new SelectLocale(EN_US);
+      const completion = new fromActions.LoadTopLevelCategories(depth);
+      store$.dispatch(action);
+      const expected$ = cold('----------c', { c: completion });
+
+      expect(effects.loadTopLevelCategoriesOnLanguageChange$).toBeObservable(expected$);
     });
   });
 
