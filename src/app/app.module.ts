@@ -8,6 +8,8 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
+import { Scheduler } from 'rxjs/Scheduler';
+import { async } from 'rxjs/scheduler/async';
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,6 +67,7 @@ export const metaReducers: MetaReducer<any>[] = !environment.production ? [store
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
+    { provide: Scheduler, useValue: async },
   ],
   bootstrap: [
     AppComponent

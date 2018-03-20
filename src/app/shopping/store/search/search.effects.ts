@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { Scheduler } from 'rxjs/Scheduler';
 import { SuggestService } from '../../../core/services/suggest/suggest.service';
 import { getRouterState } from '../../../core/store/router';
 import { RouterStateUrl } from '../../../core/store/router/router.reducer';
@@ -22,6 +24,7 @@ export class SearchEffects {
     private store: Store<ShoppingState>,
     private searchService: SearchService,
     private suggestService: SuggestService,
+    private scheduler: Scheduler,
   ) { }
 
   /**
@@ -66,12 +69,13 @@ export class SearchEffects {
   @Effect()
   suggestSearch$ = this.actions$.pipe(
     ofType(SearchActionTypes.DoSuggestSearch),
-    debounceTime(400),
+    debounceTime(400, this.scheduler),
     distinctUntilChanged(),
     map((action: DoSuggestSearch) => action.payload),
-    filter(searchTerm => searchTerm.length > 0),
+    filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm => this.suggestService.search(searchTerm).pipe(
-      map(results => new SuggestSearchSuccess(results))
+      map(results => new SuggestSearchSuccess(results)),
+      catchError(() => empty())
     )) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search
   );
 
