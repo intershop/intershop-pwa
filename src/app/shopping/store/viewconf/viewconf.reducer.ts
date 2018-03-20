@@ -1,4 +1,4 @@
-import { ViewType } from '../../../models/types';
+import { ViewType } from '../../../models/viewtype/viewtype.types';
 import * as fromViewconf from './viewconf.actions';
 
 export interface ViewconfState {
