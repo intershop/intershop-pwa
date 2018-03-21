@@ -7,6 +7,9 @@ import { CoreState } from '../store/core.state';
 import { getRouterURL } from '../store/router';
 import { getUserAuthorized } from '../store/user';
 
+/**
+ * guards a route against unprivileged access (no user is logged in)
+ */
 @Injectable()
 export class AuthGuard implements CanActivate {
 

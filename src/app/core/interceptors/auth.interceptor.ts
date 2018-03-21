@@ -8,16 +8,13 @@ let TOKEN: string;
 const tokenHeaderKeyName = 'authentication-token';
 const authorizationHeaderKey = 'Authorization';
 
+/**
+ * Intercepts outgoing HTTP request and sets authentication-token if available.
+ * Intercepts incoming HTTP response and updates authentication-token.
+ */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  /**
-   * Intercepts out going request and set authentication-token.
-   * Intercepts incoming response and update authentication-token.
-   * @param  {HttpRequest<any>} req
-   * @param  {HttpHandler} next
-   * @returns  Observable<HttpEvent<any>>
-   */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (TOKEN && !req.headers.has(authorizationHeaderKey)) {
