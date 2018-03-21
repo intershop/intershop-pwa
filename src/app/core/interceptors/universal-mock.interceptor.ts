@@ -6,6 +6,9 @@ import { join } from 'path';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
+/**
+ * answers requests to mock-data with file-content in universal mode
+ */
 @Injectable()
 export class UniversalMockInterceptor implements HttpInterceptor {
 

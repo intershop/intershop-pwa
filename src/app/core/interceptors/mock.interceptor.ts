@@ -7,6 +7,9 @@ import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
+/**
+ * redirects a given request to the REST API to mocked data depending on mock settings
+ */
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
 

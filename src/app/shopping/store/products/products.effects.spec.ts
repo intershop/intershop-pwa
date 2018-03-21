@@ -39,7 +39,7 @@ describe('ProductsEffects', () => {
         }
       });
 
-    when(productsServiceMock.getProductSkuListForCategory('123', 'name-asc'))
+    when(productsServiceMock.getProductsSkusForCategory('123', 'name-asc'))
       .thenCall(() => of({
         skus: ['P222', 'P333'],
         categoryUniqueId: '123',
@@ -113,7 +113,7 @@ describe('ProductsEffects', () => {
 
     it('should call service for SKU list', () => {
       effects.loadProductsForCategory$.subscribe(() => {
-        verify(productsServiceMock.getProductSkuListForCategory('123', 'name-asc')).once();
+        verify(productsServiceMock.getProductsSkusForCategory('123', 'name-asc')).once();
       });
     });
 
