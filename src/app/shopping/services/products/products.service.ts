@@ -8,54 +8,50 @@ import { ProductData } from '../../../models/product/product.interface';
 import { ProductMapper } from '../../../models/product/product.mapper';
 import { Product } from '../../../models/product/product.model';
 
+/**
+ * The Products Service handles the interaction with the 'products' REST API.
+ */
 @Injectable()
 export class ProductsService {
 
-  private serviceIdentifier = 'products';
+  /**
+   * The REST API URI endpoints
+   */
+  productsServiceIdentifier = 'products/';
+  categoriesServiceIdentifier = 'categories/';
 
   constructor(
     private apiService: ApiService
   ) { }
 
   /**
-   * REST API - Get full product data
-   * @param productSku  The product SKU for the product of interest.
-   * @returns           Product information.
+   * Get the full Product data for the given Product SKU.
+   * @param sku  The Product SKU for the product of interest
+   * @returns    The Product data
    */
-  getProduct(productSku: string): Observable<Product> {
-    if (!productSku) {
-      return ErrorObservable.create('getProduct() called without a productSku');
+  getProduct(sku: string): Observable<Product> {
+    if (!sku) {
+      return ErrorObservable.create('getProduct() called without a sku');
     }
     const params: HttpParams = new HttpParams().set('allImages', 'true');
-    return this.apiService.get<ProductData>(this.serviceIdentifier + '/' + productSku, params, null, false, false).pipe(
+    return this.apiService.get<ProductData>(this.productsServiceIdentifier + sku, params, null, false, false).pipe(
       map(productData => ProductMapper.fromData(productData))
     );
   }
 
-  // NEEDS_WORK: service should be parameterized with the category ID and not some URL, it should know its endpoint itself
   /**
-   * REST API - Get product list data
-   * @param  {string} url category url
-   * @returns List of products as observable
-  */
-  getProductList(url: string): Observable<Product[]> {
-    return this.apiService.get<ProductData[]>(url, null, null, true, true).pipe(
-      map(productsData => productsData.map(
-        product => ProductMapper.fromData(product)
-      ))
-    );
-  }
-
-  /**
-   * returns a sorted list of all skus of products belonging to a given category
-   * @param  {string} categoryUniqueId the category id
-   * @param  {string} [sortKey=''] the sortKey used to sort the list, default value is ''
-   * @returns List of product skus, the category id and the sort keys as observable
+   * Get a sorted list of all SKUs of Products belonging to a given Category.
+   * @param categoryUniqueId  The unique Category ID
+   * @param sortKey           The sortKey to sort the list, default value is ''
+   * @returns                 List of Product SKUs, the unique Category ID and the possible sort keys as Observable
    */
-  getProductSkuListForCategory(categoryUniqueId: string, sortKey = ''): Observable<{ skus: string[], categoryUniqueId: string, sortKeys: string[] }> {
-    let url = `categories/${categoryUniqueId.replace(/\./g, '/')}/products?returnSortKeys=true`;
-    if (sortKey) { url += `&sortKey=${sortKey}`; }
-    return this.apiService.get<any>(url, null, null, false, false).pipe(
+  getProductsSkusForCategory(categoryUniqueId: string, sortKey = ''): Observable<{ skus: string[], categoryUniqueId: string, sortKeys: string[] }> {
+    const path = this.categoriesServiceIdentifier + categoryUniqueId.replace(/\./g, '/') + '/' + this.productsServiceIdentifier;
+    let params: HttpParams = new HttpParams().set('returnSortKeys', 'true');
+    if (sortKey) {
+      params = params.set('sortKey', sortKey);
+    }
+    return this.apiService.get<any>(path, params, null, false, false).pipe(
       map(response => ({
         skus: response.elements.map(el => el.uri.split('/').pop()),
         sortKeys: response.sortKeys,
