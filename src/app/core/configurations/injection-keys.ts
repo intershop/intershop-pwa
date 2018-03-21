@@ -14,7 +14,10 @@ export const MUST_MOCK_PATHS = new InjectionToken<string[]>('mustMockPaths');
 */
 export const AVAILABLE_LOCALES = new InjectionToken<Locale[]>('availableLocales');
 /**
- * If 'username' login name is used for registration, if 'email' the email is used as login name
+ * If 'username' login name is used for registration, if 'email' the email is used as login name (default: 'email')
  */
 export const USER_REGISTRATION_LOGIN_TYPE = new InjectionToken<string>('userRegistrationLoginType');
+/**
+ * The maximum subcategories level depth rendered in the main navigation
+ */
 export const MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH = new InjectionToken<number>('mainNavigationMaxSubCategoriesDepth');
