@@ -13,12 +13,14 @@ export class SearchBoxComponent implements OnChanges, OnInit {
   searchForm: FormGroup;
 
   @Input() results: SuggestTerm[];
-  @Input() searchButtonText: string;
+  @Input() buttonText: string;
+  @Input() buttonTitleText: string;
+  @Input() placeholderText: string;
   @Input() searchTerm: string;
   @Output() searchTermChange = new EventEmitter<string>();
   @Output() performSearch = new EventEmitter<string>();
 
-  isHide = true;
+  isHidden = true;
 
   ngOnInit() {
     this.searchForm = new FormGroup({
@@ -31,7 +33,7 @@ export class SearchBoxComponent implements OnChanges, OnInit {
   ngOnChanges(c: SimpleChanges) {
     if (c.results) {
       const resultsAvailable = !!this.results && this.results.length > 0;
-      this.isHide = !resultsAvailable;
+      this.isHidden = !resultsAvailable;
     }
 
     if (c.searchTerm) {
@@ -40,7 +42,7 @@ export class SearchBoxComponent implements OnChanges, OnInit {
   }
 
   hidePopup() {
-    this.isHide = true;
+    this.isHidden = true;
   }
 
   search(searchTerm: string) {

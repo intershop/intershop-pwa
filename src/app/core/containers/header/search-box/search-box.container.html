@@ -1,6 +1,8 @@
 <ish-search-box
   [results]="searchResults$ | async"
-  [searchButtonText]=""
+  [buttonText]=""
+  [buttonTitleText]="'search.searchbox.button.title' | translate"
+  [placeholderText] = "'search.searchbox.instructional_text' | translate"
   [searchTerm]="previousSearchTerm$ | async"
   (searchTermChange)="suggestSearch($event)"
   (performSearch)="performSearch($event)"
