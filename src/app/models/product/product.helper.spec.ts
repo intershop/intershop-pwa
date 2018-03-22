@@ -1,8 +1,27 @@
 import * as using from 'jasmine-data-provider';
+import { CategoryMapper } from '../category/category.mapper';
 import { ProductMapper } from './product.mapper';
 import { Product, ProductHelper } from './product.model';
 
 describe('Product Helper', () => {
+
+  describe('generateProductRoute()', () => {
+
+    function dataProvider() {
+      return [
+        { product: { sku: 'SKU' }, category: { id: 'CAT_ID' }, categoryUniqueId: 'CAT', expected: '/category/CAT/product/SKU' },
+        { product: { sku: 'SKU' }, category: undefined, categoryUniqueId: undefined, expected: '/product/SKU' }
+      ];
+    }
+
+    using(dataProvider, (dataSlice) => {
+      it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(dataSlice.product)}' and category '${JSON.stringify(dataSlice.category)}'`, () => {
+        const product = dataSlice.product ? ProductMapper.fromData(dataSlice.product) : undefined;
+        const category = dataSlice.category ? CategoryMapper.fromData(dataSlice.category, dataSlice.categoryUniqueId) : undefined;
+        expect(ProductHelper.generateProductRoute(product, category)).toEqual(dataSlice.expected);
+      });
+    });
+  });
 
   describe('image', () => {
 
