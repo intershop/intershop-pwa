@@ -1,6 +1,7 @@
 import { Image } from '../image/image.model';
 
 export interface Category {
+  uniqueId: string;
 
   id: string;
   name: string;
@@ -9,7 +10,6 @@ export interface Category {
   subCategories: Category[];
   subCategoriesIds: string[];
   subCategoriesCount: number;
-  uniqueId: string;
   description: string;
   images: Image[];
 
