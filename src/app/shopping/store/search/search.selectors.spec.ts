@@ -18,8 +18,8 @@ describe('Search Selectors', () => {
   const state: SearchState = {
     searchTerm: 'a',
     skus: ['9780321934161', '0818279012576'],
-    searchLoading: false,
-    suggestSearchResults: [],
+    loading: false,
+    suggestSearchResults: []
   };
 
   beforeEach(() => {
@@ -39,7 +39,7 @@ describe('Search Selectors', () => {
   describe('getSearchLoading', () => {
     it('should return the loading state if given', () => {
       const result = getSearchLoading.projector(state);
-      const expected = state.searchLoading;
+      const expected = state.loading;
       expect(result).toBe(expected);
     });
   });

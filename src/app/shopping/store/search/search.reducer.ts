@@ -4,14 +4,14 @@ import { SearchAction, SearchActionTypes } from './search.actions';
 export interface SearchState {
   searchTerm: string;
   skus: string[];
-  searchLoading: boolean;
+  loading: boolean;
   suggestSearchResults: SuggestTerm[];
 }
 
 export const initialState: SearchState = {
   searchTerm: undefined,
   skus: [],
-  searchLoading: false,
+  loading: false,
   suggestSearchResults: [],
 };
 
@@ -19,16 +19,16 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
   switch (action.type) {
     case SearchActionTypes.DoSearch: {
       const searchTerm = action.payload;
-      const searchLoading = true;
+      const loading = true;
 
-      return { ...state, searchTerm, searchLoading };
+      return { ...state, searchTerm, loading };
     }
 
     case SearchActionTypes.SearchProductsAvailable: {
       const skus = action.payload;
-      const searchLoading = false;
+      const loading = false;
 
-      return { ...state, skus, searchLoading };
+      return { ...state, skus, loading };
     }
 
     case SearchActionTypes.SuggestSearchSuccess: {
