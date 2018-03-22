@@ -6,18 +6,15 @@ import { of } from 'rxjs/observable/of';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { Scheduler } from 'rxjs/Scheduler';
 import { SuggestService } from '../../../core/services/suggest/suggest.service';
-import { getRouterState } from '../../../core/store/router';
-import { RouterStateUrl } from '../../../core/store/router/router.reducer';
 import { SearchService } from '../../services/products/search.service';
 import { LoadProduct } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { SetSortKeys } from '../viewconf';
-import { DoSearch, DoSuggestSearch, SearchActionTypes, SearchProductFail, SearchProductsAvailable, SuggestSearchSuccess } from './search.actions';
+import { SearchActionTypes, SearchProducts, SearchProductsFail, SearchProductsSuccess, SuggestSearch, SuggestSearchSuccess } from './search.actions';
 import { getRequestedSearchTerm } from './search.selectors';
 
 @Injectable()
 export class SearchEffects {
-  private urlParamSearchTerm = 'SearchTerm';
 
   constructor(
     private actions$: Actions,
@@ -28,46 +25,46 @@ export class SearchEffects {
   ) {}
 
   /**
-   * effect checks for changed search URL and triggers DoSearch action
+   * Effect that listens for search route changes and triggers a search action.
    */
   // TODO: Use ofRoute() operator here or at least do not work with the router state but with the router actions
   @Effect()
   triggerSearch$ = this.store.pipe(
     select(getRequestedSearchTerm),
     filter(searchTerm => !!searchTerm),
-    map(searchTerm => new DoSearch(searchTerm)),
+    map(searchTerm => new SearchProducts(searchTerm)),
   );
 
   /**
-   * effect checks for DoSearch action, performs search call and triggers LoadProduct and SearchProductsAvailable
+   * Effect that triggers a products search request via REST service and additional actions to fetch the product data of the search results.
    */
   // TODO: API returns only maximum of 50 products -- handle more products (e.g. via paging or lazy loading)
   @Effect()
-  performSearch$ = this.actions$.pipe(
-    ofType(SearchActionTypes.DoSearch),
-    map((action: DoSearch) => action.payload),
+  searchProducts$ = this.actions$.pipe(
+    ofType(SearchActionTypes.SearchProducts),
+    map((action: SearchProducts) => action.payload),
     switchMap(searchTerm => {
-      // get products
+      // get products via REST API call
       return this.searchService.searchForProductSkus(searchTerm).pipe(
         mergeMap(res => [
-          // fire actions for loading products
+          // dispatch action with search result
+          new SearchProductsSuccess({ searchTerm: searchTerm, products: res.skus }),
+          // dispatch actions to load the product information of the found products
           ...res.skus.map(sku => new LoadProduct(sku)),
-          // fire action for search page
-          new SearchProductsAvailable(res.skus),
-          // fire action for sorting toolbox
-          new SetSortKeys(res.sortKeys),
+          // dispatch action to store the returned sorting options
+          new SetSortKeys(res.sortKeys)
         ]),
-        catchError(error => of(new SearchProductFail(error)))
+        catchError(error => of(new SearchProductsFail(error)))
       );
     })
   );
 
   @Effect()
   suggestSearch$ = this.actions$.pipe(
-    ofType(SearchActionTypes.DoSuggestSearch),
+    ofType(SearchActionTypes.SuggestSearch),
     debounceTime(400, this.scheduler),
     distinctUntilChanged(),
-    map((action: DoSuggestSearch) => action.payload),
+    map((action: SuggestSearch) => action.payload),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService
