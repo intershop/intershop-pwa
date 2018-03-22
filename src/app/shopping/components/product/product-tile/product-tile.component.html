@@ -1,11 +1,11 @@
 <div class="product-tile">
   <div class="product-image-container">
-    <a [routerLink]="['./product/' + product.sku]">
+    <a [routerLink]="generateProductRoute(product, category)">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
     </a>
   </div>
 
-  <a class="product-title" [routerLink]="['./product/' + product.sku]">{{product.name}}</a>
+  <a class="product-title" [routerLink]="generateProductRoute(product, category)">{{product.name}}</a>
 
   <div class="price-container">
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
