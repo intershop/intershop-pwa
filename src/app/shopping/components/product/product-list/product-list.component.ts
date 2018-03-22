@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Category } from '../../../../models/category/category.model';
 import { Product } from '../../../../models/product/product.model';
 import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
@@ -11,6 +12,7 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
 export class ProductListComponent {
 
   @Input() products: Product[];
-  @Input() viewType: ViewType = 'grid';
+  @Input() category?: Category;
+  @Input() viewType?: ViewType = 'grid';
 
 }

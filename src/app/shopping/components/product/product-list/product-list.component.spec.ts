@@ -12,8 +12,8 @@ describe('Product List Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         ProductListComponent,
-        MockComponent({ selector: 'ish-product-tile', template: 'Product Tile Component', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-product-row', template: 'Product Row Component', inputs: ['product'] }),
+        MockComponent({ selector: 'ish-product-tile', template: 'Product Tile Component', inputs: ['product', 'category'] }),
+        MockComponent({ selector: 'ish-product-row', template: 'Product Row Component', inputs: ['product', 'category'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ]
     }).compileComponents();

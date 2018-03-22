@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Product } from '../../../../models/product/product.model';
+import { Category } from '../../../../models/category/category.model';
+import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-tile',
@@ -10,5 +11,8 @@ import { Product } from '../../../../models/product/product.model';
 export class ProductTileComponent {
 
   @Input() product: Product;
+  @Input() category?: Category;
+
+  generateProductRoute = ProductHelper.generateProductRoute;
 
 }
