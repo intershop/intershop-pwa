@@ -1,35 +1,35 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { DoSearch, SearchActionTypes, SearchProductFail, SearchProductsAvailable } from './search.actions';
+import { SearchActionTypes, SearchProducts, SearchProductsFail, SearchProductsSuccess } from './search.actions';
 
 describe('Search Actions', () => {
-  describe('DoSearch Action', () => {
-    it('should create new action for DoSearch', () => {
+  describe('SearchProducts Action', () => {
+    it('should create new action for SearchProducts', () => {
       const payload = 'aaa';
-      const action = new DoSearch(payload);
+      const action = new SearchProducts(payload);
 
       expect({ ...action }).toEqual({
-        type: SearchActionTypes.DoSearch,
-        payload,
+        type: SearchActionTypes.SearchProducts,
+        payload
       });
     });
 
-    it('should create new action for SearchProductsAvailable', () => {
-      const payload = ['a', 'b'];
-      const action = new SearchProductsAvailable(payload);
+    it('should create new action for SearchProductsSuccess', () => {
+      const payload = { searchTerm: 'search', products: ['a', 'b'] };
+      const action = new SearchProductsSuccess(payload);
 
       expect({ ...action }).toEqual({
-        type: SearchActionTypes.SearchProductsAvailable,
-        payload,
+        type: SearchActionTypes.SearchProductsSuccess,
+        payload
       });
     });
 
-    it('should create new action for SearchProductFail', () => {
+    it('should create new action for SearchProductsFail', () => {
       const payload = { message: 'error' } as HttpErrorResponse;
-      const action = new SearchProductFail(payload);
+      const action = new SearchProductsFail(payload);
 
       expect({ ...action }).toEqual({
-        type: SearchActionTypes.SearchProductFail,
-        payload,
+        type: SearchActionTypes.SearchProductsFail,
+        payload
       });
     });
   });

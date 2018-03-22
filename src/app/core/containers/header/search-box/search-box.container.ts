@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
-import { DoSuggestSearch, getSearchTerm, getSuggestSearchResults } from '../../../../shopping/store/search';
+import { getSearchTerm, getSuggestSearchResults, SuggestSearch } from '../../../../shopping/store/search';
 import { ShoppingState } from '../../../../shopping/store/shopping.state';
 
 @Component({
@@ -23,7 +23,7 @@ export class SearchBoxContainerComponent implements OnInit {
   }
 
   suggestSearch(term: string) {
-    this.store.dispatch(new DoSuggestSearch(term));
+    this.store.dispatch(new SuggestSearch(term));
   }
 
   performSearch(searchTerm: string) {

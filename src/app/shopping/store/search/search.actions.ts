@@ -3,41 +3,41 @@ import { Action } from '@ngrx/store';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 export enum SearchActionTypes {
-  DoSearch = '[Shopping] Do Search',
-  DoSuggestSearch = '[Shopping] Do Suggest Search',
-  SuggestSearchSuccess = '[Shopping] Suggest Search Success',
-  SearchProductsAvailable = '[Shopping] Search Products Available',
-  SearchProductFail = '[Shopping] Search Products Fail',
+  SearchProducts = '[Shopping] Search Products',
+  SearchProductsSuccess = '[Shopping] Search Products Success',
+  SearchProductsFail = '[Shopping] Search Products Fail',
+  SuggestSearch = '[Shopping] Suggest Search',
+  SuggestSearchSuccess = '[Shopping] Suggest Search Success'
 }
 
-export class DoSearch implements Action {
-  readonly type = SearchActionTypes.DoSearch;
-  constructor(public payload: string) {}
+export class SearchProducts implements Action {
+  readonly type = SearchActionTypes.SearchProducts;
+  constructor(public payload: string) { }
 }
 
-export class DoSuggestSearch implements Action {
-  readonly type = SearchActionTypes.DoSuggestSearch;
-  constructor(public payload: string) {}
+export class SearchProductsSuccess implements Action {
+  readonly type = SearchActionTypes.SearchProductsSuccess;
+  constructor(public payload: { searchTerm: string, products: string[] }) { }
+}
+
+export class SearchProductsFail implements Action {
+  readonly type = SearchActionTypes.SearchProductsFail;
+  constructor(public payload: HttpErrorResponse) { }
+}
+
+export class SuggestSearch implements Action {
+  readonly type = SearchActionTypes.SuggestSearch;
+  constructor(public payload: string) { }
 }
 
 export class SuggestSearchSuccess implements Action {
   readonly type = SearchActionTypes.SuggestSearchSuccess;
-  constructor(public payload: SuggestTerm[]) {}
-}
-
-export class SearchProductsAvailable implements Action {
-  readonly type = SearchActionTypes.SearchProductsAvailable;
-  constructor(public payload: string[]) {}
-}
-
-export class SearchProductFail implements Action {
-  readonly type = SearchActionTypes.SearchProductFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: SuggestTerm[]) { }
 }
 
 export type SearchAction =
-  | DoSearch
-  | DoSuggestSearch
-  | SuggestSearchSuccess
-  | SearchProductsAvailable
-  | SearchProductFail;
+  | SearchProducts
+  | SearchProductsSuccess
+  | SearchProductsFail
+  | SuggestSearch
+  | SuggestSearchSuccess;
