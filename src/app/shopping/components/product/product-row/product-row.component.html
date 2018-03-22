@@ -1,7 +1,7 @@
 <div class="product-tile-list row">
   <div class="col-sm-2 col-xs-3">
     <div class="product-image-container">
-      <a [routerLink]="['./product/' + product.sku]">
+      <a [routerLink]="generateProductRoute(product, category)">
         <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
       </a>
     </div>
@@ -9,7 +9,7 @@
   <div class="col-sm-10 col-xs-9">
     <div class="row">
       <div class="col-xs-8 text-left">
-        <a class="product-title" [routerLink]="['./product/' + product.sku]">{{product.name}}</a>
+        <a class="product-title" [routerLink]="generateProductRoute(product, category)">{{product.name}}</a>
         <div class="product-description">
           {{product.shortDescription}}
         </div>
