@@ -14,7 +14,7 @@ export const getRequestedSearchTerm = createSelector(
 
 export const getSearchLoading = createSelector(
   getSearchState,
-  state => state.searchLoading
+  state => state.loading
 );
 
 export const getSearchTerm = createSelector(getSearchState, state => state.searchTerm);
