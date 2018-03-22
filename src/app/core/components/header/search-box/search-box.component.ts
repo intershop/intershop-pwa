@@ -12,26 +12,33 @@ export class SearchBoxComponent implements OnChanges, OnInit {
 
   searchForm: FormGroup;
 
-  @Input() results: SuggestTerm[];
-  @Input() searchButtonText: string;
+  @Input() buttonText: string;
+  @Input() buttonTitleText: string;
+  @Input() placeholderText: string;
+  @Input() autoSuggest: boolean;
+  @Input() maxAutoSuggests: number;
   @Input() searchTerm: string;
+  @Input() results: SuggestTerm[];
   @Output() searchTermChange = new EventEmitter<string>();
   @Output() performSearch = new EventEmitter<string>();
 
-  isHide = true;
+  isHidden = true;
+  activeIndex = -1;
 
   ngOnInit() {
     this.searchForm = new FormGroup({
       search: new FormControl('')
     });
 
-    this.searchForm.get('search').valueChanges.subscribe(this.searchTermChange);
+    if (this.autoSuggest) {
+      this.searchForm.get('search').valueChanges.subscribe(this.searchTermChange);
+    }
   }
 
   ngOnChanges(c: SimpleChanges) {
     if (c.results) {
       const resultsAvailable = !!this.results && this.results.length > 0;
-      this.isHide = !resultsAvailable;
+      this.isHidden = !resultsAvailable;
     }
 
     if (c.searchTerm) {
@@ -40,7 +47,8 @@ export class SearchBoxComponent implements OnChanges, OnInit {
   }
 
   hidePopup() {
-    this.isHide = true;
+    this.isHidden = true;
+    this.activeIndex = -1;
   }
 
   search(searchTerm: string) {
@@ -48,17 +56,41 @@ export class SearchBoxComponent implements OnChanges, OnInit {
   }
 
   submitSearch() {
+    if (this.activeIndex > -1) {
+      this.setSearchFormValue(this.results[this.activeIndex].term);
+    }
     const { search } = this.searchForm.value;
     if (search) {
+      this.hidePopup();
       this.performSearch.emit(search);
     }
+  }
+
+  submitSuggestedTerm(suggestedTerm: string) {
+    this.setSearchFormValue(suggestedTerm);
+    this.submitSearch();
+  }
+
+  selectSuggestedTerm(index: number) {
+    if (this.isHidden ||
+      (this.maxAutoSuggests && index > this.maxAutoSuggests - 1) ||
+      (index < -1) ||
+      (index > this.results.length - 1)
+    ) {
+      return;
+    }
+    this.activeIndex = index;
+  }
+
+  isActiveSuggestedTerm(index: number) {
+    return this.activeIndex === index;
   }
 
   private setSearchFormValue(value: string) {
     // TODO: check why this method can be called before there is a searchForm
     if (this.searchForm) {
       this.searchForm.patchValue({
-        search: this.searchTerm
+        search: value
       }, { emitEvent: false });
     }
   }

@@ -1,6 +1,6 @@
 <!-- NEEDS_WORK: review and adapt -->
 <form role="search" class="search clearfix" name="SearchBox_Header" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
-  <input [placeholder]="'search.searchbox.instructional_text' | translate"
+  <input [placeholder]="placeholderText"
          formControlName="search"
          autocomplete="off"
          name="SearchTerm"
@@ -8,26 +8,30 @@
          class="form-control searchTerm"
          (focus)="hidePopup()"
          (blur)="hidePopup()"
-         (keydown.esc)="hidePopup()">
+         (keydown.esc)="hidePopup()" 
+         (keydown.arrowleft)="selectSuggestedTerm(-1)" 
+         (keydown.arrowright)="selectSuggestedTerm(-1)" 
+         (keydown.arrowdown)="selectSuggestedTerm(activeIndex + 1)"
+         (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)">
 
   <button class="btn-search btn btn-primary"
           type="submit"
           name="search"
-          [title]="'search.searchbox.button.title' | translate">
-
+          [title]="buttonTitleText">
   <!-- search button with icon -->
-    <ng-template [ngIf]="!searchButtonText" [ngIfElse]="textBlock">
+    <ng-template [ngIf]="!buttonText" [ngIfElse]="textBlock">
       <span class="glyphicon glyphicon-search"></span>
     </ng-template>
     <!-- search button with text -->
     <ng-template #textBlock>
-      <!-- TODO: To find the value of searchButtonText
-      {{searchButtonText}} -->
+      {{buttonText}}
     </ng-template>
   </button>
 
-  <ul *ngIf="results && !isHide" class="search-suggest-results">
-    <li *ngFor="let result of results | slice:0:9">
+  <ul *ngIf="results && !isHidden" class="search-suggest-results">
+    <li *ngFor="let result of results | slice:0:maxAutoSuggests; let liIndex = index" 
+        [class.active-suggestion]="isActiveSuggestedTerm(liIndex)" 
+        (mousedown)="submitSuggestedTerm(result.term)">
       <button type="button" class="search-result">
         <span class="searchTerm">{{ result.term }}</span>
       </button>

@@ -67,7 +67,7 @@ describe('Search Box Component', () => {
     });
 
     it('should hide popup when no search results are found', () => {
-      expect(component.isHide).toBe(true);
+      expect(component.isHidden).toBe(true);
     });
   });
 
@@ -86,7 +86,28 @@ describe('Search Box Component', () => {
     }));
 
     it('should show popup when search results are found', () => {
-      expect(component.isHide).toBe(false);
+      expect(component.isHidden).toBe(false);
+    });
+  });
+
+  describe('with inputs', () => {
+    it('should show button text when buttonText is set', () => {
+      component.buttonText = 'buttonTextInput';
+      fixture.detectChanges();
+      const button = element.querySelector<HTMLButtonElement>('.btn-search');
+      expect(button.innerText).toBe(component.buttonText);
+    });
+    it('should show button title text when buttonTitleText is set', () => {
+      component.buttonTitleText = 'buttonTitleTextInput';
+      fixture.detectChanges();
+      const button = element.querySelector<HTMLButtonElement>('.btn-search');
+      expect(button.getAttribute('title')).toBe(component.buttonTitleText);
+    });
+    it('should show placeholder text when placeholderText is set', () => {
+      component.placeholderText = 'placeholderTextInput';
+      fixture.detectChanges();
+      const inputElement = element.querySelector<HTMLInputElement>('.searchTerm');
+      expect(inputElement.getAttribute('placeholder')).toBe(component.placeholderText);
     });
   });
 });
