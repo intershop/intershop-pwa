@@ -27,9 +27,6 @@ export class SearchBoxContainerComponent implements OnInit {
   }
 
   performSearch(searchTerm: string) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { SearchTerm: searchTerm },
-    };
-    this.router.navigate(['/search'], navigationExtras);
+    this.router.navigate(['/search', searchTerm]);
   }
 }
