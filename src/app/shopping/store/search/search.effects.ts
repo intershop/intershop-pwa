@@ -12,14 +12,8 @@ import { SearchService } from '../../services/products/search.service';
 import { LoadProduct } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { SetSortKeys } from '../viewconf';
-import {
-  DoSearch,
-  DoSuggestSearch,
-  SearchActionTypes,
-  SearchProductFail,
-  SearchProductsAvailable,
-  SuggestSearchSuccess,
-} from './search.actions';
+import { DoSearch, DoSuggestSearch, SearchActionTypes, SearchProductFail, SearchProductsAvailable, SuggestSearchSuccess } from './search.actions';
+import { getRequestedSearchTerm } from './search.selectors';
 
 @Injectable()
 export class SearchEffects {
@@ -39,13 +33,9 @@ export class SearchEffects {
   // TODO: Use ofRoute() operator here or at least do not work with the router state but with the router actions
   @Effect()
   triggerSearch$ = this.store.pipe(
-    select(getRouterState),
-    filter(router => !!router),
-    map(router => router.state),
-    filter((state: RouterStateUrl) => state.url.startsWith('/search') && !!state.queryParams[this.urlParamSearchTerm]),
-    distinctUntilChanged(),
-    map(state => state.queryParams[this.urlParamSearchTerm]),
-    map(searchTerm => new DoSearch(searchTerm))
+    select(getRequestedSearchTerm),
+    filter(searchTerm => !!searchTerm),
+    map(searchTerm => new DoSearch(searchTerm)),
   );
 
   /**

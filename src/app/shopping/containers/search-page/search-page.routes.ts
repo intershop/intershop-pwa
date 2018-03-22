@@ -3,7 +3,7 @@ import { SearchPageContainerComponent } from './search-page.container';
 
 export const searchPageRoutes: Routes = [
   {
-    path: '',
-    component: SearchPageContainerComponent,
+    path: ':searchTerm',
+    component: SearchPageContainerComponent
   },
 ];
