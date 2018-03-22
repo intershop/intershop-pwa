@@ -1,0 +1,12 @@
+<div class="no-search-result" data-testing-id="no-search-result-page">
+  <h1 class="h2">{{'search.noResult.heading' | translate }}</h1>
+
+  <p class="no-search-result-title" [innerHTML]="'search.noResult.message' | translate: {'0': searchTerm}"></p>
+
+<!-- TODO: implement search box with suggested search -->
+
+  <div class="search-guidelines">
+    <h4 class="cms-search-tips-header" [innerHTML]="'search.searchnoresult.guidelines.title' | translate"></h4>
+    <ol [innerHTML]="'search.searchnoresult.guidelines.text' | translate"></ol>
+  </div>
+</div>
