@@ -80,6 +80,7 @@ describe('Product Image Component', () => {
   });
 
   it('should render img tag when imageView is not available', () => {
+    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('img').getAttribute('data-type')).toBe(component.imageType);
   });
@@ -87,6 +88,7 @@ describe('Product Image Component', () => {
   it('should render img tag for S size and for image view front', () => {
     component.imageType = 'S';
     component.imageView = 'front';
+    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('img').getAttribute('data-type')).toBe(component.imageType);
   });
@@ -94,6 +96,7 @@ describe('Product Image Component', () => {
   it('should render img tag for L size and for image view front', () => {
     component.imageType = 'L';
     component.imageView = 'front';
+    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('img').getAttribute('data-type')).toBe(component.imageType);
   });
@@ -136,6 +139,7 @@ describe('Product Image Component', () => {
 
     it('should append imageView when image view is available and altText parameter not set', () => {
       component.imageView = 'front';
+      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('img').getAttribute('alt')).toContain('front S');
     });
