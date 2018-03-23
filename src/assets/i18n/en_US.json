@@ -2296,7 +2296,7 @@
   "shopping_cart.ministatus.close.button.label": "Close",
   "shopping_cart.ministatus.empty_cart.text": "Your cart is currently empty.",
   "shopping_cart.ministatus.heading": "Shopping Cart:",
-  "shopping_cart.ministatus.items.text": "{0, choice, 0#0 items|1#1 item|1<{0,number,integer} items}",
+  "shopping_cart.ministatus.items.text": {"=0":"0 items", "=1": "1 item", "other": "# items"},
   "shopping_cart.ministatus.shopping_cart_items.heading": "Items in your cart:",
   "shopping_cart.ministatus.view_cart.link": "View Cart",
   "shopping_cart.no_working_template.message": "No Working Template defined!",

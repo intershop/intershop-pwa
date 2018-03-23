@@ -2209,7 +2209,7 @@
   "shopping_cart.ministatus.close.button.label": "Fermer",
   "shopping_cart.ministatus.empty_cart.text": "Votre panier est actuellement vide.",
   "shopping_cart.ministatus.heading": "Panier d''achat :",
-  "shopping_cart.ministatus.items.text": "{0, choice, 0#0 articles|1#1 article|1<{0,number,integer} articles}",
+  "shopping_cart.ministatus.items.text": {"=0":"0 articles", "=1": "1 article", "other": "# articles"},
   "shopping_cart.ministatus.shopping_cart_items.heading": "Articles dans votre panier :",
   "shopping_cart.ministatus.view_cart.link": "Afficher le panier",
   "shopping_cart.no_working_template.message": "Aucun modèle de plan défini !",
