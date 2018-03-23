@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
@@ -9,9 +9,10 @@ import { Product } from '../../../../models/product/product.model';
 export class RecentlyViewedAllComponent {
 
   @Input() products: Product[];
+  @Output() clearRecently = new EventEmitter<any>();
 
   clearAll() {
-    console.log('Browsing History should be cleared');
+    this.clearRecently.emit();
   }
 
 }

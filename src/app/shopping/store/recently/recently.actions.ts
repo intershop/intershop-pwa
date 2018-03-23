@@ -1,7 +1,8 @@
 import { Action } from '@ngrx/store';
 
 export enum RecentlyActionTypes {
-  AddToRecently = '[Shopping] Add Product to Recently'
+  AddToRecently = '[Shopping] Add Product to Recently',
+  ClearRecently = '[Shopping] Clear Recently'
 }
 
 export class AddToRecently implements Action {
@@ -9,5 +10,10 @@ export class AddToRecently implements Action {
   constructor(public payload: string) { }
 }
 
+export class ClearRecently implements Action {
+  readonly type = RecentlyActionTypes.ClearRecently;
+}
+
 export type RecentlyAction =
-  AddToRecently;
+  | AddToRecently
+  | ClearRecently;
