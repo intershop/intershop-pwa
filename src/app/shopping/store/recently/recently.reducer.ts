@@ -20,6 +20,13 @@ export function recentlyReducer(
 
       return { ...state, products };
     }
+
+    case fromRecently.RecentlyActionTypes.ClearRecently: {
+      const products = [];
+
+      return { ...state, products };
+    }
+
   }
 
   return state;
