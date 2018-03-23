@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
-import { getRecentlyViewedProducts } from '../../store/recently';
+import { getMostRecentlyViewedProducts } from '../../store/recently';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
@@ -19,7 +19,7 @@ export class RecentlyViewedContainerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.recentlyProducts$ = this.store.pipe(select(getRecentlyViewedProducts));
+    this.recentlyProducts$ = this.store.pipe(select(getMostRecentlyViewedProducts));
   }
 
 }

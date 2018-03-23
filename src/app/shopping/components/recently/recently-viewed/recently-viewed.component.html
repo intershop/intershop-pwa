@@ -4,7 +4,7 @@
 
   <!-- TODO: carousel or better clearing after 4 elements with intended CSS classes -->
   <div class="product-list row">
-    <div *ngFor="let product of products" class="product-list-item col-xs-6 col-md-4 grid-view">
+    <div *ngFor="let product of products" class="product-list-item col-xs-6 col-md-3">
       <ish-product-tile *ngIf="product; else loading"
         [product]="product"
       ></ish-product-tile>

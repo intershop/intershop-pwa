@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import * as productsSelectors from '../products/products.selectors';
+import { getProductEntities, getSelectedProductId } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
 export const getRecentlyState = createSelector(
@@ -13,7 +13,16 @@ export const getRecentlyProducts = createSelector(
 
 export const getRecentlyViewedProducts = createSelector(
   getRecentlyProducts,
-  productsSelectors.getProductEntities,
+  getProductEntities,
   (productSKUs, products) => productSKUs
     && productSKUs.map(sku => products[sku]) || []
+);
+
+/**
+ * Selector to get the most recent 4 products without the currently viewed product on product detail pages
+ */
+export const getMostRecentlyViewedProducts = createSelector(
+  getRecentlyViewedProducts,
+  getSelectedProductId,
+  (products, sku) => products.filter(product => product && product.sku !== sku).slice(0, 4)
 );
