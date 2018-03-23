@@ -26,11 +26,11 @@ describe('Product Page Container', () => {
         })
       ],
       declarations: [
+        ProductPageContainerComponent,
         MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['category', 'categoryPath', 'product'] }),
         MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-recently-viewed', template: 'Recently Viewed Component', inputs: ['products', 'product'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        ProductPageContainerComponent
+        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' })
       ],
     }).compileComponents();
   }));
@@ -49,10 +49,10 @@ describe('Product Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should not display anything when neither product nor loading is set', () => {
+  it('should not display anything when neither product nor loading is set (only the recently viewed container)', () => {
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual([]);
+    expect(findAllIshElements(element)).toEqual(['ish-recently-viewed-container']);
   });
 
   it('should display loading when product is loading', () => {
@@ -61,7 +61,7 @@ describe('Product Page Container', () => {
     fixture.detectChanges();
 
     expect(component.productLoading$).toBeObservable(cold('a', { a: true }));
-    expect(findAllIshElements(element)).toEqual(['ish-loading']);
+    expect(findAllIshElements(element)).toEqual(['ish-loading', 'ish-recently-viewed-container']);
   });
 
   it('should display product-detail when product is available', () => {
@@ -75,6 +75,6 @@ describe('Product Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-product-detail', 'ish-recently-viewed']);
+    expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-product-detail', 'ish-recently-viewed-container']);
   });
 });

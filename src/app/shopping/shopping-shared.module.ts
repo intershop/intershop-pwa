@@ -22,6 +22,7 @@ import { ProductTileComponent } from './components/product/product-tile/product-
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { ProductRowActionsContainerComponent } from './containers/product-row-actions/product-row-actions.container';
 import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
+import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductAddToCartComponent,
     ProductDetailActionsComponent,
     AttributeToStringPipe,
+    RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
   ],
   exports: [
@@ -73,6 +75,7 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductAddToCartComponent,
     ProductDetailActionsComponent,
     AttributeToStringPipe,
+    RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
   ]
 })
