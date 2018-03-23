@@ -1,0 +1,19 @@
+<div *ngIf="products.length" class="product-list-container">
+
+  <h2>{{ 'recentlyViewed.component.heading' | translate }}</h2>
+
+  <!-- TODO: carousel or better clearing after 4 elements with intended CSS classes -->
+  <div class="product-list row">
+    <div *ngFor="let product of products" class="product-list-item col-xs-6 col-md-3">
+      <ish-product-tile *ngIf="product; else loading"
+        [product]="product"
+      ></ish-product-tile>
+      <ng-template #loading>
+        <ish-loading></ish-loading>
+      </ng-template>
+    </div>
+  </div>
+
+  <a class="view-all" routerLink="/recently">{{ 'common.view_all.link' | translate }}</a>
+
+</div>
