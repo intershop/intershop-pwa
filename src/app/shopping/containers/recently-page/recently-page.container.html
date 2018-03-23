@@ -1,7 +1,7 @@
-<h1>{{ 'application.recentlyViewed.heading' | translate }}</h1>
+<ish-breadcrumb [trailText]="'application.recentlyViewed.breadcrumb.label' | translate"></ish-breadcrumb>
 
 <ng-container *ngIf="products$ | async as products">
 
-  <ish-recently-viewed [products]="products"></ish-recently-viewed>
+  <ish-recently-viewed-all [products]="products"></ish-recently-viewed-all>
 
 </ng-container>

@@ -5,7 +5,7 @@ import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { RecentlyPageContainerComponent } from './recently-page.container';
 
-describe('RecentlyPage.ContainerComponent', () => {
+describe('Recently Page Container', () => {
   let component: RecentlyPageContainerComponent;
   let fixture: ComponentFixture<RecentlyPageContainerComponent>;
   let element: HTMLElement;
@@ -14,7 +14,8 @@ describe('RecentlyPage.ContainerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         RecentlyPageContainerComponent,
-        MockComponent({ selector: 'ish-recently-viewed', template: 'Recently Viewed Component', inputs: ['products'] })
+        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trailText'] }),
+        MockComponent({ selector: 'ish-recently-viewed-all', template: 'Recently Viewed All Component', inputs: ['products'] })
       ],
       imports: [
         TranslateModule.forRoot()
