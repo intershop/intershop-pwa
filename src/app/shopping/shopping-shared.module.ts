@@ -19,6 +19,7 @@ import { ProductRowComponent } from './components/product/product-row/product-ro
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileActionsComponent } from './components/product/product-tile-actions/product-tile-actions.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
+import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { ProductRowActionsContainerComponent } from './containers/product-row-actions/product-row-actions.container';
 import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
 
@@ -49,6 +50,7 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductAddToCartComponent,
     ProductDetailActionsComponent,
     AttributeToStringPipe,
+    RecentlyViewedComponent,
   ],
   exports: [
     CategoryListComponent,
@@ -71,6 +73,7 @@ import { ProductTileActionsContainerComponent } from './containers/product-tile-
     ProductAddToCartComponent,
     ProductDetailActionsComponent,
     AttributeToStringPipe,
+    RecentlyViewedComponent,
   ]
 })
 

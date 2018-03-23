@@ -28,6 +28,7 @@ describe('Product Page Container', () => {
       declarations: [
         MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['category', 'categoryPath', 'product'] }),
         MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
+        MockComponent({ selector: 'ish-recently-viewed', template: 'Recently Viewed Component', inputs: ['products', 'product'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         ProductPageContainerComponent
       ],
@@ -74,6 +75,6 @@ describe('Product Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-product-detail']);
+    expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-product-detail', 'ish-recently-viewed']);
   });
 });
