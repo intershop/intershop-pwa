@@ -10,6 +10,10 @@
       (productToCompare)="addToCompare($event)"
     ></ish-product-detail>
 
+    <ish-recently-viewed
+      [products]="recentlyProducts$ | async"
+    ></ish-recently-viewed>
+
   </ng-container>
 
   <ish-loading *ngIf="productLoading$ | async"></ish-loading>

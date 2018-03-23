@@ -8,6 +8,7 @@ import { Product } from '../../../models/product/product.model';
 import { getSelectedCategory, getSelectedCategoryPath } from '../../store/categories';
 import { AddToCompare } from '../../store/compare';
 import { getProductLoading, getSelectedProduct } from '../../store/products';
+import { getRecentlyViewedProducts } from '../../store/recently';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
@@ -21,6 +22,7 @@ export class ProductPageContainerComponent implements OnInit {
   productLoading$: Observable<boolean>;
   category$: Observable<Category>;
   categoryPath$: Observable<Category[]> = of([]);
+  recentlyProducts$: Observable<Product[]>;
 
   constructor(
     private store: Store<ShoppingState>
@@ -43,6 +45,8 @@ export class ProductPageContainerComponent implements OnInit {
 
     // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
     this.categoryPath$ = this.store.pipe(select(getSelectedCategoryPath));
+
+    this.recentlyProducts$ = this.store.pipe(select(getRecentlyViewedProducts));
   }
 
   addToCart({ sku, quantity }) {
