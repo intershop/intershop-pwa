@@ -2,8 +2,7 @@ import { AbstractControl, FormGroup, ValidatorFn, Validators } from '@angular/fo
 
 /**
  * Marks all fields in a form group as dirty recursively (i.e. for nested form groups also)
- * @param  {FormGroup} formGroup
- * @returns  void
+ * @param formGroup The form group
  */
 export function markAsDirtyRecursive(formGroup: FormGroup) {
   Object.keys(formGroup.controls).forEach(key => {
@@ -21,12 +20,10 @@ export function markAsDirtyRecursive(formGroup: FormGroup) {
  * - enables required validator when there are elements in the array
  * - disables validator when no elements present
  * - resets control value to empty
- * @method updateValidatorsByDataArray
- * @param {AbstractControl} control
- * @param {any[]} array
- * @param {ValidatorFn | ValidatorFn[]} validators
- * @param {boolean} async
- * @returns void
+ * @param control
+ * @param array
+ * @param validators
+ * @param async
  */
 export function updateValidatorsByDataLength(
   control: AbstractControl,
@@ -52,9 +49,7 @@ export function updateValidatorsByDataLength(
 
 /**
  * Calls a function asynchronously
- * @method asyncify
- * @param {Function} fn
- * @returns void
+ * @param fn The function to be called asynchronously
  */
 export function asyncify(fn: Function) {
   setTimeout(fn, 0);

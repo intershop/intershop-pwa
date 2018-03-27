@@ -21,14 +21,14 @@ export class ModalDialogComponent {
   /**
    * Shows modal dialog
    */
-  show(): void {
+  show() {
     this.bsModalDialog = this.bsModalService.show(this.modalDialogTemplate);
   }
 
   /**
    * Hides modal dialog
    */
-  hide(): void {
+  hide() {
     this.bsModalDialog.hide();
   }
 }

@@ -24,7 +24,7 @@ export class HeaderNavigationComponent {
     return this.openedCategories.includes(category.uniqueId);
   }
 
-  toggleOpen(category: Category): void {
+  toggleOpen(category: Category) {
     const index = this.openedCategories.findIndex(id => id === category.uniqueId);
     (index > -1) ? this.openedCategories.splice(index, 1) : this.openedCategories.push(category.uniqueId);
   }
