@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -46,14 +46,14 @@ describe('User State Selectors', () => {
   });
 
   it('should select no customer and an error when an error event was sent', () => {
-    const error = { message: 'dummy' } as HttpErrorResponse;
+    const error = { status: 401, headers: new HttpHeaders().set('error-key', 'dummy') } as HttpErrorResponse;
     store.dispatch(new LoginUserFail(error));
 
     userAuthorized$.subscribe(authorized => expect(authorized).toBe(false));
     loggedInUser$.subscribe(customer => expect(customer).toBe(null));
     loginError$.subscribe(err => {
       expect(err).toBeTruthy();
-      expect(err.message).toBe('dummy');
+      expect(err.headers.get('error-key')).toBe('dummy');
     });
   });
 });
