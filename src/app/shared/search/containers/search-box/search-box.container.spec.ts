@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { SuggestService } from '../../../services/suggest/suggest.service';
+import { SuggestService } from '../../../../core/services/suggest/suggest.service';
 import { SearchBoxContainerComponent } from './search-box.container';
 
 describe('Search Box Container', () => {
