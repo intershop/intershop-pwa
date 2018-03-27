@@ -80,8 +80,6 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   /**
    * Submits form and throws create event when form is valid
-   * @method submitForm
-   * @returns void
    */
   submitForm() {
     if (this.form.invalid) {
