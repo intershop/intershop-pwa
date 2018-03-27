@@ -6,6 +6,11 @@ import { CoreState, } from './core.state';
 
 const STORAGE = '@ngrx/store/storage';
 
+/**
+ * To enable two way binding of all tabs set value to true. This will add the possibility to listen to changes of another tab for update.
+ */
+const bindAllTabs = false;
+
 export class Storage implements Action {
   readonly type = STORAGE;
   constructor(public payload: string) { }
@@ -15,7 +20,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
   return (state: CoreState, action: any) => {
     const keys = ['user', 'locale', 'countries', 'shopping'];
     if (action.type === STORAGE && keys.includes(action.payload)) {
-      if (localStorage) {
+      if (bindAllTabs && localStorage) {
         const rehydratedState = rehydrateApplicationState([action.payload], localStorage, k => k, true);
         return { ...state, ...rehydratedState };
       }
@@ -25,7 +30,6 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
       keys,
       rehydrate: true,
       restoreDates: true
-
     })(reducer)(state, action);
   };
 
