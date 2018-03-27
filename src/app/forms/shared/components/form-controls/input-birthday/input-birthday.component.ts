@@ -33,7 +33,7 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     super.init();
     this.createForm();
 
-    // FM: this is temporary
+    // FM: this is temporary (if any subscribe is kept, unsubscribe will be necessary)
     this.dateForm.valueChanges.subscribe(() => this.writeBirthday());
   }
 
