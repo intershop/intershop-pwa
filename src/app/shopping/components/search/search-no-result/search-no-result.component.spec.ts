@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { SearchNoResultComponent } from './search-no-result.component';
 
 describe('SearchNoResultComponent', () => {
@@ -15,7 +16,8 @@ describe('SearchNoResultComponent', () => {
         TranslateModule.forRoot()
       ],
       declarations: [
-        SearchNoResultComponent
+        SearchNoResultComponent,
+        MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' })
       ],
       providers: [
         TranslateService
@@ -38,4 +40,13 @@ describe('SearchNoResultComponent', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
+
+  it('should render no result message with search term on template', () => {
+    component.searchTerm = 'Test Search Term';
+    translate.set('search.noResult.message', '{{0}}');
+    fixture.detectChanges();
+    expect(element.querySelector('p.no-search-result-title')).toBeTruthy();
+    expect(element.querySelector('p.no-search-result-title').textContent).toContain(component.searchTerm);
+  });
+
 });
