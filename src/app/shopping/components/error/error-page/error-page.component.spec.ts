@@ -34,22 +34,4 @@ describe('Error Page Component', () => {
     expect(element.getElementsByTagName('h4')[0].textContent).toContain('Please try one of the following:');
     expect(element.getElementsByClassName('btn-primary')[0].textContent).toContain('Search');
   });
-
-  it('should not render the error if it is unavailable', () => {
-    expect(component.error).toBeFalsy();
-
-    fixture.detectChanges();
-    expect(element.querySelector('div.alert')).toBeFalsy();
-  });
-
-  it('should render the error type if it is available', () => {
-    const type = 'ERROAR';
-    component.error = { type };
-
-    fixture.detectChanges();
-
-    const alert = element.querySelector('div.alert');
-    expect(alert).toBeTruthy();
-    expect(alert.textContent).toContain(type);
-  });
 });
