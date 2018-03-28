@@ -1,6 +1,5 @@
 import { createSelector } from '@ngrx/store';
 import * as fromRouter from '../../../core/store/router';
-import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
 import * as productsSelectors from '../products/products.selectors';
 import { getShoppingState, ShoppingState } from '../shopping.state';
@@ -101,9 +100,9 @@ function populateSubCategories(c: Category, entities): Category {
     return c;
   }
 
-  const category = CategoryMapper.clone(c);
-  category.subCategories = category.subCategoriesIds
+  const subCategories = c.subCategoriesIds
     .map(id => entities[id])
     .map(cc => populateSubCategories(cc, entities));
-  return category;
+
+  return { ...c, subCategories };
 }
