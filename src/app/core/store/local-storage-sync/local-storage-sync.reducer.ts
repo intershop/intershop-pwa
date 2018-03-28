@@ -11,6 +11,13 @@ const STORAGE = '@ngrx/store/storage';
  */
 const bindAllTabs = false;
 
+/**
+ * Parts of the state that should be synced
+ */
+const keys = ['user', 'locale', 'countries', 'shopping'];
+
+
+
 export class Storage implements Action {
   readonly type = STORAGE;
   constructor(public payload: string) { }
@@ -18,13 +25,12 @@ export class Storage implements Action {
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return (state: CoreState, action: any) => {
-    const keys = ['user', 'locale', 'countries', 'shopping'];
     if (action.type === STORAGE && keys.includes(action.payload)) {
       if (bindAllTabs && localStorage) {
         const rehydratedState = rehydrateApplicationState([action.payload], localStorage, k => k, true);
         return { ...state, ...rehydratedState };
       }
-      return { ...state };
+      return state;
     }
     return localStorageSync({
       keys,
