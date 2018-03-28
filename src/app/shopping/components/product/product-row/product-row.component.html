@@ -21,7 +21,14 @@
       <div class="col-sm-4 col-xs-12 pull-right text-right text-left-xs">
         <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
         <ish-product-inventory [product]="product"></ish-product-inventory>
-        <ish-product-row-actions-container [product]="product"></ish-product-row-actions-container>
+        <div class="product-list-actions-container">
+          <div class="addtocart-container">
+            <ish-product-add-to-cart
+              [product]="product"
+              (productToCart)="addToCart()"
+            ></ish-product-add-to-cart>
+          </div>
+        </div>
       </div>
     </div>
   </div>
