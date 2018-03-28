@@ -1,5 +1,4 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
 import { adapterUpsertMany, adapterUpsertOne } from '../../../utils/adapter-upsert';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
@@ -102,15 +101,16 @@ export function flattenSubCategories(c: Category): Category[] {
     return [c];
   }
 
-  const category = CategoryMapper.clone(c);
-  category.subCategoriesIds = category.subCategories.map(sc => sc.uniqueId);
+  const category = {
+    ...c,
+    subCategoriesIds: c.subCategories.map(sc => sc.uniqueId)
+  };
+  delete category.subCategories;
 
-  const categories = category.subCategories
+  const categories = c.subCategories
     .map(sc => flattenSubCategories(sc))
     .reduce((acc, p) => [...acc, ...p], [])
     .filter(e => !!e);
-
-  delete category.subCategories;
 
   return [...categories, category];
 }

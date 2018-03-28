@@ -24,11 +24,7 @@ export class CategoryMapper {
         images: categoryData.images,
       };
     } else {
-      throw new Error('\'categoryData\' is required');
+      throw new Error(`'categoryData' is required`);
     }
-  }
-
-  static clone(c: Category): Category {
-    return JSON.parse(JSON.stringify(c));
   }
 }
