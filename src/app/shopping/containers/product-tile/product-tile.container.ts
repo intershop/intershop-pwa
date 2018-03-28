@@ -1,18 +1,21 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { isInCompareProducts, ToggleCompare } from '../../store/compare';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
-  selector: 'ish-product-tile-actions-container',
-  templateUrl: './product-tile-actions.container.html',
+  selector: 'ish-product-tile-container',
+  templateUrl: './product-tile.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductTileActionsContainerComponent implements OnInit {
+export class ProductTileContainerComponent implements OnInit {
 
   @Input() product: Product;
+  @Input() category?: Category;
+
   isInCompareList$: Observable<boolean>;
 
   constructor(
@@ -30,7 +33,7 @@ export class ProductTileActionsContainerComponent implements OnInit {
   }
 
   addToCart() {
-    console.log('[ProductTileActionsContainer] Add to Cart: SKU: ' + this.product.sku + ', Quantity: ' + this.product.minOrderQuantity);
+    console.log('[ProductTileContainer] Add to Cart: SKU: ' + this.product.sku + ', Quantity: ' + this.product.minOrderQuantity);
     // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(this.product.sku, this.product.minOrderQuantity));
   }
 

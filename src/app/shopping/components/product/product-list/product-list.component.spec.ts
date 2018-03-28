@@ -12,7 +12,7 @@ describe('Product List Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         ProductListComponent,
-        MockComponent({ selector: 'ish-product-tile', template: 'Product Tile Component', inputs: ['product', 'category'] }),
+        MockComponent({ selector: 'ish-product-tile-container', template: 'Product Tile Container', inputs: ['product', 'category'] }),
         MockComponent({ selector: 'ish-product-row', template: 'Product Row Component', inputs: ['product', 'category'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ]
@@ -35,7 +35,7 @@ describe('Product List Component', () => {
   it('should render a product tile when viewType is grid', () => {
     component.viewType = 'grid';
     fixture.detectChanges();
-    const thumbs = element.querySelectorAll('ish-product-tile');
+    const thumbs = element.querySelectorAll('ish-product-tile-container');
     expect(thumbs.length).toBe(1);
   });
 
