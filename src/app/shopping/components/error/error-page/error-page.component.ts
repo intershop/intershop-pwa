@@ -1,5 +1,5 @@
 // NEEDS_WORK: DUMMY COMPONENT
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ish-error-page',
@@ -7,6 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorPageComponent {
-  // TODO: do not handle complete ErrorState, model type might be required
-  @Input() error;
+
 }
