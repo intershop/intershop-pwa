@@ -2,11 +2,13 @@
   <h1 class="h2">{{'search.noResult.heading' | translate }}</h1>
 
   <p class="no-search-result-title" [innerHTML]="'search.noResult.message' | translate: {'0': searchTerm}"></p>
+</div>
 
-<!-- TODO: implement search box with suggested search -->
+<div class="search-container main-search-container">
+  <ish-search-box-container></ish-search-box-container>
+</div>
 
-  <div class="search-guidelines">
-    <h4 class="cms-search-tips-header" [innerHTML]="'search.searchnoresult.guidelines.title' | translate"></h4>
-    <ol [innerHTML]="'search.searchnoresult.guidelines.text' | translate"></ol>
-  </div>
+<div class="search-guidelines">
+  <h4 class="cms-search-tips-header" [innerHTML]="'search.searchnoresult.guidelines.title' | translate"></h4>
+  <ol [innerHTML]="'search.searchnoresult.guidelines.text' | translate"></ol>
 </div>

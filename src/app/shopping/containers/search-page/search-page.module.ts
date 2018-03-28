@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SharedSearchModule } from '../../../shared/shared-search.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { SearchNoResultComponent } from '../../components/search/search-no-result/search-no-result.component';
 import { SearchPageComponent } from '../../components/search/search-page/search-page.component';
@@ -12,7 +13,8 @@ import { searchPageRoutes } from './search-page.routes';
   imports: [
     RouterModule.forChild(searchPageRoutes),
     SharedModule,
-    ShoppingSharedModule
+    ShoppingSharedModule,
+    SharedSearchModule
   ],
   providers: [
     ProductsService
