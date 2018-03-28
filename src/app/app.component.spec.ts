@@ -1,4 +1,3 @@
-import { Renderer2 } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
@@ -23,8 +22,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         TranslateService,
-        { provide: Store, useFactory: () => instance(mock(Store)) },
-        Renderer2
+        { provide: Store, useFactory: () => instance(mock(Store)) }
       ],
       imports: [
         TranslateModule.forRoot(),

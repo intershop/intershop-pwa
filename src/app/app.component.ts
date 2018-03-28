@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { map } from 'rxjs/operators';
 import { CoreState } from './core/store/core.state';
 import { Storage } from './core/store/local-storage-sync/local-storage-sync.reducer';
 
@@ -15,13 +17,12 @@ export class AppComponent implements OnInit {
   // constructor(private router: Router) { console.log('ROUTES: ', this.router.config); }
 
   constructor(
-    private renderer: Renderer2,
     private store: Store<CoreState>,
   ) { }
 
   ngOnInit() {
-    this.renderer.listen('window', 'storage', event => {
-      this.store.dispatch(new Storage(event.key));
-    });
+    fromEvent(window, 'storage').pipe(
+      map((e: StorageEvent) => new Storage(e.key))
+    ).subscribe(this.store);
   }
 }
