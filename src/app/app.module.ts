@@ -22,7 +22,7 @@ import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-a
 import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers, CustomSerializer } from './core/store/core.system';
-import { localStorageSyncReducer } from './core/store/state.transfer';
+import { localStorageSyncReducer } from './core/store/local-storage-sync/local-storage-sync.reducer';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';
 

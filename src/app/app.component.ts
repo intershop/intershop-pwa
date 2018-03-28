@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CoreState } from './core/store/core.state';
-import { Storage } from './core/store/state.transfer';
+import { Storage } from './core/store/local-storage-sync/local-storage-sync.reducer';
 
 @Component({
   selector: 'ish-root',
