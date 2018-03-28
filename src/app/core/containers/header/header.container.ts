@@ -10,6 +10,16 @@ import { getErrorState } from '../../store/error/error.selectors';
   templateUrl: './header.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderContainerComponent {
+export class HeaderContainerComponent implements OnInit {
+
+  generalError$: Observable<ErrorState>;
+
+  constructor(
+    private store: Store<CoreState>
+  ) { }
+
+  ngOnInit() {
+    this.generalError$ = this.store.pipe(select(getErrorState));
+  }
 
 }
