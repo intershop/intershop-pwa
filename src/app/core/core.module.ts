@@ -18,6 +18,7 @@ import { ApiService } from './services/api.service';
 import { ApiServiceErrorHandler } from './services/api.service.errorhandler';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
+import { CrosstabService } from './services/crosstab.service';
 import { translateFactory } from './services/custom-translate-loader';
 import { ErrorCodeMappingService } from './services/error-code-mapping.service';
 import { StatePropertiesService } from './services/state-transfer/state-properties.service';
@@ -53,6 +54,7 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     StatePropertiesService,
     CountryService,
     RegionService,
+    CrosstabService,
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
@@ -67,14 +69,16 @@ export class CoreModule {
 
   constructor(
     @Optional() @SkipSelf() parentModule: CoreModule,
-    popoverConfig: PopoverConfig
+    popoverConfig: PopoverConfig,
+    crosstabService: CrosstabService
   ) {
     if (parentModule) {
-      throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only');
+      throw new Error('CoreModule is already loaded. Import it in the AppModule only');
     }
     popoverConfig.placement = 'top';
     popoverConfig.triggers = 'hover';
     popoverConfig.container = 'body';
+
+    crosstabService.listen();
   }
 }

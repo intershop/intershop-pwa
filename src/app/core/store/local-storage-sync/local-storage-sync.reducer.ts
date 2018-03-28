@@ -16,8 +16,6 @@ const bindAllTabs = false;
  */
 const keys = ['user', 'locale', 'countries', 'shopping'];
 
-
-
 export class Storage implements Action {
   readonly type = STORAGE;
   constructor(public payload: string) { }
