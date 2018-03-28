@@ -1,1 +1,7 @@
-<ish-header></ish-header>
+<ng-container *ngIf="generalError$ | async else noError">
+  <ish-small-header></ish-small-header>
+</ng-container>
+<ng-template #noError>
+  <ish-header></ish-header>
+</ng-template>
+
