@@ -36,6 +36,6 @@ export class AuthInterceptor implements HttpInterceptor {
 }
 
 // visible for testing
-export function _setToken(token: string): void {
+export function _setToken(token: string) {
   TOKEN = token;
 }

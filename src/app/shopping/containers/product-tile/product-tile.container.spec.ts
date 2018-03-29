@@ -3,11 +3,11 @@ import { combineReducers, StoreModule } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { shoppingReducers } from '../../store/shopping.system';
-import { ProductTileActionsContainerComponent } from './product-tile-actions.container';
+import { ProductTileContainerComponent } from '../product-tile/product-tile.container';
 
-describe('Product Tile Actions Container', () => {
-  let component: ProductTileActionsContainerComponent;
-  let fixture: ComponentFixture<ProductTileActionsContainerComponent>;
+describe('Product Tile Container', () => {
+  let component: ProductTileContainerComponent;
+  let fixture: ComponentFixture<ProductTileContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -18,14 +18,14 @@ describe('Product Tile Actions Container', () => {
         })
       ],
       declarations: [
-        ProductTileActionsContainerComponent,
-        MockComponent({ selector: 'ish-product-tile-actions', template: 'Product Tile Actions Component', inputs: ['isInCompareList', 'product'] }),
+        ProductTileContainerComponent,
+        MockComponent({ selector: 'ish-product-tile', template: 'Product Tile Component', inputs: ['product', 'category', 'isInCompareList'] }),
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductTileActionsContainerComponent);
+    fixture = TestBed.createComponent(ProductTileContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.product = { sku: 'sku' } as Product;

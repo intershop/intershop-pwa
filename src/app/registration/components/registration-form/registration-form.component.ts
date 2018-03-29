@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { CustomValidators } from 'ng2-validation';
+import { Subscription } from 'rxjs/Subscription';
 import { AddressFormService } from '../../../forms/address';
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { Country } from '../../../models/country/country.model';
@@ -15,9 +16,7 @@ import { markAsDirtyRecursive, updateValidatorsByDataLength } from '../../../uti
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class RegistrationFormComponent implements OnInit, OnChanges {
-  form: FormGroup;
-  submitted = false;
+export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() countries: Country[];
   @Input() regions: Region[];
@@ -28,6 +27,10 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
   @Output() create = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
   @Output() countryChange = new EventEmitter<string>();
+
+  form: FormGroup;
+  formCountrySwitchSubscription: Subscription;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -52,7 +55,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     });
 
     // build and register new address form when country code changed
-    this.form.get('countryCodeSwitch').valueChanges
+    this.formCountrySwitchSubscription = this.form.get('countryCodeSwitch').valueChanges
       .subscribe(countryCodeSwitch => this.handleCountryChange(countryCodeSwitch));
 
     // set validators for credentials form
@@ -74,14 +77,16 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
     }
   }
 
+  ngOnDestroy() {
+    this.formCountrySwitchSubscription.unsubscribe();
+  }
+
   cancelForm() {
     this.cancel.emit();
   }
 
   /**
    * Submits form and throws create event when form is valid
-   * @method submitForm
-   * @returns void
    */
   submitForm() {
     if (this.form.invalid) {

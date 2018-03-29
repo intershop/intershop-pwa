@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select/select-option.interface';
 import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
@@ -9,7 +10,7 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class ProductListToolbarComponent implements OnInit, OnChanges {
+export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() itemCount: number;
   @Input() viewType: ViewType = 'grid';
@@ -19,11 +20,12 @@ export class ProductListToolbarComponent implements OnInit, OnChanges {
   @Output() sortByChange = new EventEmitter<string>();
 
   sortForm: FormControl;
+  sortFormSubscription: Subscription;
   sortOptions: SelectOption[] = [];
 
   ngOnInit() {
     this.sortForm = new FormControl(this.sortBy);
-    this.sortForm.valueChanges.subscribe(this.sortByChange);
+    this.sortFormSubscription = this.sortForm.valueChanges.subscribe(this.sortByChange);
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -34,6 +36,10 @@ export class ProductListToolbarComponent implements OnInit, OnChanges {
     if (c.sortKeys) {
       this.sortOptions = this.mapSortKeysToSelectOptions(this.sortKeys);
     }
+  }
+
+  ngOnDestroy() {
+    this.sortFormSubscription.unsubscribe();
   }
 
   // TODO: probably it's good to map this in a selector, not here

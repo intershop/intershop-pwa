@@ -1,6 +1,5 @@
 import { createSelector } from '@ngrx/store';
 import * as fromRouter from '../../../core/store/router';
-import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
 import * as productsSelectors from '../products/products.selectors';
 import { getShoppingState, ShoppingState } from '../shopping.state';
@@ -44,16 +43,36 @@ export const getSelectedCategoryPath = createSelector(
   }
 );
 
+export const getCategoriesProductSKUs = createSelector(getCategoryState, state => state.categoriesProductSKUs);
+
+export const getProductSKUsForSelectedCategory = createSelector(
+  getCategoriesProductSKUs,
+  getSelectedCategoryId,
+  (categoriesProductSKUs, uniqueId) => categoriesProductSKUs[uniqueId] || []
+);
+
 export const getProductsForSelectedCategory = createSelector(
   getSelectedCategory,
+  getProductSKUsForSelectedCategory,
   productsSelectors.getProductEntities,
-  (category, products) => category && category.productSkus
-    && category.productSkus.map(sku => products[sku]) || []
+  (category, skus, products) => category && skus
+    && skus.map(sku => products[sku]) || []
 );
 
 export const getProductCountForSelectedCategory = createSelector(
-  getProductsForSelectedCategory,
-  products => products && products.length || 0
+  getProductSKUsForSelectedCategory,
+  skus => skus && skus.length || 0
+);
+
+export const getSelectedCategoryProductsNeeded = createSelector(
+  getSelectedCategory,
+  productsSelectors.getSelectedProductId,
+  getProductSKUsForSelectedCategory,
+  (c, selectedProductSku, skus) => {
+    if (!selectedProductSku && c && c.hasOnlineProducts && !skus.length) {
+      return [c, selectedProductSku, skus];
+    }
+  }
 );
 
 export const getCategoryLoading = createSelector(
@@ -81,9 +100,9 @@ function populateSubCategories(c: Category, entities): Category {
     return c;
   }
 
-  const category = CategoryMapper.clone(c);
-  category.subCategories = category.subCategoriesIds
+  const subCategories = c.subCategoriesIds
     .map(id => entities[id])
     .map(cc => populateSubCategories(cc, entities));
-  return category;
+
+  return { ...c, subCategories };
 }

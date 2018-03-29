@@ -1,5 +1,4 @@
-import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
-import { CategoryMapper } from '../../../models/category/category.mapper';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Category } from '../../../models/category/category.model';
 import { adapterUpsertMany, adapterUpsertOne } from '../../../utils/adapter-upsert';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
@@ -7,6 +6,7 @@ import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
   topLevelCategoriesIds: string[];
+  categoriesProductSKUs: { [uniqueId: string]: string[] };
 }
 
 export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
@@ -15,7 +15,8 @@ export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Cate
 
 export const initialState: CategoriesState = categoryAdapter.getInitialState({
   loading: false,
-  topLevelCategoriesIds: []
+  topLevelCategoriesIds: [],
+  categoriesProductSKUs: {}
 });
 
 export function categoriesReducer(
@@ -64,14 +65,12 @@ export function categoriesReducer(
       const skus = action.payload;
       const categoryUniqueId = action.categoryUniqueId;
 
-      const update: Update<Category> = {
-        id: categoryUniqueId,
-        changes: {
-          productSkus: skus
-        }
+      const categoriesProductSKUs = {
+        ...state.categoriesProductSKUs,
+        [categoryUniqueId]: skus
       };
 
-      return categoryAdapter.updateOne(update, state);
+      return { ...state, categoriesProductSKUs };
     }
 
     case CategoriesActionTypes.LoadTopLevelCategoriesSuccess: {
@@ -102,15 +101,16 @@ export function flattenSubCategories(c: Category): Category[] {
     return [c];
   }
 
-  const category = CategoryMapper.clone(c);
-  category.subCategoriesIds = category.subCategories.map(sc => sc.uniqueId);
+  const category = {
+    ...c,
+    subCategoriesIds: c.subCategories.map(sc => sc.uniqueId)
+  };
+  delete category.subCategories;
 
-  const categories = category.subCategories
+  const categories = c.subCategories
     .map(sc => flattenSubCategories(sc))
     .reduce((acc, p) => [...acc, ...p], [])
     .filter(e => !!e);
-
-  delete category.subCategories;
 
   return [...categories, category];
 }

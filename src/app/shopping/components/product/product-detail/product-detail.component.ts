@@ -16,7 +16,7 @@ export class ProductDetailComponent implements OnInit {
   productDetailForm: FormGroup;
   readonly quantityControlName = 'quantity';
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.productDetailForm = new FormGroup({
       [this.quantityControlName]: new FormControl(this.product.minOrderQuantity)
     });
