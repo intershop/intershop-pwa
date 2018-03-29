@@ -1,0 +1,4 @@
+<div class="row">
+  <a class="btn btn-link kor-control kor-control-previous" *ngIf="isShowPrevious()" (click)="selectPage(currentPage - 1)">{{'product.compare.previous.button.label' | translate}}</a>
+  <a class="btn btn-link pull-right kor-control kor-control-next" *ngIf="isShowNext()" (click)="selectPage(currentPage + 1)">{{'product.compare.next.button.label' | translate}}</a>
+</div>
