@@ -1,3 +1,5 @@
 <h1>{{'product.compare.link' | translate}}</h1>
-
-<ish-product-compare-list [compareProducts]="compareProducts$ | async"></ish-product-compare-list>
+<ish-pagination *ngIf="compareProductsCount$ | async" [itemsPerPage]="itemsPerPage"
+  [totalItems]="compareProductsCount$ | async" (pageChanged)="onPageChanged($event)"></ish-pagination>
+<ish-product-compare-list [compareProducts]="compareProducts$ | async" (productToCart)="addToCart($event)" [totalItems]="compareProductsCount$ | async"
+  (removeProductCompare)="removeProductCompare($event)"></ish-product-compare-list>
