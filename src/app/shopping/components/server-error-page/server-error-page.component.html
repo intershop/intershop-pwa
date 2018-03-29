@@ -4,7 +4,8 @@
   <h1>Something Went Wrong</h1>
   <div class="error-text">
     <h3>We are sorry ...</h3>
-    <h4>Please go back to the <a href="http://localhost:4200">Home Page</a></h4>
+    <!---  href="/"  is used here intentionally to enforce reloading the application in error case -->
+    <h4>Please go back to the <a href="/">Home Page</a> and try again.</h4>
     <p class="text-muted">
         <ng-container [ngSwitch]="error.current.status">
             <ng-container  *ngSwitchCase="0">Server timeout</ng-container>
