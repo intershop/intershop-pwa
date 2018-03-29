@@ -12,6 +12,7 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     ModalDialogComponent,
     LoadingComponent,
     AccordionComponent,
-    AccordionItemComponent
+    AccordionItemComponent,
+    PaginationComponent
   ],
   exports: [
     RouterModule,
@@ -44,7 +46,8 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     LoadingComponent,
     ModalDialogComponent,
     AccordionComponent,
-    AccordionItemComponent
+    AccordionItemComponent,
+    PaginationComponent
   ]
 })
 export class SharedModule { }
