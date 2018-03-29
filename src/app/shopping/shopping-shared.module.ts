@@ -14,14 +14,12 @@ import { ProductListToolbarComponent } from './components/product/product-list-t
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
-import { ProductRowActionsComponent } from './components/product/product-row-actions/product-row-actions.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
-import { ProductTileActionsComponent } from './components/product/product-tile-actions/product-tile-actions.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
-import { ProductRowActionsContainerComponent } from './containers/product-row-actions/product-row-actions.container';
-import { ProductTileActionsContainerComponent } from './containers/product-tile-actions/product-tile-actions.container';
+import { ProductRowContainerComponent } from './containers/product-row/product-row.container';
+import { ProductTileContainerComponent } from './containers/product-tile/product-tile.container';
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
@@ -43,10 +41,8 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductInventoryComponent,
     ProductShipmentComponent,
     ProductListToolbarComponent,
-    ProductTileActionsContainerComponent,
-    ProductTileActionsComponent,
-    ProductRowActionsContainerComponent,
-    ProductRowActionsComponent,
+    ProductTileContainerComponent,
+    ProductRowContainerComponent,
     ProductQuantityComponent,
     ProductAddToCartComponent,
     ProductDetailActionsComponent,
@@ -67,10 +63,8 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductInventoryComponent,
     ProductShipmentComponent,
     ProductListToolbarComponent,
-    ProductTileActionsContainerComponent,
-    ProductTileActionsComponent,
-    ProductRowActionsContainerComponent,
-    ProductRowActionsComponent,
+    ProductTileContainerComponent,
+    ProductRowContainerComponent,
     ProductQuantityComponent,
     ProductAddToCartComponent,
     ProductDetailActionsComponent,

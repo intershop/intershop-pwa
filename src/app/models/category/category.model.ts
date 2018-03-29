@@ -12,8 +12,6 @@ export interface Category {
   subCategoriesCount: number;
   description: string;
   images: Image[];
-
-  productSkus?: string[];
 }
 
 export * from './category.helper';

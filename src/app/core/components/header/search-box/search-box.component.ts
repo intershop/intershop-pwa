@@ -1,6 +1,7 @@
 // NEEDS_WORK: review and adapt (search-box results in javascript error when used in french)
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 
 @Component({
@@ -8,9 +9,7 @@ import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model'
   templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBoxComponent implements OnChanges, OnInit {
-
-  searchForm: FormGroup;
+export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() buttonText: string;
   @Input() buttonTitleText: string;
@@ -22,6 +21,8 @@ export class SearchBoxComponent implements OnChanges, OnInit {
   @Output() searchTermChange = new EventEmitter<string>();
   @Output() performSearch = new EventEmitter<string>();
 
+  searchForm: FormGroup;
+  searchFormSearchSubscription: Subscription;
   isHidden = true;
   activeIndex = -1;
 
@@ -31,7 +32,7 @@ export class SearchBoxComponent implements OnChanges, OnInit {
     });
 
     if (this.autoSuggest) {
-      this.searchForm.get('search').valueChanges.subscribe(this.searchTermChange);
+      this.searchFormSearchSubscription = this.searchForm.get('search').valueChanges.subscribe(this.searchTermChange);
     }
   }
 
@@ -44,6 +45,10 @@ export class SearchBoxComponent implements OnChanges, OnInit {
     if (c.searchTerm) {
       this.setSearchFormValue(this.searchTerm);
     }
+  }
+
+  ngOnDestroy() {
+    this.searchFormSearchSubscription.unsubscribe();
   }
 
   hidePopup() {

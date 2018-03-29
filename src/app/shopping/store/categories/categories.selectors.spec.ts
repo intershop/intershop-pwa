@@ -9,7 +9,7 @@ import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { LoadCategory, LoadCategoryFail, LoadCategorySuccess } from './categories.actions';
+import { LoadCategory, LoadCategoryFail, LoadCategorySuccess, SetProductSkusForCategory } from './categories.actions';
 import * as s from './categories.selectors';
 
 describe('Categories Selectors', () => {
@@ -32,7 +32,6 @@ describe('Categories Selectors', () => {
     prod = { sku: 'sku' } as Product;
     cat = { id: 'a', uniqueId: 'Aa' } as Category;
     cat.hasOnlineProducts = true;
-    cat.productSkus = [prod.sku];
 
     TestBed.configureTestingModule({
       imports: [
@@ -135,6 +134,7 @@ describe('Categories Selectors', () => {
     describe('with category route', () => {
 
       beforeEach(() => {
+        store.dispatch(new SetProductSkusForCategory(cat.uniqueId, [prod.sku]));
         store.dispatch(navigateMockAction({ url: '/any', params: { categoryUniqueId: cat.uniqueId } }));
       });
 

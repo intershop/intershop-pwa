@@ -15,7 +15,7 @@ export class ProductAddToCartComponent implements OnChanges {
 
   isDisplayTypeGlyphicon = false;
 
-  ngOnChanges(): void {
+  ngOnChanges() {
     this.isDisplayTypeGlyphicon = this.displayType === 'glyphicon';
   }
 

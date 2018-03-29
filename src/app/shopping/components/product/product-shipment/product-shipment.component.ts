@@ -13,7 +13,7 @@ export class ProductShipmentComponent implements OnChanges {
 
   isShipmentInformationAvailable = false;
 
-  ngOnChanges(): void {
+  ngOnChanges() {
     this.isShipmentInformationAvailable = Number.isInteger(this.product.readyForShipmentMin) &&
       Number.isInteger(this.product.readyForShipmentMax);
   }

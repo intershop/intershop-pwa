@@ -8,9 +8,9 @@
       <h1>{{ 'application.recentlyViewed.product.heading' | translate }}</h1>
       <div class="product-list row">
         <div *ngFor="let product of products" class="product-list-item col-xs-6 col-md-4 grid-view">
-          <ish-product-tile *ngIf="product else loading"
+          <ish-product-tile-container *ngIf="product else loading"
             [product]="product"
-          ></ish-product-tile>
+          ></ish-product-tile-container>
           <ng-template #loading>
             <ish-loading></ish-loading>
           </ng-template>

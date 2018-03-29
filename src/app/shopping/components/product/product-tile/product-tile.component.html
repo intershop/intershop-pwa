@@ -11,5 +11,21 @@
     <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
   </div>
 
-  <ish-product-tile-actions-container [product]="product"></ish-product-tile-actions-container>
+  <div class="product-tile-actions btn-group">
+    <ish-product-add-to-cart
+      [product]="product"
+      displayType="glyphicon"
+      class="btn-link"
+      (productToCart)="addToCart()"
+    ></ish-product-add-to-cart>
+    <button
+      (click)="toggleCompare()"
+      class="btn btn-link add-to-compare"
+      [ngClass]="{ 'is-selected': isInCompareList }"
+      title="{{ 'product.compare.link' | translate }}"
+    >
+      <span class="glyphicon glyphicon-equalizer"></span>
+    </button>
+  </div>
+
 </div>

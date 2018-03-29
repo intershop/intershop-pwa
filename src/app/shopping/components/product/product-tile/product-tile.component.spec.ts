@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductTileComponent } from './product-tile.component';
@@ -12,13 +13,14 @@ describe('Product Tile Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        TranslateModule.forRoot()
       ],
       declarations: [
         ProductTileComponent,
         MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
         MockComponent({ selector: 'ish-product-price', template: 'Product Price Component', inputs: ['product', 'showInformationalPrice'] }),
-        MockComponent({ selector: 'ish-product-tile-actions-container', template: 'Product Tile Actions Container', inputs: ['product'] })
+        MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart', inputs: ['product'] })
       ]
     }).compileComponents();
   }));

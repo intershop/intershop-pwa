@@ -1,23 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { ProductRowActionsContainerComponent } from './product-row-actions.container';
+import { ProductRowContainerComponent } from '../product-row/product-row.container';
 
-describe('Product Row Actions Container', () => {
-  let component: ProductRowActionsContainerComponent;
-  let fixture: ComponentFixture<ProductRowActionsContainerComponent>;
+describe('Product Row Container', () => {
+  let component: ProductRowContainerComponent;
+  let fixture: ComponentFixture<ProductRowContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ProductRowActionsContainerComponent,
-        MockComponent({ selector: 'ish-product-row-actions', template: 'Product Row Actions Component', inputs: ['product'] }),
+        ProductRowContainerComponent,
+        MockComponent({ selector: 'ish-product-row', template: 'Product Row Component', inputs: ['product', 'category'] }),
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductRowActionsContainerComponent);
+    fixture = TestBed.createComponent(ProductRowContainerComponent);
     component = fixture.componentInstance;
     component = fixture.componentInstance;
     element = fixture.nativeElement;

@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { Scheduler } from 'rxjs/Scheduler';
@@ -10,7 +9,6 @@ import { CategoriesService } from '../../../core/services/categories/categories.
 import { CoreState } from '../../../core/store/countries';
 import { getCurrentLocale } from '../../../core/store/locale';
 import * as productsActions from '../products/products.actions';
-import * as productsSelectors from '../products/products.selectors';
 import { ShoppingState } from '../shopping.state';
 import * as categoriesActions from './categories.actions';
 import * as categoriesSelectors from './categories.selectors';
@@ -69,14 +67,11 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  productOrCategoryChanged$ = combineLatest(
-    this.store.pipe(select(categoriesSelectors.getSelectedCategory)),
-    this.store.pipe(select(productsSelectors.getSelectedProductId)),
-  ).pipe(
-    filter(([c, selectedProductSku]) => !selectedProductSku),
-    filter(([c, sku]) => !sku && c && c.hasOnlineProducts && !c.productSkus),
+  productOrCategoryChanged$ = this.store.pipe(
+    select(categoriesSelectors.getSelectedCategoryProductsNeeded),
+    filter(e => !!e),
     map(([c, sku]) => new productsActions.LoadProductsForCategory(c.uniqueId))
-    );
+  );
 
   // TODO: @Ferdinand: non full categories might not be to helpfull
   @Effect()
