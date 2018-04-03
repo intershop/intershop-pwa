@@ -15,7 +15,7 @@ import * as s from './categories.selectors';
 
 describe('Categories Selectors', () => {
 
-  let store: Store<ShoppingState>;
+  let store$: Store<ShoppingState>;
 
   let categories$: Observable<Category[]>;
   let categoryEntities$: Observable<{ [id: string]: Category }>;
@@ -43,16 +43,16 @@ describe('Categories Selectors', () => {
       ]
     });
 
-    store = TestBed.get(Store);
+    store$ = TestBed.get(Store);
 
-    categories$ = store.pipe(select(s.getCategories));
-    categoryEntities$ = store.pipe(select(s.getCategoryEntities));
-    categoryLoading$ = store.pipe(select(s.getCategoryLoading));
-    productCount$ = store.pipe(select(s.getProductCountForSelectedCategory));
-    products$ = store.pipe(select(s.getProductsForSelectedCategory));
-    selectedCategory$ = store.pipe(select(s.getSelectedCategory));
-    selectedCategoryId$ = store.pipe(select(s.getSelectedCategoryId));
-    selectedCategoryPath$ = store.pipe(select(s.getSelectedCategoryPath));
+    categories$ = store$.pipe(select(s.getCategories));
+    categoryEntities$ = store$.pipe(select(s.getCategoryEntities));
+    categoryLoading$ = store$.pipe(select(s.getCategoryLoading));
+    productCount$ = store$.pipe(select(s.getProductCountForSelectedCategory));
+    products$ = store$.pipe(select(s.getProductsForSelectedCategory));
+    selectedCategory$ = store$.pipe(select(s.getSelectedCategory));
+    selectedCategoryId$ = store$.pipe(select(s.getSelectedCategoryId));
+    selectedCategoryPath$ = store$.pipe(select(s.getSelectedCategoryPath));
   });
 
   describe('with empty state', () => {
@@ -76,7 +76,7 @@ describe('Categories Selectors', () => {
   describe('loading a category', () => {
 
     beforeEach(() => {
-      store.dispatch(new LoadCategory(''));
+      store$.dispatch(new LoadCategory(''));
     });
 
     it('should set the state to loading', () => {
@@ -86,7 +86,7 @@ describe('Categories Selectors', () => {
     describe('and reporting success', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadCategorySuccess(cat));
+        store$.dispatch(new LoadCategorySuccess(cat));
       });
 
       it('should set loading to false', () => {
@@ -98,7 +98,7 @@ describe('Categories Selectors', () => {
     describe('and reporting failure', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadCategoryFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadCategoryFail({ message: 'error' } as HttpErrorResponse));
       });
 
       it('should not have loaded category on error', () => {
@@ -111,8 +111,8 @@ describe('Categories Selectors', () => {
   describe('state with a category', () => {
 
     beforeEach(() => {
-      store.dispatch(new LoadCategorySuccess(cat));
-      store.dispatch(new LoadProductSuccess(prod));
+      store$.dispatch(new LoadCategorySuccess(cat));
+      store$.dispatch(new LoadProductSuccess(prod));
     });
 
     describe('but no current router state', () => {
@@ -135,8 +135,8 @@ describe('Categories Selectors', () => {
     describe('with category route', () => {
 
       beforeEach(() => {
-        store.dispatch(new SetProductSkusForCategory(cat.uniqueId, [prod.sku]));
-        store.dispatch(navigateMockAction({ url: '/any', params: { categoryUniqueId: cat.uniqueId } }));
+        store$.dispatch(new SetProductSkusForCategory(cat.uniqueId, [prod.sku]));
+        store$.dispatch(navigateMockAction({ url: '/any', params: { categoryUniqueId: cat.uniqueId } }));
       });
 
       it('should return the category information when used', () => {
