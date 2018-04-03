@@ -1,8 +1,9 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
-import { AttributeToStringPipe } from '../../../../models/attribute/attribute.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
+import { AttributeToStringPipe } from '../../../../shared/pipes/attribute.pipe';
+import { PricePipe } from '../../../../shared/pipes/price.pipe';
 import { ProductAttributesComponent } from './product-attributes.component';
 
 describe('Product Attributes Component', () => {
@@ -15,9 +16,9 @@ describe('Product Attributes Component', () => {
       product = { sku: 'sku' } as Product;
       product.attributes = [{ name: 'A', type: 'String', value: 'A' }, { name: 'B', type: 'String', value: 'B' }];
       TestBed.configureTestingModule({
-        imports: [StoreModule.forRoot({})],
-        declarations: [ProductAttributesComponent, AttributeToStringPipe],
-        providers: [CurrencyPipe, DatePipe, DecimalPipe],
+        imports: [TranslateModule.forRoot()],
+        declarations: [ProductAttributesComponent, AttributeToStringPipe, PricePipe],
+        providers: [CurrencyPipe, DatePipe, DecimalPipe, PricePipe],
       }).compileComponents();
     })
   );

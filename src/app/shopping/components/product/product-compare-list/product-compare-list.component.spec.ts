@@ -3,8 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AttributeToStringPipe } from '../../../../models/attribute/attribute.pipe';
 import { Product } from '../../../../models/product/product.model';
+import { AttributeToStringPipe } from '../../../../shared/pipes/attribute.pipe';
+import { PricePipe } from '../../../../shared/pipes/price.pipe';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductCompareListComponent } from './product-compare-list.component';
 
@@ -44,8 +45,9 @@ describe('Product Compare List Component', () => {
             inputs: ['product'],
           }),
           AttributeToStringPipe,
+          PricePipe,
         ],
-        providers: [CurrencyPipe, DatePipe, DecimalPipe],
+        providers: [CurrencyPipe, DatePipe, DecimalPipe, PricePipe],
       }).compileComponents();
     })
   );
