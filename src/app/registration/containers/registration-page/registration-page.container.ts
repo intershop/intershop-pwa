@@ -1,15 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
 import { getAllCountries } from '../../../core/store/countries/countries.selectors';
 import { CreateUser, getUserError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { Locale } from '../../../models/locale/locale.model';
 import { Region } from '../../../models/region/region.model';
 
 @Component({
@@ -20,7 +22,7 @@ import { Region } from '../../../models/region/region.model';
 export class RegistrationPageContainerComponent implements OnInit {
 
   countries$: Observable<Country[]>;
-  languages$: Observable<any[]>;
+  languages$: Observable<Locale[]>;
   regionsForSelectedCountry$: Observable<Region[]>;
   titlesForSelectedCountry$: Observable<string[]>;
   userCreateError$: Observable<HttpErrorResponse>;
@@ -28,12 +30,14 @@ export class RegistrationPageContainerComponent implements OnInit {
   constructor(
     private store: Store<CoreState>,
     private rs: RegionService,
-    private router: Router
-  ) { }
+    private router: Router,
+    @Inject(AVAILABLE_LOCALES) locales: Locale[]
+  ) {
+    this.languages$ = of(locales);
+  }
 
   ngOnInit() {
     this.countries$ = this.store.pipe(select(getAllCountries));
-    this.languages$ = this.getLanguages();
     this.userCreateError$ = this.store.pipe(select(getUserError));
   }
 
@@ -48,15 +52,6 @@ export class RegistrationPageContainerComponent implements OnInit {
 
   onCreate(customer: Customer) {
     this.store.dispatch(new CreateUser(customer));
-  }
-
-  // TODO: this is just a temporary workaround! these information must come from the store (or from a service)
-  private getLanguages(): Observable<any[]> {
-    return of([
-      { localeid: 'en_US', name: 'English (United States)' },
-      { localeid: 'fr_FR', name: 'French (France)' },
-      { localeid: 'de_DE', name: 'German (Germany)' }
-    ]);
   }
 
   private getTitles(countryCode: string): Observable<string[]> {
