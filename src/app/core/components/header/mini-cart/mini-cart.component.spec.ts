@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { Basket } from '../../../../models/basket/basket.model';
+import { PipesModule } from '../../../../shared/pipes.module';
 import { MiniCartComponent } from './mini-cart.component';
 
 describe('Mini Cart Component', () => {
@@ -15,7 +16,8 @@ describe('Mini Cart Component', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [CollapseModule.forRoot(), CommonModule, TranslateModule.forRoot()],
+        imports: [CollapseModule.forRoot(), CommonModule, TranslateModule.forRoot(), PipesModule],
+        providers: [CurrencyPipe],
         declarations: [MiniCartComponent],
       }).compileComponents();
     })

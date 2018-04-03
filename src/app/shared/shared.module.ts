@@ -12,6 +12,9 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
+import { PipesModule } from './pipes.module';
+import { AttributeToStringPipe } from './pipes/attribute.pipe';
+import { PricePipe } from './pipes/price.pipe';
 
 @NgModule({
   imports: [
@@ -23,6 +26,7 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     CollapseModule,
     ModalModule,
     PopoverModule,
+    PipesModule,
   ],
   declarations: [
     BreadcrumbComponent,
@@ -45,6 +49,8 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     ModalDialogComponent,
     AccordionComponent,
     AccordionItemComponent,
+    AttributeToStringPipe,
+    PricePipe,
   ],
 })
 export class SharedModule {}
