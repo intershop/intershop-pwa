@@ -13,7 +13,7 @@ describe('AuthGuard', () => {
 
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
-    let store: Store<CoreState>;
+    let store$: Store<CoreState>;
 
     beforeEach(async(() => {
       const loginComponentMock = MockComponent({ selector: 'ish-login', template: 'Login Component' });
@@ -32,12 +32,12 @@ describe('AuthGuard', () => {
 
     beforeEach(() => {
       authGuard = TestBed.get(AuthGuard);
-      store = TestBed.get(Store);
-      store.dispatch(navigateMockAction({ url: '/any' }));
+      store$ = TestBed.get(Store);
+      store$.dispatch(navigateMockAction({ url: '/any' }));
     });
 
     it('should return true when user is authorized', () => {
-      store.dispatch(new LoginUserSuccess({} as Customer));
+      store$.dispatch(new LoginUserSuccess({} as Customer));
 
       authGuard.canActivate().subscribe(authorized =>
         expect(authorized).toBeTruthy()
