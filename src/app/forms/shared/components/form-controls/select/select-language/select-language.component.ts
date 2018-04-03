@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Locale } from '../../../../../../models/locale/locale.model';
 import { SelectOption } from '../../select/select-option.interface';
 import { SelectComponent } from '../select.component';
 
@@ -9,7 +10,7 @@ import { SelectComponent } from '../select.component';
 })
 export class SelectLanguageComponent extends SelectComponent implements OnChanges {
 
-  @Input() languages: any[]; // TODO: insert type
+  @Input() languages: Locale[];
   @Input() controlName = 'preferredLanguage';
   @Input() label = 'account.default_address.preferred_language.label';
   @Input() errorMessages = { required: 'Please select a preferred language' };  // ToDo: Translation key
@@ -20,11 +21,11 @@ export class SelectLanguageComponent extends SelectComponent implements OnChange
     }
   }
 
-  private mapToOptions(languages: any[]): SelectOption[] { // TODO: insert type
+  private mapToOptions(languages: Locale[]): SelectOption[] { // TODO: insert type
     if (!languages) { return; }
     return languages.map(lang => ({
-      label: lang.name,
-      value: lang.localeid
+      label: lang.displayLong,
+      value: lang.lang
     } as SelectOption));
   }
 }
