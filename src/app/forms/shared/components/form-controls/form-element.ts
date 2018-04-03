@@ -6,7 +6,7 @@ import { UUID } from 'angular2-uuid';
 export class FormElement {
   @Input() form: FormGroup;             // required
   @Input() controlName: string;         // required
-  @Input() errorMessages: any;
+  @Input() errorMessages: { [key: string]: string };
   @Input() label: string;               // localization key or a string
   @Input() labelClass = 'col-sm-4';
   @Input() inputClass = 'col-sm-8';

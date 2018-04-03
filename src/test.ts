@@ -19,7 +19,9 @@ import * as injectionKeys from './app/core/configurations/injection-keys';
 import { ICM_APPLICATION, ICM_SERVER_URL, ICM_BASE_URL } from './app/core/services/state-transfer/factories';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
+// tslint:disable-next-line: no-any
 declare const __karma__: any;
+// tslint:disable-next-line: no-any
 declare const require: any;
 
 // Prevent Karma from running prematurely.

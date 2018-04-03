@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AddressFormService } from '../../../forms/address';
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { Country } from '../../../models/country/country.model';
+import { Locale } from '../../../models/locale/locale.model';
 import { Region } from '../../../models/region/region.model';
 import { markAsDirtyRecursive, updateValidatorsByDataLength } from '../../../utils/form-utils';
 
@@ -20,12 +21,12 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() countries: Country[];
   @Input() regions: Region[];
-  @Input() languages: any[]; // TODO: insert type
-  @Input() titles: any[]; // TODO: insert type
+  @Input() languages: Locale[];
+  @Input() titles: string[];
   @Input() error: HttpErrorResponse;
 
-  @Output() create = new EventEmitter<any>();
-  @Output() cancel = new EventEmitter<any>();
+  @Output() create = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
   @Output() countryChange = new EventEmitter<string>();
 
   form: FormGroup;

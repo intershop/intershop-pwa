@@ -11,7 +11,7 @@ export class ProductAddToCartComponent implements OnChanges {
   @Input() disabled = false;
   @Input() displayType?: string;
   @Input() class?: string;
-  @Output() productToCart = new EventEmitter<any>();
+  @Output() productToCart = new EventEmitter<void>();
 
   isDisplayTypeGlyphicon = false;
 

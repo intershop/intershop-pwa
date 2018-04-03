@@ -12,8 +12,8 @@ export const environment = {
   mainNavigationMaxSubCategoriesDepth: 2,
 
   locales: [
-    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English' },
-    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German' },
-    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French' }
+    { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
+    { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
+    { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' }
   ]
 };

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -52,10 +53,10 @@ describe('CountriesEffects', () => {
     });
 
     it('should dispatch a LoadCountriesFail action if a load error occurs', () => {
-      when(countryServiceMock.getCountries()).thenReturn(_throw('error'));
+      when(countryServiceMock.getCountries()).thenReturn(_throw({ message: 'error' } as HttpErrorResponse));
 
       const action = { type: ROOT_EFFECTS_INIT } as Action;
-      const expected = new LoadCountriesFail('error');
+      const expected = new LoadCountriesFail({ message: 'error' } as HttpErrorResponse);
 
       actions$ = hot('-a', { a: action });
 

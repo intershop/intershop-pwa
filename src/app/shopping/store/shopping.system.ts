@@ -22,6 +22,7 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   viewconf: viewconfReducer
 };
 
+// tslint:disable-next-line: no-any
 export const shoppingEffects: any[] = [
   CategoriesEffects,
   ProductsEffects,

@@ -4,7 +4,7 @@ import { compareReducer, initialState } from './compare.reducer';
 describe('CompareReducer', () => {
   describe('undefined action', () => {
     it('should return the default state when queried with undefined state', () => {
-      const action = {} as any;
+      const action = {} as fromActions.CompareAction;
       const state = compareReducer(undefined, action);
 
       expect(state).toBe(initialState);

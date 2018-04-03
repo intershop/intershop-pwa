@@ -3,4 +3,5 @@ export interface Locale {
   currency: string;
   value: string;
   displayName: string;
+  displayLong: string;
 }

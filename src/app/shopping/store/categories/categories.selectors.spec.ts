@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
@@ -17,7 +18,7 @@ describe('Categories Selectors', () => {
   let store: Store<ShoppingState>;
 
   let categories$: Observable<Category[]>;
-  let categoryEntities$: Observable<any>;
+  let categoryEntities$: Observable<{ [id: string]: Category }>;
   let categoryLoading$: Observable<boolean>;
   let productCount$: Observable<number>;
   let products$: Observable<Product[]>;
@@ -97,7 +98,7 @@ describe('Categories Selectors', () => {
     describe('and reporting failure', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadCategoryFail({ message: 'error' }));
+        store.dispatch(new LoadCategoryFail({ message: 'error' } as HttpErrorResponse));
       });
 
       it('should not have loaded category on error', () => {

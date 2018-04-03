@@ -199,6 +199,7 @@
       }
     },
     "meaningful-naming-in-tests": { "severity": "warning" },
+    "no-any": { "severity": "warning" },
     "no-commented-out-tests": true,
     "no-focused-tests": true,
     "no-disabled-tests": { "severity": "warning" },

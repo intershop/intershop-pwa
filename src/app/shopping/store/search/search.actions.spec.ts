@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { DoSearch, SearchActionTypes, SearchProductFail, SearchProductsAvailable } from './search.actions';
 
 describe('Search Actions', () => {
@@ -23,7 +24,7 @@ describe('Search Actions', () => {
     });
 
     it('should create new action for SearchProductFail', () => {
-      const payload = 'any';
+      const payload = { message: 'error' } as HttpErrorResponse;
       const action = new SearchProductFail(payload);
 
       expect({ ...action }).toEqual({

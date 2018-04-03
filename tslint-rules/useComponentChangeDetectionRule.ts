@@ -16,6 +16,7 @@ class UseComponentChangeDetectionWalker extends NgWalker {
   public visitClassDecorator(decorator: ts.Decorator) {
     if (decorator.expression.getChildAt(0).getText() === 'Component') {
       const componentProperties = decorator.expression.getChildAt(2) as ts.SyntaxList;
+      // tslint:disable-next-line:no-any
       const map = (componentProperties.getChildAt(0) as any).symbol.members as ts.Map<any>;
 
       if (!map.has('changeDetection')) {

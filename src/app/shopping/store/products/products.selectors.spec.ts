@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
@@ -15,7 +16,7 @@ describe('Products Selectors', () => {
   let store: Store<ShoppingState>;
 
   let products$: Observable<Product[]>;
-  let productEntities$: Observable<any>;
+  let productEntities$: Observable<{ [id: string]: Product }>;
   let productLoading$: Observable<boolean>;
   let selected$: Observable<Product>;
   let selectedId$: Observable<string>;
@@ -83,7 +84,7 @@ describe('Products Selectors', () => {
     describe('and reporting failure', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadProductFail({ message: 'error' }));
+        store.dispatch(new LoadProductFail({ message: 'error' } as HttpErrorResponse));
       });
 
       it('should not have loaded product on error', () => {

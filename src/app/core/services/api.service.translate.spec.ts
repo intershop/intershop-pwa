@@ -33,7 +33,7 @@ describe('ApiService Translation', () => {
   };
 
   // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
-  function deepCopyObservable(obj): Observable<any> {
+  function deepCopyObservable<T>(obj): Observable<T> {
     return of(JSON.parse(JSON.stringify(obj)));
   }
 

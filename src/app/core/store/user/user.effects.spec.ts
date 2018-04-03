@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -7,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { Customer } from '../../../models/customer/customer.model';
 import { AccountLoginService } from '../../services/account-login/account-login.service';
 import { coreReducers } from '../core.system';
 import * as ua from './user.actions';
@@ -21,8 +23,8 @@ describe('UserEffects', () => {
   beforeEach(() => {
     routerMock = mock(Router);
     accountLoginServiceMock = mock(AccountLoginService);
-    when(accountLoginServiceMock.signinUser(anything())).thenReturn(of({} as any));
-    when(accountLoginServiceMock.createUser(anything())).thenReturn(of({} as any));
+    when(accountLoginServiceMock.signinUser(anything())).thenReturn(of({} as Customer));
+    when(accountLoginServiceMock.createUser(anything())).thenReturn(of({} as Customer));
 
     TestBed.configureTestingModule({
       imports: [
@@ -52,7 +54,7 @@ describe('UserEffects', () => {
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {
       const action = new ua.LoginUser({ userName: 'dummy' });
-      const completion = new ua.LoginUserSuccess({} as any);
+      const completion = new ua.LoginUserSuccess({} as Customer);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -64,7 +66,7 @@ describe('UserEffects', () => {
       when(accountLoginServiceMock.signinUser(anything())).thenReturn(_throw({ status: 401 }));
 
       const action = new ua.LoginUser({ userName: 'dummy' });
-      const completion = new ua.LoginUserFail({ status: 401 } as any);
+      const completion = new ua.LoginUserFail({ status: 401 } as HttpErrorResponse);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -87,7 +89,7 @@ describe('UserEffects', () => {
 
   describe('goToAccountAfterLogin$', () => {
     it('should navigate to /account after LoginUserSuccess', () => {
-      const action = new ua.LoginUserSuccess({} as any);
+      const action = new ua.LoginUserSuccess({} as Customer);
 
       actions$ = hot('-a', { a: action });
 
@@ -101,7 +103,7 @@ describe('UserEffects', () => {
 
   describe('createUser$', () => {
     it('should call the api service when Create event is called', () => {
-      const action = new ua.CreateUser({} as any);
+      const action = new ua.CreateUser({} as Customer);
 
       actions$ = hot('-a', { a: action });
 
@@ -111,8 +113,8 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a CreateUserSuccess action on successful user creation', () => {
-      const action = new ua.CreateUser({} as any);
-      const completion = new ua.CreateUserSuccess({} as any);
+      const action = new ua.CreateUser({} as Customer);
+      const completion = new ua.CreateUserSuccess({} as Customer);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -123,8 +125,8 @@ describe('UserEffects', () => {
     it('should dispatch a CreateUserFail action on failed user creation', () => {
       when(accountLoginServiceMock.createUser(anything())).thenReturn(_throw({ status: 401 }));
 
-      const action = new ua.CreateUser({} as any);
-      const completion = new ua.CreateUserFail({ status: 401 } as any);
+      const action = new ua.CreateUser({} as Customer);
+      const completion = new ua.CreateUserFail({ status: 401 } as HttpErrorResponse);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -135,8 +137,8 @@ describe('UserEffects', () => {
 
   describe('publishLoginEventAfterCreate$', () => {
     it('should dispatch a LoginUserSuccess when CreateUserSuccess arrives', () => {
-      const action = new ua.CreateUserSuccess({} as any);
-      const completion = new ua.LoginUserSuccess({} as any);
+      const action = new ua.CreateUserSuccess({} as Customer);
+      const completion = new ua.LoginUserSuccess({} as Customer);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
