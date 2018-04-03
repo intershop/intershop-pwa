@@ -15,7 +15,7 @@ describe('Mini Cart Container', () => {
         MockComponent({
           selector: 'ish-mini-cart',
           template: 'Mini Cart',
-          inputs: ['cartItems'],
+          inputs: ['basket'],
         }),
         MiniCartContainerComponent,
       ],

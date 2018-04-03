@@ -1,5 +1,7 @@
 // NEEDS_WORK: DUMMY COMPONENT
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { BasketHelper } from '../../../../models/basket/basket.helper';
+import { Basket } from '../../../../models/basket/basket.model';
 
 @Component({
   selector: 'ish-mini-cart',
@@ -9,18 +11,15 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 
 export class MiniCartComponent implements OnChanges {
 
-  @Input() cartItems: { salePrice: { value: number } }[];
+  @Input() basket: Basket;
 
   isCollapsed = true;
-  cartPrice: number;
-  cartLength: number;
+  itemsCount: number;
 
   ngOnChanges() {
-    this.cartPrice = 0;
-    this.cartLength = 0;
-    if (this.cartItems && this.cartItems.length) {
-      this.cartPrice = this.cartItems.map(item => item.salePrice.value).reduce((l, r) => l + r, 0);
-      this.cartLength = this.cartItems.length;
+    if (!this.basket) {
+      throw new Error('required input parameter <basket> is missing for MiniCartComponent');
     }
+    this.itemsCount = BasketHelper.getBasketItemsCount(this.basket);
   }
 }
