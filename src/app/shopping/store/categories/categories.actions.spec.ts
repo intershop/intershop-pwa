@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Category } from '../../../models/category/category.model';
 import * as fromActions from './categories.actions';
 
@@ -14,7 +15,7 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadTopLevelCategoriesFail', () => {
-      const payload = { a: 'a' };
+      const payload = { message: 'error' } as HttpErrorResponse;
       const action = new fromActions.LoadTopLevelCategoriesFail(payload);
 
       expect({ ...action }).toEqual({
@@ -49,7 +50,7 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadCategoryFail', () => {
-      const payload = { a: 'a' };
+      const payload = { message: 'error' } as HttpErrorResponse;
       const action = new fromActions.LoadCategoryFail(payload);
 
       expect({ ...action }).toEqual({

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../../../models/product/product.model';
 import * as fromActions from './products.actions';
 
@@ -14,7 +15,7 @@ describe('Products Actions', () => {
     });
 
     it('should create new action for LoadProductFail', () => {
-      const payload = '123';
+      const payload = { message: 'error' } as HttpErrorResponse;
       const action = new fromActions.LoadProductFail(payload);
 
       expect({ ...action }).toEqual({

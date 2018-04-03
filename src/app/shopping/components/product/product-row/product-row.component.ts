@@ -12,7 +12,7 @@ export class ProductRowComponent {
 
   @Input() product: Product;
   @Input() category?: Category;
-  @Output() productToCart = new EventEmitter<any>();
+  @Output() productToCart = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 

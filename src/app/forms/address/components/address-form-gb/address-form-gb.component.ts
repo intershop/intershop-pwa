@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
 export class AddressFormGBComponent implements OnInit {
 
   @Input() addressForm: FormGroup;
-  @Input() titles: any[];
+  @Input() titles: string[];
 
   ngOnInit() {
     if (!this.addressForm) {

@@ -2,6 +2,7 @@ import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { AVAILABLE_LOCALES } from '../../../../../../core/configurations/injection-keys';
 import { SelectLanguageComponent } from './select-language.component';
 
 describe('Select Language Component', () => {
@@ -26,11 +27,7 @@ describe('Select Language Component', () => {
       });
       component.form = form;
 
-      component.languages = [
-        { localeid: 'en_US', name: 'English (United States)' },
-        { localeid: 'fr_FR', name: 'French (France)' },
-        { localeid: 'de_DE', name: 'German (Germany)' }
-      ];
+      component.languages = TestBed.get(AVAILABLE_LOCALES);
     });
   }));
 

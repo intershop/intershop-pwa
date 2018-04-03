@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Locale } from '../../../models/locale/locale.model';
 
 @Component({
   selector: 'ish-registration-personal-form',
@@ -8,7 +9,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class RegistrationPersonalFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
-  @Input() languages: any[]; // TODO: insert type
+  @Input() languages: Locale[];
 
   ngOnInit() {
     if (!this.parentForm) {

@@ -1,5 +1,5 @@
 import { cold } from 'jasmine-marbles';
 
-export function c(val: any) {
+export function c<T>(val: T) {
   return cold('a', { a: val });
 }

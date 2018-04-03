@@ -13,8 +13,8 @@ export class ProductTileComponent {
   @Input() product: Product;
   @Input() category?: Category;
   @Input() isInCompareList: boolean;
-  @Output() compareToggle = new EventEmitter<any>();
-  @Output() productToCart = new EventEmitter<any>();
+  @Output() compareToggle = new EventEmitter<void>();
+  @Output() productToCart = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 

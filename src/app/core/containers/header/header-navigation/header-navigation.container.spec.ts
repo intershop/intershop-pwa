@@ -14,7 +14,7 @@ describe('Header Navigation Container', () => {
 
   beforeEach(async(() => {
     storeMock$ = mock(Store);
-    when(storeMock$.pipe(anything())).thenReturn(of({}) as any);
+    when(storeMock$.pipe(anything())).thenReturn(of({}));
 
     TestBed.configureTestingModule({
       declarations: [

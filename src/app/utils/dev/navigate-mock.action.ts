@@ -1,9 +1,10 @@
+import { Params } from '@angular/router';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 
 interface ActionPayload {
   url: string;
-  queryParams?: any;
-  params?: any;
+  queryParams?: Params;
+  params?: Params;
 }
 
 export function navigateMockAction(state: ActionPayload) {

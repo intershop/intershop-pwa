@@ -11,6 +11,7 @@ export class ModalDialogComponent {
 
   @Input() title: string;
 
+  // tslint:disable-next-line:no-any
   @ViewChild('template') modalDialogTemplate: TemplateRef<any>;
   bsModalDialog: BsModalRef;
 

@@ -48,7 +48,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
     }
   }
 
-  private checkCreationTestContent(node: ts.ExpressionStatement): any {
+  private checkCreationTestContent(node: ts.ExpressionStatement) {
     const shouldBeCreatedBlock = node.getChildAt(0).getChildAt(2).getChildAt(2).getChildAt(4).getChildAt(1);
 
     const orReduce = (l, r) => l || r;
