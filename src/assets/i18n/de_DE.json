@@ -2296,7 +2296,7 @@
   "shopping_cart.ministatus.close.button.label": "Schließen",
   "shopping_cart.ministatus.empty_cart.text": "Ihr Warenkorb ist leer.",
   "shopping_cart.ministatus.heading": "Warenkorb:",
-  "shopping_cart.ministatus.items.text": "{0, choice, 0#0 Artikel|1#1 Artikel|1<{0,number,integer} Artikel}",
+  "shopping_cart.ministatus.items.text": {"other": "# Artikel"},
   "shopping_cart.ministatus.shopping_cart_items.heading": "Artikel in Ihrem Warenkorb:",
   "shopping_cart.ministatus.view_cart.link": "Warenkorb ansehen",
   "shopping_cart.no_working_template.message": "Kein Workingtemplate definiert!",
