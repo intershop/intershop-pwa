@@ -14,6 +14,7 @@ import { async } from 'rxjs/scheduler/async';
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CheckoutModule } from './checkout/checkout.module';
 import * as injectionKeys from './core/configurations/injection-keys';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
@@ -57,6 +58,7 @@ if (!environment.production) {
     BrowserTransferStateModule,
     CoreModule,
     // import the feature modules that provide the application functionalities
+    CheckoutModule,
     ShoppingModule,
     RegistrationModule,
     AccountModule,
