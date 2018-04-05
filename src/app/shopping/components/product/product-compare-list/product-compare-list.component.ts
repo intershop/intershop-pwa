@@ -11,13 +11,21 @@ export class ProductCompareListComponent {
 
   @Input() compareProducts: Product[] = [];
   @Input() totalItems: number;
+  @Input() itemsPerPage: number;
   @Output() productToCart = new EventEmitter<{ sku: string, quantity: number }>();
   @Output() removeProductCompare = new EventEmitter<string>();
+  @Output() pageChanged = new EventEmitter<number>();
+  currentPage = 1;
+
+  onPageChanged(currentPage: number) {
+    this.currentPage = currentPage;
+    this.pageChanged.emit(currentPage);
+  }
 
   /**
    * Return Common attributes between products compare
-   * @param  {Product} product
-   * @returns Attribute
+   * @param product
+   * @returns
    */
   getCommonAttribute(product: Product): Attribute[] {
     const commonAttributes: Attribute[] = [];
@@ -29,8 +37,8 @@ export class ProductCompareListComponent {
 
   /**
    * return specific attributes between products compare
-   * @param  {Product} currentProduct
-   * @returns Product
+   * @param currentProduct
+   * @returns
    */
   getProductWithSpecificAttribute(currentProduct: Product): Product {
     const product: Product = { ...currentProduct };
@@ -40,7 +48,7 @@ export class ProductCompareListComponent {
 
   /**
    * return common attributes name list between products compare
-   * @returns Set
+   * @returns
    */
   getCommonAttributeNames(): Set<string> {
     const result = this.compareProducts.reduce((commonAttributeNameList, current) => {
@@ -57,9 +65,9 @@ export class ProductCompareListComponent {
 
   /**
    * return Attribute based on passing product and attribute name
-   * @param  {Product} product
-   * @param  {string} attributeName
-   * @returns Attribute
+   * @param product
+   * @param attributeName
+   * @returns
    */
   getAttribute(product: Product, attributeName: string): Attribute {
     return product.attributes.find(attribute => attribute.name === attributeName);
@@ -67,15 +75,16 @@ export class ProductCompareListComponent {
 
   /**
    * remove compare product
-   * @param  {string} sku
+   * @param sku
    */
   removeCompareProduct(sku: string) {
     this.removeProductCompare.emit(sku);
   }
 
   /**
-   * Add product to cart
-   * @param  {string} sku
+   * Add product with the given quantity to the cart.
+   * @param sku The SKU of the product to add
+   * @param quantity The quantity to be added
    */
   addToCart(sku: string, quantity: number) {
     this.productToCart.emit({ sku: sku, quantity: quantity });

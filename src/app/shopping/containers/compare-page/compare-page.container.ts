@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Pagination } from '../../../models/pagination/pagination.interface';
 import { Product } from '../../../models/product/product.model';
 import { getCompareProductsByCurrentPageAndItemsPerPage, getCompareProductsCount } from '../../store/compare';
 import * as fromCompare from '../../store/compare/compare.actions';
@@ -13,21 +12,22 @@ import { ShoppingState } from '../../store/shopping.state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ComparePageContainerComponent implements OnInit {
+
   compareProducts$: Observable<Product[]>;
   compareProductsCount$: Observable<Number>;
-  itemsPerPage = 2;
+  itemsPerPage = 3;
+
   constructor(
     private store: Store<ShoppingState>
   ) { }
 
   ngOnInit() {
-    const initialPage = 1;
-    this.compareProducts$ = this.store.pipe(select(getCompareProductsByCurrentPageAndItemsPerPage(initialPage, this.itemsPerPage)));
+    this.compareProducts$ = this.store.pipe(select(getCompareProductsByCurrentPageAndItemsPerPage(1, this.itemsPerPage)));
     this.compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
   }
 
-  onPageChanged(event: Pagination): void {
-    this.compareProducts$ = this.store.pipe(select(getCompareProductsByCurrentPageAndItemsPerPage(event.currentPage, event.itemsPerPage)));
+  onPageChanged(currentPage: number) {
+    this.compareProducts$ = this.store.pipe(select(getCompareProductsByCurrentPageAndItemsPerPage(currentPage, this.itemsPerPage)));
   }
 
   addToCart({ sku, quantity }) {
