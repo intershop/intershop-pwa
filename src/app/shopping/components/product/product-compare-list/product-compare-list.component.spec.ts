@@ -5,10 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AttributeToStringPipe } from '../../../../models/attribute/attribute.pipe';
 import { Product } from '../../../../models/product/product.model';
-import { ProductAddToCartComponent } from '../product-add-to-cart/product-add-to-cart.component';
-import { ProductAttributesComponent } from '../product-attributes/product-attributes.component';
-import { ProductImageComponent } from '../product-image/product-image.component';
-import { ProductPriceComponent } from '../product-price/product-price.component';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductCompareListComponent } from './product-compare-list.component';
 
 describe('Product Compare List Component', () => {
@@ -27,11 +24,12 @@ describe('Product Compare List Component', () => {
       ],
       declarations: [
         ProductCompareListComponent,
-        ProductImageComponent,
-        ProductAddToCartComponent,
-        ProductAttributesComponent,
-        ProductPriceComponent,
-        AttributeToStringPipe
+        MockComponent({ selector: 'ish-product-compare-paging', template: 'Product Compare Paging Component', inputs: ['itemsPerPage', 'currentPage', 'totalItems'] }),
+        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+        MockComponent({ selector: 'ish-product-price', template: 'Product Price Component', inputs: ['product', 'showInformationalPrice'] }),
+        MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart', inputs: ['product'] }),
+        MockComponent({ selector: 'ish-product-attributes', template: 'Product Attributes Component', inputs: ['product'] }),
+        AttributeToStringPipe,
       ],
       providers: [
         CurrencyPipe,
@@ -50,19 +48,6 @@ describe('Product Compare List Component', () => {
     translate.use('en');
     element = fixture.nativeElement;
     compareProduct1 = { sku: '111', inStock: true, availability: true } as Product;
-    compareProduct1.images = [
-      {
-        'name': 'front M',
-        'type': 'Image',
-        'imageActualHeight': 110,
-        'imageActualWidth': 110,
-        'viewID': 'front',
-        'effectiveUrl': '',
-        'typeID': 'M',
-        'primaryImage': true
-      }
-
-    ];
     compareProduct1.attributes = [
       {
         'name': 'Optical zoom',
@@ -98,20 +83,20 @@ describe('Product Compare List Component', () => {
   });
 
   it('should emit removeProductCompare when click on remove compare product', () => {
-    component.removeProductCompare.subscribe((sku: string) => {
+    component.removeProductCompare.subscribe(sku => {
       expect(sku).toBe('111');
     });
     component.removeCompareProduct('111');
   });
 
   it('should emit add to cart when click on add to cart button', () => {
-    component.productToCart.subscribe((sku: any) => {
-      expect(sku).toEqual({ 'sku': '111', 'quantity': 1 });
+    component.productToCart.subscribe(data => {
+      expect(data).toEqual({ 'sku': '111', 'quantity': 1 });
     });
     component.addToCart('111', 1);
   });
 
-  it('should test if getCommonAttributeNames method return correct list', () => {
+  it('should return 1 as the number of Common Attribute Names for the compared products', () => {
     expect(new Set(component.getCommonAttributeNames()).size).toEqual(1);
   });
 

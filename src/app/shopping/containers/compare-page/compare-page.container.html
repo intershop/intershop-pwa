@@ -1,5 +1,24 @@
-<h1>{{'product.compare.link' | translate}}</h1>
-<ish-pagination *ngIf="compareProductsCount$ | async" [itemsPerPage]="itemsPerPage"
-  [totalItems]="compareProductsCount$ | async" (pageChanged)="onPageChanged($event)"></ish-pagination>
-<ish-product-compare-list [compareProducts]="compareProducts$ | async" (productToCart)="addToCart($event)" [totalItems]="compareProductsCount$ | async"
-  (removeProductCompare)="removeProductCompare($event)"></ish-product-compare-list>
+<div>
+
+  <h1>{{'product.compare.link' | translate}}</h1>
+
+  <ng-container *ngIf="(compareProductsCount$ | async) as compareProductsCount; else emptyCompareList">
+
+    <h2>{{'product.compare.selected_product_count.message' | translate:{'0': compareProductsCount} }}</h2>
+
+    <ish-product-compare-list
+      [compareProducts]="compareProducts$ | async"
+      [totalItems]="compareProductsCount"
+      [itemsPerPage]="itemsPerPage"
+      (productToCart)="addToCart($event)"
+      (removeProductCompare)="removeProductCompare($event)"
+      (pageChanged)="onPageChanged($event)"
+    ></ish-product-compare-list>
+
+  </ng-container>
+
+  <ng-template #emptyCompareList>
+    <p>{{'product.compare.no_product_selected.message' | translate}}</p>
+  </ng-template>
+
+</div>

@@ -1,6 +1,12 @@
-<ng-container *ngIf="totalItems else emptyCompareList">
-  <h3>{{'product.compare.selected_product_count.message' | translate:{'0': totalItems} }}</h3>
-  <div class="table-responsive table-compare">
+
+<ish-product-compare-paging
+  [itemsPerPage]="itemsPerPage"
+  [currentPage]="currentPage"
+  [totalItems]="totalItems"
+  (pageChanged)="onPageChanged($event)"
+></ish-product-compare-paging>
+
+  <div class="product-list table-responsive table-compare">
     <table class="table">
       <tbody>
         <tr>
@@ -29,7 +35,10 @@
               <span itemprop="sku">{{product.sku}}</span>
             </div>
 
-            <ish-product-add-to-cart [product]="product" (productToCart)="addToCart($event,product.minOrderQuantity)"></ish-product-add-to-cart>
+            <ish-product-add-to-cart
+              [product]="product"
+              (productToCart)="addToCart(product.sku, product.minOrderQuantity)"
+            ></ish-product-add-to-cart>
           </td>
         </tr>
         <tr>
@@ -92,8 +101,9 @@
     </table>
   </div>
 
-</ng-container>
-
-<ng-template #emptyCompareList>
-  <h3>{{'product.compare.no_product_selected.message' | translate}}</h3>
-</ng-template>
+  <ish-product-compare-paging
+    [itemsPerPage]="itemsPerPage"
+    [currentPage]="currentPage"
+    [totalItems]="totalItems"
+    (pageChanged)="onPageChanged($event)"
+  ></ish-product-compare-paging>

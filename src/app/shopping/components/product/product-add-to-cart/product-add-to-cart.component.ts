@@ -11,7 +11,7 @@ export class ProductAddToCartComponent implements OnChanges {
   @Input() disabled = false;
   @Input() displayType?: string;
   @Input() class?: string;
-  @Output() productToCart = new EventEmitter<string>();
+  @Output() productToCart = new EventEmitter<void>();
 
   isDisplayTypeGlyphicon = false;
 
@@ -20,6 +20,6 @@ export class ProductAddToCartComponent implements OnChanges {
   }
 
   addToCart() {
-    this.productToCart.emit(this.product.sku);
+    this.productToCart.emit();
   }
 }
