@@ -8,8 +8,8 @@ export function randomDelay<T>(min = 1000, max = 10000): OperatorFunction<T, T> 
   };
 }
 
-export function log<T>(message?: string): OperatorFunction<T, T> {
+export function log<T>(message?: string, stringify?: boolean): OperatorFunction<T, T> {
   return function(source$: Observable<T>): Observable<T> {
-    return source$.pipe(tap(e => console.log(message || '', e)));
+    return source$.pipe(tap(e => console.log(message || '', stringify ? JSON.stringify(e) : e)));
   };
 }
