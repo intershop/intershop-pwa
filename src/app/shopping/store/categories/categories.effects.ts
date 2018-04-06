@@ -30,7 +30,7 @@ export class CategoriesEffects {
     filter(id => !!id),
     map(CategoryHelper.getCategoryPathIds),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
-    map(([ids, entities]) => ids.filter(id => categoryNeedsToBeLoaded(entities, id))),
+    map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
     mergeMap(ids => ids.map(id => new categoriesActions.LoadCategory(id)))
   );
 
@@ -86,9 +86,4 @@ export class CategoriesEffects {
     filter(sc => !!sc),
     map(sc => new categoriesActions.SaveSubCategories(sc))
   );
-}
-
-function categoryNeedsToBeLoaded(entities, uniqueId: string): boolean {
-  const c = entities[uniqueId];
-  return !c || (c.hasOnlineSubCategories && !c.subCategories);
 }
