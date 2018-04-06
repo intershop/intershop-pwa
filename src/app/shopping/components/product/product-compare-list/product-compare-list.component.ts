@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Attribute } from '../../../../models/attribute/attribute.model';
-import { Product } from '../../../../models/product/product.model';
+import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-compare-list',
@@ -16,6 +16,9 @@ export class ProductCompareListComponent {
   @Output() removeProductCompare = new EventEmitter<string>();
   @Output() pageChanged = new EventEmitter<number>();
   currentPage = 1;
+
+  generateProductRoute = ProductHelper.generateProductRoute;
+  getAttributeByAttributeName = ProductHelper.getAttributeByAttributeName;
 
   onPageChanged(currentPage: number) {
     this.currentPage = currentPage;
@@ -64,20 +67,10 @@ export class ProductCompareListComponent {
   }
 
   /**
-   * return Attribute based on passing product and attribute name
-   * @param product
-   * @param attributeName
-   * @returns
+   * Remove the product with the given SKU from the compare list.
+   * @param sku The SKU of the product to remove
    */
-  getAttribute(product: Product, attributeName: string): Attribute {
-    return product.attributes.find(attribute => attribute.name === attributeName);
-  }
-
-  /**
-   * remove compare product
-   * @param sku
-   */
-  removeCompareProduct(sku: string) {
+  removeFromCompare(sku: string) {
     this.removeProductCompare.emit(sku);
   }
 

@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
-import { getCompareProductsByCurrentPageAndItemsPerPage, getCompareProductsCount } from '../../store/compare';
-import * as fromCompare from '../../store/compare/compare.actions';
+import { getCompareProductsByCurrentPageAndItemsPerPage, getCompareProductsCount, RemoveFromCompare } from '../../store/compare';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
@@ -35,7 +34,7 @@ export class ComparePageContainerComponent implements OnInit {
     // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(sku, quantity));
   }
 
-  removeProductCompare(sku: string) {
-    this.store.dispatch(new fromCompare.RemoveFromCompare(sku));
+  removeFromCompare(sku: string) {
+    this.store.dispatch(new RemoveFromCompare(sku));
   }
 }

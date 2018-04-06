@@ -78,7 +78,7 @@ describe('Compare Page Container', () => {
   });
 
   it('should dispatch an action if removeProductCompare is called', () => {
-    component.removeProductCompare('111');
+    component.removeFromCompare('111');
     verify(storeMock.dispatch(anything())).called();
   });
 
