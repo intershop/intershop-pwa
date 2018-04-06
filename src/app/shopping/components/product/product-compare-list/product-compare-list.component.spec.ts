@@ -28,6 +28,7 @@ describe('Product Compare List Component', () => {
         MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
         MockComponent({ selector: 'ish-product-price', template: 'Product Price Component', inputs: ['product', 'showInformationalPrice'] }),
         MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart', inputs: ['product'] }),
+        MockComponent({ selector: 'ish-product-inventory', template: 'Product Inventory Component', inputs: ['product'] }),
         MockComponent({ selector: 'ish-product-attributes', template: 'Product Attributes Component', inputs: ['product'] }),
         AttributeToStringPipe,
       ],
@@ -86,7 +87,7 @@ describe('Product Compare List Component', () => {
     component.removeProductCompare.subscribe(sku => {
       expect(sku).toBe('111');
     });
-    component.removeCompareProduct('111');
+    component.removeFromCompare('111');
   });
 
   it('should emit add to cart when click on add to cart button', () => {

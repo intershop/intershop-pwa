@@ -1,3 +1,4 @@
+import { Attribute } from '../attribute/attribute.model';
 import { Category } from '../category/category.model';
 import { Image } from '../image/image.model';
 import { Product } from './product.model';
@@ -59,5 +60,15 @@ export class ProductHelper {
    */
   static isMasterProduct(product: Product): boolean {
     return product.type === ProductType.VariationProductMaster;
+  }
+
+  /**
+   * Get a specific product attribute by attribute name.
+   * @param product       The Product for which to get the attribute
+   * @param attributeName The attribute name of the attribute to get
+   * @returns              The matching product attribute
+   */
+  static getAttributeByAttributeName(product: Product, attributeName: string): Attribute {
+    return product.attributes.find(attribute => attribute.name === attributeName);
   }
 }

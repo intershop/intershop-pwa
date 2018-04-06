@@ -1,4 +1,3 @@
-
 <ish-product-compare-paging
   [itemsPerPage]="itemsPerPage"
   [currentPage]="currentPage"
@@ -6,104 +5,109 @@
   (pageChanged)="onPageChanged($event)"
 ></ish-product-compare-paging>
 
-  <div class="product-list table-responsive table-compare">
-    <table class="table">
-      <tbody>
-        <tr>
-          <th class="col-xs-6 col-sm-3">&nbsp;</th>
-          <td class="col-xs-6 col-sm-3" *ngFor="let product of compareProducts">
-            <div class="product-image">
-              <!-- Product Image -->
-              <a [routerLink]="['/product', product.sku]">
-                <ish-product-image [product]="product" imageType="M"></ish-product-image>
-              </a>
-              <a class="btn-tool" [title]="'product.compare.remove.link' | translate" (click)="removeCompareProduct(product.sku)">
-                <span class="glyphicon glyphicon-trash"></span>
-              </a>
-            </div>
+<div class="product-list table-responsive table-compare">
+  <table class="table">
+    <tbody>
 
-            <!-- Product Title -->
-            <div>
-              <a class="product-title" [routerLink]="['/product', product.sku]">
-                {{product.name}}
-              </a>
-            </div>
+      <tr>
+        <th class="col-xs-6 col-sm-3">&nbsp;</th>
+        <td *ngFor="let product of compareProducts" class="col-xs-6 col-sm-3">
+          <div class="product-image">
+            <a [routerLink]="generateProductRoute(product)">
+              <ish-product-image [product]="product" imageType="M"></ish-product-image>
+            </a>
+            <a class="btn-tool" [title]="'product.compare.remove.link' | translate" (click)="removeFromCompare(product.sku)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </a>
+          </div>
 
-            <!-- SKU -->
-            <div class="product-number">
-              <label>{{'product.itemNumber.label' | translate}}</label>
-              <span itemprop="sku">{{product.sku}}</span>
-            </div>
+          <div>
+            <a class="product-title" [routerLink]="generateProductRoute(product)">
+              {{product.name}}
+            </a>
+          </div>
 
-            <ish-product-add-to-cart
-              [product]="product"
-              (productToCart)="addToCart(product.sku, product.minOrderQuantity)"
-            ></ish-product-add-to-cart>
-          </td>
-        </tr>
-        <tr>
-          <th>{{'product.compare.price.label'|translate}}</th>
-          <td *ngFor="let product of compareProducts">
-            <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
-          </td>
-        </tr>
+          <div class="product-number">
+            <label>{{'product.itemNumber.label' | translate}}</label>
+            <span itemprop="sku">{{product.sku}}</span>
+          </div>
 
-        <tr>
-          <th></th>
-          <td *ngFor="let product of compareProducts">
-            {{ (product.inStock ? 'product.instock.text' : 'product.out_of_stock.text') | translate }}
-          </td>
-        </tr>
+          <ish-product-add-to-cart
+            [product]="product"
+            (productToCart)="addToCart(product.sku, product.minOrderQuantity)"
+          ></ish-product-add-to-cart>
+        </td>
+      </tr>
 
-        <tr>
-          <th>{{'product.compare.ratings.label' | translate}}
-          </th>
-          <td *ngFor="let product of compareProducts">
-          </td>
-        </tr>
+      <tr>
+        <th>{{'product.compare.price.label'|translate}}</th>
+        <td *ngFor="let product of compareProducts">
+          <ish-product-price
+            [product]="product"
+            [showInformationalPrice]="true"
+          ></ish-product-price>
+        </td>
+      </tr>
 
-        <tr>
-          <th>{{'product.short_description.label' | translate}}</th>
-          <td *ngFor="let product of compareProducts">
-            {{product.shortDescription}}
-          </td>
-        </tr>
+      <tr>
+        <th></th>
+        <td *ngFor="let product of compareProducts">
+          <ish-product-inventory [product]="product"></ish-product-inventory>
+        </td>
+      </tr>
 
-        <tr>
-          <th>{{'product.manufacturer_name.label' | translate}}</th>
-          <td *ngFor="let product of compareProducts">
-            {{product.manufacturer}}
-          </td>
-        </tr>
+      <!-- TODO: Ratings
+      <tr>
+        <th>{{'product.compare.ratings.label' | translate}}</th>
+        <td *ngFor="let product of compareProducts">
+        </td>
+      </tr>
+      -->
 
-        <tr>
-          <th>{{'product.manufacturer_sku.label' | translate}}
-          </th>
-          <td *ngFor="let product of compareProducts">
-          </td>
-        </tr>
+      <tr>
+        <th>{{'product.short_description.label' | translate}}</th>
+        <td *ngFor="let product of compareProducts">
+          {{product.shortDescription}}
+        </td>
+      </tr>
 
+      <tr>
+        <th>{{'product.manufacturer_name.label' | translate}}</th>
+        <td *ngFor="let product of compareProducts">
+          {{product.manufacturer}}
+        </td>
+      </tr>
 
-        <tr *ngFor="let common of getCommonAttributeNames()">
-          <th>{{common}}</th>
-          <td *ngFor="let product of compareProducts">
-            {{getAttribute(product,common) | attributeToString}}
-          </td>
-        </tr>
+      <!-- TODO: Manufacturer SKU
+      <tr>
+        <th>{{'product.manufacturer_sku.label' | translate}}
+        </th>
+        <td *ngFor="let product of compareProducts">
+        </td>
+      </tr>
+      -->
 
-        <tr>
-          <th>{{'product.specific_attributes.label' | translate}}</th>
-          <td *ngFor="let product of compareProducts">
-            <ish-product-attributes [product]="getProductWithSpecificAttribute(product)"></ish-product-attributes>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <tr *ngFor="let commonAttribute of getCommonAttributeNames()">
+        <th>{{commonAttribute}}</th>
+        <td *ngFor="let product of compareProducts">
+          {{getAttributeByAttributeName(product, commonAttribute) | attributeToString}}
+        </td>
+      </tr>
 
-  <ish-product-compare-paging
-    [itemsPerPage]="itemsPerPage"
-    [currentPage]="currentPage"
-    [totalItems]="totalItems"
-    (pageChanged)="onPageChanged($event)"
-  ></ish-product-compare-paging>
+      <tr>
+        <th>{{'product.specific_attributes.label' | translate}}</th>
+        <td *ngFor="let product of compareProducts">
+          <ish-product-attributes [product]="getProductWithSpecificAttribute(product)"></ish-product-attributes>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<ish-product-compare-paging
+  [itemsPerPage]="itemsPerPage"
+  [currentPage]="currentPage"
+  [totalItems]="totalItems"
+  (pageChanged)="onPageChanged($event)"
+></ish-product-compare-paging>
