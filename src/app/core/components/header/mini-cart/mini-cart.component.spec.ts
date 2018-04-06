@@ -12,42 +12,46 @@ describe('Mini Cart Component', () => {
   let element: HTMLElement;
   let basket: Basket;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [CollapseModule.forRoot(), CommonModule, TranslateModule.forRoot()],
-        declarations: [MiniCartComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(MiniCartComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-          basket = {
-            id: '4711',
-            purchaseCurrency: 'USD',
-            totals: {
-              itemTotal: {
-                value: 0,
-                currencyMnemonic: 'USD',
-                type: 'Money',
-              },
-              basketTotal: {
-                value: 0,
-                currencyMnemonic: 'USD',
-                type: 'Money',
-              },
-              taxTotal: {
-                value: 0,
-                currencyMnemonic: 'USD',
-                type: 'Money',
-              },
-            },
-          };
-        });
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        CollapseModule.forRoot(),
+        CommonModule,
+        TranslateModule.forRoot(),
+      ],
+      declarations: [
+        MiniCartComponent
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(MiniCartComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    basket = {
+      id: '4711',
+      lineItems: [],
+      purchaseCurrency: 'USD',
+      totals: {
+        itemTotal: {
+          value: 0,
+          currencyMnemonic: 'USD',
+          type: 'Money',
+        },
+        basketTotal: {
+          value: 0,
+          currencyMnemonic: 'USD',
+          type: 'Money',
+        },
+        taxTotal: {
+          value: 0,
+          currencyMnemonic: 'USD',
+          type: 'Money',
+        }
+      }
+    };
+  });
 
   it('should be created', () => {
     component.basket = basket;

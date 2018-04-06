@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { BasketService } from './services/basket/basket.service';
 import { checkoutEffects, checkoutReducers } from './store/checkout.system';
 
 @NgModule({
@@ -10,6 +11,7 @@ import { checkoutEffects, checkoutReducers } from './store/checkout.system';
     EffectsModule.forFeature(checkoutEffects)
   ],
   providers: [
+    BasketService
   ]
 })
 

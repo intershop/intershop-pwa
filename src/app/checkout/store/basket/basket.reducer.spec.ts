@@ -16,28 +16,29 @@ describe('Basket Reducer', () => {
 
     describe('LoadBasketFail action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.LoadBasketFail({} as HttpErrorResponse);
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.LoadBasketFail(error);
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
       });
     });
 
     describe('LoadBasketSuccess action', () => {
-      let basket: Basket;
 
-      beforeEach(() => {
-        basket = {
-          id: '584'
+      it('should set basket and set loading to false', () => {
+        const basket = {
+          id: 'test'
         } as Basket;
-      });
 
-      it('should set loading to false', () => {
         const action = new fromActions.LoadBasketSuccess(basket);
         const state = basketReducer(initialState, action);
 
+        expect(state.basket).toEqual(basket);
         expect(state.loading).toEqual(false);
       });
+
     });
   });
 });

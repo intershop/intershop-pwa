@@ -4,7 +4,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from './products.service';
 
-describe('Proucts Service', () => {
+describe('Products Service', () => {
   let productsService: ProductsService;
   let apiService: ApiService;
   const productSku = 'SKU';
