@@ -13,7 +13,7 @@ import * as s from './products.selectors';
 
 describe('Products Selectors', () => {
 
-  let store: Store<ShoppingState>;
+  let store$: Store<ShoppingState>;
 
   let products$: Observable<Product[]>;
   let productEntities$: Observable<{ [id: string]: Product }>;
@@ -35,13 +35,13 @@ describe('Products Selectors', () => {
       ]
     });
 
-    store = TestBed.get(Store);
+    store$ = TestBed.get(Store);
 
-    products$ = store.pipe(select(s.getProducts));
-    productEntities$ = store.pipe(select(s.getProductEntities));
-    productLoading$ = store.pipe(select(s.getProductLoading));
-    selected$ = store.pipe(select(s.getSelectedProduct));
-    selectedId$ = store.pipe(select(s.getSelectedProductId));
+    products$ = store$.pipe(select(s.getProducts));
+    productEntities$ = store$.pipe(select(s.getProductEntities));
+    productLoading$ = store$.pipe(select(s.getProductLoading));
+    selected$ = store$.pipe(select(s.getSelectedProduct));
+    selectedId$ = store$.pipe(select(s.getSelectedProductId));
   });
 
   describe('with empty state', () => {
@@ -62,7 +62,7 @@ describe('Products Selectors', () => {
   describe('loading a product', () => {
 
     beforeEach(() => {
-      store.dispatch(new LoadProduct(''));
+      store$.dispatch(new LoadProduct(''));
     });
 
     it('should set the state to loading', () => {
@@ -72,7 +72,7 @@ describe('Products Selectors', () => {
     describe('and reporting success', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadProductSuccess(prod));
+        store$.dispatch(new LoadProductSuccess(prod));
       });
 
       it('should set loading to false', () => {
@@ -84,7 +84,7 @@ describe('Products Selectors', () => {
     describe('and reporting failure', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadProductFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadProductFail({ message: 'error' } as HttpErrorResponse));
       });
 
       it('should not have loaded product on error', () => {
@@ -97,7 +97,7 @@ describe('Products Selectors', () => {
   describe('state with a product', () => {
 
     beforeEach(() => {
-      store.dispatch(new LoadProductSuccess(prod));
+      store$.dispatch(new LoadProductSuccess(prod));
     });
 
     describe('but no current router state', () => {
@@ -117,7 +117,7 @@ describe('Products Selectors', () => {
     describe('with product route', () => {
 
       beforeEach(() => {
-        store.dispatch(navigateMockAction({ url: '/any', params: { sku: prod.sku } }));
+        store$.dispatch(navigateMockAction({ url: '/any', params: { sku: prod.sku } }));
       });
 
       it('should return the product information when used', () => {
