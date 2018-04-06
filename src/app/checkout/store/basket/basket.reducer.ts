@@ -1,39 +1,19 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { EntityState } from '@ngrx/entity';
 import { Basket } from '../../../models/basket/basket.model';
-import { BasketAction, BasketActionTypes } from './basket.actions';
-
-// ToDo: dummy draft code
+import { BasketAction, BasketActionTypes, LoadBasketFail, LoadBasketSuccess } from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
   loading: boolean;
+  error: HttpErrorResponse;
 }
 
 export const initialState: BasketState = {
-  basket: {
-    id: '123',
-    lineItems: [{
-      name: 'product 1',
-      quantity: {
-        value: 60
-      }
-    },
-    {
-      name: 'product 2',
-      quantity: {
-        value: 40
-      }
-    }],
-    totals: {
-      basketTotal: {
-        value: 8189,
-        currencyMnemonic: 'USD'
-      }
-    }
-  } as Basket,
-  loading: false
+  basket: null,
+  loading: false,
+  error: undefined
 };
-
-export const getBasket = (state: BasketState) => state.basket;
 
 export function basketReducer(
   state = initialState,
@@ -51,6 +31,7 @@ export function basketReducer(
     case BasketActionTypes.LoadBasketFail: {
       return {
         ...state,
+        error: (action as LoadBasketFail).payload,
         loading: false
       };
     }
@@ -58,6 +39,7 @@ export function basketReducer(
     case BasketActionTypes.LoadBasketSuccess: {
       return {
         ...state,
+        basket: (action as LoadBasketSuccess).payload,
         loading: false
       };
 
