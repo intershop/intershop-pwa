@@ -11,7 +11,7 @@ import { getAllCountries, getCountriesLoading } from './countries.selectors';
 
 describe('Countries Selectors', () => {
 
-  let store: Store<CoreState>;
+  let store$: Store<CoreState>;
 
   let countries$: Observable<Country[]>;
   let countriesLoading$: Observable<boolean>;
@@ -29,10 +29,10 @@ describe('Countries Selectors', () => {
       ]
     });
 
-    store = TestBed.get(Store);
+    store$ = TestBed.get(Store);
 
-    countries$ = store.pipe(select(getAllCountries));
-    countriesLoading$ = store.pipe(select(getCountriesLoading));
+    countries$ = store$.pipe(select(getAllCountries));
+    countriesLoading$ = store$.pipe(select(getCountriesLoading));
   });
 
   describe('with empty state', () => {
@@ -46,7 +46,7 @@ describe('Countries Selectors', () => {
   describe('loading countries', () => {
 
     beforeEach(() => {
-      store.dispatch(new LoadCountries());
+      store$.dispatch(new LoadCountries());
     });
 
     it('should set the state to loading', () => {
@@ -56,7 +56,7 @@ describe('Countries Selectors', () => {
     describe('and reporting success', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadCountriesSuccess(countries));
+        store$.dispatch(new LoadCountriesSuccess(countries));
       });
 
       it('should set loading to false', () => {
@@ -68,7 +68,7 @@ describe('Countries Selectors', () => {
     describe('and reporting failure', () => {
 
       beforeEach(() => {
-        store.dispatch(new LoadCountriesFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadCountriesFail({ message: 'error' } as HttpErrorResponse));
       });
 
       it('should not have loaded category on error', () => {
