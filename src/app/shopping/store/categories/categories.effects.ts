@@ -8,6 +8,7 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configur
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { CoreState } from '../../../core/store/countries';
 import { getCurrentLocale } from '../../../core/store/locale';
+import { CategoryHelper } from '../../../models/category/category.model';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import * as categoriesActions from './categories.actions';
@@ -27,7 +28,7 @@ export class CategoriesEffects {
   selectedCategory$ = this.store.pipe(
     select(categoriesSelectors.getSelectedCategoryId),
     filter(id => !!id),
-    map(expandCategoryId),
+    map(CategoryHelper.getCategoryPathIds),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
     map(([ids, entities]) => ids.filter(id => categoryNeedsToBeLoaded(entities, id))),
     mergeMap(ids => ids.map(id => new categoriesActions.LoadCategory(id)))
@@ -90,13 +91,4 @@ export class CategoriesEffects {
 function categoryNeedsToBeLoaded(entities, uniqueId: string): boolean {
   const c = entities[uniqueId];
   return !c || (c.hasOnlineSubCategories && !c.subCategories);
-}
-
-function expandCategoryId(uniqueId: string): string[] {
-  const r = [];
-  const ids = uniqueId.split('.');
-  for (let i = 0; i < ids.length; i++) {
-    r.push(ids.slice(0, i + 1).join('.'));
-  }
-  return r.reverse();
 }
