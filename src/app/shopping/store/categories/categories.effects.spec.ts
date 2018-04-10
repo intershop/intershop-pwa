@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
@@ -8,7 +9,8 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { Scheduler } from 'rxjs/Scheduler';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { capture } from 'ts-mockito/lib/ts-mockito';
 import {
   AVAILABLE_LOCALES,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
@@ -32,6 +34,8 @@ describe('Categories Effects', () => {
 
   let categoriesServiceMock: CategoriesService;
 
+  let router: Router;
+
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(of({ uniqueId: '123' } as Category));
@@ -44,7 +48,7 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(
       _throw({ message: 'invalid number' } as HttpErrorResponse)
     );
-
+    router = mock(Router);
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
@@ -58,6 +62,7 @@ describe('Categories Effects', () => {
         provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: Scheduler, useFactory: getTestScheduler },
+        { provide: Router, useFactory: () => instance(router) },
       ],
     });
 
@@ -332,5 +337,22 @@ describe('Categories Effects', () => {
       const expected$ = cold('---');
       expect(effects.saveSubCategories$).toBeObservable(expected$);
     });
+  });
+
+  describe('redirectIfErrorInCategories$', () => {
+    it(
+      'should redirect if triggered',
+      fakeAsync(() => {
+        const action = new fromActions.LoadCategoryFail({ status: 404 } as HttpErrorResponse);
+
+        actions$ = hot('a', { a: action });
+
+        effects.redirectIfErrorInCategories$.subscribe(() => {
+          verify(router.navigate(anything())).once();
+          const [param] = capture(router.navigate).last();
+          expect(param).toEqual(['/error']);
+        });
+      })
+    );
   });
 });

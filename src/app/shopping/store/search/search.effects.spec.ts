@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { Scheduler } from 'rxjs/Scheduler';
-import { anyString, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
@@ -16,7 +17,7 @@ import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search.actions';
+import { SearchProducts, SearchProductsFail, SuggestSearch, SuggestSearchSuccess } from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
@@ -26,6 +27,8 @@ describe('Search Effects', () => {
   let apiMock: ApiService;
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
+
+  const router = mock(Router);
 
   beforeEach(() => {
     apiMock = mock(ApiService);
@@ -56,6 +59,7 @@ describe('Search Effects', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: Scheduler, useFactory: getTestScheduler },
+        { provide: Router, useFactory: () => instance(router) },
       ],
     });
 
@@ -161,5 +165,22 @@ describe('Search Effects', () => {
 
       verify(suggestServiceMock.search(anyString())).once();
     });
+  });
+
+  describe('redirectIfSearchProductFail$', () => {
+    it(
+      'should redirect if triggered',
+      fakeAsync(() => {
+        const action = new SearchProductsFail({ status: 404 } as HttpErrorResponse);
+
+        actions$ = hot('a', { a: action });
+
+        effects.redirectIfSearchProductFail$.subscribe(() => {
+          verify(router.navigate(anything())).once();
+          const [param] = capture(router.navigate).last();
+          expect(param).toEqual(['/error']);
+        });
+      })
+    );
   });
 });
