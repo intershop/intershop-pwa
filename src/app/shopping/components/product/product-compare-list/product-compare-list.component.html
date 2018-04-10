@@ -1,8 +1,8 @@
 <ish-product-compare-paging
-  [totalItems]="totalItems"
+  [totalItems]="compareProducts.length"
   [itemsPerPage]="itemsPerPage"
   [currentPage]="currentPage"
-  (pageChanged)="onPageChanged($event)"
+  (changePage)="changeCurrentPage($event)"
 ></ish-product-compare-paging>
 
 <div class="product-list table-responsive table-compare">
@@ -106,8 +106,8 @@
 </div>
 
 <ish-product-compare-paging
-  [totalItems]="totalItems"
+  [totalItems]="compareProducts.length"
   [itemsPerPage]="itemsPerPage"
   [currentPage]="currentPage"
-  (pageChanged)="onPageChanged($event)"
+  (changePage)="changeCurrentPage($event)"
 ></ish-product-compare-paging>

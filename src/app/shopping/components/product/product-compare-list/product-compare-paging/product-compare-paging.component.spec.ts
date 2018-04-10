@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { ProductComparePagingComponent } from './product-compare-paging.component';
 
 describe('Product Compare Paging Component', () => {
   let component: ProductComparePagingComponent;
   let fixture: ComponentFixture<ProductComparePagingComponent>;
   let element: HTMLElement;
-  let translate: TranslateService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ProductComparePagingComponent],
@@ -18,9 +17,6 @@ describe('Product Compare Paging Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductComparePagingComponent);
     component = fixture.componentInstance;
-    translate = TestBed.get(TranslateService);
-    translate.setDefaultLang('en');
-    translate.use('en');
     element = fixture.nativeElement;
     component.totalItems = 5;
     component.itemsPerPage = 2;
@@ -33,14 +29,14 @@ describe('Product Compare Paging Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should trigger pageChange event when click next and previous button', () => {
+  it('should trigger changePage event when click next and previous button', () => {
     const expected = 1;
     let called = false;
-    component.pageChanged.subscribe(data => {
+    component.changePage.subscribe(data => {
       expect(data).toEqual(expected);
       called = true;
     });
-    component.selectPage(expected);
+    component.changeToPage(expected);
     expect(called).toBeTruthy();
   });
 

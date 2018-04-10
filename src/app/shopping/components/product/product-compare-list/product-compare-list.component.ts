@@ -1,6 +1,18 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Product, ProductHelper } from '../../../../models/product/product.model';
 
+/**
+ * The Product Compare List Component
+ *
+ * Displays a table of products to be compared with paging handled by the {@link ProductComparePagingComponent}.
+ *
+ * @example
+ * <ish-product-compare-list
+ *               [compareProducts]="compareProducts"
+ *               (productToCart)="addToCart($event)"
+ *               (removeProductCompare)="removeFromCompare($event)"
+ * ></ish-product-compare-list>
+ */
 @Component({
   selector: 'ish-product-compare-list',
   templateUrl: './product-compare-list.component.html',
@@ -8,10 +20,24 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 })
 export class ProductCompareListComponent implements OnChanges {
 
+  /**
+   * The list of products to compare
+   */
   @Input() compareProducts: Product[] = [];
-  @Input() totalItems: number;
+
+  /**
+   * The maximum number of products to be compared on one page
+   */
   @Input() itemsPerPage = 3;
+
+  /**
+   * Trigger an add product to cart event
+   */
   @Output() productToCart = new EventEmitter<{ sku: string, quantity: number }>();
+
+  /**
+   * Trigger a remove product from compare event
+   */
   @Output() removeProductCompare = new EventEmitter<string>();
 
   commonAttributeNames: Set<string>;
@@ -24,18 +50,18 @@ export class ProductCompareListComponent implements OnChanges {
   ngOnChanges() {
     this.commonAttributeNames = this.getCommonAttributeNames();
     // decrease the current page value if the current page would be empty because of removing a product from compare
-    if (!((this.currentPage - 1) * this.itemsPerPage < this.totalItems)) {
+    if (!((this.currentPage - 1) * this.itemsPerPage < this.compareProducts.length)) {
       this.currentPage = this.currentPage - 1;
     }
     this.setVisibleProducts();
   }
 
   /**
-   * Changes the current page number and sets the appropriate compare products to be visible.
-   * @param currentPage The current page number to be set
+   * Changes the current page and sets the according compare products to be visible.
+   * @param pageNumber The page number to set the current page to
    */
-  onPageChanged(currentPage: number) {
-    this.currentPage = currentPage;
+  changeCurrentPage(pageNumber: number) {
+    this.currentPage = pageNumber;
     this.setVisibleProducts();
   }
 

@@ -19,7 +19,7 @@ describe('Compare Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         ComparePageContainerComponent,
-        MockComponent({ selector: 'ish-product-compare-list', template: 'Product Compare List Component', inputs: ['compareProducts', 'totalItems', 'itemsPerPage'] })
+        MockComponent({ selector: 'ish-product-compare-list', template: 'Product Compare List Component', inputs: ['compareProducts'] })
       ],
       imports: [
         TranslateModule.forRoot(),

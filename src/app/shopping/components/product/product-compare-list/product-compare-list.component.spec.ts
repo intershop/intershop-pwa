@@ -74,7 +74,6 @@ describe('Product Compare List Component', () => {
       }]
     };
     component.compareProducts = [compareProduct1, compareProduct2];
-    component.totalItems = 2;
   });
 
   it('should be created', () => {
