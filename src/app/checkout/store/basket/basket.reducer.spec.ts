@@ -26,7 +26,6 @@ describe('Basket Reducer', () => {
     });
 
     describe('LoadBasketSuccess action', () => {
-
       it('should set basket and set loading to false', () => {
         const basket = {
           id: 'test'
@@ -36,6 +35,39 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.basket).toEqual(basket);
+        expect(state.loading).toEqual(false);
+      });
+
+    });
+  });
+
+  describe('AddItemToBasket actions', () => {
+
+    describe('AddItemToBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.AddItemToBasket({ sku: 'test', quanity: 1 });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('AddItemToBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.AddItemToBasketFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('AddItemToBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.AddItemToBasketSuccess({});
+        const state = basketReducer(initialState, action);
+
         expect(state.loading).toEqual(false);
       });
 

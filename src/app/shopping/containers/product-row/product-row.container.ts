@@ -1,4 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AddItemToBasket } from '../../../checkout/store/basket';
+import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 
@@ -11,10 +14,11 @@ export class ProductRowContainerComponent {
   @Input() product: Product;
   @Input() category?: Category;
 
+  constructor(
+    private store: Store<CheckoutState>
+  ) { }
+
   addToCart() {
-    console.log(
-      '[ProductRowContainer] Add to Cart: SKU: ' + this.product.sku + ', Quantity: ' + this.product.minOrderQuantity
-    );
-    // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(this.product.sku, this.product.minOrderQuantity));
+    this.store.dispatch(new AddItemToBasket({ sku: this.product.sku, quanity: this.product.minOrderQuantity }));
   }
 }

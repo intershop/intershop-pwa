@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { EntityState } from '@ngrx/entity';
 import { Basket } from '../../../models/basket/basket.model';
-import { BasketAction, BasketActionTypes, LoadBasketFail, LoadBasketSuccess } from './basket.actions';
+import * as basketActions from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
@@ -17,32 +16,53 @@ export const initialState: BasketState = {
 
 export function basketReducer(
   state = initialState,
-  action: BasketAction
+  action: basketActions.BasketAction
 ): BasketState {
   switch (action.type) {
 
-    case BasketActionTypes.LoadBasket: {
+    case basketActions.BasketActionTypes.LoadBasket: {
       return {
         ...state,
         loading: true
       };
     }
 
-    case BasketActionTypes.LoadBasketFail: {
+    case basketActions.BasketActionTypes.LoadBasketFail: {
       return {
         ...state,
-        error: (action as LoadBasketFail).payload,
+        error: (action as basketActions.LoadBasketFail).payload,
         loading: false
       };
     }
 
-    case BasketActionTypes.LoadBasketSuccess: {
+    case basketActions.BasketActionTypes.LoadBasketSuccess: {
       return {
         ...state,
-        basket: (action as LoadBasketSuccess).payload,
+        basket: (action as basketActions.LoadBasketSuccess).payload,
         loading: false
       };
+    }
 
+    case basketActions.BasketActionTypes.AddItemToBasket: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+
+    case basketActions.BasketActionTypes.AddItemToBasketFail: {
+      return {
+        ...state,
+        error: (action as basketActions.AddItemToBasketFail).payload,
+        loading: false
+      };
+    }
+
+    case basketActions.BasketActionTypes.AddItemToBasketSuccess: {
+      return {
+        ...state,
+        loading: false
+      };
     }
   }
   return state;
