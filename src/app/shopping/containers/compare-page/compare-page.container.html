@@ -9,10 +9,8 @@
     <ish-product-compare-list
       [compareProducts]="compareProducts$ | async"
       [totalItems]="compareProductsCount"
-      [itemsPerPage]="itemsPerPage"
       (productToCart)="addToCart($event)"
       (removeProductCompare)="removeFromCompare($event)"
-      (pageChanged)="onPageChanged($event)"
     ></ish-product-compare-list>
 
   </ng-container>

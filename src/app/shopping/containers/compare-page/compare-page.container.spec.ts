@@ -34,7 +34,6 @@ describe('Compare Page Container', () => {
     fixture = TestBed.createComponent(ComparePageContainerComponent);
     element = fixture.nativeElement;
     component = fixture.componentInstance;
-    component.itemsPerPage = 3;
   });
 
   it('should be created', () => {

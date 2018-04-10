@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
-import { getCompareProductsByCurrentPageAndItemsPerPage, getCompareProductsCount, RemoveFromCompare } from '../../store/compare';
+import { getCompareProducts, getCompareProductsCount, RemoveFromCompare } from '../../store/compare';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
@@ -14,19 +14,14 @@ export class ComparePageContainerComponent implements OnInit {
 
   compareProducts$: Observable<Product[]>;
   compareProductsCount$: Observable<Number>;
-  itemsPerPage = 3;
 
   constructor(
     private store: Store<ShoppingState>
   ) { }
 
   ngOnInit() {
-    this.compareProducts$ = this.store.pipe(select(getCompareProductsByCurrentPageAndItemsPerPage(1, this.itemsPerPage)));
+    this.compareProducts$ = this.store.pipe(select(getCompareProducts));
     this.compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
-  }
-
-  onPageChanged(currentPage: number) {
-    this.compareProducts$ = this.store.pipe(select(getCompareProductsByCurrentPageAndItemsPerPage(currentPage, this.itemsPerPage)));
   }
 
   addToCart({ sku, quantity }) {
