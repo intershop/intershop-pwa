@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 /**
- * the product images component
+ * The Product Images Component
  *
- * displays a list of thumbnails for all images of the product and includes the {@link ProductImageComponent}
+ * Displays carousel slides for all images of the product and a thumbnails list as carousel indicator.
+ * It uses the {@link ProductImageComponent} for the rendering of product images.
  *
  * @example
  * <ish-product-images [product]="product"></ish-product-images>
@@ -18,29 +19,26 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 export class ProductImagesComponent {
 
   /**
-   * product for which the images should be displayed
+   * The product for which the images should be displayed
    */
   @Input() product: Product;
 
-  /**
-   * defines a method to be called in the template
-   */
+  activeSlide = 0;
+
   getImageViewIDsExcludePrimary = ProductHelper.getImageViewIDsExcludePrimary;
 
   /**
-   * local variable for index of active image in the thumbnail slide
-   */
-  activeSlide = 0;
-
-  /**
-   * set the index of active image in the thumbnail slide
+   * Set the active slide via index (used by the thumbnail indicator)
+   * @param slideIndex The slide index number to set the active slide
    */
   setActiveSlide(slideIndex: number) {
     this.activeSlide = slideIndex;
   }
 
   /**
-   * get the index of active image in the thumbnail slide
+   * Check if the given slide index equals the active slide
+   * @param slideIndex The slide index number to be checked if it is the active slide
+   * @returns True if the given slide index is the active slide, false otherwise
    */
   isActiveSlide(slideIndex: number): boolean {
     return this.activeSlide === slideIndex;
