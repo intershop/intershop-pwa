@@ -1,0 +1,14 @@
+<div class="row">
+  <a *ngIf="showPrevious"
+    class="btn btn-link control-previous"
+    (click)="changeToPage(currentPage - 1)"
+  >
+    {{'product.compare.previous.button.label' | translate}}
+  </a>
+  <a *ngIf="showNext"
+    class="btn btn-link pull-right control-next"
+    (click)="changeToPage(currentPage + 1)"
+  >
+    {{'product.compare.next.button.label' | translate}}
+  </a>
+</div>
