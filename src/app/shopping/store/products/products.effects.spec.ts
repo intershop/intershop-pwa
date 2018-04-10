@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
@@ -7,7 +8,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { anyString, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
@@ -28,6 +29,8 @@ describe('ProductsEffects', () => {
   let store$: Store<ShoppingState>;
   let productsServiceMock: ProductsService;
   let DE_DE: Locale;
+
+  const router = mock(Router);
 
   beforeEach(() => {
     productsServiceMock = mock(ProductsService);
@@ -59,6 +62,7 @@ describe('ProductsEffects', () => {
         ProductsEffects,
         provideMockActions(() => actions$),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: Router, useFactory: () => instance(router) },
       ],
     });
 
@@ -105,19 +109,21 @@ describe('ProductsEffects', () => {
   describe('loadProductsForCategory$', () => {
     beforeEach(() => {
       store$.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
-
-      actions$ = hot('a', {
-        a: new fromActions.LoadProductsForCategory('123'),
-      });
     });
 
     it('should call service for SKU list', () => {
       effects.loadProductsForCategory$.subscribe(() => {
         verify(productsServiceMock.getCategoryProducts('123', 'name-asc')).once();
       });
+      actions$ = hot('a', {
+        a: new fromActions.LoadProductsForCategory('123'),
+      });
     });
 
     it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProduct for each product in the list', () => {
+      actions$ = hot('a', {
+        a: new fromActions.LoadProductsForCategory('123'),
+      });
       const expectedValues = {
         a: new fromCategories.SetProductSkusForCategory('123', ['P222', 'P333']),
         b: new fromViewconf.SetSortKeys(['name-asc', 'name-desc']),
@@ -125,6 +131,17 @@ describe('ProductsEffects', () => {
         d: new fromActions.LoadProduct('P333'),
       };
       expect(effects.loadProductsForCategory$).toBeObservable(cold('(abcd)', expectedValues));
+    });
+
+    it('should not die if repeating errors are encountered', () => {
+      const error = { status: 500 } as HttpErrorResponse;
+      when(productsServiceMock.getCategoryProducts(anything(), anything())).thenReturn(_throw(error));
+      actions$ = hot('-a-a-a', {
+        a: new fromActions.LoadProductsForCategory('123'),
+      });
+      expect(effects.loadProductsForCategory$).toBeObservable(
+        cold('-a-a-a', { a: new fromActions.LoadProductFail(error) })
+      );
     });
   });
 
@@ -167,5 +184,22 @@ describe('ProductsEffects', () => {
 
       expect(effects.languageChange$).toBeObservable(cold('a', expectedValues));
     });
+  });
+
+  describe('redirectIfErrorInProducts$', () => {
+    it(
+      'should redirect if triggered',
+      fakeAsync(() => {
+        const action = new fromActions.LoadProductFail({ status: 404 } as HttpErrorResponse);
+
+        actions$ = hot('a', { a: action });
+
+        effects.redirectIfErrorInProducts$.subscribe(() => {
+          verify(router.navigate(anything())).once();
+          const [param] = capture(router.navigate).last();
+          expect(param).toEqual(['/error']);
+        });
+      })
+    );
   });
 });
