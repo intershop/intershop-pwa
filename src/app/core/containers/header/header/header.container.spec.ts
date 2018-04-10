@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, StoreModule } from '@ngrx/store';
-import { MockComponent } from '../../../utils/dev/mock.component';
-import { errorReducer } from '../../store/error/error.reducer';
+import { MockComponent } from '../../../../utils/dev/mock.component';
+import { errorReducer } from '../../../store/error/error.reducer';
 import { HeaderContainerComponent } from './header.container';
 
 describe('Header Container', () => {
@@ -18,8 +18,8 @@ describe('Header Container', () => {
       ],
       declarations: [
         HeaderContainerComponent,
-        MockComponent({ selector: 'ish-header', template: 'Full header' }),
-        MockComponent({ selector: 'ish-small-header', template: 'small header' }),
+        MockComponent({ selector: 'ish-header', template: 'Header Component' }),
+        MockComponent({ selector: 'ish-simple-header', template: 'Simple Header Component' }),
       ]
     }).compileComponents();
   }));
