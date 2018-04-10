@@ -17,9 +17,9 @@ import { LoginStatusComponent } from './components/header/login-status/login-sta
 import { MiniBasketComponent } from './components/header/mini-basket/mini-basket.component';
 import { MobileBasketComponent } from './components/header/mobile-basket/mobile-basket.component';
 import { ProductCompareStatusComponent } from './components/header/product-compare-status/product-compare-status.component';
-import { SmallHeaderComponent } from './components/header/small-header/small-header.component';
+import { SimpleHeaderComponent } from './components/header/simple-header/simple-header.component';
 import { HeaderNavigationContainerComponent } from './containers/header/header-navigation/header-navigation.container';
-import { HeaderContainerComponent } from './containers/header/header.container';
+import { HeaderContainerComponent } from './containers/header/header/header.container';
 import { LanguageSwitchContainerComponent } from './containers/header/language-switch/language-switch.container';
 import { LoginStatusContainerComponent } from './containers/header/login-status/login-status.container';
 import { MiniBasketContainerComponent } from './containers/header/mini-basket/mini-basket.container';
@@ -41,7 +41,7 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     BrowserAnimationsModule,
   ],
   declarations: [
-    SmallHeaderComponent,
+    SimpleHeaderComponent,
     HeaderComponent,
     HeaderContainerComponent,
     ProductCompareStatusComponent,
