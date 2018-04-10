@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { routerReducer } from '@ngrx/router-store';
-import { combineReducers, select, Store, StoreModule  } from '@ngrx/store';
+import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Basket } from '../../../models/basket/basket.model';
 import { c } from '../../../utils/dev/marbles-utils';
@@ -42,7 +42,7 @@ describe('Basket selectors', () => {
 
   describe('with empty state', () => {
 
-    it('no basket should be present', () => {
+    it('should be present if no basket is present', () => {
       expect(basket$).toBeObservable(c(null));
     });
   });
@@ -57,17 +57,17 @@ describe('Basket selectors', () => {
       expect(basketLoading$).toBeObservable(c(true));
     });
 
-    it('and reporting success', () => {
-        store.dispatch(new LoadBasketSuccess(basket));
-        expect(basketLoading$).toBeObservable(c(false));
-        expect(basket$).toBeObservable(c(basket));
+    it('should set the state to loading and report success', () => {
+      store.dispatch(new LoadBasketSuccess(basket));
+      expect(basketLoading$).toBeObservable(c(false));
+      expect(basket$).toBeObservable(c(basket));
     });
 
-    it('and reporting faliure', () => {
-        store.dispatch(new LoadBasketFail({ message: 'invalid' } as HttpErrorResponse));
-        expect(basketLoading$).toBeObservable(c(false));
-        expect(basket$).toBeObservable(c(null));
-        expect(basketLoadingError$).toBeObservable(c({ message: 'invalid' }));
+    it('should set the state to loading and report failure', () => {
+      store.dispatch(new LoadBasketFail({ message: 'invalid' } as HttpErrorResponse));
+      expect(basketLoading$).toBeObservable(c(false));
+      expect(basket$).toBeObservable(c(null));
+      expect(basketLoadingError$).toBeObservable(c({ message: 'invalid' }));
     });
   });
 

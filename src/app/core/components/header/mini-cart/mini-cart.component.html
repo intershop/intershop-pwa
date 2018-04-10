@@ -1,4 +1,4 @@
-<!-- NEEDS_WORK: DUMMY COMPONENT -->
+<!-- NEEDS_WORK: IMPLEMENT SLIDER AND ADD MISSING DATA -->
 <div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed" >
   <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
   <a (click)="isCollapsed = !isCollapsed; false;">
@@ -14,10 +14,9 @@
   <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCart -->
   <div [collapse]="isCollapsed" class="mini-cart">
     <ng-container *ngIf="basket; else emptyBlock">
-      <!-- dummy mini cart data in the dropdown -->
       <div class="product-rows-block">
         <div class="slider">
-          <div class="product-row">
+          <div class="product-row" *ngFor="let product of basket.lineItems">
             <div class="mini-product-img">
               <a routerLink="/">
                 <img src="assets/product_img/x_thumb.jpg"
@@ -26,14 +25,14 @@
               </a>
             </div>
             <div class="mini-product-info">
-              <a routerLink="/">A-DATA XPG Gaming Series V2.0, DDR3, 1600 MHz, CL9, 12GB (4GB x 3)</a>
+              <a routerLink="/">{{ product.title }}</a>
               <div class="product-price">$ 214.12</div>
               <div class="cart-pli-data"><span>Quantity:</span> 2</div>
             </div>
           </div>
         </div>
       </div>
-      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/">View Cart</a>
+      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/">{{ 'shopping_cart.ministatus.view_cart.link' | translate }}</a>
     </ng-container>
     <ng-template #emptyBlock>
       <!-- Your cart is currently empty. -->

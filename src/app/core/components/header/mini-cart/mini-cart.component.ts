@@ -1,6 +1,5 @@
 // NEEDS_WORK: DETAIL ITEM CONTENT MISSING
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { BasketHelper } from '../../../../models/basket/basket.helper';
 import { Basket } from '../../../../models/basket/basket.model';
 
 @Component({

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { AddItemToBasket } from '../../../checkout/store/basket';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { isInCompareProducts, ToggleCompare } from '../../store/compare';
@@ -28,9 +29,7 @@ export class ProductTileContainerComponent implements OnInit {
   }
 
   addToCart() {
-    console.log(
-      '[ProductTileContainer] Add to Cart: SKU: ' + this.product.sku + ', Quantity: ' + this.product.minOrderQuantity
-    );
-    // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(this.product.sku, this.product.minOrderQuantity));
+    // TODO: should be dispatched on checkout state, not shopping state
+    this.store.dispatch(new AddItemToBasket({ sku: this.product.sku, quanity: this.product.minOrderQuantity }));
   }
 }
