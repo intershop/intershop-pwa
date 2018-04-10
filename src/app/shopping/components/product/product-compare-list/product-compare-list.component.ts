@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Attribute } from '../../../../models/attribute/attribute.model';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
@@ -7,51 +6,49 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
   templateUrl: './product-compare-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductCompareListComponent {
+export class ProductCompareListComponent implements OnChanges {
 
   @Input() compareProducts: Product[] = [];
   @Input() totalItems: number;
-  @Input() itemsPerPage: number;
+  @Input() itemsPerPage = 3;
   @Output() productToCart = new EventEmitter<{ sku: string, quantity: number }>();
   @Output() removeProductCompare = new EventEmitter<string>();
-  @Output() pageChanged = new EventEmitter<number>();
+
+  commonAttributeNames: Set<string>;
+  visibleProducts: Product[] = [];
   currentPage = 1;
 
   generateProductRoute = ProductHelper.generateProductRoute;
   getAttributeByAttributeName = ProductHelper.getAttributeByAttributeName;
 
+  ngOnChanges() {
+    this.commonAttributeNames = this.getCommonAttributeNames();
+    // decrease the current page value if the current page would be empty because of removing a product from compare
+    if (!((this.currentPage - 1) * this.itemsPerPage < this.totalItems)) {
+      this.currentPage = this.currentPage - 1;
+    }
+    this.setVisibleProducts();
+  }
+
+  /**
+   * Changes the current page number and sets the appropriate compare products to be visible.
+   * @param currentPage The current page number to be set
+   */
   onPageChanged(currentPage: number) {
     this.currentPage = currentPage;
-    this.pageChanged.emit(currentPage);
+    this.setVisibleProducts();
   }
 
   /**
-   * Return Common attributes between products compare
-   * @param product
-   * @returns
+   * Sets the visible products of the compare products based on the items per page and the current page.
    */
-  getCommonAttribute(product: Product): Attribute[] {
-    const commonAttributes: Attribute[] = [];
-    this.getCommonAttributeNames().forEach(item => {
-      commonAttributes.push(product.attributes.find(x => x.name === item));
-    });
-    return commonAttributes;
+  setVisibleProducts() {
+    this.visibleProducts = this.compareProducts.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
   }
 
   /**
-   * return specific attributes between products compare
-   * @param currentProduct
-   * @returns
-   */
-  getProductWithSpecificAttribute(currentProduct: Product): Product {
-    const product: Product = { ...currentProduct };
-    product.attributes = currentProduct.attributes.filter(attribute => !this.getCommonAttributeNames().has(attribute.name));
-    return product;
-  }
-
-  /**
-   * return common attributes name list between products compare
-   * @returns
+   * Determines the set of common attribute names for the compare products.
+   * @returns A set of the common attribute names.
    */
   getCommonAttributeNames(): Set<string> {
     const result = this.compareProducts.reduce((commonAttributeNameList, current) => {
@@ -67,6 +64,17 @@ export class ProductCompareListComponent {
   }
 
   /**
+   * Get a product with only specific attributes. All attributes that are common between the compare products are filtered out.
+   * @param product The Products that should be stripped of its common attributes
+   * @returns       A Product with specific attributes only compared to the common attributes.
+   */
+  getProductWithSpecificAttributesOnly(product: Product): Product {
+    const specificAttributesProduct: Product = { ...product };
+    specificAttributesProduct.attributes = product.attributes.filter(attribute => !this.commonAttributeNames.has(attribute.name));
+    return specificAttributesProduct;
+  }
+
+  /**
    * Remove the product with the given SKU from the compare list.
    * @param sku The SKU of the product to remove
    */
@@ -76,8 +84,8 @@ export class ProductCompareListComponent {
 
   /**
    * Add product with the given quantity to the cart.
-   * @param sku The SKU of the product to add
-   * @param quantity The quantity to be added
+   * @param sku       The SKU of the product to add
+   * @param quantity  The quantity to be added
    */
   addToCart(sku: string, quantity: number) {
     this.productToCart.emit({ sku: sku, quantity: quantity });
