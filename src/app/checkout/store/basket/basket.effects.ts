@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import { catchError, concatMap, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
+import * as productsActions from '../../../shopping/store/products/products.actions';
 import { BasketService } from '../../services/basket/basket.service';
 import { CheckoutState } from '../checkout.state';
 import * as basketActions from './basket.actions';
@@ -45,13 +46,52 @@ export class BasketEffects {
   );
 
   /**
-   * add product to cart effecs
+   * load basket items effect
+   */
+  @Effect()
+  loadBasketItems$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketItems),
+    map((action: basketActions.LoadBasketItems) => action.payload),
+    mergeMap(basketId => {
+      return this.basketService
+        .getBasketItems(basketId)
+        .pipe(
+          map(basketItems => new basketActions.LoadBasketItemsSuccess(basketItems)),
+          catchError(error => of(new basketActions.LoadBasketItemsFail(error)))
+        );
+    })
+  );
+
+  /**
+   * trigger load basket items effect after load basket success
+   */
+  @Effect()
+  loadBasketItemsAfterBasketLoad$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketSuccess),
+    withLatestFrom(this.store.select(getCurrentBasket)),
+    map(([action, basket]) => new basketActions.LoadBasketItems(basket.id))
+  );
+
+  /**
+   * trigger load product effects after load basket items success
+   */
+  @Effect()
+  loadProductsForBasket$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketItemsSuccess),
+    withLatestFrom(this.store.select(getCurrentBasket)),
+    switchMap(([action, basket]) => [
+      ...basket.lineItems.map(lineItem => new productsActions.LoadProduct(lineItem.product['title'])),
+    ])
+  );
+
+  /**
+   * add product to basket effecs
    */
   @Effect()
   addItemToBasket$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.AddItemToBasket),
     map((action: basketActions.AddItemToBasket) => action.payload),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    withLatestFrom(this.store.select(getCurrentBasket)),
     concatMap(([payload, basket]) => {
       return this.basketService
         .addItemToBasket(payload.sku, payload.quantity, basket.id)

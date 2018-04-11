@@ -1,6 +1,7 @@
 import { Address } from '../address/address.model';
 import { Price } from '../price/price.model';
 import { ShippingMethod } from '../shipping-method/shipping-method.model';
+import { BasketItem } from './basket-item.model';
 
 export interface Basket {
   id: string;
@@ -9,8 +10,7 @@ export interface Basket {
   InvoiceToAddress?: Address;
   commonShipToAddress?: Address;
   commonShippingMethod?: ShippingMethod;
-  // tslint:disable-next-line: no-any
-  lineItems?: any[]; // TODO: add propper interface
+  lineItems?: BasketItem[];
   totals: {
     itemTotal: Price;
     itemRebatesTotal?: Price;

@@ -12,13 +12,13 @@ import { SubCategoryNavigationComponent } from './components/header/header-navig
 import { HeaderComponent } from './components/header/header.component';
 import { LanguageSwitchComponent } from './components/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from './components/header/login-status/login-status.component';
-import { MiniCartComponent } from './components/header/mini-cart/mini-cart.component';
+import { MiniBasketComponent } from './components/header/mini-basket/mini-basket.component';
 import { MobileCartComponent } from './components/header/mobile-cart/mobile-cart.component';
 import { ProductCompareStatusComponent } from './components/header/product-compare-status/product-compare-status.component';
 import { HeaderNavigationContainerComponent } from './containers/header/header-navigation/header-navigation.container';
 import { LanguageSwitchContainerComponent } from './containers/header/language-switch/language-switch.container';
 import { LoginStatusContainerComponent } from './containers/header/login-status/login-status.container';
-import { MiniCartContainerComponent } from './containers/header/mini-cart/mini-cart.container';
+import { MiniBasketContainerComponent } from './containers/header/mini-basket/mini-basket.container';
 import { MobileCartContainerComponent } from './containers/header/mobile-cart/mobile-cart.container';
 import { ProductCompareStatusContainerComponent } from './containers/header/product-compare-status/product-compare-status.container';
 
@@ -37,8 +37,8 @@ import { ProductCompareStatusContainerComponent } from './containers/header/prod
     HeaderComponent,
     ProductCompareStatusComponent,
     ProductCompareStatusContainerComponent,
-    MiniCartComponent,
-    MiniCartContainerComponent,
+    MiniBasketComponent,
+    MiniBasketContainerComponent,
     MobileCartComponent,
     MobileCartContainerComponent,
     LanguageSwitchComponent,

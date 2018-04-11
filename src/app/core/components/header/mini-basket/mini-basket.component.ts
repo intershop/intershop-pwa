@@ -1,13 +1,13 @@
 // NEEDS_WORK: DETAIL ITEM CONTENT MISSING
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Basket } from '../../../../models/basket/basket.model';
+import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
 
 @Component({
-  selector: 'ish-mini-cart',
-  templateUrl: './mini-cart.component.html',
+  selector: 'ish-mini-basket',
+  templateUrl: './mini-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MiniCartComponent implements OnChanges {
+export class MiniBasketComponent implements OnChanges {
   @Input() basket: Basket;
 
   isCollapsed = true;
@@ -15,8 +15,7 @@ export class MiniCartComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.basket) {
-      // TODO: add necessary api values to get real item count
-      this.itemsCount = this.basket.lineItems.length;
+      this.itemsCount = BasketHelper.getBasketItemsCount(this.basket);
     }
   }
 }

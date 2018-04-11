@@ -4,11 +4,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { Basket } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
-import { MiniCartComponent } from './mini-cart.component';
+import { MiniBasketComponent } from './mini-basket.component';
 
-describe('Mini Cart Component', () => {
-  let fixture: ComponentFixture<MiniCartComponent>;
-  let component: MiniCartComponent;
+describe('Mini Basket Component', () => {
+  let fixture: ComponentFixture<MiniBasketComponent>;
+  let component: MiniBasketComponent;
   let element: HTMLElement;
   let basket: Basket;
   let translate: TranslateService;
@@ -18,13 +18,13 @@ describe('Mini Cart Component', () => {
       TestBed.configureTestingModule({
         imports: [CollapseModule.forRoot(), CommonModule, TranslateModule.forRoot(), PipesModule],
         providers: [CurrencyPipe],
-        declarations: [MiniCartComponent],
+        declarations: [MiniBasketComponent],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MiniCartComponent);
+    fixture = TestBed.createComponent(MiniBasketComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.get(TranslateService);

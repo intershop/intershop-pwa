@@ -7,11 +7,11 @@ import { Basket } from '../../../../models/basket/basket.model';
 import { Region } from '../../../../models/region/region.model';
 
 @Component({
-  selector: 'ish-mini-cart-container',
-  templateUrl: './mini-cart.container.html',
+  selector: 'ish-mini-basket-container',
+  templateUrl: './mini-basket.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MiniCartContainerComponent implements OnInit {
+export class MiniBasketContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   region$: Observable<Region>;
 

@@ -2,11 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { MiniCartContainerComponent } from './mini-cart.container';
+import { MiniBasketContainerComponent } from './mini-basket.container';
 
-describe('Mini Cart Container', () => {
-  let component: MiniCartContainerComponent;
-  let fixture: ComponentFixture<MiniCartContainerComponent>;
+describe('Mini Basket Container', () => {
+  let component: MiniBasketContainerComponent;
+  let fixture: ComponentFixture<MiniBasketContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(
@@ -14,17 +14,17 @@ describe('Mini Cart Container', () => {
       TestBed.configureTestingModule({
         declarations: [
           MockComponent({
-            selector: 'ish-mini-cart',
-            template: 'Mini Cart',
+            selector: 'ish-mini-basket',
+            template: 'Mini Basket',
             inputs: ['basket'],
           }),
-          MiniCartContainerComponent,
+          MiniBasketContainerComponent,
         ],
         providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       })
         .compileComponents()
         .then(() => {
-          fixture = TestBed.createComponent(MiniCartContainerComponent);
+          fixture = TestBed.createComponent(MiniBasketContainerComponent);
           component = fixture.componentInstance;
           element = fixture.nativeElement;
         });
