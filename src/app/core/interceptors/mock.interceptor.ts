@@ -67,7 +67,7 @@ export class MockInterceptor implements HttpInterceptor {
   /**
    * transforms server REST URL to mock REST URL
    */
-  public getMockUrl(req: HttpRequest<any>) {
+  getMockUrl(req: HttpRequest<any>) {
     return this.urlHasToBeMocked(req.url) ? `${MOCK_DATA_ROOT}/${this.getRestPath(this.removeQueryStringParameter(req.url))}/${req.method.toLocaleLowerCase()}-data.json` : req.url;
   }
 
@@ -82,11 +82,11 @@ export class MockInterceptor implements HttpInterceptor {
   /**
    * check if HttpRequest has to be mocked
    */
-  public requestHasToBeMocked(req: HttpRequest<any>): boolean {
+  requestHasToBeMocked(req: HttpRequest<any>): boolean {
     return this.urlHasToBeMocked(req.url);
   }
 
-  public getRestPath(url: string): string {
+  getRestPath(url: string): string {
     const withoutApplication = url.substring(this.restEndpoint.length);
     return withoutApplication.substring(withoutApplication.indexOf('/') + 1);
   }
@@ -99,7 +99,7 @@ export class MockInterceptor implements HttpInterceptor {
     return path.split('?')[0];
   }
 
-  public matchPath(requestedPath: string, pathArray: string[]) {
+  matchPath(requestedPath: string, pathArray: string[]) {
     pathArray = pathArray || [];
     for (const configPath of pathArray) {
       if (new RegExp('^' + configPath + '$').test(requestedPath)) {

@@ -8,13 +8,13 @@ const DESCRIPTION_VIEWPOINT_ERROR_REGEX = /^('|`)should (check|test)/;
 
 class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
 
-  public visitSourceFile(sourceFile: SourceFile) {
+  visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
       super.visitSourceFile(sourceFile);
     }
   }
 
-  public visitIdentifier(node: Identifier) {
+  visitIdentifier(node: Identifier) {
     if (node.getText() === 'it') {
       const descriptionToken = getNextToken(getNextToken(node));
       if (!!descriptionToken) {
@@ -40,7 +40,7 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new MeaningfulNamingInTestsWalker(sourceFile, this.getOptions()));
   }
 }

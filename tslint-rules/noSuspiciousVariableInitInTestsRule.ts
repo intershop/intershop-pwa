@@ -19,7 +19,7 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
     this.correctlyReinitializedVariables = [];
   }
 
-  public visitSourceFile(sourceFile: ts.SourceFile) {
+  visitSourceFile(sourceFile: ts.SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
       const describeBody = RuleHelpers.getDescribeBody(sourceFile);
       if (describeBody) {
@@ -82,7 +82,7 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new NoSuspiciousVariableInitInTestsWalker(sourceFile, this.getOptions()));
   }
 }
