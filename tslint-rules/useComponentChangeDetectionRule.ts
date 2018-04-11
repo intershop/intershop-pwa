@@ -13,7 +13,7 @@ class UseComponentChangeDetectionWalker extends NgWalker {
     }
   }
 
-  public visitClassDecorator(decorator: ts.Decorator) {
+  visitClassDecorator(decorator: ts.Decorator) {
     if (decorator.expression.getChildAt(0).getText() === 'Component') {
       const componentProperties = decorator.expression.getChildAt(2) as ts.SyntaxList;
       // tslint:disable-next-line:no-any
@@ -37,7 +37,7 @@ class UseComponentChangeDetectionWalker extends NgWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new UseComponentChangeDetectionWalker(sourceFile, this.getOptions()));
   }
 }

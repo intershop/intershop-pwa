@@ -4,7 +4,7 @@ import { RuleHelpers } from './ruleHelpers';
 
 class DoNotImportEnvironmentWalker extends Lint.RuleWalker {
 
-  public visitImportDeclaration(importStatement: ImportDeclaration) {
+  visitImportDeclaration(importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
     const fromStringText = fromStringToken.getText();
     if (fromStringText.indexOf('environments/environment') > 0) {
@@ -18,7 +18,7 @@ class DoNotImportEnvironmentWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new DoNotImportEnvironmentWalker(sourceFile, this.getOptions()));
   }
 }

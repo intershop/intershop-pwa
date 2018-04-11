@@ -14,7 +14,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
     this.warnOnlyOnMissing = this.getOptions()[0] === 'warn';
   }
 
-  public visitSourceFile(sourceFile: ts.SourceFile) {
+  visitSourceFile(sourceFile: ts.SourceFile) {
     if (sourceFile.fileName.search(/.(component|container).ts/) > 0) {
       const fileName = sourceFile.fileName;
       const testName = fileName.substring(0, fileName.length - 2) + 'spec.ts';
@@ -93,7 +93,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ComponentCreationTestWalker(sourceFile, this.getOptions()));
   }
 }
