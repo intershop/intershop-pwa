@@ -35,7 +35,7 @@ describe('Products Service', () => {
   it("should get Product data when 'getProduct' is called", () => {
     when(
       apiService.get(
-        productsService.productsServiceIdentifier + productSku,
+        `${productsService.productsServiceIdentifier}/${productSku}`,
         anything(),
         anything(),
         anything(),
@@ -47,7 +47,7 @@ describe('Products Service', () => {
     });
     verify(
       apiService.get(
-        productsService.productsServiceIdentifier + productSku,
+        `${productsService.productsServiceIdentifier}/${productSku}`,
         anything(),
         anything(),
         anything(),
@@ -59,7 +59,7 @@ describe('Products Service', () => {
   it("should get a list of Products SKUs for a given Category when 'getProductsSkusForCategory' is called", () => {
     when(
       apiService.get(
-        productsService.categoriesServiceIdentifier + categoryId + '/' + productsService.productsServiceIdentifier,
+        `${productsService.categoriesServiceIdentifier}/${categoryId}/${productsService.productsServiceIdentifier}`,
         anything(),
         anything(),
         anything(),
@@ -73,7 +73,7 @@ describe('Products Service', () => {
     });
     verify(
       apiService.get(
-        productsService.categoriesServiceIdentifier + categoryId + '/' + productsService.productsServiceIdentifier,
+        `${productsService.categoriesServiceIdentifier}/${categoryId}/${productsService.productsServiceIdentifier}`,
         anything(),
         anything(),
         anything(),

@@ -16,8 +16,8 @@ export class ProductsService {
   /**
    * The REST API URI endpoints
    */
-  productsServiceIdentifier = 'products/';
-  categoriesServiceIdentifier = 'categories/';
+  productsServiceIdentifier = 'products';
+  categoriesServiceIdentifier = 'categories';
 
   constructor(private apiService: ApiService) {}
 
@@ -33,7 +33,7 @@ export class ProductsService {
     }
     const params: HttpParams = new HttpParams().set('allImages', 'true');
     return this.apiService
-      .get<ProductData>(this.productsServiceIdentifier + sku, params, null, false, false)
+      .get<ProductData>(`${this.productsServiceIdentifier}/${sku}`, params, null, false, false)
       .pipe(map(productData => ProductMapper.fromData(productData)));
   }
 
@@ -49,15 +49,13 @@ export class ProductsService {
     categoryUniqueId: string,
     sortKey = ''
   ): Observable<{ skus: string[]; categoryUniqueId: string; sortKeys: string[] }> {
-    const path =
-      this.categoriesServiceIdentifier + categoryUniqueId.replace(/\./g, '/') + '/' + this.productsServiceIdentifier;
     let params: HttpParams = new HttpParams().set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
     return this.apiService
       .get<{ elements: { uri: string }[]; sortKeys: string[]; categoryUniqueId: string }>(
-        path,
+        `${this.categoriesServiceIdentifier}/${categoryUniqueId.replace(/\./g, '/')}/${this.productsServiceIdentifier}`,
         params,
         null,
         false,
