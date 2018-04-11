@@ -12,9 +12,7 @@ import { getUserAuthorized, getUserError, LoginUser } from '../../../core/store/
   templateUrl: './login-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class LoginPageContainerComponent implements OnInit {
-
   loginToUse = false;
   loginError$: Observable<HttpErrorResponse>;
   isLoggedIn$: Observable<boolean>;
@@ -22,7 +20,7 @@ export class LoginPageContainerComponent implements OnInit {
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,
     private store: Store<CoreState>
-  ) { }
+  ) {}
 
   /**
    * Creates Login Form

@@ -27,5 +27,4 @@ describe('Viewconf Reducer', () => {
 
     expect(state.sortBy).toEqual('name-asc');
   });
-
 });

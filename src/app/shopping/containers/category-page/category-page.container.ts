@@ -15,9 +15,7 @@ import * as fromViewconf from '../../store/viewconf';
   templateUrl: './category-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class CategoryPageContainerComponent implements OnInit {
-
   category$: Observable<Category>;
   categoryLoading$: Observable<boolean>;
   categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
@@ -27,16 +25,11 @@ export class CategoryPageContainerComponent implements OnInit {
   sortBy$: Observable<string>;
   sortKeys$: Observable<string[]>;
 
-  constructor(
-    private store: Store<ShoppingState>
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     // TODO: find a nicer way to filter out the case of an 'undefined' category
-    this.category$ = this.store.pipe(
-      select(fromStore.getSelectedCategory),
-      filter(e => !!e)
-    );
+    this.category$ = this.store.pipe(select(fromStore.getSelectedCategory), filter(e => !!e));
     this.categoryLoading$ = this.store.pipe(select(fromStore.getCategoryLoading));
 
     this.products$ = this.store.pipe(select(fromStore.getProductsForSelectedCategory));

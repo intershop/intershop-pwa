@@ -16,10 +16,9 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 @Component({
   selector: 'ish-product-compare-list',
   templateUrl: './product-compare-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCompareListComponent implements OnChanges {
-
   /**
    * The list of products to compare
    */
@@ -33,7 +32,7 @@ export class ProductCompareListComponent implements OnChanges {
   /**
    * Trigger an add product to cart event
    */
-  @Output() productToCart = new EventEmitter<{ sku: string, quantity: number }>();
+  @Output() productToCart = new EventEmitter<{ sku: string; quantity: number }>();
 
   /**
    * Trigger a remove product from compare event
@@ -69,7 +68,10 @@ export class ProductCompareListComponent implements OnChanges {
    * Sets the visible products of the compare products based on the items per page and the current page.
    */
   setVisibleProducts() {
-    this.visibleProducts = this.compareProducts.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
+    this.visibleProducts = this.compareProducts.slice(
+      (this.currentPage - 1) * this.itemsPerPage,
+      this.currentPage * this.itemsPerPage
+    );
   }
 
   /**
@@ -77,16 +79,21 @@ export class ProductCompareListComponent implements OnChanges {
    * @returns A set of the common attribute names.
    */
   getCommonAttributeNames(): Set<string> {
-    const result = this.compareProducts.reduce((commonAttributeNameList, current) => {
-      commonAttributeNameList.push(current.attributes.map(x => x.name));
-      return commonAttributeNameList;
-    }, <string[][]>[]);
+    const result = this.compareProducts.reduce(
+      (commonAttributeNameList, current) => {
+        commonAttributeNameList.push(current.attributes.map(x => x.name));
+        return commonAttributeNameList;
+      },
+      <string[][]>[]
+    );
 
-    return new Set(result.shift().filter(attribute => {
-      return result.every(x => {
-        return x.indexOf(attribute) !== -1;
-      });
-    }));
+    return new Set(
+      result.shift().filter(attribute => {
+        return result.every(x => {
+          return x.indexOf(attribute) !== -1;
+        });
+      })
+    );
   }
 
   /**
@@ -96,7 +103,9 @@ export class ProductCompareListComponent implements OnChanges {
    */
   getProductWithSpecificAttributesOnly(product: Product): Product {
     const specificAttributesProduct: Product = { ...product };
-    specificAttributesProduct.attributes = product.attributes.filter(attribute => !this.commonAttributeNames.has(attribute.name));
+    specificAttributesProduct.attributes = product.attributes.filter(
+      attribute => !this.commonAttributeNames.has(attribute.name)
+    );
     return specificAttributesProduct;
   }
 
@@ -116,5 +125,4 @@ export class ProductCompareListComponent implements OnChanges {
   addToCart(sku: string, quantity: number) {
     this.productToCart.emit({ sku: sku, quantity: quantity });
   }
-
 }

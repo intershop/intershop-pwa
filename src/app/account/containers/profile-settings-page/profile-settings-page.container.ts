@@ -10,12 +10,9 @@ import { Customer } from '../../../models/customer/customer.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSettingsPageContainerComponent implements OnInit {
-
   customer$: Observable<Customer>;
 
-  constructor(
-    private store: Store<CoreState>
-  ) { }
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
     this.customer$ = this.store.pipe(select(getLoggedInUser));

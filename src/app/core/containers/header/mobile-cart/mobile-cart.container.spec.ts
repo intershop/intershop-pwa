@@ -7,22 +7,26 @@ describe('Mobile Cart Container', () => {
   let fixture: ComponentFixture<MobileCartContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        MockComponent({
-          selector: 'ish-mobile-cart',
-          template: 'Mobile Cart',
-          inputs: ['cartItems'],
-        }),
-        MobileCartContainerComponent,
-      ]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(MobileCartContainerComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    });
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          MockComponent({
+            selector: 'ish-mobile-cart',
+            template: 'Mobile Cart',
+            inputs: ['cartItems'],
+          }),
+          MobileCartContainerComponent,
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MobileCartContainerComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

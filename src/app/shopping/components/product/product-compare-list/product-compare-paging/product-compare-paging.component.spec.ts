@@ -6,13 +6,14 @@ describe('Product Compare Paging Component', () => {
   let component: ProductComparePagingComponent;
   let fixture: ComponentFixture<ProductComparePagingComponent>;
   let element: HTMLElement;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ProductComparePagingComponent],
-      imports: [TranslateModule.forRoot()]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ProductComparePagingComponent],
+        imports: [TranslateModule.forRoot()],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductComparePagingComponent);

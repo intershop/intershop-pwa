@@ -6,13 +6,10 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
 @Component({
   selector: 'ish-product-list',
   templateUrl: './product-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductListComponent {
-
   @Input() products: Product[];
   @Input() category?: Category;
   @Input() viewType?: ViewType = 'grid';
-
 }

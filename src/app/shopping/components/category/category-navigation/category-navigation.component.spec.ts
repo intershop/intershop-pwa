@@ -8,19 +8,21 @@ describe('Category Navigation Component', () => {
   let fixture: ComponentFixture<CategoryNavigationComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-      ],
-      declarations: [CategoryNavigationComponent]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(CategoryNavigationComponent);
-      component = fixture.componentInstance;
-      component.categoryPath = [{}] as Category[];
-      element = fixture.nativeElement;
-    });
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [RouterTestingModule],
+        declarations: [CategoryNavigationComponent],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(CategoryNavigationComponent);
+          component = fixture.componentInstance;
+          component.categoryPath = [{}] as Category[];
+          element = fixture.nativeElement;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

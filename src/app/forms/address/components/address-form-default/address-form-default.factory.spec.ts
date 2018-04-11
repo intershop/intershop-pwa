@@ -8,10 +8,7 @@ describe('AddressFormDEFactory', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        FormBuilder,
-        AddressFormDefaultFactory
-      ]
+      providers: [FormBuilder, AddressFormDefaultFactory],
     });
     addressFactory = TestBed.get(AddressFormDefaultFactory);
   });
@@ -36,13 +33,11 @@ describe('AddressFormDEFactory', () => {
 
   describe('getGroup', () => {
     it('should return a form group if called and apply values to it', () => {
-      const fg = addressFactory.getGroup(
-        {
-          firstName: 'John',
-          lastName: 'Doe',
-          city: 'Denver'
-        }
-      );
+      const fg = addressFactory.getGroup({
+        firstName: 'John',
+        lastName: 'Doe',
+        city: 'Denver',
+      });
       expect(fg.get('firstName').value).toEqual('John', 'firstName is set');
       expect(fg.get('lastName').value).toEqual('Doe', 'lastName is set');
       expect(fg.get('city').value).toEqual('Denver', 'city is set');

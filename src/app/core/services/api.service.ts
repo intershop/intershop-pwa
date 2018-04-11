@@ -13,7 +13,6 @@ import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 @Injectable()
 export class ApiService {
-
   private currentLocale: Locale;
 
   /**
@@ -27,7 +26,7 @@ export class ApiService {
     store: Store<CoreState>,
     private apiServiceErrorHandler: ApiServiceErrorHandler
   ) {
-    store.pipe(select(getCurrentLocale)).subscribe(locale => this.currentLocale = locale);
+    store.pipe(select(getCurrentLocale)).subscribe(locale => (this.currentLocale = locale));
   }
 
   // declare default http header
@@ -40,8 +39,13 @@ export class ApiService {
    * @returns Observable
    */
 
-  get<T>(path: string, params?: HttpParams, headers?: HttpHeaders,
-    elementsTranslation?: boolean, linkTranslation?: boolean): Observable<T> {
+  get<T>(
+    path: string,
+    params?: HttpParams,
+    headers?: HttpHeaders,
+    elementsTranslation?: boolean,
+    linkTranslation?: boolean
+  ): Observable<T> {
     let localeAndCurrency = '';
     if (!!this.currentLocale) {
       localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
@@ -53,11 +57,13 @@ export class ApiService {
       url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
     }
 
-    return this.httpClient.get<T>(url, { params: params, headers: headers }).pipe(
-      catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)),
-      map(data => (elementsTranslation && data ? data['elements'] : data)),
-      flatMap((data) => this.getLinkedData(data, linkTranslation))
-    );
+    return this.httpClient
+      .get<T>(url, { params: params, headers: headers })
+      .pipe(
+        catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)),
+        map(data => (elementsTranslation && data ? data['elements'] : data)),
+        flatMap(data => this.getLinkedData(data, linkTranslation))
+      );
   }
 
   /**
@@ -67,11 +73,9 @@ export class ApiService {
    * @returns Observable
    */
   put<T>(path: string, body: Object = {}): Observable<T> {
-    return this.httpClient.put<T>(
-      `${this.restEndpoint}/${path}`,
-      JSON.stringify(body),
-      { headers: this.defaultHeaders }
-    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+    return this.httpClient
+      .put<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
   }
 
   /**
@@ -81,11 +85,9 @@ export class ApiService {
    * @returns Observable
    */
   post<T>(path: string, body: Object = {}): Observable<T> {
-    return this.httpClient.post<T>(
-      `${this.restEndpoint}/${path}`,
-      JSON.stringify(body),
-      { headers: this.defaultHeaders }
-    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+    return this.httpClient
+      .post<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
   }
 
   /**
@@ -94,9 +96,9 @@ export class ApiService {
    * @returns Observable
    */
   delete<T>(path): Observable<T> {
-    return this.httpClient.delete<T>(
-      `${this.restEndpoint}/${path}`
-    ).pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+    return this.httpClient
+      .delete<T>(`${this.restEndpoint}/${path}`)
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
   }
 
   // tslint:disable:no-any

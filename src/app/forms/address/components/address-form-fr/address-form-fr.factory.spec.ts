@@ -8,10 +8,7 @@ describe('AddressFormDEFactory', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        FormBuilder,
-        AddressFormFRFactory
-      ]
+      providers: [FormBuilder, AddressFormFRFactory],
     });
     addressFactory = TestBed.get(AddressFormFRFactory);
   });

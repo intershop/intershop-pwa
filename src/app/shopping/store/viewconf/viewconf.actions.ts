@@ -9,20 +9,17 @@ export enum ViewconfActionTypes {
 
 export class ChangeViewType implements Action {
   readonly type = ViewconfActionTypes.ChangeViewType;
-  constructor(public payload: ViewType) { }
+  constructor(public payload: ViewType) {}
 }
 
 export class ChangeSortBy implements Action {
   readonly type = ViewconfActionTypes.ChangeSortBy;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class SetSortKeys implements Action {
   readonly type = ViewconfActionTypes.SetSortKeys;
-  constructor(public payload: string[]) { }
+  constructor(public payload: string[]) {}
 }
 
-export type ViewconfAction =
-  | ChangeViewType
-  | ChangeSortBy
-  | SetSortKeys;
+export type ViewconfAction = ChangeViewType | ChangeSortBy | SetSortKeys;

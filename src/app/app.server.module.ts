@@ -12,7 +12,12 @@ import { Observer } from 'rxjs/Observer';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { UniversalMockInterceptor } from './core/interceptors/universal-mock.interceptor';
-import { ICM_APPLICATION_SK, ICM_BASE_URL_SK, ICM_SERVER_SK, StatePropertiesService } from './core/services/state-transfer/state-properties.service';
+import {
+  ICM_APPLICATION_SK,
+  ICM_BASE_URL_SK,
+  ICM_SERVER_SK,
+  StatePropertiesService,
+} from './core/services/state-transfer/state-properties.service';
 import { coreReducers } from './core/store/core.system';
 
 export class TranslateUniversalLoader implements TranslateLoader {
@@ -49,24 +54,16 @@ export function translateLoaderFactory() {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: translateLoaderFactory
-      }
+        useFactory: translateLoaderFactory,
+      },
     }),
     StoreModule.forRoot(coreReducers, {}),
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
-  ],
-  bootstrap: [
-    AppComponent
-  ]
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true }],
+  bootstrap: [AppComponent],
 })
 export class AppServerModule {
-
-  constructor(
-    transferState: TransferState,
-    statePropertiesService: StatePropertiesService
-  ) {
+  constructor(transferState: TransferState, statePropertiesService: StatePropertiesService) {
     transferState.set(ICM_BASE_URL_SK, statePropertiesService.getICMBaseURL());
     transferState.set(ICM_APPLICATION_SK, statePropertiesService.getICMApplication());
     transferState.set(ICM_SERVER_SK, statePropertiesService.getICMServer());

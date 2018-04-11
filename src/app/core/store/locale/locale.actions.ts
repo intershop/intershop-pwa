@@ -8,12 +8,12 @@ export enum LocaleActionTypes {
 
 export class SelectLocale implements Action {
   readonly type = LocaleActionTypes.SelectLocale;
-  constructor(public payload: Locale) { }
+  constructor(public payload: Locale) {}
 }
 
 export class SetAvailableLocales implements Action {
   readonly type = LocaleActionTypes.SetAvailableLocales;
-  constructor(public payload: Locale[]) { }
+  constructor(public payload: Locale[]) {}
 }
 
 export type LocaleAction = SelectLocale | SetAvailableLocales;

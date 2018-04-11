@@ -5,4 +5,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './order-history-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderHistoryPageComponent { }
+export class OrderHistoryPageComponent {}

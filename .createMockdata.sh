@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script creates mock-data under src/assets/mock-data using the definitions in createMockdata.table.
+# This script creates mock-data under src/assets/mock-data using the definitions in .createMockdata.table.
 # It uses curl for querying the REST API and jq to format and filter the output.
 # If defined, a the login information for patricia.miller will be sent via header.
 #
@@ -15,9 +15,9 @@ set -o pipefail
 if ! command -v curl >/dev/null ; then echo "curl is not installed" ; exit 1 ; fi
 if ! command -v jq >/dev/null ; then echo "curl is not installed" ; exit 1 ; fi
 if ! curl -f "http://localhost:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-" &>/dev/null ; then echo "icm is not running" ; exit 1 ; fi
-if ! test -f createMockdata.table ; then echo "input table does not exist" ; exit 1 ; fi
+if ! test -f .createMockdata.table ; then echo "input table does not exist" ; exit 1 ; fi
 
-cat createMockdata.table | egrep -v '^#' | while read path params jqquery login
+cat .createMockdata.table | egrep -v '^#' | while read path params jqquery login
 do
     test -z "$path" && continue
     test -z "$jqquery" && jqquery="."

@@ -4,20 +4,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 
 export class FormElement {
-  @Input() form: FormGroup;             // required
-  @Input() controlName: string;         // required
+  @Input() form: FormGroup; // required
+  @Input() controlName: string; // required
   @Input() errorMessages: { [key: string]: string };
-  @Input() label: string;               // localization key or a string
+  @Input() label: string; // localization key or a string
   @Input() labelClass = 'col-sm-4';
   @Input() inputClass = 'col-sm-8';
-  @Input() markRequiredLabel = 'auto';  /* values: 'auto' (default) - label is marked, if an required validator is set
+  @Input()
+  markRequiredLabel = 'auto'; /* values: 'auto' (default) - label is marked, if an required validator is set
                                                   'on' (label is always marked as required),
                                                   'off' (label is never marked as required) */
   uuid: string;
 
-  constructor(
-    protected translate: TranslateService
-  ) { }
+  constructor(protected translate: TranslateService) {}
 
   init() {
     if (!this.form) {
@@ -27,7 +26,11 @@ export class FormElement {
       throw new Error('required input parameter <controlName> is missing for FormElementComponent');
     }
     if (!this.formControl) {
-      throw new Error(`input parameter <controlName> with value '${this.controlName}' does not exist in the given form for FormElementComponent`);
+      throw new Error(
+        `input parameter <controlName> with value '${
+          this.controlName
+        }' does not exist in the given form for FormElementComponent`
+      );
     }
     this.uuid = UUID.UUID(); // uuid to make the id of the control unique
   }
@@ -56,7 +59,7 @@ export class FormElement {
         const formControl = new FormControl();
         if (this.form.get(this.controlName).validator) {
           const validationResult = this.form.get(this.controlName).validator(formControl);
-          required = (validationResult !== null && validationResult.required === true);
+          required = validationResult !== null && validationResult.required === true;
         }
         return required;
       }

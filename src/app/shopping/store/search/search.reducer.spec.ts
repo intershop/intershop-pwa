@@ -32,5 +32,4 @@ describe('Products Reducer', () => {
       expect(state.skus).toEqual(skus);
     });
   });
-
 });

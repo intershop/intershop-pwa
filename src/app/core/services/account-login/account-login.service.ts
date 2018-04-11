@@ -9,20 +9,20 @@ import { AccountLogin } from './account-login.model';
 
 @Injectable()
 export class AccountLoginService {
-
-  constructor(
-    private apiService: ApiService
-  ) { }
+  constructor(private apiService: ApiService) {}
 
   private accountLoginFromCustomer(customer: Customer): AccountLogin {
     return {
       userName: customer.credentials.login,
-      password: customer.credentials.password
+      password: customer.credentials.password,
     };
   }
 
   signinUser(userDetails: AccountLogin): Observable<Customer> {
-    const headers = new HttpHeaders().set('Authorization', 'BASIC ' + Buffer.from((userDetails.userName + ':' + userDetails.password)).toString('base64'));
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'BASIC ' + Buffer.from(userDetails.userName + ':' + userDetails.password).toString('base64')
+    );
     return this.apiService.get<Customer>('customers/-', null, headers);
   }
 

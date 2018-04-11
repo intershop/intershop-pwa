@@ -10,17 +10,15 @@ describe('Product Inventory Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      providers: [
-        TranslateService
-      ],
-      declarations: [ProductInventoryComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot()],
+        providers: [TranslateService],
+        declarations: [ProductInventoryComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductInventoryComponent);
@@ -49,7 +47,9 @@ describe('Product Inventory Component', () => {
     product.inStock = true;
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('In Stock');
-    expect(element.querySelector('link[itemprop=\'availability\']').attributes['href'].value === 'http://schema.org/InStock').toBeTruthy();
+    expect(
+      element.querySelector("link[itemprop='availability']").attributes['href'].value === 'http://schema.org/InStock'
+    ).toBeTruthy();
   });
 
   it('should show Out of Stock when inStock = false', () => {
@@ -57,6 +57,8 @@ describe('Product Inventory Component', () => {
     product.inStock = false;
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('Out of Stock');
-    expect(element.querySelector('link[itemprop=\'availability\']').attributes['href'].value === 'http://schema.org/OutOfStock').toBeTruthy();
+    expect(
+      element.querySelector("link[itemprop='availability']").attributes['href'].value === 'http://schema.org/OutOfStock'
+    ).toBeTruthy();
   });
 });

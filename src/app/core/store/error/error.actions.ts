@@ -24,7 +24,7 @@ export enum ErrorGroupTypes {
 export abstract class Http5XXAction implements Action {
   errorGroup = ErrorGroupTypes.Http5XXError;
   type = '';
-  constructor(public error: HttpErrorResponse) { }
+  constructor(public error: HttpErrorResponse) {}
 }
 
 export class GeneralError extends Http5XXAction {
@@ -83,7 +83,8 @@ export class NetworkAuthenticationRequiredError extends Http5XXAction {
   readonly type = ErrorActionTypes.NetworkAuthenticationRequiredError;
 }
 
-export type Http5XXError = GeneralError
+export type Http5XXError =
+  | GeneralError
   | CommunicationTimeoutError
   | InternalServerError
   | NotImplementedError

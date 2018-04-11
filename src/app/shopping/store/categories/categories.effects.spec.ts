@@ -9,7 +9,10 @@ import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { Scheduler } from 'rxjs/Scheduler';
 import { instance, mock, verify, when } from 'ts-mockito';
-import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
+import {
+  AVAILABLE_LOCALES,
+  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+} from '../../../core/configurations/injection-keys';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
@@ -32,19 +35,22 @@ describe('Categories Effects', () => {
   beforeEach(() => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getCategory('123')).thenReturn(of({ uniqueId: '123' } as Category));
-    when(categoriesServiceMock.getCategory('invalid')).thenReturn(_throw({ message: 'invalid category' } as HttpErrorResponse));
-    when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of([
-      { uniqueId: '123' } as Category,
-      { uniqueId: '456' } as Category
-    ]));
-    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(_throw({ message: 'invalid number' } as HttpErrorResponse));
+    when(categoriesServiceMock.getCategory('invalid')).thenReturn(
+      _throw({ message: 'invalid category' } as HttpErrorResponse)
+    );
+    when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(
+      of([{ uniqueId: '123' } as Category, { uniqueId: '456' } as Category])
+    );
+    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(
+      _throw({ message: 'invalid number' } as HttpErrorResponse)
+    );
 
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
           locale: localeReducer,
-          routerReducer
+          routerReducer,
         }),
       ],
       providers: [
@@ -60,11 +66,10 @@ describe('Categories Effects', () => {
   });
 
   describe('selectedCategory$', () => {
-
     const setSelectedCategoryId = function(id: string) {
       const routerAction = navigateMockAction({
         url: `/category/${id}`,
-        params: { categoryUniqueId: id }
+        params: { categoryUniqueId: id },
       });
       store$.dispatch(routerAction);
     };
@@ -74,14 +79,13 @@ describe('Categories Effects', () => {
     });
 
     describe('for root categories', () => {
-
       let category: Category;
 
       beforeEach(() => {
         category = {
           uniqueId: '123',
           id: '123',
-          hasOnlineSubCategories: false
+          hasOnlineSubCategories: false,
         } as Category;
       });
 
@@ -111,14 +115,13 @@ describe('Categories Effects', () => {
     });
 
     describe('for leaf categories', () => {
-
       let category: Category;
 
       beforeEach(() => {
         category = {
           uniqueId: '123.456.789',
           id: '789',
-          hasOnlineSubCategories: false
+          hasOnlineSubCategories: false,
         } as Category;
       });
 
@@ -177,7 +180,6 @@ describe('Categories Effects', () => {
   });
 
   describe('loadTopLevelCategoriesOnLanguageChange$', () => {
-
     let EN_US: Locale;
     let depth: number;
 
@@ -214,7 +216,7 @@ describe('Categories Effects', () => {
       const action = new fromActions.LoadTopLevelCategories(limit);
       const completion = new fromActions.LoadTopLevelCategoriesSuccess([
         { uniqueId: '123' } as Category,
-        { uniqueId: '456' } as Category
+        { uniqueId: '456' } as Category,
       ]);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -242,13 +244,13 @@ describe('Categories Effects', () => {
       category = {
         uniqueId: '123',
         id: '123',
-        hasOnlineProducts: false
+        hasOnlineProducts: false,
       } as Category;
 
       selectCategory = function(cid: string) {
         const routerAction = navigateMockAction({
           url: `/category/${cid}`,
-          params: { categoryUniqueId: cid }
+          params: { categoryUniqueId: cid },
         });
         store$.dispatch(routerAction);
       };
@@ -258,8 +260,8 @@ describe('Categories Effects', () => {
           url: `/category/${cid}/product/${sku}`,
           params: {
             categoryUniqueId: cid,
-            sku
-          }
+            sku,
+          },
         });
         store$.dispatch(routerAction);
       };
@@ -303,9 +305,7 @@ describe('Categories Effects', () => {
         selectCategory(category.uniqueId);
 
         const action = new productsActions.LoadProductsForCategory(category.uniqueId);
-        expect(effects.productOrCategoryChanged$).toBeObservable(
-          cold('a', { a: action })
-        );
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
       });
     });
   });
@@ -314,10 +314,7 @@ describe('Categories Effects', () => {
     it('should map to action of type SaveSubCategories if subcategories exist', () => {
       const category = {
         uniqueId: '123',
-        subCategories: [
-          { uniqueId: '456' },
-          { uniqueId: '789' }
-        ]
+        subCategories: [{ uniqueId: '456' }, { uniqueId: '789' }],
       } as Category;
       const action = new fromActions.LoadCategorySuccess(category);
       const completion = new fromActions.SaveSubCategories(category.subCategories);
@@ -336,5 +333,4 @@ describe('Categories Effects', () => {
       expect(effects.saveSubCategories$).toBeObservable(expected$);
     });
   });
-
 });

@@ -15,7 +15,6 @@ const camelCaseFromPascalCase = (input: string): string => {
 };
 
 class ProjectStructureWalker extends Lint.RuleWalker {
-
   warnUnmatched = false;
   patterns: RuleDeclaration[] = [];
   ignoredFiles: string[];
@@ -36,12 +35,15 @@ class ProjectStructureWalker extends Lint.RuleWalker {
   }
 
   visitSourceFile(sourceFile: ts.SourceFile) {
-
     this.fileName = sourceFile.fileName;
 
-    const isIgnored = this.ignoredFiles.map<boolean>(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName)).reduce((l, r) => l || r);
+    const isIgnored = this.ignoredFiles
+      .map<boolean>(ignoredPattern => new RegExp(ignoredPattern).test(this.fileName))
+      .reduce((l, r) => l || r);
     if (!isIgnored) {
-      const matchesPathPattern = this.pathPatterns.map(pattern => new RegExp(pattern).test(this.fileName)).reduce((l, r) => l || r);
+      const matchesPathPattern = this.pathPatterns
+        .map(pattern => new RegExp(pattern).test(this.fileName))
+        .reduce((l, r) => l || r);
       if (!matchesPathPattern) {
         this.addFailureAtNode(sourceFile, `this file path does not match any defined patterns`);
       }
@@ -50,9 +52,8 @@ class ProjectStructureWalker extends Lint.RuleWalker {
   }
 
   private visitName(name: string, node: ts.Node) {
-
     const matchingPatterns = this.patterns
-      .map(pattern => ({ pattern, match: new RegExp(pattern.name).exec(name) }) )
+      .map(pattern => ({ pattern, match: new RegExp(pattern.name).exec(name) }))
       .filter(x => !!x.match);
 
     if (matchingPatterns.length >= 1 && matchingPatterns[0].match[1]) {
@@ -103,7 +104,6 @@ class ProjectStructureWalker extends Lint.RuleWalker {
  * Implementation of the project-structure rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ProjectStructureWalker(sourceFile, this.getOptions()));
   }

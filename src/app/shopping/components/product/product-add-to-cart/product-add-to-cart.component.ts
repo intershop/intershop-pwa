@@ -4,7 +4,7 @@ import { Product } from '../../../../models/product/product.model';
 @Component({
   selector: 'ish-product-add-to-cart',
   templateUrl: './product-add-to-cart.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToCartComponent implements OnChanges {
   @Input() product: Product;

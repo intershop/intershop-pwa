@@ -13,39 +13,33 @@ describe('RegistrationForm Component', () => {
   let element: HTMLElement;
   let fb: FormBuilder;
 
-  beforeEach(async(() => {
-    const addressFormFactoryMock = mock(AddressFormFactory);
-    when(addressFormFactoryMock.getGroup(anything())).thenReturn(
-      new FormGroup({})
-    );
+  beforeEach(
+    async(() => {
+      const addressFormFactoryMock = mock(AddressFormFactory);
+      when(addressFormFactoryMock.getGroup(anything())).thenReturn(new FormGroup({}));
 
-    const addressFormServiceMock = mock(AddressFormService);
-    when(addressFormServiceMock.getFactory(anything())).thenReturn(
-      addressFormFactoryMock
-    );
+      const addressFormServiceMock = mock(AddressFormService);
+      when(addressFormServiceMock.getFactory(anything())).thenReturn(addressFormFactoryMock);
 
-    TestBed.configureTestingModule({
-      declarations: [RegistrationFormComponent,
-        MockComponent({
-          selector: 'ish-registration-credentials-form',
-          template: 'Credentials Template',
-          inputs: ['parentForm', 'controlName']
-        }),
-        MockComponent({
-          selector: 'ish-address-form',
-          template: 'Address Template',
-          inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles']
-        }),
-      ],
-      providers: [
-        { provide: AddressFormService, useFactory: () => instance(addressFormServiceMock) }
-      ],
-      imports: [
-        FormsSharedModule,
-        TranslateModule.forRoot()
-      ]
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          RegistrationFormComponent,
+          MockComponent({
+            selector: 'ish-registration-credentials-form',
+            template: 'Credentials Template',
+            inputs: ['parentForm', 'controlName'],
+          }),
+          MockComponent({
+            selector: 'ish-address-form',
+            template: 'Address Template',
+            inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles'],
+          }),
+        ],
+        providers: [{ provide: AddressFormService, useFactory: () => instance(addressFormServiceMock) }],
+        imports: [FormsSharedModule, TranslateModule.forRoot()],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegistrationFormComponent);
@@ -63,7 +57,9 @@ describe('RegistrationForm Component', () => {
   it('should create a registration form on creation', () => {
     expect(component.form).toBeUndefined('registration form has not been created before init');
     fixture.detectChanges();
-    expect(component.form.get('preferredLanguage')).toBeTruthy('registration form contains a preferredLanguage control');
+    expect(component.form.get('preferredLanguage')).toBeTruthy(
+      'registration form contains a preferredLanguage control'
+    );
     expect(component.form.get('birthday')).toBeTruthy('registration form contains a birthday control');
   });
 
@@ -80,22 +76,25 @@ describe('RegistrationForm Component', () => {
     expect(fired).toBeTruthy('cancel event fired');
   });
 
-  it('should set submitted flag if submit is clicked and form is not valid', async(() => {
-    // fixture.detectChanges only necessary to trigger ngOnInit that will add a subscription that will be unsubscribed with ngOnDestroy
-    fixture.detectChanges();
-    component.form = new FormGroup({
-      preferredLanguage: new FormControl('', Validators.required),
-    });
-    expect(component.submitted).toBeFalsy('submitted is false after component init');
-    component.submitForm();
-    fixture.whenStable().then(() => {
-      expect(component.submitted).toBeTruthy('submitted is true after submitting an invalid form');
-    });
-  }));
+  it(
+    'should set submitted flag if submit is clicked and form is not valid',
+    async(() => {
+      // fixture.detectChanges only necessary to trigger ngOnInit that will add a subscription that will be unsubscribed with ngOnDestroy
+      fixture.detectChanges();
+      component.form = new FormGroup({
+        preferredLanguage: new FormControl('', Validators.required),
+      });
+      expect(component.submitted).toBeFalsy('submitted is false after component init');
+      component.submitForm();
+      fixture.whenStable().then(() => {
+        expect(component.submitted).toBeTruthy('submitted is true after submitting an invalid form');
+      });
+    })
+  );
 
   it('should NOT throw create event for invalid form', () => {
     component.form = new FormGroup({
-      control: new FormControl('', Validators.required)
+      control: new FormControl('', Validators.required),
     });
 
     let fired = false;
@@ -112,7 +111,7 @@ describe('RegistrationForm Component', () => {
     component.form = fb.group({
       control: new FormControl('foo', Validators.required),
       credentials: fb.group({}),
-      address: fb.group({})
+      address: fb.group({}),
     });
 
     let fired = false;

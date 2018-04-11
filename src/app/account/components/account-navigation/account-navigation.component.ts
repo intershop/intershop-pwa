@@ -6,6 +6,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountNavigationComponent {
-
   @Input() selectedItem: string;
 }

@@ -17,13 +17,10 @@ describe('CompareEffects', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers)
+          shopping: combineReducers(shoppingReducers),
         }),
       ],
-      providers: [
-        CompareEffects,
-        provideMockActions(() => actions$),
-      ],
+      providers: [CompareEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.get(CompareEffects);
@@ -31,7 +28,6 @@ describe('CompareEffects', () => {
   });
 
   describe('toggleCompare$', () => {
-
     it('should switch to ADD action', () => {
       const sku = '123';
 
@@ -56,6 +52,5 @@ describe('CompareEffects', () => {
 
       expect(effects.toggleCompare$).toBeObservable(expected$);
     });
-
   });
 });

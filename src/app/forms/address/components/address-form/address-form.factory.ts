@@ -20,8 +20,9 @@ export abstract class AddressFormFactory {
     newGroup.addControl('countryCode', new FormControl(''));
 
     // apply values to the new form
-    if (value) { newGroup.patchValue(value); }
+    if (value) {
+      newGroup.patchValue(value);
+    }
     return newGroup;
   }
-
 }

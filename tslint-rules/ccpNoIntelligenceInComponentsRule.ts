@@ -8,8 +8,7 @@ interface RuleSetting {
 }
 
 class CCPNoIntelligenceInComponentsWalker extends Lint.RuleWalker {
-
-  ruleSettings: {[key: string]: RuleSetting} = {};
+  ruleSettings: { [key: string]: RuleSetting } = {};
   isContainer: boolean;
 
   constructor(sourceFile: SourceFile, options: Lint.IOptions) {
@@ -38,10 +37,16 @@ class CCPNoIntelligenceInComponentsWalker extends Lint.RuleWalker {
     }
 
     if (fromStringText.search(/\/store(\/|$)/) > 0 && !this.ruleSettings[c].ngrx) {
-      this.addFailureAtNode(importStatement, `ngrx handling is not allowed in ${c}s. (found ${importStatement.getText()})`);
+      this.addFailureAtNode(
+        importStatement,
+        `ngrx handling is not allowed in ${c}s. (found ${importStatement.getText()})`
+      );
     }
     if (fromStringText.search(/\.service$/) > 0 && !this.ruleSettings[c].service) {
-      this.addFailureAtNode(importStatement, `service usage is not allowed in ${c}s. (found ${importStatement.getText()})`);
+      this.addFailureAtNode(
+        importStatement,
+        `service usage is not allowed in ${c}s. (found ${importStatement.getText()})`
+      );
     }
   }
 }
@@ -50,7 +55,6 @@ class CCPNoIntelligenceInComponentsWalker extends Lint.RuleWalker {
  * Implementation of the ccp-no-intelligence-in-components rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-
   apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new CCPNoIntelligenceInComponentsWalker(sourceFile, this.getOptions()));
   }

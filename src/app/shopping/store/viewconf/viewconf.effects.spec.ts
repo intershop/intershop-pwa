@@ -17,18 +17,14 @@ describe('ViewconfEffects', () => {
   let store: Store<ShoppingState>;
 
   beforeEach(() => {
-
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer
+          routerReducer,
         }),
       ],
-      providers: [
-        ViewconfEffects,
-        provideMockActions(() => actions$),
-      ],
+      providers: [ViewconfEffects, provideMockActions(() => actions$)],
     });
 
     effects = TestBed.get(ViewconfEffects);
@@ -46,7 +42,7 @@ describe('ViewconfEffects', () => {
       const categoryUniqueId = '123';
       const routerAction = navigateMockAction({
         url: `/category/${categoryUniqueId}`,
-        params: { categoryUniqueId }
+        params: { categoryUniqueId },
       });
       store.dispatch(routerAction);
 
@@ -58,5 +54,4 @@ describe('ViewconfEffects', () => {
       expect(effects.changeSortBy$).toBeObservable(expected$);
     });
   });
-
 });

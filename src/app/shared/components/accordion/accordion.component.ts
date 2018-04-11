@@ -5,5 +5,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './accordion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-export class AccordionComponent { }
+export class AccordionComponent {}

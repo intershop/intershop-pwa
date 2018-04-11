@@ -7,6 +7,5 @@ import { of } from 'rxjs/observable/of';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MobileCartContainerComponent {
-
   cartItems$ = of([]);
 }

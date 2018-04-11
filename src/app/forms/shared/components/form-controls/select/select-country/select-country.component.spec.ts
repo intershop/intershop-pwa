@@ -9,31 +9,32 @@ describe('Select Country Component', () => {
   let fixture: ComponentFixture<SelectCountryComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectCountryComponent],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(SelectCountryComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SelectCountryComponent],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SelectCountryComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-        const form = new FormGroup({
-          countryCode: new FormControl(),
-          state: new FormControl('Region1', [Validators.required])
+          const form = new FormGroup({
+            countryCode: new FormControl(),
+            state: new FormControl('Region1', [Validators.required]),
+          });
+          component.form = form;
+          component.countries = [
+            { countryCode: 'BG', name: 'Bulgaria' },
+            { countryCode: 'DE', name: 'Germany' },
+            { countryCode: 'FR', name: 'France' },
+          ];
         });
-        component.form = form;
-        component.countries = [
-          { countryCode: 'BG', name: 'Bulgaria' },
-          { countryCode: 'DE', name: 'Germany' },
-          { countryCode: 'FR', name: 'France' }
-        ];
-      });
-  }));
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -49,7 +50,7 @@ describe('Select Country Component', () => {
 
   it('should display countries if component input changes', () => {
     const changes: SimpleChanges = {
-      countries: new SimpleChange(null, component.countries, false)
+      countries: new SimpleChange(null, component.countries, false),
     };
     component.ngOnChanges(changes);
 

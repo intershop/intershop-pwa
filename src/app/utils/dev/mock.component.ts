@@ -6,7 +6,7 @@ export function MockComponent(options: Component) {
     selector: options.selector,
     template: options.template || '',
     inputs: options.inputs,
-    outputs: options.outputs
+    outputs: options.outputs,
   };
-  return Component(metadata)(class { });
+  return Component(metadata)(class {});
 }

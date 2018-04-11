@@ -3,15 +3,16 @@ import { ADDRESS_FORM_FACTORY, AddressFormFactory } from '../components/address-
 
 @Injectable()
 export class AddressFormService {
-
-  constructor( @Inject(ADDRESS_FORM_FACTORY) private factories: AddressFormFactory[]) { }
+  constructor(@Inject(ADDRESS_FORM_FACTORY) private factories: AddressFormFactory[]) {}
 
   /*
     gets the appropriate address factory for the given countryCode
   */
   getFactory(countryCode: string = 'default'): AddressFormFactory {
     let factory = this.findFactory(countryCode);
-    if (!factory) { factory = this.findFactory('default'); }
+    if (!factory) {
+      factory = this.findFactory('default');
+    }
     return factory;
   }
 

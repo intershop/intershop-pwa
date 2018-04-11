@@ -7,13 +7,8 @@ import { Category } from '../../../../models/category/category.model';
   templateUrl: './category-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class CategoryListComponent {
-
   @Input() categories: Category[];
 
-  constructor(
-    @Inject(ICM_BASE_URL) public icmBaseURL
-  ) { }
-
+  constructor(@Inject(ICM_BASE_URL) public icmBaseURL) {}
 }

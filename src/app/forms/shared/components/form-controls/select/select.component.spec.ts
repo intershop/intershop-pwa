@@ -10,30 +10,35 @@ describe('Select Component', () => {
   let fixture: ComponentFixture<SelectComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectComponent],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(SelectComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SelectComponent],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SelectComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-      const form = new FormGroup({
-        simpleField: new FormControl(),
-        requiredField: new FormControl('', [Validators.required])
-      });
-      const options: SelectOption[] = [{ 'label': 'optionLabel', 'value': 'optionValue' }, { 'label': 'optionLabel2', 'value': 'optionValue2' }];
+          const form = new FormGroup({
+            simpleField: new FormControl(),
+            requiredField: new FormControl('', [Validators.required]),
+          });
+          const options: SelectOption[] = [
+            { label: 'optionLabel', value: 'optionValue' },
+            { label: 'optionLabel2', value: 'optionValue2' },
+          ];
 
-      component.label = 'label';
-      component.form = form;
-      component.controlName = 'simpleField';
-      component.options = options;
-    });
-  }));
+          component.label = 'label';
+          component.form = form;
+          component.controlName = 'simpleField';
+          component.options = options;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -44,9 +49,15 @@ describe('Select Component', () => {
   it('should be rendered on creation and show options', () => {
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=simpleField]')).toBeTruthy('select is rendered');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]')).toBeTruthy('option with the correct value is rendered');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]').innerHTML).toContain('optionLabel', 'option with the correct value and label is rendered');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue2 ]').innerHTML).toContain('optionLabel2', '2nd option with the correct value and label is rendered');
+    expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]')).toBeTruthy(
+      'option with the correct value is rendered'
+    );
+    expect(
+      element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]').innerHTML
+    ).toContain('optionLabel', 'option with the correct value and label is rendered');
+    expect(
+      element.querySelector('select[data-testing-id=simpleField] option[value = optionValue2 ]').innerHTML
+    ).toContain('optionLabel2', '2nd option with the correct value and label is rendered');
   });
 
   it('should not be rendered if there are no options and no required validator', () => {
@@ -64,14 +75,18 @@ describe('Select Component', () => {
   it('should show empty option if no value is set', () => {
     fixture.detectChanges();
     expect(component.showEmptyOption).toBeTruthy('showEmptyOption is set to true');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeTruthy('empty option is displayed');
+    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeTruthy(
+      'empty option is displayed'
+    );
   });
 
   it('should not show empty option if a value is set', () => {
     component.form.get(component.controlName).setValue('optionValue');
     fixture.detectChanges();
     expect(component.showEmptyOption).toBeFalsy('showEmptyOption is set to false');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeFalsy('empty option is not displayed');
+    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeFalsy(
+      'empty option is not displayed'
+    );
   });
 
   it('should not render a label if label input parameter is missing', () => {
@@ -91,5 +106,4 @@ describe('Select Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('label + div.col-sm-9')).toBeTruthy('input class equals col-sm-9');
   });
-
 });

@@ -11,35 +11,35 @@ describe('Credentials Form Component', () => {
   let fixture: ComponentFixture<RegistrationCredentialsFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
-      providers: [
-        FormBuilder
-      ],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
+        providers: [FormBuilder],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-      const parentForm = new FormGroup({});
-      const credentialsForm = new FormGroup({
-        login: new FormControl(''),
-        loginConfirmation: new FormControl(''),
-        password: new FormControl(''),
-        passwordConfirmation: new FormControl(''),
-        securityQuestion: new FormControl(''),
-        securityQuestionAnswer: new FormControl(''),
-        newsletter: new FormControl('')
-      });
-      parentForm.addControl('credentials', credentialsForm);
-      component.parentForm = parentForm;
-    });
-  }));
+          const parentForm = new FormGroup({});
+          const credentialsForm = new FormGroup({
+            login: new FormControl(''),
+            loginConfirmation: new FormControl(''),
+            password: new FormControl(''),
+            passwordConfirmation: new FormControl(''),
+            securityQuestion: new FormControl(''),
+            securityQuestionAnswer: new FormControl(''),
+            newsletter: new FormControl(''),
+          });
+          parentForm.addControl('credentials', credentialsForm);
+          component.parentForm = parentForm;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -55,10 +55,16 @@ describe('Credentials Form Component', () => {
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('input[data-testing-id=login]')).toBeTruthy('login is rendered');
-    expect(element.querySelector('input[data-testing-id=loginConfirmation]')).toBeTruthy('loginConfirmation is rendered');
+    expect(element.querySelector('input[data-testing-id=loginConfirmation]')).toBeTruthy(
+      'loginConfirmation is rendered'
+    );
     expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy('password is rendered');
-    expect(element.querySelector('input[data-testing-id=passwordConfirmation]')).toBeTruthy('passwordConfirmation is rendered');
-    expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy('securityQuestion is rendered');
+    expect(element.querySelector('input[data-testing-id=passwordConfirmation]')).toBeTruthy(
+      'passwordConfirmation is rendered'
+    );
+    expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy(
+      'securityQuestion is rendered'
+    );
     expect(element.querySelector('input[data-testing-id=securityQuestionAnswer]')).toBeTruthy('answer is rendered');
   });
 });

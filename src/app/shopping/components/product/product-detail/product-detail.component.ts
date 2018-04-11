@@ -8,9 +8,8 @@ import { Product } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent implements OnInit {
-
   @Input() product: Product;
-  @Output() productToCart = new EventEmitter<{ sku: string, quantity: number }>();
+  @Output() productToCart = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
 
   productDetailForm: FormGroup;
@@ -18,17 +17,15 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit() {
     this.productDetailForm = new FormGroup({
-      [this.quantityControlName]: new FormControl(this.product.minOrderQuantity)
+      [this.quantityControlName]: new FormControl(this.product.minOrderQuantity),
     });
   }
 
   addToCart() {
-    this.productToCart.emit(
-      {
-        sku: this.product.sku,
-        quantity: this.productDetailForm.get(this.quantityControlName).value
-      }
-    );
+    this.productToCart.emit({
+      sku: this.product.sku,
+      quantity: this.productDetailForm.get(this.quantityControlName).value,
+    });
   }
 
   addToCompare() {

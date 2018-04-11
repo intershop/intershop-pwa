@@ -18,9 +18,7 @@ import { Region } from '../../../models/region/region.model';
   templateUrl: './registration-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class RegistrationPageContainerComponent implements OnInit {
-
   countries$: Observable<Country[]>;
   languages$: Observable<Locale[]>;
   regionsForSelectedCountry$: Observable<Region[]>;
@@ -59,19 +57,11 @@ export class RegistrationPageContainerComponent implements OnInit {
 
     switch (countryCode) {
       case 'DE': {
-        salutationlabels = [
-          'account.salutation.ms.text',
-          'account.salutation.mr.text',
-          'account.salutation.dr.text'
-        ];
+        salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
         break;
       }
       case 'FR': {
-        salutationlabels = [
-          'account.salutation.ms.text',
-          'account.salutation.mr.text',
-          'account.salutation.dr.text'
-        ];
+        salutationlabels = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
         break;
       }
       case 'GB': {
@@ -80,7 +70,7 @@ export class RegistrationPageContainerComponent implements OnInit {
           'account.salutation.miss.text',
           'account.salutation.mrs.text',
           'account.salutation.mr.text',
-          'account.salutation.dr.text'
+          'account.salutation.dr.text',
         ];
         break;
       }

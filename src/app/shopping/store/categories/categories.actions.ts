@@ -10,47 +10,47 @@ export enum CategoriesActionTypes {
   LoadCategoryFail = '[Shopping] Load Category Fail',
   LoadCategorySuccess = '[Shopping] Load Category Success',
   SaveSubCategories = '[Shopping] Save SubCategories',
-  SetProductSkusForCategory = '[Shopping] Set Product SKUs For Category'
+  SetProductSkusForCategory = '[Shopping] Set Product SKUs For Category',
 }
 
 export class LoadTopLevelCategories implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategories;
-  constructor(public payload: number) { }
+  constructor(public payload: number) {}
 }
 
 export class LoadTopLevelCategoriesFail implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesFail;
-  constructor(public payload: HttpErrorResponse) { }
+  constructor(public payload: HttpErrorResponse) {}
 }
 
 export class LoadTopLevelCategoriesSuccess implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesSuccess;
-  constructor(public payload: Category[]) { }
+  constructor(public payload: Category[]) {}
 }
 
 export class LoadCategory implements Action {
   readonly type = CategoriesActionTypes.LoadCategory;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class LoadCategoryFail implements Action {
   readonly type = CategoriesActionTypes.LoadCategoryFail;
-  constructor(public payload: HttpErrorResponse) { }
+  constructor(public payload: HttpErrorResponse) {}
 }
 
 export class LoadCategorySuccess implements Action {
   readonly type = CategoriesActionTypes.LoadCategorySuccess;
-  constructor(public payload: Category) { }
+  constructor(public payload: Category) {}
 }
 
 export class SaveSubCategories implements Action {
   readonly type = CategoriesActionTypes.SaveSubCategories;
-  constructor(public payload: Category[]) { }
+  constructor(public payload: Category[]) {}
 }
 
 export class SetProductSkusForCategory implements Action {
   readonly type = CategoriesActionTypes.SetProductSkusForCategory;
-  constructor(public categoryUniqueId: string, public payload: string[]) { }
+  constructor(public categoryUniqueId: string, public payload: string[]) {}
 }
 
 export type CategoriesAction =

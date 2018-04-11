@@ -11,26 +11,22 @@ export enum ProductsActionTypes {
 
 export class LoadProduct implements Action {
   readonly type = ProductsActionTypes.LoadProduct;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class LoadProductFail implements Action {
   readonly type = ProductsActionTypes.LoadProductFail;
-  constructor(public payload: HttpErrorResponse) { }
+  constructor(public payload: HttpErrorResponse) {}
 }
 
 export class LoadProductSuccess implements Action {
   readonly type = ProductsActionTypes.LoadProductSuccess;
-  constructor(public payload: Product) { }
+  constructor(public payload: Product) {}
 }
 
 export class LoadProductsForCategory implements Action {
   readonly type = ProductsActionTypes.LoadProductsForCategory;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
-export type ProductsAction =
-  | LoadProduct
-  | LoadProductFail
-  | LoadProductSuccess
-  | LoadProductsForCategory;
+export type ProductsAction = LoadProduct | LoadProductFail | LoadProductSuccess | LoadProductsForCategory;

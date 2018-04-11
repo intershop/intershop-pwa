@@ -8,18 +8,8 @@ import { RecentlyPageContainerComponent } from './recently-page.container';
 import { recentlyPageRoutes } from './recently-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(recentlyPageRoutes),
-    SharedModule,
-    ShoppingSharedModule
-  ],
-  providers: [
-    ProductsService
-  ],
-  declarations: [
-    RecentlyPageContainerComponent,
-    RecentlyViewedAllComponent
-  ]
+  imports: [RouterModule.forChild(recentlyPageRoutes), SharedModule, ShoppingSharedModule],
+  providers: [ProductsService],
+  declarations: [RecentlyPageContainerComponent, RecentlyViewedAllComponent],
 })
-
-export class RecentlyPageModule { }
+export class RecentlyPageModule {}

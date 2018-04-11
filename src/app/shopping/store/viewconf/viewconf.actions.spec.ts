@@ -7,7 +7,7 @@ describe('Viewconf Actions', () => {
 
     expect({ ...action }).toEqual({
       type: fromActions.ViewconfActionTypes.ChangeViewType,
-      payload
+      payload,
     });
   });
 
@@ -17,7 +17,7 @@ describe('Viewconf Actions', () => {
 
     expect({ ...action }).toEqual({
       type: fromActions.ViewconfActionTypes.ChangeSortBy,
-      payload
+      payload,
     });
   });
 
@@ -27,8 +27,7 @@ describe('Viewconf Actions', () => {
 
     expect({ ...action }).toEqual({
       type: fromActions.ViewconfActionTypes.SetSortKeys,
-      payload
+      payload,
     });
   });
-
 });

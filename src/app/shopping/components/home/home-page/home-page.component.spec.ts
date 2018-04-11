@@ -7,12 +7,14 @@ describe('Home Page Component', () => {
   let fixture: ComponentFixture<HomePageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CarouselModule.forRoot()],
-      declarations: [HomePageComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [CarouselModule.forRoot()],
+        declarations: [HomePageComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomePageComponent);

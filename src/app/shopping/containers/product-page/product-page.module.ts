@@ -8,17 +8,8 @@ import { ProductPageContainerComponent } from './product-page.container';
 import { productPageRoutes } from './product-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(productPageRoutes),
-    SharedModule,
-    FormsSharedModule,
-    ShoppingSharedModule
-  ],
+  imports: [RouterModule.forChild(productPageRoutes), SharedModule, FormsSharedModule, ShoppingSharedModule],
   providers: [],
-  declarations: [
-    ProductPageContainerComponent,
-    ProductDetailComponent
-  ]
+  declarations: [ProductPageContainerComponent, ProductDetailComponent],
 })
-
-export class ProductPageModule { }
+export class ProductPageModule {}

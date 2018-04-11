@@ -6,7 +6,6 @@ import { RuleHelpers } from './ruleHelpers';
 const SHOULD_BE_CREATED_NAME = 'should be created';
 
 class ComponentCreationTestWalker extends Lint.RuleWalker {
-
   private warnOnlyOnMissing = false;
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
@@ -24,7 +23,13 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
     } else if (sourceFile.fileName.search(/.(component|container).spec.ts/) > 0) {
       const describe = RuleHelpers.getDescribeBody(sourceFile);
       if (describe) {
-        const creationCheck = describe.getChildren().find(n => (n.kind === ts.SyntaxKind.ExpressionStatement && n.getText().startsWith(`it('${SHOULD_BE_CREATED_NAME}', () => {`)));
+        const creationCheck = describe
+          .getChildren()
+          .find(
+            n =>
+              n.kind === ts.SyntaxKind.ExpressionStatement &&
+              n.getText().startsWith(`it('${SHOULD_BE_CREATED_NAME}', () => {`)
+          );
 
         if (!creationCheck) {
           super.addFailureAtNode(sourceFile, `component does not have a '${SHOULD_BE_CREATED_NAME}' test`);
@@ -49,20 +54,43 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
   }
 
   private checkCreationTestContent(node: ts.ExpressionStatement) {
-    const shouldBeCreatedBlock = node.getChildAt(0).getChildAt(2).getChildAt(2).getChildAt(4).getChildAt(1);
+    const shouldBeCreatedBlock = node
+      .getChildAt(0)
+      .getChildAt(2)
+      .getChildAt(2)
+      .getChildAt(4)
+      .getChildAt(1);
 
     const orReduce = (l, r) => l || r;
 
-    if (!shouldBeCreatedBlock.getChildren().map(this.findComponentTruthy).reduce(orReduce, false)) {
+    if (
+      !shouldBeCreatedBlock
+        .getChildren()
+        .map(this.findComponentTruthy)
+        .reduce(orReduce, false)
+    ) {
       super.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if component is truthy`);
     }
 
-    if (!shouldBeCreatedBlock.getChildren().map(this.findElementTruthy).reduce(orReduce, false)) {
+    if (
+      !shouldBeCreatedBlock
+        .getChildren()
+        .map(this.findElementTruthy)
+        .reduce(orReduce, false)
+    ) {
       super.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if html element is truthy`);
     }
 
-    if (!shouldBeCreatedBlock.getChildren().map(this.findDetectChangesNotThrow).reduce(orReduce, false)) {
-      super.addFailureAtNode(node, `'${SHOULD_BE_CREATED_NAME}' block does not test if feature.detectChanges does not throw`);
+    if (
+      !shouldBeCreatedBlock
+        .getChildren()
+        .map(this.findDetectChangesNotThrow)
+        .reduce(orReduce, false)
+    ) {
+      super.addFailureAtNode(
+        node,
+        `'${SHOULD_BE_CREATED_NAME}' block does not test if feature.detectChanges does not throw`
+      );
     }
   }
 
@@ -75,7 +103,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
   }
 
   private findDetectChangesNotThrow(node: ts.ExpressionStatement): boolean {
-    return node.getText().search(/.*fixture.*detectChanges.*not\.toThrow.*/) >= 0;
+    return node.getText().search(/[\s\S]*fixture[\s\S]*detectChanges[\s\S]*not\.toThrow[\s\S]*/) >= 0;
   }
 
   private reportMissingCreationTest(sourceFile: ts.SourceFile) {
@@ -92,7 +120,6 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
  * Implementation of the component-creation-test rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ComponentCreationTestWalker(sourceFile, this.getOptions()));
   }
