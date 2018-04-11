@@ -9,7 +9,6 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent implements OnChanges {
-
   @Input() product: Product;
   @Input() imageType: string;
   @Input() imageView?: string;
@@ -18,14 +17,11 @@ export class ProductImageComponent implements OnChanges {
 
   productImage: Image;
 
-  constructor(
-    @Inject(ICM_BASE_URL) public icmBaseURL
-  ) { }
+  constructor(@Inject(ICM_BASE_URL) public icmBaseURL) {}
 
   ngOnChanges() {
     this.productImage = this.imageView
       ? ProductHelper.getImageByImageTypeAndImageView(this.product, this.imageType, this.imageView)
       : ProductHelper.getPrimaryImage(this.product, this.imageType);
   }
-
 }

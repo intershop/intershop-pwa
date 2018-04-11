@@ -7,7 +7,6 @@ const DESCRIPTION_REGEX = /^('|`|")should([\s\S]* (when|if|until|on|for|to) [\s\
 const DESCRIPTION_VIEWPOINT_ERROR_REGEX = /^('|`)should (check|test)/;
 
 class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
-
   visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
       super.visitSourceFile(sourceFile);
@@ -23,7 +22,10 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
           description = descriptionToken.parent.getText();
         }
         if (DESCRIPTION_VIEWPOINT_ERROR_REGEX.test(description)) {
-          this.addFailureAtNode(node, `describe what the component is doing, not what the test is doing (found "${description}")`);
+          this.addFailureAtNode(
+            node,
+            `describe what the component is doing, not what the test is doing (found "${description}")`
+          );
         } else if (!DESCRIPTION_REGEX.test(description)) {
           this.addFailureAtNode(node, '"' + description + '" does not match ' + DESCRIPTION_REGEX);
         }
@@ -39,7 +41,6 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
  * Implementation of the meainingful-naming-in-tests rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-
   apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new MeaningfulNamingInTestsWalker(sourceFile, this.getOptions()));
   }

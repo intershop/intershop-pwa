@@ -13,12 +13,11 @@ const MOCK_DATA_ROOT = './assets/mock-data';
  */
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
-
   constructor(
     @Inject(REST_ENDPOINT) private restEndpoint: string,
     @Inject(NEED_MOCK) private needMock: boolean,
     @Inject(MUST_MOCK_PATHS) private mustMockPaths: string[]
-  ) { }
+  ) {}
 
   /**
    * Intercepts out going request and changes url to mock url if needed.
@@ -41,7 +40,8 @@ export class MockInterceptor implements HttpInterceptor {
           return this.attachTokenIfNecessary(req, response);
         }
         return event;
-      }));
+      })
+    );
   }
 
   /**
@@ -49,8 +49,10 @@ export class MockInterceptor implements HttpInterceptor {
    */
   private mockUserIsLoggingIn(req: HttpRequest<any>) {
     const authorizationHeaderKey = 'Authorization';
-    return req.headers.has(authorizationHeaderKey) && req.headers.get(authorizationHeaderKey) ===
-      'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==';
+    return (
+      req.headers.has(authorizationHeaderKey) &&
+      req.headers.get(authorizationHeaderKey) === 'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ=='
+    );
   }
 
   /**
@@ -68,7 +70,11 @@ export class MockInterceptor implements HttpInterceptor {
    * transforms server REST URL to mock REST URL
    */
   getMockUrl(req: HttpRequest<any>) {
-    return this.urlHasToBeMocked(req.url) ? `${MOCK_DATA_ROOT}/${this.getRestPath(this.removeQueryStringParameter(req.url))}/${req.method.toLocaleLowerCase()}-data.json` : req.url;
+    return this.urlHasToBeMocked(req.url)
+      ? `${MOCK_DATA_ROOT}/${this.getRestPath(
+          this.removeQueryStringParameter(req.url)
+        )}/${req.method.toLocaleLowerCase()}-data.json`
+      : req.url;
   }
 
   private urlHasToBeMocked(url: string): boolean {

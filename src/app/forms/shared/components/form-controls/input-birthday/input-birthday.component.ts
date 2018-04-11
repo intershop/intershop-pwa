@@ -20,10 +20,9 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
   /*
     constructor
   */
-  constructor(
-    private fb: FormBuilder,
-    protected translate: TranslateService
-  ) { super(translate); }
+  constructor(private fb: FormBuilder, protected translate: TranslateService) {
+    super(translate);
+  }
 
   /*
     on Init
@@ -42,8 +41,11 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
   */
   private setDefaultValues() {
     this.controlName = this.controlName || 'birthday';
-    this.label = this.label || 'Birthday';      // ToDo: Translation key
-    this.errorMessages = this.errorMessages || { 'min': 'Please enter a valid birthday', 'max': 'Please enter a valid birthday' }; // ToDo
+    this.label = this.label || 'Birthday'; // ToDo: Translation key
+    this.errorMessages = this.errorMessages || {
+      min: 'Please enter a valid birthday',
+      max: 'Please enter a valid birthday',
+    }; // ToDo
 
     const currentDate = new Date();
     this.minYear = this.minYear || currentDate.getFullYear() - 116;
@@ -57,7 +59,7 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     this.dateForm = this.fb.group({
       day: ['', [Validators.min(this.minDay), Validators.max(this.maxDay)]],
       month: ['', [Validators.min(this.minMonth), Validators.max(this.maxMonth)]],
-      year: ['', [Validators.min(this.minYear), Validators.max(this.maxYear)]]
+      year: ['', [Validators.min(this.minYear), Validators.max(this.maxYear)]],
     });
 
     // Add form group temporarily to the parent form to prevent a form submit with an invalid birth date
@@ -74,7 +76,14 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     let month = this.dateForm.get('month').value;
     const year = this.dateForm.get('year').value;
     let birthday = '';
-    if (day && month && year && this.dateForm.get('day').valid && this.dateForm.get('month').valid && this.dateForm.get('year').valid) {
+    if (
+      day &&
+      month &&
+      year &&
+      this.dateForm.get('day').valid &&
+      this.dateForm.get('month').valid &&
+      this.dateForm.get('year').valid
+    ) {
       day = day.length === 1 ? '0' + day : day;
       month = month.length === 1 ? '0' + month : month;
       birthday = year + '-' + month + '-' + day;

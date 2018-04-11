@@ -8,19 +8,14 @@ import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 import { MockInterceptor } from './mock.interceptor';
 
 describe('Mock Interceptor', () => {
-
   const BASE_URL = 'http://example.org';
 
   describe('REST Path Extraction', () => {
-
     let mockInterceptor: MockInterceptor;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [
-          MockInterceptor,
-          { provide: REST_ENDPOINT, useValue: BASE_URL }
-        ]
+        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
       });
       mockInterceptor = TestBed.get(MockInterceptor);
     });
@@ -30,21 +25,19 @@ describe('Mock Interceptor', () => {
     });
 
     it('should extract the correct path when rest URL is given with currency and locale', () => {
-      expect(mockInterceptor.getRestPath(BASE_URL + ';loc=en_US;cur=USD/categories/Cameras')).toBe('categories/Cameras');
+      expect(mockInterceptor.getRestPath(BASE_URL + ';loc=en_US;cur=USD/categories/Cameras')).toBe(
+        'categories/Cameras'
+      );
     });
   });
 
   describe('Request URL Modification', () => {
-
     let mockInterceptor: MockInterceptor;
     const request: HttpRequest<any> = new HttpRequest('GET', '');
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [
-          MockInterceptor,
-          { provide: REST_ENDPOINT, useValue: BASE_URL }
-        ]
+        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
       });
       mockInterceptor = TestBed.get(MockInterceptor);
     });
@@ -53,13 +46,15 @@ describe('Mock Interceptor', () => {
       return [
         { url: BASE_URL + '/categories', willBeMocked: true, method: 'GET' },
         { url: BASE_URL + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
-        { url: './assets/picture.png', willBeMocked: false, method: 'GET' }
+        { url: './assets/picture.png', willBeMocked: false, method: 'GET' },
       ];
     }
 
-    using(dataProvider, (dataSlice) => {
+    using(dataProvider, dataSlice => {
       it(`should ${dataSlice.willBeMocked ? '' : 'not '}mock request to ${dataSlice.url}`, () => {
-        expect(mockInterceptor.requestHasToBeMocked(request.clone({ url: dataSlice.url }))).toBe(dataSlice.willBeMocked);
+        expect(mockInterceptor.requestHasToBeMocked(request.clone({ url: dataSlice.url }))).toBe(
+          dataSlice.willBeMocked
+        );
       });
       it(`should ${dataSlice.willBeMocked ? '' : 'not '}change url for ${dataSlice.url}`, () => {
         if (dataSlice.willBeMocked) {
@@ -72,15 +67,11 @@ describe('Mock Interceptor', () => {
   });
 
   describe('matchPath Method', () => {
-
     let mockInterceptor: MockInterceptor;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [
-          MockInterceptor,
-          { provide: REST_ENDPOINT, useValue: BASE_URL }
-        ]
+        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
       });
       mockInterceptor = TestBed.get(MockInterceptor);
     });
@@ -104,7 +95,7 @@ describe('Mock Interceptor', () => {
       ];
     }
 
-    using(dataProvider, (dataSlice) => {
+    using(dataProvider, dataSlice => {
       it(`should${dataSlice.expect ? '' : ' not'} when \'${dataSlice.item}\' in ${dataSlice.in}`, () => {
         expect(mockInterceptor.matchPath(dataSlice.item, dataSlice.in)).toBe(dataSlice.expect);
       });
@@ -112,17 +103,13 @@ describe('Mock Interceptor', () => {
   });
 
   describe('Intercepting', () => {
-
     let mockInterceptor: MockInterceptor;
     let request: HttpRequest<any>;
     let handler: HttpHandler;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [
-          MockInterceptor,
-          { provide: REST_ENDPOINT, useValue: BASE_URL }
-        ]
+        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
       });
       mockInterceptor = TestBed.get(MockInterceptor);
       request = new HttpRequest('GET', `${BASE_URL}/some`);
@@ -132,21 +119,33 @@ describe('Mock Interceptor', () => {
     });
 
     it('should attach token when patricia is logged in correctly', () => {
-      mockInterceptor.intercept(request.clone({ headers: request.headers.append('Authorization', 'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==') }), handler).subscribe(event => {
-        expect(event.type).toBe(HttpEventType.Response);
+      mockInterceptor
+        .intercept(
+          request.clone({
+            headers: request.headers.append(
+              'Authorization',
+              'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ=='
+            ),
+          }),
+          handler
+        )
+        .subscribe(event => {
+          expect(event.type).toBe(HttpEventType.Response);
 
-        const response = event as HttpResponse<any>;
-        expect(response.headers.get('authentication-token')).toBeTruthy();
-      });
+          const response = event as HttpResponse<any>;
+          expect(response.headers.get('authentication-token')).toBeTruthy();
+        });
     });
 
     it('should not attach token when patricia is not logged in correctly', () => {
-      mockInterceptor.intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler).subscribe(event => {
-        expect(event.type).toBe(HttpEventType.Response);
+      mockInterceptor
+        .intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler)
+        .subscribe(event => {
+          expect(event.type).toBe(HttpEventType.Response);
 
-        const response = event as HttpResponse<any>;
-        expect(response.headers.get('authentication-token')).toBeFalsy();
-      });
+          const response = event as HttpResponse<any>;
+          expect(response.headers.get('authentication-token')).toBeFalsy();
+        });
     });
   });
 });

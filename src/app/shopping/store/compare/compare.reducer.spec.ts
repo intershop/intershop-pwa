@@ -27,7 +27,7 @@ describe('CompareReducer', () => {
 
       const previousState = {
         ...initialState,
-        products: ['123', sku]
+        products: ['123', sku],
       };
       const action = new fromActions.RemoveFromCompare(sku);
       const state = compareReducer(previousState, action);

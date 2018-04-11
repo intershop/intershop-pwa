@@ -11,10 +11,8 @@ describe('BreadCrumb Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [BreadcrumbComponent],
-      imports: [
-        TranslateModule.forRoot(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(BreadcrumbComponent);
     component = fixture.componentInstance;
@@ -31,7 +29,9 @@ describe('BreadCrumb Component', () => {
     component.searchTerm = 'Test Search Term';
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=breadcrumb-search-term]')).toBeTruthy();
-    expect(element.querySelector('[data-testing-id=breadcrumb-search-term]').textContent).toContain(component.searchTerm);
+    expect(element.querySelector('[data-testing-id=breadcrumb-search-term]').textContent).toContain(
+      component.searchTerm
+    );
   });
 
   it('should not render search term when not available', () => {

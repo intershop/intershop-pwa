@@ -17,7 +17,8 @@ describe('proof-of-concept App', () => {
     // https://github.com/angular/protractor/blob/master/docs/timeouts.md#how-to-disable-waiting-for-angular
     browser.waitForAngularEnabled(false);
 
-    page.getCustomerInfo()
+    page
+      .getCustomerInfo()
       .then(msg => expect(msg).toEqual(telephoneNumber))
       .then(done, done.fail);
   });

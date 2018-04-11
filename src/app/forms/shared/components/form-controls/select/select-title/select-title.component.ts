@@ -11,9 +11,7 @@ import { SelectComponent } from '../select.component';
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {
   @Input() titles: string[];
 
-  constructor(
-    protected translate: TranslateService
-  ) {
+  constructor(protected translate: TranslateService) {
     super(translate);
   }
 
@@ -39,14 +37,19 @@ export class SelectTitleComponent extends SelectComponent implements OnChanges, 
   private setDefaultValues() {
     this.controlName = this.controlName || 'title';
     this.label = this.label || 'account.default_address.title.label';
-    this.errorMessages = this.errorMessages || { 'required': 'account.address.title.error.required' };
+    this.errorMessages = this.errorMessages || { required: 'account.address.title.error.required' };
   }
 
   private mapToOptions(titles: string[]): SelectOption[] {
-    if (!titles) { return; }
-    return titles.map(t => ({
-      label: t,
-      value: t
-    } as SelectOption));
+    if (!titles) {
+      return;
+    }
+    return titles.map(
+      t =>
+        ({
+          label: t,
+          value: t,
+        } as SelectOption)
+    );
   }
 }

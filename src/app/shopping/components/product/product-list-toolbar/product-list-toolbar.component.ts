@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select/select-option.interface';
@@ -9,9 +19,7 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
   templateUrl: './product-list-toolbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() itemCount: number;
   @Input() viewType: ViewType = 'grid';
   @Input() sortBy = 'default';

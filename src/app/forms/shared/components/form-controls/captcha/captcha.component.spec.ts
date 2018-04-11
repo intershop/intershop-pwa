@@ -7,12 +7,14 @@ describe('Captcha Component', () => {
   let component: CaptchaComponent;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CaptchaComponent],
-      imports: [RecaptchaModule.forRoot()]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [CaptchaComponent],
+        imports: [RecaptchaModule.forRoot()],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CaptchaComponent);
@@ -31,5 +33,4 @@ describe('Captcha Component', () => {
     const elem = element.getElementsByClassName('form-group');
     expect(elem[0].innerHTML).toContain('re-captcha');
   });
-
 });

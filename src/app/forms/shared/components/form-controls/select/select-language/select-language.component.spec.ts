@@ -10,26 +10,28 @@ describe('Select Language Component', () => {
   let fixture: ComponentFixture<SelectLanguageComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectLanguageComponent],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(SelectLanguageComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SelectLanguageComponent],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SelectLanguageComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-      const form = new FormGroup({
-        preferredLanguage: new FormControl('en_US')
-      });
-      component.form = form;
+          const form = new FormGroup({
+            preferredLanguage: new FormControl('en_US'),
+          });
+          component.form = form;
 
-      component.languages = TestBed.get(AVAILABLE_LOCALES);
-    });
-  }));
+          component.languages = TestBed.get(AVAILABLE_LOCALES);
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -40,17 +42,21 @@ describe('Select Language Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('preferredLanguage', 'control Name should be <preferredLanguage>');
-    expect(component.label).toEqual('account.default_address.preferred_language.label', 'label key should be <account.default_address.preferred_language.label>');
+    expect(component.label).toEqual(
+      'account.default_address.preferred_language.label',
+      'label key should be <account.default_address.preferred_language.label>'
+    );
   });
 
   it('should get and display languages on creation', () => {
     const changes: SimpleChanges = {
-      languages: new SimpleChange(null, component.languages, false)
+      languages: new SimpleChange(null, component.languages, false),
     };
     component.ngOnChanges(changes);
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 languages are in the options array'); // ToDo: languages are retrieved from a service
-    expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy('language select is rendered');
+    expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy(
+      'language select is rendered'
+    );
   });
-
 });

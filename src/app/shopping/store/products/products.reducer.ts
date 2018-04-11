@@ -4,7 +4,7 @@ import { Product } from '../../../models/product/product.model';
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 
 export const productAdapter: EntityAdapter<Product> = createEntityAdapter<Product>({
-  selectId: product => product.sku
+  selectId: product => product.sku,
 });
 
 export interface ProductsState extends EntityState<Product> {
@@ -12,26 +12,22 @@ export interface ProductsState extends EntityState<Product> {
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
-  loading: false
+  loading: false,
 });
 
-export function productsReducer(
-  state = initialState,
-  action: ProductsAction
-): ProductsState {
+export function productsReducer(state = initialState, action: ProductsAction): ProductsState {
   switch (action.type) {
-
     case ProductsActionTypes.LoadProduct: {
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     }
 
     case ProductsActionTypes.LoadProductFail: {
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     }
 
@@ -45,7 +41,7 @@ export function productsReducer(
         const updated = ProductMapper.updateImmutably(state.entities[sku], loadedProduct);
         const entities = {
           ...state.entities,
-          [sku]: updated
+          [sku]: updated,
         };
         updatedState = { ...state, entities };
       } else {

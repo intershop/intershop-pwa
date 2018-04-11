@@ -9,64 +9,65 @@ describe('Product Images Component', () => {
   let fixture: ComponentFixture<ProductImagesComponent>;
   let product: Product;
   let element: HTMLElement;
-  beforeEach(async(() => {
-    product = { sku: 'sku' } as Product;
-    product.name = 'Lenco';
-    product.images = [
-      {
-        'name': 'front S',
-        'type': 'Image',
-        'imageActualHeight': 110,
-        'imageActualWidth': 110,
-        'viewID': 'front',
-        'effectiveUrl': '/assets/product_img/a.jpg',
-        'typeID': 'S',
-        'primaryImage': true
-      },
-      {
-        'name': 'front S',
-        'type': 'Image',
-        'imageActualHeight': 110,
-        'imageActualWidth': 110,
-        'viewID': 'front',
-        'effectiveUrl': '/assets/product_img/a.jpg',
-        'typeID': 'S',
-        'primaryImage': false
-      },
-      {
-        'name': 'front L',
-        'type': 'Image',
-        'imageActualHeight': 500,
-        'imageActualWidth': 500,
-        'viewID': 'front',
-        'effectiveUrl': '/assets/product_img/a.jpg',
-        'typeID': 'L',
-        'primaryImage': true
-      },
-      {
-        'name': 'front L',
-        'type': 'Image',
-        'imageActualHeight': 500,
-        'imageActualWidth': 500,
-        'viewID': 'front',
-        'effectiveUrl': '/assets/product_img/b.jpg',
-        'typeID': 'L',
-        'primaryImage': false
-      }
-
-    ];
-    TestBed.configureTestingModule({
-      imports: [CarouselModule.forRoot()],
-      declarations: [ProductImagesComponent,
-        MockComponent({
-          selector: 'ish-product-image', template:
-            '<img src="/assets/product_img/b.jpg" />',
-          inputs: ['product', 'imageType', 'class', 'imageView']
-        })
-      ]
+  beforeEach(
+    async(() => {
+      product = { sku: 'sku' } as Product;
+      product.name = 'Lenco';
+      product.images = [
+        {
+          name: 'front S',
+          type: 'Image',
+          imageActualHeight: 110,
+          imageActualWidth: 110,
+          viewID: 'front',
+          effectiveUrl: '/assets/product_img/a.jpg',
+          typeID: 'S',
+          primaryImage: true,
+        },
+        {
+          name: 'front S',
+          type: 'Image',
+          imageActualHeight: 110,
+          imageActualWidth: 110,
+          viewID: 'front',
+          effectiveUrl: '/assets/product_img/a.jpg',
+          typeID: 'S',
+          primaryImage: false,
+        },
+        {
+          name: 'front L',
+          type: 'Image',
+          imageActualHeight: 500,
+          imageActualWidth: 500,
+          viewID: 'front',
+          effectiveUrl: '/assets/product_img/a.jpg',
+          typeID: 'L',
+          primaryImage: true,
+        },
+        {
+          name: 'front L',
+          type: 'Image',
+          imageActualHeight: 500,
+          imageActualWidth: 500,
+          viewID: 'front',
+          effectiveUrl: '/assets/product_img/b.jpg',
+          typeID: 'L',
+          primaryImage: false,
+        },
+      ];
+      TestBed.configureTestingModule({
+        imports: [CarouselModule.forRoot()],
+        declarations: [
+          ProductImagesComponent,
+          MockComponent({
+            selector: 'ish-product-image',
+            template: '<img src="/assets/product_img/b.jpg" />',
+            inputs: ['product', 'imageType', 'class', 'imageView'],
+          }),
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductImagesComponent);

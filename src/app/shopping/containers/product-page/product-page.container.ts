@@ -16,28 +16,19 @@ import { ShoppingState } from '../../store/shopping.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPageContainerComponent implements OnInit {
-
   product$: Observable<Product>;
   productLoading$: Observable<boolean>;
   category$: Observable<Category>;
   categoryPath$: Observable<Category[]> = of([]);
 
-  constructor(
-    private store: Store<ShoppingState>
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     // TODO: find a nicer way to filter out the case of an 'undefined' product when the router state change is not waiting for the guard to actually do the routing
-    this.product$ = this.store.pipe(
-      select(getSelectedProduct),
-      filter(product => !!product)
-    );
+    this.product$ = this.store.pipe(select(getSelectedProduct), filter(product => !!product));
 
     // TODO: find a nicer way to filter out the case of an 'undefined' category when the router state change is not waiting for the guard to actually do the routing
-    this.category$ = this.store.pipe(
-      select(getSelectedCategory),
-      filter(category => !!category)
-    );
+    this.category$ = this.store.pipe(select(getSelectedCategory), filter(category => !!category));
 
     this.productLoading$ = this.store.pipe(select(getProductLoading));
 
@@ -53,5 +44,4 @@ export class ProductPageContainerComponent implements OnInit {
   addToCompare(sku) {
     this.store.dispatch(new AddToCompare(sku));
   }
-
 }

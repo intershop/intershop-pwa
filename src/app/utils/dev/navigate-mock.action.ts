@@ -11,8 +11,8 @@ export function navigateMockAction(state: ActionPayload) {
   return {
     payload: {
       routerState: { ...state },
-      event: { id: 1 }
+      event: { id: 1 },
     },
-    type: ROUTER_NAVIGATION
+    type: ROUTER_NAVIGATION,
   } as RouterNavigationAction;
 }

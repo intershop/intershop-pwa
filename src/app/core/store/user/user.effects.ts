@@ -11,21 +11,19 @@ import * as userActions from './user.actions';
 
 @Injectable()
 export class UserEffects {
-  constructor(
-    private actions$: Actions,
-    private accountLoginService: AccountLoginService,
-    private router: Router
-  ) { }
+  constructor(private actions$: Actions, private accountLoginService: AccountLoginService, private router: Router) {}
 
   @Effect()
   loginUser$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoginUser),
     map((action: userActions.LoginUser) => action.payload),
     mergeMap(credentials => {
-      return this.accountLoginService.signinUser(credentials).pipe(
-        map(customer => new userActions.LoginUserSuccess(customer)),
-        catchError(error => of(this.dispatchLogin(error)))
-      );
+      return this.accountLoginService
+        .signinUser(credentials)
+        .pipe(
+          map(customer => new userActions.LoginUserSuccess(customer)),
+          catchError(error => of(this.dispatchLogin(error)))
+        );
     })
   );
 
@@ -46,18 +44,19 @@ export class UserEffects {
     ofType(userActions.UserActionTypes.CreateUser),
     map((action: userActions.CreateUser) => action.payload),
     mergeMap((customerData: Customer) => {
-      return this.accountLoginService.createUser(customerData).pipe(
-        map(customer => new userActions.CreateUserSuccess(customer)),
-        catchError(error => of(this.dispatchCreation(error)))
-      );
+      return this.accountLoginService
+        .createUser(customerData)
+        .pipe(
+          map(customer => new userActions.CreateUserSuccess(customer)),
+          catchError(error => of(this.dispatchCreation(error)))
+        );
     })
   );
 
   @Effect()
   publishLoginEventAfterCreate$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.CreateUserSuccess),
-    map((action: userActions.CreateUserSuccess) =>
-      new userActions.LoginUserSuccess(action.payload))
+    map((action: userActions.CreateUserSuccess) => new userActions.LoginUserSuccess(action.payload))
   );
 
   dispatchLogin(error): Action {

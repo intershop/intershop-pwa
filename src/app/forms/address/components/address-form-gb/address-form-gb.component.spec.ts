@@ -11,35 +11,35 @@ describe('German Address Component', () => {
   let fixture: ComponentFixture<AddressFormGBComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [AddressFormGBComponent, InputComponent, SelectTitleComponent],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(AddressFormGBComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-    TestBed.configureTestingModule({
-      declarations: [AddressFormGBComponent, InputComponent, SelectTitleComponent],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AddressFormGBComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-
-        const addressForm = new FormGroup({
-          countryCode: new FormControl('GB'),
-          title: new FormControl(''),
-          firstName: new FormControl(''),
-          lastName: new FormControl(''),
-          addressLine1: new FormControl(''),
-          addressLine2: new FormControl(''),
-          addressLine3: new FormControl(''),
-          postalCode: new FormControl(''),
-          city: new FormControl('')
+          const addressForm = new FormGroup({
+            countryCode: new FormControl('GB'),
+            title: new FormControl(''),
+            firstName: new FormControl(''),
+            lastName: new FormControl(''),
+            addressLine1: new FormControl(''),
+            addressLine2: new FormControl(''),
+            addressLine3: new FormControl(''),
+            postalCode: new FormControl(''),
+            city: new FormControl(''),
+          });
+          component.addressForm = addressForm;
+          component.titles = ['Mrs.'];
         });
-        component.addressForm = addressForm;
-        component.titles = ['Mrs.'];
-      });
-  }));
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

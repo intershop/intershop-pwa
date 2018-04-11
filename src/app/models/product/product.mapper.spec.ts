@@ -13,7 +13,11 @@ describe('ProductFactory', () => {
     });
 
     it(`should return VariationProduct when getting a ProductData with mastered = true`, () => {
-      const product: Product = ProductMapper.fromData({ sku: '1', mastered: true, productMasterSKU: '2' } as ProductData);
+      const product: Product = ProductMapper.fromData({
+        sku: '1',
+        mastered: true,
+        productMasterSKU: '2',
+      } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type === ProductType.VariationProduct).toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
@@ -27,7 +31,11 @@ describe('ProductFactory', () => {
     });
 
     it(`should return VariationProductMaster with variationAttributes when getting a ProductData with productMaster = true`, () => {
-      const product: Product = ProductMapper.fromData({ sku: '1', productMaster: true, variableVariationAttributes: [] } as ProductData);
+      const product: Product = ProductMapper.fromData({
+        sku: '1',
+        productMaster: true,
+        variableVariationAttributes: [],
+      } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type === ProductType.VariationProductMaster).toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
@@ -35,7 +43,11 @@ describe('ProductFactory', () => {
     });
 
     it(`should return Product without variationAttributes when getting a ProductData with productMaster = false`, () => {
-      const product: Product = ProductMapper.fromData({ sku: '1', productMaster: false, variableVariationAttributes: [] } as ProductData);
+      const product: Product = ProductMapper.fromData({
+        sku: '1',
+        productMaster: false,
+        variableVariationAttributes: [],
+      } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type === ProductType.Product).toBeTruthy();
       expect(product.type === ProductType.VariationProduct).toBeFalsy();

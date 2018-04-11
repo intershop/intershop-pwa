@@ -8,16 +8,11 @@ const routes: Routes = [
   { path: 'category', loadChildren: 'app/shopping/containers/category-page/category-page.module#CategoryPageModule' },
   { path: 'compare', loadChildren: 'app/shopping/containers/compare-page/compare-page.module#ComparePageModule' },
   { path: 'recently', loadChildren: 'app/shopping/containers/recently-page/recently-page.module#RecentlyPageModule' },
-  { path: 'search', loadChildren: 'app/shopping/containers/search-page/search-page.module#SearchPageModule' }
+  { path: 'search', loadChildren: 'app/shopping/containers/search-page/search-page.module#SearchPageModule' },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-
-export class ShoppingRoutingModule { }
+export class ShoppingRoutingModule {}

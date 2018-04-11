@@ -10,25 +10,24 @@ import { LoginUserSuccess } from '../store/user';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
-
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
     let store$: Store<CoreState>;
 
-    beforeEach(async(() => {
-      const loginComponentMock = MockComponent({ selector: 'ish-login', template: 'Login Component' });
+    beforeEach(
+      async(() => {
+        const loginComponentMock = MockComponent({ selector: 'ish-login', template: 'Login Component' });
 
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([
-            { path: 'login', component: loginComponentMock }
-          ]),
-          StoreModule.forRoot(coreReducers)
-        ],
-        providers: [AuthGuard],
-        declarations: [loginComponentMock]
-      }).compileComponents();
-    }));
+        TestBed.configureTestingModule({
+          imports: [
+            RouterTestingModule.withRoutes([{ path: 'login', component: loginComponentMock }]),
+            StoreModule.forRoot(coreReducers),
+          ],
+          providers: [AuthGuard],
+          declarations: [loginComponentMock],
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       authGuard = TestBed.get(AuthGuard);
@@ -39,15 +38,11 @@ describe('AuthGuard', () => {
     it('should return true when user is authorized', () => {
       store$.dispatch(new LoginUserSuccess({} as Customer));
 
-      authGuard.canActivate().subscribe(authorized =>
-        expect(authorized).toBeTruthy()
-      );
+      authGuard.canActivate().subscribe(authorized => expect(authorized).toBeTruthy());
     });
 
     it('should return false when called as unauthorized', () => {
-      authGuard.canActivate().subscribe(authorized =>
-        expect(authorized).toBeFalsy()
-      );
+      authGuard.canActivate().subscribe(authorized => expect(authorized).toBeFalsy());
     });
   });
 });

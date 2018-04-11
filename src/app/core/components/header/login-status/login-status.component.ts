@@ -6,8 +6,6 @@ import { Customer } from '../../../../models/customer/customer.model';
   templateUrl: './login-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class LoginStatusComponent {
-
   @Input() customer: Customer;
 }

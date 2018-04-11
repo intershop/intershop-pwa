@@ -13,16 +13,13 @@ import { Product } from '../../../models/product/product.model';
  */
 @Injectable()
 export class ProductsService {
-
   /**
    * The REST API URI endpoints
    */
   productsServiceIdentifier = 'products/';
   categoriesServiceIdentifier = 'categories/';
 
-  constructor(
-    private apiService: ApiService
-  ) { }
+  constructor(private apiService: ApiService) {}
 
   /**
    * Get the full Product data for the given Product SKU.
@@ -34,9 +31,9 @@ export class ProductsService {
       return ErrorObservable.create('getProduct() called without a sku');
     }
     const params: HttpParams = new HttpParams().set('allImages', 'true');
-    return this.apiService.get<ProductData>(this.productsServiceIdentifier + sku, params, null, false, false).pipe(
-      map(productData => ProductMapper.fromData(productData))
-    );
+    return this.apiService
+      .get<ProductData>(this.productsServiceIdentifier + sku, params, null, false, false)
+      .pipe(map(productData => ProductMapper.fromData(productData)));
   }
 
   /**
@@ -45,19 +42,30 @@ export class ProductsService {
    * @param sortKey           The sortKey to sort the list, default value is ''
    * @returns                 List of Product SKUs, the unique Category ID and the possible sort keys as Observable
    */
-  getProductsSkusForCategory(categoryUniqueId: string, sortKey = ''): Observable<{ skus: string[], categoryUniqueId: string, sortKeys: string[] }> {
-    const path = this.categoriesServiceIdentifier + categoryUniqueId.replace(/\./g, '/') + '/' + this.productsServiceIdentifier;
+  getProductsSkusForCategory(
+    categoryUniqueId: string,
+    sortKey = ''
+  ): Observable<{ skus: string[]; categoryUniqueId: string; sortKeys: string[] }> {
+    const path =
+      this.categoriesServiceIdentifier + categoryUniqueId.replace(/\./g, '/') + '/' + this.productsServiceIdentifier;
     let params: HttpParams = new HttpParams().set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
-    return this.apiService.get<{ elements: { uri: string }[], sortKeys: string[], categoryUniqueId: string }>(path, params, null, false, false).pipe(
-      map(response => ({
-        skus: response.elements.map(el => el.uri.split('/').pop()),
-        sortKeys: response.sortKeys,
-        categoryUniqueId: categoryUniqueId
-      }))
-    );
+    return this.apiService
+      .get<{ elements: { uri: string }[]; sortKeys: string[]; categoryUniqueId: string }>(
+        path,
+        params,
+        null,
+        false,
+        false
+      )
+      .pipe(
+        map(response => ({
+          skus: response.elements.map(el => el.uri.split('/').pop()),
+          sortKeys: response.sortKeys,
+          categoryUniqueId: categoryUniqueId,
+        }))
+      );
   }
-
 }

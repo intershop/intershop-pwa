@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { AccountRoutingModule } from './account-routing.module';
 
 @NgModule({
-  imports: [
-    AccountRoutingModule
-  ]
+  imports: [AccountRoutingModule],
 })
-
-export class AccountModule { }
+export class AccountModule {}

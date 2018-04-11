@@ -26,14 +26,7 @@ import { CategoriesService } from './services/categories/categories.service';
 import { SuggestService } from './services/suggest/suggest.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    TranslateModule,
-    BsDropdownModule,
-    CollapseModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, RouterModule, TranslateModule, BsDropdownModule, CollapseModule, ReactiveFormsModule],
   declarations: [
     HeaderComponent,
     ProductCompareStatusComponent,
@@ -52,14 +45,7 @@ import { SuggestService } from './services/suggest/suggest.service';
     LoginStatusComponent,
     LoginStatusContainerComponent,
   ],
-  providers: [
-    AccountLoginService,
-    CategoriesService,
-    SuggestService,
-  ],
-  exports: [
-    HeaderComponent
-  ]
+  providers: [AccountLoginService, CategoriesService, SuggestService],
+  exports: [HeaderComponent],
 })
-
-export class HeaderModule { }
+export class HeaderModule {}

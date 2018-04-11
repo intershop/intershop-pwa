@@ -8,15 +8,12 @@ import * as errorSelectors from './error.selectors';
 
 @Injectable()
 export class ErrorEffects {
-  constructor(
-    private router: Router,
-    private store: Store<CoreState>
-  ) { }
+  constructor(private router: Router, private store: Store<CoreState>) {}
 
   @Effect({ dispatch: false })
   gotoErrorPageInCaseOfError$ = this.store.pipe(
     select(errorSelectors.getErrorState),
-    filter((state) => !!state),
+    filter(state => !!state),
     tap(() => this.router.navigate(['/error']))
   );
 }

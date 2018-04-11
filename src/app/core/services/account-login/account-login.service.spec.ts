@@ -19,18 +19,22 @@ describe('AccountLogin Service', () => {
     accountLoginService.signinUser(loginDetail).subscribe(data => {
       expect(data['authorized']).toBe(true);
     });
-
   });
 
   it('should return error message when wrong credentials are entered', () => {
     const errorMessage = '401 and Unauthorized';
     const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
-    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(ErrorObservable.create(new Error(errorMessage)));
-    accountLoginService.signinUser(userDetails).subscribe((data) => {
-      fail('no data in this path is expected');
-    }, (error) => {
-      expect(error).toBeTruthy();
-      expect(error.message).toBe(errorMessage);
-    });
+    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(
+      ErrorObservable.create(new Error(errorMessage))
+    );
+    accountLoginService.signinUser(userDetails).subscribe(
+      data => {
+        fail('no data in this path is expected');
+      },
+      error => {
+        expect(error).toBeTruthy();
+        expect(error.message).toBe(errorMessage);
+      }
+    );
   });
 });

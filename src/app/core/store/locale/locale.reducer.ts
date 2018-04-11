@@ -7,23 +7,19 @@ export interface LocaleState extends EntityState<Locale> {
 }
 
 export const adapter: EntityAdapter<Locale> = createEntityAdapter<Locale>({
-  selectId: l => l.lang
+  selectId: l => l.lang,
 });
 
-export const getCurrent = (state: LocaleState) => (state && state.entities && state.current) ? state.entities[state.current] : null;
+export const getCurrent = (state: LocaleState) =>
+  state && state.entities && state.current ? state.entities[state.current] : null;
 
-export const {
-  selectAll: getAvailable
-} = adapter.getSelectors();
+export const { selectAll: getAvailable } = adapter.getSelectors();
 
 export const initialState: LocaleState = adapter.getInitialState({
   current: null,
 });
 
-export function localeReducer(
-  state = initialState,
-  action: LocaleAction
-): LocaleState {
+export function localeReducer(state = initialState, action: LocaleAction): LocaleState {
   switch (action.type) {
     case LocaleActionTypes.SelectLocale: {
       const idx = action.payload.lang;

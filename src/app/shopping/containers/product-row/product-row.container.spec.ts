@@ -7,14 +7,20 @@ describe('Product Row Container', () => {
   let fixture: ComponentFixture<ProductRowContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ProductRowContainerComponent,
-        MockComponent({ selector: 'ish-product-row', template: 'Product Row Component', inputs: ['product', 'category'] }),
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ProductRowContainerComponent,
+          MockComponent({
+            selector: 'ish-product-row',
+            template: 'Product Row Component',
+            inputs: ['product', 'category'],
+          }),
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductRowContainerComponent);

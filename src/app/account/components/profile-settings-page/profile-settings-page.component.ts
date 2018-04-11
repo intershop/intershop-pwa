@@ -7,7 +7,6 @@ import { Customer } from '../../../models/customer/customer.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSettingsPageComponent {
-
   showSuccessMessage: string;
   @Input() customer: Customer;
 }

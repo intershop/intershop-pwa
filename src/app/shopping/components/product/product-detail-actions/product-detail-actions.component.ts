@@ -6,7 +6,7 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 @Component({
   selector: 'ish-product-detail-actions',
   templateUrl: './product-detail-actions.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailActionsComponent {
   @Input() product: Product;
@@ -17,10 +17,7 @@ export class ProductDetailActionsComponent {
 
   isMasterProduct = ProductHelper.isMasterProduct;
 
-  constructor(
-    private location: Location,
-    @Inject(ICM_BASE_URL) public icmBaseURL
-  ) { }
+  constructor(private location: Location, @Inject(ICM_BASE_URL) public icmBaseURL) {}
 
   get currentUrl(): string {
     return this.icmBaseURL + this.location.path();

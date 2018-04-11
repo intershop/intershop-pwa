@@ -7,9 +7,7 @@ import { Product } from '../../../models/product/product.model';
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class BreadcrumbComponent {
-
   @Input() separator = '/';
   @Input() showHome = true;
   @Input() category: Category; // TODO: the category is not used for now, but should be used instead of the categoryPath once it includes the category path itself

@@ -22,15 +22,15 @@ describe('ApiService', () => {
     TestBed.configureTestingModule({
       imports: [
         // https://angular.io/guide/http#testing-http-requests
-        HttpClientTestingModule
+        HttpClientTestingModule,
       ],
       providers: [
         { provide: REST_ENDPOINT, useValue: BASE_URL },
         { provide: ICM_SERVER_URL, useValue: BASE_URL },
         { provide: Store, useFactory: () => instance(storeMock$) },
         ApiServiceErrorHandler,
-        ApiService
-      ]
+        ApiService,
+      ],
     });
 
     apiService = TestBed.get(ApiService);

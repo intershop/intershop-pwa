@@ -1,7 +1,6 @@
 import { Basket } from './basket.model';
 
 export class BasketHelper {
-
   /**
    * Calculates the number of items in the basket - TODO: should be returned by the REST call
    * @param basket The basket

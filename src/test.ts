@@ -9,10 +9,7 @@ import 'zone.js/dist/proxy.js';
 import 'zone.js/dist/sync-test';
 import 'zone.js/dist/jasmine-patch';
 import { getTestBed } from '@angular/core/testing';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting
-} from '@angular/platform-browser-dynamic/testing';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from './environments/environment';
 import * as injectionKeys from './app/core/configurations/injection-keys';
@@ -26,7 +23,7 @@ declare const require: any;
 
 // Prevent Karma from running prematurely.
 // tslint:disable-next-line: no-empty
-__karma__.loaded = function() { };
+__karma__.loaded = function() {};
 
 // First, initialize the Angular testing environment.
 beforeEach(() => {
@@ -40,9 +37,12 @@ beforeEach(() => {
       { provide: ICM_BASE_URL, useValue: environment.icmBaseURL },
       { provide: ICM_APPLICATION, useValue: environment.icmApplication },
       { provide: ICM_SERVER_URL, useValue: `${environment.icmBaseURL}/${environment.icmServer}` },
-      { provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: environment.mainNavigationMaxSubCategoriesDepth },
+      {
+        provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+        useValue: environment.mainNavigationMaxSubCategoriesDepth,
+      },
       // TODO: get from REST call
-      { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' }
+      { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
     ])
   );
 });

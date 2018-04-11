@@ -6,18 +6,14 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ModalDialogComponent {
-
   @Input() title: string;
 
   // tslint:disable-next-line:no-any
   @ViewChild('template') modalDialogTemplate: TemplateRef<any>;
   bsModalDialog: BsModalRef;
 
-  constructor(
-    private bsModalService: BsModalService
-  ) { }
+  constructor(private bsModalService: BsModalService) {}
 
   /**
    * Shows modal dialog

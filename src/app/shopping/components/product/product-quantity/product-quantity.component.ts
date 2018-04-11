@@ -7,7 +7,7 @@ import { Product } from '../../../../models/product/product.model';
 @Component({
   selector: 'ish-product-quantity',
   templateUrl: './product-quantity.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductQuantityComponent implements OnInit {
   @Input() product: Product;
@@ -37,17 +37,19 @@ export class ProductQuantityComponent implements OnInit {
         Validators.required,
         Validators.min(this.minOrderQuantity),
         Validators.max(this.maxOrderQuantity),
-        SpecialValidators.integer
+        SpecialValidators.integer,
       ]);
     }
   }
 
   get quantityOptions(): SelectOption[] {
-    return Array.from({ length: this.maxOrderQuantity - this.minOrderQuantity + 1 },
-      (value, index) => ({
-        label: (this.minOrderQuantity + index).toString(),
-        value: (this.minOrderQuantity + index).toString()
-      } as SelectOption)
+    return Array.from(
+      { length: this.maxOrderQuantity - this.minOrderQuantity + 1 },
+      (value, index) =>
+        ({
+          label: (this.minOrderQuantity + index).toString(),
+          value: (this.minOrderQuantity + index).toString(),
+        } as SelectOption)
     );
   }
 }

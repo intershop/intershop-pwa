@@ -13,9 +13,7 @@ import { ChangeSortBy, ChangeViewType, getSortBy, getSortKeys, getViewType } fro
   templateUrl: './search-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class SearchPageContainerComponent implements OnInit {
-
   searchTerm$: Observable<string>;
   searchLoading$: Observable<boolean>;
   products$: Observable<Product[]>;
@@ -24,15 +22,13 @@ export class SearchPageContainerComponent implements OnInit {
   sortBy$: Observable<string>;
   sortKeys$: Observable<string[]>;
 
-  constructor(
-    private store: Store<ShoppingState>
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     this.searchTerm$ = this.store.pipe(select(getSearchTerm));
     this.searchLoading$ = this.store.pipe(select(getSearchLoading));
     this.products$ = this.store.pipe(select(getSearchProducts));
-    this.totalItems$ = this.products$.pipe(map((products) => products.length));
+    this.totalItems$ = this.products$.pipe(map(products => products.length));
     this.viewType$ = this.store.pipe(select(getViewType));
     this.sortBy$ = this.store.pipe(select(getSortBy));
     this.sortKeys$ = this.store.pipe(select(getSortKeys));

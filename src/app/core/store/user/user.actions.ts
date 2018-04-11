@@ -15,17 +15,17 @@ export enum UserActionTypes {
 
 export class LoginUser implements Action {
   readonly type = UserActionTypes.LoginUser;
-  constructor(public payload: AccountLogin) { }
+  constructor(public payload: AccountLogin) {}
 }
 
 export class LoginUserFail implements Action {
   readonly type = UserActionTypes.LoginUserFail;
-  constructor(public payload: HttpErrorResponse) { }
+  constructor(public payload: HttpErrorResponse) {}
 }
 
 export class LoginUserSuccess implements Action {
   readonly type = UserActionTypes.LoginUserSuccess;
-  constructor(public payload: Customer) { }
+  constructor(public payload: Customer) {}
 }
 
 export class LogoutUser implements Action {
@@ -34,17 +34,24 @@ export class LogoutUser implements Action {
 
 export class CreateUser implements Action {
   readonly type = UserActionTypes.CreateUser;
-  constructor(public payload: Customer) { }
+  constructor(public payload: Customer) {}
 }
 
 export class CreateUserSuccess implements Action {
   readonly type = UserActionTypes.CreateUserSuccess;
-  constructor(public payload: Customer) { }
+  constructor(public payload: Customer) {}
 }
 
 export class CreateUserFail implements Action {
   readonly type = UserActionTypes.CreateUserFail;
-  constructor(public payload: HttpErrorResponse) { }
+  constructor(public payload: HttpErrorResponse) {}
 }
 
-export type UserAction = LoginUser | LoginUserFail | LoginUserSuccess | LogoutUser | CreateUser | CreateUserFail | CreateUserSuccess;
+export type UserAction =
+  | LoginUser
+  | LoginUserFail
+  | LoginUserSuccess
+  | LogoutUser
+  | CreateUser
+  | CreateUserFail
+  | CreateUserSuccess;

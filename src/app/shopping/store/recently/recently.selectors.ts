@@ -2,20 +2,14 @@ import { createSelector } from '@ngrx/store';
 import { getProductEntities, getSelectedProductId } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
-export const getRecentlyState = createSelector(
-  getShoppingState, (state: ShoppingState) => state.recently
-);
+export const getRecentlyState = createSelector(getShoppingState, (state: ShoppingState) => state.recently);
 
-export const getRecentlyProducts = createSelector(
-  getRecentlyState,
-  state => state.products
-);
+export const getRecentlyProducts = createSelector(getRecentlyState, state => state.products);
 
 export const getRecentlyViewedProducts = createSelector(
   getRecentlyProducts,
   getProductEntities,
-  (productSKUs, products) => productSKUs
-    && productSKUs.map(sku => products[sku]) || []
+  (productSKUs, products) => (productSKUs && productSKUs.map(sku => products[sku])) || []
 );
 
 /**

@@ -5,11 +5,14 @@ import { RegionService } from './region.service';
 describe('RegionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RegionService]
+      providers: [RegionService],
     });
   });
 
-  it('should be created', inject([RegionService], (service: RegionService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([RegionService], (service: RegionService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

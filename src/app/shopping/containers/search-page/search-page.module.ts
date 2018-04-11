@@ -8,18 +8,8 @@ import { SearchPageContainerComponent } from './search-page.container';
 import { searchPageRoutes } from './search-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(searchPageRoutes),
-    SharedModule,
-    ShoppingSharedModule
-  ],
-  providers: [
-    ProductsService
-  ],
-  declarations: [
-    SearchPageContainerComponent,
-    SearchPageComponent
-  ]
+  imports: [RouterModule.forChild(searchPageRoutes), SharedModule, ShoppingSharedModule],
+  providers: [ProductsService],
+  declarations: [SearchPageContainerComponent, SearchPageComponent],
 })
-
-export class SearchPageModule { }
+export class SearchPageModule {}

@@ -8,22 +8,16 @@ import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
 
 describe('Locale Selectors', () => {
-
   let store: Store<CoreState>;
 
   let currentLocale$: Observable<Locale>;
   let availableLocales$: Observable<Locale[]>;
 
-  const locales = [
-    { lang: 'cn' },
-    { lang: 'jp' }
-  ] as Locale[];
+  const locales = [{ lang: 'cn' }, { lang: 'jp' }] as Locale[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers),
-      ],
+      imports: [StoreModule.forRoot(coreReducers)],
     });
 
     store = TestBed.get(Store);

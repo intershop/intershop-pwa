@@ -11,19 +11,14 @@ describe('LoginFormComponent', () => {
   let fixture: ComponentFixture<LoginFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        LoginFormComponent
-      ],
-      imports: [
-        FormsSharedModule,
-        TranslateModule.forRoot(),
-        CustomFormsModule,
-        RouterTestingModule,
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [LoginFormComponent],
+        imports: [FormsSharedModule, TranslateModule.forRoot(), CustomFormsModule, RouterTestingModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginFormComponent);
@@ -45,7 +40,6 @@ describe('LoginFormComponent', () => {
   });
 
   describe('error display', () => {
-
     it('should not have any error when initialized', () => {
       fixture.detectChanges();
       expect(component.error).toBeFalsy();
@@ -61,7 +55,6 @@ describe('LoginFormComponent', () => {
   });
 
   describe('email format', () => {
-
     beforeEach(() => {
       component.loginType = 'email';
       fixture.detectChanges();

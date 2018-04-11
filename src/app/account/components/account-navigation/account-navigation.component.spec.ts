@@ -7,12 +7,14 @@ describe('Account Navigation Component', () => {
   let fixture: ComponentFixture<AccountNavigationComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AccountNavigationComponent],
-      imports: [TranslateModule.forRoot()]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [AccountNavigationComponent],
+        imports: [TranslateModule.forRoot()],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountNavigationComponent);

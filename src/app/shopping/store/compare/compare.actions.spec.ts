@@ -7,7 +7,7 @@ describe('Compare Actions', () => {
 
     expect({ ...action }).toEqual({
       type: fromActions.CompareActionTypes.AddToCompare,
-      payload
+      payload,
     });
   });
 
@@ -17,8 +17,7 @@ describe('Compare Actions', () => {
 
     expect({ ...action }).toEqual({
       type: fromActions.CompareActionTypes.RemoveFromCompare,
-      payload
+      payload,
     });
   });
-
 });

@@ -9,18 +9,22 @@ describe('Recently Viewed All Component', () => {
   let fixture: ComponentFixture<RecentlyViewedAllComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        RecentlyViewedAllComponent,
-        MockComponent({ selector: 'ish-product-tile-container', template: 'Product Tile Container', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' })
-      ],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          RecentlyViewedAllComponent,
+          MockComponent({
+            selector: 'ish-product-tile-container',
+            template: 'Product Tile Container',
+            inputs: ['product'],
+          }),
+          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        ],
+        imports: [TranslateModule.forRoot()],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RecentlyViewedAllComponent);
@@ -32,6 +36,8 @@ describe('Recently Viewed All Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(function() {
+      fixture.detectChanges();
+    }).not.toThrow();
   });
 });

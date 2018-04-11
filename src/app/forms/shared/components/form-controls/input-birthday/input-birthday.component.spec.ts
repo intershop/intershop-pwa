@@ -10,26 +10,26 @@ describe('Input Birthday Component', () => {
   let fixture: ComponentFixture<InputBirthdayComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        FormsSharedModule
-      ],
-      providers: [
-        { provide: TranslateService }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(InputBirthdayComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsSharedModule],
+        providers: [{ provide: TranslateService }],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(InputBirthdayComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-      const form = new FormGroup({
-        birthday: new FormControl()
-      });
-      component.form = form;
-    });
-  }));
+          const form = new FormGroup({
+            birthday: new FormControl(),
+          });
+          component.form = form;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

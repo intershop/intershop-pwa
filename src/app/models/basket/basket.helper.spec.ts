@@ -2,14 +2,12 @@ import { BasketItem } from './basket-item.model';
 import { Basket, BasketHelper } from './basket.model';
 
 describe('Basket Helper', () => {
-
   describe('getBasketItemsCount', () => {
-
     let basket: Basket;
     beforeEach(() => {
       basket = { id: '123' } as Basket;
       const li = {
-        'quantity': { 'value': 2 }
+        quantity: { value: 2 },
       } as BasketItem;
       basket.lineItems = [li, li, li];
     });
@@ -22,5 +20,4 @@ describe('Basket Helper', () => {
       expect(BasketHelper.getBasketItemsCount(basket)).toEqual(6);
     });
   });
-
 });

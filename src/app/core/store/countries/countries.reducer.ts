@@ -4,7 +4,7 @@ import { CountryAction, CountryActionTypes } from './countries.actions';
 import { CountriesState } from './countries.reducer';
 
 export const countryAdapter: EntityAdapter<Country> = createEntityAdapter<Country>({
-  selectId: country => country.countryCode
+  selectId: country => country.countryCode,
 });
 
 export interface CountriesState extends EntityState<Country> {
@@ -12,26 +12,22 @@ export interface CountriesState extends EntityState<Country> {
 }
 
 export const initialState: CountriesState = countryAdapter.getInitialState({
-  loading: false
+  loading: false,
 });
 
-export function countriesReducer(
-  state = initialState,
-  action: CountryAction
-): CountriesState {
+export function countriesReducer(state = initialState, action: CountryAction): CountriesState {
   switch (action.type) {
-
     case CountryActionTypes.LoadCountries: {
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     }
 
     case CountryActionTypes.LoadCountriesFail: {
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     }
 
@@ -40,7 +36,7 @@ export function countriesReducer(
 
       return {
         ...countryAdapter.addAll(loadedCountries, state),
-        loading: false
+        loading: false,
       };
     }
   }

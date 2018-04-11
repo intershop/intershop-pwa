@@ -2,7 +2,6 @@ import { getNextToken } from 'tsutils';
 import * as ts from 'typescript';
 
 export class RuleHelpers {
-
   static dumpNode(node: ts.Node, dumpTokens: boolean = false) {
     if (node) {
       console.log('----------------------------------------');
@@ -29,7 +28,10 @@ export class RuleHelpers {
   }
 
   static extractVariableNameInDeclaration(statement: ts.Node): string {
-    return statement.getChildAt(1).getFirstToken().getText();
+    return statement
+      .getChildAt(1)
+      .getFirstToken()
+      .getText();
   }
 
   static getNextChildTokenOfKind(node: ts.Node, kind: ts.SyntaxKind): ts.Node {
@@ -45,10 +47,14 @@ export class RuleHelpers {
 
   static getDescribeBody(sourceFile: ts.SourceFile): ts.Node {
     const statements = sourceFile.statements.filter(
-      (stmt) => stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe');
+      stmt => stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'
+    );
     if (statements.length && statements[0].getChildAt(0)) {
       const describeStatement: ts.Node = statements[0].getChildAt(0).getChildAt(2);
-      const describeBody = describeStatement.getChildAt(2).getChildAt(4).getChildAt(1);
+      const describeBody = describeStatement
+        .getChildAt(2)
+        .getChildAt(4)
+        .getChildAt(1);
       return describeBody;
     }
     return undefined;

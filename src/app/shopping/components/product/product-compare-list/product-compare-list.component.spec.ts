@@ -15,30 +15,40 @@ describe('Product Compare List Component', () => {
   let translate: TranslateService;
   let compareProduct1: Product;
   let compareProduct2: Product;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        StoreModule.forRoot({})
-      ],
-      declarations: [
-        ProductCompareListComponent,
-        MockComponent({ selector: 'ish-product-compare-paging', template: 'Product Compare Paging Component', inputs: ['itemsPerPage', 'currentPage', 'totalItems'] }),
-        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-product-price', template: 'Product Price Component', inputs: ['product', 'showInformationalPrice'] }),
-        MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-product-inventory', template: 'Product Inventory Component', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-product-attributes', template: 'Product Attributes Component', inputs: ['product'] }),
-        AttributeToStringPipe,
-      ],
-      providers: [
-        CurrencyPipe,
-        DatePipe,
-        DecimalPipe
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [RouterTestingModule, TranslateModule.forRoot(), StoreModule.forRoot({})],
+        declarations: [
+          ProductCompareListComponent,
+          MockComponent({
+            selector: 'ish-product-compare-paging',
+            template: 'Product Compare Paging Component',
+            inputs: ['itemsPerPage', 'currentPage', 'totalItems'],
+          }),
+          MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+          MockComponent({
+            selector: 'ish-product-price',
+            template: 'Product Price Component',
+            inputs: ['product', 'showInformationalPrice'],
+          }),
+          MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart', inputs: ['product'] }),
+          MockComponent({
+            selector: 'ish-product-inventory',
+            template: 'Product Inventory Component',
+            inputs: ['product'],
+          }),
+          MockComponent({
+            selector: 'ish-product-attributes',
+            template: 'Product Attributes Component',
+            inputs: ['product'],
+          }),
+          AttributeToStringPipe,
+        ],
+        providers: [CurrencyPipe, DatePipe, DecimalPipe],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductCompareListComponent);
@@ -51,27 +61,32 @@ describe('Product Compare List Component', () => {
     compareProduct1 = { sku: '111', inStock: true, availability: true } as Product;
     compareProduct1.attributes = [
       {
-        'name': 'Optical zoom',
-        'type': 'String',
-        'value': '20 x'
+        name: 'Optical zoom',
+        type: 'String',
+        value: '20 x',
       },
       {
-        'name': 'Focal length (35mm film equivalent)',
-        'type': 'String',
-        'value': '40 - 800 mm'
+        name: 'Focal length (35mm film equivalent)',
+        type: 'String',
+        value: '40 - 800 mm',
       },
       {
-        'name': 'Image formats supported',
-        'type': 'String',
-        'value': '1920 x 1080, 1600 x 1200, 640 x 480'
-      }];
+        name: 'Image formats supported',
+        type: 'String',
+        value: '1920 x 1080, 1600 x 1200, 640 x 480',
+      },
+    ];
 
     compareProduct2 = {
-      ...compareProduct1, sku: '112', attributes: [{
-        'name': 'Optical zoom',
-        'type': 'String',
-        'value': '20 x'
-      }]
+      ...compareProduct1,
+      sku: '112',
+      attributes: [
+        {
+          name: 'Optical zoom',
+          type: 'String',
+          value: '20 x',
+        },
+      ],
     };
     component.compareProducts = [compareProduct1, compareProduct2];
   });
@@ -91,7 +106,7 @@ describe('Product Compare List Component', () => {
 
   it('should emit add to cart when click on add to cart button', () => {
     component.productToCart.subscribe(data => {
-      expect(data).toEqual({ 'sku': '111', 'quantity': 1 });
+      expect(data).toEqual({ sku: '111', quantity: 1 });
     });
     component.addToCart('111', 1);
   });
@@ -99,5 +114,4 @@ describe('Product Compare List Component', () => {
   it('should return 1 as the number of Common Attribute Names for the compared products', () => {
     expect(new Set(component.getCommonAttributeNames()).size).toEqual(1);
   });
-
 });

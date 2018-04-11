@@ -15,12 +15,8 @@ export const initialState: SearchState = {
   suggestSearchResults: [],
 };
 
-export function searchReducer(
-  state = initialState,
-  action: SearchAction
-): SearchState {
+export function searchReducer(state = initialState, action: SearchAction): SearchState {
   switch (action.type) {
-
     case SearchActionTypes.DoSearch: {
       const searchTerm = action.payload;
       const searchLoading = true;
@@ -39,7 +35,6 @@ export function searchReducer(
       const suggestSearchResults = action.payload;
       return { ...state, suggestSearchResults };
     }
-
   }
 
   return state;

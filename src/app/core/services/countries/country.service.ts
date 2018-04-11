@@ -18,7 +18,7 @@ export class CountryService {
       { countryCode: 'FR', name: 'France' },
       { countryCode: 'IN', name: 'India' },
       { countryCode: 'GB', name: 'United Kingdom' },
-      { countryCode: 'US', name: 'United States' }
+      { countryCode: 'US', name: 'United States' },
     ]).pipe(delay(500));
   }
 

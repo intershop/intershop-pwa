@@ -7,6 +7,5 @@ import { Customer } from '../../../models/customer/customer.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountPageComponent {
-
   @Input() customer: Customer;
 }

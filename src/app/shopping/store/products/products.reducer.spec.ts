@@ -41,7 +41,7 @@ describe('Products Reducer', () => {
         product = {
           sku: '111',
           name: 'Test product',
-          inStock: true
+          inStock: true,
         } as Product;
       });
 
@@ -75,6 +75,5 @@ describe('Products Reducer', () => {
         expect(state.loading).toEqual(false);
       });
     });
-
   });
 });

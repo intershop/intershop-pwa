@@ -6,7 +6,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccordionItemComponent {
-
   @Input() heading: string;
   @Input() dataTestingId: string;
 
