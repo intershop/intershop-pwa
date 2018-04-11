@@ -10,12 +10,8 @@ import { shoppingEffects, shoppingReducers } from './store/shopping.system';
   imports: [
     ShoppingRoutingModule,
     StoreModule.forFeature('shopping', shoppingReducers),
-    EffectsModule.forFeature(shoppingEffects)
+    EffectsModule.forFeature(shoppingEffects),
   ],
-  providers: [
-    ProductsService,
-    SearchService
-  ]
+  providers: [ProductsService, SearchService],
 })
-
-export class ShoppingModule { }
+export class ShoppingModule {}

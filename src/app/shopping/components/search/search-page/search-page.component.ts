@@ -5,10 +5,9 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
 @Component({
   selector: 'ish-search-page',
   templateUrl: './search-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchPageComponent {
-
   @Input() searchTerm: string;
   @Input() products: Product[];
   @Input() totalItems: number;
@@ -25,5 +24,4 @@ export class SearchPageComponent {
   changeSortBy(sortBy: string) {
     this.sortByChange.emit(sortBy);
   }
-
 }

@@ -3,7 +3,6 @@ import * as ts from 'typescript';
 import { RuleHelpers } from './ruleHelpers';
 
 class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
-
   // TODO: excludes currently only supported for 'variable X is not re-initialized in beforeEach'
   excludes: string[] = [];
   interestingVariables: ts.Node[];
@@ -39,10 +38,17 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
       }
 
       const missingReinit = this.interestingVariables
-        .filter(node => this.correctlyReinitializedVariables.indexOf(RuleHelpers.extractVariableNameInDeclaration(node)) < 0)
-        .filter(node => this.excludes.indexOf(RuleHelpers.extractVariableNameInDeclaration(node)) < 0 );
+        .filter(
+          node => this.correctlyReinitializedVariables.indexOf(RuleHelpers.extractVariableNameInDeclaration(node)) < 0
+        )
+        .filter(node => this.excludes.indexOf(RuleHelpers.extractVariableNameInDeclaration(node)) < 0);
 
-      missingReinit.forEach(key => this.addFailureAtNode(key, 'variable "' + RuleHelpers.extractVariableNameInDeclaration(key) + '" is not re-initialized in beforeEach'));
+      missingReinit.forEach(key =>
+        this.addFailureAtNode(
+          key,
+          'variable "' + RuleHelpers.extractVariableNameInDeclaration(key) + '" is not re-initialized in beforeEach'
+        )
+      );
     }
   }
 
@@ -56,7 +62,13 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
         const testBedStatement = statement.getChildAt(0);
         const possibleThenStatement = testBedStatement.getChildAt(testBedStatement.getChildCount() - 1);
         if (possibleThenStatement && possibleThenStatement.getText() === 'then') {
-          this.checkVariableStatementsInBeforeEach(statement.getChildAt(2).getChildAt(0).getChildAt(4).getChildAt(1));
+          this.checkVariableStatementsInBeforeEach(
+            statement
+              .getChildAt(2)
+              .getChildAt(0)
+              .getChildAt(4)
+              .getChildAt(1)
+          );
         }
       }
     });
@@ -81,7 +93,6 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
  * Implementation of the no-suspicious-variable-init-in-tests rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new NoSuspiciousVariableInitInTestsWalker(sourceFile, this.getOptions()));
   }

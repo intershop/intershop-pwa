@@ -9,13 +9,12 @@ import { SelectComponent } from '../select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectSecurityQuestionComponent extends SelectComponent implements OnInit {
-
   /*
     constructor
   */
-  constructor(
-    protected translate: TranslateService
-  ) { super(translate); }
+  constructor(protected translate: TranslateService) {
+    super(translate);
+  }
 
   /*
     on Init
@@ -34,7 +33,7 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
   private setDefaultValues() {
     this.controlName = this.controlName || 'securityQuestion';
     this.label = this.label || 'account.security_question.label';
-    this.errorMessages = this.errorMessages || { 'required': 'account.security_question.error.required' };
+    this.errorMessages = this.errorMessages || { required: 'account.security_question.error.required' };
   }
 
   /*
@@ -49,8 +48,8 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
       // Map questions array to an array of type SelectOption
       options = securityQuestions.map(question => {
         return {
-          'label': question,
-          'value': question
+          label: question,
+          value: question,
         };
       });
     }
@@ -64,7 +63,7 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
       'account.security_question.pet_name.text',
       'account.security_question.street_name.text',
       'account.security_question.elementary_school.text',
-      'account.security_question.first_employer.text'
+      'account.security_question.first_employer.text',
     ];
     return questions;
   }

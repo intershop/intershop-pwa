@@ -9,26 +9,25 @@ describe('Login Status Component', () => {
   let element: HTMLElement;
 
   const userData = {
-    'firstName': 'Patricia',
-    'lastName': 'Miller'
+    firstName: 'Patricia',
+    lastName: 'Miller',
   } as Customer;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot(),
-      ],
-      declarations: [
-        LoginStatusComponent
-      ],
-      providers: [
-      ],
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(LoginStatusComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    });
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot()],
+        declarations: [LoginStatusComponent],
+        providers: [],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(LoginStatusComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

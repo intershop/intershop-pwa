@@ -13,20 +13,15 @@ describe('Product Detail Actions Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        TranslateModule.forRoot(),
-      ],
-      providers: [
-        TranslateService,
-        { provide: Location, useFactory: () => instance(mock(Location)) },
-      ],
-      declarations: [ProductDetailActionsComponent]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, TranslateModule.forRoot()],
+        providers: [TranslateService, { provide: Location, useFactory: () => instance(mock(Location)) }],
+        declarations: [ProductDetailActionsComponent],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductDetailActionsComponent);
@@ -43,36 +38,54 @@ describe('Product Detail Actions Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(function() {
+      fixture.detectChanges();
+    }).not.toThrow();
   });
 
   describe('link rendering', () => {
     function dataProvider() {
       return [
-        { className: '.glyphicon-send', linkName: 'email to friend', localeKey: 'product.email_a_friend.link', localeValue: 'Email a friend' },
-        { className: '.glyphicon-print', linkName: 'print page', localeKey: 'product.print_page.link', localeValue: 'Print Page' },
-        { className: '.glyphicon-equalizer', linkName: 'compare', localeKey: 'product.compare.link', localeValue: 'Compare' }
+        {
+          className: '.glyphicon-send',
+          linkName: 'email to friend',
+          localeKey: 'product.email_a_friend.link',
+          localeValue: 'Email a friend',
+        },
+        {
+          className: '.glyphicon-print',
+          linkName: 'print page',
+          localeKey: 'product.print_page.link',
+          localeValue: 'Print Page',
+        },
+        {
+          className: '.glyphicon-equalizer',
+          linkName: 'compare',
+          localeKey: 'product.compare.link',
+          localeValue: 'Compare',
+        },
       ];
     }
-    using(dataProvider, (dataSlice) => {
+    using(dataProvider, dataSlice => {
       it(`should show "${dataSlice.linkName}" link when product inforamtion is available`, () => {
         translate.set(dataSlice.localeKey, dataSlice.localeValue);
         fixture.detectChanges();
-        expect(element.querySelector(dataSlice.className).nextElementSibling.textContent).toContain(dataSlice.localeValue);
+        expect(element.querySelector(dataSlice.className).nextElementSibling.textContent).toContain(
+          dataSlice.localeValue
+        );
       });
     });
 
     it('should not show "compare" link when product inforamtion is available and productMaster = true', () => {
       component.product.type = ProductType.VariationProductMaster;
       fixture.detectChanges();
-      expect(element.querySelector('a[data-testing-id=\'compare-sku\']')).toBeFalsy();
+      expect(element.querySelector("a[data-testing-id='compare-sku']")).toBeFalsy();
     });
   });
 
   it('should emit "product to compare" event when compare link is clicked', () => {
-    component.productToCompare.subscribe((data) =>
-      expect(data).toBeFalsy());
+    component.productToCompare.subscribe(data => expect(data).toBeFalsy());
     fixture.detectChanges();
-    (<HTMLElement>element.querySelector('a[data-testing-id=\'compare-sku\']')).click();
+    (<HTMLElement>element.querySelector("a[data-testing-id='compare-sku']")).click();
   });
 });

@@ -15,9 +15,7 @@ const authorizationHeaderKey = 'Authorization';
  */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     if (TOKEN && !req.headers.has(authorizationHeaderKey)) {
       req = req.clone({ headers: req.headers.set(tokenHeaderKeyName, TOKEN) });
     }

@@ -5,14 +5,11 @@ import * as productsSelectors from '../products/products.selectors';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 import { categoryAdapter } from './categories.reducer';
 
-const getCategoryState = createSelector(
-  getShoppingState, (state: ShoppingState) => state.categories
-);
+const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
 
-export const {
-  selectEntities: getCategoryEntities,
-  selectAll: getCategories,
-} = categoryAdapter.getSelectors(getCategoryState);
+export const { selectEntities: getCategoryEntities, selectAll: getCategories } = categoryAdapter.getSelectors(
+  getCategoryState
+);
 
 export const getSelectedCategoryId = createSelector(
   fromRouter.getRouterState,
@@ -55,13 +52,12 @@ export const getProductsForSelectedCategory = createSelector(
   getSelectedCategory,
   getProductSKUsForSelectedCategory,
   productsSelectors.getProductEntities,
-  (category, skus, products) => category && skus
-    && skus.map(sku => products[sku]) || []
+  (category, skus, products) => (category && skus && skus.map(sku => products[sku])) || []
 );
 
 export const getProductCountForSelectedCategory = createSelector(
   getProductSKUsForSelectedCategory,
-  skus => skus && skus.length || 0
+  skus => (skus && skus.length) || 0
 );
 
 export const getSelectedCategoryProductsNeeded = createSelector(
@@ -75,23 +71,15 @@ export const getSelectedCategoryProductsNeeded = createSelector(
   }
 );
 
-export const getCategoryLoading = createSelector(
-  getCategoryState,
-  categories => categories.loading
-);
+export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);
 
-export const getTlCategoriesIds = createSelector(
-  getCategoryState,
-  categories => categories.topLevelCategoriesIds
-);
+export const getTlCategoriesIds = createSelector(getCategoryState, categories => categories.topLevelCategoriesIds);
 
 export const getTopLevelCategories = createSelector(
   getCategoryEntities,
   getTlCategoriesIds,
   (entities, tlCategoriesIds) => {
-    return tlCategoriesIds
-      .map(id => entities[id])
-      .map(category => populateSubCategories(category, entities));
+    return tlCategoriesIds.map(id => entities[id]).map(category => populateSubCategories(category, entities));
   }
 );
 
@@ -100,9 +88,7 @@ function populateSubCategories(c: Category, entities): Category {
     return c;
   }
 
-  const subCategories = c.subCategoriesIds
-    .map(id => entities[id])
-    .map(cc => populateSubCategories(cc, entities));
+  const subCategories = c.subCategoriesIds.map(id => entities[id]).map(cc => populateSubCategories(cc, entities));
 
   return { ...c, subCategories };
 }

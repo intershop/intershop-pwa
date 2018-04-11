@@ -9,30 +9,28 @@ describe('Select Title Component', () => {
   let fixture: ComponentFixture<SelectTitleComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectTitleComponent],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(SelectTitleComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SelectTitleComponent],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SelectTitleComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-      const form = new FormGroup({
-        countryCode: new FormControl('BG'),
-        title: new FormControl()
-      });
-      component.form = form;
-      component.titles = [
-        'account.salutation.ms.text',
-        'account.salutation.mr.text',
-        'account.salutation.dr.text'
-      ];
-    });
-  }));
+          const form = new FormGroup({
+            countryCode: new FormControl('BG'),
+            title: new FormControl(),
+          });
+          component.form = form;
+          component.titles = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -43,12 +41,15 @@ describe('Select Title Component', () => {
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
     expect(component.controlName).toEqual('title', 'control Name should be <title>');
-    expect(component.label).toEqual('account.default_address.title.label', 'label key should be <account.default_address.title.label>');
+    expect(component.label).toEqual(
+      'account.default_address.title.label',
+      'label key should be <account.default_address.title.label>'
+    );
   });
 
   it('should get and display titles for a certain country', () => {
     const changes: SimpleChanges = {
-      titles: new SimpleChange(null, component.titles, false)
+      titles: new SimpleChange(null, component.titles, false),
     };
     component.ngOnChanges(changes);
 

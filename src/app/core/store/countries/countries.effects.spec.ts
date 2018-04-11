@@ -19,23 +19,18 @@ describe('CountriesEffects', () => {
   let effects: CountriesEffects;
   let countryServiceMock: CountryService;
 
-  const countries = [
-    { countryCode: 'BG', name: 'Bulgaria' },
-    { countryCode: 'DE', name: 'Germany' }
-  ] as Country[];
+  const countries = [{ countryCode: 'BG', name: 'Bulgaria' }, { countryCode: 'DE', name: 'Germany' }] as Country[];
 
   beforeEach(() => {
     countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(of(countries));
 
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers),
-      ],
+      imports: [StoreModule.forRoot(coreReducers)],
       providers: [
         CountriesEffects,
         provideMockActions(() => actions$),
-        { provide: CountryService, useFactory: () => instance(countryServiceMock) }
+        { provide: CountryService, useFactory: () => instance(countryServiceMock) },
       ],
     });
 

@@ -12,11 +12,17 @@ import { SearchService } from '../../services/products/search.service';
 import { LoadProduct } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { SetSortKeys } from '../viewconf';
-import { DoSearch, DoSuggestSearch, SearchActionTypes, SearchProductFail, SearchProductsAvailable, SuggestSearchSuccess } from './search.actions';
+import {
+  DoSearch,
+  DoSuggestSearch,
+  SearchActionTypes,
+  SearchProductFail,
+  SearchProductsAvailable,
+  SuggestSearchSuccess,
+} from './search.actions';
 
 @Injectable()
 export class SearchEffects {
-
   private urlParamSearchTerm = 'SearchTerm';
 
   constructor(
@@ -24,8 +30,8 @@ export class SearchEffects {
     private store: Store<ShoppingState>,
     private searchService: SearchService,
     private suggestService: SuggestService,
-    private scheduler: Scheduler,
-  ) { }
+    private scheduler: Scheduler
+  ) {}
 
   /**
    * effect checks for changed search URL and triggers DoSearch action
@@ -35,7 +41,7 @@ export class SearchEffects {
   triggerSearch$ = this.store.pipe(
     select(getRouterState),
     filter(router => !!router),
-    map((router) => router.state),
+    map(router => router.state),
     filter((state: RouterStateUrl) => state.url.startsWith('/search') && !!state.queryParams[this.urlParamSearchTerm]),
     distinctUntilChanged(),
     map(state => state.queryParams[this.urlParamSearchTerm]),
@@ -59,7 +65,7 @@ export class SearchEffects {
           // fire action for search page
           new SearchProductsAvailable(res.skus),
           // fire action for sorting toolbox
-          new SetSortKeys(res.sortKeys)
+          new SetSortKeys(res.sortKeys),
         ]),
         catchError(error => of(new SearchProductFail(error)))
       );
@@ -73,10 +79,10 @@ export class SearchEffects {
     distinctUntilChanged(),
     map((action: DoSuggestSearch) => action.payload),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
-    switchMap(searchTerm => this.suggestService.search(searchTerm).pipe(
-      map(results => new SuggestSearchSuccess(results)),
-      catchError(() => empty())
-    )) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search
+    switchMap(searchTerm =>
+      this.suggestService
+        .search(searchTerm)
+        .pipe(map(results => new SuggestSearchSuccess(results)), catchError(() => empty()))
+    ) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search
   );
-
 }

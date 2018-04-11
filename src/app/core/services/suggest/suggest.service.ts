@@ -7,12 +7,9 @@ import { ApiService } from '../api.service';
 
 @Injectable()
 export class SuggestService {
-
   private serviceIdentifier = 'suggest';
 
-  constructor(
-    private apiService: ApiService
-  ) { }
+  constructor(private apiService: ApiService) {}
 
   /**
    * Returns the list of items matching the search term
@@ -23,5 +20,4 @@ export class SuggestService {
     const params = new HttpParams().set('SearchTerm', searchTerm);
     return this.apiService.get<SuggestTerm[]>(this.serviceIdentifier, params, null, true, false);
   }
-
 }

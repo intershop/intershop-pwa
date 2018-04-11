@@ -7,7 +7,6 @@ import { FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressFormDEComponent implements OnInit {
-
   @Input() addressForm: FormGroup;
   @Input() titles: string[];
 

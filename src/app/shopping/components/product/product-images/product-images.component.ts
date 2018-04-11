@@ -13,11 +13,9 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 @Component({
   selector: 'ish-product-images',
   templateUrl: './product-images.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductImagesComponent {
-
   /**
    * The product for which the images should be displayed
    */
@@ -43,5 +41,4 @@ export class ProductImagesComponent {
   isActiveSlide(slideIndex: number): boolean {
     return this.activeSlide === slideIndex;
   }
-
 }

@@ -20,8 +20,8 @@ export class CategoriesEffects {
     private store: Store<ShoppingState | CoreState>,
     private categoryService: CategoriesService,
     private scheduler: Scheduler,
-    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number,
-  ) { }
+    @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number
+  ) {}
 
   @Effect()
   selectedCategory$ = this.store.pipe(
@@ -30,7 +30,7 @@ export class CategoriesEffects {
     map(expandCategoryId),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
     map(([ids, entities]) => ids.filter(id => categoryNeedsToBeLoaded(entities, id))),
-    mergeMap((ids) => ids.map(id => new categoriesActions.LoadCategory(id))),
+    mergeMap(ids => ids.map(id => new categoriesActions.LoadCategory(id)))
   );
 
   @Effect()
@@ -38,10 +38,12 @@ export class CategoriesEffects {
     ofType(categoriesActions.CategoriesActionTypes.LoadCategory),
     map((action: categoriesActions.LoadCategory) => action.payload),
     mergeMap(categoryUniqueId => {
-      return this.categoryService.getCategory(categoryUniqueId).pipe(
-        map(category => new categoriesActions.LoadCategorySuccess(category)),
-        catchError(error => of(new categoriesActions.LoadCategoryFail(error)))
-      );
+      return this.categoryService
+        .getCategory(categoryUniqueId)
+        .pipe(
+          map(category => new categoriesActions.LoadCategorySuccess(category)),
+          catchError(error => of(new categoriesActions.LoadCategoryFail(error)))
+        );
     })
   );
 
@@ -51,7 +53,7 @@ export class CategoriesEffects {
     filter(locale => !!locale && !!locale.lang),
     debounceTime(100, this.scheduler), // TODO @Ferdinand: why doesn't it work without this? :'(
     distinctUntilChanged(),
-    map(() => new categoriesActions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth)),
+    map(() => new categoriesActions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
   );
 
   @Effect()
@@ -59,10 +61,12 @@ export class CategoriesEffects {
     ofType(categoriesActions.CategoriesActionTypes.LoadTopLevelCategories),
     map((action: categoriesActions.LoadTopLevelCategories) => action.payload),
     mergeMap(limit => {
-      return this.categoryService.getTopLevelCategories(limit).pipe(
-        map(category => new categoriesActions.LoadTopLevelCategoriesSuccess(category)),
-        catchError(error => of(new categoriesActions.LoadTopLevelCategoriesFail(error)))
-      );
+      return this.categoryService
+        .getTopLevelCategories(limit)
+        .pipe(
+          map(category => new categoriesActions.LoadTopLevelCategoriesSuccess(category)),
+          catchError(error => of(new categoriesActions.LoadTopLevelCategoriesFail(error)))
+        );
     })
   );
 

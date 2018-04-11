@@ -6,11 +6,14 @@ describe('CrosstabService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot({})],
-      providers: [CrosstabService]
+      providers: [CrosstabService],
     });
   });
 
-  it('should be created', inject([CrosstabService], (service: CrosstabService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([CrosstabService], (service: CrosstabService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

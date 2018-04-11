@@ -18,14 +18,8 @@ describe('ErrorEffects', () => {
     store$ = mock(Store);
 
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers),
-      ],
-      providers: [
-        ErrorEffects,
-        Store,
-        { provide: Router, useFactory: () => instance(routerMock) }
-      ],
+      imports: [StoreModule.forRoot(coreReducers)],
+      providers: [ErrorEffects, Store, { provide: Router, useFactory: () => instance(routerMock) }],
     });
 
     store$ = TestBed.get(Store);

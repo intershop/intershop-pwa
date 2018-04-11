@@ -6,7 +6,6 @@ import { ProductData } from './product.interface';
 import { Product, ProductType } from './product.model';
 
 export class ProductMapper {
-
   private static filterPrice(price: Price): Price {
     if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
       return price;

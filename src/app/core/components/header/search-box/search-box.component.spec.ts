@@ -10,19 +10,18 @@ describe('Search Box Component', () => {
   let component: SearchBoxComponent;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        SearchBoxComponent
-      ],
-      imports: [
-        TranslateModule.forRoot(),
-        ReactiveFormsModule
-      ],
-    }).overrideComponent(SearchBoxComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchBoxComponent],
+        imports: [TranslateModule.forRoot(), ReactiveFormsModule],
+      })
+        .overrideComponent(SearchBoxComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchBoxComponent);
@@ -49,7 +48,7 @@ describe('Search Box Component', () => {
 
   it('should fire event when search is called', () => {
     let term: string;
-    component.searchTermChange.subscribe(searchTerm => term = searchTerm);
+    component.searchTermChange.subscribe(searchTerm => (term = searchTerm));
 
     component.search('test');
     expect(term).toEqual('test');
@@ -73,17 +72,17 @@ describe('Search Box Component', () => {
 
   describe('with results', () => {
     beforeEach(() => {
-      triggerSearch('cam', [
-        { term: 'Cameras', type: undefined },
-        { term: 'Camcorders', type: undefined },
-      ]);
+      triggerSearch('cam', [{ term: 'Cameras', type: undefined }, { term: 'Camcorders', type: undefined }]);
     });
 
-    it('should show results when suggestions are available', fakeAsync(() => {
-      const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
+    it(
+      'should show results when suggestions are available',
+      fakeAsync(() => {
+        const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
 
-      expect(ul.querySelectorAll('li').length).toBe(2);
-    }));
+        expect(ul.querySelectorAll('li').length).toBe(2);
+      })
+    );
 
     it('should show popup when search results are found', () => {
       expect(component.isHidden).toBe(false);

@@ -9,7 +9,6 @@ import { SelectComponent } from '../select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectCountryComponent extends SelectComponent implements OnChanges {
-
   @Input() countries: Country[];
   @Input() controlName = 'countryCode';
   @Input() label = 'Country';
@@ -22,10 +21,15 @@ export class SelectCountryComponent extends SelectComponent implements OnChanges
   }
 
   private mapToOptions(countries: Country[]): SelectOption[] {
-    if (!countries) { return; }
-    return countries.map(c => ({
-      label: c.name,
-      value: c.countryCode
-    } as SelectOption));
+    if (!countries) {
+      return;
+    }
+    return countries.map(
+      c =>
+        ({
+          label: c.name,
+          value: c.countryCode,
+        } as SelectOption)
+    );
   }
 }

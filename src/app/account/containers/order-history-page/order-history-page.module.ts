@@ -7,15 +7,7 @@ import { OrderHistoryPageContainerComponent } from './order-history-page.contain
 import { orderHistoryPageRoutes } from './order-history-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(orderHistoryPageRoutes),
-    SharedModule,
-    AccountSharedModule
-  ],
-  declarations: [
-    OrderHistoryPageComponent,
-    OrderHistoryPageContainerComponent,
-  ]
+  imports: [RouterModule.forChild(orderHistoryPageRoutes), SharedModule, AccountSharedModule],
+  declarations: [OrderHistoryPageComponent, OrderHistoryPageContainerComponent],
 })
-
-export class OrderHistoryPageModule { }
+export class OrderHistoryPageModule {}

@@ -7,17 +7,21 @@ describe('Mobile Cart Component', () => {
   let fixture: ComponentFixture<MobileCartComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [MobileCartComponent]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(MobileCartComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [MobileCartComponent],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MobileCartComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-      component.cartItems = [];
-    });
-  }));
+          component.cartItems = [];
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

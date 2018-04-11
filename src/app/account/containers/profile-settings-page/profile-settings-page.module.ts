@@ -7,15 +7,7 @@ import { ProfileSettingsPageContainerComponent } from './profile-settings-page.c
 import { profileSettingsPageRoutes } from './profile-settings-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(profileSettingsPageRoutes),
-    SharedModule,
-    AccountSharedModule
-  ],
-  declarations: [
-    ProfileSettingsPageComponent,
-    ProfileSettingsPageContainerComponent,
-  ]
+  imports: [RouterModule.forChild(profileSettingsPageRoutes), SharedModule, AccountSharedModule],
+  declarations: [ProfileSettingsPageComponent, ProfileSettingsPageContainerComponent],
 })
-
-export class ProfileSettingsPageModule { }
+export class ProfileSettingsPageModule {}

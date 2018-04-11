@@ -7,7 +7,6 @@ import { Locale } from '../../../../models/locale/locale.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchComponent {
-
   @Input() locale: Locale;
   @Input() availableLocales: Locale[];
   @Output() localeChange = new EventEmitter<Locale>();

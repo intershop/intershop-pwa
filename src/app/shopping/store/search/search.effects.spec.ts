@@ -33,20 +33,19 @@ describe('SearchEffects', () => {
 
     searchServiceMock = mock(SearchService);
     suggestServiceMock = mock(SuggestService);
-    when(searchServiceMock.searchForProductSkus(anyString()))
-      .thenCall((searchTerm: string) => {
-        if (!searchTerm) {
-          return _throw('');
-        } else {
-          return of('Product SKU 1');
-        }
-      });
+    when(searchServiceMock.searchForProductSkus(anyString())).thenCall((searchTerm: string) => {
+      if (!searchTerm) {
+        return _throw('');
+      } else {
+        return of('Product SKU 1');
+      }
+    });
 
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer
+          routerReducer,
         }),
       ],
       providers: [
@@ -66,7 +65,6 @@ describe('SearchEffects', () => {
 
   describe('triggerSearch$', () => {
     it('should trigger DoSearch action if search URL', () => {
-
       const routerAction = navigateMockAction({ url: '/search', queryParams: { SearchTerm: 'dummy' } });
       store$.dispatch(routerAction);
 
@@ -111,8 +109,8 @@ describe('SearchEffects', () => {
       actions$ = hot('a', { a: action });
 
       expect(effects.suggestSearch$).toBeObservable(
-        cold('----------------------------------------a',
-          { a: new SuggestSearchSuccess(result) }));
+        cold('----------------------------------------a', { a: new SuggestSearchSuccess(result) })
+      );
 
       verify(suggestServiceMock.search(anyString())).once();
     });
@@ -121,11 +119,15 @@ describe('SearchEffects', () => {
       const result = [{ type: undefined, term: 'Goods' }];
       when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
 
-      actions$ = hot('--a---b----c', { a: new DoSuggestSearch('g'), b: new DoSuggestSearch('goo'), c: new DoSuggestSearch('good') });
+      actions$ = hot('--a---b----c', {
+        a: new DoSuggestSearch('g'),
+        b: new DoSuggestSearch('goo'),
+        c: new DoSuggestSearch('good'),
+      });
 
       expect(effects.suggestSearch$).toBeObservable(
-        cold('---------------------------------------------------a',
-          { a: new SuggestSearchSuccess(result) }));
+        cold('---------------------------------------------------a', { a: new SuggestSearchSuccess(result) })
+      );
 
       verify(suggestServiceMock.search(anyString())).once();
     });
@@ -134,11 +136,16 @@ describe('SearchEffects', () => {
       const result = [{ type: undefined, term: 'Goods' }];
       when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
 
-      actions$ = hot('a------------------------------------------------------b', { a: new DoSuggestSearch('good'), b: new DoSuggestSearch('good') });
+      actions$ = hot('a------------------------------------------------------b', {
+        a: new DoSuggestSearch('good'),
+        b: new DoSuggestSearch('good'),
+      });
 
       expect(effects.suggestSearch$).toBeObservable(
-        cold('----------------------------------------a-------------------------------------------------------',
-          { a: new SuggestSearchSuccess(result) }));
+        cold('----------------------------------------a-------------------------------------------------------', {
+          a: new SuggestSearchSuccess(result),
+        })
+      );
 
       verify(suggestServiceMock.search(anyString())).once();
     });
@@ -149,7 +156,8 @@ describe('SearchEffects', () => {
       actions$ = hot('a', { a: new DoSuggestSearch('good') });
 
       expect(effects.suggestSearch$).toBeObservable(
-        cold('-----------------------------------------------------------------------------------------------'));
+        cold('-----------------------------------------------------------------------------------------------')
+      );
 
       verify(suggestServiceMock.search(anyString())).once();
     });

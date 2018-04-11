@@ -23,12 +23,10 @@ describe('Auth Interceptor Service', () => {
         const res = new HttpResponse<any>({ body: JSON.parse(responseData), headers: headers });
         mockRequest = req;
         return of(res);
-      }
+      },
     };
     TestBed.configureTestingModule({
-      providers: [
-        AuthInterceptor
-      ]
+      providers: [AuthInterceptor],
     });
     authInterceptor = TestBed.get(AuthInterceptor);
   });
@@ -44,7 +42,7 @@ describe('Auth Interceptor Service', () => {
     const TOKEN = 'testtoken';
     _setToken(TOKEN);
 
-    authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe(data => {
       expect(mockRequest.headers.get('authentication-token')).toEqual(TOKEN);
     });
   });
@@ -52,7 +50,7 @@ describe('Auth Interceptor Service', () => {
   it(`should not set token when request's header contains 'Authorization'`, () => {
     const headers = new HttpHeaders().set('Authorization', 'Basic');
     const request = new HttpRequest<any>('GET', ' ', { headers: headers });
-    authInterceptor.intercept(request, mockInterceptor).subscribe((data) => {
+    authInterceptor.intercept(request, mockInterceptor).subscribe(data => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
     });
   });
@@ -60,7 +58,7 @@ describe('Auth Interceptor Service', () => {
   it('should not set token when token is empty', () => {
     _setToken('');
 
-    authInterceptor.intercept(getRequest, mockInterceptor).subscribe((data) => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe(data => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
     });
   });

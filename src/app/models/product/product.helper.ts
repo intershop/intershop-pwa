@@ -5,7 +5,6 @@ import { Product } from './product.model';
 import { ProductType } from './product.types';
 
 export class ProductHelper {
-
   /**
    * Generate a product detail route with optional category context.
    * @param product   The Product to genereate the route for
@@ -50,9 +49,7 @@ export class ProductHelper {
    * @returns         Array of available ImageView ids
    */
   static getImageViewIDsExcludePrimary(product: Product, imageType: string): string[] {
-    return product.images
-      .filter(image => image.typeID === imageType && !image.primaryImage)
-      .map(image => image.viewID);
+    return product.images.filter(image => image.typeID === imageType && !image.primaryImage).map(image => image.viewID);
   }
 
   /**

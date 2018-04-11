@@ -16,10 +16,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 @Component({
   selector: 'ish-product-compare-paging',
   templateUrl: './product-compare-paging.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductComparePagingComponent implements OnChanges {
-
   /**
    * The total items number to be considered for paging
    */
@@ -57,5 +56,4 @@ export class ProductComparePagingComponent implements OnChanges {
   changeToPage(pageNumber: number) {
     this.changePage.emit(pageNumber);
   }
-
 }

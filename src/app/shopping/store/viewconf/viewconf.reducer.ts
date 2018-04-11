@@ -13,12 +13,8 @@ export const initialState: ViewconfState = {
   sortKeys: [],
 };
 
-export function viewconfReducer(
-  state = initialState,
-  action: fromViewconf.ViewconfAction
-): ViewconfState {
+export function viewconfReducer(state = initialState, action: fromViewconf.ViewconfAction): ViewconfState {
   switch (action.type) {
-
     case fromViewconf.ViewconfActionTypes.ChangeViewType: {
       const viewType = action.payload;
       return { ...state, viewType };
@@ -33,7 +29,7 @@ export function viewconfReducer(
       const sortKeys = action.payload;
       return {
         ...state,
-        sortKeys: [...sortKeys]
+        sortKeys: [...sortKeys],
       };
     }
   }

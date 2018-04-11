@@ -9,15 +9,12 @@ import { ErrorState } from './error.reducer';
 import { getErrorState } from './error.selectors';
 
 describe('Error Selectors', () => {
-
   let store$: Store<CoreState>;
   let getErrorState$: Observable<ErrorState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers),
-      ],
+      imports: [StoreModule.forRoot(coreReducers)],
     });
 
     store$ = TestBed.get(Store);

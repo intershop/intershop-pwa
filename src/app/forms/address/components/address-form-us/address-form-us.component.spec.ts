@@ -11,32 +11,32 @@ describe('German Address Component', () => {
   let fixture: ComponentFixture<AddressFormUSComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [AddressFormUSComponent, InputComponent, SelectTitleComponent],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(AddressFormUSComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-    TestBed.configureTestingModule({
-      declarations: [AddressFormUSComponent, InputComponent, SelectTitleComponent],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents().then(() => {
-        fixture = TestBed.createComponent(AddressFormUSComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-
-        const addressForm = new FormGroup({
-          countryCode: new FormControl('BG'),
-          firstName: new FormControl(''),
-          lastName: new FormControl(''),
-          addressLine1: new FormControl(''),
-          addressLine2: new FormControl(''),
-          postalCode: new FormControl(''),
-          city: new FormControl('')
+          const addressForm = new FormGroup({
+            countryCode: new FormControl('BG'),
+            firstName: new FormControl(''),
+            lastName: new FormControl(''),
+            addressLine1: new FormControl(''),
+            addressLine2: new FormControl(''),
+            postalCode: new FormControl(''),
+            city: new FormControl(''),
+          });
+          component.addressForm = addressForm;
         });
-        component.addressForm = addressForm;
-      });
-  }));
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -63,8 +63,10 @@ describe('German Address Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is not rendered');
 
-    component.regions = [{ countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
-    { countryCode: 'US', regionCode: 'FL', name: 'Florida' }];
+    component.regions = [
+      { countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
+      { countryCode: 'US', regionCode: 'FL', name: 'Florida' },
+    ];
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is rendered');
   });

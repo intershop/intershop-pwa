@@ -9,26 +9,21 @@ import { ErrorActionTypes } from '../store/error';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('ApiServiceErrorHandler dispatchCommunicationErrors Method', () => {
-
   let apiServiceErrorHandler: ApiServiceErrorHandler;
 
   let storeMock: Store<CoreState>;
 
-  beforeEach(async(() => {
-
-    storeMock = mock(Store);
-    TestBed.configureTestingModule({
-      declarations: [
-      ],
-      providers: [
-
-        { provide: Store, useFactory: () => instance(storeMock) },
-        ApiServiceErrorHandler
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
-    apiServiceErrorHandler = TestBed.get(ApiServiceErrorHandler);
-  }));
+  beforeEach(
+    async(() => {
+      storeMock = mock(Store);
+      TestBed.configureTestingModule({
+        declarations: [],
+        providers: [{ provide: Store, useFactory: () => instance(storeMock) }, ApiServiceErrorHandler],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+      apiServiceErrorHandler = TestBed.get(ApiServiceErrorHandler);
+    })
+  );
 
   function dataProviderKnown() {
     return [
@@ -48,13 +43,10 @@ describe('ApiServiceErrorHandler dispatchCommunicationErrors Method', () => {
     ];
   }
   function dataProviderUnknown() {
-    return [
-      { error: { status: 301 } },
-      { error: { status: 404 } }
-    ];
+    return [{ error: { status: 301 } }, { error: { status: 404 } }];
   }
 
-  using(dataProviderUnknown, (dataSlice) => {
+  using(dataProviderUnknown, dataSlice => {
     it(`should delegate Error when Http Code ${dataSlice.error.status} is handled`, () => {
       const result$ = apiServiceErrorHandler.dispatchCommunicationErrors(dataSlice.error);
 
@@ -63,8 +55,10 @@ describe('ApiServiceErrorHandler dispatchCommunicationErrors Method', () => {
     });
   });
 
-  using(dataProviderKnown, (dataSlice) => {
-    it(`should create  state \' ${dataSlice.expectedType} \')  when Http Code ${dataSlice.error.status} is handled`, () => {
+  using(dataProviderKnown, dataSlice => {
+    it(`should create  state \' ${dataSlice.expectedType} \')  when Http Code ${
+      dataSlice.error.status
+    } is handled`, () => {
       apiServiceErrorHandler.dispatchCommunicationErrors(dataSlice.error);
 
       verify(storeMock.dispatch(anything())).called();

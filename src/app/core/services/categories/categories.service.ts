@@ -10,12 +10,9 @@ import { ApiService } from '../api.service';
 
 @Injectable()
 export class CategoriesService {
-
   private serviceIdentifier = 'categories';
 
-  constructor(
-    private apiService: ApiService
-  ) { }
+  constructor(private apiService: ApiService) {}
 
   /**
    * REST API - Get top level categories
@@ -25,15 +22,15 @@ export class CategoriesService {
   getTopLevelCategories(limit: number): Observable<Category[]> {
     let params = new HttpParams().set('imageView', 'NO-IMAGE');
     if (limit > 0) {
-      params = params
-        .set('view', 'tree')
-        .set('limit', limit.toString());
+      params = params.set('view', 'tree').set('limit', limit.toString());
     }
-    return this.apiService.get<CategoryData[]>(this.serviceIdentifier, params, null, true).pipe(
-      map(categoriesData => categoriesData.map(
-        categoryData => CategoryMapper.fromData(categoryData, categoryData.id)
-      ))
-    );
+    return this.apiService
+      .get<CategoryData[]>(this.serviceIdentifier, params, null, true)
+      .pipe(
+        map(categoriesData =>
+          categoriesData.map(categoryData => CategoryMapper.fromData(categoryData, categoryData.id))
+        )
+      );
   }
 
   /**
@@ -46,8 +43,8 @@ export class CategoriesService {
       return ErrorObservable.create('getCategory() called without categoryUniqueId');
     }
     const categoryResourceIdentifier = categoryUniqueId.replace(/\./g, '/');
-    return this.apiService.get<CategoryData>(this.serviceIdentifier + '/' + categoryResourceIdentifier, null, null, false).pipe(
-      map(categoryData => CategoryMapper.fromData(categoryData, categoryUniqueId))
-    );
+    return this.apiService
+      .get<CategoryData>(this.serviceIdentifier + '/' + categoryResourceIdentifier, null, null, false)
+      .pipe(map(categoryData => CategoryMapper.fromData(categoryData, categoryUniqueId)));
   }
 }

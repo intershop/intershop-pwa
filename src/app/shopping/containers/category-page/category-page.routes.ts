@@ -4,10 +4,10 @@ import { CategoryPageContainerComponent } from './category-page.container';
 export const categoryPageRoutes: Routes = [
   {
     path: ':categoryUniqueId',
-    component: CategoryPageContainerComponent
+    component: CategoryPageContainerComponent,
   },
   {
     path: ':categoryUniqueId/product',
-    loadChildren: 'app/shopping/containers/product-page/product-page.module#ProductPageModule'
-  }
+    loadChildren: 'app/shopping/containers/product-page/product-page.module#ProductPageModule',
+  },
 ];

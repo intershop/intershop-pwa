@@ -15,20 +15,16 @@ describe('FormControlFeedbackComponent', () => {
   beforeEach(() => {
     translateService = mock(TranslateService);
 
-    when(translateService.get('requiredkey'))
-      .thenReturn(of('requiredmessage'));
+    when(translateService.get('requiredkey')).thenReturn(of('requiredmessage'));
 
-    when(translateService.get('lengthkey'))
-      .thenReturn(of('lengthmessage'));
+    when(translateService.get('lengthkey')).thenReturn(of('lengthmessage'));
   });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BrowserModule],
       declarations: [FormControlFeedbackComponent],
-      providers: [
-        { provide: TranslateService, useFactory: () => instance(translateService) }
-      ]
+      providers: [{ provide: TranslateService, useFactory: () => instance(translateService) }],
     }).compileComponents();
   });
 
@@ -37,13 +33,10 @@ describe('FormControlFeedbackComponent', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.control = new FormControl('', [
-      Validators.required,
-      Validators.minLength(3)
-    ]);
+    component.control = new FormControl('', [Validators.required, Validators.minLength(3)]);
     component.messages = {
       required: 'requiredkey',
-      minlength: 'lengthkey'
+      minlength: 'lengthkey',
     };
   });
 

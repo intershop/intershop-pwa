@@ -12,20 +12,22 @@ describe('Categories Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
-    when(apiServiceMock.get('categories', anything(), anything(), anything())).thenReturn(of([{ id: 'blubb' }] as CategoryData[]));
-    when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(of({ id: 'blubb' } as CategoryData));
-    when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(of({ id: 'blubb' } as CategoryData));
+    when(apiServiceMock.get('categories', anything(), anything(), anything())).thenReturn(
+      of([{ id: 'blubb' }] as CategoryData[])
+    );
+    when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(
+      of({ id: 'blubb' } as CategoryData)
+    );
+    when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(
+      of({ id: 'blubb' } as CategoryData)
+    );
     TestBed.configureTestingModule({
-      providers: [
-        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
-        CategoriesService
-      ]
+      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, CategoriesService],
     });
     categoriesService = TestBed.get(CategoriesService);
   });
 
   describe('getTopLevelCategories()', () => {
-
     it('should call ApiService "categories" when called', () => {
       categoriesService.getTopLevelCategories(0);
       verify(apiServiceMock.get('categories', anything(), anything(), anything())).once();
@@ -44,7 +46,6 @@ describe('Categories Service', () => {
   });
 
   describe('getCategory()', () => {
-
     it('should call underlying ApiService categories/id when asked to resolve a category by id', () => {
       categoriesService.getCategory('dummyid');
 

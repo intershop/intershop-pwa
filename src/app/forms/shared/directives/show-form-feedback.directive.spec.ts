@@ -23,10 +23,7 @@ describe('ShowFormFeedbackDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BrowserModule],
-      declarations: [
-        TestComponent,
-        ShowFormFeedbackDirective
-      ]
+      declarations: [TestComponent, ShowFormFeedbackDirective],
     });
   });
 

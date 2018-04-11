@@ -10,23 +10,16 @@ import { LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countr
 import { getAllCountries, getCountriesLoading } from './countries.selectors';
 
 describe('Countries Selectors', () => {
-
   let store$: Store<CoreState>;
 
   let countries$: Observable<Country[]>;
   let countriesLoading$: Observable<boolean>;
 
-  const countries = [
-    { countryCode: 'BG', name: 'Bulgaria' },
-    { countryCode: 'DE', name: 'Germany' }
-  ] as Country[];
+  const countries = [{ countryCode: 'BG', name: 'Bulgaria' }, { countryCode: 'DE', name: 'Germany' }] as Country[];
 
   beforeEach(() => {
-
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers)
-      ]
+      imports: [StoreModule.forRoot(coreReducers)],
     });
 
     store$ = TestBed.get(Store);
@@ -36,7 +29,6 @@ describe('Countries Selectors', () => {
   });
 
   describe('with empty state', () => {
-
     it('should not select any countries when used', () => {
       expect(countries$).toBeObservable(c([]));
       expect(countriesLoading$).toBeObservable(c(false));
@@ -44,7 +36,6 @@ describe('Countries Selectors', () => {
   });
 
   describe('loading countries', () => {
-
     beforeEach(() => {
       store$.dispatch(new LoadCountries());
     });
@@ -54,7 +45,6 @@ describe('Countries Selectors', () => {
     });
 
     describe('and reporting success', () => {
-
       beforeEach(() => {
         store$.dispatch(new LoadCountriesSuccess(countries));
       });
@@ -66,7 +56,6 @@ describe('Countries Selectors', () => {
     });
 
     describe('and reporting failure', () => {
-
       beforeEach(() => {
         store$.dispatch(new LoadCountriesFail({ message: 'error' } as HttpErrorResponse));
       });

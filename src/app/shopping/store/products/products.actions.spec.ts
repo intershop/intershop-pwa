@@ -10,7 +10,7 @@ describe('Products Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.ProductsActionTypes.LoadProduct,
-        payload
+        payload,
       });
     });
 
@@ -20,7 +20,7 @@ describe('Products Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.ProductsActionTypes.LoadProductFail,
-        payload
+        payload,
       });
     });
 
@@ -30,7 +30,7 @@ describe('Products Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.ProductsActionTypes.LoadProductSuccess,
-        payload
+        payload,
       });
     });
 
@@ -40,7 +40,7 @@ describe('Products Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.ProductsActionTypes.LoadProductsForCategory,
-        payload
+        payload,
       });
     });
   });

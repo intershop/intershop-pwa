@@ -15,7 +15,7 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   user: userReducer,
   locale: localeReducer,
   countries: countriesReducer,
-  error: errorReducer
+  error: errorReducer,
 };
 
 // tslint:disable-next-line:no-any

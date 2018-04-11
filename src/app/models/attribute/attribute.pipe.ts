@@ -8,20 +8,17 @@ import { Attribute } from './attribute.model';
 
 @Pipe({ name: 'attributeToString' })
 export class AttributeToStringPipe implements PipeTransform {
-
   locale: string;
 
   constructor(
     store: Store<CoreState>,
     private currencyPipe: CurrencyPipe,
     private datePipe: DatePipe,
-    private decimalPipe: DecimalPipe,
+    private decimalPipe: DecimalPipe
   ) {
-    store.pipe(
-      select(getCurrentLocale),
-      filter(x => !!x),
-      map(currentLocale => currentLocale.lang)
-    ).subscribe(l => this.locale = l);
+    store
+      .pipe(select(getCurrentLocale), filter(x => !!x), map(currentLocale => currentLocale.lang))
+      .subscribe(l => (this.locale = l));
   }
 
   private toDate(val): string {

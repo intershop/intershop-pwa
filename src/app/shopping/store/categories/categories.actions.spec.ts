@@ -10,7 +10,7 @@ describe('Categories Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.CategoriesActionTypes.LoadTopLevelCategories,
-        payload
+        payload,
       });
     });
 
@@ -20,20 +20,17 @@ describe('Categories Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.CategoriesActionTypes.LoadTopLevelCategoriesFail,
-        payload
+        payload,
       });
     });
 
     it('should create new action for LoadTopLevelCategoriesSuccess', () => {
-      const payload = [
-        { uniqueId: '123' } as Category,
-        { uniqueId: '456' } as Category
-      ];
+      const payload = [{ uniqueId: '123' } as Category, { uniqueId: '456' } as Category];
       const action = new fromActions.LoadTopLevelCategoriesSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.CategoriesActionTypes.LoadTopLevelCategoriesSuccess,
-        payload
+        payload,
       });
     });
   });
@@ -45,7 +42,7 @@ describe('Categories Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.CategoriesActionTypes.LoadCategory,
-        payload
+        payload,
       });
     });
 
@@ -55,7 +52,7 @@ describe('Categories Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.CategoriesActionTypes.LoadCategoryFail,
-        payload
+        payload,
       });
     });
 
@@ -65,22 +62,19 @@ describe('Categories Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.CategoriesActionTypes.LoadCategorySuccess,
-        payload
+        payload,
       });
     });
   });
 
   it('should create new action for SaveSubCategories', () => {
-    const payload = [
-      { uniqueId: '123' },
-      { uniqueId: '456' }
-    ] as Category[];
+    const payload = [{ uniqueId: '123' }, { uniqueId: '456' }] as Category[];
 
     const action = new fromActions.SaveSubCategories(payload);
 
     expect({ ...action }).toEqual({
       type: fromActions.CategoriesActionTypes.SaveSubCategories,
-      payload
+      payload,
     });
   });
 
@@ -88,15 +82,12 @@ describe('Categories Actions', () => {
     const payload = ['123', '456'];
     const categoryUniqueId = '789';
 
-    const action = new fromActions.SetProductSkusForCategory(
-      categoryUniqueId, payload
-    );
+    const action = new fromActions.SetProductSkusForCategory(categoryUniqueId, payload);
 
     expect({ ...action }).toEqual({
       type: fromActions.CategoriesActionTypes.SetProductSkusForCategory,
       payload,
-      categoryUniqueId
+      categoryUniqueId,
     });
   });
-
 });

@@ -11,7 +11,6 @@ import { SearchState } from './search.reducer';
 import { getSearchLoading, getSearchProducts, getSearchTerm } from './search.selectors';
 
 describe('Search Selectors', () => {
-
   let store$: Store<ShoppingState>;
   let products$: Observable<Product[]>;
   let searchProducts$: Observable<Product[]>;
@@ -20,22 +19,21 @@ describe('Search Selectors', () => {
     searchTerm: 'a',
     skus: ['9780321934161', '0818279012576'],
     searchLoading: false,
-    suggestSearchResults: []
+    suggestSearchResults: [],
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers)
-        })
-      ]
+          shopping: combineReducers(shoppingReducers),
+        }),
+      ],
     });
 
     store$ = TestBed.get(Store);
     products$ = store$.pipe(select(getProducts));
     searchProducts$ = store$.pipe(select(getSearchProducts));
-
   });
 
   describe('getSearchLoading', () => {
@@ -58,9 +56,7 @@ describe('Search Selectors', () => {
     it('should return products if found', () => {
       let products: Product[];
 
-      products$.subscribe(value =>
-        products = value
-      );
+      products$.subscribe(value => (products = value));
 
       store$.dispatch(new LoadProductSuccess({ sku: '9780321934161' } as Product));
       store$.dispatch(new LoadProductSuccess({ sku: '0818279012576' } as Product));
@@ -69,5 +65,4 @@ describe('Search Selectors', () => {
       expect(searchProducts$).toBeObservable(cold('a', { a: products }));
     });
   });
-
 });

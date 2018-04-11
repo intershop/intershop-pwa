@@ -5,11 +5,14 @@ import { CountryService } from './country.service';
 describe('CountryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CountryService]
+      providers: [CountryService],
     });
   });
 
-  it('should be created', inject([CountryService], (service: CountryService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([CountryService], (service: CountryService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

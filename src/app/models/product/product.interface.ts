@@ -5,7 +5,6 @@ import { Price } from '../price/price.model';
 import { Warranty } from '../warranty/warranty.model';
 
 export interface ProductData {
-
   sku: string;
   productName: string;
   shortDescription: string;

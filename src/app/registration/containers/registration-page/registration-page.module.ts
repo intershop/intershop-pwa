@@ -7,16 +7,8 @@ import { RegistrationPageContainerComponent } from './registration-page.containe
 import { registrationPageRoutes } from './registration-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(registrationPageRoutes),
-    SharedModule,
-    RegistrationSharedModule
-  ],
-  declarations: [
-    RegistrationPageContainerComponent
-  ],
-  providers: [
-  ]
+  imports: [RouterModule.forChild(registrationPageRoutes), SharedModule, RegistrationSharedModule],
+  declarations: [RegistrationPageContainerComponent],
+  providers: [],
 })
-
-export class RegistrationPageModule { }
+export class RegistrationPageModule {}

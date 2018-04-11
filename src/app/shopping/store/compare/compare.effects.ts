@@ -8,10 +8,7 @@ import { getCompareProductsSKUs } from './compare.selectors';
 
 @Injectable()
 export class CompareEffects {
-  constructor(
-    private actions$: Actions,
-    private store: Store<ShoppingState>,
-  ) { }
+  constructor(private actions$: Actions, private store: Store<ShoppingState>) {}
 
   @Effect()
   toggleCompare$ = this.actions$.pipe(
@@ -20,9 +17,7 @@ export class CompareEffects {
     withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
     map(({ sku, isInList }) => {
-      return isInList ?
-        new compareActions.RemoveFromCompare(sku) :
-        new compareActions.AddToCompare(sku);
+      return isInList ? new compareActions.RemoveFromCompare(sku) : new compareActions.AddToCompare(sku);
     })
   );
 }

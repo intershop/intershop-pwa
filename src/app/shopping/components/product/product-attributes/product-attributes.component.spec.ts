@@ -10,27 +10,17 @@ describe('Product Attributes Component', () => {
   let fixture: ComponentFixture<ProductAttributesComponent>;
   let element: HTMLElement;
   let product: Product;
-  beforeEach(async(() => {
-    product = { sku: 'sku' } as Product;
-    product.attributes = [
-      { name: 'A', type: 'String', value: 'A' },
-      { name: 'B', type: 'String', value: 'B' },
-    ];
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({})
-      ],
-      declarations: [
-        ProductAttributesComponent,
-        AttributeToStringPipe,
-      ],
-      providers: [
-        CurrencyPipe,
-        DatePipe,
-        DecimalPipe,
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      product = { sku: 'sku' } as Product;
+      product.attributes = [{ name: 'A', type: 'String', value: 'A' }, { name: 'B', type: 'String', value: 'B' }];
+      TestBed.configureTestingModule({
+        imports: [StoreModule.forRoot({})],
+        declarations: [ProductAttributesComponent, AttributeToStringPipe],
+        providers: [CurrencyPipe, DatePipe, DecimalPipe],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAttributesComponent);

@@ -11,8 +11,8 @@ export class LocaleEffects {
   constructor(
     private actions$: Actions,
     private translateService: TranslateService,
-    @Inject(AVAILABLE_LOCALES) private availableLocales: Locale[],
-  ) { }
+    @Inject(AVAILABLE_LOCALES) private availableLocales: Locale[]
+  ) {}
 
   @Effect({ dispatch: false })
   setLocale$ = this.actions$.pipe(
@@ -30,7 +30,9 @@ export class LocaleEffects {
   @Effect()
   setFirstAvailableLocale$ = this.actions$.pipe(
     ofType(fromActions.LocaleActionTypes.SetAvailableLocales),
-    map((action: fromActions.SetAvailableLocales) =>
-      new fromActions.SelectLocale((action.payload && action.payload[0]) ? action.payload[0] : null))
+    map(
+      (action: fromActions.SetAvailableLocales) =>
+        new fromActions.SelectLocale(action.payload && action.payload[0] ? action.payload[0] : null)
+    )
   );
 }

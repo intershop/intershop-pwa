@@ -5,7 +5,6 @@ import { CategoryMapper } from './category.mapper';
 
 describe('Category Helper', () => {
   describe('equals', () => {
-
     function dataProvider() {
       const emptyCategory = CategoryMapper.fromData({} as CategoryData);
       const category1 = CategoryMapper.fromData({ id: '1' } as CategoryData);
@@ -28,8 +27,10 @@ describe('Category Helper', () => {
       ];
     }
 
-    using(dataProvider, (slice) => {
-      it(`should return ${slice.result} when comparing '${JSON.stringify(slice.cat1)}' and '${JSON.stringify(slice.cat2)}'`, () => {
+    using(dataProvider, slice => {
+      it(`should return ${slice.result} when comparing '${JSON.stringify(slice.cat1)}' and '${JSON.stringify(
+        slice.cat2
+      )}'`, () => {
         expect(CategoryHelper.equals(slice.cat1, slice.cat2)).toBe(slice.result);
       });
     });

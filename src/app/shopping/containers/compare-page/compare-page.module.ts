@@ -8,16 +8,7 @@ import { ComparePageContainerComponent } from './compare-page.container';
 import { comparePageRoutes } from './compare-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(comparePageRoutes),
-    SharedModule,
-    ShoppingSharedModule
-  ],
-  declarations: [
-    ComparePageContainerComponent,
-    ProductCompareListComponent,
-    ProductComparePagingComponent
-  ]
+  imports: [RouterModule.forChild(comparePageRoutes), SharedModule, ShoppingSharedModule],
+  declarations: [ComparePageContainerComponent, ProductCompareListComponent, ProductComparePagingComponent],
 })
-
-export class ComparePageModule { }
+export class ComparePageModule {}

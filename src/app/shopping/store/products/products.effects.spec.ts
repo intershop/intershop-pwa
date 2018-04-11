@@ -31,21 +31,21 @@ describe('ProductsEffects', () => {
 
   beforeEach(() => {
     productsServiceMock = mock(ProductsService);
-    when(productsServiceMock.getProduct(anyString()))
-      .thenCall((sku: string) => {
-        if (sku === 'invalid') {
-          return _throw({ message: 'invalid' } as HttpErrorResponse);
-        } else {
-          return of({ sku } as Product);
-        }
-      });
+    when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
+      if (sku === 'invalid') {
+        return _throw({ message: 'invalid' } as HttpErrorResponse);
+      } else {
+        return of({ sku } as Product);
+      }
+    });
 
-    when(productsServiceMock.getProductsSkusForCategory('123', 'name-asc'))
-      .thenCall(() => of({
+    when(productsServiceMock.getProductsSkusForCategory('123', 'name-asc')).thenCall(() =>
+      of({
         skus: ['P222', 'P333'],
         categoryUniqueId: '123',
-        sortKeys: ['name-asc', 'name-desc']
-      }));
+        sortKeys: ['name-asc', 'name-desc'],
+      })
+    );
 
     TestBed.configureTestingModule({
       imports: [
@@ -103,12 +103,11 @@ describe('ProductsEffects', () => {
   });
 
   describe('loadProductsForCategory$', () => {
-
     beforeEach(() => {
       store$.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
 
       actions$ = hot('a', {
-        a: new fromActions.LoadProductsForCategory('123')
+        a: new fromActions.LoadProductsForCategory('123'),
       });
     });
 
@@ -125,10 +124,8 @@ describe('ProductsEffects', () => {
         c: new fromActions.LoadProduct('P222'),
         d: new fromActions.LoadProduct('P333'),
       };
-      expect(effects.loadProductsForCategory$)
-        .toBeObservable(cold('(abcd)', expectedValues));
+      expect(effects.loadProductsForCategory$).toBeObservable(cold('(abcd)', expectedValues));
     });
-
   });
 
   describe('selectedProduct$', () => {
@@ -139,12 +136,12 @@ describe('ProductsEffects', () => {
       // select product
       const routerAction = navigateMockAction({
         url: `/category/${categoryUniqueId}/product/${sku}`,
-        params: { categoryUniqueId, sku }
+        params: { categoryUniqueId, sku },
       });
       store$.dispatch(routerAction);
 
       const expectedValues = {
-        a: new fromActions.LoadProduct(sku)
+        a: new fromActions.LoadProduct(sku),
       };
 
       expect(effects.selectedProduct$).toBeObservable(cold('a', expectedValues));
@@ -159,13 +156,13 @@ describe('ProductsEffects', () => {
       // select product
       const routerAction = navigateMockAction({
         url: `/category/${categoryUniqueId}/product/${sku}`,
-        params: { categoryUniqueId, sku }
+        params: { categoryUniqueId, sku },
       });
       store$.dispatch(routerAction);
       store$.dispatch(new SelectLocale(DE_DE));
 
       const expectedValues = {
-        a: new fromActions.LoadProduct(sku)
+        a: new fromActions.LoadProduct(sku),
       };
 
       expect(effects.languageChange$).toBeObservable(cold('a', expectedValues));

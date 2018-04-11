@@ -17,23 +17,37 @@ describe('Category Page Container', () => {
   let element: HTMLElement;
   let store$: Store<CoreState>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-          routerReducer,
-        })
-      ],
-      declarations: [
-        CategoryPageContainerComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['category', 'categoryPath'] }),
-        MockComponent({ selector: 'ish-category-page', template: 'Category Page Component', inputs: ['category', 'categoryPath'] }),
-        MockComponent({ selector: 'ish-family-page', template: 'Family Page Component', inputs: ['category', 'categoryPath', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'] }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' })
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          StoreModule.forRoot({
+            shopping: combineReducers(shoppingReducers),
+            routerReducer,
+          }),
+        ],
+        declarations: [
+          CategoryPageContainerComponent,
+          MockComponent({
+            selector: 'ish-breadcrumb',
+            template: 'Breadcrumb Component',
+            inputs: ['category', 'categoryPath'],
+          }),
+          MockComponent({
+            selector: 'ish-category-page',
+            template: 'Category Page Component',
+            inputs: ['category', 'categoryPath'],
+          }),
+          MockComponent({
+            selector: 'ish-family-page',
+            template: 'Family Page Component',
+            inputs: ['category', 'categoryPath', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
+          }),
+          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryPageContainerComponent);
@@ -69,7 +83,7 @@ describe('Category Page Container', () => {
     store$.dispatch(new LoadCategorySuccess(category));
     const routerAction = navigateMockAction({
       url: `/category/${category.uniqueId}`,
-      params: { categoryUniqueId: category.uniqueId }
+      params: { categoryUniqueId: category.uniqueId },
     });
     store$.dispatch(routerAction);
 
@@ -85,7 +99,7 @@ describe('Category Page Container', () => {
     store$.dispatch(new LoadCategorySuccess(category));
     const routerAction = navigateMockAction({
       url: `/category/${category.uniqueId}`,
-      params: { categoryUniqueId: category.uniqueId }
+      params: { categoryUniqueId: category.uniqueId },
     });
     store$.dispatch(routerAction);
 

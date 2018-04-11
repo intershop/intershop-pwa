@@ -7,13 +7,10 @@ export interface ErrorState {
 
 export const initialState: ErrorState = {
   current: null,
-  type: null
+  type: null,
 };
 
-export function errorReducer(
-  state = initialState,
-  action: HttpError
-): ErrorState {
+export function errorReducer(state = initialState, action: HttpError): ErrorState {
   const httpAction = action as HttpError;
   switch (httpAction.errorGroup) {
     case ErrorGroupTypes.Http5XXError: {

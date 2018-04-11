@@ -8,16 +8,13 @@ import { ShoppingState } from '../../store/shopping.state';
 @Component({
   selector: 'ish-compare-page-container',
   templateUrl: './compare-page.container.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComparePageContainerComponent implements OnInit {
-
   compareProducts$: Observable<Product[]>;
   compareProductsCount$: Observable<Number>;
 
-  constructor(
-    private store: Store<ShoppingState>
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     this.compareProducts$ = this.store.pipe(select(getCompareProducts));

@@ -8,16 +8,15 @@ import { FormElement } from '../form-element';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class InputComponent extends FormElement implements OnInit {
-  @Input() type = 'text';        // values: 'text' (default), 'password', 'email'
+  @Input() type = 'text'; // values: 'text' (default), 'password', 'email'
   @Input() maxlength = '60';
-  @Input() autocomplete?: string;  /* default = null  for input type 'text' and 'email' (autocomplete not set)
+  @Input()
+  autocomplete?: string; /* default = null  for input type 'text' and 'email' (autocomplete not set)
                                              = 'off' for input type 'password' */
   @Input() min?: number;
   @Input() max?: number;
 
-  constructor(
-    protected translate: TranslateService
-  ) {
+  constructor(protected translate: TranslateService) {
     super(translate);
   }
 
@@ -30,7 +29,9 @@ export class InputComponent extends FormElement implements OnInit {
     // check type is valid
     const types = 'text|password|email|number';
     if (!types.includes(this.type)) {
-      throw new Error('input parameter <type> is not valid for InputComponent, only text, email, password and number are possible types');
+      throw new Error(
+        'input parameter <type> is not valid for InputComponent, only text, email, password and number are possible types'
+      );
     }
   }
 
@@ -38,6 +39,8 @@ export class InputComponent extends FormElement implements OnInit {
     set default values for empty input parameters
   */
   protected setDefaultValues() {
-    if (!this.autocomplete) { this.autocomplete = (this.type === 'password' ? 'off' : null); }
+    if (!this.autocomplete) {
+      this.autocomplete = this.type === 'password' ? 'off' : null;
+    }
   }
 }

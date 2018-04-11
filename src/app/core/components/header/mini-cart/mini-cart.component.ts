@@ -8,9 +8,7 @@ import { Basket } from '../../../../models/basket/basket.model';
   templateUrl: './mini-cart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class MiniCartComponent implements OnChanges {
-
   @Input() basket: Basket;
 
   isCollapsed = true;

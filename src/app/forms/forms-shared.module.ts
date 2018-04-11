@@ -12,21 +12,14 @@ import { selectComponents } from './shared/components/form-controls/select/index
 import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedback.directive';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    RecaptchaModule,
-    TranslateModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
+  imports: [SharedModule, RecaptchaModule, TranslateModule, CommonModule, FormsModule, ReactiveFormsModule],
   declarations: [
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
     InputComponent,
     ...selectComponents,
     InputBirthdayComponent,
-    CaptchaComponent
+    CaptchaComponent,
   ],
   exports: [
     CommonModule,
@@ -39,7 +32,6 @@ import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedbac
     ...selectComponents,
     InputBirthdayComponent,
     CaptchaComponent,
-  ]
+  ],
 })
-
-export class FormsSharedModule { }
+export class FormsSharedModule {}

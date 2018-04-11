@@ -22,13 +22,11 @@ describe('LocaleEffects', () => {
     translateServiceMock = mock(TranslateService);
 
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers),
-      ],
+      imports: [StoreModule.forRoot(coreReducers)],
       providers: [
         LocaleEffects,
         provideMockActions(() => actions$),
-        { provide: TranslateService, useFactory: () => instance(translateServiceMock) }
+        { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
       ],
     });
 

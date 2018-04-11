@@ -5,11 +5,9 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 @Component({
   selector: 'ish-product-tile',
   templateUrl: './product-tile.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductTileComponent {
-
   @Input() product: Product;
   @Input() category?: Category;
   @Input() isInCompareList: boolean;
@@ -25,5 +23,4 @@ export class ProductTileComponent {
   addToCart() {
     this.productToCart.emit();
   }
-
 }

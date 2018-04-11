@@ -14,7 +14,6 @@ import { LoadCategory, LoadCategoryFail, LoadCategorySuccess, SetProductSkusForC
 import * as s from './categories.selectors';
 
 describe('Categories Selectors', () => {
-
   let store$: Store<ShoppingState>;
 
   let categories$: Observable<Category[]>;
@@ -38,9 +37,9 @@ describe('Categories Selectors', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer
-        })
-      ]
+          routerReducer,
+        }),
+      ],
     });
 
     store$ = TestBed.get(Store);
@@ -56,7 +55,6 @@ describe('Categories Selectors', () => {
   });
 
   describe('with empty state', () => {
-
     it('should not select any categories when used', () => {
       expect(categories$).toBeObservable(c([]));
       expect(categoryEntities$).toBeObservable(c({}));
@@ -74,7 +72,6 @@ describe('Categories Selectors', () => {
   });
 
   describe('loading a category', () => {
-
     beforeEach(() => {
       store$.dispatch(new LoadCategory(''));
     });
@@ -84,7 +81,6 @@ describe('Categories Selectors', () => {
     });
 
     describe('and reporting success', () => {
-
       beforeEach(() => {
         store$.dispatch(new LoadCategorySuccess(cat));
       });
@@ -96,7 +92,6 @@ describe('Categories Selectors', () => {
     });
 
     describe('and reporting failure', () => {
-
       beforeEach(() => {
         store$.dispatch(new LoadCategoryFail({ message: 'error' } as HttpErrorResponse));
       });
@@ -109,14 +104,12 @@ describe('Categories Selectors', () => {
   });
 
   describe('state with a category', () => {
-
     beforeEach(() => {
       store$.dispatch(new LoadCategorySuccess(cat));
       store$.dispatch(new LoadProductSuccess(prod));
     });
 
     describe('but no current router state', () => {
-
       it('should return the category information when used', () => {
         expect(categories$).toBeObservable(c([cat]));
         expect(categoryEntities$).toBeObservable(c({ [cat.uniqueId]: cat }));
@@ -133,7 +126,6 @@ describe('Categories Selectors', () => {
     });
 
     describe('with category route', () => {
-
       beforeEach(() => {
         store$.dispatch(new SetProductSkusForCategory(cat.uniqueId, [prod.sku]));
         store$.dispatch(navigateMockAction({ url: '/any', params: { categoryUniqueId: cat.uniqueId } }));

@@ -10,18 +10,15 @@ describe('Product Add To Cart Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot(),
-      ],
-      providers: [
-        TranslateService
-      ],
-      declarations: [ProductAddToCartComponent]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot()],
+        providers: [TranslateService],
+        declarations: [ProductAddToCartComponent],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToCartComponent);
@@ -41,12 +38,16 @@ describe('Product Add To Cart Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() { fixture.detectChanges(); }).not.toThrow();
+    expect(function() {
+      fixture.detectChanges();
+    }).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set', () => {
     component.product = null;
-    expect(function() { fixture.detectChanges(); }).toThrow();
+    expect(function() {
+      fixture.detectChanges();
+    }).toThrow();
   });
 
   it('should not render when inStock = false', () => {
@@ -73,5 +74,4 @@ describe('Product Add To Cart Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
   });
-
 });

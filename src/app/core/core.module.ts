@@ -31,8 +31,8 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
       loader: {
         provide: TranslateLoader,
         useFactory: translateFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     CustomFormsModule,
     RecaptchaModule.forRoot(),
@@ -42,11 +42,9 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
     HeaderModule,
-    FooterModule
+    FooterModule,
   ],
-  declarations: [
-    StyleWrapperDirective
-  ],
+  declarations: [StyleWrapperDirective],
   providers: [
     ApiService,
     ApiServiceErrorHandler,
@@ -59,16 +57,13 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     DatePipe,
     DecimalPipe,
   ],
-  exports: [
-    StyleWrapperDirective,
-    HeaderModule,
-    FooterModule
-  ]
+  exports: [StyleWrapperDirective, HeaderModule, FooterModule],
 })
 export class CoreModule {
-
   constructor(
-    @Optional() @SkipSelf() parentModule: CoreModule,
+    @Optional()
+    @SkipSelf()
+    parentModule: CoreModule,
     popoverConfig: PopoverConfig,
     crosstabService: CrosstabService
   ) {
