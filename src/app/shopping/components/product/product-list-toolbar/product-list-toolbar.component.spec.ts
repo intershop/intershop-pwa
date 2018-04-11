@@ -8,16 +8,14 @@ describe('Product List Toolbar Component', () => {
   let fixture: ComponentFixture<ProductListToolbarComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ProductListToolbarComponent],
-      imports: [
-        TranslateModule.forRoot(),
-        FormsModule,
-        ReactiveFormsModule
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ProductListToolbarComponent],
+        imports: [TranslateModule.forRoot(), FormsModule, ReactiveFormsModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListToolbarComponent);

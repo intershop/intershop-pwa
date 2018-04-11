@@ -5,7 +5,6 @@ import { AddressFormFactory } from '../address-form/address-form.factory';
 
 @Injectable()
 export class AddressFormFRFactory extends AddressFormFactory {
-
   countryCode = 'FR';
 
   constructor(private fb: FormBuilder) {
@@ -21,8 +20,7 @@ export class AddressFormFRFactory extends AddressFormFactory {
       addressLine2: [],
       postalCode: ['', [Validators.required, Validators.pattern('[0-9]{5}')]],
       city: ['', Validators.required],
-      phoneHome: ['']
+      phoneHome: [''],
     });
   }
-
 }

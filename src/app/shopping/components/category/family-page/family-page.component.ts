@@ -6,11 +6,9 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
 @Component({
   selector: 'ish-family-page',
   templateUrl: './family-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class FamilyPageComponent {
-
   @Input() category: Category;
   @Input() categoryPath: Category[];
   @Input() products: Product[];
@@ -28,5 +26,4 @@ export class FamilyPageComponent {
   changeSortBy(sortBy: string) {
     this.sortByChange.emit(sortBy);
   }
-
 }

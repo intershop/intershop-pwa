@@ -1,7 +1,7 @@
 // tslint:disable:no-any
 import { Action, ActionReducer } from '@ngrx/store';
 import { localStorageSync, rehydrateApplicationState } from 'ngrx-store-localstorage';
-import { CoreState, } from '../core.state';
+import { CoreState } from '../core.state';
 
 // https://github.com/btroncone/ngrx-store-localstorage/issues/40#issuecomment-336283880
 
@@ -19,7 +19,7 @@ const keys = ['user', 'locale', 'countries', 'shopping'];
 
 export class Storage implements Action {
   readonly type = STORAGE;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -34,8 +34,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
     return localStorageSync({
       keys,
       rehydrate: true,
-      restoreDates: true
+      restoreDates: true,
     })(reducer)(state, action);
   };
-
 }

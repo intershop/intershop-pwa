@@ -29,7 +29,7 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     ModalDialogComponent,
     LoadingComponent,
     AccordionComponent,
-    AccordionItemComponent
+    AccordionItemComponent,
   ],
   exports: [
     RouterModule,
@@ -44,7 +44,7 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
     LoadingComponent,
     ModalDialogComponent,
     AccordionComponent,
-    AccordionItemComponent
-  ]
+    AccordionItemComponent,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

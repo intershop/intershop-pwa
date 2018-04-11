@@ -7,13 +7,14 @@ describe('Accordion Panel Component', () => {
   let element: HTMLElement;
   let fixture: ComponentFixture<AccordionItemComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CollapseModule],
-      declarations: [AccordionItemComponent]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [CollapseModule],
+        declarations: [AccordionItemComponent],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccordionItemComponent);

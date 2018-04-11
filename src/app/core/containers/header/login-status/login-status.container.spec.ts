@@ -9,25 +9,27 @@ describe('Login Status Container', () => {
   let fixture: ComponentFixture<LoginStatusContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        MockComponent({
-          selector: 'ish-login-status',
-          template: 'Login Status',
-          inputs: ['customer'],
-        }),
-        LoginStatusContainerComponent,
-      ],
-      providers: [
-        { provide: Store, useFactory: () => instance(mock(Store)) },
-      ]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(LoginStatusContainerComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    });
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          MockComponent({
+            selector: 'ish-login-status',
+            template: 'Login Status',
+            inputs: ['customer'],
+          }),
+          LoginStatusContainerComponent,
+        ],
+        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(LoginStatusContainerComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

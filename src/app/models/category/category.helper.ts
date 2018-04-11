@@ -1,7 +1,6 @@
 import { Category } from './category.model';
 
 export class CategoryHelper {
-
   /**
    * @returns          True if the categories are equal, false if not.
    *                   'equal' means

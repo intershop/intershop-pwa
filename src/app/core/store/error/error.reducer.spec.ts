@@ -7,7 +7,6 @@ import { CommunicationTimeoutError, ErrorActionTypes, HttpError } from './error.
 import { errorReducer, initialState } from './error.reducer';
 
 describe('Error Reducer', () => {
-
   describe('initialState', () => {
     it('should not have a error when unmodified', () => {
       expect(initialState.current).toBeNull();
@@ -16,7 +15,6 @@ describe('Error Reducer', () => {
     it('should not have an type when unmodified', () => {
       expect(initialState.type).toBeFalsy();
     });
-
   });
 
   describe('reducer', () => {
@@ -25,7 +23,6 @@ describe('Error Reducer', () => {
 
       expect(newState).toEqual(initialState);
     });
-
   });
 
   function dataProvider() {
@@ -33,29 +30,30 @@ describe('Error Reducer', () => {
       {
         state: initialState,
         action: {} as HttpError,
-        expected: initialState
+        expected: initialState,
       },
       {
         state: initialState,
         action: new CommunicationTimeoutError({} as HttpErrorResponse),
-        expected: { current: {}, type: ErrorActionTypes.TimeoutError }
+        expected: { current: {}, type: ErrorActionTypes.TimeoutError },
       },
       {
         state: initialState,
         action: new CreateUserSuccess(anything()),
-        expected: initialState
+        expected: initialState,
       },
       {
         state: { current: {}, type: ErrorActionTypes.TimeoutError },
         action: { type: ROUTER_NAVIGATION, payload: { routerState: { url: '/error' } } },
-        expected: { current: {}, type: ErrorActionTypes.TimeoutError }
-      }
-
+        expected: { current: {}, type: ErrorActionTypes.TimeoutError },
+      },
     ];
   }
 
-  using(dataProvider, (dataSlice) => {
-    it(`should return ${dataSlice.expected === initialState ? ' initialState' : (' \'' + dataSlice.expected.type + '\' ')} when Action ${dataSlice.action.type} is reduced on state ${dataSlice.state.type}`, () => {
+  using(dataProvider, dataSlice => {
+    it(`should return ${
+      dataSlice.expected === initialState ? ' initialState' : " '" + dataSlice.expected.type + "' "
+    } when Action ${dataSlice.action.type} is reduced on state ${dataSlice.state.type}`, () => {
       const newState = errorReducer(dataSlice.state, dataSlice.action);
       expect(newState).toEqual(dataSlice.expected);
     });

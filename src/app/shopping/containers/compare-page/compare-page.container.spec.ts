@@ -14,21 +14,23 @@ describe('Compare Page Container', () => {
   let component: ComparePageContainerComponent;
   let storeMock: Store<ShoppingState>;
 
-  beforeEach(async(() => {
-    storeMock = mock(Store);
-    TestBed.configureTestingModule({
-      declarations: [
-        ComparePageContainerComponent,
-        MockComponent({ selector: 'ish-product-compare-list', template: 'Product Compare List Component', inputs: ['compareProducts'] })
-      ],
-      imports: [
-        TranslateModule.forRoot(),
-      ],
-      providers: [
-        { provide: Store, useFactory: () => instance(storeMock) }
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      storeMock = mock(Store);
+      TestBed.configureTestingModule({
+        declarations: [
+          ComparePageContainerComponent,
+          MockComponent({
+            selector: 'ish-product-compare-list',
+            template: 'Product Compare List Component',
+            inputs: ['compareProducts'],
+          }),
+        ],
+        imports: [TranslateModule.forRoot()],
+        providers: [{ provide: Store, useFactory: () => instance(storeMock) }],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComparePageContainerComponent);
@@ -44,13 +46,15 @@ describe('Compare Page Container', () => {
 
   it('should not display compare product list when no compare products available', () => {
     when(storeMock.pipe(anything())).thenCall(selector => {
-      return selector(of({
-        shopping: {
-          compare: {
-            products: []
-          }
-        }
-      }));
+      return selector(
+        of({
+          shopping: {
+            compare: {
+              products: [],
+            },
+          },
+        })
+      );
     });
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual([]);
@@ -58,19 +62,21 @@ describe('Compare Page Container', () => {
 
   it('should display compare product list when compare products available', () => {
     when(storeMock.pipe(anything())).thenCall(selector => {
-      return selector(of({
-        shopping: {
-          products: {
-            entities: {
-              '1': { sku: '1' },
-              '2': { sku: '2' },
-            }
+      return selector(
+        of({
+          shopping: {
+            products: {
+              entities: {
+                '1': { sku: '1' },
+                '2': { sku: '2' },
+              },
+            },
+            compare: {
+              products: ['1', '2'],
+            },
           },
-          compare: {
-            products: ['1', '2']
-          }
-        }
-      }));
+        })
+      );
     });
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-product-compare-list']);
@@ -80,5 +86,4 @@ describe('Compare Page Container', () => {
     component.removeFromCompare('111');
     verify(storeMock.dispatch(anything())).called();
   });
-
 });

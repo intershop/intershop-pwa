@@ -11,6 +11,6 @@ import { FormsSharedModule } from './forms-shared.module';
   imports: [CommonModule, ReactiveFormsModule, SharedModule, FormsSharedModule],
   declarations: [...components],
   exports: [...components, FormsSharedModule],
-  providers: [AddressFormService, ...factoryProviders]
+  providers: [AddressFormService, ...factoryProviders],
 })
-export class FormsAddressModule { }
+export class FormsAddressModule {}

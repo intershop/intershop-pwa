@@ -4,11 +4,9 @@ import { Product } from '../../../../models/product/product.model';
 @Component({
   selector: 'ish-product-price',
   templateUrl: './product-price.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductPriceComponent implements OnChanges {
-
   @Input() product: Product;
   @Input() showInformationalPrice: boolean;
   @Input() showPriceSavings: boolean;

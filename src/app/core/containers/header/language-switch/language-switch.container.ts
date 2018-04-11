@@ -11,13 +11,10 @@ import { getAvailableLocales, getCurrentLocale, SelectLocale } from '../../../st
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchContainerComponent implements OnInit {
-
   locale$: Observable<Locale>;
   availableLocales$: Observable<Locale[]>;
 
-  constructor(
-    private store: Store<CoreState>
-  ) { }
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
     this.locale$ = this.store.pipe(select(getCurrentLocale));

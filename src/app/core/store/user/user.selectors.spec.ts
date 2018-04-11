@@ -9,7 +9,6 @@ import { LoginUserFail, LoginUserSuccess } from './user.actions';
 import { getLoggedInUser, getUserAuthorized, getUserError } from './user.selectors';
 
 describe('User State Selectors', () => {
-
   let store: Store<CoreState>;
 
   let userAuthorized$: Observable<boolean>;
@@ -18,9 +17,7 @@ describe('User State Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers),
-      ],
+      imports: [StoreModule.forRoot(coreReducers)],
     });
 
     store = TestBed.get(Store);
@@ -31,43 +28,29 @@ describe('User State Selectors', () => {
   });
 
   it('should select no customer when no event was sent', () => {
-    userAuthorized$.subscribe(authorized =>
-      expect(authorized).toBe(false)
-    );
-    loggedInUser$.subscribe(customer =>
-      expect(customer).toBe(null)
-    );
-    loginError$.subscribe(error =>
-      expect(error).toBeFalsy()
-    );
+    userAuthorized$.subscribe(authorized => expect(authorized).toBe(false));
+    loggedInUser$.subscribe(customer => expect(customer).toBe(null));
+    loginError$.subscribe(error => expect(error).toBeFalsy());
   });
 
   it('should select the customer when logging in successfully', () => {
     const firstName = 'dummy';
     store.dispatch(new LoginUserSuccess({ firstName } as Customer));
 
-    userAuthorized$.subscribe(authorized =>
-      expect(authorized).toBe(true)
-    );
+    userAuthorized$.subscribe(authorized => expect(authorized).toBe(true));
     loggedInUser$.subscribe(customer => {
       expect(customer).toBeTruthy();
       expect(customer.firstName).toEqual(firstName);
     });
-    loginError$.subscribe(error =>
-      expect(error).toBeFalsy()
-    );
+    loginError$.subscribe(error => expect(error).toBeFalsy());
   });
 
   it('should select no customer and an error when an error event was sent', () => {
     const error = { message: 'dummy' } as HttpErrorResponse;
     store.dispatch(new LoginUserFail(error));
 
-    userAuthorized$.subscribe(authorized =>
-      expect(authorized).toBe(false)
-    );
-    loggedInUser$.subscribe(customer =>
-      expect(customer).toBe(null)
-    );
+    userAuthorized$.subscribe(authorized => expect(authorized).toBe(false));
+    loggedInUser$.subscribe(customer => expect(customer).toBe(null));
     loginError$.subscribe(err => {
       expect(err).toBeTruthy();
       expect(err.message).toBe('dummy');

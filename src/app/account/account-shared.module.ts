@@ -4,11 +4,8 @@ import { SharedModule } from '../shared/shared.module';
 import { AccountNavigationComponent } from './components/account-navigation/account-navigation.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule
-  ],
+  imports: [CommonModule, SharedModule],
   declarations: [AccountNavigationComponent],
-  exports: [AccountNavigationComponent]
+  exports: [AccountNavigationComponent],
 })
-export class AccountSharedModule { }
+export class AccountSharedModule {}

@@ -9,10 +9,7 @@ import * as viewconfActions from './viewconf.actions';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(
-    private actions$: Actions,
-    private store: Store<ShoppingState>,
-  ) { }
+  constructor(private actions$: Actions, private store: Store<ShoppingState>) {}
 
   @Effect()
   changeSortBy$ = this.actions$.pipe(

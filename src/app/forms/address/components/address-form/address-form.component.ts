@@ -9,7 +9,6 @@ import { Region } from '../../../../models/region/region.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressFormComponent implements OnInit {
-
   @Input() parentForm: FormGroup;
   @Input() controlName = 'address';
   @Input() countryCode: string;

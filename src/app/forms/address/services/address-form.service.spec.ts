@@ -11,17 +11,19 @@ describe('Address Form Service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: ADDRESS_FORM_FACTORY, useValue: [new AddressFormDefaultFactory(new FormBuilder()), new AddressFormDEFactory(new FormBuilder())] },
-        AddressFormService
-
-      ]
+        {
+          provide: ADDRESS_FORM_FACTORY,
+          useValue: [new AddressFormDefaultFactory(new FormBuilder()), new AddressFormDEFactory(new FormBuilder())],
+        },
+        AddressFormService,
+      ],
     });
     addressFormService = TestBed.get(AddressFormService);
   });
 
-  it('should be created', (() => {
+  it('should be created', () => {
     expect(addressFormService).toBeTruthy();
-  }));
+  });
 
   describe('getFactory()', () => {
     it('should return Default address form factory if no countryCode is given', () => {

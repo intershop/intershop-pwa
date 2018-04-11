@@ -9,14 +9,10 @@ import { Customer } from '../../../models/customer/customer.model';
   templateUrl: './account-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class AccountPageContainerComponent implements OnInit {
-
   customer$: Observable<Customer>;
 
-  constructor(
-    private store: Store<CoreState>
-  ) { }
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
     this.customer$ = this.store.pipe(select(getLoggedInUser));

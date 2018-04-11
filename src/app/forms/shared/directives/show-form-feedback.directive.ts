@@ -13,10 +13,9 @@ import { AbstractControl } from '@angular/forms';
  * </div>
  */
 @Directive({
-  selector: '[ishShowFormFeedback]'
+  selector: '[ishShowFormFeedback]',
 })
 export class ShowFormFeedbackDirective {
-
   /**
    * FormControl which validation status is considered
    */
@@ -26,15 +25,16 @@ export class ShowFormFeedbackDirective {
   /**
    *  If form control is invalid and dirty 'has-error' class is added
    */
-  @HostBinding('class.has-error') get hasErrors() {
+  @HostBinding('class.has-error')
+  get hasErrors() {
     return this.control.validator && this.control.invalid && this.control.dirty;
   }
 
   /**
    *  If form control is valid and dirty 'has-success' class is added
    */
-  @HostBinding('class.has-success') get hasSuccess() {
+  @HostBinding('class.has-success')
+  get hasSuccess() {
     return this.control.validator && this.control.valid && this.control.dirty;
   }
-
 }

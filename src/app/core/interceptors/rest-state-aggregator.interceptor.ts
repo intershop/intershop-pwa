@@ -18,7 +18,6 @@ const REST_CALL_CACHE = makeStateKey<any>('restCallCache');
  */
 @Injectable()
 export class RestStateAggregatorInterceptor implements HttpInterceptor {
-
   private cache: any;
 
   constructor(
@@ -38,9 +37,7 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     if (req.url.startsWith(this.restEndpoint)) {
-
       const key = req.urlWithParams;
 
       if (isPlatformServer(this.platformId)) {
@@ -52,7 +49,8 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
               this.persistCacheInState();
             }
             return event;
-          }));
+          })
+        );
       } else {
         if (!!this.cache[key]) {
           const content = JSON.parse(this.cache[key]);

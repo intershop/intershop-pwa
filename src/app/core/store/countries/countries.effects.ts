@@ -7,10 +7,7 @@ import * as countryActions from './countries.actions';
 
 @Injectable()
 export class CountriesEffects {
-  constructor(
-    private actions$: Actions,
-    private countryService: CountryService
-  ) { }
+  constructor(private actions$: Actions, private countryService: CountryService) {}
 
   @Effect()
   loadCountries$ = this.actions$.pipe(
@@ -19,8 +16,8 @@ export class CountriesEffects {
       return this.countryService
         .getCountries()
         .pipe(
-        map(countries => new countryActions.LoadCountriesSuccess(countries)),
-        catchError(error => of(new countryActions.LoadCountriesFail(error)))
+          map(countries => new countryActions.LoadCountriesSuccess(countries)),
+          catchError(error => of(new countryActions.LoadCountriesFail(error)))
         );
     })
   );

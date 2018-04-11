@@ -6,7 +6,6 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './registration-credentials-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-
 export class RegistrationCredentialsFormComponent implements OnInit {
   @Input() parentForm: FormGroup;
   @Input() controlName = 'credentials';
@@ -20,5 +19,4 @@ export class RegistrationCredentialsFormComponent implements OnInit {
   get credentialsForm(): FormGroup {
     return this.parentForm.get(this.controlName) as FormGroup;
   }
-
 }

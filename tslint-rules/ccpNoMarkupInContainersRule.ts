@@ -5,7 +5,6 @@ import { SourceFile } from 'typescript';
 const MESSAGE = 'Container templates should not contain markup.';
 
 class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
-
   patterns: string[];
 
   constructor(sourceFile: SourceFile, options: Lint.IOptions) {
@@ -15,7 +14,6 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
 
   visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.match(/.*\/containers\/(?!.*(routes|module|spec).ts$).*.ts/)) {
-
       const fileName = sourceFile.fileName;
       const templateName = fileName.substring(0, fileName.length - 2) + 'html';
 
@@ -38,7 +36,6 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
  * Implementation of the ccp-no-markup-in-containers rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-
   apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new CCPNoMarkupInContainersWalker(sourceFile, this.getOptions()));
   }

@@ -11,21 +11,16 @@ import { ShoppingState } from '../../store/shopping.state';
   templateUrl: './recently-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class RecentlyPageContainerComponent implements OnInit {
-
   products$: Observable<Product[]> = of([]);
 
-  constructor(
-    private store: Store<ShoppingState>
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     this.products$ = this.store.pipe(select(getRecentlyViewedProducts));
   }
 
   clearAll() {
-    this.store.dispatch(new ClearRecently);
+    this.store.dispatch(new ClearRecently());
   }
-
 }

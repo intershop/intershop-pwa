@@ -27,9 +27,7 @@ describe('UserEffects', () => {
     when(accountLoginServiceMock.createUser(anything())).thenReturn(of({} as Customer));
 
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(coreReducers),
-      ],
+      imports: [StoreModule.forRoot(coreReducers)],
       providers: [
         UserEffects,
         provideMockActions(() => actions$),
@@ -47,9 +45,7 @@ describe('UserEffects', () => {
 
       actions$ = hot('-a', { a: action });
 
-      effects.loginUser$.subscribe(() =>
-        verify(accountLoginServiceMock.signinUser(anything())).once()
-      );
+      effects.loginUser$.subscribe(() => verify(accountLoginServiceMock.signinUser(anything())).once());
     });
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {

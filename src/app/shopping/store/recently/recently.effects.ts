@@ -8,9 +8,7 @@ import * as recentlyActions from './recently.actions';
 
 @Injectable()
 export class RecentlyEffects {
-  constructor(
-    private store: Store<ShoppingState>,
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   @Effect()
   viewedProduct$ = this.store.pipe(

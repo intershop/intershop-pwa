@@ -7,7 +7,6 @@ import { Category } from '../../../../../models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubCategoryNavigationComponent {
-
   @Input() category: Category;
   @Input() subCategoriesDepth: number;
 
@@ -19,6 +18,6 @@ export class SubCategoryNavigationComponent {
 
   toggleOpen(category: Category) {
     const index = this.openedCategories.findIndex(id => id === category.uniqueId);
-    (index > -1) ? this.openedCategories.splice(index, 1) : this.openedCategories.push(category.uniqueId);
+    index > -1 ? this.openedCategories.splice(index, 1) : this.openedCategories.push(category.uniqueId);
   }
 }

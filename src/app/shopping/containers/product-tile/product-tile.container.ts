@@ -12,20 +12,15 @@ import { ShoppingState } from '../../store/shopping.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductTileContainerComponent implements OnInit {
-
   @Input() product: Product;
   @Input() category?: Category;
 
   isInCompareList$: Observable<boolean>;
 
-  constructor(
-    private store: Store<ShoppingState>
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
-    this.isInCompareList$ = this.store.pipe(
-      select(isInCompareProducts(this.product.sku))
-    );
+    this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(this.product.sku)));
   }
 
   toggleCompare() {
@@ -33,8 +28,9 @@ export class ProductTileContainerComponent implements OnInit {
   }
 
   addToCart() {
-    console.log('[ProductTileContainer] Add to Cart: SKU: ' + this.product.sku + ', Quantity: ' + this.product.minOrderQuantity);
+    console.log(
+      '[ProductTileContainer] Add to Cart: SKU: ' + this.product.sku + ', Quantity: ' + this.product.minOrderQuantity
+    );
     // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(this.product.sku, this.product.minOrderQuantity));
   }
-
 }

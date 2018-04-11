@@ -23,10 +23,7 @@ import { ProductTileContainerComponent } from './containers/product-tile/product
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    FormsSharedModule
-  ],
+  imports: [SharedModule, FormsSharedModule],
   declarations: [
     CategoryListComponent,
     CategoryNavigationComponent,
@@ -71,7 +68,6 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     AttributeToStringPipe,
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
-  ]
+  ],
 })
-
-export class ShoppingSharedModule { }
+export class ShoppingSharedModule {}

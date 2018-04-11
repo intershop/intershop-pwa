@@ -8,19 +8,15 @@ describe('Modal Dialog Component', () => {
   let fixture: ComponentFixture<ModalDialogComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        ModalModule.forRoot(),
-        TranslateModule.forRoot()
-      ],
-      providers: [
-        TranslateService,
-        BsModalService
-      ],
-      declarations: [ModalDialogComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [ModalModule.forRoot(), TranslateModule.forRoot()],
+        providers: [TranslateService, BsModalService],
+        declarations: [ModalDialogComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ModalDialogComponent);
@@ -45,5 +41,4 @@ describe('Modal Dialog Component', () => {
     fixture.detectChanges();
     expect(component.bsModalDialog).toBeFalsy();
   });
-
 });

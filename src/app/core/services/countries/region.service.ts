@@ -5,7 +5,6 @@ import { Region } from '../../../models/region/region.model';
 
 @Injectable()
 export class RegionService {
-
   regionDataUS$: Observable<Region[]>;
   regionDataBG$: Observable<Region[]>;
   /*
@@ -18,12 +17,12 @@ export class RegionService {
       { countryCode: 'US', regionCode: 'IN', name: 'Indiana' },
       { countryCode: 'US', regionCode: 'MN', name: 'Michigan' },
       { countryCode: 'US', regionCode: 'NY', name: 'New York' },
-      { countryCode: 'US', regionCode: 'TX', name: 'Texas' }
+      { countryCode: 'US', regionCode: 'TX', name: 'Texas' },
     ]);
     this.regionDataBG$ = of([
       { countryCode: 'BG', regionCode: '02', name: 'Burgas' },
       { countryCode: 'BG', regionCode: '23', name: 'Sofia' },
-      { countryCode: 'BG', regionCode: '03', name: 'Varna' }
+      { countryCode: 'BG', regionCode: '03', name: 'Varna' },
     ]);
   }
 

@@ -5,15 +5,11 @@ export interface RecentlyState {
 }
 
 export const initialState: RecentlyState = {
-  products: []
+  products: [],
 };
 
-export function recentlyReducer(
-  state = initialState,
-  action: fromRecently.RecentlyAction
-): RecentlyState {
+export function recentlyReducer(state = initialState, action: fromRecently.RecentlyAction): RecentlyState {
   switch (action.type) {
-
     case fromRecently.RecentlyActionTypes.AddToRecently: {
       const newProduct = action.payload;
       const products = [newProduct, ...state.products.filter(id => id !== newProduct)];
@@ -26,7 +22,6 @@ export function recentlyReducer(
 
       return { ...state, products };
     }
-
   }
 
   return state;

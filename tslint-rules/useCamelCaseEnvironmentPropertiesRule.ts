@@ -2,7 +2,6 @@ import * as Lint from 'tslint';
 import { PropertyAssignment, SourceFile, SyntaxKind } from 'typescript';
 
 class UseCamelCaseEnvironmentPropertiesWalker extends Lint.RuleWalker {
-
   visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.match(/.*\/environment[\.\w]*\.ts/)) {
       super.visitSourceFile(sourceFile);
@@ -26,7 +25,6 @@ class UseCamelCaseEnvironmentPropertiesWalker extends Lint.RuleWalker {
  * Implementation of the use-camel-case-environment-properties rule.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-
   apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new UseCamelCaseEnvironmentPropertiesWalker(sourceFile, this.getOptions()));
   }

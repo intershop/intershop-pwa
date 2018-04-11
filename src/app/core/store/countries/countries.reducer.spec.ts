@@ -40,7 +40,7 @@ describe('Countries Reducer', () => {
       beforeEach(() => {
         country = {
           countryCode: 'BG',
-          name: 'Bulgaria'
+          name: 'Bulgaria',
         } as Country;
       });
 

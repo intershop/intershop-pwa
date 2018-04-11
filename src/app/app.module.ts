@@ -19,7 +19,16 @@ import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { MockInterceptor } from './core/interceptors/mock.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
-import { getICMApplication, getICMBaseURL, getICMServerURL, getRestEndPoint, ICM_APPLICATION, ICM_BASE_URL, ICM_SERVER_URL, REST_ENDPOINT } from './core/services/state-transfer/factories';
+import {
+  getICMApplication,
+  getICMBaseURL,
+  getICMServerURL,
+  getRestEndPoint,
+  ICM_APPLICATION,
+  ICM_BASE_URL,
+  ICM_SERVER_URL,
+  REST_ENDPOINT,
+} from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers, CustomSerializer } from './core/store/core.system';
 import { localStorageSyncReducer } from './core/store/local-storage-sync/local-storage-sync.reducer';
@@ -38,12 +47,10 @@ if (!environment.production) {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({
-      appId: 'proof-of-concept'
+      appId: 'proof-of-concept',
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,
@@ -58,7 +65,7 @@ if (!environment.production) {
     StoreModule.forRoot(coreReducers, { metaReducers }),
     EffectsModule.forRoot(coreEffects),
     StoreRouterConnectingModule,
-    !environment.production ? StoreDevtoolsModule.instrument() : []
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: CustomSerializer },
@@ -68,7 +75,10 @@ if (!environment.production) {
     { provide: ICM_SERVER_URL, useFactory: getICMServerURL(), deps: [StatePropertiesService] },
     { provide: injectionKeys.NEED_MOCK, useValue: environment.needMock },
     { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
-    { provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: environment.mainNavigationMaxSubCategoriesDepth },
+    {
+      provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+      useValue: environment.mainNavigationMaxSubCategoriesDepth,
+    },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
@@ -77,12 +87,9 @@ if (!environment.production) {
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
-
   constructor() {
     registerLocaleData(localeDe);
     // TODO: https://github.com/angular/angular/issues/21809

@@ -15,7 +15,7 @@ export class FormControlFeedbackComponent implements DoCheck {
 
   errors: Array<Observable<string>>;
 
-  constructor(private translate: TranslateService) { }
+  constructor(private translate: TranslateService) {}
 
   ngDoCheck() {
     if (this.control.dirty) {
@@ -26,17 +26,21 @@ export class FormControlFeedbackComponent implements DoCheck {
   get iconClasses(): { [key: string]: boolean } {
     return {
       'glyphicon-remove': this.control.validator && this.control.invalid,
-      'glyphicon-ok': this.control.validator && this.control.valid
+      'glyphicon-ok': this.control.validator && this.control.valid,
     };
   }
 
   getErrorList(): Observable<string>[] {
-    if (!this.control.errors) { return []; }
+    if (!this.control.errors) {
+      return [];
+    }
 
     return Object.keys(this.control.errors)
-      .map(key => (this.messages && key in this.messages && this.messages[key]) ?
-        this.messages[key] :
-        this.control.errors['customError']
+      .map(
+        key =>
+          this.messages && key in this.messages && this.messages[key]
+            ? this.messages[key]
+            : this.control.errors['customError']
       )
       .filter(locString => !!locString)
       .map(locString => this.translate.get(locString));

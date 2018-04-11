@@ -19,17 +19,17 @@ describe('ApiService Translation', () => {
   const categoriesPath = `${BASE_URL}/site/categories`;
   const webcamsPath = `${categoriesPath}/Cameras-Camcorders/577`;
   const webcamResponse = {
-    'name': 'Webcams',
-    'description': 'The camera products and services catalog.',
-    'id': '577'
+    name: 'Webcams',
+    description: 'The camera products and services catalog.',
+    id: '577',
   };
   const webcamLink = {
-    'type': 'Link',
-    'uri': 'site/categories/Cameras-Camcorders/577'
+    type: 'Link',
+    uri: 'site/categories/Cameras-Camcorders/577',
   };
   const categoriesResponse = {
-    'elements': [webcamLink],
-    'id': 'Cameras-Camcorders'
+    elements: [webcamLink],
+    id: 'Cameras-Camcorders',
   };
 
   // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
@@ -59,8 +59,8 @@ describe('ApiService Translation', () => {
         { provide: ICM_SERVER_URL, useValue: BASE_URL },
         { provide: Store, useFactory: () => instance(storeMock) },
         ApiServiceErrorHandler,
-        ApiService
-      ]
+        ApiService,
+      ],
     });
     apiService = TestBed.get(ApiService);
 
@@ -69,7 +69,7 @@ describe('ApiService Translation', () => {
   });
 
   it('should perform element translation when it is requested', () => {
-    apiService.get('categories', null, null, true, false).subscribe((data) => {
+    apiService.get('categories', null, null, true, false).subscribe(data => {
       expect(data).toEqual([webcamLink]);
     });
     verify(httpClient.get(categoriesPath, new Object(anything()))).once();
@@ -77,7 +77,7 @@ describe('ApiService Translation', () => {
   });
 
   it('should not perform element translation when it is not requested', () => {
-    apiService.get('categories', null, null, false, false).subscribe((data) => {
+    apiService.get('categories', null, null, false, false).subscribe(data => {
       expect(data).toEqual(categoriesResponse);
     });
     verify(httpClient.get(categoriesPath, new Object(anything()))).once();
@@ -85,7 +85,7 @@ describe('ApiService Translation', () => {
   });
 
   it('should perform link translation when requested', () => {
-    apiService.get('categories', null, null, false, true).subscribe((data) => {
+    apiService.get('categories', null, null, false, true).subscribe(data => {
       expect(data['elements']).toEqual([webcamResponse]);
       expect(data['id']).toEqual('Cameras-Camcorders');
     });
@@ -94,7 +94,7 @@ describe('ApiService Translation', () => {
   });
 
   it('should not perform link translation when not requested', () => {
-    apiService.get('categories', null, null, false, false).subscribe((data) => {
+    apiService.get('categories', null, null, false, false).subscribe(data => {
       expect(data).toEqual(categoriesResponse);
     });
     verify(httpClient.get(categoriesPath, new Object(anything()))).once();
@@ -102,7 +102,7 @@ describe('ApiService Translation', () => {
   });
 
   it('should perform both operations when requested', () => {
-    apiService.get('categories', null, null, true, true).subscribe((data) => {
+    apiService.get('categories', null, null, true, true).subscribe(data => {
       expect(data).toEqual([webcamResponse]);
     });
     verify(httpClient.get(categoriesPath, new Object(anything()))).once();

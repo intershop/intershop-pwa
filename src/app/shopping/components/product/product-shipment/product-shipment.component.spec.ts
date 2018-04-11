@@ -13,18 +13,15 @@ describe('Product Shipment Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot(),
-        ModalModule.forRoot()
-      ],
-      providers: [
-        TranslateService
-      ],
-      declarations: [ProductShipmentComponent, ModalDialogComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot(), ModalModule.forRoot()],
+        providers: [TranslateService],
+        declarations: [ProductShipmentComponent, ModalDialogComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductShipmentComponent);
@@ -46,7 +43,9 @@ describe('Product Shipment Component', () => {
 
   it('should throw an error if input parameter product is not set properly', () => {
     component.product = null;
-    expect(function() { component.ngOnChanges(); }).toThrow();
+    expect(function() {
+      component.ngOnChanges();
+    }).toThrow();
   });
 
   it('should not render when readyForShipmentMin and readyForShipmentMax are not available', () => {
@@ -57,13 +56,33 @@ describe('Product Shipment Component', () => {
   describe('text rendering', () => {
     function dataProvider() {
       return [
-        { readyForShipmentMin: 0, readyForShipmentMax: 1, localeKey: 'product.ready_for_shipment.within24', localeValue: 'Usually ships within 24 hours', expectedText: 'Usually ships within 24 hours' },
-        { readyForShipmentMin: 0, readyForShipmentMax: 3, localeKey: 'product.ready_for_shipment.within', localeValue: 'Usually ships within {{0}} days.', expectedText: 'Usually ships within 3 days.' },
-        { readyForShipmentMin: 3, readyForShipmentMax: 7, localeKey: 'product.ready_for_shipment.minmax', localeValue: 'Usually ships in {{0}} to {{1}} days.', expectedText: 'Usually ships in 3 to 7 days.' },
+        {
+          readyForShipmentMin: 0,
+          readyForShipmentMax: 1,
+          localeKey: 'product.ready_for_shipment.within24',
+          localeValue: 'Usually ships within 24 hours',
+          expectedText: 'Usually ships within 24 hours',
+        },
+        {
+          readyForShipmentMin: 0,
+          readyForShipmentMax: 3,
+          localeKey: 'product.ready_for_shipment.within',
+          localeValue: 'Usually ships within {{0}} days.',
+          expectedText: 'Usually ships within 3 days.',
+        },
+        {
+          readyForShipmentMin: 3,
+          readyForShipmentMax: 7,
+          localeKey: 'product.ready_for_shipment.minmax',
+          localeValue: 'Usually ships in {{0}} to {{1}} days.',
+          expectedText: 'Usually ships in 3 to 7 days.',
+        },
       ];
     }
-    using(dataProvider, (dataSlice) => {
-      it(`should use "${dataSlice.localeKey}" localization text when readyForShipmentMin = ${dataSlice.readyForShipmentMin} and readyForShipmentMax = ${dataSlice.readyForShipmentMax}`, () => {
+    using(dataProvider, dataSlice => {
+      it(`should use "${dataSlice.localeKey}" localization text when readyForShipmentMin = ${
+        dataSlice.readyForShipmentMin
+      } and readyForShipmentMax = ${dataSlice.readyForShipmentMax}`, () => {
         product.readyForShipmentMin = dataSlice.readyForShipmentMin;
         product.readyForShipmentMax = dataSlice.readyForShipmentMax;
         translate.set(dataSlice.localeKey, dataSlice.localeValue);

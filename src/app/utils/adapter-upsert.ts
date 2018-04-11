@@ -7,7 +7,11 @@ import { EntityAdapter, EntityState, Update } from '@ngrx/entity';
  * They can be removed once NgRx 6 is out and the issue is fixed
  */
 
-export function adapterUpsertOne<T, U extends EntityState<T>>(upsert: { id: string, entity: T }, state: U, adapter: EntityAdapter<T>): U {
+export function adapterUpsertOne<T, U extends EntityState<T>>(
+  upsert: { id: string; entity: T },
+  state: U,
+  adapter: EntityAdapter<T>
+): U {
   const { id, entity } = upsert;
   if (state.entities[id]) {
     return adapter.updateOne({ id, changes: entity }, state);
@@ -16,7 +20,11 @@ export function adapterUpsertOne<T, U extends EntityState<T>>(upsert: { id: stri
   }
 }
 
-export function adapterUpsertMany<T, U extends EntityState<T>>(upserts: { id: string, entity: T }[], state: U, adapter: EntityAdapter<T>): U {
+export function adapterUpsertMany<T, U extends EntityState<T>>(
+  upserts: { id: string; entity: T }[],
+  state: U,
+  adapter: EntityAdapter<T>
+): U {
   const toAdd: T[] = [];
   const toUpdate: Update<T>[] = [];
 

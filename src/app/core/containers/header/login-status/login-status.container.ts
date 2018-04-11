@@ -11,12 +11,9 @@ import { getLoggedInUser } from '../../../store/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginStatusContainerComponent implements OnInit {
-
   customer$: Observable<Customer>;
 
-  constructor(
-    private store: Store<CoreState>
-  ) { }
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
     this.customer$ = this.store.pipe(select(getLoggedInUser));

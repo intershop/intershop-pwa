@@ -7,15 +7,13 @@ import { Storage } from '../store/local-storage-sync/local-storage-sync.reducer'
 
 @Injectable()
 export class CrosstabService {
-
-  constructor(private store: Store<CoreState>) { }
+  constructor(private store: Store<CoreState>) {}
 
   listen() {
     if (typeof window !== 'undefined') {
-      fromEvent(window, 'storage').pipe(
-        map((e: StorageEvent) => new Storage(e.key)),
-      ).subscribe(this.store);
+      fromEvent(window, 'storage')
+        .pipe(map((e: StorageEvent) => new Storage(e.key)))
+        .subscribe(this.store);
     }
   }
-
 }

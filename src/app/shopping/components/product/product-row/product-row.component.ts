@@ -5,11 +5,9 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 @Component({
   selector: 'ish-product-row',
   templateUrl: './product-row.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductRowComponent {
-
   @Input() product: Product;
   @Input() category?: Category;
   @Output() productToCart = new EventEmitter<void>();
@@ -19,5 +17,4 @@ export class ProductRowComponent {
   addToCart() {
     this.productToCart.emit();
   }
-
 }

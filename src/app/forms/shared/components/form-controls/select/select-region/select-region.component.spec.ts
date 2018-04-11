@@ -9,29 +9,31 @@ describe('Select Region Component', () => {
   let fixture: ComponentFixture<SelectRegionComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectRegionComponent],
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(SelectRegionComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SelectRegionComponent],
+        imports: [TranslateModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SelectRegionComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
 
-      const form = new FormGroup({
-        countryCode: new FormControl('BG'),
-        state: new FormControl('Region1', [Validators.required])
-      });
-      component.form = form;
-      component.regions = [
-        { countryCode: 'BG', regionCode: '02', name: 'Burgas' },
-        { countryCode: 'BG', regionCode: '23', name: 'Sofia' }
-      ];
-    });
-  }));
+          const form = new FormGroup({
+            countryCode: new FormControl('BG'),
+            state: new FormControl('Region1', [Validators.required]),
+          });
+          component.form = form;
+          component.regions = [
+            { countryCode: 'BG', regionCode: '02', name: 'Burgas' },
+            { countryCode: 'BG', regionCode: '23', name: 'Sofia' },
+          ];
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -47,7 +49,7 @@ describe('Select Region Component', () => {
 
   it('should get and display regions for a certain country', () => {
     const changes: SimpleChanges = {
-      regions: new SimpleChange(null, component.regions, false)
+      regions: new SimpleChange(null, component.regions, false),
     };
     component.ngOnChanges(changes);
 

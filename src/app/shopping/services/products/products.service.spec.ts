@@ -10,21 +10,21 @@ describe('Proucts Service', () => {
   const productSku = 'SKU';
   const categoryId = 'CategoryID';
   const productsMockData = {
-    'elements': [
+    elements: [
       {
-        'type': 'Link',
-        'uri': '/categories/CategoryID/products/ProductA',
-        'title': 'Product A'
+        type: 'Link',
+        uri: '/categories/CategoryID/products/ProductA',
+        title: 'Product A',
       },
       {
-        'type': 'Link',
-        'uri': '/categories/CategoryID/products/ProductB',
-        'title': 'Product B'
-      }
+        type: 'Link',
+        uri: '/categories/CategoryID/products/ProductB',
+        title: 'Product B',
+      },
     ],
-    'type': 'ResourceCollection',
-    'sortKeys': ['name-desc', 'name-asc'],
-    'name': 'products'
+    type: 'ResourceCollection',
+    sortKeys: ['name-desc', 'name-asc'],
+    name: 'products',
   };
 
   beforeEach(() => {
@@ -32,23 +32,53 @@ describe('Proucts Service', () => {
     productsService = new ProductsService(instance(apiService));
   });
 
-  it('should get Product data when \'getProduct\' is called', () => {
-    when(apiService.get(productsService.productsServiceIdentifier + productSku, anything(), anything(), anything(), anything()))
-      .thenReturn(of({ sku: productSku } as Product));
+  it("should get Product data when 'getProduct' is called", () => {
+    when(
+      apiService.get(
+        productsService.productsServiceIdentifier + productSku,
+        anything(),
+        anything(),
+        anything(),
+        anything()
+      )
+    ).thenReturn(of({ sku: productSku } as Product));
     productsService.getProduct(productSku).subscribe(data => {
       expect(data.sku).toEqual(productSku);
     });
-    verify(apiService.get(productsService.productsServiceIdentifier + productSku, anything(), anything(), anything(), anything())).once();
+    verify(
+      apiService.get(
+        productsService.productsServiceIdentifier + productSku,
+        anything(),
+        anything(),
+        anything(),
+        anything()
+      )
+    ).once();
   });
 
-  it('should get a list of Products SKUs for a given Category when \'getProductsSkusForCategory\' is called', () => {
-    when(apiService.get(productsService.categoriesServiceIdentifier + categoryId + '/' + productsService.productsServiceIdentifier, anything(), anything(), anything(), anything()))
-      .thenReturn(of(productsMockData));
+  it("should get a list of Products SKUs for a given Category when 'getProductsSkusForCategory' is called", () => {
+    when(
+      apiService.get(
+        productsService.categoriesServiceIdentifier + categoryId + '/' + productsService.productsServiceIdentifier,
+        anything(),
+        anything(),
+        anything(),
+        anything()
+      )
+    ).thenReturn(of(productsMockData));
     productsService.getProductsSkusForCategory(categoryId).subscribe(data => {
       expect(data.skus).toEqual(['ProductA', 'ProductB']);
       expect(data.categoryUniqueId).toEqual(categoryId);
       expect(data.sortKeys).toEqual(['name-desc', 'name-asc']);
     });
-    verify(apiService.get(productsService.categoriesServiceIdentifier + categoryId + '/' + productsService.productsServiceIdentifier, anything(), anything(), anything(), anything())).once();
+    verify(
+      apiService.get(
+        productsService.categoriesServiceIdentifier + categoryId + '/' + productsService.productsServiceIdentifier,
+        anything(),
+        anything(),
+        anything(),
+        anything()
+      )
+    ).once();
   });
 });

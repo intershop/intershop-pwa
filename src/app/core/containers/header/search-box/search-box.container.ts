@@ -12,14 +12,10 @@ import { ShoppingState } from '../../../../shopping/store/shopping.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxContainerComponent implements OnInit {
-
   searchResults$: Observable<SuggestTerm[]>;
   previousSearchTerm$: Observable<string>;
 
-  constructor(
-    private store: Store<ShoppingState>,
-    private router: Router
-  ) { }
+  constructor(private store: Store<ShoppingState>, private router: Router) {}
 
   ngOnInit() {
     this.searchResults$ = this.store.pipe(select(getSuggestSearchResults));
@@ -32,7 +28,7 @@ export class SearchBoxContainerComponent implements OnInit {
 
   performSearch(searchTerm: string) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'SearchTerm': searchTerm }
+      queryParams: { SearchTerm: searchTerm },
     };
     this.router.navigate(['/search'], navigationExtras);
   }

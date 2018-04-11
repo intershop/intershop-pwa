@@ -12,11 +12,7 @@ import { getUserAuthorized } from '../store/user';
  */
 @Injectable()
 export class AuthGuard implements CanActivate {
-
-  constructor(
-    private store: Store<CoreState>,
-    private router: Router
-  ) { }
+  constructor(private store: Store<CoreState>, private router: Router) {}
 
   canActivate(): Observable<boolean> {
     return this.store.pipe(

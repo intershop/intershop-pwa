@@ -12,7 +12,6 @@ import { LoadProduct, LoadProductFail, LoadProductSuccess } from './products.act
 import * as s from './products.selectors';
 
 describe('Products Selectors', () => {
-
   let store$: Store<ShoppingState>;
 
   let products$: Observable<Product[]>;
@@ -30,9 +29,9 @@ describe('Products Selectors', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer
-        })
-      ]
+          routerReducer,
+        }),
+      ],
     });
 
     store$ = TestBed.get(Store);
@@ -45,7 +44,6 @@ describe('Products Selectors', () => {
   });
 
   describe('with empty state', () => {
-
     it('should not select any products when used', () => {
       expect(products$).toBeObservable(c([]));
       expect(productEntities$).toBeObservable(c({}));
@@ -60,7 +58,6 @@ describe('Products Selectors', () => {
   });
 
   describe('loading a product', () => {
-
     beforeEach(() => {
       store$.dispatch(new LoadProduct(''));
     });
@@ -70,7 +67,6 @@ describe('Products Selectors', () => {
     });
 
     describe('and reporting success', () => {
-
       beforeEach(() => {
         store$.dispatch(new LoadProductSuccess(prod));
       });
@@ -82,7 +78,6 @@ describe('Products Selectors', () => {
     });
 
     describe('and reporting failure', () => {
-
       beforeEach(() => {
         store$.dispatch(new LoadProductFail({ message: 'error' } as HttpErrorResponse));
       });
@@ -95,13 +90,11 @@ describe('Products Selectors', () => {
   });
 
   describe('state with a product', () => {
-
     beforeEach(() => {
       store$.dispatch(new LoadProductSuccess(prod));
     });
 
     describe('but no current router state', () => {
-
       it('should return the product information when used', () => {
         expect(products$).toBeObservable(c([prod]));
         expect(productEntities$).toBeObservable(c({ [prod.sku]: prod }));
@@ -115,7 +108,6 @@ describe('Products Selectors', () => {
     });
 
     describe('with product route', () => {
-
       beforeEach(() => {
         store$.dispatch(navigateMockAction({ url: '/any', params: { sku: prod.sku } }));
       });

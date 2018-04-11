@@ -2,7 +2,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { arrayDiff, arrayIntersect, markAsDirtyRecursive } from './form-utils';
 
 describe('Form Utils', () => {
-
   describe('array utils', () => {
     it('should return diff for two arrays', () => {
       const a = [1, 2, 3, 4, 5, 6];
@@ -26,7 +25,7 @@ describe('Form Utils', () => {
   describe('markAsDirtyRecursive', () => {
     it('should mark all controls dirty for flat form group', () => {
       const group = new FormGroup({
-        ctrl: new FormControl('')
+        ctrl: new FormControl(''),
       });
 
       const ctrl = group.get('ctrl');
@@ -40,9 +39,9 @@ describe('Form Utils', () => {
         foo: new FormGroup({
           ctrlA: new FormControl(''),
           grp: new FormGroup({
-            ctrlB: new FormControl('')
-          })
-        })
+            ctrlB: new FormControl(''),
+          }),
+        }),
       });
 
       const ctrlA = group.get('foo.ctrlA');

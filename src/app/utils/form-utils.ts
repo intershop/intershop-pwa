@@ -34,9 +34,7 @@ export function updateValidatorsByDataLength(
 ) {
   // asyncify this if async flag is set
   if (async) {
-    return this.asyncify(
-      () => this.updateValidatorsByDataLength(control, array, validators, false)
-    );
+    return this.asyncify(() => this.updateValidatorsByDataLength(control, array, validators, false));
   }
 
   if (array && array.length) {

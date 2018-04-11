@@ -7,15 +7,7 @@ import { LoginPageContainerComponent } from './login-page.container';
 import { loginPageRoutes } from './login-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(loginPageRoutes),
-    SharedModule,
-    FormsSharedModule
-  ],
-  declarations: [
-    LoginPageContainerComponent,
-    LoginFormComponent
-  ]
+  imports: [RouterModule.forChild(loginPageRoutes), SharedModule, FormsSharedModule],
+  declarations: [LoginPageContainerComponent, LoginFormComponent],
 })
-
-export class LoginPageModule { }
+export class LoginPageModule {}

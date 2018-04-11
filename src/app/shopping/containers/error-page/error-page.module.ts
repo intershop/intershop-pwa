@@ -6,14 +6,7 @@ import { ErrorPageContainerComponent } from './error-page.container';
 import { errorPageRoutes } from './error-page.routes';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(errorPageRoutes),
-    SharedModule
-  ],
-  declarations: [
-    ErrorPageComponent,
-    ErrorPageContainerComponent,
-  ]
+  imports: [RouterModule.forChild(errorPageRoutes), SharedModule],
+  declarations: [ErrorPageComponent, ErrorPageContainerComponent],
 })
-
-export class ErrorPageModule { }
+export class ErrorPageModule {}

@@ -19,7 +19,7 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   compare: compareReducer,
   recently: recentlyReducer,
   search: searchReducer,
-  viewconf: viewconfReducer
+  viewconf: viewconfReducer,
 };
 
 // tslint:disable-next-line: no-any
@@ -29,5 +29,5 @@ export const shoppingEffects: any[] = [
   CompareEffects,
   RecentlyEffects,
   SearchEffects,
-  ViewconfEffects
+  ViewconfEffects,
 ];

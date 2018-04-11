@@ -11,12 +11,9 @@ import { ShoppingState } from '../../../../shopping/store/shopping.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCompareStatusContainerComponent implements OnInit {
-
   productCompareCount$: Observable<number>;
 
-  constructor(
-    private store: Store<ShoppingState>,
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     this.productCompareCount$ = this.store.pipe(select(getCompareProductsSKUs), pluck('length'));

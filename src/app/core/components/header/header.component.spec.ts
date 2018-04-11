@@ -10,30 +10,32 @@ describe('Header Component', () => {
   let element: HTMLElement;
   let component: HeaderComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        CollapseModule,
-        TranslateModule.forRoot(),
-        RouterTestingModule
-      ],
-      declarations: [
-        HeaderComponent,
-        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
-        MockComponent({ selector: 'ish-product-compare-status-container', template: 'Product Compare Status Container' }),
-        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
-        MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' }),
-        MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
-        MockComponent({ selector: 'ish-mini-cart-container', template: 'Mini Cart Container' }),
-        MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
-      ]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(HeaderComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    });
-
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [CollapseModule, TranslateModule.forRoot(), RouterTestingModule],
+        declarations: [
+          HeaderComponent,
+          MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
+          MockComponent({
+            selector: 'ish-product-compare-status-container',
+            template: 'Product Compare Status Container',
+          }),
+          MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
+          MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' }),
+          MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
+          MockComponent({ selector: 'ish-mini-cart-container', template: 'Mini Cart Container' }),
+          MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(HeaderComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -42,12 +44,18 @@ describe('Header Component', () => {
   });
 
   it('should render User Links on template', () => {
-    expect(element.getElementsByTagName('ish-login-status-container')[0].textContent).toContain('Login Status Container');
-    expect(element.getElementsByTagName('ish-product-compare-status-container')[0].textContent).toContain('Product Compare Status Container');
+    expect(element.getElementsByTagName('ish-login-status-container')[0].textContent).toContain(
+      'Login Status Container'
+    );
+    expect(element.getElementsByTagName('ish-product-compare-status-container')[0].textContent).toContain(
+      'Product Compare Status Container'
+    );
   });
 
   it('should render Language Switch on template', () => {
-    expect(element.getElementsByTagName('ish-language-switch-container')[0].textContent).toContain('Language Switch Container');
+    expect(element.getElementsByTagName('ish-language-switch-container')[0].textContent).toContain(
+      'Language Switch Container'
+    );
   });
 
   it('should render Search Box on template', () => {
@@ -55,7 +63,9 @@ describe('Header Component', () => {
   });
 
   it('should render Header Navigation on template', () => {
-    expect(element.getElementsByTagName('ish-header-navigation-container')[0].textContent).toContain('Header Navigation Container');
+    expect(element.getElementsByTagName('ish-header-navigation-container')[0].textContent).toContain(
+      'Header Navigation Container'
+    );
   });
 
   it('should render Cart on template', () => {

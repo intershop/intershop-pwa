@@ -1,5 +1,15 @@
 // NEEDS_WORK: review and adapt (search-box results in javascript error when used in french)
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
@@ -10,7 +20,6 @@ import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() buttonText: string;
   @Input() buttonTitleText: string;
   @Input() placeholderText: string;
@@ -28,7 +37,7 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.searchForm = new FormGroup({
-      search: new FormControl('')
+      search: new FormControl(''),
     });
 
     if (this.autoSuggest) {
@@ -77,10 +86,11 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   selectSuggestedTerm(index: number) {
-    if (this.isHidden ||
+    if (
+      this.isHidden ||
       (this.maxAutoSuggests && index > this.maxAutoSuggests - 1) ||
-      (index < -1) ||
-      (index > this.results.length - 1)
+      index < -1 ||
+      index > this.results.length - 1
     ) {
       return;
     }
@@ -94,9 +104,12 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   private setSearchFormValue(value: string) {
     // TODO: check why this method can be called before there is a searchForm
     if (this.searchForm) {
-      this.searchForm.patchValue({
-        search: value
-      }, { emitEvent: false });
+      this.searchForm.patchValue(
+        {
+          search: value,
+        },
+        { emitEvent: false }
+      );
     }
   }
 }

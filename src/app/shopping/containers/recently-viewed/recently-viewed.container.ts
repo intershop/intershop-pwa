@@ -11,15 +11,11 @@ import { ShoppingState } from '../../store/shopping.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecentlyViewedContainerComponent implements OnInit {
-
   recentlyProducts$: Observable<Product[]>;
 
-  constructor(
-    private store: Store<ShoppingState>
-  ) { }
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     this.recentlyProducts$ = this.store.pipe(select(getMostRecentlyViewedProducts));
   }
-
 }

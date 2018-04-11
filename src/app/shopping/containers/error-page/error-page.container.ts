@@ -11,12 +11,9 @@ import { ErrorState } from '../../../core/store/error/error.reducer';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorPageContainerComponent implements OnInit {
-
   generalError$: Observable<ErrorState>;
 
-  constructor(
-    private store: Store<CoreState>
-  ) { }
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
     this.generalError$ = this.store.pipe(select(getErrorState));

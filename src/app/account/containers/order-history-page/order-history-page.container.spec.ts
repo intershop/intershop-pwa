@@ -8,23 +8,25 @@ describe('Order History Page Container', () => {
   let fixture: ComponentFixture<OrderHistoryPageContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        OrderHistoryPageContainerComponent,
-        MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['account', 'trailText']
-        }),
-        MockComponent({
-          selector: 'ish-order-history-page',
-          template: 'Order History Page Component'
-        })
-      ],
-      imports: [TranslateModule.forRoot()]
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          OrderHistoryPageContainerComponent,
+          MockComponent({
+            selector: 'ish-breadcrumb',
+            template: 'Breadcrumb Component',
+            inputs: ['account', 'trailText'],
+          }),
+          MockComponent({
+            selector: 'ish-order-history-page',
+            template: 'Order History Page Component',
+          }),
+        ],
+        imports: [TranslateModule.forRoot()],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderHistoryPageContainerComponent);

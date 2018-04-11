@@ -2,7 +2,16 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import { catchError, concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { CoreState } from '../../../core/store/countries';
 import { getCurrentLocale } from '../../../core/store/locale';
 import { ProductsService } from '../../services/products/products.service';
@@ -18,17 +27,19 @@ export class ProductsEffects {
     private actions$: Actions,
     private store: Store<ShoppingState | CoreState>,
     private productsService: ProductsService
-  ) { }
+  ) {}
 
   @Effect()
   loadProduct$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProduct),
     map((action: productsActions.LoadProduct) => action.payload),
     mergeMap(sku => {
-      return this.productsService.getProduct(sku).pipe(
-        map(product => new productsActions.LoadProductSuccess(product)),
-        catchError(error => of(new productsActions.LoadProductFail(error)))
-      );
+      return this.productsService
+        .getProduct(sku)
+        .pipe(
+          map(product => new productsActions.LoadProductSuccess(product)),
+          catchError(error => of(new productsActions.LoadProductFail(error)))
+        );
     })
   );
 
@@ -37,7 +48,9 @@ export class ProductsEffects {
     ofType(productsActions.ProductsActionTypes.LoadProductsForCategory),
     map((action: productsActions.LoadProductsForCategory) => action.payload),
     withLatestFrom(this.store.pipe(select(fromViewconf.getSortBy))),
-    concatMap(([categoryUniqueId, sortBy]) => this.productsService.getProductsSkusForCategory(categoryUniqueId, sortBy)),
+    concatMap(([categoryUniqueId, sortBy]) =>
+      this.productsService.getProductsSkusForCategory(categoryUniqueId, sortBy)
+    ),
     switchMap(res => [
       new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
       new fromViewconf.SetSortKeys(res.sortKeys),
@@ -49,7 +62,7 @@ export class ProductsEffects {
   selectedProduct$ = this.store.pipe(
     select(productsSelectors.getSelectedProductId),
     filter(id => !!id),
-    map(id => new productsActions.LoadProduct(id)),
+    map(id => new productsActions.LoadProduct(id))
   );
 
   @Effect()
@@ -59,6 +72,6 @@ export class ProductsEffects {
     distinctUntilChanged(),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([locale, sku]) => !!sku),
-    map(([locale, sku]) => new productsActions.LoadProduct(sku)),
+    map(([locale, sku]) => new productsActions.LoadProduct(sku))
   );
 }

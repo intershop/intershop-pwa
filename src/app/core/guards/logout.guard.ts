@@ -9,8 +9,7 @@ import { LogoutUser } from '../store/user';
  */
 @Injectable()
 export class LogoutGuard implements CanActivate {
-
-  constructor(private store: Store<CoreState>) { }
+  constructor(private store: Store<CoreState>) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     this.store.dispatch(new LogoutUser());

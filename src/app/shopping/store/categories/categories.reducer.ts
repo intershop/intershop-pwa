@@ -10,32 +10,28 @@ export interface CategoriesState extends EntityState<Category> {
 }
 
 export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
-  selectId: category => category.uniqueId
+  selectId: category => category.uniqueId,
 });
 
 export const initialState: CategoriesState = categoryAdapter.getInitialState({
   loading: false,
   topLevelCategoriesIds: [],
-  categoriesProductSKUs: {}
+  categoriesProductSKUs: {},
 });
 
-export function categoriesReducer(
-  state = initialState,
-  action: CategoriesAction
-): CategoriesState {
+export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
-
     case CategoriesActionTypes.LoadCategory: {
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     }
 
     case CategoriesActionTypes.LoadCategoryFail: {
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     }
 
@@ -45,9 +41,8 @@ export function categoriesReducer(
       const upsert = { id: loadedCategory.uniqueId, entity: loadedCategory };
       return {
         ...adapterUpsertOne(upsert, state, categoryAdapter),
-        loading: false
+        loading: false,
       };
-
     }
 
     case CategoriesActionTypes.SaveSubCategories: {
@@ -55,7 +50,7 @@ export function categoriesReducer(
 
       const upserts = subCategories.map(c => ({
         id: c.uniqueId,
-        entity: c
+        entity: c,
       }));
 
       return adapterUpsertMany(upserts, state, categoryAdapter);
@@ -67,7 +62,7 @@ export function categoriesReducer(
 
       const categoriesProductSKUs = {
         ...state.categoriesProductSKUs,
-        [categoryUniqueId]: skus
+        [categoryUniqueId]: skus,
       };
 
       return { ...state, categoriesProductSKUs };
@@ -77,18 +72,16 @@ export function categoriesReducer(
       const tlCategories = action.payload;
       const topLevelCategoriesIds = tlCategories.map(c => c.uniqueId);
 
-      const allCategories = tlCategories
-        .map(c => flattenSubCategories(c))
-        .reduce((acc, p) => [...acc, ...p], []);
+      const allCategories = tlCategories.map(c => flattenSubCategories(c)).reduce((acc, p) => [...acc, ...p], []);
 
       const upserts = allCategories.map(c => ({
         id: c.uniqueId,
-        entity: c
+        entity: c,
       }));
 
       return {
         ...adapterUpsertMany(upserts, state, categoryAdapter),
-        topLevelCategoriesIds
+        topLevelCategoriesIds,
       };
     }
   }
@@ -103,7 +96,7 @@ export function flattenSubCategories(c: Category): Category[] {
 
   const category = {
     ...c,
-    subCategoriesIds: c.subCategories.map(sc => sc.uniqueId)
+    subCategoriesIds: c.subCategories.map(sc => sc.uniqueId),
   };
   delete category.subCategories;
 

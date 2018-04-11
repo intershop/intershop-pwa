@@ -9,22 +9,20 @@ describe('Footer Component', () => {
   let element: HTMLElement;
   let component: FooterComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        CollapseModule.forRoot(),
-        ModalModule.forRoot(),
-        PopoverModule.forRoot(),
-      ],
-      declarations: [
-        FooterComponent,
-      ]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(FooterComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    });
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [CollapseModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot()],
+        declarations: [FooterComponent],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(FooterComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();

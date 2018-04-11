@@ -11,7 +11,6 @@ import { markAsDirtyRecursive } from '../../../utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnInit {
-
   form: FormGroup;
   submitted = false;
 
@@ -30,7 +29,7 @@ export class LoginFormComponent implements OnInit {
 
     this.form = new FormGroup({
       userName: new FormControl('', [Validators.required, userNameValidator]),
-      password: new FormControl('', Validators.required)
+      password: new FormControl('', Validators.required),
     });
   }
 

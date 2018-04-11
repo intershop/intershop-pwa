@@ -7,7 +7,6 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './captcha.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class CaptchaComponent {
   @Input() parentForm: FormGroup;
   @Input() controlName: string;
@@ -19,5 +18,4 @@ export class CaptchaComponent {
   resolved(captchaResponse: string) {
     this.parentForm.get(this.controlName).setValue(true);
   }
-
 }

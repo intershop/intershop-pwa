@@ -20,16 +20,12 @@ export const initialState: UserState = {
   error: undefined,
 };
 
-export function userReducer(
-  state = initialState,
-  action: Action
-): UserState {
+export function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
-
     case ROUTER_NAVIGATION: {
       return {
         ...state,
-        error: undefined
+        error: undefined,
       };
     }
 
@@ -40,7 +36,7 @@ export function userReducer(
     case UserActionTypes.LoginUserFail: {
       return {
         ...initialState,
-        error: (action as LoginUserFail).payload
+        error: (action as LoginUserFail).payload,
       };
     }
 
@@ -48,7 +44,7 @@ export function userReducer(
       return {
         ...initialState,
         authorized: true,
-        customer: (action as LoginUserSuccess).payload
+        customer: (action as LoginUserSuccess).payload,
       };
     }
 
@@ -59,7 +55,7 @@ export function userReducer(
     case UserActionTypes.CreateUserFail: {
       return {
         ...state,
-        error: (action as CreateUserFail).payload
+        error: (action as CreateUserFail).payload,
       };
     }
   }

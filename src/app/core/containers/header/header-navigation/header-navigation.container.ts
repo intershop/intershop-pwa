@@ -11,12 +11,9 @@ import { CoreState } from '../../../store/core.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderNavigationContainerComponent implements OnInit {
-
   categories$: Observable<Category[]>;
 
-  constructor(
-    private store: Store<CoreState>,
-  ) { }
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
     this.categories$ = this.store.pipe(select(getTopLevelCategories));

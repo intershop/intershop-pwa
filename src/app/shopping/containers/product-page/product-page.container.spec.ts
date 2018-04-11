@@ -17,23 +17,29 @@ describe('Product Page Container', () => {
   let element: HTMLElement;
   let store$: Store<CoreState>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-          routerReducer
-        })
-      ],
-      declarations: [
-        ProductPageContainerComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['category', 'categoryPath', 'product'] }),
-        MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' })
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          StoreModule.forRoot({
+            shopping: combineReducers(shoppingReducers),
+            routerReducer,
+          }),
+        ],
+        declarations: [
+          ProductPageContainerComponent,
+          MockComponent({
+            selector: 'ish-breadcrumb',
+            template: 'Breadcrumb Component',
+            inputs: ['category', 'categoryPath', 'product'],
+          }),
+          MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
+          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+          MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductPageContainerComponent);
@@ -69,12 +75,16 @@ describe('Product Page Container', () => {
     store$.dispatch(new LoadProductSuccess(product));
     const routerAction = navigateMockAction({
       url: `/product/${product.sku}`,
-      params: { sku: product.sku }
+      params: { sku: product.sku },
     });
     store$.dispatch(routerAction);
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-product-detail', 'ish-recently-viewed-container']);
+    expect(findAllIshElements(element)).toEqual([
+      'ish-breadcrumb',
+      'ish-product-detail',
+      'ish-recently-viewed-container',
+    ]);
   });
 });
