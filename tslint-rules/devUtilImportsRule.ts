@@ -4,13 +4,13 @@ import { RuleHelpers } from './ruleHelpers';
 
 class DevUtilImportsWalker extends Lint.RuleWalker {
 
-  public visitSourceFile(sourceFile: SourceFile) {
+  visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search(/.spec.ts/) < 0) {
       super.visitSourceFile(sourceFile);
     }
   }
 
-  public visitImportDeclaration(importStatement: ImportDeclaration) {
+  visitImportDeclaration(importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
     const fromStringText = fromStringToken.getText();
     if (fromStringText.indexOf('utils/dev') > 0) {
@@ -24,7 +24,7 @@ class DevUtilImportsWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new DevUtilImportsWalker(sourceFile, this.getOptions()));
   }
 }

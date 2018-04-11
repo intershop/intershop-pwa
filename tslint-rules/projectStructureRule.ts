@@ -70,28 +70,28 @@ class ProjectStructureWalker extends Lint.RuleWalker {
     }
   }
 
-  public visitClassDeclaration(declaration: ts.ClassDeclaration) {
+  visitClassDeclaration(declaration: ts.ClassDeclaration) {
     const name = declaration.name.escapedText.toString();
     this.visitName(name, declaration);
   }
 
-  public visitInterfaceDeclaration(declaration: ts.InterfaceDeclaration) {
+  visitInterfaceDeclaration(declaration: ts.InterfaceDeclaration) {
     const name = declaration.name.escapedText.toString();
     this.visitName(name, declaration);
   }
 
-  public visitFunctionDeclaration(declaration: ts.FunctionDeclaration) {
+  visitFunctionDeclaration(declaration: ts.FunctionDeclaration) {
     const name = declaration.name.escapedText.toString();
     this.visitName(name, declaration);
   }
 
-  public visitVariableStatement(stmt: ts.VariableStatement) {
+  visitVariableStatement(stmt: ts.VariableStatement) {
     if (stmt.getText().startsWith('export')) {
       super.visitVariableStatement(stmt);
     }
   }
 
-  public visitVariableDeclaration(declaration: ts.VariableDeclaration) {
+  visitVariableDeclaration(declaration: ts.VariableDeclaration) {
     if (ts.isIdentifier(declaration.name) && (declaration.name as ts.Identifier).escapedText) {
       const name = (declaration.name as ts.Identifier).escapedText.toString();
       this.visitName(name, declaration);
@@ -104,7 +104,7 @@ class ProjectStructureWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new ProjectStructureWalker(sourceFile, this.getOptions()));
   }
 }

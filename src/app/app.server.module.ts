@@ -16,7 +16,7 @@ import { ICM_APPLICATION_SK, ICM_BASE_URL_SK, ICM_SERVER_SK, StatePropertiesServ
 import { coreReducers } from './core/store/core.system';
 
 export class TranslateUniversalLoader implements TranslateLoader {
-  public getTranslation(lang: string): Observable<string> {
+  getTranslation(lang: string): Observable<string> {
     return Observable.create((observer: Observer<string>) => {
       let rootPath = process.cwd();
       if (!!rootPath && rootPath.indexOf('browser') > 0) {

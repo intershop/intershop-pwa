@@ -4,7 +4,7 @@ import { RuleHelpers } from './ruleHelpers';
 
 class LocalImportsFormatPluginWalker extends Lint.RuleWalker {
 
-  public visitImportDeclaration(importStatement: ImportDeclaration) {
+  visitImportDeclaration(importStatement: ImportDeclaration) {
     let applyLikeAutoImportPlugin: boolean;
     if (this.getOptions()[0] === 'AutoImportPlugin') {
       applyLikeAutoImportPlugin = true;
@@ -38,7 +38,7 @@ class LocalImportsFormatPluginWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new LocalImportsFormatPluginWalker(sourceFile, this.getOptions()));
   }
 }
