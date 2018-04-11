@@ -3,13 +3,13 @@ import { PropertyAssignment, SourceFile, SyntaxKind } from 'typescript';
 
 class UseCamelCaseEnvironmentPropertiesWalker extends Lint.RuleWalker {
 
-  public visitSourceFile(sourceFile: SourceFile) {
+  visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.match(/.*\/environment[\.\w]*\.ts/)) {
       super.visitSourceFile(sourceFile);
     }
   }
 
-  public visitPropertyAssignment(propertyAssignment: PropertyAssignment) {
+  visitPropertyAssignment(propertyAssignment: PropertyAssignment) {
     propertyAssignment.getChildren().forEach(token => {
       if (token.kind === SyntaxKind.Identifier) {
         const identifier = token.getText();
@@ -27,7 +27,7 @@ class UseCamelCaseEnvironmentPropertiesWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new UseCamelCaseEnvironmentPropertiesWalker(sourceFile, this.getOptions()));
   }
 }

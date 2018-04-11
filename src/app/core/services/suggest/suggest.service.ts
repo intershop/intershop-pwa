@@ -19,7 +19,7 @@ export class SuggestService {
    * @param searchTerm  The search term to get suggestions for.
    * @returns           List of suggested search terms.
    */
-  public search(searchTerm: string): Observable<SuggestTerm[]> {
+  search(searchTerm: string): Observable<SuggestTerm[]> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
     return this.apiService.get<SuggestTerm[]>(this.serviceIdentifier, params, null, true, false);
   }

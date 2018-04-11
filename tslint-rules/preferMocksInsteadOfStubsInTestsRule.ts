@@ -5,13 +5,13 @@ import { RuleHelpers } from './ruleHelpers';
 
 class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {
 
-  public visitSourceFile(sourceFile: SourceFile) {
+  visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
       super.visitSourceFile(sourceFile);
     }
   }
 
-  public visitClassDeclaration(node: ClassDeclaration) {
+  visitClassDeclaration(node: ClassDeclaration) {
     const classToken = RuleHelpers.getNextChildTokenOfKind(node, SyntaxKind.ClassKeyword);
     const classNameToken = getNextToken(classToken);
     const className = classNameToken.getText();
@@ -27,7 +27,7 @@ class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new PreferMocksInsteadOfStubsInTestsWalker(sourceFile, this.getOptions()));
   }
 }

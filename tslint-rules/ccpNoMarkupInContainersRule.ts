@@ -13,7 +13,7 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
     this.patterns = options['ruleArguments'][0]['patterns'];
   }
 
-  public visitSourceFile(sourceFile: SourceFile) {
+  visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.match(/.*\/containers\/(?!.*(routes|module|spec).ts$).*.ts/)) {
 
       const fileName = sourceFile.fileName;
@@ -39,7 +39,7 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
  */
 export class Rule extends Lint.Rules.AbstractRule {
 
-  public apply(sourceFile: SourceFile): Lint.RuleFailure[] {
+  apply(sourceFile: SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new CCPNoMarkupInContainersWalker(sourceFile, this.getOptions()));
   }
 }
