@@ -68,6 +68,8 @@ describe('RegistrationForm Component', () => {
   });
 
   it('should throw cancel event when cancel is clicked', () => {
+    // fixture.detectChanges only necessary to trigger ngOnInit that will add a subscription that will be unsubscribed with ngOnDestroy
+    fixture.detectChanges();
 
     let fired = false;
     component.cancel.subscribe(() => {
@@ -79,6 +81,8 @@ describe('RegistrationForm Component', () => {
   });
 
   it('should set submitted flag if submit is clicked and form is not valid', async(() => {
+    // fixture.detectChanges only necessary to trigger ngOnInit that will add a subscription that will be unsubscribed with ngOnDestroy
+    fixture.detectChanges();
     component.form = new FormGroup({
       preferredLanguage: new FormControl('', Validators.required),
     });
