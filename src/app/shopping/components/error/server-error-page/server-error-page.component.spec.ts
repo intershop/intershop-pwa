@@ -6,19 +6,19 @@ describe('Server Error Page Component', () => {
   let element: HTMLElement;
   let component: ServerErrorPageComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ServerErrorPageComponent,
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ServerErrorPageComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ServerErrorPageComponent);
     element = fixture.nativeElement;
     component = fixture.componentInstance;
-    component.error = { 'current': { 'status': 0 } };
+    component.error = { current: { status: 0 } };
   });
 
   it('should be created', () => {
@@ -28,7 +28,7 @@ describe('Server Error Page Component', () => {
   });
 
   it('should render a server timeout error content on the HTML', () => {
-    component.error = { 'current': { 'status': 0 }, 'type': 'Error' };
+    component.error = { current: { status: 0 }, type: 'Error' };
     fixture.detectChanges();
     expect(element.getElementsByTagName('h3')[0].textContent).toContain('We are sorry');
     expect(element.getElementsByTagName('h4')[0].textContent).toContain('Please go back to the');
@@ -36,7 +36,7 @@ describe('Server Error Page Component', () => {
   });
 
   it('should render a 5xx error content on the HTML', () => {
-    component.error = { 'current': { 'status': 500 }, 'type': 'Error' };
+    component.error = { current: { status: 500 }, type: 'Error' };
     fixture.detectChanges();
     expect(element.getElementsByTagName('h3')[0].textContent).toContain('We are sorry');
     expect(element.getElementsByTagName('h4')[0].textContent).toContain('Please go back to the');
@@ -45,7 +45,7 @@ describe('Server Error Page Component', () => {
   });
 
   it('should render the error type if it is available', () => {
-    component.error = { 'current': { 'status': 500 }, 'type': 'Error' };
+    component.error = { current: { status: 500 }, type: 'Error' };
     fixture.detectChanges();
     const a = element.querySelector('p.text-muted');
     expect(a).toBeTruthy();

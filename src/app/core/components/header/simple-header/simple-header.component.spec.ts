@@ -6,17 +6,19 @@ describe('Simple Header Component', () => {
   let element: HTMLElement;
   let component: SimpleHeaderComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        SimpleHeaderComponent,
-      ]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(SimpleHeaderComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    });
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [SimpleHeaderComponent],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SimpleHeaderComponent);
+          component = fixture.componentInstance;
+          element = fixture.nativeElement;
+        });
+    })
+  );
 
   it('should be created', () => {
     expect(component).toBeTruthy();
