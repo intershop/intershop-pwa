@@ -7,7 +7,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServerErrorPageComponent {
-
   // TODO: do not handle complete ErrorState, model type might be required
   @Input() error;
 }

@@ -59,9 +59,6 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     LoginStatusContainerComponent,
     ClickOutsideDirective,
   ],
-  exports: [
-    HeaderComponent,
-    HeaderContainerComponent
-  ]
+  exports: [HeaderComponent, HeaderContainerComponent],
 })
 export class HeaderModule {}
