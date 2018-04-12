@@ -6,18 +6,8 @@ import { SearchBoxComponent } from './search/components/search-box/search-box.co
 import { SearchBoxContainerComponent } from './search/containers/search-box/search-box.container';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    TranslateModule,
-    ReactiveFormsModule
-  ],
-  declarations: [
-    SearchBoxComponent,
-    SearchBoxContainerComponent
-  ],
-  exports: [
-    SearchBoxComponent,
-    SearchBoxContainerComponent
-  ]
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule],
+  declarations: [SearchBoxComponent, SearchBoxContainerComponent],
+  exports: [SearchBoxComponent, SearchBoxContainerComponent],
 })
-export class SharedSearchModule { }
+export class SharedSearchModule {}

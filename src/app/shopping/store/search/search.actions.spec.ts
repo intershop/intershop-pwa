@@ -9,7 +9,7 @@ describe('Search Actions', () => {
 
       expect({ ...action }).toEqual({
         type: SearchActionTypes.SearchProducts,
-        payload
+        payload,
       });
     });
 
@@ -19,7 +19,7 @@ describe('Search Actions', () => {
 
       expect({ ...action }).toEqual({
         type: SearchActionTypes.SearchProductsSuccess,
-        payload
+        payload,
       });
     });
 
@@ -29,7 +29,7 @@ describe('Search Actions', () => {
 
       expect({ ...action }).toEqual({
         type: SearchActionTypes.SearchProductsFail,
-        payload
+        payload,
       });
     });
   });
