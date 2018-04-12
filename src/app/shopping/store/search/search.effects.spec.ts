@@ -65,7 +65,6 @@ describe('Search Effects', () => {
 
   describe('triggerSearch$', () => {
     it('should trigger SearchProducts action if search URL', () => {
-
       const routerAction = navigateMockAction({ url: '/search', params: { searchTerm: 'dummy' } });
       store$.dispatch(routerAction);
 
@@ -120,7 +119,11 @@ describe('Search Effects', () => {
       const result = [{ type: undefined, term: 'Goods' }];
       when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
 
-      actions$ = hot('--a---b----c', { a: new SuggestSearch('g'), b: new SuggestSearch('goo'), c: new SuggestSearch('good') });
+      actions$ = hot('--a---b----c', {
+        a: new SuggestSearch('g'),
+        b: new SuggestSearch('goo'),
+        c: new SuggestSearch('good'),
+      });
 
       expect(effects.suggestSearch$).toBeObservable(
         cold('---------------------------------------------------a', { a: new SuggestSearchSuccess(result) })
@@ -133,7 +136,10 @@ describe('Search Effects', () => {
       const result = [{ type: undefined, term: 'Goods' }];
       when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
 
-      actions$ = hot('a------------------------------------------------------b', { a: new SuggestSearch('good'), b: new SuggestSearch('good') });
+      actions$ = hot('a------------------------------------------------------b', {
+        a: new SuggestSearch('good'),
+        b: new SuggestSearch('good'),
+      });
 
       expect(effects.suggestSearch$).toBeObservable(
         cold('----------------------------------------a-------------------------------------------------------', {

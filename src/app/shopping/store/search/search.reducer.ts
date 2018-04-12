@@ -17,11 +17,10 @@ export const initialState: SearchState = {
 
 export function searchReducer(state = initialState, action: SearchAction): SearchState {
   switch (action.type) {
-
     case SearchActionTypes.SearchProducts: {
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     }
 
@@ -34,7 +33,7 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
         ...state,
         products,
         searchTerm,
-        loading
+        loading,
       };
     }
 
@@ -42,7 +41,7 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
       const suggestSearchResults = action.payload;
       return {
         ...state,
-        suggestSearchResults
+        suggestSearchResults,
       };
     }
   }

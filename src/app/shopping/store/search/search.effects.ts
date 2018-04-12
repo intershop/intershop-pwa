@@ -10,12 +10,18 @@ import { SearchService } from '../../services/products/search.service';
 import { LoadProduct } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { SetSortKeys } from '../viewconf';
-import { SearchActionTypes, SearchProducts, SearchProductsFail, SearchProductsSuccess, SuggestSearch, SuggestSearchSuccess } from './search.actions';
+import {
+  SearchActionTypes,
+  SearchProducts,
+  SearchProductsFail,
+  SearchProductsSuccess,
+  SuggestSearch,
+  SuggestSearchSuccess,
+} from './search.actions';
 import { getRequestedSearchTerm } from './search.selectors';
 
 @Injectable()
 export class SearchEffects {
-
   constructor(
     private actions$: Actions,
     private store: Store<ShoppingState>,
@@ -32,7 +38,7 @@ export class SearchEffects {
   triggerSearch$ = this.store.pipe(
     select(getRequestedSearchTerm),
     filter(searchTerm => !!searchTerm),
-    map(searchTerm => new SearchProducts(searchTerm)),
+    map(searchTerm => new SearchProducts(searchTerm))
   );
 
   /**
@@ -52,7 +58,7 @@ export class SearchEffects {
           // dispatch actions to load the product information of the found products
           ...res.skus.map(sku => new LoadProduct(sku)),
           // dispatch action to store the returned sorting options
-          new SetSortKeys(res.sortKeys)
+          new SetSortKeys(res.sortKeys),
         ]),
         catchError(error => of(new SearchProductsFail(error)))
       );

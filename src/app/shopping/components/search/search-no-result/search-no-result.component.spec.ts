@@ -10,21 +10,18 @@ describe('SearchNoResultComponent', () => {
   let element: HTMLElement;
   let translate: TranslateService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot()
-      ],
-      declarations: [
-        SearchNoResultComponent,
-        MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' })
-      ],
-      providers: [
-        TranslateService
-      ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot()],
+        declarations: [
+          SearchNoResultComponent,
+          MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' }),
+        ],
+        providers: [TranslateService],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchNoResultComponent);
@@ -48,5 +45,4 @@ describe('SearchNoResultComponent', () => {
     expect(element.querySelector('p.no-search-result-title')).toBeTruthy();
     expect(element.querySelector('p.no-search-result-title').textContent).toContain(component.searchTerm);
   });
-
 });

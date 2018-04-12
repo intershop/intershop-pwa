@@ -19,7 +19,7 @@ describe('Search Selectors', () => {
     searchTerm: 'a',
     products: ['9780321934161', '0818279012576'],
     loading: false,
-    suggestSearchResults: []
+    suggestSearchResults: [],
   };
 
   beforeEach(() => {
@@ -60,7 +60,9 @@ describe('Search Selectors', () => {
 
       store$.dispatch(new LoadProductSuccess({ sku: '9780321934161' } as Product));
       store$.dispatch(new LoadProductSuccess({ sku: '0818279012576' } as Product));
-      store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search', products: ['9780321934161', '0818279012576'] }));
+      store$.dispatch(
+        new SearchProductsSuccess({ searchTerm: 'search', products: ['9780321934161', '0818279012576'] })
+      );
 
       expect(searchProducts$).toBeObservable(cold('a', { a: products }));
     });
