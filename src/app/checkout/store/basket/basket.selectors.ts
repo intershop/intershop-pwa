@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
-import { CheckoutState, getCheckoutState } from '../checkout.state';
+import { getCheckoutState } from '../checkout.state';
 
 const getBasketState = createSelector(
-  getCheckoutState, (state: CheckoutState) => state.basket
+  getCheckoutState, state => state.basket
 );
 
 export const getCurrentBasket = createSelector(

@@ -30,6 +30,6 @@ export class ProductTileContainerComponent implements OnInit {
 
   addToCart() {
     // TODO: should be dispatched on checkout state, not shopping state
-    this.store.dispatch(new AddItemToBasket({ sku: this.product.sku, quanity: this.product.minOrderQuantity }));
+    this.store.dispatch(new AddItemToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
   }
 }

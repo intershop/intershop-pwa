@@ -35,7 +35,7 @@ describe('BasketEffects', () => {
       });
 
     when(basketServiceMock.addItemToBasket(anyString(), anyNumber(), anyString()))
-      .thenCall((sku: string, quanity: number, basketId: string) => {
+      .thenCall((sku: string, quantity: number, basketId: string) => {
         // TODO: provide a more meaningfull test implementation
         if (sku === 'invalid') {
           return _throw({ message: 'invalid' } as HttpErrorResponse);
@@ -106,17 +106,17 @@ describe('BasketEffects', () => {
   describe('addItemToBasket$', () => {
 
     it('should call the basketService for AddItemToBasket action', () => {
-      const payload = { sku: 'test', quanity: 1 };
-      const action = new basketActions.AddItemToBasket({ sku: 'test', quanity: 1 });
+      const payload = { sku: 'test', quantity: 1 };
+      const action = new basketActions.AddItemToBasket({ sku: 'test', quantity: 1 });
       actions$ = hot('-a', { a: action });
 
       effects.addItemToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemToBasket(payload.sku, payload.quanity, 'test')).once();
+        verify(basketServiceMock.addItemToBasket(payload.sku, payload.quantity, 'test')).once();
       });
     });
 
     it('should map to action of type AddItemToBasketSuccess', () => {
-      const payload = { sku: 'test', quanity: 1 };
+      const payload = { sku: 'test', quantity: 1 };
       const action = new basketActions.AddItemToBasket(payload);
       const completion = new basketActions.AddItemToBasketSuccess({});
       actions$ = hot('-a-a-a', { a: action });
@@ -126,7 +126,7 @@ describe('BasketEffects', () => {
     });
 
     it('should map invalid request to action of type AddItemToBasketFail', () => {
-      const payload = { sku: 'invalid', quanity: 1 };
+      const payload = { sku: 'invalid', quantity: 1 };
       const action = new basketActions.AddItemToBasket(payload);
       const completion = new basketActions.AddItemToBasketFail({ message: 'invalid' } as HttpErrorResponse);
       // TODO: fix me

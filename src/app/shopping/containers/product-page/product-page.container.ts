@@ -39,7 +39,7 @@ export class ProductPageContainerComponent implements OnInit {
 
   addToCart({ sku, quantity }) {
     // TODO: should be dispatched on checkout state, not shopping state
-    this.store.dispatch(new AddItemToBasket({ sku: sku, quanity: quantity }));
+    this.store.dispatch(new AddItemToBasket({ sku: sku, quantity: quantity }));
   }
 
   addToCompare(sku) {
