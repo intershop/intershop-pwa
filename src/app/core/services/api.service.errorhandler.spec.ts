@@ -29,18 +29,7 @@ describe('ApiServiceErrorHandler dispatchCommunicationErrors Method', () => {
   function dataProviderKnown() {
     return [
       { error: { status: 0 }, expectedType: ErrorActionTypes.TimeoutError },
-      { error: { status: 500 }, expectedType: ErrorActionTypes.InternalServerError },
-      { error: { status: 501 }, expectedType: ErrorActionTypes.NotImplementedError },
-      { error: { status: 502 }, expectedType: ErrorActionTypes.BadGatewayError },
-      { error: { status: 503 }, expectedType: ErrorActionTypes.ServiceUnavailableError },
-      { error: { status: 504 }, expectedType: ErrorActionTypes.GatewayTimeoutError },
-      { error: { status: 505 }, expectedType: ErrorActionTypes.HttpVersionNotSupportedError },
-      { error: { status: 506 }, expectedType: ErrorActionTypes.VariantAlsoNegotiatesError },
-      { error: { status: 507 }, expectedType: ErrorActionTypes.InsufficientStorageError },
-      { error: { status: 508 }, expectedType: ErrorActionTypes.LoopDetectedError },
-      { error: { status: 509 }, expectedType: ErrorActionTypes.BandwidthLimitExceededError },
-      { error: { status: 510 }, expectedType: ErrorActionTypes.NotExtendedError },
-      { error: { status: 511 }, expectedType: ErrorActionTypes.NetworkAuthenticationRequiredError },
+      { error: { status: 500 }, expectedType: ErrorActionTypes.ServerError },
     ];
   }
   function dataProviderUnknown() {

@@ -4,7 +4,7 @@ import { Action, Store } from '@ngrx/store';
 import { empty } from 'rxjs/observable/empty';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { CoreState } from '../store/core.state';
-import { ErrorActionTypes, InternalServerError } from '../store/error';
+import { ErrorActionTypes, ServerError } from '../store/error';
 import { ApiService } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
@@ -58,8 +58,8 @@ describe('ApiService', () => {
 
     verify(storeMock$.dispatch(anything())).once();
     const [action] = capture(storeMock$.dispatch).last();
-    expect((<Action>action).type).toEqual(ErrorActionTypes.InternalServerError);
-    expect((<InternalServerError>action).error.statusText).toEqual(statusText);
+    expect((<Action>action).type).toEqual(ErrorActionTypes.ServerError);
+    expect((<ServerError>action).error.statusText).toEqual(statusText);
   });
 
   it('should call the httpClient.put method when apiService.put method is called.', () => {
