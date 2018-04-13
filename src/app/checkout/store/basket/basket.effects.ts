@@ -51,7 +51,7 @@ export class BasketEffects {
     map((action: basketActions.AddItemToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([payload, basket]) => {
-      return this.basketService.addItemToBasket(payload.sku, payload.quanity, basket.id).pipe(
+      return this.basketService.addItemToBasket(payload.sku, payload.quantity, basket.id).pipe(
         map(result => new basketActions.AddItemToBasketSuccess(result)),
         catchError(error => of(new basketActions.AddItemToBasketFail(error)))
       );

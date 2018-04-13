@@ -19,6 +19,6 @@ export class ProductRowContainerComponent {
   ) { }
 
   addToCart() {
-    this.store.dispatch(new AddItemToBasket({ sku: this.product.sku, quanity: this.product.minOrderQuantity }));
+    this.store.dispatch(new AddItemToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
   }
 }

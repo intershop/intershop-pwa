@@ -28,7 +28,7 @@ export class LoadBasketSuccess implements Action {
 
 export class AddItemToBasket implements Action {
   readonly type = BasketActionTypes.AddItemToBasket;
-  constructor(public payload: { sku: string, quanity: number }) { }
+  constructor(public payload: { sku: string, quantity: number }) { }
 }
 
 export class AddItemToBasketFail implements Action {
