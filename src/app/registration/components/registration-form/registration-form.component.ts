@@ -10,7 +10,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { CustomValidators } from 'ng2-validation';
 import { takeUntil } from 'rxjs/operators';
@@ -79,6 +79,25 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
     const stateControl = this.form && this.form.get('address.state');
     if (c.regions && stateControl) {
       updateValidatorsByDataLength(stateControl, this.regions, Validators.required, true);
+    }
+    if (c.error && c.error.currentValue) {
+      if (c.error.currentValue.headers.get('error-missing-attributes')) {
+        const missingAttributes: string[] = c.error.currentValue.headers.get('error-missing-attributes').split(',');
+        missingAttributes
+          .map(attr => (attr === 'email' ? 'credentials.login' : attr))
+          .map(attr => {
+            let obj: AbstractControl | FormControl = this.form;
+            attr.split('.').forEach(sub => {
+              obj = obj.get(sub);
+            });
+            return obj as FormControl;
+          })
+          .filter(formControl => !!formControl)
+          .forEach(formControl => {
+            formControl.markAsDirty();
+            formControl.setErrors({ incorrect: true });
+          });
+      }
     }
   }
 

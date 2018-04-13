@@ -2344,6 +2344,6 @@
   "recentlyViewed.component.heading": "Récemment consultés",
   "shopping.product.readyforshipment.details.title": "Durée Prêt à l''expédition",
   "shopping.product.readyforshipment.details.text": "<p>Lorem ipsum onsectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p><h3>Sub Heading</h3><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>",
-  "customer.credentials.login.not_unique.error": "Un utilisateur avec cette adresse e-mail existe déjà. Vérifiez si ces informations sont correctes ou saisissez une autre adresse e-mail."
-
+  "customer.credentials.login.not_unique.error": "Un utilisateur avec cette adresse e-mail existe déjà. Vérifiez si ces informations sont correctes ou saisissez une autre adresse e-mail.",
+  "customer.missing_fields.error": "Missing fields"
 }
