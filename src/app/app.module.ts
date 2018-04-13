@@ -42,10 +42,10 @@ import { ShoppingModule } from './shopping/shopping.module';
 import { environment } from '../environments/environment';
 
 // tslint:disable-next-line: no-any
-export let metaReducers: MetaReducer<any>[] = [localStorageSyncReducer];
-if (!environment.production) {
-  metaReducers = [...metaReducers, storeFreeze];
-}
+export const metaReducers: MetaReducer<any>[] = [
+  ...(!environment.production ? [storeFreeze] : []),
+  ...(environment.syncLocalStorage ? [localStorageSyncReducer] : []),
+];
 
 @NgModule({
   declarations: [AppComponent],
