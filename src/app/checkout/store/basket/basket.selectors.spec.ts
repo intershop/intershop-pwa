@@ -8,7 +8,7 @@ import { c } from '../../../utils/dev/marbles-utils';
 import { CheckoutState } from '../checkout.state';
 import { checkoutReducers } from '../checkout.system';
 import { LoadBasket, LoadBasketFail, LoadBasketSuccess } from './basket.actions';
-import { getCurrentBasket, getCurrentBasketLoading, getCurrentBasketLoadingError } from './basket.selectors';
+import { getBasketError, getBasketLoading, getCurrentBasket } from './basket.selectors';
 
 describe('Basket selectors', () => {
 
@@ -16,7 +16,7 @@ describe('Basket selectors', () => {
 
   let basket$: Observable<Basket>;
   let basketLoading$: Observable<boolean>;
-  let basketLoadingError$: Observable<HttpErrorResponse>;
+  let basketError$: Observable<HttpErrorResponse>;
 
   let basket;
 
@@ -36,8 +36,8 @@ describe('Basket selectors', () => {
 
     store = TestBed.get(Store);
     basket$ = store.pipe(select(getCurrentBasket));
-    basketLoading$ = store.pipe(select(getCurrentBasketLoading));
-    basketLoadingError$ = store.pipe(select(getCurrentBasketLoadingError));
+    basketLoading$ = store.pipe(select(getBasketLoading));
+    basketError$ = store.pipe(select(getBasketError));
   });
 
   describe('with empty state', () => {
@@ -67,7 +67,7 @@ describe('Basket selectors', () => {
       store.dispatch(new LoadBasketFail({ message: 'invalid' } as HttpErrorResponse));
       expect(basketLoading$).toBeObservable(c(false));
       expect(basket$).toBeObservable(c(null));
-      expect(basketLoadingError$).toBeObservable(c({ message: 'invalid' }));
+      expect(basketError$).toBeObservable(c({ message: 'invalid' }));
     });
   });
 

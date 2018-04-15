@@ -10,12 +10,12 @@ export const getCurrentBasket = createSelector(
   basket => basket.basket
 );
 
-export const getCurrentBasketLoading = createSelector(
+export const getBasketLoading = createSelector(
   getBasketState,
   basket => basket.loading
 );
 
-export const getCurrentBasketLoadingError = createSelector(
+export const getBasketError = createSelector(
   getBasketState,
   basket => basket.error
 );
