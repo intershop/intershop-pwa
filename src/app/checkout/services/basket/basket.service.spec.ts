@@ -37,14 +37,14 @@ describe('Basket Service', () => {
   });
 
   it('should get Basket data when \'getBasket\' is called', () => {
-    when(apiService.get(basketService.basketServiceIdentifier + basketMockData.id))
+    when(apiService.get(basketService.basketServiceIdentifier + '/' + basketMockData.id))
       .thenReturn(of(basketMockData));
 
     basketService.getBasket(basketMockData.id).subscribe(data => {
       expect(data.id).toEqual(basketMockData.id);
     });
 
-    verify(apiService.get(basketService.basketServiceIdentifier + basketMockData.id)).once();
+    verify(apiService.get(basketService.basketServiceIdentifier + '/' + basketMockData.id)).once();
   });
 
   it('should post item to basket when \'addItemToBasket\' is called', () => {
@@ -58,7 +58,7 @@ describe('Basket Service', () => {
 
     verify(
       apiService.post(
-        basketService.basketServiceIdentifier + basketMockData.id + '/items/',
+        basketService.basketServiceIdentifier + '/' + basketMockData.id + '/' + basketService.itemsServiceIdentifier,
         anything()
       )
     ).once();
