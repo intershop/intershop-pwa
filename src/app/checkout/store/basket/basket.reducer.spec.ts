@@ -28,7 +28,7 @@ describe('Basket Reducer', () => {
     describe('LoadBasketSuccess action', () => {
       it('should set basket and set loading to false', () => {
         const basket = {
-          id: 'test'
+          id: 'test',
         } as Basket;
 
         const action = new fromActions.LoadBasketSuccess(basket);
@@ -37,12 +37,10 @@ describe('Basket Reducer', () => {
         expect(state.basket).toEqual(basket);
         expect(state.loading).toEqual(false);
       });
-
     });
   });
 
   describe('AddItemToBasket actions', () => {
-
     describe('AddItemToBasket action', () => {
       it('should set loading to true', () => {
         const action = new fromActions.AddItemToBasket({ sku: 'test', quantity: 1 });
@@ -70,7 +68,6 @@ describe('Basket Reducer', () => {
 
         expect(state.loading).toEqual(false);
       });
-
     });
   });
 });

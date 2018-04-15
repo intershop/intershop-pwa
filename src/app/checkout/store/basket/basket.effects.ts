@@ -16,7 +16,7 @@ export class BasketEffects {
     private actions$: Actions,
     private store: Store<CheckoutState | CoreState>,
     private basketService: BasketService
-  ) { }
+  ) {}
 
   /**
    * load basket effect
@@ -26,10 +26,12 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasket),
     map((action: basketActions.LoadBasket) => action.payload),
     mergeMap(basketId => {
-      return this.basketService.getBasket(basketId).pipe(
-        map(basket => new basketActions.LoadBasketSuccess(basket)),
-        catchError(error => of(new basketActions.LoadBasketFail(error))),
-      );
+      return this.basketService
+        .getBasket(basketId)
+        .pipe(
+          map(basket => new basketActions.LoadBasketSuccess(basket)),
+          catchError(error => of(new basketActions.LoadBasketFail(error)))
+        );
     })
   );
 
@@ -51,10 +53,12 @@ export class BasketEffects {
     map((action: basketActions.AddItemToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([payload, basket]) => {
-      return this.basketService.addItemToBasket(payload.sku, payload.quantity, basket.id).pipe(
-        map(result => new basketActions.AddItemToBasketSuccess(result)),
-        catchError(error => of(new basketActions.AddItemToBasketFail(error)))
-      );
+      return this.basketService
+        .addItemToBasket(payload.sku, payload.quantity, basket.id)
+        .pipe(
+          map(result => new basketActions.AddItemToBasketSuccess(result)),
+          catchError(error => of(new basketActions.AddItemToBasketFail(error)))
+        );
     })
   );
 

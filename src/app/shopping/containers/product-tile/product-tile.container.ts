@@ -19,9 +19,7 @@ export class ProductTileContainerComponent implements OnInit {
 
   isInCompareList$: Observable<boolean>;
 
-  constructor(
-    private store: Store<ShoppingState | CheckoutState>
-  ) { }
+  constructor(private store: Store<ShoppingState | CheckoutState>) {}
 
   ngOnInit() {
     this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(this.product.sku)));

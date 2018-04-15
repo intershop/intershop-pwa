@@ -16,9 +16,7 @@ export class ComparePageContainerComponent implements OnInit {
   compareProducts$: Observable<Product[]>;
   compareProductsCount$: Observable<Number>;
 
-  constructor(
-    private store: Store<ShoppingState | CheckoutState>
-  ) { }
+  constructor(private store: Store<ShoppingState | CheckoutState>) {}
 
   ngOnInit() {
     this.compareProducts$ = this.store.pipe(select(getCompareProducts));

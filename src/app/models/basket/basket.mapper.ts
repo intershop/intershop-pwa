@@ -2,14 +2,13 @@ import { BasketData } from '../basket/basket.interface';
 import { Basket } from './basket.model';
 
 export class BasketMapper {
-
   static fromData(data: BasketData) {
     const basket: Basket = {
       id: data.id,
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.dynamicMessages,
       InvoiceToAddress: data.InvoiceToAddress,
-      totals: data.totals
+      totals: data.totals,
     };
 
     if (data.shippingBuckets.length > 0) {

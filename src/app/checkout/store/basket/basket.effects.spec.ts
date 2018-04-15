@@ -14,7 +14,6 @@ import * as basketActions from './basket.actions';
 import { BasketEffects } from './basket.effects';
 
 describe('BasketEffects', () => {
-
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketEffects;
@@ -24,36 +23,38 @@ describe('BasketEffects', () => {
     basketServiceMock = mock(BasketService);
     storeMock$ = mock(Store);
 
-    when(basketServiceMock.getBasket(anyString()))
-      .thenCall((id: string) => {
-        // TODO: provide a more meaningfull test implementation
-        if (id === 'invalid') {
-          return _throw({ message: 'invalid' } as HttpErrorResponse);
-        } else {
-          return of({ id: id } as Basket);
-        }
-      });
+    when(basketServiceMock.getBasket(anyString())).thenCall((id: string) => {
+      // TODO: provide a more meaningfull test implementation
+      if (id === 'invalid') {
+        return _throw({ message: 'invalid' } as HttpErrorResponse);
+      } else {
+        return of({ id: id } as Basket);
+      }
+    });
 
-    when(basketServiceMock.addItemToBasket(anyString(), anyNumber(), anyString()))
-      .thenCall((sku: string, quantity: number, basketId: string) => {
+    when(basketServiceMock.addItemToBasket(anyString(), anyNumber(), anyString())).thenCall(
+      (sku: string, quantity: number, basketId: string) => {
         // TODO: provide a more meaningfull test implementation
         if (sku === 'invalid') {
           return _throw({ message: 'invalid' } as HttpErrorResponse);
         } else {
           return of({});
         }
-      });
+      }
+    );
 
     when(storeMock$.pipe(anything())).thenCall(selector => {
-      return selector(of({
-        checkout: {
-          basket: {
+      return selector(
+        of({
+          checkout: {
             basket: {
-              id: 'test'
-            }
-          }
-        }
-      }));
+              basket: {
+                id: 'test',
+              },
+            },
+          },
+        })
+      );
     });
 
     TestBed.configureTestingModule({
@@ -62,7 +63,7 @@ describe('BasketEffects', () => {
         BasketEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
-        { provide: Store, useFactory: () => instance(storeMock$) }
+        { provide: Store, useFactory: () => instance(storeMock$) },
       ],
     });
 
@@ -70,7 +71,6 @@ describe('BasketEffects', () => {
   });
 
   describe('loadBasket$', () => {
-
     it('should call the basketService for LoadBasket action', () => {
       const id = 'test';
       const action = new basketActions.LoadBasket(id);
@@ -104,7 +104,6 @@ describe('BasketEffects', () => {
   });
 
   describe('addItemToBasket$', () => {
-
     it('should call the basketService for AddItemToBasket action', () => {
       const payload = { sku: 'test', quantity: 1 };
       const action = new basketActions.AddItemToBasket({ sku: 'test', quantity: 1 });
@@ -136,5 +135,4 @@ describe('BasketEffects', () => {
       expect(effects.addItemToBasket$).toBeObservable(expected$);
     });
   });
-
 });

@@ -11,19 +11,15 @@ export interface BasketState {
 export const initialState: BasketState = {
   basket: null,
   loading: false,
-  error: null
+  error: null,
 };
 
-export function basketReducer(
-  state = initialState,
-  action: BasketAction
-): BasketState {
+export function basketReducer(state = initialState, action: BasketAction): BasketState {
   switch (action.type) {
-
     case BasketActionTypes.LoadBasket: {
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     }
 
@@ -33,7 +29,7 @@ export function basketReducer(
       return {
         ...state,
         error: error,
-        loading: false
+        loading: false,
       };
     }
 
@@ -43,14 +39,14 @@ export function basketReducer(
       return {
         ...state,
         basket,
-        loading: false
+        loading: false,
       };
     }
 
     case BasketActionTypes.AddItemToBasket: {
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     }
 
@@ -60,14 +56,14 @@ export function basketReducer(
       return {
         ...state,
         error,
-        loading: false
+        loading: false,
       };
     }
 
     case BasketActionTypes.AddItemToBasketSuccess: {
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     }
   }

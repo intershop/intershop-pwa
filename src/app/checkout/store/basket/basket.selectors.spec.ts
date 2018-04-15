@@ -11,7 +11,6 @@ import { LoadBasket, LoadBasketFail, LoadBasketSuccess } from './basket.actions'
 import { getBasketError, getBasketLoading, getCurrentBasket } from './basket.selectors';
 
 describe('Basket selectors', () => {
-
   let store: Store<CheckoutState>;
 
   let basket$: Observable<Basket>;
@@ -29,9 +28,9 @@ describe('Basket selectors', () => {
       imports: [
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
-          routerReducer
-        })
-      ]
+          routerReducer,
+        }),
+      ],
     });
 
     store = TestBed.get(Store);
@@ -41,14 +40,12 @@ describe('Basket selectors', () => {
   });
 
   describe('with empty state', () => {
-
     it('should be present if no basket is present', () => {
       expect(basket$).toBeObservable(c(null));
     });
   });
 
   describe('loading a basket', () => {
-
     beforeEach(() => {
       store.dispatch(new LoadBasket());
     });
@@ -70,5 +67,4 @@ describe('Basket selectors', () => {
       expect(basketError$).toBeObservable(c({ message: 'invalid' }));
     });
   });
-
 });
