@@ -8,6 +8,4 @@ export const checkoutReducers: ActionReducerMap<CheckoutState> = {
 };
 
 // tslint:disable-next-line: no-any
-export const checkoutEffects: any[] = [
-  BasketEffects
-];
+export const checkoutEffects: any[] = [BasketEffects];

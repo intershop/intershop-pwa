@@ -23,9 +23,7 @@ export class ProductPageContainerComponent implements OnInit {
   category$: Observable<Category>;
   categoryPath$: Observable<Category[]> = of([]);
 
-  constructor(
-    private store: Store<ShoppingState | CheckoutState>
-  ) { }
+  constructor(private store: Store<ShoppingState | CheckoutState>) {}
 
   ngOnInit() {
     // TODO: find a nicer way to filter out the case of an 'undefined' product when the router state change is not waiting for the guard to actually do the routing

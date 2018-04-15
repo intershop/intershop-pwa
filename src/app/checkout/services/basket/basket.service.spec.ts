@@ -10,16 +10,18 @@ describe('Basket Service', () => {
 
   const basketMockData = {
     id: 'test',
-    shippingBuckets: [{
-      lineItems: [],
-      shippingMethod: {},
-      shipToAddress: {}
-    }]
+    shippingBuckets: [
+      {
+        lineItems: [],
+        shippingMethod: {},
+        shipToAddress: {},
+      },
+    ],
   };
 
   const itemMockData = {
     sku: 'test',
-    quantity: 10
+    quantity: 10,
   };
 
   beforeEach(() => {
@@ -27,18 +29,16 @@ describe('Basket Service', () => {
 
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        { provide: ApiService, useFactory: () => instance(apiService) },
-        BasketService
-      ]
+      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }, BasketService],
     });
 
     basketService = TestBed.get(BasketService);
   });
 
-  it('should get Basket data when \'getBasket\' is called', () => {
-    when(apiService.get(basketService.basketServiceIdentifier + '/' + basketMockData.id))
-      .thenReturn(of(basketMockData));
+  it("should get Basket data when 'getBasket' is called", () => {
+    when(apiService.get(basketService.basketServiceIdentifier + '/' + basketMockData.id)).thenReturn(
+      of(basketMockData)
+    );
 
     basketService.getBasket(basketMockData.id).subscribe(data => {
       expect(data.id).toEqual(basketMockData.id);
@@ -47,14 +47,12 @@ describe('Basket Service', () => {
     verify(apiService.get(basketService.basketServiceIdentifier + '/' + basketMockData.id)).once();
   });
 
-  it('should post item to basket when \'addItemToBasket\' is called', () => {
-    when(apiService.post(anything(), anything()))
-      .thenReturn(of({}));
+  it("should post item to basket when 'addItemToBasket' is called", () => {
+    when(apiService.post(anything(), anything())).thenReturn(of({}));
 
-    basketService.addItemToBasket(itemMockData.sku, itemMockData.quantity, basketMockData.id)
-      .subscribe(() => {
-        expect(true).toBeTruthy();
-      });
+    basketService.addItemToBasket(itemMockData.sku, itemMockData.quantity, basketMockData.id).subscribe(() => {
+      expect(true).toBeTruthy();
+    });
 
     verify(
       apiService.post(

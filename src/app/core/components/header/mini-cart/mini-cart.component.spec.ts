@@ -12,18 +12,14 @@ describe('Mini Cart Component', () => {
   let basket: Basket;
   let translate: TranslateService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        CollapseModule.forRoot(),
-        CommonModule,
-        TranslateModule.forRoot(),
-      ],
-      declarations: [
-        MiniCartComponent
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [CollapseModule.forRoot(), CommonModule, TranslateModule.forRoot()],
+        declarations: [MiniCartComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MiniCartComponent);
@@ -31,7 +27,7 @@ describe('Mini Cart Component', () => {
     element = fixture.nativeElement;
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
-    translate.setTranslation('en', { 'shopping_cart.ministatus.items.text': { 'other': '#' } });
+    translate.setTranslation('en', { 'shopping_cart.ministatus.items.text': { other: '#' } });
     basket = {
       id: '4711',
       lineItems: [],
@@ -51,8 +47,8 @@ describe('Mini Cart Component', () => {
           value: 0,
           currencyMnemonic: 'USD',
           type: 'Money',
-        }
-      }
+        },
+      },
     };
   });
 

@@ -15,9 +15,7 @@ export class MiniCartContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   region$: Observable<Region>;
 
-  constructor(
-    private store: Store<CheckoutState>
-  ) { }
+  constructor(private store: Store<CheckoutState>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));

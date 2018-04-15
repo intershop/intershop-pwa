@@ -10,7 +10,7 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.LoadBasket,
-        payload
+        payload,
       });
     });
 
@@ -20,7 +20,7 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.LoadBasketFail,
-        payload
+        payload,
       });
     });
 
@@ -30,7 +30,7 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.LoadBasketSuccess,
-        payload
+        payload,
       });
     });
   });

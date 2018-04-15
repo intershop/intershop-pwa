@@ -15,13 +15,7 @@ const bindAllTabs = false;
 /**
  * Parts of the state that should be synced
  */
-const keys = [
-  'checkout',
-  'countries',
-  'locale',
-  'shopping',
-  'user'
-];
+const keys = ['checkout', 'countries', 'locale', 'shopping', 'user'];
 
 export class Storage implements Action {
   readonly type = STORAGE;

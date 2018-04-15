@@ -11,7 +11,6 @@ import { Basket } from '../../../models/basket/basket.model';
  */
 @Injectable()
 export class BasketService {
-
   /**
    * The REST API URI endpoints
    */
@@ -19,9 +18,7 @@ export class BasketService {
   defaultBasketId = '-';
   itemsServiceIdentifier = 'items';
 
-  constructor(
-    private apiService: ApiService,
-  ) { }
+  constructor(private apiService: ApiService) {}
 
   /**
    * Get the Basket for the given basket id
@@ -31,9 +28,9 @@ export class BasketService {
    * @returns         The basket
    */
   getBasket(basketId: string = this.defaultBasketId): Observable<Basket> {
-    return this.apiService.get<BasketData>(this.basketServiceIdentifier + '/' + basketId).pipe(
-      map(basketData => BasketMapper.fromData(basketData))
-    );
+    return this.apiService
+      .get<BasketData>(this.basketServiceIdentifier + '/' + basketId)
+      .pipe(map(basketData => BasketMapper.fromData(basketData)));
   }
 
   /**
@@ -46,15 +43,19 @@ export class BasketService {
   // tslint:disable-next-line: no-any
   addItemToBasket(sku: string, quantity: number = 1, basketId: string): Observable<any> {
     const body: Object = {
-      elements: [{
-        sku: sku,
-        quantity: {
-          value: quantity
-        }
-      }]
+      elements: [
+        {
+          sku: sku,
+          quantity: {
+            value: quantity,
+          },
+        },
+      ],
     };
 
-    return this.apiService.post(this.basketServiceIdentifier + '/' + basketId + '/' + this.itemsServiceIdentifier, body);
+    return this.apiService.post(
+      this.basketServiceIdentifier + '/' + basketId + '/' + this.itemsServiceIdentifier,
+      body
+    );
   }
-
 }

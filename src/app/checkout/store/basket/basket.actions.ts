@@ -13,33 +13,33 @@ export enum BasketActionTypes {
 
 export class LoadBasket implements Action {
   readonly type = BasketActionTypes.LoadBasket;
-  constructor(public payload?: string) { }
+  constructor(public payload?: string) {}
 }
 
 export class LoadBasketFail implements Action {
   readonly type = BasketActionTypes.LoadBasketFail;
-  constructor(public payload: HttpErrorResponse) { }
+  constructor(public payload: HttpErrorResponse) {}
 }
 
 export class LoadBasketSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketSuccess;
-  constructor(public payload: Basket) { }
+  constructor(public payload: Basket) {}
 }
 
 export class AddItemToBasket implements Action {
   readonly type = BasketActionTypes.AddItemToBasket;
-  constructor(public payload: { sku: string, quantity: number }) { }
+  constructor(public payload: { sku: string; quantity: number }) {}
 }
 
 export class AddItemToBasketFail implements Action {
   readonly type = BasketActionTypes.AddItemToBasketFail;
-  constructor(public payload: HttpErrorResponse) { }
+  constructor(public payload: HttpErrorResponse) {}
 }
 
 export class AddItemToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemToBasketSuccess;
   // tslint:disable:no-any
-  constructor(public payload: any) { }
+  constructor(public payload: any) {}
 }
 
 export type BasketAction =

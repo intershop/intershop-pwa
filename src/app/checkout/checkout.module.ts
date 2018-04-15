@@ -8,11 +8,8 @@ import { checkoutEffects, checkoutReducers } from './store/checkout.system';
   imports: [
     // ShoppingRoutingModule,
     StoreModule.forFeature('checkout', checkoutReducers),
-    EffectsModule.forFeature(checkoutEffects)
+    EffectsModule.forFeature(checkoutEffects),
   ],
-  providers: [
-    BasketService
-  ]
+  providers: [BasketService],
 })
-
-export class CheckoutModule { }
+export class CheckoutModule {}
