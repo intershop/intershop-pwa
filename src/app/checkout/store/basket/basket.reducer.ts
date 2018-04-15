@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Basket } from '../../../models/basket/basket.model';
-import * as basketActions from './basket.actions';
+import { BasketAction, BasketActionTypes } from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
@@ -16,18 +16,18 @@ export const initialState: BasketState = {
 
 export function basketReducer(
   state = initialState,
-  action: basketActions.BasketAction
+  action: BasketAction
 ): BasketState {
   switch (action.type) {
 
-    case basketActions.BasketActionTypes.LoadBasket: {
+    case BasketActionTypes.LoadBasket: {
       return {
         ...state,
         loading: true
       };
     }
 
-    case basketActions.BasketActionTypes.LoadBasketFail: {
+    case BasketActionTypes.LoadBasketFail: {
       const error = action.payload;
 
       return {
@@ -37,7 +37,7 @@ export function basketReducer(
       };
     }
 
-    case basketActions.BasketActionTypes.LoadBasketSuccess: {
+    case BasketActionTypes.LoadBasketSuccess: {
       const basket = action.payload;
 
       return {
@@ -47,14 +47,14 @@ export function basketReducer(
       };
     }
 
-    case basketActions.BasketActionTypes.AddItemToBasket: {
+    case BasketActionTypes.AddItemToBasket: {
       return {
         ...state,
         loading: true
       };
     }
 
-    case basketActions.BasketActionTypes.AddItemToBasketFail: {
+    case BasketActionTypes.AddItemToBasketFail: {
       const error = action.payload;
 
       return {
@@ -64,7 +64,7 @@ export function basketReducer(
       };
     }
 
-    case basketActions.BasketActionTypes.AddItemToBasketSuccess: {
+    case BasketActionTypes.AddItemToBasketSuccess: {
       return {
         ...state,
         loading: false

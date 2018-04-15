@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
 import { AddItemToBasket } from '../../../checkout/store/basket';
+import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { getSelectedCategory, getSelectedCategoryPath } from '../../store/categories';
@@ -22,7 +23,9 @@ export class ProductPageContainerComponent implements OnInit {
   category$: Observable<Category>;
   categoryPath$: Observable<Category[]> = of([]);
 
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(
+    private store: Store<ShoppingState | CheckoutState>
+  ) { }
 
   ngOnInit() {
     // TODO: find a nicer way to filter out the case of an 'undefined' product when the router state change is not waiting for the guard to actually do the routing
@@ -38,7 +41,6 @@ export class ProductPageContainerComponent implements OnInit {
   }
 
   addToCart({ sku, quantity }) {
-    // TODO: should be dispatched on checkout state, not shopping state
     this.store.dispatch(new AddItemToBasket({ sku: sku, quantity: quantity }));
   }
 
