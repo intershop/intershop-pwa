@@ -7,7 +7,7 @@ import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
 
 /**
- * The basket service handles the interaction with the 'baskets' REST API.
+ * The Basket Service handles the interaction with the 'baskets' REST API.
  */
 @Injectable()
 export class BasketService {
@@ -15,31 +15,33 @@ export class BasketService {
   /**
    * The REST API URI endpoints
    */
-  basketServiceIdentifier = 'baskets/';
+  basketServiceIdentifier = 'baskets';
+  defaultBasketId = '-';
+  itemsServiceIdentifier = 'items';
 
   constructor(
     private apiService: ApiService,
   ) { }
 
   /**
-   * Get a specific product for the given basket id
-   * fallbacks to last used basket
+   * Get the Basket for the given basket id
+   * or fallbacks to '-' as basket id to get current basket for the current user
    *
-   * @param basketId The basket id
-   * @returns The basket data
+   * @param basketId  The basket id
+   * @returns         The basket
    */
-  getBasket(basketId: string = '-'): Observable<Basket> {
-    return this.apiService.get<BasketData>(this.basketServiceIdentifier + basketId).pipe(
+  getBasket(basketId: string = this.defaultBasketId): Observable<Basket> {
+    return this.apiService.get<BasketData>(this.basketServiceIdentifier + '/' + basketId).pipe(
       map(basketData => BasketMapper.fromData(basketData))
     );
   }
 
   /**
-   * add product to specific basket
+   * Add a product with the given quantity to the given basket.
    *
-   * @param sku product sku
-   * @param quantity quantity of the product
-   * @param basketId id of the basket which the product should be added in
+   * @param sku       The product to be added's sku
+   * @param quantity  The quantity of the product to add
+   * @param basketId  The id of the basket which the product should be added to
    */
   // tslint:disable-next-line: no-any
   addItemToBasket(sku: string, quantity: number = 1, basketId: string): Observable<any> {
@@ -52,7 +54,7 @@ export class BasketService {
       }]
     };
 
-    return this.apiService.post(this.basketServiceIdentifier + basketId + '/items/', body);
+    return this.apiService.post(this.basketServiceIdentifier + '/' + basketId + '/' + this.itemsServiceIdentifier, body);
   }
 
 }

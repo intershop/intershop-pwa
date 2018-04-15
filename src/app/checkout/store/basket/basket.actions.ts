@@ -13,7 +13,7 @@ export enum BasketActionTypes {
 
 export class LoadBasket implements Action {
   readonly type = BasketActionTypes.LoadBasket;
-  constructor(public payload: string = '-') { }
+  constructor(public payload?: string) { }
 }
 
 export class LoadBasketFail implements Action {
