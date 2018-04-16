@@ -21,6 +21,13 @@ export const initialState: UserState = {
 
 export function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
+    case UserActionTypes.UserErrorReset: {
+      return {
+        ...state,
+        error: undefined,
+      };
+    }
+
     case UserActionTypes.LoginUser: {
       return initialState;
     }

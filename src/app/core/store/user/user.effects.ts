@@ -2,17 +2,25 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, select, Store } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Customer } from '../../../models/customer/customer.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
+import { CoreState } from '../core.state';
 import * as errorActions from '../error/error.actions';
 import * as userActions from './user.actions';
+import { getUserError } from './user.selectors';
 
 @Injectable()
 export class UserEffects {
-  constructor(private actions$: Actions, private registrationService: RegistrationService, private router: Router) {}
+  constructor(
+    private actions$: Actions,
+    private store$: Store<CoreState>,
+    private registrationService: RegistrationService,
+    private router: Router
+  ) {}
 
   @Effect()
   loginUser$ = this.actions$.pipe(
@@ -52,6 +60,14 @@ export class UserEffects {
           catchError(error => of(this.dispatchCreation(error)))
         );
     })
+  );
+
+  @Effect()
+  resetUserError$ = this.actions$.pipe(
+    ofType(ROUTER_NAVIGATION_TYPE),
+    withLatestFrom(this.store$.pipe(select(getUserError))),
+    filter(([action, error]) => !!error),
+    map(() => new userActions.UserErrorReset())
   );
 
   @Effect()

@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { Customer } from '../../../models/customer/customer.model';
-import { LoginUser, LoginUserFail, LoginUserSuccess, LogoutUser } from './user.actions';
+import { LoginUser, LoginUserFail, LoginUserSuccess, LogoutUser, UserErrorReset } from './user.actions';
 import { initialState, userReducer } from './user.reducer';
 
 describe('User Reducer', () => {
@@ -50,13 +50,13 @@ describe('User Reducer', () => {
       expect(newState).toEqual(initialState);
     });
 
-    it('should set error when LoginUserFail action is reduced and error is resetted after route changed', () => {
+    it('should set error when LoginUserFail action is reduced and error is resetted after reset action', () => {
       const error = { status: 500, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
-      const newState = userReducer(initialState, new LoginUserFail(error));
+      let newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });
 
-      // newState = userReducer(newState, { type: ROUTER_NAVIGATION });
+      newState = userReducer(newState, new UserErrorReset());
       expect(newState.error).toBeUndefined();
     });
 

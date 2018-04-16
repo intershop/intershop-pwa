@@ -11,6 +11,7 @@ export enum UserActionTypes {
   CreateUser = '[Account] Create User',
   CreateUserSuccess = '[Account] Create User Success',
   CreateUserFail = '[Account] Create User Failed',
+  UserErrorReset = '[Account] Reset User Error',
 }
 
 export class LoginUser implements Action {
@@ -45,6 +46,10 @@ export class CreateUserSuccess implements Action {
 export class CreateUserFail implements Action {
   readonly type = UserActionTypes.CreateUserFail;
   constructor(public payload: HttpErrorResponse) {}
+}
+
+export class UserErrorReset implements Action {
+  readonly type = UserActionTypes.UserErrorReset;
 }
 
 export type UserAction =
