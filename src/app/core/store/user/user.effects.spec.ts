@@ -2,14 +2,16 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from '../../../models/customer/customer.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
+import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';
@@ -17,6 +19,7 @@ import { UserEffects } from './user.effects';
 describe('UserEffects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
+  let store$: Store<CoreState>;
   let registrationServiceMock: RegistrationService;
   let routerMock: Router;
 
@@ -37,6 +40,7 @@ describe('UserEffects', () => {
     });
 
     effects = TestBed.get(UserEffects);
+    store$ = TestBed.get(Store);
   });
 
   describe('loginUser$', () => {
@@ -131,6 +135,22 @@ describe('UserEffects', () => {
       const expected$ = cold('-b', { b: completion });
 
       expect(effects.createUser$).toBeObservable(expected$);
+    });
+  });
+
+  describe('resetUserError$', () => {
+    it('should not dispatch UserErrorReset action on router navigation if error is not set', () => {
+      actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
+
+      expect(effects.resetUserError$).toBeObservable(cold('-'));
+    });
+
+    it('should dispatch UserErrorReset action on router navigation if error was set', () => {
+      store$.dispatch(new ua.LoginUserFail({ message: 'error' } as HttpErrorResponse));
+
+      actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
+
+      expect(effects.resetUserError$).toBeObservable(cold('a', { a: new ua.UserErrorReset() }));
     });
   });
 
