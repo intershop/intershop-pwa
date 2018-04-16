@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { AddItemToBasket } from '../../../checkout/store/basket';
+import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Product } from '../../../models/product/product.model';
 import { getCompareProducts, getCompareProductsCount, RemoveFromCompare } from '../../store/compare';
 import { ShoppingState } from '../../store/shopping.state';
@@ -14,7 +16,7 @@ export class ComparePageContainerComponent implements OnInit {
   compareProducts$: Observable<Product[]>;
   compareProductsCount$: Observable<Number>;
 
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private store: Store<ShoppingState | CheckoutState>) {}
 
   ngOnInit() {
     this.compareProducts$ = this.store.pipe(select(getCompareProducts));
@@ -22,8 +24,7 @@ export class ComparePageContainerComponent implements OnInit {
   }
 
   addToCart({ sku, quantity }) {
-    console.log('[ComparePageContainer] Add to Cart: SKU: ' + sku + ', Quantity: ' + quantity);
-    // TODO: dispatch add to cart action // this.store.dispatch(new AddToCart(sku, quantity));
+    this.store.dispatch(new AddItemToBasket({ sku: sku, quantity: quantity }));
   }
 
   removeFromCompare(sku: string) {

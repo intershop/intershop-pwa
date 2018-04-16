@@ -1,36 +1,41 @@
-<!-- NEEDS_WORK: DUMMY COMPONENT -->
-<div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed">
+<!-- NEEDS_WORK: IMPLEMENT SLIDER AND ADD MISSING DATA -->
+<div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed" >
   <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
   <a (click)="isCollapsed = !isCollapsed; false;">
     <span class="glyphicon glyphicon-shopping-cart"></span>
     <!-- TODO: check for a better solution for the plural and translate pipe combination for cases where the en_US.json is not yet loaded, current solution: || {"other": "#"} -->
-    <span>{{ itemsCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span><span> / </span>
-    <span class="mini-cart-price">{{ basket.totals.basketTotal.value | currency:basket.totals.basketTotal.currencyMnemonic}}</span>
+    <span>{{ itemsCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
+    <ng-container *ngIf="basket">
+      <span> / </span>
+      <span class="mini-cart-price" *ngIf="basket">{{ basket.totals.basketTotal.value | currency:basket.totals.basketTotal.currencyMnemonic}}</span>
+    </ng-container>
   </a>
   <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
   <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCart -->
   <div [collapse]="isCollapsed" class="mini-cart">
-    <!-- Your cart is currently empty. -->
-
-    <!-- dummy mini cart data in the dropdown -->
-    <div class="product-rows-block">
-      <div class="slider">
-        <div class="product-row">
-          <div class="mini-product-img">
-            <a routerLink="/">
-              <img src="assets/product_img/x_thumb.jpg"
-                data-test="true" class="product-image" data-type="S" alt="A-DATA XPG Gaming Series V2.0, DDR3, 1600 MHz, CL9, 12GB (4GB x 3) product photo"
-                height="110" width="110" />
-            </a>
-          </div>
-          <div class="mini-product-info">
-            <a routerLink="/">A-DATA XPG Gaming Series V2.0, DDR3, 1600 MHz, CL9, 12GB (4GB x 3)</a>
-            <div class="product-price">$ 214.12</div>
-            <div class="cart-pli-data"><span>Quantity:</span> 2</div>
+    <ng-container *ngIf="basket; else emptyBlock">
+      <div class="product-rows-block">
+        <div class="slider">
+          <div class="product-row" *ngFor="let product of basket.lineItems">
+            <div class="mini-product-img">
+              <a routerLink="/">
+                <img src="assets/product_img/x_thumb.jpg"
+                  data-test="true" class="product-image" data-type="S" alt="A-DATA XPG Gaming Series V2.0, DDR3, 1600 MHz, CL9, 12GB (4GB x 3) product photo"
+                  height="110" width="110" />
+              </a>
+            </div>
+            <div class="mini-product-info">
+              <a routerLink="/">{{ product.title }}</a>
+              <div class="product-price">$ 214.12</div>
+              <div class="cart-pli-data"><span>Quantity:</span> 2</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/">View Cart</a>
-  </div>
+      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/">{{ 'shopping_cart.ministatus.view_cart.link' | translate }}</a>
+    </ng-container>
+    <ng-template #emptyBlock>
+      <!-- Your cart is currently empty. -->
+      {{ 'shopping_cart.ministatus.empty_cart.text' | translate }}
+    </ng-template>
 </div>

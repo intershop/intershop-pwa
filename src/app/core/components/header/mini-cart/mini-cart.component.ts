@@ -1,6 +1,5 @@
-// NEEDS_WORK: DUMMY COMPONENT
+// NEEDS_WORK: DETAIL ITEM CONTENT MISSING
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { BasketHelper } from '../../../../models/basket/basket.helper';
 import { Basket } from '../../../../models/basket/basket.model';
 
 @Component({
@@ -12,12 +11,12 @@ export class MiniCartComponent implements OnChanges {
   @Input() basket: Basket;
 
   isCollapsed = true;
-  itemsCount: number;
+  itemsCount = 0;
 
   ngOnChanges() {
-    if (!this.basket) {
-      throw new Error('required input parameter <basket> is missing for MiniCartComponent');
+    if (this.basket) {
+      // TODO: add necessary api values to get real item count
+      this.itemsCount = this.basket.lineItems.length;
     }
-    this.itemsCount = BasketHelper.getBasketItemsCount(this.basket);
   }
 }
