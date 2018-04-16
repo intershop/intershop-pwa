@@ -2,8 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
@@ -11,18 +12,14 @@ import { Scheduler } from 'rxjs/Scheduler';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
-import { ShoppingState } from '../shopping.state';
-import { shoppingReducers } from '../shopping.system';
 import { SearchProducts, SearchProductsFail, SuggestSearch, SuggestSearchSuccess } from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
   let actions$: Observable<Action>;
   let effects: SearchEffects;
-  let store$: Store<ShoppingState>;
   let apiMock: ApiService;
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
@@ -44,11 +41,6 @@ describe('Search Effects', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-        }),
-      ],
       providers: [
         SearchEffects,
         ProductsService,
@@ -62,13 +54,16 @@ describe('Search Effects', () => {
     });
 
     effects = TestBed.get(SearchEffects);
-    store$ = TestBed.get(Store);
   });
 
   describe('triggerSearch$', () => {
-    it('should trigger SearchProducts action if search URL', () => {
-      const routerAction = navigateMockAction({ url: '/search', params: { searchTerm: 'dummy' } });
-      store$.dispatch(routerAction);
+    it('should trigger SearchProducts action if search URL is matched', () => {
+      const action = new RouteNavigation({
+        path: 'search/:searchTerm',
+        params: { searchTerm: 'dummy' },
+        queryParams: [],
+      });
+      actions$ = hot('a', { a: action });
 
       expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts('dummy') }));
     });
