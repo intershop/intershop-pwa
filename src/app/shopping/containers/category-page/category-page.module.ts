@@ -9,7 +9,6 @@ import { categoryPageRoutes } from './category-page.routes';
 
 @NgModule({
   imports: [RouterModule.forChild(categoryPageRoutes), SharedModule, ShoppingSharedModule],
-  providers: [],
   declarations: [CategoryPageContainerComponent, CategoryPageComponent, FamilyPageComponent],
 })
 export class CategoryPageModule {}
