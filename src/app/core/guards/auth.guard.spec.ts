@@ -1,9 +1,10 @@
 import { async, TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
+import { anything, spy, verify } from 'ts-mockito/lib/ts-mockito';
 import { Customer } from '../../models/customer/customer.model';
 import { MockComponent } from '../../utils/dev/mock.component';
-import { navigateMockAction } from '../../utils/dev/navigate-mock.action';
 import { CoreState } from '../store/core.state';
 import { coreReducers } from '../store/core.system';
 import { LoginUserSuccess } from '../store/user';
@@ -13,6 +14,7 @@ describe('AuthGuard', () => {
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
     let store$: Store<CoreState>;
+    let router: Router;
 
     beforeEach(
       async(() => {
@@ -32,17 +34,24 @@ describe('AuthGuard', () => {
     beforeEach(() => {
       authGuard = TestBed.get(AuthGuard);
       store$ = TestBed.get(Store);
-      store$.dispatch(navigateMockAction({ url: '/any' }));
+      const realRouter = TestBed.get(Router);
+      router = spy(realRouter);
     });
 
     it('should return true when user is authorized', () => {
       store$.dispatch(new LoginUserSuccess({} as Customer));
 
-      authGuard.canActivate().subscribe(authorized => expect(authorized).toBeTruthy());
+      authGuard.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot).subscribe(authorized => {
+        expect(authorized).toBeTruthy();
+        verify(router.navigate(anything(), anything())).never();
+      });
     });
 
     it('should return false when called as unauthorized', () => {
-      authGuard.canActivate().subscribe(authorized => expect(authorized).toBeFalsy());
+      authGuard.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot).subscribe(authorized => {
+        expect(authorized).toBeFalsy();
+        verify(router.navigate(anything(), anything())).once();
+      });
     });
   });
 });
