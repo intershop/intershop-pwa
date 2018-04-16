@@ -12,7 +12,7 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { CoreState } from '../../../core/store/countries';
+import { CoreState } from '../../../core/store/core.state';
 import { getCurrentLocale } from '../../../core/store/locale';
 import { ProductsService } from '../../services/products/products.service';
 import * as categoriesActions from '../categories/categories.actions';
