@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import * as using from 'jasmine-data-provider';
+import { RouteNavigation } from 'ngrx-router';
 import { anything } from 'ts-mockito/lib/ts-mockito';
 import { CreateUserSuccess } from '../user';
 import { CommunicationTimeoutError, ErrorActionTypes, HttpError } from './error.actions';
@@ -43,7 +44,7 @@ describe('Error Reducer', () => {
       },
       {
         state: { current: {}, type: ErrorActionTypes.TimeoutError },
-        // action: { type: ROUTER_NAVIGATION, payload: { routerState: { url: '/error' } } },
+        action: new RouteNavigation({ path: 'error', params: {}, queryParams: {} }),
         expected: { current: {}, type: ErrorActionTypes.TimeoutError },
       },
     ];
