@@ -2,8 +2,8 @@ import { HttpParams } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs/observable/of';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { ApiService } from '../../../core/services/api.service';
 import { CategoryData } from '../../../models/category/category.interface';
-import { ApiService } from '../api.service';
 import { CategoriesService } from './categories.service';
 
 describe('Categories Service', () => {

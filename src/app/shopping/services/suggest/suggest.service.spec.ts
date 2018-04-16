@@ -1,8 +1,8 @@
 import { async, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { ApiService } from '../../../core/services/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
-import { ApiService } from '../api.service';
 import { SuggestService } from './suggest.service';
 
 describe('Suggest Service', () => {

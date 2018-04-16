@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { map } from 'rxjs/operators';
+import { ApiService } from '../../../core/services/api.service';
 import { CategoryData } from '../../../models/category/category.interface';
 import { CategoryMapper } from '../../../models/category/category.mapper';
 import { Category } from '../../../models/category/category.model';
-import { ApiService } from '../api.service';
 
 @Injectable()
 export class CategoriesService {
