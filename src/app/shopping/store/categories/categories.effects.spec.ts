@@ -13,12 +13,12 @@ import {
   AVAILABLE_LOCALES,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from '../../../core/configurations/injection-keys';
-import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Category } from '../../../models/category/category.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
+import { CategoriesService } from '../../services/categories/categories.service';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
