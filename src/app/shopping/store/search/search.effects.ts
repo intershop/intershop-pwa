@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { ofRoute, RouteNavigation } from 'ngrx-router';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -9,7 +9,6 @@ import { Scheduler } from 'rxjs/Scheduler';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProduct } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { SetSortKeys } from '../viewconf';
 import {
   SearchActionTypes,
@@ -19,13 +18,11 @@ import {
   SuggestSearch,
   SuggestSearchSuccess,
 } from './search.actions';
-import { getRequestedSearchTerm } from './search.selectors';
 
 @Injectable()
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
     private scheduler: Scheduler,
@@ -35,11 +32,12 @@ export class SearchEffects {
   /**
    * Effect that listens for search route changes and triggers a search action.
    */
-  // TODO: Use ofRoute() operator here or at least do not work with the router state but with the router actions
   @Effect()
-  triggerSearch$ = this.store.pipe(
-    select(getRequestedSearchTerm),
-    filter(searchTerm => !!searchTerm),
+  triggerSearch$ = this.actions$.pipe(
+    ofRoute('search/:searchTerm'),
+    map((action: RouteNavigation) => action.payload.params['searchTerm']),
+    filter(x => !!x),
+    distinctUntilChanged(),
     map(searchTerm => new SearchProducts(searchTerm))
   );
 
