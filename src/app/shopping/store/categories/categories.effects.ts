@@ -6,7 +6,7 @@ import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, 
 import { Scheduler } from 'rxjs/Scheduler';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CategoriesService } from '../../../core/services/categories/categories.service';
-import { CoreState } from '../../../core/store/countries';
+import { CoreState } from '../../../core/store/core.state';
 import { getCurrentLocale } from '../../../core/store/locale';
 import { CategoryHelper } from '../../../models/category/category.model';
 import * as productsActions from '../products/products.actions';

@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, map, mergeMap, withLatestFrom } from 'rxjs/operators';
-import { CoreState } from '../../../core/store/countries';
+import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
 import { BasketService } from '../../services/basket/basket.service';
 import { CheckoutState } from '../checkout.state';
