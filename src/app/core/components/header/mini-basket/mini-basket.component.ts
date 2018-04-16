@@ -1,6 +1,7 @@
 // NEEDS_WORK: DETAIL ITEM CONTENT MISSING
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
+import { ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-mini-basket',
@@ -10,6 +11,7 @@ import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
 export class MiniBasketComponent implements OnChanges {
   @Input() basket: Basket;
 
+  generateProductRoute = ProductHelper.generateProductRoute;
   isCollapsed = true;
   itemsCount = 0;
 
