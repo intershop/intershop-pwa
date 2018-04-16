@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { ofRoute, RouteNavigation } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
@@ -36,8 +37,16 @@ export class CategoriesEffects {
   ) {}
 
   @Effect()
-  selectedCategory$ = this.store.pipe(
-    select(categoriesSelectors.getSelectedCategoryId),
+  routeListenerForSelectingCategory$ = this.actions$.pipe(
+    ofRoute(['category/:categoryUniqueId', 'category/:categoryUniqueId/product/:sku']),
+    map((action: RouteNavigation) => action.payload.params['categoryUniqueId']),
+    map(categoryUniqueId => new categoriesActions.SelectCategory(categoryUniqueId))
+  );
+
+  @Effect()
+  selectedCategory$ = this.actions$.pipe(
+    ofType(categoriesActions.CategoriesActionTypes.SelectCategory),
+    map((action: categoriesActions.SelectCategory) => action.payload),
     filter(id => !!id),
     map(CategoryHelper.getCategoryPathUniqueIds),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),

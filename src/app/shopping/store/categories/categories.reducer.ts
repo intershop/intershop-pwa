@@ -7,6 +7,7 @@ export interface CategoriesState extends EntityState<Category> {
   loading: boolean;
   topLevelCategoriesIds: string[];
   categoriesProductSKUs: { [uniqueId: string]: string[] };
+  selected: string;
 }
 
 export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
@@ -17,10 +18,18 @@ export const initialState: CategoriesState = categoryAdapter.getInitialState({
   loading: false,
   topLevelCategoriesIds: [],
   categoriesProductSKUs: {},
+  selected: undefined,
 });
 
 export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
+    case CategoriesActionTypes.SelectCategory: {
+      return {
+        ...state,
+        selected: action.payload,
+      };
+    }
+
     case CategoriesActionTypes.LoadCategory: {
       return {
         ...state,

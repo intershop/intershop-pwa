@@ -5,11 +5,16 @@ import { Observable } from 'rxjs/Observable';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { c } from '../../../utils/dev/marbles-utils';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { LoadCategory, LoadCategoryFail, LoadCategorySuccess, SetProductSkusForCategory } from './categories.actions';
+import {
+  LoadCategory,
+  LoadCategoryFail,
+  LoadCategorySuccess,
+  SelectCategory,
+  SetProductSkusForCategory,
+} from './categories.actions';
 import * as s from './categories.selectors';
 
 describe('Categories Selectors', () => {
@@ -126,7 +131,7 @@ describe('Categories Selectors', () => {
     describe('with category route', () => {
       beforeEach(() => {
         store$.dispatch(new SetProductSkusForCategory(cat.uniqueId, [prod.sku]));
-        store$.dispatch(navigateMockAction({ url: '/any', params: { categoryUniqueId: cat.uniqueId } }));
+        store$.dispatch(new SelectCategory(cat.uniqueId));
       });
 
       it('should return the category information when used', () => {

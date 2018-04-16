@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
+import { SelectCategory } from '../categories';
 import * as fromProducts from '../products';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
@@ -38,11 +38,7 @@ describe('ViewconfEffects', () => {
 
     it('should map to action of type LoadProductsForCategory if category is selected', () => {
       const categoryUniqueId = '123';
-      const routerAction = navigateMockAction({
-        url: `/category/${categoryUniqueId}`,
-        params: { categoryUniqueId },
-      });
-      store.dispatch(routerAction);
+      store.dispatch(new SelectCategory(categoryUniqueId));
 
       const action = new fromActions.ChangeSortBy('name-desc');
       const completion = new fromProducts.LoadProductsForCategory(categoryUniqueId);
