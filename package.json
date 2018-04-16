@@ -61,6 +61,7 @@
     "ng-recaptcha": "^3.0.3",
     "ng2-completer": "^1.6.3",
     "ng2-validation": "^4.2.0",
+    "ngrx-router": "^1.0.0",
     "ngrx-store-localstorage": "^5.0.0",
     "ngx-bootstrap": "^2.0.2",
     "rxjs": "^5.5.6",
