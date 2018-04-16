@@ -2,6 +2,7 @@ import * as using from 'jasmine-data-provider';
 import { CategoryHelper } from './category.helper';
 import { CategoryData } from './category.interface';
 import { CategoryMapper } from './category.mapper';
+import { Category } from './category.model';
 
 describe('Category Helper', () => {
   describe('equals', () => {
@@ -32,6 +33,43 @@ describe('Category Helper', () => {
         slice.cat2
       )}'`, () => {
         expect(CategoryHelper.equals(slice.cat1, slice.cat2)).toBe(slice.result);
+      });
+    });
+  });
+
+  describe('getCategoryPathIds', () => {
+    function dataProvider() {
+      return [
+        { uniqueId: undefined, result: undefined },
+        { uniqueId: '', result: undefined },
+        { uniqueId: 'A', result: ['A'] },
+        { uniqueId: 'A.B', result: ['A.B', 'A'] },
+        { uniqueId: 'A.B.C', result: ['A.B.C', 'A.B', 'A'] },
+      ];
+    }
+
+    using(dataProvider, slice => {
+      it(`should return ${slice.result} when expanding '${JSON.stringify(slice.uniqueId)}'`, () => {
+        expect(CategoryHelper.getCategoryPathIds(slice.uniqueId)).toEqual(slice.result);
+      });
+    });
+  });
+
+  describe('isCategoryCompletelyLoaded', () => {
+    function dataProvider() {
+      return [
+        { category: undefined, result: false },
+        { category: {} as Category, result: false },
+        { category: { hasOnlineSubCategories: true } as Category, result: false },
+        { category: { hasOnlineSubCategories: false } as Category, result: true },
+        { category: { hasOnlineSubCategories: true, subCategories: [] } as Category, result: false },
+        { category: { hasOnlineSubCategories: true, subCategories: [{}] } as Category, result: true },
+      ];
+    }
+
+    using(dataProvider, slice => {
+      it(`should return ${slice.result} when checking '${JSON.stringify(slice.category)}'`, () => {
+        expect(CategoryHelper.isCategoryCompletelyLoaded(slice.category)).toEqual(slice.result);
       });
     });
   });

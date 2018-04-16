@@ -10,4 +10,31 @@ export class CategoryHelper {
   static equals(self: Category, category: Category): boolean {
     return !!self && !!category && self.uniqueId === category.uniqueId;
   }
+
+  /**
+   * expands a given uniqueId to the IDs of the path
+   * @example
+   * 'A.B.C' -> ['A.B.C', 'A.B', 'A']
+   */
+  static getCategoryPathIds(uniqueId: string): string[] {
+    if (!uniqueId) {
+      return undefined;
+    }
+    const r = [];
+    const ids = uniqueId.split('.');
+    for (let i = 0; i < ids.length; i++) {
+      r.push(ids.slice(0, i + 1).join('.'));
+    }
+    return r.reverse();
+  }
+
+  /**
+   * check if a given category has subcategories which are not loaded yet
+   */
+  static isCategoryCompletelyLoaded(category: Category): boolean {
+    return (
+      !!category &&
+      (category.hasOnlineSubCategories === false || (!!category.subCategories && !!category.subCategories.length))
+    );
+  }
 }
