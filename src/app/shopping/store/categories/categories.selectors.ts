@@ -10,7 +10,7 @@ export const { selectEntities: getCategoryEntities, selectAll: getCategories } =
   getCategoryState
 );
 
-export const getSelectedCategoryId = createSelector(getCategoryState, (state: any) => state.selected);
+export const getSelectedCategoryId = createSelector(getCategoryState, state => state.selected);
 
 export const getSelectedCategory = createSelector(
   getCategoryEntities,

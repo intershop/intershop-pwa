@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 
 export enum CategoriesActionTypes {
+  SelectCategory = '[Shopping] Select Category',
   LoadTopLevelCategories = '[Shopping] Load top level categories',
   LoadTopLevelCategoriesFail = '[Shopping] Load top level categories fail',
   LoadTopLevelCategoriesSuccess = '[Shopping] Load top level categories success',
@@ -11,6 +12,11 @@ export enum CategoriesActionTypes {
   LoadCategorySuccess = '[Shopping] Load Category Success',
   SaveSubCategories = '[Shopping] Save SubCategories',
   SetProductSkusForCategory = '[Shopping] Set Product SKUs For Category',
+}
+
+export class SelectCategory implements Action {
+  readonly type = CategoriesActionTypes.SelectCategory;
+  constructor(public payload: string) {}
 }
 
 export class LoadTopLevelCategories implements Action {
@@ -54,6 +60,7 @@ export class SetProductSkusForCategory implements Action {
 }
 
 export type CategoriesAction =
+  | SelectCategory
   | LoadTopLevelCategories
   | LoadTopLevelCategoriesFail
   | LoadTopLevelCategoriesSuccess
