@@ -7,7 +7,7 @@ import { initialState, userReducer } from './user.reducer';
 
 describe('User Reducer', () => {
   const customer = {
-    id: 'dummy',
+    customerNo: 'dummy',
   } as Customer;
 
   describe('initialState', () => {
