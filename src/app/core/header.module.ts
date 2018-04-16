@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse/collapse.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown/bs-dropdown.module';
+import { PipesModule } from '../shared/pipes.module';
 import { HeaderNavigationComponent } from './components/header/header-navigation/header-navigation.component';
 import { SubCategoryNavigationComponent } from './components/header/header-navigation/sub-category-navigation/sub-category-navigation.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -26,7 +27,15 @@ import { CategoriesService } from './services/categories/categories.service';
 import { SuggestService } from './services/suggest/suggest.service';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, TranslateModule, BsDropdownModule, CollapseModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    BsDropdownModule,
+    CollapseModule,
+    ReactiveFormsModule,
+    PipesModule,
+  ],
   declarations: [
     HeaderComponent,
     ProductCompareStatusComponent,

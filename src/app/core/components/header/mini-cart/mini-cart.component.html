@@ -7,7 +7,7 @@
     <span>{{ itemsCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
     <ng-container *ngIf="basket">
       <span> / </span>
-      <span class="mini-cart-price" *ngIf="basket">{{ basket.totals.basketTotal.value | currency:basket.totals.basketTotal.currencyMnemonic}}</span>
+      <span class="mini-cart-price" *ngIf="basket">{{ basket.totals.basketTotal | ishPrice }}</span>
     </ng-container>
   </a>
   <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->

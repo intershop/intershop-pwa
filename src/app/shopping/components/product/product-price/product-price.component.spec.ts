@@ -1,7 +1,9 @@
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { Product } from '../../../../models/product/product.model';
+import { PricePipe } from '../../../../shared/pipes/price.pipe';
 import { ProductPriceComponent } from './product-price.component';
 
 describe('Product Price Component', () => {
@@ -14,9 +16,9 @@ describe('Product Price Component', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        providers: [TranslateService],
-        declarations: [ProductPriceComponent],
+        imports: [TranslateModule.forRoot(), CommonModule],
+        providers: [TranslateService, PricePipe, CurrencyPipe],
+        declarations: [ProductPriceComponent, PricePipe],
       }).compileComponents();
     })
   );
@@ -141,6 +143,7 @@ describe('Product Price Component', () => {
       component.showPriceSavings = true;
       component.isListPriceGreaterThanSalePrice = true;
       component.isListPriceLessThanSalePrice = false;
+      component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('.price-savings').textContent.trim()).toEqual('you saved $1.00');
     });

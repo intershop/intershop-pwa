@@ -11,6 +11,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown/bs-dropdown.module';
 import { ModalModule } from 'ngx-bootstrap/modal/modal.module';
 import { PopoverConfig } from 'ngx-bootstrap/popover/popover.config';
 import { PopoverModule } from 'ngx-bootstrap/popover/popover.module';
+import { PipesModule } from '../shared/pipes.module';
+import { PricePipe } from '../shared/pipes/price.pipe';
 import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
@@ -43,6 +45,7 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     PopoverModule.forRoot(),
     HeaderModule,
     FooterModule,
+    PipesModule,
   ],
   declarations: [StyleWrapperDirective],
   providers: [
@@ -53,9 +56,10 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     CountryService,
     RegionService,
     CrosstabService,
-    CurrencyPipe,
+    CurrencyPipe, // TODO: https://github.com/angular/angular/issues/20536
     DatePipe,
     DecimalPipe,
+    PricePipe,
   ],
   exports: [StyleWrapperDirective, HeaderModule, FooterModule],
 })
