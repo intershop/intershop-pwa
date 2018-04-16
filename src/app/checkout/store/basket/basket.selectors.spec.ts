@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Basket } from '../../../models/basket/basket.model';
@@ -42,7 +41,6 @@ describe('Basket selectors', () => {
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
           shopping: combineReducers(shoppingReducers),
-          routerReducer,
         }),
       ],
     });

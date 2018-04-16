@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
@@ -51,7 +50,6 @@ describe('Categories Effects', () => {
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
           locale: localeReducer,
-          routerReducer,
         }),
       ],
       providers: [

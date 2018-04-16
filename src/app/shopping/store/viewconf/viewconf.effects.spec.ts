@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +20,6 @@ describe('ViewconfEffects', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer,
         }),
       ],
       providers: [ViewconfEffects, provideMockActions(() => actions$)],

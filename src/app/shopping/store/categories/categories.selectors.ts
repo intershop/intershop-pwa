@@ -1,5 +1,4 @@
 import { createSelector } from '@ngrx/store';
-import * as fromRouter from '../../../core/store/router';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
 import * as productsSelectors from '../products/products.selectors';
 import { getShoppingState, ShoppingState } from '../shopping.state';
@@ -11,10 +10,7 @@ export const { selectEntities: getCategoryEntities, selectAll: getCategories } =
   getCategoryState
 );
 
-export const getSelectedCategoryId = createSelector(
-  fromRouter.getRouterState,
-  router => router && router.state && router.state.params.categoryUniqueId
-);
+export const getSelectedCategoryId = createSelector(getCategoryState, (state: any) => state.selected);
 
 export const getSelectedCategory = createSelector(
   getCategoryEntities,
