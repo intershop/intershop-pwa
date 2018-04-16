@@ -13,7 +13,8 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { CustomValidators } from 'ng2-validation';
-import { Subscription } from 'rxjs/Subscription';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 import { AddressFormService } from '../../../forms/address';
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { Country } from '../../../models/country/country.model';
@@ -37,8 +38,8 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
   @Output() cancel = new EventEmitter<void>();
   @Output() countryChange = new EventEmitter<string>();
 
+  destroy$ = new Subject();
   form: FormGroup;
-  formCountrySwitchSubscription: Subscription;
   submitted = false;
 
   constructor(private fb: FormBuilder, private afs: AddressFormService) {}
@@ -61,9 +62,10 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     // build and register new address form when country code changed
-    this.formCountrySwitchSubscription = this.form
+    this.form
       .get('countryCodeSwitch')
-      .valueChanges.subscribe(countryCodeSwitch => this.handleCountryChange(countryCodeSwitch));
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(countryCodeSwitch => this.handleCountryChange(countryCodeSwitch));
 
     // set validators for credentials form
     const credForm = this.form.get('credentials');
@@ -80,7 +82,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.formCountrySwitchSubscription.unsubscribe();
+    this.destroy$.next();
   }
 
   cancelForm() {

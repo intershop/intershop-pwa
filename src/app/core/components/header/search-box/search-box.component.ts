@@ -11,7 +11,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 
 @Component({
@@ -30,8 +31,8 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   @Output() searchTermChange = new EventEmitter<string>();
   @Output() performSearch = new EventEmitter<string>();
 
+  destroy$ = new Subject();
   searchForm: FormGroup;
-  searchFormSearchSubscription: Subscription;
   isHidden = true;
   activeIndex = -1;
 
@@ -41,7 +42,10 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     if (this.autoSuggest) {
-      this.searchFormSearchSubscription = this.searchForm.get('search').valueChanges.subscribe(this.searchTermChange);
+      this.searchForm
+        .get('search')
+        .valueChanges.pipe(takeUntil(this.destroy$))
+        .subscribe(this.searchTermChange);
     }
   }
 
@@ -57,7 +61,7 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.searchFormSearchSubscription.unsubscribe();
+    this.destroy$.next();
   }
 
   hidePopup() {

@@ -10,7 +10,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select/select-option.interface';
 import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
@@ -27,13 +28,13 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   @Output() viewTypeChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<string>();
 
+  destroy$ = new Subject();
   sortForm: FormControl;
-  sortFormSubscription: Subscription;
   sortOptions: SelectOption[] = [];
 
   ngOnInit() {
     this.sortForm = new FormControl(this.sortBy);
-    this.sortFormSubscription = this.sortForm.valueChanges.subscribe(this.sortByChange);
+    this.sortForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.sortByChange);
   }
 
   ngOnChanges(c: SimpleChanges) {
@@ -47,7 +48,7 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnDestroy() {
-    this.sortFormSubscription.unsubscribe();
+    this.destroy$.next();
   }
 
   // TODO: probably it's good to map this in a selector, not here
