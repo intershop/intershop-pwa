@@ -1,9 +1,11 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { Basket } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
+import { ShoppingSharedModule } from '../../../../shopping/shopping-shared.module';
 import { MiniBasketComponent } from './mini-basket.component';
 
 describe('Mini Basket Component', () => {
@@ -16,7 +18,14 @@ describe('Mini Basket Component', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [CollapseModule.forRoot(), CommonModule, TranslateModule.forRoot(), PipesModule],
+        imports: [
+          CollapseModule.forRoot(),
+          CommonModule,
+          RouterTestingModule,
+          TranslateModule.forRoot(),
+          PipesModule,
+          ShoppingSharedModule,
+        ],
         providers: [CurrencyPipe],
         declarations: [MiniBasketComponent],
       }).compileComponents();

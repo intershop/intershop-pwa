@@ -1,3 +1,4 @@
+import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 import { Product } from '../product/product.model';
 
@@ -10,7 +11,7 @@ export interface BasketItem {
     value: number;
     unit?: string;
   };
-  product: Product;
+  product: Product | Link;
   price: Price;
   singleBasePrice: Price;
   itemSurcharges?: {

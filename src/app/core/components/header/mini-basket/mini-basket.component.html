@@ -1,5 +1,5 @@
 <!-- NEEDS_WORK: IMPLEMENT SLIDER AND ADD MISSING DATA -->
-<div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed" >
+<div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed">
   <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
   <a (click)="isCollapsed = !isCollapsed; false;">
     <span class="glyphicon glyphicon-shopping-cart"></span>
@@ -16,18 +16,19 @@
     <ng-container *ngIf="basket; else emptyBlock">
       <div class="product-rows-block">
         <div class="slider">
-          <div class="product-row" *ngFor="let product of basket.lineItems">
+          <div class="product-row" *ngFor="let lineItem of basket.lineItems">
             <div class="mini-product-img">
-              <a routerLink="/">
-                <img src="assets/product_img/x_thumb.jpg"
-                  data-test="true" class="product-image" data-type="S" alt="A-DATA XPG Gaming Series V2.0, DDR3, 1600 MHz, CL9, 12GB (4GB x 3) product photo"
-                  height="110" width="110" />
+              <a *ngIf="lineItem.product && lineItem.product.sku" [routerLink]="generateProductRoute(lineItem.product)" (click)="isCollapsed = true;">
+                <ish-product-image [product]="lineItem.product" imageType="S" class="product-image"></ish-product-image>
               </a>
             </div>
             <div class="mini-product-info">
-              <a routerLink="/">{{ product.name }}</a>
-              <div class="product-price" *ngIf="product.price">{{ product.price.value | currency: product.price.currencyMnemonic }}</div>
-              <div class="cart-pli-data" *ngIf="product.quantity"><span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ product.quantity.value }}</div>
+              <a [routerLink]="lineItem.product ? generateProductRoute(lineItem.product) : '/'" (click)="isCollapsed = true;">
+                {{ lineItem.name }}
+              </a>
+              <div class="product-price" *ngIf="lineItem.price">{{ lineItem.price.value | currency: lineItem.price.currencyMnemonic }}</div>
+              <div class="cart-pli-data" *ngIf="lineItem.quantity">
+                <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}</div>
             </div>
           </div>
         </div>
@@ -38,4 +39,4 @@
       <!-- Your cart is currently empty. -->
       {{ 'shopping_cart.ministatus.empty_cart.text' | translate }}
     </ng-template>
-</div>
+  </div>

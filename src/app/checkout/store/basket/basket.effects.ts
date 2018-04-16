@@ -5,6 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
+import { getProductEntities } from '../../../shopping/store/products';
 import * as productsActions from '../../../shopping/store/products/products.actions';
 import { BasketService } from '../../services/basket/basket.service';
 import { CheckoutState } from '../checkout.state';
@@ -68,19 +69,23 @@ export class BasketEffects {
   @Effect()
   loadBasketItemsAfterBasketLoad$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketSuccess),
-    withLatestFrom(this.store.select(getCurrentBasket)),
-    map(([action, basket]) => new basketActions.LoadBasketItems(basket.id))
+    map((action: basketActions.LoadBasketSuccess) => action.payload),
+    map(payload => new basketActions.LoadBasketItems(payload.id))
   );
 
   /**
    * trigger load product effects after load basket items success
+   * only requests missing products
    */
   @Effect()
   loadProductsForBasket$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketItemsSuccess),
-    withLatestFrom(this.store.select(getCurrentBasket)),
-    switchMap(([action, basket]) => [
-      ...basket.lineItems.map(lineItem => new productsActions.LoadProduct(lineItem.product['title'])),
+    map((action: basketActions.LoadBasketItemsSuccess) => action.payload),
+    withLatestFrom(this.store.select(getProductEntities)),
+    switchMap(([payload, products]) => [
+      ...payload
+        .filter(lineItem => !products[lineItem.product['title']])
+        .map(lineItem => new productsActions.LoadProduct(lineItem.product['title'])),
     ])
   );
 
