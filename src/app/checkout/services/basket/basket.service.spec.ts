@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
@@ -26,13 +25,7 @@ describe('Basket Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
-
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [{ provide: ApiService, useFactory: () => instance(apiService) }, BasketService],
-    });
-
-    basketService = TestBed.get(BasketService);
+    basketService = new BasketService(instance(apiService));
   });
 
   it("should get Basket data when 'getBasket' is called", () => {

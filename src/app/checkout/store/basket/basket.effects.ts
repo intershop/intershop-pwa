@@ -56,7 +56,7 @@ export class BasketEffects {
       return this.basketService
         .addItemToBasket(payload.sku, payload.quantity, basket.id)
         .pipe(
-          map(result => new basketActions.AddItemToBasketSuccess(result)),
+          map(() => new basketActions.AddItemToBasketSuccess()),
           catchError(error => of(new basketActions.AddItemToBasketFail(error)))
         );
     })

@@ -40,8 +40,7 @@ export class BasketService {
    * @param quantity  The quantity of the product to add
    * @param basketId  The id of the basket which the product should be added to
    */
-  // tslint:disable-next-line: no-any
-  addItemToBasket(sku: string, quantity: number = 1, basketId: string): Observable<any> {
+  addItemToBasket(sku: string, quantity: number = 1, basketId: string): Observable<void> {
     const body: Object = {
       elements: [
         {

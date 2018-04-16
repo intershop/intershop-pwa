@@ -38,8 +38,6 @@ export class AddItemToBasketFail implements Action {
 
 export class AddItemToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemToBasketSuccess;
-  // tslint:disable:no-any
-  constructor(public payload: any) {}
 }
 
 export type BasketAction =
