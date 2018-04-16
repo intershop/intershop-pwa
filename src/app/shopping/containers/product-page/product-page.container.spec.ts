@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { CoreState } from '../../../core/store/core.state';
@@ -23,7 +22,6 @@ describe('Product Page Container', () => {
         imports: [
           StoreModule.forRoot({
             shopping: combineReducers(shoppingReducers),
-            routerReducer,
           }),
         ],
         declarations: [

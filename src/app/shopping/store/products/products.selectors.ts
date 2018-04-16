@@ -1,5 +1,4 @@
 import { createSelector } from '@ngrx/store';
-import * as fromRouter from '../../../core/store/router';
 import { Product } from '../../../models/product/product.model';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 import { productAdapter } from './products.reducer';
@@ -10,10 +9,7 @@ export const { selectEntities: getProductEntities, selectAll: getProducts } = pr
   getProductsState
 );
 
-export const getSelectedProductId = createSelector(
-  fromRouter.getRouterState,
-  router => router && router.state && router.state.params.sku
-);
+export const getSelectedProductId = createSelector(getProductsState, (state: any) => state.selected);
 
 export const getSelectedProduct = createSelector(
   getProductEntities,

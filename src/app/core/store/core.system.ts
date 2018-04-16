@@ -1,4 +1,3 @@
-import { routerReducer } from '@ngrx/router-store';
 import { ActionReducerMap } from '@ngrx/store';
 import { CoreState } from './core.state';
 import { CountriesEffects } from './countries/countries.effects';
@@ -11,7 +10,6 @@ import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 
 export const coreReducers: ActionReducerMap<CoreState> = {
-  routerReducer: routerReducer,
   user: userReducer,
   locale: localeReducer,
   countries: countriesReducer,
@@ -20,5 +18,3 @@ export const coreReducers: ActionReducerMap<CoreState> = {
 
 // tslint:disable-next-line:no-any
 export const coreEffects: any[] = [UserEffects, LocaleEffects, CountriesEffects, ErrorEffects];
-
-export * from './router/router.serializers';
