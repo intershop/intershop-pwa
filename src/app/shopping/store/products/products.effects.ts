@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { ofRoute, RouteNavigation } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
@@ -66,10 +67,18 @@ export class ProductsEffects {
   );
 
   @Effect()
-  selectedProduct$ = this.store.pipe(
-    select(productsSelectors.getSelectedProductId),
-    filter(id => !!id),
-    map(id => new productsActions.LoadProduct(id))
+  routeListenerForSelectingProducts$ = this.actions$.pipe(
+    ofRoute(['category/:categoryUniqueId/product/:sku', 'product/:sku']),
+    map((action: RouteNavigation) => action.payload.params['sku']),
+    map(sku => new productsActions.SelectProduct(sku))
+  );
+
+  @Effect()
+  selectedProduct$ = this.actions$.pipe(
+    ofType(productsActions.ProductsActionTypes.SelectProduct),
+    map((action: productsActions.SelectProduct) => action.payload),
+    filter(sku => !!sku),
+    map(sku => new productsActions.LoadProduct(sku))
   );
 
   @Effect()

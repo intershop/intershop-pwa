@@ -16,7 +16,6 @@ import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Category } from '../../../models/category/category.model';
 import { Locale } from '../../../models/locale/locale.model';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { CategoriesService } from '../../services/categories/categories.service';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
@@ -267,7 +266,6 @@ describe('Categories Effects', () => {
 
   describe('productOrCategoryChanged$', () => {
     let category: Category;
-    let selectProduct;
 
     beforeEach(() => {
       category = {
@@ -275,22 +273,11 @@ describe('Categories Effects', () => {
         id: '123',
         hasOnlineProducts: false,
       } as Category;
-
-      selectProduct = function(cid: string, sku: string) {
-        const routerAction = navigateMockAction({
-          url: `/category/${cid}/product/${sku}`,
-          params: {
-            categoryUniqueId: cid,
-            sku,
-          },
-        });
-        store$.dispatch(routerAction);
-      };
     });
 
     it('should do nothing when product is selected', () => {
       store$.dispatch(new fromActions.LoadCategorySuccess(category));
-      selectProduct('123', 'P222');
+      store$.dispatch(new productsActions.SelectProduct('P222'));
 
       expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
     });
