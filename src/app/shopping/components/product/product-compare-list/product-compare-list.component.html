@@ -90,7 +90,7 @@
       <tr *ngFor="let commonAttributeName of commonAttributeNames">
         <th>{{commonAttributeName}}</th>
         <td *ngFor="let product of visibleProducts">
-          {{getAttributeByAttributeName(product, commonAttributeName) | attributeToString:'|'}}
+          {{getAttributeByAttributeName(product, commonAttributeName) | ishAttribute:'|'}}
         </td>
       </tr>
 

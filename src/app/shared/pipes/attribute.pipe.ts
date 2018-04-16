@@ -1,36 +1,29 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { filter, map } from 'rxjs/operators';
-import { CoreState } from '../../core/store/countries';
-import { getCurrentLocale } from '../../core/store/locale';
-import { Attribute } from './attribute.model';
+import { TranslateService } from '@ngx-translate/core';
+import { Attribute } from '../../models/attribute/attribute.model';
+import { Price } from '../../models/price/price.model';
+import { PricePipe } from './price.pipe';
 
-@Pipe({ name: 'attributeToString' })
+@Pipe({ name: 'ishAttribute' })
 export class AttributeToStringPipe implements PipeTransform {
-  locale: string;
-
   constructor(
-    store: Store<CoreState>,
-    private currencyPipe: CurrencyPipe,
+    private translateService: TranslateService,
     private datePipe: DatePipe,
-    private decimalPipe: DecimalPipe
-  ) {
-    store
-      .pipe(select(getCurrentLocale), filter(x => !!x), map(currentLocale => currentLocale.lang))
-      .subscribe(l => (this.locale = l));
-  }
+    private decimalPipe: DecimalPipe,
+    private pricePipe: PricePipe
+  ) {}
 
   private toDate(val): string {
-    return this.datePipe.transform(val, 'shortDate', undefined, this.locale);
+    return this.datePipe.transform(val, 'shortDate', undefined, this.translateService.currentLang);
   }
 
   private toDecimal(val): string {
-    return this.decimalPipe.transform(val, undefined, this.locale);
+    return this.decimalPipe.transform(val, undefined, this.translateService.currentLang);
   }
 
-  private toCurrency(val, mnemonic): string {
-    return this.currencyPipe.transform(val, mnemonic, 'symbol', undefined, this.locale);
+  private toCurrency(price: Price): string {
+    return this.pricePipe.transform(price);
   }
 
   transform(data: Attribute, valuesSeparator: string = ', '): string {
@@ -62,7 +55,7 @@ export class AttributeToStringPipe implements PipeTransform {
           case 'Quantity':
             return `${this.toDecimal(data.value.value)}\xA0${data.value.unit}`;
           case 'Money':
-            return this.toCurrency(data.value.value, data.value.currencyMnemonic);
+            return this.toCurrency(data.value as Price);
           default:
             return data.value.toString();
         }

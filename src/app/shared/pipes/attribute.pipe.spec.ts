@@ -1,21 +1,14 @@
 import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TestBed } from '@angular/core/testing';
-import { Store, StoreModule } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
-import { AVAILABLE_LOCALES } from '../../core/configurations/injection-keys';
-import { coreReducers } from '../../core/store/core.system';
-import { CoreState } from '../../core/store/countries';
-import { SelectLocale, SetAvailableLocales } from '../../core/store/locale';
-import { Locale } from '../locale/locale.model';
 import { AttributeToStringPipe } from './attribute.pipe';
+import { PricePipe } from './price.pipe';
 
 describe('Attribute toString Pipe', () => {
   let pipe: AttributeToStringPipe;
-  let store$: Store<CoreState>;
-
-  let EN_US: Locale;
-  let DE_DE: Locale;
+  let translateService: TranslateService;
 
   const valuesSeparator = '::';
 
@@ -23,16 +16,12 @@ describe('Attribute toString Pipe', () => {
     registerLocaleData(localeDe);
 
     TestBed.configureTestingModule({
-      imports: [CommonModule, StoreModule.forRoot(coreReducers)],
-      providers: [AttributeToStringPipe, CurrencyPipe, DatePipe, DecimalPipe],
+      imports: [CommonModule, TranslateModule.forRoot()],
+      providers: [AttributeToStringPipe, PricePipe, CurrencyPipe, DatePipe, DecimalPipe],
     });
     pipe = TestBed.get(AttributeToStringPipe);
-    store$ = TestBed.get(Store);
-    const locales: Locale[] = TestBed.get(AVAILABLE_LOCALES);
-    store$.dispatch(new SetAvailableLocales(locales));
-
-    EN_US = locales.find(v => v.lang.startsWith('en'));
-    DE_DE = locales.find(v => v.lang.startsWith('de'));
+    translateService = TestBed.get(TranslateService);
+    translateService.setDefaultLang('en');
   });
 
   function dataProvider() {
@@ -203,12 +192,12 @@ describe('Attribute toString Pipe', () => {
 
   using(dataProvider, slice => {
     it(`should translate attribute of type ${slice.attribute.type} correcly when locale en_US is set`, () => {
-      store$.dispatch(new SelectLocale(EN_US));
+      translateService.use('en_US');
       expect(pipe.transform(slice.attribute, valuesSeparator)).toEqual(slice.en_US);
     });
 
     it(`should translate attribute of type ${slice.attribute.type} correcly when locale de_DE is set`, () => {
-      store$.dispatch(new SelectLocale(DE_DE));
+      translateService.use('de_DE');
       expect(pipe.transform(slice.attribute, valuesSeparator)).toEqual(slice.de_DE);
     });
   });
