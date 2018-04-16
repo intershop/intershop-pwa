@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs/observable/of';
-import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
 describe('FormControlFeedbackComponent', () => {
@@ -13,19 +11,16 @@ describe('FormControlFeedbackComponent', () => {
   let translateService: TranslateService;
 
   beforeEach(() => {
-    translateService = mock(TranslateService);
-
-    when(translateService.get('requiredkey')).thenReturn(of('requiredmessage'));
-
-    when(translateService.get('lengthkey')).thenReturn(of('lengthmessage'));
-  });
-
-  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserModule],
+      imports: [BrowserModule, TranslateModule.forRoot()],
       declarations: [FormControlFeedbackComponent],
-      providers: [{ provide: TranslateService, useFactory: () => instance(translateService) }],
     }).compileComponents();
+
+    translateService = TestBed.get(TranslateService);
+    translateService.setDefaultLang('en');
+    translateService.use('en');
+    translateService.set('requiredkey', 'requiredmessage');
+    translateService.set('lengthkey', 'lengthmessage');
   });
 
   beforeEach(() => {
