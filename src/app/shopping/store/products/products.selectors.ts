@@ -9,7 +9,7 @@ export const { selectEntities: getProductEntities, selectAll: getProducts } = pr
   getProductsState
 );
 
-export const getSelectedProductId = createSelector(getProductsState, (state: any) => state.selected);
+export const getSelectedProductId = createSelector(getProductsState, state => state.selected);
 
 export const getSelectedProduct = createSelector(
   getProductEntities,

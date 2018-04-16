@@ -3,12 +3,17 @@ import { Action } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
 
 export enum ProductsActionTypes {
+  SelectProduct = '[Shopping] Select Product',
   LoadProduct = '[Shopping] Load Product',
   LoadProductFail = '[Shopping] Load Product Fail',
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
 }
 
+export class SelectProduct implements Action {
+  readonly type = ProductsActionTypes.SelectProduct;
+  constructor(public payload: string) {}
+}
 export class LoadProduct implements Action {
   readonly type = ProductsActionTypes.LoadProduct;
   constructor(public payload: string) {}
@@ -29,4 +34,9 @@ export class LoadProductsForCategory implements Action {
   constructor(public payload: string) {}
 }
 
-export type ProductsAction = LoadProduct | LoadProductFail | LoadProductSuccess | LoadProductsForCategory;
+export type ProductsAction =
+  | SelectProduct
+  | LoadProduct
+  | LoadProductFail
+  | LoadProductSuccess
+  | LoadProductsForCategory;
