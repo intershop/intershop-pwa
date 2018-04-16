@@ -63,7 +63,7 @@ describe('Basket Reducer', () => {
 
     describe('AddItemToBasketSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.AddItemToBasketSuccess({});
+        const action = new fromActions.AddItemToBasketSuccess();
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(false);

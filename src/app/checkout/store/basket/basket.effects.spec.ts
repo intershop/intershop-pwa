@@ -117,7 +117,7 @@ describe('BasketEffects', () => {
     it('should map to action of type AddItemToBasketSuccess', () => {
       const payload = { sku: 'test', quantity: 1 };
       const action = new basketActions.AddItemToBasket(payload);
-      const completion = new basketActions.AddItemToBasketSuccess({});
+      const completion = new basketActions.AddItemToBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

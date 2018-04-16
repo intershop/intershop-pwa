@@ -1,5 +1,3 @@
-import { Country } from '../country/country.model';
-
 export interface Address {
   urn: string;
   type?: string;
@@ -15,6 +13,7 @@ export interface Address {
   postalCode: string;
   city: string;
   mainDivision?: string;
-  country: Country | string;
+  country: string;
+  countryCode: string;
   phoneHome: string;
 }
