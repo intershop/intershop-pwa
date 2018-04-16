@@ -10,7 +10,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
 import { CustomValidators } from 'ng2-validation';
 import { takeUntil } from 'rxjs/operators';
@@ -21,7 +21,11 @@ import { Country } from '../../../models/country/country.model';
 import { Customer } from '../../../models/customer/customer.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Region } from '../../../models/region/region.model';
-import { markAsDirtyRecursive, updateValidatorsByDataLength } from '../../../utils/form-utils';
+import {
+  markAsDirtyRecursive,
+  markFormControlsAsInvalid,
+  updateValidatorsByDataLength,
+} from '../../../utils/form-utils';
 
 @Component({
   selector: 'ish-registration-form',
@@ -82,21 +86,13 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (c.error && c.error.currentValue) {
       if (c.error.currentValue.headers.get('error-missing-attributes')) {
-        const missingAttributes: string[] = c.error.currentValue.headers.get('error-missing-attributes').split(',');
-        missingAttributes
-          .map(attr => (attr === 'email' ? 'credentials.login' : attr))
-          .map(attr => {
-            let obj: AbstractControl | FormControl = this.form;
-            attr.split('.').forEach(sub => {
-              obj = obj.get(sub);
-            });
-            return obj as FormControl;
-          })
-          .filter(formControl => !!formControl)
-          .forEach(formControl => {
-            formControl.markAsDirty();
-            formControl.setErrors({ incorrect: true });
-          });
+        const missingAttributes: string = c.error.currentValue.headers.get('error-missing-attributes');
+        // map missing 'email' response to login field
+        const list: string[] = missingAttributes
+          .split(',')
+          .map(attr => (attr === 'email' ? 'credentials.login' : attr));
+
+        markFormControlsAsInvalid(this.form, list);
       }
     }
   }
