@@ -81,4 +81,14 @@ describe('Products Service', () => {
       )
     ).once();
   });
+
+  it('should get products based on the given search term', () => {
+    const products = ['Product1', 'Product2'];
+    const searchTerm = 'aaa';
+
+    when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(of(products));
+    productsService.searchProducts(searchTerm);
+
+    verify(apiService.get(anything(), anything(), anything(), anything(), anything())).once();
+  });
 });
