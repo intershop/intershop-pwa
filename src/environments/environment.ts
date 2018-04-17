@@ -10,6 +10,7 @@ export const environment = {
   icmServer: 'INTERSHOP/rest/WFS',
   icmApplication: 'inSPIRED-inTRONICS-Site',
   mainNavigationMaxSubCategoriesDepth: 2,
+  syncLocalStorage: true,
 
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
