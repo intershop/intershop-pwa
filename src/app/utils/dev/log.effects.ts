@@ -32,7 +32,7 @@ export class LogEffects {
     this.store$.dispatch(action);
   }
 
-  actionsIterator(include: string[]) {
+  actionsIterator(include: (string | RegExp)[]) {
     let currentIdx = 0;
 
     return {
@@ -44,7 +44,14 @@ export class LogEffects {
         } while (
           !!current &&
           !!current.type &&
-          !include.map(inc => current.type.startsWith(inc)).reduce((l, r) => l || r)
+          !include
+            .map(inc => {
+              if (typeof inc === 'string') {
+                return (current.type as string).indexOf(inc) >= 0;
+              }
+              return (current.type as string).search(inc) >= 0;
+            })
+            .reduce((l, r) => l || r)
         );
         return current;
       },
