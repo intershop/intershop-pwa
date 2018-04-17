@@ -52,15 +52,10 @@ export const getProductCountForSelectedCategory = createSelector(
   skus => (skus && skus.length) || 0
 );
 
-export const getSelectedCategoryProductsNeeded = createSelector(
+export const productsForSelectedCategoryAreNotLoaded = createSelector(
   getSelectedCategory,
-  productsSelectors.getSelectedProductId,
   getProductSKUsForSelectedCategory,
-  (c, selectedProductSku, skus) => {
-    if (!selectedProductSku && c && c.hasOnlineProducts && !skus.length) {
-      return [c, selectedProductSku, skus];
-    }
-  }
+  (c, skus) => c && c.hasOnlineProducts && !skus.length
 );
 
 export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);
