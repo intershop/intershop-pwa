@@ -2,12 +2,26 @@
   "elements": [
     {
       "type": "Link",
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "3953312"
+        }
+      ],
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/3953312",
       "title": "Canon LEGRIA HF R16",
       "description": "LEGRIA HF R16 - 8GB, SDHC, 1/ 13.97 cm (5.5 \") CMOS, 20x opt., dig. 400x"
     },
     {
       "type": "Link",
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "7912061"
+        }
+      ],
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584/products/7912061",
       "title": "Kodak PlayFull Ze1",
       "description": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black"

@@ -15,11 +15,13 @@ describe('Products Service', () => {
         type: 'Link',
         uri: '/categories/CategoryID/products/ProductA',
         title: 'Product A',
+        attributes: [{ name: 'sku', type: 'String', value: 'ProductA' }],
       },
       {
         type: 'Link',
         uri: '/categories/CategoryID/products/ProductB',
         title: 'Product B',
+        attributes: [{ name: 'sku', type: 'String', value: 'ProductB' }],
       },
     ],
     type: 'ResourceCollection',
@@ -56,7 +58,7 @@ describe('Products Service', () => {
     ).once();
   });
 
-  it("should get a list of Products SKUs for a given Category when 'getProductsSkusForCategory' is called", () => {
+  it("should get a list of products SKUs for a given Category when 'getCategoryProducts' is called", () => {
     when(
       apiService.get(
         `${productsService.categoriesServiceIdentifier}/${categoryId}/${productsService.productsServiceIdentifier}`,
@@ -66,7 +68,7 @@ describe('Products Service', () => {
         anything()
       )
     ).thenReturn(of(productsMockData));
-    productsService.getProductsSkusForCategory(categoryId).subscribe(data => {
+    productsService.getCategoryProducts(categoryId).subscribe(data => {
       expect(data.skus).toEqual(['ProductA', 'ProductB']);
       expect(data.categoryUniqueId).toEqual(categoryId);
       expect(data.sortKeys).toEqual(['name-desc', 'name-asc']);
@@ -83,10 +85,9 @@ describe('Products Service', () => {
   });
 
   it('should get products based on the given search term', () => {
-    const products = ['Product1', 'Product2'];
     const searchTerm = 'aaa';
 
-    when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(of(products));
+    when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(of(productsMockData));
     productsService.searchProducts(searchTerm);
 
     verify(apiService.get(anything(), anything(), anything(), anything(), anything())).once();

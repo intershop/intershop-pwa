@@ -17,11 +17,11 @@
 categories ?view=tree&limit=3&imageView=NO-IMAGE
 categories/Cameras-Camcorders
 categories/Cameras-Camcorders/584
-categories/Cameras-Camcorders/584/products ?returnSortKeys=true {elements:[.elements[1],.elements[2]],name,type,sortKeys}
+categories/Cameras-Camcorders/584/products ?returnSortKeys=true&attrs=sku {elements:[.elements[1],.elements[2]],name,type,sortKeys}
 categories/Cameras-Camcorders/584/products/3953312 ?allImages=true
 categories/Cameras-Camcorders/584/products/7912061 ?allImages=true
 categories/Cameras-Camcorders/832
-categories/Cameras-Camcorders/832/products ?returnSortKeys=true {elements:[.elements[0],.elements[2]],name,type,sortKeys}
+categories/Cameras-Camcorders/832/products ?returnSortKeys=true&attrs=sku {elements:[.elements[0],.elements[2]],name,type,sortKeys}
 categories/Cameras-Camcorders/832/products/8182790134362 ?allImages=true
 categories/Cameras-Camcorders/832/products/8182790134363 ?allImages=true
 categories/Computers
