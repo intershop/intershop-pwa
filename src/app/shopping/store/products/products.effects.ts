@@ -48,9 +48,7 @@ export class ProductsEffects {
     ofType(productsActions.ProductsActionTypes.LoadProductsForCategory),
     map((action: productsActions.LoadProductsForCategory) => action.payload),
     withLatestFrom(this.store.pipe(select(fromViewconf.getSortBy))),
-    concatMap(([categoryUniqueId, sortBy]) =>
-      this.productsService.getProductsSkusForCategory(categoryUniqueId, sortBy)
-    ),
+    concatMap(([categoryUniqueId, sortBy]) => this.productsService.getCategoryProducts(categoryUniqueId, sortBy)),
     switchMap(res => [
       new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
       new fromViewconf.SetSortKeys(res.sortKeys),

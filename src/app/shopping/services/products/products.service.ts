@@ -31,30 +31,37 @@ export class ProductsService {
     if (!sku) {
       return ErrorObservable.create('getProduct() called without a sku');
     }
+
     const params: HttpParams = new HttpParams().set('allImages', 'true');
+
     return this.apiService
       .get<ProductData>(`${this.productsServiceIdentifier}/${sku}`, params, null, false, false)
       .pipe(map(productData => ProductMapper.fromData(productData)));
   }
 
   /**
-   * Get a sorted list of all SKUs of Products belonging to a given Category.
+   * Get a sorted list of all products (as SKU list) assigned to a given Category.
    *
    * @param categoryUniqueId  The unique Category ID
    * @param sortKey           The sortKey to sort the list, default value is ''
-   * @returns                 List of Product SKUs, the unique Category ID and the possible sort keys as Observable
+   * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sortings [sortKeys]
    */
   // TODO: handle and document paging
-  getProductsSkusForCategory(
+  getCategoryProducts(
     categoryUniqueId: string,
     sortKey = ''
   ): Observable<{ skus: string[]; categoryUniqueId: string; sortKeys: string[] }> {
-    let params: HttpParams = new HttpParams().set('returnSortKeys', 'true');
+    if (!categoryUniqueId) {
+      return ErrorObservable.create('getCategoryProducts() called without categoryUniqueId');
+    }
+
+    let params: HttpParams = new HttpParams().set('attrs', 'sku').set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
+
     return this.apiService
-      .get<{ elements: { uri: string }[]; sortKeys: string[]; categoryUniqueId: string }>(
+      .get<{ elements: { attributes: { value: string }[] }[]; sortKeys: string[]; categoryUniqueId: string }>(
         `${this.categoriesServiceIdentifier}/${categoryUniqueId.replace(/\./g, '/')}/${this.productsServiceIdentifier}`,
         params,
         null,
@@ -63,7 +70,7 @@ export class ProductsService {
       )
       .pipe(
         map(response => ({
-          skus: response.elements.map(el => el.uri.split('/').pop()),
+          skus: response.elements.map(element => element.attributes[0].value),
           sortKeys: response.sortKeys,
           categoryUniqueId: categoryUniqueId,
         }))
@@ -74,8 +81,7 @@ export class ProductsService {
    * Get products (as SKU list) for a given search term.
    *
    * @param searchTerm  The search term to look for matching products
-   * @returns           A list of matching Product SKUs [skus]
-   * @returns           A list of possible sortings [sortKeys]
+   * @returns           A list of matching Product SKUs [skus] with a list of possible sortings [sortKeys]
    */
   // TODO: handle and document paging (total, offset, amount)
   searchProducts(searchTerm: string): Observable<{ skus: string[]; sortKeys: string[] }> {
@@ -96,6 +102,11 @@ export class ProductsService {
         false,
         false
       )
-      .pipe(map(res => ({ skus: res.elements.map(element => element.attributes[0].value), sortKeys: res.sortKeys })));
+      .pipe(
+        map(response => ({
+          skus: response.elements.map(element => element.attributes[0].value),
+          sortKeys: response.sortKeys,
+        }))
+      );
   }
 }
