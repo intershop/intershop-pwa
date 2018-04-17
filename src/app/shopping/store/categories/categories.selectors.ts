@@ -6,9 +6,11 @@ import { categoryAdapter } from './categories.reducer';
 
 const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
 
-export const { selectEntities: getCategoryEntities, selectAll: getCategories } = categoryAdapter.getSelectors(
-  getCategoryState
-);
+export const {
+  selectEntities: getCategoryEntities,
+  selectAll: getCategories,
+  selectIds: getCategoriesIds,
+} = categoryAdapter.getSelectors(getCategoryState);
 
 export const getSelectedCategoryId = createSelector(getCategoryState, state => state.selected);
 

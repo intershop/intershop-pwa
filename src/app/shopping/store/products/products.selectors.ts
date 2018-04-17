@@ -5,9 +5,11 @@ import { productAdapter } from './products.reducer';
 
 const getProductsState = createSelector(getShoppingState, (state: ShoppingState) => state.products);
 
-export const { selectEntities: getProductEntities, selectAll: getProducts } = productAdapter.getSelectors(
-  getProductsState
-);
+export const {
+  selectEntities: getProductEntities,
+  selectAll: getProducts,
+  selectIds: getProductIds,
+} = productAdapter.getSelectors(getProductsState);
 
 export const getSelectedProductId = createSelector(getProductsState, state => state.selected);
 
