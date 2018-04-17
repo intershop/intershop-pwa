@@ -95,8 +95,11 @@ export class CategoriesEffects {
   productOrCategoryChanged$ = this.store.pipe(
     select(categoriesSelectors.productsForSelectedCategoryAreNotLoaded),
     filter(x => !!x),
-    withLatestFrom(this.store.select(categoriesSelectors.getSelectedCategoryId)),
-    filter(([needed, uniqueId]) => !!uniqueId),
+    withLatestFrom(
+      this.store.select(categoriesSelectors.getSelectedCategoryId),
+      this.store.select(getSelectedProductId)
+    ),
+    filter(([needed, uniqueId, sku]) => !!uniqueId && !sku),
     map(([needed, uniqueId]) => new productsActions.LoadProductsForCategory(uniqueId))
   );
 
