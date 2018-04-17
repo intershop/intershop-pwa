@@ -12,22 +12,22 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { Scheduler } from 'rxjs/Scheduler';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { AccountLoginService } from '../../core/services/account-login/account-login.service';
-import { CategoriesService } from '../../core/services/categories/categories.service';
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
 import { CountryService } from '../../core/services/countries/country.service';
-import { SuggestService } from '../../core/services/suggest/suggest.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { Category } from '../../models/category/category.model';
+import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
+import { CategoriesService } from '../services/categories/categories.service';
 import { ProductsService } from '../services/products/products.service';
-import { SearchService } from '../services/products/search.service';
+import { SuggestService } from '../services/suggest/suggest.service';
 import { CategoriesActionTypes, getCategoriesIds, LoadCategory, SelectCategory } from './categories';
 import { getProductIds, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
 import { RecentlyActionTypes } from './recently';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
 
-describe('Shopping Store', () => {
+fdescribe('Shopping Store', () => {
   let store: LogEffects;
   let router: Router;
   let categoriesServiceMock: CategoriesService;
@@ -38,7 +38,16 @@ describe('Shopping Store', () => {
     class DummyComponent {}
 
     categoriesServiceMock = mock(CategoriesService);
-    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(empty());
+    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
+      of([
+        {
+          uniqueId: '123',
+          id: '123',
+          hasOnlineSubCategories: true,
+          hasOnlineProducts: false,
+        },
+      ] as Category[])
+    );
     when(categoriesServiceMock.getCategory(anyString())).thenReturn(empty());
     when(categoriesServiceMock.getCategory('123')).thenReturn(
       of(<Category>{
@@ -62,7 +71,7 @@ describe('Shopping Store', () => {
 
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => of({ sku }));
-    when(productsServiceMock.getProductsSkusForCategory('123.456', anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('123.456', anything())).thenReturn(
       of({
         skus: ['P1', 'P2'],
         categoryUniqueId: '123.456',
@@ -80,6 +89,10 @@ describe('Shopping Store', () => {
         EffectsModule.forRoot([...coreEffects, ...shoppingEffects, LogEffects]),
         RouterTestingModule.withRoutes([
           {
+            path: 'home',
+            component: DummyComponent,
+          },
+          {
             path: 'category/:categoryUniqueId',
             component: DummyComponent,
           },
@@ -91,13 +104,13 @@ describe('Shopping Store', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
-        { provide: AccountLoginService, useFactory: () => instance(mock(AccountLoginService)) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
-        { provide: SearchService, useFactory: () => instance(mock(SearchService)) },
+        { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: Scheduler, useFactory: getTestScheduler },
+        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 0 },
       ],
     });
 
@@ -107,6 +120,23 @@ describe('Shopping Store', () => {
 
   it('should be created', () => {
     expect(store).toBeTruthy();
+  });
+
+  describe('home page', () => {
+    it(
+      'should just load toplevel categories when no specific shopping page is loaded',
+      fakeAsync(() => {
+        router.navigate(['/home']);
+
+        tick(5000);
+        expect(store.actions).toBeTruthy();
+
+        const i = store.actionsIterator(['[Shopping]']);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next()).toBeUndefined();
+      })
+    );
   });
 
   describe('category page', () => {
@@ -119,6 +149,8 @@ describe('Shopping Store', () => {
         expect(store.actions).toBeTruthy();
 
         const i = store.actionsIterator(['[Shopping]', '[Router]']);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(i.next()).toEqual(new SelectCategory('123'));
         expect(i.next()).toEqual(new LoadCategory('123'));
@@ -139,6 +171,8 @@ describe('Shopping Store', () => {
         tick(5000);
         expect(store.actions).toBeTruthy();
         const i = store.actionsIterator(['[Shopping]']);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectCategory('123.456'));
         expect(i.next()).toEqual(new LoadCategory('123.456'));
         expect(i.next()).toEqual(new LoadCategory('123'));
@@ -153,7 +187,7 @@ describe('Shopping Store', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next()).toBeUndefined();
 
-        expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+        expect(getCategoriesIds(store.state)).toEqual(['123', '123.456']);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       })
     );
@@ -167,8 +201,9 @@ describe('Shopping Store', () => {
 
         tick(5000);
         expect(store.actions).toBeTruthy();
-        expect(store.actions.length).toEqual(13);
         const i = store.actionsIterator(['[Shopping]']);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectCategory('123.456'));
         expect(i.next()).toEqual(new SelectProduct('P1'));
         expect(i.next()).toEqual(new LoadCategory('123.456'));
@@ -180,7 +215,7 @@ describe('Shopping Store', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next()).toBeUndefined();
 
-        expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+        expect(getCategoriesIds(store.state)).toEqual(['123', '123.456']);
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );

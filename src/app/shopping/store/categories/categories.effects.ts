@@ -4,23 +4,13 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ofRoute, RouteNavigation } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  mergeMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
-import { Scheduler } from 'rxjs/Scheduler';
+import { catchError, distinctUntilChanged, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
-import { getCurrentLocale } from '../../../core/store/locale';
+import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../services/categories/categories.service';
-import * as productsActions from '../products/products.actions';
+import { getSelectedProductId, LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
 import * as categoriesActions from './categories.actions';
 import * as categoriesSelectors from './categories.selectors';
@@ -31,7 +21,6 @@ export class CategoriesEffects {
     private actions$: Actions,
     private store: Store<ShoppingState | CoreState>,
     private categoryService: CategoriesService,
-    private scheduler: Scheduler,
     private router: Router,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number
   ) {}
@@ -69,10 +58,10 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  loadTopLevelCategoriesOnLanguageChange$ = this.store.pipe(
-    select(getCurrentLocale),
+  loadTopLevelCategoriesOnLanguageChange$ = this.actions$.pipe(
+    ofType(LocaleActionTypes.SelectLocale),
+    map((action: SelectLocale) => action.payload),
     filter(locale => !!locale && !!locale.lang),
-    debounceTime(100, this.scheduler), // TODO @Ferdinand: why doesn't it work without this? :'(
     distinctUntilChanged(),
     map(() => new categoriesActions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
   );
@@ -100,7 +89,7 @@ export class CategoriesEffects {
       this.store.select(getSelectedProductId)
     ),
     filter(([needed, uniqueId, sku]) => !!uniqueId && !sku),
-    map(([needed, uniqueId]) => new productsActions.LoadProductsForCategory(uniqueId))
+    map(([needed, uniqueId]) => new LoadProductsForCategory(uniqueId))
   );
 
   @Effect({ dispatch: false })

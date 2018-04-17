@@ -3,12 +3,11 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold, getTestScheduler, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jasmine-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { Scheduler } from 'rxjs/Scheduler';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { capture } from 'ts-mockito/lib/ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
@@ -56,7 +55,6 @@ describe('Categories Effects', () => {
         CategoriesEffects,
         provideMockActions(() => actions$),
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
-        { provide: Scheduler, useFactory: getTestScheduler },
         { provide: Router, useFactory: () => instance(router) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
       ],
@@ -222,8 +220,8 @@ describe('Categories Effects', () => {
     it('should trigger when language is changed', () => {
       const action = new SelectLocale(EN_US);
       const completion = new fromActions.LoadTopLevelCategories(depth);
-      store$.dispatch(action);
-      const expected$ = cold('----------c', { c: completion });
+      actions$ = hot('a', { a: action });
+      const expected$ = cold('c', { c: completion });
 
       expect(effects.loadTopLevelCategoriesOnLanguageChange$).toBeObservable(expected$);
     });
