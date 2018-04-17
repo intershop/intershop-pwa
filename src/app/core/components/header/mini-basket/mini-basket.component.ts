@@ -1,5 +1,6 @@
 // NEEDS_WORK: DETAIL ITEM CONTENT MISSING
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { animate, AnimationBuilder, style } from '@angular/animations';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
@@ -10,14 +11,72 @@ import { ProductHelper } from '../../../../models/product/product.model';
 })
 export class MiniBasketComponent implements OnChanges {
   @Input() basket: Basket;
+  @ViewChild('slider') slider: ElementRef;
+
+  readonly ANIMATION_TIMING: string = '200ms ease-in';
 
   generateProductRoute = ProductHelper.generateProductRoute;
   isCollapsed = true;
-  itemsCount = 0;
+  itemCount = 0;
+
+  currentProduct = 0;
+
+  constructor(private animationBuilder: AnimationBuilder) {}
 
   ngOnChanges() {
     if (this.basket) {
-      this.itemsCount = BasketHelper.getBasketItemsCount(this.basket);
+      this.itemCount = BasketHelper.getBasketItemsCount(this.basket);
     }
+  }
+
+  /**
+   * slider control scroll up
+   */
+  scrollUp() {
+    if (!this.slider || this.currentProduct === 0) {
+      return;
+    }
+
+    const slider = this.slider.nativeElement as HTMLDivElement;
+    const tileHeight = slider.children.length > 0 ? slider.children.item(0).clientHeight : 0;
+
+    this.currentProduct -= 1;
+    const offset = tileHeight * this.currentProduct;
+    this.animate(offset);
+  }
+
+  /**
+   * slider control scroll down
+   */
+  scrollDown() {
+    if (!this.slider || !this.basket || !this.basket.lineItems) {
+      return;
+    }
+
+    const slider = this.slider.nativeElement as HTMLDivElement;
+    const tileHeight = slider.children.length > 0 ? slider.children.item(0).clientHeight : 0;
+    if (this.currentProduct < this.basket.lineItems.length - 2) {
+      this.currentProduct += 1;
+      const offset = tileHeight * this.currentProduct;
+      this.animate(offset);
+    }
+  }
+
+  /**
+   * animate slider container
+   * @param offset vertical translate offset
+   */
+  animate(offset: number) {
+    if (!this.slider) {
+      return;
+    }
+
+    const slider = this.slider.nativeElement as HTMLDivElement;
+    const scrollAnimation = this.animationBuilder.build([
+      animate(this.ANIMATION_TIMING, style({ transform: `translateY(-${offset}px)` })),
+    ]);
+
+    const player = scrollAnimation.create(slider);
+    player.play();
   }
 }

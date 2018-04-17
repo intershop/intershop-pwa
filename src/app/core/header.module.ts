@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse/collapse.module';
@@ -34,6 +35,7 @@ import { ProductCompareStatusContainerComponent } from './containers/header/prod
     PipesModule,
     SharedSearchModule,
     ShoppingSharedModule,
+    BrowserAnimationsModule,
   ],
   declarations: [
     HeaderComponent,
