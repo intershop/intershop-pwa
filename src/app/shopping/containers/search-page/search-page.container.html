@@ -6,7 +6,7 @@
 
     <!-- search result with products -->
     <ng-container *ngIf="products.length; else noResult">
-      <ish-search-page
+      <ish-search-result
         [searchTerm]="searchTerm"
         [products]="products"
         [totalItems]="totalItems$ | async"
@@ -15,7 +15,7 @@
         [sortKeys]="sortKeys$ | async"
         (viewTypeChange)="changeViewType($event)"
         (sortByChange)="changeSortBy($event)"
-      ></ish-search-page>
+      ></ish-search-result>
     </ng-container>
 
     <!-- empty search result -->
