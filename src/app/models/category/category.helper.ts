@@ -27,20 +27,20 @@ export class CategoryHelper {
   }
 
   /**
-   * expands a given uniqueId to the IDs of the path
+   * Expands a given uniqueId to the category path categories uniqueIds.
    * @example
-   * 'A.B.C' -> ['A.B.C', 'A.B', 'A']
+   * 'A.B.C' -> ['A', 'A.B', 'A.B.C']
    */
-  static getCategoryPathIds(uniqueId: string): string[] {
+  static getCategoryPathUniqueIds(uniqueId: string): string[] {
     if (!uniqueId) {
       return undefined;
     }
-    const r = [];
-    const ids = uniqueId.split('.');
+    const uniqueIds = [];
+    const ids = uniqueId.split(CategoryHelper.uniqueIdSeparator);
     for (let i = 0; i < ids.length; i++) {
-      r.push(ids.slice(0, i + 1).join('.'));
+      uniqueIds.push(ids.slice(0, i + 1).join(CategoryHelper.uniqueIdSeparator));
     }
-    return r.reverse();
+    return uniqueIds;
   }
 
   /**

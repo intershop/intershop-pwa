@@ -28,7 +28,7 @@ export class CategoriesEffects {
   selectedCategory$ = this.store.pipe(
     select(categoriesSelectors.getSelectedCategoryId),
     filter(id => !!id),
-    map(CategoryHelper.getCategoryPathIds),
+    map(CategoryHelper.getCategoryPathUniqueIds),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
     map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
     mergeMap(ids => ids.map(id => new categoriesActions.LoadCategory(id)))
