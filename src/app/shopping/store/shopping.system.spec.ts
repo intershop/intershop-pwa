@@ -27,7 +27,8 @@ import { RecentlyActionTypes } from './recently';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
 
-fdescribe('Shopping Store', () => {
+describe('Shopping Store', () => {
+  const DEBUG = false;
   let store: LogEffects;
   let router: Router;
   let categoriesServiceMock: CategoriesService;
@@ -115,6 +116,8 @@ fdescribe('Shopping Store', () => {
     });
 
     store = TestBed.get(LogEffects);
+    store.logActions = DEBUG;
+    store.logState = DEBUG;
     router = TestBed.get(Router);
   });
 
@@ -233,6 +236,7 @@ fdescribe('Shopping Store', () => {
           'should have all required data when previously visited',
           fakeAsync(() => {
             const i = store.actionsIterator(['[Shopping]']);
+            expect(i.next()).toEqual(new SelectProduct(undefined));
             expect(i.next()).toBeUndefined();
           })
         );
@@ -270,7 +274,7 @@ fdescribe('Shopping Store', () => {
       })
     );
 
-    xdescribe('and and going back to the family page', () => {
+    describe('and and going back to the family page', () => {
       beforeEach(
         fakeAsync(() => {
           store.actions = [];
@@ -283,6 +287,7 @@ fdescribe('Shopping Store', () => {
         'should load the sibling products when they are not yet loaded',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
           expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);

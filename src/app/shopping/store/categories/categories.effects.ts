@@ -3,8 +3,18 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ofRoute, RouteNavigation } from 'ngrx-router';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { catchError, distinctUntilChanged, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
@@ -83,15 +93,13 @@ export class CategoriesEffects {
   );
 
   @Effect()
-  productOrCategoryChanged$ = this.store.pipe(
-    select(categoriesSelectors.productsForSelectedCategoryAreNotLoaded),
-    filter(x => !!x),
-    withLatestFrom(
-      this.store.select(categoriesSelectors.getSelectedCategoryId),
-      this.store.select(getSelectedProductId)
-    ),
-    filter(([needed, uniqueId, sku]) => !!uniqueId && !sku),
-    map(([needed, uniqueId]) => new LoadProductsForCategory(uniqueId))
+  productOrCategoryChanged$ = combineLatest(
+    this.store.pipe(select(categoriesSelectors.productsForSelectedCategoryAreNotLoaded)),
+    this.store.pipe(select(getSelectedProductId))
+  ).pipe(
+    filter(([needed, sku]) => !!needed && !sku),
+    switchMap(() => this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
+    map(uniqueId => new LoadProductsForCategory(uniqueId))
   );
 
   @Effect({ dispatch: false })
