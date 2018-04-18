@@ -99,6 +99,19 @@ describe('Categories Effects', () => {
       actions$ = hot('a', { a: action });
       expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-'));
     });
+
+    it('should not trigger SelectCategory when category is already selected', () => {
+      store$.dispatch(new fromActions.SelectCategory('dummy'));
+
+      const action = new RouteNavigation({
+        path: 'category/:categoryUniqueId',
+        params: { categoryUniqueId: 'dummy' },
+        queryParams: {},
+      });
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-'));
+    });
   });
 
   describe('selectedCategory$', () => {

@@ -29,7 +29,9 @@ export class CategoriesEffects {
   routeListenerForSelectingCategory$ = this.actions$.pipe(
     ofRoute(['category/:categoryUniqueId', 'category/:categoryUniqueId/product/:sku']),
     map((action: RouteNavigation) => action.payload.params['categoryUniqueId']),
-    map(categoryUniqueId => new categoriesActions.SelectCategory(categoryUniqueId))
+    withLatestFrom(this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
+    filter(([fromAction, fromStore]) => fromAction !== fromStore),
+    map(([categoryUniqueId, old]) => new categoriesActions.SelectCategory(categoryUniqueId))
   );
 
   @Effect()
