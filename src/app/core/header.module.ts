@@ -21,7 +21,6 @@ import { LoginStatusContainerComponent } from './containers/header/login-status/
 import { MiniCartContainerComponent } from './containers/header/mini-cart/mini-cart.container';
 import { MobileCartContainerComponent } from './containers/header/mobile-cart/mobile-cart.container';
 import { ProductCompareStatusContainerComponent } from './containers/header/product-compare-status/product-compare-status.container';
-import { AccountLoginService } from './services/account-login/account-login.service';
 
 @NgModule({
   imports: [
@@ -50,7 +49,6 @@ import { AccountLoginService } from './services/account-login/account-login.serv
     LoginStatusComponent,
     LoginStatusContainerComponent,
   ],
-  providers: [AccountLoginService],
   exports: [HeaderComponent],
 })
 export class HeaderModule {}

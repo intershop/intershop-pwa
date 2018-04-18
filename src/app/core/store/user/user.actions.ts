@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
-import { AccountLogin } from '../../../core/services/account-login/account-login.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { AccountLogin } from '../../../registration/services/registration/account-login.model';
 
 export enum UserActionTypes {
   LoginUser = '[Account] Login User',

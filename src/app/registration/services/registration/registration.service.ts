@@ -3,15 +3,15 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
+import { ApiService } from '../../../core/services/api.service';
 import { Customer } from '../../../models/customer/customer.model';
-import { ApiService } from '../../services/api.service';
 import { AccountLogin } from './account-login.model';
 
 @Injectable()
-export class AccountLoginService {
+export class RegistrationService {
   constructor(private apiService: ApiService) {}
 
-  private accountLoginFromCustomer(customer: Customer): AccountLogin {
+  private RegistrationFromCustomer(customer: Customer): AccountLogin {
     return {
       userName: customer.credentials.login,
       password: customer.credentials.password,
@@ -29,7 +29,7 @@ export class AccountLoginService {
   createUser(newCustomer: Customer): Observable<Customer> {
     return this.apiService.post<Customer>('customers', newCustomer).pipe(
       // TODO:see #IS-22750 - user should actually be logged in after registration
-      switchMap(() => this.signinUser(this.accountLoginFromCustomer(newCustomer)))
+      switchMap(() => this.signinUser(this.RegistrationFromCustomer(newCustomer)))
     );
   }
 }
