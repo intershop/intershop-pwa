@@ -15,6 +15,8 @@ import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
 import { CountryService } from '../../core/services/countries/country.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
+import { CategoryData } from '../../models/category/category.interface';
+import { CategoryMapper } from '../../models/category/category.mapper';
 import { Category } from '../../models/category/category.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
@@ -41,26 +43,55 @@ describe('Shopping Store', () => {
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
       of([
-        {
-          uniqueId: '123',
-          id: '123',
+        CategoryMapper.fromData({
+          id: 'A',
           hasOnlineSubCategories: true,
+          hasOnlineProducts: false,
+          subCategoriesCount: 1,
+          subCategories: [
+            {
+              id: '123',
+              hasOnlineSubCategories: true,
+              hasOnlineProducts: false,
+            },
+          ],
+        } as CategoryData),
+        {
+          uniqueId: 'B',
+          id: 'B',
+          hasOnlineSubCategories: false,
           hasOnlineProducts: false,
         },
       ] as Category[])
     );
     when(categoriesServiceMock.getCategory(anyString())).thenReturn(empty());
-    when(categoriesServiceMock.getCategory('123')).thenReturn(
+    when(categoriesServiceMock.getCategory('A')).thenReturn(
       of(<Category>{
-        uniqueId: '123',
+        uniqueId: 'A',
+        id: 'A',
+        hasOnlineSubCategories: true,
+        hasOnlineProducts: false,
+      })
+    );
+    when(categoriesServiceMock.getCategory('B')).thenReturn(
+      of(<Category>{
+        uniqueId: 'B',
+        id: 'B',
+        hasOnlineSubCategories: false,
+        hasOnlineProducts: false,
+      })
+    );
+    when(categoriesServiceMock.getCategory('A.123')).thenReturn(
+      of(<Category>{
+        uniqueId: 'A.123',
         id: '123',
         hasOnlineSubCategories: true,
         hasOnlineProducts: false,
       })
     );
-    when(categoriesServiceMock.getCategory('123.456')).thenReturn(
+    when(categoriesServiceMock.getCategory('A.123.456')).thenReturn(
       of(<Category>{
-        uniqueId: '123.456',
+        uniqueId: 'A.123.456',
         id: '456',
         hasOnlineSubCategories: false,
         hasOnlineProducts: true,
@@ -72,10 +103,10 @@ describe('Shopping Store', () => {
 
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => of({ sku }));
-    when(productsServiceMock.getCategoryProducts('123.456', anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('A.123.456', anything())).thenReturn(
       of({
         skus: ['P1', 'P2'],
-        categoryUniqueId: '123.456',
+        categoryUniqueId: 'A.123.456',
         sortKeys: [],
       })
     );
@@ -140,6 +171,9 @@ describe('Shopping Store', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toBeUndefined();
+
+        expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
+        expect(getProductIds(store.state)).toEqual([]);
       })
     );
   });
@@ -147,7 +181,7 @@ describe('Shopping Store', () => {
   describe('category page', () => {
     beforeEach(
       fakeAsync(() => {
-        router.navigate(['/category', '123']);
+        router.navigate(['/category', 'A.123']);
         tick(5000);
       })
     );
@@ -155,7 +189,7 @@ describe('Shopping Store', () => {
     it(
       'should load necessary data when going to a category page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['123']);
+        expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
         expect(getProductIds(store.state)).toEqual([]);
       })
     );
@@ -165,9 +199,11 @@ describe('Shopping Store', () => {
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]', '[Router]']);
         expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
-        expect(i.next()).toEqual(new SelectCategory('123'));
-        expect(i.next()).toEqual(new LoadCategory('123'));
+        expect(i.next()).toEqual(new SelectCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toBeUndefined();
@@ -178,7 +214,7 @@ describe('Shopping Store', () => {
   describe('family page', () => {
     beforeEach(
       fakeAsync(() => {
-        router.navigate(['/category', '123.456']);
+        router.navigate(['/category', 'A.123.456']);
         tick(5000);
       })
     );
@@ -186,7 +222,7 @@ describe('Shopping Store', () => {
     it(
       'should load all products and required categories when going to a family page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+        expect(getCategoriesIds(store.state)).toEqual(['A.123.456', 'A.123', 'A', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       })
     );
@@ -195,10 +231,12 @@ describe('Shopping Store', () => {
       'should have all required actions when going to a family page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next()).toEqual(new SelectCategory('123.456'));
-        expect(i.next()).toEqual(new LoadCategory('123.456'));
-        expect(i.next()).toEqual(new LoadCategory('123'));
+        expect(i.next()).toEqual(new SelectCategory('A.123.456'));
+        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
@@ -217,7 +255,7 @@ describe('Shopping Store', () => {
       beforeEach(
         fakeAsync(() => {
           store.actions = [];
-          router.navigate(['/category', '123.456', 'product', 'P1']);
+          router.navigate(['/category', 'A.123.456', 'product', 'P1']);
           tick(5000);
         })
       );
@@ -238,7 +276,7 @@ describe('Shopping Store', () => {
         beforeEach(
           fakeAsync(() => {
             store.actions = [];
-            router.navigate(['/category', '123.456']);
+            router.navigate(['/category', 'A.123.456']);
             tick(5000);
           })
         );
@@ -258,7 +296,7 @@ describe('Shopping Store', () => {
   describe('product page', () => {
     beforeEach(
       fakeAsync(() => {
-        router.navigate(['/category', '123.456', 'product', 'P1']);
+        router.navigate(['/category', 'A.123.456', 'product', 'P1']);
         tick(5000);
       })
     );
@@ -266,7 +304,7 @@ describe('Shopping Store', () => {
     it(
       'should load the product and its required categories when going to a product page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+        expect(getCategoriesIds(store.state)).toEqual(['A.123.456', 'A.123', 'A', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
@@ -275,13 +313,15 @@ describe('Shopping Store', () => {
       'should trigger required load actions when going to a product page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next()).toEqual(new SelectCategory('123.456'));
+        expect(i.next()).toEqual(new SelectCategory('A.123.456'));
         expect(i.next()).toEqual(new SelectProduct('P1'));
-        expect(i.next()).toEqual(new LoadCategory('123.456'));
-        expect(i.next()).toEqual(new LoadCategory('123'));
+        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadProduct('P1'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
@@ -294,7 +334,7 @@ describe('Shopping Store', () => {
       beforeEach(
         fakeAsync(() => {
           store.actions = [];
-          router.navigate(['/category', '123.456']);
+          router.navigate(['/category', 'A.123.456']);
           tick(5000);
         })
       );
@@ -302,7 +342,7 @@ describe('Shopping Store', () => {
       it(
         'should load the sibling products when they are not yet loaded',
         fakeAsync(() => {
-          expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+          expect(getCategoriesIds(store.state)).toEqual(['A.123.456', 'A.123', 'A', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
         })
       );
