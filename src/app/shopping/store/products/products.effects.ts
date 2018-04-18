@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { ofRoute, RouteNavigation } from 'ngrx-router';
+import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
@@ -56,10 +56,11 @@ export class ProductsEffects {
       this.productsService
         .getCategoryProducts(categoryUniqueId, sortBy)
         .pipe(
-          switchMap(res => [
+          withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+          switchMap(([res, entities]) => [
             new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
             new fromViewconf.SetSortKeys(res.sortKeys),
-            ...res.skus.map(sku => new productsActions.LoadProduct(sku)),
+            ...res.skus.filter(sku => !entities[sku]).map(sku => new productsActions.LoadProduct(sku)),
           ]),
           catchError(error => of(new productsActions.LoadProductFail(error)))
         )
@@ -68,9 +69,11 @@ export class ProductsEffects {
 
   @Effect()
   routeListenerForSelectingProducts$ = this.actions$.pipe(
-    ofRoute(['category/:categoryUniqueId/product/:sku', 'product/:sku']),
+    ofType(ROUTER_NAVIGATION_TYPE),
     map((action: RouteNavigation) => action.payload.params['sku']),
-    map(sku => new productsActions.SelectProduct(sku))
+    withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
+    filter(([fromAction, fromStore]) => fromAction !== fromStore),
+    map(([sku]) => new productsActions.SelectProduct(sku))
   );
 
   @Effect()
