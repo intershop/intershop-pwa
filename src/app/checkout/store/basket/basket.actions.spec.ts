@@ -69,31 +69,31 @@ describe('Basket Actions', () => {
   });
 
   describe('Add Item To Basket Actions', () => {
-    it('should create new action for AddProductToBasket', () => {
-      const payload = { sku: 'test', quantity: 1 };
-      const action = new fromActions.AddProductToBasket(payload);
+    it('should create new action for AddProductsToBasket', () => {
+      const payload = { items: [{ sku: 'test', quantity: 1 }] };
+      const action = new fromActions.AddProductsToBasket(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.AddProductToBasket,
+        type: fromActions.BasketActionTypes.AddProductsToBasket,
         payload,
       });
     });
 
-    it('should create new action for AddItemToBasketFail', () => {
+    it('should create new action for AddItemsToBasketFail', () => {
       const payload = { message: 'error' } as HttpErrorResponse;
-      const action = new fromActions.AddItemToBasketFail(payload);
+      const action = new fromActions.AddItemsToBasketFail(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.AddItemToBasketFail,
+        type: fromActions.BasketActionTypes.AddItemsToBasketFail,
         payload,
       });
     });
 
-    it('should create new action for AddItemToBasketSuccess', () => {
-      const action = new fromActions.AddItemToBasketSuccess();
+    it('should create new action for AddItemsToBasketSuccess', () => {
+      const action = new fromActions.AddItemsToBasketSuccess();
 
       expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.AddItemToBasketSuccess,
+        type: fromActions.BasketActionTypes.AddItemsToBasketSuccess,
       });
     });
   });

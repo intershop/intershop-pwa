@@ -11,7 +11,7 @@ export class BasketMapper {
       totals: data.totals,
     };
 
-    if (data.shippingBuckets.length > 0) {
+    if (data.shippingBuckets && data.shippingBuckets.length > 0) {
       const shippingBucket = data.shippingBuckets[0];
 
       basket.commonShippingMethod = shippingBucket.shippingMethod;

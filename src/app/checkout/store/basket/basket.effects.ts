@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
-import { catchError, concatMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
@@ -89,19 +90,22 @@ export class BasketEffects {
   );
 
   /**
-   * Add a product to the current basket.
+   * Add products to the current basket.
    */
   @Effect()
-  addItemToBasket$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddProductToBasket),
-    map((action: basketActions.AddProductToBasket) => action.payload),
+  addProductsToBasket$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.AddProductsToBasket),
+    map((action: basketActions.AddProductsToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([payload, basket]) => {
+      // get basket id from AddItemsToBasket action if set, otherwise use current basket id
+      const basketId = payload.basketId || basket.id;
+
       return this.basketService
-        .addItemToBasket(payload.sku, payload.quantity, basket.id)
+        .addProductsToBasket(payload.items, basketId)
         .pipe(
-          map(() => new basketActions.AddItemToBasketSuccess()),
-          catchError(error => of(new basketActions.AddItemToBasketFail(error)))
+          map(() => new basketActions.AddItemsToBasketSuccess()),
+          catchError(error => of(new basketActions.AddItemsToBasketFail(error)))
         );
     })
   );
@@ -110,8 +114,45 @@ export class BasketEffects {
    * Trigger a LoadBasket action after successfully adding an item to the basket.
    */
   @Effect()
-  loadBasketAfterAddItemToBasket$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddItemToBasketSuccess),
+  loadBasketAfterAddItemsToBasket$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.AddItemsToBasketSuccess),
     map(() => new basketActions.LoadBasket())
+  );
+
+  /**
+   * Triggers LoadBasket action after first router navigation event fired.
+   */
+  @Effect()
+  loadBasketAfterAppInit$ = this.actions$.pipe(
+    ofType(ROUTER_NAVIGATION_TYPE),
+    take(1),
+    map(() => new basketActions.LoadBasket())
+  );
+
+  /**
+   * Triggers AddItemsToBasket action after LoginUserSuccess if basket items present from pre login state.
+   * Triggers LoadBasket, if no pre login state basket items present.
+   */
+  @Effect()
+  mergeBasketAfterLogin$ = this.actions$.pipe(
+    ofType(UserActionTypes.LoginUserSuccess),
+    switchMap(() => this.basketService.getBasket()),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    map(([newBasket, currentBasket]) => {
+      if (!currentBasket.lineItems || currentBasket.lineItems.length === 0) {
+        return new basketActions.LoadBasket();
+      }
+      const lineItems = currentBasket.lineItems;
+      const items: { sku: string; quantity: number }[] = [];
+
+      for (const lineItem of lineItems) {
+        items.push({
+          sku: lineItem.product.sku,
+          quantity: lineItem.quantity.value,
+        });
+      }
+
+      return new basketActions.AddProductsToBasket({ items: items, basketId: newBasket.id });
+    })
   );
 }
