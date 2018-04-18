@@ -22,7 +22,6 @@ import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
 import { CrosstabService } from './services/crosstab.service';
 import { translateFactory } from './services/custom-translate-loader';
-import { ErrorCodeMappingService } from './services/error-code-mapping.service';
 import { StatePropertiesService } from './services/state-transfer/state-properties.service';
 
 @NgModule({
@@ -51,7 +50,6 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
   providers: [
     ApiService,
     ApiServiceErrorHandler,
-    ErrorCodeMappingService,
     StatePropertiesService,
     CountryService,
     RegionService,
