@@ -27,6 +27,7 @@ describe('ProductsEffects', () => {
   let store$: Store<ShoppingState>;
   let productsServiceMock: ProductsService;
   const DE_DE = { lang: 'de' } as Locale;
+  const EN_US = { lang: 'en' } as Locale;
 
   const router = mock(Router);
 
@@ -187,13 +188,13 @@ describe('ProductsEffects', () => {
   });
 
   describe('languageChange$', () => {
-    it('should refetch product when language is changed', () => {
+    it('should refetch product when language is changed distinctly ignoring the first time', () => {
       const sku = 'P123';
 
       store$.dispatch(new fromActions.SelectProduct(sku));
-      store$.dispatch(new SelectLocale(DE_DE));
+      actions$ = hot('-a--b--b--a', { a: new SelectLocale(DE_DE), b: new SelectLocale(EN_US) });
 
-      expect(effects.languageChange$).toBeObservable(cold('a', { a: new fromActions.LoadProduct(sku) }));
+      expect(effects.languageChange$).toBeObservable(cold('----a-----a', { a: new fromActions.LoadProduct(sku) }));
     });
   });
 
