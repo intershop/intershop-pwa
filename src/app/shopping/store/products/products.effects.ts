@@ -11,12 +11,13 @@ import {
   filter,
   map,
   mergeMap,
+  skip,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
-import { getCurrentLocale } from '../../../core/store/locale';
+import { LocaleActionTypes } from '../../../core/store/locale';
 import { ProductsService } from '../../services/products/products.service';
 import * as categoriesActions from '../categories/categories.actions';
 import { ShoppingState } from '../shopping.state';
@@ -84,11 +85,14 @@ export class ProductsEffects {
     map(sku => new productsActions.LoadProduct(sku))
   );
 
+  /**
+   * reload the current (if available) product when language is changed
+   */
   @Effect()
-  languageChange$ = this.store.pipe(
-    select(getCurrentLocale),
-    filter(x => !!x),
+  languageChange$ = this.actions$.pipe(
+    ofType(LocaleActionTypes.SelectLocale),
     distinctUntilChanged(),
+    skip(1), // ignore app init language selection
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([locale, sku]) => !!sku),
     map(([locale, sku]) => new productsActions.LoadProduct(sku))
