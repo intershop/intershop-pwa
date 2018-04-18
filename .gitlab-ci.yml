@@ -81,4 +81,4 @@ deploy_demo:
   script: bash .gitlab-ci-deploy.sh
   environment:
     name: demo
-    url: http://jdevpool15:4321
+    url: http://jdevbuildslave01.rnd.j.intershop.de:4321
