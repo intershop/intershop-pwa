@@ -29,15 +29,13 @@ describe('Basket Service', () => {
   });
 
   it("should get Basket data when 'getBasket' is called", () => {
-    when(apiService.get(basketService.basketServiceIdentifier + '/' + basketMockData.id)).thenReturn(
-      of(basketMockData)
-    );
+    when(apiService.get(`baskets/${basketMockData.id}`)).thenReturn(of(basketMockData));
 
     basketService.getBasket(basketMockData.id).subscribe(data => {
       expect(data.id).toEqual(basketMockData.id);
     });
 
-    verify(apiService.get(basketService.basketServiceIdentifier + '/' + basketMockData.id)).once();
+    verify(apiService.get(`baskets/${basketMockData.id}`)).once();
   });
 
   it("should post item to basket when 'addItemToBasket' is called", () => {
@@ -47,11 +45,6 @@ describe('Basket Service', () => {
       expect(true).toBeTruthy();
     });
 
-    verify(
-      apiService.post(
-        basketService.basketServiceIdentifier + '/' + basketMockData.id + '/' + basketService.itemsServiceIdentifier,
-        anything()
-      )
-    ).once();
+    verify(apiService.post(`baskets/${basketMockData.id}/items`, anything())).once();
   });
 });

@@ -11,34 +11,24 @@ import { Basket } from '../../../models/basket/basket.model';
  */
 @Injectable()
 export class BasketService {
-  /**
-   * The REST API URI endpoints
-   */
-  basketServiceIdentifier = 'baskets';
-  defaultBasketId = '-';
-  itemsServiceIdentifier = 'items';
-
   constructor(private apiService: ApiService) {}
 
   /**
-   * Get the Basket for the given basket id
-   * or fallbacks to '-' as basket id to get current basket for the current user
-   *
-   * @param basketId  The basket id
-   * @returns         The basket
+   * Get the Basket for the given basket id or fallback to '-' as basket id to get the current basket for the current user.
+   * @param basketId  The basket id.
+   * @returns         The basket.
    */
-  getBasket(basketId: string = this.defaultBasketId): Observable<Basket> {
+  getBasket(basketId: string = '-'): Observable<Basket> {
     return this.apiService
-      .get<BasketData>(this.basketServiceIdentifier + '/' + basketId)
+      .get<BasketData>(`baskets/${basketId}`)
       .pipe(map(basketData => BasketMapper.fromData(basketData)));
   }
 
   /**
    * Add a product with the given quantity to the given basket.
-   *
-   * @param sku       The product to be added's sku
-   * @param quantity  The quantity of the product to add
-   * @param basketId  The id of the basket which the product should be added to
+   * @param sku       The product to be added's sku.
+   * @param quantity  The quantity of the product to add.
+   * @param basketId  The id of the basket which the product should be added to.
    */
   addItemToBasket(sku: string, quantity: number = 1, basketId: string): Observable<void> {
     const body: Object = {
@@ -52,9 +42,6 @@ export class BasketService {
       ],
     };
 
-    return this.apiService.post(
-      this.basketServiceIdentifier + '/' + basketId + '/' + this.itemsServiceIdentifier,
-      body
-    );
+    return this.apiService.post(`baskets/${basketId}/items`, body);
   }
 }
