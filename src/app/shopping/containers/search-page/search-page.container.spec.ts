@@ -21,8 +21,8 @@ describe('Search Page Container', () => {
           SearchPageContainerComponent,
           MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['searchTerm'] }),
           MockComponent({
-            selector: 'ish-search-page',
-            template: 'Search Page Component',
+            selector: 'ish-search-result',
+            template: 'Search Result Component',
             inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
           }),
           MockComponent({

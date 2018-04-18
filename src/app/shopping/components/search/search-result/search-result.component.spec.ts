@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { SearchPageComponent } from './search-page.component';
+import { SearchResultComponent } from './search-result.component';
 
-describe('Search Page Component', () => {
-  let component: SearchPageComponent;
-  let fixture: ComponentFixture<SearchPageComponent>;
+describe('Search Result Component', () => {
+  let component: SearchResultComponent;
+  let fixture: ComponentFixture<SearchResultComponent>;
   let element: HTMLElement;
   let translate: TranslateService;
 
@@ -14,7 +14,7 @@ describe('Search Page Component', () => {
       TestBed.configureTestingModule({
         imports: [TranslateModule.forRoot()],
         declarations: [
-          SearchPageComponent,
+          SearchResultComponent,
           MockComponent({
             selector: 'ish-product-list-toolbar',
             template: 'Products List Toolbar Component',
@@ -32,7 +32,7 @@ describe('Search Page Component', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchPageComponent);
+    fixture = TestBed.createComponent(SearchResultComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.get(TranslateService);
