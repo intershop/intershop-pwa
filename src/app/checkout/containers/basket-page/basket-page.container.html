@@ -15,5 +15,7 @@
     <ng-container *ngIf="basket.lineItems.length, else emptyBasket"></ng-container>
     <ish-shopping-basket [basket]="basket"></ish-shopping-basket>
   </ng-container>
-  <ng-template #emptyBasket>Empty Basket</ng-template>
+  <ng-template #emptyBasket>
+    <ish-shopping-basket-empty></ish-shopping-basket-empty>
+  </ng-template>
 </div>
