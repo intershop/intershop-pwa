@@ -1,27 +1,19 @@
-// NEEDS_WORK: is the model necessary?
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
+import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { Customer } from '../../../models/customer/customer.model';
-import { AccountLogin } from './account-login.model';
 
 @Injectable()
 export class RegistrationService {
   constructor(private apiService: ApiService) {}
 
-  private RegistrationFromCustomer(customer: Customer): AccountLogin {
-    return {
-      userName: customer.credentials.login,
-      password: customer.credentials.password,
-    };
-  }
-
-  signinUser(userDetails: AccountLogin): Observable<Customer> {
+  signinUser(loginCredentials: LoginCredentials): Observable<Customer> {
     const headers = new HttpHeaders().set(
       'Authorization',
-      'BASIC ' + Buffer.from(userDetails.userName + ':' + userDetails.password).toString('base64')
+      'BASIC ' + Buffer.from(loginCredentials.login + ':' + loginCredentials.password).toString('base64')
     );
     return this.apiService.get<Customer>('customers/-', null, headers);
   }
@@ -29,7 +21,7 @@ export class RegistrationService {
   createUser(newCustomer: Customer): Observable<Customer> {
     return this.apiService.post<Customer>('customers', newCustomer).pipe(
       // TODO:see #IS-22750 - user should actually be logged in after registration
-      switchMap(() => this.signinUser(this.RegistrationFromCustomer(newCustomer)))
+      switchMap(() => this.signinUser(newCustomer.credentials))
     );
   }
 }
