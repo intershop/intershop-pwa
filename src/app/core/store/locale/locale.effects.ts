@@ -17,13 +17,14 @@ export class LocaleEffects {
   @Effect({ dispatch: false })
   setLocale$ = this.actions$.pipe(
     ofType(fromActions.LocaleActionTypes.SelectLocale),
-    map((action: fromActions.SelectLocale) => action.payload),
-    tap(locale => this.translateService.setDefaultLang(locale.lang))
+    map((action: fromActions.SelectLocale) => action.payload.lang),
+    tap(lang => this.translateService.use(lang))
   );
 
   @Effect()
   loadAllLocales$ = this.actions$.pipe(
     ofType(ROOT_EFFECTS_INIT),
+    tap(() => this.translateService.setDefaultLang(this.availableLocales[0].lang)),
     map(() => new fromActions.SetAvailableLocales(this.availableLocales))
   );
 
