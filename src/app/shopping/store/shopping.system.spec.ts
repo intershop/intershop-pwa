@@ -209,7 +209,7 @@ fdescribe('Shopping Store', () => {
       );
 
       it(
-        'should reload the product selected',
+        'should reload the product when selected',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectProduct('P1'));
@@ -219,17 +219,38 @@ fdescribe('Shopping Store', () => {
           expect(i.next()).toBeUndefined();
         })
       );
+
+      describe('and and going back to the family page', () => {
+        beforeEach(
+          fakeAsync(() => {
+            store.actions = [];
+            router.navigate(['/category', '123.456']);
+            tick(5000);
+          })
+        );
+
+        it(
+          'should have all required data when previously visited',
+          fakeAsync(() => {
+            const i = store.actionsIterator(['[Shopping]']);
+            expect(i.next()).toBeUndefined();
+          })
+        );
+      });
     });
   });
 
   describe('product page', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/category', '123.456', 'product', 'P1']);
+        tick(5000);
+      })
+    );
+
     it(
       'should load the product and its required category when going to a product page',
       fakeAsync(() => {
-        router.navigate(['/category', '123.456', 'product', 'P1']);
-
-        tick(5000);
-        expect(store.actions).toBeTruthy();
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
@@ -248,5 +269,31 @@ fdescribe('Shopping Store', () => {
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
+
+    xdescribe('and and going back to the family page', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.actions = [];
+          router.navigate(['/category', '123.456']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should load the sibling products when they are not yet loaded',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
+          expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
+          expect(i.next()).toEqual(new LoadProduct('P2'));
+          expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+          expect(i.next()).toBeUndefined();
+
+          expect(getCategoriesIds(store.state)).toEqual(['123', '123.456']);
+          expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
+        })
+      );
+    });
   });
 });
