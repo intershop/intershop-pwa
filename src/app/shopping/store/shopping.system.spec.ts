@@ -123,14 +123,16 @@ fdescribe('Shopping Store', () => {
   });
 
   describe('home page', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/home']);
+        tick(5000);
+      })
+    );
+
     it(
       'should just load toplevel categories when no specific shopping page is loaded',
       fakeAsync(() => {
-        router.navigate(['/home']);
-
-        tick(5000);
-        expect(store.actions).toBeTruthy();
-
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
@@ -140,14 +142,16 @@ fdescribe('Shopping Store', () => {
   });
 
   describe('category page', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/category', '123']);
+        tick(5000);
+      })
+    );
+
     it(
       'should load necessary data when going to a category page',
       fakeAsync(() => {
-        router.navigate(['/category', '123']);
-
-        tick(5000);
-        expect(store.actions).toBeTruthy();
-
         const i = store.actionsIterator(['[Shopping]', '[Router]']);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
@@ -163,13 +167,16 @@ fdescribe('Shopping Store', () => {
   });
 
   describe('family page', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/category', '123.456']);
+        tick(5000);
+      })
+    );
+
     it(
       'should load all products when going to a family page',
       fakeAsync(() => {
-        router.navigate(['/category', '123.456']);
-
-        tick(5000);
-        expect(store.actions).toBeTruthy();
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
@@ -191,6 +198,28 @@ fdescribe('Shopping Store', () => {
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       })
     );
+
+    describe('and clicking a product', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.actions = [];
+          router.navigate(['/category', '123.456', 'product', 'P1']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should reload the product selected',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next()).toEqual(new SelectProduct('P1'));
+          expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
+          expect(i.next()).toEqual(new LoadProduct('P1'));
+          expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('product page', () => {
