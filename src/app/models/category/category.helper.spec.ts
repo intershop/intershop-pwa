@@ -37,6 +37,24 @@ describe('Category Helper', () => {
     });
   });
 
+  describe('getCategoryPath', () => {
+    function dataProvider() {
+      return [
+        { uniqueId: undefined, result: undefined },
+        { uniqueId: '', result: undefined },
+        { uniqueId: 'A', result: 'A' },
+        { uniqueId: 'A.B', result: 'A/B' },
+        { uniqueId: 'A.B.C', result: 'A/B/C' },
+      ];
+    }
+
+    using(dataProvider, slice => {
+      it(`should return '${slice.result}' when expanding '${slice.uniqueId}'`, () => {
+        expect(CategoryHelper.getCategoryPath(slice.uniqueId)).toEqual(slice.result);
+      });
+    });
+  });
+
   describe('getCategoryPathIds', () => {
     function dataProvider() {
       return [
