@@ -80,20 +80,20 @@ describe('Basket Reducer', () => {
     });
   });
 
-  describe('AddItemToBasket actions', () => {
-    describe('AddProductToBasket action', () => {
+  describe('AddItemsToBasket actions', () => {
+    describe('AddProductsToBasket action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.AddProductToBasket({ sku: 'test', quantity: 1 });
+        const action = new fromActions.AddProductsToBasket({ items: [{ sku: 'test', quantity: 1 }] });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(true);
       });
     });
 
-    describe('AddItemToBasketFail action', () => {
+    describe('AddItemsToBasketFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpErrorResponse;
-        const action = new fromActions.AddItemToBasketFail(error);
+        const action = new fromActions.AddItemsToBasketFail(error);
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(false);
@@ -101,9 +101,9 @@ describe('Basket Reducer', () => {
       });
     });
 
-    describe('AddItemToBasketSuccess action', () => {
+    describe('AddItemsToBasketSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.AddItemToBasketSuccess();
+        const action = new fromActions.AddItemsToBasketSuccess();
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(false);

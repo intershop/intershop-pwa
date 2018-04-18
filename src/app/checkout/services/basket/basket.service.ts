@@ -9,6 +9,15 @@ import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
 
+interface Body {
+  elements: {
+    sku: string;
+    quantity: {
+      value: number;
+    };
+  }[];
+}
+
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
  */
@@ -39,22 +48,23 @@ export class BasketService {
   }
 
   /**
-   * Add a product with the given quantity to the given basket.
-   * @param sku       The product to be added's sku.
-   * @param quantity  The quantity of the product to add.
+   * Add products with the given quantity to the given basket.
+   * @param items     The products to be added's sku.
    * @param basketId  The id of the basket which the product should be added to.
    */
-  addItemToBasket(sku: string, quantity: number = 1, basketId: string): Observable<void> {
-    const body: Object = {
-      elements: [
-        {
-          sku: sku,
-          quantity: {
-            value: quantity,
-          },
-        },
-      ],
+  addProductsToBasket(items: { sku: string; quantity: number }[], basketId: string): Observable<void> {
+    const body: Body = {
+      elements: [],
     };
+
+    for (const item of items) {
+      body.elements.push({
+        sku: item.sku,
+        quantity: {
+          value: item.quantity,
+        },
+      });
+    }
 
     return this.apiService.post(`baskets/${basketId}/items`, body);
   }
