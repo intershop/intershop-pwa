@@ -4,9 +4,9 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
-import { AccountLogin } from '../../../core/services/account-login/account-login.model';
 import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized, getUserError, LoginUser } from '../../../core/store/user';
+import { AccountLogin } from '../../services/registration/account-login.model';
 
 @Component({
   templateUrl: './login-page.container.html',
