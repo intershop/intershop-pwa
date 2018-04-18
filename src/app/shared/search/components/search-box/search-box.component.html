@@ -8,16 +8,16 @@
          class="form-control searchTerm"
          (focus)="hidePopup()"
          (blur)="hidePopup()"
-         (keydown.esc)="hidePopup()" 
-         (keydown.arrowleft)="selectSuggestedTerm(-1)" 
-         (keydown.arrowright)="selectSuggestedTerm(-1)" 
+         (keydown.esc)="hidePopup()"
+         (keydown.arrowleft)="selectSuggestedTerm(-1)"
+         (keydown.arrowright)="selectSuggestedTerm(-1)"
          (keydown.arrowdown)="selectSuggestedTerm(activeIndex + 1)"
          (keydown.arrowup)="selectSuggestedTerm(activeIndex - 1)">
 
   <button class="btn-search btn btn-primary"
           type="submit"
           name="search"
-          [title]="buttonTitleText">
+          [title]="('search.searchbox.button.title' | translate)">
   <!-- search button with icon -->
     <ng-template [ngIf]="!buttonText" [ngIfElse]="textBlock">
       <span class="glyphicon glyphicon-search"></span>
@@ -29,8 +29,8 @@
   </button>
 
   <ul *ngIf="results && !isHidden" class="search-suggest-results">
-    <li *ngFor="let result of results | slice:0:maxAutoSuggests; let liIndex = index" 
-        [class.active-suggestion]="isActiveSuggestedTerm(liIndex)" 
+    <li *ngFor="let result of results | slice:0:maxAutoSuggests; let liIndex = index"
+        [class.active-suggestion]="isActiveSuggestedTerm(liIndex)"
         (mousedown)="submitSuggestedTerm(result.term)">
       <button type="button" class="search-result">
         <span class="searchTerm">{{ result.term }}</span>
