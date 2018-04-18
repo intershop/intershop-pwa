@@ -20,7 +20,7 @@ import { ApiService } from './services/api.service';
 import { ApiServiceErrorHandler } from './services/api.service.errorhandler';
 import { CountryService } from './services/countries/country.service';
 import { RegionService } from './services/countries/region.service';
-import { CrosstabService } from './services/crosstab.service';
+import { CrosstabService } from './services/crosstab/crosstab.service';
 import { translateFactory } from './services/custom-translate-loader';
 import { StatePropertiesService } from './services/state-transfer/state-properties.service';
 

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { map } from 'rxjs/operators';
-import { CoreState } from '../store/core.state';
-import { Storage } from '../store/local-storage-sync/local-storage-sync.reducer';
+import { CoreState } from '../../store/core.state';
+import { Storage } from '../../store/local-storage-sync/local-storage-sync.reducer';
 
 @Injectable()
 export class CrosstabService {
