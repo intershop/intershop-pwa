@@ -11,4 +11,9 @@
     </div>
   </div>
   <!-- Shopping Cart  Components -->
+  <ng-container *ngIf="basket$ | async as basket, else emptyBasket">
+    <ng-container *ngIf="basket.lineItems.length, else emptyBasket"></ng-container>
+    <ish-shopping-basket [basket]="basket"></ish-shopping-basket>
+  </ng-container>
+  <ng-template #emptyBasket>Empty Basket</ng-template>
 </div>
