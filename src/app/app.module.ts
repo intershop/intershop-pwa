@@ -58,8 +58,8 @@ export const metaReducers: MetaReducer<any>[] = [
     BrowserTransferStateModule,
     CoreModule,
     // import the feature modules that provide the application functionalities
-    CheckoutModule,
     ShoppingModule,
+    CheckoutModule,
     RegistrationModule,
     AccountModule,
     // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
