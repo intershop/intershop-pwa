@@ -128,9 +128,9 @@ describe('Categories Effects', () => {
       it('should trigger multiple LoadCategory if they dont exist', () => {
         setSelectedCategoryId(category.uniqueId);
 
-        const completionA = new fromActions.LoadCategory('123.456.789');
+        const completionA = new fromActions.LoadCategory('123');
         const completionB = new fromActions.LoadCategory('123.456');
-        const completionC = new fromActions.LoadCategory('123');
+        const completionC = new fromActions.LoadCategory('123.456.789');
         const expected$ = cold('(abc)', { a: completionA, b: completionB, c: completionC });
         expect(effects.selectedCategory$).toBeObservable(expected$);
       });
@@ -139,8 +139,8 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(category));
         setSelectedCategoryId(category.uniqueId);
 
-        const completionB = new fromActions.LoadCategory('123.456');
-        const completionC = new fromActions.LoadCategory('123');
+        const completionB = new fromActions.LoadCategory('123');
+        const completionC = new fromActions.LoadCategory('123.456');
         const expected$ = cold('(bc)', { b: completionB, c: completionC });
         expect(effects.selectedCategory$).toBeObservable(expected$);
       });
