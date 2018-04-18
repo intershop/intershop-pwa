@@ -16,10 +16,14 @@ describe('SearchNoResultComponent', () => {
         imports: [TranslateModule.forRoot()],
         declarations: [
           SearchNoResultComponent,
-          MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' }),
+          MockComponent({
+            selector: 'ish-search-box-container',
+            template: 'Search Box Container',
+            inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
+          }),
         ],
         providers: [TranslateService],
-      }).compileComponents();
+      });
     })
   );
 

@@ -96,12 +96,6 @@ describe('Search Box Component', () => {
       const button = element.querySelector<HTMLButtonElement>('.btn-search');
       expect(button.innerText).toBe(component.buttonText);
     });
-    it('should show button title text when buttonTitleText is set', () => {
-      component.buttonTitleText = 'buttonTitleTextInput';
-      fixture.detectChanges();
-      const button = element.querySelector<HTMLButtonElement>('.btn-search');
-      expect(button.getAttribute('title')).toBe(component.buttonTitleText);
-    });
     it('should show placeholder text when placeholderText is set', () => {
       component.placeholderText = 'placeholderTextInput';
       fixture.detectChanges();
