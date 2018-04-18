@@ -41,8 +41,8 @@ describe('LocaleEffects', () => {
       actions$ = hot('-a', { a: action });
 
       effects.setLocale$.subscribe(() => {
-        verify(translateServiceMock.setDefaultLang(anything())).once();
-        const params = capture(translateServiceMock.setDefaultLang).last();
+        verify(translateServiceMock.use(anything())).once();
+        const params = capture(translateServiceMock.use).last();
         expect(params[0]).toEqual('jp');
       });
     });
