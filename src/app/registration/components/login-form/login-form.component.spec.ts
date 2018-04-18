@@ -6,7 +6,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { LoginFormComponent } from './login-form.component';
 
-describe('LoginFormComponent', () => {
+describe('Login Form Component', () => {
   let component: LoginFormComponent;
   let fixture: ComponentFixture<LoginFormComponent>;
   let element: HTMLElement;
@@ -34,7 +34,7 @@ describe('LoginFormComponent', () => {
 
   it('should render login form on Login page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('input[data-testing-id=userName]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=login]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=password]')).toBeTruthy();
     expect(element.getElementsByClassName('btn btn-primary')).toBeTruthy();
   });
@@ -61,13 +61,13 @@ describe('LoginFormComponent', () => {
     });
 
     it('should not detect error if email is well formed', () => {
-      component.form.controls['userName'].setValue('test@test.com');
-      expect(component.form.controls['userName'].valid).toBeTruthy();
+      component.form.controls['login'].setValue('test@test.com');
+      expect(component.form.controls['login'].valid).toBeTruthy();
     });
 
     it('should detect error if email is malformed', () => {
-      component.form.controls['userName'].setValue('testtest.com');
-      expect(component.form.controls['userName'].valid).toBeFalsy();
+      component.form.controls['login'].setValue('testtest.com');
+      expect(component.form.controls['login'].valid).toBeFalsy();
     });
   });
 });

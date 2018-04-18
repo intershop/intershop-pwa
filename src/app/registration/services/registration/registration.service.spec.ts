@@ -13,7 +13,7 @@ describe('Registration Service', () => {
   });
 
   it('should login the user when correct credentials are entered', () => {
-    const loginDetail = { userName: 'patricia@test.intershop.de', password: '!InterShop00!' };
+    const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
     when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(of({ authorized: true }));
 
     registrationService.signinUser(loginDetail).subscribe(data => {
@@ -23,7 +23,7 @@ describe('Registration Service', () => {
 
   it('should return error message when wrong credentials are entered', () => {
     const errorMessage = '401 and Unauthorized';
-    const userDetails = { userName: 'intershop@123.com', password: 'wrong' };
+    const userDetails = { login: 'intershop@123.com', password: 'wrong' };
     when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(
       ErrorObservable.create(new Error(errorMessage))
     );

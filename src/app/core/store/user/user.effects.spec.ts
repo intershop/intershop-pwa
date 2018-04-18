@@ -41,7 +41,7 @@ describe('UserEffects', () => {
 
   describe('loginUser$', () => {
     it('should call the api service when LoginUser event is called', () => {
-      const action = new ua.LoginUser({ userName: 'dummy' });
+      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
 
       actions$ = hot('-a', { a: action });
 
@@ -49,7 +49,7 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {
-      const action = new ua.LoginUser({ userName: 'dummy' });
+      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
       const completion = new ua.LoginUserSuccess({} as Customer);
 
       actions$ = hot('-a', { a: action });
@@ -61,7 +61,7 @@ describe('UserEffects', () => {
     it('should dispatch a LoginUserFail action on failed login', () => {
       when(registrationServiceMock.signinUser(anything())).thenReturn(_throw({ status: 401 }));
 
-      const action = new ua.LoginUser({ userName: 'dummy' });
+      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
       const completion = new ua.LoginUserFail({ status: 401 } as HttpErrorResponse);
 
       actions$ = hot('-a', { a: action });
