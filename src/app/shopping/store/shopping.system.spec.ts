@@ -155,16 +155,22 @@ describe('Shopping Store', () => {
     it(
       'should load necessary data when going to a category page',
       fakeAsync(() => {
+        expect(getCategoriesIds(store.state)).toEqual(['123']);
+        expect(getProductIds(store.state)).toEqual([]);
+      })
+    );
+
+    it(
+      'have toplevel loading and category loading actions when going to a category page',
+      fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]', '[Router]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(i.next()).toEqual(new SelectCategory('123'));
         expect(i.next()).toEqual(new LoadCategory('123'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toBeUndefined();
-
-        expect(getCategoriesIds(store.state)).toEqual(['123']);
       })
     );
   });
@@ -178,16 +184,24 @@ describe('Shopping Store', () => {
     );
 
     it(
-      'should load all products when going to a family page',
+      'should load all products and required categories when going to a family page',
+      fakeAsync(() => {
+        expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+        expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
+      })
+    );
+
+    it(
+      'should have all required actions when going to a family page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectCategory('123.456'));
         expect(i.next()).toEqual(new LoadCategory('123.456'));
         expect(i.next()).toEqual(new LoadCategory('123'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
@@ -196,9 +210,6 @@ describe('Shopping Store', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next()).toBeUndefined();
-
-        expect(getCategoriesIds(store.state)).toEqual(['123', '123.456']);
-        expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       })
     );
 
@@ -253,24 +264,29 @@ describe('Shopping Store', () => {
     );
 
     it(
-      'should load the product and its required category when going to a product page',
+      'should load the product and its required categories when going to a product page',
+      fakeAsync(() => {
+        expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+        expect(getProductIds(store.state)).toEqual(['P1']);
+      })
+    );
+
+    it(
+      'should trigger required load actions when going to a product page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectCategory('123.456'));
         expect(i.next()).toEqual(new SelectProduct('P1'));
         expect(i.next()).toEqual(new LoadCategory('123.456'));
         expect(i.next()).toEqual(new LoadCategory('123'));
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadProduct('P1'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toBeUndefined();
-
-        expect(getCategoriesIds(store.state)).toEqual(['123', '123.456']);
-        expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
 
@@ -286,6 +302,14 @@ describe('Shopping Store', () => {
       it(
         'should load the sibling products when they are not yet loaded',
         fakeAsync(() => {
+          expect(getCategoriesIds(store.state)).toEqual(['123.456', '123']);
+          expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
+        })
+      );
+
+      it(
+        'should trigger actions for products when they are not yet loaded',
+        fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
@@ -294,9 +318,6 @@ describe('Shopping Store', () => {
           expect(i.next()).toEqual(new LoadProduct('P2'));
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
-
-          expect(getCategoriesIds(store.state)).toEqual(['123', '123.456']);
-          expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
         })
       );
     });
