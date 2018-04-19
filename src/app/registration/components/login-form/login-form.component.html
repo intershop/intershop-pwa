@@ -12,7 +12,7 @@
 
         <!-- TODO: server side error messages -->
         <div *ngIf="error" role="alert" class="alert alert-danger">
-          <ng-container *ngIf="error.status == 401">
+          <ng-container *ngIf="isUnauthorized()">
             {{(loginType === 'email') ? ('account.login.email_password.error.invalid' | translate) :
               ('account.login.username_password.error.invalid' | translate) }}
           </ng-container>
