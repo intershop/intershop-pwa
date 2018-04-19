@@ -13,12 +13,12 @@ import {
   AVAILABLE_LOCALES,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from '../../../core/configurations/injection-keys';
-import { CategoriesService } from '../../../core/services/categories/categories.service';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Category } from '../../../models/category/category.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
+import { CategoriesService } from '../../services/categories/categories.service';
 import * as productsActions from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
@@ -128,9 +128,9 @@ describe('Categories Effects', () => {
       it('should trigger multiple LoadCategory if they dont exist', () => {
         setSelectedCategoryId(category.uniqueId);
 
-        const completionA = new fromActions.LoadCategory('123.456.789');
+        const completionA = new fromActions.LoadCategory('123');
         const completionB = new fromActions.LoadCategory('123.456');
-        const completionC = new fromActions.LoadCategory('123');
+        const completionC = new fromActions.LoadCategory('123.456.789');
         const expected$ = cold('(abc)', { a: completionA, b: completionB, c: completionC });
         expect(effects.selectedCategory$).toBeObservable(expected$);
       });
@@ -139,8 +139,8 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(category));
         setSelectedCategoryId(category.uniqueId);
 
-        const completionB = new fromActions.LoadCategory('123.456');
-        const completionC = new fromActions.LoadCategory('123');
+        const completionB = new fromActions.LoadCategory('123');
+        const completionC = new fromActions.LoadCategory('123.456');
         const expected$ = cold('(bc)', { b: completionB, c: completionC });
         expect(effects.selectedCategory$).toBeObservable(expected$);
       });

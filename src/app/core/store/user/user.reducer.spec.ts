@@ -40,13 +40,13 @@ describe('User Reducer', () => {
 
   describe('Actions', () => {
     it('should set initial state when LoginUser action is reduced', () => {
-      const newState = userReducer(initialState, new LoginUser({ userName: 'dummy' }));
+      const newState = userReducer(initialState, new LoginUser({ login: 'dummy', password: 'dummy' }));
 
       expect(newState).toEqual(initialState);
     });
 
     it('should set initial when LoginUser action is reduced', () => {
-      const newState = userReducer(initialState, new LoginUser({ userName: 'dummy' }));
+      const newState = userReducer(initialState, new LoginUser({ login: 'dummy', password: 'dummy' }));
 
       expect(newState).toEqual(initialState);
     });
@@ -85,7 +85,7 @@ describe('User Reducer', () => {
     it('should unset authorized and customer when reducing LoginUser', () => {
       const oldState = { ...initialState, customer, authorized: true };
 
-      const newState = userReducer(oldState, new LoginUser({ userName: 'dummy' }));
+      const newState = userReducer(oldState, new LoginUser({ login: 'dummy', password: 'dummy' }));
 
       expect(newState).toEqual({ ...initialState, customer: null, authorized: false });
     });

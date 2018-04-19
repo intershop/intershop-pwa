@@ -1,6 +1,20 @@
 {
-  "name": "GoPro HERO4 Silver",
-  "type": "Product",
+  "attachments": [
+    {
+      "key": "AC_Manual_2_",
+      "name": "Quick Start Guide",
+      "type": "Manual",
+      "uri": false,
+      "value": "inSPIRED:/manuals/QSG_H4Silver_ENG_REVF_WEB.pdf"
+    },
+    {
+      "key": "AC_Manual_1_",
+      "name": "User Manual",
+      "type": "Manual",
+      "uri": false,
+      "value": "inSPIRED:/manuals/UM_H4Silver_ENG_REVF_WEB.pdf"
+    }
+  ],
   "attributes": [
     {
       "name": "USB connector type",
@@ -17,8 +31,8 @@
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 40,
-        "unit": "m"
+        "unit": "m",
+        "value": 40
       }
     },
     {
@@ -32,6 +46,15 @@
       "value": "3840 x 2160 pixels"
     },
     {
+      "name": "Weight",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "g",
+        "value": 83
+      }
+    },
+    {
       "name": "Bundled software",
       "type": "String",
       "value": "GoPro App|GoPro Studio"
@@ -40,15 +63,6 @@
       "name": "Video formats supported",
       "type": "String",
       "value": "H.264|MP4"
-    },
-    {
-      "name": "Weight",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "value": 83,
-        "unit": "g"
-      }
     },
     {
       "name": "Supported video modes",
@@ -71,12 +85,12 @@
       "value": "Lithium-Ion (Li-Ion)"
     },
     {
-      "name": "Wireless LAN (WLAN) connection",
+      "name": "Full HD",
       "type": "String",
       "value": "Yes"
     },
     {
-      "name": "Full HD",
+      "name": "Wireless LAN (WLAN) connection",
       "type": "String",
       "value": "Yes"
     },
@@ -90,8 +104,8 @@
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 240,
-        "unit": "fps"
+        "unit": "fps",
+        "value": 240
       }
     },
     {
@@ -99,8 +113,8 @@
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 2,
-        "unit": "h"
+        "unit": "h",
+        "value": 2
       }
     },
     {
@@ -108,8 +122,8 @@
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 12,
-        "unit": "MP"
+        "unit": "MP",
+        "value": 12
       }
     },
     {
@@ -123,209 +137,195 @@
       "value": "LCD"
     }
   ],
-  "sku": "8182790134362",
-  "productName": "GoPro HERO4 Silver",
-  "shortDescription": "High-performance capture. Touch-display convenience. - Features 1080p60 and",
-  "longDescription": "<b>High-performance capture. Touch-display convenience.</b>\n<br/>Capture your world with HERO4 Silver, the high-performance GoPro with a built-in touch display. Controlling the camera, framing shots and playing back content is now ultra convenient—just view, tap and swipe the screen. HERO4 Silver captures 1080p60 and 720p120 video with lifelike clarity, plus 12MP photos at a staggering 30 frames per second. Built-in video trimming lets you create and save short highlight clips for easy sharing. HiLight Tag enables you to mark key moments to make them easier to find later. Waterproof to 131’ (40m), HERO4 Silver combines versatility and high-performance capture with the convenience of a touch display.\n<br/><br/>\n<b>Features:</b>\n<br/>- Built-in touch display + video trimming\n<br/>- Professional video quality\n<br/>- Fast, powerful photo capture\n<br/>- New settings for after dark\n<br/>- Control, view and share with built-in Wi-Fi + Bluetooth®\n<br/>- Time Lapse videos made easy\n<br/>- HiLight Tag your best moments\n<br/>- World's most immersive video\n<br/>- Auto Low Light mode\n<br/>- QuikCapture convenience\n<br/>- Impressive audio performance\n<br/>- Protune™ for photo + video\n<br/>- Improved camera control\n<br/>- GoPro App + GoPro Studio\n<br/><br/>\n<b>What's included?</b>\n<br/>- HERO4 Silver Camera with Built-In Display\n<br/>- Standard Housing 131' (40 m)\n<br/>- Skeleton + Touch Backdoors\n<br/>- Rechargeable Battery\n<br/>- Curved Adhesive Mount\n<br/>- Flat Adhesive Mount\n<br/>- Quick Release Buckles\n<br/>- 3-Way Pivot Arm (Mounting Hardware)\n<br/>- USB Cable",
   "availability": true,
-  "retailSet": false,
-  "inStock": true,
-  "productMaster": false,
-  "mastered": false,
-  "roundedAverageRating": "5.0",
-  "readyForShipmentMin": 3,
-  "readyForShipmentMax": 7,
-  "minOrderQuantity": 1,
-  "productBundle": false,
-  "manufacturer": "GoPro",
-  "listPrice": {
-    "type": "ProductPrice",
-    "value": 391.98,
-    "currencyMnemonic": "USD"
-  },
-  "salePrice": {
-    "type": "ProductPrice",
-    "value": 391.98,
-    "currencyMnemonic": "USD"
-  },
-  "crosssells": "inSPIRED-inTRONICS-Site/-/products/8182790134362/crosssells",
-  "reviews": "inSPIRED-inTRONICS-Site/-/products/8182790134362/reviews",
-  "shippingMethods": [
+  "availableGiftMessages": [
     {
-      "name": "2-Business Day",
-      "type": "ShippingMethod",
-      "id": "STD_2DAY",
-      "shippingTimeMin": 1,
-      "shippingTimeMax": 2
+      "description": "A gift message card.",
+      "title": "Gift Message Pink",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink"
     },
     {
-      "name": "5-Business Day",
-      "type": "ShippingMethod",
-      "id": "STD_5DAY",
-      "shippingTimeMin": 2,
-      "shippingTimeMax": 5
+      "description": "A green message card.",
+      "title": "Gift Message Green",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen"
     },
     {
-      "name": "Standard Ground",
-      "type": "ShippingMethod",
-      "id": "STD_GROUND",
-      "shippingTimeMin": 3,
-      "shippingTimeMax": 7
-    },
-    {
-      "name": "Saturday Delivery",
-      "type": "ShippingMethod",
-      "id": "SATURDAY",
-      "shippingTimeMin": 0,
-      "shippingTimeMax": 6
+      "description": "A blue gift card message.",
+      "title": "Gift Message Blue",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue"
     }
   ],
   "availableGiftWraps": [
     {
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature",
-      "title": "Gift Wrap Nature",
-      "description": "Wrapping paper with ornamental pattern."
-    },
-    {
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy",
+      "description": "Gift Wrap with phantasy pattern.",
       "title": "Gift Wrap Phantasy",
-      "description": "Gift Wrap with phantasy pattern."
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
     },
     {
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers",
+      "description": "Gift Wrap with a beautiful pink floral pattern",
       "title": "Gift Wrap Pink Flowers",
-      "description": "Gift Wrap with a beautiful pink floral pattern"
-    }
-  ],
-  "availableGiftMessages": [
-    {
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue",
-      "title": "Gift Message Blue",
-      "description": "A blue gift card message."
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers"
     },
     {
+      "description": "Wrapping paper with ornamental pattern.",
+      "title": "Gift Wrap Nature",
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen",
-      "title": "Gift Message Green",
-      "description": "A green message card."
-    },
-    {
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink",
-      "title": "Gift Message Pink",
-      "description": "A gift message card."
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature"
     }
   ],
+  "crosssells": "inSPIRED-inTRONICS-Site/-/products/8182790134362/crosssells",
   "images": [
     {
-      "name": "side S",
-      "type": "Image",
       "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "side",
-      "typeID": "S",
-      "imageActualHeight": 110,
-      "imageActualWidth": 110,
-      "primaryImage": false
-    },
-    {
-      "name": "back S",
-      "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "back",
-      "typeID": "S",
-      "imageActualHeight": 110,
-      "imageActualWidth": 110,
-      "primaryImage": false
-    },
-    {
-      "name": "front S",
-      "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "front",
-      "typeID": "S",
-      "imageActualHeight": 110,
-      "imageActualWidth": 110,
-      "primaryImage": true
-    },
-    {
-      "name": "side L",
-      "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "side",
-      "typeID": "L",
       "imageActualHeight": 500,
       "imageActualWidth": 500,
-      "primaryImage": false
-    },
-    {
       "name": "back L",
+      "primaryImage": false,
       "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "back",
       "typeID": "L",
-      "imageActualHeight": 500,
-      "imageActualWidth": 500,
-      "primaryImage": false
+      "viewID": "back"
     },
     {
-      "name": "front L",
-      "type": "Image",
       "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "front",
-      "typeID": "L",
-      "imageActualHeight": 500,
-      "imageActualWidth": 500,
-      "primaryImage": true
-    },
-    {
-      "name": "side M",
-      "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "side",
-      "typeID": "M",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
-      "primaryImage": false
-    },
-    {
       "name": "back M",
+      "primaryImage": false,
       "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "back",
       "typeID": "M",
-      "imageActualHeight": 270,
-      "imageActualWidth": 270,
-      "primaryImage": false
+      "viewID": "back"
     },
     {
-      "name": "front M",
-      "type": "Image",
       "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "front",
-      "typeID": "M",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "back S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "front L",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
-      "primaryImage": true
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "front S",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "side L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "side M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "side S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "side"
     }
   ],
-  "attachments": [
+  "inStock": true,
+  "listPrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 391.98
+  },
+  "longDescription": "<b>High-performance capture. Touch-display convenience.</b>\n<br/>Capture your world with HERO4 Silver, the high-performance GoPro with a built-in touch display. Controlling the camera, framing shots and playing back content is now ultra convenient—just view, tap and swipe the screen. HERO4 Silver captures 1080p60 and 720p120 video with lifelike clarity, plus 12MP photos at a staggering 30 frames per second. Built-in video trimming lets you create and save short highlight clips for easy sharing. HiLight Tag enables you to mark key moments to make them easier to find later. Waterproof to 131’ (40m), HERO4 Silver combines versatility and high-performance capture with the convenience of a touch display.\n<br/><br/>\n<b>Features:</b>\n<br/>- Built-in touch display + video trimming\n<br/>- Professional video quality\n<br/>- Fast, powerful photo capture\n<br/>- New settings for after dark\n<br/>- Control, view and share with built-in Wi-Fi + Bluetooth®\n<br/>- Time Lapse videos made easy\n<br/>- HiLight Tag your best moments\n<br/>- World's most immersive video\n<br/>- Auto Low Light mode\n<br/>- QuikCapture convenience\n<br/>- Impressive audio performance\n<br/>- Protune™ for photo + video\n<br/>- Improved camera control\n<br/>- GoPro App + GoPro Studio\n<br/><br/>\n<b>What's included?</b>\n<br/>- HERO4 Silver Camera with Built-In Display\n<br/>- Standard Housing 131' (40 m)\n<br/>- Skeleton + Touch Backdoors\n<br/>- Rechargeable Battery\n<br/>- Curved Adhesive Mount\n<br/>- Flat Adhesive Mount\n<br/>- Quick Release Buckles\n<br/>- 3-Way Pivot Arm (Mounting Hardware)\n<br/>- USB Cable",
+  "manufacturer": "GoPro",
+  "mastered": false,
+  "minOrderQuantity": 1,
+  "name": "GoPro HERO4 Silver",
+  "productBundle": false,
+  "productMaster": false,
+  "productName": "GoPro HERO4 Silver",
+  "readyForShipmentMax": 7,
+  "readyForShipmentMin": 3,
+  "retailSet": false,
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/8182790134362/reviews",
+  "roundedAverageRating": "5.0",
+  "salePrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 391.98
+  },
+  "shippingMethods": [
     {
-      "name": "Quick Start Guide",
-      "type": "Manual",
-      "key": "AC_Manual_2_",
-      "value": "inSPIRED:/manuals/QSG_H4Silver_ENG_REVF_WEB.pdf",
-      "uri": false
+      "id": "STD_2DAY",
+      "name": "2-Business Day",
+      "shippingTimeMax": 2,
+      "shippingTimeMin": 1,
+      "type": "ShippingMethod"
     },
     {
-      "name": "User Manual",
-      "type": "Manual",
-      "key": "AC_Manual_1_",
-      "value": "inSPIRED:/manuals/UM_H4Silver_ENG_REVF_WEB.pdf",
-      "uri": false
+      "id": "STD_5DAY",
+      "name": "5-Business Day",
+      "shippingTimeMax": 5,
+      "shippingTimeMin": 2,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "SATURDAY",
+      "name": "Saturday Delivery",
+      "shippingTimeMax": 6,
+      "shippingTimeMin": 0,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_GROUND",
+      "name": "Standard Ground",
+      "shippingTimeMax": 7,
+      "shippingTimeMin": 3,
+      "type": "ShippingMethod"
     }
-  ]
+  ],
+  "shortDescription": "High-performance capture. Touch-display convenience. - Features 1080p60 and",
+  "sku": "8182790134362",
+  "type": "Product"
 }

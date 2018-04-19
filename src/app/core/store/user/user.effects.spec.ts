@@ -9,7 +9,7 @@ import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from '../../../models/customer/customer.model';
-import { AccountLoginService } from '../../services/account-login/account-login.service';
+import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { coreReducers } from '../core.system';
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';
@@ -17,14 +17,14 @@ import { UserEffects } from './user.effects';
 describe('UserEffects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
-  let accountLoginServiceMock: AccountLoginService;
+  let registrationServiceMock: RegistrationService;
   let routerMock: Router;
 
   beforeEach(() => {
     routerMock = mock(Router);
-    accountLoginServiceMock = mock(AccountLoginService);
-    when(accountLoginServiceMock.signinUser(anything())).thenReturn(of({} as Customer));
-    when(accountLoginServiceMock.createUser(anything())).thenReturn(of({} as Customer));
+    registrationServiceMock = mock(RegistrationService);
+    when(registrationServiceMock.signinUser(anything())).thenReturn(of({} as Customer));
+    when(registrationServiceMock.createUser(anything())).thenReturn(of({} as Customer));
 
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot(coreReducers)],
@@ -32,7 +32,7 @@ describe('UserEffects', () => {
         UserEffects,
         provideMockActions(() => actions$),
         { provide: Router, useFactory: () => instance(routerMock) },
-        { provide: AccountLoginService, useFactory: () => instance(accountLoginServiceMock) },
+        { provide: RegistrationService, useFactory: () => instance(registrationServiceMock) },
       ],
     });
 
@@ -41,15 +41,15 @@ describe('UserEffects', () => {
 
   describe('loginUser$', () => {
     it('should call the api service when LoginUser event is called', () => {
-      const action = new ua.LoginUser({ userName: 'dummy' });
+      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
 
       actions$ = hot('-a', { a: action });
 
-      effects.loginUser$.subscribe(() => verify(accountLoginServiceMock.signinUser(anything())).once());
+      effects.loginUser$.subscribe(() => verify(registrationServiceMock.signinUser(anything())).once());
     });
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {
-      const action = new ua.LoginUser({ userName: 'dummy' });
+      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
       const completion = new ua.LoginUserSuccess({} as Customer);
 
       actions$ = hot('-a', { a: action });
@@ -59,9 +59,9 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a LoginUserFail action on failed login', () => {
-      when(accountLoginServiceMock.signinUser(anything())).thenReturn(_throw({ status: 401 }));
+      when(registrationServiceMock.signinUser(anything())).thenReturn(_throw({ status: 401 }));
 
-      const action = new ua.LoginUser({ userName: 'dummy' });
+      const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
       const completion = new ua.LoginUserFail({ status: 401 } as HttpErrorResponse);
 
       actions$ = hot('-a', { a: action });
@@ -104,7 +104,7 @@ describe('UserEffects', () => {
       actions$ = hot('-a', { a: action });
 
       effects.createUser$.subscribe(() => {
-        verify(accountLoginServiceMock.createUser(anything())).once();
+        verify(registrationServiceMock.createUser(anything())).once();
       });
     });
 
@@ -119,7 +119,7 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
-      when(accountLoginServiceMock.createUser(anything())).thenReturn(_throw({ status: 401 }));
+      when(registrationServiceMock.createUser(anything())).thenReturn(_throw({ status: 401 }));
 
       const action = new ua.CreateUser({} as Customer);
       const completion = new ua.CreateUserFail({ status: 401 } as HttpErrorResponse);
