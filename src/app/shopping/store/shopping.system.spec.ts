@@ -12,12 +12,14 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { Scheduler } from 'rxjs/Scheduler';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
+import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
 import { CountryService } from '../../core/services/countries/country.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
+import { SelectLocale } from '../../core/store/locale';
 import { CategoryData } from '../../models/category/category.interface';
 import { CategoryMapper } from '../../models/category/category.mapper';
 import { Category } from '../../models/category/category.model';
+import { Locale } from '../../models/locale/locale.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
 import { CategoriesService } from '../services/categories/categories.service';
@@ -35,10 +37,17 @@ describe('Shopping Store', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
+  let locales: Locale[];
 
   beforeEach(() => {
     @Component({ template: 'dummy' })
     class DummyComponent {}
+
+    locales = [
+      { lang: 'en_US', currency: 'USD', value: 'en' },
+      { lang: 'de_DE', currency: 'EUR', value: 'de' },
+      { lang: 'fr_FR', currency: 'EUR', value: 'fr' },
+    ] as Locale[];
 
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
@@ -142,7 +151,8 @@ describe('Shopping Store', () => {
         { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: Scheduler, useFactory: getTestScheduler },
-        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 0 },
+        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
+        { provide: AVAILABLE_LOCALES, useValue: locales },
       ],
     });
 
@@ -150,6 +160,7 @@ describe('Shopping Store', () => {
     store.logActions = DEBUG;
     store.logState = DEBUG;
     router = TestBed.get(Router);
+    locales = TestBed.get(AVAILABLE_LOCALES);
   });
 
   it('should be created', () => {
@@ -176,6 +187,26 @@ describe('Shopping Store', () => {
         expect(getProductIds(store.state)).toEqual([]);
       })
     );
+
+    describe('and changing the language', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.actions = [];
+          store.dispatch(new SelectLocale(locales[1]));
+          tick(5000);
+        })
+      );
+
+      it(
+        'should just reload top level categories when language is changed',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('category page', () => {
@@ -189,19 +220,19 @@ describe('Shopping Store', () => {
     it(
       'should load necessary data when going to a category page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
+        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'B']);
         expect(getProductIds(store.state)).toEqual([]);
       })
     );
 
     it(
-      'have toplevel loading and category loading actions when going to a category page',
+      'should have toplevel loading and category loading actions when going to a category page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]', '[Router]']);
         expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(i.next()).toEqual(new SelectCategory('A.123'));
-        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
@@ -209,6 +240,26 @@ describe('Shopping Store', () => {
         expect(i.next()).toBeUndefined();
       })
     );
+
+    describe('and changing the language', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.actions = [];
+          store.dispatch(new SelectLocale(locales[1]));
+          tick(5000);
+        })
+      );
+
+      it(
+        'should just reload top level categories when language is changed',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('family page', () => {
@@ -222,7 +273,7 @@ describe('Shopping Store', () => {
     it(
       'should load all products and required categories when going to a family page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A.123.456', 'A.123', 'A', 'B']);
+        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       })
     );
@@ -232,9 +283,9 @@ describe('Shopping Store', () => {
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
-        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
-        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
@@ -291,6 +342,26 @@ describe('Shopping Store', () => {
         );
       });
     });
+
+    describe('and changing the language', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.actions = [];
+          store.dispatch(new SelectLocale(locales[1]));
+          tick(5000);
+        })
+      );
+
+      it(
+        'should just reload top level categories when language is changed',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('product page', () => {
@@ -304,7 +375,7 @@ describe('Shopping Store', () => {
     it(
       'should load the product and its required categories when going to a product page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A.123.456', 'A.123', 'A', 'B']);
+        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
@@ -315,9 +386,9 @@ describe('Shopping Store', () => {
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
         expect(i.next()).toEqual(new SelectProduct('P1'));
-        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
-        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadProduct('P1'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
@@ -329,6 +400,28 @@ describe('Shopping Store', () => {
         expect(i.next()).toBeUndefined();
       })
     );
+
+    describe('and changing the language', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.actions = [];
+          store.dispatch(new SelectLocale(locales[1]));
+          tick(5000);
+        })
+      );
+
+      it(
+        'should reload the product and top level categries when language is changed',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+          expect(i.next()).toEqual(new LoadProduct('P1'));
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+          expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+    });
 
     describe('and and going back to the family page', () => {
       beforeEach(
@@ -342,7 +435,7 @@ describe('Shopping Store', () => {
       it(
         'should load the sibling products when they are not yet loaded',
         fakeAsync(() => {
-          expect(getCategoriesIds(store.state)).toEqual(['A.123.456', 'A.123', 'A', 'B']);
+          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
         })
       );
