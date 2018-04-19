@@ -14,7 +14,7 @@
 
 # path params jq-query login?
 
-categories ?view=tree&limit=3&imageView=NO-IMAGE
+categories ?view=tree&limit=2&imageView=NO-IMAGE
 categories/Cameras-Camcorders
 categories/Cameras-Camcorders/584
 categories/Cameras-Camcorders/584/products ?returnSortKeys=true&attrs=sku {elements:[.elements[1],.elements[2]],name,type,sortKeys}
