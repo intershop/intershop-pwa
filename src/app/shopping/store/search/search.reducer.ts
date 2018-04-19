@@ -3,37 +3,46 @@ import { SearchAction, SearchActionTypes } from './search.actions';
 
 export interface SearchState {
   searchTerm: string;
-  skus: string[];
-  searchLoading: boolean;
+  products: string[];
+  loading: boolean;
   suggestSearchResults: SuggestTerm[];
 }
 
 export const initialState: SearchState = {
   searchTerm: undefined,
-  skus: [],
-  searchLoading: false,
+  products: [],
+  loading: false,
   suggestSearchResults: [],
 };
 
 export function searchReducer(state = initialState, action: SearchAction): SearchState {
   switch (action.type) {
-    case SearchActionTypes.DoSearch: {
-      const searchTerm = action.payload;
-      const searchLoading = true;
-
-      return { ...state, searchTerm, searchLoading };
+    case SearchActionTypes.SearchProducts: {
+      return {
+        ...state,
+        loading: true,
+      };
     }
 
-    case SearchActionTypes.SearchProductsAvailable: {
-      const skus = action.payload;
-      const searchLoading = false;
-
-      return { ...state, skus, searchLoading };
+    case SearchActionTypes.SearchProductsSuccess: {
+      const searchResult = action.payload;
+      const products = searchResult.products;
+      const searchTerm = searchResult.searchTerm;
+      const loading = false;
+      return {
+        ...state,
+        products,
+        searchTerm,
+        loading,
+      };
     }
 
     case SearchActionTypes.SuggestSearchSuccess: {
       const suggestSearchResults = action.payload;
-      return { ...state, suggestSearchResults };
+      return {
+        ...state,
+        suggestSearchResults,
+      };
     }
   }
 

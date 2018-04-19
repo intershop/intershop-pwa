@@ -6,7 +6,7 @@ import { Product } from '../../../models/product/product.model';
 import { getProducts, LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { SearchProductsAvailable } from './search.actions';
+import { SearchProductsSuccess } from './search.actions';
 import { SearchState } from './search.reducer';
 import { getSearchLoading, getSearchProducts, getSearchTerm } from './search.selectors';
 
@@ -17,8 +17,8 @@ describe('Search Selectors', () => {
 
   const state: SearchState = {
     searchTerm: 'a',
-    skus: ['9780321934161', '0818279012576'],
-    searchLoading: false,
+    products: ['9780321934161', '0818279012576'],
+    loading: false,
     suggestSearchResults: [],
   };
 
@@ -39,7 +39,7 @@ describe('Search Selectors', () => {
   describe('getSearchLoading', () => {
     it('should return the loading state if given', () => {
       const result = getSearchLoading.projector(state);
-      const expected = state.searchLoading;
+      const expected = state.loading;
       expect(result).toBe(expected);
     });
   });
@@ -60,7 +60,9 @@ describe('Search Selectors', () => {
 
       store$.dispatch(new LoadProductSuccess({ sku: '9780321934161' } as Product));
       store$.dispatch(new LoadProductSuccess({ sku: '0818279012576' } as Product));
-      store$.dispatch(new SearchProductsAvailable(['9780321934161', '0818279012576']));
+      store$.dispatch(
+        new SearchProductsSuccess({ searchTerm: 'search', products: ['9780321934161', '0818279012576'] })
+      );
 
       expect(searchProducts$).toBeObservable(cold('a', { a: products }));
     });

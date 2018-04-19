@@ -22,7 +22,11 @@ describe('Header Component', () => {
             template: 'Product Compare Status Container',
           }),
           MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
-          MockComponent({ selector: 'ish-search-box-container', template: 'Search Box Container' }),
+          MockComponent({
+            selector: 'ish-search-box-container',
+            template: 'Search Box Container',
+            inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
+          }),
           MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
           MockComponent({ selector: 'ish-mini-cart-container', template: 'Mini Cart Container' }),
           MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),

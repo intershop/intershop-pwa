@@ -3,8 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
+import { SuggestService } from '../../../../core/services/suggest/suggest.service';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { SuggestService } from '../../../services/suggest/suggest.service';
 import { SearchBoxContainerComponent } from './search-box.container';
 
 describe('Search Box Container', () => {
@@ -20,15 +20,7 @@ describe('Search Box Container', () => {
           MockComponent({
             selector: 'ish-search-box',
             template: 'Search Box',
-            inputs: [
-              'results',
-              'buttonText',
-              'buttonTitleText',
-              'placeholderText',
-              'searchTerm',
-              'autoSuggest',
-              'maxAutoSuggests',
-            ],
+            inputs: ['results', 'buttonText', 'placeholderText', 'searchTerm', 'autoSuggest', 'maxAutoSuggests'],
           }),
           SearchBoxContainerComponent,
         ],

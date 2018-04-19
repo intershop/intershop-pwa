@@ -16,10 +16,10 @@ import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { SearchService } from '../../services/products/search.service';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { DoSearch, DoSuggestSearch, SuggestSearchSuccess } from './search.actions';
+import { SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search.actions';
 import { SearchEffects } from './search.effects';
 
-describe('SearchEffects', () => {
+describe('Search Effects', () => {
   let actions$: Observable<Action>;
   let effects: SearchEffects;
   let store$: Store<ShoppingState>;
@@ -64,21 +64,21 @@ describe('SearchEffects', () => {
   });
 
   describe('triggerSearch$', () => {
-    it('should trigger DoSearch action if search URL', () => {
-      const routerAction = navigateMockAction({ url: '/search', queryParams: { SearchTerm: 'dummy' } });
+    it('should trigger SearchProducts action if search URL', () => {
+      const routerAction = navigateMockAction({ url: '/search', params: { searchTerm: 'dummy' } });
       store$.dispatch(routerAction);
 
-      expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new DoSearch('dummy') }));
+      expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts('dummy') }));
     });
   });
 
-  describe('performSearch$', () => {
+  describe('searchProducts$', () => {
     it('should perform a search with given search term and trigger actions when search is requested', () => {
       const searchTerm = '123';
-      const action = new DoSearch(searchTerm);
+      const action = new SearchProducts(searchTerm);
       actions$ = hot('a', { a: action });
 
-      effects.performSearch$.subscribe(() => {
+      effects.searchProducts$.subscribe(() => {
         verify(searchServiceMock.searchForProductSkus(searchTerm)).once();
       });
     });
@@ -86,7 +86,7 @@ describe('SearchEffects', () => {
 
   describe('suggestSearch$', () => {
     it('should not fire when search term is falsy', () => {
-      const action = new DoSuggestSearch(undefined);
+      const action = new SuggestSearch(undefined);
       actions$ = hot('a', { a: action });
 
       expect(effects.suggestSearch$).toBeObservable(cold('-'));
@@ -94,7 +94,7 @@ describe('SearchEffects', () => {
     });
 
     it('should not fire when search term is empty', () => {
-      const action = new DoSuggestSearch('');
+      const action = new SuggestSearch('');
       actions$ = hot('a', { a: action });
 
       expect(effects.suggestSearch$).toBeObservable(cold('-'));
@@ -105,7 +105,7 @@ describe('SearchEffects', () => {
       const result = [{ type: undefined, term: 'Goods' }];
       when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
 
-      const action = new DoSuggestSearch('g');
+      const action = new SuggestSearch('g');
       actions$ = hot('a', { a: action });
 
       expect(effects.suggestSearch$).toBeObservable(
@@ -120,9 +120,9 @@ describe('SearchEffects', () => {
       when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
 
       actions$ = hot('--a---b----c', {
-        a: new DoSuggestSearch('g'),
-        b: new DoSuggestSearch('goo'),
-        c: new DoSuggestSearch('good'),
+        a: new SuggestSearch('g'),
+        b: new SuggestSearch('goo'),
+        c: new SuggestSearch('good'),
       });
 
       expect(effects.suggestSearch$).toBeObservable(
@@ -137,8 +137,8 @@ describe('SearchEffects', () => {
       when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
 
       actions$ = hot('a------------------------------------------------------b', {
-        a: new DoSuggestSearch('good'),
-        b: new DoSuggestSearch('good'),
+        a: new SuggestSearch('good'),
+        b: new SuggestSearch('good'),
       });
 
       expect(effects.suggestSearch$).toBeObservable(
@@ -153,7 +153,7 @@ describe('SearchEffects', () => {
     it('should not fire action when error is encountered at service level', () => {
       when(suggestServiceMock.search(anyString())).thenReturn(_throw(new HttpErrorResponse({ status: 500 })));
 
-      actions$ = hot('a', { a: new DoSuggestSearch('good') });
+      actions$ = hot('a', { a: new SuggestSearch('good') });
 
       expect(effects.suggestSearch$).toBeObservable(
         cold('-----------------------------------------------------------------------------------------------')
