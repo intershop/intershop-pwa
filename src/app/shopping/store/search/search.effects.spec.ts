@@ -10,10 +10,10 @@ import { _throw } from 'rxjs/observable/throw';
 import { Scheduler } from 'rxjs/Scheduler';
 import { anyString, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
-import { SuggestService } from '../../../core/services/suggest/suggest.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
-import { SearchService } from '../../services/products/search.service';
+import { ProductsService } from '../../services/products/products.service';
+import { SuggestService } from '../../services/suggest/suggest.service';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import { SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search.actions';
@@ -24,16 +24,16 @@ describe('Search Effects', () => {
   let effects: SearchEffects;
   let store$: Store<ShoppingState>;
   let apiMock: ApiService;
-  let searchServiceMock: SearchService;
+  let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
 
   beforeEach(() => {
     apiMock = mock(ApiService);
     actions$ = new Observable<Action>();
 
-    searchServiceMock = mock(SearchService);
+    productsServiceMock = mock(ProductsService);
     suggestServiceMock = mock(SuggestService);
-    when(searchServiceMock.searchForProductSkus(anyString())).thenCall((searchTerm: string) => {
+    when(productsServiceMock.searchProducts(anyString())).thenCall((searchTerm: string) => {
       if (!searchTerm) {
         return _throw('');
       } else {
@@ -50,10 +50,10 @@ describe('Search Effects', () => {
       ],
       providers: [
         SearchEffects,
-        SearchService,
+        ProductsService,
         provideMockActions(() => actions$),
         { provide: ApiService, useFactory: () => instance(apiMock) },
-        { provide: SearchService, useFactory: () => instance(searchServiceMock) },
+        { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: Scheduler, useFactory: getTestScheduler },
       ],
@@ -79,7 +79,7 @@ describe('Search Effects', () => {
       actions$ = hot('a', { a: action });
 
       effects.searchProducts$.subscribe(() => {
-        verify(searchServiceMock.searchForProductSkus(searchTerm)).once();
+        verify(productsServiceMock.searchProducts(searchTerm)).once();
       });
     });
   });

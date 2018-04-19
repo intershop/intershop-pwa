@@ -4,21 +4,21 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import { AccountLoginService } from '../../../core/services/account-login/account-login.service';
 import { Customer } from '../../../models/customer/customer.model';
+import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import * as errorActions from '../error/error.actions';
 import * as userActions from './user.actions';
 
 @Injectable()
 export class UserEffects {
-  constructor(private actions$: Actions, private accountLoginService: AccountLoginService, private router: Router) {}
+  constructor(private actions$: Actions, private registrationService: RegistrationService, private router: Router) {}
 
   @Effect()
   loginUser$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoginUser),
     map((action: userActions.LoginUser) => action.payload),
     mergeMap(credentials => {
-      return this.accountLoginService
+      return this.registrationService
         .signinUser(credentials)
         .pipe(
           map(customer => new userActions.LoginUserSuccess(customer)),
@@ -44,7 +44,7 @@ export class UserEffects {
     ofType(userActions.UserActionTypes.CreateUser),
     map((action: userActions.CreateUser) => action.payload),
     mergeMap((customerData: Customer) => {
-      return this.accountLoginService
+      return this.registrationService
         .createUser(customerData)
         .pipe(
           map(customer => new userActions.CreateUserSuccess(customer)),

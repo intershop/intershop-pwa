@@ -5,8 +5,8 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { Scheduler } from 'rxjs/Scheduler';
-import { SuggestService } from '../../../core/services/suggest/suggest.service';
-import { SearchService } from '../../services/products/search.service';
+import { ProductsService } from '../../services/products/products.service';
+import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProduct } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { SetSortKeys } from '../viewconf';
@@ -25,7 +25,7 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store: Store<ShoppingState>,
-    private searchService: SearchService,
+    private productsService: ProductsService,
     private suggestService: SuggestService,
     private scheduler: Scheduler
   ) {}
@@ -50,8 +50,8 @@ export class SearchEffects {
     ofType(SearchActionTypes.SearchProducts),
     map((action: SearchProducts) => action.payload),
     switchMap(searchTerm => {
-      // get products via REST API call
-      return this.searchService.searchForProductSkus(searchTerm).pipe(
+      // get products
+      return this.productsService.searchProducts(searchTerm).pipe(
         mergeMap(res => [
           // dispatch action with search result
           new SearchProductsSuccess({ searchTerm: searchTerm, products: res.skus }),

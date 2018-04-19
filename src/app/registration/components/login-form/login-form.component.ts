@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { AccountLogin } from '../../../core/services/account-login/account-login.model';
+import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { markAsDirtyRecursive } from '../../../utils/form-utils';
 
 @Component({
@@ -11,24 +11,24 @@ import { markAsDirtyRecursive } from '../../../utils/form-utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnInit {
-  form: FormGroup;
-  submitted = false;
-
   @Input() loginType: string;
   @Input() isLoggedIn: boolean;
   @Input() error: HttpErrorResponse;
-  @Output() login = new EventEmitter<AccountLogin>();
+  @Output() login = new EventEmitter<LoginCredentials>();
+
+  form: FormGroup;
+  submitted = false;
 
   ngOnInit() {
-    let userNameValidator;
+    let loginValidator;
     if (this.loginType === 'email') {
-      userNameValidator = CustomValidators.email;
+      loginValidator = CustomValidators.email;
     } else {
-      userNameValidator = Validators.nullValidator;
+      loginValidator = Validators.nullValidator;
     }
 
     this.form = new FormGroup({
-      userName: new FormControl('', [Validators.required, userNameValidator]),
+      login: new FormControl('', [Validators.required, loginValidator]),
       password: new FormControl('', Validators.required),
     });
   }

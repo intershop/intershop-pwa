@@ -1,5 +1,5 @@
 import { CategoryData } from './category.interface';
-import { Category } from './category.model';
+import { Category, CategoryHelper } from './category.model';
 
 export class CategoryMapper {
   static fromData(categoryData: CategoryData, categoryUniqueId?: string): Category {
@@ -7,7 +7,7 @@ export class CategoryMapper {
       const uniqueId = categoryUniqueId ? categoryUniqueId : categoryData.id;
       const subCategories = categoryData.subCategories
         ? categoryData.subCategories.map(subCategoryData =>
-            CategoryMapper.fromData(subCategoryData, uniqueId + '.' + subCategoryData.id)
+            CategoryMapper.fromData(subCategoryData, uniqueId + CategoryHelper.uniqueIdSeparator + subCategoryData.id)
           )
         : undefined;
 

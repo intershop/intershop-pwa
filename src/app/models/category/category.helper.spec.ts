@@ -37,20 +37,38 @@ describe('Category Helper', () => {
     });
   });
 
-  describe('getCategoryPathIds', () => {
+  describe('getCategoryPath', () => {
+    function dataProvider() {
+      return [
+        { uniqueId: undefined, result: undefined },
+        { uniqueId: '', result: undefined },
+        { uniqueId: 'A', result: 'A' },
+        { uniqueId: 'A.B', result: 'A/B' },
+        { uniqueId: 'A.B.C', result: 'A/B/C' },
+      ];
+    }
+
+    using(dataProvider, slice => {
+      it(`should return '${slice.result}' when expanding '${slice.uniqueId}'`, () => {
+        expect(CategoryHelper.getCategoryPath(slice.uniqueId)).toEqual(slice.result);
+      });
+    });
+  });
+
+  describe('getCategoryPathUniqueIds', () => {
     function dataProvider() {
       return [
         { uniqueId: undefined, result: undefined },
         { uniqueId: '', result: undefined },
         { uniqueId: 'A', result: ['A'] },
-        { uniqueId: 'A.B', result: ['A.B', 'A'] },
-        { uniqueId: 'A.B.C', result: ['A.B.C', 'A.B', 'A'] },
+        { uniqueId: 'A.B', result: ['A', 'A.B'] },
+        { uniqueId: 'A.B.C', result: ['A', 'A.B', 'A.B.C'] },
       ];
     }
 
     using(dataProvider, slice => {
       it(`should return ${slice.result} when expanding '${JSON.stringify(slice.uniqueId)}'`, () => {
-        expect(CategoryHelper.getCategoryPathIds(slice.uniqueId)).toEqual(slice.result);
+        expect(CategoryHelper.getCategoryPathUniqueIds(slice.uniqueId)).toEqual(slice.result);
       });
     });
   });

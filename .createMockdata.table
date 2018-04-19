@@ -14,24 +14,24 @@
 
 # path params jq-query login?
 
-categories ?view=tree&limit=3&imageView=NO-IMAGE
+categories ?view=tree&limit=2&imageView=NO-IMAGE
 categories/Cameras-Camcorders
 categories/Cameras-Camcorders/584
-categories/Cameras-Camcorders/584/products ?returnSortKeys=true {elements:[.elements[1],.elements[2]],name,type,sortKeys}
-categories/Cameras-Camcorders/584/products/3953312 ?allImages=true
-categories/Cameras-Camcorders/584/products/7912061 ?allImages=true
+categories/Cameras-Camcorders/584/products ?returnSortKeys=true&attrs=sku {elements:[.elements[1],.elements[2]],name,type,sortKeys}
+categories/Cameras-Camcorders/584/products/3953312 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+categories/Cameras-Camcorders/584/products/7912061 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 categories/Cameras-Camcorders/832
-categories/Cameras-Camcorders/832/products ?returnSortKeys=true {elements:[.elements[0],.elements[2]],name,type,sortKeys}
-categories/Cameras-Camcorders/832/products/8182790134362 ?allImages=true
-categories/Cameras-Camcorders/832/products/8182790134363 ?allImages=true
+categories/Cameras-Camcorders/832/products ?returnSortKeys=true&attrs=sku {elements:[.elements[0],.elements[2]],name,type,sortKeys}
+categories/Cameras-Camcorders/832/products/8182790134362 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+categories/Cameras-Camcorders/832/products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 categories/Computers
 categories/Computers/106
 categories/Computers/106/236
 categories/Computers/106/830
 categories/Home-Entertainment
 categories/Specials
-products/3953312 ?allImages=true
-products/7912061 ?allImages=true
-products/8182790134362 ?allImages=true
-products/8182790134363 ?allImages=true
+products/3953312 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/7912061 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/8182790134362 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 customers/- ? . login
