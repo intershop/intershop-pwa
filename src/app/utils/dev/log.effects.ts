@@ -6,7 +6,7 @@ import { CoreState } from '../../core/store/core.state';
 
 @Injectable()
 export class LogEffects {
-  actions: Action[] = [];
+  private actions: Action[] = [];
   state: CoreState;
 
   logActions = false;
@@ -30,6 +30,10 @@ export class LogEffects {
 
   dispatch(action: Action) {
     this.store$.dispatch(action);
+  }
+
+  reset() {
+    this.actions = [];
   }
 
   actionsIterator(include: (string | RegExp)[]) {

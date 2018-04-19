@@ -191,7 +191,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(
         fakeAsync(() => {
-          store.actions = [];
+          store.reset();
           store.dispatch(new SelectLocale(locales[1]));
           tick(5000);
         })
@@ -244,7 +244,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(
         fakeAsync(() => {
-          store.actions = [];
+          store.reset();
           store.dispatch(new SelectLocale(locales[1]));
           tick(5000);
         })
@@ -305,7 +305,7 @@ describe('Shopping Store', () => {
     describe('and clicking a product', () => {
       beforeEach(
         fakeAsync(() => {
-          store.actions = [];
+          store.reset();
           router.navigate(['/category', 'A.123.456', 'product', 'P1']);
           tick(5000);
         })
@@ -326,7 +326,7 @@ describe('Shopping Store', () => {
       describe('and and going back to the family page', () => {
         beforeEach(
           fakeAsync(() => {
-            store.actions = [];
+            store.reset();
             router.navigate(['/category', 'A.123.456']);
             tick(5000);
           })
@@ -346,7 +346,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(
         fakeAsync(() => {
-          store.actions = [];
+          store.reset();
           store.dispatch(new SelectLocale(locales[1]));
           tick(5000);
         })
@@ -404,7 +404,7 @@ describe('Shopping Store', () => {
     describe('and changing the language', () => {
       beforeEach(
         fakeAsync(() => {
-          store.actions = [];
+          store.reset();
           store.dispatch(new SelectLocale(locales[1]));
           tick(5000);
         })
@@ -426,7 +426,7 @@ describe('Shopping Store', () => {
     describe('and and going back to the family page', () => {
       beforeEach(
         fakeAsync(() => {
-          store.actions = [];
+          store.reset();
           router.navigate(['/category', 'A.123.456']);
           tick(5000);
         })
