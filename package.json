@@ -13,7 +13,7 @@
     "docs:serve": "npm run docs -- -s",
     "docs:watch": "npm run docs -- -s -w",
     "e2e": "ng e2e",
-    "check": "npm run lint -- --fix && npm run format && npm run test -- --single-run && npm run e2e",
+    "check": "npm run lint -- --fix && npm run format && npm run test -- --single-run --browsers ChromeHeadless && npm run e2e",
     "build:client-and-server-bundles": "ng build --aot --progress=false && ng build --aot --app 1 --output-hashing=false --progress=false",
     "build:client-and-server-bundles:prod": "ng build --prod --progress=false && ng build --prod --app 1 --output-hashing=false --progress=false",
     "build:static": "npm run build:client-and-server-bundles && npm run webpack:server && npm run generate:static",
