@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { Action } from '@ngrx/store';
 import { Customer } from '../../../models/customer/customer.model';
@@ -52,7 +52,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when LoginUserFail action is reduced and error is resetted after route changed', () => {
-      const error = { message: 'error' } as HttpErrorResponse;
+      const error = { status: 500, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
       let newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });
@@ -62,7 +62,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when CreateUserFail action is reduced', () => {
-      const error = { message: 'error' } as HttpErrorResponse;
+      const error = { status: 500, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
       const newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });

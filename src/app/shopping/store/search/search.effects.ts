@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Scheduler } from 'rxjs/Scheduler';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
@@ -27,7 +28,8 @@ export class SearchEffects {
     private store: Store<ShoppingState>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private scheduler: Scheduler
+    private scheduler: Scheduler,
+    private router: Router
   ) {}
 
   /**
@@ -77,5 +79,11 @@ export class SearchEffects {
         .search(searchTerm)
         .pipe(map(results => new SuggestSearchSuccess(results)), catchError(() => empty()))
     ) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search
+  );
+
+  @Effect({ dispatch: false })
+  redirectIfSearchProductFail$ = this.actions$.pipe(
+    ofType(SearchActionTypes.SearchProductsFail),
+    tap(() => this.router.navigate(['/error']))
   );
 }

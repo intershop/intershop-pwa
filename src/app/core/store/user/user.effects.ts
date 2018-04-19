@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -60,14 +61,14 @@ export class UserEffects {
   );
 
   dispatchLogin(error): Action {
-    if (error.status >= 400 && error.status <= 403) {
+    if (error.headers.has('error-key')) {
       return new userActions.LoginUserFail(error);
     }
     return new errorActions.GeneralError(error);
   }
 
-  dispatchCreation(error): Action {
-    if (error.status >= 400 && error.status <= 409) {
+  dispatchCreation(error: HttpErrorResponse): Action {
+    if (error.headers.has('error-key')) {
       return new userActions.CreateUserFail(error);
     }
     return new errorActions.GeneralError(error);

@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { _throw } from 'rxjs/observable/throw';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { CategoryData } from '../../../models/category/category.interface';
@@ -22,7 +22,7 @@ export class CategoriesService {
    */
   getCategory(categoryUniqueId: string): Observable<Category> {
     if (!categoryUniqueId) {
-      return ErrorObservable.create('getCategory() called without categoryUniqueId');
+      return _throw('getCategory() called without categoryUniqueId');
     }
 
     return this.apiService

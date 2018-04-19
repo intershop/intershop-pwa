@@ -1,5 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { arrayDiff, arrayIntersect, markAsDirtyRecursive } from './form-utils';
+import { arrayDiff, arrayIntersect, markAsDirtyRecursive, markFormControlsAsInvalid } from './form-utils';
 
 describe('Form Utils', () => {
   describe('array utils', () => {
@@ -54,6 +54,51 @@ describe('Form Utils', () => {
 
       expect(ctrlA.dirty).toBeTruthy();
       expect(ctrlB.dirty).toBeTruthy();
+    });
+  });
+
+  describe('markFormControlsAsInvalid', () => {
+    it('should mark a single field as dirty when set', () => {
+      const form = new FormGroup({
+        a: new FormControl(),
+        b: new FormControl(),
+        c: new FormControl(),
+      });
+      const fields = ['a'];
+      markFormControlsAsInvalid(form, fields);
+      expect(form.get('a').valid).toBe(false);
+      expect(form.get('b').valid).toBe(true);
+      expect(form.get('c').valid).toBe(true);
+    });
+
+    it('should mark multiple fields as dirty when comma separated', () => {
+      const form = new FormGroup({
+        a: new FormControl(),
+        b: new FormControl(),
+        c: new FormControl(),
+      });
+      const fields = ['a', 'b'];
+      markFormControlsAsInvalid(form, fields);
+      expect(form.get('a').valid).toBe(false);
+      expect(form.get('b').valid).toBe(false);
+      expect(form.get('c').valid).toBe(true);
+    });
+
+    it('should mark fully specified fields as dirty when comma separated', () => {
+      const form = new FormGroup({
+        a: new FormGroup({
+          a1: new FormControl(),
+          a2: new FormControl(),
+        }),
+        b: new FormControl(),
+        c: new FormControl(),
+      });
+      const fields = ['a.a1'];
+      markFormControlsAsInvalid(form, fields);
+      expect(form.get('a').get('a1').valid).toBe(false);
+      expect(form.get('a').get('a2').valid).toBe(true);
+      expect(form.get('b').valid).toBe(true);
+      expect(form.get('c').valid).toBe(true);
     });
   });
 });

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
@@ -10,6 +11,7 @@ import {
   map,
   mergeMap,
   switchMap,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
@@ -26,7 +28,8 @@ export class ProductsEffects {
   constructor(
     private actions$: Actions,
     private store: Store<ShoppingState | CoreState>,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private router: Router
   ) {}
 
   @Effect()
@@ -48,12 +51,18 @@ export class ProductsEffects {
     ofType(productsActions.ProductsActionTypes.LoadProductsForCategory),
     map((action: productsActions.LoadProductsForCategory) => action.payload),
     withLatestFrom(this.store.pipe(select(fromViewconf.getSortBy))),
-    concatMap(([categoryUniqueId, sortBy]) => this.productsService.getCategoryProducts(categoryUniqueId, sortBy)),
-    switchMap(res => [
-      new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
-      new fromViewconf.SetSortKeys(res.sortKeys),
-      ...res.skus.map(sku => new productsActions.LoadProduct(sku)),
-    ])
+    concatMap(([categoryUniqueId, sortBy]) =>
+      this.productsService
+        .getCategoryProducts(categoryUniqueId, sortBy)
+        .pipe(
+          switchMap(res => [
+            new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
+            new fromViewconf.SetSortKeys(res.sortKeys),
+            ...res.skus.map(sku => new productsActions.LoadProduct(sku)),
+          ]),
+          catchError(error => of(new productsActions.LoadProductFail(error)))
+        )
+    )
   );
 
   @Effect()
@@ -71,5 +80,11 @@ export class ProductsEffects {
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([locale, sku]) => !!sku),
     map(([locale, sku]) => new productsActions.LoadProduct(sku))
+  );
+
+  @Effect({ dispatch: false })
+  redirectIfErrorInProducts$ = this.actions$.pipe(
+    ofType(productsActions.ProductsActionTypes.LoadProductFail),
+    tap(() => this.router.navigate(['/error']))
   );
 }
