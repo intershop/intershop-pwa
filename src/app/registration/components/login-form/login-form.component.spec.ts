@@ -46,11 +46,22 @@ describe('Login Form Component', () => {
       expect(element.querySelector('.alert-danger')).toBeFalsy();
     });
 
-    it('should display error when error is set', () => {
-      component.error = new HttpErrorResponse({ status: 401 });
-      fixture.detectChanges();
-      expect(component.error).toBeTruthy();
-      expect(element.querySelector('.alert-danger')).toBeTruthy();
+    describe('depending on loginType', () => {
+      beforeEach(() => {
+        component.error = new HttpErrorResponse({ status: 401 });
+      });
+
+      it('should display username error when error is set', () => {
+        component.loginType = 'default';
+        fixture.detectChanges();
+        expect(element.querySelector('.alert-danger').textContent).toContain('user');
+      });
+
+      it('should display email error when error is set', () => {
+        component.loginType = 'email';
+        fixture.detectChanges();
+        expect(element.querySelector('.alert-danger').textContent).toContain('email');
+      });
     });
   });
 

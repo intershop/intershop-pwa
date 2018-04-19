@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { _throw } from 'rxjs/observable/throw';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { Attribute } from '../../../models/attribute/attribute.model';
@@ -24,7 +24,7 @@ export class ProductsService {
    */
   getProduct(sku: string): Observable<Product> {
     if (!sku) {
-      return ErrorObservable.create('getProduct() called without a sku');
+      return _throw('getProduct() called without a sku');
     }
 
     const params: HttpParams = new HttpParams().set('allImages', 'true');
@@ -46,7 +46,7 @@ export class ProductsService {
     sortKey = ''
   ): Observable<{ skus: string[]; categoryUniqueId: string; sortKeys: string[] }> {
     if (!categoryUniqueId) {
-      return ErrorObservable.create('getCategoryProducts() called without categoryUniqueId');
+      return _throw('getCategoryProducts() called without categoryUniqueId');
     }
 
     let params: HttpParams = new HttpParams().set('attrs', 'sku').set('returnSortKeys', 'true');
@@ -81,7 +81,7 @@ export class ProductsService {
   // TODO: handle and document paging (total, offset, amount)
   searchProducts(searchTerm: string): Observable<{ skus: string[]; sortKeys: string[] }> {
     if (!searchTerm) {
-      return ErrorObservable.create('searchProducts() called without searchTerm');
+      return _throw('searchProducts() called without searchTerm');
     }
 
     const params = new HttpParams()

@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 /**
  * Marks all fields in a form group as dirty recursively (i.e. for nested form groups also)
@@ -44,6 +44,30 @@ export function updateValidatorsByDataLength(
   }
   control.setValue('');
   control.updateValueAndValidity();
+}
+
+/**
+ * This method will mark all listed @param fields in the @param form as invalid.
+ * These @param fields must be comma separated and
+ * (if embedded in FormGroups other than the @param form) specified by their paths.
+ * This means the email field in the credentials subform is qualified by 'credentials.email'.
+ * @param form the root to start search with
+ * @param fields comma separated, fully qualified paths to the field.
+ */
+export function markFormControlsAsInvalid(form: FormGroup, fields: string[]) {
+  fields
+    .map(attr => {
+      let obj: AbstractControl | FormControl = form;
+      attr.split('.').forEach(sub => {
+        obj = obj.get(sub);
+      });
+      return obj as FormControl;
+    })
+    .filter(formControl => !!formControl)
+    .forEach(formControl => {
+      formControl.markAsDirty();
+      formControl.setErrors({ incorrect: true });
+    });
 }
 
 /**

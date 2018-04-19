@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -59,10 +59,12 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a LoginUserFail action on failed login', () => {
-      when(registrationServiceMock.signinUser(anything())).thenReturn(_throw({ status: 401 }));
+      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+
+      when(registrationServiceMock.signinUser(anything())).thenReturn(_throw(error));
 
       const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
-      const completion = new ua.LoginUserFail({ status: 401 } as HttpErrorResponse);
+      const completion = new ua.LoginUserFail(error);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -119,10 +121,11 @@ describe('UserEffects', () => {
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
-      when(registrationServiceMock.createUser(anything())).thenReturn(_throw({ status: 401 }));
+      const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
+      when(registrationServiceMock.createUser(anything())).thenReturn(_throw(error));
 
       const action = new ua.CreateUser({} as Customer);
-      const completion = new ua.CreateUserFail({ status: 401 } as HttpErrorResponse);
+      const completion = new ua.CreateUserFail(error);
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });

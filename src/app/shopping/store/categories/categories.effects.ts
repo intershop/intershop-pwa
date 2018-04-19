@@ -1,8 +1,18 @@
 import { Inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { Scheduler } from 'rxjs/Scheduler';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
@@ -21,6 +31,7 @@ export class CategoriesEffects {
     private store: Store<ShoppingState | CoreState>,
     private categoryService: CategoriesService,
     private scheduler: Scheduler,
+    private router: Router,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number
   ) {}
 
@@ -76,6 +87,12 @@ export class CategoriesEffects {
     select(categoriesSelectors.getSelectedCategoryProductsNeeded),
     filter(e => !!e),
     map(([c, sku]) => new productsActions.LoadProductsForCategory(c.uniqueId))
+  );
+
+  @Effect({ dispatch: false })
+  redirectIfErrorInCategories$ = this.actions$.pipe(
+    ofType(categoriesActions.CategoriesActionTypes.LoadCategoryFail),
+    tap(() => this.router.navigate(['/error']))
   );
 
   // TODO: @Ferdinand: non full categories might not be to helpfull
