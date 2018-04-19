@@ -15,16 +15,43 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 
+/**
+ * displays the search box with search button
+ *
+ * @example
+ * <ish-search-box
+ *               [buttonText]="buttonText"
+ *               [placeholderText] ="placeholderText"
+ *               [autoSuggest] = "autoSuggest"
+ *               [maxAutoSuggests] = "maxAutoSuggests"
+ *               [results]="searchResults$ | async"
+ *               [searchTerm]="previousSearchTerm$ | async"
+ *               (searchTermChange)="suggestSearch($event)"
+ *               (performSearch)="performSearch($event)"
+ * ></ish-search-box>
+ */
 @Component({
   selector: 'ish-search-box',
   templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() buttonText: string;
-  @Input() buttonTitleText: string;
-  @Input() placeholderText: string;
+  /**
+   * text for search button on search box
+   * glyphicon is used if no text is provided
+   */
+  @Input() buttonText?: string;
+  /**
+   * placeholder text for search input field
+   */
+  @Input() placeholderText = '';
+  /**
+   * if autoSuggest is set to true auto suggestion is provided for search box, else no auto suggestion is provided
+   */
   @Input() autoSuggest: boolean;
+  /**
+   * configures the number of suggestions if auto suggestion is provided
+   */
   @Input() maxAutoSuggests: number;
   @Input() searchTerm: string;
   @Input() results: SuggestTerm[];

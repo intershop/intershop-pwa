@@ -1,0 +1,10 @@
+<ish-search-box
+  [buttonText]="buttonText"
+  [placeholderText] ="placeholderText"
+  [autoSuggest] = "autoSuggest"
+  [maxAutoSuggests] = "maxAutoSuggests"
+  [results]="searchResults$ | async"
+  [searchTerm]="previousSearchTerm$ | async"
+  (searchTermChange)="suggestSearch($event)"
+  (performSearch)="performSearch($event)"
+></ish-search-box>

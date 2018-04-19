@@ -48,7 +48,11 @@
       </div>
       <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
       <div class="col-sm-4 search-container header-search-container">
-        <ish-search-box-container></ish-search-box-container>
+        <ish-search-box-container
+          [placeholderText]="'search.searchbox.instructional_text' | translate"
+          [autoSuggest] = true
+          [maxAutoSuggests] = 10
+        ></ish-search-box-container>
       </div>
     </div>
   </div>
