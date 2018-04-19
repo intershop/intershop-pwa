@@ -24,5 +24,5 @@ do
     test ! -z "$login" && header="Authorization: BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ=="
     echo "generating ${path}${params} $login-> '$jqquery'"
     mkdir -p src/assets/mock-data/$path
-    curl -sf -H "$header" "http://localhost:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%/assets/product_img/a.jpg%' > src/assets/mock-data/$path/get-data.json
+    curl -sf -H "$header" "http://localhost:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -S -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%/assets/product_img/a.jpg%' > src/assets/mock-data/$path/get-data.json
 done
