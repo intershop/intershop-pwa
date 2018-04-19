@@ -1,134 +1,284 @@
 {
-  "name": "Cables",
-  "type": "Category",
-  "hasOnlineProducts": true,
-  "hasOnlineSubCategories": true,
-  "online": "1",
-  "description": "Computer, computer peripherals and services catalog",
-  "subCategoriesCount": 5,
-  "images": [
+  "categoryPath": [
     {
-      "name": "front M",
-      "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "front",
-      "typeID": "M",
-      "imageActualHeight": 270,
-      "imageActualWidth": 270,
-      "primaryImage": true
+      "id": "Computers",
+      "name": "Computers",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+    },
+    {
+      "id": "106",
+      "name": "Hardware Components",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+    },
+    {
+      "id": "830",
+      "name": "Cables",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
     }
   ],
+  "description": "Computer, computer peripherals and services catalog",
+  "hasOnlineProducts": true,
+  "hasOnlineSubCategories": true,
   "id": "830",
+  "images": [
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    }
+  ],
+  "name": "Cables",
+  "online": "1",
   "subCategories": [
     {
-      "name": "Audio/Video Cables",
-      "type": "Category",
-      "hasOnlineProducts": true,
-      "hasOnlineSubCategories": false,
-      "online": "1",
-      "description": "Computer, computer peripherals and services catalog",
-      "images": [
+      "categoryPath": [
         {
-          "name": "front M",
-          "type": "Image",
-          "effectiveUrl": "/assets/product_img/a.jpg",
-          "viewID": "front",
-          "typeID": "M",
-          "imageActualHeight": 270,
-          "imageActualWidth": 270,
-          "primaryImage": true
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "830",
+          "name": "Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
+        },
+        {
+          "id": "1307",
+          "name": "Audio/Video Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1307"
         }
       ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
       "id": "1307",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Audio/Video Cables",
+      "online": "1",
+      "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1307"
     },
     {
-      "name": "Usb Cables",
-      "type": "Category",
-      "hasOnlineProducts": true,
-      "hasOnlineSubCategories": false,
-      "online": "1",
-      "description": "Computer, computer peripherals and services catalog",
-      "images": [
+      "categoryPath": [
         {
-          "name": "front M",
-          "type": "Image",
-          "effectiveUrl": "/assets/product_img/a.jpg",
-          "viewID": "front",
-          "typeID": "M",
-          "imageActualHeight": 270,
-          "imageActualWidth": 270,
-          "primaryImage": true
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "830",
+          "name": "Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
+        },
+        {
+          "id": "1501",
+          "name": "Cable Interface/Gender Adapters",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501"
         }
       ],
-      "id": "1158",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1158"
-    },
-    {
-      "name": "SATA Cables",
-      "type": "Category",
+      "description": "Computer, computer peripherals and services catalog",
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
-      "online": "1",
-      "description": "Computer, computer peripherals and services catalog",
-      "images": [
-        {
-          "name": "front M",
-          "type": "Image",
-          "effectiveUrl": "/assets/product_img/a.jpg",
-          "viewID": "front",
-          "typeID": "M",
-          "imageActualHeight": 270,
-          "imageActualWidth": 270,
-          "primaryImage": true
-        }
-      ],
-      "id": "1303",
-      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1303"
-    },
-    {
-      "name": "Cable Interface/Gender Adapters",
-      "type": "Category",
-      "hasOnlineProducts": true,
-      "hasOnlineSubCategories": false,
-      "online": "1",
-      "description": "Computer, computer peripherals and services catalog",
-      "images": [
-        {
-          "name": "front M",
-          "type": "Image",
-          "effectiveUrl": "/assets/product_img/a.jpg",
-          "viewID": "front",
-          "typeID": "M",
-          "imageActualHeight": 270,
-          "imageActualWidth": 270,
-          "primaryImage": true
-        }
-      ],
       "id": "1501",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Cable Interface/Gender Adapters",
+      "online": "1",
+      "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1501"
     },
     {
-      "name": "Firewire Cables",
-      "type": "Category",
-      "hasOnlineProducts": true,
-      "hasOnlineSubCategories": false,
-      "online": "1",
-      "description": "Computer, computer peripherals and services catalog",
-      "images": [
+      "categoryPath": [
         {
-          "name": "front M",
-          "type": "Image",
-          "effectiveUrl": "/assets/product_img/a.jpg",
-          "viewID": "front",
-          "typeID": "M",
-          "imageActualHeight": 270,
-          "imageActualWidth": 270,
-          "primaryImage": true
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "830",
+          "name": "Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
+        },
+        {
+          "id": "1306",
+          "name": "Firewire Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1306"
         }
       ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
       "id": "1306",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Firewire Cables",
+      "online": "1",
+      "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1306"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "830",
+          "name": "Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
+        },
+        {
+          "id": "1303",
+          "name": "SATA Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1303"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "1303",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "SATA Cables",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1303"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "830",
+          "name": "Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
+        },
+        {
+          "id": "1158",
+          "name": "Usb Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1158"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "1158",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Usb Cables",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830/1158"
     }
-  ]
+  ],
+  "subCategoriesCount": 5,
+  "type": "Category"
 }

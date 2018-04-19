@@ -1,6 +1,4 @@
 {
-  "name": "Kodak PlayFull Ze1",
-  "type": "Product",
   "attributes": [
     {
       "name": "Built-in microphone",
@@ -8,14 +6,14 @@
       "value": "Y"
     },
     {
-      "name": "Video out",
-      "type": "String",
-      "value": "1"
-    },
-    {
       "name": "Sensor type",
       "type": "String",
       "value": "CMOS"
+    },
+    {
+      "name": "Video out",
+      "type": "String",
+      "value": "1"
     },
     {
       "name": "Tripod mountable",
@@ -33,9 +31,9 @@
       "value": "-"
     },
     {
-      "name": "Built-in speakers",
+      "name": "Image formats supported",
       "type": "String",
-      "value": "Y"
+      "value": "JPG,EXIF"
     },
     {
       "name": "Focal length (35mm film equivalent)",
@@ -43,9 +41,9 @@
       "value": "3.9 - 44 mm"
     },
     {
-      "name": "Image formats supported",
+      "name": "Built-in speakers",
       "type": "String",
-      "value": "JPG,EXIF"
+      "value": "Y"
     },
     {
       "name": "Video formats supported",
@@ -57,8 +55,8 @@
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 99,
-        "unit": "mm"
+        "unit": "mm",
+        "value": 99
       }
     },
     {
@@ -77,9 +75,9 @@
       "value": "128 MB"
     },
     {
-      "name": "Capture modes",
+      "name": "USB 2.0 ports quantity",
       "type": "String",
-      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
+      "value": "1"
     },
     {
       "name": "Minimum system requirements",
@@ -87,9 +85,9 @@
       "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
     },
     {
-      "name": "USB 2.0 ports quantity",
+      "name": "Capture modes",
       "type": "String",
-      "value": "1"
+      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
     },
     {
       "name": "Compatible memory cards",
@@ -101,8 +99,8 @@
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 41,
-        "unit": "mm"
+        "unit": "mm",
+        "value": 41
       }
     },
     {
@@ -120,8 +118,8 @@
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 18,
-        "unit": "mm"
+        "unit": "mm",
+        "value": 18
       }
     },
     {
@@ -150,18 +148,18 @@
       "value": "38.1 mm (1.5 \")"
     },
     {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "Arcsoft Media Impression"
-    },
-    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
-        "value": 95,
-        "unit": "g"
+        "unit": "g",
+        "value": 95
       }
+    },
+    {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "Arcsoft Media Impression"
     },
     {
       "name": "HDMI ports quantity",
@@ -189,9 +187,19 @@
       "value": "5 MP"
     },
     {
+      "name": "Image stabilizer",
+      "type": "String",
+      "value": "Y"
+    },
+    {
       "name": "Compatible operating systems",
       "type": "String",
       "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
+    },
+    {
+      "name": "Camcorder tape type",
+      "type": "String",
+      "value": "Flash memory"
     },
     {
       "name": "Colour_of_product",
@@ -202,176 +210,168 @@
       ]
     },
     {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
-    },
-    {
       "name": "Display",
       "type": "String",
       "value": "LCD"
-    },
-    {
-      "name": "Image stabilizer",
-      "type": "String",
-      "value": "Y"
     }
   ],
-  "sku": "7912061",
-  "productName": "Kodak PlayFull Ze1",
-  "shortDescription": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
-  "longDescription": "<b>PlayFull Ze1</b><br/>Whether you’re looking for the latest features or the hottest trends, the KODAK PLAYFULL Video Camera delivers all the goods in a slim and chic design. Get the party started with vibrant 1080p HD and while you’re turning heads, you can catch stunning 5 MP photos in a snap. Then press the Share button, pop out the built-in USB arm and go from social butterfly to social networking superstar in seconds. The fully loaded PLAYFULL Video Camera puts your life center stage and lets you show the world why you are So Kodak.<br/><br/><b>Just press to impress<br/>The world’s only cameras with 3-step sharing!<br/>Kodak’s Share button makes sharing your videos and pictures as simple as 1, 2, 3.</b><br/>- Step 1—Just press Share when in review mode<br/>- Step 2—Choose your favorite sharing destination, e-mail address, or KODAK PULSE Display<br/>- Step 3—Connect your camera to your computer or insert your memory card and your videos or pictures are automatically uploaded to the destination(s)<br/><b>Only KODAK Cameras:</b><br/>- Let you simultaneously share to multiple social networks, e-mail and PULSE Display<br/>- Automatically share when you connect to a PC<br/>- Tag to the largest number of social networks: KODAK Gallery, FACEBOOK, TWITTER, YouTube, FLICKR, ORKUT, YANDEX, and KAIXIN001<br/><br/><b>Bold and beautiful—full HD video and pictures</b><br/>- Full 1080p high definition captures your life in amazing detail<br/>- Easily switch to still camera mode to catch 5 MP, 16:9 widescreen HD still pictures<br/><br/><b>Choose the resolution that works for you:</b><br/>- 1080p—great for stunning playback on your HDTV<br/>- 720p at 60 fps—for fast action and super slow motion playback<br/>- 720p at 30 fps—ideal for general recording in high definition<br/>- WVGA—perfect for conserving space on your memory card or smaller files sizes for web use<br/><br/><b>The power to edit in the palm of your hand</b><br/>- The KODAK PLAYFULL features on-camera editing capability, so you can fine-tune your footage, cut out what you don’t want, or extract still images from video<br/>- When you’re ready to upload, just press Share, choose your destination, pop out the USB arm, and you’re good to go<br/><br/><b>Up for anything, ready for everything</b><br/>- The built-in USB arm is perfect for automatic sharing, in-camera charging, and easy transferring to computer<br/>- Get sharper videos and less blur thanks to built-in digital image stabilization<br/>- Capture your friends in their best light with smart face tracking technology—the camera detects and locks onto faces, then ensures great exposure around them<br/>- See more details and accurate colors with incredible low-light performance<br/>- There’s always room for more—record up to 10 hours of HD video with expandable SD/SDHC card slot (up to 32 GB)<br/><br/>Cool capture effects give a new look to your scenes<br/>- Black and white<br/>- Sepia<br/>- High saturation—bright, bold colors<br/>- '70s film—muted colors, slightly greenish cast, and a little graininess for a retro look<br/><br/><b>Don’t let sun glare ruin your recording</b><br/>- The bright 1.5 in. LCD automatically adjusts to the lighting conditions around you<br/>- See your screen even in ultra-bright sunlight—simply turn on the LCD Glare Shield feature<br/> <br/><b>Great video editing software comes on-board the PLAYFULL Camera<br/>Download the software when you first connect it to your computer to:</b><br/>- Edit and trim videos<br/>- Add a voice-over to narrate your footage<br/>- Add pictures and music to your videos to make cool mashups<br/>- Grab and edit still images from video frames to get that perfect shot<br/><br/><b>Ready for the big screen</b><br/>- HDMI port gives you the option to debut your videos in full glory on your HDTV<br/>- It doesn’t matter if you own a MAC or a PC—the KODAK PLAYFULL is compatible with both<br/>- The optional remote control makes it easy to comfortably enjoy your videos and pictures",
   "availability": true,
-  "retailSet": false,
-  "inStock": true,
-  "productMaster": false,
-  "mastered": false,
-  "roundedAverageRating": "0.0",
-  "readyForShipmentMin": 3,
-  "readyForShipmentMax": 7,
-  "minOrderQuantity": 1,
-  "productBundle": false,
-  "manufacturer": "Kodak",
-  "listPrice": {
-    "type": "ProductPrice",
-    "value": 129.85,
-    "currencyMnemonic": "USD"
-  },
-  "salePrice": {
-    "type": "ProductPrice",
-    "value": 129.85,
-    "currencyMnemonic": "USD"
-  },
-  "shippingMethods": [
+  "availableGiftMessages": [
     {
-      "name": "2-Business Day",
-      "type": "ShippingMethod",
-      "id": "STD_2DAY",
-      "shippingTimeMin": 1,
-      "shippingTimeMax": 2
+      "description": "A gift message card.",
+      "title": "Gift Message Pink",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink"
     },
     {
-      "name": "Standard Ground",
-      "type": "ShippingMethod",
-      "id": "STD_GROUND",
-      "shippingTimeMin": 3,
-      "shippingTimeMax": 7
+      "description": "A blue gift card message.",
+      "title": "Gift Message Blue",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue"
     },
     {
-      "name": "5-Business Day",
-      "type": "ShippingMethod",
-      "id": "STD_5DAY",
-      "shippingTimeMin": 2,
-      "shippingTimeMax": 5
-    },
-    {
-      "name": "Saturday Delivery",
-      "type": "ShippingMethod",
-      "id": "SATURDAY",
-      "shippingTimeMin": 0,
-      "shippingTimeMax": 6
+      "description": "A green message card.",
+      "title": "Gift Message Green",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen"
     }
   ],
   "availableGiftWraps": [
     {
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers",
-      "title": "Gift Wrap Pink Flowers",
-      "description": "Gift Wrap with a beautiful pink floral pattern"
-    },
-    {
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature",
-      "title": "Gift Wrap Nature",
-      "description": "Wrapping paper with ornamental pattern."
-    },
-    {
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy",
+      "description": "Gift Wrap with phantasy pattern.",
       "title": "Gift Wrap Phantasy",
-      "description": "Gift Wrap with phantasy pattern."
-    }
-  ],
-  "availableGiftMessages": [
-    {
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink",
-      "title": "Gift Message Pink",
-      "description": "A gift message card."
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
     },
     {
+      "description": "Gift Wrap with a beautiful pink floral pattern",
+      "title": "Gift Wrap Pink Flowers",
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue",
-      "title": "Gift Message Blue",
-      "description": "A blue gift card message."
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers"
     },
     {
+      "description": "Wrapping paper with ornamental pattern.",
+      "title": "Gift Wrap Nature",
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen",
-      "title": "Gift Message Green",
-      "description": "A green message card."
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature"
     }
   ],
   "images": [
     {
-      "name": "back S",
-      "type": "Image",
       "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "back",
-      "typeID": "S",
-      "imageActualHeight": 110,
-      "imageActualWidth": 110,
-      "primaryImage": false
-    },
-    {
-      "name": "front S",
-      "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "front",
-      "typeID": "S",
-      "imageActualHeight": 110,
-      "imageActualWidth": 110,
-      "primaryImage": true
-    },
-    {
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
       "name": "back L",
+      "primaryImage": false,
       "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "back",
       "typeID": "L",
-      "imageActualHeight": 500,
-      "imageActualWidth": 500,
-      "primaryImage": false
+      "viewID": "back"
     },
     {
-      "name": "front L",
-      "type": "Image",
       "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "front",
-      "typeID": "L",
-      "imageActualHeight": 500,
-      "imageActualWidth": 500,
-      "primaryImage": true
-    },
-    {
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
       "name": "back M",
+      "primaryImage": false,
       "type": "Image",
-      "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "back",
       "typeID": "M",
-      "imageActualHeight": 270,
-      "imageActualWidth": 270,
-      "primaryImage": false
+      "viewID": "back"
     },
     {
-      "name": "front M",
-      "type": "Image",
       "effectiveUrl": "/assets/product_img/a.jpg",
-      "viewID": "front",
-      "typeID": "M",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "back S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "front L",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
       "imageActualHeight": 270,
       "imageActualWidth": 270,
-      "primaryImage": true
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "front S",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "front"
     }
-  ]
+  ],
+  "inStock": true,
+  "listPrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 129.85
+  },
+  "longDescription": "<b>PlayFull Ze1</b><br/>Whether you’re looking for the latest features or the hottest trends, the KODAK PLAYFULL Video Camera delivers all the goods in a slim and chic design. Get the party started with vibrant 1080p HD and while you’re turning heads, you can catch stunning 5 MP photos in a snap. Then press the Share button, pop out the built-in USB arm and go from social butterfly to social networking superstar in seconds. The fully loaded PLAYFULL Video Camera puts your life center stage and lets you show the world why you are So Kodak.<br/><br/><b>Just press to impress<br/>The world’s only cameras with 3-step sharing!<br/>Kodak’s Share button makes sharing your videos and pictures as simple as 1, 2, 3.</b><br/>- Step 1—Just press Share when in review mode<br/>- Step 2—Choose your favorite sharing destination, e-mail address, or KODAK PULSE Display<br/>- Step 3—Connect your camera to your computer or insert your memory card and your videos or pictures are automatically uploaded to the destination(s)<br/><b>Only KODAK Cameras:</b><br/>- Let you simultaneously share to multiple social networks, e-mail and PULSE Display<br/>- Automatically share when you connect to a PC<br/>- Tag to the largest number of social networks: KODAK Gallery, FACEBOOK, TWITTER, YouTube, FLICKR, ORKUT, YANDEX, and KAIXIN001<br/><br/><b>Bold and beautiful—full HD video and pictures</b><br/>- Full 1080p high definition captures your life in amazing detail<br/>- Easily switch to still camera mode to catch 5 MP, 16:9 widescreen HD still pictures<br/><br/><b>Choose the resolution that works for you:</b><br/>- 1080p—great for stunning playback on your HDTV<br/>- 720p at 60 fps—for fast action and super slow motion playback<br/>- 720p at 30 fps—ideal for general recording in high definition<br/>- WVGA—perfect for conserving space on your memory card or smaller files sizes for web use<br/><br/><b>The power to edit in the palm of your hand</b><br/>- The KODAK PLAYFULL features on-camera editing capability, so you can fine-tune your footage, cut out what you don’t want, or extract still images from video<br/>- When you’re ready to upload, just press Share, choose your destination, pop out the USB arm, and you’re good to go<br/><br/><b>Up for anything, ready for everything</b><br/>- The built-in USB arm is perfect for automatic sharing, in-camera charging, and easy transferring to computer<br/>- Get sharper videos and less blur thanks to built-in digital image stabilization<br/>- Capture your friends in their best light with smart face tracking technology—the camera detects and locks onto faces, then ensures great exposure around them<br/>- See more details and accurate colors with incredible low-light performance<br/>- There’s always room for more—record up to 10 hours of HD video with expandable SD/SDHC card slot (up to 32 GB)<br/><br/>Cool capture effects give a new look to your scenes<br/>- Black and white<br/>- Sepia<br/>- High saturation—bright, bold colors<br/>- '70s film—muted colors, slightly greenish cast, and a little graininess for a retro look<br/><br/><b>Don’t let sun glare ruin your recording</b><br/>- The bright 1.5 in. LCD automatically adjusts to the lighting conditions around you<br/>- See your screen even in ultra-bright sunlight—simply turn on the LCD Glare Shield feature<br/> <br/><b>Great video editing software comes on-board the PLAYFULL Camera<br/>Download the software when you first connect it to your computer to:</b><br/>- Edit and trim videos<br/>- Add a voice-over to narrate your footage<br/>- Add pictures and music to your videos to make cool mashups<br/>- Grab and edit still images from video frames to get that perfect shot<br/><br/><b>Ready for the big screen</b><br/>- HDMI port gives you the option to debut your videos in full glory on your HDTV<br/>- It doesn’t matter if you own a MAC or a PC—the KODAK PLAYFULL is compatible with both<br/>- The optional remote control makes it easy to comfortably enjoy your videos and pictures",
+  "manufacturer": "Kodak",
+  "mastered": false,
+  "minOrderQuantity": 1,
+  "name": "Kodak PlayFull Ze1",
+  "productBundle": false,
+  "productMaster": false,
+  "productName": "Kodak PlayFull Ze1",
+  "readyForShipmentMax": 7,
+  "readyForShipmentMin": 3,
+  "retailSet": false,
+  "roundedAverageRating": "0.0",
+  "salePrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 129.85
+  },
+  "shippingMethods": [
+    {
+      "id": "STD_2DAY",
+      "name": "2-Business Day",
+      "shippingTimeMax": 2,
+      "shippingTimeMin": 1,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_5DAY",
+      "name": "5-Business Day",
+      "shippingTimeMax": 5,
+      "shippingTimeMin": 2,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "SATURDAY",
+      "name": "Saturday Delivery",
+      "shippingTimeMax": 6,
+      "shippingTimeMin": 0,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_GROUND",
+      "name": "Standard Ground",
+      "shippingTimeMax": 7,
+      "shippingTimeMin": 3,
+      "type": "ShippingMethod"
+    }
+  ],
+  "shortDescription": "PlayFull Ze1, 5MP, 4x, 3.81 cm (1.5 \") LCD, 128Mb, USB 2.0, HDMI, Blue/Black",
+  "sku": "7912061",
+  "type": "Product"
 }
