@@ -46,4 +46,8 @@ export class LoginFormComponent implements OnInit {
 
     this.login.emit(this.form.value);
   }
+
+  isUnauthorized() {
+    return !!this.error && this.error.status === 401;
+  }
 }
