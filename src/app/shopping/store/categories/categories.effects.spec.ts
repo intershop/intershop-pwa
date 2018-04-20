@@ -323,6 +323,14 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(category));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
 
+        actions$ = hot('a', {
+          a: new RouteNavigation({
+            path: 'category/:categoryUniqueId',
+            params: { categoryUniqueId: category.uniqueId },
+            queryParams: {},
+          }),
+        });
+
         const action = new productsActions.LoadProductsForCategory(category.uniqueId);
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
       });

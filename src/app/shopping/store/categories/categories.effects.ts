@@ -20,7 +20,7 @@ import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { getSelectedProductId, LoadProductsForCategory } from '../products';
+import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
 import * as categoriesActions from './categories.actions';
 import * as categoriesSelectors from './categories.selectors';
@@ -92,12 +92,16 @@ export class CategoriesEffects {
     })
   );
 
+  /**
+   * trigger LoadProductsForCategory if we are on a family page
+   * and the corresponding products were not yet loaded
+   */
   @Effect()
   productOrCategoryChanged$ = combineLatest(
     this.store.pipe(select(categoriesSelectors.productsForSelectedCategoryAreNotLoaded)),
-    this.store.pipe(select(getSelectedProductId))
+    this.actions$.pipe(ofRoute('category/:categoryUniqueId'))
   ).pipe(
-    filter(([needed, sku]) => !!needed && !sku),
+    filter(([needed, correctPath]) => !!needed && !!correctPath),
     switchMap(() => this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
     map(uniqueId => new LoadProductsForCategory(uniqueId))
   );
