@@ -22,8 +22,12 @@ check_format:
       - develop
   tags:
   - docker-executor
-  image: gradle
-  script: gradle --no-daemon --max-workers 1 --continue checkFormatted
+  image: node:8-alpine
+  script:
+  - apk --no-cache add git
+  - npm install
+  - npm run format
+  - git status --porcelain | wc -l | xargs test '0' -eq
 
 check_prod_build:
   stage: build

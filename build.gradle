@@ -54,7 +54,6 @@ buildscript {
 plugins {
     /** https://github.com/srs/gradle-node-plugin */
     id "com.moowork.node" version "1.1.1"
-    id 'org.ajoberstar.grgit' version '1.7.2'
 }
 
 repositories {
@@ -211,12 +210,6 @@ task format(type:NodeTask, description:'format files using Prettier', group:'Nod
     script = file("$projectDir/node_modules/prettier/bin-prettier.js")
     args = ['--loglevel', 'warn', '--write', '**/*.*']
     inputs.files('src', 'e2e', 'tslint-rules')
-}
-
-task checkFormatted(dependsOn:format) {
-  doFirst {
-    assert grgit.status().isClean(), 'there are uncommited changes -- seems like you need to run "npm run format" before committing. If you are using VSCode use the Prettier PlugIn with editor.formatOnSave activated'
-  }
 }
 
 gradle.projectsEvaluated {
