@@ -30,10 +30,12 @@ describe('Mini Basket Component', () => {
           RouterTestingModule,
           TranslateModule.forRoot(),
           PipesModule,
-          ShoppingSharedModule,
         ],
         providers: [CurrencyPipe],
-        declarations: [MiniBasketComponent],
+        declarations: [
+          MiniBasketComponent,
+          MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+        ],
       }).compileComponents();
     })
   );

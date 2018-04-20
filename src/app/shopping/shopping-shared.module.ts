@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { FormsSharedModule } from '../forms/forms-shared.module';
+import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { ProductAddToCartComponent } from './components/product/product-add-to-cart/product-add-to-cart.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
-import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
 import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
@@ -22,13 +22,12 @@ import { ProductTileContainerComponent } from './containers/product-tile/product
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
-  imports: [SharedModule, FormsSharedModule],
+  imports: [SharedModule, FormsSharedModule, SharedProductModule],
   declarations: [
     CategoryListComponent,
     CategoryNavigationComponent,
     ProductAttributesComponent,
     ProductImagesComponent,
-    ProductImageComponent,
     ProductListComponent,
     ProductPriceComponent,
     ProductRowComponent,
@@ -46,10 +45,10 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     RecentlyViewedComponent,
   ],
   exports: [
+    SharedProductModule,
     CategoryListComponent,
     CategoryNavigationComponent,
     ProductAttributesComponent,
-    ProductImageComponent,
     ProductImagesComponent,
     ProductListComponent,
     ProductRowComponent,
