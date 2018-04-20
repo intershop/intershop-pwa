@@ -1,4 +1,3 @@
-// NEEDS_WORK: DETAIL ITEM CONTENT MISSING
 import { animate, AnimationBuilder, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
@@ -16,9 +15,9 @@ export class MiniBasketComponent implements OnChanges {
   readonly ANIMATION_TIMING: string = '200ms ease-in';
 
   generateProductRoute = ProductHelper.generateProductRoute;
+
   isCollapsed = true;
   itemCount = 0;
-
   currentProduct = 0;
 
   constructor(private animationBuilder: AnimationBuilder) {}
@@ -30,7 +29,7 @@ export class MiniBasketComponent implements OnChanges {
   }
 
   /**
-   * slider control scroll up
+   * Slider control scroll up.
    */
   scrollUp() {
     if (!this.slider || this.currentProduct === 0) {
@@ -46,7 +45,7 @@ export class MiniBasketComponent implements OnChanges {
   }
 
   /**
-   * slider control scroll down
+   * Slider control scroll down.
    */
   scrollDown() {
     if (!this.slider || !this.basket || !this.basket.lineItems) {
@@ -63,7 +62,7 @@ export class MiniBasketComponent implements OnChanges {
   }
 
   /**
-   * animate slider container
+   * Animate the slider container.
    * @param offset vertical translate offset
    */
   animate(offset: number) {
