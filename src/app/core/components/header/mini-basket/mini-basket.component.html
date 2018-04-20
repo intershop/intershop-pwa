@@ -1,48 +1,55 @@
-<!-- NEEDS_WORK: IMPLEMENT SLIDER AND ADD MISSING DATA -->
 <div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed">
-  <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
+
   <a (click)="isCollapsed = !isCollapsed; false;">
     <span class="glyphicon glyphicon-shopping-cart"></span>
     <!-- TODO: check for a better solution for the plural and translate pipe combination for cases where the en_US.json is not yet loaded, current solution: || {"other": "#"} -->
     <span>{{ itemCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
     <ng-container *ngIf="basket">
       <span> / </span>
-      <span class="mini-cart-price" *ngIf="basket">{{ basket.totals.basketTotal | ishPrice }}</span>
+      <span class="mini-cart-price">{{ basket.totals.basketTotal | ishPrice }}</span>
     </ng-container>
   </a>
-  <!-- END TEMPLATE app_sf_responsive/default/inc/header/MiniCartLink -->
-  <!-- BEGIN TEMPLATE app_sf_responsive/default/inc/header/MiniCart -->
+
   <div [collapse]="isCollapsed" class="mini-cart">
-    <ng-container *ngIf="basket; else emptyBlock">
-      <div class="btn-scroll-up" [class.disabled]="currentProduct === 0" (click)="scrollUp()" *ngIf="basket.lineItems.length > 2">
+
+    <ng-container *ngIf="basket && basket.lineItems.length > 0; else emptyBlock">
+
+      <div *ngIf="basket.lineItems.length > 2" class="btn-scroll-up" [class.disabled]="currentProduct === 0" (click)="scrollUp()">
         <span class="glyphicon glyphicon-chevron-up"></span>
       </div>
+
       <div class="product-rows-block">
         <div class="slider" #slider>
-          <div class="product-row" *ngFor="let lineItem of basket.lineItems">
+
+          <div *ngFor="let lineItem of basket.lineItems" class="product-row">
             <div class="mini-product-img">
-              <a *ngIf="lineItem.product && lineItem.product['sku']" [routerLink]="generateProductRoute(lineItem.product)" (click)="isCollapsed = true;">
+              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="isCollapsed = true;">
                 <ish-product-image [product]="lineItem.product" imageType="S" class="product-image"></ish-product-image>
               </a>
             </div>
             <div class="mini-product-info">
-              <a [routerLink]="lineItem.product ? generateProductRoute(lineItem.product) : '/'" (click)="isCollapsed = true;">
+              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="isCollapsed = true;">
                 {{ lineItem.name }}
               </a>
-              <div class="product-price" *ngIf="lineItem.price">{{ lineItem.price.value | currency: lineItem.price.currencyMnemonic }}</div>
-              <div class="cart-pli-data" *ngIf="lineItem.quantity">
-                <span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}</div>
+              <div class="product-price">{{ lineItem.price.value | currency: lineItem.price.currencyMnemonic }}</div>
+              <div class="cart-pli-data"><span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}</div>
             </div>
           </div>
+
         </div>
       </div>
+
       <div class="btn-scroll-down" [class.disabled]="currentProduct === basket.lineItems.length - 2" (click)="scrollDown()" *ngIf="basket.lineItems.length > 2">
         <span class="glyphicon glyphicon-chevron-down"></span>
       </div>
+
       <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket">{{ 'shopping_cart.ministatus.view_cart.link' | translate }}</a>
+
     </ng-container>
+
     <ng-template #emptyBlock>
-      <!-- Your cart is currently empty. -->
       {{ 'shopping_cart.ministatus.empty_cart.text' | translate }}
     </ng-template>
+
   </div>
+</div>

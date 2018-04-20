@@ -67,11 +67,16 @@ describe('Mini Basket Component', () => {
       name: 'test',
       position: 1,
       quantity: {
-        type: 'test',
+        type: 'Quantity',
         value: 2,
+        unit: '',
       },
       product: product,
-      price: null,
+      price: {
+        type: 'Money',
+        value: 27.76,
+        currencyMnemonic: 'USD',
+      },
       singleBasePrice: null,
       isHiddenGift: false,
       isFreeGift: false,
