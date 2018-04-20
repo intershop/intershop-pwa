@@ -7,7 +7,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { getTestScheduler } from 'jasmine-marbles';
-import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
@@ -28,7 +28,7 @@ import { ProductsService } from '../services/products/products.service';
 import { SuggestService } from '../services/suggest/suggest.service';
 import { CategoriesActionTypes, getCategoriesIds, LoadCategory, SelectCategory } from './categories';
 import { getProductIds, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
-import { RecentlyActionTypes } from './recently';
+import { AddToRecently, RecentlyActionTypes } from './recently';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
 
@@ -139,6 +139,10 @@ describe('Shopping Store', () => {
         RouterTestingModule.withRoutes([
           {
             path: 'home',
+            component: DummyComponent,
+          },
+          {
+            path: 'error',
             component: DummyComponent,
           },
           {
@@ -452,8 +456,8 @@ describe('Shopping Store', () => {
         'should trigger actions for products when they are not yet loaded',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
+          expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
           expect(i.next()).toEqual(new LoadProduct('P2'));
@@ -462,5 +466,55 @@ describe('Shopping Store', () => {
         })
       );
     });
+  });
+
+  describe('product page with invalid product', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/category', 'A.123.456', 'product', 'P3']);
+        tick(5000);
+      })
+    );
+
+    it(
+      'should load only family page content and redirect to error when product was not found',
+      fakeAsync(() => {
+        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getProductIds(store.state)).toEqual([]);
+      })
+    );
+
+    it(
+      'should trigger required load actions when going to a product page with invalid product sku',
+      fakeAsync(() => {
+        const i = store.actionsIterator(['[Shopping]', '[Router]']);
+
+        const productPageRouting = i.next() as RouteNavigation;
+        expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+        expect(productPageRouting.payload.params['sku']).toEqual('P3');
+        expect(productPageRouting.payload.params['categoryUniqueId']).toEqual('A.123.456');
+
+        expect(i.next()).toEqual(new SelectCategory('A.123.456'));
+        expect(i.next()).toEqual(new SelectProduct('P3'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
+        expect(i.next()).toEqual(new AddToRecently('P3'));
+        expect(i.next()).toEqual(new LoadProduct('P3'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductFail);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+
+        const errorPageRouting = i.next() as RouteNavigation;
+        expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+        expect(errorPageRouting.payload.path).toEqual('error');
+
+        expect(i.next()).toEqual(new SelectProduct(undefined));
+        expect(i.next()).toBeUndefined();
+      })
+    );
   });
 });
