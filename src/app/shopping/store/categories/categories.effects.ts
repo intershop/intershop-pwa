@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { ofRoute, RouteNavigation } from 'ngrx-router';
+import { ofRoute, RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
 import {
@@ -37,7 +37,7 @@ export class CategoriesEffects {
 
   @Effect()
   routeListenerForSelectingCategory$ = this.actions$.pipe(
-    ofRoute(['category/:categoryUniqueId', 'category/:categoryUniqueId/product/:sku']),
+    ofType(ROUTER_NAVIGATION_TYPE),
     map((action: RouteNavigation) => action.payload.params['categoryUniqueId']),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
@@ -103,6 +103,7 @@ export class CategoriesEffects {
   ).pipe(
     filter(([needed, correctPath]) => !!needed && !!correctPath),
     switchMap(() => this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
+    filter(x => !!x),
     map(uniqueId => new LoadProductsForCategory(uniqueId))
   );
 
