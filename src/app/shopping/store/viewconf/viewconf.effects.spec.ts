@@ -3,11 +3,12 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
-import { SelectCategory } from '../categories';
-import * as fromProducts from '../products';
+import { Category } from '../../../models/category/category.model';
+import { LoadCategorySuccess, SelectCategory } from '../categories';
+import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import * as fromActions from './viewconf.actions';
+import { ChangeSortBy } from './viewconf.actions';
 import { ViewconfEffects } from './viewconf.effects';
 
 describe('ViewconfEffects', () => {
@@ -31,17 +32,25 @@ describe('ViewconfEffects', () => {
 
   describe('changeSortBy$', () => {
     it('should do nothing if no category is selected', () => {
-      const action = new fromActions.ChangeSortBy('name-desc');
+      const action = new ChangeSortBy('name-desc');
       actions$ = hot('-a-a-a', { a: action });
       expect(effects.changeSortBy$).toBeObservable(cold('-'));
     });
 
-    it('should map to action of type LoadProductsForCategory if category is selected', () => {
-      const categoryUniqueId = '123';
-      store.dispatch(new SelectCategory(categoryUniqueId));
+    it('should do nothing if category is selected but not available', () => {
+      store.dispatch(new SelectCategory('123'));
 
-      const action = new fromActions.ChangeSortBy('name-desc');
-      const completion = new fromProducts.LoadProductsForCategory(categoryUniqueId);
+      const action = new ChangeSortBy('name-desc');
+      actions$ = hot('-a-a-a', { a: action });
+      expect(effects.changeSortBy$).toBeObservable(cold('-'));
+    });
+
+    it('should map to action of type LoadProductsForCategory if category is selected and available', () => {
+      store.dispatch(new LoadCategorySuccess({ uniqueId: '123' } as Category));
+      store.dispatch(new SelectCategory('123'));
+
+      const action = new ChangeSortBy('name-desc');
+      const completion = new LoadProductsForCategory('123');
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
