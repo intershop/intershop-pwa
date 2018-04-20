@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Params, Router, RouterState } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
@@ -122,6 +122,28 @@ describe('User Effects', () => {
         verify(routerMock.navigate(anything())).once();
         const [param] = capture(routerMock.navigate).last();
         expect(param).toEqual(['/account']);
+      });
+    });
+
+    it('should navigate to returnUrl after LoginUserSuccess when it is set', () => {
+      when(routerMock.routerState).thenReturn({
+        snapshot: {
+          root: {
+            queryParams: {
+              returnUrl: '/foobar',
+            } as Params,
+          },
+        },
+      } as RouterState);
+
+      const action = new ua.LoginUserSuccess({} as Customer);
+
+      actions$ = hot('-a', { a: action });
+
+      effects.goToAccountAfterLogin$.subscribe(() => {
+        verify(routerMock.navigate(anything())).once();
+        const [param] = capture(routerMock.navigate).last();
+        expect(param).toEqual(['/foobar']);
       });
     });
   });
