@@ -7,8 +7,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse/collapse.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown/bs-dropdown.module';
 import { PipesModule } from '../shared/pipes.module';
+import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedSearchModule } from '../shared/shared-search.module';
-import { ShoppingSharedModule } from '../shopping/shopping-shared.module';
 import { HeaderNavigationComponent } from './components/header/header-navigation/header-navigation.component';
 import { SubCategoryNavigationComponent } from './components/header/header-navigation/sub-category-navigation/sub-category-navigation.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -33,8 +33,8 @@ import { ProductCompareStatusContainerComponent } from './containers/header/prod
     CollapseModule,
     ReactiveFormsModule,
     PipesModule,
+    SharedProductModule,
     SharedSearchModule,
-    ShoppingSharedModule,
     BrowserAnimationsModule,
   ],
   declarations: [
