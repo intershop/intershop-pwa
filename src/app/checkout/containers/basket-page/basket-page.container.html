@@ -1,21 +1,15 @@
-<div data-testing-id="cart-page" data-cart-page>
-  <div class="row">
-    <div class="cart-header col-xs-12">
-      <h1 class="pull-left">
-        <span class="cart-header-title">{{'shopping_cart.heading' | translate}}</span>
-        <span class="cart-header-note">
-          <span>{{'shopping_cart.transaction.text' |translate }}</span>
-          <!-- ToDo open dialog with content -->
-        </span>
-      </h1>
-    </div>
-  </div>
-  <!-- Shopping Cart  Components -->
-  <ng-container *ngIf="basket$ | async as basket, else emptyBasket">
-    <ng-container *ngIf="basket.lineItems.length, else emptyBasket"></ng-container>
+<ng-container *ngIf="(basket$ | async) as basket">
+
+  <ng-container *ngIf="basket.lineItems.length; else emptyBasket">
     <ish-shopping-basket [basket]="basket"></ish-shopping-basket>
   </ng-container>
+
   <ng-template #emptyBasket>
     <ish-shopping-basket-empty></ish-shopping-basket-empty>
   </ng-template>
-</div>
+
+</ng-container>
+
+<ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+
+<ish-recently-viewed-container></ish-recently-viewed-container>
