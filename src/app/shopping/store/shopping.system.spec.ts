@@ -517,4 +517,48 @@ describe('Shopping Store', () => {
       })
     );
   });
+
+  describe('category page with invalid category', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/category', 'A.123.XXX']);
+        tick(5000);
+      })
+    );
+
+    it(
+      'should load only some categories and redirect to error when category was not found',
+      fakeAsync(() => {
+        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'B']);
+        expect(getProductIds(store.state)).toEqual([]);
+      })
+    );
+
+    it(
+      'should trigger required load actions when going to a category page with invalid category uniqueId',
+      fakeAsync(() => {
+        const i = store.actionsIterator(['[Shopping]', '[Router]']);
+
+        const productPageRouting = i.next() as RouteNavigation;
+        expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+        expect(productPageRouting.payload.params['categoryUniqueId']).toEqual('A.123.XXX');
+
+        expect(i.next()).toEqual(new SelectCategory('A.123.XXX'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A.123.XXX'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategoryFail);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+
+        const errorPageRouting = i.next() as RouteNavigation;
+        expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
+        expect(errorPageRouting.payload.path).toEqual('error');
+
+        expect(i.next()).toBeUndefined();
+      })
+    );
+  });
 });
