@@ -10,6 +10,7 @@ import { getTestScheduler } from 'jasmine-marbles';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
+import { _throw } from 'rxjs/observable/throw';
 import { Scheduler } from 'rxjs/Scheduler';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
@@ -73,45 +74,52 @@ describe('Shopping Store', () => {
         },
       ] as Category[])
     );
-    when(categoriesServiceMock.getCategory(anyString())).thenReturn(empty());
-    when(categoriesServiceMock.getCategory('A')).thenReturn(
-      of(<Category>{
-        uniqueId: 'A',
-        id: 'A',
-        hasOnlineSubCategories: true,
-        hasOnlineProducts: false,
-      })
-    );
-    when(categoriesServiceMock.getCategory('B')).thenReturn(
-      of(<Category>{
-        uniqueId: 'B',
-        id: 'B',
-        hasOnlineSubCategories: false,
-        hasOnlineProducts: false,
-      })
-    );
-    when(categoriesServiceMock.getCategory('A.123')).thenReturn(
-      of(<Category>{
-        uniqueId: 'A.123',
-        id: '123',
-        hasOnlineSubCategories: true,
-        hasOnlineProducts: false,
-      })
-    );
-    when(categoriesServiceMock.getCategory('A.123.456')).thenReturn(
-      of(<Category>{
-        uniqueId: 'A.123.456',
-        id: '456',
-        hasOnlineSubCategories: false,
-        hasOnlineProducts: true,
-      })
-    );
+    when(categoriesServiceMock.getCategory(anything())).thenCall(uniqueId => {
+      switch (uniqueId) {
+        case 'A':
+          return of(<Category>{
+            uniqueId: 'A',
+            id: 'A',
+            hasOnlineSubCategories: true,
+            hasOnlineProducts: false,
+          });
+        case 'B':
+          return of(<Category>{
+            uniqueId: 'B',
+            id: 'B',
+            hasOnlineSubCategories: false,
+            hasOnlineProducts: false,
+          });
+        case 'A.123':
+          return of(<Category>{
+            uniqueId: 'A.123',
+            id: '123',
+            hasOnlineSubCategories: true,
+            hasOnlineProducts: false,
+          });
+        case 'A.123.456':
+          return of(<Category>{
+            uniqueId: 'A.123.456',
+            id: '456',
+            hasOnlineSubCategories: false,
+            hasOnlineProducts: true,
+          });
+        default:
+          return _throw(`error loading category ${uniqueId}`);
+      }
+    });
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(empty());
 
     productsServiceMock = mock(ProductsService);
-    when(productsServiceMock.getProduct(anyString())).thenCall(sku => of({ sku }));
+    when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
+      if (['P1', 'P2'].find(x => x === sku)) {
+        return of({ sku });
+      } else {
+        return _throw(`error loading product ${sku}`);
+      }
+    });
     when(productsServiceMock.getCategoryProducts('A.123.456', anything())).thenReturn(
       of({
         skus: ['P1', 'P2'],
