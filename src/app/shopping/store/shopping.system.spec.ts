@@ -26,8 +26,14 @@ import { LogEffects } from '../../utils/dev/log.effects';
 import { CategoriesService } from '../services/categories/categories.service';
 import { ProductsService } from '../services/products/products.service';
 import { SuggestService } from '../services/suggest/suggest.service';
-import { CategoriesActionTypes, getCategoriesIds, LoadCategory, SelectCategory } from './categories';
-import { getProductIds, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
+import {
+  CategoriesActionTypes,
+  getCategoriesIds,
+  getSelectedCategory,
+  LoadCategory,
+  SelectCategory,
+} from './categories';
+import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
 import { AddToRecently, RecentlyActionTypes } from './recently';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
@@ -139,6 +145,10 @@ describe('Shopping Store', () => {
         RouterTestingModule.withRoutes([
           {
             path: 'home',
+            component: DummyComponent,
+          },
+          {
+            path: 'compare',
             component: DummyComponent,
           },
           {
@@ -272,6 +282,41 @@ describe('Shopping Store', () => {
         })
       );
     });
+
+    describe('and and going to compare page', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          router.navigate(['/compare']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should not load anything additionally when going to compare page',
+        fakeAsync(() => {
+          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'B']);
+          expect(getProductIds(store.state)).toEqual([]);
+        })
+      );
+
+      it(
+        'should trigger actions for deselecting category and product when no longer in category or product',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next()).toEqual(new SelectCategory(undefined));
+          expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should not have a selected product or category when redirected to error page',
+        fakeAsync(() => {
+          expect(getSelectedCategory(store.state)).toBeUndefined();
+          expect(getSelectedProduct(store.state)).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('family page', () => {
@@ -374,6 +419,41 @@ describe('Shopping Store', () => {
         })
       );
     });
+
+    describe('and and going to compare page', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          router.navigate(['/compare']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should not load anything additionally when going to compare page',
+        fakeAsync(() => {
+          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+          expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
+        })
+      );
+
+      it(
+        'should trigger actions for deselecting category and product when no longer in category or product',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next()).toEqual(new SelectCategory(undefined));
+          expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should not have a selected product or category when redirected to error page',
+        fakeAsync(() => {
+          expect(getSelectedCategory(store.state)).toBeUndefined();
+          expect(getSelectedProduct(store.state)).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('product page', () => {
@@ -466,6 +546,42 @@ describe('Shopping Store', () => {
         })
       );
     });
+
+    describe('and and going to compare page', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          router.navigate(['/compare']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should not load anything additionally when going to compare page',
+        fakeAsync(() => {
+          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+          expect(getProductIds(store.state)).toEqual(['P1']);
+        })
+      );
+
+      it(
+        'should trigger actions for deselecting category and product when no longer in category or product',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next()).toEqual(new SelectCategory(undefined));
+          expect(i.next()).toEqual(new SelectProduct(undefined));
+          expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should not have a selected product or category when redirected to error page',
+        fakeAsync(() => {
+          expect(getSelectedCategory(store.state)).toBeUndefined();
+          expect(getSelectedProduct(store.state)).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('product page with invalid product', () => {
@@ -512,8 +628,17 @@ describe('Shopping Store', () => {
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(errorPageRouting.payload.path).toEqual('error');
 
+        expect(i.next()).toEqual(new SelectCategory(undefined));
         expect(i.next()).toEqual(new SelectProduct(undefined));
         expect(i.next()).toBeUndefined();
+      })
+    );
+
+    it(
+      'should not have a selected product or category when redirected to error page',
+      fakeAsync(() => {
+        expect(getSelectedCategory(store.state)).toBeUndefined();
+        expect(getSelectedProduct(store.state)).toBeUndefined();
       })
     );
   });
@@ -557,7 +682,16 @@ describe('Shopping Store', () => {
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(errorPageRouting.payload.path).toEqual('error');
 
+        expect(i.next()).toEqual(new SelectCategory(undefined));
         expect(i.next()).toBeUndefined();
+      })
+    );
+
+    it(
+      'should not have a selected product or category when redirected to error page',
+      fakeAsync(() => {
+        expect(getSelectedCategory(store.state)).toBeUndefined();
+        expect(getSelectedProduct(store.state)).toBeUndefined();
       })
     );
   });
