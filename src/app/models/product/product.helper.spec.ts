@@ -14,6 +14,8 @@ describe('Product Helper', () => {
           expected: '/category/CAT/product/SKU',
         },
         { product: { sku: 'SKU' }, category: undefined, categoryUniqueId: undefined, expected: '/product/SKU' },
+        { product: {}, category: undefined, categoryUniqueId: undefined, expected: '/' },
+        { product: undefined, category: undefined, categoryUniqueId: undefined, expected: '/' },
       ];
     }
 
@@ -83,13 +85,38 @@ describe('Product Helper', () => {
         expect(ProductHelper.getPrimaryImage(product, 'L').primaryImage).toBeTruthy();
       });
 
-      it('should return no image when called with invalid image type', () => {
+      it('should return undefined  when called with invalid image type', () => {
         expect(ProductHelper.getPrimaryImage(product, 'W')).toBeUndefined();
       });
 
-      it('should return no image when images is not available', () => {
+      it('should return undefined when images are not available', () => {
         product.images = [];
         expect(ProductHelper.getPrimaryImage(product, 'L')).toBeUndefined();
+      });
+
+      it('should return undefined when images is not defined', () => {
+        product = { sku: 'sku' } as Product;
+        expect(ProductHelper.getPrimaryImage(product, 'L')).toBeUndefined();
+      });
+    });
+
+    describe('getImageByImageTypeAndImageView()', () => {
+      it('should return image when called with image type as L(Large size) and image view as front', () => {
+        expect(ProductHelper.getImageByImageTypeAndImageView(product, 'L', 'front')).toEqual(product.images[2]);
+      });
+
+      it('should return undefined when called with invalid image type and invalid image view', () => {
+        expect(ProductHelper.getImageByImageTypeAndImageView(product, 'W', 'left')).toBeUndefined();
+      });
+
+      it('should return undefined when images are not available', () => {
+        product.images = [];
+        expect(ProductHelper.getImageByImageTypeAndImageView(product, 'L', 'front')).toBeUndefined();
+      });
+
+      it('should return undefined when images is not defined', () => {
+        product = { sku: 'sku' } as Product;
+        expect(ProductHelper.getImageByImageTypeAndImageView(product, 'L', 'front')).toBeUndefined();
       });
     });
 
@@ -102,24 +129,14 @@ describe('Product Helper', () => {
         expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'W').length).toEqual(0);
       });
 
-      it('should return empty list when images is not available', () => {
+      it('should return empty list when images are not available', () => {
         product.images = [];
         expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'L').length).toEqual(0);
       });
-    });
 
-    describe('getImageByImageTypeAndImageView()', () => {
-      it('should return image when called with image type as L(Large size) and image view as front', () => {
-        expect(ProductHelper.getImageByImageTypeAndImageView(product, 'L', 'front')).toEqual(product.images[2]);
-      });
-
-      it('should return no image when called with invalid image type and invalid image view', () => {
-        expect(ProductHelper.getImageByImageTypeAndImageView(product, 'W', 'left')).toBeUndefined();
-      });
-
-      it('should return no image when images is not available', () => {
-        product.images = [];
-        expect(ProductHelper.getImageByImageTypeAndImageView(product, 'L', 'front')).toBeUndefined();
+      it('should return empty list when images is not defined', () => {
+        product = { sku: 'sku' } as Product;
+        expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'L').length).toEqual(0);
       });
     });
   });
