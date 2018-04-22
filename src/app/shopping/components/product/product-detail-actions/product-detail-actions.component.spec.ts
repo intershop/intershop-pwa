@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
+import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product, ProductType } from '../../../../models/product/product.model';
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
@@ -17,7 +18,11 @@ describe('Product Detail Actions Component', () => {
     async(() => {
       TestBed.configureTestingModule({
         imports: [CommonModule, TranslateModule.forRoot()],
-        providers: [TranslateService, { provide: Location, useFactory: () => instance(mock(Location)) }],
+        providers: [
+          TranslateService,
+          { provide: Location, useFactory: () => instance(mock(Location)) },
+          { provide: ICM_BASE_URL, useValue: 'http://example.org' },
+        ],
         declarations: [ProductDetailActionsComponent],
       }).compileComponents();
     })

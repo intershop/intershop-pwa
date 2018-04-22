@@ -2,14 +2,17 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { TranslateModule } from '@ngx-translate/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Locale } from '../../../../models/locale/locale.model';
-import { AVAILABLE_LOCALES } from '../../../configurations/injection-keys';
 import { LanguageSwitchComponent } from './language-switch.component';
 
 describe('Language Switch Component', () => {
   let fixture: ComponentFixture<LanguageSwitchComponent>;
   let component: LanguageSwitchComponent;
   let element: HTMLElement;
-  let locales: Locale[];
+  const locales = [
+    { lang: 'en_US', value: 'en', displayName: 'English' },
+    { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
+    { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
+  ] as Locale[];
 
   beforeEach(
     async(() => {
@@ -23,7 +26,6 @@ describe('Language Switch Component', () => {
           component = fixture.componentInstance;
           element = fixture.nativeElement;
 
-          locales = TestBed.get(AVAILABLE_LOCALES);
           component.availableLocales = locales;
           component.locale = locales[1];
         });

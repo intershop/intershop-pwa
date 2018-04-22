@@ -12,8 +12,6 @@ import { getTestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from './environments/environment';
-import * as injectionKeys from './app/core/configurations/injection-keys';
-import { ICM_APPLICATION, ICM_SERVER_URL, ICM_BASE_URL } from './app/core/services/state-transfer/factories';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 // tslint:disable-next-line: no-any
@@ -28,23 +26,7 @@ __karma__.loaded = function() {};
 // First, initialize the Angular testing environment.
 beforeEach(() => {
   environment.needMock = true;
-  getTestBed().initTestEnvironment(
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting([
-      { provide: injectionKeys.NEED_MOCK, useValue: true },
-      { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
-      { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
-      { provide: ICM_BASE_URL, useValue: environment.icmBaseURL },
-      { provide: ICM_APPLICATION, useValue: environment.icmApplication },
-      { provide: ICM_SERVER_URL, useValue: `${environment.icmBaseURL}/${environment.icmServer}` },
-      {
-        provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-        useValue: environment.mainNavigationMaxSubCategoriesDepth,
-      },
-      // TODO: get from REST call
-      { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-    ])
-  );
+  getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 });
 afterEach(() => {
   getTestBed().resetTestEnvironment();
