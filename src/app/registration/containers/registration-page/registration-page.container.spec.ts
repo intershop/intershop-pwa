@@ -4,8 +4,10 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs/observable/of';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
+import { Locale } from '../../../models/locale/locale.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { RegistrationPageContainerComponent } from './registration-page.container';
 
@@ -15,6 +17,10 @@ describe('Registration Page Container', () => {
   let element: HTMLElement;
   let routerMock: Router;
   let storeMock$: Store<CoreState>;
+  const defaultLocales = [
+    { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
+    { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
+  ] as Locale[];
 
   beforeEach(
     async(() => {
@@ -42,6 +48,7 @@ describe('Registration Page Container', () => {
           { provide: RegionService, useFactory: () => instance(regionServiceMock) },
           { provide: Router, useFactory: () => instance(routerMock) },
           { provide: Store, useFactory: () => instance(storeMock$) },
+          { provide: AVAILABLE_LOCALES, useValue: defaultLocales },
         ],
         imports: [TranslateModule.forRoot()],
       }).compileComponents();

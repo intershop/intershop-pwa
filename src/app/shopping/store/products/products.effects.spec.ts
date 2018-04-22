@@ -9,7 +9,6 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
-import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Locale } from '../../../models/locale/locale.model';
@@ -28,7 +27,7 @@ describe('ProductsEffects', () => {
   let effects: ProductsEffects;
   let store$: Store<ShoppingState>;
   let productsServiceMock: ProductsService;
-  let DE_DE: Locale;
+  const DE_DE = { lang: 'de' } as Locale;
 
   const router = mock(Router);
 
@@ -69,9 +68,7 @@ describe('ProductsEffects', () => {
     effects = TestBed.get(ProductsEffects);
     store$ = TestBed.get(Store);
 
-    const locales: Locale[] = TestBed.get(AVAILABLE_LOCALES);
-    store$.dispatch(new SetAvailableLocales(locales));
-    DE_DE = locales.find(v => v.lang.startsWith('de'));
+    store$.dispatch(new SetAvailableLocales([DE_DE]));
   });
 
   describe('loadProduct$', () => {

@@ -16,7 +16,10 @@ describe('LocaleEffects', () => {
   let actions$: Observable<Action>;
   let effects: LocaleEffects;
   let translateServiceMock: TranslateService;
-  let defaultLocales: Locale[];
+  const defaultLocales = [
+    { lang: 'en_US', value: 'en', displayName: 'English' },
+    { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
+  ] as Locale[];
 
   beforeEach(() => {
     translateServiceMock = mock(TranslateService);
@@ -27,11 +30,11 @@ describe('LocaleEffects', () => {
         LocaleEffects,
         provideMockActions(() => actions$),
         { provide: TranslateService, useFactory: () => instance(translateServiceMock) },
+        { provide: AVAILABLE_LOCALES, useValue: defaultLocales },
       ],
     });
 
     effects = TestBed.get(LocaleEffects);
-    defaultLocales = TestBed.get(AVAILABLE_LOCALES);
   });
 
   describe('setLocale$', () => {
