@@ -5,21 +5,26 @@ import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs/observable/of';
 import { anything, instance, mock, when } from 'ts-mockito';
 import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
+import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
 import { MockInterceptor } from './mock.interceptor';
 
 describe('Mock Interceptor', () => {
   const BASE_URL = 'http://example.org';
 
-  describe('REST Path Extraction', () => {
-    let mockInterceptor: MockInterceptor;
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
-      });
-      mockInterceptor = TestBed.get(MockInterceptor);
+  let mockInterceptor: MockInterceptor;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        MockInterceptor,
+        { provide: REST_ENDPOINT, useValue: BASE_URL },
+        { provide: NEED_MOCK, useValue: true },
+        { provide: MUST_MOCK_PATHS, useValue: [] },
+      ],
     });
+    mockInterceptor = TestBed.get(MockInterceptor);
+  });
 
+  describe('REST Path Extraction', () => {
     it('should extract the correct path when rest URL is given', () => {
       expect(mockInterceptor.getRestPath(BASE_URL + '/categories/Cameras')).toBe('categories/Cameras');
     });
@@ -32,15 +37,7 @@ describe('Mock Interceptor', () => {
   });
 
   describe('Request URL Modification', () => {
-    let mockInterceptor: MockInterceptor;
     const request: HttpRequest<any> = new HttpRequest('GET', '');
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
-      });
-      mockInterceptor = TestBed.get(MockInterceptor);
-    });
 
     function dataProvider() {
       return [
@@ -67,15 +64,6 @@ describe('Mock Interceptor', () => {
   });
 
   describe('matchPath Method', () => {
-    let mockInterceptor: MockInterceptor;
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
-      });
-      mockInterceptor = TestBed.get(MockInterceptor);
-    });
-
     function dataProvider() {
       return [
         { item: 'categories', in: undefined, expect: false },
@@ -103,15 +91,10 @@ describe('Mock Interceptor', () => {
   });
 
   describe('Intercepting', () => {
-    let mockInterceptor: MockInterceptor;
     let request: HttpRequest<any>;
     let handler: HttpHandler;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [MockInterceptor, { provide: REST_ENDPOINT, useValue: BASE_URL }],
-      });
-      mockInterceptor = TestBed.get(MockInterceptor);
       request = new HttpRequest('GET', `${BASE_URL}/some`);
       const handlerMock = mock(HttpXhrBackend);
       when(handlerMock.handle(anything())).thenReturn(of(new HttpResponse<any>()));

@@ -55,6 +55,6 @@ describe('Select Region Component', () => {
 
     fixture.detectChanges();
     expect(component.options.length).toEqual(2, '2 regions are in the options array');
-    expect(element.querySelector('select[data-testing-id=state]')).toBeTruthy('state select is rendered');
+    expect(element.querySelector('select[data-testing-id=state]')).toBeTruthy();
   });
 });

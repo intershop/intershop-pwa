@@ -11,10 +11,7 @@ import { _throw } from 'rxjs/observable/throw';
 import { Scheduler } from 'rxjs/Scheduler';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { capture } from 'ts-mockito/lib/ts-mockito';
-import {
-  AVAILABLE_LOCALES,
-  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-} from '../../../core/configurations/injection-keys';
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Category } from '../../../models/category/category.model';
@@ -63,6 +60,7 @@ describe('Categories Effects', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: Scheduler, useFactory: getTestScheduler },
         { provide: Router, useFactory: () => instance(router) },
+        { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
       ],
     });
 
@@ -185,14 +183,12 @@ describe('Categories Effects', () => {
   });
 
   describe('loadTopLevelCategoriesOnLanguageChange$', () => {
-    let EN_US: Locale;
+    const EN_US = { lang: 'en' } as Locale;
     let depth: number;
 
     beforeEach(() => {
       depth = TestBed.get(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH);
-      const locales: Locale[] = TestBed.get(AVAILABLE_LOCALES);
-      EN_US = locales.find(v => v.lang.startsWith('en'));
-      store$.dispatch(new SetAvailableLocales(locales));
+      store$.dispatch(new SetAvailableLocales([EN_US]));
     });
 
     it('should trigger when language is changed', () => {
