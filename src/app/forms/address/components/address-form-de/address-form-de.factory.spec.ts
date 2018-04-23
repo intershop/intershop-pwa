@@ -20,15 +20,15 @@ describe('AddressFormDEFactory', () => {
   describe('group', () => {
     it('should return a DE form group if called', () => {
       const fg = addressFactory.group();
-      expect(fg.get('title')).toBeTruthy('form group contains title');
-      expect(fg.get('firstName')).toBeTruthy('form group contains firstname');
-      expect(fg.get('lastName')).toBeTruthy('form group contains lastName');
-      expect(fg.get('addressLine1')).toBeTruthy('form group contains addressLine1');
-      expect(fg.get('addressLine2')).toBeTruthy('form group contains addressLine2');
-      expect(fg.get('addressLine3')).toBeTruthy('form group contains addressLine3');
-      expect(fg.get('postalCode')).toBeTruthy('form group contains postalCode');
-      expect(fg.get('city')).toBeTruthy('form group contains city');
-      expect(fg.get('phoneHome')).toBeTruthy('form group contains phoneHome');
+      expect(fg.get('title')).toBeTruthy();
+      expect(fg.get('firstName')).toBeTruthy();
+      expect(fg.get('lastName')).toBeTruthy();
+      expect(fg.get('addressLine1')).toBeTruthy();
+      expect(fg.get('addressLine2')).toBeTruthy();
+      expect(fg.get('addressLine3')).toBeTruthy();
+      expect(fg.get('postalCode')).toBeTruthy();
+      expect(fg.get('city')).toBeTruthy();
+      expect(fg.get('phoneHome')).toBeTruthy();
     });
   });
 });

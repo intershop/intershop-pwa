@@ -20,7 +20,7 @@ describe('AddressFormDEFactory', () => {
   describe('group', () => {
     it('should return an empty form group if called', () => {
       const fg = addressFactory.group();
-      expect(fg).toBeTruthy('form group is created');
+      expect(fg).toBeTruthy();
     });
   });
 });

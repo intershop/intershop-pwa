@@ -43,10 +43,11 @@ describe('Language Switch Component', () => {
   it(
     'should show the available language options when language dropdown is clicked',
     fakeAsync(() => {
-      fixture.autoDetectChanges(true);
+      fixture.detectChanges();
       const anchorTag = fixture.nativeElement.querySelectorAll('[dropdownToggle]')[0];
       anchorTag.click();
-      tick();
+      tick(500);
+      fixture.detectChanges();
       const languageOptions = element.getElementsByTagName('li');
       const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
 

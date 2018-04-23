@@ -94,7 +94,7 @@ describe('Search Box Component', () => {
       component.buttonText = 'buttonTextInput';
       fixture.detectChanges();
       const button = element.querySelector<HTMLButtonElement>('.btn-search');
-      expect(button.innerText).toBe(component.buttonText);
+      expect(button.textContent).toContain(component.buttonText);
     });
     it('should show placeholder text when placeholderText is set', () => {
       component.placeholderText = 'placeholderTextInput';

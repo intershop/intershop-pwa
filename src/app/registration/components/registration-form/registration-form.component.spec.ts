@@ -55,12 +55,10 @@ describe('RegistrationForm Component', () => {
   });
 
   it('should create a registration form on creation', () => {
-    expect(component.form).toBeUndefined('registration form has not been created before init');
+    expect(component.form).toBeUndefined();
     fixture.detectChanges();
-    expect(component.form.get('preferredLanguage')).toBeTruthy(
-      'registration form contains a preferredLanguage control'
-    );
-    expect(component.form.get('birthday')).toBeTruthy('registration form contains a birthday control');
+    expect(component.form.get('preferredLanguage')).toBeTruthy();
+    expect(component.form.get('birthday')).toBeTruthy();
   });
 
   it('should throw cancel event when cancel is clicked', () => {
@@ -70,7 +68,7 @@ describe('RegistrationForm Component', () => {
     });
 
     component.cancelForm();
-    expect(fired).toBeTruthy('cancel event fired');
+    expect(fired).toBeTruthy();
   });
 
   it(
@@ -79,10 +77,10 @@ describe('RegistrationForm Component', () => {
       component.form = new FormGroup({
         preferredLanguage: new FormControl('', Validators.required),
       });
-      expect(component.submitted).toBeFalsy('submitted is false after component init');
+      expect(component.submitted).toBeFalsy();
       component.submitForm();
       fixture.whenStable().then(() => {
-        expect(component.submitted).toBeTruthy('submitted is true after submitting an invalid form');
+        expect(component.submitted).toBeTruthy();
       });
     })
   );
@@ -99,7 +97,7 @@ describe('RegistrationForm Component', () => {
 
     component.submitForm();
     fixture.detectChanges();
-    expect(fired).toBeFalsy('invalid form does not trigger event');
+    expect(fired).toBeFalsy();
   });
 
   it('should throw create event for valid form (and not when invalid)', () => {
@@ -116,6 +114,6 @@ describe('RegistrationForm Component', () => {
 
     component.submitForm();
     fixture.detectChanges();
-    expect(fired).toBeTruthy('valid form triggers event');
+    expect(fired).toBeTruthy();
   });
 });
