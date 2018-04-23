@@ -16,16 +16,16 @@ import { CustomValidators } from 'ng2-validation';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { AddressFormService } from '../../../forms/address';
+import {
+  markAsDirtyRecursive,
+  markFormControlsAsInvalid,
+  updateValidatorsByDataLength,
+} from '../../../forms/shared/utils/form-utils';
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { Country } from '../../../models/country/country.model';
 import { Customer } from '../../../models/customer/customer.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Region } from '../../../models/region/region.model';
-import {
-  markAsDirtyRecursive,
-  markFormControlsAsInvalid,
-  updateValidatorsByDataLength,
-} from '../../../utils/form-utils';
 
 @Component({
   selector: 'ish-registration-form',
