@@ -1,0 +1,43 @@
+<div data-testing-id="cart-page">
+  <div class="row">
+    <div class="cart-header col-xs-12">
+      <h1 class="pull-left">
+        <span class="cart-header-title">{{'shopping_cart.heading' | translate}}</span>
+        <span class="cart-header-note">
+          <span>{{'shopping_cart.transaction.text' |translate }}</span>
+            <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{'shopping_cart.read_more.link' | translate}}</a>
+        </span>
+      </h1>
+    </div>
+  </div>
+
+  <form>
+    <div class="row">
+      <div class="col-sm-12 col-md-8">
+        <!-- BEGIN Line Items Overview -->
+        <div class="list-header hidden-xs">
+          <div class="col-sm-8 col-lg-6 list-header-item list-header-item-descr">{{ 'shopping_cart.product_description.heading' | translate }}</div>
+          <div class="hidden-sm hidden-md col-lg-2 list-header-item text-right">{{ 'shopping_cart.qty.heading' | translate }}</div>
+          <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
+          <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
+        </div>
+        <div class="list-body"></div>
+      </div>
+
+      <div class="col-sm-12 col-md-4 order-summary">
+        <h2> {{ 'checkout.order_details.heading' | translate }}</h2>
+
+        <div class="cost-summary">
+          <!-- Cost Summary Component -->
+        </div>
+
+        <!-- Checkout Button -->
+      </div>
+    </div>
+  </form>
+</div>
+
+<ish-modal-dialog #modalDialog [title]="'checkout.safeandsecure.details.title' | translate">
+  <div [innerHTML]="'checkout.safeandsecure.details.text' | translate"></div>
+</ish-modal-dialog>
+
