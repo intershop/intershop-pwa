@@ -18,7 +18,13 @@
   </div>
   <!-- END TEMPLATE sld_pmc/default/inc/HtmlPrint -->
   <div class="search-container error-search-container">
-    <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/search/SearchBox -->
+
+    <ish-search-box-container
+      [placeholderText]= "'search.searchbox.instructional_text' |translate"
+      [autoSuggest] = true
+      [maxAutoSuggests] = 10
+    ></ish-search-box-container>
+    <!-- BEGIN TEMPLATE app_sf_responsive/default/modules/search/SearchBox
     <form method="post" action="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewParametricSearch-SimpleOfferSearch;pgid=c4Mgcq2xZ6dSRpJQ6CZZv8dh0000vk6OUO8I"
       role="search" class="search clearfix" name="SearchBox_ErrorPage"><input autocomplete="off" name="SearchTerm" class="form-control searchTerm" data-suggesturl="http://localhost:480/INTERSHOP/web/WFS/inSPIRED-inTRONICS-Site/en_US/-/USD/ViewSuggestSearch-Suggest;pgid=c4Mgcq2xZ6dSRpJQ6CZZv8dh0000vk6OUO8I?MaxAutoSuggestResults=10"
         placeholder="Search for keyword, product ID or category..." type="text">
@@ -27,7 +33,7 @@
       <ul class="search-suggest-results">
       </ul>
     </form>
-    <!-- END TEMPLATE app_sf_responsive/default/modules/search/SearchBox -->
+    END TEMPLATE app_sf_responsive/default/modules/search/SearchBox -->
   </div>
 </div>
 <!-- END TEMPLATE app_sf_responsive_cm/default/component/system/Error -->
