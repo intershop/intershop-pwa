@@ -55,8 +55,6 @@ describe('Select Language Component', () => {
     component.ngOnChanges(changes);
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 languages are in the options array'); // ToDo: languages are retrieved from a service
-    expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy(
-      'language select is rendered'
-    );
+    expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy();
   });
 });

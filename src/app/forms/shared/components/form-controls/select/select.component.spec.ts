@@ -48,10 +48,8 @@ describe('Select Component', () => {
 
   it('should be rendered on creation and show options', () => {
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=simpleField]')).toBeTruthy('select is rendered');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]')).toBeTruthy(
-      'option with the correct value is rendered'
-    );
+    expect(element.querySelector('select[data-testing-id=simpleField]')).toBeTruthy();
+    expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]')).toBeTruthy();
     expect(
       element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]').innerHTML
     ).toContain('optionLabel', 'option with the correct value and label is rendered');
@@ -74,19 +72,15 @@ describe('Select Component', () => {
 
   it('should show empty option if no value is set', () => {
     fixture.detectChanges();
-    expect(component.showEmptyOption).toBeTruthy('showEmptyOption is set to true');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeTruthy(
-      'empty option is displayed'
-    );
+    expect(component.showEmptyOption).toBeTruthy();
+    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeTruthy();
   });
 
   it('should not show empty option if a value is set', () => {
     component.form.get(component.controlName).setValue('optionValue');
     fixture.detectChanges();
-    expect(component.showEmptyOption).toBeFalsy('showEmptyOption is set to false');
-    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeFalsy(
-      'empty option is not displayed'
-    );
+    expect(component.showEmptyOption).toBeFalsy();
+    expect(element.querySelector('select[data-testing-id=simpleField] option[value=""]')).toBeFalsy();
   });
 
   it('should not render a label if label input parameter is missing', () => {
@@ -98,12 +92,12 @@ describe('Select Component', () => {
   it('should set input parameter labelClass on html element', () => {
     component.labelClass = 'col-sm-3';
     fixture.detectChanges();
-    expect(element.querySelector('label.col-sm-3')).toBeTruthy('label class equals col-sm-3');
+    expect(element.querySelector('label.col-sm-3')).toBeTruthy();
   });
 
   it('should set input parameter inputClass on html element: ', () => {
     component.inputClass = 'col-sm-9';
     fixture.detectChanges();
-    expect(element.querySelector('label + div.col-sm-9')).toBeTruthy('input class equals col-sm-9');
+    expect(element.querySelector('label + div.col-sm-9')).toBeTruthy();
   });
 });

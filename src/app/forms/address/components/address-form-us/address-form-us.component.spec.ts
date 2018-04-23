@@ -51,28 +51,28 @@ describe('German Address Component', () => {
 
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('input[data-testing-id=firstName]')).toBeTruthy('first name is rendered');
-    expect(element.querySelector('input[data-testing-id=lastName]')).toBeTruthy('last name is rendered');
-    expect(element.querySelector('input[data-testing-id=addressLine1]')).toBeTruthy('addressLine1 is rendered');
-    expect(element.querySelector('input[data-testing-id=addressLine2]')).toBeTruthy('addressLine2 is rendered');
-    expect(element.querySelector('input[data-testing-id=postalCode]')).toBeTruthy('postalCode is rendered');
-    expect(element.querySelector('input[data-testing-id=city]')).toBeTruthy('city is rendered');
+    expect(element.querySelector('input[data-testing-id=firstName]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=lastName]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=addressLine1]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=addressLine2]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=postalCode]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=city]')).toBeTruthy();
   });
 
   it('should display region select box if regions  input parameter is not empty', () => {
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is not rendered');
+    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();
 
     component.regions = [
       { countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
       { countryCode: 'US', regionCode: 'FL', name: 'Florida' },
     ];
     fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy('state select is rendered');
+    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();
   });
 
   it('should display an apo/fpo popover link on creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('a[placement]')).toBeTruthy('popover link is shown');
+    expect(element.querySelector('a[placement]')).toBeTruthy();
   });
 });

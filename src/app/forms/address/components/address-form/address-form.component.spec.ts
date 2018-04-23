@@ -50,10 +50,8 @@ describe('Select Component', () => {
 
   it('should be rendered on creation and show countrySwitch and phoneHome', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-select-country[controlName=countryCodeSwitch]')).toBeTruthy(
-      'country select is rendered'
-    );
-    expect(element.querySelector('ish-input[controlName=phoneHome]')).toBeTruthy('phone home input is rendered');
+    expect(element.querySelector('ish-select-country[controlName=countryCodeSwitch]')).toBeTruthy();
+    expect(element.querySelector('ish-input[controlName=phoneHome]')).toBeTruthy();
   });
 
   describe('dataprovider', () => {
@@ -72,7 +70,7 @@ describe('Select Component', () => {
       it(`should render \'${dataSlice.cmp}\' if countryCode equals \'${dataSlice.countryCode}\'`, () => {
         component.countryCode = dataSlice.countryCode;
         fixture.detectChanges();
-        expect(element.querySelector(dataSlice.cmp)).toBeTruthy('country specific address form is rendered');
+        expect(element.querySelector(dataSlice.cmp)).toBeTruthy();
       });
     });
   });
