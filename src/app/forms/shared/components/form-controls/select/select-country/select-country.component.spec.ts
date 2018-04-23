@@ -56,6 +56,6 @@ describe('Select Country Component', () => {
 
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 countries are in the options array');
-    expect(element.querySelector('select[data-testing-id=countryCode]')).toBeTruthy('country select is rendered');
+    expect(element.querySelector('select[data-testing-id=countryCode]')).toBeTruthy();
   });
 });

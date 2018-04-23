@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { AVAILABLE_LOCALES } from '../../../../../../core/configurations/injection-keys';
+import { Locale } from '../../../../../../models/locale/locale.model';
 import { SelectLanguageComponent } from './select-language.component';
 
 describe('Select Language Component', () => {
@@ -28,7 +28,10 @@ describe('Select Language Component', () => {
           });
           component.form = form;
 
-          component.languages = TestBed.get(AVAILABLE_LOCALES);
+          component.languages = [
+            { lang: 'en_US', value: 'en', displayName: 'English' },
+            { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
+          ] as Locale[];
         });
     })
   );
@@ -54,9 +57,7 @@ describe('Select Language Component', () => {
     };
     component.ngOnChanges(changes);
     fixture.detectChanges();
-    expect(component.options.length).toEqual(3, '3 languages are in the options array'); // ToDo: languages are retrieved from a service
-    expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy(
-      'language select is rendered'
-    );
+    expect(component.options.length).toEqual(2, '2 languages are in the options array'); // ToDo: languages are retrieved from a service
+    expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy();
   });
 });

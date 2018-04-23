@@ -55,6 +55,6 @@ describe('Select Title Component', () => {
 
     fixture.detectChanges();
     expect(component.options.length).toEqual(3, '3 titles are in the options array');
-    expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy('title select is rendered');
+    expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy();
   });
 });

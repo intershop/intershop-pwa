@@ -48,8 +48,6 @@ describe('Select Security Question Component', () => {
   it('should get and display security questions on creation', () => {
     fixture.detectChanges();
     expect(component.options.length).toEqual(5, '5 questions are in the options array'); // ToDo: questions are retrieved from a service
-    expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy(
-      'security question select is rendered'
-    );
+    expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy();
   });
 });
