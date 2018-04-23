@@ -1,5 +1,6 @@
 stages:
   - build
+  - e2e
   - publish
   - deploy
 
@@ -10,36 +11,24 @@ build:
       - develop
   tags:
   - docker-executor
-  image: selenium/standalone-chrome
-  script:
-  - ./gradlew -q --no-daemon --max-workers 1 --continue -Dgeb.env=ci reset build
-  - bash .gitlab-ci-test-universal.sh
-
-check_format:
-  stage: build
-  except:
-    refs:
-      - develop
-  tags:
-  - docker-executor
   image: node:8-alpine
   script:
   - apk --no-cache add git
   - npm install
+  - npm run test -- --ci
+  - npm run lint
+  - npm run build:dynamic:prod
   - npm run format
   - git status --porcelain | wc -l | xargs test '0' -eq
 
-check_prod_build:
-  stage: build
-  except:
-    refs:
-      - develop
+e2e:
+  stage: e2e
   tags:
   - docker-executor
-  image: node:8-alpine
+  image: selenium/standalone-chrome
   script:
-  - npm install
-  - npm run build:dynamic:prod
+  - ./gradlew -q --no-daemon --max-workers 1 --continue -Dgeb.env=ci test protractor
+  - bash .gitlab-ci-test-universal.sh
 
 .job-template: &job_definition
   stage: publish
