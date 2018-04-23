@@ -21,7 +21,7 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: 'ts-loader' }
+      { test: /\.ts$/, loader: 'ts-loader?configFile=./src/tsconfig.server.json' }
     ]
   },
   plugins: [
