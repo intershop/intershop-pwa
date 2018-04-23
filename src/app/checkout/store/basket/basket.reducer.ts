@@ -107,6 +107,54 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         loading: false,
       };
     }
+
+    case BasketActionTypes.UpdateBasketItem: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case BasketActionTypes.UpdateBasketItemFail: {
+      const error = action.payload;
+
+      return {
+        ...state,
+        error,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.UpdateBasketItemSuccess: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.DeleteBasketItem: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case BasketActionTypes.DeleteBasketItemFail: {
+      const error = action.payload;
+
+      return {
+        ...state,
+        error,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.DeleteBasketItemSuccess: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
   }
   return state;
 }

@@ -83,6 +83,24 @@ describe('BasketEffects', () => {
       }
     );
 
+    when(basketServiceMock.updateBasketItem(anything(), anyString(), anyString())).thenCall(
+      (body: Object, itemId: string, basketId: string) => {
+        if (itemId === 'invalid') {
+          return _throw({ message: 'invalid' } as HttpErrorResponse);
+        } else {
+          return of({});
+        }
+      }
+    );
+
+    when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenCall((itemId: string, basketId: string) => {
+      if (itemId === 'invalid') {
+        return _throw({ message: 'invalid' } as HttpErrorResponse);
+      } else {
+        return of({});
+      }
+    });
+
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
@@ -126,8 +144,8 @@ describe('BasketEffects', () => {
       const id = 'invalid';
       const action = new basketActions.LoadBasket(id);
       const completion = new basketActions.LoadBasketFail({ message: 'invalid' } as HttpErrorResponse);
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
     });
@@ -173,8 +191,8 @@ describe('BasketEffects', () => {
         id: 'test',
       } as Basket);
       const completion = new basketActions.LoadBasketItems('test');
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketItemsAfterBasketLoad$).toBeObservable(expected$);
     });
@@ -185,11 +203,11 @@ describe('BasketEffects', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
     });
 
-    it('should call the productsSerivce for getProduct actions for line items if LoadBasketSuccess action triggered', () => {
+    it('should trigger LoadProduct actions for line items if LoadBasketSuccess action triggered', () => {
       const action = new basketActions.LoadBasketItemsSuccess(lineItems);
       const completion = new LoadProduct('test');
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadProductsForBasket$).toBeObservable(expected$);
     });
@@ -236,8 +254,8 @@ describe('BasketEffects', () => {
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
       const completion = new basketActions.LoadBasket();
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.createBasketIfMissing$).toBeObservable(expected$);
     });
@@ -294,8 +312,8 @@ describe('BasketEffects', () => {
     it('should map to action of type LoadBasket if pre login basket is empty', () => {
       const action = new LoginUserSuccess({} as Customer);
       const completion = new basketActions.LoadBasket();
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.mergeBasketAfterLogin$).toBeObservable(expected$);
     });
@@ -315,10 +333,147 @@ describe('BasketEffects', () => {
         ],
         basketId: basket.id,
       });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.mergeBasketAfterLogin$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketItem$', () => {
+    beforeEach(() => {
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+    });
+
+    it('should call the basketService for UpdateBasketItem action if quantity > 0', () => {
+      const payload = {
+        quantity: 2,
+        itemId: 'test',
+      };
+      const action = new basketActions.UpdateBasketItem(payload);
+      actions$ = hot('-a', { a: action });
+
+      effects.updateBasketItem$.subscribe(() => {
+        verify(basketServiceMock.updateBasketItem(payload.quantity, 'test', 'test')).once();
+      });
+    });
+
+    it('should map to action of type DeleteBasketItem if quantity === 0', () => {
+      const payload = {
+        quantity: 0,
+        itemId: 'test',
+      };
+      const action = new basketActions.UpdateBasketItem(payload);
+      const completion = new basketActions.DeleteBasketItem(payload.itemId);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteBasketItemIfQuantityZero$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type UpdateBasketItemSuccess', () => {
+      const payload = {
+        quantity: 2,
+        itemId: 'test',
+      };
+      const action = new basketActions.UpdateBasketItem(payload);
+      const completion = new basketActions.UpdateBasketItemSuccess();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketItem$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type UpdateBasketItemFail', () => {
+      const payload = {
+        quantity: 2,
+        itemId: 'invalid',
+      };
+      const action = new basketActions.UpdateBasketItem(payload);
+      const completion = new basketActions.UpdateBasketItemFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketItem$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketItem$', () => {
+    beforeEach(() => {
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+    });
+
+    it('should map to actions of type UpdateBasketItem for every payload array item', () => {
+      const payload = [
+        {
+          quantity: 2,
+          itemId: 'test',
+        },
+      ];
+      const action = new basketActions.UpdateBasketItems(payload);
+      const completion = new basketActions.UpdateBasketItem(payload[0]);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketItems$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketAfterUpdateBasketItem$', () => {
+    it('should map to action of type LoadBasket if UpdateBasketItemSuccess action triggered', () => {
+      const action = new basketActions.UpdateBasketItemSuccess();
+      const completion = new basketActions.LoadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.mergeBasketAfterLogin$).toBeObservable(expected$);
+      expect(effects.loadBasketAfterUpdateBasketItem$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteBasketItem$', () => {
+    beforeEach(() => {
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+    });
+
+    it('should call the basketService for DeleteBasketItem action', () => {
+      const payload = 'test';
+      const action = new basketActions.DeleteBasketItem(payload);
+      actions$ = hot('-a', { a: action });
+
+      effects.deleteBasketItem$.subscribe(() => {
+        verify(basketServiceMock.deleteBasketItem('test', 'test')).once();
+      });
+    });
+
+    it('should map to action of type DeleteBasketItemSuccess', () => {
+      const payload = 'test';
+      const action = new basketActions.DeleteBasketItem(payload);
+      const completion = new basketActions.DeleteBasketItemSuccess();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteBasketItem$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type DeleteBasketItemFail', () => {
+      const payload = 'invalid';
+      const action = new basketActions.DeleteBasketItem(payload);
+      const completion = new basketActions.DeleteBasketItemFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteBasketItem$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketAfterDeleteBasketItem$', () => {
+    it('should map to action of type LoadBasket if DeleteBasketItemSuccess action triggered', () => {
+      const action = new basketActions.DeleteBasketItemSuccess();
+      const completion = new basketActions.LoadBasket();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketAfterDeleteBasketItem$).toBeObservable(expected$);
     });
   });
 });
