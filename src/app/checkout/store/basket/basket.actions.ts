@@ -12,8 +12,15 @@ export enum BasketActionTypes {
   LoadBasketItemsSuccess = '[Basket API] Load Basket Items Success',
   AddProductToBasket = '[Basket] Add Product',
   AddItemsToBasket = '[Basket Internal] Add Items To Basket',
-  AddItemsToBasketFail = '[Basket API] Add Items To Basket Fail',
-  AddItemsToBasketSuccess = '[Basket API] Add Items To Basket Success',
+  AddItemsToBasketFail = '[Basket API] Add Item To Basket Fail',
+  AddItemsToBasketSuccess = '[Basket API] Add Item To Basket Success',
+  UpdateBasketItem = '[Checkout] Update a Basket Item',
+  UpdateBasketItemFail = '[Checkout] Update a Basket Item Fail',
+  UpdateBasketItemSuccess = '[Checkout] Update a Basket Item Success',
+  UpdateBasketItems = '[Checkout] Update a Basket Items',
+  DeleteBasketItem = '[Checkout] Delete a Basket Item',
+  DeleteBasketItemFail = '[Checkout] Delete a Basket Item Fail',
+  DeleteBasketItemSuccess = '[Checkout] Delete a Basket Item Success',
 }
 
 export class LoadBasket implements Action {
@@ -65,6 +72,42 @@ export class AddItemsToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketSuccess;
 }
 
+export class UpdateBasketItem implements Action {
+  readonly type = BasketActionTypes.UpdateBasketItem;
+  // TODO: add basketId if multibasket functionality is needed
+  constructor(public payload: { itemId: string; quantity: number }) {}
+}
+
+export class UpdateBasketItemFail implements Action {
+  readonly type = BasketActionTypes.UpdateBasketItemFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class UpdateBasketItemSuccess implements Action {
+  readonly type = BasketActionTypes.UpdateBasketItemSuccess;
+}
+
+export class UpdateBasketItems implements Action {
+  readonly type = BasketActionTypes.UpdateBasketItems;
+  // TODO: add basketId if multibasket functionality is needed
+  constructor(public payload: { itemId: string; quantity: number }[]) {}
+}
+
+export class DeleteBasketItem implements Action {
+  readonly type = BasketActionTypes.DeleteBasketItem;
+  // TODO: add basketId if multibasket functionality is needed
+  constructor(public payload: string) {}
+}
+
+export class DeleteBasketItemFail implements Action {
+  readonly type = BasketActionTypes.DeleteBasketItemFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class DeleteBasketItemSuccess implements Action {
+  readonly type = BasketActionTypes.DeleteBasketItemSuccess;
+}
+
 export type BasketAction =
   | LoadBasket
   | LoadBasketFail
@@ -75,4 +118,11 @@ export type BasketAction =
   | AddProductToBasket
   | AddItemsToBasket
   | AddItemsToBasketFail
-  | AddItemsToBasketSuccess;
+  | AddItemsToBasketSuccess
+  | UpdateBasketItem
+  | UpdateBasketItemFail
+  | UpdateBasketItemSuccess
+  | UpdateBasketItems
+  | DeleteBasketItem
+  | DeleteBasketItemFail
+  | DeleteBasketItemSuccess;

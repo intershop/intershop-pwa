@@ -110,4 +110,69 @@ describe('Basket Reducer', () => {
       });
     });
   });
+
+  describe('UpdateBasketItem actions', () => {
+    describe('UpdateBasketItem action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.UpdateBasketItem({
+          quantity: 2,
+          itemId: 'test',
+        });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('UpdateBasketItemFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.UpdateBasketItemFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('UpdateBasketItemSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.UpdateBasketItemSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+      });
+    });
+  });
+
+  describe('DeleteBasketItem actions', () => {
+    describe('DeleteBasketItem action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.DeleteBasketItem('test');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('DeleteBasketItemFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.DeleteBasketItemFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('DeleteBasketItemSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.DeleteBasketItemSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+      });
+    });
+  });
 });
