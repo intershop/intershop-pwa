@@ -82,8 +82,8 @@
     }
   ],
   "test": {
-    "karma": {
-      "config": "./karma.conf.js"
+    "jest": {
+      "config": "./jest.config.js"
     }
   },
   "defaults": {

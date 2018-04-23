@@ -96,10 +96,10 @@ test {
     systemProperty 'geb.env', System.getProperty('geb.env', 'local')
 }
 
-task karma(type: NodeTask, dependsOn:[npmInstall, dist], description: 'run jasmine tests', group:'Node') {
-    script = file("$projectDir/node_modules/@angular/cli/bin/ng")
-    args = ['test', '--progress=false', '--reporters', 'junit,html,spec', '--browsers', 'ChromeHeadless', '--single-run', '--no-color', '--code-coverage']
-    inputs.files('src', 'package.json', 'karma-ci.conf.js')
+task karma(type: NpmTask, dependsOn:[npmInstall, dist], description: 'run jasmine tests', group:'Node') {
+    args = ['run', 'test', '--silent']
+    inputs.dir('src')
+    inputs.files(fileTree(dir: projectDir, includes : ['*.js', '*.json']))
 }
 check.dependsOn karma
 
