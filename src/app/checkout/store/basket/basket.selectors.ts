@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket/basket-item.model';
+import { Product } from '../../../models/product/product.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { getCheckoutState } from '../checkout.state';
 
@@ -9,7 +10,7 @@ const getBasketState = createSelector(getCheckoutState, state => state.basket);
  * Select the current basket with the appended product data for each line item.
  */
 export const getCurrentBasket = createSelector(getBasketState, getProductEntities, (basket, products) => {
-  if (!basket.basket) {
+  if (!basket.basket || !basket.basket.lineItems) {
     return null;
   }
 
@@ -18,10 +19,11 @@ export const getCurrentBasket = createSelector(getBasketState, getProductEntitie
 
   for (const item of lineItems) {
     const lineItem = { ...item };
+    const product = item.product as Product;
 
-    if (item.product && item.product.sku) {
+    if (product && product.sku) {
       updatedLineItems.push(lineItem);
-      lineItem.product = products[item.product.sku];
+      lineItem.product = products[product.sku];
     }
   }
 
