@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
+import { BasketItemData } from '../../../models/basket/basket-item.interface';
+import { BasketItemMapper } from '../../../models/basket/basket-item.mapper';
 import { BasketItem } from '../../../models/basket/basket-item.model';
 import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
@@ -31,7 +33,9 @@ export class BasketService {
    * @returns         The basket items.
    */
   getBasketItems(basketId: string): Observable<BasketItem[]> {
-    return this.apiService.get(`baskets/${basketId}/items`, undefined, undefined, true);
+    return this.apiService
+      .get<BasketItemData[]>(`baskets/${basketId}/items`, undefined, undefined, true)
+      .pipe(map(basketItemsData => basketItemsData.map(basketItemData => BasketItemMapper.fromData(basketItemData))));
   }
 
   /**

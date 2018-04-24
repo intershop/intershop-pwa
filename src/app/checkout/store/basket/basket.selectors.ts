@@ -19,10 +19,9 @@ export const getCurrentBasket = createSelector(getBasketState, getProductEntitie
   for (const item of lineItems) {
     const lineItem = { ...item };
 
-    if (item.product && item.product['title']) {
-      const sku = item.product['title'];
+    if (item.product && item.product.sku) {
       updatedLineItems.push(lineItem);
-      lineItem.product = products[sku];
+      lineItem.product = products[item.product.sku];
     }
   }
 
