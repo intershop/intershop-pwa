@@ -12,6 +12,9 @@ export class ProductHelper {
    * @returns         Product route string
    */
   static generateProductRoute(product: Product, category?: Category): string {
+    if (!(product && product.sku)) {
+      return '/';
+    }
     let productRoute = '/product/' + product.sku;
     if (category) {
       productRoute = '/category/' + category.uniqueId + productRoute;
@@ -28,6 +31,9 @@ export class ProductHelper {
    * @returns         The primary product image of the given ImageType
    */
   static getPrimaryImage(product: Product, imageType: string): Image {
+    if (!(product && product.images)) {
+      return undefined;
+    }
     return product.images.find(image => image.typeID === imageType && image.primaryImage);
   }
 
@@ -39,6 +45,9 @@ export class ProductHelper {
    * @returns         The matching product image
    */
   static getImageByImageTypeAndImageView(product: Product, imageType: string, imageView: string): Image {
+    if (!(product && product.images)) {
+      return undefined;
+    }
     return product.images.find(image => image.typeID === imageType && image.viewID === imageView);
   }
 
@@ -49,6 +58,9 @@ export class ProductHelper {
    * @returns         Array of available ImageView ids
    */
   static getImageViewIDsExcludePrimary(product: Product, imageType: string): string[] {
+    if (!(product && product.images)) {
+      return [];
+    }
     return product.images.filter(image => image.typeID === imageType && !image.primaryImage).map(image => image.viewID);
   }
 
@@ -66,6 +78,9 @@ export class ProductHelper {
    * @returns              The matching product attribute
    */
   static getAttributeByAttributeName(product: Product, attributeName: string): Attribute {
+    if (!(product && product.attributes)) {
+      return undefined;
+    }
     return product.attributes.find(attribute => attribute.name === attributeName);
   }
 }

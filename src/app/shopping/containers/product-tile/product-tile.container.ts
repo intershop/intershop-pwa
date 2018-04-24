@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { AddItemToBasket } from '../../../checkout/store/basket';
+import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
@@ -30,6 +30,6 @@ export class ProductTileContainerComponent implements OnInit {
   }
 
   addToCart() {
-    this.store.dispatch(new AddItemToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
+    this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
   }
 }

@@ -7,7 +7,7 @@ export class BasketHelper {
    * @returns Number of basket item quantities
    */
   static getBasketItemsCount(basket: Basket): number {
-    if (!basket || !basket.lineItems) {
+    if (!basket || !basket.lineItems || (basket.lineItems.length > 0 && !basket.lineItems[0].quantity)) {
       return 0;
     }
 

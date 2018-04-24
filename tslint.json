@@ -247,8 +247,8 @@
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // enforce specific folder structure for modules
           "^.*/src/app/\\w+/(components/|containers/|store/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$",
-          // forms may have submodules
-          "^.*/src/app/forms/\\w+/(components/||directives/|validators/|services/|interceptors/|guards/|configurations/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
+          // forms and shared may have submodules
+          "^.*/src/app/(forms|shared)/\\w+/(components/||directives/|validators/|services/|interceptors/|guards/|configurations/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
         ],
         "patterns": [
           // root components

@@ -43,7 +43,47 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
-    case BasketActionTypes.AddItemToBasket: {
+    case BasketActionTypes.LoadBasketItems: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case BasketActionTypes.LoadBasketItemsFail: {
+      const error = action.payload;
+
+      return {
+        ...state,
+        error: error,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.LoadBasketItemsSuccess: {
+      const lineItems = action.payload;
+      let updatedBasket;
+
+      if (state.basket) {
+        updatedBasket = {
+          ...state.basket,
+          lineItems: lineItems,
+        };
+
+        return {
+          ...state,
+          basket: updatedBasket,
+          loading: false,
+        };
+      }
+
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.AddProductToBasket: {
       return {
         ...state,
         loading: true,
