@@ -5,8 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
-import { getProductEntities } from '../../../shopping/store/products';
-import * as productsActions from '../../../shopping/store/products/products.actions';
+import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { BasketService } from '../../services/basket/basket.service';
 import { CheckoutState } from '../checkout.state';
 import * as basketActions from './basket.actions';
@@ -21,7 +20,7 @@ export class BasketEffects {
   ) {}
 
   /**
-   * load basket effect
+   * The load basket effect.
    */
   @Effect()
   loadBasket$ = this.actions$.pipe(
@@ -38,7 +37,7 @@ export class BasketEffects {
   );
 
   /**
-   * triggers load basket effect after successful login
+   * Trigger a LoadBasket action after a successful login.
    */
   @Effect()
   loadBasketAfterLogin$ = this.actions$.pipe(
@@ -47,7 +46,7 @@ export class BasketEffects {
   );
 
   /**
-   * load basket items effect
+   * The load basket items effect.
    */
   @Effect()
   loadBasketItems$ = this.actions$.pipe(
@@ -64,38 +63,38 @@ export class BasketEffects {
   );
 
   /**
-   * trigger load basket items effect after load basket success
+   * Trigger a LoadBasketItems action after a successful basket loading.
    */
   @Effect()
   loadBasketItemsAfterBasketLoad$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketSuccess),
     map((action: basketActions.LoadBasketSuccess) => action.payload),
-    map(payload => new basketActions.LoadBasketItems(payload.id))
+    map(basket => new basketActions.LoadBasketItems(basket.id))
   );
 
   /**
-   * trigger load product effects after load basket items success
-   * only requests missing products
+   * After successfully loading the basket items, trigger a LoadProduct action
+   * for each product that is missing in the current product entities state.
    */
   @Effect()
   loadProductsForBasket$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketItemsSuccess),
     map((action: basketActions.LoadBasketItemsSuccess) => action.payload),
     withLatestFrom(this.store.select(getProductEntities)),
-    switchMap(([payload, products]) => [
-      ...payload
+    switchMap(([basketItems, products]) => [
+      ...basketItems
         .filter(lineItem => !products[lineItem.product['title']])
-        .map(lineItem => new productsActions.LoadProduct(lineItem.product['title'])),
+        .map(lineItem => new LoadProduct(lineItem.product['title'])),
     ])
   );
 
   /**
-   * add product to basket effecs
+   * Add a product to the current basket.
    */
   @Effect()
   addItemToBasket$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddItemToBasket),
-    map((action: basketActions.AddItemToBasket) => action.payload),
+    ofType(basketActions.BasketActionTypes.AddProductToBasket),
+    map((action: basketActions.AddProductToBasket) => action.payload),
     withLatestFrom(this.store.select(getCurrentBasket)),
     concatMap(([payload, basket]) => {
       return this.basketService
@@ -108,7 +107,7 @@ export class BasketEffects {
   );
 
   /**
-   * triggers load basket effect after successful AddItemToBasket
+   * Trigger a LoadBasket action after successfully adding an item to the basket.
    */
   @Effect()
   loadBasketAfterAddItemToBasket$ = this.actions$.pipe(
