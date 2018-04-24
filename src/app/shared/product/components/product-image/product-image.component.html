@@ -1,6 +1,6 @@
 <img [src]="productImage && productImage.effectiveUrl ? icmBaseURL + productImage.effectiveUrl : '/assets/img/not_available.png'"
   [ngClass]="class"
-  [attr.alt]="altText ? altText : (product.name ? product.name : product.sku) + ' ' + ('product.image.text.alttext' | translate) + (imageView ? ' ' + imageView + ' ' + productImage?.typeID : '')"
+  [attr.alt]="altText ? altText : (product?.name ? product?.name : product?.sku) + ' ' + ('product.image.text.alttext' | translate) + (imageView ? ' ' + imageView + ' ' + productImage?.typeID : '')"
   [attr.height]="productImage?.imageActualHeight"
   [attr.width]="productImage?.imageActualWidth"
   [attr.data-type]="productImage?.typeID"

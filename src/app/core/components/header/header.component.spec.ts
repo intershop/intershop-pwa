@@ -28,7 +28,7 @@ describe('Header Component', () => {
             inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
           }),
           MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
-          MockComponent({ selector: 'ish-mini-cart-container', template: 'Mini Cart Container' }),
+          MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
           MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
         ],
       })
@@ -74,6 +74,6 @@ describe('Header Component', () => {
 
   it('should render Cart on template', () => {
     expect(element.getElementsByTagName('ish-mobile-cart-container')[0].textContent).toContain('Mobile Cart Container');
-    expect(element.getElementsByTagName('ish-mini-cart-container')[0].textContent).toContain('Mini Cart Container');
+    expect(element.getElementsByTagName('ish-mini-basket-container')[0].textContent).toContain('Mini Basket Container');
   });
 });
