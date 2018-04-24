@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
-import { AddItemToBasket } from '../../../checkout/store/basket';
+import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
@@ -39,7 +39,7 @@ export class ProductPageContainerComponent implements OnInit {
   }
 
   addToCart({ sku, quantity }) {
-    this.store.dispatch(new AddItemToBasket({ sku: sku, quantity: quantity }));
+    this.store.dispatch(new AddProductToBasket({ sku: sku, quantity: quantity }));
   }
 
   addToCompare(sku) {

@@ -202,9 +202,9 @@ describe('BasketEffects', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
     });
 
-    it('should call the basketService for AddItemToBasket action', () => {
+    it('should call the basketService for AddProductToBasket action', () => {
       const payload = { sku: 'test', quantity: 1 };
-      const action = new basketActions.AddItemToBasket(payload);
+      const action = new basketActions.AddProductToBasket(payload);
       actions$ = hot('-a', { a: action });
 
       effects.addItemToBasket$.subscribe(() => {
@@ -214,7 +214,7 @@ describe('BasketEffects', () => {
 
     it('should map to action of type AddItemToBasketSuccess', () => {
       const payload = { sku: 'test', quantity: 1 };
-      const action = new basketActions.AddItemToBasket(payload);
+      const action = new basketActions.AddProductToBasket(payload);
       const completion = new basketActions.AddItemToBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -224,7 +224,7 @@ describe('BasketEffects', () => {
 
     it('should map invalid request to action of type AddItemToBasketFail', () => {
       const payload = { sku: 'invalid', quantity: 1 };
-      const action = new basketActions.AddItemToBasket(payload);
+      const action = new basketActions.AddProductToBasket(payload);
       const completion = new basketActions.AddItemToBasketFail({ message: 'invalid' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
