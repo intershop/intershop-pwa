@@ -7,9 +7,9 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
-import { Attribute } from '../../../models/attribute/attribute.model';
 import { BasketItem } from '../../../models/basket/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { Product } from '../../../models/product/product.model';
 import { LoadProduct } from '../../../shopping/store/products';
 import { ShoppingState } from '../../../shopping/store/shopping.state';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
@@ -35,16 +35,8 @@ describe('BasketEffects', () => {
       id: 'test',
       name: 'test',
       position: 1,
-      quantity: {
-        type: 'test',
-        value: 1,
-      },
-      product: {
-        attributes: [] as Attribute[],
-        title: 'test',
-        type: 'test',
-        uri: 'test',
-      },
+      quantity: { type: 'test', value: 1 },
+      product: { sku: 'test' } as Product,
       price: null,
       singleBasePrice: null,
       isHiddenGift: false,

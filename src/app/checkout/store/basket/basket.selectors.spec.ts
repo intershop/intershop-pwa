@@ -30,7 +30,7 @@ describe('Basket selectors', () => {
         {
           id: 'test',
           product: {
-            title: 'test',
+            sku: 'test',
           },
         },
       ],

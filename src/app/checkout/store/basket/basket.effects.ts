@@ -83,8 +83,8 @@ export class BasketEffects {
     withLatestFrom(this.store.select(getProductEntities)),
     switchMap(([basketItems, products]) => [
       ...basketItems
-        .filter(lineItem => !products[lineItem.product['title']])
-        .map(lineItem => new LoadProduct(lineItem.product['title'])),
+        .filter(lineItem => !products[lineItem.product.sku])
+        .map(lineItem => new LoadProduct(lineItem.product.sku)),
     ])
   );
 
