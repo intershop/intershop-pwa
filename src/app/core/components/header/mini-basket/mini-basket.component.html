@@ -31,7 +31,7 @@
               <a [routerLink]="generateProductRoute(lineItem.product)" (click)="isCollapsed = true;">
                 {{ lineItem.name }}
               </a>
-              <div class="product-price">{{ lineItem.price.value | currency: lineItem.price.currencyMnemonic }}</div>
+              <div class="product-price">{{ lineItem.price | ishPrice }}</div>
               <div class="cart-pli-data"><span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}</div>
             </div>
           </div>
@@ -39,7 +39,12 @@
         </div>
       </div>
 
-      <div class="btn-scroll-down" [class.disabled]="currentProduct === basket.lineItems.length - 2" (click)="scrollDown()" *ngIf="basket.lineItems.length > 2">
+      <div
+        *ngIf="basket.lineItems.length > 2"
+        class="btn-scroll-down"
+        [class.disabled]="currentProduct === basket.lineItems.length - 2"
+        (click)="scrollDown()"
+      >
         <span class="glyphicon glyphicon-chevron-down"></span>
       </div>
 

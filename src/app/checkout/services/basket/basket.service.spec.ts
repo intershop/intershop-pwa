@@ -28,7 +28,7 @@ describe('Basket Service', () => {
     basketService = new BasketService(instance(apiService));
   });
 
-  it("should get Basket data when 'getBasket' is called", () => {
+  it("should get basket data when 'getBasket' is called", () => {
     when(apiService.get(`baskets/${basketMockData.id}`)).thenReturn(of(basketMockData));
 
     basketService.getBasket(basketMockData.id).subscribe(data => {
@@ -36,6 +36,16 @@ describe('Basket Service', () => {
     });
 
     verify(apiService.get(`baskets/${basketMockData.id}`)).once();
+  });
+
+  it("should get basket items for specific basketId when 'getBasketItems' is called", () => {
+    when(apiService.get(`baskets/${basketMockData.id}/items`, anything(), anything(), true)).thenReturn(of([]));
+
+    basketService.getBasketItems(basketMockData.id).subscribe(() => {
+      expect(true).toBeTruthy();
+    });
+
+    verify(apiService.get(`baskets/${basketMockData.id}/items`, anything(), anything(), true)).once();
   });
 
   it("should post item to basket when 'addItemToBasket' is called", () => {

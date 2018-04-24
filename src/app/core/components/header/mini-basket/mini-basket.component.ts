@@ -3,22 +3,34 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewC
 import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
+/**
+ * The Mini Basket Component displays a quick overview over the users basket items
+ * It uses the {@link ProductImageComponent} for the rendering of product images.
+ *
+ * @example
+ * <ish-mini-basket [basket]="basket$ | async"></ish-mini-basket>
+ */
 @Component({
   selector: 'ish-mini-basket',
   templateUrl: './mini-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiniBasketComponent implements OnChanges {
+  /**
+   * the basket that should be displayed
+   */
   @Input() basket: Basket;
+
+  /**
+   * vertical product slider element reference
+   */
   @ViewChild('slider') slider: ElementRef;
-
-  readonly ANIMATION_TIMING: string = '200ms ease-in';
-
-  generateProductRoute = ProductHelper.generateProductRoute;
 
   isCollapsed = true;
   itemCount = 0;
   currentProduct = 0;
+
+  generateProductRoute = ProductHelper.generateProductRoute;
 
   constructor(private animationBuilder: AnimationBuilder) {}
 
@@ -37,7 +49,7 @@ export class MiniBasketComponent implements OnChanges {
     }
 
     const slider = this.slider.nativeElement as HTMLDivElement;
-    const tileHeight = slider.children.length > 0 ? slider.children.item(0).clientHeight : 0;
+    const tileHeight = slider.children.length > 0 ? slider.lastElementChild.getBoundingClientRect().height : 0;
 
     this.currentProduct -= 1;
     const offset = tileHeight * this.currentProduct;
@@ -53,7 +65,7 @@ export class MiniBasketComponent implements OnChanges {
     }
 
     const slider = this.slider.nativeElement as HTMLDivElement;
-    const tileHeight = slider.children.length > 0 ? slider.children.item(0).clientHeight : 0;
+    const tileHeight = slider.children.length > 0 ? slider.lastElementChild.getBoundingClientRect().height : 0;
     if (this.currentProduct < this.basket.lineItems.length - 2) {
       this.currentProduct += 1;
       const offset = tileHeight * this.currentProduct;
@@ -72,7 +84,7 @@ export class MiniBasketComponent implements OnChanges {
 
     const slider = this.slider.nativeElement as HTMLDivElement;
     const scrollAnimation = this.animationBuilder.build([
-      animate(this.ANIMATION_TIMING, style({ transform: `translateY(-${offset}px)` })),
+      animate('200ms ease-in', style({ transform: `translateY(-${offset}px)` })),
     ]);
 
     const player = scrollAnimation.create(slider);
