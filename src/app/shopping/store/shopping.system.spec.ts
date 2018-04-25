@@ -163,6 +163,10 @@ describe('Shopping Store', () => {
             path: 'category/:categoryUniqueId/product/:sku',
             component: DummyComponent,
           },
+          {
+            path: 'product/:sku',
+            component: DummyComponent,
+          },
         ]),
         TranslateModule.forRoot(),
       ],
@@ -569,6 +573,94 @@ describe('Shopping Store', () => {
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectCategory(undefined));
+          expect(i.next()).toEqual(new SelectProduct(undefined));
+          expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should not have a selected product or category when redirected to error page',
+        fakeAsync(() => {
+          expect(getSelectedCategory(store.state)).toBeUndefined();
+          expect(getSelectedProduct(store.state)).toBeUndefined();
+        })
+      );
+    });
+  });
+
+  describe('product page without category context', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/product', 'P1']);
+        tick(5000);
+      })
+    );
+
+    it(
+      'should load the product ang top level categories when going to a product page',
+      fakeAsync(() => {
+        expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
+        expect(getProductIds(store.state)).toEqual(['P1']);
+      })
+    );
+
+    it(
+      'should trigger required load actions when going to a product page',
+      fakeAsync(() => {
+        const i = store.actionsIterator(['[Shopping]']);
+        expect(i.next()).toEqual(new SelectProduct('P1'));
+        expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
+        expect(i.next()).toEqual(new LoadProduct('P1'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next()).toBeUndefined();
+      })
+    );
+
+    describe('and changing the language', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          store.dispatch(new SelectLocale(locales[1]));
+          tick(5000);
+        })
+      );
+
+      it(
+        'should reload the product and top level categries when language is changed',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+          expect(i.next()).toEqual(new LoadProduct('P1'));
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+          expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+    });
+
+    describe('and and going to compare page', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          router.navigate(['/compare']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should not load anything additionally when going to compare page',
+        fakeAsync(() => {
+          expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
+          expect(getProductIds(store.state)).toEqual(['P1']);
+        })
+      );
+
+      it(
+        'should trigger actions for deselecting category and product when no longer in category or product',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next()).toBeUndefined();
         })
