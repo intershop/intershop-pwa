@@ -193,6 +193,10 @@
       {"name": ["spyOn"], "message": "Use ts-mockito instead!"},
       {"name": ["*", "select"], "message": "Use store.pipe(select()) instead!"}
     ],
+    "ban-specific-imports": [
+      true,
+      { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." }
+    ],
     "no-suspicious-variable-init-in-tests": {
       "severity": "error",
       "options": {
