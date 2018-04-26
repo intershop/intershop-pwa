@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { createCategoryView } from '../../../models/category-view/category-view.model';
-import { Category, CategoryHelper } from '../../../models/category/category.model';
+import { Category } from '../../../models/category/category.model';
 import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
@@ -36,7 +36,7 @@ export const getSelectedCategoryPath = createSelector(
   (entities, category): Category[] => {
     const categories: Category[] = [];
     if (category) {
-      CategoryHelper.getCategoryPathUniqueIds(category.uniqueId).forEach(uniqueId => {
+      category.categoryPath.forEach(uniqueId => {
         categories.push(entities[uniqueId]);
       });
     }

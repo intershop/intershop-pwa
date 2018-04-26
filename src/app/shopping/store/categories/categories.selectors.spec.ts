@@ -38,7 +38,7 @@ describe('Categories Selectors', () => {
 
   beforeEach(() => {
     prod = { sku: 'sku' } as Product;
-    cat = { uniqueId: 'Aa' } as Category;
+    cat = { uniqueId: 'Aa', categoryPath: ['Aa'] } as Category;
     cat.hasOnlineProducts = true;
 
     TestBed.configureTestingModule({
