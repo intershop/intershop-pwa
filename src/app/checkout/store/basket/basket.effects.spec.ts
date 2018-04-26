@@ -83,10 +83,6 @@ describe('BasketEffects', () => {
       }
     );
 
-    when(basketServiceMock.createBasket()).thenCall(() => {
-      return of({ title: 'newTest' });
-    });
-
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({

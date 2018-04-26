@@ -8,7 +8,6 @@ import { BasketItem } from '../../../models/basket/basket-item.model';
 import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
-import { Link } from '../../../models/link/link.model';
 
 interface Body {
   elements: {
@@ -35,14 +34,6 @@ export class BasketService {
     return this.apiService
       .get<BasketData>(`baskets/${basketId}`)
       .pipe(map(basketData => BasketMapper.fromData(basketData)));
-  }
-
-  /**
-   * Create a new basket
-   * @returns Link to the created basket
-   */
-  createBasket(): Observable<Link> {
-    return this.apiService.post<Link>(`baskets`);
   }
 
   /**

@@ -38,16 +38,6 @@ describe('Basket Service', () => {
     verify(apiService.get(`baskets/${basketMockData.id}`)).once();
   });
 
-  it("should create new basket when 'createBasket' is called", () => {
-    when(apiService.post(`baskets`)).thenReturn(of({}));
-
-    basketService.createBasket().subscribe(data => {
-      expect(true).toBeTruthy();
-    });
-
-    verify(apiService.post(`baskets`)).once();
-  });
-
   it("should get basket items for specific basketId when 'getBasketItems' is called", () => {
     when(apiService.get(`baskets/${basketMockData.id}/items`, anything(), anything(), true)).thenReturn(of([]));
 
