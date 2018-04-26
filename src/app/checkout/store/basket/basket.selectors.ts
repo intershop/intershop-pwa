@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { BasketItem } from '../../../models/basket/basket-item.model';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Product } from '../../../models/product/product.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { getCheckoutState } from '../checkout.state';

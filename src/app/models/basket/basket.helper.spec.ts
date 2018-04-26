@@ -1,4 +1,4 @@
-import { BasketItem } from './basket-item.model';
+import { BasketItem } from '../basket-item/basket-item.model';
 import { Basket, BasketHelper } from './basket.model';
 
 describe('Basket Helper', () => {

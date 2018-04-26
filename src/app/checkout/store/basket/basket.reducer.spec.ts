@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { BasketItem } from '../../../models/basket/basket-item.model';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import * as fromActions from './basket.actions';
 import { basketReducer, initialState } from './basket.reducer';
