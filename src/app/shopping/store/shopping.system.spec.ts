@@ -17,22 +17,15 @@ import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../
 import { CountryService } from '../../core/services/countries/country.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { SelectLocale } from '../../core/store/locale';
-import { CategoryData } from '../../models/category/category.interface';
-import { CategoryMapper } from '../../models/category/category.mapper';
 import { Category } from '../../models/category/category.model';
 import { Locale } from '../../models/locale/locale.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
+import { categoryTree } from '../../utils/dev/test-data-utils';
 import { CategoriesService } from '../services/categories/categories.service';
 import { ProductsService } from '../services/products/products.service';
 import { SuggestService } from '../services/suggest/suggest.service';
-import {
-  CategoriesActionTypes,
-  getCategoriesIds,
-  getSelectedCategory,
-  LoadCategory,
-  SelectCategory,
-} from './categories';
+import { CategoriesActionTypes, getCategoryIds, getSelectedCategory, LoadCategory, SelectCategory } from './categories';
 import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
 import { getRecentlyProducts, RecentlyActionTypes } from './recently';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
@@ -56,60 +49,29 @@ describe('Shopping Store', () => {
       { lang: 'fr_FR', currency: 'EUR', value: 'fr' },
     ] as Locale[];
 
+    const catA = { uniqueId: 'A', categoryPath: ['A'], hasOnlineSubCategories: true } as Category;
+    const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'], hasOnlineSubCategories: true } as Category;
+    const catA123456 = {
+      uniqueId: 'A.123.456',
+      categoryPath: ['A', 'A.123', 'A.456'],
+      hasOnlineProducts: true,
+    } as Category;
+    const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
+
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
-      of([
-        CategoryMapper.fromData({
-          id: 'A',
-          hasOnlineSubCategories: true,
-          hasOnlineProducts: false,
-          subCategoriesCount: 1,
-          subCategories: [
-            {
-              id: '123',
-              hasOnlineSubCategories: true,
-              hasOnlineProducts: false,
-            },
-          ],
-        } as CategoryData),
-        {
-          uniqueId: 'B',
-          id: 'B',
-          hasOnlineSubCategories: false,
-          hasOnlineProducts: false,
-        },
-      ] as Category[])
+      of(categoryTree([catA, catA123, catB] as Category[]))
     );
     when(categoriesServiceMock.getCategory(anything())).thenCall(uniqueId => {
       switch (uniqueId) {
         case 'A':
-          return of(<Category>{
-            uniqueId: 'A',
-            id: 'A',
-            hasOnlineSubCategories: true,
-            hasOnlineProducts: false,
-          });
+          return of(categoryTree([{ ...catA, completelyLoaded: true }, catA123]));
         case 'B':
-          return of(<Category>{
-            uniqueId: 'B',
-            id: 'B',
-            hasOnlineSubCategories: false,
-            hasOnlineProducts: false,
-          });
+          return of(categoryTree([{ ...catB, completelyLoaded: true }]));
         case 'A.123':
-          return of(<Category>{
-            uniqueId: 'A.123',
-            id: '123',
-            hasOnlineSubCategories: true,
-            hasOnlineProducts: false,
-          });
+          return of(categoryTree([{ ...catA123, completelyLoaded: true }, catA123456]));
         case 'A.123.456':
-          return of(<Category>{
-            uniqueId: 'A.123.456',
-            id: '456',
-            hasOnlineSubCategories: false,
-            hasOnlineProducts: true,
-          });
+          return of(categoryTree([{ ...catA123456, completelyLoaded: true }]));
         default:
           return _throw(`error loading category ${uniqueId}`);
       }
@@ -208,7 +170,7 @@ describe('Shopping Store', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toBeUndefined();
 
-        expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
+        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
         expect(getProductIds(store.state)).toEqual([]);
       })
     );
@@ -232,6 +194,37 @@ describe('Shopping Store', () => {
         })
       );
     });
+
+    describe('and going to a category page', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          router.navigate(['/category', 'A.123']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should load necessary data when going to a category page',
+        fakeAsync(() => {
+          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+          expect(getProductIds(store.state)).toEqual([]);
+        })
+      );
+
+      it(
+        'should have toplevel loading and category loading actions when going to a category page',
+        fakeAsync(() => {
+          const i = store.actionsIterator(['[Shopping]']);
+          expect(i.next()).toEqual(new SelectCategory('A.123'));
+          expect(i.next()).toEqual(new LoadCategory('A'));
+          expect(i.next()).toEqual(new LoadCategory('A.123'));
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('category page', () => {
@@ -245,7 +238,7 @@ describe('Shopping Store', () => {
     it(
       'should load necessary data when going to a category page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'B']);
+        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual([]);
       })
     );
@@ -298,7 +291,7 @@ describe('Shopping Store', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'B']);
+          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual([]);
         })
       );
@@ -333,7 +326,7 @@ describe('Shopping Store', () => {
     it(
       'should load all products and required categories when going to a family page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       })
     );
@@ -456,7 +449,7 @@ describe('Shopping Store', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
         })
       );
@@ -491,7 +484,7 @@ describe('Shopping Store', () => {
     it(
       'should load the product and its required categories when going to a product page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
@@ -565,7 +558,7 @@ describe('Shopping Store', () => {
       it(
         'should load the sibling products when they are not yet loaded',
         fakeAsync(() => {
-          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
         })
       );
@@ -604,7 +597,7 @@ describe('Shopping Store', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1']);
         })
       );
@@ -640,7 +633,7 @@ describe('Shopping Store', () => {
     it(
       'should load the product ang top level categories when going to a product page',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
+        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
@@ -693,7 +686,7 @@ describe('Shopping Store', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoriesIds(store.state)).toEqual(['A.123', 'A', 'B']);
+          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1']);
         })
       );
@@ -728,7 +721,7 @@ describe('Shopping Store', () => {
     it(
       'should load only family page content and redirect to error when product was not found',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
+        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual([]);
       })
     );
@@ -793,7 +786,7 @@ describe('Shopping Store', () => {
     it(
       'should load only some categories and redirect to error when category was not found',
       fakeAsync(() => {
-        expect(getCategoriesIds(store.state)).toEqual(['A', 'A.123', 'B']);
+        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual([]);
       })
     );
