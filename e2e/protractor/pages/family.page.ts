@@ -10,7 +10,7 @@ export class FamilyPage {
     return $$('ish-product-tile').count();
   }
 
-  gotoProductDetailPage(sku) {
+  gotoProductDetailPageBySku(sku) {
     $('#product-' + sku).click();
     return new ProductPage();
   }
