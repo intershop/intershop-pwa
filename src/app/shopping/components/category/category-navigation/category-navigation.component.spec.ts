@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { createCategoryView } from '../../../../models/category-view/category-view.model';
 import { Category } from '../../../../models/category/category.model';
+import { categoryTree } from '../../../../utils/dev/test-data-utils';
 import { CategoryNavigationComponent } from './category-navigation.component';
 
 describe('Category Navigation Component', () => {
@@ -18,8 +20,13 @@ describe('Category Navigation Component', () => {
         .then(() => {
           fixture = TestBed.createComponent(CategoryNavigationComponent);
           component = fixture.componentInstance;
-          component.categoryPath = [{}] as Category[];
           element = fixture.nativeElement;
+
+          const tree = categoryTree([
+            { uniqueId: 'A', categoryPath: ['A'] },
+            { uniqueId: 'A.1', categoryPath: ['A', 'A.1'] },
+          ] as Category[]);
+          component.category = createCategoryView(tree, 'A');
         });
     })
   );

@@ -1,6 +1,5 @@
 import { createSelector } from '@ngrx/store';
 import { createCategoryView } from '../../../models/category-view/category-view.model';
-import { Category } from '../../../models/category/category.model';
 import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
@@ -28,20 +27,6 @@ export const getCategories = createSelector(getCategoryTree, tree => tree.ids.ma
  */
 export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, (tree, id) =>
   createCategoryView(tree, id)
-);
-
-export const getSelectedCategoryPath = createSelector(
-  getCategoryEntities,
-  getSelectedCategory,
-  (entities, category): Category[] => {
-    const categories: Category[] = [];
-    if (category) {
-      category.categoryPath.forEach(uniqueId => {
-        categories.push(entities[uniqueId]);
-      });
-    }
-    return categories;
-  }
 );
 
 export const getCategoriesProductSKUs = createSelector(getCategoryState, state => state.categoriesProductSKUs);

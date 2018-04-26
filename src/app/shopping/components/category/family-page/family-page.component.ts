@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Category } from '../../../../models/category/category.model';
+import { CategoryView } from '../../../../models/category-view/category-view.model';
 import { Product } from '../../../../models/product/product.model';
 import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
@@ -9,8 +9,7 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FamilyPageComponent {
-  @Input() category: Category;
-  @Input() categoryPath: Category[];
+  @Input() category: CategoryView;
   @Input() products: Product[];
   @Input() totalItems: number;
   @Input() viewType: ViewType;

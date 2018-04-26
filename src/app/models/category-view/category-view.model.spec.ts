@@ -72,22 +72,21 @@ describe('CategoryView Factory', () => {
     expect(view.hasChildren()).toBe(true);
     expect(view.children().length).toEqual(1);
 
-    expect(view.children()[0].uniqueId).toEqual('123.456');
-    expect(view.children()[0].hasChildren()).toBe(true);
-    expect(view.children()[0].children().length).toEqual(1);
+    const subCategory = view.children()[0];
+    expect(subCategory.uniqueId).toEqual('123.456');
+    expect(subCategory.hasChildren()).toBe(true);
+    expect(subCategory.children().length).toEqual(1);
 
-    expect(view.children()[0].children()[0].uniqueId).toEqual('123.456.789');
-    expect(
-      view
-        .children()[0]
-        .children()[0]
-        .hasChildren()
-    ).toBe(false);
-    expect(
-      view
-        .children()[0]
-        .children()[0]
-        .children()
-    ).toEqual([]);
+    const subSubCategory = subCategory.children()[0];
+    expect(subSubCategory.uniqueId).toEqual('123.456.789');
+    expect(subSubCategory.hasChildren()).toBe(false);
+    expect(subSubCategory.children()).toEqual([]);
+  });
+
+  it('should provide acces to the category path of a category', () => {
+    const tree = categoryTree([cat1, cat11, cat111]);
+    const view = createCategoryView(tree, '123.456.789');
+
+    expect(view.pathCategories().map(v => v.uniqueId)).toEqual(['123', '123.456', '123.456.789']);
   });
 });

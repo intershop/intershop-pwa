@@ -28,17 +28,17 @@ describe('Category Page Container', () => {
           MockComponent({
             selector: 'ish-breadcrumb',
             template: 'Breadcrumb Component',
-            inputs: ['category', 'categoryPath'],
+            inputs: ['category'],
           }),
           MockComponent({
             selector: 'ish-category-page',
             template: 'Category Page Component',
-            inputs: ['category', 'categoryPath'],
+            inputs: ['category'],
           }),
           MockComponent({
             selector: 'ish-family-page',
             template: 'Family Page Component',
-            inputs: ['category', 'categoryPath', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
+            inputs: ['category', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
           }),
           MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         ],
