@@ -27,7 +27,7 @@ e2e:
   - docker-executor
   image: selenium/standalone-chrome
   script:
-  - ./gradlew -q --no-daemon --max-workers 1 --continue -Dgeb.env=ci test protractor
+  - ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci test protractor
   - bash .gitlab-ci-test-universal.sh
 
 .job-template: &job_definition
