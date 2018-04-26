@@ -93,8 +93,8 @@ export class CategoriesEffects {
   );
 
   /**
-   * trigger LoadProductsForCategory if we are on a family page
-   * and the corresponding products were not yet loaded
+   * Trigger LoadProductsForCategory if we are on a family page
+   * and the corresponding products were not yet loaded.
    */
   @Effect()
   productOrCategoryChanged$ = combineLatest(

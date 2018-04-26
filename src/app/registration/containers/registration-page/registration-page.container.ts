@@ -52,6 +52,7 @@ export class RegistrationPageContainerComponent implements OnInit {
     this.store.dispatch(new CreateUser(customer));
   }
 
+  // TODO: should come from configuration?
   private getTitles(countryCode: string): Observable<string[]> {
     let salutationlabels = [];
 

@@ -15,14 +15,14 @@ export const {
 /**
  * Retrieves the currently selected categoryUniqueId.
  * Be aware that it can have invalid values and it can change
- * so the referenced category might not yet be available
+ * so the referenced category might not yet be available.
  *
- * When in doubt prefere using getSelectedCategory
+ * When in doubt prefere using getSelectedCategory.
  */
 export const getSelectedCategoryId = createSelector(getCategoryState, state => state.selected);
 
 /**
- * retrieves the currently resolved selected category
+ * Retrieves the currently resolved selected category.
  */
 export const getSelectedCategory = createSelector(
   getCategoryEntities,

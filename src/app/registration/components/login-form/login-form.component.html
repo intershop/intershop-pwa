@@ -20,7 +20,7 @@
         </div>
 
         <form name="LoginUserForm" [formGroup]="form" class="form-horizontal" (ngSubmit)="submitForm()">
-          <!-- Hidden Fields in ISML -->
+
           <p>{{'account.login.message' | translate}}</p>
 
           <ng-container *ngIf="loginType === 'email'; else userLoginWithUserName">
