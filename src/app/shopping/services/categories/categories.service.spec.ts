@@ -13,13 +13,13 @@ describe('Categories Service', () => {
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     when(apiServiceMock.get('categories', anything(), anything(), anything())).thenReturn(
-      of([{ id: 'blubb' }] as CategoryData[])
+      of([{ categoryPath: [{ id: 'blubb' }] }] as CategoryData[])
     );
     when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(
-      of({ id: 'blubb' } as CategoryData)
+      of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
     );
     when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(
-      of({ id: 'blubb' } as CategoryData)
+      of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
     );
     TestBed.configureTestingModule({
       providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }, CategoriesService],
