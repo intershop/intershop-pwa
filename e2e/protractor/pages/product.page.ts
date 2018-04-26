@@ -7,7 +7,7 @@ export class ProductPage {
   }
 
   getPrice() {
-    return $('div#current-price').getText();
+    return $('div[data-testing-id="current-price"]').getText();
   }
 
   isComplete(): promise.Promise<boolean> {

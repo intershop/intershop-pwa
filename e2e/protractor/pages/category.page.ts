@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, promise } from 'protractor';
+import { $, $$, browser, promise } from 'protractor';
 import { FamilyPage } from './family.page';
 
 export class CategoryPage {
