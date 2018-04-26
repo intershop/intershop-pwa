@@ -1,17 +1,14 @@
-import { $, $$, browser, promise } from 'protractor';
-import { ProductPage } from './product.page';
+import { $, $$, promise } from 'protractor';
+import { Page } from './page.interface';
 
-export class FamilyPage {
-  static navigateTo(categoryId) {
-    browser.get('/category/' + categoryId);
-    return new FamilyPage();
-  }
+export class FamilyPage implements Page {
+  tag = 'ish-family-page';
+
   getVisibleProductsCount(): promise.Promise<number> {
     return $$('ish-product-tile').count();
   }
 
   gotoProductDetailPageBySku(sku) {
     $('#product-' + sku).click();
-    return new ProductPage();
   }
 }

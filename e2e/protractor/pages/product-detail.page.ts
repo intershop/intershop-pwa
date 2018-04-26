@@ -1,6 +1,8 @@
 import { $, promise } from 'protractor';
+import { Page } from './page.interface';
 
-export class ProductPage {
+export class ProductDetailPage implements Page {
+  tag = 'ish-product-page-container';
   addToCardButton = $('[data-testing-id="addToCartButton"]');
   getSku() {
     return $('span[itemprop="sku"]').getText();

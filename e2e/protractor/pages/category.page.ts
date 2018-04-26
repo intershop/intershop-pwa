@@ -1,20 +1,11 @@
-import { $, $$, browser, promise } from 'protractor';
-import { FamilyPage } from './family.page';
+import { $, $$, promise } from 'protractor';
+import { Page } from './page.interface';
 
-export class CategoryPage {
-  static navigateTo(categoryId) {
-    browser.get('/category/' + categoryId);
-    return new CategoryPage();
-  }
+export class CategoryPage implements Page {
+  tag = 'ish-category-page';
 
-  gotoSubCategory(categoryId): CategoryPage | FamilyPage {
+  gotoSubCategory(categoryId) {
     $('div[data-testing-id="' + categoryId + '"] a').click();
-    if ($('ish-family-page').isPresent()) {
-      return new FamilyPage();
-    }
-    if ($('ish-category-page').isPresent()) {
-      return new CategoryPage();
-    }
   }
 
   getSubCategoryCount(): promise.Promise<number> {
