@@ -1,19 +1,19 @@
-import { $, browser, by, element } from 'protractor';
-import { CategoryPage } from './category.page';
+import { $, browser } from 'protractor';
+import { Page } from './page.interface';
 
-export class HomePage {
+export class HomePage implements Page {
+  tag = 'ish-home-page-container';
+
   static navigateTo() {
     browser.get('/');
-    return new HomePage();
   }
 
   getCategoryLink(categoryId) {
-    return element(by.css('[data-testing-id="' + categoryId + '"]'));
+    return $('[data-testing-id="' + categoryId + '"]');
   }
 
-  gotoCategoryPage(categoryId): CategoryPage {
+  gotoCategoryPage(categoryId) {
     $('[data-testing-id="' + categoryId + '"]').click();
-    return new CategoryPage();
   }
   getContent() {
     return $('body').getText();
