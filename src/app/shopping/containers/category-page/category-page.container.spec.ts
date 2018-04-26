@@ -1,13 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { CoreState } from '../../../core/store/core.state';
 import { Category } from '../../../models/category/category.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
-import { LoadCategory, LoadCategorySuccess } from '../../store/categories';
+import { LoadCategory, LoadCategorySuccess, SelectCategory } from '../../store/categories';
 import { shoppingReducers } from '../../store/shopping.system';
 import { CategoryPageContainerComponent } from './category-page.container';
 
@@ -23,7 +21,6 @@ describe('Category Page Container', () => {
         imports: [
           StoreModule.forRoot({
             shopping: combineReducers(shoppingReducers),
-            routerReducer,
           }),
         ],
         declarations: [
@@ -81,11 +78,7 @@ describe('Category Page Container', () => {
     const category = { uniqueId: 'dummy' } as Category;
     category.hasOnlineSubCategories = true;
     store$.dispatch(new LoadCategorySuccess(category));
-    const routerAction = navigateMockAction({
-      url: `/category/${category.uniqueId}`,
-      params: { categoryUniqueId: category.uniqueId },
-    });
-    store$.dispatch(routerAction);
+    store$.dispatch(new SelectCategory(category.uniqueId));
 
     fixture.detectChanges();
 
@@ -97,11 +90,7 @@ describe('Category Page Container', () => {
     const category = { uniqueId: 'dummy' } as Category;
     category.hasOnlineProducts = true;
     store$.dispatch(new LoadCategorySuccess(category));
-    const routerAction = navigateMockAction({
-      url: `/category/${category.uniqueId}`,
-      params: { categoryUniqueId: category.uniqueId },
-    });
-    store$.dispatch(routerAction);
+    store$.dispatch(new SelectCategory(category.uniqueId));
 
     fixture.detectChanges();
 

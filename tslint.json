@@ -190,7 +190,12 @@
       {"name": ["*", "ngOnInit"], "message": "Use fixture.detectChanges instead!"},
       {"name": ["*", "unsubscribe"], "message": "Do it another way: https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87"},
       {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"},
-      {"name": ["spyOn"], "message": "Use ts-mockito instead!"}
+      {"name": ["spyOn"], "message": "Use ts-mockito instead!"},
+      {"name": ["*", "select"], "message": "Use store.pipe(select()) instead!"}
+    ],
+    "ban-specific-imports": [
+      true,
+      { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." }
     ],
     "no-suspicious-variable-init-in-tests": {
       "severity": "error",

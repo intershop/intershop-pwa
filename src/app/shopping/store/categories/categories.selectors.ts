@@ -1,21 +1,29 @@
 import { createSelector } from '@ngrx/store';
-import * as fromRouter from '../../../core/store/router';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
-import * as productsSelectors from '../products/products.selectors';
+import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 import { categoryAdapter } from './categories.reducer';
 
 const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
 
-export const { selectEntities: getCategoryEntities, selectAll: getCategories } = categoryAdapter.getSelectors(
-  getCategoryState
-);
+export const {
+  selectEntities: getCategoryEntities,
+  selectAll: getCategories,
+  selectIds: getCategoriesIds,
+} = categoryAdapter.getSelectors(getCategoryState);
 
-export const getSelectedCategoryId = createSelector(
-  fromRouter.getRouterState,
-  router => router && router.state && router.state.params.categoryUniqueId
-);
+/**
+ * Retrieves the currently selected categoryUniqueId.
+ * Be aware that it can have invalid values and it can change
+ * so the referenced category might not yet be available
+ *
+ * When in doubt prefere using getSelectedCategory
+ */
+export const getSelectedCategoryId = createSelector(getCategoryState, state => state.selected);
 
+/**
+ * retrieves the currently resolved selected category
+ */
 export const getSelectedCategory = createSelector(
   getCategoryEntities,
   getSelectedCategoryId,
@@ -24,11 +32,11 @@ export const getSelectedCategory = createSelector(
 
 export const getSelectedCategoryPath = createSelector(
   getCategoryEntities,
-  getSelectedCategoryId,
-  (entities, categoryUniqueId): Category[] => {
+  getSelectedCategory,
+  (entities, category): Category[] => {
     const categories: Category[] = [];
-    if (categoryUniqueId) {
-      CategoryHelper.getCategoryPathUniqueIds(categoryUniqueId).forEach(uniqueId => {
+    if (category) {
+      CategoryHelper.getCategoryPathUniqueIds(category.uniqueId).forEach(uniqueId => {
         categories.push(entities[uniqueId]);
       });
     }
@@ -40,14 +48,14 @@ export const getCategoriesProductSKUs = createSelector(getCategoryState, state =
 
 export const getProductSKUsForSelectedCategory = createSelector(
   getCategoriesProductSKUs,
-  getSelectedCategoryId,
-  (categoriesProductSKUs, uniqueId) => categoriesProductSKUs[uniqueId] || []
+  getSelectedCategory,
+  (categoriesProductSKUs, category) => (!!category ? categoriesProductSKUs[category.uniqueId] || [] : [])
 );
 
 export const getProductsForSelectedCategory = createSelector(
   getSelectedCategory,
   getProductSKUsForSelectedCategory,
-  productsSelectors.getProductEntities,
+  getProductEntities,
   (category, skus, products) => (category && skus && skus.map(sku => products[sku])) || []
 );
 
@@ -56,15 +64,10 @@ export const getProductCountForSelectedCategory = createSelector(
   skus => (skus && skus.length) || 0
 );
 
-export const getSelectedCategoryProductsNeeded = createSelector(
+export const productsForSelectedCategoryAreNotLoaded = createSelector(
   getSelectedCategory,
-  productsSelectors.getSelectedProductId,
   getProductSKUsForSelectedCategory,
-  (c, selectedProductSku, skus) => {
-    if (!selectedProductSku && c && c.hasOnlineProducts && !skus.length) {
-      return [c, selectedProductSku, skus];
-    }
-  }
+  (c, skus) => c && c.hasOnlineProducts && !skus.length
 );
 
 export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);

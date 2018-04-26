@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { catchError, concatMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
@@ -80,7 +80,7 @@ export class BasketEffects {
   loadProductsForBasket$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.LoadBasketItemsSuccess),
     map((action: basketActions.LoadBasketItemsSuccess) => action.payload),
-    withLatestFrom(this.store.select(getProductEntities)),
+    withLatestFrom(this.store.pipe(select(getProductEntities))),
     switchMap(([basketItems, products]) => [
       ...basketItems
         .filter(lineItem => !products[lineItem.product.sku])
@@ -95,7 +95,7 @@ export class BasketEffects {
   addItemToBasket$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.AddProductToBasket),
     map((action: basketActions.AddProductToBasket) => action.payload),
-    withLatestFrom(this.store.select(getCurrentBasket)),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([payload, basket]) => {
       return this.basketService
         .addItemToBasket(payload.sku, payload.quantity, basket.id)
