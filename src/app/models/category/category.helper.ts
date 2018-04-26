@@ -28,6 +28,8 @@ export class CategoryHelper {
 
   /**
    * Expands a given uniqueId to the category path categories uniqueIds.
+   *
+   * Don't use this if you already have a {@link Category} with a categoryPath.
    * @example
    * 'A.B.C' -> ['A', 'A.B', 'A.B.C']
    */
