@@ -14,7 +14,7 @@ exports[`Category List Component should be created 1`] = `
     >
       <div
         class="category-name"
-        data-testing-id="category-id1"
+        data-testing-id="category-uid1"
       >
         <a
           href="/category/uid1"
@@ -38,7 +38,7 @@ exports[`Category List Component should be created 1`] = `
     >
       <div
         class="category-name"
-        data-testing-id="category-id2"
+        data-testing-id="category-uid2"
       >
         <a
           href="/category/uid2"

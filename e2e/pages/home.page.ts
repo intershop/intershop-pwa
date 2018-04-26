@@ -10,12 +10,8 @@ export class HomePage {
     browser.get('/');
   }
 
-  getCategoryLink(categoryId) {
-    return $('[data-testing-id="' + categoryId + '"]');
-  }
-
-  gotoCategoryPage(categoryId) {
-    $('[data-testing-id="' + categoryId + '"]').click();
+  gotoCategoryPage(categoryUniqueId) {
+    $('[data-testing-id="' + categoryUniqueId + '-link"]').click();
   }
 
   getContent() {
