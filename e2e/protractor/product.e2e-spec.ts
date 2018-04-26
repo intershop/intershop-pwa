@@ -1,8 +1,6 @@
-import { $, $$, browser, by, element } from 'protractor';
-import { CategoryPage } from './pages/category.page';
+import { browser } from 'protractor';
 import { FamilyPage } from './pages/family.page';
 import { HomePage } from './pages/home.page';
-import { ProofOfConceptPage } from './pages/proof-of-concept.page';
 
 describe('proof-of-concept App', () => {
   beforeAll(() => browser.waitForAngularEnabled(false));
@@ -22,7 +20,7 @@ describe('proof-of-concept App', () => {
     const familyPage = FamilyPage.navigateTo('Cameras-Camcorders.584');
     expect(familyPage.getVisibleProductsCount()).toBe(2);
 
-    const productPage = familyPage.gotoProductDetailPage('3953312');
+    const productPage = familyPage.gotoProductDetailPageBySku('3953312');
     expect(productPage.isComplete()).toBe(true);
 
     expect(productPage.getSku()).toBe('3953312');
