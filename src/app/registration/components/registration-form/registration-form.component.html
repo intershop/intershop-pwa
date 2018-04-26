@@ -8,7 +8,6 @@
 <div class="section" data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
 
-    <!--ish-email-password component-->
     <h2>{{'account.register.email_password.heading' | translate}}</h2>
     <p>{{'account.register.email_password.message' | translate}}</p>
     <div class="section">
@@ -31,13 +30,16 @@
             [countryCode]="countryCode"
             [regions]="regions"
             [titles]="titles"
-            [countries]="countries"></ish-address-form>
+            [countries]="countries"
+          ></ish-address-form>
 
-          <!--
+          <!--- TODO: language and birthday selection
           <ish-registration-personal-form
           [parentForm]="form"
           [languages]="languages"></ish-registration-personal-form>
+          -->
 
+          <!--- TODO: captcha integration
           <ish-captcha [parentForm]="form" controlName="captcha"></ish-captcha>
           -->
 
