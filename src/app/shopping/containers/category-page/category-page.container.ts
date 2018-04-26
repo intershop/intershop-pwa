@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { filter } from 'rxjs/operators';
-import { Category } from '../../../models/category/category.model';
+import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
 import * as fromStore from '../../store/categories';
@@ -16,9 +15,8 @@ import * as fromViewconf from '../../store/viewconf';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryPageContainerComponent implements OnInit {
-  category$: Observable<Category>;
+  category$: Observable<CategoryView>;
   categoryLoading$: Observable<boolean>;
-  categoryPath$: Observable<Category[]> = of([]); // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
   products$: Observable<Product[]>;
   totalItems$: Observable<number>;
   viewType$: Observable<ViewType>;
@@ -28,7 +26,6 @@ export class CategoryPageContainerComponent implements OnInit {
   constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
-    // TODO: find a nicer way to filter out the case of an 'undefined' category
     this.category$ = this.store.pipe(select(fromStore.getSelectedCategory), filter(e => !!e));
     this.categoryLoading$ = this.store.pipe(select(fromStore.getCategoryLoading));
 
@@ -37,9 +34,6 @@ export class CategoryPageContainerComponent implements OnInit {
     this.viewType$ = this.store.pipe(select(fromViewconf.getViewType));
     this.sortBy$ = this.store.pipe(select(fromViewconf.getSortBy));
     this.sortKeys$ = this.store.pipe(select(fromViewconf.getSortKeys));
-
-    // TODO: only category should be needed once the REST call returns the categoryPath as part of the category
-    this.categoryPath$ = this.store.pipe(select(fromStore.getSelectedCategoryPath));
   }
 
   changeViewType(viewType: ViewType) {

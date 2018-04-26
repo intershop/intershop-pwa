@@ -30,7 +30,6 @@ describe('Categories Selectors', () => {
   let products$: Observable<Product[]>;
   let selectedCategory$: Observable<Category>;
   let selectedCategoryId$: Observable<string>;
-  let selectedCategoryPath$: Observable<Category[]>;
   let topLevelCategories$: Observable<Category[]>;
 
   let cat: Category;
@@ -58,7 +57,6 @@ describe('Categories Selectors', () => {
     products$ = store$.pipe(select(s.getProductsForSelectedCategory));
     selectedCategory$ = store$.pipe(select(s.getSelectedCategory));
     selectedCategoryId$ = store$.pipe(select(s.getSelectedCategoryId));
-    selectedCategoryPath$ = store$.pipe(select(s.getSelectedCategoryPath));
     topLevelCategories$ = store$.pipe(select(s.getTopLevelCategories));
   });
 
@@ -72,7 +70,6 @@ describe('Categories Selectors', () => {
     it('should not select any selected category when used', () => {
       expect(selectedCategory$).toBeObservable(c(undefined));
       expect(selectedCategoryId$).toBeObservable(c(undefined));
-      expect(selectedCategoryPath$).toBeObservable(c([]));
       expect(productCount$).toBeObservable(c(0));
       expect(products$).toBeObservable(c([]));
     });
@@ -130,7 +127,6 @@ describe('Categories Selectors', () => {
       it('should not select the irrelevant category when used', () => {
         expect(selectedCategory$).toBeObservable(c(undefined));
         expect(selectedCategoryId$).toBeObservable(c(undefined));
-        expect(selectedCategoryPath$).toBeObservable(c([]));
         expect(productCount$).toBeObservable(c(0));
         expect(products$).toBeObservable(c([]));
       });
@@ -151,7 +147,6 @@ describe('Categories Selectors', () => {
       it('should select the selected category when used', () => {
         expect(selectedCategory$.pipe(map(ca => ca.uniqueId))).toBeObservable(c(cat.uniqueId));
         expect(selectedCategoryId$).toBeObservable(c(cat.uniqueId));
-        expect(selectedCategoryPath$).toBeObservable(c([cat]));
         expect(productCount$).toBeObservable(c(1));
         expect(products$).toBeObservable(c([prod]));
       });
