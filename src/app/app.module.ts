@@ -1,13 +1,13 @@
 import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
-import { NgModule } from '@angular/core';
+import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { EffectsModule } from '@ngrx/effects';
-import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
+import { TranslateService } from '@ngx-translate/core';
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
 import { Scheduler } from 'rxjs/Scheduler';
 import { async } from 'rxjs/scheduler/async';
@@ -31,7 +31,7 @@ import {
   REST_ENDPOINT,
 } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
-import { coreEffects, coreReducers, CustomSerializer } from './core/store/core.system';
+import { coreEffects, coreReducers } from './core/store/core.system';
 import { localStorageSyncReducer } from './core/store/local-storage-sync/local-storage-sync.reducer';
 import { RegistrationModule } from './registration/registration.module';
 import { ShoppingModule } from './shopping/shopping.module';
@@ -66,11 +66,9 @@ export const metaReducers: MetaReducer<any>[] = [
     AppRoutingModule,
     StoreModule.forRoot(coreReducers, { metaReducers }),
     EffectsModule.forRoot(coreEffects),
-    StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [
-    { provide: RouterStateSerializer, useClass: CustomSerializer },
     { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },
     { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
     { provide: ICM_APPLICATION, useFactory: getICMApplication(), deps: [StatePropertiesService] },
@@ -92,9 +90,13 @@ export const metaReducers: MetaReducer<any>[] = [
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor() {
+  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
     registerLocaleData(localeDe);
     // TODO: https://github.com/angular/angular/issues/21809
     // registerLocaleData(localeFr);
+
+    console.log(lang);
+
+    translateService.setDefaultLang(lang.replace(/\-/, '_'));
   }
 }

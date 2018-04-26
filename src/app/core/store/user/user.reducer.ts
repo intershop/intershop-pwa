@@ -1,5 +1,4 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { Action } from '@ngrx/store';
 import { Customer } from '../../../models/customer/customer.model';
 import { CreateUserFail, LoginUserFail, LoginUserSuccess, UserActionTypes } from './user.actions';
@@ -22,7 +21,7 @@ export const initialState: UserState = {
 
 export function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
-    case ROUTER_NAVIGATION: {
+    case UserActionTypes.UserErrorReset: {
       return {
         ...state,
         error: undefined,

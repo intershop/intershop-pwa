@@ -1,13 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { CoreState } from '../../../core/store/core.state';
 import { Product } from '../../../models/product/product.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
-import { LoadProduct, LoadProductSuccess } from '../../store/products';
+import { LoadProduct, LoadProductSuccess, SelectProduct } from '../../store/products';
 import { shoppingReducers } from '../../store/shopping.system';
 import { ProductPageContainerComponent } from './product-page.container';
 
@@ -23,7 +21,6 @@ describe('Product Page Container', () => {
         imports: [
           StoreModule.forRoot({
             shopping: combineReducers(shoppingReducers),
-            routerReducer,
           }),
         ],
         declarations: [
@@ -73,11 +70,7 @@ describe('Product Page Container', () => {
   it('should display product-detail when product is available', () => {
     const product = { sku: 'dummy' } as Product;
     store$.dispatch(new LoadProductSuccess(product));
-    const routerAction = navigateMockAction({
-      url: `/product/${product.sku}`,
-      params: { sku: product.sku },
-    });
-    store$.dispatch(routerAction);
+    store$.dispatch(new SelectProduct(product.sku));
 
     fixture.detectChanges();
 

@@ -1,14 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
 import { c } from '../../../utils/dev/marbles-utils';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { LoadProduct, LoadProductFail, LoadProductSuccess } from './products.actions';
+import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
 import * as s from './products.selectors';
 
 describe('Products Selectors', () => {
@@ -29,7 +27,6 @@ describe('Products Selectors', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer,
         }),
       ],
     });
@@ -109,7 +106,7 @@ describe('Products Selectors', () => {
 
     describe('with product route', () => {
       beforeEach(() => {
-        store$.dispatch(navigateMockAction({ url: '/any', params: { sku: prod.sku } }));
+        store$.dispatch(new SelectProduct(prod.sku));
       });
 
       it('should return the product information when used', () => {

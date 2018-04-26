@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
+import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable } from 'rxjs/Observable';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
 import { Locale } from '../../../models/locale/locale.model';
@@ -52,13 +52,13 @@ describe('LocaleEffects', () => {
   });
 
   describe('loadAllLocales$', () => {
-    it('should load all locales on effects init', () => {
-      const action = { type: ROOT_EFFECTS_INIT } as Action;
+    it('should load all locales on first routing action and only then', () => {
+      const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
       const expected = new SetAvailableLocales(defaultLocales);
 
-      actions$ = hot('-a', { a: action });
+      actions$ = hot('-a--a-----a', { a: action });
 
-      expect(effects.loadAllLocales$).toBeObservable(cold('-b', { b: expected }));
+      expect(effects.loadAllLocales$).toBeObservable(cold('-(b|)-------------', { b: expected }));
     });
   });
 

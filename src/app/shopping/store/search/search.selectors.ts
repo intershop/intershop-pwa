@@ -1,14 +1,8 @@
 import { createSelector } from '@ngrx/store';
-import { getRouterState } from '../../../core/store/router';
 import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
 export const getSearchState = createSelector(getShoppingState, (state: ShoppingState) => state.search);
-
-export const getRequestedSearchTerm = createSelector(
-  getRouterState,
-  router => router && router.state && router.state.params.searchTerm
-);
 
 export const getSearchLoading = createSelector(getSearchState, state => state.loading);
 

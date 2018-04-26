@@ -2,9 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { routerReducer } from '@ngrx/router-store';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
@@ -13,7 +13,6 @@ import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
-import { navigateMockAction } from '../../../utils/dev/navigate-mock.action';
 import { ProductsService } from '../../services/products/products.service';
 import * as fromCategories from '../categories';
 import { ShoppingState } from '../shopping.state';
@@ -28,6 +27,7 @@ describe('ProductsEffects', () => {
   let store$: Store<ShoppingState>;
   let productsServiceMock: ProductsService;
   const DE_DE = { lang: 'de' } as Locale;
+  const EN_US = { lang: 'en' } as Locale;
 
   const router = mock(Router);
 
@@ -53,7 +53,6 @@ describe('ProductsEffects', () => {
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
-          routerReducer,
           locale: localeReducer,
         }),
       ],
@@ -142,44 +141,60 @@ describe('ProductsEffects', () => {
     });
   });
 
+  describe('routeListenerForSelectingProducts$', () => {
+    it('should fire SelectProduct when route /category/XXX/product/YYY is navigated', () => {
+      const action = new RouteNavigation({
+        path: 'category/:categoryUniqueId/product/:sku',
+        params: { categoryUniqueId: 'dummy', sku: 'foobar' },
+        queryParams: {},
+      });
+      const expected = new fromActions.SelectProduct('foobar');
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('a', { a: expected }));
+    });
+
+    it('should fire SelectProduct when route /product/YYY is navigated', () => {
+      const action = new RouteNavigation({
+        path: 'product/:sku',
+        params: { sku: 'foobar' },
+        queryParams: {},
+      });
+      const expected = new fromActions.SelectProduct('foobar');
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('a', { a: expected }));
+    });
+
+    it('should not fire SelectProduct when route /something is navigated', () => {
+      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForSelectingProducts$).toBeObservable(cold('-'));
+    });
+  });
+
   describe('selectedProduct$', () => {
     it('should map to LoadProduct when product is selected', () => {
       const sku = 'P123';
-      const categoryUniqueId = '123';
+      actions$ = hot('a', { a: new fromActions.SelectProduct(sku) });
+      expect(effects.selectedProduct$).toBeObservable(cold('a', { a: new fromActions.LoadProduct(sku) }));
+    });
 
-      // select product
-      const routerAction = navigateMockAction({
-        url: `/category/${categoryUniqueId}/product/${sku}`,
-        params: { categoryUniqueId, sku },
-      });
-      store$.dispatch(routerAction);
-
-      const expectedValues = {
-        a: new fromActions.LoadProduct(sku),
-      };
-
-      expect(effects.selectedProduct$).toBeObservable(cold('a', expectedValues));
+    it('should fire LoadProduct when product is undefined', () => {
+      actions$ = hot('a', { a: new fromActions.SelectProduct(undefined) });
+      expect(effects.selectedProduct$).toBeObservable(cold('-'));
     });
   });
 
   describe('languageChange$', () => {
-    it('should refetch product when language is changed', () => {
+    it('should refetch product when language is changed distinctly ignoring the first time', () => {
       const sku = 'P123';
-      const categoryUniqueId = '123';
 
-      // select product
-      const routerAction = navigateMockAction({
-        url: `/category/${categoryUniqueId}/product/${sku}`,
-        params: { categoryUniqueId, sku },
-      });
-      store$.dispatch(routerAction);
-      store$.dispatch(new SelectLocale(DE_DE));
+      store$.dispatch(new fromActions.SelectProduct(sku));
+      actions$ = hot('-a--b--b--a', { a: new SelectLocale(DE_DE), b: new SelectLocale(EN_US) });
 
-      const expectedValues = {
-        a: new fromActions.LoadProduct(sku),
-      };
-
-      expect(effects.languageChange$).toBeObservable(cold('a', expectedValues));
+      expect(effects.languageChange$).toBeObservable(cold('----a-----a', { a: new fromActions.LoadProduct(sku) }));
     });
   });
 

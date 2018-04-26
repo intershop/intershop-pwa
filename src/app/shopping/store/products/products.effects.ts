@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
@@ -10,12 +11,13 @@ import {
   filter,
   map,
   mergeMap,
+  skip,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
-import { getCurrentLocale } from '../../../core/store/locale';
+import { LocaleActionTypes } from '../../../core/store/locale';
 import { ProductsService } from '../../services/products/products.service';
 import * as categoriesActions from '../categories/categories.actions';
 import { ShoppingState } from '../shopping.state';
@@ -55,10 +57,11 @@ export class ProductsEffects {
       this.productsService
         .getCategoryProducts(categoryUniqueId, sortBy)
         .pipe(
-          switchMap(res => [
+          withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+          switchMap(([res, entities]) => [
             new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
             new fromViewconf.SetSortKeys(res.sortKeys),
-            ...res.skus.map(sku => new productsActions.LoadProduct(sku)),
+            ...res.skus.filter(sku => !entities[sku]).map(sku => new productsActions.LoadProduct(sku)),
           ]),
           catchError(error => of(new productsActions.LoadProductFail(error)))
         )
@@ -66,17 +69,30 @@ export class ProductsEffects {
   );
 
   @Effect()
-  selectedProduct$ = this.store.pipe(
-    select(productsSelectors.getSelectedProductId),
-    filter(id => !!id),
-    map(id => new productsActions.LoadProduct(id))
+  routeListenerForSelectingProducts$ = this.actions$.pipe(
+    ofType(ROUTER_NAVIGATION_TYPE),
+    map((action: RouteNavigation) => action.payload.params['sku']),
+    withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
+    filter(([fromAction, fromStore]) => fromAction !== fromStore),
+    map(([sku]) => new productsActions.SelectProduct(sku))
   );
 
   @Effect()
-  languageChange$ = this.store.pipe(
-    select(getCurrentLocale),
-    filter(x => !!x),
+  selectedProduct$ = this.actions$.pipe(
+    ofType(productsActions.ProductsActionTypes.SelectProduct),
+    map((action: productsActions.SelectProduct) => action.payload),
+    filter(sku => !!sku),
+    map(sku => new productsActions.LoadProduct(sku))
+  );
+
+  /**
+   * reload the current (if available) product when language is changed
+   */
+  @Effect()
+  languageChange$ = this.actions$.pipe(
+    ofType(LocaleActionTypes.SelectLocale),
     distinctUntilChanged(),
+    skip(1), // ignore app init language selection
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([locale, sku]) => !!sku),
     map(([locale, sku]) => new productsActions.LoadProduct(sku))

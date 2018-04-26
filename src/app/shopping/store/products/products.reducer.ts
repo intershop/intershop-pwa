@@ -9,14 +9,23 @@ export const productAdapter: EntityAdapter<Product> = createEntityAdapter<Produc
 
 export interface ProductsState extends EntityState<Product> {
   loading: boolean;
+  selected: string;
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   loading: false,
+  selected: undefined,
 });
 
 export function productsReducer(state = initialState, action: ProductsAction): ProductsState {
   switch (action.type) {
+    case ProductsActionTypes.SelectProduct: {
+      return {
+        ...state,
+        selected: action.payload,
+      };
+    }
+
     case ProductsActionTypes.LoadProduct: {
       return {
         ...state,

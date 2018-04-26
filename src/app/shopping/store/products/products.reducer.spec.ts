@@ -13,6 +13,15 @@ describe('Products Reducer', () => {
     });
   });
 
+  describe('SelectProduct', () => {
+    it('should select a product when reduced', () => {
+      const action = new fromActions.SelectProduct('dummy');
+      const state = productsReducer(initialState, action);
+
+      expect(state.selected).toEqual('dummy');
+    });
+  });
+
   describe('LoadProduct actions', () => {
     describe('LoadProduct action', () => {
       it('should set loading to true', () => {
