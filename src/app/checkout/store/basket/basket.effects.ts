@@ -120,7 +120,7 @@ export class BasketEffects {
       const basketId = payload.basketId || basket.id;
 
       return this.basketService
-        .addProductsToBasket(payload.items, basketId)
+        .addItemsToBasket(payload.items, basketId)
         .pipe(
           map(() => new basketActions.AddItemsToBasketSuccess()),
           catchError(error => of(new basketActions.AddItemsToBasketFail(error)))

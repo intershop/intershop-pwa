@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { _throw } from 'rxjs/observable/throw';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
@@ -8,15 +9,6 @@ import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
-
-interface Body {
-  elements: {
-    sku: string;
-    quantity: {
-      value: number;
-    };
-  }[];
-}
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -42,29 +34,33 @@ export class BasketService {
    * @returns         The basket items.
    */
   getBasketItems(basketId: string): Observable<BasketItem[]> {
+    if (!basketId) {
+      return _throw('getBasketItems() called without basketId');
+    }
+
     return this.apiService
       .get<BasketItemData[]>(`baskets/${basketId}/items`, undefined, undefined, true)
       .pipe(map(basketItemsData => basketItemsData.map(basketItemData => BasketItemMapper.fromData(basketItemData))));
   }
 
   /**
-   * Add products with the given quantity to the given basket.
-   * @param items     The products to be added's sku.
-   * @param basketId  The id of the basket which the product should be added to.
+   * Adds a list of items with the given sku and quantity to the given basket.
+   * @param items     The list of product SKU and quantity pairs to be added to the basket.
+   * @param basketId  The id of the basket to add the items to.
    */
-  addProductsToBasket(items: { sku: string; quantity: number }[], basketId: string): Observable<void> {
-    const body: Body = {
-      elements: [],
-    };
+  addItemsToBasket(items: { sku: string; quantity: number }[], basketId: string): Observable<void> {
+    if (!items) {
+      return _throw('addItemsToBasket() called without items');
+    }
 
-    for (const item of items) {
-      body.elements.push({
+    const body = {
+      elements: items.map(item => ({
         sku: item.sku,
         quantity: {
           value: item.quantity,
         },
-      });
-    }
+      })),
+    };
 
     return this.apiService.post(`baskets/${basketId}/items`, body);
   }

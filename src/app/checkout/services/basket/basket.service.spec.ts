@@ -51,7 +51,7 @@ describe('Basket Service', () => {
   it("should post item to basket when 'addItemsToBasket' is called", () => {
     when(apiService.post(anything(), anything())).thenReturn(of({}));
 
-    basketService.addProductsToBasket([itemMockData], basketMockData.id).subscribe(() => {
+    basketService.addItemsToBasket([itemMockData], basketMockData.id).subscribe(() => {
       expect(true).toBeTruthy();
     });
 
