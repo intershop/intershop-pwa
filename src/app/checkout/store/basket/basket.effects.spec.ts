@@ -8,7 +8,7 @@ import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { LoginUserSuccess } from '../../../core/store/user/user.actions';
-import { BasketItem } from '../../../models/basket/basket-item.model';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
 import { Product } from '../../../models/product/product.model';
