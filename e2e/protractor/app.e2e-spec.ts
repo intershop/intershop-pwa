@@ -9,7 +9,7 @@ describe('proof-of-concept App', () => {
     page = new ProofOfConceptPage();
   });
 
-  it(`should display telephone number "${telephoneNumber}" on home page`, done => {
+  it(`should display telephone number "${telephoneNumber}" on home page`, () => {
     page.navigateTo();
 
     // disable waiting for Angular to finish page changes since the Carousel on the homepage will not finish
@@ -17,9 +17,6 @@ describe('proof-of-concept App', () => {
     // https://github.com/angular/protractor/blob/master/docs/timeouts.md#how-to-disable-waiting-for-angular
     browser.waitForAngularEnabled(false);
 
-    page
-      .getCustomerInfo()
-      .then(msg => expect(msg).toEqual(telephoneNumber))
-      .then(done, done.fail);
+    expect(page.getCustomerInfo()).toBe(telephoneNumber);
   });
 });
