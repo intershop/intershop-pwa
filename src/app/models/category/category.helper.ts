@@ -42,14 +42,4 @@ export class CategoryHelper {
     }
     return uniqueIds;
   }
-
-  /**
-   * check if a given category has subcategories which are not loaded yet
-   */
-  static isCategoryCompletelyLoaded(category: Category): boolean {
-    return (
-      !!category &&
-      (category.hasOnlineSubCategories === false || (!!category.subCategories && !!category.subCategories.length))
-    );
-  }
 }
