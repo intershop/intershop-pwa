@@ -1,25 +1,19 @@
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Category } from '../../../models/category/category.model';
-import { adapterUpsertMany, adapterUpsertOne } from '../../../utils/adapter-upsert';
+import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 
-export interface CategoriesState extends EntityState<Category> {
+export interface CategoriesState {
+  categories: CategoryTree;
   loading: boolean;
-  topLevelCategoriesIds: string[];
   categoriesProductSKUs: { [uniqueId: string]: string[] };
   selected: string;
 }
 
-export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
-  selectId: category => category.uniqueId,
-});
-
-export const initialState: CategoriesState = categoryAdapter.getInitialState({
+export const initialState: CategoriesState = {
   loading: false,
-  topLevelCategoriesIds: [],
+  categories: CategoryTreeHelper.empty(),
   categoriesProductSKUs: {},
   selected: undefined,
-});
+};
 
 export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
@@ -45,24 +39,13 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
     }
 
     case CategoriesActionTypes.LoadCategorySuccess: {
-      const loadedCategory = action.payload;
-
-      const upsert = { id: loadedCategory.uniqueId, entity: loadedCategory };
+      const loadedTree = action.payload;
+      const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
       return {
-        ...adapterUpsertOne(upsert, state, categoryAdapter),
+        ...state,
+        categories,
         loading: false,
       };
-    }
-
-    case CategoriesActionTypes.SaveSubCategories: {
-      const subCategories = action.payload;
-
-      const upserts = subCategories.map(c => ({
-        id: c.uniqueId,
-        entity: c,
-      }));
-
-      return adapterUpsertMany(upserts, state, categoryAdapter);
     }
 
     case CategoriesActionTypes.SetProductSkusForCategory: {
@@ -78,41 +61,15 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
     }
 
     case CategoriesActionTypes.LoadTopLevelCategoriesSuccess: {
-      const tlCategories = action.payload;
-      const topLevelCategoriesIds = tlCategories.map(c => c.uniqueId);
-
-      const allCategories = tlCategories.map(c => flattenSubCategories(c)).reduce((acc, p) => [...acc, ...p], []);
-
-      const upserts = allCategories.map(c => ({
-        id: c.uniqueId,
-        entity: c,
-      }));
-
+      const loadedTree = action.payload;
+      const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
       return {
-        ...adapterUpsertMany(upserts, state, categoryAdapter),
-        topLevelCategoriesIds,
+        ...state,
+        categories,
+        loading: false,
       };
     }
   }
 
   return state;
-}
-
-export function flattenSubCategories(c: Category): Category[] {
-  if (!(c.hasOnlineSubCategories && c.subCategoriesCount > 0)) {
-    return [c];
-  }
-
-  const category = {
-    ...c,
-    subCategoriesIds: c.subCategories.map(sc => sc.uniqueId),
-  };
-  delete category.subCategories;
-
-  const categories = c.subCategories
-    .map(sc => flattenSubCategories(sc))
-    .reduce((acc, p) => [...acc, ...p], [])
-    .filter(e => !!e);
-
-  return [...categories, category];
 }

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
-import { Category } from '../../../models/category/category.model';
+import { CategoryTree } from '../../../models/category-tree/category-tree.model';
 
 export enum CategoriesActionTypes {
   SelectCategory = '[Shopping] Select Category',
@@ -10,7 +10,6 @@ export enum CategoriesActionTypes {
   LoadCategory = '[Shopping] Load Category',
   LoadCategoryFail = '[Shopping] Load Category Fail',
   LoadCategorySuccess = '[Shopping] Load Category Success',
-  SaveSubCategories = '[Shopping] Save SubCategories',
   SetProductSkusForCategory = '[Shopping] Set Product SKUs For Category',
 }
 
@@ -31,7 +30,7 @@ export class LoadTopLevelCategoriesFail implements Action {
 
 export class LoadTopLevelCategoriesSuccess implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesSuccess;
-  constructor(public payload: Category[]) {}
+  constructor(public payload: CategoryTree) {}
 }
 
 export class LoadCategory implements Action {
@@ -46,12 +45,7 @@ export class LoadCategoryFail implements Action {
 
 export class LoadCategorySuccess implements Action {
   readonly type = CategoriesActionTypes.LoadCategorySuccess;
-  constructor(public payload: Category) {}
-}
-
-export class SaveSubCategories implements Action {
-  readonly type = CategoriesActionTypes.SaveSubCategories;
-  constructor(public payload: Category[]) {}
+  constructor(public payload: CategoryTree) {}
 }
 
 export class SetProductSkusForCategory implements Action {
@@ -67,5 +61,4 @@ export type CategoriesAction =
   | LoadCategory
   | LoadCategoryFail
   | LoadCategorySuccess
-  | SaveSubCategories
   | SetProductSkusForCategory;

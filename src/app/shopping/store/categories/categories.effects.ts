@@ -51,7 +51,7 @@ export class CategoriesEffects {
     filter(id => !!id),
     map(CategoryHelper.getCategoryPathUniqueIds),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
-    map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
+    map(([ids, entities]) => ids.filter(id => !entities[id] || !entities[id].completelyLoaded)),
     mergeMap(ids => ids.map(id => new categoriesActions.LoadCategory(id)))
   );
 
@@ -111,14 +111,5 @@ export class CategoriesEffects {
   redirectIfErrorInCategories$ = this.actions$.pipe(
     ofType(categoriesActions.CategoriesActionTypes.LoadCategoryFail),
     tap(() => this.router.navigate(['/error']))
-  );
-
-  // TODO: @Ferdinand: non full categories might not be to helpfull
-  @Effect()
-  saveSubCategories$ = this.actions$.pipe(
-    ofType(categoriesActions.CategoriesActionTypes.LoadCategorySuccess),
-    map((action: categoriesActions.LoadCategorySuccess) => action.payload.subCategories),
-    filter(sc => !!sc),
-    map(sc => new categoriesActions.SaveSubCategories(sc))
   );
 }
