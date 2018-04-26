@@ -16,8 +16,7 @@
     <div class="product-info">
 
       <div *ngIf="product.manufacturer" class="product-brand">
-        <!-- TODO: fit routerLink for manufacturer search once search is implemented -->
-        <a [routerLink]="'/search/'+product.manufacturer">
+        <a [routerLink]="['/search', product.manufacturer]">
           <span itemprop="brand">{{product.manufacturer}}</span>
         </a>
       </div>
