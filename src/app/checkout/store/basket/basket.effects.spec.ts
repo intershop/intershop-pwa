@@ -73,7 +73,7 @@ describe('BasketEffects', () => {
       }
     });
 
-    when(basketServiceMock.addProductsToBasket(anything(), anyString())).thenCall(
+    when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenCall(
       (items: { sku: string; quantity: number }[], basketId: string) => {
         if (items[0].sku === 'invalid') {
           return _throw({ message: 'invalid' } as HttpErrorResponse);
@@ -206,7 +206,7 @@ describe('BasketEffects', () => {
       actions$ = hot('-a', { a: action });
 
       effects.addProductsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addProductsToBasket(payload.items, 'test')).once();
+        verify(basketServiceMock.addItemsToBasket(payload.items, 'test')).once();
       });
     });
 
@@ -218,7 +218,7 @@ describe('BasketEffects', () => {
       actions$ = hot('-a', { a: action });
 
       effects.addProductsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addProductsToBasket(payload.items, 'test2')).once();
+        verify(basketServiceMock.addItemsToBasket(payload.items, 'test2')).once();
       });
     });
 
@@ -228,7 +228,7 @@ describe('BasketEffects', () => {
       actions$ = hot('-a', { a: action });
 
       effects.addProductsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addProductsToBasket(payload.items, 'test')).never();
+        verify(basketServiceMock.addItemsToBasket(payload.items, 'test')).never();
       });
     });
 
