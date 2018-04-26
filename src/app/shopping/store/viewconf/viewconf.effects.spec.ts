@@ -4,6 +4,7 @@ import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { Category } from '../../../models/category/category.model';
+import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadCategorySuccess, SelectCategory } from '../categories';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
@@ -46,7 +47,7 @@ describe('ViewconfEffects', () => {
     });
 
     it('should map to action of type LoadProductsForCategory if category is selected and available', () => {
-      store.dispatch(new LoadCategorySuccess({ uniqueId: '123' } as Category));
+      store.dispatch(new LoadCategorySuccess(categoryTree([{ uniqueId: '123' } as Category])));
       store.dispatch(new SelectCategory('123'));
 
       const action = new ChangeSortBy('name-desc');

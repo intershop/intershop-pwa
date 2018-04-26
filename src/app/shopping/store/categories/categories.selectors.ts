@@ -2,15 +2,8 @@ import { createSelector } from '@ngrx/store';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
 import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
-import { categoryAdapter } from './categories.reducer';
 
 const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
-
-export const {
-  selectEntities: getCategoryEntities,
-  selectAll: getCategories,
-  selectIds: getCategoriesIds,
-} = categoryAdapter.getSelectors(getCategoryState);
 
 /**
  * Retrieves the currently selected categoryUniqueId.
@@ -20,6 +13,14 @@ export const {
  * When in doubt prefere using getSelectedCategory.
  */
 export const getSelectedCategoryId = createSelector(getCategoryState, state => state.selected);
+
+export const getCategoryTree = createSelector(getCategoryState, state => state.categories);
+
+export const getCategoryEntities = createSelector(getCategoryTree, tree => tree.nodes);
+
+export const getCategoryIds = createSelector(getCategoryTree, tree => tree.ids);
+
+export const getCategories = createSelector(getCategoryTree, tree => tree.ids.map(id => tree.nodes[id]));
 
 /**
  * Retrieves the currently resolved selected category.
@@ -72,22 +73,8 @@ export const productsForSelectedCategoryAreNotLoaded = createSelector(
 
 export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);
 
-export const getTlCategoriesIds = createSelector(getCategoryState, categories => categories.topLevelCategoriesIds);
+const getTlCategoriesIds = createSelector(getCategoryTree, tree => tree.rootIds);
 
-export const getTopLevelCategories = createSelector(
-  getCategoryEntities,
-  getTlCategoriesIds,
-  (entities, tlCategoriesIds) => {
-    return tlCategoriesIds.map(id => entities[id]).map(category => populateSubCategories(category, entities));
-  }
+export const getTopLevelCategories = createSelector(getCategoryEntities, getTlCategoriesIds, (entities, ids) =>
+  ids.map(id => entities[id])
 );
-
-function populateSubCategories(c: Category, entities): Category {
-  if (!(c.hasOnlineSubCategories && c.subCategoriesIds && c.subCategoriesIds.length && c.subCategoriesCount > 0)) {
-    return c;
-  }
-
-  const subCategories = c.subCategoriesIds.map(id => entities[id]).map(cc => populateSubCategories(cc, entities));
-
-  return { ...c, subCategories };
-}
