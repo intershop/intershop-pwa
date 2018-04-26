@@ -95,8 +95,6 @@ export class AppModule {
     // TODO: https://github.com/angular/angular/issues/21809
     // registerLocaleData(localeFr);
 
-    console.log(lang);
-
     translateService.setDefaultLang(lang.replace(/\-/, '_'));
   }
 }
