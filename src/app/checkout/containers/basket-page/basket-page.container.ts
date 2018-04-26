@@ -20,4 +20,12 @@ export class BasketPageContainerComponent implements OnInit {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.basketLoading$ = this.store.pipe(select(getBasketLoading));
   }
+
+  deleteBasketItem(itemId: string) {
+    console.log(itemId);
+  }
+
+  updateBasketQuantities(formValue: string) {
+    console.log(formValue);
+  }
 }
