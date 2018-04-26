@@ -1,6 +1,6 @@
 <ul class="category-list row">
   <li *ngFor="let category of categories" class="category-list-item col-xs-6 col-md-4">
-    <div class="category-name" [attr.data-testing-id]="'category-' + category.id">
+    <div class="category-name" [attr.data-testing-id]="'category-' + category.uniqueId">
       <a [routerLink]="['/category', category.uniqueId]">
         <!-- TODO: image generation with all attributes should be more generic, e.g. with an image component, with fallback for no images -->
         <img *ngIf="category.images" [src]="icmBaseURL + category.images[0].effectiveUrl" data-testing-id="category-image-" height="270" width="270">

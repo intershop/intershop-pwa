@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { CategoryView } from '../../../../../models/category-view/category-view.model';
 import { Category } from '../../../../../models/category/category.model';
 
 @Component({
@@ -7,7 +8,7 @@ import { Category } from '../../../../../models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubCategoryNavigationComponent {
-  @Input() category: Category;
+  @Input() category: CategoryView;
   @Input() subCategoriesDepth: number;
 
   openedCategories = [];

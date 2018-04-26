@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { c } from '../../../utils/dev/marbles-utils';
@@ -148,7 +149,7 @@ describe('Categories Selectors', () => {
       });
 
       it('should select the selected category when used', () => {
-        expect(selectedCategory$).toBeObservable(c(cat));
+        expect(selectedCategory$.pipe(map(ca => ca.uniqueId))).toBeObservable(c(cat.uniqueId));
         expect(selectedCategoryId$).toBeObservable(c(cat.uniqueId));
         expect(selectedCategoryPath$).toBeObservable(c([cat]));
         expect(productCount$).toBeObservable(c(1));
@@ -168,7 +169,7 @@ describe('Categories Selectors', () => {
     });
 
     it('should select root categories when used', () => {
-      expect(topLevelCategories$).toBeObservable(c([catA, catB]));
+      expect(topLevelCategories$.pipe(map(ca => ca.map(x => x.uniqueId)))).toBeObservable(c(['A', 'B']));
     });
   });
 });

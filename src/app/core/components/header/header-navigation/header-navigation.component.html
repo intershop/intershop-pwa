@@ -7,12 +7,12 @@
   <li *ngFor="let category of categories" class="dropdown" [ngClass]="{'open' : isOpened(category)}"
     #submenu (mouseover)="subMenuShow(submenu)" (mouseout)="subMenuHide(submenu)" (click)="subMenuHide(submenu)"
   >
-    <a [routerLink]="['/category', category.uniqueId]" [attr.data-testing-id]="category.id + '-link'"
+    <a [routerLink]="['/category', category.uniqueId]" [attr.data-testing-id]="category.uniqueId + '-link'"
       [ngStyle]="{'width' : (!category.hasOnlineSubCategories) ? '100%' : ''}"
     >
       {{category.name}}
     </a>
-    <a *ngIf="category.subCategories" (click)="toggleOpen(category)" class="dropdown-toggle visible-xs">
+    <a *ngIf="category.hasChildren()" (click)="toggleOpen(category)" class="dropdown-toggle visible-xs">
       <span class="glyphicon" [ngClass]="isOpened(category) ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
     </a>
     <ish-sub-category-navigation [category]="category" [subCategoriesDepth]="1"></ish-sub-category-navigation>

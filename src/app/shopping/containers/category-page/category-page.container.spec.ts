@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold } from 'jasmine-marbles';
 import { CoreState } from '../../../core/store/core.state';
 import { Category } from '../../../models/category/category.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
@@ -83,7 +82,6 @@ describe('Category Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(component.category$).toBeObservable(cold('a', { a: category }));
     expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-category-page']);
   });
 
@@ -95,7 +93,6 @@ describe('Category Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(component.category$).toBeObservable(cold('a', { a: category }));
     expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-family-page']);
   });
 });

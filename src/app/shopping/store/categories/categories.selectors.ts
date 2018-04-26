@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+import { createCategoryView } from '../../../models/category-view/category-view.model';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
 import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
@@ -25,10 +26,8 @@ export const getCategories = createSelector(getCategoryTree, tree => tree.ids.ma
 /**
  * Retrieves the currently resolved selected category.
  */
-export const getSelectedCategory = createSelector(
-  getCategoryEntities,
-  getSelectedCategoryId,
-  (entities, id): Category => entities[id]
+export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, (tree, id) =>
+  createCategoryView(tree, id)
 );
 
 export const getSelectedCategoryPath = createSelector(
@@ -73,8 +72,6 @@ export const productsForSelectedCategoryAreNotLoaded = createSelector(
 
 export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);
 
-const getTlCategoriesIds = createSelector(getCategoryTree, tree => tree.rootIds);
-
-export const getTopLevelCategories = createSelector(getCategoryEntities, getTlCategoriesIds, (entities, ids) =>
-  ids.map(id => entities[id])
+export const getTopLevelCategories = createSelector(getCategoryTree, tree =>
+  tree.rootIds.map(id => createCategoryView(tree, id))
 );
