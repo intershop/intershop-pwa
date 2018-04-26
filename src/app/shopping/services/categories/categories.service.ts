@@ -4,9 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { _throw } from 'rxjs/observable/throw';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
-import { CategoryData } from '../../../models/category/category.interface';
+import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
+import { CategoryData, CategoryPathElement } from '../../../models/category/category.interface';
 import { CategoryMapper } from '../../../models/category/category.mapper';
-import { Category, CategoryHelper } from '../../../models/category/category.model';
+import { CategoryHelper } from '../../../models/category/category.model';
 
 /**
  * The Categories Service handles the interaction with the 'categories' REST API.
@@ -20,14 +21,14 @@ export class CategoriesService {
    * @param categoryUniqueId  The unique category id for the category of interest (encodes the category path).
    * @returns                 The Category information.
    */
-  getCategory(categoryUniqueId: string): Observable<Category> {
+  getCategory(categoryUniqueId: string): Observable<CategoryTree> {
     if (!categoryUniqueId) {
       return _throw('getCategory() called without categoryUniqueId');
     }
 
     return this.apiService
       .get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`, null, null, false)
-      .pipe(map(categoryData => CategoryMapper.fromData(categoryData, categoryUniqueId)));
+      .pipe(map(categoryData => CategoryMapper.fromData(categoryData)));
   }
 
   /**
@@ -35,18 +36,24 @@ export class CategoriesService {
    * @param limit  The number of levels to be returned (depth) in hierarchical view.
    * @returns      A Sorted list of top level categories with sub categories.
    */
-  getTopLevelCategories(limit: number): Observable<Category[]> {
+  getTopLevelCategories(limit: number): Observable<CategoryTree> {
     let params = new HttpParams().set('imageView', 'NO-IMAGE');
     if (limit > 0) {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
 
-    return this.apiService
-      .get<CategoryData[]>('categories', params, null, true)
-      .pipe(
-        map(categoriesData =>
-          categoriesData.map(categoryData => CategoryMapper.fromData(categoryData, categoryData.id))
-        )
-      );
+    return this.apiService.get<CategoryData[]>('categories', params, null, true).pipe(
+      // TODO: ISREST-312 - REST call doesn't insert categoryPath for top-level categories
+      map(array =>
+        array.map(tlelem => {
+          const id = tlelem['id'];
+          tlelem.categoryPath = [{ id } as CategoryPathElement];
+          return tlelem;
+        })
+      ),
+      map(categoriesData =>
+        categoriesData.map(data => CategoryMapper.fromData(data)).reduce((a, b) => CategoryTreeHelper.merge(a, b))
+      )
+    );
   }
 }
