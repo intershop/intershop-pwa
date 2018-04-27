@@ -10,7 +10,7 @@ export interface Category {
   description: string;
   images: Image[];
 
-  completelyLoaded: boolean;
+  completenessLevel: number;
 }
 
 export * from './category.helper';

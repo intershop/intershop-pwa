@@ -53,6 +53,7 @@ describe('Categories Reducer', () => {
           name: 'Camcorders',
           description: 'The camera products and services catalog.',
           uniqueId: 'Camcorders.584',
+          completenessLevel: 0,
         } as Category;
       });
 
@@ -72,6 +73,7 @@ describe('Categories Reducer', () => {
           ...category,
           name: 'Updated',
           description: 'Updated category',
+          completenessLevel: 2,
         } as Category;
 
         const action2 = new fromActions.LoadCategorySuccess(categoryTree([updatedCategory]));

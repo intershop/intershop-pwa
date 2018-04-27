@@ -60,18 +60,18 @@ describe('Shopping Store', () => {
 
     categoriesServiceMock = mock(CategoriesService);
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
-      of(categoryTree([catA, catA123, catB] as Category[]))
+      of(categoryTree([catA, catA123, catB].map(c => ({ ...c, completenessLevel: 0 }))))
     );
     when(categoriesServiceMock.getCategory(anything())).thenCall(uniqueId => {
       switch (uniqueId) {
         case 'A':
-          return of(categoryTree([{ ...catA, completelyLoaded: true }, catA123]));
+          return of(categoryTree([{ ...catA, completenessLevel: 2 }, { ...catA123, completenessLevel: 1 }]));
         case 'B':
-          return of(categoryTree([{ ...catB, completelyLoaded: true }]));
+          return of(categoryTree([{ ...catB, completenessLevel: 2 }]));
         case 'A.123':
-          return of(categoryTree([{ ...catA123, completelyLoaded: true }, catA123456]));
+          return of(categoryTree([{ ...catA123, completenessLevel: 2 }, { ...catA123456, completenessLevel: 1 }]));
         case 'A.123.456':
-          return of(categoryTree([{ ...catA123456, completelyLoaded: true }]));
+          return of(categoryTree([{ ...catA123456, completenessLevel: 2 }]));
         default:
           return _throw(`error loading category ${uniqueId}`);
       }

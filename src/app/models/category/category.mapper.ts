@@ -23,6 +23,33 @@ export class CategoryMapper {
   }
 
   /**
+   * Compute completeness level of incoming raw data.
+   */
+  static computeCompleteness(categoryData: CategoryData): number {
+    if (!categoryData) {
+      return -1;
+    }
+
+    // adjust CategoryHelper.maxCompletenessLevel accordingly
+    let count = 0;
+
+    if (!categoryData.uri) {
+      // returned subcategories and elements from the top-level category call contain uri
+      count++;
+    }
+    if (categoryData.images) {
+      // images are not supplied with top level category call
+      count++;
+    }
+    if (categoryData.categoryPath && categoryData.categoryPath.length === 1) {
+      // root categories have no images but a single-entry categoryPath
+      count++;
+    }
+
+    return count;
+  }
+
+  /**
    * Maps a raw {@link CategoryData} element to a {@link Category} element ignoring subcategories.
    */
   static fromDataSingle(categoryData: CategoryData): Category {
@@ -38,8 +65,7 @@ export class CategoryMapper {
         hasOnlineSubCategories: categoryData.hasOnlineSubCategories,
         description: categoryData.description,
         images: categoryData.images,
-        // if category was not requested directly in REST API, it always has an uri
-        completelyLoaded: !categoryData.uri,
+        completenessLevel: CategoryMapper.computeCompleteness(categoryData),
       };
     } else {
       throw new Error(`'categoryData' is required`);
