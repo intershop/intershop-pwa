@@ -1,5 +1,5 @@
 import { $, $$, promise } from 'protractor';
-import { Page } from '../../framework/page.interface';
+import { Page } from '../../framework';
 
 export class FamilyPage implements Page {
   tag = 'ish-family-page';
