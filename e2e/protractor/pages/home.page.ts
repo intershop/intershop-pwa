@@ -1,5 +1,5 @@
 import { $, browser } from 'protractor';
-import { Page } from './page.interface';
+import { Page } from '../framework/page.interface';
 
 export class HomePage implements Page {
   tag = 'ish-home-page-container';

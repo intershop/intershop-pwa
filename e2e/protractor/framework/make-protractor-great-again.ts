@@ -1,5 +1,5 @@
 import { $, promise } from 'protractor';
-import { Page } from './pages/page.interface';
+import { Page } from './page.interface';
 
 let currentPage: Page;
 
