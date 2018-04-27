@@ -1,7 +1,6 @@
 import { $, $$, promise } from 'protractor';
-import { Page } from '../../framework';
 
-export class CategoryPage implements Page {
+export class CategoryPage {
   tag = 'ish-category-page';
 
   gotoSubCategory(categoryId) {
