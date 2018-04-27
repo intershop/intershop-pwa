@@ -51,12 +51,10 @@ export class CategoryTreeHelper {
   }
 
   /**
-   * Select {@link Category} for update:
-   * If current is completely loaded, overload only with also completely loaded one.
-   * If current is not completely loaded, overload always.
+   * Select {@link Category} for update
    */
   static updateStrategy(current: Category, incoming: Category): Category {
-    if (!current || !current.completelyLoaded || incoming.completelyLoaded) {
+    if (!current || current.completenessLevel <= incoming.completenessLevel) {
       return incoming;
     }
     return current;

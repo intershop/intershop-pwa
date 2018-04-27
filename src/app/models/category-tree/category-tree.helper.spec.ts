@@ -274,17 +274,26 @@ describe('CategoryTreeHelper', () => {
   describe('updateStrategy()', () => {
     using(
       [
-        { category1CL: undefined, category2CL: true, expected: 'new' },
-        { category1CL: undefined, category2CL: undefined, expected: 'new' },
-        { category1CL: true, category2CL: true, expected: 'new' },
-        { category1CL: true, category2CL: undefined, expected: 'old' },
+        { category1CL: 0, category2CL: 1, expected: 'new' },
+        { category1CL: 0, category2CL: 2, expected: 'new' },
+        { category1CL: 2, category2CL: 2, expected: 'new' },
+        { category1CL: 1, category2CL: 0, expected: 'old' },
+        { category1CL: 2, category2CL: 0, expected: 'old' },
       ],
       slice => {
-        it(`should prefer ${slice.expected} one when having ${slice.category1CL} and incoming ${
-          slice.category2CL
+        it(`should prefer ${slice.expected} one when having completenessLevel ${slice.category1completenessLevel} vs. ${
+          slice.category2completenessLevel
         }`, () => {
-          const category1 = { uniqueId: 'A', name: 'old', completelyLoaded: slice.category1CL } as Category;
-          const category2 = { uniqueId: 'A', name: 'new', completelyLoaded: slice.category2CL } as Category;
+          const category1 = {
+            uniqueId: 'A',
+            name: 'old',
+            completenessLevel: slice.category1CL,
+          } as Category;
+          const category2 = {
+            uniqueId: 'A',
+            name: 'new',
+            completenessLevel: slice.category2CL,
+          } as Category;
 
           const result = CategoryTreeHelper.updateStrategy(category1, category2);
 

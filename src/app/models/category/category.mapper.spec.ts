@@ -24,6 +24,26 @@ describe('CategoryMapper', () => {
     );
   });
 
+  describe('computeCompleteness()', () => {
+    it('should return -1 for falsy inputs', () => {
+      expect(CategoryMapper.computeCompleteness(null)).toEqual(-1);
+      expect(CategoryMapper.computeCompleteness(undefined)).toEqual(-1);
+      expect(CategoryMapper.computeCompleteness(null)).toEqual(-1);
+    });
+    it('should return 0 for input from top level call', () => {
+      expect(CategoryMapper.computeCompleteness({ uri: 'some' } as CategoryData)).toEqual(0);
+    });
+    it('should return 1 for input from subcategories from category call', () => {
+      expect(CategoryMapper.computeCompleteness({ uri: 'some', images: [{}] } as CategoryData)).toEqual(1);
+    });
+    it('should return 2 for input from categories call', () => {
+      expect(CategoryMapper.computeCompleteness({ images: [{}], categoryPath: [{}, {}] } as CategoryData)).toEqual(2);
+    });
+    it('should return 2 for input from categories call with root categories', () => {
+      expect(CategoryMapper.computeCompleteness({ categoryPath: [{}] } as CategoryData)).toEqual(2);
+    });
+  });
+
   describe('fromDataSingle()', () => {
     it('should throw an error when input is falsy', () => {
       expect(() => CategoryMapper.fromDataSingle(undefined)).toThrow();

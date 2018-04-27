@@ -1,6 +1,11 @@
 import { Category } from './category.model';
 
 export class CategoryHelper {
+  /**
+   * the maximum level of completeness a category can achieve
+   */
+  static maxCompletenessLevel = 2;
+
   static uniqueIdSeparator = '.';
 
   /**
@@ -43,5 +48,12 @@ export class CategoryHelper {
       uniqueIds.push(ids.slice(0, i + 1).join(CategoryHelper.uniqueIdSeparator));
     }
     return uniqueIds;
+  }
+
+  /**
+   * check if a given category has the maximum completeness level
+   */
+  static isCategoryCompletelyLoaded(category: Category): boolean {
+    return !!category && category.completenessLevel >= CategoryHelper.maxCompletenessLevel;
   }
 }

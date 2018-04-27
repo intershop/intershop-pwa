@@ -139,6 +139,7 @@ describe('Categories Effects', () => {
       });
 
       it('should reload category if it isnt completely loaded yet', () => {
+        category.completenessLevel = 0;
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
 
@@ -148,7 +149,7 @@ describe('Categories Effects', () => {
       });
 
       it('should do nothing if category is completely loaded', () => {
-        category.completelyLoaded = true;
+        category.completenessLevel = 2;
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
         expect(effects.selectedCategory$).toBeObservable(cold('-'));
@@ -163,7 +164,7 @@ describe('Categories Effects', () => {
 
       it('should trigger LoadCategory if category exists but subcategories have not been loaded', () => {
         category.hasOnlineSubCategories = true;
-        category.completelyLoaded = false;
+        category.completenessLevel = 0;
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
 
@@ -194,7 +195,7 @@ describe('Categories Effects', () => {
       });
 
       it('should not trigger LoadCategory for categories that are completely loaded', () => {
-        category.completelyLoaded = true;
+        category.completenessLevel = 2;
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
 
