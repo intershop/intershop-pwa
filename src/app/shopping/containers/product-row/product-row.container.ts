@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AddProductsToBasket } from '../../../checkout/store/basket';
+import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
@@ -17,8 +17,6 @@ export class ProductRowContainerComponent {
   constructor(private store: Store<CheckoutState>) {}
 
   addToCart() {
-    this.store.dispatch(
-      new AddProductsToBasket({ items: [{ sku: this.product.sku, quantity: this.product.minOrderQuantity }] })
-    );
+    this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
   }
 }

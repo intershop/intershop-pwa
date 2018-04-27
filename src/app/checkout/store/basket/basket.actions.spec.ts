@@ -68,13 +68,13 @@ describe('Basket Actions', () => {
     });
   });
 
-  describe('Add Item To Basket Actions', () => {
-    it('should create new action for AddProductsToBasket', () => {
-      const payload = { items: [{ sku: 'test', quantity: 1 }] };
-      const action = new fromActions.AddProductsToBasket(payload);
+  describe('Add Items To Basket Actions', () => {
+    it('should create new action for AddProductToBasket', () => {
+      const payload = { sku: 'test', quantity: 1 };
+      const action = new fromActions.AddProductToBasket(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.AddProductsToBasket,
+        type: fromActions.BasketActionTypes.AddProductToBasket,
         payload,
       });
     });

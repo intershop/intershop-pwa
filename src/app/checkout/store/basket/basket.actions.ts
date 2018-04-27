@@ -10,9 +10,10 @@ export enum BasketActionTypes {
   LoadBasketItems = '[Basket Internal] Load Basket Items',
   LoadBasketItemsFail = '[Basket API] Load Basket Items Fail',
   LoadBasketItemsSuccess = '[Basket API] Load Basket Items Success',
-  AddProductsToBasket = '[Basket] Add Product',
-  AddItemsToBasketFail = '[Basket API] Add Item To Basket Fail',
-  AddItemsToBasketSuccess = '[Basket API] Add Item To Basket Success',
+  AddProductToBasket = '[Basket] Add Product',
+  AddItemsToBasket = '[Basket Internal] Add Items To Basket',
+  AddItemsToBasketFail = '[Basket API] Add Items To Basket Fail',
+  AddItemsToBasketSuccess = '[Basket API] Add Items To Basket Success',
 }
 
 export class LoadBasket implements Action {
@@ -45,8 +46,13 @@ export class LoadBasketItemsSuccess implements Action {
   constructor(public payload: BasketItem[]) {}
 }
 
-export class AddProductsToBasket implements Action {
-  readonly type = BasketActionTypes.AddProductsToBasket;
+export class AddProductToBasket implements Action {
+  readonly type = BasketActionTypes.AddProductToBasket;
+  constructor(public payload: { sku: string; quantity: number }) {}
+}
+
+export class AddItemsToBasket implements Action {
+  readonly type = BasketActionTypes.AddItemsToBasket;
   constructor(public payload: { items: { sku: string; quantity: number }[]; basketId?: string }) {}
 }
 
@@ -66,6 +72,7 @@ export type BasketAction =
   | LoadBasketItems
   | LoadBasketItemsFail
   | LoadBasketItemsSuccess
-  | AddProductsToBasket
+  | AddProductToBasket
+  | AddItemsToBasket
   | AddItemsToBasketFail
   | AddItemsToBasketSuccess;
