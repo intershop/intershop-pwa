@@ -67,7 +67,7 @@ describe('CategoryMapper', () => {
       } as CategoryData);
       expect(categoryTree).toBeTruthy();
       expect(categoryTree.rootIds).toEqual(['1']);
-      expect(categoryTree.ids).toEqual(['1']);
+      expect(Object.keys(categoryTree.nodes)).toEqual(['1']);
       const rootNode = categoryTree.nodes['1'];
       expect(rootNode).toBeTruthy();
       expect(rootNode.uniqueId).toEqual('1');
@@ -104,7 +104,7 @@ describe('CategoryMapper', () => {
       expect(categoryTree.nodes['1.2']).toBeTruthy();
       expect(categoryTree.nodes['1.2'].uniqueId).toEqual('1.2');
 
-      expect(categoryTree.ids).toEqual(['1', '1.2']);
+      expect(Object.keys(categoryTree.nodes)).toEqual(['1', '1.2']);
 
       expect(categoryTree.edges).toEqual({ '1': ['1.2'] });
     });

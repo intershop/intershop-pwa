@@ -8,7 +8,6 @@ export class CategoryTreeHelper {
   static empty(): CategoryTree {
     return {
       edges: {},
-      ids: [],
       nodes: {},
       rootIds: [],
     };
@@ -42,7 +41,6 @@ export class CategoryTreeHelper {
 
     return {
       edges,
-      ids: [category.uniqueId],
       nodes: { [category.uniqueId]: { ...category } },
       rootIds,
     };
@@ -91,9 +89,8 @@ export class CategoryTreeHelper {
     });
 
     const rootIds = this.removeDuplicates([...current.rootIds, ...incoming.rootIds]);
-    const ids = Object.keys(nodes);
 
-    return { edges, ids, nodes, rootIds };
+    return { edges, nodes, rootIds };
   }
 
   /**

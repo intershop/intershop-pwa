@@ -60,7 +60,7 @@ describe('Categories Reducer', () => {
         const action = new fromActions.LoadCategorySuccess(categoryTree([category]));
         const state = categoriesReducer(initialState, action);
 
-        expect(state.categories.ids.length).toBe(1);
+        expect(Object.keys(state.categories.nodes).length).toBe(1);
         expect(state.categories.nodes[category.uniqueId]).toEqual(category);
       });
 
@@ -77,7 +77,7 @@ describe('Categories Reducer', () => {
         const action2 = new fromActions.LoadCategorySuccess(categoryTree([updatedCategory]));
         const state2 = categoriesReducer(state1, action2);
 
-        expect(state2.categories.ids.length).toBe(1);
+        expect(Object.keys(state2.categories.nodes).length).toBe(1);
         expect(state2.categories.nodes[category.uniqueId]).toEqual(updatedCategory);
       });
 
@@ -123,8 +123,8 @@ describe('Categories Reducer', () => {
 
       const expectedIds = ['1', '2', '1.1', '1.1.1', '2.1', '2.2'];
 
-      expect(state.categories.ids.length).toBe(6);
-      expect(state.categories.ids).toEqual(expectedIds);
+      expect(Object.keys(state.categories.nodes).length).toBe(6);
+      expect(Object.keys(state.categories.nodes)).toEqual(expectedIds);
       expect(state.categories.nodes['1.1'].name).toEqual('updated');
     });
 
