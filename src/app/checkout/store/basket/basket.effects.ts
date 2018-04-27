@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { catchError, concatMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, distinctUntilKeyChanged, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
+import { Product } from '../../../models/product/product.model';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { BasketService } from '../../services/basket/basket.service';
 import { CheckoutState } from '../checkout.state';
@@ -83,25 +85,56 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     switchMap(([basketItems, products]) => [
       ...basketItems
-        .filter(lineItem => !products[lineItem.product.sku])
-        .map(lineItem => new LoadProduct(lineItem.product.sku)),
+        .filter(basketItem => !products[(basketItem.product as Product).sku])
+        .map(basketItem => new LoadProduct((basketItem.product as Product).sku)),
     ])
   );
 
   /**
-   * Add a product to the current basket.
+   * Trigger a LoadBasket action to create and obtain a new basket
+   * if no basket is present when trying to add items to the basket.
    */
   @Effect()
-  addItemToBasket$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddProductToBasket),
-    map((action: basketActions.AddProductToBasket) => action.payload),
+  createBasketIfMissing$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.AddItemsToBasket),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([payload, basket]) => {
+    filter(([action, basket]) => !basket),
+    // TODO: add create basket if LoadBasket does not create basket anymore
+    map(() => new basketActions.LoadBasket())
+  );
+
+  /**
+   * Add a product to the current basket.
+   * Triggers the internal AddItemsToBasket action that handles the actual adding of the product to the basket.
+   */
+  @Effect()
+  addProductToBasket$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.AddProductToBasket),
+    map((action: basketActions.AddProductToBasket) => new basketActions.AddItemsToBasket({ items: [action.payload] }))
+  );
+
+  /**
+   * Add items to the current basket.
+   * Only triggers if basket is set.
+   * Triggers if AddItemsToBasket action was triggered without a basket before once a basket becomes available.
+   */
+  @Effect()
+  // combine AddItemsToBasket action and getCurrentBasket selector to ensure that basket is set
+  addItemsToBasket$ = combineLatest(
+    this.actions$.pipe(ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket)),
+    // only emit value if basket is set and basket id changes
+    this.store.pipe(select(getCurrentBasket), filter(basket => !!basket), distinctUntilKeyChanged('basketId'))
+  ).pipe(
+    map(([action, basket]) => ({ payload: action.payload, basket })),
+    switchMap(({ payload, basket }) => {
+      // get basket id from AddItemsToBasket action if set, otherwise use current basket id
+      const basketId = payload.basketId || basket.id;
+
       return this.basketService
-        .addItemToBasket(payload.sku, payload.quantity, basket.id)
+        .addItemsToBasket(payload.items, basketId)
         .pipe(
-          map(() => new basketActions.AddItemToBasketSuccess()),
-          catchError(error => of(new basketActions.AddItemToBasketFail(error)))
+          map(() => new basketActions.AddItemsToBasketSuccess()),
+          catchError(error => of(new basketActions.AddItemsToBasketFail(error)))
         );
     })
   );
@@ -110,8 +143,31 @@ export class BasketEffects {
    * Trigger a LoadBasket action after successfully adding an item to the basket.
    */
   @Effect()
-  loadBasketAfterAddItemToBasket$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddItemToBasketSuccess),
+  loadBasketAfterAddItemsToBasket$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.AddItemsToBasketSuccess),
     map(() => new basketActions.LoadBasket())
+  );
+
+  /**
+   * Trigger an AddItemsToBasket action after LoginUserSuccess if basket items are present from pre login state.
+   * Trigger a LoadBasket action, if no pre login state basket items present
+   */
+  @Effect()
+  mergeBasketAfterLogin$ = this.actions$.pipe(
+    ofType(UserActionTypes.LoginUserSuccess),
+    switchMap(() => this.basketService.getBasket()),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    map(([newBasket, currentBasket]) => {
+      if (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) {
+        return new basketActions.LoadBasket();
+      }
+
+      const items = currentBasket.lineItems.map(lineItem => ({
+        sku: lineItem.product.sku,
+        quantity: lineItem.quantity.value,
+      }));
+
+      return new basketActions.AddItemsToBasket({ items: items, basketId: newBasket.id });
+    })
   );
 }

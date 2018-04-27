@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { _throw } from 'rxjs/observable/throw';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
-import { BasketItemData } from '../../../models/basket/basket-item.interface';
-import { BasketItemMapper } from '../../../models/basket/basket-item.mapper';
-import { BasketItem } from '../../../models/basket/basket-item.model';
+import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
+import { BasketItemMapper } from '../../../models/basket-item/basket-item.mapper';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
@@ -17,7 +18,7 @@ export class BasketService {
   constructor(private apiService: ApiService) {}
 
   /**
-   * Get the Basket for the given basket id or fallback to '-' as basket id to get the current basket for the current user.
+   * Get the basket for the given basket id or fallback to '-' as basket id to get the current basket for the current user.
    * @param basketId  The basket id.
    * @returns         The basket.
    */
@@ -33,27 +34,32 @@ export class BasketService {
    * @returns         The basket items.
    */
   getBasketItems(basketId: string): Observable<BasketItem[]> {
+    if (!basketId) {
+      return _throw('getBasketItems() called without basketId');
+    }
+
     return this.apiService
       .get<BasketItemData[]>(`baskets/${basketId}/items`, undefined, undefined, true)
       .pipe(map(basketItemsData => basketItemsData.map(basketItemData => BasketItemMapper.fromData(basketItemData))));
   }
 
   /**
-   * Add a product with the given quantity to the given basket.
-   * @param sku       The product to be added's sku.
-   * @param quantity  The quantity of the product to add.
-   * @param basketId  The id of the basket which the product should be added to.
+   * Adds a list of items with the given sku and quantity to the given basket.
+   * @param items     The list of product SKU and quantity pairs to be added to the basket.
+   * @param basketId  The id of the basket to add the items to.
    */
-  addItemToBasket(sku: string, quantity: number = 1, basketId: string): Observable<void> {
-    const body: Object = {
-      elements: [
-        {
-          sku: sku,
-          quantity: {
-            value: quantity,
-          },
+  addItemsToBasket(items: { sku: string; quantity: number }[], basketId: string): Observable<void> {
+    if (!items) {
+      return _throw('addItemsToBasket() called without items');
+    }
+
+    const body = {
+      elements: items.map(item => ({
+        sku: item.sku,
+        quantity: {
+          value: item.quantity,
         },
-      ],
+      })),
     };
 
     return this.apiService.post(`baskets/${basketId}/items`, body);

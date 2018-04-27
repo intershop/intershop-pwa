@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { BasketItem } from '../../../models/basket/basket-item.model';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import * as fromActions from './basket.actions';
 import { basketReducer, initialState } from './basket.reducer';
@@ -80,7 +80,7 @@ describe('Basket Reducer', () => {
     });
   });
 
-  describe('AddItemToBasket actions', () => {
+  describe('AddItemsToBasket actions', () => {
     describe('AddProductToBasket action', () => {
       it('should set loading to true', () => {
         const action = new fromActions.AddProductToBasket({ sku: 'test', quantity: 1 });
@@ -90,10 +90,10 @@ describe('Basket Reducer', () => {
       });
     });
 
-    describe('AddItemToBasketFail action', () => {
+    describe('AddItemsToBasketFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpErrorResponse;
-        const action = new fromActions.AddItemToBasketFail(error);
+        const action = new fromActions.AddItemsToBasketFail(error);
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(false);
@@ -101,9 +101,9 @@ describe('Basket Reducer', () => {
       });
     });
 
-    describe('AddItemToBasketSuccess action', () => {
+    describe('AddItemsToBasketSuccess action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.AddItemToBasketSuccess();
+        const action = new fromActions.AddItemsToBasketSuccess();
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(false);
