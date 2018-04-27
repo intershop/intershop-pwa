@@ -14,13 +14,14 @@ const getCategoryState = createSelector(getShoppingState, (state: ShoppingState)
  */
 export const getSelectedCategoryId = createSelector(getCategoryState, state => state.selected);
 
-export const getCategoryTree = createSelector(getCategoryState, state => state.categories);
+const getCategoryTree = createSelector(getCategoryState, state => state.categories);
 
+/**
+ * Retrieve the {@link Dictionary} of {@link Category} entities.
+ */
 export const getCategoryEntities = createSelector(getCategoryTree, tree => tree.nodes);
 
 export const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
-
-export const getCategories = createSelector(getCategoryTree, tree => Object.values(tree.nodes));
 
 /**
  * Retrieves the currently resolved selected category.
