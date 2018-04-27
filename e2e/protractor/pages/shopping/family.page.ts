@@ -1,7 +1,6 @@
 import { $, $$, promise } from 'protractor';
-import { Page } from '../../framework';
 
-export class FamilyPage implements Page {
+export class FamilyPage {
   tag = 'ish-family-page';
 
   getVisibleProductsCount(): promise.Promise<number> {
