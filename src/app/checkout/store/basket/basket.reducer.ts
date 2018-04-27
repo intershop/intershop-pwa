@@ -83,7 +83,8 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
-    case BasketActionTypes.AddProductsToBasket: {
+    case BasketActionTypes.AddProductToBasket:
+    case BasketActionTypes.AddItemsToBasket: {
       return {
         ...state,
         loading: true,

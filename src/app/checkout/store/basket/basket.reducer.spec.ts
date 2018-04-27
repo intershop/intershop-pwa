@@ -81,9 +81,9 @@ describe('Basket Reducer', () => {
   });
 
   describe('AddItemsToBasket actions', () => {
-    describe('AddProductsToBasket action', () => {
+    describe('AddProductToBasket action', () => {
       it('should set loading to true', () => {
-        const action = new fromActions.AddProductsToBasket({ items: [{ sku: 'test', quantity: 1 }] });
+        const action = new fromActions.AddProductToBasket({ sku: 'test', quantity: 1 });
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toEqual(true);

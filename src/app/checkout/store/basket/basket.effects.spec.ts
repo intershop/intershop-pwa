@@ -195,46 +195,46 @@ describe('BasketEffects', () => {
     });
   });
 
-  describe('addProductsToBasket$', () => {
-    it('should call the basketService for addProductsToBasket', () => {
+  describe('addItemsToBasket$', () => {
+    it('should call the basketService for addItemsToBasket', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
       // try if addProductsToBasket is triggered in relation to LoadBasketSuccess
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
 
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
-      const action = new basketActions.AddProductsToBasket(payload);
+      const action = new basketActions.AddItemsToBasket(payload);
       actions$ = hot('-a', { a: action });
 
-      effects.addProductsToBasket$.subscribe(() => {
+      effects.addItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.addItemsToBasket(payload.items, 'test')).once();
       });
     });
 
-    it('should call the basketService for addProductsToBasket with specific basketId when basketId set', () => {
+    it('should call the basketService for addItemsToBasket with specific basketId when basketId set', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
 
       const payload = { items: [{ sku: 'test', quantity: 1 }], basketId: 'test2' };
-      const action = new basketActions.AddProductsToBasket(payload);
+      const action = new basketActions.AddItemsToBasket(payload);
       actions$ = hot('-a', { a: action });
 
-      effects.addProductsToBasket$.subscribe(() => {
+      effects.addProductToBasket$.subscribe(() => {
         verify(basketServiceMock.addItemsToBasket(payload.items, 'test2')).once();
       });
     });
 
-    it('should not call the basketService for addProductsToBasket if no basket in store', () => {
+    it('should not call the basketService for addItemsToBasket if no basket in store', () => {
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
-      const action = new basketActions.AddProductsToBasket(payload);
+      const action = new basketActions.AddItemsToBasket(payload);
       actions$ = hot('-a', { a: action });
 
-      effects.addProductsToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket(payload.items, 'test')).never();
+      effects.addProductToBasket$.subscribe(() => {
+        verify(basketServiceMock.addItemsToBasket(anything(), 'test')).never();
       });
     });
 
     it('should map to action of type LoadBasket when no basket is present', () => {
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
-      const action = new basketActions.AddProductsToBasket(payload);
+      const action = new basketActions.AddItemsToBasket(payload);
       const completion = new basketActions.LoadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
@@ -246,24 +246,36 @@ describe('BasketEffects', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
 
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
-      const action = new basketActions.AddProductsToBasket(payload);
+      const action = new basketActions.AddItemsToBasket(payload);
       const completion = new basketActions.AddItemsToBasketSuccess();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.addProductsToBasket$).toBeObservable(expected$);
+      expect(effects.addItemsToBasket$).toBeObservable(expected$);
     });
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
 
       const payload = { items: [{ sku: 'invalid', quantity: 1 }] };
-      const action = new basketActions.AddProductsToBasket(payload);
+      const action = new basketActions.AddItemsToBasket(payload);
       const completion = new basketActions.AddItemsToBasketFail({ message: 'invalid' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.addProductsToBasket$).toBeObservable(expected$);
+      expect(effects.addItemsToBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('addProductToBasket$', () => {
+    it('should map an AddProductToBasket to an AddItemsToBasket action', () => {
+      const payload = { sku: 'test', quantity: 1 };
+      const action = new basketActions.AddProductToBasket(payload);
+      const completion = new basketActions.AddItemsToBasket({ items: [payload] });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.addProductToBasket$).toBeObservable(expected$);
     });
   });
 
@@ -288,13 +300,13 @@ describe('BasketEffects', () => {
       expect(effects.mergeBasketAfterLogin$).toBeObservable(expected$);
     });
 
-    it('should map to action of type addProductsToBasket if pre login basket is filled', () => {
+    it('should map to action of type addItemsToBasket if pre login basket is filled', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
       store$.dispatch(new basketActions.LoadBasketItemsSuccess(lineItems));
       store$.dispatch(new LoadProductSuccess({ sku: 'test' } as Product));
 
       const action = new LoginUserSuccess({} as Customer);
-      const completion = new basketActions.AddProductsToBasket({
+      const completion = new basketActions.AddItemsToBasket({
         items: [
           {
             sku: lineItems[0].product.sku,

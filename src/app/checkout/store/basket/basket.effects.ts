@@ -91,11 +91,12 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a LoadBasket action to create and obtain a new basket if no basket is present
+   * Trigger a LoadBasket action to create and obtain a new basket
+   * if no basket is present when trying to add items to the basket.
    */
   @Effect()
   createBasketIfMissing$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddProductsToBasket),
+    ofType(basketActions.BasketActionTypes.AddItemsToBasket),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([action, basket]) => !basket),
     // TODO: add create basket if LoadBasket does not create basket anymore
@@ -103,14 +104,24 @@ export class BasketEffects {
   );
 
   /**
-   * Add products to the current basket.
-   * Only triggers if basket is set.
-   * Triggers if AddProductsToBasket action was triggered without a basket before if a basket becomes available
+   * Add a product to the current basket.
+   * Triggers the internal AddItemsToBasket action that handles the actual adding of the product to the basket.
    */
   @Effect()
-  // combine AddProductsToBasket action and getCurrentBasket selector to ensure that basket is set
-  addProductsToBasket$ = combineLatest(
-    this.actions$.pipe(ofType<basketActions.AddProductsToBasket>(basketActions.BasketActionTypes.AddProductsToBasket)),
+  addProductToBasket$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.AddProductToBasket),
+    map((action: basketActions.AddProductToBasket) => new basketActions.AddItemsToBasket({ items: [action.payload] }))
+  );
+
+  /**
+   * Add items to the current basket.
+   * Only triggers if basket is set.
+   * Triggers if AddItemsToBasket action was triggered without a basket before once a basket becomes available.
+   */
+  @Effect()
+  // combine AddItemsToBasket action and getCurrentBasket selector to ensure that basket is set
+  addItemsToBasket$ = combineLatest(
+    this.actions$.pipe(ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket)),
     // only emit value if basket is set and basket id changes
     this.store.pipe(select(getCurrentBasket), filter(basket => !!basket), distinctUntilKeyChanged('basketId'))
   ).pipe(
@@ -138,7 +149,7 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a AddItemsToBasket action after LoginUserSuccess if basket items present from pre login state
+   * Trigger an AddItemsToBasket action after LoginUserSuccess if basket items are present from pre login state.
    * Trigger a LoadBasket action, if no pre login state basket items present
    */
   @Effect()
@@ -150,17 +161,13 @@ export class BasketEffects {
       if (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) {
         return new basketActions.LoadBasket();
       }
-      const lineItems = currentBasket.lineItems;
-      const items: { sku: string; quantity: number }[] = [];
 
-      for (const lineItem of lineItems) {
-        items.push({
-          sku: lineItem.product.sku,
-          quantity: lineItem.quantity.value,
-        });
-      }
+      const items = currentBasket.lineItems.map(lineItem => ({
+        sku: lineItem.product.sku,
+        quantity: lineItem.quantity.value,
+      }));
 
-      return new basketActions.AddProductsToBasket({ items: items, basketId: newBasket.id });
+      return new basketActions.AddItemsToBasket({ items: items, basketId: newBasket.id });
     })
   );
 }
