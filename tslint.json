@@ -290,7 +290,7 @@
           // environments
           { "name": "^(environment)$", "file": "src/environments/environment(\\.[a-z]+|)\\.ts$" },
           // e2e
-          { "name": "^(.*)Page$", "file": ".*/pages(/.*|)/<kebab>\\.page\\.ts$" }
+          { "name": "^([A-Z].*)Page$", "file": ".*/pages(/.*|)/<kebab>\\.page\\.ts$" }
         ],
         "ignoredFiles": [
           "/(prerender|server).ts$",

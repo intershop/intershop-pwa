@@ -1,5 +1,5 @@
 import { $, promise } from 'protractor';
-import { Page } from '../../framework/page.interface';
+import { Page } from '../../framework';
 
 export class ProductDetailPage implements Page {
   tag = 'ish-product-page-container';

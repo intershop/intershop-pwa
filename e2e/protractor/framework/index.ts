@@ -1,9 +1,13 @@
+// tslint:disable no-barrel-files
 import { $, promise } from 'protractor';
-import { Page } from './page.interface';
+
+export class Page {
+  readonly tag: string;
+}
 
 let currentPage: Page;
 
-export function onPage<T extends Page>(type: { new (): T }): promise.Promise<string> {
+function onPage<T extends Page>(type: { new (): T }): promise.Promise<string> {
   const expected = new type();
   currentPage = expected;
   // the isPresent() method is not used by intention, to get a better fail result:
