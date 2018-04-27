@@ -11,7 +11,6 @@ describe('CategoryTreeHelper', () => {
       expect(empty.rootIds).toEqual([]);
       expect(empty.nodes).toEqual({});
       expect(empty.edges).toEqual({});
-      expect(empty.ids).toEqual([]);
     });
   });
 
@@ -32,7 +31,6 @@ describe('CategoryTreeHelper', () => {
       expect(tree.rootIds).toEqual(['A']);
       expect(tree.nodes).toEqual({ A: cat });
       expect(tree.edges).toEqual({});
-      expect(tree.ids).toEqual(['A']);
     });
 
     it('should not set root ids when category path was omitted', () => {
@@ -42,7 +40,6 @@ describe('CategoryTreeHelper', () => {
       expect(tree.rootIds).toEqual([]);
       expect(tree.nodes).toEqual({ A: cat });
       expect(tree.edges).toEqual({});
-      expect(tree.ids).toEqual(['A']);
     });
 
     it('should create a tree from a subcategory with edges for categoryPath and no root id', () => {
@@ -51,7 +48,6 @@ describe('CategoryTreeHelper', () => {
       expect(tree).toBeTruthy();
       expect(tree.rootIds).toEqual([]);
       expect(tree.nodes).toEqual({ 'A.1': cat });
-      expect(tree.ids).toEqual(['A.1']);
       expect(tree.edges).toEqual({ A: ['A.1'] });
     });
 
@@ -61,7 +57,6 @@ describe('CategoryTreeHelper', () => {
       expect(tree).toBeTruthy();
       expect(tree.rootIds).toEqual([]);
       expect(tree.nodes).toEqual({ 'A.1.a.1': cat });
-      expect(tree.ids).toEqual(['A.1.a.1']);
       expect(tree.edges).toEqual({ A: ['A.1'], 'A.1': ['A.1.a'], 'A.1.a': ['A.1.a.1'] });
     });
   });
@@ -79,7 +74,6 @@ describe('CategoryTreeHelper', () => {
       const empty = CategoryTreeHelper.empty();
       const tree = CategoryTreeHelper.add(empty, { uniqueId: 'A', categoryPath: ['A'] } as Category);
 
-      expect(tree.ids).toEqual(['A']);
       expect(tree.edges).toEqual({});
       expect(Object.keys(tree.nodes)).toEqual(['A']);
       expect(tree.rootIds).toEqual(['A']);
@@ -112,7 +106,6 @@ describe('CategoryTreeHelper', () => {
       const tree1 = CategoryTreeHelper.add(empty, cat1);
       const tree2 = CategoryTreeHelper.add(tree1, cat2);
 
-      expect(tree2.ids).toEqual(['A', 'B']);
       expect(tree2.edges).toEqual({});
       expect(Object.keys(tree2.nodes)).toEqual(['A', 'B']);
       expect(tree2.rootIds).toEqual(['A', 'B']);
@@ -127,7 +120,6 @@ describe('CategoryTreeHelper', () => {
 
       const tree = CategoryTreeHelper.add(root, child);
 
-      expect(tree.ids).toEqual(['A', 'A.1']);
       expect(tree.edges).toEqual({ A: ['A.1'] });
       expect(Object.keys(tree.nodes)).toEqual(['A', 'A.1']);
       expect(tree.rootIds).toEqual(['A']);
@@ -143,7 +135,6 @@ describe('CategoryTreeHelper', () => {
       const tree1 = CategoryTreeHelper.add(tree0, child1);
       const tree2 = CategoryTreeHelper.add(tree1, child2);
 
-      expect(tree2.ids).toEqual(['A', 'A.1', 'A.2']);
       expect(tree2.edges).toEqual({ A: ['A.1', 'A.2'] });
       expect(Object.keys(tree2.nodes)).toEqual(['A', 'A.1', 'A.2']);
       expect(tree2.rootIds).toEqual(['A']);
@@ -159,7 +150,6 @@ describe('CategoryTreeHelper', () => {
       const tree1 = CategoryTreeHelper.add(tree0, child1);
       const tree2 = CategoryTreeHelper.add(tree1, child2);
 
-      expect(tree2.ids).toEqual(['A', 'A.1', 'A.1.a']);
       expect(tree2.edges).toEqual({ A: ['A.1'], 'A.1': ['A.1.a'] });
       expect(Object.keys(tree2.nodes)).toEqual(['A', 'A.1', 'A.1.a']);
       expect(tree2.rootIds).toEqual(['A']);
@@ -179,7 +169,6 @@ describe('CategoryTreeHelper', () => {
       const tree3 = CategoryTreeHelper.add(tree2, child3);
       const tree4 = CategoryTreeHelper.add(tree3, child4);
 
-      expect(tree4.ids).toEqual(['A', 'A.1', 'A.1.a', 'A.2', 'A.1.b']);
       expect(tree4.edges).toEqual({ A: ['A.1', 'A.2'], 'A.1': ['A.1.a', 'A.1.b'] });
       expect(Object.keys(tree4.nodes)).toEqual(['A', 'A.1', 'A.1.a', 'A.2', 'A.1.b']);
       expect(tree4.rootIds).toEqual(['A']);
@@ -215,7 +204,6 @@ describe('CategoryTreeHelper', () => {
       const empty = CategoryTreeHelper.empty();
       const result = CategoryTreeHelper.merge(treeAAB, empty);
 
-      expect(result.ids).toEqual(['A', 'A.B']);
       expect(Object.keys(result.nodes)).toEqual(['A', 'A.B']);
       expect(result.edges).toEqual({ A: ['A.B'] });
       expect(result.rootIds).toEqual(['A']);
@@ -225,7 +213,6 @@ describe('CategoryTreeHelper', () => {
       const empty = CategoryTreeHelper.empty();
       const result = CategoryTreeHelper.merge(empty, treeAAB);
 
-      expect(result.ids).toEqual(['A', 'A.B']);
       expect(Object.keys(result.nodes)).toEqual(['A', 'A.B']);
       expect(result.edges).toEqual({ A: ['A.B'] });
       expect(result.rootIds).toEqual(['A']);
@@ -234,7 +221,6 @@ describe('CategoryTreeHelper', () => {
     it('should combine simple trees in parallel when queried', () => {
       const combined = CategoryTreeHelper.merge(treeA, treeB);
 
-      expect(combined.ids).toEqual(['A', 'B']);
       expect(Object.keys(combined.nodes)).toEqual(['A', 'B']);
       expect(combined.edges).toEqual({});
       expect(combined.rootIds).toEqual(['A', 'B']);
@@ -249,7 +235,6 @@ describe('CategoryTreeHelper', () => {
     it('should combine simple tree as child tree when queried', () => {
       const combined = CategoryTreeHelper.merge(treeA, treeAB);
 
-      expect(combined.ids).toEqual(['A', 'A.B']);
       expect(Object.keys(combined.nodes)).toEqual(['A', 'A.B']);
       expect(combined.edges).toEqual({ A: ['A.B'] });
       expect(combined.rootIds).toEqual(['A']);
@@ -276,7 +261,7 @@ describe('CategoryTreeHelper', () => {
 
       const combined = CategoryTreeHelper.merge(treeA, treeB);
 
-      expect(combined.ids).toEqual(['A', 'A.1', 'A.1.a', 'A.2', 'A.1.b', 'B', 'B.1', 'B.1.a', 'B.2']);
+      expect(Object.keys(combined.nodes)).toEqual(['A', 'A.1', 'A.1.a', 'A.2', 'A.1.b', 'B', 'B.1', 'B.1.a', 'B.2']);
       expect(combined.edges).toEqual({
         A: ['A.1', 'A.2'],
         'A.1': ['A.1.a', 'A.1.b'],

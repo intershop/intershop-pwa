@@ -18,9 +18,9 @@ export const getCategoryTree = createSelector(getCategoryState, state => state.c
 
 export const getCategoryEntities = createSelector(getCategoryTree, tree => tree.nodes);
 
-export const getCategoryIds = createSelector(getCategoryTree, tree => tree.ids);
+export const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
-export const getCategories = createSelector(getCategoryTree, tree => tree.ids.map(id => tree.nodes[id]));
+export const getCategories = createSelector(getCategoryTree, tree => Object.values(tree.nodes));
 
 /**
  * Retrieves the currently resolved selected category.
