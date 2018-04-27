@@ -62,7 +62,8 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
 
     case CategoriesActionTypes.LoadTopLevelCategoriesSuccess: {
       const loadedTree = action.payload;
-      const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
+      // merge the current tree onto the incoming to respect the sorting order from ICM
+      const categories = CategoryTreeHelper.merge(loadedTree, state.categories);
       return {
         ...state,
         categories,
