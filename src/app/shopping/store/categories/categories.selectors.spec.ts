@@ -23,7 +23,6 @@ import * as s from './categories.selectors';
 describe('Categories Selectors', () => {
   let store$: Store<ShoppingState>;
 
-  let categories$: Observable<Category[]>;
   let categoryEntities$: Observable<{ [id: string]: Category }>;
   let categoryLoading$: Observable<boolean>;
   let productCount$: Observable<number>;
@@ -50,7 +49,6 @@ describe('Categories Selectors', () => {
 
     store$ = TestBed.get(Store);
 
-    categories$ = store$.pipe(select(s.getCategories));
     categoryEntities$ = store$.pipe(select(s.getCategoryEntities));
     categoryLoading$ = store$.pipe(select(s.getCategoryLoading));
     productCount$ = store$.pipe(select(s.getProductCountForSelectedCategory));
@@ -62,7 +60,6 @@ describe('Categories Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any categories when used', () => {
-      expect(categories$).toBeObservable(c([]));
       expect(categoryEntities$).toBeObservable(c({}));
       expect(categoryLoading$).toBeObservable(c(false));
     });
@@ -119,7 +116,6 @@ describe('Categories Selectors', () => {
 
     describe('but no current router state', () => {
       it('should return the category information when used', () => {
-        expect(categories$).toBeObservable(c([cat]));
         expect(categoryEntities$).toBeObservable(c({ [cat.uniqueId]: cat }));
         expect(categoryLoading$).toBeObservable(c(false));
       });
@@ -139,7 +135,6 @@ describe('Categories Selectors', () => {
       });
 
       it('should return the category information when used', () => {
-        expect(categories$).toBeObservable(c([cat]));
         expect(categoryEntities$).toBeObservable(c({ [cat.uniqueId]: cat }));
         expect(categoryLoading$).toBeObservable(c(false));
       });
