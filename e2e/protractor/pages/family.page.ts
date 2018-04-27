@@ -9,6 +9,6 @@ export class FamilyPage implements Page {
   }
 
   gotoProductDetailPageBySku(sku) {
-    $('#product-' + sku).click();
+    $('ish-product-tile div[data-testing-sku="' + sku + '"]').click();
   }
 }
