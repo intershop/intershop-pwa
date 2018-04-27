@@ -48,10 +48,10 @@ describe('Basket Service', () => {
     verify(apiService.get(`baskets/${basketMockData.id}/items`, anything(), anything(), true)).once();
   });
 
-  it("should post item to basket when 'addItemToBasket' is called", () => {
+  it("should post item to basket when 'addItemsToBasket' is called", () => {
     when(apiService.post(anything(), anything())).thenReturn(of({}));
 
-    basketService.addItemToBasket(itemMockData.sku, itemMockData.quantity, basketMockData.id).subscribe(() => {
+    basketService.addItemsToBasket([itemMockData], basketMockData.id).subscribe(() => {
       expect(true).toBeTruthy();
     });
 

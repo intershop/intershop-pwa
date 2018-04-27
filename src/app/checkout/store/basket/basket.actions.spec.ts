@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { BasketItem } from '../../../models/basket/basket-item.model';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import * as fromActions from './basket.actions';
 
@@ -68,7 +68,7 @@ describe('Basket Actions', () => {
     });
   });
 
-  describe('Add Item To Basket Actions', () => {
+  describe('Add Items To Basket Actions', () => {
     it('should create new action for AddProductToBasket', () => {
       const payload = { sku: 'test', quantity: 1 };
       const action = new fromActions.AddProductToBasket(payload);
@@ -79,21 +79,21 @@ describe('Basket Actions', () => {
       });
     });
 
-    it('should create new action for AddItemToBasketFail', () => {
+    it('should create new action for AddItemsToBasketFail', () => {
       const payload = { message: 'error' } as HttpErrorResponse;
-      const action = new fromActions.AddItemToBasketFail(payload);
+      const action = new fromActions.AddItemsToBasketFail(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.AddItemToBasketFail,
+        type: fromActions.BasketActionTypes.AddItemsToBasketFail,
         payload,
       });
     });
 
-    it('should create new action for AddItemToBasketSuccess', () => {
-      const action = new fromActions.AddItemToBasketSuccess();
+    it('should create new action for AddItemsToBasketSuccess', () => {
+      const action = new fromActions.AddItemsToBasketSuccess();
 
       expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.AddItemToBasketSuccess,
+        type: fromActions.BasketActionTypes.AddItemsToBasketSuccess,
       });
     });
   });

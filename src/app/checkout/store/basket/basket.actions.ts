@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
-import { BasketItem } from '../../../models/basket/basket-item.model';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 
 export enum BasketActionTypes {
@@ -11,8 +11,9 @@ export enum BasketActionTypes {
   LoadBasketItemsFail = '[Basket API] Load Basket Items Fail',
   LoadBasketItemsSuccess = '[Basket API] Load Basket Items Success',
   AddProductToBasket = '[Basket] Add Product',
-  AddItemToBasketFail = '[Basket API] Add Item To Basket Fail',
-  AddItemToBasketSuccess = '[Basket API] Add Item To Basket Success',
+  AddItemsToBasket = '[Basket Internal] Add Items To Basket',
+  AddItemsToBasketFail = '[Basket API] Add Items To Basket Fail',
+  AddItemsToBasketSuccess = '[Basket API] Add Items To Basket Success',
 }
 
 export class LoadBasket implements Action {
@@ -50,13 +51,18 @@ export class AddProductToBasket implements Action {
   constructor(public payload: { sku: string; quantity: number }) {}
 }
 
-export class AddItemToBasketFail implements Action {
-  readonly type = BasketActionTypes.AddItemToBasketFail;
+export class AddItemsToBasket implements Action {
+  readonly type = BasketActionTypes.AddItemsToBasket;
+  constructor(public payload: { items: { sku: string; quantity: number }[]; basketId?: string }) {}
+}
+
+export class AddItemsToBasketFail implements Action {
+  readonly type = BasketActionTypes.AddItemsToBasketFail;
   constructor(public payload: HttpErrorResponse) {}
 }
 
-export class AddItemToBasketSuccess implements Action {
-  readonly type = BasketActionTypes.AddItemToBasketSuccess;
+export class AddItemsToBasketSuccess implements Action {
+  readonly type = BasketActionTypes.AddItemsToBasketSuccess;
 }
 
 export type BasketAction =
@@ -67,5 +73,6 @@ export type BasketAction =
   | LoadBasketItemsFail
   | LoadBasketItemsSuccess
   | AddProductToBasket
-  | AddItemToBasketFail
-  | AddItemToBasketSuccess;
+  | AddItemsToBasket
+  | AddItemsToBasketFail
+  | AddItemsToBasketSuccess;

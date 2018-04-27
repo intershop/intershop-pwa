@@ -83,14 +83,15 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
-    case BasketActionTypes.AddProductToBasket: {
+    case BasketActionTypes.AddProductToBasket:
+    case BasketActionTypes.AddItemsToBasket: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case BasketActionTypes.AddItemToBasketFail: {
+    case BasketActionTypes.AddItemsToBasketFail: {
       const error = action.payload;
 
       return {
@@ -100,7 +101,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
-    case BasketActionTypes.AddItemToBasketSuccess: {
+    case BasketActionTypes.AddItemsToBasketSuccess: {
       return {
         ...state,
         loading: false,
