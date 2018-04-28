@@ -240,7 +240,7 @@
       "options": {
         "warnUnmatched": false,
         "pathPatterns": [
-          "^.*/e2e/protractor/.*$",
+          "^.*/e2e/.*$",
           "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
           // unmanaged folders
           "^.*/src/app/(utils/).*\\.ts$",
