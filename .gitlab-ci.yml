@@ -25,10 +25,20 @@ e2e:
   stage: e2e
   tags:
   - docker-executor
-  image: selenium/standalone-chrome
+  image: 
+    name: caltha/protractor
+    entrypoint: [""]
   script:
-  - ./gradlew --no-daemon --max-workers 1 --continue -Dgeb.env=ci test protractor
-  - bash .gitlab-ci-test-universal.sh
+  - apt-get update
+  - apt-get install -y wget
+  - npm install
+  - npx webdriver-manager update --chrome --chrome.version=2.38 --gecko false
+  - export ICM_BASE_URL="http://localhost:4000"
+  - npm run build:dynamic
+  - npm run serve:dynamic &
+  - wget -q --wait 10 --tries 1000 --retry-connrefused http://localhost:4000
+  - sh .gitlab-ci-test-universal.sh
+  - npx protractor --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4000
 
 .job-template: &job_definition
   stage: publish
