@@ -4,7 +4,8 @@
   "description": "Intershop specific tslint rules",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "postinstall": "npm run build"
   },
   "keywords": ["tslint", "intershop"],
   "author": "",
