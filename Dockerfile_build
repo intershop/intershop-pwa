@@ -1,9 +1,10 @@
 FROM node:8-alpine
 COPY package.json package-lock.json /workspace/
+COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN set -x \
 &&  before=$(md5sum package-lock.json | awk '{ print $1 }') \
-&&  npm install \
+&&  (cd tslint-rules && npm i) && npm install --unsafe-perm \
 &&  after=$(md5sum package-lock.json | awk '{ print $1 }') \
 &&  test "$before" = "$after"
 COPY . /workspace/
@@ -11,7 +12,7 @@ RUN npm run test --silent -- --ci
 RUN npm run lint --silent -- --format prose
 RUN npm run build:dynamic:prod
 RUN set -x \
-&&  before=$(find src e2e tslint-rules *.json *.ts *.ts -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \
+&&  before=$(find src e2e tslint-rules/src *.json *.ts -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \
 &&  npm run format \
-&&  after=$(find src e2e tslint-rules *.json *.ts *.ts -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \
+&&  after=$(find src e2e tslint-rules/src *.json *.ts -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \
 &&  test "$before" = "$after"

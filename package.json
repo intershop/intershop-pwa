@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "postinstall": "npm link tslint-rules",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
