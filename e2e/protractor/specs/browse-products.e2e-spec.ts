@@ -29,7 +29,6 @@ describe('Browsing User', () => {
       page.gotoProductDetailPageBySku('3953312');
     });
     at(ProductDetailPage, page => {
-      expect(page.isComplete()).toBe(true);
       expect(page.getSku()).toBe('3953312');
       expect(page.getPrice()).toBe('$303.62');
     });
