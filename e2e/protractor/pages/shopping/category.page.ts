@@ -1,7 +1,7 @@
 import { $, $$, promise } from 'protractor';
 
 export class CategoryPage {
-  tag = 'ish-category-page';
+  readonly tag = 'ish-category-page';
 
   gotoSubCategory(categoryId) {
     $('div[data-testing-id="' + categoryId + '"] a').click();
