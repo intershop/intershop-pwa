@@ -168,12 +168,7 @@
     ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
-    "use-component-change-detection": {
-      "severity": "warning",
-      "options": {
-        "forceOnPush": false
-      }
-    },
+    "use-component-change-detection": { "severity": "warning" },
     "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
