@@ -2,11 +2,11 @@
   "extends": [
     "rxjs-tslint-rules",
     "tslint-clean-code",
-    "tslint-consistent-codestyle"
+    "tslint-consistent-codestyle",
+    "intershop-tslint-rules"
   ],
   "rulesDirectory": [
     "node_modules/codelyzer",
-    "tslint-rules",
     "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
