@@ -1,49 +1,31 @@
 import { NgWalker } from 'codelyzer/angular/ngWalker';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+import { RuleHelpers } from './ruleHelpers';
+
+const message = 'Component should explicitely declare "changeDetection", preferrably "ChangeDetectionStrategy.OnPush"';
 
 class UseComponentChangeDetectionWalker extends NgWalker {
-  forceOnPush = true;
-
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
     super(sourceFile, options);
-    if (options['ruleArguments'][0]) {
-      this.forceOnPush = !!options['ruleArguments'][0]['forceOnPush'];
-    }
   }
 
   visitClassDecorator(decorator: ts.Decorator) {
     if (decorator.expression.getChildAt(0).getText() === 'Component') {
       const componentProperties = decorator.expression.getChildAt(2) as ts.SyntaxList;
-      // tslint:disable-next-line:no-any
-      const map = (componentProperties.getChildAt(0) as any).symbol.members as ts.Map<any>;
+      const propertyList = componentProperties
+        .getChildAt(0)
+        .getChildAt(1)
+        .getChildren();
 
-      if (!map.has('changeDetection')) {
-        if (!this.forceOnPush) {
-          super.addFailureAtNode(
-            decorator,
-            'Component should declare "changeDetection", preferrably "ChangeDetectionStrategy.OnPush"'
-          );
-        } else if (
-          !map.get('changeDetection') ||
-          map
-            .get('changeDetection')
-            .valueDeclaration.getText()
-            .indexOf('OnPush') < 0
-        ) {
-          super.addFailureAtNode(
-            decorator,
-            'Component should declare "changeDetection: ChangeDetectionStrategy.OnPush"'
-          );
-        }
-      } else if (
-        this.forceOnPush &&
-        map
-          .get('changeDetection')
-          .valueDeclaration.getText()
-          .indexOf('OnPush') < 0
-      ) {
-        super.addFailureAtNode(decorator, 'Component should declare "changeDetection: ChangeDetectionStrategy.OnPush"');
+      const containsChangeDetection =
+        propertyList
+          .filter(child => child.kind === ts.SyntaxKind.PropertyAssignment)
+          .map((assignement: ts.PropertyAssignment) => assignement.name)
+          .filter((identifier: ts.Identifier) => identifier.escapedText === 'changeDetection').length === 1;
+
+      if (!containsChangeDetection) {
+        super.addFailureAtNode(decorator, message);
       }
     }
   }
