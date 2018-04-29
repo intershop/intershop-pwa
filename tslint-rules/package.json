@@ -1,0 +1,17 @@
+{
+  "name": "intershop-tslint-rules",
+  "version": "0.0.1",
+  "description": "Intershop specific tslint rules",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "keywords": ["tslint", "intershop"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "codelyzer": "^4.1.0",
+    "tslint": "^5.9.1",
+    "typescript": "~2.6.2"
+  }
+}
