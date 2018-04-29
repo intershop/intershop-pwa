@@ -20,7 +20,7 @@ describe('Browsing User', () => {
       page.gotoSubCategory('category-584');
     });
     at(FamilyPage, page => {
-      expect(page.getVisibleProductsCount()).toBe(2);
+      expect(page.getVisibleProductsCount()).toBeGreaterThanOrEqual(2);
     });
   });
 
