@@ -18,6 +18,15 @@ describe('Basket Service', () => {
     ],
   };
 
+  const lineItemData = {
+    id: 'test',
+    quantity: {
+      type: 'Quantity',
+      unit: '',
+      value: 1,
+    },
+  };
+
   const itemMockData = {
     sku: 'test',
     quantity: 10,
@@ -56,5 +65,25 @@ describe('Basket Service', () => {
     });
 
     verify(apiService.post(`baskets/${basketMockData.id}/items`, anything())).once();
+  });
+
+  it("should put updated data to basket line item of spefic basket when 'updateBasketItem' is called", () => {
+    when(apiService.put(anything(), anything())).thenReturn(of({}));
+
+    basketService.updateBasketItem(lineItemData.id, 2, basketMockData.id).subscribe(() => {
+      expect(true).toBeTruthy();
+    });
+
+    verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, anything())).once();
+  });
+
+  it("should remove line item from spefic basket when 'deleteBasketItem' is called", () => {
+    when(apiService.delete(anything())).thenReturn(of({}));
+
+    basketService.deleteBasketItem(lineItemData.id, basketMockData.id).subscribe(() => {
+      expect(true).toBeTruthy();
+    });
+
+    verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
   });
 });

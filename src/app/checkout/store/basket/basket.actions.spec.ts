@@ -97,4 +97,88 @@ describe('Basket Actions', () => {
       });
     });
   });
+
+  describe('Update Basket Item Actions', () => {
+    it('should create new action for UpdateBasketItem', () => {
+      const payload = {
+        quantity: 1,
+        itemId: 'test',
+      };
+      const action = new fromActions.UpdateBasketItem(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketItem,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketItemFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.UpdateBasketItemFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketItemFail,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketItemSuccess', () => {
+      const action = new fromActions.UpdateBasketItemSuccess();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketItemSuccess,
+      });
+    });
+  });
+
+  describe('Update Basket Items Actions', () => {
+    it('should create new action for UpdateBasketItems', () => {
+      const payload = [
+        {
+          quantity: 1,
+          itemId: 'test',
+        },
+        {
+          quantity: 2,
+          itemId: 'test',
+        },
+      ];
+      const action = new fromActions.UpdateBasketItems(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketItems,
+        payload,
+      });
+    });
+  });
+
+  describe('Delete Basket Item Actions', () => {
+    it('should create new action for DeleteBasketItem', () => {
+      const payload = 'test';
+      const action = new fromActions.DeleteBasketItem(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.DeleteBasketItem,
+        payload,
+      });
+    });
+
+    it('should create new action for DeleteBasketItemFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.DeleteBasketItemFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.DeleteBasketItemFail,
+        payload,
+      });
+    });
+
+    it('should create new action for DeleteBasketItemSuccess', () => {
+      const action = new fromActions.DeleteBasketItemSuccess();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.DeleteBasketItemSuccess,
+      });
+    });
+  });
 });

@@ -3,7 +3,16 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { of } from 'rxjs/observable/of';
-import { catchError, distinctUntilKeyChanged, filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
 import { Product } from '../../../models/product/product.model';
@@ -39,15 +48,6 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a LoadBasket action after a successful login.
-   */
-  @Effect()
-  loadBasketAfterLogin$ = this.actions$.pipe(
-    ofType(UserActionTypes.LoginUserSuccess),
-    map(() => new basketActions.LoadBasket())
-  );
-
-  /**
    * The load basket items effect.
    */
   @Effect()
@@ -65,16 +65,6 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a LoadBasketItems action after a successful basket loading.
-   */
-  @Effect()
-  loadBasketItemsAfterBasketLoad$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.LoadBasketSuccess),
-    map((action: basketActions.LoadBasketSuccess) => action.payload),
-    map(basket => new basketActions.LoadBasketItems(basket.id))
-  );
-
-  /**
    * After successfully loading the basket items, trigger a LoadProduct action
    * for each product that is missing in the current product entities state.
    */
@@ -88,19 +78,6 @@ export class BasketEffects {
         .filter(basketItem => !products[(basketItem.product as Product).sku])
         .map(basketItem => new LoadProduct((basketItem.product as Product).sku)),
     ])
-  );
-
-  /**
-   * Trigger a LoadBasket action to create and obtain a new basket
-   * if no basket is present when trying to add items to the basket.
-   */
-  @Effect()
-  createBasketIfMissing$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddItemsToBasket),
-    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([action, basket]) => !basket),
-    // TODO: add create basket if LoadBasket does not create basket anymore
-    map(() => new basketActions.LoadBasket())
   );
 
   /**
@@ -140,11 +117,71 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a LoadBasket action after successfully adding an item to the basket.
+   * Update basket item effect if quantity > 0.
    */
   @Effect()
-  loadBasketAfterAddItemsToBasket$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddItemsToBasketSuccess),
+  updateBasketItem$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasketItem),
+    map((action: basketActions.UpdateBasketItem) => action.payload),
+    filter(payload => payload.quantity > 0),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([payload, basket]) => {
+      return this.basketService
+        .updateBasketItem(payload.itemId, payload.quantity, basket.id)
+        .pipe(
+          map(() => new basketActions.UpdateBasketItemSuccess()),
+          catchError(error => of(new basketActions.UpdateBasketItemFail(error)))
+        );
+    })
+  );
+
+  /**
+   * Delete basket item effect.
+   */
+  @Effect()
+  deleteBasketItem$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.DeleteBasketItem),
+    map((action: basketActions.DeleteBasketItem) => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([itemId, basket]) => {
+      return this.basketService
+        .deleteBasketItem(itemId, basket.id)
+        .pipe(
+          map(() => new basketActions.DeleteBasketItemSuccess()),
+          catchError(error => of(new basketActions.DeleteBasketItemFail(error)))
+        );
+    })
+  );
+
+  /**
+   * Trigger a LoadBasket action after a successful login.
+   */
+  @Effect()
+  loadBasketAfterLogin$ = this.actions$.pipe(
+    ofType(UserActionTypes.LoginUserSuccess),
+    map(() => new basketActions.LoadBasket())
+  );
+
+  /**
+   * Trigger a LoadBasketItems action after a successful basket loading.
+   */
+  @Effect()
+  loadBasketItemsAfterBasketLoad$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketSuccess),
+    map((action: basketActions.LoadBasketSuccess) => action.payload),
+    map(basket => new basketActions.LoadBasketItems(basket.id))
+  );
+
+  /**
+   * Trigger a LoadBasket action to create and obtain a new basket
+   * if no basket is present when trying to add items to the basket.
+   */
+  @Effect()
+  createBasketIfMissing$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.AddItemsToBasket),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(([action, basket]) => !basket),
+    // TODO: add create basket if LoadBasket does not create basket anymore
     map(() => new basketActions.LoadBasket())
   );
 
@@ -158,6 +195,7 @@ export class BasketEffects {
     switchMap(() => this.basketService.getBasket()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     map(([newBasket, currentBasket]) => {
+      // TODO: move to separate effect?
       if (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) {
         return new basketActions.LoadBasket();
       }
@@ -169,5 +207,42 @@ export class BasketEffects {
 
       return new basketActions.AddItemsToBasket({ items: items, basketId: newBasket.id });
     })
+  );
+
+  /**
+   * Triggers a LoadBasket action after successful interaction with the Basket API.
+   */
+  @Effect()
+  loadBasketAfterBasketChangeSuccess$ = this.actions$.pipe(
+    ofType(
+      basketActions.BasketActionTypes.AddItemsToBasketSuccess,
+      basketActions.BasketActionTypes.UpdateBasketItemSuccess,
+      basketActions.BasketActionTypes.DeleteBasketItemSuccess
+    ),
+    map(() => new basketActions.LoadBasket())
+  );
+
+  /**
+   * Update basket items effect.
+   * Triggers UpdateBasketItem for every item in payload array.
+   */
+  @Effect()
+  updateBasketItems$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasketItems),
+    map((action: basketActions.UpdateBasketItems) => action.payload),
+    switchMap(items => [
+      ...items.map(item => new basketActions.UpdateBasketItem(item as { quantity: number; itemId: string })),
+    ])
+  );
+
+  /**
+   * Trigger DeleteBasketItem action if UpdateBasketItem quantity === 0.
+   */
+  @Effect()
+  deleteBasketItemIfQuantityZero$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasketItem),
+    map((action: basketActions.UpdateBasketItem) => action.payload),
+    filter(payload => payload.quantity === 0),
+    map(payload => new basketActions.DeleteBasketItem(payload.itemId))
   );
 }

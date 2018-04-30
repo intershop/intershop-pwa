@@ -16,19 +16,37 @@ export const initialState: BasketState = {
 
 export function basketReducer(state = initialState, action: BasketAction): BasketState {
   switch (action.type) {
-    case BasketActionTypes.LoadBasket: {
+    case BasketActionTypes.LoadBasket:
+    case BasketActionTypes.LoadBasketItems:
+    case BasketActionTypes.AddProductToBasket:
+    case BasketActionTypes.AddItemsToBasket:
+    case BasketActionTypes.UpdateBasketItem:
+    case BasketActionTypes.DeleteBasketItem: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case BasketActionTypes.LoadBasketFail: {
+    case BasketActionTypes.LoadBasketFail:
+    case BasketActionTypes.LoadBasketItemsFail:
+    case BasketActionTypes.AddItemsToBasketFail:
+    case BasketActionTypes.UpdateBasketItemFail:
+    case BasketActionTypes.DeleteBasketItemFail: {
       const error = action.payload;
 
       return {
         ...state,
-        error: error,
+        error,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.AddItemsToBasketSuccess:
+    case BasketActionTypes.UpdateBasketItemSuccess:
+    case BasketActionTypes.DeleteBasketItemSuccess: {
+      return {
+        ...state,
         loading: false,
       };
     }
@@ -39,23 +57,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       return {
         ...state,
         basket,
-        loading: false,
-      };
-    }
-
-    case BasketActionTypes.LoadBasketItems: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
-    case BasketActionTypes.LoadBasketItemsFail: {
-      const error = action.payload;
-
-      return {
-        ...state,
-        error: error,
         loading: false,
       };
     }
@@ -77,31 +78,6 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         };
       }
 
-      return {
-        ...state,
-        loading: false,
-      };
-    }
-
-    case BasketActionTypes.AddProductToBasket:
-    case BasketActionTypes.AddItemsToBasket: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
-    case BasketActionTypes.AddItemsToBasketFail: {
-      const error = action.payload;
-
-      return {
-        ...state,
-        error,
-        loading: false,
-      };
-    }
-
-    case BasketActionTypes.AddItemsToBasketSuccess: {
       return {
         ...state,
         loading: false,
