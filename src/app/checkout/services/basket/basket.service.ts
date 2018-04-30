@@ -64,4 +64,29 @@ export class BasketService {
 
     return this.apiService.post(`baskets/${basketId}/items`, body);
   }
+
+  /**
+   * Updates specific line items quantity in the given basket.
+   * @param itemId    The id of the line item that should be updated.
+   * @param quantity  The new quantity.
+   * @param basketId  The id of the basket in which the item should be updated.
+   */
+  updateBasketItem(itemId: string, quantity: number, basketId: string): Observable<void> {
+    const body = {
+      quantity: {
+        value: quantity,
+      },
+    };
+
+    return this.apiService.put(`baskets/${basketId}/items/${itemId}`, body);
+  }
+
+  /**
+   * Remove specific line item from the given basket.
+   * @param itemId    The id of the line item that should be deleted.
+   * @param basketId  The id of the basket where the item should be removed.
+   */
+  deleteBasketItem(itemId: string, basketId: string): Observable<void> {
+    return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  }
 }
