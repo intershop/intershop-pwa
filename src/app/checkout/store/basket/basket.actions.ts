@@ -14,13 +14,13 @@ export enum BasketActionTypes {
   AddItemsToBasket = '[Basket Internal] Add Items To Basket',
   AddItemsToBasketFail = '[Basket API] Add Item To Basket Fail',
   AddItemsToBasketSuccess = '[Basket API] Add Item To Basket Success',
-  UpdateBasketItem = '[Checkout] Update a Basket Item',
-  UpdateBasketItemFail = '[Checkout] Update a Basket Item Fail',
-  UpdateBasketItemSuccess = '[Checkout] Update a Basket Item Success',
-  UpdateBasketItems = '[Checkout] Update a Basket Items',
-  DeleteBasketItem = '[Checkout] Delete a Basket Item',
-  DeleteBasketItemFail = '[Checkout] Delete a Basket Item Fail',
-  DeleteBasketItemSuccess = '[Checkout] Delete a Basket Item Success',
+  UpdateBasketItem = '[Basket] Update Basket Item',
+  UpdateBasketItemFail = '[Basket API] Update Basket Item Fail',
+  UpdateBasketItemSuccess = '[Basket API] Update Basket Item Success',
+  UpdateBasketItems = '[Basket] Update Basket Items',
+  DeleteBasketItem = '[Basket] Delete Basket Item',
+  DeleteBasketItemFail = '[Basket API] Delete Basket Item Fail',
+  DeleteBasketItemSuccess = '[Basket API] Delete Basket Item Success',
 }
 
 export class LoadBasket implements Action {
@@ -74,7 +74,6 @@ export class AddItemsToBasketSuccess implements Action {
 
 export class UpdateBasketItem implements Action {
   readonly type = BasketActionTypes.UpdateBasketItem;
-  // TODO: add basketId if multibasket functionality is needed
   constructor(public payload: { itemId: string; quantity: number }) {}
 }
 
@@ -89,13 +88,11 @@ export class UpdateBasketItemSuccess implements Action {
 
 export class UpdateBasketItems implements Action {
   readonly type = BasketActionTypes.UpdateBasketItems;
-  // TODO: add basketId if multibasket functionality is needed
   constructor(public payload: { itemId: string; quantity: number }[]) {}
 }
 
 export class DeleteBasketItem implements Action {
   readonly type = BasketActionTypes.DeleteBasketItem;
-  // TODO: add basketId if multibasket functionality is needed
   constructor(public payload: string) {}
 }
 

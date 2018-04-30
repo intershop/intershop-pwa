@@ -186,15 +186,6 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a LoadBasket action after successfully adding an item to the basket.
-   */
-  @Effect()
-  loadBasketAfterAddItemsToBasket$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddItemsToBasketSuccess),
-    map(() => new basketActions.LoadBasket())
-  );
-
-  /**
    * Trigger an AddItemsToBasket action after LoginUserSuccess if basket items are present from pre login state.
    * Trigger a LoadBasket action, if no pre login state basket items present
    */
@@ -219,20 +210,15 @@ export class BasketEffects {
   );
 
   /**
-   * Triggers load basket effect after successful UpdateBasketItem.
+   * Triggers a LoadBasket action after successful interaction with the Basket API.
    */
   @Effect()
-  loadBasketAfterUpdateBasketItem$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.UpdateBasketItemSuccess),
-    map(() => new basketActions.LoadBasket())
-  );
-
-  /**
-   * Triggers load basket effect after successful DeleteBasketItem.
-   */
-  @Effect()
-  loadBasketAfterDeleteBasketItem$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.DeleteBasketItemSuccess),
+  loadBasketAfterBasketChangeSuccess$ = this.actions$.pipe(
+    ofType(
+      basketActions.BasketActionTypes.AddItemsToBasketSuccess,
+      basketActions.BasketActionTypes.UpdateBasketItemSuccess,
+      basketActions.BasketActionTypes.DeleteBasketItemSuccess
+    ),
     map(() => new basketActions.LoadBasket())
   );
 

@@ -304,7 +304,7 @@ describe('BasketEffects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.loadBasketAfterAddItemsToBasket$).toBeObservable(expected$);
+      expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
     });
   });
 
@@ -426,7 +426,7 @@ describe('BasketEffects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
 
-      expect(effects.loadBasketAfterUpdateBasketItem$).toBeObservable(expected$);
+      expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
     });
   });
 
@@ -473,7 +473,7 @@ describe('BasketEffects', () => {
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadBasketAfterDeleteBasketItem$).toBeObservable(expected$);
+      expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
     });
   });
 });
