@@ -70,7 +70,7 @@ describe('Basket Service', () => {
   it("should put updated data to basket line item of spefic basket when 'updateBasketItem' is called", () => {
     when(apiService.put(anything(), anything())).thenReturn(of({}));
 
-    basketService.updateBasketItem(2, lineItemData.id, basketMockData.id).subscribe(() => {
+    basketService.updateBasketItem(lineItemData.id, 2, basketMockData.id).subscribe(() => {
       expect(true).toBeTruthy();
     });
 
