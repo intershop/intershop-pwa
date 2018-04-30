@@ -66,16 +66,14 @@ export class BasketService {
   }
 
   /**
-   * Updates specific line items quantity in the given basket
-   *
-   * @param quantity  The new quantity
-   * @param itemId    The id of the line item that should be updated
-   * @param basketId  The id of the basket in which the item should be updated
+   * Updates specific line items quantity in the given basket.
+   * @param itemId    The id of the line item that should be updated.
+   * @param quantity  The new quantity.
+   * @param basketId  The id of the basket in which the item should be updated.
    */
-  updateBasketItem(quantity: number, itemId: string, basketId: string): Observable<void> {
+  updateBasketItem(itemId: string, quantity: number, basketId: string): Observable<void> {
     const body = {
       quantity: {
-        type: 'Quantity',
         value: quantity,
       },
     };
@@ -84,10 +82,9 @@ export class BasketService {
   }
 
   /**
-   * Remove specific line item from the given basket
-   *
-   * @param itemId    The id of the line item that should be deleted
-   * @param basketId  The id of the basket where the item should be removed
+   * Remove specific line item from the given basket.
+   * @param itemId    The id of the line item that should be deleted.
+   * @param basketId  The id of the basket where the item should be removed.
    */
   deleteBasketItem(itemId: string, basketId: string): Observable<void> {
     return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);

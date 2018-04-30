@@ -6,7 +6,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { LoginUserSuccess } from '../../../core/store/user/user.actions';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
@@ -83,8 +83,8 @@ describe('BasketEffects', () => {
       }
     );
 
-    when(basketServiceMock.updateBasketItem(anything(), anyString(), anyString())).thenCall(
-      (body: Object, itemId: string, basketId: string) => {
+    when(basketServiceMock.updateBasketItem(anyString(), anyNumber(), anyString())).thenCall(
+      (itemId: string, quantity: Number, basketId: string) => {
         if (itemId === 'invalid') {
           return _throw({ message: 'invalid' } as HttpErrorResponse);
         } else {
@@ -354,7 +354,7 @@ describe('BasketEffects', () => {
       actions$ = hot('-a', { a: action });
 
       effects.updateBasketItem$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem(payload.quantity, 'test', 'test')).once();
+        verify(basketServiceMock.updateBasketItem('test', payload.quantity, 'test')).once();
       });
     });
 
@@ -373,8 +373,8 @@ describe('BasketEffects', () => {
 
     it('should map to action of type UpdateBasketItemSuccess', () => {
       const payload = {
-        quantity: 2,
         itemId: 'test',
+        quantity: 2,
       };
       const action = new basketActions.UpdateBasketItem(payload);
       const completion = new basketActions.UpdateBasketItemSuccess();
@@ -386,8 +386,8 @@ describe('BasketEffects', () => {
 
     it('should map invalid request to action of type UpdateBasketItemFail', () => {
       const payload = {
-        quantity: 2,
         itemId: 'invalid',
+        quantity: 2,
       };
       const action = new basketActions.UpdateBasketItem(payload);
       const completion = new basketActions.UpdateBasketItemFail({ message: 'invalid' } as HttpErrorResponse);
