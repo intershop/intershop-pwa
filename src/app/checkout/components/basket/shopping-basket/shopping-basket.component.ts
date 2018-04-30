@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
+import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
 import { Basket } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
@@ -12,7 +13,7 @@ import { ProductHelper } from '../../../../models/product/product.model';
 export class ShoppingBasketComponent implements OnChanges {
   @Input() basket: Basket;
 
-  @Output() update = new EventEmitter<string>();
+  @Output() update = new EventEmitter<{ itemId: string; quantity: number }[]>();
   @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
@@ -39,8 +40,8 @@ export class ShoppingBasketComponent implements OnChanges {
     for (const item of basket.lineItems) {
       itemsForm.push(
         this.fb.group({
-          id: item.id,
-          quantity: item.quantity.value,
+          itemId: item.id,
+          quantity: [item.quantity.value, [Validators.required, SpecialValidators.integer]],
         })
       );
     }
@@ -58,7 +59,10 @@ export class ShoppingBasketComponent implements OnChanges {
       return;
     }
 
-    this.update.emit(JSON.stringify(this.form.value));
+    for (const item of this.form.value.items) {
+      item.quantity = parseInt(item.quantity, 10);
+    }
+    this.update.emit(this.form.value.items);
   }
 
   /**
