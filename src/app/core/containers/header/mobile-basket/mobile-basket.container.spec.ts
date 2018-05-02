@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { MobileCartContainerComponent } from './mobile-cart.container';
+import { MobileBasketContainerComponent } from './mobile-basket.container';
 
-describe('Mobile Cart Container', () => {
-  let component: MobileCartContainerComponent;
-  let fixture: ComponentFixture<MobileCartContainerComponent>;
+describe('Mobile Basket Container', () => {
+  let component: MobileBasketContainerComponent;
+  let fixture: ComponentFixture<MobileBasketContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(
@@ -12,16 +12,16 @@ describe('Mobile Cart Container', () => {
       TestBed.configureTestingModule({
         declarations: [
           MockComponent({
-            selector: 'ish-mobile-cart',
-            template: 'Mobile Cart',
+            selector: 'ish-mobile-basket',
+            template: 'Mobile Basket',
             inputs: ['cartItems'],
           }),
-          MobileCartContainerComponent,
+          MobileBasketContainerComponent,
         ],
       })
         .compileComponents()
         .then(() => {
-          fixture = TestBed.createComponent(MobileCartContainerComponent);
+          fixture = TestBed.createComponent(MobileBasketContainerComponent);
           component = fixture.componentInstance;
           element = fixture.nativeElement;
         });

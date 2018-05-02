@@ -15,13 +15,13 @@ import { HeaderComponent } from './components/header/header.component';
 import { LanguageSwitchComponent } from './components/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from './components/header/login-status/login-status.component';
 import { MiniBasketComponent } from './components/header/mini-basket/mini-basket.component';
-import { MobileCartComponent } from './components/header/mobile-cart/mobile-cart.component';
+import { MobileBasketComponent } from './components/header/mobile-basket/mobile-basket.component';
 import { ProductCompareStatusComponent } from './components/header/product-compare-status/product-compare-status.component';
 import { HeaderNavigationContainerComponent } from './containers/header/header-navigation/header-navigation.container';
 import { LanguageSwitchContainerComponent } from './containers/header/language-switch/language-switch.container';
 import { LoginStatusContainerComponent } from './containers/header/login-status/login-status.container';
 import { MiniBasketContainerComponent } from './containers/header/mini-basket/mini-basket.container';
-import { MobileCartContainerComponent } from './containers/header/mobile-cart/mobile-cart.container';
+import { MobileBasketContainerComponent } from './containers/header/mobile-basket/mobile-basket.container';
 import { ProductCompareStatusContainerComponent } from './containers/header/product-compare-status/product-compare-status.container';
 
 @NgModule({
@@ -43,8 +43,8 @@ import { ProductCompareStatusContainerComponent } from './containers/header/prod
     ProductCompareStatusContainerComponent,
     MiniBasketComponent,
     MiniBasketContainerComponent,
-    MobileCartComponent,
-    MobileCartContainerComponent,
+    MobileBasketComponent,
+    MobileBasketContainerComponent,
     LanguageSwitchComponent,
     LanguageSwitchContainerComponent,
     HeaderNavigationComponent,
