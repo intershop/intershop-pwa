@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
-  selector: 'ish-product-add-to-cart',
-  templateUrl: './product-add-to-cart.component.html',
+  selector: 'ish-product-add-to-basket',
+  templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductAddToCartComponent implements OnChanges {
+export class ProductAddToBasketComponent implements OnChanges {
   @Input() product: Product;
   @Input() disabled = false;
   @Input() displayType?: string;
