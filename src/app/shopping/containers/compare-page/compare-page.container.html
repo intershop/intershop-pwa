@@ -8,7 +8,7 @@
 
     <ish-product-compare-list
       [compareProducts]="compareProducts$ | async"
-      (productToCart)="addToCart($event)"
+      (productToBasket)="addToBasket($event)"
       (removeProductCompare)="removeFromCompare($event)"
     ></ish-product-compare-list>
 

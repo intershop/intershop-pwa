@@ -10,11 +10,11 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
 export class ProductRowComponent {
   @Input() product: Product;
   @Input() category?: Category;
-  @Output() productToCart = new EventEmitter<void>();
+  @Output() productToBasket = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 
-  addToCart() {
-    this.productToCart.emit();
+  addToBasket() {
+    this.productToBasket.emit();
   }
 }

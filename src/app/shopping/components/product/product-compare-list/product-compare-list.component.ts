@@ -9,7 +9,7 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
  * @example
  * <ish-product-compare-list
  *               [compareProducts]="compareProducts"
- *               (productToCart)="addToCart($event)"
+ *               (productToBasket)="addToBasket($event)"
  *               (removeProductCompare)="removeFromCompare($event)"
  * ></ish-product-compare-list>
  */
@@ -32,7 +32,7 @@ export class ProductCompareListComponent implements OnChanges {
   /**
    * Trigger an add product to cart event
    */
-  @Output() productToCart = new EventEmitter<{ sku: string; quantity: number }>();
+  @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
 
   /**
    * Trigger a remove product from compare event
@@ -122,7 +122,7 @@ export class ProductCompareListComponent implements OnChanges {
    * @param sku       The SKU of the product to add
    * @param quantity  The quantity to be added
    */
-  addToCart(sku: string, quantity: number) {
-    this.productToCart.emit({ sku: sku, quantity: quantity });
+  addToBasket(sku: string, quantity: number) {
+    this.productToBasket.emit({ sku: sku, quantity: quantity });
   }
 }

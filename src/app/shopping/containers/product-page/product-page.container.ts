@@ -38,7 +38,7 @@ export class ProductPageContainerComponent implements OnInit {
     this.categoryPath$ = this.store.pipe(select(getSelectedCategoryPath));
   }
 
-  addToCart({ sku, quantity }) {
+  addToBasket({ sku, quantity }) {
     this.store.dispatch(new AddProductToBasket({ sku: sku, quantity: quantity }));
   }
 
