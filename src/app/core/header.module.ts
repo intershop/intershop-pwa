@@ -23,6 +23,7 @@ import { LoginStatusContainerComponent } from './containers/header/login-status/
 import { MiniBasketContainerComponent } from './containers/header/mini-basket/mini-basket.container';
 import { MobileBasketContainerComponent } from './containers/header/mobile-basket/mobile-basket.container';
 import { ProductCompareStatusContainerComponent } from './containers/header/product-compare-status/product-compare-status.container';
+import { ClickOutsideDirective } from './directives/click-outside.directive';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import { ProductCompareStatusContainerComponent } from './containers/header/prod
     SubCategoryNavigationComponent,
     LoginStatusComponent,
     LoginStatusContainerComponent,
+    ClickOutsideDirective,
   ],
   exports: [HeaderComponent],
 })
