@@ -21,6 +21,7 @@
 /*.*
 /node_modules
 /build
+/builds
 /dist
 /docs
 /src/assets
