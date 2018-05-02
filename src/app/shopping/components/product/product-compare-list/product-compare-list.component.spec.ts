@@ -108,10 +108,10 @@ describe('Product Compare List Component', () => {
   });
 
   it('should emit add to cart when click on add to cart button', () => {
-    component.productToCart.subscribe(data => {
+    component.productToBasket.subscribe(data => {
       expect(data).toEqual({ sku: '111', quantity: 1 });
     });
-    component.addToCart('111', 1);
+    component.addToBasket('111', 1);
   });
 
   it('should return 1 as the number of Common Attribute Names for the compared products', () => {

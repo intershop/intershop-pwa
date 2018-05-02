@@ -29,7 +29,7 @@ export class ProductTileContainerComponent implements OnInit {
     this.store.dispatch(new ToggleCompare(this.product.sku));
   }
 
-  addToCart() {
+  addToBasket() {
     this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
   }
 }

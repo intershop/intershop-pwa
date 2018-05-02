@@ -12,7 +12,7 @@ export class ProductTileComponent {
   @Input() category?: Category;
   @Input() isInCompareList: boolean;
   @Output() compareToggle = new EventEmitter<void>();
-  @Output() productToCart = new EventEmitter<void>();
+  @Output() productToBasket = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 
@@ -20,7 +20,7 @@ export class ProductTileComponent {
     this.compareToggle.emit();
   }
 
-  addToCart() {
-    this.productToCart.emit();
+  addToBasket() {
+    this.productToBasket.emit();
   }
 }

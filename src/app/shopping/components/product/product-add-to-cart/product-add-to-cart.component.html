@@ -6,7 +6,7 @@
     [disabled]="disabled"
     [attr.title]="'product.add_to_cart.link' | translate"
     data-testing-id="addToCartButton"
-    (click)="addToCart()"
+    (click)="addToBasket()"
   >
 
     <ng-template [ngIf]="isDisplayTypeGlyphicon" [ngIfElse]="defaultButton">
