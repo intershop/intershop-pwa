@@ -3,5 +3,7 @@ build
 dist
 node_modules
 .dockerignore
-.git*
-Dockerfile
+.git
+.gitattributes
+.gitignore
+Dockerfile*

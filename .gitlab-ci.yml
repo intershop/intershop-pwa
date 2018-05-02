@@ -10,35 +10,16 @@ build:
     refs:
       - develop
   tags:
-  - docker-executor
-  image: node:8-alpine
-  script:
-  - apk --no-cache add git
-  - npm install
-  - npm run test -- --ci
-  - npm run lint
-  - npm run build:dynamic:prod
-  - npm run format
-  - git status --porcelain | wc -l | xargs test '0' -eq
+  - shell-executor
+  - docker
+  script: docker build --file Dockerfile_build .
 
 e2e:
   stage: e2e
   tags:
-  - docker-executor
-  image: 
-    name: caltha/protractor
-    entrypoint: [""]
-  script:
-  - apt-get update
-  - apt-get install -y wget
-  - npm install
-  - npx webdriver-manager update --chrome --chrome.version=2.38 --gecko false
-  - export ICM_BASE_URL="http://localhost:4000"
-  - npm run build:dynamic
-  - npm run serve:dynamic &
-  - wget -q --wait 10 --tries 1000 --retry-connrefused http://localhost:4000
-  - sh .gitlab-ci-test-universal.sh
-  - npx protractor --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4000
+  - shell-executor
+  - docker
+  script: docker build --file Dockerfile_e2e .
 
 .job-template: &job_definition
   stage: publish
