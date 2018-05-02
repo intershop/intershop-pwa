@@ -9,7 +9,7 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { c } from '../../../utils/dev/marbles-utils';
 import { CheckoutState } from '../checkout.state';
 import { checkoutReducers } from '../checkout.system';
-import { LoadBasket, LoadBasketFail, LoadBasketSuccess } from './basket.actions';
+import { LoadBasket, LoadBasketFail, LoadBasketItemsSuccess, LoadBasketSuccess } from './basket.actions';
 import { getBasketError, getBasketLoading, getCurrentBasket } from './basket.selectors';
 
 describe('Basket selectors', () => {
@@ -20,20 +20,22 @@ describe('Basket selectors', () => {
   let basketError$: Observable<HttpErrorResponse>;
 
   let basket;
+  let lineItems;
   let prod: Product;
 
   beforeEach(() => {
     basket = {
       id: 'test',
-      lineItems: [
-        {
-          id: 'test',
-          product: {
-            sku: 'test',
-          },
-        },
-      ],
+      lineItems: [],
     };
+    lineItems = [
+      {
+        id: 'test',
+        product: {
+          sku: 'test',
+        },
+      },
+    ];
     prod = { sku: 'test' } as Product;
 
     TestBed.configureTestingModule({
@@ -80,6 +82,7 @@ describe('Basket selectors', () => {
       };
 
       store$.dispatch(new LoadBasketSuccess(basket));
+      store$.dispatch(new LoadBasketItemsSuccess(lineItems));
       expect(basketLoading$).toBeObservable(c(false));
       expect(basket$).toBeObservable(c(expected));
     });

@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { LoadBasket, LoadBasketSuccess } from '../../store/basket/basket.actions';
+import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from '../../store/basket/basket.actions';
 import { CheckoutState } from '../../store/checkout.state';
 import { checkoutReducers } from '../../store/checkout.system';
 import { BasketPageContainerComponent } from './basket-page.container';
@@ -64,8 +65,10 @@ describe('Basket Page Container', () => {
   });
 
   it('should render shopping basket component if there is a basket with line items', () => {
-    const basket = { id: 'dummy', lineItems: [{ id: '123', product: { sku: 'SKU_123' } }] } as Basket;
+    const basket = { id: 'dummy' } as Basket;
+    const lineItems = [{ id: '123', product: { sku: 'SKU_123' } }] as BasketItem[];
     store$.dispatch(new LoadBasketSuccess(basket));
+    store$.dispatch(new LoadBasketItemsSuccess(lineItems));
     fixture.detectChanges();
     expect(element.querySelector('ish-shopping-basket')).toBeTruthy();
   });
