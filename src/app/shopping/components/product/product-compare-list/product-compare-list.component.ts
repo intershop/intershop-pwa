@@ -30,7 +30,7 @@ export class ProductCompareListComponent implements OnChanges {
   @Input() itemsPerPage = 3;
 
   /**
-   * Trigger an add product to cart event
+   * Trigger an add product to basket event
    */
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
 
@@ -118,7 +118,7 @@ export class ProductCompareListComponent implements OnChanges {
   }
 
   /**
-   * Add product with the given quantity to the cart.
+   * Add product with the given quantity to the basket.
    * @param sku       The SKU of the product to add
    * @param quantity  The quantity to be added
    */

@@ -1,20 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MobileBasketComponent } from './mobile-basket.component';
 
-import { MobileCartComponent } from './mobile-cart.component';
-
-describe('Mobile Cart Component', () => {
-  let component: MobileCartComponent;
-  let fixture: ComponentFixture<MobileCartComponent>;
+describe('Mobile Basket Component', () => {
+  let component: MobileBasketComponent;
+  let fixture: ComponentFixture<MobileBasketComponent>;
   let element: HTMLElement;
 
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [MobileCartComponent],
+        declarations: [MobileBasketComponent],
       })
         .compileComponents()
         .then(() => {
-          fixture = TestBed.createComponent(MobileCartComponent);
+          fixture = TestBed.createComponent(MobileBasketComponent);
           component = fixture.componentInstance;
           element = fixture.nativeElement;
 

@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { of } from 'rxjs/observable/of';
 
 @Component({
-  selector: 'ish-mobile-cart-container',
-  templateUrl: './mobile-cart.container.html',
+  selector: 'ish-mobile-basket-container',
+  templateUrl: './mobile-basket.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MobileCartContainerComponent {
+export class MobileBasketContainerComponent {
   cartItems$ = of([]);
 }

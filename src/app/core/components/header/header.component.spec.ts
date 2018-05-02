@@ -29,7 +29,7 @@ describe('Header Component', () => {
           }),
           MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
           MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
-          MockComponent({ selector: 'ish-mobile-cart-container', template: 'Mobile Cart Container' }),
+          MockComponent({ selector: 'ish-mobile-basket-container', template: 'Mobile Basket Container' }),
         ],
       })
         .compileComponents()
@@ -72,8 +72,10 @@ describe('Header Component', () => {
     );
   });
 
-  it('should render Cart on template', () => {
-    expect(element.getElementsByTagName('ish-mobile-cart-container')[0].textContent).toContain('Mobile Cart Container');
+  it('should render Basket on template', () => {
+    expect(element.getElementsByTagName('ish-mobile-basket-container')[0].textContent).toContain(
+      'Mobile Basket Container'
+    );
     expect(element.getElementsByTagName('ish-mini-basket-container')[0].textContent).toContain('Mini Basket Container');
   });
 });

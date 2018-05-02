@@ -111,7 +111,7 @@ describe('Product Compare List Component', () => {
     component.removeFromCompare('111');
   });
 
-  it('should emit add to cart when click on add to cart button', () => {
+  it('should emit add to basket when click on add to basket button', () => {
     component.productToBasket.subscribe(data => {
       expect(data).toEqual({ sku: '111', quantity: 1 });
     });
