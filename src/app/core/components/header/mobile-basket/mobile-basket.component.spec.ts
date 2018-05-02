@@ -17,7 +17,7 @@ describe('Mobile Basket Component', () => {
           component = fixture.componentInstance;
           element = fixture.nativeElement;
 
-          component.cartItems = [];
+          component.itemCount = 0;
         });
     })
   );

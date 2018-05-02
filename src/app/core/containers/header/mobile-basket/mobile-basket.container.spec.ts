@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { MobileBasketContainerComponent } from './mobile-basket.container';
 
@@ -14,10 +16,11 @@ describe('Mobile Basket Container', () => {
           MockComponent({
             selector: 'ish-mobile-basket',
             template: 'Mobile Basket',
-            inputs: ['cartItems'],
+            inputs: ['basket'],
           }),
           MobileBasketContainerComponent,
         ],
+        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       })
         .compileComponents()
         .then(() => {
