@@ -1,4 +1,4 @@
-<div class="product-tile">
+<div class="product-tile" [attr.data-testing-sku]="product.sku">
   <div class="product-image-container">
     <a [routerLink]="generateProductRoute(product, category)">
       <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>

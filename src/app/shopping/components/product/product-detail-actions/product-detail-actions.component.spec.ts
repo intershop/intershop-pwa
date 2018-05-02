@@ -2,7 +2,7 @@ import { CommonModule, Location } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
-import { instance, mock } from 'ts-mockito/lib/ts-mockito';
+import { instance, mock, spy, verify } from 'ts-mockito/lib/ts-mockito';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product, ProductType } from '../../../../models/product/product.model';
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
@@ -84,13 +84,16 @@ describe('Product Detail Actions Component', () => {
     it('should not show "compare" link when product inforamtion is available and productMaster = true', () => {
       component.product.type = ProductType.VariationProductMaster;
       fixture.detectChanges();
-      expect(element.querySelector("a[data-testing-id='compare-sku']")).toBeFalsy();
+      expect(element.querySelector("[data-testing-id='compare-sku']")).toBeFalsy();
     });
   });
 
   it('should emit "product to compare" event when compare link is clicked', () => {
-    component.productToCompare.subscribe(data => expect(data).toBeFalsy());
+    const eventEmitter$ = spy(component.productToCompare);
     fixture.detectChanges();
-    (<HTMLElement>element.querySelector("a[data-testing-id='compare-sku']")).click();
+
+    (<HTMLElement>element.querySelector("[data-testing-id='compare-sku'] a")).click();
+
+    verify(eventEmitter$.emit()).once();
   });
 });

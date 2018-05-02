@@ -27,7 +27,24 @@ exports.config = {
     require('ts-node').register({
       project: 'e2e/protractor/tsconfig.e2e.json'
     });
-    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+    jasmine.getEnv().addReporter(new SpecReporter({ 
+      spec: { 
+        displayStacktrace: false, 
+        displayDuration: true,
+        displayErrorMessages: true
+      },
+      summary: {
+        displayStacktrace: true,
+      },
+      // stacktrace: {
+      //   filter: (inp) => {
+      //     return inp.split(' at ')
+      //     .filter(i => /\/e2e\//.test(i))
+      //     .map(i => i.split('/e2e/')[1].trim())
+      //     .reduce((a, b) => a + '\n' + b)
+      //   }
+      // }
+    }));
     var reporters = require('jasmine-reporters');
     jasmine.getEnv().addReporter(new reporters.JUnitXmlReporter({
       savePath: 'build/test-results/protractor',
