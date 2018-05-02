@@ -59,15 +59,12 @@ To run the project as a Progressive Web App with an enabled [Service Worker](htt
 
 ## Running unit tests
 
-Run `ng test` to start an on the fly test running environment or `gradlew karma` to execute the unit tests via [Karma](https://karma-runner.github.io) once.
+Run `npm test` to start an on the fly test running environment to execute the unit tests via [Jest](https://facebook.github.io/jest/) once. To run Jest in watch mode with interactive interface run `npm run test:watch`.
 
 ## Running end-to-end tests
 
-Run `ng e2e` or `gradlew protractor` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 The application is automatically started in the background.
-
-Run `gradlew test` to execute the end-to-end tests via [geb+spock](http://www.gebish.org/).
-Gradle automatically starts the application in the background.
 
 ## Build
 
@@ -75,14 +72,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running the CI build locally
 
-A complete build like in the build plan can be started with:
-`gradlew build -Dgeb.env=ci`.
-
 To run the CI build of gitlab locally within a nativ Linux environment you can use `gitlab-runner`. Get it [here](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/bleeding-edge.md). To execute the build, start `gitlab-ci-multi-runner exec docker build`.
-
-## Utility tasks
-
-Run `gradlew reset` to delete node binaries and the node_modules downloaded from npm install.
 
 ## Code formatting
 
@@ -90,7 +80,7 @@ Run `ng lint` to check the application of the default tslint rules configuration
 
 For development make sure the used IDE or Editor follows the [EditorConfig](http://editorconfig.org/) configuration of the project and uses [Prettier](https://prettier.io/) to help maintain consistent coding styles (see `.editorconfig` and `.prettierrc.json`).
 
-Use `npm run format` or `gradlew format` to run Prettier to apply a consistent code style to the source code.
+Use `npm run format` to run Prettier to apply a consistent code style to the source code.
 
 ## Pre-Commit Check
 
