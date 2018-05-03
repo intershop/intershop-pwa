@@ -20,13 +20,13 @@
       labelClass="label-quantity col-xs-6"
       [inputClass]="'col-xs-6 form-group ' + (class || '')"
       markRequiredLabel="off"
-      [min]="minOrderQuantity"
-      [max]="maxOrderQuantity"
+      [min]="product.minOrderQuantity"
+      [max]="product.maxOrderQuantity"
       [errorMessages]="{
         'required':'product.quantity.notempty.text',
         'integer': 'product.quantity.integer.text',
-        'min': 'product.quantity.greaterthan.text' | translate:{ '0': minOrderQuantity },
-        'max': 'product.quantity.lessthan.text' | translate:{ '0': maxOrderQuantity }
+        'min': 'product.quantity.greaterthan.text' | translate:{ '0': product.minOrderQuantity },
+        'max': 'product.quantity.lessthan.text' | translate:{ '0': product.maxOrderQuantity }
       }"
     ></ish-input>
   </ng-template>
