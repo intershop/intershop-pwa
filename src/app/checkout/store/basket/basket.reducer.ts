@@ -1,15 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { BasketAction, BasketActionTypes } from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
+  lineItems: BasketItem[];
   loading: boolean;
   error: HttpErrorResponse;
 }
 
 export const initialState: BasketState = {
   basket: null,
+  lineItems: [],
   loading: false,
   error: null,
 };
@@ -20,7 +23,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasketItems:
     case BasketActionTypes.AddProductToBasket:
     case BasketActionTypes.AddItemsToBasket:
-    case BasketActionTypes.UpdateBasketItem:
+    case BasketActionTypes.UpdateBasketItems:
     case BasketActionTypes.DeleteBasketItem: {
       return {
         ...state,
@@ -31,7 +34,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasketFail:
     case BasketActionTypes.LoadBasketItemsFail:
     case BasketActionTypes.AddItemsToBasketFail:
-    case BasketActionTypes.UpdateBasketItemFail:
+    case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail: {
       const error = action.payload;
 
@@ -43,7 +46,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.AddItemsToBasketSuccess:
-    case BasketActionTypes.UpdateBasketItemSuccess:
+    case BasketActionTypes.UpdateBasketItemsSuccess:
     case BasketActionTypes.DeleteBasketItemSuccess: {
       return {
         ...state,
@@ -52,7 +55,10 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.LoadBasketSuccess: {
-      const basket = action.payload;
+      const basket = {
+        ...action.payload,
+        lineItems: undefined,
+      };
 
       return {
         ...state,
@@ -63,23 +69,10 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
 
     case BasketActionTypes.LoadBasketItemsSuccess: {
       const lineItems = action.payload;
-      let updatedBasket;
-
-      if (state.basket) {
-        updatedBasket = {
-          ...state.basket,
-          lineItems: lineItems,
-        };
-
-        return {
-          ...state,
-          basket: updatedBasket,
-          loading: false,
-        };
-      }
 
       return {
         ...state,
+        lineItems,
         loading: false,
       };
     }

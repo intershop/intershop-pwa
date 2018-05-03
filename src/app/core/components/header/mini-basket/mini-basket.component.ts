@@ -35,9 +35,7 @@ export class MiniBasketComponent implements OnChanges {
   constructor(private animationBuilder: AnimationBuilder) {}
 
   ngOnChanges() {
-    if (this.basket) {
-      this.itemCount = BasketHelper.getBasketItemsCount(this.basket);
-    }
+    this.itemCount = BasketHelper.getBasketItemsCount(this.basket);
   }
 
   /**
