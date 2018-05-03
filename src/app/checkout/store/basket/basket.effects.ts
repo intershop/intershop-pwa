@@ -127,10 +127,9 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.UpdateBasketItems),
     map((action: basketActions.UpdateBasketItems) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    switchMap(([items, basket]) => {
+    map(([items, basket]) => {
       const basketItems = basket.lineItems;
       const updatedItems = [];
-
       if (basketItems) {
         for (const basketItem of basketItems) {
           for (const item of items) {
@@ -139,6 +138,13 @@ export class BasketEffects {
             }
           }
         }
+      }
+      return { updatedItems, basket };
+    }),
+
+    switchMap(({ updatedItems, basket }) => {
+      if (updatedItems.length === 0) {
+        return of(new basketActions.UpdateBasketItemsSuccess());
       }
 
       return forkJoin(

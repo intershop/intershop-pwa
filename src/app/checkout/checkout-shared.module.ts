@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { ShoppingBasketEmptyComponent } from './components/basket/shopping-basket-empty/shopping-basket-empty.component';
-import { ShoppingBasketComponent } from './components/basket/shopping-basket/shopping-basket.component';
+import { BasketItemDescriptionComponent } from './components/common/basket-item-description/basket-item-description.component';
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [ShoppingBasketComponent, ShoppingBasketEmptyComponent],
-  exports: [ShoppingBasketComponent, ShoppingBasketEmptyComponent],
+  declarations: [BasketItemDescriptionComponent],
+  exports: [BasketItemDescriptionComponent],
 })
 export class CheckoutSharedModule {}

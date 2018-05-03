@@ -18,16 +18,7 @@ export class ProductQuantityComponent implements OnInit {
 
   readonly selectType = 'select';
 
-  minOrderQuantity = 1;
-  maxOrderQuantity = 100;
-
   ngOnInit() {
-    if (this.product.minOrderQuantity) {
-      this.minOrderQuantity = this.product.minOrderQuantity;
-    }
-    if (this.product.maxOrderQuantity) {
-      this.maxOrderQuantity = this.product.maxOrderQuantity;
-    }
     this.parentForm.get(this.controlName).setValidators(this.getValidations());
   }
 
@@ -35,8 +26,8 @@ export class ProductQuantityComponent implements OnInit {
     if (this.type !== this.selectType) {
       return Validators.compose([
         Validators.required,
-        Validators.min(this.minOrderQuantity),
-        Validators.max(this.maxOrderQuantity),
+        Validators.min(this.product.minOrderQuantity),
+        Validators.max(this.product.maxOrderQuantity),
         SpecialValidators.integer,
       ]);
     }
@@ -44,11 +35,11 @@ export class ProductQuantityComponent implements OnInit {
 
   get quantityOptions(): SelectOption[] {
     return Array.from(
-      { length: this.maxOrderQuantity - this.minOrderQuantity + 1 },
+      { length: this.product.maxOrderQuantity - this.product.minOrderQuantity + 1 },
       (value, index) =>
         ({
-          label: (this.minOrderQuantity + index).toString(),
-          value: (this.minOrderQuantity + index).toString(),
+          label: (this.product.minOrderQuantity + index).toString(),
+          value: (this.product.minOrderQuantity + index).toString(),
         } as SelectOption)
     );
   }

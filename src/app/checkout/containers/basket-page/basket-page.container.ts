@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Basket } from '../../../models/basket/basket.model';
-import { getBasketLoading, getCurrentBasket } from '../../store/basket';
+import { DeleteBasketItem, getBasketLoading, getCurrentBasket, UpdateBasketItems } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
@@ -19,5 +19,13 @@ export class BasketPageContainerComponent implements OnInit {
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.basketLoading$ = this.store.pipe(select(getBasketLoading));
+  }
+
+  deleteBasketItem(itemId: string) {
+    this.store.dispatch(new DeleteBasketItem(itemId));
+  }
+
+  updateBasketItems(formValue: { itemId: string; quantity: number }[]) {
+    this.store.dispatch(new UpdateBasketItems(formValue));
   }
 }

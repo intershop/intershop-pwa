@@ -13,11 +13,21 @@ export interface BasketItemData {
   product: Link;
   price: Price;
   singleBasePrice: Price;
-  itemSurcharges?: {
-    amount: Price;
-    description?: string;
-    displayName?: string;
-  };
+  itemSurcharges?: [
+    {
+      amount: Price;
+      description?: string;
+      displayName?: string;
+    }
+  ];
+  valueRebates: [
+    {
+      amount: Price;
+      description: string;
+      name: string;
+      rebateType: string;
+    }
+  ];
   isHiddenGift: boolean;
   isFreeGift: boolean;
   inStock: boolean;

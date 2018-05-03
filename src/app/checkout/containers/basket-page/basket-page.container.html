@@ -1,6 +1,10 @@
 <ng-container *ngIf="(basket$ | async) as basket; else emptyBasket">
   <ng-container *ngIf="basket.lineItems.length; else emptyBasket">
-    <ish-shopping-basket [basket]="basket"></ish-shopping-basket>
+    <ish-shopping-basket
+      [basket]="basket"
+      (deleteItem)="deleteBasketItem($event)"
+      (updateItems)="updateBasketItems($event)"
+    ></ish-shopping-basket>
   </ng-container>
 </ng-container>
 

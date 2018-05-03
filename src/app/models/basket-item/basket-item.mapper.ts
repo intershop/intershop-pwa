@@ -12,6 +12,7 @@ export class BasketItemMapper {
       price: data.price,
       singleBasePrice: data.singleBasePrice,
       itemSurcharges: data.itemSurcharges,
+      valueRebates: data.valueRebates,
       isHiddenGift: data.isHiddenGift,
       isFreeGift: data.isFreeGift,
       inStock: data.inStock,
