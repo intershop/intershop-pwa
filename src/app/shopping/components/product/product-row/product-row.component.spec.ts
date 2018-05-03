@@ -28,8 +28,8 @@ describe('Product Row Component', () => {
             inputs: ['product'],
           }),
           MockComponent({
-            selector: 'ish-product-add-to-cart',
-            template: 'Product Add To Cart Component',
+            selector: 'ish-product-add-to-basket',
+            template: 'Product Add To Basket Component',
             inputs: ['product'],
           }),
         ],

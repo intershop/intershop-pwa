@@ -32,10 +32,10 @@
             <span itemprop="sku">{{product.sku}}</span>
           </div>
 
-          <ish-product-add-to-cart
+          <ish-product-add-to-basket
             [product]="product"
-            (productToCart)="addToCart(product.sku, product.minOrderQuantity)"
-          ></ish-product-add-to-cart>
+            (productToBasket)="addToBasket(product.sku, product.minOrderQuantity)"
+          ></ish-product-add-to-basket>
         </td>
       </tr>
 

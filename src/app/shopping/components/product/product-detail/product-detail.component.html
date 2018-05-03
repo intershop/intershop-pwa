@@ -42,12 +42,12 @@
           [controlName]="quantityControlName"
         ></ish-product-quantity>
 
-        <ish-product-add-to-cart
+        <ish-product-add-to-basket
           [product]="product"
           [disabled]="!productDetailForm.valid"
-          (productToCart)="addToCart()"
+          (productToBasket)="addToBasket()"
           class="btn-lg btn-block"
-        ></ish-product-add-to-cart>
+        ></ish-product-add-to-basket>
 
       </form>
 

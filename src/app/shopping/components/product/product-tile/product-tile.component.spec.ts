@@ -22,7 +22,11 @@ describe('Product Tile Component', () => {
             template: 'Product Price Component',
             inputs: ['product', 'showInformationalPrice'],
           }),
-          MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart', inputs: ['product'] }),
+          MockComponent({
+            selector: 'ish-product-add-to-basket',
+            template: 'Product Add To Basket',
+            inputs: ['product'],
+          }),
         ],
       }).compileComponents();
     })

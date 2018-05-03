@@ -16,7 +16,7 @@ export class ProductRowContainerComponent {
 
   constructor(private store: Store<CheckoutState>) {}
 
-  addToCart() {
+  addToBasket() {
     this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
   }
 }

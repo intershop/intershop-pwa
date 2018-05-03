@@ -4,7 +4,7 @@ import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
-import { ProductAddToCartComponent } from './components/product/product-add-to-cart/product-add-to-cart.component';
+import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
@@ -39,7 +39,7 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductTileContainerComponent,
     ProductRowContainerComponent,
     ProductQuantityComponent,
-    ProductAddToCartComponent,
+    ProductAddToBasketComponent,
     ProductDetailActionsComponent,
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
@@ -60,7 +60,7 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductTileContainerComponent,
     ProductRowContainerComponent,
     ProductQuantityComponent,
-    ProductAddToCartComponent,
+    ProductAddToBasketComponent,
     ProductDetailActionsComponent,
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,

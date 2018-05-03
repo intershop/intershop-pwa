@@ -2,16 +2,16 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { Product } from '../../../../models/product/product.model';
 
 @Component({
-  selector: 'ish-product-add-to-cart',
-  templateUrl: './product-add-to-cart.component.html',
+  selector: 'ish-product-add-to-basket',
+  templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductAddToCartComponent implements OnChanges {
+export class ProductAddToBasketComponent implements OnChanges {
   @Input() product: Product;
   @Input() disabled = false;
   @Input() displayType?: string;
   @Input() class?: string;
-  @Output() productToCart = new EventEmitter<void>();
+  @Output() productToBasket = new EventEmitter<void>();
 
   isDisplayTypeGlyphicon = false;
 
@@ -19,7 +19,7 @@ export class ProductAddToCartComponent implements OnChanges {
     this.isDisplayTypeGlyphicon = this.displayType === 'glyphicon';
   }
 
-  addToCart() {
-    this.productToCart.emit();
+  addToBasket() {
+    this.productToBasket.emit();
   }
 }
