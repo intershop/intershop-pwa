@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs/observable/combineLatest';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
@@ -117,21 +118,40 @@ export class BasketEffects {
   );
 
   /**
-   * Update basket item effect if quantity > 0.
+   * Update basket items effect.
+   * Triggers update item request if item quantity has changed and is greater zero
+   * Triggers delete item request if item quantity set to zero
    */
   @Effect()
-  updateBasketItem$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.UpdateBasketItem),
-    map((action: basketActions.UpdateBasketItem) => action.payload),
-    filter(payload => payload.quantity > 0),
+  updateBasketItems$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasketItems),
+    map((action: basketActions.UpdateBasketItems) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([payload, basket]) => {
-      return this.basketService
-        .updateBasketItem(payload.itemId, payload.quantity, basket.id)
-        .pipe(
-          map(() => new basketActions.UpdateBasketItemSuccess()),
-          catchError(error => of(new basketActions.UpdateBasketItemFail(error)))
-        );
+    switchMap(([items, basket]) => {
+      const basketItems = basket.lineItems;
+      const updatedItems = [];
+
+      if (basketItems) {
+        for (const basketItem of basketItems) {
+          for (const item of items) {
+            if (basketItem.id === item.itemId && basketItem.quantity.value !== item.quantity) {
+              updatedItems.push(item);
+            }
+          }
+        }
+      }
+
+      return forkJoin(
+        updatedItems.map(item => {
+          if (item.quantity > 0) {
+            return this.basketService.updateBasketItem(item.itemId, item.quantity, basket.id);
+          }
+          return this.basketService.deleteBasketItem(item.itemId, basket.id);
+        })
+      ).pipe(
+        map(() => new basketActions.UpdateBasketItemsSuccess()),
+        catchError(error => of(new basketActions.UpdateBasketItemsFail(error)))
+      );
     })
   );
 
@@ -151,15 +171,6 @@ export class BasketEffects {
           catchError(error => of(new basketActions.DeleteBasketItemFail(error)))
         );
     })
-  );
-
-  /**
-   * Trigger a LoadBasket action after a successful login.
-   */
-  @Effect()
-  loadBasketAfterLogin$ = this.actions$.pipe(
-    ofType(UserActionTypes.LoginUserSuccess),
-    map(() => new basketActions.LoadBasket())
   );
 
   /**
@@ -186,20 +197,17 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger an AddItemsToBasket action after LoginUserSuccess if basket items are present from pre login state.
-   * Trigger a LoadBasket action, if no pre login state basket items present
+   * Trigger an AddItemsToBasket action after LoginUserSuccess, if basket items are present from pre login state.
    */
   @Effect()
   mergeBasketAfterLogin$ = this.actions$.pipe(
     ofType(UserActionTypes.LoginUserSuccess),
     switchMap(() => this.basketService.getBasket()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(
+      ([newBasket, currentBasket]) => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0
+    ),
     map(([newBasket, currentBasket]) => {
-      // TODO: move to separate effect?
-      if (!currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0) {
-        return new basketActions.LoadBasket();
-      }
-
       const items = currentBasket.lineItems.map(lineItem => ({
         sku: lineItem.product.sku,
         quantity: lineItem.quantity.value,
@@ -210,39 +218,29 @@ export class BasketEffects {
   );
 
   /**
+   * Trigger LoadBasket action after LoginUserSucces, if no pre login state basket items are present.
+   */
+  @Effect()
+  loadBasketAfterLogin$ = this.actions$.pipe(
+    ofType(UserActionTypes.LoginUserSuccess),
+    switchMap(() => this.basketService.getBasket()),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(
+      ([newBasket, currentBasket]) => !currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0
+    ),
+    map(() => new basketActions.LoadBasket())
+  );
+
+  /**
    * Triggers a LoadBasket action after successful interaction with the Basket API.
    */
   @Effect()
   loadBasketAfterBasketChangeSuccess$ = this.actions$.pipe(
     ofType(
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
-      basketActions.BasketActionTypes.UpdateBasketItemSuccess,
+      basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
       basketActions.BasketActionTypes.DeleteBasketItemSuccess
     ),
     map(() => new basketActions.LoadBasket())
-  );
-
-  /**
-   * Update basket items effect.
-   * Triggers UpdateBasketItem for every item in payload array.
-   */
-  @Effect()
-  updateBasketItems$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.UpdateBasketItems),
-    map((action: basketActions.UpdateBasketItems) => action.payload),
-    switchMap(items => [
-      ...items.map(item => new basketActions.UpdateBasketItem(item as { quantity: number; itemId: string })),
-    ])
-  );
-
-  /**
-   * Trigger DeleteBasketItem action if UpdateBasketItem quantity === 0.
-   */
-  @Effect()
-  deleteBasketItemIfQuantityZero$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.UpdateBasketItem),
-    map((action: basketActions.UpdateBasketItem) => action.payload),
-    filter(payload => payload.quantity === 0),
-    map(payload => new basketActions.DeleteBasketItem(payload.itemId))
   );
 }

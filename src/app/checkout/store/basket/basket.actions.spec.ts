@@ -98,39 +98,6 @@ describe('Basket Actions', () => {
     });
   });
 
-  describe('Update Basket Item Actions', () => {
-    it('should create new action for UpdateBasketItem', () => {
-      const payload = {
-        quantity: 1,
-        itemId: 'test',
-      };
-      const action = new fromActions.UpdateBasketItem(payload);
-
-      expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.UpdateBasketItem,
-        payload,
-      });
-    });
-
-    it('should create new action for UpdateBasketItemFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
-      const action = new fromActions.UpdateBasketItemFail(payload);
-
-      expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.UpdateBasketItemFail,
-        payload,
-      });
-    });
-
-    it('should create new action for UpdateBasketItemSuccess', () => {
-      const action = new fromActions.UpdateBasketItemSuccess();
-
-      expect({ ...action }).toEqual({
-        type: fromActions.BasketActionTypes.UpdateBasketItemSuccess,
-      });
-    });
-  });
-
   describe('Update Basket Items Actions', () => {
     it('should create new action for UpdateBasketItems', () => {
       const payload = [
@@ -148,6 +115,24 @@ describe('Basket Actions', () => {
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.UpdateBasketItems,
         payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketItemsFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.UpdateBasketItemsFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketItemsFail,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketItemsSuccess', () => {
+      const action = new fromActions.UpdateBasketItemsSuccess();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketItemsSuccess,
       });
     });
   });

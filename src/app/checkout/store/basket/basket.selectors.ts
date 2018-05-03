@@ -10,11 +10,11 @@ const getBasketState = createSelector(getCheckoutState, state => state.basket);
  * Select the current basket with the appended product data for each line item.
  */
 export const getCurrentBasket = createSelector(getBasketState, getProductEntities, (basket, products) => {
-  if (!basket.basket || !basket.basket.lineItems) {
+  if (!basket.basket) {
     return null;
   }
 
-  const lineItems = basket.basket.lineItems;
+  const lineItems = basket.lineItems;
   const updatedLineItems: BasketItem[] = [];
 
   for (const item of lineItems) {

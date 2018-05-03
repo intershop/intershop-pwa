@@ -14,10 +14,9 @@ export enum BasketActionTypes {
   AddItemsToBasket = '[Basket Internal] Add Items To Basket',
   AddItemsToBasketFail = '[Basket API] Add Item To Basket Fail',
   AddItemsToBasketSuccess = '[Basket API] Add Item To Basket Success',
-  UpdateBasketItem = '[Basket] Update Basket Item',
-  UpdateBasketItemFail = '[Basket API] Update Basket Item Fail',
-  UpdateBasketItemSuccess = '[Basket API] Update Basket Item Success',
   UpdateBasketItems = '[Basket] Update Basket Items',
+  UpdateBasketItemsFail = '[Basket API] Update Basket Items Fail',
+  UpdateBasketItemsSuccess = '[Basket API] Update Basket Items Success',
   DeleteBasketItem = '[Basket] Delete Basket Item',
   DeleteBasketItemFail = '[Basket API] Delete Basket Item Fail',
   DeleteBasketItemSuccess = '[Basket API] Delete Basket Item Success',
@@ -72,23 +71,18 @@ export class AddItemsToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketSuccess;
 }
 
-export class UpdateBasketItem implements Action {
-  readonly type = BasketActionTypes.UpdateBasketItem;
-  constructor(public payload: { itemId: string; quantity: number }) {}
-}
-
-export class UpdateBasketItemFail implements Action {
-  readonly type = BasketActionTypes.UpdateBasketItemFail;
-  constructor(public payload: HttpErrorResponse) {}
-}
-
-export class UpdateBasketItemSuccess implements Action {
-  readonly type = BasketActionTypes.UpdateBasketItemSuccess;
-}
-
 export class UpdateBasketItems implements Action {
   readonly type = BasketActionTypes.UpdateBasketItems;
   constructor(public payload: { itemId: string; quantity: number }[]) {}
+}
+
+export class UpdateBasketItemsFail implements Action {
+  readonly type = BasketActionTypes.UpdateBasketItemsFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class UpdateBasketItemsSuccess implements Action {
+  readonly type = BasketActionTypes.UpdateBasketItemsSuccess;
 }
 
 export class DeleteBasketItem implements Action {
@@ -116,10 +110,9 @@ export type BasketAction =
   | AddItemsToBasket
   | AddItemsToBasketFail
   | AddItemsToBasketSuccess
-  | UpdateBasketItem
-  | UpdateBasketItemFail
-  | UpdateBasketItemSuccess
   | UpdateBasketItems
+  | UpdateBasketItemsFail
+  | UpdateBasketItemsSuccess
   | DeleteBasketItem
   | DeleteBasketItemFail
   | DeleteBasketItemSuccess;

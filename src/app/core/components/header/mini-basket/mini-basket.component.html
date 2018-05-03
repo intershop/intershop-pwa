@@ -4,7 +4,7 @@
     <span class="glyphicon glyphicon-shopping-cart"></span>
     <!-- TODO: check for a better solution for the plural and translate pipe combination for cases where the en_US.json is not yet loaded, current solution: || {"other": "#"} -->
     <span>{{ itemCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
-    <ng-container *ngIf="basket">
+    <ng-container *ngIf="basket && basket.totals.basketTotal">
       <span> / </span>
       <span class="mini-cart-price">{{ basket.totals.basketTotal | ishPrice }}</span>
     </ng-container>
