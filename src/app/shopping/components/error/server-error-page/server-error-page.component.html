@@ -1,18 +1,17 @@
-<div class="marketing-area">
-</div>
 <div class="errorpage-content col-md-6 col-md-offset-3">
-  <h1>Something Went Wrong</h1>
+  <h1>{{ 'servererror.page.title' | translate }}</h1>
   <div class="error-text">
-    <h3>We are sorry ...</h3>
-    <!---  href="/"  is used here intentionally to enforce reloading the application in error case -->
-    <h4>Please go back to the <a href="/">Home Page</a> and try again.</h4>
+    <div [innerHTML]="'servererror.page.text' | translate"></div>
     <p class="text-muted">
-        <ng-container [ngSwitch]="error.current.status">
-            <ng-container  *ngSwitchCase="0">Server timeout</ng-container>
-            <ng-container *ngSwitchDefault>
-              Error code {{ error.current.status }}<br>
-              {{ error.type }} </ng-container>
-          </ng-container>
+      <ng-container [ngSwitch]="error.current.status">
+        <ng-container *ngSwitchCase="0">
+          Server timeout
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          Error code {{ error.current.status }}<br/>
+          {{ error.type }}
+        </ng-container>
+      </ng-container>
     </p>
   </div>
 </div>
