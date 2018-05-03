@@ -12,12 +12,12 @@
   </div>
 
   <div class="product-tile-actions btn-group">
-    <ish-product-add-to-cart
+    <ish-product-add-to-basket
       [product]="product"
       displayType="glyphicon"
       class="btn-link"
-      (productToCart)="addToCart()"
-    ></ish-product-add-to-cart>
+      (productToBasket)="addToBasket()"
+    ></ish-product-add-to-basket>
     <button
       (click)="toggleCompare()"
       class="btn btn-link add-to-compare"

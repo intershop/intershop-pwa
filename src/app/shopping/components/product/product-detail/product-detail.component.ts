@@ -9,7 +9,7 @@ import { Product } from '../../../../models/product/product.model';
 })
 export class ProductDetailComponent implements OnInit {
   @Input() product: Product;
-  @Output() productToCart = new EventEmitter<{ sku: string; quantity: number }>();
+  @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
 
   productDetailForm: FormGroup;
@@ -21,8 +21,8 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  addToCart() {
-    this.productToCart.emit({
+  addToBasket() {
+    this.productToBasket.emit({
       sku: this.product.sku,
       quantity: this.productDetailForm.get(this.quantityControlName).value,
     });

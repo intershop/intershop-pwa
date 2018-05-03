@@ -4,11 +4,11 @@ import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
 /**
- * The Mini Basket Component displays a quick overview over the users basket items
+ * The Mini Basket Component displays a quick overview over the users basket items.
  * It uses the {@link ProductImageComponent} for the rendering of product images.
  *
  * @example
- * <ish-mini-basket [basket]="basket$ | async"></ish-mini-basket>
+ * <ish-mini-basket [basket]="basket"></ish-mini-basket>
  */
 @Component({
   selector: 'ish-mini-basket',
@@ -17,12 +17,12 @@ import { ProductHelper } from '../../../../models/product/product.model';
 })
 export class MiniBasketComponent implements OnChanges {
   /**
-   * the basket that should be displayed
+   * The basket that should be displayed.
    */
   @Input() basket: Basket;
 
   /**
-   * vertical product slider element reference
+   * The vertical product slider element reference.
    */
   @ViewChild('slider') slider: ElementRef;
 
@@ -38,6 +38,27 @@ export class MiniBasketComponent implements OnChanges {
     if (this.basket) {
       this.itemCount = BasketHelper.getBasketItemsCount(this.basket);
     }
+  }
+
+  /**
+   * Toggle the collapse state of the mini basket programmatically.
+   */
+  toggleCollapse() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  /**
+   * Collapse the mini basket programmatically.
+   */
+  collapse() {
+    this.isCollapsed = true;
+  }
+
+  /**
+   * Open the mini basket programmatically.
+   */
+  open() {
+    this.isCollapsed = false;
   }
 
   /**

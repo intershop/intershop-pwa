@@ -33,7 +33,11 @@ describe('Product Compare List Component', () => {
             template: 'Product Price Component',
             inputs: ['product', 'showInformationalPrice'],
           }),
-          MockComponent({ selector: 'ish-product-add-to-cart', template: 'Product Add To Cart', inputs: ['product'] }),
+          MockComponent({
+            selector: 'ish-product-add-to-basket',
+            template: 'Product Add To Basket',
+            inputs: ['product'],
+          }),
           MockComponent({
             selector: 'ish-product-inventory',
             template: 'Product Inventory Component',
@@ -107,11 +111,11 @@ describe('Product Compare List Component', () => {
     component.removeFromCompare('111');
   });
 
-  it('should emit add to cart when click on add to cart button', () => {
-    component.productToCart.subscribe(data => {
+  it('should emit add to basket when click on add to basket button', () => {
+    component.productToBasket.subscribe(data => {
       expect(data).toEqual({ sku: '111', quantity: 1 });
     });
-    component.addToCart('111', 1);
+    component.addToBasket('111', 1);
   });
 
   it('should return 1 as the number of Common Attribute Names for the compared products', () => {

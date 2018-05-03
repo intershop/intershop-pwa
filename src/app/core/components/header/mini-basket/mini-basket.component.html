@@ -1,6 +1,6 @@
-<div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed">
+<div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed" ishClickOutside (isClickedOutside)="collapse()">
 
-  <a (click)="isCollapsed = !isCollapsed; false;">
+  <a (click)="toggleCollapse()">
     <span class="glyphicon glyphicon-shopping-cart"></span>
     <!-- TODO: check for a better solution for the plural and translate pipe combination for cases where the en_US.json is not yet loaded, current solution: || {"other": "#"} -->
     <span>{{ itemCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
@@ -14,7 +14,12 @@
 
     <ng-container *ngIf="basket && basket.lineItems.length > 0; else emptyBlock">
 
-      <div *ngIf="basket.lineItems.length > 2" class="btn-scroll-up" [class.disabled]="currentProduct === 0" (click)="scrollUp()">
+      <div
+        *ngIf="basket.lineItems.length > 2"
+        class="btn-scroll-up"
+        [class.disabled]="currentProduct === 0"
+        (click)="scrollUp()"
+      >
         <span class="glyphicon glyphicon-chevron-up"></span>
       </div>
 
@@ -23,12 +28,12 @@
 
           <div *ngFor="let lineItem of basket.lineItems" class="product-row">
             <div class="mini-product-img">
-              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="isCollapsed = true;">
+              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="collapse()">
                 <ish-product-image [product]="lineItem.product" imageType="S" class="product-image"></ish-product-image>
               </a>
             </div>
             <div class="mini-product-info">
-              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="isCollapsed = true;">
+              <a [routerLink]="generateProductRoute(lineItem.product)" (click)="collapse()">
                 {{ lineItem.name }}
               </a>
               <div class="product-price">{{ lineItem.price | ishPrice }}</div>
@@ -48,7 +53,7 @@
         <span class="glyphicon glyphicon-chevron-down"></span>
       </div>
 
-      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket">{{ 'shopping_cart.ministatus.view_cart.link' | translate }}</a>
+      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket" (click)="collapse()">{{ 'shopping_cart.ministatus.view_cart.link' | translate }}</a>
 
     </ng-container>
 

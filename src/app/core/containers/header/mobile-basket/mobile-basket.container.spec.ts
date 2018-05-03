@@ -1,10 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { MobileCartContainerComponent } from './mobile-cart.container';
+import { MobileBasketContainerComponent } from './mobile-basket.container';
 
-describe('Mobile Cart Container', () => {
-  let component: MobileCartContainerComponent;
-  let fixture: ComponentFixture<MobileCartContainerComponent>;
+describe('Mobile Basket Container', () => {
+  let component: MobileBasketContainerComponent;
+  let fixture: ComponentFixture<MobileBasketContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(
@@ -12,16 +14,17 @@ describe('Mobile Cart Container', () => {
       TestBed.configureTestingModule({
         declarations: [
           MockComponent({
-            selector: 'ish-mobile-cart',
-            template: 'Mobile Cart',
-            inputs: ['cartItems'],
+            selector: 'ish-mobile-basket',
+            template: 'Mobile Basket',
+            inputs: ['basket'],
           }),
-          MobileCartContainerComponent,
+          MobileBasketContainerComponent,
         ],
+        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       })
         .compileComponents()
         .then(() => {
-          fixture = TestBed.createComponent(MobileCartContainerComponent);
+          fixture = TestBed.createComponent(MobileBasketContainerComponent);
           component = fixture.componentInstance;
           element = fixture.nativeElement;
         });

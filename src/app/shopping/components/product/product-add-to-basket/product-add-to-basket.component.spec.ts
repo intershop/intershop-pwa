@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
-import { ProductAddToCartComponent } from './product-add-to-cart.component';
+import { ProductAddToBasketComponent } from './product-add-to-basket.component';
 
-describe('Product Add To Cart Component', () => {
-  let component: ProductAddToCartComponent;
-  let fixture: ComponentFixture<ProductAddToCartComponent>;
+describe('Product Add To Basket Component', () => {
+  let component: ProductAddToBasketComponent;
+  let fixture: ComponentFixture<ProductAddToBasketComponent>;
   let product: Product;
   let translate: TranslateService;
   let element: HTMLElement;
@@ -15,13 +15,13 @@ describe('Product Add To Cart Component', () => {
       TestBed.configureTestingModule({
         imports: [TranslateModule.forRoot()],
         providers: [TranslateService],
-        declarations: [ProductAddToCartComponent],
+        declarations: [ProductAddToBasketComponent],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductAddToCartComponent);
+    fixture = TestBed.createComponent(ProductAddToBasketComponent);
     component = fixture.componentInstance;
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');

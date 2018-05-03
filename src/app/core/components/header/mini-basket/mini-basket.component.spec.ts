@@ -154,4 +154,22 @@ describe('Mini Basket Component', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('ish-product-image').length).toEqual(3);
   });
+
+  it('should set isCollapsed to propper value if toggleCollapsed is called', () => {
+    component.isCollapsed = true;
+    component.toggleCollapse();
+    expect(component.isCollapsed).toBeFalsy();
+    component.toggleCollapse();
+    expect(component.isCollapsed).toBeTruthy();
+  });
+
+  it('should set isCollapsed to true if collapse() is called', () => {
+    component.collapse();
+    expect(component.isCollapsed).toBeTruthy();
+  });
+
+  it('should set isCollapsed to false if open() is called', () => {
+    component.open();
+    expect(component.isCollapsed).toBeFalsy();
+  });
 });
