@@ -31,6 +31,7 @@ export interface ProductData {
 
   productMasterSKU?: string;
   minOrderQuantity: number;
+  maxOrderQuantity?: number;
   // If Variation Master and Retail Set {
   minListPrice?: number;
   maxListPrice?: number;

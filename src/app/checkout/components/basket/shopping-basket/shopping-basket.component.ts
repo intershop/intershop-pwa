@@ -41,7 +41,10 @@ export class ShoppingBasketComponent implements OnChanges {
       itemsForm.push(
         this.fb.group({
           itemId: item.id,
-          quantity: [item.quantity.value, [Validators.required, SpecialValidators.integer]],
+          quantity: [
+            item.quantity.value,
+            [Validators.required, Validators.max(item.product.maxOrderQuantity), SpecialValidators.integer],
+          ],
         })
       );
     }
@@ -52,16 +55,18 @@ export class ShoppingBasketComponent implements OnChanges {
    * Submits quantities form and throws updateQuantities event when form is valid
    */
   submitForm() {
-    // ToDo: handle invalid form
+    // handle invalid form: should actually never happen because button is disabled in this case
     if (this.form.invalid) {
       this.submitted = true;
       markAsDirtyRecursive(this.form);
       return;
     }
 
+    // convert quantity form values to number
     for (const item of this.form.value.items) {
       item.quantity = parseInt(item.quantity, 10);
     }
+
     this.update.emit(this.form.value.items);
   }
 
