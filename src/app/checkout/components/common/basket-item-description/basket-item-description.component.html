@@ -1,7 +1,7 @@
   <!-- Product ID -->
   <p class="product-id">{{'checkout.pli.item.text.id' | translate }} {{pli.product.sku}}</p>
 
-  <!-- ToDo: Product Variations -->
+  <!-- TODO: Product Variations -->
 
   <!-- Availability -->
   <p class="availability">
@@ -17,19 +17,21 @@
   </p>
 
   <!-- Surcharges -->
-  <div *ngFor="let surcharge of pli.itemSurcharges;">
-    {{surcharge?.displayName}}<span *ngIf="!surcharge.displayName">{{surcharge?.text}}</span>
+  <div *ngFor="let surcharge of pli.itemSurcharges">
+    {{surcharge.displayName}}
+    <span *ngIf="!surcharge.displayName">{{surcharge.text}}</span>
     <span class="text-nowrap">
-      {{ surcharge?.amount.value | currency: surcharge?.amount.currencyMnemonic }}
+      {{ surcharge.amount.value | currency: surcharge.amount.currencyMnemonic }}
     </span>
-    <ng-template #Surcharge>
-      <span  [innerHTML]="surcharge?.description"></span>
+    <ng-template #SurchargeDescription>
+      <span [innerHTML]="surcharge.description"></span>
     </ng-template>
     <a class="details-tooltip"
-      [popover]="Surcharge"
+      [popover]="SurchargeDescription"
       [popoverTitle]="surcharge.displayName"
       placement="top"
-    >{{'shopping_cart.detail.text' | translate }}
+    >
+      {{'shopping_cart.detail.text' | translate }}
       <span class="glyphicon glyphicon-info-sign"></span>
     </a>
   </div>

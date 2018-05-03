@@ -13,17 +13,17 @@ import { ProductHelper } from '../../../../models/product/product.model';
 export class ShoppingBasketComponent implements OnChanges {
   @Input() basket: Basket;
 
-  @Output() update = new EventEmitter<{ itemId: string; quantity: number }[]>();
+  @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
   @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
   submitted = false;
   generateProductRoute = ProductHelper.generateProductRoute;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   /**
-   * if the basket changes a new form is created for basket quantities update
+   * If the basket changes a new form is created for basket quantities update.
    */
   ngOnChanges() {
     this.form = new FormGroup({
@@ -32,14 +32,14 @@ export class ShoppingBasketComponent implements OnChanges {
   }
 
   /**
-   * returns an array of formgroups (itemId and quantity) according to the given basket
+   * Returns an array of formgroups (itemId and quantity) according to the given basket.
    */
   createItemForm(basket: Basket): FormGroup[] {
     const itemsForm: FormGroup[] = [];
 
     for (const item of basket.lineItems) {
       itemsForm.push(
-        this.fb.group({
+        this.formBuilder.group({
           itemId: item.id,
           quantity: [
             item.quantity.value,
@@ -52,7 +52,7 @@ export class ShoppingBasketComponent implements OnChanges {
   }
 
   /**
-   * Submits quantities form and throws updateQuantities event when form is valid
+   * Submits quantities form and throws updateItems event when form is valid.
    */
   submitForm() {
     // handle invalid form: should actually never happen because button is disabled in this case
@@ -67,11 +67,11 @@ export class ShoppingBasketComponent implements OnChanges {
       item.quantity = parseInt(item.quantity, 10);
     }
 
-    this.update.emit(this.form.value.items);
+    this.updateItems.emit(this.form.value.items);
   }
 
   /**
-   * throws deleteItem event when delete button was clicked
+   * Throws deleteItem event when delete button was clicked.
    */
   onDeleteItem(itemId) {
     this.deleteItem.emit(itemId);
