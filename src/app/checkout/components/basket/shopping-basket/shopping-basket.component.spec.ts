@@ -84,10 +84,10 @@ describe('Shopping Basket Component', () => {
     expect(firedItem).toBe('4712');
   });
 
-  it('should throw update event when form is submitted', () => {
+  it('should throw updateItems event when form is submitted', () => {
     component.ngOnChanges();
     let firedFormValue = '';
-    component.update.subscribe(x => {
+    component.updateItems.subscribe(x => {
       firedFormValue = x;
     });
 

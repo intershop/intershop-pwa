@@ -20,6 +20,5 @@ import { basketPageRoutes } from './basket-page.routes';
     SharedProductModule,
   ],
   declarations: [BasketPageContainerComponent, ShoppingBasketComponent, ShoppingBasketEmptyComponent],
-  exports: [ShoppingBasketComponent, ShoppingBasketEmptyComponent],
 })
 export class BasketPageModule {}
