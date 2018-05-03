@@ -34,7 +34,7 @@ import {
   SelectCategory,
 } from './categories';
 import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
-import { AddToRecently, RecentlyActionTypes } from './recently';
+import { getRecentlyProducts, RecentlyActionTypes } from './recently';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
 
@@ -363,6 +363,13 @@ describe('Shopping Store', () => {
       })
     );
 
+    it(
+      'should not put anything in recently viewed products when going to a family page',
+      fakeAsync(() => {
+        expect(getRecentlyProducts(store.state)).toEqual([]);
+      })
+    );
+
     describe('and clicking a product', () => {
       beforeEach(
         fakeAsync(() => {
@@ -381,6 +388,13 @@ describe('Shopping Store', () => {
           expect(i.next()).toEqual(new LoadProduct('P1'));
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should add the product to recently viewed products when going to product detail page',
+        fakeAsync(() => {
+          expect(getRecentlyProducts(store.state)).toEqual(['P1']);
         })
       );
 
@@ -420,6 +434,13 @@ describe('Shopping Store', () => {
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
           expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should not put anything additionally in recently viewed products when changing the language',
+        fakeAsync(() => {
+          expect(getRecentlyProducts(store.state)).toEqual([]);
         })
       );
     });
@@ -485,7 +506,6 @@ describe('Shopping Store', () => {
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next()).toEqual(new LoadCategory('A.123.456'));
-        expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadProduct('P1'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
@@ -493,7 +513,15 @@ describe('Shopping Store', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toBeUndefined();
+      })
+    );
+
+    it(
+      'should put the product to recently viewed products when going to product detail page',
+      fakeAsync(() => {
+        expect(getRecentlyProducts(store.state)).toEqual(['P1']);
       })
     );
 
@@ -515,6 +543,13 @@ describe('Shopping Store', () => {
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should not put anything additionally to recently viewed products when changing the language',
+        fakeAsync(() => {
+          expect(getRecentlyProducts(store.state)).toEqual(['P1']);
         })
       );
     });
@@ -547,6 +582,13 @@ describe('Shopping Store', () => {
           expect(i.next()).toEqual(new LoadProduct('P2'));
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
+        })
+      );
+
+      it(
+        'should not put anything additionally to recently viewed products when going back',
+        fakeAsync(() => {
+          expect(getRecentlyProducts(store.state)).toEqual(['P1']);
         })
       );
     });
@@ -609,11 +651,11 @@ describe('Shopping Store', () => {
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next()).toEqual(new SelectProduct('P1'));
-        expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadProduct('P1'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -707,7 +749,6 @@ describe('Shopping Store', () => {
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next()).toEqual(new LoadCategory('A.123.456'));
-        expect(i.next()).toEqual(new AddToRecently('P3'));
         expect(i.next()).toEqual(new LoadProduct('P3'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
@@ -731,6 +772,13 @@ describe('Shopping Store', () => {
       fakeAsync(() => {
         expect(getSelectedCategory(store.state)).toBeUndefined();
         expect(getSelectedProduct(store.state)).toBeUndefined();
+      })
+    );
+
+    it(
+      'should not put anything to recently viewed products when invalid product was selected',
+      fakeAsync(() => {
+        expect(getRecentlyProducts(store.state)).toEqual([]);
       })
     );
   });
