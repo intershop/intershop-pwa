@@ -38,6 +38,7 @@
 *.log
 /typings
 /src/environments/environment.local.ts
+/junit.xml
 
 # System Files
 .DS_Store
