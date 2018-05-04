@@ -249,4 +249,13 @@ export class BasketEffects {
     ),
     map(() => new basketActions.LoadBasket())
   );
+
+  /**
+   * Trigger ResetBasket action after LogoutUser.
+   */
+  @Effect()
+  resetBasketAfterLogout$ = this.actions$.pipe(
+    ofType(UserActionTypes.LogoutUser),
+    map(() => new basketActions.ResetBasket())
+  );
 }
