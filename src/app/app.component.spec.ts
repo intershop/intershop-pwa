@@ -18,7 +18,7 @@ describe('AppComponent', () => {
       TestBed.configureTestingModule({
         declarations: [
           AppComponent,
-          MockComponent({ selector: 'ish-header', template: 'Header Component' }),
+          MockComponent({ selector: 'ish-header-container', template: 'Header Component' }),
           MockComponent({ selector: 'ish-footer', template: 'Footer Component' }),
         ],
         providers: [TranslateService, { provide: Store, useFactory: () => instance(mock(Store)) }],
@@ -47,7 +47,7 @@ describe('AppComponent', () => {
   it(
     'should render header component on page',
     async(() => {
-      expect(element.querySelector('ish-header').textContent).toEqual('Header Component');
+      expect(element.querySelector('ish-header-container').textContent).toEqual('Header Component');
     })
   );
 });

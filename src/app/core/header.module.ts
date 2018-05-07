@@ -11,13 +11,15 @@ import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedSearchModule } from '../shared/shared-search.module';
 import { HeaderNavigationComponent } from './components/header/header-navigation/header-navigation.component';
 import { SubCategoryNavigationComponent } from './components/header/header-navigation/sub-category-navigation/sub-category-navigation.component';
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from './components/header/header/header.component';
 import { LanguageSwitchComponent } from './components/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from './components/header/login-status/login-status.component';
 import { MiniBasketComponent } from './components/header/mini-basket/mini-basket.component';
 import { MobileBasketComponent } from './components/header/mobile-basket/mobile-basket.component';
 import { ProductCompareStatusComponent } from './components/header/product-compare-status/product-compare-status.component';
+import { SimpleHeaderComponent } from './components/header/simple-header/simple-header.component';
 import { HeaderNavigationContainerComponent } from './containers/header/header-navigation/header-navigation.container';
+import { HeaderContainerComponent } from './containers/header/header/header.container';
 import { LanguageSwitchContainerComponent } from './containers/header/language-switch/language-switch.container';
 import { LoginStatusContainerComponent } from './containers/header/login-status/login-status.container';
 import { MiniBasketContainerComponent } from './containers/header/mini-basket/mini-basket.container';
@@ -39,7 +41,9 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     BrowserAnimationsModule,
   ],
   declarations: [
+    SimpleHeaderComponent,
     HeaderComponent,
+    HeaderContainerComponent,
     ProductCompareStatusComponent,
     ProductCompareStatusContainerComponent,
     MiniBasketComponent,
@@ -55,6 +59,6 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     LoginStatusContainerComponent,
     ClickOutsideDirective,
   ],
-  exports: [HeaderComponent],
+  exports: [HeaderComponent, HeaderContainerComponent],
 })
 export class HeaderModule {}

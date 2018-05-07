@@ -14,7 +14,12 @@ describe('Error Page Container', () => {
       TestBed.configureTestingModule({
         declarations: [
           ErrorPageContainerComponent,
-          MockComponent({ selector: 'ish-error-page', template: 'Error Page Component', inputs: ['error'] }),
+          MockComponent({ selector: 'ish-error-page', template: 'Error Page Component' }),
+          MockComponent({
+            selector: 'ish-server-error-page',
+            template: 'Server Error Page Component',
+            inputs: ['error'],
+          }),
         ],
         providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       }).compileComponents();
