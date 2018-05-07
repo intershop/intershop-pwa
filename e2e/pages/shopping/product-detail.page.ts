@@ -1,4 +1,4 @@
-import { $, promise } from 'protractor';
+import { $ } from 'protractor';
 import { HeaderModule } from '../header.module';
 
 export class ProductDetailPage {
@@ -9,7 +9,7 @@ export class ProductDetailPage {
   private addToCardButton = () => $('[data-testing-id="addToCartButton"]');
   private addToCompareButton = () => $('[data-testing-id*="compare"]');
 
-  isComplete(): promise.Promise<boolean> {
+  isComplete() {
     return this.addToCardButton().isPresent();
   }
 

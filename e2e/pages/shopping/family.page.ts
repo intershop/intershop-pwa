@@ -1,4 +1,4 @@
-import { $, $$, browser, promise } from 'protractor';
+import { $, $$, browser } from 'protractor';
 import { HeaderModule } from '../header.module';
 
 export class FamilyPage {
@@ -10,7 +10,7 @@ export class FamilyPage {
     browser.get(`/category/${categoryUniqueId}`);
   }
 
-  getVisibleProductsCount(): promise.Promise<number> {
+  getVisibleProductsCount() {
     return $$('ish-product-tile').count();
   }
 
