@@ -1,0 +1,17 @@
+<div class="errorpage-content col-md-6 col-md-offset-3">
+  <h1>{{ 'servererror.page.title' | translate }}</h1>
+  <div class="error-text">
+    <div [innerHTML]="'servererror.page.text' | translate"></div>
+    <p class="text-muted">
+      <ng-container [ngSwitch]="error.current.status">
+        <ng-container *ngSwitchCase="0">
+          Server timeout
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          Error code {{ error.current.status }}<br/>
+          {{ error.type }}
+        </ng-container>
+      </ng-container>
+    </p>
+  </div>
+</div>

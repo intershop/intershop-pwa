@@ -28,16 +28,34 @@
 		}
 		input {
 			&.form-control {
-				border-color: @border-color-light;
-				background: rgba(238, 238, 238, 0.80);
-				box-shadow: none;
-				color: @text-color-primary;
+				border: @border-width-default solid @border-color-default;
+				background: @color-primary;
+				color: lighten(@text-color, 100%);
+				height: 38px;	
+				border: @border-width-default solid @border-color-default;
+
+				&:focus {
+					border: @border-width-default solid @border-color-light;
+					background: @color-inverse;
+					color: @text-color-primary;
+					box-shadow: none;
+					
+					+ button {
+						&.btn-search {
+							span:before {
+								color: @text-color-primary;
+							}
+						}
+					}
+				}
 			}
 		}
 		.btn-primary {
 			color: @text-color-corporate;
 			font-weight: normal;
-			bottom: 3px;
+			bottom: 1px;
+			right: 0px;
+			margin-bottom: 0px;
 		}
 	}
 }
