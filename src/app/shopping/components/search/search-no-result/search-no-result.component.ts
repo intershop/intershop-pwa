@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 /**
  * The Search No Result Component informs the user that no result has been found for his search and provides an input field for a new search.
@@ -12,6 +12,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'ish-search-no-result',
   templateUrl: './search-no-result.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchNoResultComponent {
   /**
