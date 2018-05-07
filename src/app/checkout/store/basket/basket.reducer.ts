@@ -76,6 +76,10 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         loading: false,
       };
     }
+
+    case BasketActionTypes.ResetBasket: {
+      return initialState;
+    }
   }
   return state;
 }

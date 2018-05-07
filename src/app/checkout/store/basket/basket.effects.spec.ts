@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
-import { LoginUserSuccess } from '../../../core/store/user/user.actions';
+import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.actions';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
@@ -483,6 +483,17 @@ describe('BasketEffects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('resetBasketAfterLogout$', () => {
+    it('should map to action of type ResetBasket if LogoutUser action triggered', () => {
+      const action = new LogoutUser();
+      const completion = new basketActions.ResetBasket();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.resetBasketAfterLogout$).toBeObservable(expected$);
     });
   });
 });

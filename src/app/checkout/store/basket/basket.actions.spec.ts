@@ -166,4 +166,14 @@ describe('Basket Actions', () => {
       });
     });
   });
+
+  describe('Reset Basket Action', () => {
+    it('should create new action for ResetBasket', () => {
+      const action = new fromActions.ResetBasket();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.ResetBasket,
+      });
+    });
+  });
 });

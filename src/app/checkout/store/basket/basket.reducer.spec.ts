@@ -176,5 +176,19 @@ describe('Basket Reducer', () => {
         expect(state.loading).toEqual(false);
       });
     });
+
+    describe('ResetBasket action', () => {
+      it('should reset to initial state', () => {
+        const oldState = {
+          ...initialState,
+          loading: true,
+          lineItems: [{ id: 'test' } as BasketItem],
+        };
+        const action = new fromActions.ResetBasket();
+        const state = basketReducer(oldState, action);
+
+        expect(state).toEqual(initialState);
+      });
+    });
   });
 });
