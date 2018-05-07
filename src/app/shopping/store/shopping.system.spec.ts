@@ -186,7 +186,6 @@ describe('Shopping Store', () => {
     store.logActions = DEBUG;
     store.logState = DEBUG;
     router = TestBed.get(Router);
-    locales = TestBed.get(AVAILABLE_LOCALES);
   });
 
   it('should be created', () => {
