@@ -7,6 +7,7 @@ import { of } from 'rxjs/observable/of';
 import {
   catchError,
   concatMap,
+  defaultIfEmpty,
   distinctUntilKeyChanged,
   filter,
   map,
@@ -142,12 +143,8 @@ export class BasketEffects {
       return { updatedItems, basket };
     }),
 
-    switchMap(({ updatedItems, basket }) => {
-      if (updatedItems.length === 0) {
-        return of(new basketActions.UpdateBasketItemsSuccess());
-      }
-
-      return forkJoin(
+    switchMap(({ updatedItems, basket }) =>
+      forkJoin(
         updatedItems.map(item => {
           if (item.quantity > 0) {
             return this.basketService.updateBasketItem(item.itemId, item.quantity, basket.id);
@@ -155,10 +152,11 @@ export class BasketEffects {
           return this.basketService.deleteBasketItem(item.itemId, basket.id);
         })
       ).pipe(
+        defaultIfEmpty(undefined),
         map(() => new basketActions.UpdateBasketItemsSuccess()),
         catchError(error => of(new basketActions.UpdateBasketItemsFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
