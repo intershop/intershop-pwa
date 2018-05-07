@@ -2,7 +2,7 @@ import * as Lint from 'tslint';
 import { getNextToken } from 'tsutils';
 import { Identifier, SourceFile } from 'typescript';
 
-const DESCRIPTION_REGEX = /^('|`|")should([\s\S]* (when|if|until|on|for|to) [\s\S]*| be created)('|`|")$/;
+const DESCRIPTION_REGEX = /^('|`|")should([\s\S]*(when|if|until|on|for|to|after)[\s\S]*| be created)('|`|")$/;
 
 const DESCRIPTION_VIEWPOINT_ERROR_REGEX = /^('|`)should (check|test)/;
 
