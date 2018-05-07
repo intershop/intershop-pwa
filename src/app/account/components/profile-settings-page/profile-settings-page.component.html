@@ -41,7 +41,7 @@
               <dl class="dl-horizontal dl-separator">
                 <dt>{{'account.profile.email.label' | translate}}</dt>
                 <dd data-testing-id="email-field">
-                  {{customer.email}}
+                  {{user.email}}
                 </dd>
                 <!-- TODO: implement logic (extend REST response) to present email subscriptions
                 <dt>{{'account.profile.order_confirmation_subscription.text' | translate}}</dt>
@@ -99,20 +99,20 @@
               <dl class="dl-horizontal dl-separator">
                 <dt>{{'account.profile.name.label' | translate}}</dt>
                 <dd>
-                  {{(customer.title) ? (customer.title + ' ') : ''}}{{customer.firstName + ' ' + customer.lastName}}
+                  {{(user.title) ? (user.title + ' ') : ''}}{{user.firstName + ' ' + user.lastName}}
                 </dd>
                 <!-- Phone Template -->
                 <dt>{{'account.profile.phone.label' | translate}}</dt>
                 <dd>
-                  {{customer.phoneHome}}
+                  {{user.phoneHome}}
                 </dd>
                 <dt>{{'account.profile.fax.label' | translate}}</dt>
                 <dd>
-                  {{customer.fax}}
+                  {{user.fax}}
                 </dd>
                 <dt>{{'account.profile.birthday.label' | translate}}</dt>
                 <dd>
-                  {{(customer.birthday) ? (customer.birthday | date) : ('account.profile.birthday.not_available' | translate)}}
+                  {{(user.birthday) ? (user.birthday | date) : ('account.profile.birthday.not_available' | translate)}}
                 </dd>
                 <dt>{{'account.profile.language.label' | translate}}</dt>
                 <dd>

@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
 
 /**
  * The Registration Service handles the registration related interaction with the 'customers' REST API.
@@ -36,5 +37,13 @@ export class RegistrationService {
       // TODO:see #IS-22750 - user should actually be logged in after registration
       switchMap(() => this.signinUser(newCustomer.credentials))
     );
+  }
+
+  /**
+   * Get Company User data.
+   * @returns The related customer user data.
+   */
+  getCompanyUserData(): Observable<SmbCustomerUser> {
+    return this.apiService.get('customers/-/users/-');
   }
 }

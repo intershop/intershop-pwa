@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { Customer } from '../../../models/customer/customer.model';
+import { PrivateCustomer } from '../../../models/customer/private-customer.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { ProfileSettingsPageComponent } from './profile-settings-page.component';
 
@@ -8,14 +8,14 @@ describe('Profile Settings Page Component', () => {
   let component: ProfileSettingsPageComponent;
   let fixture: ComponentFixture<ProfileSettingsPageComponent>;
   let element: HTMLElement;
-  const customer = {
+  const user = {
     firstName: 'Patricia',
     lastName: 'Miller',
     title: '',
     credentials: {
       login: '',
     },
-  } as Customer;
+  } as PrivateCustomer;
 
   beforeEach(
     async(() => {
@@ -41,7 +41,7 @@ describe('Profile Settings Page Component', () => {
     fixture = TestBed.createComponent(ProfileSettingsPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.customer = customer;
+    component.user = user;
   });
 
   it('should be created', () => {

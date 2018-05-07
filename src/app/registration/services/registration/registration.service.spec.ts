@@ -1,7 +1,8 @@
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
+import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
 import { RegistrationService } from './registration.service';
 
 describe('Registration Service', () => {
@@ -34,5 +35,19 @@ describe('Registration Service', () => {
         expect(error.message).toBe(errorMessage);
       }
     );
+  });
+
+  it("should get comapny user data  data when 'getCompanyUserData' is called", () => {
+    const userData = {
+      type: 'SMBCustomerUser',
+    } as SmbCustomerUser;
+
+    when(apiServiceMock.get('customers/-/users/-')).thenReturn(of(userData));
+
+    registrationService.getCompanyUserData().subscribe(data => {
+      expect(data.type).toEqual(userData.type);
+    });
+
+    verify(apiServiceMock.get('customers/-/users/-')).once();
   });
 });

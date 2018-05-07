@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Customer } from '../../../models/customer/customer.model';
+import { PrivateCustomer } from '../../../models/customer/private-customer.model';
+import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
 
 @Component({
   selector: 'ish-account-page',
@@ -7,5 +8,5 @@ import { Customer } from '../../../models/customer/customer.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountPageComponent {
-  @Input() customer: Customer;
+  @Input() user: PrivateCustomer | SmbCustomerUser;
 }

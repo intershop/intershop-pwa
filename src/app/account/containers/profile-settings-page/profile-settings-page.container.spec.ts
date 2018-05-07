@@ -3,7 +3,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { coreReducers } from '../../../core/store/core.system';
 import { LoginUserSuccess } from '../../../core/store/user';
-import { Customer } from '../../../models/customer/customer.model';
+import { PrivateCustomer } from '../../../models/customer/private-customer.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { ProfileSettingsPageContainerComponent } from './profile-settings-page.container';
 
@@ -18,7 +18,7 @@ describe('Profile Settings Page Container', () => {
     credentials: {
       login: '',
     },
-  } as Customer;
+  } as PrivateCustomer;
 
   beforeEach(
     async(() => {
@@ -33,7 +33,7 @@ describe('Profile Settings Page Container', () => {
           MockComponent({
             selector: 'ish-profile-settings-page',
             template: 'Profile Settings Component',
-            inputs: ['customer'],
+            inputs: ['user'],
           }),
         ],
         imports: [TranslateModule.forRoot(), StoreModule.forRoot(coreReducers)],
