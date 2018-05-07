@@ -35,3 +35,5 @@ products/7912061 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_
 products/8182790134362 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 customers/- ? . login
+suggest ?SearchTerm=k
+products ?searchTerm=Kodak&attrs=sku&returnSortKeys=true {elements:[.elements[]|select(.uri|test(".*/7912061"))],name,type,sortKeys}

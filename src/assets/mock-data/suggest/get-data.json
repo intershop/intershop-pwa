@@ -1,50 +1,22 @@
- {
+{
   "elements": [
     {
-      "type": "SuggestTerm",
-      "term": "networking software"
+      "term": "kensington",
+      "type": "SuggestTerm"
     },
     {
-      "type": "SuggestTerm",
-      "term": "netbooks"
+      "term": "keyboards",
+      "type": "SuggestTerm"
     },
     {
-      "type": "SuggestTerm",
-      "term": "networks"
+      "term": "kingston",
+      "type": "SuggestTerm"
     },
     {
-      "type": "SuggestTerm",
-      "term": "networking cables"
-    },
-    {
-      "type": "SuggestTerm",
-      "term": "network media converters"
-    },
-    {
-      "type": "SuggestTerm",
-      "term": "newstar"
-    },
-    {
-      "type": "SuggestTerm",
-      "term": "new products"
-    },
-    {
-      "type": "SuggestTerm",
-      "term": "network switches"
-    },
-    {
-      "type": "SuggestTerm",
-      "term": "netgear"
-    },
-    {
-      "type": "SuggestTerm",
-      "term": "nec"
-    },
-    {
-      "type": "SuggestTerm",
-      "term": "network cards & adapters"
+      "term": "kodak",
+      "type": "SuggestTerm"
     }
   ],
-  "type": "SuggestTerms",
-  "name": "suggest"
+  "name": "suggest",
+  "type": "SuggestTerms"
 }
