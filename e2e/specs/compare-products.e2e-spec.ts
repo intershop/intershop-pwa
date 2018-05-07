@@ -14,14 +14,14 @@ describe('Comparing User', () => {
 
   it(`should choose first item from family page to compare with other items by clicking the toggle compare on product tile`, () => {
     at(FamilyPage, page => {
-      page.addProductToCompareBySku('3953312');
+      page.productList.addProductToCompareBySku('3953312');
       expect(page.header.getNumberOfCompareItems()).toEqual(1);
     });
   });
 
   it(`should select the second camera and add it to compare on the product detail page`, () => {
     at(FamilyPage, page => {
-      page.gotoProductDetailPageBySku('7912061');
+      page.productList.gotoProductDetailPageBySku('7912061');
     });
 
     at(ProductDetailPage, page => {

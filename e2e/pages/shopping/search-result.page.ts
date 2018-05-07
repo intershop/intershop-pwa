@@ -1,9 +1,7 @@
-import { $$ } from 'protractor';
+import { ProductListModule } from './product-list.module';
 
 export class SearchResultPage {
   readonly tag = 'ish-search-result';
 
-  getVisibleProductsCount() {
-    return $$('ish-product-tile').count();
-  }
+  readonly productList = new ProductListModule();
 }
