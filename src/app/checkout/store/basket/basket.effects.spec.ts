@@ -351,16 +351,16 @@ describe('BasketEffects', () => {
     it('should call the basketService for updateBasketItem if quantity > 0', () => {
       const payload = [
         {
+          itemId: 'test',
           quantity: 2,
-          itemId: 'test',
         },
         {
+          itemId: 'test',
           quantity: 3,
-          itemId: 'test',
         },
         {
-          quantity: 4,
           itemId: 'test',
+          quantity: 4,
         },
       ];
       const action = new basketActions.UpdateBasketItems(payload);
@@ -376,8 +376,8 @@ describe('BasketEffects', () => {
     it('should call the basketService for deleteBasketItem if quantity = 0', () => {
       const payload = [
         {
-          quantity: 0,
           itemId: 'test',
+          quantity: 0,
         },
       ];
       const action = new basketActions.UpdateBasketItems(payload);
