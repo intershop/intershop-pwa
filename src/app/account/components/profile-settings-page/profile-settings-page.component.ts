@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Customer } from '../../../models/customer/customer.model';
+import { PrivateCustomer } from '../../../models/customer/private-customer.model';
 
 @Component({
   selector: 'ish-profile-settings-page',
@@ -8,5 +8,5 @@ import { Customer } from '../../../models/customer/customer.model';
 })
 export class ProfileSettingsPageComponent {
   showSuccessMessage: string;
-  @Input() customer: Customer;
+  @Input() user: PrivateCustomer;
 }

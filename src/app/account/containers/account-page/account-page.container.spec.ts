@@ -23,7 +23,7 @@ describe('Account Page Container', () => {
           MockComponent({
             selector: 'ish-account-page',
             template: 'Account Page Component',
-            inputs: ['customer'],
+            inputs: ['user'],
           }),
         ],
         providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],

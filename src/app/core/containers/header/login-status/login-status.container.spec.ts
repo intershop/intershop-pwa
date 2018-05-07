@@ -16,7 +16,7 @@ describe('Login Status Container', () => {
           MockComponent({
             selector: 'ish-login-status',
             template: 'Login Status',
-            inputs: ['customer'],
+            inputs: ['user'],
           }),
           LoginStatusContainerComponent,
         ],

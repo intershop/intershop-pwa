@@ -1,17 +1,34 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Action } from '@ngrx/store';
 import { Customer } from '../../../models/customer/customer.model';
-import { LoginUser, LoginUserFail, LoginUserSuccess, LogoutUser, UserErrorReset } from './user.actions';
+import { PrivateCustomer } from '../../../models/customer/private-customer.model';
+import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import {
+  LoadCompanyUserFail,
+  LoadCompanyUserSuccess,
+  LoginUser,
+  LoginUserFail,
+  LoginUserSuccess,
+  LogoutUser,
+  UserAction,
+  UserErrorReset,
+} from './user.actions';
 import { initialState, userReducer } from './user.reducer';
 
 describe('User Reducer', () => {
   const customer = {
     customerNo: 'dummy',
   } as Customer;
+  const user = {
+    firstName: 'test',
+  };
 
   describe('initialState', () => {
-    it('should not have a user when unmodified', () => {
+    it('should not have a customer when unmodified', () => {
       expect(initialState.customer).toBeNull();
+    });
+
+    it('should not have a user when unmodified', () => {
+      expect(initialState.user).toBeNull();
     });
 
     it('should not have an error when unmodified', () => {
@@ -25,13 +42,13 @@ describe('User Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = userReducer(undefined, {} as Action);
+      const newState = userReducer(undefined, {} as UserAction);
 
       expect(newState).toEqual(initialState);
     });
 
     it('should return initial state when undefined action is supplied', () => {
-      const newState = userReducer(initialState, {} as Action);
+      const newState = userReducer(initialState, {} as UserAction);
 
       expect(newState).toEqual(initialState);
     });
@@ -73,20 +90,45 @@ describe('User Reducer', () => {
       expect(newState).toEqual({ ...initialState, customer, authorized: true });
     });
 
+    it('should set user when LoginUserSuccess action is reduced with type = PrivateCustomer', () => {
+      const privateCustomer = {
+        ...customer,
+        type: 'PrivateCustomer',
+      };
+
+      const newState = userReducer(initialState, new LoginUserSuccess(privateCustomer));
+
+      expect(newState).toEqual({ ...initialState, customer: privateCustomer, user: privateCustomer, authorized: true });
+    });
+
+    it('should set error when LoadCompanyUserFail action is reduced', () => {
+      const error = { message: 'invalid' } as HttpErrorResponse;
+      const action = new LoadCompanyUserFail(error);
+      const state = userReducer(initialState, action);
+
+      expect(state.error).toEqual(error);
+    });
+
+    it('should set user when LoadCompanyUserSuccess action is reduced', () => {
+      const newState = userReducer(initialState, new LoadCompanyUserSuccess(user as SmbCustomerUser));
+
+      expect(newState).toEqual({ ...initialState, user });
+    });
+
     it('should unset authorized and customer when reducing LogoutUser', () => {
       const oldState = { ...initialState, customer, authorized: true };
 
       const newState = userReducer(oldState, new LogoutUser());
 
-      expect(newState).toEqual({ ...initialState, customer: null, authorized: false });
+      expect(newState).toEqual({ ...initialState, customer: null, user: null, authorized: false });
     });
 
     it('should unset authorized and customer when reducing LoginUser', () => {
-      const oldState = { ...initialState, customer, authorized: true };
+      const oldState = { ...initialState, customer, user: user as PrivateCustomer, authorized: true };
 
       const newState = userReducer(oldState, new LoginUser({ login: 'dummy', password: 'dummy' }));
 
-      expect(newState).toEqual({ ...initialState, customer: null, authorized: false });
+      expect(newState).toEqual({ ...initialState, customer: null, user: null, authorized: false });
     });
   });
 });

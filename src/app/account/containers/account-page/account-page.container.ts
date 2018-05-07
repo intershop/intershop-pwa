@@ -3,18 +3,19 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
-import { Customer } from '../../../models/customer/customer.model';
+import { PrivateCustomer } from '../../../models/customer/private-customer.model';
+import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
 
 @Component({
   templateUrl: './account-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountPageContainerComponent implements OnInit {
-  customer$: Observable<Customer>;
+  user$: Observable<PrivateCustomer | SmbCustomerUser>;
 
   constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.customer$ = this.store.pipe(select(getLoggedInUser));
+    this.user$ = this.store.pipe(select(getLoggedInUser));
   }
 }

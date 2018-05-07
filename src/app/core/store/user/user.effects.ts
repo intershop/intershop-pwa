@@ -36,6 +36,19 @@ export class UserEffects {
     })
   );
 
+  @Effect()
+  loadCompanyUser$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.LoadCompanyUser),
+    mergeMap(() => {
+      return this.registrationService
+        .getCompanyUserData()
+        .pipe(
+          map(user => new userActions.LoadCompanyUserSuccess(user)),
+          catchError(error => of(new userActions.LoadCompanyUserFail(error)))
+        );
+    })
+  );
+
   @Effect({ dispatch: false })
   goToHomeAfterLogout$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LogoutUser),
@@ -74,6 +87,14 @@ export class UserEffects {
   publishLoginEventAfterCreate$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.CreateUserSuccess),
     map((action: userActions.CreateUserSuccess) => new userActions.LoginUserSuccess(action.payload))
+  );
+
+  @Effect()
+  loadCompanyUserAfterLogin$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.LoginUserSuccess),
+    map((action: userActions.LoginUserSuccess) => action.payload),
+    filter(customer => customer.type === 'SMBCustomer'),
+    map(() => new userActions.LoadCompanyUser())
   );
 
   dispatchLogin(error): Action {
