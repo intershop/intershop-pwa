@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
   concatMap,
   defaultIfEmpty,
-  distinctUntilKeyChanged,
   filter,
   map,
   mergeMap,
@@ -94,18 +92,15 @@ export class BasketEffects {
 
   /**
    * Add items to the current basket.
-   * Only triggers if basket is set.
-   * Triggers if AddItemsToBasket action was triggered without a basket before once a basket becomes available.
+   * Only triggers if basket is set or action payload contains basketId.
    */
   @Effect()
-  // combine AddItemsToBasket action and getCurrentBasket selector to ensure that basket is set
-  addItemsToBasket$ = combineLatest(
-    this.actions$.pipe(ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket)),
-    // only emit value if basket is set and basket id changes
-    this.store.pipe(select(getCurrentBasket), filter(basket => !!basket), distinctUntilKeyChanged('basketId'))
-  ).pipe(
-    map(([action, basket]) => ({ payload: action.payload, basket })),
-    switchMap(({ payload, basket }) => {
+  addItemsToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    map((action: basketActions.AddItemsToBasket) => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    filter(([payload, basket]) => !!basket || !!payload.basketId),
+    switchMap(([payload, basket]) => {
       // get basket id from AddItemsToBasket action if set, otherwise use current basket id
       const basketId = payload.basketId || basket.id;
 
@@ -188,16 +183,22 @@ export class BasketEffects {
   );
 
   /**
-   * Trigger a LoadBasket action to create and obtain a new basket
-   * if no basket is present when trying to add items to the basket.
+   * Get current basket if missing and call AddItemsToBasketAction
+   * Only triggers if basket is unset set and action payload does not contain basketId.
    */
   @Effect()
-  createBasketIfMissing$ = this.actions$.pipe(
-    ofType(basketActions.BasketActionTypes.AddItemsToBasket),
+  getBasketBeforeAddItemsToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddItemsToBasket>(basketActions.BasketActionTypes.AddItemsToBasket),
+    map((action: basketActions.AddItemsToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(([action, basket]) => !basket),
+    filter(([payload, basket]) => !basket && !payload.basketId),
     // TODO: add create basket if LoadBasket does not create basket anymore
-    map(() => new basketActions.LoadBasket())
+    mergeMap(([payload, basket]) => {
+      return forkJoin(of(payload), this.basketService.getBasket());
+    }),
+    map(([payload, newBasket]) => {
+      return new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id });
+    })
   );
 
   /**
