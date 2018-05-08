@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
@@ -22,7 +22,7 @@ export class RegistrationService {
   signinUser(loginCredentials: LoginCredentials): Observable<Customer> {
     const headers = new HttpHeaders().set(
       'Authorization',
-      'BASIC ' + Buffer.from(loginCredentials.login + ':' + loginCredentials.password).toString('base64')
+      'BASIC ' + btoa(loginCredentials.login + ':' + loginCredentials.password)
     );
     return this.apiService.get<Customer>('customers/-', null, headers);
   }

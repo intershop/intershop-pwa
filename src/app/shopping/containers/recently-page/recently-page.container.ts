@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { Product } from '../../../models/product/product.model';
 import { ClearRecently, getRecentlyViewedProducts } from '../../store/recently';
 import { ShoppingState } from '../../store/shopping.state';

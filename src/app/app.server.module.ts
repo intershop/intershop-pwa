@@ -7,8 +7,7 @@ import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer } from 'rxjs';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { UniversalMockInterceptor } from './core/interceptors/universal-mock.interceptor';

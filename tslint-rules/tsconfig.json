@@ -1,21 +1,22 @@
 {
-    "compilerOptions": {
-      "declaration": false,
-      "importHelpers": true,
-      "lib": ["dom", "es2017"],
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "noEmitHelpers": true,
-      "noImplicitAny": false,
-      "outDir": "dist",
-      "removeComments": true,
-      "skipLibCheck": true,
-      "sourceMap": false,
-      "suppressImplicitAnyIndexErrors": true,
-      "target": "es5"
-    },
-    "exclude": [],
-    "include": [
-      "src/**/*.ts"
-    ]
-  }
+  "compilerOptions": {
+    "declaration": true,
+    "importHelpers": true,
+    "lib": ["es6", "es2015", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitHelpers": true,
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "noLib": false,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es5"
+  },
+  "exclude": [],
+  "include": [
+    "src/**/*.ts"
+  ]
+}

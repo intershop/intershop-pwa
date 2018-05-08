@@ -10,11 +10,11 @@ describe('Login Page Container', () => {
   let fixture: ComponentFixture<LoginPageContainerComponent>;
   let component: LoginPageContainerComponent;
   let element: HTMLElement;
-  let storeMock: Store<CoreState>;
+  let storeMock$: Store<CoreState>;
 
   beforeEach(
     async(() => {
-      storeMock = mock(Store);
+      storeMock$ = mock(Store);
 
       TestBed.configureTestingModule({
         declarations: [
@@ -27,7 +27,7 @@ describe('Login Page Container', () => {
         ],
         providers: [
           { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-          { provide: Store, useFactory: () => instance(storeMock) },
+          { provide: Store, useFactory: () => instance(storeMock$) },
         ],
       }).compileComponents();
     })

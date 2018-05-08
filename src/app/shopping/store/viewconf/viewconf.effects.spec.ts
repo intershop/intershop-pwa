@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Category } from '../../../models/category/category.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadCategorySuccess, SelectCategory } from '../categories';
@@ -15,7 +15,7 @@ import { ViewconfEffects } from './viewconf.effects';
 describe('ViewconfEffects', () => {
   let actions$: Observable<Action>;
   let effects: ViewconfEffects;
-  let store: Store<ShoppingState>;
+  let store$: Store<ShoppingState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,7 +28,7 @@ describe('ViewconfEffects', () => {
     });
 
     effects = TestBed.get(ViewconfEffects);
-    store = TestBed.get(Store);
+    store$ = TestBed.get(Store);
   });
 
   describe('changeSortBy$', () => {
@@ -39,7 +39,7 @@ describe('ViewconfEffects', () => {
     });
 
     it('should do nothing if category is selected but not available', () => {
-      store.dispatch(new SelectCategory('123'));
+      store$.dispatch(new SelectCategory('123'));
 
       const action = new ChangeSortBy('name-desc');
       actions$ = hot('-a-a-a', { a: action });
@@ -47,8 +47,8 @@ describe('ViewconfEffects', () => {
     });
 
     it('should map to action of type LoadProductsForCategory if category is selected and available', () => {
-      store.dispatch(new LoadCategorySuccess(categoryTree([{ uniqueId: '123' } as Category])));
-      store.dispatch(new SelectCategory('123'));
+      store$.dispatch(new LoadCategorySuccess(categoryTree([{ uniqueId: '123' } as Category])));
+      store$.dispatch(new SelectCategory('123'));
 
       const action = new ChangeSortBy('name-desc');
       const completion = new LoadProductsForCategory('123');

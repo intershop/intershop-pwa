@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
-import { of } from 'rxjs/observable/of';
+import { EMPTY, Observable, of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { CoreState } from '../store/core.state';
 import { ApiService } from './api.service';
@@ -13,7 +11,7 @@ import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 describe('ApiService Translation', () => {
   let httpClient: HttpClient;
   let apiService: ApiService;
-  let storeMock: Store<CoreState>;
+  let storeMock$: Store<CoreState>;
 
   const BASE_URL = 'http://www.example.org/WFS';
   const categoriesPath = `${BASE_URL}/site/categories`;
@@ -39,8 +37,8 @@ describe('ApiService Translation', () => {
 
   beforeEach(() => {
     httpClient = mock(HttpClient);
-    storeMock = mock(Store);
-    when(storeMock.pipe(anything())).thenReturn(empty());
+    storeMock$ = mock(Store);
+    when(storeMock$.pipe(anything())).thenReturn(EMPTY);
 
     when(httpClient.get(anyString(), new Object(anything()))).thenCall((path: string, obj) => {
       if (path === categoriesPath) {
@@ -57,7 +55,7 @@ describe('ApiService Translation', () => {
         { provide: HttpClient, useFactory: () => instance(httpClient) },
         { provide: REST_ENDPOINT, useValue: `${BASE_URL}/site` },
         { provide: ICM_SERVER_URL, useValue: BASE_URL },
-        { provide: Store, useFactory: () => instance(storeMock) },
+        { provide: Store, useFactory: () => instance(storeMock$) },
         ApiServiceErrorHandler,
         ApiService,
       ],

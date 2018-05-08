@@ -5,10 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
-import { Scheduler } from 'rxjs/Scheduler';
+import { Observable, of, Scheduler, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
@@ -34,7 +31,7 @@ describe('Search Effects', () => {
     suggestServiceMock = mock(SuggestService);
     when(productsServiceMock.searchProducts(anyString())).thenCall((searchTerm: string) => {
       if (!searchTerm) {
-        return _throw('');
+        return throwError('');
       } else {
         return of('Product SKU 1');
       }
@@ -148,7 +145,7 @@ describe('Search Effects', () => {
     });
 
     it('should not fire action when error is encountered at service level', () => {
-      when(suggestServiceMock.search(anyString())).thenReturn(_throw(new HttpErrorResponse({ status: 500 })));
+      when(suggestServiceMock.search(anyString())).thenReturn(throwError(new HttpErrorResponse({ status: 500 })));
 
       actions$ = hot('a', { a: new SuggestSearch('good') });
 

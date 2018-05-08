@@ -1,5 +1,4 @@
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
 import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
@@ -25,7 +24,7 @@ describe('Registration Service', () => {
   it('should return error message when wrong credentials are entered', () => {
     const errorMessage = '401 and Unauthorized';
     const userDetails = { login: 'intershop@123.com', password: 'wrong' };
-    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(_throw(new Error(errorMessage)));
+    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(throwError(new Error(errorMessage)));
     registrationService.signinUser(userDetails).subscribe(
       data => {
         fail('no data in this path is expected');

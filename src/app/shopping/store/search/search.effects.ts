@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { ofRoute, RouteNavigation } from 'ngrx-router';
-import { empty } from 'rxjs/observable/empty';
-import { of } from 'rxjs/observable/of';
+import { EMPTY, of, Scheduler } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
-import { Scheduler } from 'rxjs/Scheduler';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProduct } from '../products';
@@ -75,7 +73,7 @@ export class SearchEffects {
     switchMap(searchTerm =>
       this.suggestService
         .search(searchTerm)
-        .pipe(map(results => new SuggestSearchSuccess(results)), catchError(() => empty()))
+        .pipe(map(results => new SuggestSearchSuccess(results)), catchError(() => EMPTY))
     ) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search
   );
 

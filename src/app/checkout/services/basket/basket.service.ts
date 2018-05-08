@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
@@ -35,7 +34,7 @@ export class BasketService {
    */
   getBasketItems(basketId: string): Observable<BasketItem[]> {
     if (!basketId) {
-      return _throw('getBasketItems() called without basketId');
+      return throwError('getBasketItems() called without basketId');
     }
 
     return this.apiService
@@ -50,7 +49,7 @@ export class BasketService {
    */
   addItemsToBasket(items: { sku: string; quantity: number }[], basketId: string): Observable<void> {
     if (!items) {
-      return _throw('addItemsToBasket() called without items');
+      return throwError('addItemsToBasket() called without items');
     }
 
     const body = {
