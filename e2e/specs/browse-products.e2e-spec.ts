@@ -20,13 +20,13 @@ describe('Browsing User', () => {
       page.gotoSubCategory('category-584');
     });
     at(FamilyPage, page => {
-      expect(page.getVisibleProductsCount()).toBeGreaterThanOrEqual(2);
+      expect(page.productList.getVisibleProductsCount()).toBeGreaterThanOrEqual(2);
     });
   });
 
   it(`should end on product detail page to check product price`, () => {
     at(FamilyPage, page => {
-      page.gotoProductDetailPageBySku('3953312');
+      page.productList.gotoProductDetailPageBySku('3953312');
     });
     at(ProductDetailPage, page => {
       expect(page.getSku()).toBe('3953312');
