@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized, getUserError, LoginUser } from '../../../core/store/user';

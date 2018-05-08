@@ -27,7 +27,6 @@
     "forin": true,
     "import-blacklist": [
       true,
-      "rxjs",
       "rxjs/Rx",
       "."
     ],
@@ -110,6 +109,7 @@
     "radix": true,
     "rxjs-no-add": true,
     "rxjs-no-operator": true,
+    "rxjs-no-internal": true,
     "rxjs-finnish": {
       "options": [{
         "functions": false,
@@ -123,7 +123,6 @@
     "rxjs-no-create": { "severity": "off" },
     "rxjs-no-ignored-subscribe": { "severity": "warning" },
     "rxjs-no-patched": true,
-    "rxjs-no-wholesale": true,
     "rxjs-no-deep-operators": true,
     "rxjs-no-unsafe-switchmap": true,
     "semicolon": [

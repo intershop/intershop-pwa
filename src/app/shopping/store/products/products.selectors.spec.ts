@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Product } from '../../../models/product/product.model';
 import { c } from '../../../utils/dev/marbles-utils';
 import { ShoppingState } from '../shopping.state';

@@ -9,7 +9,7 @@ import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { TranslateService } from '@ngx-translate/core';
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
-import { Scheduler } from 'rxjs/Scheduler';
+import { Scheduler } from 'rxjs';
 import { async } from 'rxjs/scheduler/async';
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';

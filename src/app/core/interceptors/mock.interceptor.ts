@@ -9,9 +9,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { MUST_MOCK_PATHS, NEED_MOCK } from '../../core/configurations/injection-keys';
 import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
@@ -49,7 +47,7 @@ export class MockInterceptor implements HttpInterceptor {
         if (event instanceof HttpResponse) {
           const response = <HttpResponse<any>>event;
           if (this.isLoginAttempt(req) && !this.isMockUserLoggingInSuccessfully(req)) {
-            return _throw(
+            return throwError(
               new HttpErrorResponse({
                 status: 401,
                 error: 'wrong credentials',

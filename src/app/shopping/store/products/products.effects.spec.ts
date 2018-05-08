@@ -5,9 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
@@ -35,7 +33,7 @@ describe('ProductsEffects', () => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of({ sku } as Product);
       }
@@ -131,7 +129,7 @@ describe('ProductsEffects', () => {
 
     it('should not die if repeating errors are encountered', () => {
       const error = { status: 500 } as HttpErrorResponse;
-      when(productsServiceMock.getCategoryProducts(anything(), anything())).thenReturn(_throw(error));
+      when(productsServiceMock.getCategoryProducts(anything(), anything())).thenReturn(throwError(error));
       actions$ = hot('-a-a-a', {
         a: new fromActions.LoadProductsForCategory('123'),
       });

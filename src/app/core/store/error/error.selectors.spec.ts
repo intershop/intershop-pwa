@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
