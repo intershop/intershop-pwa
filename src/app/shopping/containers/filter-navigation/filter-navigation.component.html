@@ -1,0 +1,8 @@
+<div *ngIf="(filter$|async) as filter">
+  <div *ngFor="let e of filter.elements" [ngSwitch]="e.displayType">
+    <ish-filter-dropdown
+      *ngSwitchCase="'text_clear'" [filterElement]="e">
+    </ish-filter-dropdown>
+  </div>
+</div>
+
