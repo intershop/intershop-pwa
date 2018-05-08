@@ -8,6 +8,14 @@ export class HeaderModule {
       .then(s => Number.parseInt(s));
   }
 
+  gotoLoginPage() {
+    $('a.my-account-login').click();
+  }
+
+  logout() {
+    $('a.my-account-logout').click();
+  }
+
   getSearchSuggestions(searchTerm: string) {
     $('input.searchTerm').clear();
     $('input.searchTerm').sendKeys(searchTerm);
