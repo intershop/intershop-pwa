@@ -11,7 +11,9 @@ function onPage<T extends Page>(page: { new (): T }): promise.Promise<string> {
   currentPage = new page();
   return $(currentPage.tag).getTagName();
 }
-export function at<T extends Page>(type: { new (): T }, callback: (page: T) => void) {
+export function at<T extends Page>(type: { new (): T }, callback?: (page: T) => void) {
   expect(onPage(type)).toBeTruthy();
-  callback(<T>currentPage);
+  if (callback) {
+    callback(<T>currentPage);
+  }
 }
