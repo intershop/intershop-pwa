@@ -1,3 +1,4 @@
+import { FilterState } from './filter/filter.reducer';
 import { createFeatureSelector } from '@ngrx/store';
 import { CategoriesState } from './categories/categories.reducer';
 import { CompareState } from './compare/compare.reducer';
@@ -13,6 +14,7 @@ export interface ShoppingState {
   recently: RecentlyState;
   search: SearchState;
   viewconf: ViewconfState;
+  filter: FilterState;
 }
 
 export const getShoppingState = createFeatureSelector<ShoppingState>('shopping');

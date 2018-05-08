@@ -1,3 +1,4 @@
+import { FilterEffects } from './filter/filter.effects';
 import { ActionReducerMap } from '@ngrx/store';
 import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
@@ -12,6 +13,7 @@ import { searchReducer } from './search/search.reducer';
 import { ShoppingState } from './shopping.state';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
+import { filterReducer } from './filter/filter.reducer';
 
 export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   categories: categoriesReducer,
@@ -20,6 +22,7 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   recently: recentlyReducer,
   search: searchReducer,
   viewconf: viewconfReducer,
+  filter: filterReducer,
 };
 
 export const shoppingEffects = [
@@ -29,4 +32,5 @@ export const shoppingEffects = [
   RecentlyEffects,
   SearchEffects,
   ViewconfEffects,
+  FilterEffects,
 ];
