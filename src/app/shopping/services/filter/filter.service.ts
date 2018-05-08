@@ -1,21 +1,39 @@
-import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { FilterProducts } from './../../store/filter/filter.actions';
+import { CoreState } from './../../../core/store/core.state';
+import { Subject } from 'rxjs/Subject';
+import { FilterNavigation } from './../../../models/filter-navigation/filter-navigation.model';
 import { Observable } from 'rxjs/Observable';
-import { ApiService } from '../../../core/services/api.service';
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { HttpParams } from '@angular/common/http';
+import { ApiService } from './../../../core/services/api.service';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
-  constructor(private apiService: ApiService) {}
+  filter: Subject<FilterNavigation> = new Subject();
 
-  getFilter(categoryDomainName: string = null, categoryName: string = null): Observable<FilterNavigation> {
-    if (categoryDomainName && categoryName) {
-      const params = new HttpParams()
-        .set('CategoryDomainName', 'inSPIRED-inTRONICS-' + categoryDomainName)
-        .set('CategoryName', categoryName);
-      return this.apiService.get<FilterNavigation>('filters', params);
-    } else {
-      return this.apiService.get<FilterNavigation>('filters');
-    }
+  constructor(private apiService: ApiService, private store: Store<CoreState>) {}
+
+  getFilter(): Observable<FilterNavigation> {
+    return this.filter;
+  }
+  changeToFilterForCategory(categoryDomainName: string, categoryName: string) {
+    console.log("w");
+    let params = new HttpParams()
+      .set('CategoryDomainName', 'inSPIRED-inTRONICS-' + categoryDomainName)
+      .set('CategoryName', categoryName);
+    return this.apiService.get<FilterNavigation>('filters', params);
+  }
+
+  changeToFilter(filterId: string, searchParameter: string) {
+    let params = new HttpParams().set('SearchParameter', searchParameter);
+    this.apiService.get<FilterNavigation>('filters/' + filterId, params).subscribe(filter => this.filter.next(filter));
+    this.store.dispatch(new FilterProducts(''));
+    this.apiService
+      .get<FilterNavigation>('filters/' + filterId + '/hits', params)
+      .subscribe(product => console.log(product));
+  }
+  changeToAvailableFilter() {
+    this.apiService.get<FilterNavigation>('filters').subscribe(filter => this.filter.next(filter));
   }
 }
