@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
+import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -92,8 +93,7 @@ export const metaReducers: MetaReducer<any>[] = [
 export class AppModule {
   constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
     registerLocaleData(localeDe);
-    // TODO: https://github.com/angular/angular/issues/21809
-    // registerLocaleData(localeFr);
+    registerLocaleData(localeFr);
 
     translateService.setDefaultLang(lang.replace(/\-/, '_'));
   }
