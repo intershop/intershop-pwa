@@ -5,6 +5,7 @@ import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
+import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
@@ -17,6 +18,7 @@ import { ProductQuantityComponent } from './components/product/product-quantity/
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
+import { FilterNavigationComponent } from './containers/filter-navigation/filter-navigation.component';
 import { ProductRowContainerComponent } from './containers/product-row/product-row.container';
 import { ProductTileContainerComponent } from './containers/product-tile/product-tile.container';
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
@@ -42,6 +44,8 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductDetailActionsComponent,
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
+    FilterNavigationComponent,
+    FilterDropdownComponent,
   ],
   exports: [
     SharedProductModule,
@@ -62,6 +66,8 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductDetailActionsComponent,
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
+    FilterNavigationComponent,
+    FilterDropdownComponent,
   ],
 })
 export class ShoppingSharedModule {}
