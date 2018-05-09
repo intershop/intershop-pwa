@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PrivateCustomer } from '../../../models/customer/private-customer.model';
+import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { AccountPageComponent } from './account-page.component';
 
@@ -9,7 +9,7 @@ describe('Account Overview Component', () => {
   let component: AccountPageComponent;
   let element: HTMLElement;
   let translate: TranslateService;
-  const user = { firstName: 'Patricia' } as PrivateCustomer;
+  const user = { firstName: 'Patricia' } as User;
 
   beforeEach(
     async(() => {

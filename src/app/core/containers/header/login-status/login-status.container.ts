@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { PrivateCustomer } from '../../../../models/customer/private-customer.model';
-import { SmbCustomerUser } from '../../../../models/customer/smb-customer-user.model';
+import { User } from '../../../../models/user/user.model';
 import { CoreState } from '../../../store/core.state';
 import { getLoggedInUser } from '../../../store/user';
 
@@ -12,7 +11,7 @@ import { getLoggedInUser } from '../../../store/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginStatusContainerComponent implements OnInit {
-  user$: Observable<PrivateCustomer | SmbCustomerUser>;
+  user$: Observable<User>;
 
   constructor(private store: Store<CoreState>) {}
 

@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { Customer } from '../../../models/customer/customer.model';
-import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import { User } from '../../../models/user/user.model';
 
 export enum UserActionTypes {
   LoginUser = '[Account] Login User',
@@ -44,7 +44,7 @@ export class LoadCompanyUserFail implements Action {
 
 export class LoadCompanyUserSuccess implements Action {
   readonly type = UserActionTypes.LoadCompanyUserSuccess;
-  constructor(public payload: SmbCustomerUser) {}
+  constructor(public payload: User) {}
 }
 
 export class LogoutUser implements Action {

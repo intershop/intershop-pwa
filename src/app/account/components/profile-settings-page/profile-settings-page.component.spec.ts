@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { PrivateCustomer } from '../../../models/customer/private-customer.model';
+import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { ProfileSettingsPageComponent } from './profile-settings-page.component';
 
@@ -8,14 +8,7 @@ describe('Profile Settings Page Component', () => {
   let component: ProfileSettingsPageComponent;
   let fixture: ComponentFixture<ProfileSettingsPageComponent>;
   let element: HTMLElement;
-  const user = {
-    firstName: 'Patricia',
-    lastName: 'Miller',
-    title: '',
-    credentials: {
-      login: '',
-    },
-  } as PrivateCustomer;
+  const user = { firstName: 'Patricia', lastName: 'Miller' } as User;
 
   beforeEach(
     async(() => {
