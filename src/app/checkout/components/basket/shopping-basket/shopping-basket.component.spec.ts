@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { CurrencyPipe } from '@angular/common';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
-import { Basket } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
