@@ -36,6 +36,9 @@ export class MiniBasketComponent implements OnChanges {
 
   ngOnChanges() {
     this.itemCount = BasketHelper.getBasketItemsCount(this.basket);
+    if (!this.basket) {
+      this.resetScroller();
+    }
   }
 
   /**
@@ -108,5 +111,13 @@ export class MiniBasketComponent implements OnChanges {
 
     const player = scrollAnimation.create(slider);
     player.play();
+  }
+
+  /**
+   * Reset vertical scroll component if basket changes
+   */
+  resetScroller() {
+    this.currentProduct = 0;
+    this.animate(0);
   }
 }

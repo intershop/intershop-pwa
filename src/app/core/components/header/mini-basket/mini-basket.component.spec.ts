@@ -84,7 +84,7 @@ describe('Mini Basket Component', () => {
       variationProduct: false,
       bundleProduct: false,
       availability: false,
-    };
+    } as BasketItem;
     basket = {
       id: '4711',
       lineItems: [lineItem, lineItem, lineItem],
@@ -126,6 +126,17 @@ describe('Mini Basket Component', () => {
   it('should hold propper product count if loaded', () => {
     component.ngOnChanges();
     expect(component.itemCount).toBe(6);
+  });
+
+  it('should reset vertical scroll state if basket changes', () => {
+    // TODO: mockito implementation?
+    // tslint:disable-next-line:ban
+    spyOn(component, 'animate');
+
+    component.resetScroller();
+
+    expect(component.currentProduct).toBe(0);
+    expect(component.animate).toHaveBeenCalledWith(0);
   });
 
   it('should increment currentProduct index and disable scroll down button when clicking on scroll down button', () => {

@@ -35,6 +35,8 @@ import { BasketService } from '../services/basket/basket.service';
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
 
+let basketId: string = null;
+
 describe('Checkout Store', () => {
   const DEBUG = false;
   let store: LogEffects;
@@ -129,8 +131,28 @@ describe('Checkout Store', () => {
     when(countryServiceMock.getCountries()).thenReturn(of([]));
 
     const basketServiceMock = mock(BasketService);
-    when(basketServiceMock.getBasket(anything())).thenReturn(of(basket));
-    when(basketServiceMock.getBasket()).thenReturn(of(basket));
+    when(basketServiceMock.getBasket(anything())).thenCall(() => {
+      const newBasket = {
+        ...basket,
+      };
+
+      if (basketId) {
+        newBasket.id = basketId;
+      }
+
+      return of(newBasket);
+    });
+    when(basketServiceMock.getBasket()).thenCall(() => {
+      const newBasket = {
+        ...basket,
+      };
+
+      if (basketId) {
+        newBasket.id = basketId;
+      }
+
+      return of(newBasket);
+    });
     when(basketServiceMock.getBasketItems(anything())).thenReturn(of([lineItem]));
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(null));
 
@@ -189,16 +211,12 @@ describe('Checkout Store', () => {
 
     describe('and without basket', () => {
       it('should initially load basket and basketItems on product add.', () => {
-        // TODO: room for improvement since basket loading related actions are fired twice and more or less parallel
         const i = store.actionsIterator([/Basket/]);
         expect(i.next().type).toEqual(BasketActionTypes.AddProductToBasket);
         expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload] }));
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
+        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'test' }));
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
-        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
@@ -208,11 +226,12 @@ describe('Checkout Store', () => {
 
     describe('and with basket', () => {
       it('should merge basket on user login.', () => {
-        store.reset();
         const i = store.actionsIterator([/Basket/]);
+        basketId = 'newTest';
+        store.reset();
 
         store.dispatch(new LoginUser({} as LoginCredentials));
-        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'test' }));
+        expect(i.next()).toEqual(new AddItemsToBasket({ items: [payload], basketId: 'newTest' }));
         expect(i.next().type).toEqual(BasketActionTypes.AddItemsToBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
@@ -220,6 +239,10 @@ describe('Checkout Store', () => {
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
         expect(i.next()).toBeUndefined();
       });
+    });
+
+    afterEach(() => {
+      basketId = null;
     });
   });
 });
