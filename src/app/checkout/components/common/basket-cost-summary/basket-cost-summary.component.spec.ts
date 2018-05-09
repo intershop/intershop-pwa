@@ -2,9 +2,8 @@ import { CurrencyPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { BasketRebate } from '../../../../models/basket-rebate/basket-rebate.model';
-import { Basket } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
+import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 
 describe('BasketCostSummaryComponent', () => {
@@ -26,69 +25,7 @@ describe('BasketCostSummaryComponent', () => {
     fixture = TestBed.createComponent(BasketCostSummaryComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.basket = {
-      id: '4711',
-      valueRebates: [
-        {
-          name: 'appliedRebate',
-          amount: {
-            value: 11.9,
-            currencyMnemonic: 'USD',
-          },
-          rebateType: 'OrderValueOffDiscount',
-        } as BasketRebate,
-      ],
-      itemSurchargeTotalsByType: [
-        {
-          name: 'surcharge',
-          amount: {
-            value: 595,
-            currencyMnemonic: 'USD',
-          },
-          description: 'Surcharge for battery deposit',
-          displayName: 'Battery Deposit Surcharge',
-        },
-      ],
-
-      totals: {
-        itemTotal: {
-          value: 141796.98,
-          currencyMnemonic: 'USD',
-        },
-        itemRebatesTotal: {
-          value: 4446,
-          currencyMnemonic: 'USD',
-        },
-        shippingTotal: {
-          value: 87.06,
-          currencyMnemonic: 'USD',
-        },
-        itemShippingRebatesTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-        },
-        basketValueRebatesTotal: {
-          value: 4457.9,
-          currencyMnemonic: 'USD',
-        },
-        basketShippingRebatesTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-        },
-        paymentCostsTotal: {
-          value: 3.57,
-          currencyMnemonic: 'USD',
-        },
-        taxTotal: {
-          value: 22747.55,
-          currencyMnemonic: 'USD',
-        },
-        basketTotal: {
-          value: 142470.71,
-          currencyMnemonic: 'USD',
-        },
-      },
-    } as Basket;
+    component.basket = BasketMockData.getBasket();
   });
 
   it('should be created', () => {
@@ -96,5 +33,28 @@ describe('BasketCostSummaryComponent', () => {
     expect(element).toBeTruthy();
     component.ngOnChanges();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should set estimated flag to false if invoice address, shipping address and shipping method are set', () => {
+    component.ngOnChanges();
+    expect(component.estimated).toBeFalsy();
+  });
+
+  it('should set estimated flag to true if there is no invoice address', () => {
+    component.basket.invoiceToAddress = null;
+    component.ngOnChanges();
+    expect(component.estimated).toBeTruthy();
+  });
+
+  it('should set estimated flag to true if there is no shipping address', () => {
+    component.basket.commonShipToAddress = null;
+    component.ngOnChanges();
+    expect(component.estimated).toBeTruthy();
+  });
+
+  it('should set estimated flag to true if there is no shipping method', () => {
+    component.basket.commonShippingMethod = null;
+    component.ngOnChanges();
+    expect(component.estimated).toBeTruthy();
   });
 });
