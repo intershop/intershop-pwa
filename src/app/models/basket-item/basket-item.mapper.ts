@@ -19,6 +19,7 @@ export class BasketItemMapper {
       variationProduct: data.variationProduct,
       bundleProduct: data.bundleProduct,
       availability: data.availability,
+      totals: data.totals,
 
       product: { sku: data.product.title } as Product,
     };
