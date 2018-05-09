@@ -1,12 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Customer } from '../../../models/customer/customer.model';
-import { PrivateCustomer } from '../../../models/customer/private-customer.model';
-import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import { Customer, CustomerType } from '../../../models/customer/customer.model';
+import { User } from '../../../models/user/user.model';
 import { UserAction, UserActionTypes } from './user.actions';
 
 export interface UserState {
   customer: Customer;
-  user: PrivateCustomer | SmbCustomerUser;
+  user: User;
   authorized: boolean;
   error: HttpErrorResponse;
 }
@@ -58,7 +57,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
         customer: payload,
       };
 
-      if (payload.type === 'PrivateCustomer') {
+      if (payload.type === CustomerType.PrivateCustomer) {
         newState.user = payload;
       }
 
