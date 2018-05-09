@@ -216,8 +216,6 @@ describe('BasketEffects', () => {
   describe('addItemsToBasket$', () => {
     it('should call the basketService for addItemsToBasket', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
-      // try if addProductsToBasket is triggered in relation to LoadBasketSuccess
-      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
 
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
@@ -250,14 +248,14 @@ describe('BasketEffects', () => {
       });
     });
 
-    it('should map to action of type LoadBasket when no basket is present', () => {
+    it('should call the basketService for getBasket when no basket is present', () => {
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
-      const completion = new basketActions.LoadBasket();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      actions$ = hot('-a', { a: action });
 
-      expect(effects.createBasketIfMissing$).toBeObservable(expected$);
+      effects.addProductToBasket$.subscribe(() => {
+        verify(basketServiceMock.getBasket()).once();
+      });
     });
 
     it('should map to action of type AddItemsToBasketSuccess', () => {

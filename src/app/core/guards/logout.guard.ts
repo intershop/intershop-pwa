@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { _setToken } from '../interceptors/auth.interceptor';
 import { CoreState } from '../store/core.state';
 import { LogoutUser } from '../store/user';
 
@@ -13,6 +14,8 @@ export class LogoutGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     this.store.dispatch(new LogoutUser());
+    // TODO: ISREST-315 reimplement token handling in a more ngrx way
+    _setToken(null);
     return true;
   }
 }
