@@ -7,8 +7,10 @@ export class BasketMapper {
       id: data.id,
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.dynamicMessages,
-      InvoiceToAddress: data.InvoiceToAddress,
+      invoiceToAddress: data.invoiceToAddress,
       totals: data.totals,
+      valueRebates: data.valueRebates,
+      itemSurchargeTotalsByType: data.itemSurchargeTotalsByType,
     };
 
     if (data.shippingBuckets && data.shippingBuckets.length > 0) {

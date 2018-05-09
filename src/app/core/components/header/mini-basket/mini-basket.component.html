@@ -6,7 +6,7 @@
     <span>{{ itemCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
     <ng-container *ngIf="basket && basket.totals.basketTotal">
       <span> / </span>
-      <span class="mini-cart-price">{{ basket.totals.basketTotal | ishPrice }}</span>
+      <span class="mini-cart-price">{{ basket.totals.itemTotal | ishPrice }}</span>
     </ng-container>
   </a>
 

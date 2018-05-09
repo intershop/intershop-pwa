@@ -3,8 +3,10 @@ import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { CurrencyPipe } from '@angular/common';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
-import { Basket } from '../../../../models/basket/basket.model';
+import { PipesModule } from '../../../../shared/pipes.module';
+import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ShoppingBasketComponent } from './shopping-basket.component';
 
@@ -25,9 +27,14 @@ describe('Shopping Basket Component', () => {
             template: 'Basket Item Description Component',
             inputs: ['pli'],
           }),
+          MockComponent({
+            selector: 'ish-basket-cost-summary',
+            template: 'Basket Cost Summary Component',
+            inputs: ['basket'],
+          }),
         ],
-        imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule],
-        providers: [FormBuilder],
+        imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule],
+        providers: [FormBuilder, CurrencyPipe],
       }).compileComponents();
     })
   );
@@ -36,18 +43,7 @@ describe('Shopping Basket Component', () => {
     fixture = TestBed.createComponent(ShoppingBasketComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.basket = {
-      id: '4711',
-      lineItems: [
-        {
-          id: '4712',
-          quantity: { value: 10000 },
-          product: { sku: '4713' },
-          singleBasePrice: { value: 3, currencyMnemonic: 'USD' },
-          price: { value: 3, currencyMnemonic: 'USD' },
-        },
-      ],
-    } as Basket;
+    component.basket = BasketMockData.getBasket();
   });
 
   it('should be created', () => {
@@ -65,7 +61,7 @@ describe('Shopping Basket Component', () => {
     expect(component.form.get('items').value.length).toEqual(1);
   });
 
-  it('should render sub components after basket change', () => {
+  it('should render sub components if basket changes', () => {
     component.ngOnChanges();
     fixture.detectChanges();
     expect(element.getElementsByTagName('ish-product-image')[0].textContent).toContain('Product Image Component');

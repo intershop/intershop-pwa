@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { BasketItem } from '../../../../models/basket-item/basket-item.model';
+import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { BasketItemDescriptionComponent } from './basket-item-description.component';
 
 describe('BasketItemDescriptionComponent', () => {
@@ -22,12 +22,7 @@ describe('BasketItemDescriptionComponent', () => {
     fixture = TestBed.createComponent(BasketItemDescriptionComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.pli = {
-      id: '4712',
-      product: { sku: '4713' },
-      availability: true,
-      inStock: true,
-    } as BasketItem;
+    component.pli = BasketMockData.getBasketItem();
     fixture.detectChanges();
   });
 
