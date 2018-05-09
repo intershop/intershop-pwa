@@ -6,8 +6,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BasketItem } from '../../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../../models/basket/basket.model';
-import { Product } from '../../../../models/product/product.model';
 import { PipesModule } from '../../../../shared/pipes.module';
+import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { MiniBasketComponent } from './mini-basket.component';
 
@@ -15,7 +15,6 @@ describe('Mini Basket Component', () => {
   let fixture: ComponentFixture<MiniBasketComponent>;
   let component: MiniBasketComponent;
   let element: HTMLElement;
-  let product: Product;
   let lineItem: BasketItem;
   let basket: Basket;
   let translate: TranslateService;
@@ -47,44 +46,7 @@ describe('Mini Basket Component', () => {
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.setTranslation('en', { 'shopping_cart.ministatus.items.text': { other: '#' } });
-    product = {
-      sku: 'sku',
-      images: [
-        {
-          name: 'front S',
-          type: 'Image',
-          imageActualHeight: 110,
-          imageActualWidth: 110,
-          viewID: 'front',
-          effectiveUrl: '/assets/product_img/a.jpg',
-          typeID: 'S',
-          primaryImage: true,
-        },
-      ],
-    } as Product;
-    lineItem = {
-      id: 'test',
-      name: 'test',
-      position: 1,
-      quantity: {
-        type: 'Quantity',
-        value: 2,
-        unit: '',
-      },
-      product: product,
-      price: {
-        type: 'Money',
-        value: 27.76,
-        currencyMnemonic: 'USD',
-      },
-      singleBasePrice: null,
-      isHiddenGift: false,
-      isFreeGift: false,
-      inStock: false,
-      variationProduct: false,
-      bundleProduct: false,
-      availability: false,
-    } as BasketItem;
+    lineItem = BasketMockData.getBasketItem();
     basket = {
       id: '4711',
       lineItems: [lineItem, lineItem, lineItem],
@@ -125,7 +87,7 @@ describe('Mini Basket Component', () => {
 
   it('should hold propper product count if loaded', () => {
     component.ngOnChanges();
-    expect(component.itemCount).toBe(6);
+    expect(component.itemCount).toBe(30);
   });
 
   it('should reset vertical scroll state if basket changes', () => {

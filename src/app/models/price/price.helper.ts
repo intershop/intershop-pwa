@@ -21,4 +21,13 @@ export class PriceHelper {
       value: Math.round((p1.value - p2.value) * 100) / 100,
     };
   }
+
+  /**
+   * Inverts the value of a price
+   * @param price The price
+   * @returns inverted price
+   */
+  static invert(price: Price): Price {
+    return { ...price, value: price.value * -1 };
+  }
 }

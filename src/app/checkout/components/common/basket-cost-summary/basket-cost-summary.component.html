@@ -1,0 +1,83 @@
+<div class="clearfix">
+  <dl class="dl-horizontal">
+
+    <!-- SubTotal -->
+    <dt>{{'checkout.cart.subtotal.heading' | translate }}</dt>
+    <dd>
+      {{ basket.totals.itemTotal | ishPrice }}
+    </dd>
+
+    <!-- list all applied order level promotions -->
+    <!-- TODO: #IS-23184 : display rebate details -->
+    <ng-container *ngFor="let rebate of basket.valueRebates">
+      <dt>{{ 'checkout.widget.promotion.discount' | translate }}</dt>
+      <dd>
+        {{ invert(rebate.amount) | ishPrice }}
+      </dd>
+    </ng-container>
+
+    <!-- Shipping -->
+    <dt>
+      <span *ngIf="estimated">{{'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
+      <span *ngIf="!estimated">{{'checkout.order.shipping.label' | translate }}</span>
+    </dt>
+    <dd>
+      {{ basket.totals.shippingTotal | ishPrice }}
+    </dd>
+
+    <!-- Shipping promotions -->
+    <ng-container *ngIf="basket.totals.itemShippingRebatesTotal.value">
+      <dt>{{ 'checkout.widget.promotion.discount' | translate }}</dt>
+      <dd>
+        {{ invert(basket.totals.itemShippingRebatesTotal) | ishPrice }}
+      </dd>
+    </ng-container>
+
+    <!-- Surcharges -->
+    <ng-container *ngFor="let surcharge of basket.itemSurchargeTotalsByType">
+      <ng-template #SurchargeDescription>
+        <span [innerHTML]="surcharge.description"></span>
+      </ng-template>
+      <dt>
+        {{ surcharge.displayName }}
+        <a class="details-tooltip"
+          [popover]="SurchargeDescription"
+          [popoverTitle]="surcharge.displayName"
+          placement="top"
+        >
+          {{'shopping_cart.detail.text' | translate }}
+          <span class="glyphicon glyphicon-info-sign"></span>
+        </a>
+      </dt>
+      <dd>
+        {{ surcharge.amount | ishPrice }}
+      </dd>
+    </ng-container>
+
+    <!-- Payment costs -->
+    <ng-container *ngIf="!!basket.totals.paymentCostsTotal.value">
+      <dt>{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
+      <dd>
+        {{ basket.totals.paymentCostsTotal | ishPrice}}
+      </dd>
+    </ng-container>
+
+    <!-- Tax -->
+    <!-- ToDo: display tax in dependence of price calculation preferences -->
+    <ng-container *ngIf="!!basket.totals.taxTotal.value">
+      <dt>{{ 'checkout.tax.text' | translate }}</dt>
+      <dd>
+        {{ basket.totals.taxTotal | ishPrice}}
+      </dd>
+    </ng-container>
+
+    <!-- Cart total -->
+    <dt class="total-price">
+      <span *ngIf="estimated">{{'checkout.cart.estimated_total.label' | translate }}</span>
+      <span *ngIf="!estimated">{{'checkout.order.total_cost.label' | translate }}</span>
+    </dt>
+    <dd class="total-price">
+      {{ basket.totals.basketTotal | ishPrice }}
+    </dd>
+  </dl>
+</div>

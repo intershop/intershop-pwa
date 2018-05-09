@@ -1,3 +1,4 @@
+import { BasketRebate } from '../basket-rebate/basket-rebate.model';
 import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 
@@ -20,14 +21,14 @@ export interface BasketItemData {
       displayName?: string;
     }
   ];
-  valueRebates: [
-    {
-      amount: Price;
-      description: string;
-      name: string;
-      rebateType: string;
-    }
-  ];
+  valueRebates?: BasketRebate[];
+  totals: {
+    salesTaxTotal?: Price;
+    shippingTaxTotal?: Price;
+    shippingTotal: Price;
+    total: Price;
+    valueRebatesTotal?: Price;
+  };
   isHiddenGift: boolean;
   isFreeGift: boolean;
   inStock: boolean;
