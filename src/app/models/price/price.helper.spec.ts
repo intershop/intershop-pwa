@@ -79,4 +79,13 @@ describe('Price Helper', () => {
       });
     });
   });
+
+  describe('invert', () => {
+    const price = { type: 'F', currencyMnemonic: 'USD', value: 9 } as Price;
+
+    it('should return inverted price when called', () => {
+      const invertedPrice = PriceHelper.invert(price);
+      expect(invertedPrice.value).toEqual(-9);
+    });
+  });
 });
