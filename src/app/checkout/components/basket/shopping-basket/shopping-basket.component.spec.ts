@@ -7,6 +7,7 @@ import { CurrencyPipe } from '@angular/common';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { Basket } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
+import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ShoppingBasketComponent } from './shopping-basket.component';
 
@@ -43,19 +44,7 @@ describe('Shopping Basket Component', () => {
     fixture = TestBed.createComponent(ShoppingBasketComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.basket = {
-      id: '4711',
-      lineItems: [
-        {
-          id: '4712',
-          quantity: { value: 10000 },
-          product: { sku: '4713' },
-          singleBasePrice: { value: 3, currencyMnemonic: 'USD' },
-          price: { value: 3, currencyMnemonic: 'USD' },
-          totals: {},
-        },
-      ],
-    } as Basket;
+    component.basket = BasketMockData.getBasket();
   });
 
   it('should be created', () => {
