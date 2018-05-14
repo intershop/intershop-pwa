@@ -1,16 +1,15 @@
-import { FilterNavigation } from './../../../models/filter-navigation/filter-navigation.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 
 export enum FilterActionTypes {
-  FilterProducts = '[Shopping] Filter Products',
   LoadFilterForCategory = '[Shopping] Load Filter For Category',
   LoadFilterForCategorySuccess = '[Shopping] Load Filter For Category Success',
-}
-
-export class FilterProducts implements Action {
-  readonly type = FilterActionTypes.FilterProducts;
-  constructor(public payload: string) {}
+  LoadFilterForCategoryFail = '[Shopping] Load Filter For Category Fail',
+  ApplyFilter = '[Shopping] Apply Filter',
+  ApplyFilterSuccess = '[Shopping] Apply Filter Success',
+  ApplyFilterFail = '[Shopping] Apply Filter Fail',
+  SetFilteredProducts = '[Shopping] Set Filtered Products',
 }
 
 export class LoadFilterForCategory implements Action {
@@ -23,4 +22,35 @@ export class LoadFilterForCategorySuccess implements Action {
   constructor(public payload: FilterNavigation) {}
 }
 
-export type FilterActions = FilterProducts | LoadFilterForCategory | LoadFilterForCategorySuccess;
+export class LoadFilterForCategoryFail implements Action {
+  readonly type = FilterActionTypes.LoadFilterForCategoryFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class ApplyFilter implements Action {
+  readonly type = FilterActionTypes.ApplyFilter;
+  constructor(public payload: string[]) {}
+}
+
+export class ApplyFilterSuccess implements Action {
+  readonly type = FilterActionTypes.ApplyFilterSuccess;
+  constructor(public payload: FilterNavigation, public filterName: string, public searchParameter: string) {}
+}
+
+export class ApplyFilterFail implements Action {
+  readonly type = FilterActionTypes.ApplyFilterFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class SetFilteredProducts implements Action {
+  readonly type = FilterActionTypes.SetFilteredProducts;
+  constructor(public payload: string[]) {}
+}
+export type FilterActions =
+  | LoadFilterForCategory
+  | LoadFilterForCategorySuccess
+  | LoadFilterForCategoryFail
+  | ApplyFilter
+  | ApplyFilterSuccess
+  | ApplyFilterFail
+  | SetFilteredProducts;

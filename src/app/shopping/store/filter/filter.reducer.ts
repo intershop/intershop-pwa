@@ -1,36 +1,56 @@
-import { FilterActions, FilterActionTypes, FilterProducts, LoadFilterForCategorySuccess } from './filter.actions';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { ProductMapper } from '../../../models/product/product.mapper';
-import { Product } from '../../../models/product/product.model';
-import { State } from '@ngrx/store';
+import { FilterActions, FilterActionTypes } from './filter.actions';
 
 export interface FilterState {
   loading: boolean;
   availablefilter: any;
   active: boolean;
+  products: string[];
 }
 
 export const initialState: FilterState = {
   loading: false,
   active: false,
   availablefilter: {},
+  products: null,
 };
 
 export function filterReducer(state = initialState, action: FilterActions): FilterState {
   switch (action.type) {
-    case FilterActionTypes.FilterProducts: {
-      console.log('WW');
+    case FilterActionTypes.LoadFilterForCategory: {
+      return { ...initialState, loading: true };
+    }
+    case FilterActionTypes.LoadFilterForCategorySuccess: {
+      return {
+        ...state,
+        availablefilter: action.payload,
+        loading: false,
+      };
+    }
+    case FilterActionTypes.LoadFilterForCategoryFail: {
+      return {
+        ...state,
+        availablefilter: {},
+        loading: false,
+      };
+    }
+    case FilterActionTypes.ApplyFilter: {
       return {
         ...state,
         loading: true,
       };
     }
-    case FilterActionTypes.LoadFilterForCategorySuccess: {
-      console.log('w2');
+    case FilterActionTypes.ApplyFilterSuccess: {
       return {
         ...state,
         availablefilter: action.payload,
         loading: false,
+      };
+    }
+
+    case FilterActionTypes.SetFilteredProducts: {
+      return {
+        ...state,
+        products: action.payload,
       };
     }
   }

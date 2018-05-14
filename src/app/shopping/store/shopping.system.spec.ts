@@ -24,6 +24,7 @@ import { RegistrationService } from '../../registration/services/registration/re
 import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { CategoriesService } from '../services/categories/categories.service';
+import { FilterService } from '../services/filter/filter.service';
 import { ProductsService } from '../services/products/products.service';
 import { SuggestService } from '../services/suggest/suggest.service';
 import {
@@ -47,6 +48,7 @@ describe('Shopping System', () => {
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
+  let filterServiceMock: FilterService;
   let locales: Locale[];
 
   beforeEach(() => {
@@ -113,6 +115,8 @@ describe('Shopping System', () => {
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
 
+    filterServiceMock = mock(FilterService);
+
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
@@ -159,6 +163,7 @@ describe('Shopping System', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },

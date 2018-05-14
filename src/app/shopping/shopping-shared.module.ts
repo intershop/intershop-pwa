@@ -18,7 +18,7 @@ import { ProductQuantityComponent } from './components/product/product-quantity/
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
-import { FilterNavigationComponent } from './containers/filter-navigation/filter-navigation.component';
+import { FilterNavigationContainerComponent } from './containers/filter-navigation/filter-navigation.container';
 import { ProductRowContainerComponent } from './containers/product-row/product-row.container';
 import { ProductTileContainerComponent } from './containers/product-tile/product-tile.container';
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
@@ -44,7 +44,7 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductDetailActionsComponent,
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
-    FilterNavigationComponent,
+    FilterNavigationContainerComponent,
     FilterDropdownComponent,
   ],
   exports: [
@@ -66,7 +66,7 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductDetailActionsComponent,
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
-    FilterNavigationComponent,
+    FilterNavigationContainerComponent,
     FilterDropdownComponent,
   ],
 })

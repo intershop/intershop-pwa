@@ -1,4 +1,7 @@
-<b> {{filterElement.name}}</b>
-<div *ngFor="let facet of filterElement.facets">
-  <a *ngIf="!hasSelected || facet.selected" href="{{facet.link.uri}}">{{facet.link.title}}</a>
-</div>
+<ng-template *ngIf="filterElement && filterElement.facets">
+  <b> {{filterElement.name}}</b>
+  <div *ngFor="let facet of filterElement.facets">
+    <span *ngIf="facet.selected">x</span>
+    <a *ngIf="!hasSelected || facet.selected" (click)="filter(getFilterName(facet.link.uri),getQueryParam(facet.link.uri))">{{facet.link.title}} </a>
+  </div>
+</ng-template>
