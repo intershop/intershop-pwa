@@ -6,6 +6,7 @@ import { CategoryView } from '../../../models/category-view/category-view.model'
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
 import * as fromStore from '../../store/categories';
+import { getFilteredProducts } from '../../store/filter/filter.selectors';
 import { ShoppingState } from '../../store/shopping.state';
 import * as fromViewconf from '../../store/viewconf';
 
@@ -22,6 +23,7 @@ export class CategoryPageContainerComponent implements OnInit {
   viewType$: Observable<ViewType>;
   sortBy$: Observable<string>;
   sortKeys$: Observable<string[]>;
+  filteredProducts$: Observable<Product[]>;
 
   loadMore = new EventEmitter<void>(); // TODO: implement me
 
@@ -35,6 +37,7 @@ export class CategoryPageContainerComponent implements OnInit {
     this.categoryLoading$ = this.store.pipe(select(fromStore.getCategoryLoading));
 
     this.products$ = this.store.pipe(select(fromStore.getProductsForSelectedCategory));
+    this.filteredProducts$ = this.store.pipe(select(getFilteredProducts));
     this.totalItems$ = this.store.pipe(select(fromStore.getProductCountForSelectedCategory));
     this.viewType$ = this.store.pipe(select(fromViewconf.getViewType));
     this.sortBy$ = this.store.pipe(select(fromViewconf.getSortBy));

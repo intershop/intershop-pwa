@@ -1,39 +1,35 @@
-import { FilterProducts } from './../../store/filter/filter.actions';
-import { CoreState } from './../../../core/store/core.state';
-import { Subject } from 'rxjs/Subject';
-import { FilterNavigation } from './../../../models/filter-navigation/filter-navigation.model';
-import { Observable } from 'rxjs/Observable';
 import { HttpParams } from '@angular/common/http';
-import { ApiService } from './../../../core/services/api.service';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
+import { ApiService } from '../../../core/services/api.service';
+import { FilterNavigationData } from '../../../models/filter-navigation/filter-navigation.interface';
+import { FilterNavigationMapper } from '../../../models/filter-navigation/filter-navigation.mapper';
+import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { Link } from '../../../models/link/link.model';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
-  filter: Subject<FilterNavigation> = new Subject();
+  constructor(private apiService: ApiService) {}
 
-  constructor(private apiService: ApiService, private store: Store<CoreState>) {}
-
-  getFilter(): Observable<FilterNavigation> {
-    return this.filter;
-  }
-  changeToFilterForCategory(categoryDomainName: string, categoryName: string) {
-    console.log("w");
-    let params = new HttpParams()
+  getFilterForCategory(categoryDomainName: string, categoryName: string): Observable<FilterNavigation> {
+    const params = new HttpParams()
       .set('CategoryDomainName', 'inSPIRED-inTRONICS-' + categoryDomainName)
       .set('CategoryName', categoryName);
-    return this.apiService.get<FilterNavigation>('filters', params);
+    return this.apiService
+      .get<FilterNavigationData>('filters', params)
+      .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
-  changeToFilter(filterId: string, searchParameter: string) {
-    let params = new HttpParams().set('SearchParameter', searchParameter);
-    this.apiService.get<FilterNavigation>('filters/' + filterId, params).subscribe(filter => this.filter.next(filter));
-    this.store.dispatch(new FilterProducts(''));
-    this.apiService
-      .get<FilterNavigation>('filters/' + filterId + '/hits', params)
-      .subscribe(product => console.log(product));
+  applyFilter(filterName: string, searchParameter: string): Observable<FilterNavigation> {
+    return this.apiService
+      .get<FilterNavigationData>('filters/' + filterName + ';SearchParameter=' + searchParameter)
+      .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
-  changeToAvailableFilter() {
-    this.apiService.get<FilterNavigation>('filters').subscribe(filter => this.filter.next(filter));
+
+  getProductSkusForFilter(filterName: string, searchParameter: string): Observable<string[]> {
+    return this.apiService
+      .get<{ elements: Link[] }>('filters/' + filterName + ';SearchParameter=' + searchParameter + '/hits')
+      .pipe(map(e => e.elements), map((e: Link[]) => e.map(n => n.uri.split('/')[1])));
   }
 }

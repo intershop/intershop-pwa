@@ -1,17 +1,30 @@
 <ng-container *ngIf="(category$ | async) as category">
 
-  <ish-breadcrumb [category]="category"></ish-breadcrumb>
+  <ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
 
   <!-- category with subcategories -->
   <ng-container *ngIf="category.hasChildren(); else productListing">
     <ish-category-page
       [category]="category"
+      [categoryPath]="categoryPath$ | async"
     ></ish-category-page>
   </ng-container>
 
   <!-- category with products -->
-  <ng-template #productListing>
-    <ng-container *ngIf="category.hasOnlineProducts">
+  <ng-container *ngIf="category.hasOnlineProducts">
+    <ng-container *ngIf="(filteredProducts$ | async) as filteredProducts; else allProductView">
+      <ish-family-page
+        [category]="category"
+        [products]="filteredProducts$ | async"
+        [totalItems]="totalItems$ | async"
+        [viewType]="viewType$ | async"
+        [sortBy]="sortBy$ | async"
+        [sortKeys]="sortKeys$ | async"
+        (viewTypeChange)="changeViewType($event)"
+        (sortByChange)="changeSortBy($event)"
+      ></ish-family-page>
+    </ng-container>
+    <ng-template #allProductView>
       <ish-family-page
         [category]="category"
         [products]="products$ | async"
@@ -21,10 +34,9 @@
         [sortKeys]="sortKeys$ | async"
         (viewTypeChange)="changeViewType($event)"
         (sortByChange)="changeSortBy($event)"
-        (loadMore)="loadMore.emit()"
       ></ish-family-page>
-    </ng-container>
-  </ng-template>
+    </ng-template>
+  </ng-container>
 
   <!-- empty category without subcategories and without products -->
   <ng-container *ngIf="!category.hasChildren() && !category.hasOnlineProducts">

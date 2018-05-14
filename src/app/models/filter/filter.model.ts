@@ -2,7 +2,7 @@ import { Facet } from '../facet/facet.model';
 
 export interface Filter {
   name: string;
-  type: string;
+  displayType: string;
   id: string;
   facets: Facet[];
 }
