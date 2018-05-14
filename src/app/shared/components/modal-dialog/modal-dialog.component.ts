@@ -9,6 +9,13 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class ModalDialogComponent {
   @Input() title: string;
 
+  /**
+   * Additional CSS classes for styling purposes,
+   * e.g. for sizing:
+   *   'modal-lg': large, 'modal-sm': small, 'modal-md': medium (default)
+   */
+  @Input() modalClass: string;
+
   // tslint:disable-next-line:no-any
   @ViewChild('template') modalDialogTemplate: TemplateRef<any>;
   bsModalDialog: BsModalRef;
@@ -19,7 +26,7 @@ export class ModalDialogComponent {
    * Shows modal dialog
    */
   show() {
-    this.bsModalDialog = this.bsModalService.show(this.modalDialogTemplate);
+    this.bsModalDialog = this.bsModalService.show(this.modalDialogTemplate, { class: this.modalClass });
   }
 
   /**
