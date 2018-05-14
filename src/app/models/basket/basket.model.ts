@@ -22,7 +22,7 @@ export interface Basket {
     itemTotal: Price;
     paymentCostsTotal?: Price;
     shippingTotal?: Price;
-    taxTotal: Price;
+    taxTotal?: Price;
   };
   valueRebates?: BasketRebate[];
   itemSurchargeTotalsByType?: [
