@@ -120,15 +120,18 @@ describe('Mock Interceptor', () => {
         });
     });
 
-    it('should not attach token when patricia is not logged in correctly', () => {
+    it('should return error response when patricia is not logged in correctly', () => {
       mockInterceptor
         .intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler)
-        .subscribe(event => {
-          expect(event.type).toBe(HttpEventType.Response);
-
-          const response = event as HttpResponse<any>;
-          expect(response.headers.get('authentication-token')).toBeFalsy();
-        });
+        .subscribe(
+          event => fail(),
+          event => {
+            expect(event.ok).toBeFalsy();
+            expect(event.status).toBe(401);
+            expect(event.headers.get('authentication-token')).toBeFalsy();
+            expect(event.headers.get('error-key')).toBeTruthy();
+          }
+        );
     });
   });
 });
