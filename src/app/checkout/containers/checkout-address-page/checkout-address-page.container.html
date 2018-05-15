@@ -1,1 +1,12 @@
-Checkout Address Page Container
+<div data-testing-id="checkout-address-page">
+  <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
+
+  <ish-checkout-address
+    [basket]="basket$ | async"
+    [customer]="customer$ | async"
+  ></ish-checkout-address>
+
+  <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+</div>
+
+
