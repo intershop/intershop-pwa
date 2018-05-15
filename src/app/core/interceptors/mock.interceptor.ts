@@ -1,8 +1,18 @@
 // tslint:disable:no-any
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpHeaders,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { _throw } from 'rxjs/observable/throw';
+import { flatMap } from 'rxjs/operators';
 import { MUST_MOCK_PATHS, NEED_MOCK } from '../../core/configurations/injection-keys';
 import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 
@@ -22,6 +32,7 @@ export class MockInterceptor implements HttpInterceptor {
   /**
    * Intercepts out going request and changes url to mock url if needed.
    * Intercepts incoming response and sets authentication-token header if login was requested.
+   * Also handles logging in patricia with correct password and failing if credentials are wrong
    * @param  {HttpRequest<any>} req
    * @param  {HttpHandler} next
    * @returns  Observable<HttpEvent<any>>
@@ -34,32 +45,41 @@ export class MockInterceptor implements HttpInterceptor {
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
     return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
-      map(event => {
+      flatMap(event => {
         if (event instanceof HttpResponse) {
           const response = <HttpResponse<any>>event;
-          return this.attachTokenIfNecessary(req, response);
+          if (this.isLoginAttempt(req) && !this.isMockUserLoggingInSuccessfully(req)) {
+            return _throw(
+              new HttpErrorResponse({
+                status: 401,
+                error: 'wrong credentials',
+                headers: new HttpHeaders({ 'error-key': 'account.login.email_password.error.invalid' }),
+              })
+            );
+          }
+          return of(this.attachTokenIfNecessary(req, response));
         }
-        return event;
+        return of(event);
       })
     );
+  }
+
+  private isLoginAttempt(req: HttpRequest<any>) {
+    return req.headers.has('Authorization');
   }
 
   /**
    * check if user patricia@test.intershop.de with !InterShop00! is logged in correctly
    */
-  private mockUserIsLoggingIn(req: HttpRequest<any>) {
-    const authorizationHeaderKey = 'Authorization';
-    return (
-      req.headers.has(authorizationHeaderKey) &&
-      req.headers.get(authorizationHeaderKey) === 'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ=='
-    );
+  private isMockUserLoggingInSuccessfully(req: HttpRequest<any>) {
+    return req.headers.get('Authorization') === 'BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==';
   }
 
   /**
    * Decides if token needs to be attached and attaches it
    */
   private attachTokenIfNecessary(req: HttpRequest<any>, response: HttpResponse<any>): HttpResponse<any> {
-    if (this.mockUserIsLoggingIn(req) || req.url.indexOf('customers') > -1) {
+    if ((this.isLoginAttempt(req) && this.isMockUserLoggingInSuccessfully(req)) || req.url.indexOf('customers') > -1) {
       console.log('attaching dummy token');
       return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
     }
