@@ -1,12 +1,11 @@
 <ng-container *ngIf="(category$ | async) as category">
 
-  <ish-breadcrumb [category]="category" [categoryPath]="categoryPath$ | async"></ish-breadcrumb>
+  <ish-breadcrumb [category]="category"></ish-breadcrumb>
 
   <!-- category with subcategories -->
   <ng-container *ngIf="category.hasChildren(); else productListing">
     <ish-category-page
       [category]="category"
-      [categoryPath]="categoryPath$ | async"
     ></ish-category-page>
   </ng-container>
 

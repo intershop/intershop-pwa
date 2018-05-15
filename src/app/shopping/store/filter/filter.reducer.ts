@@ -1,16 +1,15 @@
+import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { FilterActions, FilterActionTypes } from './filter.actions';
 
 export interface FilterState {
   loading: boolean;
-  availablefilter: any;
-  active: boolean;
+  availablefilter: FilterNavigation;
   products: string[];
 }
 
 export const initialState: FilterState = {
   loading: false,
-  active: false,
-  availablefilter: {},
+  availablefilter: null,
   products: null,
 };
 
@@ -29,7 +28,7 @@ export function filterReducer(state = initialState, action: FilterActions): Filt
     case FilterActionTypes.LoadFilterForCategoryFail: {
       return {
         ...state,
-        availablefilter: {},
+        availablefilter: null,
         loading: false,
       };
     }

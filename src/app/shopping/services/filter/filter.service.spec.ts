@@ -3,6 +3,7 @@ import { of } from 'rxjs/observable/of';
 import { anything, mock, verify, when } from 'ts-mockito';
 import { instance } from 'ts-mockito/lib/ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
+import { Category } from '../../../models/category/category.model';
 import { FilterNavigationData } from '../../../models/filter-navigation/filter-navigation.interface';
 import { FilterService } from './filter.service';
 
@@ -33,7 +34,7 @@ describe('FilterService', () => {
 
   it("should get Filter data when 'getFilterForCategory' is called", () => {
     when(apiService.get('filters', anything())).thenReturn(of(filterMock as FilterNavigationData));
-    filterService.getFilterForCategory('a', 'b').subscribe(data => {
+    filterService.getFilterForCategory({ name: 'a', uniqueId: 'A.B' } as Category).subscribe(data => {
       expect(data.filter.length).toEqual(1);
       expect(data.filter[0].facets.length).toEqual(2);
       expect(data.filter[0].facets[0].name).toEqual('a');
