@@ -1,4 +1,3 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
@@ -51,7 +50,7 @@ describe('Product Compare List Component', () => {
           AttributeToStringPipe,
           PricePipe,
         ],
-        providers: [CurrencyPipe, DatePipe, DecimalPipe, PricePipe],
+        providers: [PricePipe],
       }).compileComponents();
     })
   );
