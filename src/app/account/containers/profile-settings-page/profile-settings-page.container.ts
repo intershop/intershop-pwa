@@ -3,18 +3,18 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
-import { Customer } from '../../../models/customer/customer.model';
+import { User } from '../../../models/user/user.model';
 
 @Component({
   templateUrl: './profile-settings-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSettingsPageContainerComponent implements OnInit {
-  customer$: Observable<Customer>;
+  user$: Observable<User>;
 
   constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.customer$ = this.store.pipe(select(getLoggedInUser));
+    this.user$ = this.store.pipe(select(getLoggedInUser));
   }
 }

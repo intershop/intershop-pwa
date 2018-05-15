@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { Customer } from '../../../../models/customer/customer.model';
+import { PrivateCustomer } from '../../../../models/customer/private-customer.model';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
@@ -11,7 +11,7 @@ describe('Login Status Component', () => {
   const userData = {
     firstName: 'Patricia',
     lastName: 'Miller',
-  } as Customer;
+  } as PrivateCustomer;
 
   beforeEach(
     async(() => {
@@ -36,7 +36,7 @@ describe('Login Status Component', () => {
   });
 
   it('should render full name on template when user is logged in', () => {
-    component.customer = userData;
+    component.user = userData;
 
     fixture.detectChanges();
 

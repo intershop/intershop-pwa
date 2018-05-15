@@ -7,7 +7,7 @@
 
     <div class="col-md-9">
 
-      <h1 [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (customer.firstName || customer.credentials.login)}"></h1>
+      <h1 *ngIf="user" [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (user.firstName || user.credentials.login)}"></h1>
       <p>{{'account.overview.message.text' | translate}}</p>
 
       <div class="row account-dashboard">

@@ -1,8 +1,8 @@
 <!-- logged in -->
-<ng-container *ngIf="customer; else notLoggedIn">
+<ng-container *ngIf="user; else notLoggedIn">
   <a routerLink="/account" class="my-account-link" attr.data-testing-id="link-myaccount">
     <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
-    <span *ngIf="customer.lastName" class="hidden-xs login-name">{{customer.firstName + ' ' + customer.lastName}}</span>
+    <span *ngIf="user.lastName" class="hidden-xs login-name">{{user.firstName + ' ' + user.lastName}}</span>
     <span class="hidden-xs">{{'account.login_status.myaccount.link' | translate}}</span>
   </a>
   <span class="hidden-xs seperator">&#124; </span>

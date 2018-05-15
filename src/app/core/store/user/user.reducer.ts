@@ -1,25 +1,28 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Action } from '@ngrx/store';
-import { Customer } from '../../../models/customer/customer.model';
-import { CreateUserFail, LoginUserFail, LoginUserSuccess, UserActionTypes } from './user.actions';
+import { Customer, CustomerType } from '../../../models/customer/customer.model';
+import { User } from '../../../models/user/user.model';
+import { UserAction, UserActionTypes } from './user.actions';
 
 export interface UserState {
   customer: Customer;
+  user: User;
   authorized: boolean;
   error: HttpErrorResponse;
 }
 
 export const getCustomer = (state: UserState) => state.customer;
+export const getUser = (state: UserState) => state.user;
 export const getAuthorized = (state: UserState) => state.authorized;
 export const getError = (state: UserState) => state.error;
 
 export const initialState: UserState = {
   customer: null,
+  user: null,
   authorized: false,
   error: undefined,
 };
 
-export function userReducer(state = initialState, action: Action): UserState {
+export function userReducer(state = initialState, action: UserAction): UserState {
   switch (action.type) {
     case UserActionTypes.UserErrorReset: {
       return {
@@ -28,33 +31,45 @@ export function userReducer(state = initialState, action: Action): UserState {
       };
     }
 
-    case UserActionTypes.LoginUser: {
+    case UserActionTypes.LoginUser:
+    case UserActionTypes.LogoutUser:
+    case UserActionTypes.CreateUserFail: {
       return initialState;
     }
 
-    case UserActionTypes.LoginUserFail: {
+    case UserActionTypes.LoginUserFail:
+    case UserActionTypes.LoadCompanyUserFail: {
+      const error = action.payload;
+
       return {
         ...initialState,
-        error: (action as LoginUserFail).payload,
+        error: error,
       };
     }
 
     case UserActionTypes.LoginUserSuccess: {
-      return {
+      const payload = action.payload;
+      let newState;
+
+      newState = {
         ...initialState,
         authorized: true,
-        customer: (action as LoginUserSuccess).payload,
+        customer: payload,
       };
+
+      if (payload.type === CustomerType.PrivateCustomer) {
+        newState.user = payload;
+      }
+
+      return newState;
     }
 
-    case UserActionTypes.LogoutUser: {
-      return initialState;
-    }
+    case UserActionTypes.LoadCompanyUserSuccess: {
+      const payload = action.payload;
 
-    case UserActionTypes.CreateUserFail: {
       return {
         ...state,
-        error: (action as CreateUserFail).payload,
+        user: payload,
       };
     }
   }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Customer } from '../../../models/customer/customer.model';
+import { User } from '../../../models/user/user.model';
 
 @Component({
   selector: 'ish-profile-settings-page',
@@ -7,6 +7,7 @@ import { Customer } from '../../../models/customer/customer.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSettingsPageComponent {
+  @Input() user: User;
+
   showSuccessMessage: string;
-  @Input() customer: Customer;
 }
