@@ -6,7 +6,7 @@ import { Action, select, Store } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { of } from 'rxjs/observable/of';
 import { catchError, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
-import { Customer } from '../../../models/customer/customer.model';
+import { Customer, CustomerType } from '../../../models/customer/customer.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { CoreState } from '../core.state';
 import * as errorActions from '../error/error.actions';
@@ -32,6 +32,19 @@ export class UserEffects {
         .pipe(
           map(customer => new userActions.LoginUserSuccess(customer)),
           catchError(error => of(this.dispatchLogin(error)))
+        );
+    })
+  );
+
+  @Effect()
+  loadCompanyUser$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.LoadCompanyUser),
+    mergeMap(() => {
+      return this.registrationService
+        .getCompanyUserData()
+        .pipe(
+          map(user => new userActions.LoadCompanyUserSuccess(user)),
+          catchError(error => of(new userActions.LoadCompanyUserFail(error)))
         );
     })
   );
@@ -74,6 +87,14 @@ export class UserEffects {
   publishLoginEventAfterCreate$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.CreateUserSuccess),
     map((action: userActions.CreateUserSuccess) => new userActions.LoginUserSuccess(action.payload))
+  );
+
+  @Effect()
+  loadCompanyUserAfterLogin$ = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.LoginUserSuccess),
+    map((action: userActions.LoginUserSuccess) => action.payload),
+    filter(customer => customer.type === CustomerType.SMBCustomer),
+    map(() => new userActions.LoadCompanyUser())
   );
 
   dispatchLogin(error): Action {

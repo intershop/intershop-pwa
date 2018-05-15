@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Customer } from '../../../models/customer/customer.model';
+import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { AccountPageComponent } from './account-page.component';
 
@@ -9,7 +9,7 @@ describe('Account Overview Component', () => {
   let component: AccountPageComponent;
   let element: HTMLElement;
   let translate: TranslateService;
-  const customer = { firstName: 'Patricia' } as Customer;
+  const user = { firstName: 'Patricia' } as User;
 
   beforeEach(
     async(() => {
@@ -39,7 +39,7 @@ describe('Account Overview Component', () => {
     translate.setDefaultLang('en');
     translate.use('en');
     translate.set('account.overview.personal_message.text', 'Hi, {{0}}.');
-    component.customer = customer;
+    component.user = user;
   });
 
   it('should be created', () => {
@@ -48,8 +48,8 @@ describe('Account Overview Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display customer name when displaying greeting text', () => {
+  it('should display user name when displaying greeting text', () => {
     fixture.detectChanges();
-    expect(element.querySelector('h1').textContent).toContain(customer.firstName);
+    expect(element.querySelector('h1').textContent).toContain(user.firstName);
   });
 });

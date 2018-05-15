@@ -1,21 +1,37 @@
 import { Address } from '../address/address.model';
 import { Credentials } from '../credentials/credentials.model';
 
+export enum CustomerType {
+  PrivateCustomer = 'PrivateCustomer',
+  SMBCustomer = 'SMBCustomer',
+}
+
 export interface Customer {
-  type?: string;
-  firstName: string;
-  lastName: string;
-  title: string;
-  phoneHome: string;
+  type?: CustomerType;
+  customerNo: string;
+  preferredInvoiceToAddress?: Address;
+  preferredShipToAddress?: Address;
+
+  // Private Customer only
+  title?: string;
+  firstName?: string;
+  lastName?: string;
+  phoneHome?: string;
   phoneBusiness?: string;
   phoneMobile?: string;
   fax?: string;
-  email: string;
-  customerNo: string;
-  birthday: string;
-  preferredLanguage: string;
-  credentials: Credentials;
-  address: Address;
-  preferredInvoiceToAddress?: Address;
-  preferredShipToAddress?: Address;
+  email?: string;
+  preferredLanguage?: string;
+  birthday?: string;
+
+  // Business Customer only
+  companyName?: string;
+  companyName2?: string;
+  taxationID?: string;
+  industry?: string;
+  description?: string;
+
+  // for registration only
+  address?: Address;
+  credentials?: Credentials;
 }
