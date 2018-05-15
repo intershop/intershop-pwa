@@ -1,4 +1,3 @@
-import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
@@ -18,7 +17,7 @@ describe('Product Attributes Component', () => {
       TestBed.configureTestingModule({
         imports: [TranslateModule.forRoot()],
         declarations: [ProductAttributesComponent, AttributeToStringPipe, PricePipe],
-        providers: [CurrencyPipe, DatePipe, DecimalPipe, PricePipe],
+        providers: [PricePipe],
       }).compileComponents();
     })
   );

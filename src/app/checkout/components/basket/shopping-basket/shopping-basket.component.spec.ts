@@ -3,7 +3,6 @@ import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { CurrencyPipe } from '@angular/common';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
@@ -34,7 +33,7 @@ describe('Shopping Basket Component', () => {
           }),
         ],
         imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule],
-        providers: [FormBuilder, CurrencyPipe],
+        providers: [FormBuilder],
       }).compileComponents();
     })
   );

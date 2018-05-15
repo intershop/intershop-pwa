@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -30,7 +30,6 @@ describe('Mini Basket Component', () => {
           TranslateModule.forRoot(),
           PipesModule,
         ],
-        providers: [CurrencyPipe],
         declarations: [
           MiniBasketComponent,
           MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
@@ -45,6 +44,7 @@ describe('Mini Basket Component', () => {
     element = fixture.nativeElement;
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
+    translate.use('en');
     translate.setTranslation('en', { 'shopping_cart.ministatus.items.text': { other: '#' } });
     lineItem = BasketMockData.getBasketItem();
     basket = {

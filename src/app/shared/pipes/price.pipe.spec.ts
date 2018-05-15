@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe, registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -14,7 +14,7 @@ describe('Price toString Pipe', () => {
 
     TestBed.configureTestingModule({
       imports: [CommonModule, TranslateModule.forRoot()],
-      providers: [PricePipe, CurrencyPipe],
+      providers: [PricePipe],
     });
     pipe = TestBed.get(PricePipe);
     translateService = TestBed.get(TranslateService);

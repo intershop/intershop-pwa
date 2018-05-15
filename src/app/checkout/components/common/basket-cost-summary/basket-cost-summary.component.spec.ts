@@ -1,4 +1,3 @@
-import { CurrencyPipe } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
@@ -16,7 +15,6 @@ describe('BasketCostSummaryComponent', () => {
       TestBed.configureTestingModule({
         imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), PipesModule],
         declarations: [BasketCostSummaryComponent],
-        providers: [CurrencyPipe],
       }).compileComponents();
     })
   );
