@@ -9,7 +9,7 @@ import { getCurrentLocale } from '../store/locale';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ApiService {
   private currentLocale: Locale;
 

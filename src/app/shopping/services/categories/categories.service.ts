@@ -11,7 +11,7 @@ import { CategoryHelper } from '../../../models/category/category.model';
 /**
  * The Categories Service handles the interaction with the 'categories' REST API.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CategoriesService {
   constructor(private apiService: ApiService) {}
 

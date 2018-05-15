@@ -10,7 +10,7 @@ import { User } from '../../../models/user/user.model';
 /**
  * The Registration Service handles the registration related interaction with the 'customers' REST API.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RegistrationService {
   constructor(private apiService: ApiService) {}
 

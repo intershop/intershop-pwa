@@ -5,7 +5,7 @@ import { EMPTY, Observable, throwError } from 'rxjs';
 import { CoreState } from '../store/core.state';
 import * as errorActions from '../store/error/error.actions';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ApiServiceErrorHandler {
   constructor(private store: Store<CoreState>) {}
 

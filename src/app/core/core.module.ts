@@ -14,13 +14,8 @@ import { PipesModule } from '../shared/pipes.module';
 import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
-import { ApiService } from './services/api.service';
-import { ApiServiceErrorHandler } from './services/api.service.errorhandler';
-import { CountryService } from './services/countries/country.service';
-import { RegionService } from './services/countries/region.service';
 import { CrosstabService } from './services/crosstab/crosstab.service';
 import { translateFactory } from './services/custom-translate-loader';
-import { StatePropertiesService } from './services/state-transfer/state-properties.service';
 
 @NgModule({
   imports: [
@@ -45,14 +40,6 @@ import { StatePropertiesService } from './services/state-transfer/state-properti
     PipesModule,
   ],
   declarations: [StyleWrapperDirective],
-  providers: [
-    ApiService,
-    ApiServiceErrorHandler,
-    StatePropertiesService,
-    CountryService,
-    RegionService,
-    CrosstabService,
-  ],
   exports: [StyleWrapperDirective, HeaderModule, FooterModule],
 })
 export class CoreModule {
