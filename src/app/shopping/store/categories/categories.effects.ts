@@ -112,13 +112,4 @@ export class CategoriesEffects {
     ofType(categoriesActions.CategoriesActionTypes.LoadCategoryFail),
     tap(() => this.router.navigate(['/error']))
   );
-
-  // TODO: @Ferdinand: non full categories might not be to helpfull
-  @Effect()
-  saveSubCategories$ = this.actions$.pipe(
-    ofType(categoriesActions.CategoriesActionTypes.LoadCategorySuccess),
-    map((action: categoriesActions.LoadCategorySuccess) => action.payload.subCategories),
-    filter(sc => !!sc),
-    map(sc => new categoriesActions.SaveSubCategories(sc))
-  );
 }

@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold } from 'jasmine-marbles';
 import { CoreState } from '../../../core/store/core.state';
 import { Category } from '../../../models/category/category.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
+import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadCategory, LoadCategorySuccess, SelectCategory } from '../../store/categories';
 import { shoppingReducers } from '../../store/shopping.system';
 import { CategoryPageContainerComponent } from './category-page.container';
@@ -28,17 +28,17 @@ describe('Category Page Container', () => {
           MockComponent({
             selector: 'ish-breadcrumb',
             template: 'Breadcrumb Component',
-            inputs: ['category', 'categoryPath'],
+            inputs: ['category'],
           }),
           MockComponent({
             selector: 'ish-category-page',
             template: 'Category Page Component',
-            inputs: ['category', 'categoryPath'],
+            inputs: ['category'],
           }),
           MockComponent({
             selector: 'ish-family-page',
             template: 'Family Page Component',
-            inputs: ['category', 'categoryPath', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
+            inputs: ['category', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
           }),
           MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         ],
@@ -75,26 +75,24 @@ describe('Category Page Container', () => {
   });
 
   it('should display category-page when category has sub categories', () => {
-    const category = { uniqueId: 'dummy' } as Category;
+    const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     category.hasOnlineSubCategories = true;
-    store$.dispatch(new LoadCategorySuccess(category));
+    store$.dispatch(new LoadCategorySuccess(categoryTree([category])));
     store$.dispatch(new SelectCategory(category.uniqueId));
 
     fixture.detectChanges();
 
-    expect(component.category$).toBeObservable(cold('a', { a: category }));
     expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-category-page']);
   });
 
   it('should display family-page when category has products', () => {
-    const category = { uniqueId: 'dummy' } as Category;
+    const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
     category.hasOnlineProducts = true;
-    store$.dispatch(new LoadCategorySuccess(category));
+    store$.dispatch(new LoadCategorySuccess(categoryTree([category])));
     store$.dispatch(new SelectCategory(category.uniqueId));
 
     fixture.detectChanges();
 
-    expect(component.category$).toBeObservable(cold('a', { a: category }));
     expect(findAllIshElements(element)).toEqual(['ish-breadcrumb', 'ish-family-page']);
   });
 });
