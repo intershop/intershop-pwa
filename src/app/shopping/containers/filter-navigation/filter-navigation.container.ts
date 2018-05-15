@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
-import * as fromStore from '../../store/filter';
-import { ApplyFilter } from '../../store/filter/filter.actions';
-import { FilterState } from '../../store/filter/filter.reducer';
+import { ApplyFilter, getAvailableFilter } from '../../store/filter';
+import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-filter-navigation',
@@ -13,13 +12,13 @@ import { FilterState } from '../../store/filter/filter.reducer';
 })
 export class FilterNavigationContainerComponent implements OnInit {
   filter$: Observable<FilterNavigation>;
-  constructor(private store: Store<FilterState>) {}
+  constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
-    this.filter$ = this.store.pipe(select(fromStore.getAvailableFilter));
+    this.filter$ = this.store.pipe(select(getAvailableFilter));
   }
 
-  applyFilter(e) {
-    this.store.dispatch(new ApplyFilter(e));
+  applyFilter(event: { filterId: string; searchParameter: string }) {
+    this.store.dispatch(new ApplyFilter(event));
   }
 }

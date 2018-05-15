@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
+import { Category } from '../../../models/category/category.model';
 import { FilterNavigationData } from '../../../models/filter-navigation/filter-navigation.interface';
 import { FilterNavigationMapper } from '../../../models/filter-navigation/filter-navigation.mapper';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
@@ -12,10 +13,13 @@ import { Link } from '../../../models/link/link.model';
 export class FilterService {
   constructor(private apiService: ApiService) {}
 
-  getFilterForCategory(categoryDomainName: string, categoryName: string): Observable<FilterNavigation> {
+  getFilterForCategory(category: Category): Observable<FilterNavigation> {
+    const idList = category.uniqueId.split('.');
+    // TODO from REST
+    const categoryDomainName = this.getDomainId(idList[0]);
     const params = new HttpParams()
-      .set('CategoryDomainName', 'inSPIRED-inTRONICS-' + categoryDomainName)
-      .set('CategoryName', categoryName);
+      .set('CategoryDomainName', categoryDomainName)
+      .set('CategoryName', idList[idList.length - 1]);
     return this.apiService
       .get<FilterNavigationData>('filters', params)
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
@@ -31,5 +35,13 @@ export class FilterService {
     return this.apiService
       .get<{ elements: Link[] }>('filters/' + filterName + ';SearchParameter=' + searchParameter + '/hits')
       .pipe(map(e => e.elements), map((e: Link[]) => e.map(n => n.uri.split('/')[1])));
+  }
+
+  private getDomainId(rootName: string) {
+    console.log(rootName);
+    if (rootName === 'Specials' || rootName === 'Cameras') {
+      return 'inSPIRED-inTRONICS-' + rootName;
+    }
+    return 'inSPIRED-' + rootName;
   }
 }

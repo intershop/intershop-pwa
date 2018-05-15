@@ -9,7 +9,7 @@ import { Filter } from '../../../../models/filter/filter.model';
 })
 export class FilterDropdownComponent implements OnInit {
   @Input() filterElement: Filter;
-  @Output() filterAction: EventEmitter<string[]> = new EventEmitter();
+  @Output() applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
   hasSelected: boolean;
   getFilterName = url => url.split('/filters/')[1].split(';')[0];
   getQueryParam = url => url.split(';SearchParameter=')[1];
@@ -17,7 +17,7 @@ export class FilterDropdownComponent implements OnInit {
     const facet: Facet[] = this.filterElement.facets;
     this.hasSelected = !!facet.find(e => e.selected);
   }
-  filter(filterName, queryParam) {
-    this.filterAction.emit([filterName, queryParam]);
+  filter(filterId, searchParameter) {
+    this.applyFilter.emit({ filterId, searchParameter });
   }
 }

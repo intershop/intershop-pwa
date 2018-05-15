@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 
 export enum FilterActionTypes {
@@ -14,7 +15,7 @@ export enum FilterActionTypes {
 
 export class LoadFilterForCategory implements Action {
   readonly type = FilterActionTypes.LoadFilterForCategory;
-  constructor(public payload: { parent: string; category: string }) {}
+  constructor(public payload: Category) {}
 }
 
 export class LoadFilterForCategorySuccess implements Action {
@@ -29,7 +30,7 @@ export class LoadFilterForCategoryFail implements Action {
 
 export class ApplyFilter implements Action {
   readonly type = FilterActionTypes.ApplyFilter;
-  constructor(public payload: string[]) {}
+  constructor(public payload: { filterId: string; searchParameter: string }) {}
 }
 
 export class ApplyFilterSuccess implements Action {
