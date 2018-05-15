@@ -16,9 +16,6 @@ import { LoginUser } from '../../core/store/user';
 import { Address } from '../../models/address/address.model';
 import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { Basket } from '../../models/basket/basket.model';
-import { CategoryData } from '../../models/category/category.interface';
-import { CategoryMapper } from '../../models/category/category.mapper';
-import { Category } from '../../models/category/category.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
 import { Locale } from '../../models/locale/locale.model';
@@ -31,6 +28,7 @@ import { SuggestService } from '../../shopping/services/suggest/suggest.service'
 import { LoadProduct } from '../../shopping/store/products';
 import { shoppingEffects, shoppingReducers } from '../../shopping/store/shopping.system';
 import { LogEffects } from '../../utils/dev/log.effects';
+import { categoryTree } from '../../utils/dev/test-data-utils';
 import { BasketService } from '../services/basket/basket.service';
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
@@ -109,23 +107,7 @@ describe('Checkout Store', () => {
     ] as Locale[];
 
     const categoriesServiceMock = mock(CategoriesService);
-    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(
-      of([
-        CategoryMapper.fromData({
-          id: 'A',
-          hasOnlineSubCategories: true,
-          hasOnlineProducts: false,
-          subCategoriesCount: 1,
-          subCategories: [
-            {
-              id: '123',
-              hasOnlineSubCategories: true,
-              hasOnlineProducts: false,
-            },
-          ],
-        } as CategoryData),
-      ] as Category[])
-    );
+    when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
 
     const countryServiceMock = mock(CountryService);
     when(countryServiceMock.getCountries()).thenReturn(of([]));

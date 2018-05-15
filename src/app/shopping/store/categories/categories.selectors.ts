@@ -1,16 +1,9 @@
 import { createSelector } from '@ngrx/store';
-import { Category, CategoryHelper } from '../../../models/category/category.model';
+import { createCategoryView } from '../../../models/category-view/category-view.model';
 import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
-import { categoryAdapter } from './categories.reducer';
 
 const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
-
-export const {
-  selectEntities: getCategoryEntities,
-  selectAll: getCategories,
-  selectIds: getCategoriesIds,
-} = categoryAdapter.getSelectors(getCategoryState);
 
 /**
  * Retrieves the currently selected categoryUniqueId.
@@ -21,27 +14,20 @@ export const {
  */
 export const getSelectedCategoryId = createSelector(getCategoryState, state => state.selected);
 
+const getCategoryTree = createSelector(getCategoryState, state => state.categories);
+
+/**
+ * Retrieve the {@link Dictionary} of {@link Category} entities.
+ */
+export const getCategoryEntities = createSelector(getCategoryTree, tree => tree.nodes);
+
+export const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
+
 /**
  * Retrieves the currently resolved selected category.
  */
-export const getSelectedCategory = createSelector(
-  getCategoryEntities,
-  getSelectedCategoryId,
-  (entities, id): Category => entities[id]
-);
-
-export const getSelectedCategoryPath = createSelector(
-  getCategoryEntities,
-  getSelectedCategory,
-  (entities, category): Category[] => {
-    const categories: Category[] = [];
-    if (category) {
-      CategoryHelper.getCategoryPathUniqueIds(category.uniqueId).forEach(uniqueId => {
-        categories.push(entities[uniqueId]);
-      });
-    }
-    return categories;
-  }
+export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, (tree, id) =>
+  createCategoryView(tree, id)
 );
 
 export const getCategoriesProductSKUs = createSelector(getCategoryState, state => state.categoriesProductSKUs);
@@ -72,22 +58,6 @@ export const productsForSelectedCategoryAreNotLoaded = createSelector(
 
 export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);
 
-export const getTlCategoriesIds = createSelector(getCategoryState, categories => categories.topLevelCategoriesIds);
-
-export const getTopLevelCategories = createSelector(
-  getCategoryEntities,
-  getTlCategoriesIds,
-  (entities, tlCategoriesIds) => {
-    return tlCategoriesIds.map(id => entities[id]).map(category => populateSubCategories(category, entities));
-  }
+export const getTopLevelCategories = createSelector(getCategoryTree, tree =>
+  tree.rootIds.map(id => createCategoryView(tree, id))
 );
-
-function populateSubCategories(c: Category, entities): Category {
-  if (!(c.hasOnlineSubCategories && c.subCategoriesIds && c.subCategoriesIds.length && c.subCategoriesCount > 0)) {
-    return c;
-  }
-
-  const subCategories = c.subCategoriesIds.map(id => entities[id]).map(cc => populateSubCategories(cc, entities));
-
-  return { ...c, subCategories };
-}

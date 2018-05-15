@@ -1,6 +1,11 @@
 import { Category } from './category.model';
 
 export class CategoryHelper {
+  /**
+   * the maximum level of completeness a category can achieve
+   */
+  static maxCompletenessLevel = 2;
+
   static uniqueIdSeparator = '.';
 
   /**
@@ -28,6 +33,8 @@ export class CategoryHelper {
 
   /**
    * Expands a given uniqueId to the category path categories uniqueIds.
+   *
+   * Don't use this if you already have a {@link Category} with a categoryPath.
    * @example
    * 'A.B.C' -> ['A', 'A.B', 'A.B.C']
    */
@@ -44,12 +51,9 @@ export class CategoryHelper {
   }
 
   /**
-   * check if a given category has subcategories which are not loaded yet
+   * check if a given category has the maximum completeness level
    */
   static isCategoryCompletelyLoaded(category: Category): boolean {
-    return (
-      !!category &&
-      (category.hasOnlineSubCategories === false || (!!category.subCategories && !!category.subCategories.length))
-    );
+    return !!category && category.completenessLevel >= CategoryHelper.maxCompletenessLevel;
   }
 }

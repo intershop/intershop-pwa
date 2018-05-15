@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Category } from '../../../models/category/category.model';
+import { categoryTree } from '../../../utils/dev/test-data-utils';
 import * as fromActions from './categories.actions';
 
 describe('Categories Actions', () => {
@@ -25,7 +26,7 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadTopLevelCategoriesSuccess', () => {
-      const payload = [{ uniqueId: '123' } as Category, { uniqueId: '456' } as Category];
+      const payload = categoryTree([{ uniqueId: '123' } as Category, { uniqueId: '456' } as Category]);
       const action = new fromActions.LoadTopLevelCategoriesSuccess(payload);
 
       expect({ ...action }).toEqual({
@@ -57,24 +58,13 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadCategorySuccess', () => {
-      const payload = { uniqueId: '123' } as Category;
+      const payload = categoryTree([{ uniqueId: '123' } as Category]);
       const action = new fromActions.LoadCategorySuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.CategoriesActionTypes.LoadCategorySuccess,
         payload,
       });
-    });
-  });
-
-  it('should create new action for SaveSubCategories', () => {
-    const payload = [{ uniqueId: '123' }, { uniqueId: '456' }] as Category[];
-
-    const action = new fromActions.SaveSubCategories(payload);
-
-    expect({ ...action }).toEqual({
-      type: fromActions.CategoriesActionTypes.SaveSubCategories,
-      payload,
     });
   });
 

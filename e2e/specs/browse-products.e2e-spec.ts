@@ -10,14 +10,14 @@ describe('Browsing User', () => {
   it(`should go from home page to category page`, () => {
     at(HomePage, page => {
       expect(page.getContent()).toContain('Cameras');
-      page.gotoCategoryPage('Cameras-Camcorders-link');
+      page.gotoCategoryPage('Cameras-Camcorders');
     });
   });
 
   it(`should navigate through sub categories to family page`, () => {
     at(CategoryPage, page => {
       expect(page.getSubCategoryCount()).toBe(6);
-      page.gotoSubCategory('category-584');
+      page.gotoSubCategory('Cameras-Camcorders.584');
     });
     at(FamilyPage, page => {
       expect(page.productList.getVisibleProductsCount()).toBeGreaterThanOrEqual(2);

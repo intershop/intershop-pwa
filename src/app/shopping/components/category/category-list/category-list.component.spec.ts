@@ -24,8 +24,8 @@ describe('Category List Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.categories = [
-      { id: 'id1', uniqueId: 'uid1', name: 'name1', images: [{ effectiveUrl: '/url1.png' }] },
-      { id: 'id2', uniqueId: 'uid2', name: 'name2', images: [{ effectiveUrl: '/url2.png' }] },
+      { uniqueId: 'uid1', name: 'name1', images: [{ effectiveUrl: '/url1.png' }] },
+      { uniqueId: 'uid2', name: 'name2', images: [{ effectiveUrl: '/url2.png' }] },
     ] as Category[];
   });
 

@@ -1,16 +1,19 @@
 import { Image } from '../image/image.model';
 
-export interface CategoryData {
+export interface CategoryPathElement {
   id: string;
   name: string;
-  type: string;
+  uri: string;
+}
+
+export interface CategoryData {
+  name: string;
   hasOnlineProducts: boolean;
   hasOnlineSubCategories: boolean;
   online: string;
   description: string;
-  subCategoriesCount?: number;
   subCategories?: CategoryData[];
-  subCategoriesIds?: string[];
   images?: Image[];
   uri?: string;
+  categoryPath: CategoryPathElement[];
 }

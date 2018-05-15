@@ -1,4 +1,4 @@
-<div class="category-page" [attr.data-testing-id]="category.id">
+<div class="category-page" [attr.data-testing-id]="category.uniqueId">
   <div class="row">
 
     <div class="col-sm-3">
@@ -6,14 +6,13 @@
         <h1>{{category.name}}</h1>
         <ish-category-navigation
           [category]="category"
-          [categoryPath]="categoryPath"
           [categoryNavigationLevel]="0"
         ></ish-category-navigation>
       </div>
     </div>
 
     <div class="col-sm-9">
-      <ish-category-list [categories]="category.subCategories"></ish-category-list>
+      <ish-category-list [categories]="category.children()"></ish-category-list>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="family-page product-search-result" [attr.data-testing-id]="'family-page-' + category.id">
+<div class="family-page product-search-result" [attr.data-testing-id]="'family-page-' + category.uniqueId">
   <div class="row">
 
     <div class="col-sm-3">
@@ -6,7 +6,6 @@
         <h1>{{category.name}}</h1>
         <ish-category-navigation
           [category]="category"
-          [categoryPath]="categoryPath"
           [categoryNavigationLevel]="0"
         ></ish-category-navigation>
       </div>
