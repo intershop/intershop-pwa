@@ -5,8 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { getTestScheduler } from 'jasmine-marbles';
-import { of, Scheduler } from 'rxjs';
+import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
 import { CountryService } from '../../core/services/countries/country.service';
@@ -167,7 +166,6 @@ describe('Checkout Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: RegistrationService, useFactory: () => instance(registrationServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
-        { provide: Scheduler, useFactory: getTestScheduler },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
       ],

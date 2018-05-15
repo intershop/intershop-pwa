@@ -2,8 +2,18 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { ofRoute, RouteNavigation } from 'ngrx-router';
-import { EMPTY, of, Scheduler } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, of } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProduct } from '../products';
@@ -23,7 +33,6 @@ export class SearchEffects {
     private actions$: Actions,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private scheduler: Scheduler,
     private router: Router
   ) {}
 
@@ -66,8 +75,8 @@ export class SearchEffects {
   @Effect()
   suggestSearch$ = this.actions$.pipe(
     ofType(SearchActionTypes.SuggestSearch),
-    debounceTime(400, this.scheduler),
-    distinctUntilChanged(),
+    debounceTime(400),
+    distinctUntilKeyChanged('payload'),
     map((action: SuggestSearch) => action.payload),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
