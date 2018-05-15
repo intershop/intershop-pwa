@@ -12,7 +12,7 @@ import { Basket } from '../../../models/basket/basket.model';
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BasketService {
   constructor(private apiService: ApiService) {}
 

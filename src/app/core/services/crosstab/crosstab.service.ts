@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { CoreState } from '../../store/core.state';
 import { Storage } from '../../store/local-storage-sync/local-storage-sync.reducer';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CrosstabService {
   constructor(private store: Store<CoreState>) {}
 

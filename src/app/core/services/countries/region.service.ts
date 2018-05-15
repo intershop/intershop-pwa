@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Region } from '../../../models/region/region.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RegionService {
   regionDataUS$: Observable<Region[]>;
   regionDataBG$: Observable<Region[]>;

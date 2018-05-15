@@ -13,7 +13,7 @@ export const ICM_SERVER_SK = makeStateKey<string>('icmServer');
  * Service for retrieving injection properties {@link ICM_BASE_URL} and {@link REST_ENDPOINT}.
  * Do not use service directly, inject properties with supplied factory methods instead.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class StatePropertiesService {
   constructor(private transferState: TransferState, @Inject(PLATFORM_ID) private platformId: string) {}
 

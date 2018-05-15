@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Country } from '../../../models/country/country.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CountryService {
   countries$: Observable<Country[]>;
 

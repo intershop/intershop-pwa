@@ -12,7 +12,7 @@ import { Product, ProductHelper } from '../../../models/product/product.model';
 /**
  * The Products Service handles the interaction with the 'products' REST API.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProductsService {
   constructor(private apiService: ApiService) {}
 
