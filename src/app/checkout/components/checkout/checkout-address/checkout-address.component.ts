@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Basket } from '../../../../models/basket/basket.model';
-import { Customer } from '../../../../models/customer/customer.model';
+import { User } from '../../../../models/user/user.model';
 
 @Component({
   selector: 'ish-checkout-address',
@@ -9,5 +9,5 @@ import { Customer } from '../../../../models/customer/customer.model';
 })
 export class CheckoutAddressComponent {
   @Input() basket: Basket;
-  @Input() customer: Customer;
+  @Input() user: User;
 }
