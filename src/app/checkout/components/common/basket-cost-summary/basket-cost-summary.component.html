@@ -26,7 +26,7 @@
     </dd>
 
     <!-- Shipping promotions -->
-    <ng-container *ngIf="basket.totals.itemShippingRebatesTotal.value">
+    <ng-container *ngIf="basket.totals.itemShippingRebatesTotal && basket.totals.itemShippingRebatesTotal.value">
       <dt>{{ 'checkout.widget.promotion.discount' | translate }}</dt>
       <dd>
         {{ invert(basket.totals.itemShippingRebatesTotal) | ishPrice }}
@@ -55,7 +55,7 @@
     </ng-container>
 
     <!-- Payment costs -->
-    <ng-container *ngIf="!!basket.totals.paymentCostsTotal.value">
+    <ng-container *ngIf="basket.totals.paymentCostsTotal && basket.totals.paymentCostsTotal.value">
       <dt>{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
       <dd>
         {{ basket.totals.paymentCostsTotal | ishPrice}}
@@ -64,7 +64,7 @@
 
     <!-- Tax -->
     <!-- ToDo: display tax in dependence of price calculation preferences -->
-    <ng-container *ngIf="!!basket.totals.taxTotal.value">
+    <ng-container *ngIf="basket.totals.taxTotal && basket.totals.taxTotal.value">
       <dt>{{ 'checkout.tax.text' | translate }}</dt>
       <dd>
         {{ basket.totals.taxTotal | ishPrice}}
