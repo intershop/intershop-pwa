@@ -16,6 +16,9 @@
     </span>
   </p>
 
+  <!-- ship window message -->
+  <ish-product-shipment [product]="pli.product"></ish-product-shipment>
+
   <!-- Surcharges -->
   <div *ngFor="let surcharge of pli.itemSurcharges">
     {{surcharge.displayName}}

@@ -14,7 +14,6 @@ import { ProductListComponent } from './components/product/product-list/product-
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
-import { ProductShipmentComponent } from './components/product/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { ProductRowContainerComponent } from './containers/product-row/product-row.container';
@@ -34,7 +33,6 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductTileComponent,
     ProductPriceComponent,
     ProductInventoryComponent,
-    ProductShipmentComponent,
     ProductListToolbarComponent,
     ProductTileContainerComponent,
     ProductRowContainerComponent,
@@ -55,7 +53,6 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductTileComponent,
     ProductPriceComponent,
     ProductInventoryComponent,
-    ProductShipmentComponent,
     ProductListToolbarComponent,
     ProductTileContainerComponent,
     ProductRowContainerComponent,
