@@ -1,5 +1,23 @@
-<b> {{filterElement.name}}</b>
-<div *ngFor="let facet of filterElement.facets">
-  <span *ngIf="facet.selected">x</span>
-  <a *ngIf="!hasSelected || facet.selected" (click)="filter(getFilterName(facet.link.uri),getQueryParam(facet.link.uri))">{{facet.link.title}} </a>
+<div class="filter-group">
+
+  <h3>{{filterElement.name}}</h3>
+
+  <ul class="filter-list">
+    <ng-container *ngFor="let facet of filterElement.facets">
+      <li *ngIf="facet.selected" class="filter-item filter-selected">
+        <!--- TODO: add filter count -->
+        <span class="icon-selected"></span>{{facet.link.title}}
+        <!--- TODO: implement delete filter -->
+        <a class="filter-clear"><span class="glyphicon glyphicon-minus pull-right"></span></a>
+      </li>
+    </ng-container>
+  </ul>
+
+  <select name="SearchParameter" class="ws-submit-search-param form-control">
+    <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
+    <ng-container *ngFor="let facet of filterElement.facets">
+      <option *ngIf="!facet.selected" (click)="filter(getFilterName(facet.link.uri),getQueryParam(facet.link.uri))">{{facet.link.title}}</option>
+    </ng-container>
+  </select>
+
 </div>
