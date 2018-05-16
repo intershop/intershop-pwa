@@ -13,15 +13,13 @@ describe('Product Price Component', () => {
   let translate: TranslateService;
   let product: Product;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot(), CommonModule],
-        providers: [TranslateService, PricePipe],
-        declarations: [ProductPriceComponent, PricePipe],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), CommonModule],
+      providers: [TranslateService, PricePipe],
+      declarations: [ProductPriceComponent, PricePipe],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     translate = TestBed.get(TranslateService);

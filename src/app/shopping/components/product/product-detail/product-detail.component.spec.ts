@@ -10,25 +10,23 @@ describe('ProductDetailComponent', () => {
   let fixture: ComponentFixture<ProductDetailComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      const prod = { sku: 'sku' } as Product;
+  beforeEach(async(() => {
+    const prod = { sku: 'sku' } as Product;
 
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-        declarations: [ProductDetailComponent],
-        // TODO: prepare more detailed test
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(ProductDetailComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-          component.product = prod;
-        });
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [ProductDetailComponent],
+      // TODO: prepare more detailed test
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(ProductDetailComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+        component.product = prod;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

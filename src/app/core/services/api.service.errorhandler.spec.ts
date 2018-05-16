@@ -14,17 +14,15 @@ describe('ApiServiceErrorHandler dispatchCommunicationErrors Method', () => {
 
   let storeMock$: Store<CoreState>;
 
-  beforeEach(
-    async(() => {
-      storeMock$ = mock(Store);
-      TestBed.configureTestingModule({
-        declarations: [],
-        providers: [{ provide: Store, useFactory: () => instance(storeMock$) }, ApiServiceErrorHandler],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-      apiServiceErrorHandler = TestBed.get(ApiServiceErrorHandler);
-    })
-  );
+  beforeEach(async(() => {
+    storeMock$ = mock(Store);
+    TestBed.configureTestingModule({
+      declarations: [],
+      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }, ApiServiceErrorHandler],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+    apiServiceErrorHandler = TestBed.get(ApiServiceErrorHandler);
+  }));
 
   function dataProviderKnown() {
     return [

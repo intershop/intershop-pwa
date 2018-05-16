@@ -19,24 +19,22 @@ describe('Mini Basket Component', () => {
   let basket: Basket;
   let translate: TranslateService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          NoopAnimationsModule,
-          CollapseModule.forRoot(),
-          CommonModule,
-          RouterTestingModule,
-          TranslateModule.forRoot(),
-          PipesModule,
-        ],
-        declarations: [
-          MiniBasketComponent,
-          MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        NoopAnimationsModule,
+        CollapseModule.forRoot(),
+        CommonModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        PipesModule,
+      ],
+      declarations: [
+        MiniBasketComponent,
+        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MiniBasketComponent);

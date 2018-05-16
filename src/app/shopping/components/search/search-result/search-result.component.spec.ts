@@ -9,27 +9,25 @@ describe('Search Result Component', () => {
   let element: HTMLElement;
   let translate: TranslateService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [
-          SearchResultComponent,
-          MockComponent({
-            selector: 'ish-product-list-toolbar',
-            template: 'Products List Toolbar Component',
-            inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
-          }),
-          MockComponent({
-            selector: 'ish-product-list',
-            template: 'Products List Component',
-            inputs: ['products', 'viewType'],
-          }),
-        ],
-        providers: [TranslateService],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [
+        SearchResultComponent,
+        MockComponent({
+          selector: 'ish-product-list-toolbar',
+          template: 'Products List Toolbar Component',
+          inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
+        }),
+        MockComponent({
+          selector: 'ish-product-list',
+          template: 'Products List Component',
+          inputs: ['products', 'viewType'],
+        }),
+      ],
+      providers: [TranslateService],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchResultComponent);

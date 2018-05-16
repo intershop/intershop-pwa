@@ -9,32 +9,30 @@ describe('Select Country Component', () => {
   let fixture: ComponentFixture<SelectCountryComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SelectCountryComponent],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(SelectCountryComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const form = new FormGroup({
-            countryCode: new FormControl(),
-            state: new FormControl('Region1', [Validators.required]),
-          });
-          component.form = form;
-          component.countries = [
-            { countryCode: 'BG', name: 'Bulgaria' },
-            { countryCode: 'DE', name: 'Germany' },
-            { countryCode: 'FR', name: 'France' },
-          ];
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SelectCountryComponent],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SelectCountryComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const form = new FormGroup({
+          countryCode: new FormControl(),
+          state: new FormControl('Region1', [Validators.required]),
+        });
+        component.form = form;
+        component.countries = [
+          { countryCode: 'BG', name: 'Bulgaria' },
+          { countryCode: 'DE', name: 'Germany' },
+          { countryCode: 'FR', name: 'France' },
+        ];
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

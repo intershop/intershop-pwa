@@ -15,45 +15,43 @@ describe('Product Compare List Component', () => {
   let translate: TranslateService;
   let compareProduct1: Product;
   let compareProduct2: Product;
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, TranslateModule.forRoot(), StoreModule.forRoot({})],
-        declarations: [
-          ProductCompareListComponent,
-          MockComponent({
-            selector: 'ish-product-compare-paging',
-            template: 'Product Compare Paging Component',
-            inputs: ['itemsPerPage', 'currentPage', 'totalItems'],
-          }),
-          MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
-          MockComponent({
-            selector: 'ish-product-price',
-            template: 'Product Price Component',
-            inputs: ['product', 'showInformationalPrice'],
-          }),
-          MockComponent({
-            selector: 'ish-product-add-to-basket',
-            template: 'Product Add To Basket',
-            inputs: ['product'],
-          }),
-          MockComponent({
-            selector: 'ish-product-inventory',
-            template: 'Product Inventory Component',
-            inputs: ['product'],
-          }),
-          MockComponent({
-            selector: 'ish-product-attributes',
-            template: 'Product Attributes Component',
-            inputs: ['product'],
-          }),
-          AttributeToStringPipe,
-          PricePipe,
-        ],
-        providers: [PricePipe],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, TranslateModule.forRoot(), StoreModule.forRoot({})],
+      declarations: [
+        ProductCompareListComponent,
+        MockComponent({
+          selector: 'ish-product-compare-paging',
+          template: 'Product Compare Paging Component',
+          inputs: ['itemsPerPage', 'currentPage', 'totalItems'],
+        }),
+        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+        MockComponent({
+          selector: 'ish-product-price',
+          template: 'Product Price Component',
+          inputs: ['product', 'showInformationalPrice'],
+        }),
+        MockComponent({
+          selector: 'ish-product-add-to-basket',
+          template: 'Product Add To Basket',
+          inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-inventory',
+          template: 'Product Inventory Component',
+          inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-attributes',
+          template: 'Product Attributes Component',
+          inputs: ['product'],
+        }),
+        AttributeToStringPipe,
+        PricePipe,
+      ],
+      providers: [PricePipe],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductCompareListComponent);

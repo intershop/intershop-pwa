@@ -11,25 +11,23 @@ describe('Account Overview Component', () => {
   let translate: TranslateService;
   const user = { firstName: 'Patricia' } as User;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          AccountPageComponent,
-          MockComponent({
-            selector: 'ish-breadcrumb',
-            template: 'Breadcrumb Component',
-            inputs: ['account', 'trailText'],
-          }),
-          MockComponent({
-            selector: 'ish-account-navigation',
-            template: 'Account Naviation Component',
-          }),
-        ],
-        imports: [TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AccountPageComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['account', 'trailText'],
+        }),
+        MockComponent({
+          selector: 'ish-account-navigation',
+          template: 'Account Naviation Component',
+        }),
+      ],
+      imports: [TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountPageComponent);

@@ -12,30 +12,28 @@ describe('Header Navigation Container', () => {
   let element: HTMLElement;
   let storeMock$: Store<CoreState>;
 
-  beforeEach(
-    async(() => {
-      storeMock$ = mock(Store);
-      when(storeMock$.pipe(anything())).thenReturn(of({}));
+  beforeEach(async(() => {
+    storeMock$ = mock(Store);
+    when(storeMock$.pipe(anything())).thenReturn(of({}));
 
-      TestBed.configureTestingModule({
-        declarations: [
-          MockComponent({
-            selector: 'ish-header-navigation',
-            template: 'Header Navigation',
-            inputs: ['categories'],
-          }),
-          HeaderNavigationContainerComponent,
-        ],
-        providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(HeaderNavigationContainerComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-        });
+    TestBed.configureTestingModule({
+      declarations: [
+        MockComponent({
+          selector: 'ish-header-navigation',
+          template: 'Header Navigation',
+          inputs: ['categories'],
+        }),
+        HeaderNavigationContainerComponent,
+      ],
+      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(HeaderNavigationContainerComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

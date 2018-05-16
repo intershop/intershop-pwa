@@ -9,21 +9,19 @@ describe('CheckoutAddressComponent', () => {
   let fixture: ComponentFixture<CheckoutAddressComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          CheckoutAddressComponent,
-          MockComponent({
-            selector: 'ish-basket-cost-summary',
-            template: 'Basket Cost Summary Component',
-            inputs: ['basket'],
-          }),
-        ],
-        imports: [TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        CheckoutAddressComponent,
+        MockComponent({
+          selector: 'ish-basket-cost-summary',
+          template: 'Basket Cost Summary Component',
+          inputs: ['basket'],
+        }),
+      ],
+      imports: [TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutAddressComponent);

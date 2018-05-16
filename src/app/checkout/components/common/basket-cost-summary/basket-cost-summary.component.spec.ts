@@ -10,14 +10,12 @@ describe('BasketCostSummaryComponent', () => {
   let fixture: ComponentFixture<BasketCostSummaryComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), PipesModule],
-        declarations: [BasketCostSummaryComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), PipesModule],
+      declarations: [BasketCostSummaryComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketCostSummaryComponent);

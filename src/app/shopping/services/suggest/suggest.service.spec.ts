@@ -9,18 +9,14 @@ describe('Suggest Service', () => {
   let apiService: ApiService;
   let suggestService: SuggestService;
 
-  beforeEach(
-    async(() => {
-      apiService = mock(ApiService);
-      when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(
-        of<SuggestTerm[]>([])
-      );
-      TestBed.configureTestingModule({
-        providers: [SuggestService, { provide: ApiService, useFactory: () => instance(apiService) }],
-      });
-      suggestService = TestBed.get(SuggestService);
-    })
-  );
+  beforeEach(async(() => {
+    apiService = mock(ApiService);
+    when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(of<SuggestTerm[]>([]));
+    TestBed.configureTestingModule({
+      providers: [SuggestService, { provide: ApiService, useFactory: () => instance(apiService) }],
+    });
+    suggestService = TestBed.get(SuggestService);
+  }));
 
   it('should always delegate to api service when called', () => {
     verify(apiService.get(anything(), anything(), anything(), anything(), anything())).never();

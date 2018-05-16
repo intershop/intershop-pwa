@@ -10,21 +10,19 @@ describe('Error Page Component', () => {
   let component: ErrorPageComponent;
   let translate: TranslateService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [
-          ErrorPageComponent,
-          MockComponent({
-            selector: 'ish-search-box-container',
-            template: 'Search Box Container',
-            inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
-          }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [
+        ErrorPageComponent,
+        MockComponent({
+          selector: 'ish-search-box-container',
+          template: 'Search Box Container',
+          inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
+        }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ErrorPageComponent);

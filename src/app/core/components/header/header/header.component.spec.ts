@@ -10,36 +10,34 @@ describe('Header Component', () => {
   let element: HTMLElement;
   let component: HeaderComponent;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [CollapseModule, TranslateModule.forRoot(), RouterTestingModule],
-        declarations: [
-          HeaderComponent,
-          MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
-          MockComponent({
-            selector: 'ish-product-compare-status-container',
-            template: 'Product Compare Status Container',
-          }),
-          MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
-          MockComponent({
-            selector: 'ish-search-box-container',
-            template: 'Search Box Container',
-            inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
-          }),
-          MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
-          MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
-          MockComponent({ selector: 'ish-mobile-basket-container', template: 'Mobile Basket Container' }),
-        ],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(HeaderComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [CollapseModule, TranslateModule.forRoot(), RouterTestingModule],
+      declarations: [
+        HeaderComponent,
+        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
+        MockComponent({
+          selector: 'ish-product-compare-status-container',
+          template: 'Product Compare Status Container',
+        }),
+        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
+        MockComponent({
+          selector: 'ish-search-box-container',
+          template: 'Search Box Container',
+          inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
+        }),
+        MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
+        MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
+        MockComponent({ selector: 'ish-mobile-basket-container', template: 'Mobile Basket Container' }),
+      ],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(HeaderComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

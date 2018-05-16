@@ -11,34 +11,32 @@ describe('German Address Component', () => {
   let fixture: ComponentFixture<AddressFormFRComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [AddressFormFRComponent, InputComponent, SelectTitleComponent],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(AddressFormFRComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const addressForm = new FormGroup({
-            countryCode: new FormControl('FR'),
-            title: new FormControl(''),
-            firstName: new FormControl(''),
-            lastName: new FormControl(''),
-            addressLine1: new FormControl(''),
-            addressLine2: new FormControl(''),
-            postalCode: new FormControl(''),
-            city: new FormControl(''),
-          });
-          component.addressForm = addressForm;
-          component.titles = ['Mrs.'];
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [AddressFormFRComponent, InputComponent, SelectTitleComponent],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(AddressFormFRComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const addressForm = new FormGroup({
+          countryCode: new FormControl('FR'),
+          title: new FormControl(''),
+          firstName: new FormControl(''),
+          lastName: new FormControl(''),
+          addressLine1: new FormControl(''),
+          addressLine2: new FormControl(''),
+          postalCode: new FormControl(''),
+          city: new FormControl(''),
+        });
+        component.addressForm = addressForm;
+        component.titles = ['Mrs.'];
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

@@ -6,21 +6,19 @@ describe('Mobile Basket Component', () => {
   let fixture: ComponentFixture<MobileBasketComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [MobileBasketComponent],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(MobileBasketComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          component.itemCount = 0;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [MobileBasketComponent],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(MobileBasketComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        component.itemCount = 0;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
