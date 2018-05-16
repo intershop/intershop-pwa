@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
+import { MockComponent } from '../../../../utils/dev/mock.component';
 import { BasketItemDescriptionComponent } from './basket-item-description.component';
 
 describe('BasketItemDescriptionComponent', () => {
@@ -13,7 +14,14 @@ describe('BasketItemDescriptionComponent', () => {
     async(() => {
       TestBed.configureTestingModule({
         imports: [TranslateModule.forRoot(), PopoverModule.forRoot()],
-        declarations: [BasketItemDescriptionComponent],
+        declarations: [
+          BasketItemDescriptionComponent,
+          MockComponent({
+            selector: 'ish-product-shipment',
+            template: 'Product Shipment Component',
+            inputs: ['product'],
+          }),
+        ],
       }).compileComponents();
     })
   );
