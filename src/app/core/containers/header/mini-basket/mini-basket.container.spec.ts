@@ -9,27 +9,25 @@ describe('Mini Basket Container', () => {
   let fixture: ComponentFixture<MiniBasketContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          MockComponent({
-            selector: 'ish-mini-basket',
-            template: 'Mini Basket',
-            inputs: ['basket'],
-          }),
-          MiniBasketContainerComponent,
-        ],
-        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(MiniBasketContainerComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        MockComponent({
+          selector: 'ish-mini-basket',
+          template: 'Mini Basket',
+          inputs: ['basket'],
+        }),
+        MiniBasketContainerComponent,
+      ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(MiniBasketContainerComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

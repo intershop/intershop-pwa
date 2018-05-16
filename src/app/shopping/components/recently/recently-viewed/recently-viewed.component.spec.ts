@@ -9,22 +9,20 @@ describe('Recently Viewed Component', () => {
   let fixture: ComponentFixture<RecentlyViewedComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          RecentlyViewedComponent,
-          MockComponent({
-            selector: 'ish-product-tile-container',
-            template: 'Product Tile Container',
-            inputs: ['product'],
-          }),
-          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        ],
-        imports: [TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        RecentlyViewedComponent,
+        MockComponent({
+          selector: 'ish-product-tile-container',
+          template: 'Product Tile Container',
+          inputs: ['product'],
+        }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+      ],
+      imports: [TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RecentlyViewedComponent);

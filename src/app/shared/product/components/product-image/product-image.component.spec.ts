@@ -10,49 +10,47 @@ describe('Product Image Component', () => {
   let fixture: ComponentFixture<ProductImageComponent>;
   let product: Product;
   let translate: TranslateService;
-  beforeEach(
-    async(() => {
-      product = { sku: 'sku' } as Product;
-      product.name = 'Lenco';
-      product.images = [
-        {
-          name: 'front S',
-          type: 'Image',
-          imageActualHeight: 110,
-          imageActualWidth: 110,
-          viewID: 'front',
-          effectiveUrl: '/assets/product_img/a.jpg',
-          typeID: 'S',
-          primaryImage: true,
-        },
-        {
-          name: 'front S',
-          type: 'Image',
-          imageActualHeight: 110,
-          imageActualWidth: 110,
-          viewID: 'front',
-          effectiveUrl: '/assets/product_img/a.jpg',
-          typeID: 'S',
-          primaryImage: false,
-        },
-        {
-          name: 'front L',
-          type: 'Image',
-          imageActualHeight: 500,
-          imageActualWidth: 500,
-          viewID: 'front',
-          effectiveUrl: '/assets/product_img/a.jpg',
-          typeID: 'L',
-          primaryImage: true,
-        },
-      ];
-      TestBed.configureTestingModule({
-        declarations: [ProductImageComponent],
-        imports: [TranslateModule.forRoot()],
-        providers: [{ provide: ICM_BASE_URL, useValue: '' }, TranslateService],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    product = { sku: 'sku' } as Product;
+    product.name = 'Lenco';
+    product.images = [
+      {
+        name: 'front S',
+        type: 'Image',
+        imageActualHeight: 110,
+        imageActualWidth: 110,
+        viewID: 'front',
+        effectiveUrl: '/assets/product_img/a.jpg',
+        typeID: 'S',
+        primaryImage: true,
+      },
+      {
+        name: 'front S',
+        type: 'Image',
+        imageActualHeight: 110,
+        imageActualWidth: 110,
+        viewID: 'front',
+        effectiveUrl: '/assets/product_img/a.jpg',
+        typeID: 'S',
+        primaryImage: false,
+      },
+      {
+        name: 'front L',
+        type: 'Image',
+        imageActualHeight: 500,
+        imageActualWidth: 500,
+        viewID: 'front',
+        effectiveUrl: '/assets/product_img/a.jpg',
+        typeID: 'L',
+        primaryImage: true,
+      },
+    ];
+    TestBed.configureTestingModule({
+      declarations: [ProductImageComponent],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: ICM_BASE_URL, useValue: '' }, TranslateService],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     translate = TestBed.get(TranslateService);

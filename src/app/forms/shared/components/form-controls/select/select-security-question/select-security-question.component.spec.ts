@@ -9,26 +9,24 @@ describe('Select Security Question Component', () => {
   let fixture: ComponentFixture<SelectSecurityQuestionComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SelectSecurityQuestionComponent],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(SelectSecurityQuestionComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const form = new FormGroup({
-            securityQuestion: new FormControl(),
-          });
-          component.form = form;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SelectSecurityQuestionComponent],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SelectSecurityQuestionComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const form = new FormGroup({
+          securityQuestion: new FormControl(),
+        });
+        component.form = form;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

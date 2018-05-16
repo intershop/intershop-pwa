@@ -10,22 +10,20 @@ describe('SearchNoResultComponent', () => {
   let element: HTMLElement;
   let translate: TranslateService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [
-          SearchNoResultComponent,
-          MockComponent({
-            selector: 'ish-search-box-container',
-            template: 'Search Box Container',
-            inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
-          }),
-        ],
-        providers: [TranslateService],
-      });
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [
+        SearchNoResultComponent,
+        MockComponent({
+          selector: 'ish-search-box-container',
+          template: 'Search Box Container',
+          inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
+        }),
+      ],
+      providers: [TranslateService],
+    });
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchNoResultComponent);

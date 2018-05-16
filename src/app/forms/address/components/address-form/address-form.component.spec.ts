@@ -10,28 +10,26 @@ describe('Select Component', () => {
   let fixture: ComponentFixture<AddressFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [AddressFormComponent],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(AddressFormComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const form = new FormGroup({
-            countryCodeSwitch: new FormControl(),
-            phoneHome: new FormControl(),
-          });
-
-          component.parentForm = form;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [AddressFormComponent],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(AddressFormComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const form = new FormGroup({
+          countryCodeSwitch: new FormControl(),
+          phoneHome: new FormControl(),
+        });
+
+        component.parentForm = form;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

@@ -10,21 +10,19 @@ describe('Category Page Component', () => {
   let fixture: ComponentFixture<CategoryPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          CategoryPageComponent,
-          MockComponent({
-            selector: 'ish-category-navigation',
-            template: 'Category Navigation Component',
-            inputs: ['category', 'categoryPath', 'categoryNavigationLevel'],
-          }),
-          MockComponent({ selector: 'ish-category-list', template: 'Category List Component', inputs: ['categories'] }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        CategoryPageComponent,
+        MockComponent({
+          selector: 'ish-category-navigation',
+          template: 'Category Navigation Component',
+          inputs: ['category', 'categoryPath', 'categoryNavigationLevel'],
+        }),
+        MockComponent({ selector: 'ish-category-list', template: 'Category List Component', inputs: ['categories'] }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryPageComponent);

@@ -10,15 +10,13 @@ describe('Product Inventory Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        providers: [TranslateService],
-        declarations: [ProductInventoryComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      providers: [TranslateService],
+      declarations: [ProductInventoryComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductInventoryComponent);

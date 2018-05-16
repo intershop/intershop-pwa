@@ -9,15 +9,13 @@ describe('Category List Component', () => {
   let fixture: ComponentFixture<CategoryListComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
-        declarations: [CategoryListComponent],
-        providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      declarations: [CategoryListComponent],
+      providers: [{ provide: ICM_BASE_URL, useValue: 'http://www.example.org' }],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryListComponent);

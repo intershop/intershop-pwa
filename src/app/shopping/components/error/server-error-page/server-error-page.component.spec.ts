@@ -8,15 +8,13 @@ describe('Server Error Page Component', () => {
   let component: ServerErrorPageComponent;
   let translate: TranslateService;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [ServerErrorPageComponent],
-        providers: [TranslateService],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [ServerErrorPageComponent],
+      providers: [TranslateService],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ServerErrorPageComponent);

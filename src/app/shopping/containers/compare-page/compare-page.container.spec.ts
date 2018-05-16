@@ -14,23 +14,21 @@ describe('Compare Page Container', () => {
   let component: ComparePageContainerComponent;
   let storeMock$: Store<ShoppingState>;
 
-  beforeEach(
-    async(() => {
-      storeMock$ = mock(Store);
-      TestBed.configureTestingModule({
-        declarations: [
-          ComparePageContainerComponent,
-          MockComponent({
-            selector: 'ish-product-compare-list',
-            template: 'Product Compare List Component',
-            inputs: ['compareProducts'],
-          }),
-        ],
-        imports: [TranslateModule.forRoot()],
-        providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    storeMock$ = mock(Store);
+    TestBed.configureTestingModule({
+      declarations: [
+        ComparePageContainerComponent,
+        MockComponent({
+          selector: 'ish-product-compare-list',
+          template: 'Product Compare List Component',
+          inputs: ['compareProducts'],
+        }),
+      ],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComparePageContainerComponent);

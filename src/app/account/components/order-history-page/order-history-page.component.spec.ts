@@ -8,20 +8,18 @@ describe('Order History Page Component', () => {
   let fixture: ComponentFixture<OrderHistoryPageComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          OrderHistoryPageComponent,
-          MockComponent({
-            selector: 'ish-account-navigation',
-            template: 'Account Naviation Component',
-          }),
-        ],
-        imports: [TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        OrderHistoryPageComponent,
+        MockComponent({
+          selector: 'ish-account-navigation',
+          template: 'Account Naviation Component',
+        }),
+      ],
+      imports: [TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderHistoryPageComponent);

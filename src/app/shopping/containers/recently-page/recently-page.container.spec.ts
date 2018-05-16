@@ -10,23 +10,21 @@ describe('Recently Page Container', () => {
   let fixture: ComponentFixture<RecentlyPageContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          RecentlyPageContainerComponent,
-          MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trailText'] }),
-          MockComponent({
-            selector: 'ish-recently-viewed-all',
-            template: 'Recently Viewed All Component',
-            inputs: ['products'],
-          }),
-        ],
-        imports: [TranslateModule.forRoot()],
-        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        RecentlyPageContainerComponent,
+        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trailText'] }),
+        MockComponent({
+          selector: 'ish-recently-viewed-all',
+          template: 'Recently Viewed All Component',
+          inputs: ['products'],
+        }),
+      ],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RecentlyPageContainerComponent);

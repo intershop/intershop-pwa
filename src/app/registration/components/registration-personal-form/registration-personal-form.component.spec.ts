@@ -8,26 +8,24 @@ describe('RegistrationPersonalFormComponent', () => {
   let fixture: ComponentFixture<RegistrationPersonalFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [RegistrationPersonalFormComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(RegistrationPersonalFormComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const parentForm = new FormGroup({
-            preferredLanguage: new FormControl(),
-            birthday: new FormControl(),
-          });
-          component.parentForm = parentForm;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [RegistrationPersonalFormComponent],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(RegistrationPersonalFormComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const parentForm = new FormGroup({
+          preferredLanguage: new FormControl(),
+          birthday: new FormControl(),
+        });
+        component.parentForm = parentForm;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

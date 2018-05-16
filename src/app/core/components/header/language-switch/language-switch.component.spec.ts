@@ -14,23 +14,21 @@ describe('Language Switch Component', () => {
     { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },
   ] as Locale[];
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [BsDropdownModule.forRoot(), TranslateModule.forRoot()],
-        declarations: [LanguageSwitchComponent],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(LanguageSwitchComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          component.availableLocales = locales;
-          component.locale = locales[1];
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [BsDropdownModule.forRoot(), TranslateModule.forRoot()],
+      declarations: [LanguageSwitchComponent],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(LanguageSwitchComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        component.availableLocales = locales;
+        component.locale = locales[1];
+      });
+  }));
 
   function findLang(value: string) {
     return locales.find(l => l.value === value);

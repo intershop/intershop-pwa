@@ -10,31 +10,29 @@ describe('Select Language Component', () => {
   let fixture: ComponentFixture<SelectLanguageComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SelectLanguageComponent],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(SelectLanguageComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const form = new FormGroup({
-            preferredLanguage: new FormControl('en_US'),
-          });
-          component.form = form;
-
-          component.languages = [
-            { lang: 'en_US', value: 'en', displayName: 'English' },
-            { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
-          ] as Locale[];
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SelectLanguageComponent],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SelectLanguageComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const form = new FormGroup({
+          preferredLanguage: new FormControl('en_US'),
+        });
+        component.form = form;
+
+        component.languages = [
+          { lang: 'en_US', value: 'en', displayName: 'English' },
+          { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
+        ] as Locale[];
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

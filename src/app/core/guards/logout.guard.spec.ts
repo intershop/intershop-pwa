@@ -11,16 +11,14 @@ describe('LogoutGuard', () => {
     let logoutGuard: LogoutGuard;
     let storeMock$: Store<CoreState>;
 
-    beforeEach(
-      async(() => {
-        storeMock$ = mock(Store);
+    beforeEach(async(() => {
+      storeMock$ = mock(Store);
 
-        TestBed.configureTestingModule({
-          imports: [RouterTestingModule],
-          providers: [LogoutGuard, { provide: Store, useFactory: () => instance(storeMock$) }],
-        }).compileComponents();
-      })
-    );
+      TestBed.configureTestingModule({
+        imports: [RouterTestingModule],
+        providers: [LogoutGuard, { provide: Store, useFactory: () => instance(storeMock$) }],
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       logoutGuard = TestBed.get(LogoutGuard);
