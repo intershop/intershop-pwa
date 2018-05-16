@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
 import { Basket } from '../../../../models/basket/basket.model';
@@ -20,7 +21,7 @@ export class ShoppingBasketComponent implements OnChanges {
   submitted = false;
   generateProductRoute = ProductHelper.generateProductRoute;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
 
   /**
    * If the basket changes a new form is created for basket quantities update.
@@ -66,7 +67,6 @@ export class ShoppingBasketComponent implements OnChanges {
     for (const item of this.form.value.items) {
       item.quantity = parseInt(item.quantity, 10);
     }
-
     this.updateItems.emit(this.form.value.items);
   }
 
@@ -75,5 +75,13 @@ export class ShoppingBasketComponent implements OnChanges {
    */
   onDeleteItem(itemId) {
     this.deleteItem.emit(itemId);
+  }
+
+  /**
+   * checkout button leads to checkout address page
+   */
+  checkout() {
+    // ToDo: routing should be handled in another way, see #ISREST-317
+    this.router.navigate(['/checkout/address']);
   }
 }

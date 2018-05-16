@@ -118,9 +118,12 @@
         <div class="cost-summary">
           <!-- Cost Summary Component -->
           <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
-        </div>
 
-        <!-- Checkout Button -->
+          <!-- ToDo: ISREST-275: disable button if basket max value is exceeded -->
+          <button type="submit" class="btn btn-lg btn-block btn-primary" (click)="checkout()">
+              {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
+            </button>
+        </div>
       </div>
     </div>
   </form>
