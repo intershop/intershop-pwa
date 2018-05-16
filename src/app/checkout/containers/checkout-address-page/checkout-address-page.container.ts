@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
 import { Basket } from '../../../models/basket/basket.model';
-import { Customer } from '../../../models/customer/customer.model';
+import { User } from '../../../models/user/user.model';
 import { getBasketLoading, getCurrentBasket } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
@@ -14,7 +14,7 @@ import { CheckoutState } from '../../store/checkout.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressPageContainerComponent implements OnInit {
-  customer$: Observable<Customer>;
+  user$: Observable<User>;
   basket$: Observable<Basket>;
   basketLoading$: Observable<boolean>;
 
@@ -24,6 +24,6 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.basketLoading$ = this.store.pipe(select(getBasketLoading));
 
-    this.customer$ = this.coreStore.pipe(select(getLoggedInUser));
+    this.user$ = this.coreStore.pipe(select(getLoggedInUser));
   }
 }

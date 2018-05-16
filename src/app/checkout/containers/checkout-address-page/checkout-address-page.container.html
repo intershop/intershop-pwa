@@ -3,7 +3,7 @@
 
   <ish-checkout-address
     [basket]="basket$ | async"
-    [customer]="customer$ | async"
+    [user]="user$ | async"
   ></ish-checkout-address>
 
   <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
