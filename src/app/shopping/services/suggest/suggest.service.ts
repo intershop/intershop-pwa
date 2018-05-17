@@ -1,13 +1,13 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ApiService } from '../../../core/services/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 /**
  * The Suggest Service handles the interaction with the 'suggest' REST API.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SuggestService {
   constructor(private apiService: ApiService) {}
 

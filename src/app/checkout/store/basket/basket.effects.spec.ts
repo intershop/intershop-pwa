@@ -3,9 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.actions';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
@@ -55,7 +53,7 @@ describe('BasketEffects', () => {
 
     when(basketServiceMock.getBasket(anyString())).thenCall((id: string) => {
       if (id === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of({ id: id } as Basket);
       }
@@ -67,7 +65,7 @@ describe('BasketEffects', () => {
 
     when(basketServiceMock.getBasketItems(anyString())).thenCall((id: string) => {
       if (id === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of([]);
       }
@@ -76,7 +74,7 @@ describe('BasketEffects', () => {
     when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenCall(
       (items: { sku: string; quantity: number }[], basketId: string) => {
         if (items[0].sku === 'invalid') {
-          return _throw({ message: 'invalid' } as HttpErrorResponse);
+          return throwError({ message: 'invalid' } as HttpErrorResponse);
         } else {
           return of({});
         }
@@ -86,7 +84,7 @@ describe('BasketEffects', () => {
     when(basketServiceMock.updateBasketItem(anyString(), anyNumber(), anyString())).thenCall(
       (itemId: string, quantity: Number, basketId: string) => {
         if (itemId === 'invalid') {
-          return _throw({ message: 'invalid' } as HttpErrorResponse);
+          return throwError({ message: 'invalid' } as HttpErrorResponse);
         } else {
           return of({});
         }
@@ -95,7 +93,7 @@ describe('BasketEffects', () => {
 
     when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenCall((itemId: string, basketId: string) => {
       if (itemId === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of({});
       }

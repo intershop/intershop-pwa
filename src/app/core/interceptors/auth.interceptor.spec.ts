@@ -1,8 +1,7 @@
 // tslint:disable:no-any
 import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { _setToken, AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor Service', () => {

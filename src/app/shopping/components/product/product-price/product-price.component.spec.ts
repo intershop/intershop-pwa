@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
@@ -13,15 +13,13 @@ describe('Product Price Component', () => {
   let translate: TranslateService;
   let product: Product;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot(), CommonModule],
-        providers: [TranslateService, PricePipe, CurrencyPipe],
-        declarations: [ProductPriceComponent, PricePipe],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), CommonModule],
+      providers: [TranslateService, PricePipe],
+      declarations: [ProductPriceComponent, PricePipe],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     translate = TestBed.get(TranslateService);

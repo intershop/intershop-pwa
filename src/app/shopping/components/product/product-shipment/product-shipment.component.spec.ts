@@ -13,15 +13,13 @@ describe('Product Shipment Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot(), ModalModule.forRoot()],
-        providers: [TranslateService],
-        declarations: [ProductShipmentComponent, ModalDialogComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), ModalModule.forRoot()],
+      providers: [TranslateService],
+      declarations: [ProductShipmentComponent, ModalDialogComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductShipmentComponent);

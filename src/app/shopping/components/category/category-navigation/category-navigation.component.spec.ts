@@ -10,26 +10,24 @@ describe('Category Navigation Component', () => {
   let fixture: ComponentFixture<CategoryNavigationComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
-        declarations: [CategoryNavigationComponent],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(CategoryNavigationComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const tree = categoryTree([
-            { uniqueId: 'A', categoryPath: ['A'] },
-            { uniqueId: 'A.1', categoryPath: ['A', 'A.1'] },
-          ] as Category[]);
-          component.category = createCategoryView(tree, 'A');
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      declarations: [CategoryNavigationComponent],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(CategoryNavigationComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const tree = categoryTree([
+          { uniqueId: 'A', categoryPath: ['A'] },
+          { uniqueId: 'A.1', categoryPath: ['A', 'A.1'] },
+        ] as Category[]);
+        component.category = createCategoryView(tree, 'A');
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

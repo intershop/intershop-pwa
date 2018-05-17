@@ -11,28 +11,26 @@ describe('Checkout Address Page Container', () => {
   let fixture: ComponentFixture<CheckoutAddressPageContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          CheckoutAddressPageContainerComponent,
-          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-          MockComponent({
-            selector: 'ish-checkout-address',
-            template: 'Checkout Address Component',
-            inputs: ['basket', 'user'],
-          }),
-        ],
-        imports: [
-          TranslateModule.forRoot(),
-          StoreModule.forRoot({
-            checkout: combineReducers(checkoutReducers),
-          }),
-        ],
-        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        CheckoutAddressPageContainerComponent,
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({
+          selector: 'ish-checkout-address',
+          template: 'Checkout Address Component',
+          inputs: ['basket', 'user'],
+        }),
+      ],
+      imports: [
+        TranslateModule.forRoot(),
+        StoreModule.forRoot({
+          checkout: combineReducers(checkoutReducers),
+        }),
+      ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutAddressPageContainerComponent);

@@ -1,29 +1,24 @@
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { formatDate, formatNumber } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Attribute } from '../../models/attribute/attribute.model';
 import { Price } from '../../models/price/price.model';
-import { PricePipe } from './price.pipe';
+import { formatPrice } from './price.pipe';
 
 @Pipe({ name: 'ishAttribute' })
 export class AttributeToStringPipe implements PipeTransform {
-  constructor(
-    private translateService: TranslateService,
-    private datePipe: DatePipe,
-    private decimalPipe: DecimalPipe,
-    private pricePipe: PricePipe
-  ) {}
+  constructor(private translateService: TranslateService) {}
 
   private toDate(val): string {
-    return this.datePipe.transform(val, 'shortDate', undefined, this.translateService.currentLang);
+    return formatDate(val, 'shortDate', this.translateService.currentLang);
   }
 
   private toDecimal(val): string {
-    return this.decimalPipe.transform(val, undefined, this.translateService.currentLang);
+    return formatNumber(val, this.translateService.currentLang);
   }
 
   private toCurrency(price: Price): string {
-    return this.pricePipe.transform(price);
+    return formatPrice(price, this.translateService.currentLang);
   }
 
   transform(data: Attribute, valuesSeparator: string = ', '): string {

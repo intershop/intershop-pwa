@@ -5,12 +5,12 @@ import { LogoutGuard } from '../core/guards/logout.guard';
 const routes: Routes = [
   {
     path: 'register',
-    loadChildren: 'app/registration/containers/registration-page/registration-page.module#RegistrationPageModule',
+    loadChildren: './containers/registration-page/registration-page.module#RegistrationPageModule',
   },
-  { path: 'login', loadChildren: 'app/registration/containers/login-page/login-page.module#LoginPageModule' },
+  { path: 'login', loadChildren: './containers/login-page/login-page.module#LoginPageModule' },
   {
     path: 'logout',
-    loadChildren: 'app/shopping/containers/home-page/home-page.module#HomePageModule',
+    loadChildren: '../shopping/containers/home-page/home-page.module#HomePageModule',
     canActivate: [LogoutGuard],
   },
 ];

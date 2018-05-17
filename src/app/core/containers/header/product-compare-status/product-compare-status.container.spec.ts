@@ -9,27 +9,25 @@ describe('Product Compare Container', () => {
   let fixture: ComponentFixture<ProductCompareStatusContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          MockComponent({
-            selector: 'ish-product-compare-status',
-            template: 'Compare Status',
-            inputs: ['productCompareCount'],
-          }),
-          ProductCompareStatusContainerComponent,
-        ],
-        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(ProductCompareStatusContainerComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        MockComponent({
+          selector: 'ish-product-compare-status',
+          template: 'Compare Status',
+          inputs: ['productCompareCount'],
+        }),
+        ProductCompareStatusContainerComponent,
+      ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(ProductCompareStatusContainerComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

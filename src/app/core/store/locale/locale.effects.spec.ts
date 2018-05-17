@@ -4,7 +4,7 @@ import { Action, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';

@@ -10,14 +10,12 @@ describe('SubCategory Navigation Component', () => {
   let component: SubCategoryNavigationComponent;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
-        declarations: [SubCategoryNavigationComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      declarations: [SubCategoryNavigationComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubCategoryNavigationComponent);

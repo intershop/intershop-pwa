@@ -7,16 +7,14 @@ describe('Home Page Container', () => {
   let fixture: ComponentFixture<HomePageContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          MockComponent({ selector: 'ish-home-page', template: 'Home Page Component' }),
-          HomePageContainerComponent,
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        MockComponent({ selector: 'ish-home-page', template: 'Home Page Component' }),
+        HomePageContainerComponent,
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomePageContainerComponent);

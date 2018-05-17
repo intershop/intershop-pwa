@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';

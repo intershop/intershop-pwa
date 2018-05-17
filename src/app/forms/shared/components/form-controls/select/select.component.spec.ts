@@ -10,35 +10,33 @@ describe('Select Component', () => {
   let fixture: ComponentFixture<SelectComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SelectComponent],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(SelectComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const form = new FormGroup({
-            simpleField: new FormControl(),
-            requiredField: new FormControl('', [Validators.required]),
-          });
-          const options: SelectOption[] = [
-            { label: 'optionLabel', value: 'optionValue' },
-            { label: 'optionLabel2', value: 'optionValue2' },
-          ];
-
-          component.label = 'label';
-          component.form = form;
-          component.controlName = 'simpleField';
-          component.options = options;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SelectComponent],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SelectComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const form = new FormGroup({
+          simpleField: new FormControl(),
+          requiredField: new FormControl('', [Validators.required]),
+        });
+        const options: SelectOption[] = [
+          { label: 'optionLabel', value: 'optionValue' },
+          { label: 'optionLabel2', value: 'optionValue2' },
+        ];
+
+        component.label = 'label';
+        component.form = form;
+        component.controlName = 'simpleField';
+        component.options = options;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

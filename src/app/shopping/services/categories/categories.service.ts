@@ -1,7 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api.service';
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
@@ -12,7 +11,7 @@ import { CategoryHelper } from '../../../models/category/category.model';
 /**
  * The Categories Service handles the interaction with the 'categories' REST API.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CategoriesService {
   constructor(private apiService: ApiService) {}
 
@@ -23,7 +22,7 @@ export class CategoriesService {
    */
   getCategory(categoryUniqueId: string): Observable<CategoryTree> {
     if (!categoryUniqueId) {
-      return _throw('getCategory() called without categoryUniqueId');
+      return throwError('getCategory() called without categoryUniqueId');
     }
 
     return this.apiService

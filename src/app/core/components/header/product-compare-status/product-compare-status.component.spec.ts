@@ -10,21 +10,19 @@ describe('Product Compare Status Component', () => {
   let component: ProductCompareStatusComponent;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([{ path: 'compare', component: ProductCompareStatusComponent }]),
-          TranslateModule.forRoot(),
-        ],
-        declarations: [ProductCompareStatusComponent],
-      }).compileComponents();
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([{ path: 'compare', component: ProductCompareStatusComponent }]),
+        TranslateModule.forRoot(),
+      ],
+      declarations: [ProductCompareStatusComponent],
+    }).compileComponents();
 
-      fixture = TestBed.createComponent(ProductCompareStatusComponent);
-      component = fixture.componentInstance;
-      element = fixture.nativeElement;
-    })
-  );
+    fixture = TestBed.createComponent(ProductCompareStatusComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();
@@ -32,16 +30,13 @@ describe('Product Compare Status Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it(
-    'should navigate to compare page when compare icon is clicked',
-    async(
-      inject([Router, Location], (router: Router, location: Location) => {
-        fixture.detectChanges();
-        element.querySelector('a').click();
-        fixture.whenStable().then(() => {
-          expect(location.path()).toContain('compare');
-        });
-      })
-    )
-  );
+  it('should navigate to compare page when compare icon is clicked', async(
+    inject([Router, Location], (router: Router, location: Location) => {
+      fixture.detectChanges();
+      element.querySelector('a').click();
+      fixture.whenStable().then(() => {
+        expect(location.path()).toContain('compare');
+      });
+    })
+  ));
 });

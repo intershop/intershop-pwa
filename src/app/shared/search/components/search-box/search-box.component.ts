@@ -11,8 +11,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 
 /**

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
@@ -12,25 +12,23 @@ describe('Compare Page Container', () => {
   let fixture: ComponentFixture<ComparePageContainerComponent>;
   let element: HTMLElement;
   let component: ComparePageContainerComponent;
-  let storeMock: Store<ShoppingState>;
+  let storeMock$: Store<ShoppingState>;
 
-  beforeEach(
-    async(() => {
-      storeMock = mock(Store);
-      TestBed.configureTestingModule({
-        declarations: [
-          ComparePageContainerComponent,
-          MockComponent({
-            selector: 'ish-product-compare-list',
-            template: 'Product Compare List Component',
-            inputs: ['compareProducts'],
-          }),
-        ],
-        imports: [TranslateModule.forRoot()],
-        providers: [{ provide: Store, useFactory: () => instance(storeMock) }],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    storeMock$ = mock(Store);
+    TestBed.configureTestingModule({
+      declarations: [
+        ComparePageContainerComponent,
+        MockComponent({
+          selector: 'ish-product-compare-list',
+          template: 'Product Compare List Component',
+          inputs: ['compareProducts'],
+        }),
+      ],
+      imports: [TranslateModule.forRoot()],
+      providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComparePageContainerComponent);
@@ -45,7 +43,7 @@ describe('Compare Page Container', () => {
   });
 
   it('should not display compare product list when no compare products available', () => {
-    when(storeMock.pipe(anything())).thenCall(selector => {
+    when(storeMock$.pipe(anything())).thenCall(selector => {
       return selector(
         of({
           shopping: {
@@ -61,7 +59,7 @@ describe('Compare Page Container', () => {
   });
 
   it('should display compare product list when compare products available', () => {
-    when(storeMock.pipe(anything())).thenCall(selector => {
+    when(storeMock$.pipe(anything())).thenCall(selector => {
       return selector(
         of({
           shopping: {
@@ -84,6 +82,6 @@ describe('Compare Page Container', () => {
 
   it('should dispatch an action if removeProductCompare is called', () => {
     component.removeFromCompare('111');
-    verify(storeMock.dispatch(anything())).called();
+    verify(storeMock$.dispatch(anything())).called();
   });
 });

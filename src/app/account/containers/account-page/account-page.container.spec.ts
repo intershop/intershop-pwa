@@ -10,27 +10,25 @@ describe('Account Page Container', () => {
   let component: AccountPageContainerComponent;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          AccountPageContainerComponent,
-          MockComponent({
-            selector: 'ish-breadcrumb',
-            template: 'Breadcrumb Component',
-            inputs: ['account', 'trailText'],
-          }),
-          MockComponent({
-            selector: 'ish-account-page',
-            template: 'Account Page Component',
-            inputs: ['user'],
-          }),
-        ],
-        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-        imports: [TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AccountPageContainerComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['account', 'trailText'],
+        }),
+        MockComponent({
+          selector: 'ish-account-page',
+          template: 'Account Page Component',
+          inputs: ['user'],
+        }),
+      ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
+      imports: [TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AccountPageContainerComponent);

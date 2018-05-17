@@ -3,8 +3,7 @@ import { isPlatformServer } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { REST_ENDPOINT } from '../services/state-transfer/factories';
 

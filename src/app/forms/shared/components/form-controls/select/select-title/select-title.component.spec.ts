@@ -9,28 +9,26 @@ describe('Select Title Component', () => {
   let fixture: ComponentFixture<SelectTitleComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SelectTitleComponent],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(SelectTitleComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const form = new FormGroup({
-            countryCode: new FormControl('BG'),
-            title: new FormControl(),
-          });
-          component.form = form;
-          component.titles = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SelectTitleComponent],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SelectTitleComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const form = new FormGroup({
+          countryCode: new FormControl('BG'),
+          title: new FormControl(),
+        });
+        component.form = form;
+        component.titles = ['account.salutation.ms.text', 'account.salutation.mr.text', 'account.salutation.dr.text'];
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

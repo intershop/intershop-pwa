@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 import { getSearchTerm, getSuggestSearchResults, SuggestSearch } from '../../../../shopping/store/search';
 import { ShoppingState } from '../../../../shopping/store/shopping.state';

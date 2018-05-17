@@ -10,25 +10,23 @@ describe('Product Tile Container', () => {
   let fixture: ComponentFixture<ProductTileContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          StoreModule.forRoot({
-            shopping: combineReducers(shoppingReducers),
-          }),
-        ],
-        declarations: [
-          ProductTileContainerComponent,
-          MockComponent({
-            selector: 'ish-product-tile',
-            template: 'Product Tile Component',
-            inputs: ['product', 'category', 'isInCompareList'],
-          }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        StoreModule.forRoot({
+          shopping: combineReducers(shoppingReducers),
+        }),
+      ],
+      declarations: [
+        ProductTileContainerComponent,
+        MockComponent({
+          selector: 'ish-product-tile',
+          template: 'Product Tile Component',
+          inputs: ['product', 'category', 'isInCompareList'],
+        }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductTileContainerComponent);

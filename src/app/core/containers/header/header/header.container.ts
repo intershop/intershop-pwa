@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CoreState } from '../../../store/core.state';
 import { ErrorState } from '../../../store/error/error.reducer';
 import { getErrorState } from '../../../store/error/error.selectors';

@@ -9,27 +9,25 @@ describe('Mobile Basket Container', () => {
   let fixture: ComponentFixture<MobileBasketContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          MockComponent({
-            selector: 'ish-mobile-basket',
-            template: 'Mobile Basket',
-            inputs: ['basket'],
-          }),
-          MobileBasketContainerComponent,
-        ],
-        providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(MobileBasketContainerComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        MockComponent({
+          selector: 'ish-mobile-basket',
+          template: 'Mobile Basket',
+          inputs: ['basket'],
+        }),
+        MobileBasketContainerComponent,
+      ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(MobileBasketContainerComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

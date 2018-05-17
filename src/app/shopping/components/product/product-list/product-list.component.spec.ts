@@ -8,26 +8,24 @@ describe('Product List Component', () => {
   let fixture: ComponentFixture<ProductListComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          ProductListComponent,
-          MockComponent({
-            selector: 'ish-product-tile-container',
-            template: 'Product Tile Container',
-            inputs: ['product', 'category'],
-          }),
-          MockComponent({
-            selector: 'ish-product-row-container',
-            template: 'Product Row Container',
-            inputs: ['product', 'category'],
-          }),
-          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ProductListComponent,
+        MockComponent({
+          selector: 'ish-product-tile-container',
+          template: 'Product Tile Container',
+          inputs: ['product', 'category'],
+        }),
+        MockComponent({
+          selector: 'ish-product-row-container',
+          template: 'Product Row Container',
+          inputs: ['product', 'category'],
+        }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductListComponent);

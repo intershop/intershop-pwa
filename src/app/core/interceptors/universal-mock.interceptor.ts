@@ -4,8 +4,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer } from 'rxjs';
 
 /**
  * answers requests to mock-data with file-content in universal mode

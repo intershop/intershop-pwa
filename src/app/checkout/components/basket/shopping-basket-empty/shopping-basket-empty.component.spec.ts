@@ -7,14 +7,12 @@ describe('Shopping Basket Empty Component', () => {
   let fixture: ComponentFixture<ShoppingBasketEmptyComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [ShoppingBasketEmptyComponent],
-        imports: [TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ShoppingBasketEmptyComponent],
+      imports: [TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ShoppingBasketEmptyComponent);

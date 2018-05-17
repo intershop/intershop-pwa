@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Product } from '../../../models/product/product.model';
 import { getProducts, LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';

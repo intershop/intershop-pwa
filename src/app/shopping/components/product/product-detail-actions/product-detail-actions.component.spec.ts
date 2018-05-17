@@ -14,19 +14,17 @@ describe('Product Detail Actions Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [CommonModule, TranslateModule.forRoot()],
-        providers: [
-          TranslateService,
-          { provide: Location, useFactory: () => instance(mock(Location)) },
-          { provide: ICM_BASE_URL, useValue: 'http://example.org' },
-        ],
-        declarations: [ProductDetailActionsComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [CommonModule, TranslateModule.forRoot()],
+      providers: [
+        TranslateService,
+        { provide: Location, useFactory: () => instance(mock(Location)) },
+        { provide: ICM_BASE_URL, useValue: 'http://example.org' },
+      ],
+      declarations: [ProductDetailActionsComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductDetailActionsComponent);

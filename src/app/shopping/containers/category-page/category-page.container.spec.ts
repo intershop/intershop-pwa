@@ -15,36 +15,34 @@ describe('Category Page Container', () => {
   let element: HTMLElement;
   let store$: Store<CoreState>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          StoreModule.forRoot({
-            shopping: combineReducers(shoppingReducers),
-          }),
-        ],
-        declarations: [
-          CategoryPageContainerComponent,
-          MockComponent({
-            selector: 'ish-breadcrumb',
-            template: 'Breadcrumb Component',
-            inputs: ['category'],
-          }),
-          MockComponent({
-            selector: 'ish-category-page',
-            template: 'Category Page Component',
-            inputs: ['category'],
-          }),
-          MockComponent({
-            selector: 'ish-family-page',
-            template: 'Family Page Component',
-            inputs: ['category', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
-          }),
-          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        StoreModule.forRoot({
+          shopping: combineReducers(shoppingReducers),
+        }),
+      ],
+      declarations: [
+        CategoryPageContainerComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['category'],
+        }),
+        MockComponent({
+          selector: 'ish-category-page',
+          template: 'Category Page Component',
+          inputs: ['category'],
+        }),
+        MockComponent({
+          selector: 'ish-family-page',
+          template: 'Family Page Component',
+          inputs: ['category', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
+        }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategoryPageContainerComponent);
