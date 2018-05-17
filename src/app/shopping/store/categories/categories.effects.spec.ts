@@ -182,13 +182,11 @@ describe('Categories Effects', () => {
         } as Category;
       });
 
-      it('should trigger multiple LoadCategory if they dont exist', () => {
+      it('should trigger only one LoadCategory if it doesnt exist', () => {
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
 
-        const completionA = new fromActions.LoadCategory('123');
-        const completionB = new fromActions.LoadCategory('123.456');
-        const completionC = new fromActions.LoadCategory('123.456.789');
-        const expected$ = cold('(abc)', { a: completionA, b: completionB, c: completionC });
+        const completion = new fromActions.LoadCategory('123.456.789');
+        const expected$ = cold('a', { a: completion });
         expect(effects.selectedCategory$).toBeObservable(expected$);
       });
 
@@ -197,10 +195,7 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
 
-        const completionB = new fromActions.LoadCategory('123');
-        const completionC = new fromActions.LoadCategory('123.456');
-        const expected$ = cold('(bc)', { b: completionB, c: completionC });
-        expect(effects.selectedCategory$).toBeObservable(expected$);
+        expect(effects.selectedCategory$).toBeObservable(cold('-----'));
       });
     });
   });
