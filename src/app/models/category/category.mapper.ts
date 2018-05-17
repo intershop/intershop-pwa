@@ -23,6 +23,40 @@ export class CategoryMapper {
   }
 
   /**
+   * Utility Method:
+   * Creates Category stubs from the category path (excluding the last element)
+   */
+  static categoriesFromCategoryPath(path: CategoryPathElement[]): CategoryTree {
+    if (!path || !path.length) {
+      return CategoryTreeHelper.empty();
+    }
+
+    let uniqueId;
+    const newCategoryPath = [];
+
+    const treeFromPath = path
+      // remove the last
+      .filter((val, idx, arr) => idx !== arr.length - 1)
+      .map(pathElement => {
+        // accumulate and construct uniqueId and categoryPath
+        uniqueId = !uniqueId ? pathElement.id : uniqueId + CategoryHelper.uniqueIdSeparator + pathElement.id;
+        newCategoryPath.push(uniqueId);
+
+        // yield category stub
+        return {
+          uniqueId,
+          name: pathElement.name,
+          completenessLevel: 0,
+          categoryPath: [...newCategoryPath],
+        };
+      })
+      // construct a tree from it
+      .reduce((tree, cat: Category) => CategoryTreeHelper.add(tree, cat), CategoryTreeHelper.empty());
+
+    return treeFromPath;
+  }
+
+  /**
    * Compute completeness level of incoming raw data.
    */
   static computeCompleteness(categoryData: CategoryData): number {
@@ -92,9 +126,16 @@ export class CategoryMapper {
       const rootCat = CategoryMapper.fromDataSingle(categoryData);
       const tree = CategoryTreeHelper.single(rootCat);
 
+      // create tree from categoryPath stubs
+      const categoryPathTree = CategoryMapper.categoriesFromCategoryPath(categoryData.categoryPath);
+
       // merge sub categories onto current tree
       const treeWithSubCategories = CategoryTreeHelper.merge(tree, subTrees);
-      return treeWithSubCategories;
+
+      // merge categoryPath stubs onto current tree
+      const treeWithEverything = CategoryTreeHelper.merge(treeWithSubCategories, categoryPathTree);
+
+      return treeWithEverything;
     } else {
       throw new Error(`'categoryData' is required`);
     }
