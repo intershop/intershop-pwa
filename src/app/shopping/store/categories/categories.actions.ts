@@ -4,6 +4,7 @@ import { CategoryTree } from '../../../models/category-tree/category-tree.model'
 
 export enum CategoriesActionTypes {
   SelectCategory = '[Shopping] Select Category',
+  SelectedCategoryAvailable = '[Shopping] Selected Category Available',
   LoadTopLevelCategories = '[Shopping] Load top level categories',
   LoadTopLevelCategoriesFail = '[Shopping] Load top level categories fail',
   LoadTopLevelCategoriesSuccess = '[Shopping] Load top level categories success',
@@ -15,6 +16,11 @@ export enum CategoriesActionTypes {
 
 export class SelectCategory implements Action {
   readonly type = CategoriesActionTypes.SelectCategory;
+  constructor(public payload: string) {}
+}
+
+export class SelectedCategoryAvailable implements Action {
+  readonly type = CategoriesActionTypes.SelectedCategoryAvailable;
   constructor(public payload: string) {}
 }
 

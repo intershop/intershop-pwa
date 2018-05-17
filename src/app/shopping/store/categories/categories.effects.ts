@@ -54,6 +54,20 @@ export class CategoriesEffects {
   );
 
   @Effect()
+  selectedCategoryAvailable$ = combineLatest(
+    this.actions$.pipe(
+      ofType<categoriesActions.SelectCategory>(categoriesActions.CategoriesActionTypes.SelectCategory),
+      map(action => action.payload),
+      filter(x => !!x)
+    ),
+    this.store.pipe(select(categoriesSelectors.getSelectedCategory), filter(CategoryHelper.isCategoryCompletelyLoaded))
+  ).pipe(
+    filter(([selectId, category]) => selectId === category.uniqueId),
+    distinctUntilChanged((x, y) => x[0] === y[0]),
+    map(x => new categoriesActions.SelectedCategoryAvailable(x[0]))
+  );
+
+  @Effect()
   loadCategory$ = this.actions$.pipe(
     ofType(categoriesActions.CategoriesActionTypes.LoadCategory),
     map((action: categoriesActions.LoadCategory) => action.payload),
