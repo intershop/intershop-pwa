@@ -16,12 +16,14 @@ describe('Checkout Address Page Container', () => {
       declarations: [
         CheckoutAddressPageContainerComponent,
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-checkout-progress-bar', inputs: ['step'], template: 'Checkout Progress Bar' }),
         MockComponent({
           selector: 'ish-checkout-address',
           template: 'Checkout Address Component',
           inputs: ['basket', 'user'],
         }),
       ],
+
       imports: [
         TranslateModule.forRoot(),
         StoreModule.forRoot({

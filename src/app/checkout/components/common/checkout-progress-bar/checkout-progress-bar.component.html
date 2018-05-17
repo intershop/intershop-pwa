@@ -1,0 +1,88 @@
+<div class="progress-bar-panel">
+  <ul class="progress-steps">
+    <li [ngClass]="{'progress-active': step === 1, 'progress-complete': step > 1}">
+      <a *ngIf="displayStepLinks[1]" routerLink="/checkout/address">
+        <div class="progress-number">
+          <span class="glyphicon glyphicon-ok"></span>
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.addresses.label' | translate }}
+        </span>
+      </a>
+      <ng-container *ngIf="!displayStepLinks[1]">
+        <div class="progress-number">
+          {{'checkout.progress.step1.text' | translate }}
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.addresses.label' | translate }}
+        </span>
+      </ng-container>
+    </li>
+
+    <li [ngClass]="{'progress-active': step === 2, 'progress-complete': step > 2}">
+      <a *ngIf="displayStepLinks[2]" routerLink="/checkout/shipping">
+        <div class="progress-number">
+          <span class="glyphicon glyphicon-ok"></span>
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.shipping.label' | translate }}
+        </span>
+      </a>
+      <ng-container *ngIf="!displayStepLinks[2]">
+        <div class="progress-number">
+          {{'checkout.progress.step2.text' | translate }}
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.shipping.label' | translate }}
+        </span>
+      </ng-container>
+    </li>
+
+    <li [ngClass]="{'progress-active': step === 3, 'progress-complete': step > 3}">
+      <a *ngIf="displayStepLinks[3]" routerLink="/checkout/payment">
+        <div class="progress-number">
+          <span class="glyphicon glyphicon-ok"></span>
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.payment.label' | translate }}
+        </span>
+      </a>
+      <ng-container *ngIf="!displayStepLinks[3]">
+        <div class="progress-number">
+          {{'checkout.progress.step3.text' | translate }}
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.payment.label' | translate }}
+        </span>
+      </ng-container>
+    </li>
+
+    <li [ngClass]="{'progress-active': step === 4, 'progress-complete': step > 4}">
+      <a *ngIf="displayStepLinks[4]" routerLink="/checkout/review">
+        <div class="progress-number">
+          <span class="glyphicon glyphicon-ok"></span>
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.review.label' | translate }}
+        </span>
+      </a>
+      <ng-container *ngIf="!displayStepLinks[4]">
+        <div class="progress-number">
+          {{'checkout.progress.step4.text' | translate }}
+        </div>
+        <span class="progress-label">
+          {{'checkout.progress.review.label' | translate }}
+        </span>
+      </ng-container>
+    </li>
+
+    <li [ngClass]="{'progress-active': step === 5, 'progress-complete': step > 5}">
+      <div class="progress-number">
+        {{'checkout.progress.step5.text' | translate }}
+      </div>
+      <span class="progress-label">
+        {{'checkout.progress.receipt.label' | translate }}
+      </span>
+    </li>
+  </ul>
+</div>
