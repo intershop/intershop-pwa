@@ -4,12 +4,13 @@ COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN set -x \
 &&  before=$(md5sum package-lock.json | awk '{ print $1 }') \
-&&  (cd tslint-rules && npm i) && npm install --unsafe-perm \
+&&  npm install \
 &&  after=$(md5sum package-lock.json | awk '{ print $1 }') \
 &&  test "$before" = "$after"
 COPY . /workspace/
-RUN npm run test --silent -- --ci
-RUN npm run lint --silent -- --format prose
+RUN npm run test --silent -- --ci --runInBand --testPathIgnorePatterns '.*.component.spec.ts'
+RUN npm run test --silent -- --ci --runInBand '.*.component.spec.ts'
+RUN npm run lint
 RUN npm run build:dynamic:prod
 RUN set -x \
 &&  before=$(find src e2e tslint-rules/src *.json *.ts -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \

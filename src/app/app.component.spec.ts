@@ -13,19 +13,17 @@ describe('AppComponent', () => {
   let component: AppComponent;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          AppComponent,
-          MockComponent({ selector: 'ish-header-container', template: 'Header Component' }),
-          MockComponent({ selector: 'ish-footer', template: 'Footer Component' }),
-        ],
-        providers: [TranslateService, { provide: Store, useFactory: () => instance(mock(Store)) }],
-        imports: [TranslateModule.forRoot(), RouterTestingModule],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AppComponent,
+        MockComponent({ selector: 'ish-header-container', template: 'Header Component' }),
+        MockComponent({ selector: 'ish-footer', template: 'Footer Component' }),
+      ],
+      providers: [TranslateService, { provide: Store, useFactory: () => instance(mock(Store)) }],
+      imports: [TranslateModule.forRoot(), RouterTestingModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
@@ -44,10 +42,7 @@ describe('AppComponent', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it(
-    'should render header component on page',
-    async(() => {
-      expect(element.querySelector('ish-header-container').textContent).toEqual('Header Component');
-    })
-  );
+  it('should render header component on page', async(() => {
+    expect(element.querySelector('ish-header-container').textContent).toEqual('Header Component');
+  }));
 });

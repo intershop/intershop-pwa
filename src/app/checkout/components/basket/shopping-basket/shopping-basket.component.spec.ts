@@ -3,7 +3,6 @@ import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { CurrencyPipe } from '@angular/common';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
@@ -15,29 +14,27 @@ describe('Shopping Basket Component', () => {
   let fixture: ComponentFixture<ShoppingBasketComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          ShoppingBasketComponent,
-          MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component' }),
-          MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
-          MockComponent({
-            selector: 'ish-basket-item-description',
-            template: 'Basket Item Description Component',
-            inputs: ['pli'],
-          }),
-          MockComponent({
-            selector: 'ish-basket-cost-summary',
-            template: 'Basket Cost Summary Component',
-            inputs: ['basket'],
-          }),
-        ],
-        imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule],
-        providers: [FormBuilder, CurrencyPipe],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ShoppingBasketComponent,
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component' }),
+        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+        MockComponent({
+          selector: 'ish-basket-item-description',
+          template: 'Basket Item Description Component',
+          inputs: ['pli'],
+        }),
+        MockComponent({
+          selector: 'ish-basket-cost-summary',
+          template: 'Basket Cost Summary Component',
+          inputs: ['basket'],
+        }),
+      ],
+      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule],
+      providers: [FormBuilder],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ShoppingBasketComponent);

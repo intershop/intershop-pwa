@@ -1,5 +1,4 @@
-import { OperatorFunction } from 'rxjs/interfaces';
-import { Observable } from 'rxjs/Observable';
+import { Observable, OperatorFunction } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 
 export function randomDelay<T>(min = 1000, max = 10000): OperatorFunction<T, T> {

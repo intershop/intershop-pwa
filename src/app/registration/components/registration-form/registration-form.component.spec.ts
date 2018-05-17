@@ -13,33 +13,31 @@ describe('RegistrationForm Component', () => {
   let element: HTMLElement;
   let fb: FormBuilder;
 
-  beforeEach(
-    async(() => {
-      const addressFormFactoryMock = mock(AddressFormFactory);
-      when(addressFormFactoryMock.getGroup(anything())).thenReturn(new FormGroup({}));
+  beforeEach(async(() => {
+    const addressFormFactoryMock = mock(AddressFormFactory);
+    when(addressFormFactoryMock.getGroup(anything())).thenReturn(new FormGroup({}));
 
-      const addressFormServiceMock = mock(AddressFormService);
-      when(addressFormServiceMock.getFactory(anything())).thenReturn(addressFormFactoryMock);
+    const addressFormServiceMock = mock(AddressFormService);
+    when(addressFormServiceMock.getFactory(anything())).thenReturn(addressFormFactoryMock);
 
-      TestBed.configureTestingModule({
-        declarations: [
-          RegistrationFormComponent,
-          MockComponent({
-            selector: 'ish-registration-credentials-form',
-            template: 'Credentials Template',
-            inputs: ['parentForm', 'controlName'],
-          }),
-          MockComponent({
-            selector: 'ish-address-form',
-            template: 'Address Template',
-            inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles'],
-          }),
-        ],
-        providers: [{ provide: AddressFormService, useFactory: () => instance(addressFormServiceMock) }],
-        imports: [FormsSharedModule, TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [
+        RegistrationFormComponent,
+        MockComponent({
+          selector: 'ish-registration-credentials-form',
+          template: 'Credentials Template',
+          inputs: ['parentForm', 'controlName'],
+        }),
+        MockComponent({
+          selector: 'ish-address-form',
+          template: 'Address Template',
+          inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles'],
+        }),
+      ],
+      providers: [{ provide: AddressFormService, useFactory: () => instance(addressFormServiceMock) }],
+      imports: [FormsSharedModule, TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegistrationFormComponent);
@@ -71,19 +69,16 @@ describe('RegistrationForm Component', () => {
     expect(fired).toBeTruthy();
   });
 
-  it(
-    'should set submitted flag if submit is clicked and form is not valid',
-    async(() => {
-      component.form = new FormGroup({
-        preferredLanguage: new FormControl('', Validators.required),
-      });
-      expect(component.submitted).toBeFalsy();
-      component.submitForm();
-      fixture.whenStable().then(() => {
-        expect(component.submitted).toBeTruthy();
-      });
-    })
-  );
+  it('should set submitted flag if submit is clicked and form is not valid', async(() => {
+    component.form = new FormGroup({
+      preferredLanguage: new FormControl('', Validators.required),
+    });
+    expect(component.submitted).toBeFalsy();
+    component.submitForm();
+    fixture.whenStable().then(() => {
+      expect(component.submitted).toBeTruthy();
+    });
+  }));
 
   it('should NOT throw create event for invalid form', () => {
     component.form = new FormGroup({

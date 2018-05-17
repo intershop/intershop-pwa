@@ -10,18 +10,16 @@ describe('Search Box Component', () => {
   let component: SearchBoxComponent;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SearchBoxComponent],
-        imports: [TranslateModule.forRoot(), ReactiveFormsModule],
-      })
-        .overrideComponent(SearchBoxComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
-        })
-        .compileComponents();
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SearchBoxComponent],
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule],
     })
-  );
+      .overrideComponent(SearchBoxComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchBoxComponent);

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import {
   catchError,
   concatMap,

@@ -5,9 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { capture } from 'ts-mockito/lib/ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
@@ -43,13 +41,13 @@ describe('Categories Effects', () => {
       of(categoryTree([{ uniqueId: '123', categoryPath: ['123'] } as Category]))
     );
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(
-      _throw({ message: 'invalid category' } as HttpErrorResponse)
+      throwError({ message: 'invalid category' } as HttpErrorResponse)
     );
     when(categoriesServiceMock.getTopLevelCategories(2)).thenCall(() => {
       return of(TOP_LEVEL_CATEGORIES);
     });
     when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(
-      _throw({ message: 'invalid number' } as HttpErrorResponse)
+      throwError({ message: 'invalid number' } as HttpErrorResponse)
     );
     router = mock(Router);
     TestBed.configureTestingModule({

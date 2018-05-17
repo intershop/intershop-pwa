@@ -11,40 +11,38 @@ describe('Product Quantity Component', () => {
   let product: Product;
   let translate: TranslateService;
   let element: HTMLElement;
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot(), ReactiveFormsModule],
-        providers: [TranslateService],
-        declarations: [
-          ProductQuantityComponent,
-          MockComponent({
-            selector: 'ish-select',
-            template: '<select> </select>',
-            inputs: ['options', 'controlName', 'form', 'label', 'labelClass', 'inputClass'],
-          }),
-          MockComponent({
-            selector: 'ish-input',
-            template: '<input type="number" />',
-            inputs: [
-              'options',
-              'controlName',
-              'form',
-              'label',
-              'labelClass',
-              'inputClass',
-              'markRequiredLabel',
-              'min',
-              'max',
-              'value',
-              'errorMessages',
-              'type',
-            ],
-          }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule],
+      providers: [TranslateService],
+      declarations: [
+        ProductQuantityComponent,
+        MockComponent({
+          selector: 'ish-select',
+          template: '<select> </select>',
+          inputs: ['options', 'controlName', 'form', 'label', 'labelClass', 'inputClass'],
+        }),
+        MockComponent({
+          selector: 'ish-input',
+          template: '<input type="number" />',
+          inputs: [
+            'options',
+            'controlName',
+            'form',
+            'label',
+            'labelClass',
+            'inputClass',
+            'markRequiredLabel',
+            'min',
+            'max',
+            'value',
+            'errorMessages',
+            'type',
+          ],
+        }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductQuantityComponent);

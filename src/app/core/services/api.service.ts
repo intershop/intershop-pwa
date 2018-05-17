@@ -1,9 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { of } from 'rxjs/observable/of';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, flatMap, map } from 'rxjs/operators';
 import { Locale } from '../../models/locale/locale.model';
 import { CoreState } from '../store/core.state';
@@ -11,7 +9,7 @@ import { getCurrentLocale } from '../store/locale';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ApiService {
   private currentLocale: Locale;
 

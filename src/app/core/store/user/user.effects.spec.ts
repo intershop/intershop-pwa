@@ -5,9 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { RouteNavigation } from 'ngrx-router';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from '../../../models/customer/customer.model';
 import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
@@ -67,7 +65,7 @@ describe('UserEffects', () => {
     it('should dispatch a LoginUserFail action on failed login', () => {
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
 
-      when(registrationServiceMock.signinUser(anything())).thenReturn(_throw(error));
+      when(registrationServiceMock.signinUser(anything())).thenReturn(throwError(error));
 
       const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
       const completion = new ua.LoginUserFail(error);
@@ -151,7 +149,7 @@ describe('UserEffects', () => {
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
-      when(registrationServiceMock.createUser(anything())).thenReturn(_throw(error));
+      when(registrationServiceMock.createUser(anything())).thenReturn(throwError(error));
 
       const action = new ua.CreateUser({} as Customer);
       const completion = new ua.CreateUserFail(error);

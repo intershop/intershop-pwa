@@ -9,22 +9,20 @@ describe('Header Container', () => {
   let fixture: ComponentFixture<HeaderContainerComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          StoreModule.forRoot({
-            error: combineReducers(errorReducer),
-          }),
-        ],
-        declarations: [
-          HeaderContainerComponent,
-          MockComponent({ selector: 'ish-header', template: 'Header Component' }),
-          MockComponent({ selector: 'ish-simple-header', template: 'Simple Header Component' }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        StoreModule.forRoot({
+          error: combineReducers(errorReducer),
+        }),
+      ],
+      declarations: [
+        HeaderContainerComponent,
+        MockComponent({ selector: 'ish-header', template: 'Header Component' }),
+        MockComponent({ selector: 'ish-simple-header', template: 'Simple Header Component' }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderContainerComponent);

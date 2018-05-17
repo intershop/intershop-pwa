@@ -4,9 +4,7 @@ import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { Country } from '../../../models/country/country.model';
 import { CountryService } from '../../services/countries/country.service';
@@ -48,7 +46,7 @@ describe('CountriesEffects', () => {
     });
 
     it('should dispatch a LoadCountriesFail action if a load error occurs', () => {
-      when(countryServiceMock.getCountries()).thenReturn(_throw({ message: 'error' } as HttpErrorResponse));
+      when(countryServiceMock.getCountries()).thenReturn(throwError({ message: 'error' } as HttpErrorResponse));
 
       const action = { type: ROOT_EFFECTS_INIT } as Action;
       const expected = new LoadCountriesFail({ message: 'error' } as HttpErrorResponse);

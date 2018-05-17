@@ -10,21 +10,19 @@ describe('BasketItemDescriptionComponent', () => {
   let fixture: ComponentFixture<BasketItemDescriptionComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot(), PopoverModule.forRoot()],
-        declarations: [
-          BasketItemDescriptionComponent,
-          MockComponent({
-            selector: 'ish-product-shipment',
-            template: 'Product Shipment Component',
-            inputs: ['product'],
-          }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), PopoverModule.forRoot()],
+      declarations: [
+        BasketItemDescriptionComponent,
+        MockComponent({
+          selector: 'ish-product-shipment',
+          template: 'Product Shipment Component',
+          inputs: ['product'],
+        }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketItemDescriptionComponent);

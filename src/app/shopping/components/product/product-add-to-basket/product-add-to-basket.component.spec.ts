@@ -10,15 +10,13 @@ describe('Product Add To Basket Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        providers: [TranslateService],
-        declarations: [ProductAddToBasketComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      providers: [TranslateService],
+      declarations: [ProductAddToBasketComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductAddToBasketComponent);

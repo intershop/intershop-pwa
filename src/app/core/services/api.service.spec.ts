@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
-import { empty } from 'rxjs/observable/empty';
+import { EMPTY } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { CoreState } from '../store/core.state';
 import { ErrorActionTypes, ServerError } from '../store/error';
@@ -17,7 +17,7 @@ describe('ApiService', () => {
 
   beforeEach(() => {
     storeMock$ = mock(Store);
-    when(storeMock$.pipe(anything())).thenReturn(empty());
+    when(storeMock$.pipe(anything())).thenReturn(EMPTY);
 
     TestBed.configureTestingModule({
       imports: [

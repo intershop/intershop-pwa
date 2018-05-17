@@ -6,12 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { getTestScheduler } from 'jasmine-marbles';
 import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { empty } from 'rxjs/observable/empty';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
-import { Scheduler } from 'rxjs/Scheduler';
+import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
 import { CountryService } from '../../core/services/countries/country.service';
@@ -73,19 +69,19 @@ describe('Shopping Store', () => {
         case 'A.123.456':
           return of(categoryTree([{ ...catA123456, completenessLevel: 2 }]));
         default:
-          return _throw(`error loading category ${uniqueId}`);
+          return throwError(`error loading category ${uniqueId}`);
       }
     });
 
     const countryServiceMock = mock(CountryService);
-    when(countryServiceMock.getCountries()).thenReturn(empty());
+    when(countryServiceMock.getCountries()).thenReturn(EMPTY);
 
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall(sku => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku });
       } else {
-        return _throw(`error loading product ${sku}`);
+        return throwError(`error loading product ${sku}`);
       }
     });
     when(productsServiceMock.getCategoryProducts('A.123.456', anything())).thenReturn(
@@ -138,7 +134,6 @@ describe('Shopping Store', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
-        { provide: Scheduler, useFactory: getTestScheduler },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
       ],

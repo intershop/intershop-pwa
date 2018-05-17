@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 
 // tslint:disable-next-line: do-not-import-environment
@@ -12,9 +13,9 @@ export const ICM_SERVER_SK = makeStateKey<string>('icmServer');
  * Service for retrieving injection properties {@link ICM_BASE_URL} and {@link REST_ENDPOINT}.
  * Do not use service directly, inject properties with supplied factory methods instead.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class StatePropertiesService {
-  constructor(private transferState: TransferState) {}
+  constructor(private transferState: TransferState, @Inject(PLATFORM_ID) private platformId: string) {}
 
   /**
    * Retrieve property from first set property of server state, system environment or environment.ts
@@ -22,7 +23,7 @@ export class StatePropertiesService {
   getStateOrEnvOrDefault(key: StateKey<string>, envKey: string, envPropKey: string): string {
     if (this.transferState.hasKey(key)) {
       return this.transferState.get(key, null);
-    } else if (!!process.env[envKey]) {
+    } else if (isPlatformServer(this.platformId) && !!process.env[envKey]) {
       return process.env[envKey];
     } else {
       return environment[envPropKey];

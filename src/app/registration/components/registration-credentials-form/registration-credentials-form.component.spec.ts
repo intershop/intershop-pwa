@@ -11,35 +11,33 @@ describe('Credentials Form Component', () => {
   let fixture: ComponentFixture<RegistrationCredentialsFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
-        providers: [FormBuilder],
-        imports: [TranslateModule.forRoot()],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
-          component = fixture.componentInstance;
-          element = fixture.nativeElement;
-
-          const parentForm = new FormGroup({});
-          const credentialsForm = new FormGroup({
-            login: new FormControl(''),
-            loginConfirmation: new FormControl(''),
-            password: new FormControl(''),
-            passwordConfirmation: new FormControl(''),
-            securityQuestion: new FormControl(''),
-            securityQuestionAnswer: new FormControl(''),
-            newsletter: new FormControl(''),
-          });
-          parentForm.addControl('credentials', credentialsForm);
-          component.parentForm = parentForm;
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
+      providers: [FormBuilder],
+      imports: [TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(RegistrationCredentialsFormComponent);
+        component = fixture.componentInstance;
+        element = fixture.nativeElement;
+
+        const parentForm = new FormGroup({});
+        const credentialsForm = new FormGroup({
+          login: new FormControl(''),
+          loginConfirmation: new FormControl(''),
+          password: new FormControl(''),
+          passwordConfirmation: new FormControl(''),
+          securityQuestion: new FormControl(''),
+          securityQuestionAnswer: new FormControl(''),
+          newsletter: new FormControl(''),
+        });
+        parentForm.addControl('credentials', credentialsForm);
+        component.parentForm = parentForm;
+      });
+  }));
 
   it('should be created', () => {
     expect(component).toBeTruthy();

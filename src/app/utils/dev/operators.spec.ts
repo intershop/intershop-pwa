@@ -1,5 +1,5 @@
 import { cold, hot } from 'jasmine-marbles';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { log } from './operators';
 
 describe('log operator', () => {

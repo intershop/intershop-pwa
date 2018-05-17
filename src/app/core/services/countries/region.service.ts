@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { Region } from '../../../models/region/region.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RegionService {
   regionDataUS$: Observable<Region[]>;
   regionDataBG$: Observable<Region[]>;

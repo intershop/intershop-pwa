@@ -27,4 +27,5 @@
 /src/assets
 /out-tsc
 /coverage
+/tslint-rules/dist
 /tslint-rules/*.*

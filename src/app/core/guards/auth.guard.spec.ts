@@ -16,20 +16,18 @@ describe('AuthGuard', () => {
     let store$: Store<CoreState>;
     let router: Router;
 
-    beforeEach(
-      async(() => {
-        const loginComponentMock = MockComponent({ selector: 'ish-login', template: 'Login Component' });
+    beforeEach(async(() => {
+      const loginComponentMock = MockComponent({ selector: 'ish-login', template: 'Login Component' });
 
-        TestBed.configureTestingModule({
-          imports: [
-            RouterTestingModule.withRoutes([{ path: 'login', component: loginComponentMock }]),
-            StoreModule.forRoot(coreReducers),
-          ],
-          providers: [AuthGuard],
-          declarations: [loginComponentMock],
-        }).compileComponents();
-      })
-    );
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([{ path: 'login', component: loginComponentMock }]),
+          StoreModule.forRoot(coreReducers),
+        ],
+        providers: [AuthGuard],
+        declarations: [loginComponentMock],
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
       authGuard = TestBed.get(AuthGuard);

@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
+import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -9,8 +10,6 @@ import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { TranslateService } from '@ngx-translate/core';
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
-import { Scheduler } from 'rxjs/Scheduler';
-import { async } from 'rxjs/scheduler/async';
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -82,7 +81,6 @@ export const metaReducers: MetaReducer<any>[] = [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
-    { provide: Scheduler, useValue: async },
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
@@ -92,8 +90,7 @@ export const metaReducers: MetaReducer<any>[] = [
 export class AppModule {
   constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
     registerLocaleData(localeDe);
-    // TODO: https://github.com/angular/angular/issues/21809
-    // registerLocaleData(localeFr);
+    registerLocaleData(localeFr);
 
     translateService.setDefaultLang(lang.replace(/\-/, '_'));
   }

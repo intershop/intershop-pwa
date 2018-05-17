@@ -10,32 +10,30 @@ describe('Product Row Component', () => {
   let fixture: ComponentFixture<ProductRowComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, TranslateModule.forRoot()],
-        declarations: [
-          ProductRowComponent,
-          MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
-          MockComponent({
-            selector: 'ish-product-price',
-            template: 'Product Price Component',
-            inputs: ['product', 'showInformationalPrice'],
-          }),
-          MockComponent({
-            selector: 'ish-product-inventory',
-            template: 'Product Inventory Component',
-            inputs: ['product'],
-          }),
-          MockComponent({
-            selector: 'ish-product-add-to-basket',
-            template: 'Product Add To Basket Component',
-            inputs: ['product'],
-          }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        ProductRowComponent,
+        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+        MockComponent({
+          selector: 'ish-product-price',
+          template: 'Product Price Component',
+          inputs: ['product', 'showInformationalPrice'],
+        }),
+        MockComponent({
+          selector: 'ish-product-inventory',
+          template: 'Product Inventory Component',
+          inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-add-to-basket',
+          template: 'Product Add To Basket Component',
+          inputs: ['product'],
+        }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductRowComponent);

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Basket } from '../../../models/basket/basket.model';
 import { DeleteBasketItem, getBasketLoading, getCurrentBasket, UpdateBasketItems } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';

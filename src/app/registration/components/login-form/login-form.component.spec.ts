@@ -11,14 +11,12 @@ describe('Login Form Component', () => {
   let fixture: ComponentFixture<LoginFormComponent>;
   let element: HTMLElement;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [LoginFormComponent],
-        imports: [FormsSharedModule, TranslateModule.forRoot(), CustomFormsModule, RouterTestingModule],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [LoginFormComponent],
+      imports: [FormsSharedModule, TranslateModule.forRoot(), CustomFormsModule, RouterTestingModule],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginFormComponent);

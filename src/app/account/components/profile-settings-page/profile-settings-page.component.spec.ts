@@ -10,25 +10,23 @@ describe('Profile Settings Page Component', () => {
   let element: HTMLElement;
   const user = { firstName: 'Patricia', lastName: 'Miller' } as User;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          ProfileSettingsPageComponent,
-          MockComponent({
-            selector: 'ish-breadcrumb',
-            template: 'Breadcrumb Component',
-            inputs: ['account', 'trailText'],
-          }),
-          MockComponent({
-            selector: 'ish-account-navigation',
-            template: 'Account Navigation Component',
-          }),
-        ],
-        imports: [TranslateModule.forRoot()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ProfileSettingsPageComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['account', 'trailText'],
+        }),
+        MockComponent({
+          selector: 'ish-account-navigation',
+          template: 'Account Navigation Component',
+        }),
+      ],
+      imports: [TranslateModule.forRoot()],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileSettingsPageComponent);

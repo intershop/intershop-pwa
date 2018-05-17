@@ -10,8 +10,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select/select-option.interface';
 import { ViewType } from '../../../../models/viewtype/viewtype.types';
 

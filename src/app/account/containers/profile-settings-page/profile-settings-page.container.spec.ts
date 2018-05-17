@@ -20,30 +20,28 @@ describe('Profile Settings Page Container', () => {
     },
   } as PrivateCustomer;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          ProfileSettingsPageContainerComponent,
-          MockComponent({
-            selector: 'ish-breadcrumb',
-            template: 'Breadcrumb Component',
-            inputs: ['account', 'trailText'],
-          }),
-          MockComponent({
-            selector: 'ish-profile-settings-page',
-            template: 'Profile Settings Component',
-            inputs: ['user'],
-          }),
-        ],
-        imports: [TranslateModule.forRoot(), StoreModule.forRoot(coreReducers)],
-      })
-        .compileComponents()
-        .then(() => {
-          TestBed.get(Store).dispatch(new LoginUserSuccess(customer));
-        });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ProfileSettingsPageContainerComponent,
+        MockComponent({
+          selector: 'ish-breadcrumb',
+          template: 'Breadcrumb Component',
+          inputs: ['account', 'trailText'],
+        }),
+        MockComponent({
+          selector: 'ish-profile-settings-page',
+          template: 'Profile Settings Component',
+          inputs: ['user'],
+        }),
+      ],
+      imports: [TranslateModule.forRoot(), StoreModule.forRoot(coreReducers)],
     })
-  );
+      .compileComponents()
+      .then(() => {
+        TestBed.get(Store).dispatch(new LoginUserSuccess(customer));
+      });
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileSettingsPageContainerComponent);

@@ -32,7 +32,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
           );
 
         if (!creationCheck) {
-          super.addFailureAtNode(sourceFile, `component does not have a '${SHOULD_BE_CREATED_NAME}' test`);
+          super.addFailureAt(0, 1, `component does not have a '${SHOULD_BE_CREATED_NAME}' test`);
         } else {
           this.checkCreationTestContent(creationCheck as ts.ExpressionStatement);
         }
@@ -44,7 +44,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
     }
   }
 
-  private fsExistsSync(myDir): boolean {
+  private fsExistsSync(myDir: string): boolean {
     try {
       fs.accessSync(myDir);
       return true;
@@ -61,7 +61,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
       .getChildAt(4)
       .getChildAt(1);
 
-    const orReduce = (l, r) => l || r;
+    const orReduce = (l: boolean, r: boolean) => l || r;
 
     if (
       !shouldBeCreatedBlock

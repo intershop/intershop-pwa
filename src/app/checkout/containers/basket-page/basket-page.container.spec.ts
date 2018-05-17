@@ -16,26 +16,24 @@ describe('Basket Page Container', () => {
   let element: HTMLElement;
   let store$: Store<CheckoutState>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          BasketPageContainerComponent,
-          MockComponent({ selector: 'ish-shopping-basket', template: 'Shopping Basket Component', inputs: ['basket'] }),
-          MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
-          MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
-          MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        ],
-        imports: [
-          TranslateModule.forRoot(),
-          StoreModule.forRoot({
-            checkout: combineReducers(checkoutReducers),
-            shopping: combineReducers(shoppingReducers),
-          }),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        BasketPageContainerComponent,
+        MockComponent({ selector: 'ish-shopping-basket', template: 'Shopping Basket Component', inputs: ['basket'] }),
+        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
+        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+      ],
+      imports: [
+        TranslateModule.forRoot(),
+        StoreModule.forRoot({
+          checkout: combineReducers(checkoutReducers),
+          shopping: combineReducers(shoppingReducers),
+        }),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketPageContainerComponent);

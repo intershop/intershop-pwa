@@ -10,28 +10,26 @@ describe('Login Page Container', () => {
   let fixture: ComponentFixture<LoginPageContainerComponent>;
   let component: LoginPageContainerComponent;
   let element: HTMLElement;
-  let storeMock: Store<CoreState>;
+  let storeMock$: Store<CoreState>;
 
-  beforeEach(
-    async(() => {
-      storeMock = mock(Store);
+  beforeEach(async(() => {
+    storeMock$ = mock(Store);
 
-      TestBed.configureTestingModule({
-        declarations: [
-          MockComponent({
-            selector: 'ish-login-form',
-            template: 'Login Form',
-            inputs: ['loginType', 'isLoggedIn', 'error'],
-          }),
-          LoginPageContainerComponent,
-        ],
-        providers: [
-          { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
-          { provide: Store, useFactory: () => instance(storeMock) },
-        ],
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [
+        MockComponent({
+          selector: 'ish-login-form',
+          template: 'Login Form',
+          inputs: ['loginType', 'isLoggedIn', 'error'],
+        }),
+        LoginPageContainerComponent,
+      ],
+      providers: [
+        { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+        { provide: Store, useFactory: () => instance(storeMock$) },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPageContainerComponent);
