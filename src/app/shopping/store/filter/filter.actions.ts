@@ -11,6 +11,9 @@ export enum FilterActionTypes {
   ApplyFilterSuccess = '[Shopping] Apply Filter Success',
   ApplyFilterFail = '[Shopping] Apply Filter Fail',
   SetFilteredProducts = '[Shopping] Set Filtered Products',
+  LoadFilterForSearch = '[Shopping] Load Filter for Search',
+  LoadFilterForSearchSuccess = '[Shopping] Load Filter for Search Success',
+  LoadFilterForSearchFail = '[Shopping] Load Filter for Search Fail',
 }
 
 export class LoadFilterForCategory implements Action {
@@ -28,6 +31,21 @@ export class LoadFilterForCategoryFail implements Action {
   constructor(public payload: HttpErrorResponse) {}
 }
 
+export class LoadFilterForSearch implements Action {
+  readonly type = FilterActionTypes.LoadFilterForSearch;
+  constructor(public payload: string) {}
+}
+
+export class LoadFilterForSearchSuccess implements Action {
+  readonly type = FilterActionTypes.LoadFilterForSearchSuccess;
+  constructor(public payload: FilterNavigation) {}
+}
+
+export class LoadFilterForSearchFail implements Action {
+  readonly type = FilterActionTypes.LoadFilterForSearchFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
 export class ApplyFilter implements Action {
   readonly type = FilterActionTypes.ApplyFilter;
   constructor(public payload: { filterId: string; searchParameter: string }) {}
@@ -35,7 +53,7 @@ export class ApplyFilter implements Action {
 
 export class ApplyFilterSuccess implements Action {
   readonly type = FilterActionTypes.ApplyFilterSuccess;
-  constructor(public payload: FilterNavigation, public filterName: string, public searchParameter: string) {}
+  constructor(public payload: { availableFilter: FilterNavigation; filterName: string; searchParameter: string }) {}
 }
 
 export class ApplyFilterFail implements Action {
@@ -54,4 +72,7 @@ export type FilterActions =
   | ApplyFilter
   | ApplyFilterSuccess
   | ApplyFilterFail
-  | SetFilteredProducts;
+  | SetFilteredProducts
+  | LoadFilterForSearch
+  | LoadFilterForSearchSuccess
+  | LoadFilterForSearchFail;

@@ -2,32 +2,44 @@
 
   <ish-breadcrumb [searchTerm]="searchTerm"></ish-breadcrumb>
 
-  <ng-container *ngIf="(products$ | async) as products">
-
-    <!-- search result with products -->
-    <ng-container *ngIf="products.length; else noResult">
-      <ish-search-result
-        [searchTerm]="searchTerm"
-        [products]="products"
-        [totalItems]="totalItems$ | async"
-        [viewType]="viewType$ | async"
-        [sortBy]="sortBy$ | async"
-        [sortKeys]="sortKeys$ | async"
-        (viewTypeChange)="changeViewType($event)"
-        (sortByChange)="changeSortBy($event)"
-        (loadMore)="loadMore.emit()"
-      ></ish-search-result>
-    </ng-container>
-    
-    <!-- empty search result -->
-    <ng-template #noResult>
-      <ish-search-no-result *ngIf="!(searchLoading$ | async)"
+  <ng-container *ngIf="(filteredProducts$ | async) as filteredProducts; else allProductView">
+    <ish-search-result
       [searchTerm]="searchTerm"
-      ></ish-search-no-result>
-    </ng-template>
-
+      [products]="filteredProducts"
+      [totalItems]="totalItems$ | async"
+      [viewType]="viewType$ | async"
+      [sortBy]="sortBy$ | async"
+      [sortKeys]="sortKeys$ | async"
+      (viewTypeChange)="changeViewType($event)"
+      (sortByChange)="changeSortBy($event)"
+    ></ish-search-result>
   </ng-container>
+  <ng-template #allProductView>
+    <ng-container  *ngIf="(products$ | async) as products">
+      <!-- search result with products -->
+      <ng-container *ngIf="products.length; else noResult">
+        <ish-search-result
+          [searchTerm]="searchTerm"
+          [products]="products"
+          [totalItems]="totalItems$ | async"
+          [viewType]="viewType$ | async"
+          [sortBy]="sortBy$ | async"
+          [sortKeys]="sortKeys$ | async"
+          (viewTypeChange)="changeViewType($event)"
+          (sortByChange)="changeSortBy($event)"
+          (loadMore)="loadMore.emit()"
+        ></ish-search-result>
+      </ng-container>
+      
+      <!-- empty search result -->
+      <ng-template #noResult>
+        <ish-search-no-result *ngIf="!(searchLoading$ | async)"
+        [searchTerm]="searchTerm"
+        ></ish-search-no-result>
+      </ng-template>
 
+    </ng-container>
+  </ng-template>
 </ng-container>
 
 <ish-loading-spinner *ngIf="searchLoading$ | async"></ish-loading-spinner>

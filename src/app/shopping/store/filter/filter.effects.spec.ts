@@ -16,6 +16,7 @@ import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { FilterService } from '../../services/filter/filter.service';
 import { LoadCategorySuccess, SelectCategory } from '../categories/categories.actions';
 import { SelectProduct } from '../products/products.actions';
+import { SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import * as fromActions from './filter.actions';
@@ -33,6 +34,13 @@ describe('FilterEffects', () => {
   } as FilterNavigation;
   beforeEach(() => {
     filterServiceMock = mock(FilterService);
+    when(filterServiceMock.getFilterForSearch(anything())).thenCall(a => {
+      if (a === 'invalid') {
+        return _throw({ message: 'invalid' } as HttpErrorResponse);
+      } else {
+        return of(filterNav);
+      }
+    });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
       if (a.name === 'invalid') {
         return _throw({ message: 'invalid' } as HttpErrorResponse);
@@ -171,6 +179,46 @@ describe('FilterEffects', () => {
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bcd)', { b: loadProducts1, c: loadProducts2, d: completion });
       expect(effects.loadFilteredProducts$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadFilterForSearch$', () => {
+    it('should call the filterService for LoadFilterForSearch action', () => {
+      const action = new fromActions.LoadFilterForSearch('search');
+      actions$ = hot('-a', { a: action });
+
+      effects.loadFilterForSearch$.subscribe(() => {
+        verify(filterServiceMock.getFilterForSearch(anything())).once();
+      });
+    });
+
+    it('should map to action of type LoadFilterForSearchSuccess', () => {
+      const action = new fromActions.LoadFilterForSearch('search');
+      const completion = new fromActions.LoadFilterForSearchSuccess(filterNav);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadFilterForSearch$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadFilterForSearchFail', () => {
+      const action = new fromActions.LoadFilterForSearch('invalid');
+      const completion = new fromActions.LoadFilterForSearchFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadFilterForSearch$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadFilterForSearchIfSearchSuccess$', () => {
+    it('should trigger LoadFilterForSearch for SearchProductsSuccess action', () => {
+      const action = new SearchProductsSuccess({ searchTerm: 'a', products: null });
+
+      const completion = new fromActions.LoadFilterForSearch('a');
+      actions$ = hot('a', { a: action });
+      const expected$ = cold('c', { c: completion });
+      expect(effects.loadFilterForSearchIfSearchSuccess$).toBeObservable(expected$);
     });
   });
 });

@@ -43,6 +43,36 @@ describe('Filter Reducer', () => {
     });
   });
 
+  describe('LoadFilterForSearch', () => {
+    it('should change state to loading when reduced', () => {
+      const action = new fromActions.LoadFilterForSearch('');
+      const state = filterReducer(initialState, action);
+
+      expect(state.loading).toEqual(true);
+    });
+  });
+
+  describe('LoadFilterForSearchSuccess', () => {
+    it('should set filter when reduced', () => {
+      const filter = { filter: [{ name: 'a' }] } as FilterNavigation;
+      const action = new fromActions.LoadFilterForSearchSuccess(filter);
+      const state = filterReducer(initialState, action);
+
+      expect(state.availablefilter).toEqual(filter);
+      expect(state.loading).toEqual(false);
+    });
+  });
+
+  describe('LoadFilterForSearchFailed', () => {
+    it('should set filter when reduced', () => {
+      const action = new fromActions.LoadFilterForSearchFail({} as HttpErrorResponse);
+      const state = filterReducer(initialState, action);
+
+      expect(state.availablefilter).toBeFalsy();
+      expect(state.loading).toEqual(false);
+    });
+  });
+
   describe('ApplyFilter', () => {
     it('should change state to loading when reduced', () => {
       const action = new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' });

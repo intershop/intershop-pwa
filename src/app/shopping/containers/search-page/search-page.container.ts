@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { getFilteredProducts } from '../../store/filter';
 import { getSearchLoading, getSearchProducts, getSearchTerm, SearchMoreProducts } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { ChangeSortBy, ChangeViewType, getSortBy, getSortKeys, getTotalItems, getViewType } from '../../store/viewconf';
@@ -17,6 +18,7 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
   searchTerm$: Observable<string>;
   searchLoading$: Observable<boolean>;
   products$: Observable<Product[]>;
+  filteredProducts$: Observable<Product[]>;
   totalItems$: Observable<number>;
   viewType$: Observable<ViewType>;
   sortBy$: Observable<string>;
@@ -32,6 +34,7 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
     this.searchTerm$ = this.store.pipe(select(getSearchTerm));
     this.searchLoading$ = this.store.pipe(select(getSearchLoading));
     this.products$ = this.store.pipe(select(getSearchProducts));
+    this.filteredProducts$ = this.store.pipe(select(getFilteredProducts));
     this.totalItems$ = this.store.pipe(select(getTotalItems));
     this.viewType$ = this.store.pipe(select(getViewType));
     this.sortBy$ = this.store.pipe(select(getSortBy));

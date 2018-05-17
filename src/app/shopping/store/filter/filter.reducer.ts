@@ -3,32 +3,35 @@ import { FilterActions, FilterActionTypes } from './filter.actions';
 
 export interface FilterState {
   loading: boolean;
-  availablefilter: FilterNavigation;
+  availableFilter: FilterNavigation;
   products: string[];
 }
 
 export const initialState: FilterState = {
   loading: false,
-  availablefilter: null,
+  availableFilter: null,
   products: null,
 };
 
 export function filterReducer(state = initialState, action: FilterActions): FilterState {
   switch (action.type) {
-    case FilterActionTypes.LoadFilterForCategory: {
+    case FilterActionTypes.LoadFilterForCategory:
+    case FilterActionTypes.LoadFilterForSearch: {
       return { ...initialState, loading: true };
     }
-    case FilterActionTypes.LoadFilterForCategorySuccess: {
+    case FilterActionTypes.LoadFilterForCategorySuccess:
+    case FilterActionTypes.LoadFilterForSearchSuccess: {
       return {
         ...state,
-        availablefilter: action.payload,
+        availableFilter: action.payload,
         loading: false,
       };
     }
-    case FilterActionTypes.LoadFilterForCategoryFail: {
+    case FilterActionTypes.LoadFilterForCategoryFail:
+    case FilterActionTypes.LoadFilterForSearchFail: {
       return {
         ...state,
-        availablefilter: null,
+        availableFilter: null,
         loading: false,
       };
     }
@@ -39,9 +42,10 @@ export function filterReducer(state = initialState, action: FilterActions): Filt
       };
     }
     case FilterActionTypes.ApplyFilterSuccess: {
+      const { availableFilter } = action.payload;
       return {
         ...state,
-        availablefilter: action.payload,
+        availableFilter,
         loading: false,
       };
     }
