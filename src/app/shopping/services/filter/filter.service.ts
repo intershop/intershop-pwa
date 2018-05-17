@@ -8,6 +8,8 @@ import { FilterNavigationData } from '../../../models/filter-navigation/filter-n
 import { FilterNavigationMapper } from '../../../models/filter-navigation/filter-navigation.mapper';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { Link } from '../../../models/link/link.model';
+import { SearchParameterMapper } from '../../../models/search-parameter/search-parameter.mapper';
+import { SearchParameter } from '../../../models/search-parameter/search-parameter.model';
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
@@ -25,15 +27,22 @@ export class FilterService {
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
+  getFilterForSearch(searchTerm: string): Observable<FilterNavigation> {
+    const searchParameter = SearchParameterMapper.toData({ queryTerm: searchTerm } as SearchParameter);
+    return this.apiService
+      .get<FilterNavigationData>(`filters/blablub;SearchParameter=${searchParameter}`)
+      .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
+  }
+
   applyFilter(filterName: string, searchParameter: string): Observable<FilterNavigation> {
     return this.apiService
-      .get<FilterNavigationData>('filters/' + filterName + ';SearchParameter=' + searchParameter)
+      .get<FilterNavigationData>(`filters/${filterName};SearchParameter=${searchParameter}`)
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
   getProductSkusForFilter(filterName: string, searchParameter: string): Observable<string[]> {
     return this.apiService
-      .get<{ elements: Link[] }>('filters/' + filterName + ';SearchParameter=' + searchParameter + '/hits')
+      .get<{ elements: Link[] }>(`filters/${filterName};SearchParameter=${searchParameter}/hits`)
       .pipe(map(e => e.elements), map((e: Link[]) => e.map(n => n.uri.split('/')[1])));
   }
 

@@ -24,6 +24,10 @@ describe('Search Result Component', () => {
           template: 'Products List Component',
           inputs: ['products', 'viewType'],
         }),
+        MockComponent({
+          selector: 'ish-filter-navigation',
+          template: 'Filter Navigation',
+        }),
       ],
     }).compileComponents();
   }));

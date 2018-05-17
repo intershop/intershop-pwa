@@ -11,6 +11,7 @@ import { catchError, distinctUntilKeyChanged, filter, map, mergeMap, switchMap }
 import { CoreState } from '../../../core/store/core.state';
 import * as fromStore from '../../store/categories';
 import * as filterActions from '../filter/filter.actions';
+import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
 
 @Injectable()
@@ -35,6 +36,19 @@ export class FilterEffects {
   );
 
   @Effect()
+  loadFilterForSearch$ = this.actions$.pipe(
+    ofType(filterActions.FilterActionTypes.LoadFilterForSearch),
+    mergeMap((action: filterActions.LoadFilterForSearch) =>
+      this.filterService
+        .getFilterForSearch(action.payload)
+        .pipe(
+          map(filterNavigation => new filterActions.LoadFilterForSearchSuccess(filterNavigation)),
+          catchError(error => of(new filterActions.LoadFilterForSearchFail(error)))
+        )
+    )
+  );
+
+  @Effect()
   loadFilterIfCategoryWasSelected$ = this.store$.pipe(
     select(fromStore.getSelectedCategory),
     filter(category => !!category),
@@ -48,6 +62,12 @@ export class FilterEffects {
           pathCategories: undefined,
         } as Category)
     )
+  );
+
+  @Effect()
+  loadFilterForSearchIfSearchSuccess$ = this.actions$.pipe(
+    ofType(SearchActionTypes.SearchProductsSuccess),
+    map((action: SearchProductsSuccess) => new filterActions.LoadFilterForSearch(action.payload.searchTerm))
   );
 
   @Effect()
