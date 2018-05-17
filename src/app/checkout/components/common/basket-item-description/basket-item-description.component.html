@@ -24,7 +24,7 @@
     {{surcharge.displayName}}
     <span *ngIf="!surcharge.displayName">{{surcharge.text}}</span>
     <span class="text-nowrap">
-      {{ surcharge.amount.value | currency: surcharge.amount.currencyMnemonic }}
+      {{ surcharge.amount | ishPrice }}
     </span>
     <ng-template #SurchargeDescription>
       <span [innerHTML]="surcharge.description"></span>
