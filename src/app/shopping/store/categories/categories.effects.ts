@@ -48,10 +48,9 @@ export class CategoriesEffects {
     ofType(categoriesActions.CategoriesActionTypes.SelectCategory),
     map((action: categoriesActions.SelectCategory) => action.payload),
     filter(id => !!id),
-    map(CategoryHelper.getCategoryPathUniqueIds),
     withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
-    map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
-    mergeMap(ids => ids.map(id => new categoriesActions.LoadCategory(id)))
+    filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
+    map(([id]) => new categoriesActions.LoadCategory(id))
   );
 
   @Effect()
