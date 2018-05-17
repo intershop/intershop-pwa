@@ -11,7 +11,7 @@ import { capture } from 'ts-mockito/lib/ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
-import { Category } from '../../../models/category/category.model';
+import { Category, CategoryHelper } from '../../../models/category/category.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { CategoriesService } from '../../services/categories/categories.service';
@@ -365,5 +365,54 @@ describe('Categories Effects', () => {
         });
       })
     );
+  });
+
+  describe('selectedCategoryAvailable$', () => {
+    it('should not fire when selected category is not available', () => {
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = of(new fromActions.SelectCategory('A'));
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(cold('-----'));
+    });
+
+    it('should not fire when selected category is available but not completely loaded', () => {
+      store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([{ uniqueId: 'A' }] as Category[])));
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = of(new fromActions.SelectCategory('A'));
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(cold('-----'));
+    });
+
+    it('should fire when selected category is available and completely loaded', () => {
+      store$.dispatch(
+        new fromActions.LoadCategorySuccess(
+          categoryTree([{ uniqueId: 'A', completenessLevel: CategoryHelper.maxCompletenessLevel }] as Category[])
+        )
+      );
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = of(new fromActions.SelectCategory('A'));
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(
+        cold('a', { a: new fromActions.SelectedCategoryAvailable('A') })
+      );
+    });
+
+    it('should not fire twice when category is selected multiple times', () => {
+      store$.dispatch(
+        new fromActions.LoadCategorySuccess(
+          categoryTree([{ uniqueId: 'A', completenessLevel: CategoryHelper.maxCompletenessLevel }] as Category[])
+        )
+      );
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = hot('-a-a-a', { a: new fromActions.SelectCategory('A') });
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(
+        cold('-a-----', { a: new fromActions.SelectedCategoryAvailable('A') })
+      );
+    });
   });
 });
