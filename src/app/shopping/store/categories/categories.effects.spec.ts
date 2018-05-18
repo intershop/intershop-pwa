@@ -336,16 +336,34 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
 
-        actions$ = hot('a', {
+        actions$ = hot('(ab)', {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId',
             params: { categoryUniqueId: category.uniqueId },
             queryParams: {},
           }),
+          b: new fromActions.SelectedCategoryAvailable(category.uniqueId),
         });
 
         const action = new productsActions.LoadProductsForCategory(category.uniqueId);
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
+      });
+
+      it('should not trigger action when we are on a product page', () => {
+        category.hasOnlineProducts = true;
+        store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
+        store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
+
+        actions$ = hot('(ab)', {
+          a: new RouteNavigation({
+            path: 'category/:categoryUniqueId/product/:sku',
+            params: { categoryUniqueId: category.uniqueId, sku: 'dummy' },
+            queryParams: {},
+          }),
+          b: new fromActions.SelectedCategoryAvailable(category.uniqueId),
+        });
+
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('------'));
       });
     });
   });
