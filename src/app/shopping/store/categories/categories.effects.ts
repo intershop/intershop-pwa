@@ -105,17 +105,18 @@ export class CategoriesEffects {
   );
 
   /**
-   * Trigger LoadProductsForCategory if we are on a family page
+   * Trigger {@link LoadProductsForCategory} if we are on a family page
    * and the corresponding products were not yet loaded.
    */
   @Effect()
   productOrCategoryChanged$ = combineLatest(
-    this.store.pipe(select(categoriesSelectors.productsForSelectedCategoryAreNotLoaded)),
+    this.actions$.pipe(ofType(categoriesActions.CategoriesActionTypes.SelectedCategoryAvailable)),
     this.actions$.pipe(ofRoute('category/:categoryUniqueId'))
   ).pipe(
-    filter(([needed, correctPath]) => !!needed && !!correctPath),
-    switchMap(() => this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
-    filter(x => !!x),
+    switchMap(() =>
+      this.store.pipe(select(categoriesSelectors.productsForSelectedCategoryAreNotLoaded), filter(needed => needed))
+    ),
+    switchMap(() => this.store.pipe(select(categoriesSelectors.getSelectedCategoryId), filter(uniqueId => !!uniqueId))),
     map(uniqueId => new LoadProductsForCategory(uniqueId))
   );
 
