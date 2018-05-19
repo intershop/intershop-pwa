@@ -39,6 +39,7 @@ import { ShoppingModule } from './shopping/shopping.module';
 // In theory the platformBrowserDynamic method in main.ts could handle this but this breaks server-side rendering.
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from '../environments/environment';
+import { FEATURE_TOGGLES } from './shared/feature-toggle/configurations/injection-keys';
 
 // tslint:disable-next-line: no-any
 export const metaReducers: MetaReducer<any>[] = [
@@ -84,6 +85,7 @@ export const metaReducers: MetaReducer<any>[] = [
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+    { provide: FEATURE_TOGGLES, useValue: environment['features'] },
   ],
   bootstrap: [AppComponent],
 })
