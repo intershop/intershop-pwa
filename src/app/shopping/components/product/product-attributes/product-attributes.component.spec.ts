@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
 import { AttributeToStringPipe } from '../../../../shared/pipes/attribute.pipe';
 import { PricePipe } from '../../../../shared/pipes/price.pipe';
@@ -25,6 +25,10 @@ describe('Product Attributes Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.product = product;
+
+    const translate: TranslateService = TestBed.get(TranslateService);
+    translate.setDefaultLang('en');
+    translate.use('en');
   });
 
   it('should be created', () => {
