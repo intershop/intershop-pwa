@@ -13,7 +13,12 @@ const routes: Routes = [
     canActivate: [FeatureToggleGuard],
     data: { feature: 'compare' },
   },
-  { path: 'recently', loadChildren: './containers/recently-page/recently-page.module#RecentlyPageModule' },
+  {
+    path: 'recently',
+    loadChildren: './containers/recently-page/recently-page.module#RecentlyPageModule',
+    canActivate: [FeatureToggleGuard],
+    data: { feature: 'recently' },
+  },
   { path: 'search', loadChildren: './containers/search-page/search-page.module#SearchPageModule' },
 ];
 
