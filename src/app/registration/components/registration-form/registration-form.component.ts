@@ -15,7 +15,7 @@ import { UUID } from 'angular2-uuid';
 import { CustomValidators } from 'ng2-validation';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AddressFormService } from '../../../forms/address';
+import { AddressFormFactoryProvider } from '../../../forms/address/configurations/address-form-factory.provider';
 import {
   markAsDirtyRecursive,
   markFormControlsAsInvalid,
@@ -47,7 +47,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
   form: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder, private afs: AddressFormService) {}
+  constructor(private fb: FormBuilder, private afs: AddressFormFactoryProvider) {}
 
   ngOnInit() {
     this.form = this.fb.group({

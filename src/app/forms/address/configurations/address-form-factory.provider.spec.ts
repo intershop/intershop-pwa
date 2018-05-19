@@ -3,10 +3,10 @@ import { FormBuilder } from '@angular/forms';
 import { AddressFormDEFactory } from '../components/address-form-de/address-form-de.factory';
 import { AddressFormDefaultFactory } from '../components/address-form-default/address-form-default.factory';
 import { ADDRESS_FORM_FACTORY } from '../components/address-form/address-form.factory';
-import { AddressFormService } from './address-form.service';
+import { AddressFormFactoryProvider } from './address-form-factory.provider';
 
-describe('Address Form Service', () => {
-  let addressFormService: AddressFormService;
+describe('Address Form Factory Provider', () => {
+  let addressFormService: AddressFormFactoryProvider;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,10 +15,10 @@ describe('Address Form Service', () => {
           provide: ADDRESS_FORM_FACTORY,
           useValue: [new AddressFormDefaultFactory(new FormBuilder()), new AddressFormDEFactory(new FormBuilder())],
         },
-        AddressFormService,
+        AddressFormFactoryProvider,
       ],
     });
-    addressFormService = TestBed.get(AddressFormService);
+    addressFormService = TestBed.get(AddressFormFactoryProvider);
   });
 
   it('should be created', () => {
