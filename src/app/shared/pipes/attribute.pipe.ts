@@ -5,7 +5,7 @@ import { Attribute } from '../../models/attribute/attribute.model';
 import { Price } from '../../models/price/price.model';
 import { formatPrice } from './price.pipe';
 
-@Pipe({ name: 'ishAttribute' })
+@Pipe({ name: 'ishAttribute', pure: false })
 export class AttributeToStringPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
@@ -22,6 +22,10 @@ export class AttributeToStringPipe implements PipeTransform {
   }
 
   transform(data: Attribute, valuesSeparator: string = ', '): string {
+    if (!this.translateService.currentLang) {
+      return 'undefined';
+    }
+
     switch (data.type) {
       case 'String':
         return data.value;

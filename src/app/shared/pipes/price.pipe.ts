@@ -8,12 +8,12 @@ export function formatPrice(price: Price, lang: string): string {
   return formatCurrency(price.value, lang, symbol);
 }
 
-@Pipe({ name: 'ishPrice' })
+@Pipe({ name: 'ishPrice', pure: false })
 export class PricePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   transform(data: Price): string {
-    if (!data) {
+    if (!data || !this.translateService.currentLang) {
       return 'undefined';
     }
     switch (data.type) {
