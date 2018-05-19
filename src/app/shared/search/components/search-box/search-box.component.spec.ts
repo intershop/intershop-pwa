@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
@@ -74,14 +74,11 @@ describe('Search Box Component', () => {
       triggerSearch('cam', [{ term: 'Cameras' }, { term: 'Camcorders' }]);
     });
 
-    it(
-      'should show results when suggestions are available',
-      fakeAsync(() => {
-        const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
+    it('should show results when suggestions are available', () => {
+      const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
 
-        expect(ul.querySelectorAll('li')).toHaveLength(2);
-      })
-    );
+      expect(ul.querySelectorAll('li')).toHaveLength(2);
+    });
 
     it('should show popup when search results are found', () => {
       expect(component.isHidden).toBeFalse();
@@ -90,16 +87,16 @@ describe('Search Box Component', () => {
 
   describe('with inputs', () => {
     it('should show button text when buttonText is set', () => {
-      component.buttonText = 'buttonTextInput';
+      component.configuration = { buttonText: 'buttonTextInput' };
       fixture.detectChanges();
       const button = element.querySelector<HTMLButtonElement>('.btn-search');
-      expect(button.textContent).toContain(component.buttonText);
+      expect(button.textContent).toContain('buttonTextInput');
     });
     it('should show placeholder text when placeholderText is set', () => {
-      component.placeholderText = 'placeholderTextInput';
+      component.configuration = { placeholderText: 'placeholderTextInput' };
       fixture.detectChanges();
       const inputElement = element.querySelector<HTMLInputElement>('.searchTerm');
-      expect(inputElement.getAttribute('placeholder')).toBe(component.placeholderText);
+      expect(inputElement.getAttribute('placeholder')).toBe('placeholderTextInput');
     });
   });
 });

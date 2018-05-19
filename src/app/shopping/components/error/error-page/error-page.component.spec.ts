@@ -18,7 +18,7 @@ describe('Error Page Component', () => {
         MockComponent({
           selector: 'ish-search-box-container',
           template: 'Search Box Container',
-          inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
+          inputs: ['configuration'],
         }),
       ],
     }).compileComponents();
