@@ -17,5 +17,7 @@ export const environment = {
     { lang: 'de_DE', currency: 'EUR', value: 'de', displayName: 'German', displayLong: 'German (Germany)' },
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
-  features: {},
+  features: {
+    compare: true,
+  },
 };

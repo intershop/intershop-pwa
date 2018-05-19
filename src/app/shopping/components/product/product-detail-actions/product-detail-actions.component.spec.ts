@@ -5,6 +5,7 @@ import * as using from 'jasmine-data-provider';
 import { instance, mock, spy, verify } from 'ts-mockito/lib/ts-mockito';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product, ProductType } from '../../../../models/product/product.model';
+import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
 describe('Product Detail Actions Component', () => {
@@ -16,7 +17,7 @@ describe('Product Detail Actions Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, TranslateModule.forRoot()],
+      imports: [CommonModule, TranslateModule.forRoot(), FeatureToggleModule.testingFeatures({ compare: true })],
       providers: [
         { provide: Location, useFactory: () => instance(mock(Location)) },
         { provide: ICM_BASE_URL, useValue: 'http://example.org' },
