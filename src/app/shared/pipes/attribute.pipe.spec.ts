@@ -4,7 +4,6 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { AttributeToStringPipe } from './attribute.pipe';
-import { PricePipe } from './price.pipe';
 
 describe('Attribute Pipe', () => {
   let pipe: AttributeToStringPipe;
@@ -17,7 +16,7 @@ describe('Attribute Pipe', () => {
 
     TestBed.configureTestingModule({
       imports: [CommonModule, TranslateModule.forRoot()],
-      providers: [AttributeToStringPipe, PricePipe],
+      providers: [AttributeToStringPipe],
     });
     pipe = TestBed.get(AttributeToStringPipe);
     translateService = TestBed.get(TranslateService);

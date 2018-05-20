@@ -13,8 +13,6 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { LoadingComponent } from './components/loading/loading.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
 import { PipesModule } from './pipes.module';
-import { AttributeToStringPipe } from './pipes/attribute.pipe';
-import { PricePipe } from './pipes/price.pipe';
 
 @NgModule({
   imports: [
@@ -49,8 +47,7 @@ import { PricePipe } from './pipes/price.pipe';
     ModalDialogComponent,
     AccordionComponent,
     AccordionItemComponent,
-    AttributeToStringPipe,
-    PricePipe,
+    PipesModule,
   ],
 })
 export class SharedModule {}
