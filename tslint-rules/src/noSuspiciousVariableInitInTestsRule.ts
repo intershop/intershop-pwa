@@ -19,7 +19,7 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
   }
 
   visitSourceFile(sourceFile: ts.SourceFile) {
-    if (sourceFile.fileName.search('.spec.ts') > 0) {
+    if (sourceFile.fileName.endsWith('.spec.ts')) {
       const describeBody = RuleHelpers.getDescribeBody(sourceFile);
       if (describeBody) {
         for (let i = 0; i < describeBody.getChildCount(); i++) {

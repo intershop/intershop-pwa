@@ -7,7 +7,7 @@ const MULTI_LINE_COMMENT_REGEX = /\/\*[^(\*\/)]*(?=(it|describe|xit|xdescribe|fi
 
 class NoCommentedOutTestsWalker extends Lint.RuleWalker {
   visitSourceFile(sourceFile: ts.SourceFile) {
-    if (sourceFile.fileName.search('.spec.ts') > 0) {
+    if (sourceFile.fileName.endsWith('.spec.ts')) {
       forEachComment(sourceFile, (fullFileText: string, commentRange: ts.CommentRange) => {
         const comment: string = fullFileText.substring(commentRange.pos, commentRange.end);
         if (SINGLE_LINE_COMMENT_REGEX.test(comment) || MULTI_LINE_COMMENT_REGEX.test(comment)) {
