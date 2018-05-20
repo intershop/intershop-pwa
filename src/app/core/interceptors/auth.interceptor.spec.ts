@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { _setToken, AuthInterceptor } from './auth.interceptor';
 
-describe('Auth Interceptor Service', () => {
+describe('Auth Interceptor', () => {
   const responseData = `{"name":"test","age":"34"}`;
   let getRequest: HttpRequest<any>;
 

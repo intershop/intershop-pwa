@@ -9,7 +9,7 @@ import { CoreState } from '../store/core.state';
 import { ErrorActionTypes } from '../store/error';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
-describe('ApiServiceErrorHandler dispatchCommunicationErrors Method', () => {
+describe('Api Service Errorhandler', () => {
   let apiServiceErrorHandler: ApiServiceErrorHandler;
 
   let storeMock$: Store<CoreState>;

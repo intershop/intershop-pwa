@@ -2,7 +2,7 @@ import { BasketData } from './basket.interface';
 import { BasketMapper } from './basket.mapper';
 import { Basket } from './basket.model';
 
-describe('basketFactory', () => {
+describe('Basket Mapper', () => {
   describe('fromData', () => {
     it(`should return Basket when getting BasketData`, () => {
       const basketData = {

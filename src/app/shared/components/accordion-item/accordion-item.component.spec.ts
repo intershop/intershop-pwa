@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { AccordionItemComponent } from './accordion-item.component';
 
-describe('Accordion Panel Component', () => {
+describe('Accordion Item Component', () => {
   let component: AccordionItemComponent;
   let element: HTMLElement;
   let fixture: ComponentFixture<AccordionItemComponent>;

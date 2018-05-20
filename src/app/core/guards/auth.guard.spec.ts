@@ -10,7 +10,7 @@ import { coreReducers } from '../store/core.system';
 import { LoginUserSuccess } from '../store/user';
 import { AuthGuard } from './auth.guard';
 
-describe('AuthGuard', () => {
+describe('Auth Guard', () => {
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
     let store$: Store<CoreState>;

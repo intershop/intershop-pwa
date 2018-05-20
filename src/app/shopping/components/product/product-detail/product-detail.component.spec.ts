@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
 import { ProductDetailComponent } from './product-detail.component';
 
-describe('ProductDetailComponent', () => {
+describe('Product Detail Component', () => {
   let component: ProductDetailComponent;
   let fixture: ComponentFixture<ProductDetailComponent>;
   let element: HTMLElement;

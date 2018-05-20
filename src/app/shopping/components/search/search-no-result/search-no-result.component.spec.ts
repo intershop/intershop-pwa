@@ -4,7 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { SearchNoResultComponent } from './search-no-result.component';
 
-describe('SearchNoResultComponent', () => {
+describe('Search No Result Component', () => {
   let component: SearchNoResultComponent;
   let fixture: ComponentFixture<SearchNoResultComponent>;
   let element: HTMLElement;

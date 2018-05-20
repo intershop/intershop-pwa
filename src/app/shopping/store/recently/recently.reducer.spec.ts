@@ -1,7 +1,7 @@
 import { AddToRecently, ClearRecently, RecentlyAction } from './recently.actions';
 import { initialState, recentlyReducer } from './recently.reducer';
 
-describe('recentlyReducer', () => {
+describe('Recently Reducer', () => {
   it('should return initial state when falsy state is reduced', () => {
     expect(recentlyReducer(undefined, {} as RecentlyAction)).toEqual(initialState);
   });
