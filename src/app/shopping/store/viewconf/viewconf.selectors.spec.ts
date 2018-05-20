@@ -1,7 +1,7 @@
 import { ViewconfState } from './viewconf.reducer';
 import * as fromSelectors from './viewconf.selectors';
 
-describe('CompareListSelectors', () => {
+describe('Viewconf Selectors', () => {
   describe('getSortBy', () => {
     it('should return the sortBy setting when queried', () => {
       const state: ViewconfState = {

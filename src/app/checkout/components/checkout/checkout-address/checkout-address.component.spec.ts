@@ -4,7 +4,7 @@ import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CheckoutAddressComponent } from './checkout-address.component';
 
-describe('CheckoutAddressComponent', () => {
+describe('Checkout Address Component', () => {
   let component: CheckoutAddressComponent;
   let fixture: ComponentFixture<CheckoutAddressComponent>;
   let element: HTMLElement;

@@ -3,7 +3,7 @@ import { Category } from '../category/category.model';
 import { CategoryTreeHelper } from './category-tree.helper';
 import { CategoryTree } from './category-tree.model';
 
-describe('CategoryTreeHelper', () => {
+describe('Category Tree Helper', () => {
   describe('empty()', () => {
     it('should create an empty tree instance when called', () => {
       const empty = CategoryTreeHelper.empty();

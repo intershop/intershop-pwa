@@ -15,7 +15,7 @@ import { coreReducers } from '../core.system';
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';
 
-describe('UserEffects', () => {
+describe('User Effects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
   let store$: Store<CoreState>;

@@ -5,7 +5,7 @@ import { Category } from '../../../../../models/category/category.model';
 import { categoryTree } from '../../../../../utils/dev/test-data-utils';
 import { SubCategoryNavigationComponent } from './sub-category-navigation.component';
 
-describe('SubCategory Navigation Component', () => {
+describe('Sub Category Navigation Component', () => {
   let fixture: ComponentFixture<SubCategoryNavigationComponent>;
   let component: SubCategoryNavigationComponent;
   let element: HTMLElement;

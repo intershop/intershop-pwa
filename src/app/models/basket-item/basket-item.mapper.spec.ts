@@ -2,7 +2,7 @@ import { BasketItemData } from './basket-item.interface';
 import { BasketItemMapper } from './basket-item.mapper';
 import { BasketItem } from './basket-item.model';
 
-describe('basketItemFactory', () => {
+describe('Basket Item Mapper', () => {
   describe('fromData', () => {
     it(`should return BasketItem when getting BasketItemData with a product.sku reference`, () => {
       const basketItemData = {

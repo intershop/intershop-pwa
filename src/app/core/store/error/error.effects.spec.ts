@@ -8,7 +8,7 @@ import { coreReducers } from '../core.system';
 import { CommunicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';
 
-describe('ErrorEffects', () => {
+describe('Error Effects', () => {
   let effects: ErrorEffects;
   let routerMock: Router;
   let store$: Store<CoreState>;

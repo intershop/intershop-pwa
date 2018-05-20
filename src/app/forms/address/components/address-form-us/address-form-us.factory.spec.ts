@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 
 import { AddressFormUSFactory } from './address-form-us.factory';
 
-describe('AddressFormDEFactory', () => {
+describe('Address Form Us Factory', () => {
   let addressFactory: AddressFormUSFactory;
 
   beforeEach(() => {

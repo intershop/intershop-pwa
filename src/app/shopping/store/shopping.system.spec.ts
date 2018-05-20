@@ -27,7 +27,7 @@ import { getRecentlyProducts, RecentlyActionTypes } from './recently';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
 
-describe('Shopping Store', () => {
+describe('Shopping System', () => {
   const DEBUG = false;
   let store: LogEffects;
   let router: Router;

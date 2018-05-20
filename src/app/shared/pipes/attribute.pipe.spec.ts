@@ -6,7 +6,7 @@ import * as using from 'jasmine-data-provider';
 import { AttributeToStringPipe } from './attribute.pipe';
 import { PricePipe } from './price.pipe';
 
-describe('Attribute toString Pipe', () => {
+describe('Attribute Pipe', () => {
   let pipe: AttributeToStringPipe;
   let translateService: TranslateService;
 

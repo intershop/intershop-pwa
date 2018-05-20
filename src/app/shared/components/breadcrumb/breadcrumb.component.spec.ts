@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
-describe('BreadCrumb Component', () => {
+describe('Breadcrumb Component', () => {
   let fixture: ComponentFixture<BreadcrumbComponent>;
   let component: BreadcrumbComponent;
   let element: HTMLElement;
