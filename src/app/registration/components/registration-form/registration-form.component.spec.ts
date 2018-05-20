@@ -2,7 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { AddressFormFactory, AddressFormService } from '../../../forms/address/index';
+import { AddressFormFactory } from '../../../forms/address/components/address-form/address-form.factory';
+import { AddressFormFactoryProvider } from '../../../forms/address/configurations/address-form-factory.provider';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { RegistrationFormComponent } from './registration-form.component';
@@ -17,8 +18,8 @@ describe('Registration Form Component', () => {
     const addressFormFactoryMock = mock(AddressFormFactory);
     when(addressFormFactoryMock.getGroup(anything())).thenReturn(new FormGroup({}));
 
-    const addressFormServiceMock = mock(AddressFormService);
-    when(addressFormServiceMock.getFactory(anything())).thenReturn(addressFormFactoryMock);
+    const addressFormFactoryProviderMock = mock(AddressFormFactoryProvider);
+    when(addressFormFactoryProviderMock.getFactory(anything())).thenReturn(addressFormFactoryMock);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -34,7 +35,7 @@ describe('Registration Form Component', () => {
           inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles'],
         }),
       ],
-      providers: [{ provide: AddressFormService, useFactory: () => instance(addressFormServiceMock) }],
+      providers: [{ provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) }],
       imports: [FormsSharedModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));

@@ -45,7 +45,7 @@ class ProjectStructureWalker extends Lint.RuleWalker {
         .map(pattern => new RegExp(pattern).test(this.fileName))
         .reduce((l, r) => l || r);
       if (!matchesPathPattern) {
-        this.addFailureAtNode(sourceFile, `this file path does not match any defined patterns`);
+        this.addFailureAt(0, 1, `this file path does not match any defined patterns`);
       }
       super.visitSourceFile(sourceFile);
     }
