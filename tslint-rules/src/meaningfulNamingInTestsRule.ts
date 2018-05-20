@@ -20,7 +20,7 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
   }
 
   visitSourceFile(sourceFile: SourceFile) {
-    if (sourceFile.fileName.search('.spec.ts') > 0) {
+    if (sourceFile.fileName.endsWith('.spec.ts')) {
       const statements = sourceFile.statements.filter(
         stmt => stmt.kind === SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'
       );

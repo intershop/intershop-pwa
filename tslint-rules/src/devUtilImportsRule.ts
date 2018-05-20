@@ -4,7 +4,7 @@ import { RuleHelpers } from './ruleHelpers';
 
 class DevUtilImportsWalker extends Lint.RuleWalker {
   visitSourceFile(sourceFile: SourceFile) {
-    if (sourceFile.fileName.search(/.spec.ts/) < 0) {
+    if (!sourceFile.fileName.endsWith('.spec.ts')) {
       super.visitSourceFile(sourceFile);
     }
   }
