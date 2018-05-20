@@ -6,7 +6,7 @@ import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { BasketItemDescriptionComponent } from './basket-item-description.component';
 
-describe('BasketItemDescriptionComponent', () => {
+describe('Basket Item Description Component', () => {
   let component: BasketItemDescriptionComponent;
   let fixture: ComponentFixture<BasketItemDescriptionComponent>;
   let element: HTMLElement;

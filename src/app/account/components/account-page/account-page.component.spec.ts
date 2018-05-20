@@ -4,7 +4,7 @@ import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { AccountPageComponent } from './account-page.component';
 
-describe('Account Overview Component', () => {
+describe('Account Page Component', () => {
   let fixture: ComponentFixture<AccountPageComponent>;
   let component: AccountPageComponent;
   let element: HTMLElement;

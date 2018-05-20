@@ -9,7 +9,7 @@ import { ApiService } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
-describe('ApiService', () => {
+describe('Api Service', () => {
   const BASE_URL = 'http://www.example.org';
   let apiService: ApiService;
   let storeMock$: Store<CoreState>;

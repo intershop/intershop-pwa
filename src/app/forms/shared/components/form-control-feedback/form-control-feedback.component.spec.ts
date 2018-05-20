@@ -4,7 +4,7 @@ import { BrowserModule, By } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
-describe('FormControlFeedbackComponent', () => {
+describe('Form Control Feedback Component', () => {
   let fixture: ComponentFixture<FormControlFeedbackComponent>;
   let component: FormControlFeedbackComponent;
   let element: HTMLElement;

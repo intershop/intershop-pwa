@@ -5,7 +5,7 @@ import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { BasketCostSummaryComponent } from './basket-cost-summary.component';
 
-describe('BasketCostSummaryComponent', () => {
+describe('Basket Cost Summary Component', () => {
   let component: BasketCostSummaryComponent;
   let fixture: ComponentFixture<BasketCostSummaryComponent>;
   let element: HTMLElement;

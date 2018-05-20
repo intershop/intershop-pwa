@@ -1,14 +1,44 @@
 import * as Lint from 'tslint';
 import { getNextToken } from 'tsutils';
-import { Identifier, SourceFile } from 'typescript';
+import { Identifier, SourceFile, StringLiteral, SyntaxKind } from 'typescript';
 
 const DESCRIPTION_REGEX = /^('|`|")should([\s\S]*(when|if|until|on|for|to|after)[\s\S]*| be created)('|`|")$/;
 
 const DESCRIPTION_VIEWPOINT_ERROR_REGEX = /^('|`)should (check|test)/;
 
 class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
+  interpolatedName(filePath: string) {
+    const fileName = filePath
+      .split('/')
+      .filter((val, idx, array) => idx === array.length - 1)[0]
+      .replace('.spec.ts', '');
+    const className = fileName
+      .split(/[\.-]+/)
+      .map(part => part.substring(0, 1).toUpperCase() + part.substring(1))
+      .reduce((acc, val) => acc + ' ' + val);
+    return className;
+  }
+
   visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search('.spec.ts') > 0) {
+      const statements = sourceFile.statements.filter(
+        stmt => stmt.kind === SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'
+      );
+      if (statements.length && statements[0].getChildAt(0)) {
+        const describeText = statements[0]
+          .getChildAt(0)
+          .getChildAt(2)
+          .getChildAt(0) as StringLiteral;
+        const interpolated = this.interpolatedName(sourceFile.fileName);
+        if (describeText.text !== interpolated) {
+          const fix = new Lint.Replacement(describeText.getStart(), describeText.getWidth(), `'${interpolated}'`);
+          this.addFailureAtNode(
+            describeText,
+            `string does not match filename, expected '${interpolated}' found '${describeText.text}'`,
+            fix
+          );
+        }
+      }
       super.visitSourceFile(sourceFile);
     }
   }

@@ -5,7 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { PricePipe } from './price.pipe';
 
-describe('Price toString Pipe', () => {
+describe('Price Pipe', () => {
   let pipe: PricePipe;
   let translateService: TranslateService;
 

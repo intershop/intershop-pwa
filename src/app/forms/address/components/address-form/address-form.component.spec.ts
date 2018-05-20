@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 import { AddressFormComponent } from './address-form.component';
 
-describe('Select Component', () => {
+describe('Address Form Component', () => {
   let component: AddressFormComponent;
   let fixture: ComponentFixture<AddressFormComponent>;
   let element: HTMLElement;

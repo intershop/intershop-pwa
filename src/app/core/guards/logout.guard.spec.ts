@@ -6,7 +6,7 @@ import { CoreState } from '../store/core.state';
 import { UserActionTypes } from '../store/user';
 import { LogoutGuard } from './logout.guard';
 
-describe('LogoutGuard', () => {
+describe('Logout Guard', () => {
   describe('canActivate()', () => {
     let logoutGuard: LogoutGuard;
     let storeMock$: Store<CoreState>;

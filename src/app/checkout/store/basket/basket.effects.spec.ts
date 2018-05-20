@@ -19,7 +19,7 @@ import { checkoutReducers } from '../checkout.system';
 import * as basketActions from './basket.actions';
 import { BasketEffects } from './basket.effects';
 
-describe('BasketEffects', () => {
+describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let effects: BasketEffects;

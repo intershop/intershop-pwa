@@ -4,7 +4,7 @@ import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductCompareStatusContainerComponent } from './product-compare-status.container';
 
-describe('Product Compare Container', () => {
+describe('Product Compare Status Container', () => {
   let component: ProductCompareStatusContainerComponent;
   let fixture: ComponentFixture<ProductCompareStatusContainerComponent>;
   let element: HTMLElement;

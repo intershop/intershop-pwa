@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RegistrationPersonalFormComponent } from './registration-personal-form.component';
 
-describe('RegistrationPersonalFormComponent', () => {
+describe('Registration Personal Form Component', () => {
   let component: RegistrationPersonalFormComponent;
   let fixture: ComponentFixture<RegistrationPersonalFormComponent>;
   let element: HTMLElement;

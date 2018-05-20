@@ -1,7 +1,7 @@
 import * as fromActions from './compare.actions';
 import { compareReducer, initialState } from './compare.reducer';
 
-describe('CompareReducer', () => {
+describe('Compare Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when queried with undefined state', () => {
       const action = {} as fromActions.CompareAction;

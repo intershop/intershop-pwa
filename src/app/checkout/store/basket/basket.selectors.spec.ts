@@ -12,7 +12,7 @@ import { checkoutReducers } from '../checkout.system';
 import { LoadBasket, LoadBasketFail, LoadBasketItemsSuccess, LoadBasketSuccess } from './basket.actions';
 import { getBasketError, getBasketLoading, getCurrentBasket } from './basket.selectors';
 
-describe('Basket selectors', () => {
+describe('Basket Selectors', () => {
   let store$: Store<CheckoutState>;
 
   let basket$: Observable<Basket>;

@@ -2,7 +2,7 @@ import { inject, TestBed } from '@angular/core/testing';
 
 import { RegionService } from './region.service';
 
-describe('RegionService', () => {
+describe('Region Service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [RegionService],

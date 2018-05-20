@@ -6,7 +6,7 @@ import { InputComponent } from '../../../forms/shared/components/form-controls/i
 import { SelectSecurityQuestionComponent } from '../../../forms/shared/components/form-controls/select/select-security-question/select-security-question.component';
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form.component';
 
-describe('Credentials Form Component', () => {
+describe('Registration Credentials Form Component', () => {
   let component: RegistrationCredentialsFormComponent;
   let fixture: ComponentFixture<RegistrationCredentialsFormComponent>;
   let element: HTMLElement;

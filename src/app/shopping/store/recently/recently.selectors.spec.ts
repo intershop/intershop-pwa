@@ -8,7 +8,7 @@ import { shoppingReducers } from '../shopping.system';
 import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyProducts, getRecentlyViewedProducts } from './recently.selectors';
 
-describe('recently selectors', () => {
+describe('Recently Selectors', () => {
   let store$: LogEffects;
 
   beforeEach(() => {

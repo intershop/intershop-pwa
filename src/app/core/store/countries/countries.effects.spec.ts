@@ -12,7 +12,7 @@ import { coreReducers } from '../core.system';
 import { LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { CountriesEffects } from './countries.effects';
 
-describe('CountriesEffects', () => {
+describe('Countries Effects', () => {
   let actions$: Observable<Action>;
   let effects: CountriesEffects;
   let countryServiceMock: CountryService;
