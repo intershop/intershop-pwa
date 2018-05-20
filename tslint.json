@@ -247,7 +247,7 @@
           // enforce specific folder structure for modules
           "^.*/src/app/[a-z-]+/(components/|containers/|store/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$",
           // forms and shared may have submodules
-          "^.*/src/app/(forms|shared)/[a-z-]+/(components/|containers/|directives/|validators/|services/|interceptors/|guards/|configurations/|utils/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
+          "^.*/src/app/(forms|shared)/[a-z-]+/(components/|containers/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/|utils/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
         ],
         "patterns": [
           // root components

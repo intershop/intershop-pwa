@@ -5,7 +5,7 @@ import { RuleHelpers } from './ruleHelpers';
 
 class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {
   visitSourceFile(sourceFile: SourceFile) {
-    if (sourceFile.fileName.search('.spec.ts') > 0) {
+    if (sourceFile.fileName.endsWith('.spec.ts')) {
       super.visitSourceFile(sourceFile);
     }
   }
