@@ -12,7 +12,7 @@ import { shoppingReducers } from '../shopping.system';
 import { ChangeSortBy } from './viewconf.actions';
 import { ViewconfEffects } from './viewconf.effects';
 
-describe('ViewconfEffects', () => {
+describe('Viewconf Effects', () => {
   let actions$: Observable<Action>;
   let effects: ViewconfEffects;
   let store$: Store<ShoppingState>;

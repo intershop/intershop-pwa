@@ -2,7 +2,7 @@ import * as using from 'jasmine-data-provider';
 import { CategoryData } from './category.interface';
 import { CategoryMapper } from './category.mapper';
 
-describe('CategoryMapper', () => {
+describe('Category Mapper', () => {
   describe('mapCategoryPath()', () => {
     it('should throw on falsy or empty input', () => {
       expect(() => CategoryMapper.mapCategoryPath(undefined)).toThrowError('input is falsy');

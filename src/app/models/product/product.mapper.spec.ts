@@ -3,7 +3,7 @@ import { ProductData } from './product.interface';
 import { ProductMapper } from './product.mapper';
 import { Product, ProductHelper, ProductType } from './product.model';
 
-describe('ProductFactory', () => {
+describe('Product Mapper', () => {
   describe('fromData', () => {
     it(`should return Product when getting a ProductData`, () => {
       const product: Product = ProductMapper.fromData({ sku: '1' } as ProductData);

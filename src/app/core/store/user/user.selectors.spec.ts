@@ -10,7 +10,7 @@ import { coreReducers } from '../core.system';
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserAuthorized, getUserError } from './user.selectors';
 
-describe('User State Selectors', () => {
+describe('User Selectors', () => {
   let store$: Store<CoreState>;
 
   let userAuthorized$: Observable<boolean>;

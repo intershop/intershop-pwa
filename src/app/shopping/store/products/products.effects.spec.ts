@@ -19,7 +19,7 @@ import * as fromViewconf from '../viewconf';
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
 
-describe('ProductsEffects', () => {
+describe('Products Effects', () => {
   let actions$: Observable<Action>;
   let effects: ProductsEffects;
   let store$: Store<ShoppingState>;

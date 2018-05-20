@@ -8,7 +8,7 @@ import { shoppingReducers } from '../shopping.system';
 import * as fromActions from './compare.actions';
 import { CompareEffects } from './compare.effects';
 
-describe('CompareEffects', () => {
+describe('Compare Effects', () => {
   let actions$: Observable<Action>;
   let effects: CompareEffects;
   let store$: Store<ShoppingState>;

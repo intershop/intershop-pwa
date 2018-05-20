@@ -8,7 +8,7 @@ import { MockComponent } from './utils/dev/mock.component';
 
 let translate: TranslateService;
 
-describe('AppComponent', () => {
+describe('App Component', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
   let element: HTMLElement;

@@ -7,7 +7,7 @@ import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { RegistrationFormComponent } from './registration-form.component';
 
-describe('RegistrationForm Component', () => {
+describe('Registration Form Component', () => {
   let fixture: ComponentFixture<RegistrationFormComponent>;
   let component: RegistrationFormComponent;
   let element: HTMLElement;

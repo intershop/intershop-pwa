@@ -1,7 +1,7 @@
 import { CompareState } from './compare.reducer';
 import * as fromSelectors from './compare.selectors';
 
-describe('CompareListSelectors', () => {
+describe('Compare Selectors', () => {
   describe('getCompareList', () => {
     it('should return the SKU list when queried', () => {
       const state: CompareState = {

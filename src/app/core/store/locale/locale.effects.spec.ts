@@ -12,7 +12,7 @@ import { coreReducers } from '../core.system';
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { LocaleEffects } from './locale.effects';
 
-describe('LocaleEffects', () => {
+describe('Locale Effects', () => {
   let actions$: Observable<Action>;
   let effects: LocaleEffects;
   let translateServiceMock: TranslateService;

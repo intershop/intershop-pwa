@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CheckoutProgressBarComponent } from './checkout-progress-bar.component';
 
-describe('CheckoutProgressBarComponent', () => {
+describe('Checkout Progress Bar Component', () => {
   let component: CheckoutProgressBarComponent;
   let fixture: ComponentFixture<CheckoutProgressBarComponent>;
   let element: HTMLElement;

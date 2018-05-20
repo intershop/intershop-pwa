@@ -8,7 +8,7 @@ import { ApiService } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
-describe('ApiService Translation', () => {
+describe('Api Service Translate', () => {
   let httpClient: HttpClient;
   let apiService: ApiService;
   let storeMock$: Store<CoreState>;

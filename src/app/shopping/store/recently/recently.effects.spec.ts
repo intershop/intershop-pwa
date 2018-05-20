@@ -10,7 +10,7 @@ import { shoppingReducers } from '../shopping.system';
 import { AddToRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';
 
-describe('RecentlyEffects', () => {
+describe('Recently Effects', () => {
   let actions$: Observable<Action>;
   let effects: RecentlyEffects;
   let store$: Store<ShoppingState>;

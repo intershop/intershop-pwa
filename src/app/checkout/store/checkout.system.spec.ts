@@ -33,7 +33,7 @@ import { checkoutEffects, checkoutReducers } from './checkout.system';
 
 let basketId: string = null;
 
-describe('Checkout Store', () => {
+describe('Checkout System', () => {
   const DEBUG = false;
   let store: LogEffects;
   let locales: Locale[];

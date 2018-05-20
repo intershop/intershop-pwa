@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccordionComponent } from './accordion.component';
 
-describe('Accordion Container Component', () => {
+describe('Accordion Component', () => {
   let component: AccordionComponent;
   let fixture: ComponentFixture<AccordionComponent>;
   let element: HTMLElement;

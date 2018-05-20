@@ -13,7 +13,7 @@ class TestComponent {
   control = new FormControl('', Validators.required);
 }
 
-describe('ShowFormFeedbackDirective', () => {
+describe('Show Form Feedback Directive', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
 
