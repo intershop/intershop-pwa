@@ -20,7 +20,7 @@ import {
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
-import { LoadProduct } from '../products';
+import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { canRequestMore, getPagingPage, ResetPagingInfo, SetPagingInfo, SetSortKeys } from '../viewconf';
 import {
@@ -80,7 +80,7 @@ export class SearchEffects {
             totalItems: res.total,
           }),
           // dispatch actions to load the product information of the found products
-          ...res.skus.map(sku => new LoadProduct(sku)),
+          ...res.products.map(product => new LoadProductSuccess(product)),
           // dispatch action to store the returned sorting options
           new SetSortKeys(res.sortKeys),
         ]),

@@ -57,7 +57,7 @@ export class ProductsEffects {
         switchMap(([res, entities]) => [
           new categoriesActions.SetProductSkusForCategory({ categoryUniqueId: res.categoryUniqueId, skus: res.skus }),
           new fromViewconf.SetSortKeys(res.sortKeys),
-          ...res.skus.filter(sku => !entities[sku]).map(sku => new productsActions.LoadProduct(sku)),
+          ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
         ]),
         catchError(error => of(new productsActions.LoadProductFail(error)))
       )

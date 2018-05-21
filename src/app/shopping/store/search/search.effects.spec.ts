@@ -36,8 +36,10 @@ describe('Search Effects', () => {
         if (!searchTerm) {
           return throwError('');
         } else {
+          const currentSlice = skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
           return of({
-            skus: skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage),
+            skus: currentSlice,
+            products: currentSlice.map(sku => ({ sku })),
             sortKeys: [],
             total: skus.length,
           });

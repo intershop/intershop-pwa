@@ -19,6 +19,7 @@ import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { SelectLocale } from '../../core/store/locale';
 import { Category } from '../../models/category/category.model';
 import { Locale } from '../../models/locale/locale.model';
+import { Product } from '../../models/product/product.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
@@ -102,10 +103,11 @@ describe('Shopping System', () => {
         skus: ['P1', 'P2'],
         categoryUniqueId: 'A.123.456',
         sortKeys: [],
+        products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
       })
     );
     when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
-      of({ skus: ['P2'], sortKeys: [], total: 1 })
+      of({ skus: ['P2'], products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
     );
 
     suggestServiceMock = mock(SuggestService);
@@ -290,9 +292,8 @@ describe('Shopping System', () => {
           expect(i.next()).toEqual(new SearchProducts('something'));
           expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
-          expect(i.next()).toEqual(new LoadProduct('P2'));
-          expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -447,8 +448,6 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next()).toEqual(new LoadProduct('P1'));
-        expect(i.next()).toEqual(new LoadProduct('P2'));
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next()).toBeUndefined();
@@ -675,7 +674,6 @@ describe('Shopping System', () => {
           expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-          expect(i.next()).toEqual(new LoadProduct('P2'));
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
         })
@@ -958,10 +956,9 @@ describe('Shopping System', () => {
         expect(i.next()).toEqual(new SearchProducts('something'));
         expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
-        expect(i.next()).toEqual(new LoadProduct('P2'));
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toBeUndefined();
       })
