@@ -84,35 +84,4 @@ describe('Api Service Translate', () => {
     verify(httpClient.get(categoriesPath, new Object(anything()))).once();
     verify(httpClient.get(webcamsPath, new Object(anything()))).never();
   });
-
-  it('should perform link translation when requested', () => {
-    apiService
-      .get('categories')
-      .pipe(apiService.linkTranslation)
-      .subscribe(data => {
-        expect(data['elements']).toEqual([webcamResponse]);
-        expect(data['id']).toEqual('Cameras-Camcorders');
-      });
-    verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-    verify(httpClient.get(webcamsPath, new Object(anything()))).once();
-  });
-
-  it('should not perform link translation when not requested', () => {
-    apiService.get('categories').subscribe(data => {
-      expect(data).toEqual(categoriesResponse);
-    });
-    verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-    verify(httpClient.get(webcamsPath, new Object(anything()))).never();
-  });
-
-  it('should perform both operations when requested', () => {
-    apiService
-      .get('categories')
-      .pipe(unpackEnvelope(), apiService.linkTranslation)
-      .subscribe(data => {
-        expect(data).toEqual([webcamResponse]);
-      });
-    verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-    verify(httpClient.get(webcamsPath, new Object(anything()))).once();
-  });
 });
