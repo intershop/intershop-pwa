@@ -12,13 +12,11 @@ describe('Categories Service', () => {
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
-    when(apiServiceMock.get('categories', anything(), anything(), anything())).thenReturn(
+    when(apiServiceMock.get('categories', anything())).thenReturn(
       of([{ categoryPath: [{ id: 'blubb' }] }] as CategoryData[])
     );
-    when(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).thenReturn(
-      of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
-    );
-    when(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).thenReturn(
+    when(apiServiceMock.get('categories/dummyid')).thenReturn(of({ categoryPath: [{ id: 'blubb' }] } as CategoryData));
+    when(apiServiceMock.get('categories/dummyid/dummysubid')).thenReturn(
       of({ categoryPath: [{ id: 'blubb' }] } as CategoryData)
     );
     TestBed.configureTestingModule({
@@ -30,12 +28,12 @@ describe('Categories Service', () => {
   describe('getTopLevelCategories()', () => {
     it('should call ApiService "categories" when called', () => {
       categoriesService.getTopLevelCategories(0);
-      verify(apiServiceMock.get('categories', anything(), anything(), anything())).once();
+      verify(apiServiceMock.get('categories', anything())).once();
     });
 
     it('should call ApiService "categories" in tree mode when called with a depth', () => {
       categoriesService.getTopLevelCategories(1);
-      verify(apiServiceMock.get('categories', anything(), anything(), anything())).once();
+      verify(apiServiceMock.get('categories', anything())).once();
       const args = capture(apiServiceMock.get).last();
       expect(args[0]).toBe('categories');
       const params = args[1] as HttpParams;
@@ -49,25 +47,26 @@ describe('Categories Service', () => {
     it('should call underlying ApiService categories/id when asked to resolve a category by id', () => {
       categoriesService.getCategory('dummyid');
 
-      verify(apiServiceMock.get('categories/dummyid', anything(), anything(), anything())).once();
+      verify(apiServiceMock.get('categories/dummyid')).once();
     });
 
     it('should return error when called with null', () => {
       categoriesService.getCategory(null).subscribe(data => fail(), err => expect(err).toBeTruthy());
 
-      verify(apiServiceMock.get(anything(), anything(), anything(), anything())).never();
+      verify(apiServiceMock.get(anything())).never();
+      verify(apiServiceMock.get(anything(), anything())).never();
     });
 
     it('should return error when called with empty category', () => {
       categoriesService.getCategory('').subscribe(data => fail(), err => expect(err).toBeTruthy());
 
-      verify(apiServiceMock.get(anything(), anything(), anything(), anything())).never();
+      verify(apiServiceMock.get(anything())).never();
     });
 
     it('should call underlying ApiService categories/id when asked to resolve a subcategory by id', () => {
       categoriesService.getCategory('dummyid/dummysubid');
 
-      verify(apiServiceMock.get('categories/dummyid/dummysubid', anything(), anything(), anything())).once();
+      verify(apiServiceMock.get('categories/dummyid/dummysubid')).once();
     });
   });
 });
