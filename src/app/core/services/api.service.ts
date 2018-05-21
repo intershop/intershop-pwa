@@ -9,6 +9,10 @@ import { getCurrentLocale } from '../store/locale';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
+export function unpackEnvelope() {
+  return map(data => (data ? data['elements'] : data));
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private currentLocale: Locale;
@@ -30,20 +34,15 @@ export class ApiService {
   // declare default http header
   private defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
+  linkTranslation = flatMap(data => this.getLinkedData(data, true));
+
   /**
    * http get request
    * @param  {string} path
    * @param  {URLSearchParams=newURLSearchParams(} params
    * @returns Observable
    */
-
-  get<T>(
-    path: string,
-    params?: HttpParams,
-    headers?: HttpHeaders,
-    elementsTranslation?: boolean,
-    linkTranslation?: boolean
-  ): Observable<T> {
+  get<T>(path: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
     let localeAndCurrency = '';
     if (!!this.currentLocale) {
       localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
@@ -57,11 +56,7 @@ export class ApiService {
 
     return this.httpClient
       .get<T>(url, { params: params, headers: headers })
-      .pipe(
-        catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)),
-        map(data => (elementsTranslation && data ? data['elements'] : data)),
-        flatMap(data => this.getLinkedData(data, linkTranslation))
-      );
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
   }
 
   /**
