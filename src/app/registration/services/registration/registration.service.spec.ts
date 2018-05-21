@@ -1,7 +1,7 @@
 import { of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api.service';
-import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import { User } from '../../../models/user/user.model';
 import { RegistrationService } from './registration.service';
 
 describe('Registration Service', () => {
@@ -39,7 +39,7 @@ describe('Registration Service', () => {
   it("should get comapny user data  data when 'getCompanyUserData' is called", () => {
     const userData = {
       type: 'SMBCustomerUser',
-    } as SmbCustomerUser;
+    } as User;
 
     when(apiServiceMock.get('customers/-/users/-')).thenReturn(of(userData));
 
