@@ -36,7 +36,7 @@ describe('Categories Service', () => {
       verify(apiServiceMock.get('categories', anything())).once();
       const args = capture(apiServiceMock.get).last();
       expect(args[0]).toBe('categories');
-      const params = args[1] as HttpParams;
+      const params = args[1]['params'] as HttpParams;
       expect(params).toBeTruthy();
       expect(params.get('view')).toBe('tree');
       expect(params.get('limit')).toBe('1');
@@ -54,13 +54,12 @@ describe('Categories Service', () => {
       categoriesService.getCategory(null).subscribe(data => fail(), err => expect(err).toBeTruthy());
 
       verify(apiServiceMock.get(anything())).never();
-      verify(apiServiceMock.get(anything(), anything())).never();
     });
 
     it('should return error when called with empty category', () => {
       categoriesService.getCategory('').subscribe(data => fail(), err => expect(err).toBeTruthy());
 
-      verify(apiServiceMock.get(anything())).never();
+      verify(apiServiceMock.get(anything(), anything())).never();
     });
 
     it('should call underlying ApiService categories/id when asked to resolve a subcategory by id', () => {
