@@ -70,7 +70,7 @@ describe('Search Box Component', () => {
 
   describe('with results', () => {
     beforeEach(() => {
-      triggerSearch('cam', [{ term: 'Cameras', type: undefined }, { term: 'Camcorders', type: undefined }]);
+      triggerSearch('cam', [{ term: 'Cameras' }, { term: 'Camcorders' }]);
     });
 
     it(
