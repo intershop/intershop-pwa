@@ -6,7 +6,7 @@ import { Action, select, Store } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { of } from 'rxjs';
 import { catchError, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
-import { Customer, CustomerType } from '../../../models/customer/customer.model';
+import { Customer } from '../../../models/customer/customer.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { CoreState } from '../core.state';
 import * as errorActions from '../error/error.actions';
@@ -93,7 +93,7 @@ export class UserEffects {
   loadCompanyUserAfterLogin$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoginUserSuccess),
     map((action: userActions.LoginUserSuccess) => action.payload),
-    filter(customer => customer.type === CustomerType.SMBCustomer),
+    filter(customer => customer.type === 'SMBCustomer'),
     map(() => new userActions.LoadCompanyUser())
   );
 

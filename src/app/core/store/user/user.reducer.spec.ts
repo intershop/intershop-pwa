@@ -1,7 +1,6 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Customer } from '../../../models/customer/customer.model';
-import { PrivateCustomer } from '../../../models/customer/private-customer.model';
-import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import { Customer, CustomerType } from '../../../models/customer/customer.model';
+import { User } from '../../../models/user/user.model';
 import {
   LoadCompanyUserFail,
   LoadCompanyUserSuccess,
@@ -20,7 +19,7 @@ describe('User Reducer', () => {
   } as Customer;
   const user = {
     firstName: 'test',
-  };
+  } as User;
 
   describe('initialState', () => {
     it('should not have a customer when unmodified', () => {
@@ -93,12 +92,14 @@ describe('User Reducer', () => {
     it('should set user when LoginUserSuccess action is reduced with type = PrivateCustomer', () => {
       const privateCustomer = {
         ...customer,
-        type: 'PrivateCustomer',
+        type: 'PrivateCustomer' as CustomerType,
       };
 
       const newState = userReducer(initialState, new LoginUserSuccess(privateCustomer));
 
-      expect(newState).toEqual({ ...initialState, customer: privateCustomer, user: privateCustomer, authorized: true });
+      expect(newState.customer).toEqual(privateCustomer);
+      expect(newState.user).toEqual(privateCustomer as User);
+      expect(newState.authorized).toBe(true);
     });
 
     it('should set error when LoadCompanyUserFail action is reduced', () => {
@@ -110,7 +111,7 @@ describe('User Reducer', () => {
     });
 
     it('should set user when LoadCompanyUserSuccess action is reduced', () => {
-      const newState = userReducer(initialState, new LoadCompanyUserSuccess(user as SmbCustomerUser));
+      const newState = userReducer(initialState, new LoadCompanyUserSuccess(user));
 
       expect(newState).toEqual({ ...initialState, user });
     });
@@ -124,7 +125,7 @@ describe('User Reducer', () => {
     });
 
     it('should unset authorized and customer when reducing LoginUser', () => {
-      const oldState = { ...initialState, customer, user: user as PrivateCustomer, authorized: true };
+      const oldState = { ...initialState, customer, user, authorized: true };
 
       const newState = userReducer(oldState, new LoginUser({ login: 'dummy', password: 'dummy' }));
 

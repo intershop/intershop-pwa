@@ -8,7 +8,7 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from '../../../models/customer/customer.model';
-import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import { User } from '../../../models/user/user.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
@@ -27,7 +27,7 @@ describe('User Effects', () => {
     registrationServiceMock = mock(RegistrationService);
     when(registrationServiceMock.signinUser(anything())).thenReturn(of({} as Customer));
     when(registrationServiceMock.createUser(anything())).thenReturn(of({} as Customer));
-    when(registrationServiceMock.getCompanyUserData()).thenReturn(of({ type: 'SMBCustomerUser' } as SmbCustomerUser));
+    when(registrationServiceMock.getCompanyUserData()).thenReturn(of({ type: 'SMBCustomerUser' } as User));
 
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot(coreReducers)],
@@ -89,7 +89,7 @@ describe('User Effects', () => {
     it('should map to action of type LoadBasketSuccess', () => {
       const type = 'SMBCustomerUser';
       const action = new ua.LoadCompanyUser();
-      const completion = new ua.LoadCompanyUserSuccess({ type } as SmbCustomerUser);
+      const completion = new ua.LoadCompanyUserSuccess({ type } as User);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

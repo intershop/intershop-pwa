@@ -3,8 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Customer } from '../../../models/customer/customer.model';
-import { PrivateCustomer } from '../../../models/customer/private-customer.model';
-import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import { User } from '../../../models/user/user.model';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
@@ -15,7 +14,7 @@ describe('User Selectors', () => {
 
   let userAuthorized$: Observable<boolean>;
   let loggedInCustomer$: Observable<Customer>;
-  let loggedInUser$: Observable<PrivateCustomer | SmbCustomerUser>;
+  let loggedInUser$: Observable<User>;
   let loginError$: Observable<HttpErrorResponse>;
 
   beforeEach(() => {
@@ -53,19 +52,19 @@ describe('User Selectors', () => {
   it('should select the user when logging in as private customer successfully', () => {
     const firstName = 'test';
     const type = 'PrivateCustomer';
-    store$.dispatch(new LoginUserSuccess({ firstName, type } as PrivateCustomer));
+    store$.dispatch(new LoginUserSuccess({ firstName, type } as Customer));
 
     userAuthorized$.subscribe(authorized => expect(authorized).toBe(true));
     loggedInUser$.subscribe(user => {
       expect(user).toBeTruthy();
-      expect((user as PrivateCustomer).firstName).toEqual(firstName);
+      expect(user.firstName).toEqual(firstName);
     });
     loginError$.subscribe(error => expect(error).toBeFalsy());
   });
 
   it('should not select the user when logging in as company customer successfully', () => {
     const type = 'SMBCustomer';
-    store$.dispatch(new LoginUserSuccess({ type } as PrivateCustomer));
+    store$.dispatch(new LoginUserSuccess({ type } as Customer));
 
     userAuthorized$.subscribe(authorized => expect(authorized).toBe(true));
     loggedInUser$.subscribe(user => {
@@ -77,11 +76,11 @@ describe('User Selectors', () => {
   it('should select the user when load company user is successful', () => {
     const firstName = 'test';
     const type = 'PrivateCustomer';
-    store$.dispatch(new LoadCompanyUserSuccess({ firstName, type } as SmbCustomerUser));
+    store$.dispatch(new LoadCompanyUserSuccess({ firstName, type } as User));
 
     loggedInUser$.subscribe(user => {
       expect(user).toBeTruthy();
-      expect((user as SmbCustomerUser).firstName).toEqual(firstName);
+      expect(user.firstName).toEqual(firstName);
     });
     loginError$.subscribe(error => expect(error).toBeFalsy());
   });

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Customer } from '../../../models/customer/customer.model';
-import { SmbCustomerUser } from '../../../models/customer/smb-customer-user.model';
+import { User } from '../../../models/user/user.model';
 import * as fromActions from './user.actions';
 
 describe('User Actions', () => {
@@ -59,7 +59,7 @@ describe('User Actions', () => {
     });
 
     it('should create new action for LoadCompanyUserSuccess', () => {
-      const payload = { type: 'SmbCustomerUser' } as SmbCustomerUser;
+      const payload = { type: 'SMBCustomerUser' } as User;
       const action = new fromActions.LoadCompanyUserSuccess(payload);
 
       expect({ ...action }).toEqual({
@@ -82,7 +82,7 @@ describe('User Actions', () => {
   describe('Create User Actions', () => {
     it('should create new action for CreateUser', () => {
       const payload = {
-        type: 'PrivateUser',
+        type: 'PrivateCustomer',
       } as Customer;
       const action = new fromActions.CreateUser(payload);
 
@@ -104,7 +104,7 @@ describe('User Actions', () => {
 
     it('should create new action for CreateUserSuccess', () => {
       const payload = {
-        type: 'PrivateUser',
+        type: 'PrivateCustomer',
       } as Customer;
       const action = new fromActions.CreateUserSuccess(payload);
 
