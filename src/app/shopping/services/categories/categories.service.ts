@@ -41,7 +41,7 @@ export class CategoriesService {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
 
-    return this.apiService.get<CategoryData[]>('categories', params).pipe(
+    return this.apiService.get<CategoryData[]>('categories', { params }).pipe(
       unpackEnvelope(),
       // TODO: ISREST-312 - REST call doesn't insert categoryPath for top-level categories
       map(array =>

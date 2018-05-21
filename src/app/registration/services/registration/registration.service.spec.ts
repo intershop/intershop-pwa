@@ -14,7 +14,7 @@ describe('Registration Service', () => {
 
   it('should login the user when correct credentials are entered', () => {
     const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
-    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(of({ authorized: true }));
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of({ authorized: true }));
 
     registrationService.signinUser(loginDetail).subscribe(data => {
       expect(data['authorized']).toBe(true);
@@ -24,7 +24,7 @@ describe('Registration Service', () => {
   it('should return error message when wrong credentials are entered', () => {
     const errorMessage = '401 and Unauthorized';
     const userDetails = { login: 'intershop@123.com', password: 'wrong' };
-    when(apiServiceMock.get(anything(), anything(), anything())).thenReturn(throwError(new Error(errorMessage)));
+    when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error(errorMessage)));
     registrationService.signinUser(userDetails).subscribe(
       data => {
         fail('no data in this path is expected');
