@@ -17,3 +17,4 @@ RUN set -x \
 &&  npm run format \
 &&  after=$(find src e2e tslint-rules/src *.json *.ts -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \
 &&  test "$before" = "$after"
+RUN npx tsc -p src/tsconfig.spec.json

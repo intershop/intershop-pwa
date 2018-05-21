@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { createCategoryView } from '../../../../models/category-view/category-view.model';
 import { Category } from '../../../../models/category/category.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+import { categoryTree } from '../../../../utils/dev/test-data-utils';
 import { FamilyPageComponent } from './family-page.component';
 
 describe('Family Page Component', () => {
@@ -35,7 +37,8 @@ describe('Family Page Component', () => {
     fixture = TestBed.createComponent(FamilyPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.category = {} as Category;
+    const cat = { uniqueId: 'A', categoryPath: ['A'] } as Category;
+    component.category = createCategoryView(categoryTree([cat]), 'A');
   });
 
   it('should be created', () => {

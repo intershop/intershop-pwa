@@ -10,6 +10,15 @@
             "problemMatcher": [
                 "$tsc-watch"
             ]
+        },
+        {
+            "label": "run continuous test-compile",
+            "type": "typescript",
+            "tsconfig": "src/tsconfig.spec.json",
+            "option": "watch",
+            "problemMatcher": [
+                "$tsc-watch"
+            ]
         }
     ]
 }

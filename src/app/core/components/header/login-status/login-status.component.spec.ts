@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { PrivateCustomer } from '../../../../models/customer/private-customer.model';
+import { User } from '../../../../models/user/user.model';
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
@@ -9,9 +9,10 @@ describe('Login Status Component', () => {
   let element: HTMLElement;
 
   const userData = {
+    type: 'PrivateCustomer',
     firstName: 'Patricia',
     lastName: 'Miller',
-  } as PrivateCustomer;
+  } as User;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

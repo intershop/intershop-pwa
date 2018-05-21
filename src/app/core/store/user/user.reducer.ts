@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Customer, CustomerType } from '../../../models/customer/customer.model';
+import { Customer } from '../../../models/customer/customer.model';
 import { User } from '../../../models/user/user.model';
 import { UserAction, UserActionTypes } from './user.actions';
 
@@ -57,7 +57,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
         customer: payload,
       };
 
-      if (payload.type === CustomerType.PrivateCustomer) {
+      if (payload.type === 'PrivateCustomer') {
         newState.user = payload;
       }
 
