@@ -86,7 +86,7 @@ export class ProductHelper {
    * @param attributeName The attribute name of the attribute to get
    * @returns              The matching product attribute
    */
-  static getAttributeByAttributeName(product: Product, attributeName: string): Attribute {
+  static getAttributeByAttributeName(product: { attributes: Attribute[] }, attributeName: string): Attribute {
     if (!(product && product.attributes)) {
       return undefined;
     }

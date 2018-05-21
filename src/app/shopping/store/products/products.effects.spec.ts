@@ -44,6 +44,7 @@ describe('Products Effects', () => {
         skus: ['P222', 'P333'],
         categoryUniqueId: '123',
         sortKeys: ['name-asc', 'name-desc'],
+        products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
       })
     );
 
@@ -115,15 +116,15 @@ describe('Products Effects', () => {
       });
     });
 
-    it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProduct for each product in the list', () => {
+    it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProductSuccess for each product in the list', () => {
       actions$ = hot('a', {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       const expectedValues = {
         a: new fromCategories.SetProductSkusForCategory({ categoryUniqueId: '123', skus: ['P222', 'P333'] }),
         b: new fromViewconf.SetSortKeys(['name-asc', 'name-desc']),
-        c: new fromActions.LoadProduct('P222'),
-        d: new fromActions.LoadProduct('P333'),
+        c: new fromActions.LoadProductSuccess({ sku: 'P222' } as Product),
+        d: new fromActions.LoadProductSuccess({ sku: 'P333' } as Product),
       };
       expect(effects.loadProductsForCategory$).toBeObservable(cold('(abcd)', expectedValues));
     });

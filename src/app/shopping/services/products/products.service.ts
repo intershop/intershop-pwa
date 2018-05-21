@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api/api.service';
 import { Attribute } from '../../../models/attribute/attribute.model';
 import { CategoryHelper } from '../../../models/category/category.model';
-import { ProductData } from '../../../models/product/product.interface';
+import { ProductData, ProductDataStub } from '../../../models/product/product.interface';
 import { ProductMapper } from '../../../models/product/product.mapper';
 import { Product, ProductHelper } from '../../../models/product/product.model';
 
@@ -41,12 +41,14 @@ export class ProductsService {
   getCategoryProducts(
     categoryUniqueId: string,
     sortKey = ''
-  ): Observable<{ skus: string[]; categoryUniqueId: string; sortKeys: string[] }> {
+  ): Observable<{ skus: string[]; products: Product[]; categoryUniqueId: string; sortKeys: string[] }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
     }
 
-    let params: HttpParams = new HttpParams().set('attrs', 'sku').set('returnSortKeys', 'true');
+    let params: HttpParams = new HttpParams()
+      .set('attrs', 'sku,salePrice,listPrice,availability,manufacturer,image')
+      .set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
@@ -61,6 +63,7 @@ export class ProductsService {
           skus: response.elements.map(
             (element: Product) => ProductHelper.getAttributeByAttributeName(element, 'sku').value
           ),
+          products: response.elements.map((element: ProductDataStub) => ProductMapper.fromStubData(element) as Product),
           sortKeys: response.sortKeys,
           categoryUniqueId: categoryUniqueId,
         }))
@@ -76,7 +79,7 @@ export class ProductsService {
     searchTerm: string,
     page: number,
     itemsPerPage: number
-  ): Observable<{ skus: string[]; sortKeys: string[]; total: number }> {
+  ): Observable<{ skus: string[]; products: Product[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
@@ -85,16 +88,15 @@ export class ProductsService {
       .set('searchTerm', searchTerm)
       .set('amount', itemsPerPage.toString())
       .set('offset', (page * itemsPerPage).toString())
-      .set('attrs', 'sku')
+      .set('attrs', 'sku,salePrice,listPrice,availability,manufacturer,image')
       .set('returnSortKeys', 'true');
 
     return this.apiService
-      .get<{ elements: { attributes: Attribute[] }[]; sortKeys: string[]; total: number }>('products', { params })
+      .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
       .pipe(
         map(response => ({
-          skus: response.elements.map(
-            (element: Product) => ProductHelper.getAttributeByAttributeName(element, 'sku').value
-          ),
+          skus: response.elements.map(element => ProductHelper.getAttributeByAttributeName(element, 'sku').value),
+          products: response.elements.map(element => ProductMapper.fromStubData(element) as Product),
           sortKeys: response.sortKeys,
           total: !!response.total ? response.total : response.elements.length,
         }))
