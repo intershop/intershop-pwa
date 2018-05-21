@@ -15,7 +15,6 @@ import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { SelectLocale } from '../../core/store/locale';
 import { Category } from '../../models/category/category.model';
 import { Locale } from '../../models/locale/locale.model';
-import { SuggestTerm } from '../../models/suggest-term/suggest-term.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
@@ -104,7 +103,7 @@ describe('Shopping System', () => {
     when(productsServiceMock.searchProducts('something')).thenReturn(of({ skus: ['P2'], sortKeys: [] }));
 
     suggestServiceMock = mock(SuggestService);
-    when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }] as SuggestTerm[]));
+    when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
