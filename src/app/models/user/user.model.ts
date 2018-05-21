@@ -1,9 +1,6 @@
 import { Address } from '../address/address.model';
 
-export enum UserType {
-  PrivateCustomer = 'PrivateCustomer',
-  SMBCustomerUser = 'SMBCustomerUser',
-}
+export type UserType = 'PrivateCustomer' | 'SMBCustomerUser';
 
 export interface User {
   type: UserType;
