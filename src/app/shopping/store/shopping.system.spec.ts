@@ -15,6 +15,7 @@ import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { SelectLocale } from '../../core/store/locale';
 import { Category } from '../../models/category/category.model';
 import { Locale } from '../../models/locale/locale.model';
+import { SuggestTerm } from '../../models/suggest-term/suggest-term.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
@@ -31,6 +32,7 @@ import {
 } from './categories';
 import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
 import { getRecentlyProducts, RecentlyActionTypes } from './recently';
+import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
 
@@ -40,6 +42,7 @@ describe('Shopping System', () => {
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
+  let suggestServiceMock: SuggestService;
   let locales: Locale[];
 
   beforeEach(() => {
@@ -98,6 +101,10 @@ describe('Shopping System', () => {
         sortKeys: [],
       })
     );
+    when(productsServiceMock.searchProducts('something')).thenReturn(of({ skus: ['P2'], sortKeys: [] }));
+
+    suggestServiceMock = mock(SuggestService);
+    when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }] as SuggestTerm[]));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -132,6 +139,10 @@ describe('Shopping System', () => {
             path: 'product/:sku',
             component: DummyComponent,
           },
+          {
+            path: 'search/:searchTerm',
+            component: DummyComponent,
+          },
         ]),
         TranslateModule.forRoot(),
       ],
@@ -140,7 +151,7 @@ describe('Shopping System', () => {
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
-        { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
+        { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
       ],
@@ -225,6 +236,77 @@ describe('Shopping System', () => {
           expect(i.next()).toBeUndefined();
         })
       );
+    });
+
+    describe('and looking for suggestions', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          store.dispatch(new SuggestSearch('some'));
+          tick(5000);
+        })
+      );
+
+      it('should trigger suggest actions when suggest feature is used', () => {
+        const i = store.actionsIterator([/Shopping/]);
+
+        expect(i.next()).toEqual(new SuggestSearchSuccess([{ term: 'something' }]));
+        expect(i.next()).toBeUndefined();
+      });
+    });
+
+    describe('and searching for something', () => {
+      beforeEach(
+        fakeAsync(() => {
+          store.reset();
+          router.navigate(['/search', 'something']);
+          tick(5000);
+        })
+      );
+
+      it(
+        'should load the product for the search results',
+        fakeAsync(() => {
+          expect(getProductIds(store.state)).toEqual(['P2']);
+        })
+      );
+
+      it(
+        'should trigger required actions when searching',
+        fakeAsync(() => {
+          const i = store.actionsIterator([/Shopping/]);
+
+          expect(i.next()).toEqual(new SearchProducts('something'));
+          expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
+          expect(i.next()).toEqual(new LoadProduct('P2'));
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
+          expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+          expect(i.next()).toBeUndefined();
+        })
+      );
+
+      describe('and viewing the product', () => {
+        beforeEach(
+          fakeAsync(() => {
+            store.reset();
+            router.navigate(['/product', 'P2']);
+            tick(5000);
+          })
+        );
+
+        it(
+          'should reload the product data when selected',
+          fakeAsync(() => {
+            const i = store.actionsIterator([/Shopping/]);
+
+            expect(i.next()).toEqual(new SelectProduct('P2'));
+            expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
+            expect(i.next()).toEqual(new LoadProduct('P2'));
+            expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+            expect(i.next()).toBeUndefined();
+          })
+        );
+      });
     });
   });
 
@@ -811,6 +893,38 @@ describe('Shopping System', () => {
       fakeAsync(() => {
         expect(getSelectedCategory(store.state)).toBeUndefined();
         expect(getSelectedProduct(store.state)).toBeUndefined();
+      })
+    );
+  });
+
+  describe('searching for something', () => {
+    beforeEach(
+      fakeAsync(() => {
+        router.navigate(['/search', 'something']);
+        tick(5000);
+      })
+    );
+
+    it(
+      'should load the product for the search results',
+      fakeAsync(() => {
+        expect(getProductIds(store.state)).toEqual(['P2']);
+      })
+    );
+
+    it(
+      'should trigger required actions when searching',
+      fakeAsync(() => {
+        const i = store.actionsIterator([/Shopping/]);
+
+        expect(i.next()).toEqual(new SearchProducts('something'));
+        expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
+        expect(i.next()).toEqual(new LoadProduct('P2'));
+        expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next()).toBeUndefined();
       })
     );
   });
