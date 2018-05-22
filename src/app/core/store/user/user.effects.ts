@@ -58,7 +58,16 @@ export class UserEffects {
   @Effect({ dispatch: false })
   goToAccountAfterLogin$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoginUserSuccess),
-    tap(() => this.router.navigate(['/account']))
+    tap(() => {
+      const state = this.router.routerState;
+      let navigateTo: string;
+      if (state && state.snapshot && state.snapshot.root.queryParams['returnUrl']) {
+        navigateTo = state.snapshot.root.queryParams['returnUrl'];
+      } else {
+        navigateTo = '/account';
+      }
+      this.router.navigate([navigateTo]);
+    })
   );
 
   @Effect()
