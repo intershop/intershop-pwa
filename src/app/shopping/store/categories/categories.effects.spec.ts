@@ -11,7 +11,7 @@ import { capture } from 'ts-mockito/lib/ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
-import { Category } from '../../../models/category/category.model';
+import { Category, CategoryHelper } from '../../../models/category/category.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { CategoriesService } from '../../services/categories/categories.service';
@@ -182,13 +182,11 @@ describe('Categories Effects', () => {
         } as Category;
       });
 
-      it('should trigger multiple LoadCategory if they dont exist', () => {
+      it('should trigger only one LoadCategory if it doesnt exist', () => {
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
 
-        const completionA = new fromActions.LoadCategory('123');
-        const completionB = new fromActions.LoadCategory('123.456');
-        const completionC = new fromActions.LoadCategory('123.456.789');
-        const expected$ = cold('(abc)', { a: completionA, b: completionB, c: completionC });
+        const completion = new fromActions.LoadCategory('123.456.789');
+        const expected$ = cold('a', { a: completion });
         expect(effects.selectedCategory$).toBeObservable(expected$);
       });
 
@@ -197,10 +195,7 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
 
-        const completionB = new fromActions.LoadCategory('123');
-        const completionC = new fromActions.LoadCategory('123.456');
-        const expected$ = cold('(bc)', { b: completionB, c: completionC });
-        expect(effects.selectedCategory$).toBeObservable(expected$);
+        expect(effects.selectedCategory$).toBeObservable(cold('-----'));
       });
     });
   });
@@ -341,16 +336,34 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
 
-        actions$ = hot('a', {
+        actions$ = hot('(ab)', {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId',
             params: { categoryUniqueId: category.uniqueId },
             queryParams: {},
           }),
+          b: new fromActions.SelectedCategoryAvailable(category.uniqueId),
         });
 
         const action = new productsActions.LoadProductsForCategory(category.uniqueId);
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
+      });
+
+      it('should not trigger action when we are on a product page', () => {
+        category.hasOnlineProducts = true;
+        store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
+        store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
+
+        actions$ = hot('(ab)', {
+          a: new RouteNavigation({
+            path: 'category/:categoryUniqueId/product/:sku',
+            params: { categoryUniqueId: category.uniqueId, sku: 'dummy' },
+            queryParams: {},
+          }),
+          b: new fromActions.SelectedCategoryAvailable(category.uniqueId),
+        });
+
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('------'));
       });
     });
   });
@@ -370,5 +383,54 @@ describe('Categories Effects', () => {
         });
       })
     );
+  });
+
+  describe('selectedCategoryAvailable$', () => {
+    it('should not fire when selected category is not available', () => {
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = of(new fromActions.SelectCategory('A'));
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(cold('-----'));
+    });
+
+    it('should not fire when selected category is available but not completely loaded', () => {
+      store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([{ uniqueId: 'A' }] as Category[])));
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = of(new fromActions.SelectCategory('A'));
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(cold('-----'));
+    });
+
+    it('should fire when selected category is available and completely loaded', () => {
+      store$.dispatch(
+        new fromActions.LoadCategorySuccess(
+          categoryTree([{ uniqueId: 'A', completenessLevel: CategoryHelper.maxCompletenessLevel }] as Category[])
+        )
+      );
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = of(new fromActions.SelectCategory('A'));
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(
+        cold('a', { a: new fromActions.SelectedCategoryAvailable('A') })
+      );
+    });
+
+    it('should not fire twice when category is selected multiple times', () => {
+      store$.dispatch(
+        new fromActions.LoadCategorySuccess(
+          categoryTree([{ uniqueId: 'A', completenessLevel: CategoryHelper.maxCompletenessLevel }] as Category[])
+        )
+      );
+      store$.dispatch(new fromActions.SelectCategory('A'));
+
+      actions$ = hot('-a-a-a', { a: new fromActions.SelectCategory('A') });
+
+      expect(effects.selectedCategoryAvailable$).toBeObservable(
+        cold('-a-----', { a: new fromActions.SelectedCategoryAvailable('A') })
+      );
+    });
   });
 });
