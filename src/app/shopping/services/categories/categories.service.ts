@@ -2,7 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService, unpackEnvelope } from '../../../core/services/api.service';
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
 import { CategoryData, CategoryPathElement } from '../../../models/category/category.interface';
 import { CategoryMapper } from '../../../models/category/category.mapper';
@@ -26,7 +26,7 @@ export class CategoriesService {
     }
 
     return this.apiService
-      .get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`, null, null, false)
+      .get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`)
       .pipe(map(categoryData => CategoryMapper.fromData(categoryData)));
   }
 
@@ -41,7 +41,8 @@ export class CategoriesService {
       params = params.set('view', 'tree').set('limit', limit.toString());
     }
 
-    return this.apiService.get<CategoryData[]>('categories', params, null, true).pipe(
+    return this.apiService.get<CategoryData[]>('categories', { params }).pipe(
+      unpackEnvelope(),
       // TODO: ISREST-312 - REST call doesn't insert categoryPath for top-level categories
       map(array =>
         array.map(tlelem => {

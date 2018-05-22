@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService, unpackEnvelope } from '../../../core/services/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 /**
@@ -18,6 +18,6 @@ export class SuggestService {
    */
   search(searchTerm: string): Observable<SuggestTerm[]> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
-    return this.apiService.get<SuggestTerm[]>('suggest', params, null, true, false);
+    return this.apiService.get<SuggestTerm[]>('suggest', { params }).pipe(unpackEnvelope());
   }
 }

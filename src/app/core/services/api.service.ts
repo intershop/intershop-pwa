@@ -1,13 +1,17 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, flatMap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Locale } from '../../models/locale/locale.model';
 import { CoreState } from '../store/core.state';
 import { getCurrentLocale } from '../store/locale';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
-import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
+import { REST_ENDPOINT } from './state-transfer/factories';
+
+export function unpackEnvelope() {
+  return map(data => (data ? data['elements'] : data));
+}
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -19,7 +23,6 @@ export class ApiService {
    */
   constructor(
     @Inject(REST_ENDPOINT) private restEndpoint: string,
-    @Inject(ICM_SERVER_URL) private icmServerUrl: string,
     private httpClient: HttpClient,
     store: Store<CoreState>,
     private apiServiceErrorHandler: ApiServiceErrorHandler
@@ -36,14 +39,7 @@ export class ApiService {
    * @param  {URLSearchParams=newURLSearchParams(} params
    * @returns Observable
    */
-
-  get<T>(
-    path: string,
-    params?: HttpParams,
-    headers?: HttpHeaders,
-    elementsTranslation?: boolean,
-    linkTranslation?: boolean
-  ): Observable<T> {
+  get<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     let localeAndCurrency = '';
     if (!!this.currentLocale) {
       localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
@@ -56,12 +52,8 @@ export class ApiService {
     }
 
     return this.httpClient
-      .get<T>(url, { params: params, headers: headers })
-      .pipe(
-        catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)),
-        map(data => (elementsTranslation && data ? data['elements'] : data)),
-        flatMap(data => this.getLinkedData(data, linkTranslation))
-      );
+      .get<T>(url, options)
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
   }
 
   /**
@@ -97,41 +89,5 @@ export class ApiService {
     return this.httpClient
       .delete<T>(`${this.restEndpoint}/${path}`)
       .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
-  }
-
-  // tslint:disable:no-any
-
-  private getLinkedData(data: any, linkTranslation?: boolean): Observable<any> {
-    if (!linkTranslation) {
-      return of(data);
-    } else {
-      let elements = data.elements ? data.elements : data;
-      if (!elements || !elements.length || !elements.find(x => x.type === 'Link')) {
-        return of(elements);
-      }
-      return forkJoin(this.getLinkedObjects(elements)).pipe(
-        map(results => {
-          elements = elements.map((item, key) => {
-            return results[key];
-          });
-          if (data.elements) {
-            data.elements = elements;
-            return data;
-          }
-          return elements;
-        })
-      );
-    }
-  }
-
-  private getLinkedObjects(data: any[]): Observable<any>[] {
-    const uriList$: Observable<any>[] = [];
-    data.forEach(item => {
-      if (item.type === 'Link' && item.uri) {
-        const linkUrl = `${this.icmServerUrl}/${item.uri}`;
-        uriList$.push(this.get<any>(linkUrl));
-      }
-    });
-    return uriList$;
   }
 }
