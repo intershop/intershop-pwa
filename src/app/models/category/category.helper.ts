@@ -32,25 +32,6 @@ export class CategoryHelper {
   }
 
   /**
-   * Expands a given uniqueId to the category path categories uniqueIds.
-   *
-   * Don't use this if you already have a {@link Category} with a categoryPath.
-   * @example
-   * 'A.B.C' -> ['A', 'A.B', 'A.B.C']
-   */
-  static getCategoryPathUniqueIds(uniqueId: string): string[] {
-    if (!uniqueId) {
-      return undefined;
-    }
-    const uniqueIds = [];
-    const ids = uniqueId.split(CategoryHelper.uniqueIdSeparator);
-    for (let i = 0; i < ids.length; i++) {
-      uniqueIds.push(ids.slice(0, i + 1).join(CategoryHelper.uniqueIdSeparator));
-    }
-    return uniqueIds;
-  }
-
-  /**
    * check if a given category has the maximum completeness level
    */
   static isCategoryCompletelyLoaded(category: Category): boolean {

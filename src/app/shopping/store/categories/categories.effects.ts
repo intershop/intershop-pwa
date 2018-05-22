@@ -21,8 +21,8 @@ import { CategoryHelper } from '../../../models/category/category.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
-import * as categoriesActions from './categories.actions';
-import * as categoriesSelectors from './categories.selectors';
+import * as actions from './categories.actions';
+import * as selectors from './categories.selectors';
 
 @Injectable()
 export class CategoriesEffects {
@@ -34,36 +34,62 @@ export class CategoriesEffects {
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number
   ) {}
 
+  /**
+   * listens to routing and fires {@link SelectCategory} if a category route is selected
+   */
   @Effect()
   routeListenerForSelectingCategory$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
     map((action: RouteNavigation) => action.payload.params['categoryUniqueId']),
-    withLatestFrom(this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
+    withLatestFrom(this.store.pipe(select(selectors.getSelectedCategoryId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
-    map(([categoryUniqueId, old]) => new categoriesActions.SelectCategory(categoryUniqueId))
+    map(([categoryUniqueId, old]) => new actions.SelectCategory(categoryUniqueId))
   );
 
+  /**
+   * listens to {@link SelectCategory} actions and fires {@link LoadCategory}
+   * when the requested {@link Category} is not available
+   */
   @Effect()
   selectedCategory$ = this.actions$.pipe(
-    ofType(categoriesActions.CategoriesActionTypes.SelectCategory),
-    map((action: categoriesActions.SelectCategory) => action.payload),
+    ofType(actions.CategoriesActionTypes.SelectCategory),
+    map((action: actions.SelectCategory) => action.payload),
     filter(id => !!id),
-    map(CategoryHelper.getCategoryPathUniqueIds),
-    withLatestFrom(this.store.pipe(select(categoriesSelectors.getCategoryEntities))),
-    map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
-    mergeMap(ids => ids.map(id => new categoriesActions.LoadCategory(id)))
+    withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
+    filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
+    map(([id]) => new actions.LoadCategory(id))
   );
 
+  /**
+   * fires {@link SelectedCategoryAvailable} when the requested {@link Category} is completely loaded
+   */
+  @Effect()
+  selectedCategoryAvailable$ = combineLatest(
+    this.actions$.pipe(
+      ofType(actions.CategoriesActionTypes.SelectCategory),
+      map((action: actions.SelectCategory) => action.payload),
+      filter(x => !!x)
+    ),
+    this.store.pipe(select(selectors.getSelectedCategory), filter(CategoryHelper.isCategoryCompletelyLoaded))
+  ).pipe(
+    filter(([selectId, category]) => selectId === category.uniqueId),
+    distinctUntilChanged((x, y) => x[0] === y[0]),
+    map(x => new actions.SelectedCategoryAvailable(x[0]))
+  );
+
+  /**
+   * loads a {@link Category} using the {@link CategoriesService}
+   */
   @Effect()
   loadCategory$ = this.actions$.pipe(
-    ofType(categoriesActions.CategoriesActionTypes.LoadCategory),
-    map((action: categoriesActions.LoadCategory) => action.payload),
+    ofType(actions.CategoriesActionTypes.LoadCategory),
+    map((action: actions.LoadCategory) => action.payload),
     mergeMap(categoryUniqueId => {
       return this.categoryService
         .getCategory(categoryUniqueId)
         .pipe(
-          map(category => new categoriesActions.LoadCategorySuccess(category)),
-          catchError(error => of(new categoriesActions.LoadCategoryFail(error)))
+          map(category => new actions.LoadCategorySuccess(category)),
+          catchError(error => of(new actions.LoadCategoryFail(error)))
         );
     })
   );
@@ -74,41 +100,42 @@ export class CategoriesEffects {
     map((action: SelectLocale) => action.payload),
     filter(locale => !!locale && !!locale.lang),
     distinctUntilChanged(),
-    map(() => new categoriesActions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
+    map(() => new actions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
   );
 
   @Effect()
   loadTopLevelCategories$ = this.actions$.pipe(
-    ofType(categoriesActions.CategoriesActionTypes.LoadTopLevelCategories),
-    map((action: categoriesActions.LoadTopLevelCategories) => action.payload),
+    ofType(actions.CategoriesActionTypes.LoadTopLevelCategories),
+    map((action: actions.LoadTopLevelCategories) => action.payload),
     mergeMap(limit => {
       return this.categoryService
         .getTopLevelCategories(limit)
         .pipe(
-          map(category => new categoriesActions.LoadTopLevelCategoriesSuccess(category)),
-          catchError(error => of(new categoriesActions.LoadTopLevelCategoriesFail(error)))
+          map(category => new actions.LoadTopLevelCategoriesSuccess(category)),
+          catchError(error => of(new actions.LoadTopLevelCategoriesFail(error)))
         );
     })
   );
 
   /**
-   * Trigger LoadProductsForCategory if we are on a family page
+   * Trigger {@link LoadProductsForCategory} if we are on a family page
    * and the corresponding products were not yet loaded.
    */
   @Effect()
   productOrCategoryChanged$ = combineLatest(
-    this.store.pipe(select(categoriesSelectors.productsForSelectedCategoryAreNotLoaded)),
+    this.actions$.pipe(ofType(actions.CategoriesActionTypes.SelectedCategoryAvailable)),
     this.actions$.pipe(ofRoute('category/:categoryUniqueId'))
   ).pipe(
-    filter(([needed, correctPath]) => !!needed && !!correctPath),
-    switchMap(() => this.store.pipe(select(categoriesSelectors.getSelectedCategoryId))),
-    filter(x => !!x),
+    switchMap(() =>
+      this.store.pipe(select(selectors.productsForSelectedCategoryAreNotLoaded), filter(needed => needed))
+    ),
+    switchMap(() => this.store.pipe(select(selectors.getSelectedCategoryId), filter(uniqueId => !!uniqueId))),
     map(uniqueId => new LoadProductsForCategory(uniqueId))
   );
 
   @Effect({ dispatch: false })
   redirectIfErrorInCategories$ = this.actions$.pipe(
-    ofType(categoriesActions.CategoriesActionTypes.LoadCategoryFail),
+    ofType(actions.CategoriesActionTypes.LoadCategoryFail),
     tap(() => this.router.navigate(['/error']))
   );
 }

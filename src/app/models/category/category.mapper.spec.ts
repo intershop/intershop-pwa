@@ -1,6 +1,8 @@
 import * as using from 'jasmine-data-provider';
+import { categoryTree } from '../../utils/dev/test-data-utils';
 import { CategoryData } from './category.interface';
 import { CategoryMapper } from './category.mapper';
+import { Category } from './category.model';
 
 describe('Category Mapper', () => {
   describe('mapCategoryPath()', () => {
@@ -19,6 +21,41 @@ describe('Category Mapper', () => {
       slice => {
         it(`should return ${slice.result} when mapping path from '${JSON.stringify(slice.path)}'`, () => {
           expect(CategoryMapper.mapCategoryPath(slice.path)).toEqual(slice.result);
+        });
+      }
+    );
+  });
+
+  describe('categoriesFromCategoryPath()', () => {
+    it('should return empty tree on falsy or empty imput', () => {
+      expect(CategoryMapper.categoriesFromCategoryPath(undefined)).toEqual(categoryTree());
+      expect(CategoryMapper.categoriesFromCategoryPath(null)).toEqual(categoryTree());
+      expect(CategoryMapper.categoriesFromCategoryPath([])).toEqual(categoryTree());
+    });
+
+    const cat1 = { uniqueId: '1', categoryPath: ['1'], completenessLevel: 0, name: 'n1' } as Category;
+    const cat2 = { uniqueId: '1.2', categoryPath: ['1', '1.2'], completenessLevel: 0, name: 'n2' } as Category;
+    const cat3 = {
+      uniqueId: '1.2.3',
+      categoryPath: ['1', '1.2', '1.2.3'],
+      completenessLevel: 0,
+      name: 'n3',
+    } as Category;
+
+    using(
+      [
+        { path: [{ id: '1', name: 'n1' }], result: categoryTree() },
+        { path: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }], result: categoryTree([cat1]) },
+        {
+          path: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }, { id: '3', name: 'n3' }, { id: '4', name: 'n4' }],
+          result: categoryTree([cat1, cat2, cat3]),
+        },
+      ],
+      slice => {
+        it(`should return tree with ${Object.keys(slice.result.nodes)} when mapping path from '${JSON.stringify(
+          slice.path
+        )}'`, () => {
+          expect(CategoryMapper.categoriesFromCategoryPath(slice.path)).toEqual(slice.result);
         });
       }
     );
@@ -82,51 +119,51 @@ describe('Category Mapper', () => {
     });
 
     it(`should return CategoryTree with one root node when raw CategoryData only has one`, () => {
-      const categoryTree = CategoryMapper.fromData({
+      const tree = CategoryMapper.fromData({
         categoryPath: [{ id: '1' }],
       } as CategoryData);
-      expect(categoryTree).toBeTruthy();
-      expect(categoryTree.rootIds).toEqual(['1']);
-      expect(Object.keys(categoryTree.nodes)).toEqual(['1']);
-      const rootNode = categoryTree.nodes['1'];
+      expect(tree).toBeTruthy();
+      expect(tree.rootIds).toEqual(['1']);
+      expect(Object.keys(tree.nodes)).toEqual(['1']);
+      const rootNode = tree.nodes['1'];
       expect(rootNode).toBeTruthy();
       expect(rootNode.uniqueId).toEqual('1');
-      expect(categoryTree.edges).toEqual({});
+      expect(tree.edges).toEqual({});
     });
 
-    it(`should return CategoryTree with one node and computed uniqueid when raw CategoryData was supplied with categoryPath`, () => {
-      const categoryTree = CategoryMapper.fromData({
+    it(`should return CategoryTree with node and computed uniqueid when raw CategoryData was supplied with categoryPath`, () => {
+      const tree = CategoryMapper.fromData({
         categoryPath: [{ id: '1' }, { id: '2' }],
       } as CategoryData);
-      expect(categoryTree).toBeTruthy();
-      expect(categoryTree.rootIds).toEqual([]);
-      expect(Object.keys(categoryTree.nodes)).toEqual(['1.2']);
+      expect(tree).toBeTruthy();
+      expect(tree.rootIds).toEqual(['1']);
+      expect(Object.keys(tree.nodes)).toEqual(['1', '1.2']);
 
-      const node = categoryTree.nodes['1.2'];
+      const node = tree.nodes['1.2'];
       expect(node).toBeTruthy();
       expect(node.uniqueId).toEqual('1.2');
 
-      expect(categoryTree.edges).toEqual({ '1': ['1.2'] });
+      expect(tree.edges).toEqual({ '1': ['1.2'] });
     });
 
     it(`should handle sub categories on raw CategoryData`, () => {
-      const categoryTree = CategoryMapper.fromData({
+      const tree = CategoryMapper.fromData({
         categoryPath: [{ id: '1' }],
         subCategories: [{ categoryPath: [{ id: '1' }, { id: '2' }] } as CategoryData],
       } as CategoryData);
-      expect(categoryTree).toBeTruthy();
+      expect(tree).toBeTruthy();
 
-      expect(categoryTree.rootIds).toEqual(['1']);
+      expect(tree.rootIds).toEqual(['1']);
 
-      expect(Object.keys(categoryTree.nodes)).toEqual(['1', '1.2']);
-      expect(categoryTree.nodes['1']).toBeTruthy();
-      expect(categoryTree.nodes['1'].uniqueId).toEqual('1');
-      expect(categoryTree.nodes['1.2']).toBeTruthy();
-      expect(categoryTree.nodes['1.2'].uniqueId).toEqual('1.2');
+      expect(Object.keys(tree.nodes)).toEqual(['1', '1.2']);
+      expect(tree.nodes['1']).toBeTruthy();
+      expect(tree.nodes['1'].uniqueId).toEqual('1');
+      expect(tree.nodes['1.2']).toBeTruthy();
+      expect(tree.nodes['1.2'].uniqueId).toEqual('1.2');
 
-      expect(Object.keys(categoryTree.nodes)).toEqual(['1', '1.2']);
+      expect(Object.keys(tree.nodes)).toEqual(['1', '1.2']);
 
-      expect(categoryTree.edges).toEqual({ '1': ['1.2'] });
+      expect(tree.edges).toEqual({ '1': ['1.2'] });
     });
   });
 });
