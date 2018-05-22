@@ -6,4 +6,6 @@ export class Facet {
   count: number;
   selected: boolean;
   link: Link;
+  filterId: string;
+  searchParameter: string;
 }

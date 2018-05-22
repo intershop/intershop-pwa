@@ -16,7 +16,7 @@
   <select name="SearchParameter" class="ws-submit-search-param form-control">
     <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
     <ng-container *ngFor="let facet of filterElement.facets">
-      <option *ngIf="!facet.selected" (click)="filter(getFilterName(facet.link.uri),getQueryParam(facet.link.uri))">{{facet.link.title}}</option>
+      <option *ngIf="!facet.selected" (click)="filter(facet)">{{facet.link.title}}</option>
     </ng-container>
   </select>
 
