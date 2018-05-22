@@ -24,7 +24,7 @@ export class RegistrationService {
       'Authorization',
       'BASIC ' + btoa(loginCredentials.login + ':' + loginCredentials.password)
     );
-    return this.apiService.get<Customer>('customers/-', null, headers);
+    return this.apiService.get<Customer>('customers/-', { headers });
   }
 
   /**

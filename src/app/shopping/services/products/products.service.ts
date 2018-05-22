@@ -29,7 +29,7 @@ export class ProductsService {
     const params: HttpParams = new HttpParams().set('allImages', 'true');
 
     return this.apiService
-      .get<ProductData>(`products/${sku}`, params, null, false, false)
+      .get<ProductData>(`products/${sku}`, { params })
       .pipe(map(productData => ProductMapper.fromData(productData)));
   }
 
@@ -56,10 +56,7 @@ export class ProductsService {
     return this.apiService
       .get<{ elements: { attributes: Attribute[] }[]; sortKeys: string[]; categoryUniqueId: string }>(
         `categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}/products`,
-        params,
-        null,
-        false,
-        false
+        { params }
       )
       .pipe(
         map(response => ({
@@ -89,7 +86,7 @@ export class ProductsService {
       .set('returnSortKeys', 'true');
 
     return this.apiService
-      .get<{ elements: { attributes: Attribute[] }[]; sortKeys: string[] }>('products', params, null, false, false)
+      .get<{ elements: { attributes: Attribute[] }[]; sortKeys: string[] }>('products', { params })
       .pipe(
         map(response => ({
           skus: response.elements.map(

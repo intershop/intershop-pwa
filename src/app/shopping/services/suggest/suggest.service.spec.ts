@@ -11,7 +11,7 @@ describe('Suggest Service', () => {
 
   beforeEach(async(() => {
     apiService = mock(ApiService);
-    when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(of<SuggestTerm[]>([]));
+    when(apiService.get(anything(), anything())).thenReturn(of<SuggestTerm[]>([]));
     TestBed.configureTestingModule({
       providers: [SuggestService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
@@ -19,22 +19,20 @@ describe('Suggest Service', () => {
   }));
 
   it('should always delegate to api service when called', () => {
-    verify(apiService.get(anything(), anything(), anything(), anything(), anything())).never();
+    verify(apiService.get(anything(), anything())).never();
 
     suggestService.search('some');
-    verify(apiService.get(anything(), anything(), anything(), anything(), anything())).once();
+    verify(apiService.get(anything(), anything())).once();
   });
 
   it('should return the matched terms when search term is executed', () => {
     const result = [{ type: undefined, term: 'Goods' }];
-    when(apiService.get(anything(), anything(), anything(), anything(), anything())).thenReturn(
-      of<SuggestTerm[]>(result)
-    );
+    when(apiService.get(anything(), anything())).thenReturn(of<SuggestTerm[]>(result));
 
     suggestService.search('g').subscribe(res => {
       expect(res).toEqual(result);
     });
 
-    verify(apiService.get(anything(), anything(), anything(), anything(), anything())).once();
+    verify(apiService.get(anything(), anything())).once();
   });
 });

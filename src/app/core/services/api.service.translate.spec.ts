@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { CoreState } from '../store/core.state';
-import { ApiService } from './api.service';
+import { ApiService, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
@@ -67,43 +67,21 @@ describe('Api Service Translate', () => {
   });
 
   it('should perform element translation when it is requested', () => {
-    apiService.get('categories', null, null, true, false).subscribe(data => {
-      expect(data).toEqual([webcamLink]);
-    });
+    apiService
+      .get('categories')
+      .pipe(unpackEnvelope())
+      .subscribe(data => {
+        expect(data).toEqual([webcamLink]);
+      });
     verify(httpClient.get(categoriesPath, new Object(anything()))).once();
     verify(httpClient.get(webcamsPath, new Object(anything()))).never();
   });
 
   it('should not perform element translation when it is not requested', () => {
-    apiService.get('categories', null, null, false, false).subscribe(data => {
+    apiService.get('categories').subscribe(data => {
       expect(data).toEqual(categoriesResponse);
     });
     verify(httpClient.get(categoriesPath, new Object(anything()))).once();
     verify(httpClient.get(webcamsPath, new Object(anything()))).never();
-  });
-
-  it('should perform link translation when requested', () => {
-    apiService.get('categories', null, null, false, true).subscribe(data => {
-      expect(data['elements']).toEqual([webcamResponse]);
-      expect(data['id']).toEqual('Cameras-Camcorders');
-    });
-    verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-    verify(httpClient.get(webcamsPath, new Object(anything()))).once();
-  });
-
-  it('should not perform link translation when not requested', () => {
-    apiService.get('categories', null, null, false, false).subscribe(data => {
-      expect(data).toEqual(categoriesResponse);
-    });
-    verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-    verify(httpClient.get(webcamsPath, new Object(anything()))).never();
-  });
-
-  it('should perform both operations when requested', () => {
-    apiService.get('categories', null, null, true, true).subscribe(data => {
-      expect(data).toEqual([webcamResponse]);
-    });
-    verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-    verify(httpClient.get(webcamsPath, new Object(anything()))).once();
   });
 });
