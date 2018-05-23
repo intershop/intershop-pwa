@@ -104,11 +104,8 @@ export class BasketMockData {
       city: 'Berlin',
       usage: [true, true],
       shipToAddress: true,
-      street: 'Potsdamer Str. 20',
       invoiceToAddress: true,
       shipFromAddress: false,
-      serviceToAddress: false,
-      installToAddress: false,
     } as Address;
   }
 
