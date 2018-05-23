@@ -1,7 +1,6 @@
 import { NgWalker } from 'codelyzer/angular/ngWalker';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
-import { RuleHelpers } from './ruleHelpers';
 
 const message = 'Component should explicitely declare "changeDetection", preferrably "ChangeDetectionStrategy.OnPush"';
 

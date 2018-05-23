@@ -15,7 +15,7 @@
     "docs:serve": "npm run docs -- -s",
     "docs:watch": "npm run docs -- -s -w",
     "e2e": "ng e2e",
-    "check": "npm run lint -- proof-of-concept --fix --format stylish && npm run lint -- proof-of-concept-e2e --fix --format stylish && npm run format && npm run test && npm run e2e",
+    "check": "npm run lint -- --fix --format stylish && npm run format && npm run test && npm run e2e",
     "build:client-and-server-bundles": "ng build --aot --progress=false && ng run proof-of-concept:server --progress=false",
     "build:client-and-server-bundles:prod": "ng build --prod --progress=false && ng run proof-of-concept:server --progress=false",
     "build:static": "npm run build:client-and-server-bundles && npm run webpack:server && npm run generate:static",
