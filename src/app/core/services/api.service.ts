@@ -53,7 +53,7 @@ export class ApiService {
 
     return this.httpClient
       .get<T>(url, options)
-      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors(error)));
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
   }
 
   /**
