@@ -1,4 +1,5 @@
 export interface Address {
+  id: string;
   urn: string;
   type?: string;
   addressName: string;
