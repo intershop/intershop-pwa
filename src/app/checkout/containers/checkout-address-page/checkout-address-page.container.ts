@@ -5,6 +5,7 @@ import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
 import { Basket } from '../../../models/basket/basket.model';
 import { User } from '../../../models/user/user.model';
+import { LoadAddresses } from '../../store/addresses/addresses.actions';
 import { getBasketLoading, getCurrentBasket } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
@@ -25,5 +26,7 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
     this.basketLoading$ = this.store.pipe(select(getBasketLoading));
 
     this.user$ = this.coreStore.pipe(select(getLoggedInUser));
+
+    this.store.dispatch(new LoadAddresses());
   }
 }
