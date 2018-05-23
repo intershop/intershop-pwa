@@ -2,6 +2,7 @@ FROM caltha/protractor
 RUN apt-get update
 RUN apt-get install -y wget
 COPY package.json package-lock.json /workspace/
+COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN npm install
 RUN npx webdriver-manager update --chrome --chrome.version=2.38 --gecko false
