@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Locale } from '../../models/locale/locale.model';
 import { CoreState } from '../store/core.state';
@@ -9,8 +9,13 @@ import { getCurrentLocale } from '../store/locale';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 import { REST_ENDPOINT } from './state-transfer/factories';
 
-export function unpackEnvelope() {
-  return map(data => (data ? data['elements'] : data));
+/**
+ * Pipable operator for elements translation (removing the envelop).
+ * @returns The items of an elements array without the elements wrapper.
+ */
+export function unpackEnvelope<T>(): OperatorFunction<{ elements: T[] }, T[]> {
+  return map(data => (data ? data['elements'] : []));
+}
 }
 
 @Injectable({ providedIn: 'root' })
