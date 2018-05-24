@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../../core/services/api/api.service';
 import { BasketService } from './basket.service';
 
 describe('Basket Service', () => {

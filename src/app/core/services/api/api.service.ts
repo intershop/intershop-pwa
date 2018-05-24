@@ -3,12 +3,12 @@ import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable, OperatorFunction } from 'rxjs';
 import { catchError, defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
-import { Link } from '../../models/link/link.model';
-import { Locale } from '../../models/locale/locale.model';
-import { CoreState } from '../store/core.state';
-import { getCurrentLocale } from '../store/locale';
+import { Link } from '../../../models/link/link.model';
+import { Locale } from '../../../models/locale/locale.model';
+import { CoreState } from '../../store/core.state';
+import { getCurrentLocale } from '../../store/locale';
+import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
-import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 /**
  * Pipable operator for elements translation (removing the envelop).

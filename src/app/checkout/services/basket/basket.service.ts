@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiService, unpackEnvelope } from '../../../core/services/api.service';
+import { ApiService, unpackEnvelope } from '../../../core/services/api/api.service';
 import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../../models/basket-item/basket-item.mapper';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';

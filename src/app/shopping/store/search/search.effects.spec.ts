@@ -8,7 +8,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../../core/services/api/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { ProductsService } from '../../services/products/products.service';

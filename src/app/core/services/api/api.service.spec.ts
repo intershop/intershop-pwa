@@ -4,11 +4,11 @@ import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
-import { CoreState } from '../store/core.state';
-import { ErrorActionTypes, ServerError } from '../store/error';
+import { CoreState } from '../../store/core.state';
+import { ErrorActionTypes, ServerError } from '../../store/error';
+import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
 import { ApiService, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
-import { ICM_SERVER_URL, REST_ENDPOINT } from './state-transfer/factories';
 
 describe('Api Service', () => {
   describe('API Service Methods', () => {
