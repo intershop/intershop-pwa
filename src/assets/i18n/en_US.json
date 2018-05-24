@@ -1549,7 +1549,7 @@
   "checkout.widget.promo_code.link": "Enter a Promotion Code?",
   "checkout.widget.promotion.details": "Details",
   "checkout.widget.promotion.discount": "Discount",
-  "checkout.widget.promotion.discounts": "Discounts",
+  "checkout.widget.promotion.discounts": {"=1": "Discount", "other": "Discounts"},
   "checkout.widget.promotion.item.amount.text": "You Save",
   "checkout.widget.promotion.order.amount.text": "- ",
   "checkout.widget.promotion.shipping.amount.text": "- ",

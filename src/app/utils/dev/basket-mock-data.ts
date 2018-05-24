@@ -78,6 +78,7 @@ export class BasketMockData {
   static getBasketItem(): BasketItem {
     return {
       id: '4712',
+      name: 'pli name',
       quantity: { value: 10 },
       product: { sku: '4713' },
       availability: true,

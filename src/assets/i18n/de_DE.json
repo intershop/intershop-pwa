@@ -1549,7 +1549,7 @@
   "checkout.widget.promo_code.link": "Aktionscode eingeben?",
   "checkout.widget.promotion.details": "Details",
   "checkout.widget.promotion.discount": "Rabatt",
-  "checkout.widget.promotion.discounts": "Rabatte",
+  "checkout.widget.promotion.discounts": {"=1": "Rabatt", "other": "Rabatte"},
   "checkout.widget.promotion.item.amount.text": "Sie sparen",
   "checkout.widget.promotion.order.amount.text": "- ",
   "checkout.widget.promotion.shipping.amount.text": "- ",
