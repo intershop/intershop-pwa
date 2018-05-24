@@ -33,7 +33,9 @@
     <div class="col-sm-12 col-md-4">
       <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
       <!-- Begin Cart Summary -->
-      <!-- ToDo: itemsInCart -->
+      <!-- itemsInCart -->
+      <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
       <div class="cost-summary">
         <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
 

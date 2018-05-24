@@ -1463,6 +1463,7 @@
   "checkout.widget.promo_code.link": "Entrer un code promotionnel ?",
   "checkout.widget.promotion.applied": "Promotion appliquée",
   "checkout.widget.promotion.details": "Détails",
+  "checkout.widget.promotion.discounts": {"=1": "Remise", "other": "Remises"},
   "checkout.widget.promotion.item.amount.text": "Vous économisez",
   "checkout.widget.promotion.order.amount.text": "- ",
   "checkout.widget.promotion.shipping.amount.text": "- ",
