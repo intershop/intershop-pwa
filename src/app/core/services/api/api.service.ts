@@ -15,7 +15,12 @@ import { ApiServiceErrorHandler } from './api.service.errorhandler';
  * @returns The items of an elements array without the elements wrapper.
  */
 export function unpackEnvelope<T>(): OperatorFunction<{ elements: T[] }, T[]> {
-  return map(data => (data ? data['elements'] : []));
+  return source$ =>
+    source$.pipe(
+      filter(data => !!data.elements && !!data.elements.length),
+      map(data => data.elements),
+      defaultIfEmpty([])
+    );
 }
 
 /**
@@ -27,7 +32,7 @@ export function resolveLinks<T>(apiService: ApiService): OperatorFunction<Link[]
   return source$ =>
     source$.pipe(
       // filter for all real Link elements
-      map(links => links.filter(el => !!el && el.type === 'Link')),
+      map(links => links.filter(el => !!el && el.type === 'Link' && !!el.uri)),
       // stop if empty array
       filter(links => !!links && !!links.length),
       // transform Link elements to API Observables

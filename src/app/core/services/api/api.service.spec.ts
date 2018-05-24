@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
-import { EMPTY, Observable, of } from 'rxjs';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { EMPTY } from 'rxjs';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { Link } from '../../../models/link/link.model';
 import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes, ServerError } from '../../store/error';
 import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
@@ -87,7 +87,7 @@ describe('Api Service', () => {
   });
 
   describe('API Service Pipable Operators', () => {
-    let httpClient: HttpClient;
+    let httpTestingController: HttpTestingController;
     let apiService: ApiService;
     let storeMock$: Store<CoreState>;
 
@@ -108,29 +108,13 @@ describe('Api Service', () => {
       id: 'Cameras-Camcorders',
     };
 
-    // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
-    function deepCopyObservable<T>(obj): Observable<T> {
-      return of(JSON.parse(JSON.stringify(obj)));
-    }
-
     beforeEach(() => {
-      httpClient = mock(HttpClient);
       storeMock$ = mock(Store);
       when(storeMock$.pipe(anything())).thenReturn(EMPTY);
 
-      when(httpClient.get(anyString(), new Object(anything()))).thenCall((path: string, obj) => {
-        if (path === categoriesPath) {
-          return deepCopyObservable(categoriesResponse);
-        } else if (path === webcamsPath) {
-          return deepCopyObservable(webcamResponse);
-        } else {
-          return of(`path '${path}' does not exist`);
-        }
-      });
-
       TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
         providers: [
-          { provide: HttpClient, useFactory: () => instance(httpClient) },
           { provide: REST_ENDPOINT, useValue: `${BASE_URL}/site` },
           { provide: ICM_SERVER_URL, useValue: BASE_URL },
           { provide: Store, useFactory: () => instance(storeMock$) },
@@ -139,47 +123,120 @@ describe('Api Service', () => {
         ],
       });
       apiService = TestBed.get(ApiService);
+      httpTestingController = TestBed.get(HttpTestingController);
+    });
 
-      verify(httpClient.get(categoriesPath, new Object(anything()))).never();
-      verify(httpClient.get(webcamsPath, new Object(anything()))).never();
+    afterEach(() => {
+      // After every test, assert that there are no more pending requests.
+      httpTestingController.verify();
     });
 
     it('should perform element translation when it is requested', () => {
+      let resData;
+
       apiService
         .get('categories')
         .pipe(unpackEnvelope())
-        .subscribe(data => {
-          expect(data).toEqual([webcamLink]);
-        });
-      verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-      verify(httpClient.get(webcamsPath, new Object(anything()))).never();
+        .subscribe(data => (resData = data));
+
+      const req = httpTestingController.expectOne(categoriesPath);
+      req.flush(categoriesResponse);
+
+      httpTestingController.expectNone(webcamsPath);
+
+      expect(resData).toEqual([webcamLink]);
     });
 
-    it('should not perform element translation when it is not requested', () => {
-      apiService.get('categories').subscribe(data => {
-        expect(data).toEqual(categoriesResponse);
-      });
-      verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-      verify(httpClient.get(webcamsPath, new Object(anything()))).never();
+    it('should return empty array on element translation when no elements are found', () => {
+      let resData;
+
+      apiService
+        .get('categories')
+        .pipe(unpackEnvelope())
+        .subscribe(data => (resData = data));
+
+      const req = httpTestingController.expectOne(categoriesPath);
+      req.flush({});
+
+      httpTestingController.expectNone(webcamsPath);
+
+      expect(resData).toEqual([]);
     });
 
-    it('should not perform link translation when not requested', () => {
-      apiService.get('categories').subscribe(data => {
-        expect(data).toEqual(categoriesResponse);
-      });
-      verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-      verify(httpClient.get(webcamsPath, new Object(anything()))).never();
+    it('should not perform element or link translation when it is not requested', () => {
+      let resData;
+
+      apiService.get('categories').subscribe(data => (resData = data));
+
+      const req = httpTestingController.expectOne(categoriesPath);
+      req.flush(categoriesResponse);
+
+      httpTestingController.expectNone(webcamsPath);
+
+      expect(resData).toEqual(categoriesResponse);
     });
 
     it('should perform both operations when requested', () => {
+      let resData;
+
       apiService
         .get('categories')
         .pipe(unpackEnvelope(), resolveLinks(apiService))
-        .subscribe(data => {
-          expect(data).toEqual([webcamResponse]);
-        });
-      verify(httpClient.get(categoriesPath, new Object(anything()))).once();
-      verify(httpClient.get(webcamsPath, new Object(anything()))).once();
+        .subscribe(data => (resData = data));
+
+      const req = httpTestingController.expectOne(categoriesPath);
+      req.flush(categoriesResponse);
+
+      const req2 = httpTestingController.expectOne(webcamsPath);
+      req2.flush(webcamResponse);
+
+      expect(resData).toEqual([webcamResponse]);
+    });
+
+    it('should filter out elements that are not links when doing link translation', () => {
+      let resData;
+
+      apiService
+        .get('something')
+        .pipe(resolveLinks(apiService))
+        .subscribe(data => (resData = data));
+
+      const req = httpTestingController.expectOne(`${BASE_URL}/site/something`);
+      req.flush([{ uri: 'site/dummy1' }, { type: 'Link', uri: 'site/dummy2' }, { type: 'Link' }] as Link[]);
+
+      httpTestingController.expectNone(`${BASE_URL}/site/dummy1`);
+      httpTestingController.expectOne(`${BASE_URL}/site/dummy2`).flush({});
+      httpTestingController.expectNone(`${BASE_URL}/site/dummy3`);
+
+      expect(resData.length).toBe(1);
+    });
+
+    it('should return empty array on link translation when no links are available', () => {
+      let resData;
+
+      apiService
+        .get('something')
+        .pipe(resolveLinks(apiService))
+        .subscribe(data => (resData = data));
+
+      const req = httpTestingController.expectOne(`${BASE_URL}/site/something`);
+      req.flush([]);
+
+      expect(resData.length).toBe(0);
+    });
+
+    it('should return empty array on element and link translation when source is empty', () => {
+      let resData;
+
+      apiService
+        .get('categories')
+        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .subscribe(data => (resData = data));
+
+      const req = httpTestingController.expectOne(categoriesPath);
+      req.flush({});
+
+      expect(resData).toEqual([]);
     });
   });
 });
