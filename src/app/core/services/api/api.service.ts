@@ -1,28 +1,56 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { Locale } from '../../models/locale/locale.model';
-import { CoreState } from '../store/core.state';
-import { getCurrentLocale } from '../store/locale';
+import { forkJoin, Observable, OperatorFunction } from 'rxjs';
+import { catchError, defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
+import { Link } from '../../../models/link/link.model';
+import { Locale } from '../../../models/locale/locale.model';
+import { CoreState } from '../../store/core.state';
+import { getCurrentLocale } from '../../store/locale';
+import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
-import { REST_ENDPOINT } from './state-transfer/factories';
 
-export function unpackEnvelope() {
-  return map(data => (data ? data['elements'] : data));
+/**
+ * Pipable operator for elements translation (removing the envelop).
+ * @returns The items of an elements array without the elements wrapper.
+ */
+export function unpackEnvelope<T>(): OperatorFunction<{ elements: T[] }, T[]> {
+  return source$ =>
+    source$.pipe(
+      filter(data => !!data.elements && !!data.elements.length),
+      map(data => data.elements),
+      defaultIfEmpty([])
+    );
+}
+
+/**
+ * Pipable operator for link translation (resolving the links).
+ * @param apiService  The API service to be used for the link translation.
+ * @returns           The links resolved to their actual REST response data.
+ */
+export function resolveLinks<T>(apiService: ApiService): OperatorFunction<Link[], T[]> {
+  return source$ =>
+    source$.pipe(
+      // filter for all real Link elements
+      map(links => links.filter(el => !!el && el.type === 'Link' && !!el.uri)),
+      // stop if empty array
+      filter(links => !!links && !!links.length),
+      // transform Link elements to API Observables
+      map(links => links.map(item => apiService.get<T>(`${apiService.icmServerURL}/${item.uri}`))),
+      // flatten O(O[]) -> O([])
+      switchMap(obsArray => forkJoin(obsArray)),
+      // return empty Array if no links were supplied to be resolved
+      defaultIfEmpty([])
+    );
 }
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private currentLocale: Locale;
 
-  /**
-   * Constructor
-   * @param  {Http} private http
-   */
   constructor(
     @Inject(REST_ENDPOINT) private restEndpoint: string,
+    @Inject(ICM_SERVER_URL) public icmServerURL: string,
     private httpClient: HttpClient,
     store: Store<CoreState>,
     private apiServiceErrorHandler: ApiServiceErrorHandler

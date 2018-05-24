@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
 import { CustomFormsModule } from 'ng2-validation';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -15,7 +16,10 @@ import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
 import { CrosstabService } from './services/crosstab/crosstab.service';
-import { translateFactory } from './services/custom-translate-loader';
+
+export function translateFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+}
 
 @NgModule({
   imports: [
