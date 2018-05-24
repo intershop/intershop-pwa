@@ -9,7 +9,7 @@ import { LoadFilterForCategorySuccess } from '../../store/filter/filter.actions'
 import { shoppingReducers } from '../../store/shopping.system';
 import { FilterNavigationContainerComponent } from './filter-navigation.container';
 
-describe('FilterNavigationContainerComponent', () => {
+describe('Filter Navigation Container', () => {
   let component: FilterNavigationContainerComponent;
   let fixture: ComponentFixture<FilterNavigationContainerComponent>;
   let element: HTMLElement;
@@ -24,6 +24,7 @@ describe('FilterNavigationContainerComponent', () => {
       ],
       declarations: [
         MockComponent({ selector: 'ish-filter-dropdown', template: 'Dropdown Filter', inputs: ['filterElement'] }),
+        MockComponent({ selector: 'ish-filter-checkbox', template: 'Checkbox Filter', inputs: ['filterElement'] }),
         FilterNavigationContainerComponent,
       ],
     }).compileComponents();
@@ -48,11 +49,19 @@ describe('FilterNavigationContainerComponent', () => {
     expect(findAllIshElements(element)).toEqual([]);
   });
 
-  it('should display filter-dropdown if facet with displayType text_clear is present', () => {
-    const filter = { filter: [{ displayType: 'text_clear' } as Filter] } as FilterNavigation;
+  it('should display filter-dropdown if facet with displayType dropdown is present', () => {
+    const filter = { filter: [{ displayType: 'dropdown' } as Filter] } as FilterNavigation;
 
     store$.dispatch(new LoadFilterForCategorySuccess(filter));
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-filter-dropdown']);
+  });
+
+  it('should display filter-checkbox if facet with displayType text_clear is present', () => {
+    const filter = { filter: [{ displayType: 'text_clear' } as Filter] } as FilterNavigation;
+
+    store$.dispatch(new LoadFilterForCategorySuccess(filter));
+    fixture.detectChanges();
+    expect(findAllIshElements(element)).toEqual(['ish-filter-checkbox']);
   });
 });

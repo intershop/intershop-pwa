@@ -4,20 +4,22 @@
 
   <ul class="filter-list">
     <ng-container *ngFor="let facet of filterElement.facets">
-      <li *ngIf="facet.selected" class="filter-item filter-selected">
-        <!--- TODO: add filter count -->
+      <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
         <span class="icon-selected"></span>{{facet.link.title}}
+        <span class="filter-count">({{facet.count}})</span>
         <!--- TODO: implement delete filter -->
         <a class="filter-clear"><span class="glyphicon glyphicon-minus pull-right"></span></a>
       </li>
     </ng-container>
   </ul>
 
-  <select name="SearchParameter" class="ws-submit-search-param form-control">
-    <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
-    <ng-container *ngFor="let facet of filterElement.facets">
-      <option *ngIf="!facet.selected" (click)="filter(facet)">{{facet.link.title}}</option>
-    </ng-container>
-  </select>
+  <form role="filter" name="Filter" [formGroup]="filterForm">
+    <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
+      <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
+      <ng-container *ngFor="let facet of filterElement.facets">
+        <option *ngIf="!facet.selected  && facet.name !== 'Show all'" [value]="facet.name">{{facet.link.title}}</option>
+      </ng-container>
+    </select>
+  </form>
 
 </div>
