@@ -38,9 +38,9 @@ export class BasketService {
     }
 
     return this.apiService
-      .get<BasketItemData[]>(`baskets/${basketId}/items`)
+      .get(`baskets/${basketId}/items`)
       .pipe(
-        unpackEnvelope(),
+        unpackEnvelope<BasketItemData>(),
         map(basketItemsData => basketItemsData.map(basketItemData => BasketItemMapper.fromData(basketItemData)))
       );
   }

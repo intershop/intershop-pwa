@@ -18,6 +18,6 @@ export class SuggestService {
    */
   search(searchTerm: string): Observable<SuggestTerm[]> {
     const params = new HttpParams().set('SearchTerm', searchTerm);
-    return this.apiService.get<SuggestTerm[]>('suggest', { params }).pipe(unpackEnvelope());
+    return this.apiService.get('suggest', { params }).pipe(unpackEnvelope<SuggestTerm>());
   }
 }
