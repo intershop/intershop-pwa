@@ -20,6 +20,11 @@ describe('Checkout Address Component', () => {
           inputs: ['basket'],
         }),
         MockComponent({
+          selector: 'ish-basket-items-summary',
+          template: 'Basket Items Summary Component',
+          inputs: ['basket'],
+        }),
+        MockComponent({
           selector: 'ish-address',
           template: 'Address Component',
           inputs: ['address'],
