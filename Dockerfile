@@ -1,5 +1,6 @@
 FROM node:8-alpine as buildstep
 COPY package.json package-lock.json /workspace/
+COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN npm install
 COPY . /workspace
