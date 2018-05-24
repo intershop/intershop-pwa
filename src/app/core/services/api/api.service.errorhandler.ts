@@ -2,8 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, throwError } from 'rxjs';
-import { CoreState } from '../store/core.state';
-import * as errorActions from '../store/error/error.actions';
+import { CoreState } from '../../store/core.state';
+import * as errorActions from '../../store/error/error.actions';
 
 @Injectable({ providedIn: 'root' })
 export class ApiServiceErrorHandler {
