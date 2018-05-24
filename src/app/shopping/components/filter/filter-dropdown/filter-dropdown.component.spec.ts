@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Filter } from '../../../../models/filter/filter.model';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Filter } from '../../../../models/filter/filter.model';
 import { FilterDropdownComponent } from './filter-dropdown.component';
 
 describe('Filter Dropdown Component', () => {
@@ -17,7 +17,7 @@ describe('Filter Dropdown Component', () => {
   }));
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule],
       declarations: [FilterDropdownComponent],
       providers: [TranslateService],
     }).compileComponents();
