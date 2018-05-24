@@ -1,6 +1,6 @@
 import { of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService } from '../../../core/services/api/api.service';
 import { User } from '../../../models/user/user.model';
 import { RegistrationService } from './registration.service';
 
