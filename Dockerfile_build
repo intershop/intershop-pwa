@@ -1,7 +1,15 @@
 FROM node:8-alpine
+RUN node --version
+RUN npm --version
 COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
-WORKDIR /workspace
+WORKDIR /workspace/tslint-rules/
+RUN set -x \
+&&  before=$(find dist package-lock.json -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \
+&&  npm run build \
+&&  after=$(find dist package-lock.json -type f -exec md5sum {} \; | sort | md5sum | awk '{ print $1 }') \
+&&  test "$before" = "$after"
+WORKDIR /workspace/
 RUN set -x \
 &&  before=$(md5sum package-lock.json | awk '{ print $1 }') \
 &&  npm install \
