@@ -1,12 +1,6 @@
-# REST based storefront PoC
+# inSPIRED Progressive Web App
 
-The proof of concept for a REST based storefront clone of the Responsive Starter Store.
-
-It is supposed to implement the Family Page and the Registration Page as an Angular application based on the according pages from the Responsive Starter Store using only the REST API of the Intershop Commerce Management.
-
-The Family Page will be a playground for testing of paging, SEO, server side rendering, page load optimizations etc.
-
-The Registration Page will feature form handling, validation and interaction with data binding.
+An Angular based storefront clone of the Responsive Starter Store that communicates with the Intershop Commerce Management server via REST API only.
 
 ---
 
@@ -16,9 +10,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Project setup
 
+After cloning the project from the Git repository a command line needs to be oppend in the project folder and the following commands need to be run.
+
 ```
-git clone https://gitlab.intershop.de/rest-based-storefront/proof-of-concept.git
-cd proof-of-concept
 npm install
 ng serve --open
 ```
@@ -31,9 +25,11 @@ The project can alternatively be run with `npm start`.
 
 Run `ng serve` or `ng s` for a dev server that is configured via `environment.ts` to use mocked responses instead of actual REST calls.
 
-Running `ng serve --environment prod` or `ng s -e prod` will start a server that will comunicate via REST API with the Intershop Commerce Management. The used `environment.prod.ts` is configured to be used with the [`intershop7-devenv`](https://gitlab.intershop.de/rest-based-storefront/intershop7-devenv) in a docker toolbox with IP `192.168.99.100`.
+Running `ng serve --configuration production` or `ng s -c production` will start a server that will comunicate via REST API with the Intershop Commerce Management. The used `environment.prod.ts` is configured to be used with the [`intershop7-devenv`](https://gitlab.intershop.de/ISPWA/intershop7-devenv) in a docker toolbox with IP `192.168.99.100`.
 
 > If a different setup is used the IP address and port can be changed in the `environment.prod.ts` or the IP address could be mapped. For running the docker container native on Linux, one could do `sudo iptables -t nat -A OUTPUT -d 192.168.99.100 -j DNAT --to-destination 127.0.0.1` to enable this mapping.
+
+The project is also configured to support the usage of an own local environment file `environment.local.ts` that can be configured according to the development environment, e.g. with a different icmBaseURL or `production: false` for better debugging support while using a real server API. This file will be ignored by Git so the developer specific setting will not be commited. To use this local environment configuration the server should be started with `ng s -c local`.
 
 Once the server is running, navigate to `http://localhost:4200/` in your browser to see the application. The app will automatically reload if you change any of the source files.
 
