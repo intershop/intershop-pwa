@@ -50,7 +50,7 @@ export const metaReducers: MetaReducer<any>[] = [
   declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({
-      appId: 'proof-of-concept',
+      appId: 'inspired-pwa',
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,
