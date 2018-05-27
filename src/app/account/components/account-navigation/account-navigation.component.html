@@ -1,19 +1,21 @@
-<ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+<div class="col-md-3 account-nav-box">
+  <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
 
-  <li routerLinkActive="active">
-    <a routerLink="/account/overview">{{'account.my_account.link' | translate}}</a>
-  </li>
+    <li routerLinkActive="active">
+      <a routerLink="/account/overview">{{'account.my_account.link' | translate}}</a>
+    </li>
 
-  <li routerLinkActive="active">
-    <a routerLink="/account/orders">{{'account.order_history.link' | translate}}</a>
-  </li>
+    <li routerLinkActive="active">
+      <a routerLink="/account/orders">{{'account.order_history.link' | translate}}</a>
+    </li>
 
-  <li routerLinkActive="active">
-    <a routerLink="/account/profile">{{'account.profile.link' | translate}}</a>
-  </li>
+    <li routerLinkActive="active">
+      <a routerLink="/account/profile">{{'account.profile.link' | translate}}</a>
+    </li>
 
-  <li>
-    <a routerLink="/logout">{{'account.navigation.logout.link' | translate}}</a>
-  </li>
+    <li>
+      <a routerLink="/logout">{{'account.navigation.logout.link' | translate}}</a>
+    </li>
 
-</ul>
+  </ul>
+</div>
