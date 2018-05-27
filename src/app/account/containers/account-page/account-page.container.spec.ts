@@ -15,11 +15,6 @@ describe('Account Page Container', () => {
       declarations: [
         AccountPageContainerComponent,
         MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['account', 'trailText'],
-        }),
-        MockComponent({
           selector: 'ish-account-page',
           template: 'Account Page Component',
           inputs: ['user'],
