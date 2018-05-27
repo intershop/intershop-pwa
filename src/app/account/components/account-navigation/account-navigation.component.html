@@ -1,14 +1,14 @@
 <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
 
-  <li [ngClass]="{ 'active': selectedItem === 'OVERVIEW' }">
-    <a routerLink="/account">{{'account.my_account.link' | translate}}</a>
+  <li routerLinkActive="active">
+    <a routerLink="/account/overview">{{'account.my_account.link' | translate}}</a>
   </li>
 
-  <li [ngClass]="{ 'active': selectedItem === 'ORDERS' }">
+  <li routerLinkActive="active">
     <a routerLink="/account/orders">{{'account.order_history.link' | translate}}</a>
   </li>
 
-  <li [ngClass]="{ 'active': selectedItem === 'PROFILE' }">
+  <li routerLinkActive="active">
     <a routerLink="/account/profile">{{'account.profile.link' | translate}}</a>
   </li>
 
