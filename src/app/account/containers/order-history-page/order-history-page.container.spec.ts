@@ -13,11 +13,6 @@ describe('Order History Page Container', () => {
       declarations: [
         OrderHistoryPageContainerComponent,
         MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['account', 'trailText'],
-        }),
-        MockComponent({
           selector: 'ish-order-history-page',
           template: 'Order History Page Component',
         }),

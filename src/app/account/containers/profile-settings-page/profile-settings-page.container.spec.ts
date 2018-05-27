@@ -26,11 +26,6 @@ describe('Profile Settings Page Container', () => {
       declarations: [
         ProfileSettingsPageContainerComponent,
         MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['account', 'trailText'],
-        }),
-        MockComponent({
           selector: 'ish-profile-settings-page',
           template: 'Profile Settings Component',
           inputs: ['user'],
