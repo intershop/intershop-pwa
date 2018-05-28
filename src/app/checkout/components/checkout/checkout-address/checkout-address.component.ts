@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Address } from '../../../../models/address/address.model';
 import { Basket } from '../../../../models/basket/basket.model';
 import { User } from '../../../../models/user/user.model';
 
@@ -10,4 +11,5 @@ import { User } from '../../../../models/user/user.model';
 export class CheckoutAddressComponent {
   @Input() basket: Basket;
   @Input() user: User;
+  @Input() addresses: Address[];
 }

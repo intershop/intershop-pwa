@@ -3,8 +3,10 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
+import { Address } from '../../../models/address/address.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { User } from '../../../models/user/user.model';
+import { getAddressesLoading, getAllAddresses } from '../../store/addresses';
 import { LoadAddresses } from '../../store/addresses/addresses.actions';
 import { getBasketLoading, getCurrentBasket } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
@@ -18,6 +20,8 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   user$: Observable<User>;
   basket$: Observable<Basket>;
   basketLoading$: Observable<boolean>;
+  addresses$: Observable<Address[]>;
+  addressesLoading$: Observable<boolean>;
 
   constructor(private store: Store<CheckoutState>, private coreStore: Store<CoreState>) {}
 
@@ -28,5 +32,7 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
     this.user$ = this.coreStore.pipe(select(getLoggedInUser));
 
     this.store.dispatch(new LoadAddresses());
+    this.addresses$ = this.store.pipe(select(getAllAddresses));
+    this.addressesLoading$ = this.store.pipe(select(getAddressesLoading));
   }
 }
