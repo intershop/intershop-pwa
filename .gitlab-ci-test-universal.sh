@@ -19,7 +19,7 @@ universalTest 4 "http://localhost:4000/register" "Create Account"
 universalTest 5 "http://localhost:4000/category/Cameras-Camcorders" "<h1>Cameras</h1>"
 universalTest 6 "http://localhost:4000/category/Cameras-Camcorders" "<h3>Webcams</h3>"
 universalTest 7 "http://localhost:4000/category/Cameras-Camcorders.584" "add-to-compare"
-universalTest 8 "http://localhost:4000/home" "proof-of-concept-state"
+universalTest 8 "http://localhost:4000/home" "inspired-pwa-state"
 universalTest 9 "http://localhost:4000/home" "&q;icmBaseURL&q;:&q;http://localhost:4000"
 
 exit 0
