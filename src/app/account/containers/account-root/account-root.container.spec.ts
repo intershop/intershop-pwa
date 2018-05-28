@@ -23,8 +23,8 @@ describe('Account Root Container', () => {
           inputs: ['account', 'trailText'],
         }),
         MockComponent({
-          selector: 'ish-account-navigation',
-          template: 'Account Naviation Component',
+          selector: 'ish-account-root',
+          template: 'Account Root Component',
         }),
       ],
       providers: [
