@@ -18,7 +18,7 @@ var NoBarrelFilesWalker = (function (_super) {
     }
     NoBarrelFilesWalker.prototype.visitSourceFile = function (sourceFile) {
         if (sourceFile.fileName.search('index.ts') > 0) {
-            this.addFailureAtNode(sourceFile, 'The use of barrel files is deprecated!');
+            this.addFailureAt(0, 1, 'The use of barrel files is deprecated!');
         }
     };
     return NoBarrelFilesWalker;

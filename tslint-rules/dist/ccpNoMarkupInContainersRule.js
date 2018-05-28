@@ -30,7 +30,7 @@ var CCPNoMarkupInContainersWalker = (function (_super) {
                 this.patterns.forEach(function (pattern) {
                     if (template_1.search(pattern) >= 0) {
                         var message = MESSAGE + " (found '" + pattern + "')";
-                        _this.addFailureAtNode(sourceFile, message);
+                        _this.addFailureAt(0, 1, message);
                     }
                 });
             }
