@@ -104,7 +104,7 @@ var ComponentCreationTestWalker = (function (_super) {
             console.warn(sourceFile.fileName, message);
         }
         else {
-            _super.prototype.addFailureAtNode.call(this, sourceFile, message);
+            _super.prototype.addFailureAt.call(this, 0, 1, message);
         }
     };
     return ComponentCreationTestWalker;
