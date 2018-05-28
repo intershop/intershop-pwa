@@ -22,7 +22,7 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
         this.patterns.forEach(pattern => {
           if (template.search(pattern) >= 0) {
             const message = `${MESSAGE} (found '${pattern}')`;
-            this.addFailureAtNode(sourceFile, message);
+            this.addFailureAt(0, 1, message);
           }
         });
       } catch (err) {
