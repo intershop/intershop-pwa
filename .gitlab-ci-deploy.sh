@@ -1,7 +1,7 @@
 set -x
 set -e
 
-IMAGE="${CI_REGISTRY}/${CI_PROJECT_PATH}-prod:${CI_BUILD_REF}"
+IMAGE="${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-prod:${CI_BUILD_REF}"
 SERVICE="inspired-pwa"
 
 if ! docker service ps $SERVICE ; then
