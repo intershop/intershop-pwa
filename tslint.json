@@ -132,6 +132,9 @@
     "rxjs-no-patched": true,
     "rxjs-no-deep-operators": true,
     "rxjs-no-unsafe-switchmap": true,
+    "rxjs-no-unsafe-catch": true,
+    "rxjs-no-unsafe-scope": { "severity": "off" },
+    "rxjs-no-unsafe-takeuntil": true,
     "semicolon": [
       true,
       "always"
