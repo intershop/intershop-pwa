@@ -6,9 +6,9 @@
   <ish-checkout-address
     [basket]="basket$ | async"
     [user]="user$ | async"
+    [addresses]="addresses$ | async"
   ></ish-checkout-address>
 
   <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+  <ish-loading *ngIf="addressesLoading$ | async"></ish-loading>
 </div>
-
-
