@@ -1,0 +1,7 @@
+<ish-product-tile
+  [product]="product"
+  [category]="category"
+  [isInCompareList]="isInCompareList$ | async"
+  (compareToggle)="toggleCompare()"
+  (productToBasket)="addToBasket()"
+></ish-product-tile>

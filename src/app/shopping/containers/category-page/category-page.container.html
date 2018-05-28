@@ -1,0 +1,34 @@
+<ng-container *ngIf="category$ | async as category">
+
+  <ish-breadcrumb [category]="category"></ish-breadcrumb>
+
+  <!-- category with subcategories -->
+  <ng-container *ngIf="category.hasOnlineSubCategories">
+    <ish-category-page
+      [category]="category"
+    ></ish-category-page>
+  </ng-container>
+
+  <!-- category with products -->
+  <ng-container *ngIf="category.hasOnlineProducts">
+    <ish-family-page
+      [category]="category"
+      [products]="products$ | async"
+      [totalItems]="totalItems$ | async"
+      [viewType]="viewType$ | async"
+      [sortBy]="sortBy$ | async"
+      [sortKeys]="sortKeys$ | async"
+      (viewTypeChange)="changeViewType($event)"
+      (sortByChange)="changeSortBy($event)"
+    ></ish-family-page>
+  </ng-container>
+
+  <!-- empty category without subcategories and without products -->
+  <ng-container *ngIf="!category.hasOnlineSubCategories && !category.hasOnlineProducts">
+    <!-- TODO: decide how to handle empty categories -->
+    <h1>{{category.name}}</h1>
+  </ng-container>
+
+</ng-container>
+
+<ish-loading *ngIf="categoryLoading$ | async"></ish-loading>

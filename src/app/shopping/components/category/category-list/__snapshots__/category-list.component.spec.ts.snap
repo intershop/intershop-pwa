@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Category List Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.0.3"
+>
+  <ul
+    class="category-list row"
+  >
+    
+    <li
+      class="category-list-item col-xs-6 col-md-4"
+    >
+      <div
+        class="category-name"
+        data-testing-id="category-uid1"
+      >
+        <a
+          href="/category/uid1"
+          ng-reflect-router-link="/category,uid1"
+        >
+          
+          <img
+            data-testing-id="category-image-"
+            height="270"
+            src="http://www.example.org/url1.png"
+            width="270"
+          />
+          <h3>
+            name1
+          </h3>
+        </a>
+      </div>
+    </li>
+    <li
+      class="category-list-item col-xs-6 col-md-4"
+    >
+      <div
+        class="category-name"
+        data-testing-id="category-uid2"
+      >
+        <a
+          href="/category/uid2"
+          ng-reflect-router-link="/category,uid2"
+        >
+          
+          <img
+            data-testing-id="category-image-"
+            height="270"
+            src="http://www.example.org/url2.png"
+            width="270"
+          />
+          <h3>
+            name2
+          </h3>
+        </a>
+      </div>
+    </li>
+  </ul>
+</div>
+`;

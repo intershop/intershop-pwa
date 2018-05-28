@@ -1,0 +1,49 @@
+
+// property groups styles
+body {
+	.propertyeditor {
+		margin-bottom: @space-default;
+
+		.propertygroup-property {
+			.propertygroup-property-content {
+				display: inherit;
+				
+				.propertygroup-editor-value {
+					width: 100%;
+				}
+			}	
+		}
+		
+		.propertygroup-description {
+			font-size: inherit;
+		}
+		
+		.propertygroup-error {
+			display: none !important;
+		}
+	}
+	
+	.propertyeditor-view {
+		.propertygroup-description {
+			display: none;
+		}
+				
+		.propertygroup-property-noneditable {
+			margin-bottom: 0;
+				
+			label {
+				padding-top: 0;
+				margin-bottom:0;
+				
+				&:after {
+					content:":";
+				}
+			}
+				
+			.required	{
+				display: none;
+			}							
+		}
+	}
+}	
+

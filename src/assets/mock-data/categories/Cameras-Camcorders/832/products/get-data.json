@@ -1,0 +1,38 @@
+{
+  "elements": [
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "8182790134362"
+        }
+      ],
+      "description": "High-performance capture. Touch-display convenience. - Features 1080p60 and",
+      "title": "GoPro HERO4 Silver",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832/products/8182790134362"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "8182790134363"
+        }
+      ],
+      "description": "The best, only smaller. HERO5 Session combines 4K video, one-button simplicity and voice control all in a small, waterproof design.",
+      "title": "GoPro HERO5 Session",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/832/products/8182790134363"
+    }
+  ],
+  "name": "products",
+  "sortKeys": [
+    "name-desc",
+    "name-asc",
+    "value-asc",
+    "value-desc"
+  ],
+  "type": "ResourceCollection"
+}

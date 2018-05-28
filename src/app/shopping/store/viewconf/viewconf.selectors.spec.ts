@@ -1,0 +1,30 @@
+import { ViewconfState } from './viewconf.reducer';
+import * as fromSelectors from './viewconf.selectors';
+
+describe('Viewconf Selectors', () => {
+  describe('getSortBy', () => {
+    it('should return the sortBy setting when queried', () => {
+      const state: ViewconfState = {
+        sortBy: 'name-asc',
+        viewType: 'grid',
+        sortKeys: [],
+      };
+      const result = fromSelectors.getSortBy.projector(state);
+      const expected = state.sortBy;
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe('getViewType', () => {
+    it('should return the sortBy setting when queried', () => {
+      const state: ViewconfState = {
+        sortBy: 'name-asc',
+        viewType: 'grid',
+        sortKeys: [],
+      };
+      const result = fromSelectors.getViewType.projector(state);
+      const expected = state.viewType;
+      expect(result).toBe(expected);
+    });
+  });
+});

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
+  selector: 'ish-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  title = 'app';
+  // DEBUG: prints the configured routes for routing analysis
+  // constructor(private router: Router) { console.log('ROUTES: ', this.router.config); }
 }

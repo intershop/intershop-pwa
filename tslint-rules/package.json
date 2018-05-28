@@ -1,0 +1,32 @@
+{
+  "name": "intershop-tslint-rules",
+  "version": "0.0.1",
+  "description": "Intershop specific tslint rules",
+  "main": "index.js",
+  "keywords": [
+    "tslint",
+    "intershop"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@angular/compiler": "^6.0.3",
+    "@angular/core": "^6.0.3",
+    "@types/node": "^10.1.2",
+    "codelyzer": "4.3.0",
+    "rimraf": "^2.6.2",
+    "tslint": "5.10.0",
+    "typescript": "^2.8.3"
+  },
+  "peerDependencies": {
+    "@angular/compiler": ">6.0.0-beta <7.0.0",
+    "@angular/core": ">6.0.0-beta <7.0.0",
+    "tslint": "^5.0.0",
+    "typescript": "^2.7.3"
+  },
+  "scripts": {
+    "prebuild": "npm i",
+    "build": "tsc",
+    "postbuild": "rimraf node_modules"
+  }
+}

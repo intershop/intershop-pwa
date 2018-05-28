@@ -1,0 +1,29 @@
+<div class="product-list row">
+
+  <!--Grid View -->
+  <ng-container *ngIf="viewType === 'grid'">
+    <div *ngFor="let product of products" class="product-list-item col-md-4 col-xs-6 grid-view">
+      <ish-product-tile-container *ngIf="product else loading"
+        [product]="product"
+        [category]="category"
+      ></ish-product-tile-container>
+      <ng-template #loading>
+        <ish-loading></ish-loading>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <!--List View-->
+  <ng-container *ngIf="viewType === 'list'">
+    <div *ngFor="let product of products" class="product-list-item col-md-12 list-view">
+      <ish-product-row-container *ngIf="product else loading"
+        [product]="product"
+        [category]="category"
+      ></ish-product-row-container>
+      <ng-template #loading>
+        <ish-loading></ish-loading>
+      </ng-template>
+    </div>
+  </ng-container>
+
+</div>

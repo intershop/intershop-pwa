@@ -1,0 +1,14 @@
+<div *ngIf="isShipmentInformationAvailable && product.availability" class="ready-for-shipment" data-testing-id="section-productshipping-shortinfo">
+  <ng-template [ngIf]="product.readyForShipmentMin === 0" [ngIfElse]="shipmentRange">
+    {{ (product.readyForShipmentMax === 1 ? 'product.ready_for_shipment.within24' : 'product.ready_for_shipment.within') | translate:{'0':
+    product.readyForShipmentMax} }}
+  </ng-template>
+  <ng-template #shipmentRange>
+    {{ 'product.ready_for_shipment.minmax' | translate:{'0': product.readyForShipmentMin, '1': product.readyForShipmentMax} }}
+  </ng-template>
+  <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{'product.ready_for_shipment.detail.text' | translate}}</a>
+</div>
+
+<ish-modal-dialog #modalDialog [title]="'shopping.product.readyforshipment.details.title' | translate">
+  <div [innerHTML]="'shopping.product.readyforshipment.details.text' | translate"></div>
+</ish-modal-dialog>

@@ -1,0 +1,22 @@
+{
+  "elements": [
+    {
+      "term": "kensington",
+      "type": "SuggestTerm"
+    },
+    {
+      "term": "keyboards",
+      "type": "SuggestTerm"
+    },
+    {
+      "term": "kingston",
+      "type": "SuggestTerm"
+    },
+    {
+      "term": "kodak",
+      "type": "SuggestTerm"
+    }
+  ],
+  "name": "suggest",
+  "type": "SuggestTerms"
+}

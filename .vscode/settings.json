@@ -1,0 +1,12 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "editor.renderWhitespace": "all",
+  "editor.formatOnSave": true,
+  "tslint.autoFixOnSave": true,
+  "jest.restartJestOnSnapshotUpdate": true,
+
+  // file type specific exclusions
+  "[html]": {
+    "editor.formatOnSave": false,
+  }
+}

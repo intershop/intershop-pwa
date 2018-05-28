@@ -1,8 +1,15 @@
+<div ishStyleWrapper>
+  <header data-testing-id="page-header" class="top">
+    <ish-header-container></ish-header-container>
+  </header>
 
-<app-header></app-header>
+  <div class="wrapper">
+    <div role="main" class="container main-container" style="position: relative; min-height: 200px;">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 
-<app-family-page></app-family-page>
-
-<!--<app-error-page></app-error-page>-->
-
-<app-footer></app-footer>
+  <footer data-testing-id="section-footer">
+    <ish-footer></ish-footer>
+  </footer>
+</div>

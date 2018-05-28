@@ -1,0 +1,11 @@
+<div class="errorpage-content col-md-6 col-md-offset-3">
+  <h1>{{ 'error.page.title' | translate }}</h1>
+  <div class="error-text" [innerHTML]="'error.page.text' | translate"></div>
+  <div class="search-container error-search-container">
+    <ish-search-box-container
+      [placeholderText]= "'search.searchbox.instructional_text' | translate"
+      [autoSuggest] = true
+      [maxAutoSuggests] = 10
+    ></ish-search-box-container>
+  </div>
+</div>

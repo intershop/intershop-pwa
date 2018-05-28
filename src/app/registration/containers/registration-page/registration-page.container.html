@@ -1,0 +1,10 @@
+<ish-registration-form
+  [countries]="countries$ | async"
+  [languages]="languages$ | async"
+  [regions]="regionsForSelectedCountry$ | async"
+  [titles]="titlesForSelectedCountry$ | async"
+  [error]="userCreateError$ | async"
+  (create)="onCreate($event)"
+  (cancel)="onCancel()"
+  (countryChange)="updateData($event)">
+</ish-registration-form>

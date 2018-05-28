@@ -1,0 +1,70 @@
+<ish-product-detail-actions
+  [product]="product"
+  (productToCompare)="addToCompare()"
+></ish-product-detail-actions>
+
+<div class="row product-details">
+
+  <ish-product-images [product]="product"></ish-product-images>
+
+  <div class="col-md-4 col-sm-6 col-xs-12">
+
+    <h1>
+      <span itemprop="name">{{product.name}}</span>
+    </h1>
+
+    <div class="product-info">
+
+      <div *ngIf="product.manufacturer" class="product-brand">
+        <a [routerLink]="['/search', product.manufacturer]">
+          <span itemprop="brand">{{product.manufacturer}}</span>
+        </a>
+      </div>
+
+      <div class="product-number">
+        <label>{{ 'product.itemNumber.label' | translate }}</label>
+        <span itemprop="sku">{{product.sku}}</span>
+      </div>
+
+      <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <ish-product-price [product]="product" [showInformationalPrice]="true" [showPriceSavings]="true"></ish-product-price>
+
+        <ish-product-inventory [product]="product"></ish-product-inventory>
+      </div>
+
+      <ish-product-shipment [product]="product"></ish-product-shipment>
+
+      <form [formGroup]="productDetailForm" class="product-form form-horizontal">
+
+        <ish-product-quantity
+          [product]="product"
+          [parentForm]="productDetailForm"
+          [controlName]="quantityControlName"
+        ></ish-product-quantity>
+
+        <ish-product-add-to-basket
+          [product]="product"
+          [disabled]="!productDetailForm.valid"
+          (productToBasket)="addToBasket()"
+          class="btn-lg btn-block"
+        ></ish-product-add-to-basket>
+
+      </form>
+
+    </div>
+
+    <ish-accordion>
+      <ish-accordion-item [heading]="'product.description.heading' | translate">
+        <div [innerHTML]="product.longDescription"></div>
+      </ish-accordion-item>
+      <ish-accordion-item *ngIf="product.attributes && product.attributes.length" [heading]="'product.details.heading' | translate">
+        <ish-product-attributes [product]="product"></ish-product-attributes>
+      </ish-accordion-item>
+      <ish-accordion-item [heading]="'product.shipping.heading' | translate" dataTestingId="section-shipping-tab">
+        <ish-product-shipment [product]="product"></ish-product-shipment>
+      </ish-accordion-item>
+    </ish-accordion>
+
+  </div>
+
+</div>

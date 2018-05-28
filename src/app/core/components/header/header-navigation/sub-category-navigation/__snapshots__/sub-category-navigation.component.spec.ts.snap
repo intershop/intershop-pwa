@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sub Category Navigation Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.0.3"
+>
+  
+  <ul
+    class="category-level0"
+    ng-reflect-klass="category-level0"
+    ng-reflect-ng-class="[object Object]"
+  >
+    
+    <li
+      class="main-navigation-level0-item"
+      ng-reflect-klass="main-navigation-level0-item"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        href="/category/A.1"
+        ng-reflect-ng-style="[object Object]"
+        ng-reflect-router-link="/category,A.1"
+        style="width: 100%;"
+      >
+        CAT_A1
+      </a>
+      
+      <a
+        class="dropdown-toggle visible-xs"
+      >
+        <span
+          class="glyphicon glyphicon-plus"
+          ng-reflect-klass="glyphicon"
+          ng-reflect-ng-class="glyphicon-plus"
+        />
+      </a>
+      <ish-sub-category-navigation
+        ng-reflect-category="[object Object]"
+        ng-reflect-sub-categories-depth="1"
+      >
+        
+        <ul
+          class="category-level1 dropdown-menu"
+          ng-reflect-klass="category-level1"
+          ng-reflect-ng-class="[object Object]"
+        >
+          
+          <li
+            class="main-navigation-level1-item"
+            ng-reflect-klass="main-navigation-level1-item"
+            ng-reflect-ng-class="[object Object]"
+          >
+            <a
+              href="/category/A.1.a"
+              ng-reflect-ng-style="[object Object]"
+              ng-reflect-router-link="/category,A.1.a"
+              style="width: 100%;"
+            >
+              CAT_A1a
+            </a>
+            
+            <ish-sub-category-navigation
+              ng-reflect-category="[object Object]"
+              ng-reflect-sub-categories-depth="2"
+            >
+              
+            </ish-sub-category-navigation>
+          </li>
+        </ul>
+      </ish-sub-category-navigation>
+    </li>
+    <li
+      class="main-navigation-level0-item"
+      ng-reflect-klass="main-navigation-level0-item"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        href="/category/A.2"
+        ng-reflect-ng-style="[object Object]"
+        ng-reflect-router-link="/category,A.2"
+        style="width: 100%;"
+      >
+        CAT_A2
+      </a>
+      
+      <ish-sub-category-navigation
+        ng-reflect-category="[object Object]"
+        ng-reflect-sub-categories-depth="1"
+      >
+        
+      </ish-sub-category-navigation>
+    </li>
+  </ul>
+</div>
+`;

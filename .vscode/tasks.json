@@ -1,0 +1,24 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run continuous AOT build",
+            "type": "npm",
+            "script": "build:watch",
+            "problemMatcher": [
+                "$tsc-watch"
+            ]
+        },
+        {
+            "label": "run continuous test-compile",
+            "type": "typescript",
+            "tsconfig": "src/tsconfig.spec.json",
+            "option": "watch",
+            "problemMatcher": [
+                "$tsc-watch"
+            ]
+        }
+    ]
+}

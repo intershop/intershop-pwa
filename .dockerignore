@@ -1,0 +1,9 @@
+.gradle
+build
+dist
+node_modules
+.dockerignore
+.git
+.gitattributes
+.gitignore
+Dockerfile*

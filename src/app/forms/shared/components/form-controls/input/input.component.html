@@ -1,0 +1,20 @@
+<div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
+  <label *ngIf="label" [for]="uuid" class="control-label" [ngClass]="labelClass">{{label | translate}}
+    <span *ngIf="required" class="required">*</span>
+  </label>
+  <div [ngClass]="inputClass">
+    <input
+      [type]="type"
+      class="form-control"
+      [id]="uuid"
+      [formControlName]="controlName"
+      [attr.data-testing-id]="controlName"
+      [maxlength]="maxlength"
+      [attr.autocomplete]="autocomplete"
+      [min]="min || ''"
+      [max]="max || ''"
+    >
+    <ng-content></ng-content>
+    <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
+  </div>
+</div>

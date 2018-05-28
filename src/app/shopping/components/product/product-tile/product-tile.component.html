@@ -1,0 +1,31 @@
+<div class="product-tile" [attr.data-testing-sku]="product.sku">
+  <div class="product-image-container">
+    <a [routerLink]="generateProductRoute(product, category)">
+      <ish-product-image [product]="product" imageType="M" class="product-image"></ish-product-image>
+    </a>
+  </div>
+
+  <a class="product-title" [routerLink]="generateProductRoute(product, category)">{{product.name}}</a>
+
+  <div class="price-container">
+    <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>
+  </div>
+
+  <div class="product-tile-actions btn-group">
+    <ish-product-add-to-basket
+      [product]="product"
+      displayType="glyphicon"
+      class="btn-link"
+      (productToBasket)="addToBasket()"
+    ></ish-product-add-to-basket>
+    <button
+      (click)="toggleCompare()"
+      class="btn btn-link add-to-compare"
+      [ngClass]="{ 'is-selected': isInCompareList }"
+      title="{{ 'product.compare.link' | translate }}"
+    >
+      <span class="glyphicon glyphicon-equalizer"></span>
+    </button>
+  </div>
+
+</div>

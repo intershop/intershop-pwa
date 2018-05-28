@@ -1,0 +1,34 @@
+<div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity row">
+
+  <ng-template [ngIf]="type === selectType" [ngIfElse]="inputType">
+    <ish-select
+      [options]="quantityOptions"
+      [form]="parentForm"
+      [controlName]="controlName"
+      label="product.quantity.label"
+      labelClass="label-quantity col-xs-6"
+      [inputClass]="'col-xs-6 form-group ' + (class || '')"
+    ></ish-select>
+  </ng-template>
+
+  <ng-template #inputType>
+    <ish-input
+      [form]="parentForm"
+      [controlName]="controlName"
+      type="number"
+      label="product.quantity.label"
+      labelClass="label-quantity col-xs-6"
+      [inputClass]="'col-xs-6 form-group ' + (class || '')"
+      markRequiredLabel="off"
+      [min]="product.minOrderQuantity"
+      [max]="product.maxOrderQuantity"
+      [errorMessages]="{
+        'required':'product.quantity.notempty.text',
+        'integer': 'product.quantity.integer.text',
+        'min': 'product.quantity.greaterthan.text' | translate:{ '0': product.minOrderQuantity },
+        'max': 'product.quantity.lessthan.text' | translate:{ '0': product.maxOrderQuantity }
+      }"
+    ></ish-input>
+  </ng-template>
+
+</div>

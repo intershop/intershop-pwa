@@ -1,0 +1,36 @@
+<div class="account-wrapper" data-testing-id="account-page">
+  <div class="row account-main">
+
+    <div class="col-md-3 account-nav-box">
+      <ish-account-navigation selectedItem="OVERVIEW"></ish-account-navigation>
+    </div>
+
+    <div class="col-md-9">
+
+      <h1 *ngIf="user" [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (user.firstName || user.credentials.login)}"></h1>
+      <p>{{'account.overview.message.text' | translate}}</p>
+
+      <div class="row account-dashboard">
+        <div class="col-sm-3 col-xs-6 dashboard-item">
+          <a routerLink="./orders">
+            <div class="circle-icon">
+              <span class="glyphicon glyphicon-list-alt"></span>
+            </div>
+            {{'account.order_history.link' | translate}}
+          </a>
+        </div>
+        <div class="col-sm-3 col-xs-6 dashboard-item">
+          <a routerLink="./profile">
+            <div class="circle-icon">
+              <span class="glyphicon glyphicon-cog"></span>
+            </div>
+            {{'account.profile.link' | translate}}
+          </a>
+        </div>
+      </div>
+
+      <p class="help-block">{{'account.overview.note.heading' | translate}}: <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span></p>
+
+    </div>
+  </div>
+</div>

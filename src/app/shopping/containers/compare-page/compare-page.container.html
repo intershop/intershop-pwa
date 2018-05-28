@@ -1,0 +1,21 @@
+<div>
+
+  <h1>{{'product.compare.link' | translate}}</h1>
+
+  <ng-container *ngIf="(compareProductsCount$ | async) as compareProductsCount; else emptyCompareList">
+
+    <h2>{{'product.compare.selected_product_count.message' | translate:{'0': compareProductsCount} }}</h2>
+
+    <ish-product-compare-list
+      [compareProducts]="compareProducts$ | async"
+      (productToBasket)="addToBasket($event)"
+      (removeProductCompare)="removeFromCompare($event)"
+    ></ish-product-compare-list>
+
+  </ng-container>
+
+  <ng-template #emptyCompareList>
+    <p>{{'product.compare.no_product_selected.message' | translate}}</p>
+  </ng-template>
+
+</div>

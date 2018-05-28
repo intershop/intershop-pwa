@@ -1,0 +1,47 @@
+@import "./reset.css";
+@import "./bootstrap.min.css";
+@import "./bootstrap-card.css";
+@import "./prism.css";
+@import "./font-awesome.min.css";
+@import "./compodoc.css";
+@import "./tablesort.css";
+@import "./readthedocs.css";
+
+a, .content a {
+    color: #319F9E;
+	text-decoration: underline;
+}
+a:visited, .content a:visited {
+	color: #319F9E;
+}
+a:hover, .content a:hover {
+    color: #168989;
+}
+
+.menu ul.list li.title {
+	background-color: #319F9E;
+	text-transform: uppercase;
+    font-weight: bold;
+}
+.menu ul.list li a {
+	text-overflow: unset;
+	text-decoration: none;
+	white-space: unset;
+}
+	
+.navbar-default {
+    background-color: #319F9E;
+}
+
+code {
+    background: #f0f2f1;
+	box-shadow: 0 1px 1px rgba(0,0,0,.125);
+	box-sizing: border-box;
+	border-radius: 3px;
+    color: #319F9E;
+    display: inline-block;
+	font-size: 13px;
+    line-height: 20px;
+	overflow-x: unset;
+    padding: 0 5px;	
+}

@@ -1,0 +1,19 @@
+<ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+
+  <li [ngClass]="{ 'active': selectedItem === 'OVERVIEW' }">
+    <a routerLink="/account">{{'account.my_account.link' | translate}}</a>
+  </li>
+
+  <li [ngClass]="{ 'active': selectedItem === 'ORDERS' }">
+    <a routerLink="/account/orders">{{'account.order_history.link' | translate}}</a>
+  </li>
+
+  <li [ngClass]="{ 'active': selectedItem === 'PROFILE' }">
+    <a routerLink="/account/profile">{{'account.profile.link' | translate}}</a>
+  </li>
+
+  <li>
+    <a routerLink="/logout">{{'account.navigation.logout.link' | translate}}</a>
+  </li>
+
+</ul>

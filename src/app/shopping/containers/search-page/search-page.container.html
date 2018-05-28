@@ -1,0 +1,32 @@
+<ng-container *ngIf="(searchTerm$ | async) as searchTerm">
+
+  <ish-breadcrumb [searchTerm]="searchTerm"></ish-breadcrumb>
+
+  <ng-container *ngIf="(products$ | async) as products">
+
+    <!-- search result with products -->
+    <ng-container *ngIf="products.length; else noResult">
+      <ish-search-result
+        [searchTerm]="searchTerm"
+        [products]="products"
+        [totalItems]="totalItems$ | async"
+        [viewType]="viewType$ | async"
+        [sortBy]="sortBy$ | async"
+        [sortKeys]="sortKeys$ | async"
+        (viewTypeChange)="changeViewType($event)"
+        (sortByChange)="changeSortBy($event)"
+      ></ish-search-result>
+    </ng-container>
+
+    <!-- empty search result -->
+    <ng-template #noResult>
+      <ish-search-no-result
+        [searchTerm]="searchTerm"
+      ></ish-search-no-result>
+    </ng-template>
+
+  </ng-container>
+
+</ng-container>
+
+<ish-loading *ngIf="searchLoading$ | async"></ish-loading>

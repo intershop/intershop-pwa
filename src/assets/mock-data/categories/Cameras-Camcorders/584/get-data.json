@@ -1,0 +1,35 @@
+{
+  "categoryPath": [
+    {
+      "id": "Cameras-Camcorders",
+      "name": "Cameras",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders"
+    },
+    {
+      "id": "584",
+      "name": "Camcorders",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders/584"
+    }
+  ],
+  "description": "The camera products and services catalog.",
+  "hasOnlineProducts": true,
+  "hasOnlineSubCategories": false,
+  "id": "584",
+  "images": [
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    }
+  ],
+  "name": "Camcorders",
+  "online": "1",
+  "type": "Category"
+}

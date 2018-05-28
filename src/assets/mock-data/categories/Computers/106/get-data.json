@@ -1,0 +1,374 @@
+{
+  "categoryPath": [
+    {
+      "id": "Computers",
+      "name": "Computers",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+    },
+    {
+      "id": "106",
+      "name": "Hardware Components",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+    }
+  ],
+  "description": "Hardware components of computers.",
+  "hasOnlineProducts": false,
+  "hasOnlineSubCategories": true,
+  "id": "106",
+  "images": [
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    }
+  ],
+  "name": "Hardware Components",
+  "online": "1",
+  "subCategories": [
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "173",
+          "name": "Audio Cards",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/173"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "173",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Audio Cards",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/173"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "830",
+          "name": "Cables",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": true,
+      "id": "830",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Cables",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/830"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "236",
+          "name": "Chassis Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": false,
+      "hasOnlineSubCategories": true,
+      "id": "236",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Chassis Components",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/236"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "911",
+          "name": "Memory Modules",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/911"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "911",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Memory Modules",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/911"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "897_HP",
+          "name": "Motherboards",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/897_HP"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": false,
+      "hasOnlineSubCategories": false,
+      "id": "897_HP",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Motherboards",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/897_HP"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "816",
+          "name": "Power Supplies",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/816"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": false,
+      "hasOnlineSubCategories": true,
+      "id": "816",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Power Supplies",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/816"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "989",
+          "name": "Processors",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/989"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "989",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Processors",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/989"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        },
+        {
+          "id": "106",
+          "name": "Hardware Components",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106"
+        },
+        {
+          "id": "170",
+          "name": "Video Cards",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/170"
+        }
+      ],
+      "description": "Computer, computer peripherals and services catalog",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "170",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Video Cards",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/106/170"
+    }
+  ],
+  "subCategoriesCount": 8,
+  "type": "Category"
+}

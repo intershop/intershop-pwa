@@ -4,6 +4,10 @@
 /dist
 /tmp
 /out-tsc
+/bin
+
+# unsupported yarn files
+/yarn.lock
 
 # dependencies
 /node_modules
@@ -16,6 +20,9 @@
 *.launch
 .settings/
 *.sublime-workspace
+/.nb-gradle
+/nbproject/
+/tsfmt.json
 
 # IDE - VSCode
 .vscode/*
@@ -28,15 +35,28 @@
 /.sass-cache
 /connect.lock
 /coverage
-/libpeerconnection.log
-npm-debug.log
-testem.log
+*.log
 /typings
-
-# e2e
-/e2e/*.js
-/e2e/*.map
+/src/environments/environment.local.ts
+/junit.xml
 
 # System Files
 .DS_Store
 Thumbs.db
+
+# backup and compiled files
+**~
+*.bak
+*.class
+*.pyc
+
+# Gradle Files
+**/build/
+**/target/
+**/.gradle
+
+# gitlab-runner
+/builds
+
+# batch file for personal development purposes
+/dev.bat

@@ -1,0 +1,14 @@
+<ish-checkout-progress-bar [step]="1"></ish-checkout-progress-bar>
+
+<div data-testing-id="checkout-address-page">
+  <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
+
+  <ish-checkout-address
+    [basket]="basket$ | async"
+    [user]="user$ | async"
+  ></ish-checkout-address>
+
+  <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+</div>
+
+

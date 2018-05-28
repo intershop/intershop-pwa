@@ -1,0 +1,8 @@
+<ng-container *ngIf="generalError$ | async; else defaultHeader">
+  <ish-simple-header></ish-simple-header>
+</ng-container>
+
+<ng-template #defaultHeader>
+  <ish-header></ish-header>
+</ng-template>
+

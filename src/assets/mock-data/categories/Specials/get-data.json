@@ -1,0 +1,152 @@
+{
+  "categoryPath": [
+    {
+      "id": "Specials",
+      "name": "Specials",
+      "type": "CategoryPath",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
+    }
+  ],
+  "description": "Special products and services.",
+  "hasOnlineProducts": false,
+  "hasOnlineSubCategories": true,
+  "id": "Specials",
+  "name": "Specials",
+  "online": "1",
+  "subCategories": [
+    {
+      "categoryPath": [
+        {
+          "id": "Specials",
+          "name": "Specials",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
+        },
+        {
+          "id": "GiftCardsCertificates",
+          "name": "Gift Cards & Certificates",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
+        }
+      ],
+      "description": "Gift Cards & Certificates",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "GiftCardsCertificates",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Gift Cards & Certificates",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/GiftCardsCertificates"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Specials",
+          "name": "Specials",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
+        },
+        {
+          "id": "HotDeals",
+          "name": "Hot Deals",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
+        }
+      ],
+      "description": "Hot Deals",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "HotDeals",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Hot Deals",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/HotDeals"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Specials",
+          "name": "Specials",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
+        },
+        {
+          "id": "NewProducts",
+          "name": "New Products",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
+        }
+      ],
+      "description": "Neue Produkte",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "NewProducts",
+      "name": "New Products",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/NewProducts"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Specials",
+          "name": "Specials",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
+        },
+        {
+          "id": "TopSellers",
+          "name": "Top Sellers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
+        }
+      ],
+      "description": "Top Sellers",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "TopSellers",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Top Sellers",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials/TopSellers"
+    }
+  ],
+  "subCategoriesCount": 4,
+  "type": "Category"
+}

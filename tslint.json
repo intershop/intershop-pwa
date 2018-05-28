@@ -1,9 +1,18 @@
 {
+  "extends": [
+    "rxjs-tslint-rules",
+    "tslint-clean-code",
+    "tslint-consistent-codestyle",
+    "intershop-tslint-rules"
+  ],
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
     "arrow-return-shorthand": true,
+    "no-commented-out-code": { "severity": "warning" },
+    "no-consecutive-blank-lines": true,
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -11,28 +20,49 @@
       "check-space"
     ],
     "curly": true,
+    "deprecation": {
+      "severity": "warn"
+    },
     "eofline": true,
     "forin": true,
     "import-blacklist": [
       true,
-      "rxjs"
+      "rxjs/Rx",
+      "."
     ],
     "import-spacing": true,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      2
     ],
     "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
-      true,
+      false,
       140
     ],
-    "member-access": false,
+    "member-access": [
+      true,
+      "no-public"
+    ],
     "member-ordering": [
       true,
-      "static-before-instance",
-      "variables-before-functions"
+      {
+        "order": [
+          "static-field",
+          "instance-field",
+          "static-method",
+          "instance-method"
+        ]
+      }
+    ],
+    "naming-convention": [
+      // https://github.com/ajafff/tslint-consistent-codestyle/blob/master/docs/naming-convention.md
+      true,
+      {"type": "functionVariable", "modifiers": ["export", "const"], "format": "camelCase"},
+      {"type": "type", "format": "PascalCase"},
+      {"type": "enumMember", "format": "PascalCase"}
     ],
     "no-arg": true,
     "no-bitwise": true,
@@ -47,7 +77,7 @@
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
-    "no-empty": false,
+    "no-empty": true,
     "no-empty-interface": true,
     "no-eval": true,
     "no-inferrable-types": [
@@ -63,6 +93,7 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
+    "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
@@ -73,13 +104,29 @@
       "check-else",
       "check-whitespace"
     ],
+    "one-variable-per-declaration": true,
     "prefer-const": true,
-    "quotemark": [
-      true,
-      "single"
-    ],
     "radix": true,
+    "rxjs-no-add": true,
+    "rxjs-no-operator": true,
+    "rxjs-no-internal": true,
+    "rxjs-finnish": {
+      "options": [{
+        "functions": false,
+        "methods": false,
+        "parameters": false,
+        "properties": false,
+        "variables": true
+      }],
+      "severity": "error"
+    },
+    "rxjs-no-create": { "severity": "off" },
+    "rxjs-no-ignored-subscribe": { "severity": "warning" },
+    "rxjs-no-patched": true,
+    "rxjs-no-deep-operators": true,
+    "rxjs-no-unsafe-switchmap": true,
     "semicolon": [
+      true,
       "always"
     ],
     "triple-equals": [
@@ -96,9 +143,8 @@
         "variable-declaration": "nospace"
       }
     ],
-    "typeof-compare": true,
     "unified-signatures": true,
-    "variable-name": false,
+    "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
       true,
       "check-branch",
@@ -110,17 +156,18 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "ish",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "ish",
       "kebab-case"
     ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
+    "use-component-change-detection": { "severity": "warning" },
     "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
@@ -128,8 +175,127 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "no-access-missing-member": true,
-    "templates-use-public": true,
-    "invoke-injectable": true
+    "no-access-missing-member": false,
+    "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
+    "ordered-imports": true,
+    "no-duplicate-imports": true,
+    "ban": [
+      true,
+      {"name": ["*", "ngOnInit"], "message": "Use fixture.detectChanges instead!"},
+      {"name": ["*", "unsubscribe"], "message": "Do it another way: https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87"},
+      {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"},
+      {"name": ["spyOn"], "message": "Use ts-mockito instead!"},
+      {"name": ["*", "select"], "message": "Use store.pipe(select()) instead!"}
+    ],
+    "ban-specific-imports": [
+      true,
+      { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." }
+    ],
+    "no-suspicious-variable-init-in-tests": {
+      "severity": "error",
+      "options": {
+        "exclude": [ "actions$" ]
+      }
+    },
+    "meaningful-naming-in-tests": { "severity": "warning" },
+    "no-any": { "severity": "warning" },
+    "no-commented-out-tests": true,
+    "no-focused-tests": true,
+    "no-disabled-tests": { "severity": "warning" },
+    "prefer-mocks-instead-of-stubs-in-tests": true,
+    "no-barrel-files": true,
+    "do-not-import-environment": true,
+    "use-camel-case-environment-properties": true,
+    "dev-util-imports": true,
+    "component-creation-test": true,
+    "ccp-no-intelligence-in-components": {
+      "severity": "warning",
+      "options": {
+        // forbid every logic in components
+        "component": {
+          "ngrx": false,
+          "service": false
+        },
+        "container": {
+          "ngrx": true,
+          // services should only be used by effects
+          "service": false
+        }
+      }
+    },
+    "ccp-no-markup-in-containers": {
+      "severity": "warning",
+      "options": {
+        "patterns": [ "<img", "<ul", "<li", "<table", "<(?![^>]*(clearfix))[^>]*class" ]
+      }
+    },
+    "project-structure": {
+      "severity": "warning",
+      "options": {
+        "warnUnmatched": false,
+        "pathPatterns": [
+          "^.*/e2e/.*$",
+          "^.*/src/environments/environment(\\.\\w+|)\\.ts$",
+          // unmanaged folders
+          "^.*/src/app/(utils/).*\\.ts$",
+          // model
+          "^.*/src/app/models/(.*)/\\1\\.(pipe|helper|interface|mapper|types)\\.ts$",
+          // allow only module declaration in module folders
+          "^.*/src/app/\\w+/[\\w\\.\\-]+\\.module\\.ts$",
+          // allow only app related content directly in src/app
+          "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
+          // enforce specific folder structure for modules
+          "^.*/src/app/[a-z-]+/(components/|containers/|store/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$",
+          // forms and shared may have submodules
+          "^.*/src/app/(forms|shared)/[a-z-]+/(components/|containers/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/|utils/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
+        ],
+        "patterns": [
+          // root components
+          { "name": "^(AppComponent)$", "file": "src/app/app\\.component\\.ts$" },
+          { "name": "^(AppServerModule)$", "file": "src/app/app\\.server\\.module\\.ts$" },
+          // angular components
+          { "name": "^(.*)ContainerComponent$", "file": ".*/containers(/.*|)/<kebab>/<kebab>\\.container\\.ts$" },
+          { "name": "^(.*)Component$", "file": ".*/components(/.*|)/<kebab>/<kebab>\\.component\\.ts$" },
+          { "name": "^(.*)Directive$", "file": ".*/directives/<kebab>\\.directive\\.ts$" },
+          { "name": "^(.*)Guard$", "file": ".*/guards/<kebab>\\.guard\\.ts$" },
+          { "name": "^(.*)Interceptor$", "file": ".*/interceptors/<kebab>\\.interceptor\\.ts$" },
+          // services
+          { "name": "^(.*)Service$", "file": "/services(/.*|)/<kebab>\\.service\\.ts$" },
+          // modules and routing
+          { "name": "^(.*)Module$", "file": ".*/<kebab>\\.module\\.ts$" },
+          { "name": "^(.*Page)Routes$", "file": ".*/containers(/.*|)/<kebab>/<kebab>\\.routes\\.ts$" },
+          { "name": "^(routes)$", "file": ".*/.*\\-routing\\.module\\.ts$" },
+          // form specific factories
+          { "name": "^(AddressForm.*)Factory$", "file": ".*src/app/forms/.*/components/<kebab>/<kebab>\\.factory\\.ts$" },
+          // factory pattern
+          { "name": "^([A-Z].*)Helper$", "file": ".*/models/<kebab>/<kebab>\\.helper\\.ts$" },
+          { "name": "^([A-Z].*)Mapper$", "file": ".*/models/<kebab>/<kebab>\\.mapper\\.ts$" },
+          { "name": "^(.*)Data$", "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$" },
+          // ngrx
+          { "name": "^([A-Z].*)Effects$", "file": ".*/store/<kebab>/<kebab>\\.effects\\.ts$" },
+          { "name": "^([a-z].*)Effects$", "file": ".*/store/<kebab>\\.system\\.ts$" },
+          { "name": "^get(.*)State$", "file": ".*/store/(<kebab>/<kebab>\\.selectors|<kebab>\\.state)\\.ts$" },
+          { "name": "^([A-Z].*)State$", "file": ".*/store/(<kebab>/<kebab>\\.reducer|<kebab>\\.state)\\.ts$" },
+          { "name": "^(initialState)$", "file": ".*/store/.*\\.reducer\\.ts$" },
+          { "name": "^((get|is)[A-Z].*)$", "file": ".*/(store/.*\\.(reducer|selectors)|factories)\\.ts$" },
+          { "name": "^(.*)Reducer$", "file": ".*/store/<kebab>/<kebab>\\.reducer\\.ts$" },
+          { "name": "^(metaReducers)$", "file": ".*\\.module\\.ts$" },
+          { "name": "^([a-z].*)Reducers$", "file": ".*/store/<kebab>\\.system\\.ts$" },
+          // environments
+          { "name": "^(environment)$", "file": "src/environments/environment(\\.[a-z]+|)\\.ts$" },
+          // e2e
+          { "name": "^([A-Z].*)Page$", "file": ".*/pages(/.*|)/<kebab>\\.page\\.ts$" }
+        ],
+        "ignoredFiles": [
+          "/(prerender|server).ts$",
+          "src/[^\/]*.ts$",
+          ".*.spec.ts$",
+          "/tslint-rules/",
+          "/utils/dev/",
+          ".*.actions.ts$",
+          ".*.model.ts$"
+        ]
+      }
+    }
   }
 }

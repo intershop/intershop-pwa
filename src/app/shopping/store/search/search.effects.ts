@@ -1,0 +1,94 @@
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { ofRoute, RouteNavigation } from 'ngrx-router';
+import { EMPTY, of } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
+import { ProductsService } from '../../services/products/products.service';
+import { SuggestService } from '../../services/suggest/suggest.service';
+import { LoadProduct } from '../products';
+import { SetSortKeys } from '../viewconf';
+import {
+  SearchActionTypes,
+  SearchProducts,
+  SearchProductsFail,
+  SearchProductsSuccess,
+  SuggestSearch,
+  SuggestSearchSuccess,
+} from './search.actions';
+
+@Injectable()
+export class SearchEffects {
+  constructor(
+    private actions$: Actions,
+    private productsService: ProductsService,
+    private suggestService: SuggestService,
+    private router: Router
+  ) {}
+
+  /**
+   * Effect that listens for search route changes and triggers a search action.
+   */
+  @Effect()
+  triggerSearch$ = this.actions$.pipe(
+    ofRoute('search/:searchTerm'),
+    map((action: RouteNavigation) => action.payload.params['searchTerm']),
+    filter(x => !!x),
+    distinctUntilChanged(),
+    map(searchTerm => new SearchProducts(searchTerm))
+  );
+
+  /**
+   * Effect that triggers a products search request via REST service and additional actions to fetch the product data of the search results.
+   */
+  // TODO: API returns only maximum of 50 products -- handle more products (e.g. via paging or lazy loading)
+  @Effect()
+  searchProducts$ = this.actions$.pipe(
+    ofType(SearchActionTypes.SearchProducts),
+    map((action: SearchProducts) => action.payload),
+    switchMap(searchTerm => {
+      // get products
+      return this.productsService.searchProducts(searchTerm).pipe(
+        mergeMap(res => [
+          // dispatch action with search result
+          new SearchProductsSuccess({ searchTerm: searchTerm, products: res.skus }),
+          // dispatch actions to load the product information of the found products
+          ...res.skus.map(sku => new LoadProduct(sku)),
+          // dispatch action to store the returned sorting options
+          new SetSortKeys(res.sortKeys),
+        ]),
+        catchError(error => of(new SearchProductsFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  suggestSearch$ = this.actions$.pipe(
+    ofType(SearchActionTypes.SuggestSearch),
+    debounceTime(400),
+    distinctUntilKeyChanged('payload'),
+    map((action: SuggestSearch) => action.payload),
+    filter(searchTerm => !!searchTerm && searchTerm.length > 0),
+    switchMap(searchTerm =>
+      this.suggestService
+        .search(searchTerm)
+        .pipe(map(results => new SuggestSearchSuccess(results)), catchError(() => EMPTY))
+    ) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search
+  );
+
+  @Effect({ dispatch: false })
+  redirectIfSearchProductFail$ = this.actions$.pipe(
+    ofType(SearchActionTypes.SearchProductsFail),
+    tap(() => this.router.navigate(['/error']))
+  );
+}

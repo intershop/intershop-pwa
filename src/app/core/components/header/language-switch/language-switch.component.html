@@ -1,0 +1,17 @@
+<div *ngIf="locale" class="language-switch" dropdown placement="bottom right">
+  <a dropdownToggle (click)="false" class="language-switch-link">
+    <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
+    <span class="language-switch-current-selection hidden-xs">{{locale.value}}<span class="switch_arrow"></span></span>
+  </a>
+  <div *dropdownMenu class="language-switch-container dropdown-menu dropdown-menu-right">
+    <div class="language-switch-menu-container">
+      <ul *ngIf="availableLocales && availableLocales.length">
+        <li *ngFor="let l of availableLocales">
+          <a *ngIf="l.lang !== locale.lang" (click)="switch(l)">
+            {{l.displayName}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

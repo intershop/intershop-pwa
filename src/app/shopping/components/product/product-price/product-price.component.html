@@ -1,0 +1,21 @@
+<div class="current-price"
+  [ngClass]="{ 'sale-price': (showInformationalPrice && isListPriceGreaterThanSalePrice), 'sale-price-higher': (showInformationalPrice && isListPriceLessThanSalePrice) }"
+  data-testing-id="current-price"
+>
+  <ng-template [ngIf]="product.salePrice" [ngIfElse]="salePriceNotAvailable">
+    {{ (isListPriceGreaterThanSalePrice ? 'product.price.salePricePrefix.text' : 'product.price.salePriceFallback.text') | translate:{'0': product.salePrice | ishPrice } }}
+    <meta itemprop="price" [attr.content]="product.salePrice.value | number: '1.2-2':'en_US'" />
+    <meta itemprop="priceCurrency" [attr.content]="product.salePrice.currencyMnemonic" />
+  </ng-template>
+  <ng-template #salePriceNotAvailable>
+    {{ 'product.price.na.text' | translate }}
+  </ng-template>
+</div>
+
+<div *ngIf="showInformationalPrice && isListPriceGreaterThanSalePrice" class="old-price" data-testing-id="old-price">
+  {{ 'product.price.listPriceFallback.text' | translate:{'0': product.listPrice | ishPrice } }}
+</div>
+
+<span *ngIf="showPriceSavings && isListPriceGreaterThanSalePrice" class="price-savings">
+  {{ 'product.price.savingsFallback.text' | translate:{'0': priceSavings | ishPrice } }}
+</span>

@@ -1,0 +1,46 @@
+<div class="row checkout-address-book">
+  <!-- registered user -->
+    <ng-container *ngIf="user; else checkoutAddressLogin">
+      <div class="col-sm-6 col-md-4" data-testing-id="invoiceToAddress">
+        <h2> {{ 'checkout.address.billing.label' | translate }}</h2>
+        <div *ngIf="basket.invoiceToAddress"  class="address-box">
+          <ish-address [address]="basket.invoiceToAddress"></ish-address>
+        </div>
+        <p *ngIf="!basket.invoiceToAddress" class="text-danger">
+          {{ 'checkout.addresses.no_Selection.invoice.error' | translate}}
+        </p>
+      </div>
+      <div class="col-sm-6 col-md-4" data-testing-id="shipToAddress">
+        <h2> {{ 'checkout.address.shipping.label' | translate }}</h2>
+        <div *ngIf="basket.commonShipToAddress"  class="address-box">
+          <ish-address *ngIf="basket.commonShipToAddress.urn !== basket.invoiceToAddress.urn" [address]="basket.commonShipToAddress"></ish-address>
+          <p *ngIf="basket.commonShipToAddress.urn === basket.invoiceToAddress.urn" data-testing-id="sameAsInvoice" class="section">
+            {{ 'checkout.same_as_billing_address.text' | translate}}
+          <p>
+        </div>
+        <p *ngIf="!basket.commonShipToAddress" class="text-danger">
+            {{ 'checkout.addresses.no_Selection.shipping.error' | translate}}
+          </p>
+      </div>
+    </ng-container>
+    <!-- unregistered user -->
+    <ng-template #checkoutAddressLogin>
+      <div class="col-sm-12 col-md-8">
+        login form container
+      </div>
+    </ng-template>
+
+    <div class="col-sm-12 col-md-4">
+      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+      <!-- Begin Cart Summary -->
+      <!-- itemsInCart -->
+      <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
+      <div class="cost-summary">
+        <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+
+        <button class="btn btn-lg btn-block btn-primary" type="submit">{{'checkout.button.label' | translate}}</button><!-- ToDo -->
+      </div>
+
+    </div>
+</div>

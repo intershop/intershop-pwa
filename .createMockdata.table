@@ -1,0 +1,35 @@
+#
+# This table defines the entries for fetching mock-data. The columns are space separated.
+# (Be careful when adding or modifying entries.)
+# Only the first column (path) is mandatory.
+#
+# The columns are as follows:
+# - path: The path to be queried.
+# - params: The parameters for the request. Use '?' if you need an empty value.
+# - jq-query: Filter the output with jq. Use '.' if you need an empty value.
+#             See https://stedolan.github.io/jq/manual/
+# - login: Supply any value if a login should be performed.
+#
+
+
+# path params jq-query login?
+
+categories ?view=tree&limit=2&imageView=NO-IMAGE
+categories/Cameras-Camcorders
+categories/Cameras-Camcorders/584
+categories/Cameras-Camcorders/584/products ?returnSortKeys=true&attrs=sku {elements:[.elements[]|select(.uri|test(".*/(3953312|7912061)"))],name,type,sortKeys}
+categories/Cameras-Camcorders/832
+categories/Cameras-Camcorders/832/products ?returnSortKeys=true&attrs=sku {elements:[.elements[]|select(.uri|test(".*/(8182790134362|8182790134363)"))],name,type,sortKeys}
+categories/Computers
+categories/Computers/106
+categories/Computers/106/236
+categories/Computers/106/830
+categories/Home-Entertainment
+categories/Specials
+products/3953312 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/7912061 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/8182790134362 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+customers/- ? . login
+suggest ?SearchTerm=k
+products ?searchTerm=Kodak&attrs=sku&returnSortKeys=true {elements:[.elements[]|select(.uri|test(".*/7912061"))],name,type,sortKeys}
