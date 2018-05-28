@@ -9,8 +9,7 @@ import { accountRootRoutes } from './account-root.routes';
 
 @NgModule({
   imports: [RouterModule.forChild(accountRootRoutes), SharedModule, AccountSharedModule],
-  declarations: [AccountRootContainerComponent],
-  exports: [AccountNavigationComponent],
+  declarations: [AccountRootContainerComponent, AccountNavigationComponent],
   providers: [AuthGuard],
 })
 export class AccountRootModule {}

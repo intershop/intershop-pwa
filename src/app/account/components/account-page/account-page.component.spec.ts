@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { User } from '../../../models/user/user.model';
-import { MockComponent } from '../../../utils/dev/mock.component';
 import { AccountPageComponent } from './account-page.component';
 
 describe('Account Page Component', () => {
@@ -13,18 +12,7 @@ describe('Account Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AccountPageComponent,
-        MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['account', 'trailText'],
-        }),
-        MockComponent({
-          selector: 'ish-account-navigation',
-          template: 'Account Naviation Component',
-        }),
-      ],
+      declarations: [AccountPageComponent],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
