@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from '../../../utils/dev/mock.component';
 import { OrderHistoryPageComponent } from './order-history-page.component';
 
 describe('Order History Page Component', () => {
@@ -10,13 +9,7 @@ describe('Order History Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        OrderHistoryPageComponent,
-        MockComponent({
-          selector: 'ish-account-navigation',
-          template: 'Account Naviation Component',
-        }),
-      ],
+      declarations: [OrderHistoryPageComponent],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));

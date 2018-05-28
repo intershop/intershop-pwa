@@ -22,6 +22,10 @@ describe('Account Root Container', () => {
           template: 'Breadcrumb Component',
           inputs: ['account', 'trailText'],
         }),
+        MockComponent({
+          selector: 'ish-account-navigation',
+          template: 'Account Naviation Component',
+        }),
       ],
       providers: [
         { provide: Store, useFactory: () => instance(mock(Store)) },

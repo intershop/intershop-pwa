@@ -1,3 +1,11 @@
 <ish-breadcrumb [account]="true" [trailText]="breadcrumbKey$ | async | translate"></ish-breadcrumb>
 
-<router-outlet></router-outlet>
+<div class="account-wrapper" data-testing-id="account-page">
+  <div class="row account-main">
+
+    <ish-account-navigation></ish-account-navigation>
+
+    <router-outlet></router-outlet>
+
+  </div>
+</div>
