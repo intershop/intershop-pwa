@@ -4,7 +4,7 @@ import { SourceFile } from 'typescript';
 class NoBarrelFilesWalker extends Lint.RuleWalker {
   visitSourceFile(sourceFile: SourceFile) {
     if (sourceFile.fileName.search('index.ts') > 0) {
-      this.addFailureAtNode(sourceFile, 'The use of barrel files is deprecated!');
+      this.addFailureAt(0, 1, 'The use of barrel files is deprecated!');
     }
   }
 }

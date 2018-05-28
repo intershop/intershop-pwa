@@ -111,7 +111,7 @@ class ComponentCreationTestWalker extends Lint.RuleWalker {
     if (this.warnOnlyOnMissing) {
       console.warn(sourceFile.fileName, message);
     } else {
-      super.addFailureAtNode(sourceFile, message);
+      super.addFailureAt(0, 1, message);
     }
   }
 }
