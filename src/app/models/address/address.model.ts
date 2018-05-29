@@ -17,4 +17,6 @@ export interface Address {
   country: string;
   countryCode: string;
   phoneHome: string;
+  invoiceToAddress: boolean;
+  shipToAddress: boolean;
 }
