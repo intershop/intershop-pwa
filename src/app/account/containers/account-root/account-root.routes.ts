@@ -6,17 +6,16 @@ export const accountRootRoutes: Routes = [
   {
     path: '',
     component: AccountRootContainerComponent,
-    canActivateChild: [AuthGuard],
     children: [
-      {
-        path: 'profile',
-        data: { breadcrumbKey: 'account.profile.link' },
-        loadChildren: '../profile-settings-page/profile-settings-page.module#ProfileSettingsPageModule',
-      },
       {
         path: 'overview',
         data: { breadcrumbKey: 'account.overview.link' },
         loadChildren: '../account-page/account-page.module#AccountPageModule',
+      },
+      {
+        path: 'profile',
+        data: { breadcrumbKey: 'account.profile.link' },
+        loadChildren: '../profile-settings-page/profile-settings-page.module#ProfileSettingsPageModule',
       },
       {
         path: 'orders',
