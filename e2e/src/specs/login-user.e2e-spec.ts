@@ -42,4 +42,12 @@ describe('Returning User', () => {
       });
     });
   });
+
+  describe('with protected url', () => {
+    beforeAll(() => MyAccountPage.navigateTo());
+
+    it('should be redirected to login page', () => {
+      at(LoginPage);
+    });
+  });
 });

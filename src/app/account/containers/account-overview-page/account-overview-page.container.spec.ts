@@ -1,28 +1,32 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { instance, mock } from 'ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { OrderHistoryPageContainerComponent } from './order-history-page.container';
+import { AccountOverviewPageContainerComponent } from './account-overview-page.container';
 
-describe('Order History Page Container', () => {
-  let component: OrderHistoryPageContainerComponent;
-  let fixture: ComponentFixture<OrderHistoryPageContainerComponent>;
+describe('Account Overview Page Container', () => {
+  let fixture: ComponentFixture<AccountOverviewPageContainerComponent>;
+  let component: AccountOverviewPageContainerComponent;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OrderHistoryPageContainerComponent,
+        AccountOverviewPageContainerComponent,
         MockComponent({
-          selector: 'ish-order-history-page',
-          template: 'Order History Page Component',
+          selector: 'ish-account-overview-page',
+          template: 'Account Overview Page Component',
+          inputs: ['user'],
         }),
       ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderHistoryPageContainerComponent);
+    fixture = TestBed.createComponent(AccountOverviewPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
