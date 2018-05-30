@@ -1,0 +1,7 @@
+{
+  "*.ts": [
+    "npx tslint --project tsconfig.json --fix",
+    "npx prettier --loglevel warn --write",
+    "git add"
+  ]
+}
