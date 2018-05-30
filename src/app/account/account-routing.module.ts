@@ -3,7 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'account', loadChildren: './containers/account-root/account-root.module#AccountRootModule' },
+  {
+    path: 'account',
+    loadChildren: './containers/account-root/account-root.module#AccountRootModule',
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
