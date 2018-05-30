@@ -1,19 +1,19 @@
-<ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+<div class="col-md-3 account-nav-box">
 
-  <li [ngClass]="{ 'active': selectedItem === 'OVERVIEW' }">
-    <a routerLink="/account">{{'account.my_account.link' | translate}}</a>
-  </li>
+  <ng-container *ngIf="!isMobileView; else mobileNavigation">
+    <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+      <li *ngFor="let item of navigationItems" routerLinkActive="active">
+        <a routerLink="{{item.link}}">{{ item.localizationKey | translate}}</a>
+      </li>
+    </ul>
+  </ng-container>
 
-  <li [ngClass]="{ 'active': selectedItem === 'ORDERS' }">
-    <a routerLink="/account/orders">{{'account.order_history.link' | translate}}</a>
-  </li>
+  <ng-template #mobileNavigation>
+    <select (change)="navigateTo($event.target.value)" class="form-control">
+      <option *ngFor="let item of navigationItems" value="{{item.link}}" [attr.selected]="item.link === currentPath ? 'selected': null">
+        {{ item.localizationKey | translate}}
+      </option>
+    </select>
+  </ng-template>
 
-  <li [ngClass]="{ 'active': selectedItem === 'PROFILE' }">
-    <a routerLink="/account/profile">{{'account.profile.link' | translate}}</a>
-  </li>
-
-  <li>
-    <a routerLink="/logout">{{'account.navigation.logout.link' | translate}}</a>
-  </li>
-
-</ul>
+</div>
