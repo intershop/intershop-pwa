@@ -2,6 +2,7 @@
   "name": "inspired-pwa",
   "version": "0.0.0",
   "scripts": {
+    "precommit": "lint-staged",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -78,6 +79,7 @@
     "@types/node": "^6.0.0",
     "codelyzer": "4.3.0",
     "cpy-cli": "^1.0.1",
+    "husky": "^0.14.3",
     "intershop-tslint-rules": "file:tslint-rules",
     "istanbul": "^0.4.5",
     "istanbul-api": "1.2.2",
@@ -90,6 +92,7 @@
     "jest": "^22.4.3",
     "jest-junit": "^3.7.0",
     "jest-preset-angular": "^5.2.1",
+    "lint-staged": "^7.1.2",
     "ng-packagr": "^3.0.0-rc.2",
     "ngrx-store-freeze": "0.2.2",
     "prettier": "1.12.1",
