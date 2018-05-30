@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from '../../../core/guards/auth.guard';
+import { AccountOverviewPageContainerComponent } from '../account-overview-page/account-overview-page.container';
 import { AccountRootContainerComponent } from './account-root.container';
 
 export const accountRootRoutes: Routes = [
@@ -10,7 +10,7 @@ export const accountRootRoutes: Routes = [
       {
         path: 'overview',
         data: { breadcrumbKey: 'account.overview.link' },
-        loadChildren: '../account-page/account-page.module#AccountPageModule',
+        component: AccountOverviewPageContainerComponent,
       },
       {
         path: 'profile',

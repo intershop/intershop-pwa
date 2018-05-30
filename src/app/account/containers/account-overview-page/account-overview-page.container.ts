@@ -6,10 +6,10 @@ import { getLoggedInUser } from '../../../core/store/user';
 import { User } from '../../../models/user/user.model';
 
 @Component({
-  templateUrl: './account-page.container.html',
+  templateUrl: './account-overview-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountPageContainerComponent implements OnInit {
+export class AccountOverviewPageContainerComponent implements OnInit {
   user$: Observable<User>;
 
   constructor(private store: Store<CoreState>) {}

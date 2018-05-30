@@ -1,24 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { User } from '../../../models/user/user.model';
-import { AccountPageComponent } from './account-page.component';
+import { AccountOverviewPageComponent } from './account-overview-page.component';
 
-describe('Account Page Component', () => {
-  let fixture: ComponentFixture<AccountPageComponent>;
-  let component: AccountPageComponent;
+describe('Account Overview Page Component', () => {
+  let fixture: ComponentFixture<AccountOverviewPageComponent>;
+  let component: AccountOverviewPageComponent;
   let element: HTMLElement;
   let translate: TranslateService;
   const user = { firstName: 'Patricia' } as User;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountPageComponent],
+      declarations: [AccountOverviewPageComponent],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountPageComponent);
+    fixture = TestBed.createComponent(AccountOverviewPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.get(TranslateService);

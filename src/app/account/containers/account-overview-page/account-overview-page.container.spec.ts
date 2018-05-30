@@ -3,20 +3,20 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { AccountPageContainerComponent } from './account-page.container';
+import { AccountOverviewPageContainerComponent } from './account-overview-page.container';
 
-describe('Account Page Container', () => {
-  let fixture: ComponentFixture<AccountPageContainerComponent>;
-  let component: AccountPageContainerComponent;
+describe('Account Overview Page Container', () => {
+  let fixture: ComponentFixture<AccountOverviewPageContainerComponent>;
+  let component: AccountOverviewPageContainerComponent;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AccountPageContainerComponent,
+        AccountOverviewPageContainerComponent,
         MockComponent({
-          selector: 'ish-account-page',
-          template: 'Account Page Component',
+          selector: 'ish-account-overview-page',
+          template: 'Account Overview Page Component',
           inputs: ['user'],
         }),
       ],
@@ -26,7 +26,7 @@ describe('Account Page Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountPageContainerComponent);
+    fixture = TestBed.createComponent(AccountOverviewPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
