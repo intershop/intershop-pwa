@@ -8,17 +8,17 @@ import { User } from '../../../models/user/user.model';
 import { resolveChildRouteData } from '../../../utils/router';
 
 @Component({
-  templateUrl: './account-root.container.html',
+  templateUrl: './account-page.container.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class AccountRootContainerComponent implements OnInit {
+export class AccountPageContainerComponent implements OnInit {
   user$: Observable<User>;
   breadcrumbKey$: Observable<string>;
 
   constructor(private store: Store<CoreState>, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.breadcrumbKey$ = resolveChildRouteData<string>(this.route, this.router, 'breadcrumbKey');
     this.user$ = this.store.pipe(select(getLoggedInUser));
+    this.breadcrumbKey$ = resolveChildRouteData<string>(this.route, this.router, 'breadcrumbKey');
   }
 }
