@@ -5,7 +5,7 @@ import { AuthGuard } from '../core/guards/auth.guard';
 const routes: Routes = [
   {
     path: 'account',
-    loadChildren: './containers/account-root/account-root.module#AccountRootModule',
+    loadChildren: './containers/account-page/account-page.module#AccountPageModule',
     canActivate: [AuthGuard],
   },
 ];

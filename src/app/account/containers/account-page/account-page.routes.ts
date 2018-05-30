@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { AccountOverviewPageContainerComponent } from '../account-overview-page/account-overview-page.container';
-import { AccountRootContainerComponent } from './account-root.container';
+import { AccountPageContainerComponent } from './account-page.container';
 
-export const accountRootRoutes: Routes = [
+export const accountPageRoutes: Routes = [
   {
     path: '',
-    component: AccountRootContainerComponent,
+    component: AccountPageContainerComponent,
     children: [
       {
         path: 'overview',

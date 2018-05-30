@@ -6,25 +6,25 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock } from 'ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { AccountRootContainerComponent } from './account-root.container';
+import { AccountPageContainerComponent } from './account-page.container';
 
-describe('Account Root Container', () => {
-  let fixture: ComponentFixture<AccountRootContainerComponent>;
-  let component: AccountRootContainerComponent;
+describe('Account Page Container', () => {
+  let fixture: ComponentFixture<AccountPageContainerComponent>;
+  let component: AccountPageContainerComponent;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AccountRootContainerComponent,
+        AccountPageContainerComponent,
         MockComponent({
           selector: 'ish-breadcrumb',
           template: 'Breadcrumb Component',
           inputs: ['account', 'trailText'],
         }),
         MockComponent({
-          selector: 'ish-account-root',
-          template: 'Account Root Component',
+          selector: 'ish-account-page',
+          template: 'Account Page Component',
         }),
       ],
       providers: [
@@ -36,7 +36,7 @@ describe('Account Root Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountRootContainerComponent);
+    fixture = TestBed.createComponent(AccountPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

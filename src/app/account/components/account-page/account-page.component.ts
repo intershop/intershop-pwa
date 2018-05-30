@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'ish-account-root',
-  templateUrl: './account-root.component.html',
+  selector: 'ish-account-page',
+  templateUrl: './account-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountRootComponent {}
+export class AccountPageComponent {}
