@@ -59,6 +59,16 @@ describe('Basket Effects', () => {
       }
     });
 
+    when(basketServiceMock.updateBasket(anyString(), anything())).thenCall(
+      (basketId: string, payload: { invoiceToAddress: { id: string } }) => {
+        if (basketId === 'invalid') {
+          return throwError({ message: 'invalid' } as HttpErrorResponse);
+        } else {
+          return of({});
+        }
+      }
+    );
+
     when(basketServiceMock.getBasket()).thenCall((id: string) => {
       return of({ id: 'test' } as Basket);
     });
@@ -147,6 +157,22 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasket$', () => {
+    it('should call the basketService for updateBasket', done => {
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+
+      const basketId = 'test';
+      const payload = { invoiceToAddress: { id: '7654' } };
+      const action = new basketActions.UpdateBasket(payload);
+      actions$ = of(action);
+
+      effects.updateBasket$.subscribe(() => {
+        verify(basketServiceMock.updateBasket(basketId, payload)).once();
+        done();
+      });
     });
   });
 
