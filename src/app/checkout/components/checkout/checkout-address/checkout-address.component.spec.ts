@@ -100,4 +100,28 @@ describe('Checkout Address Component', () => {
     expect(component.shippingAddresses[0].id).toEqual('4712');
     expect(component.shippingAddresses[1].id).toEqual('4713');
   });
+
+  it('should throw updateInvoiceAddress event when invoice address form value id changes', done => {
+    fixture.detectChanges();
+
+    let formValue = '';
+    component.updateInvoiceAddress.subscribe(x => {
+      formValue = x;
+      done();
+    });
+
+    component.invoiceAddressForm.get('id').setValue('testId');
+    expect(formValue).toBe('testId');
+  });
+
+  it('should throw updateshippingAddress event when shipping address form value id changes', done => {
+    fixture.detectChanges();
+
+    component.updateShippingAddress.subscribe(x => {
+      expect(x).toBe('testId');
+      done();
+    });
+
+    component.shippingAddressForm.get('id').setValue('testId');
+  });
 });

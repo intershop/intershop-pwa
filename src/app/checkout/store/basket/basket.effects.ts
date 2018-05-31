@@ -46,6 +46,54 @@ export class BasketEffects {
   );
 
   /**
+   * Updates the invoice address of the basket.
+   * Triggers the internal UpdateBasket action that handles the actual updating operation.
+   */
+  @Effect()
+  updateBasketInvoiceAddress$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasketInvoiceAddress),
+    map(
+      (action: basketActions.UpdateBasketInvoiceAddress) =>
+        new basketActions.UpdateBasket({
+          invoiceToAddress: { id: action.payload },
+        })
+    )
+  );
+
+  /**
+   * Updates the common shipping address of the basket.
+   * Triggers the internal UpdateBasket action that handles the actual updating operation.
+   */
+  @Effect()
+  updateBasketShippingAddress$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasketShippingAddress),
+    map(
+      (action: basketActions.UpdateBasketInvoiceAddress) =>
+        new basketActions.UpdateBasket({
+          commonShipToAddress: { id: action.payload },
+        })
+    )
+  );
+
+  /**
+   * Update basket effect.
+   */
+  @Effect()
+  updateBasket$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasket),
+    map((action: basketActions.UpdateBasket) => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([payload, basket]) => {
+      return this.basketService
+        .updateBasket(basket.id, payload)
+        .pipe(
+          map(() => new basketActions.UpdateBasketSuccess()),
+          catchError(error => of(new basketActions.UpdateBasketFail(error)))
+        );
+    })
+  );
+
+  /**
    * The load basket items effect.
    */
   @Effect()
@@ -240,6 +288,7 @@ export class BasketEffects {
   @Effect()
   loadBasketAfterBasketChangeSuccess$ = this.actions$.pipe(
     ofType(
+      basketActions.BasketActionTypes.UpdateBasketSuccess,
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
       basketActions.BasketActionTypes.DeleteBasketItemSuccess

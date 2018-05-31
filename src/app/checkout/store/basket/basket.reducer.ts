@@ -20,6 +20,9 @@ export const initialState: BasketState = {
 export function basketReducer(state = initialState, action: BasketAction): BasketState {
   switch (action.type) {
     case BasketActionTypes.LoadBasket:
+    case BasketActionTypes.UpdateBasketInvoiceAddress:
+    case BasketActionTypes.UpdateBasketShippingAddress:
+    case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.LoadBasketItems:
     case BasketActionTypes.AddProductToBasket:
     case BasketActionTypes.AddItemsToBasket:
@@ -32,6 +35,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.LoadBasketFail:
+    case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.LoadBasketItemsFail:
     case BasketActionTypes.AddItemsToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
@@ -45,6 +49,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
+    case BasketActionTypes.UpdateBasketSuccess:
     case BasketActionTypes.AddItemsToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
     case BasketActionTypes.DeleteBasketItemSuccess: {
