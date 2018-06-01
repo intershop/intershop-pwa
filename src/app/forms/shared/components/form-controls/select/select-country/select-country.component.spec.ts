@@ -42,8 +42,8 @@ describe('Select Country Component', () => {
 
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
-    expect(component.controlName).toEqual('countryCode', 'control Name should be <countryCode>');
-    expect(component.label).toEqual('Country', 'label key should be Country');
+    expect(component.controlName).toEqual('countryCode');
+    expect(component.label).toEqual('Country');
   });
 
   it('should display countries if component input changes', () => {
@@ -53,7 +53,7 @@ describe('Select Country Component', () => {
     component.ngOnChanges(changes);
 
     fixture.detectChanges();
-    expect(component.options.length).toEqual(3, '3 countries are in the options array');
+    expect(component.options.length).toEqual(3);
     expect(element.querySelector('select[data-testing-id=countryCode]')).toBeTruthy();
   });
 });

@@ -36,16 +36,13 @@ describe('Select Security Question Component', () => {
 
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
-    expect(component.controlName).toEqual('securityQuestion', 'control Name should be <securityQuestion>');
-    expect(component.label).toEqual(
-      'account.security_question.label',
-      'label key should be <account.security_question.label>'
-    );
+    expect(component.controlName).toEqual('securityQuestion');
+    expect(component.label).toEqual('account.security_question.label');
   });
 
   it('should get and display security questions on creation', () => {
     fixture.detectChanges();
-    expect(component.options.length).toEqual(5, '5 questions are in the options array'); // ToDo: questions are retrieved from a service
+    expect(component.options.length).toEqual(5); // ToDo: questions are retrieved from a service
     expect(element.querySelector('select[data-testing-id=securityQuestion]')).toBeTruthy();
   });
 });
