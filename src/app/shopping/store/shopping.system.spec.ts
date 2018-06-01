@@ -183,7 +183,7 @@ describe('Shopping System', () => {
         expect(i.next()).toBeUndefined();
 
         expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
-        expect(getProductIds(store.state)).toEqual([]);
+        expect(getProductIds(store.state)).toBeEmpty();
       })
     );
 
@@ -220,7 +220,7 @@ describe('Shopping System', () => {
         'should load necessary data when going to a category page',
         fakeAsync(() => {
           expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
-          expect(getProductIds(store.state)).toEqual([]);
+          expect(getProductIds(store.state)).toBeEmpty();
         })
       );
 
@@ -321,7 +321,7 @@ describe('Shopping System', () => {
       'should load necessary data when going to a category page',
       fakeAsync(() => {
         expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
-        expect(getProductIds(store.state)).toEqual([]);
+        expect(getProductIds(store.state)).toBeEmpty();
       })
     );
 
@@ -373,7 +373,7 @@ describe('Shopping System', () => {
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
           expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
-          expect(getProductIds(store.state)).toEqual([]);
+          expect(getProductIds(store.state)).toBeEmpty();
         })
       );
 
@@ -436,7 +436,7 @@ describe('Shopping System', () => {
     it(
       'should not put anything in recently viewed products when going to a family page',
       fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toEqual([]);
+        expect(getRecentlyProducts(store.state)).toBeEmpty();
       })
     );
 
@@ -510,7 +510,7 @@ describe('Shopping System', () => {
       it(
         'should not put anything additionally in recently viewed products when changing the language',
         fakeAsync(() => {
-          expect(getRecentlyProducts(store.state)).toEqual([]);
+          expect(getRecentlyProducts(store.state)).toBeEmpty();
         })
       );
     });
@@ -797,7 +797,7 @@ describe('Shopping System', () => {
       'should load only family page content and redirect to error when product was not found',
       fakeAsync(() => {
         expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
-        expect(getProductIds(store.state)).toEqual([]);
+        expect(getProductIds(store.state)).toBeEmpty();
       })
     );
 
@@ -842,7 +842,7 @@ describe('Shopping System', () => {
     it(
       'should not put anything to recently viewed products when invalid product was selected',
       fakeAsync(() => {
-        expect(getRecentlyProducts(store.state)).toEqual([]);
+        expect(getRecentlyProducts(store.state)).toBeEmpty();
       })
     );
   });
@@ -859,7 +859,7 @@ describe('Shopping System', () => {
       'should load only some categories and redirect to error when category was not found',
       fakeAsync(() => {
         expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
-        expect(getProductIds(store.state)).toEqual([]);
+        expect(getProductIds(store.state)).toBeEmpty();
       })
     );
 

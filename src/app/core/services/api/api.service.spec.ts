@@ -160,7 +160,7 @@ describe('Api Service', () => {
 
       httpTestingController.expectNone(webcamsPath);
 
-      expect(resData).toEqual([]);
+      expect(resData).toBeEmpty();
     });
 
     it('should not perform element or link translation when it is not requested', () => {
@@ -208,7 +208,7 @@ describe('Api Service', () => {
       httpTestingController.expectOne(`${BASE_URL}/site/dummy2`).flush({});
       httpTestingController.expectNone(`${BASE_URL}/site/dummy3`);
 
-      expect(resData.length).toBe(1);
+      expect(resData).toHaveLength(1);
     });
 
     it('should return empty array on link translation when no links are available', () => {
@@ -222,7 +222,7 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(`${BASE_URL}/site/something`);
       req.flush([]);
 
-      expect(resData.length).toBe(0);
+      expect(resData).toHaveLength(0);
     });
 
     it('should return empty array on element and link translation when source is empty', () => {
@@ -236,7 +236,7 @@ describe('Api Service', () => {
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush({});
 
-      expect(resData).toEqual([]);
+      expect(resData).toBeEmpty();
     });
   });
 });

@@ -28,14 +28,14 @@ describe('Locale Selectors', () => {
 
   it('should have nothing when just initialized', () => {
     currentLocale$.subscribe(locale => expect(locale).toBeNull());
-    availableLocales$.subscribe(array => expect(array.length).toBe(0));
+    availableLocales$.subscribe(array => expect(array).toHaveLength(0));
   });
 
   it('should select a available locales when SetAvailableLocales action is reduced', () => {
     store$.dispatch(new SetAvailableLocales(locales));
 
     availableLocales$.subscribe(array => {
-      expect(array.length).toBe(locales.length);
+      expect(array).toHaveLength(locales.length);
       expect(array).toEqual(locales);
     });
 

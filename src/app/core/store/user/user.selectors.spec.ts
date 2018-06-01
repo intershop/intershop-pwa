@@ -31,7 +31,7 @@ describe('User Selectors', () => {
   });
 
   it('should select no customer/user when no event was sent', () => {
-    userAuthorized$.subscribe(authorized => expect(authorized).toBe(false));
+    userAuthorized$.subscribe(authorized => expect(authorized).toBeFalse());
     loggedInCustomer$.subscribe(customer => expect(customer).toBe(null));
     loggedInUser$.subscribe(user => expect(user).toBe(null));
     loginError$.subscribe(error => expect(error).toBeFalsy());
@@ -41,7 +41,7 @@ describe('User Selectors', () => {
     const customerNo = 'test';
     store$.dispatch(new LoginUserSuccess({ customerNo } as Customer));
 
-    userAuthorized$.subscribe(authorized => expect(authorized).toBe(true));
+    userAuthorized$.subscribe(authorized => expect(authorized).toBeTrue());
     loggedInCustomer$.subscribe(customer => {
       expect(customer).toBeTruthy();
       expect((customer as Customer).customerNo).toEqual(customerNo);
@@ -54,7 +54,7 @@ describe('User Selectors', () => {
     const type = 'PrivateCustomer';
     store$.dispatch(new LoginUserSuccess({ firstName, type } as Customer));
 
-    userAuthorized$.subscribe(authorized => expect(authorized).toBe(true));
+    userAuthorized$.subscribe(authorized => expect(authorized).toBeTrue());
     loggedInUser$.subscribe(user => {
       expect(user).toBeTruthy();
       expect(user.firstName).toEqual(firstName);
@@ -66,7 +66,7 @@ describe('User Selectors', () => {
     const type = 'SMBCustomer';
     store$.dispatch(new LoginUserSuccess({ type } as Customer));
 
-    userAuthorized$.subscribe(authorized => expect(authorized).toBe(true));
+    userAuthorized$.subscribe(authorized => expect(authorized).toBeTrue());
     loggedInUser$.subscribe(user => {
       expect(user).toBeNull();
     });
@@ -89,7 +89,7 @@ describe('User Selectors', () => {
     const error = { status: 401, headers: new HttpHeaders().set('error-key', 'dummy') } as HttpErrorResponse;
     store$.dispatch(new LoginUserFail(error));
 
-    userAuthorized$.subscribe(authorized => expect(authorized).toBe(false));
+    userAuthorized$.subscribe(authorized => expect(authorized).toBeFalse());
     loggedInUser$.subscribe(customer => expect(customer).toBe(null));
     loginError$.subscribe(err => {
       expect(err).toBeTruthy();

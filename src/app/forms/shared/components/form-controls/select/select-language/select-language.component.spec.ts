@@ -52,7 +52,7 @@ describe('Select Language Component', () => {
     };
     component.ngOnChanges(changes);
     fixture.detectChanges();
-    expect(component.options.length).toEqual(2); // ToDo: languages are retrieved from a service
+    expect(component.options).toHaveLength(2); // ToDo: languages are retrieved from a service
     expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy();
   });
 });

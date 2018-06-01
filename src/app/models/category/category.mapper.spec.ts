@@ -128,7 +128,7 @@ describe('Category Mapper', () => {
       const rootNode = tree.nodes['1'];
       expect(rootNode).toBeTruthy();
       expect(rootNode.uniqueId).toEqual('1');
-      expect(tree.edges).toEqual({});
+      expect(tree.edges).toBeEmpty();
     });
 
     it(`should return CategoryTree with node and computed uniqueid when raw CategoryData was supplied with categoryPath`, () => {

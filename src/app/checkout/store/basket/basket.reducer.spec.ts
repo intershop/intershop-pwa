@@ -11,7 +11,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.LoadBasket('test');
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -21,7 +21,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.LoadBasketFail(error);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -36,7 +36,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.basket).toEqual(basket);
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });
@@ -47,7 +47,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.LoadBasketItems('test');
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -57,7 +57,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.LoadBasketItemsFail(error);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -75,7 +75,7 @@ describe('Basket Reducer', () => {
         state = basketReducer(state, basketItemsAction);
 
         expect(state.lineItems).toEqual(basketItems);
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });
@@ -86,7 +86,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.AddProductToBasket({ sku: 'test', quantity: 1 });
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -96,7 +96,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.AddItemsToBasketFail(error);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -106,7 +106,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.AddItemsToBasketSuccess();
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });
@@ -122,7 +122,7 @@ describe('Basket Reducer', () => {
         ]);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -132,7 +132,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasketItemsFail(error);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -142,7 +142,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasketItemsSuccess();
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });
@@ -153,7 +153,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.DeleteBasketItem('test');
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -163,7 +163,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.DeleteBasketItemFail(error);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -173,7 +173,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.DeleteBasketItemSuccess();
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
 

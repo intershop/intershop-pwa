@@ -66,9 +66,9 @@ describe('Form Utils', () => {
       });
       const fields = ['a'];
       markFormControlsAsInvalid(form, fields);
-      expect(form.get('a').valid).toBe(false);
-      expect(form.get('b').valid).toBe(true);
-      expect(form.get('c').valid).toBe(true);
+      expect(form.get('a').valid).toBeFalse();
+      expect(form.get('b').valid).toBeTrue();
+      expect(form.get('c').valid).toBeTrue();
     });
 
     it('should mark multiple fields as dirty when comma separated', () => {
@@ -79,9 +79,9 @@ describe('Form Utils', () => {
       });
       const fields = ['a', 'b'];
       markFormControlsAsInvalid(form, fields);
-      expect(form.get('a').valid).toBe(false);
-      expect(form.get('b').valid).toBe(false);
-      expect(form.get('c').valid).toBe(true);
+      expect(form.get('a').valid).toBeFalse();
+      expect(form.get('b').valid).toBeFalse();
+      expect(form.get('c').valid).toBeTrue();
     });
 
     it('should mark fully specified fields as dirty when comma separated', () => {
@@ -95,10 +95,10 @@ describe('Form Utils', () => {
       });
       const fields = ['a.a1'];
       markFormControlsAsInvalid(form, fields);
-      expect(form.get('a').get('a1').valid).toBe(false);
-      expect(form.get('a').get('a2').valid).toBe(true);
-      expect(form.get('b').valid).toBe(true);
-      expect(form.get('c').valid).toBe(true);
+      expect(form.get('a').get('a1').valid).toBeFalse();
+      expect(form.get('a').get('a2').valid).toBeTrue();
+      expect(form.get('b').valid).toBeTrue();
+      expect(form.get('c').valid).toBeTrue();
     });
   });
 });
