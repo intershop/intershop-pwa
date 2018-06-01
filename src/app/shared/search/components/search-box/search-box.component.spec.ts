@@ -64,7 +64,7 @@ describe('Search Box Component', () => {
     });
 
     it('should hide popup when no search results are found', () => {
-      expect(component.isHidden).toBe(true);
+      expect(component.isHidden).toBeTrue();
     });
   });
 
@@ -78,12 +78,12 @@ describe('Search Box Component', () => {
       fakeAsync(() => {
         const ul = element.querySelector<HTMLUListElement>('.search-suggest-results');
 
-        expect(ul.querySelectorAll('li').length).toBe(2);
+        expect(ul.querySelectorAll('li')).toHaveLength(2);
       })
     );
 
     it('should show popup when search results are found', () => {
-      expect(component.isHidden).toBe(false);
+      expect(component.isHidden).toBeFalse();
     });
   });
 

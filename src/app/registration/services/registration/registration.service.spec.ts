@@ -17,7 +17,7 @@ describe('Registration Service', () => {
     when(apiServiceMock.get(anything(), anything())).thenReturn(of({ authorized: true }));
 
     registrationService.signinUser(loginDetail).subscribe(data => {
-      expect(data['authorized']).toBe(true);
+      expect(data['authorized']).toBeTrue();
     });
   });
 

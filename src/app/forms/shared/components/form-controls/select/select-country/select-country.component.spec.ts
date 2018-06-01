@@ -53,7 +53,7 @@ describe('Select Country Component', () => {
     component.ngOnChanges(changes);
 
     fixture.detectChanges();
-    expect(component.options.length).toEqual(3);
+    expect(component.options).toHaveLength(3);
     expect(element.querySelector('select[data-testing-id=countryCode]')).toBeTruthy();
   });
 });
