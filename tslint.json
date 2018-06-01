@@ -198,6 +198,7 @@
       }
     },
     "meaningful-naming-in-tests": { "severity": "warning" },
+    "use-async-synchronisation-in-tests": true,
     "no-any": { "severity": "warning" },
     "no-commented-out-tests": true,
     "no-focused-tests": true,
