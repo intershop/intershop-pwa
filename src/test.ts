@@ -1,4 +1,5 @@
 require('jest-preset-angular');
+require('jest-extended');
 import { getTestBed } from '@angular/core/testing';
 beforeEach(() => {
   // tslint:disable-next-line: no-any
