@@ -36,19 +36,21 @@ describe('Auth Guard', () => {
       router = spy(realRouter);
     });
 
-    it('should return true when user is authorized', () => {
+    it('should return true when user is authorized', done => {
       store$.dispatch(new LoginUserSuccess({} as Customer));
 
       authGuard.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot).subscribe(authorized => {
         expect(authorized).toBeTruthy();
         verify(router.navigate(anything(), anything())).never();
+        done();
       });
     });
 
-    it('should return false when called as unauthorized', () => {
+    it('should return false when called as unauthorized', done => {
       authGuard.canActivate({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot).subscribe(authorized => {
         expect(authorized).toBeFalsy();
         verify(router.navigate(anything(), anything())).once();
+        done();
       });
     });
   });

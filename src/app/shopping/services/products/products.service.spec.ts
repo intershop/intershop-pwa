@@ -34,22 +34,24 @@ describe('Products Service', () => {
     productsService = new ProductsService(instance(apiService));
   });
 
-  it("should get Product data when 'getProduct' is called", () => {
+  it("should get Product data when 'getProduct' is called", done => {
     when(apiService.get(`products/${productSku}`, anything())).thenReturn(of({ sku: productSku } as Product));
     productsService.getProduct(productSku).subscribe(data => {
       expect(data.sku).toEqual(productSku);
+      verify(apiService.get(`products/${productSku}`, anything())).once();
+      done();
     });
-    verify(apiService.get(`products/${productSku}`, anything())).once();
   });
 
-  it("should get a list of products SKUs for a given Category when 'getCategoryProducts' is called", () => {
+  it("should get a list of products SKUs for a given Category when 'getCategoryProducts' is called", done => {
     when(apiService.get(`categories/${categoryId}/products`, anything())).thenReturn(of(productsMockData));
     productsService.getCategoryProducts(categoryId).subscribe(data => {
       expect(data.skus).toEqual(['ProductA', 'ProductB']);
       expect(data.categoryUniqueId).toEqual(categoryId);
       expect(data.sortKeys).toEqual(['name-desc', 'name-asc']);
+      verify(apiService.get(`categories/${categoryId}/products`, anything())).once();
+      done();
     });
-    verify(apiService.get(`categories/${categoryId}/products`, anything())).once();
   });
 
   it('should get products based on the given search term', () => {

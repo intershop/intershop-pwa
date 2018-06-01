@@ -50,14 +50,32 @@ describe('Categories Service', () => {
       verify(apiServiceMock.get('categories/dummyid')).once();
     });
 
-    it('should return error when called with null', () => {
-      categoriesService.getCategory(null).subscribe(data => fail(), err => expect(err).toBeTruthy());
+    it('should return error when called with null', done => {
+      categoriesService.getCategory(null).subscribe(
+        data => {
+          fail();
+          done();
+        },
+        err => {
+          expect(err).toBeTruthy();
+          done();
+        }
+      );
 
       verify(apiServiceMock.get(anything())).never();
     });
 
-    it('should return error when called with empty category', () => {
-      categoriesService.getCategory('').subscribe(data => fail(), err => expect(err).toBeTruthy());
+    it('should return error when called with empty category', done => {
+      categoriesService.getCategory('').subscribe(
+        data => {
+          fail();
+          done();
+        },
+        err => {
+          expect(err).toBeTruthy();
+          done();
+        }
+      );
 
       verify(apiServiceMock.get(anything(), anything())).never();
     });
