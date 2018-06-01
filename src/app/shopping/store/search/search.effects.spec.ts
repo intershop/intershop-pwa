@@ -70,13 +70,14 @@ describe('Search Effects', () => {
     });
 
     describe('searchProducts$', () => {
-      it('should perform a search with given search term and trigger actions when search is requested', () => {
+      it('should perform a search with given search term and trigger actions when search is requested', done => {
         const searchTerm = '123';
         const action = new SearchProducts(searchTerm);
-        actions$ = hot('a', { a: action });
+        actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
           verify(productsServiceMock.searchProducts(searchTerm)).once();
+          done();
         });
       });
     });
@@ -181,6 +182,7 @@ describe('Search Effects', () => {
           store$.dispatch(new SuggestSearch('good'));
           tick(4000);
 
+          // tslint:disable-next-line:use-async-synchronisation-in-tests
           effects.suggestSearch$.subscribe(() => fail(), () => fail(), () => fail());
 
           const iter = store$.actionsIterator([/.*/]);

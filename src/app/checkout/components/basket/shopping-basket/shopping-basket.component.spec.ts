@@ -67,24 +67,23 @@ describe('Shopping Basket Component', () => {
     );
   });
 
-  it('should throw deleteItem event when delete item is clicked', () => {
-    let firedItem = '';
-    component.deleteItem.subscribe(itemId => {
-      firedItem = itemId;
+  it('should throw deleteItem event when delete item is clicked', done => {
+    component.deleteItem.subscribe(firedItem => {
+      expect(firedItem).toBe('4712');
+      done();
     });
 
     component.onDeleteItem('4712');
-    expect(firedItem).toBe('4712');
   });
 
-  it('should throw updateItems event when form is submitted', () => {
+  it('should throw updateItems event when form is submitted', done => {
     component.ngOnChanges();
-    let firedFormValue = '';
-    component.updateItems.subscribe(x => {
-      firedFormValue = x;
+
+    component.updateItems.subscribe(firedFormValue => {
+      expect(firedFormValue).toBe(component.form.value.items);
+      done();
     });
 
     component.submitForm();
-    expect(firedFormValue).toBe(component.form.value.items);
   });
 });

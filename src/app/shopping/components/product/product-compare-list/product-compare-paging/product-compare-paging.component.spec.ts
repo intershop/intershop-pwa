@@ -28,12 +28,13 @@ describe('Product Compare Paging Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should trigger changePage event when click next and previous button', () => {
+  it('should trigger changePage event when click next and previous button', done => {
     const expected = 1;
     let called = false;
     component.changePage.subscribe(data => {
       expect(data).toEqual(expected);
       called = true;
+      done();
     });
     component.changeToPage(expected);
     expect(called).toBeTruthy();

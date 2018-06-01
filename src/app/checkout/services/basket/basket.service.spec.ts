@@ -37,53 +37,49 @@ describe('Basket Service', () => {
     basketService = new BasketService(instance(apiService));
   });
 
-  it("should get basket data when 'getBasket' is called", () => {
+  it("should get basket data when 'getBasket' is called", done => {
     when(apiService.get(`baskets/${basketMockData.id}`)).thenReturn(of(basketMockData));
 
     basketService.getBasket(basketMockData.id).subscribe(data => {
       expect(data.id).toEqual(basketMockData.id);
+      verify(apiService.get(`baskets/${basketMockData.id}`)).once();
+      done();
     });
-
-    verify(apiService.get(`baskets/${basketMockData.id}`)).once();
   });
 
-  it("should get basket items for specific basketId when 'getBasketItems' is called", () => {
+  it("should get basket items for specific basketId when 'getBasketItems' is called", done => {
     when(apiService.get(`baskets/${basketMockData.id}/items`)).thenReturn(of([]));
 
     basketService.getBasketItems(basketMockData.id).subscribe(() => {
-      expect(true).toBeTruthy();
+      verify(apiService.get(`baskets/${basketMockData.id}/items`)).once();
+      done();
     });
-
-    verify(apiService.get(`baskets/${basketMockData.id}/items`)).once();
   });
 
-  it("should post item to basket when 'addItemsToBasket' is called", () => {
+  it("should post item to basket when 'addItemsToBasket' is called", done => {
     when(apiService.post(anything(), anything())).thenReturn(of({}));
 
     basketService.addItemsToBasket([itemMockData], basketMockData.id).subscribe(() => {
-      expect(true).toBeTruthy();
+      verify(apiService.post(`baskets/${basketMockData.id}/items`, anything())).once();
+      done();
     });
-
-    verify(apiService.post(`baskets/${basketMockData.id}/items`, anything())).once();
   });
 
-  it("should put updated data to basket line item of spefic basket when 'updateBasketItem' is called", () => {
+  it("should put updated data to basket line item of spefic basket when 'updateBasketItem' is called", done => {
     when(apiService.put(anything(), anything())).thenReturn(of({}));
 
     basketService.updateBasketItem(lineItemData.id, 2, basketMockData.id).subscribe(() => {
-      expect(true).toBeTruthy();
+      verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, anything())).once();
+      done();
     });
-
-    verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, anything())).once();
   });
 
-  it("should remove line item from spefic basket when 'deleteBasketItem' is called", () => {
+  it("should remove line item from spefic basket when 'deleteBasketItem' is called", done => {
     when(apiService.delete(anything())).thenReturn(of({}));
 
     basketService.deleteBasketItem(lineItemData.id, basketMockData.id).subscribe(() => {
-      expect(true).toBeTruthy();
+      verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+      done();
     });
-
-    verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
   });
 });

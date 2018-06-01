@@ -44,12 +44,13 @@ describe('Search Box Component', () => {
     fixture.detectChanges();
   }
 
-  it('should fire event when search is called', () => {
-    let term: string;
-    component.searchTermChange.subscribe(searchTerm => (term = searchTerm));
+  it('should fire event when search is called', done => {
+    component.searchTermChange.subscribe(searchTerm => {
+      expect(searchTerm).toEqual('test');
+      done();
+    });
 
     component.search('test');
-    expect(term).toEqual('test');
   });
 
   describe('with no results', () => {

@@ -44,12 +44,15 @@ describe('User Effects', () => {
   });
 
   describe('loginUser$', () => {
-    it('should call the api service when LoginUser event is called', () => {
+    it('should call the api service when LoginUser event is called', done => {
       const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
 
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
-      effects.loginUser$.subscribe(() => verify(registrationServiceMock.signinUser(anything())).once());
+      effects.loginUser$.subscribe(() => {
+        verify(registrationServiceMock.signinUser(anything())).once();
+        done();
+      });
     });
 
     it('should dispatch a LoginUserSuccess action on successful login', () => {
@@ -77,12 +80,13 @@ describe('User Effects', () => {
   });
 
   describe('loadCompanyUser$', () => {
-    it('should call the registationService for LoadCompanyUser', () => {
+    it('should call the registationService for LoadCompanyUser', done => {
       const action = new ua.LoadCompanyUser();
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadCompanyUser$.subscribe(() => {
         verify(registrationServiceMock.getCompanyUserData()).once();
+        done();
       });
     });
 
@@ -100,32 +104,34 @@ describe('User Effects', () => {
   });
 
   describe('goToHomeAfterLogout$', () => {
-    it('should navigate to /home after LogoutUser', () => {
+    it('should navigate to /home after LogoutUser', done => {
       const action = new ua.LogoutUser();
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.goToHomeAfterLogout$.subscribe(() => {
         verify(routerMock.navigate(anything())).once();
         const [param] = capture(routerMock.navigate).last();
         expect(param).toEqual(['/home']);
+        done();
       });
     });
   });
 
   describe('goToAccountAfterLogin$', () => {
-    it('should navigate to /account after LoginUserSuccess', () => {
+    it('should navigate to /account after LoginUserSuccess', done => {
       const action = new ua.LoginUserSuccess({} as Customer);
 
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.goToAccountAfterLogin$.subscribe(() => {
         verify(routerMock.navigate(anything())).once();
         const [param] = capture(routerMock.navigate).last();
         expect(param).toEqual(['/account']);
+        done();
       });
     });
 
-    it('should navigate to returnUrl after LoginUserSuccess when it is set', () => {
+    it('should navigate to returnUrl after LoginUserSuccess when it is set', done => {
       when(routerMock.routerState).thenReturn({
         snapshot: {
           root: {
@@ -138,24 +144,26 @@ describe('User Effects', () => {
 
       const action = new ua.LoginUserSuccess({} as Customer);
 
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.goToAccountAfterLogin$.subscribe(() => {
         verify(routerMock.navigate(anything())).once();
         const [param] = capture(routerMock.navigate).last();
         expect(param).toEqual(['/foobar']);
+        done();
       });
     });
   });
 
   describe('createUser$', () => {
-    it('should call the api service when Create event is called', () => {
+    it('should call the api service when Create event is called', done => {
       const action = new ua.CreateUser({} as Customer);
 
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.createUser$.subscribe(() => {
         verify(registrationServiceMock.createUser(anything())).once();
+        done();
       });
     });
 

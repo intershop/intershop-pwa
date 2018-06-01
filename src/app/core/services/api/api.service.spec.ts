@@ -44,16 +44,22 @@ describe('Api Service', () => {
       httpTestingController.verify();
     });
 
-    it('should call the httpClient.get method when apiService.get method is called.', () => {
-      apiService.get('data').subscribe(data => expect(data).toBeTruthy());
+    it('should call the httpClient.get method when apiService.get method is called.', done => {
+      apiService.get('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
 
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
       expect(req.request.method).toEqual('GET');
     });
 
     it('should create Error Action if httpClient.get throws Error.', () => {
       const statusText = 'ERROAAR';
-      apiService.get('data').subscribe(data => expect(data).toBeTruthy());
+
+      // tslint:disable-next-line:use-async-synchronisation-in-tests
+      apiService.get('data').subscribe(data => fail(), data => fail());
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
 
       req.flush('err', { status: 500, statusText });
@@ -64,24 +70,36 @@ describe('Api Service', () => {
       expect((<ServerError>action).error.statusText).toEqual(statusText);
     });
 
-    it('should call the httpClient.put method when apiService.put method is called.', () => {
-      apiService.put('data').subscribe(data => expect(data).toBeTruthy());
+    it('should call the httpClient.put method when apiService.put method is called.', done => {
+      apiService.put('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
 
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
       expect(req.request.method).toEqual('PUT');
     });
 
-    it('should call the httpClient.post method when apiService.post method is called.', () => {
-      apiService.post('data').subscribe(data => expect(data).toBeTruthy());
+    it('should call the httpClient.post method when apiService.post method is called.', done => {
+      apiService.post('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
 
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
       expect(req.request.method).toEqual('POST');
     });
 
-    it('should call the httpClient.delete method when apiService.delete method is called.', () => {
-      apiService.delete('data').subscribe(data => expect(data).toBeTruthy());
+    it('should call the httpClient.delete method when apiService.delete method is called.', done => {
+      apiService.delete('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
 
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
       expect(req.request.method).toEqual('DELETE');
     });
   });
@@ -131,75 +149,72 @@ describe('Api Service', () => {
       httpTestingController.verify();
     });
 
-    it('should perform element translation when it is requested', () => {
-      let resData;
-
+    it('should perform element translation when it is requested', done => {
       apiService
         .get('categories')
         .pipe(unpackEnvelope())
-        .subscribe(data => (resData = data));
+        .subscribe(data => {
+          expect(data).toEqual([webcamLink]);
+          done();
+        });
 
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush(categoriesResponse);
 
       httpTestingController.expectNone(webcamsPath);
-
-      expect(resData).toEqual([webcamLink]);
     });
 
-    it('should return empty array on element translation when no elements are found', () => {
-      let resData;
-
+    it('should return empty array on element translation when no elements are found', done => {
       apiService
         .get('categories')
         .pipe(unpackEnvelope())
-        .subscribe(data => (resData = data));
+        .subscribe(data => {
+          expect(data).toBeEmpty();
+          done();
+        });
 
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush({});
 
       httpTestingController.expectNone(webcamsPath);
-
-      expect(resData).toBeEmpty();
     });
 
-    it('should not perform element or link translation when it is not requested', () => {
-      let resData;
-
-      apiService.get('categories').subscribe(data => (resData = data));
+    it('should not perform element or link translation when it is not requested', done => {
+      apiService.get('categories').subscribe(data => {
+        expect(data).toEqual(categoriesResponse);
+        done();
+      });
 
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush(categoriesResponse);
 
       httpTestingController.expectNone(webcamsPath);
-
-      expect(resData).toEqual(categoriesResponse);
     });
 
-    it('should perform both operations when requested', () => {
-      let resData;
-
+    it('should perform both operations when requested', done => {
       apiService
         .get('categories')
         .pipe(unpackEnvelope(), resolveLinks(apiService))
-        .subscribe(data => (resData = data));
+        .subscribe(data => {
+          expect(data).toEqual([webcamResponse]);
+          done();
+        });
 
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush(categoriesResponse);
 
       const req2 = httpTestingController.expectOne(webcamsPath);
       req2.flush(webcamResponse);
-
-      expect(resData).toEqual([webcamResponse]);
     });
 
-    it('should filter out elements that are not links when doing link translation', () => {
-      let resData;
-
+    it('should filter out elements that are not links when doing link translation', done => {
       apiService
         .get('something')
         .pipe(resolveLinks(apiService))
-        .subscribe(data => (resData = data));
+        .subscribe(data => {
+          expect(data).toHaveLength(1);
+          done();
+        });
 
       const req = httpTestingController.expectOne(`${BASE_URL}/site/something`);
       req.flush([{ uri: 'site/dummy1' }, { type: 'Link', uri: 'site/dummy2' }, { type: 'Link' }] as Link[]);
@@ -207,36 +222,32 @@ describe('Api Service', () => {
       httpTestingController.expectNone(`${BASE_URL}/site/dummy1`);
       httpTestingController.expectOne(`${BASE_URL}/site/dummy2`).flush({});
       httpTestingController.expectNone(`${BASE_URL}/site/dummy3`);
-
-      expect(resData).toHaveLength(1);
     });
 
-    it('should return empty array on link translation when no links are available', () => {
-      let resData;
-
+    it('should return empty array on link translation when no links are available', done => {
       apiService
         .get('something')
         .pipe(resolveLinks(apiService))
-        .subscribe(data => (resData = data));
+        .subscribe(data => {
+          expect(data).toBeEmpty();
+          done();
+        });
 
       const req = httpTestingController.expectOne(`${BASE_URL}/site/something`);
       req.flush([]);
-
-      expect(resData).toHaveLength(0);
     });
 
-    it('should return empty array on element and link translation when source is empty', () => {
-      let resData;
-
+    it('should return empty array on element and link translation when source is empty', done => {
       apiService
         .get('categories')
         .pipe(unpackEnvelope(), resolveLinks(apiService))
-        .subscribe(data => (resData = data));
+        .subscribe(data => {
+          expect(data).toBeEmpty();
+          done();
+        });
 
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush({});
-
-      expect(resData).toBeEmpty();
     });
   });
 });
