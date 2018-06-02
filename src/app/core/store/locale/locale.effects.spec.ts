@@ -4,7 +4,7 @@ import { Action, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
@@ -38,15 +38,16 @@ describe('Locale Effects', () => {
   });
 
   describe('setLocale$', () => {
-    it('should call TranslateService when SetLocale action is handled', () => {
+    it('should call TranslateService when SetLocale action is handled', done => {
       const action = new SelectLocale({ lang: 'jp' } as Locale);
 
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.setLocale$.subscribe(() => {
         verify(translateServiceMock.use(anything())).once();
         const params = capture(translateServiceMock.use).last();
         expect(params[0]).toEqual('jp');
+        done();
       });
     });
   });

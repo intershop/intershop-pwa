@@ -50,10 +50,10 @@ describe('Select Component', () => {
     expect(element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]')).toBeTruthy();
     expect(
       element.querySelector('select[data-testing-id=simpleField] option[value = optionValue ]').innerHTML
-    ).toContain('optionLabel', 'option with the correct value and label is rendered');
+    ).toContain('optionLabel');
     expect(
       element.querySelector('select[data-testing-id=simpleField] option[value = optionValue2 ]').innerHTML
-    ).toContain('optionLabel2', '2nd option with the correct value and label is rendered');
+    ).toContain('optionLabel2');
   });
 
   it('should not be rendered if there are no options and no required validator', () => {

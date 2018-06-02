@@ -32,7 +32,7 @@ describe('Checkout Progress Bar Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('li a[routerLink]').length).toEqual(3);
+    expect(element.querySelectorAll('li a[routerLink]')).toHaveLength(3);
   });
 
   it('should not display any links if basket step = 5 (receipt)', () => {
@@ -40,6 +40,6 @@ describe('Checkout Progress Bar Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('li a[routerLink]').length).toEqual(0);
+    expect(element.querySelectorAll('li a[routerLink]')).toHaveLength(0);
   });
 });

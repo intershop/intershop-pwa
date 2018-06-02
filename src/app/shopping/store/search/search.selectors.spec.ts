@@ -3,7 +3,7 @@ import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 import { Product } from '../../../models/product/product.model';
-import { getProducts, LoadProductSuccess } from '../products';
+import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import { SearchProductsSuccess } from './search.actions';
@@ -12,7 +12,6 @@ import { getSearchLoading, getSearchProducts, getSearchTerm } from './search.sel
 
 describe('Search Selectors', () => {
   let store$: Store<ShoppingState>;
-  let products$: Observable<Product[]>;
   let searchProducts$: Observable<Product[]>;
 
   const state: SearchState = {
@@ -32,7 +31,6 @@ describe('Search Selectors', () => {
     });
 
     store$ = TestBed.get(Store);
-    products$ = store$.pipe(select(getProducts));
     searchProducts$ = store$.pipe(select(getSearchProducts));
   });
 
@@ -54,17 +52,15 @@ describe('Search Selectors', () => {
 
   describe('getSearchProducts', () => {
     it('should return products if found', () => {
-      let products: Product[];
-
-      products$.subscribe(value => (products = value));
-
       store$.dispatch(new LoadProductSuccess({ sku: '9780321934161' } as Product));
       store$.dispatch(new LoadProductSuccess({ sku: '0818279012576' } as Product));
       store$.dispatch(
         new SearchProductsSuccess({ searchTerm: 'search', products: ['9780321934161', '0818279012576'] })
       );
 
-      expect(searchProducts$).toBeObservable(cold('a', { a: products }));
+      expect(searchProducts$).toBeObservable(
+        cold('a', { a: [{ sku: '9780321934161' }, { sku: '0818279012576' }] as Product[] })
+      );
     });
   });
 });

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
@@ -201,13 +201,14 @@ describe('Categories Effects', () => {
   });
 
   describe('loadCategory$', () => {
-    it('should call the categoriesService for LoadCategory action', () => {
+    it('should call the categoriesService for LoadCategory action', done => {
       const categoryId = '123';
       const action = new fromActions.LoadCategory(categoryId);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadCategory$.subscribe(() => {
         verify(categoriesServiceMock.getCategory(categoryId)).once();
+        done();
       });
     });
 
@@ -258,13 +259,14 @@ describe('Categories Effects', () => {
   });
 
   describe('loadTopLevelCategories$', () => {
-    it('should call the categoriesService for LoadTopLevelCategories action', () => {
+    it('should call the categoriesService for LoadTopLevelCategories action', done => {
       const limit = 2;
       const action = new fromActions.LoadTopLevelCategories(limit);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadTopLevelCategories$.subscribe(() => {
         verify(categoriesServiceMock.getTopLevelCategories(limit)).once();
+        done();
       });
     });
 
@@ -369,20 +371,18 @@ describe('Categories Effects', () => {
   });
 
   describe('redirectIfErrorInCategories$', () => {
-    it(
-      'should redirect if triggered',
-      fakeAsync(() => {
-        const action = new fromActions.LoadCategoryFail({ status: 404 } as HttpErrorResponse);
+    it('should redirect if triggered', done => {
+      const action = new fromActions.LoadCategoryFail({ status: 404 } as HttpErrorResponse);
 
-        actions$ = hot('a', { a: action });
+      actions$ = of(action);
 
-        effects.redirectIfErrorInCategories$.subscribe(() => {
-          verify(router.navigate(anything())).once();
-          const [param] = capture(router.navigate).last();
-          expect(param).toEqual(['/error']);
-        });
-      })
-    );
+      effects.redirectIfErrorInCategories$.subscribe(() => {
+        verify(router.navigate(anything())).once();
+        const [param] = capture(router.navigate).last();
+        expect(param).toEqual(['/error']);
+        done();
+      });
+    });
   });
 
   describe('selectedCategoryAvailable$', () => {

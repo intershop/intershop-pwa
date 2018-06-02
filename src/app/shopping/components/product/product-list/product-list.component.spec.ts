@@ -44,13 +44,13 @@ describe('Product List Component', () => {
     component.viewType = 'grid';
     fixture.detectChanges();
     const thumbs = element.querySelectorAll('ish-product-tile-container');
-    expect(thumbs.length).toBe(1);
+    expect(thumbs).toHaveLength(1);
   });
 
   it('should render a product row when viewType is list', () => {
     component.viewType = 'list';
     fixture.detectChanges();
     const thumbs = element.querySelectorAll('ish-product-row-container');
-    expect(thumbs.length).toBe(1);
+    expect(thumbs).toHaveLength(1);
   });
 });

@@ -35,7 +35,7 @@ describe('User Reducer', () => {
     });
 
     it('should not be authorized when unmodified', () => {
-      expect(initialState.authorized).toBe(false);
+      expect(initialState.authorized).toBeFalse();
     });
   });
 
@@ -99,7 +99,7 @@ describe('User Reducer', () => {
 
       expect(newState.customer).toEqual(privateCustomer);
       expect(newState.user).toEqual(privateCustomer as User);
-      expect(newState.authorized).toBe(true);
+      expect(newState.authorized).toBeTrue();
     });
 
     it('should set error when LoadCompanyUserFail action is reduced', () => {

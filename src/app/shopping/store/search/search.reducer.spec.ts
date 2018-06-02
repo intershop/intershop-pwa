@@ -17,7 +17,7 @@ describe('Search Reducer', () => {
       const action = new SearchProducts(term);
       const state = searchReducer(initialState, action);
 
-      expect(state.loading).toEqual(true);
+      expect(state.loading).toBeTrue();
     });
   });
 
@@ -27,7 +27,7 @@ describe('Search Reducer', () => {
       const action = new SearchProductsSuccess({ searchTerm: 'search', products: skus });
       const state = searchReducer(initialState, action);
 
-      expect(state.loading).toEqual(false);
+      expect(state.loading).toBeFalse();
       expect(state.products).toEqual(skus);
     });
   });

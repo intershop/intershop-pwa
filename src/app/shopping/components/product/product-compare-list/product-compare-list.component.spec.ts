@@ -97,16 +97,18 @@ describe('Product Compare List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should emit removeProductCompare when click on remove compare product', () => {
+  it('should emit removeProductCompare when click on remove compare product', done => {
     component.removeProductCompare.subscribe(sku => {
       expect(sku).toBe('111');
+      done();
     });
     component.removeFromCompare('111');
   });
 
-  it('should emit add to basket when click on add to basket button', () => {
+  it('should emit add to basket when click on add to basket button', done => {
     component.productToBasket.subscribe(data => {
       expect(data).toEqual({ sku: '111', quantity: 1 });
+      done();
     });
     component.addToBasket('111', 1);
   });
