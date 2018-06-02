@@ -6,8 +6,8 @@ describe('Locale Reducer', () => {
   describe('initialState', () => {
     it('should have nothing in it when unmodified', () => {
       expect(initialState.current).toBe(null);
-      expect(initialState.entities).toEqual({});
-      expect(initialState.ids.length).toBe(0);
+      expect(initialState.entities).toBeEmpty();
+      expect(initialState.ids).toBeEmpty();
     });
   });
 

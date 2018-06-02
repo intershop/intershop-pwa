@@ -22,17 +22,21 @@ describe('Error Selectors', () => {
     getErrorState$ = store$.pipe(select(getErrorState));
   });
 
-  it('should have nothing when just initialized', () => {
-    getErrorState$.subscribe(error => expect(error).toBeNull());
+  it('should have nothing when just initialized', done => {
+    getErrorState$.subscribe(error => {
+      expect(error).toBeNull();
+      done();
+    });
   });
 
-  it('should select a error when a HttpError action is reduced', () => {
+  it('should select a error when a HttpError action is reduced', done => {
     const httpResponse = {} as HttpErrorResponse;
     store$.dispatch(new CommunicationTimeoutError(httpResponse));
 
     getErrorState$.subscribe(error => {
       expect(error.type).toBe(ErrorActionTypes.TimeoutError);
       expect(error.current).toBe(httpResponse);
+      done();
     });
   });
 });

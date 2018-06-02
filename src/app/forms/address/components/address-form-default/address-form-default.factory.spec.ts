@@ -38,9 +38,9 @@ describe('Address Form Default Factory', () => {
         lastName: 'Doe',
         city: 'Denver',
       });
-      expect(fg.get('firstName').value).toEqual('John', 'firstName is set');
-      expect(fg.get('lastName').value).toEqual('Doe', 'lastName is set');
-      expect(fg.get('city').value).toEqual('Denver', 'city is set');
+      expect(fg.get('firstName').value).toEqual('John');
+      expect(fg.get('lastName').value).toEqual('Doe');
+      expect(fg.get('city').value).toEqual('Denver');
     });
   });
 });

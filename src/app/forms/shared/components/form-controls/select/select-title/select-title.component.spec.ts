@@ -38,11 +38,8 @@ describe('Select Title Component', () => {
 
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
-    expect(component.controlName).toEqual('title', 'control Name should be <title>');
-    expect(component.label).toEqual(
-      'account.default_address.title.label',
-      'label key should be <account.default_address.title.label>'
-    );
+    expect(component.controlName).toEqual('title');
+    expect(component.label).toEqual('account.default_address.title.label');
   });
 
   it('should get and display titles for a certain country', () => {
@@ -52,7 +49,7 @@ describe('Select Title Component', () => {
     component.ngOnChanges(changes);
 
     fixture.detectChanges();
-    expect(component.options.length).toEqual(3, '3 titles are in the options array');
+    expect(component.options).toHaveLength(3);
     expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy();
   });
 });

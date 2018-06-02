@@ -6,7 +6,8 @@
     "target": "es5",
     "allowJs": true,
     "types": [
-      "jasmine",
+      "jest",
+      "jest-extended",
       "node"
     ]
   },

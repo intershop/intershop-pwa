@@ -42,11 +42,8 @@ describe('Select Language Component', () => {
 
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
-    expect(component.controlName).toEqual('preferredLanguage', 'control Name should be <preferredLanguage>');
-    expect(component.label).toEqual(
-      'account.default_address.preferred_language.label',
-      'label key should be <account.default_address.preferred_language.label>'
-    );
+    expect(component.controlName).toEqual('preferredLanguage');
+    expect(component.label).toEqual('account.default_address.preferred_language.label');
   });
 
   it('should get and display languages on creation', () => {
@@ -55,7 +52,7 @@ describe('Select Language Component', () => {
     };
     component.ngOnChanges(changes);
     fixture.detectChanges();
-    expect(component.options.length).toEqual(2, '2 languages are in the options array'); // ToDo: languages are retrieved from a service
+    expect(component.options).toHaveLength(2); // ToDo: languages are retrieved from a service
     expect(element.querySelector('select[data-testing-id=preferredLanguage]')).toBeTruthy();
   });
 });

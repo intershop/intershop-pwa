@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
@@ -69,13 +69,14 @@ describe('Products Effects', () => {
   });
 
   describe('loadProduct$', () => {
-    it('should call the productsService for LoadProduct action', () => {
+    it('should call the productsService for LoadProduct action', done => {
       const sku = 'P123';
       const action = new fromActions.LoadProduct(sku);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadProduct$.subscribe(() => {
         verify(productsServiceMock.getProduct(sku)).once();
+        done();
       });
     });
 
@@ -105,12 +106,12 @@ describe('Products Effects', () => {
       store$.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
     });
 
-    it('should call service for SKU list', () => {
+    it('should call service for SKU list', done => {
+      actions$ = of(new fromActions.LoadProductsForCategory('123'));
+
       effects.loadProductsForCategory$.subscribe(() => {
         verify(productsServiceMock.getCategoryProducts('123', 'name-asc')).once();
-      });
-      actions$ = hot('a', {
-        a: new fromActions.LoadProductsForCategory('123'),
+        done();
       });
     });
 
@@ -197,19 +198,17 @@ describe('Products Effects', () => {
   });
 
   describe('redirectIfErrorInProducts$', () => {
-    it(
-      'should redirect if triggered',
-      fakeAsync(() => {
-        const action = new fromActions.LoadProductFail({ status: 404 } as HttpErrorResponse);
+    it('should redirect if triggered', done => {
+      const action = new fromActions.LoadProductFail({ status: 404 } as HttpErrorResponse);
 
-        actions$ = hot('a', { a: action });
+      actions$ = of(action);
 
-        effects.redirectIfErrorInProducts$.subscribe(() => {
-          verify(router.navigate(anything())).once();
-          const [param] = capture(router.navigate).last();
-          expect(param).toEqual(['/error']);
-        });
-      })
-    );
+      effects.redirectIfErrorInProducts$.subscribe(() => {
+        verify(router.navigate(anything())).once();
+        const [param] = capture(router.navigate).last();
+        expect(param).toEqual(['/error']);
+        done();
+      });
+    });
   });
 });

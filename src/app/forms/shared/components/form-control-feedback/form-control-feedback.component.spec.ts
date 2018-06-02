@@ -50,7 +50,7 @@ describe('Form Control Feedback Component', () => {
     fixture.detectChanges();
 
     expect(component.control.errors.required).toBeTruthy();
-    expect(getErrorDisplay().length).toBe(0);
+    expect(getErrorDisplay()).toBeEmpty();
   });
 
   it('should display errors when control is dirty', () => {
@@ -60,7 +60,7 @@ describe('Form Control Feedback Component', () => {
     const elements = getErrorDisplay();
 
     expect(component.control.errors.minlength).toBeTruthy();
-    expect(elements.length).toBe(1);
+    expect(elements).toHaveLength(1);
     expect(elements[0].nativeElement.textContent).toContain('lengthmessage');
   });
 
@@ -68,11 +68,11 @@ describe('Form Control Feedback Component', () => {
     component.control.setValue('');
     expect(component.control.errors.required).toBeTruthy();
     fixture.detectChanges();
-    expect(getErrorDisplay().length).toBe(0);
+    expect(getErrorDisplay()).toBeEmpty();
 
     component.control.markAsDirty();
     fixture.detectChanges();
-    expect(getErrorDisplay().length).toBe(1);
+    expect(getErrorDisplay()).toHaveLength(1);
   });
 
   function getIcon() {

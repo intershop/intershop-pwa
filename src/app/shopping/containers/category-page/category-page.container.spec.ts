@@ -61,7 +61,7 @@ describe('Category Page Container', () => {
   it('should not display anything when neither category nor loading is set', () => {
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual([]);
+    expect(findAllIshElements(element)).toBeEmpty();
   });
 
   it('should display loading when category is loading', () => {

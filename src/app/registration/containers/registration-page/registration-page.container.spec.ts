@@ -65,15 +65,28 @@ describe('Registration Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should retrieve countries and languages on creation', () => {
+  it('should retrieve countries and languages on creation', done => {
     fixture.detectChanges();
-    component.languages$.subscribe(result => expect(result.length).toBeGreaterThan(0));
+    component.languages$.subscribe(result => {
+      expect(result.length).toBeGreaterThan(0);
+      done();
+    });
   });
 
-  it('should retrieve regions and titles if country changes', () => {
+  it('should retrieve regions if country changes', done => {
     component.updateData('DE');
-    component.regionsForSelectedCountry$.subscribe(result => expect(result.length).toBeGreaterThan(0));
-    component.titlesForSelectedCountry$.subscribe(result => expect(result.length).toBeGreaterThan(0));
+    component.regionsForSelectedCountry$.subscribe(result => {
+      expect(result.length).toBeGreaterThan(0);
+      done();
+    });
+  });
+
+  it('should retrieve titles if country changes', done => {
+    component.updateData('DE');
+    component.titlesForSelectedCountry$.subscribe(result => {
+      expect(result.length).toBeGreaterThan(0);
+      done();
+    });
   });
 
   it('should navigate to homepage when cancel is clicked', async(() => {

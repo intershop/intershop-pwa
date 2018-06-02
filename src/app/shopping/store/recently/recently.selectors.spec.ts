@@ -25,9 +25,9 @@ describe('Recently Selectors', () => {
   });
 
   it('should select nothing for an empty state', () => {
-    expect(getRecentlyProducts(store$.state)).toEqual([]);
-    expect(getRecentlyViewedProducts(store$.state)).toEqual([]);
-    expect(getMostRecentlyViewedProducts(store$.state)).toEqual([]);
+    expect(getRecentlyProducts(store$.state)).toBeEmpty();
+    expect(getRecentlyViewedProducts(store$.state)).toBeEmpty();
+    expect(getMostRecentlyViewedProducts(store$.state)).toBeEmpty();
   });
 
   describe('after short shopping spree', () => {

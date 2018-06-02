@@ -118,13 +118,14 @@ describe('Basket Effects', () => {
   });
 
   describe('loadBasket$', () => {
-    it('should call the basketService for loadBasket', () => {
+    it('should call the basketService for loadBasket', done => {
       const id = 'test';
       const action = new basketActions.LoadBasket(id);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadBasket$.subscribe(() => {
         verify(basketServiceMock.getBasket(id)).once();
+        done();
       });
     });
 
@@ -154,13 +155,14 @@ describe('Basket Effects', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
     });
 
-    it('should call the basketService for loadBasketItems', () => {
+    it('should call the basketService for loadBasketItems', done => {
       const id = 'test';
       const action = new basketActions.LoadBasketItems(id);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadBasketItems$.subscribe(() => {
         verify(basketServiceMock.getBasketItems(id)).once();
+        done();
       });
     });
 
@@ -212,47 +214,51 @@ describe('Basket Effects', () => {
   });
 
   describe('addItemsToBasket$', () => {
-    it('should call the basketService for addItemsToBasket', () => {
+    it('should call the basketService for addItemsToBasket', done => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
 
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.addItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.addItemsToBasket(payload.items, 'test')).once();
+        done();
       });
     });
 
-    it('should call the basketService for addItemsToBasket with specific basketId when basketId set', () => {
+    it('should call the basketService for addItemsToBasket with specific basketId when basketId set', done => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
 
       const payload = { items: [{ sku: 'test', quantity: 1 }], basketId: 'test2' };
       const action = new basketActions.AddItemsToBasket(payload);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
-      effects.addProductToBasket$.subscribe(() => {
+      effects.addItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.addItemsToBasket(payload.items, 'test2')).once();
+        done();
       });
     });
 
     it('should not call the basketService for addItemsToBasket if no basket in store', () => {
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
-      effects.addProductToBasket$.subscribe(() => {
-        verify(basketServiceMock.addItemsToBasket(anything(), 'test')).never();
-      });
+      // tslint:disable-next-line:use-async-synchronisation-in-tests
+      effects.addItemsToBasket$.subscribe(() => fail(), () => fail());
+
+      verify(basketServiceMock.addItemsToBasket(anything(), 'test')).never();
     });
 
-    it('should call the basketService for getBasket when no basket is present', () => {
+    it('should call the basketService for getBasket when no basket is present', done => {
       const payload = { items: [{ sku: 'test', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
-      effects.addProductToBasket$.subscribe(() => {
+      effects.getBasketBeforeAddItemsToBasket$.subscribe(() => {
         verify(basketServiceMock.getBasket()).once();
+        done();
       });
     });
 
@@ -344,7 +350,7 @@ describe('Basket Effects', () => {
       store$.dispatch(new basketActions.LoadBasketItemsSuccess(lineItems));
     });
 
-    it('should call the basketService for updateBasketItem if quantity > 0', () => {
+    it('should call the basketService for updateBasketItem if quantity > 0', done => {
       const payload = [
         {
           itemId: 'test',
@@ -360,16 +366,17 @@ describe('Basket Effects', () => {
         },
       ];
       const action = new basketActions.UpdateBasketItems(payload);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
         verify(basketServiceMock.updateBasketItem(payload[0].itemId, payload[0].quantity, 'test')).once();
         verify(basketServiceMock.updateBasketItem(payload[1].itemId, payload[1].quantity, 'test')).once();
         verify(basketServiceMock.updateBasketItem(payload[2].itemId, payload[2].quantity, 'test')).once();
+        done();
       });
     });
 
-    it('should call the basketService for deleteBasketItem if quantity = 0', () => {
+    it('should call the basketService for deleteBasketItem if quantity = 0', done => {
       const payload = [
         {
           itemId: 'test',
@@ -377,10 +384,11 @@ describe('Basket Effects', () => {
         },
       ];
       const action = new basketActions.UpdateBasketItems(payload);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
         verify(basketServiceMock.deleteBasketItem(payload[0].itemId, 'test')).once();
+        done();
       });
     });
 
@@ -440,13 +448,14 @@ describe('Basket Effects', () => {
       store$.dispatch(new basketActions.LoadBasketSuccess(basket));
     });
 
-    it('should call the basketService for DeleteBasketItem action', () => {
+    it('should call the basketService for DeleteBasketItem action', done => {
       const payload = 'test';
       const action = new basketActions.DeleteBasketItem(payload);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.deleteBasketItem$.subscribe(() => {
         verify(basketServiceMock.deleteBasketItem('test', 'test')).once();
+        done();
       });
     });
 
