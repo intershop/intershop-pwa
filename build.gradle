@@ -11,7 +11,7 @@ task build {
         '''
 
         println 'pending: https://jira.intershop.de/browse/ISTOOLS-3633'
-        println 'please refer to the GitLab build plan: https://gitlab.intershop.de/ISPWA/inSPIRED_pwa/pipelines'
+        println 'please refer to the GitLab build plan: https://gitlab.intershop.de/ISPWA/intershop-pwa/pipelines'
     }
 }
 task reset {}
