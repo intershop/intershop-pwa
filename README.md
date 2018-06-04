@@ -1,4 +1,4 @@
-# inSPIRED Progressive Web App
+# Intershop Progressive Web App
 
 An Angular based storefront clone of the Responsive Starter Store that communicates with the Intershop Commerce Management server via REST API only.
 
