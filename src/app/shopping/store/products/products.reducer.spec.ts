@@ -28,8 +28,8 @@ describe('Products Reducer', () => {
         const action = new fromActions.LoadProduct('123');
         const state = productsReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
-        expect(state.entities).toEqual({});
+        expect(state.loading).toBeTrue();
+        expect(state.entities).toBeEmpty();
       });
     });
 
@@ -38,8 +38,8 @@ describe('Products Reducer', () => {
         const action = new fromActions.LoadProductFail({} as HttpErrorResponse);
         const state = productsReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
-        expect(state.entities).toEqual({});
+        expect(state.loading).toBeFalse();
+        expect(state.entities).toBeEmpty();
       });
     });
 
@@ -58,7 +58,7 @@ describe('Products Reducer', () => {
         const action = new fromActions.LoadProductSuccess(product);
         const state = productsReducer(initialState, action);
 
-        expect(state.ids.length).toBe(1);
+        expect(state.ids).toHaveLength(1);
         expect(state.entities[product.sku]).toEqual(product);
       });
 
@@ -73,7 +73,7 @@ describe('Products Reducer', () => {
         const action2 = new fromActions.LoadProductSuccess(updatedProduct);
         const state2 = productsReducer(state1, action2);
 
-        expect(state2.ids.length).toBe(1);
+        expect(state2.ids).toHaveLength(1);
         expect(state2.entities[product.sku]).toEqual(updatedProduct);
       });
 
@@ -81,7 +81,7 @@ describe('Products Reducer', () => {
         const action = new fromActions.LoadProductSuccess(product);
         const state = productsReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });

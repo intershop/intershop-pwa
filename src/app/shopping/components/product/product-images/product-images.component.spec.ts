@@ -83,12 +83,12 @@ describe('Product Images Component', () => {
 
   it('should render carousel on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('slide').length).toEqual(2);
+    expect(element.getElementsByTagName('slide')).toHaveLength(2);
   });
 
   it('should render thumbnails on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByClassName('product-thumb-set').length).toEqual(2);
+    expect(element.getElementsByClassName('product-thumb-set')).toHaveLength(2);
   });
 
   it('should show corresponding image in carousel and set active class on thumbnail when clicking on thumbnail image', () => {

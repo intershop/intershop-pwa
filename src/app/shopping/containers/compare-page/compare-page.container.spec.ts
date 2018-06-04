@@ -55,7 +55,7 @@ describe('Compare Page Container', () => {
       );
     });
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual([]);
+    expect(findAllIshElements(element)).toBeEmpty();
   });
 
   it('should display compare product list when compare products available', () => {

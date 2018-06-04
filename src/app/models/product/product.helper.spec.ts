@@ -120,17 +120,17 @@ describe('Product Helper', () => {
       });
 
       it('should return empty list when called with invalid image type', () => {
-        expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'W').length).toEqual(0);
+        expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'W')).toBeEmpty();
       });
 
       it('should return empty list when images are not available', () => {
         product.images = [];
-        expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'L').length).toEqual(0);
+        expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'L')).toBeEmpty();
       });
 
       it('should return empty list when images is not defined', () => {
         product = { sku: 'sku' } as Product;
-        expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'L').length).toEqual(0);
+        expect(ProductHelper.getImageViewIDsExcludePrimary(product, 'L')).toBeEmpty();
       });
     });
   });

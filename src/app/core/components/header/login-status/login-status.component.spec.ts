@@ -49,6 +49,6 @@ describe('Login Status Component', () => {
     fixture.detectChanges();
 
     const loggedInDetails = element.getElementsByClassName('login-name');
-    expect(loggedInDetails.length).toBe(0);
+    expect(loggedInDetails).toHaveLength(0);
   });
 });

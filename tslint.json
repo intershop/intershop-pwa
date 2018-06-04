@@ -198,6 +198,7 @@
       }
     },
     "meaningful-naming-in-tests": { "severity": "warning" },
+    "use-async-synchronisation-in-tests": true,
     "no-any": { "severity": "warning" },
     "no-commented-out-tests": true,
     "no-focused-tests": true,
@@ -270,7 +271,7 @@
           // factory pattern
           { "name": "^([A-Z].*)Helper$", "file": ".*/models/<kebab>/<kebab>\\.helper\\.ts$" },
           { "name": "^([A-Z].*)Mapper$", "file": ".*/models/<kebab>/<kebab>\\.mapper\\.ts$" },
-          { "name": "^(.*)Data$", "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$" },
+          { "name": "^([A-Z].*)Data$", "file": ".*/models/<kebab>/<kebab>\\.interface\\.ts$" },
           // ngrx
           { "name": "^([A-Z].*)Effects$", "file": ".*/store/<kebab>/<kebab>\\.effects\\.ts$" },
           { "name": "^([a-z].*)Effects$", "file": ".*/store/<kebab>\\.system\\.ts$" },

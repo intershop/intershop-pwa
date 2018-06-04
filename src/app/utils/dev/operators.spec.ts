@@ -1,3 +1,4 @@
+// tslint:disable:use-async-synchronisation-in-tests
 import { cold, hot } from 'jasmine-marbles';
 import { Subject } from 'rxjs';
 import { log } from './operators';

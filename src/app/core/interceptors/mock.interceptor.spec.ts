@@ -101,7 +101,7 @@ describe('Mock Interceptor', () => {
       handler = instance(handlerMock);
     });
 
-    it('should attach token when patricia is logged in correctly', () => {
+    it('should attach token when patricia is logged in correctly', done => {
       mockInterceptor
         .intercept(
           request.clone({
@@ -117,19 +117,24 @@ describe('Mock Interceptor', () => {
 
           const response = event as HttpResponse<any>;
           expect(response.headers.get('authentication-token')).toBeTruthy();
+          done();
         });
     });
 
-    it('should return error response when patricia is not logged in correctly', () => {
+    it('should return error response when patricia is not logged in correctly', done => {
       mockInterceptor
         .intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler)
         .subscribe(
-          event => fail(),
+          event => {
+            fail();
+            done();
+          },
           event => {
             expect(event.ok).toBeFalsy();
             expect(event.status).toBe(401);
             expect(event.headers.get('authentication-token')).toBeFalsy();
             expect(event.headers.get('error-key')).toBeTruthy();
+            done();
           }
         );
     });

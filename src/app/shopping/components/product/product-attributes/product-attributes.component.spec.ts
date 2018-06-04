@@ -37,9 +37,9 @@ describe('Product Attributes Component', () => {
 
   it('should render product attributes when available', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('dt').length).toEqual(2);
-    expect(element.getElementsByClassName('ish-ca-type').length).toEqual(2);
-    expect(element.getElementsByClassName('ish-ca-value').length).toEqual(2);
+    expect(element.getElementsByTagName('dt')).toHaveLength(2);
+    expect(element.getElementsByClassName('ish-ca-type')).toHaveLength(2);
+    expect(element.getElementsByClassName('ish-ca-value')).toHaveLength(2);
   });
 
   it('should render product attributes name and value when available', () => {

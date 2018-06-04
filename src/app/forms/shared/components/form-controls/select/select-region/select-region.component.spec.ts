@@ -41,8 +41,8 @@ describe('Select Region Component', () => {
 
   it('should set default values properly on creation', () => {
     fixture.detectChanges();
-    expect(component.controlName).toEqual('state', 'control Name should be <state>');
-    expect(component.label).toEqual('State/Province', 'label should be <State/Province>');
+    expect(component.controlName).toEqual('state');
+    expect(component.label).toEqual('State/Province');
   });
 
   it('should get and display regions for a certain country', () => {
@@ -52,7 +52,7 @@ describe('Select Region Component', () => {
     component.ngOnChanges(changes);
 
     fixture.detectChanges();
-    expect(component.options.length).toEqual(2, '2 regions are in the options array');
+    expect(component.options).toHaveLength(2);
     expect(element.querySelector('select[data-testing-id=state]')).toBeTruthy();
   });
 });

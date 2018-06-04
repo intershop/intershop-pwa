@@ -25,14 +25,14 @@ describe('Suggest Service', () => {
     verify(apiService.get(anything(), anything())).once();
   });
 
-  it('should return the matched terms when search term is executed', () => {
+  it('should return the matched terms when search term is executed', done => {
     const result = [{ type: undefined, term: 'Goods' }];
-    when(apiService.get(anything(), anything())).thenReturn(of<SuggestTerm[]>(result));
+    when(apiService.get(anything(), anything())).thenReturn(of({ elements: result }));
 
     suggestService.search('g').subscribe(res => {
       expect(res).toEqual(result);
+      verify(apiService.get(anything(), anything())).once();
+      done();
     });
-
-    verify(apiService.get(anything(), anything())).once();
   });
 });

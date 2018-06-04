@@ -19,8 +19,8 @@ describe('Countries Reducer', () => {
         const action = new LoadCountries();
         const state = countriesReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
-        expect(state.entities).toEqual({});
+        expect(state.loading).toBeTrue();
+        expect(state.entities).toBeEmpty();
       });
     });
 
@@ -29,8 +29,8 @@ describe('Countries Reducer', () => {
         const action = new LoadCountriesFail({} as HttpErrorResponse);
         const state = countriesReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
-        expect(state.entities).toEqual({});
+        expect(state.loading).toBeFalse();
+        expect(state.entities).toBeEmpty();
       });
     });
 
@@ -48,7 +48,7 @@ describe('Countries Reducer', () => {
         const action = new LoadCountriesSuccess([country]);
         const state = countriesReducer(initialState, action);
 
-        expect(state.ids.length).toBe(1);
+        expect(state.ids).toHaveLength(1);
         expect(state.entities[country.countryCode]).toEqual(country);
       });
     });

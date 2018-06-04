@@ -60,14 +60,12 @@ describe('Registration Form Component', () => {
     expect(component.form.get('birthday')).toBeTruthy();
   });
 
-  it('should throw cancel event when cancel is clicked', () => {
-    let fired = false;
+  it('should throw cancel event when cancel is clicked', done => {
     component.cancel.subscribe(() => {
-      fired = true;
+      done();
     });
 
     component.cancelForm();
-    expect(fired).toBeTruthy();
   });
 
   it('should set submitted flag if submit is clicked and form is not valid', async(() => {
@@ -81,35 +79,34 @@ describe('Registration Form Component', () => {
     });
   }));
 
-  it('should NOT throw create event for invalid form', () => {
+  it('should NOT throw create event for invalid form', done => {
     component.form = new FormGroup({
       control: new FormControl('', Validators.required),
     });
 
-    let fired = false;
     component.create.subscribe(() => {
-      fired = true;
+      fail();
+      done();
     });
 
     component.submitForm();
     fixture.detectChanges();
-    expect(fired).toBeFalsy();
+
+    done();
   });
 
-  it('should throw create event for valid form (and not when invalid)', () => {
+  it('should throw create event for valid form (and not when invalid)', done => {
     component.form = fb.group({
       control: new FormControl('foo', Validators.required),
       credentials: fb.group({}),
       address: fb.group({}),
     });
 
-    let fired = false;
     component.create.subscribe(() => {
-      fired = true;
+      done();
     });
 
     component.submitForm();
     fixture.detectChanges();
-    expect(fired).toBeTruthy();
   });
 });
