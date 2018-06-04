@@ -381,7 +381,7 @@ describe('Shopping System', () => {
         'should trigger actions for deselecting category and product when no longer in category or product',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next()).toEqual(new SelectCategory(undefined));
+          expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -536,7 +536,7 @@ describe('Shopping System', () => {
         'should trigger actions for deselecting category and product when no longer in category or product',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next()).toEqual(new SelectCategory(undefined));
+          expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -681,7 +681,7 @@ describe('Shopping System', () => {
         'should trigger actions for deselecting category and product when no longer in category or product',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next()).toEqual(new SelectCategory(undefined));
+          expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
           expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next()).toBeUndefined();
         })
@@ -825,7 +825,7 @@ describe('Shopping System', () => {
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(errorPageRouting.payload.path).toEqual('error');
 
-        expect(i.next()).toEqual(new SelectCategory(undefined));
+        expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
         expect(i.next()).toEqual(new SelectProduct(undefined));
         expect(i.next()).toBeUndefined();
       })
@@ -882,7 +882,7 @@ describe('Shopping System', () => {
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(errorPageRouting.payload.path).toEqual('error');
 
-        expect(i.next()).toEqual(new SelectCategory(undefined));
+        expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
         expect(i.next()).toBeUndefined();
       })
     );

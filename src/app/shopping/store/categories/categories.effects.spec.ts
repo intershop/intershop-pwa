@@ -106,25 +106,19 @@ describe('Categories Effects', () => {
     });
 
     it('should not trigger SelectCategory when category is already selected', () => {
-      store$.dispatch(new fromActions.SelectCategory('dummy'));
-
       const action = new RouteNavigation({
         path: 'category/:categoryUniqueId',
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
+      const expected = new fromActions.SelectCategory('dummy');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-'));
+      actions$ = hot('-a-a-a', { a: action });
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-a----', { a: expected }));
     });
   });
 
   describe('selectedCategory$', () => {
-    it('should do nothing for undefined category id', () => {
-      actions$ = hot('a', { a: new fromActions.SelectCategory(undefined) });
-      expect(effects.selectedCategory$).toBeObservable(cold('-'));
-    });
-
     describe('for root categories', () => {
       let category: CategoryView;
 
