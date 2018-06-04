@@ -1,5 +1,5 @@
 {
-  "name": "inspired-pwa",
+  "name": "intershop-pwa",
   "version": "0.0.0",
   "scripts": {
     "precommit": "lint-staged",
@@ -16,8 +16,8 @@
     "docs:watch": "npm run docs -- -s -w",
     "e2e": "ng e2e",
     "check": "npm run lint -- --fix --format stylish && npm run format && npm run test && npm run e2e",
-    "build:client-and-server-bundles": "ng build --aot --progress=false && ng run inspired-pwa:server --progress=false",
-    "build:client-and-server-bundles:prod": "ng build --prod --progress=false && ng run inspired-pwa:server --progress=false",
+    "build:client-and-server-bundles": "ng build --aot --progress=false && ng run intershop-pwa:server --progress=false",
+    "build:client-and-server-bundles:prod": "ng build --prod --progress=false && ng run intershop-pwa:server --progress=false",
     "build:static": "npm run build:client-and-server-bundles && npm run webpack:server && npm run generate:static",
     "build:static:prod": "npm run build:client-and-server-bundles:prod && npm run webpack:server && npm run generate:static",
     "build:dynamic": "npm run build:client-and-server-bundles && npm run webpack:server",

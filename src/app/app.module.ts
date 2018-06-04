@@ -50,7 +50,7 @@ export const metaReducers: MetaReducer<any>[] = [
   declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({
-      appId: 'inspired-pwa',
+      appId: 'intershop-pwa',
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,
