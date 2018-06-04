@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "inspired-pwa": {
+    "intershop-pwa": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -61,21 +61,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "inspired-pwa:build"
+            "browserTarget": "intershop-pwa:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "inspired-pwa:build:production"
+              "browserTarget": "intershop-pwa:build:production"
             },
             "local": {
-              "browserTarget": "inspired-pwa:build:local"
+              "browserTarget": "intershop-pwa:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "inspired-pwa:build"
+            "browserTarget": "intershop-pwa:build"
           }
         },
         "lint": {
@@ -99,7 +99,7 @@
         }
       }
     },
-    "inspired-pwa-e2e": {
+    "intershop-pwa-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -107,12 +107,12 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "inspired-pwa:serve",
+            "devServerTarget": "intershop-pwa:serve",
             "port": 4400
           }
         }
       }
     }
   },
-  "defaultProject": "inspired-pwa"
+  "defaultProject": "intershop-pwa"
 }

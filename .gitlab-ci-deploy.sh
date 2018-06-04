@@ -2,7 +2,7 @@ set -x
 set -e
 
 IMAGE="${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-prod:${CI_BUILD_REF}"
-SERVICE="inspired-pwa"
+SERVICE="intershop-pwa"
 
 if ! docker service ps $SERVICE ; then
   docker service create -d \
