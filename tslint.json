@@ -11,6 +11,9 @@
   ],
   "rules": {
     "arrow-return-shorthand": true,
+    "only-arrow-functions": [true, "allow-named-functions"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "no-unnecessary-callback-wrapper": { "severity": "warning" },
     "no-commented-out-code": { "severity": "warning" },
     "no-consecutive-blank-lines": true,
     "callable-types": true,

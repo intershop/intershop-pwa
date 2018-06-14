@@ -5,14 +5,14 @@ import { VariationProduct } from './product-variation.model';
 import { ProductData } from './product.interface';
 import { Product, ProductType } from './product.model';
 
-export class ProductMapper {
-  private static filterPrice(price: Price): Price {
-    if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
-      return price;
-    }
-    return undefined;
+function filterPrice(price: Price): Price {
+  if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
+    return price;
   }
+  return undefined;
+}
 
+export class ProductMapper {
   static fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
     const product: Product = {
       type: ProductType.Product,
@@ -25,8 +25,8 @@ export class ProductMapper {
       maxOrderQuantity: data.maxOrderQuantity || 100,
       attributes: data.attributes,
       images: data.images,
-      listPrice: this.filterPrice(data.listPrice),
-      salePrice: this.filterPrice(data.salePrice),
+      listPrice: filterPrice(data.listPrice),
+      salePrice: filterPrice(data.salePrice),
       manufacturer: data.manufacturer,
       readyForShipmentMin: data.readyForShipmentMin,
       readyForShipmentMax: data.readyForShipmentMax,

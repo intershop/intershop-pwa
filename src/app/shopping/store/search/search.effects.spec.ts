@@ -182,8 +182,7 @@ describe('Search Effects', () => {
           store$.dispatch(new SuggestSearch('good'));
           tick(4000);
 
-          // tslint:disable-next-line:use-async-synchronisation-in-tests
-          effects.suggestSearch$.subscribe(() => fail(), () => fail(), () => fail());
+          effects.suggestSearch$.subscribe(fail, fail, fail);
 
           const iter = store$.actionsIterator([/.*/]);
           iter.next();

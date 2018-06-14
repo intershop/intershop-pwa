@@ -28,9 +28,7 @@ export class ProductsService {
 
     const params: HttpParams = new HttpParams().set('allImages', 'true');
 
-    return this.apiService
-      .get<ProductData>(`products/${sku}`, { params })
-      .pipe(map(productData => ProductMapper.fromData(productData)));
+    return this.apiService.get<ProductData>(`products/${sku}`, { params }).pipe(map(ProductMapper.fromData));
   }
 
   /**

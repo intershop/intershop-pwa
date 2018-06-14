@@ -27,7 +27,7 @@ export class CategoriesService {
 
     return this.apiService
       .get<CategoryData>(`categories/${CategoryHelper.getCategoryPath(categoryUniqueId)}`)
-      .pipe(map(categoryData => CategoryMapper.fromData(categoryData)));
+      .pipe(map(CategoryMapper.fromData));
   }
 
   /**
@@ -52,7 +52,7 @@ export class CategoriesService {
         })
       ),
       map(categoriesData =>
-        categoriesData.map(data => CategoryMapper.fromData(data)).reduce((a, b) => CategoryTreeHelper.merge(a, b))
+        categoriesData.map(CategoryMapper.fromData).reduce((a, b) => CategoryTreeHelper.merge(a, b))
       )
     );
   }
