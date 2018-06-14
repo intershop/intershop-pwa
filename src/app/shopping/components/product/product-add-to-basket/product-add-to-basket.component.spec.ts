@@ -36,16 +36,12 @@ describe('Product Add To Basket Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() {
-      fixture.detectChanges();
-    }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set', () => {
     component.product = null;
-    expect(function() {
-      fixture.detectChanges();
-    }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should not render when inStock = false', () => {

@@ -26,9 +26,7 @@ export const getCategoryIds = createSelector(getCategoryTree, tree => Object.key
 /**
  * Retrieves the currently resolved selected category.
  */
-export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, (tree, id) =>
-  createCategoryView(tree, id)
-);
+export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, createCategoryView);
 
 export const getCategoriesProductSKUs = createSelector(getCategoryState, state => state.categoriesProductSKUs);
 

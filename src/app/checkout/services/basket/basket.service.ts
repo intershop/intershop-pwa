@@ -22,9 +22,7 @@ export class BasketService {
    * @returns         The basket.
    */
   getBasket(basketId: string = '-'): Observable<Basket> {
-    return this.apiService
-      .get<BasketData>(`baskets/${basketId}`)
-      .pipe(map(basketData => BasketMapper.fromData(basketData)));
+    return this.apiService.get<BasketData>(`baskets/${basketId}`).pipe(map(BasketMapper.fromData));
   }
 
   /**
@@ -39,10 +37,7 @@ export class BasketService {
 
     return this.apiService
       .get(`baskets/${basketId}/items`)
-      .pipe(
-        unpackEnvelope<BasketItemData>(),
-        map(basketItemsData => basketItemsData.map(basketItemData => BasketItemMapper.fromData(basketItemData)))
-      );
+      .pipe(unpackEnvelope<BasketItemData>(), map(basketItemsData => basketItemsData.map(BasketItemMapper.fromData)));
   }
 
   /**
