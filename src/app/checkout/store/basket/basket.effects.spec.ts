@@ -245,8 +245,7 @@ describe('Basket Effects', () => {
       const action = new basketActions.AddItemsToBasket(payload);
       actions$ = of(action);
 
-      // tslint:disable-next-line:use-async-synchronisation-in-tests
-      effects.addItemsToBasket$.subscribe(() => fail(), () => fail());
+      effects.addItemsToBasket$.subscribe(fail, fail);
 
       verify(basketServiceMock.addItemsToBasket(anything(), 'test')).never();
     });
