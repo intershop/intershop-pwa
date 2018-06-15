@@ -43,8 +43,7 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
           map(event => {
             if (event instanceof HttpResponse) {
-              const response = <HttpResponse<any>>event;
-              this.cache[key] = JSON.stringify(response.body);
+              this.cache[key] = JSON.stringify(event.body);
               this.persistCacheInState();
             }
             return event;

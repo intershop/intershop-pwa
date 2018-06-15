@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Locale } from '../../../models/locale/locale.model';
-import { LocaleAction, LocaleActionTypes, SetAvailableLocales } from './locale.actions';
+import { LocaleAction, LocaleActionTypes } from './locale.actions';
 
 export interface LocaleState extends EntityState<Locale> {
   current: string | null;
@@ -26,7 +26,7 @@ export function localeReducer(state = initialState, action: LocaleAction): Local
       return { ...state, current: idx };
     }
     case LocaleActionTypes.SetAvailableLocales: {
-      const available = (action as SetAvailableLocales).payload;
+      const available = action.payload;
       const clearState = adapter.removeAll(state);
       return adapter.addMany(available, clearState);
     }
