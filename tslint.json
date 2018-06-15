@@ -89,6 +89,7 @@
       true,
       "ignore-params"
     ],
+    "no-angle-bracket-type-assertion": true,
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
