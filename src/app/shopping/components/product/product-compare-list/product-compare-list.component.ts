@@ -79,13 +79,10 @@ export class ProductCompareListComponent implements OnChanges {
    * @returns A set of the common attribute names.
    */
   getCommonAttributeNames(): Set<string> {
-    const result = this.compareProducts.reduce(
-      (commonAttributeNameList, current) => {
-        commonAttributeNameList.push(current.attributes.map(x => x.name));
-        return commonAttributeNameList;
-      },
-      <string[][]>[]
-    );
+    const result = this.compareProducts.reduce((commonAttributeNameList, current) => {
+      commonAttributeNameList.push(current.attributes.map(x => x.name));
+      return commonAttributeNameList;
+    }, []);
 
     return new Set(
       result.shift().filter(attribute => {

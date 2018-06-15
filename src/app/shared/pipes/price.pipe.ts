@@ -19,7 +19,7 @@ export class PricePipe implements PipeTransform {
     switch (data.type) {
       case 'Money':
       case 'ProductPrice':
-        return formatPrice(data as Price, this.translateService.currentLang);
+        return formatPrice(data, this.translateService.currentLang);
       default:
         return data.toString();
     }

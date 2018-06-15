@@ -14,6 +14,6 @@ function onPage<T extends Page>(page: { new (): T }): promise.Promise<string> {
 export function at<T extends Page>(type: { new (): T }, callback?: (page: T) => void) {
   expect(onPage(type)).toBeTruthy();
   if (callback) {
-    callback(<T>currentPage);
+    callback(currentPage as T);
   }
 }

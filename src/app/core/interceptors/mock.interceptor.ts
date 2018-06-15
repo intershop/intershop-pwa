@@ -45,7 +45,6 @@ export class MockInterceptor implements HttpInterceptor {
     return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
       flatMap(event => {
         if (event instanceof HttpResponse) {
-          const response = <HttpResponse<any>>event;
           if (this.isLoginAttempt(req) && !this.isMockUserLoggingInSuccessfully(req)) {
             return throwError(
               new HttpErrorResponse({
@@ -55,7 +54,7 @@ export class MockInterceptor implements HttpInterceptor {
               })
             );
           }
-          return of(this.attachTokenIfNecessary(req, response));
+          return of(this.attachTokenIfNecessary(req, event));
         }
         return of(event);
       })

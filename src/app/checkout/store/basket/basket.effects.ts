@@ -14,7 +14,6 @@ import {
 } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
-import { Product } from '../../../models/product/product.model';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { BasketService } from '../../services/basket/basket.service';
 import { CheckoutState } from '../checkout.state';
@@ -74,8 +73,8 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     switchMap(([basketItems, products]) => [
       ...basketItems
-        .filter(basketItem => !products[(basketItem.product as Product).sku])
-        .map(basketItem => new LoadProduct((basketItem.product as Product).sku)),
+        .filter(basketItem => !products[basketItem.product.sku])
+        .map(basketItem => new LoadProduct(basketItem.product.sku)),
     ])
   );
 
