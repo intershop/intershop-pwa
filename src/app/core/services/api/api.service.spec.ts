@@ -66,8 +66,8 @@ describe('Api Service', () => {
 
       verify(storeMock$.dispatch(anything())).once();
       const [action] = capture(storeMock$.dispatch).last();
-      expect((<Action>action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((<ServerError>action).error.statusText).toEqual(statusText);
+      expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
+      expect((action as ServerError).error.statusText).toEqual(statusText);
     });
 
     it('should call the httpClient.put method when apiService.put method is called.', done => {

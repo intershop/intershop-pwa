@@ -25,8 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private setTokenFromResponse(event: HttpEvent<any>) {
     if (event instanceof HttpResponse) {
-      const response = <HttpResponse<any>>event;
-      const tokenReturned = response.headers.get(tokenHeaderKeyName);
+      const tokenReturned = event.headers.get(tokenHeaderKeyName);
       if (tokenReturned) {
         TOKEN = tokenReturned;
       }

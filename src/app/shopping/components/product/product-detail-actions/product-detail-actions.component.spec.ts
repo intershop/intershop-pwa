@@ -88,7 +88,7 @@ describe('Product Detail Actions Component', () => {
     const eventEmitter$ = spy(component.productToCompare);
     fixture.detectChanges();
 
-    (<HTMLElement>element.querySelector("[data-testing-id='compare-sku'] a")).click();
+    element.querySelector<HTMLElement>("[data-testing-id='compare-sku'] a").click();
 
     verify(eventEmitter$.emit()).once();
   });
