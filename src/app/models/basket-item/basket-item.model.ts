@@ -1,6 +1,5 @@
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
 import { Price } from '../price/price.model';
-import { Product } from '../product/product.model';
 
 export interface BasketItem {
   id: string;
@@ -11,7 +10,7 @@ export interface BasketItem {
     value: number;
     unit?: string;
   };
-  product: Product;
+  productSKU: string;
   price: Price;
   singleBasePrice: Price;
   itemSurcharges?: [
