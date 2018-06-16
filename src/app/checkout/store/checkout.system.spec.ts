@@ -18,7 +18,6 @@ import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
 import { Locale } from '../../models/locale/locale.model';
 import { Price } from '../../models/price/price.model';
-import { Product } from '../../models/product/product.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { CategoriesService } from '../../shopping/services/categories/categories.service';
 import { ProductsService } from '../../shopping/services/products/products.service';
@@ -66,7 +65,7 @@ describe('Checkout System', () => {
     name: 'test',
     position: 1,
     quantity: { type: 'test', value: 1 },
-    product: { sku: 'test' } as Product,
+    productSKU: 'test',
     price: null,
     singleBasePrice: null,
     isHiddenGift: false,

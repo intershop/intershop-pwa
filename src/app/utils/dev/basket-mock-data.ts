@@ -80,7 +80,7 @@ export class BasketMockData {
       id: '4712',
       name: 'pli name',
       quantity: { value: 10 },
-      product: { sku: '4713' },
+      productSKU: '4713',
       availability: true,
       inStock: true,
       singleBasePrice: { value: 3, currencyMnemonic: 'USD' },

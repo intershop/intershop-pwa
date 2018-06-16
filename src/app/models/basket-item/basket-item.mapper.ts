@@ -1,4 +1,3 @@
-import { Product } from '../product/product.model';
 import { BasketItemData } from './basket-item.interface';
 import { BasketItem } from './basket-item.model';
 
@@ -21,7 +20,7 @@ export class BasketItemMapper {
       availability: data.availability,
       totals: data.totals,
 
-      product: { sku: data.product.title } as Product,
+      productSKU: data.product.title,
     };
 
     return basketItem;
