@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
-import { Basket } from '../../../../models/basket/basket.model';
+import { BasketView } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
@@ -12,7 +12,7 @@ import { ProductHelper } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShoppingBasketComponent implements OnChanges {
-  @Input() basket: Basket;
+  @Input() basket: BasketView;
 
   @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
   @Output() deleteItem = new EventEmitter<string>();
@@ -35,7 +35,7 @@ export class ShoppingBasketComponent implements OnChanges {
   /**
    * Returns an array of formgroups (itemId and quantity) according to the given basket.
    */
-  createItemForm(basket: Basket): FormGroup[] {
+  createItemForm(basket: BasketView): FormGroup[] {
     const itemsForm: FormGroup[] = [];
 
     for (const item of basket.lineItems) {
