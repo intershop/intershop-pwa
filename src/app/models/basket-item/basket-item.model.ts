@@ -1,5 +1,6 @@
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
 import { Price } from '../price/price.model';
+import { Product } from '../product/product.model';
 
 export interface BasketItem {
   id: string;
@@ -34,4 +35,8 @@ export interface BasketItem {
   variationProduct: boolean;
   bundleProduct: boolean;
   availability: boolean;
+}
+
+export interface BasketItemView extends BasketItem {
+  product: Product;
 }

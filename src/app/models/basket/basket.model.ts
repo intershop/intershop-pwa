@@ -1,17 +1,17 @@
 import { Address } from '../address/address.model';
-import { BasketItem } from '../basket-item/basket-item.model';
+import { BasketItem, BasketItemView } from '../basket-item/basket-item.model';
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
 import { Price } from '../price/price.model';
 import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
-export interface Basket {
+interface AbstractBasket<T> {
   id: string;
   purchaseCurrency: string;
   dynamicMessages?: string[];
   invoiceToAddress?: Address;
   commonShipToAddress?: Address;
   commonShippingMethod?: ShippingMethod;
-  lineItems?: BasketItem[];
+  lineItems?: T[];
   totals: {
     basketShippingRebatesTotal?: Price;
     basketTotal: Price;
@@ -35,5 +35,9 @@ export interface Basket {
     }
   ];
 }
+
+export interface Basket extends AbstractBasket<BasketItem> {}
+
+export interface BasketView extends AbstractBasket<BasketItemView> {}
 
 export * from './basket.helper';
