@@ -18,7 +18,6 @@ describe('Product Detail Actions Component', () => {
     TestBed.configureTestingModule({
       imports: [CommonModule, TranslateModule.forRoot()],
       providers: [
-        TranslateService,
         { provide: Location, useFactory: () => instance(mock(Location)) },
         { provide: ICM_BASE_URL, useValue: 'http://example.org' },
       ],

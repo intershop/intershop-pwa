@@ -13,7 +13,6 @@ describe('Product Inventory Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [TranslateService],
       declarations: [ProductInventoryComponent],
     }).compileComponents();
   }));

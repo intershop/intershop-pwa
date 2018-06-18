@@ -21,7 +21,6 @@ describe('Search No Result Component', () => {
           inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
         }),
       ],
-      providers: [TranslateService],
     });
   }));
 
