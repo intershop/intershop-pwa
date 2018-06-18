@@ -36,7 +36,7 @@ describe('Basket Effects', () => {
       name: 'test',
       position: 1,
       quantity: { type: 'test', value: 1 },
-      product: { sku: 'test' } as Product,
+      productSKU: 'test',
       price: null,
       singleBasePrice: null,
       isHiddenGift: false,
@@ -319,7 +319,7 @@ describe('Basket Effects', () => {
       const completion = new basketActions.AddItemsToBasket({
         items: [
           {
-            sku: lineItems[0].product.sku,
+            sku: lineItems[0].productSKU,
             quantity: lineItems[0].quantity.value,
           },
         ],

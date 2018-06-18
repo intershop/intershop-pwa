@@ -73,8 +73,8 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getProductEntities))),
     switchMap(([basketItems, products]) => [
       ...basketItems
-        .filter(basketItem => !products[basketItem.product.sku])
-        .map(basketItem => new LoadProduct(basketItem.product.sku)),
+        .filter(basketItem => !products[basketItem.productSKU])
+        .map(basketItem => new LoadProduct(basketItem.productSKU)),
     ])
   );
 
@@ -212,7 +212,7 @@ export class BasketEffects {
     ),
     map(([newBasket, currentBasket]) => {
       const items = currentBasket.lineItems.map(lineItem => ({
-        sku: lineItem.product.sku,
+        sku: lineItem.productSKU,
         quantity: lineItem.quantity.value,
       }));
 

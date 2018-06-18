@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Basket } from '../../../../models/basket/basket.model';
+import { BasketView } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
 @Component({
@@ -8,7 +8,7 @@ import { ProductHelper } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketItemsSummaryComponent {
-  @Input() basket: Basket;
+  @Input() basket: BasketView;
 
   generateProductRoute = ProductHelper.generateProductRoute;
   isCollapsed = true;
