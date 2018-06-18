@@ -18,7 +18,7 @@ describe('Shopping Basket Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         ShoppingBasketComponent,
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component' }),
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
         MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
         MockComponent({
           selector: 'ish-basket-item-description',
