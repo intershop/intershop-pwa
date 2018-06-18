@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { B2bRoutingModule } from './b2b-routing.module';
 import { QuoteService } from './services/quote/quote.service';
 import { b2bEffects, b2bReducers } from './store/b2b.system';
 
 @NgModule({
-  imports: [StoreModule.forFeature('b2b', b2bReducers), EffectsModule.forFeature(b2bEffects)],
+  imports: [B2bRoutingModule, StoreModule.forFeature('b2b', b2bReducers), EffectsModule.forFeature(b2bEffects)],
   providers: [QuoteService],
 })
 export class B2bModule {}

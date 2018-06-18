@@ -1,0 +1,248 @@
+<!-- <isset scope="request" name="EditMode" value="#(Quote:State==0) OR (  ( (Quote:State==4) OR (Quote:State==6) ) AND ( (Quote:Modified EQ "true") OR (EditMode EQ "true") ) )#" >
+
+<isset scope="request" name="EditDisplayName" value="false">
+<isset scope="request" name="EditDescription" value="false">
+<isif condition="#(Quote:State==0) OR ( (Quote:State==4) AND (EditMode EQ "true") )#">
+  <isset scope="request" name="EditDescription" value="true">
+  <isset scope="request" name="EditDisplayName" value="true">
+</isif>
+
+<isset name="ValidQuote" value="#NOT isDefined(ERRORCODE_QUOTEVALIDATION)#" scope="request"/> -->
+
+<!--- IS CONTRACT -->
+<!-- <isset scope="request" name="isContract" value="false"> -->
+
+
+<form class="form-horizontal form-horizontal-inline bv-form">
+<!--<isform action="#URLEX(SecureURL,'',Action('ViewQuote-Dispatch'))#" method="post" name="#getValue(QuoteEditForm:Alias)#"
+  class= "form-horizontal form-horizontal-inline bv-form"
+  data-bv-message="This value is not valid"
+  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
+> -->
+
+  <!-- <input type="hidden" name="LocaleId" value="<isprint value="#CurrentRequest:Locale:LocaleID#">"/>
+  <input type="hidden" name="QuoteUUID" value="<isprint value="#Quote:UUID#">"/>
+  <input type="hidden" name="QuoteExport" value="<isprint value="#QuoteExport#">"/>
+  <input type="hidden" name="StateGroup" value="<isprint value="#StateGroup#">"/>
+  <input type="hidden" name="PageNumber" value="<isprint value="#PageNumber#">"/>
+  <input type="hidden" name="EditMode" value="<isprint value="#EditMode#">"/>
+  <input type="hidden" name="LinkSource" value="<isprint value="#LinkSource#">"/>
+  <input type="hidden" name="DateFormatString" value="<isprint value="#CurrentSession:Locale:DefaultRegionalSettings:inputDatePattern#">"/>
+  <input type="hidden" name="TimeFormatString" value="<isprint value="#CurrentSession:Locale:DefaultRegionalSettings:inputTimePattern#">"/> -->
+
+  <!--- Error messages -->
+  <!-- <isif condition="#isDefined(ERROR_submit_quote_failed)#">
+    <istext key="quote.edit.already_submitted.text" />
+  </isif>
+  <isif condition="#isDefined(ERROR_accept_quote_failed)#">
+    <istext key="quote.edit.already_accepted.text" />
+  </isif>
+  <isif condition="#isDefined(ERROR_refuse_quote_failed)#">
+    <istext key="quote.edit.already_refused.text" />
+  </isif> -->
+
+  <!--- Quote Header -->
+  <!--
+  <isif condition="#ProductListEvent:TypeCode EQ "SubmittedToSeller"#">
+    <h1><istext key="quote.edit.submitted.heading" /></h1>
+
+    <p>
+      <istext key="quote.edit.submitted.your_quote_number.text" />
+      <a href="#URLEX(SecureURL,'',Action("ViewQuote-Edit"), Parameter("QuoteUUID", Quote:UUID))#"><isprint value="#Quote:DocumentNo#"></a>
+    </p>
+    <p>
+      <istext key="quote.edit.submitted.your_quote.text" /></br />
+      <istext key="quote.edit.submitted.you_can_check.text" parameter0="#URLEX(SecureURL,'',Action("ViewQuoteList-List"))#" parameter1="#URLEX(SecureURL,'',Action("ViewUserAccount-Start"))#" encoding="off" />
+    </p>
+    <p>
+      <istext key="quote.edit.submitted.we_will_email.text" parameter0="#CurrentUser:Profile:Credentials:Login#" />
+    </p>
+  <iselse> -->
+
+    <!-- Title and Description -->
+    <ng-template [ngIf]="quote.displayName">
+      <h1>
+        <!-- <isif condition="#(Quote:State==4) OR ( (Quote:State==6) AND (EditMode EQ "true") )#"> -->
+        <ng-template [ngIf]="quote.state === 4 || ( quote.state === 6 && true)" [ngIfElse]="unsubmitted">
+          {{ 'quote.edit.responded.quote_details.text' | translate}} - {{ quote.displayName }}
+        </ng-template>
+        <ng-template #unsubmitted>
+          {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate}} - {{ quote.displayName }}
+        </ng-template>
+      </h1>
+    </ng-template>
+    <!--
+    <iselse>
+      <h1>
+        <isif condition="#(Quote:State==4) OR ( (Quote:State==6) AND (EditMode EQ "true") )#">
+          <istext key="quote.edit.responded.quote_details.text" /> - <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#">
+        <iselse>
+          <istext key="quote.edit.unsubmitted.quote_request_details.text" /> - <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#">
+        </isif>
+      </h1>
+    </isif>
+    -->
+
+    <!-- EO Titel and Description -->
+    <!--
+    <isif condition="#isDefined(ErrorCode)#">
+      <p class="alert alert-info"><istext key="#'quote.edit.info.' . ErrorCode . '.text'#" /></p>
+    </isif>-->
+
+  <div class="row">
+    <label class="col-lg-2 col-sm-3 col-xs-4 control-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
+    <div class="col-lg-10 col-sm-9 col-xs-8">
+      <p class="form-control-static">{{ quote.number }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
+    <div class="col-lg-10 col-sm-9 col-xs-8">
+      <p class="form-control-static"><ish-quote-state [quote]="quote"></ish-quote-state></p>
+    </div>
+  </div>
+
+  <!--- Shows the valid from/to date  -->
+  <div *ngIf="quote.state > 3 && quote.state < 7" class="row">
+    <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.timeframe.label' | translate }}</label>
+    <div class="col-lg-10 col-sm-9 col-xs-8">
+      <p class="form-control-static">{{ quote.validFromDate | date: 'shortDate' }} - {{ quote.validToDate | date: 'shortDate' }}</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="form-group has-feedback">
+      <label for="#SHOUD_EQUAL_INPUT_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.name.label' | translate }}</label>
+      <div class="col-lg-10  col-sm-9 col-xs-8">
+        <!--
+        <isif condition="#EditDisplayName EQ "true"#">
+          <input type="text" id="<isprint value="#QuoteEditForm:DisplayName:QualifiedName#">"
+              name="<isprint value="#QuoteEditForm:DisplayName:QualifiedName#">"
+              value="<isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:DisplayName:Value#"><iselse><isprint value="#Quote:DisplayName#"></isif>"
+              maxlength="256"
+              class="quote_name form-control"
+              placeholder="<istext key="quote.edit.unsubmitted.enter_an_optional_name.text" />"
+              data-validate="required"
+              required data-bv-notempty-message ="<istext key="shopping_cart.quote.name.required.validation.message" />"
+              aria-required="true"
+          />
+        <iselse>
+        -->
+        <p class="form-control-static">{{ quote.displayName }}</p>
+      </div>
+    </div>
+
+    <!--- CONTRACT - TIME FRAME -->
+    <!--
+    <isif condition="#isDefined(Quote:Timeframe)#">
+      <div class="row">
+        <label for="" class="control-label col-lg-2 col-sm-3 col-xs-4"><istext key="quote.edit.unsubmitted.timeframe.label" /></label>
+        <div class="col-lg-10 col-sm-9 col-xs-8">
+          <isprint value="#Quote:Timeframe#">
+        </div>
+      </div>
+    </isif>
+    -->
+
+    <!-- <isif condition="#(EditDescription EQ "true") OR (isDefined(Quote:Description) AND (Quote:Description NE ''))#"></isif> -->
+    <div *ngIf="quote.description" class="form-group">
+      <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
+      <div class="col-lg-10 col-sm-9 col-xs-8">
+        <!--
+        <isif condition="#EditDescription EQ "true"#">
+        <isif condition="#QuoteEditForm:Description:isError("error.required")#"><istext key="quote.edit.unsubmitted.enter_description.text" /></isif>
+          <textarea
+              type="text"
+              id="<isprint value="#QuoteEditForm:Description:QualifiedName#">"
+              name="<isprint value="#QuoteEditForm:Description:QualifiedName#">"
+              class="form-control"
+              placeholder="<istext key="quote.edit.unsubmitted.provide_comment.text" />"
+          ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea>
+        <iselse>
+        -->
+        <p class="form-control-static">{{ quote.description }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="quote.sellerComment" class="form-group">
+      <label for="" class="control-label col-xs-4 col-sm-3 col-lg-2">{{ 'quote.edit.unsubmitted.seller_comment.label' | translate }}</label>
+      <div class="col-xs-8 col-sm-9 col-lg-10">
+        <p class="form-control-static">{{ quote.sellerComment }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  <isif condition="#(Quote:State==3) AND (LinkSource NE "Shopping")#">
+    <div class="alert alert-info"><istext key="quote.edit.submitted.your_quote_has_been_submitted.text" parameter0="#getValue(Quote:ProductListEventByType("SubmittedToSeller"):EventDate, DATE_INPUT)#" /></div>
+    <iselseif condition="#isDefined(ERRORCODE_QUOTEVALIDATION)#">
+    <div class="alert alert-info">
+      <istext key="#ERRORCODE_QUOTEVALIDATION#"/>
+    </div>
+  </isif> -->
+
+  <!--- Quote Item List -->
+  <div class="section">
+    <h3>{{ 'quote.items.table.heading' | translate }}</h3>
+    <ish-line-item-list
+      [lineItems]="quote.items"
+      (formChange)="onFormChange($event)"
+      (deleteItem)="onDeleteItem($event)"
+    ></ish-line-item-list>
+  </div>
+
+  <div class="form-btn-group clearfix">
+    <div class="visible-xs form-group">
+      <div class="col-xs-6 pull-right text-right">
+        <!--
+        <isif condition="#LinkSource EQ "Shopping"#">
+          <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
+        <iselse>
+        -->
+        <a class="btn btn-link" [routerLink]="['/account/quote-list']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+      </div>
+    </div>
+
+    <!--- here are the buttons -->
+    <ng-template [ngIf]="quote.items.length > 0 && quote.total && quote.total.value > 0">
+      <!-- TODO: IF EDIT MODE -->
+      <!--
+      <isif condition="#EditMode EQ "true"#">
+        <button type="submit" class="btn btn-primary pull-right" name="submitquote" <isif condition="#NOT hasElements(Quote:IndependentItems)#">disabled</isif>><istext key="quote.edit.button.submit.label" /></button>
+        <button type="submit" class="btn btn-default pull-right" name="update" value="update"><istext key="quote.edit.button.save.label" /></button>
+      <iselseif condition="#(Quote:State==3)#">
+      -->
+      <!-- TODO: IF STATE 3 (SUBMITTED) -->
+      <ng-template [ngIf]="quote.state === 3">
+          <!--
+          <isif condition="#LinkSource EQ "Shopping"#">
+            <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
+          <iselse>
+          -->
+          <button class="btn btn-default" name="copy" type="submit" value="copy">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+      </ng-template>
+      <!-- TODO: ELSE -->
+      <ng-template [ngIf]="quote.state !== 3"> <!-- represents else branch in the old isml representation -->
+        <ng-template [ngIf]="quote.state === 4">
+          <!-- <isif condition="#ValidQuote#"> -->
+          <button type="submit" class="btn btn-primary pull-right" name="add2cart" value="add2cart">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
+        </ng-template>
+
+        <button  type="submit" class="btn btn-default" name="copy" value="copy">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+
+        <button *ngIf="quote.state === 4" type="submit" id="button-reject" class="btn btn-default" name="refuse" value="refuse">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
+      </ng-template>
+    </ng-template>
+  </div>
+
+  <div class="hidden-xs clearfix">
+    <!--
+    <isif condition="#LinkSource EQ "Shopping"#">
+      <a href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
+    <iselse>
+    -->
+    <a [routerLink]="['/account/quote-list']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+  </div>
+</form>

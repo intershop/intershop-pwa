@@ -23,6 +23,16 @@ export const accountPageRoutes: Routes = [
         loadChildren: '../order-history-page/order-history-page.module#OrderHistoryPageModule',
       },
       {
+        path: 'quote-list',
+        data: { breadcrumbKey: 'quote.quotes.link' },
+        loadChildren: '../../../b2b/containers/quote-list-page/quote-list-page.module#QuoteListPageModule',
+      },
+      {
+        path: 'quote',
+        data: { breadcrumbKey: 'quote.quotes.link' },
+        loadChildren: '../../../b2b/containers/quote-edit-page/quote-edit-page.module#QuoteEditPageModule',
+      },
+      {
         path: '',
         pathMatch: 'full',
         redirectTo: 'overview',
