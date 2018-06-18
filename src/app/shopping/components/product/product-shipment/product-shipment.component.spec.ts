@@ -16,7 +16,6 @@ describe('Product Shipment Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), ModalModule.forRoot()],
-      providers: [TranslateService],
       declarations: [ProductShipmentComponent, ModalDialogComponent],
     }).compileComponents();
   }));

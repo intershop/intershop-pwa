@@ -12,7 +12,6 @@ describe('Server Error Page Component', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [ServerErrorPageComponent],
-      providers: [TranslateService],
     }).compileComponents();
   }));
 

@@ -14,7 +14,6 @@ describe('Product Quantity Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), ReactiveFormsModule],
-      providers: [TranslateService],
       declarations: [
         ProductQuantityComponent,
         MockComponent({
