@@ -1,11 +1,11 @@
 import { Address } from '../../models/address/address.model';
-import { BasketItem } from '../../models/basket-item/basket-item.model';
+import { BasketItemView } from '../../models/basket-item/basket-item.model';
 import { BasketRebate } from '../../models/basket-rebate/basket-rebate.model';
-import { Basket } from '../../models/basket/basket.model';
+import { BasketView } from '../../models/basket/basket.model';
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 
 export class BasketMockData {
-  static getBasket(): Basket {
+  static getBasket(): BasketView {
     return {
       id: '4711',
       lineItems: [this.getBasketItem()],
@@ -72,21 +72,22 @@ export class BasketMockData {
           currencyMnemonic: 'USD',
         },
       },
-    } as Basket;
+    } as BasketView;
   }
 
-  static getBasketItem(): BasketItem {
+  static getBasketItem(): BasketItemView {
     return {
       id: '4712',
       name: 'pli name',
       quantity: { value: 10 },
+      productSKU: '4713',
       product: { sku: '4713' },
       availability: true,
       inStock: true,
       singleBasePrice: { value: 3, currencyMnemonic: 'USD' },
       price: { value: 3, currencyMnemonic: 'USD' },
       totals: {},
-    } as BasketItem;
+    } as BasketItemView;
   }
 
   static getAddress(): Address {

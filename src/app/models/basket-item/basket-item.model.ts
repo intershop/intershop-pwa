@@ -11,7 +11,7 @@ export interface BasketItem {
     value: number;
     unit?: string;
   };
-  product: Product;
+  productSKU: string;
   price: Price;
   singleBasePrice: Price;
   itemSurcharges?: [
@@ -35,4 +35,8 @@ export interface BasketItem {
   variationProduct: boolean;
   bundleProduct: boolean;
   availability: boolean;
+}
+
+export interface BasketItemView extends BasketItem {
+  product: Product;
 }

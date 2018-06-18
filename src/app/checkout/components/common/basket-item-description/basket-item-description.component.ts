@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { BasketItem } from '../../../../models/basket-item/basket-item.model';
+import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
 
 @Component({
   selector: 'ish-basket-item-description',
@@ -7,5 +7,5 @@ import { BasketItem } from '../../../../models/basket-item/basket-item.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketItemDescriptionComponent {
-  @Input() pli: BasketItem;
+  @Input() pli: BasketItemView;
 }

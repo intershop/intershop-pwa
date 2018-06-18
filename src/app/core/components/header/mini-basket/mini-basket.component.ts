@@ -1,6 +1,6 @@
 import { animate, AnimationBuilder, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
-import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
+import { BasketHelper, BasketView } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
 /**
@@ -19,7 +19,7 @@ export class MiniBasketComponent implements OnChanges {
   /**
    * The basket that should be displayed.
    */
-  @Input() basket: Basket;
+  @Input() basket: BasketView;
 
   /**
    * The vertical product slider element reference.
