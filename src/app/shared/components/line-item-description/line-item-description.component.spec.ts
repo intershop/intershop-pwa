@@ -1,21 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { PipesModule } from '../../../../shared/pipes.module';
-import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { MockComponent } from '../../../../utils/dev/mock.component';
-import { BasketItemDescriptionComponent } from './basket-item-description.component';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
+import { MockComponent } from '../../../utils/dev/mock.component';
+import { PipesModule } from '../../pipes.module';
+import { LineItemDescriptionComponent } from './line-item-description.component';
 
-describe('Basket Item Description Component', () => {
-  let component: BasketItemDescriptionComponent;
-  let fixture: ComponentFixture<BasketItemDescriptionComponent>;
+describe('Line Item Description Component', () => {
+  let component: LineItemDescriptionComponent;
+  let fixture: ComponentFixture<LineItemDescriptionComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), PipesModule],
       declarations: [
-        BasketItemDescriptionComponent,
+        LineItemDescriptionComponent,
         MockComponent({
           selector: 'ish-product-shipment',
           template: 'Product Shipment Component',
@@ -26,7 +26,7 @@ describe('Basket Item Description Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BasketItemDescriptionComponent);
+    fixture = TestBed.createComponent(LineItemDescriptionComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.pli = BasketMockData.getBasketItem();
@@ -41,7 +41,7 @@ describe('Basket Item Description Component', () => {
 
   it('should display sku for the basket item', () => {
     fixture.detectChanges();
-    expect(element.querySelector('.product-id').innerHTML).toContain('4713');
+    expect(element.querySelector('.product-id').textContent).toContain('4713');
   });
 
   it('should display in stock for the basket item', () => {

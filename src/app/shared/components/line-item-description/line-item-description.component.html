@@ -1,3 +1,4 @@
+<ng-template [ngIf]="pli && pli.product">
   <!-- Product ID -->
   <p class="product-id">{{'checkout.pli.item.text.id' | translate }} {{pli.productSKU}}</p>
 
@@ -5,13 +6,13 @@
 
   <!-- Availability -->
   <p class="availability">
-    <span *ngIf="!pli.availability" class="product-out-of-stock">
+    <span *ngIf="!pli.product.availability" class="product-out-of-stock">
       {{ 'checkout.pli.not_accessible.text' | translate }}
     </span>
-    <span *ngIf="pli.availability && pli.inStock" class="product-in-stock">
+    <span *ngIf="pli.product.availability && pli.product.inStock" class="product-in-stock">
       {{ 'checkout.pli.instock.text' | translate }}
     </span>
-    <span *ngIf="pli.availability && !pli.inStock" class="product-out-of-stock">
+    <span *ngIf="pli.product.availability && !pli.product.inStock" class="product-out-of-stock">
       {{ 'checkout.pli.out_of_stock.text' | translate }}
     </span>
   </p>
@@ -20,7 +21,7 @@
   <ish-product-shipment [product]="pli.product"></ish-product-shipment>
 
   <!-- Surcharges -->
-  <div *ngFor="let surcharge of pli.itemSurcharges">
+  <div *ngFor="let surcharge of pli['itemSurcharges']">
     {{surcharge.displayName}}
     <span *ngIf="!surcharge.displayName">{{surcharge.text}}</span>
     <span class="text-nowrap">
@@ -38,5 +39,6 @@
       <span class="glyphicon glyphicon-info-sign"></span>
     </a>
   </div>
+</ng-template>
 
 
