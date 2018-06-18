@@ -9,6 +9,6 @@
   <a class="details-link" (click)="modalDialog.show()" rel="nofollow">{{'product.ready_for_shipment.detail.text' | translate}}</a>
 </div>
 
-<ish-modal-dialog #modalDialog [title]="'shopping.product.readyforshipment.details.title' | translate">
+<ish-modal-dialog #modalDialog [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate }">
   <div [innerHTML]="'shopping.product.readyforshipment.details.text' | translate"></div>
 </ish-modal-dialog>

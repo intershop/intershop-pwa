@@ -130,8 +130,7 @@
 </div>
 
 <ish-modal-dialog #modalDialog
-  [title]="'checkout.safeandsecure.details.title' | translate"
-  modalClass="modal-lg"
+  [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, modalClass: 'modal-lg' }"
 >
   <div [innerHTML]="'checkout.safeandsecure.details.text' | translate"></div>
 </ish-modal-dialog>
