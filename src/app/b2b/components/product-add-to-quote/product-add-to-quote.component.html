@@ -1,0 +1,22 @@
+<!-- TODO: only show if quoting feature is available -->
+<button type="submit"
+  class="btn"
+  [ngClass]="class"
+  [class.btn-default]="!isDisplayTypeGlyphicon"
+  [disabled]="disabled"
+  [attr.title]="'quote.add_product_to_quote.button.add_to_quote.label' | translate"
+  data-testing-id="addToQuoteButton"
+  (click)="addToQuote()"
+  *ngIf="product.inStock && product.availability"
+>
+
+  <ng-template [ngIf]="isDisplayTypeGlyphicon" [ngIfElse]="defaultButton">
+    <span class="glyphicon glyphicon-inbox"></span>
+  </ng-template>
+
+  <ng-template #defaultButton>
+    {{'quote.add_product_to_quote.button.add_to_quote.label' | translate}}
+  </ng-template>
+
+</button>
+

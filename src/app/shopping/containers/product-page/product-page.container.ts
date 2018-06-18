@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { B2bState } from '../../../b2b/store/b2b.state';
+import { AddProductToQuoteRequest } from '../../../b2b/store/quote';
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CategoryView } from '../../../models/category-view/category-view.model';
@@ -21,7 +23,7 @@ export class ProductPageContainerComponent implements OnInit {
   productLoading$: Observable<boolean>;
   category$: Observable<CategoryView>;
 
-  constructor(private store: Store<ShoppingState | CheckoutState>) {}
+  constructor(private store: Store<ShoppingState | CheckoutState | B2bState>) {}
 
   ngOnInit() {
     this.product$ = this.store.pipe(
@@ -41,5 +43,9 @@ export class ProductPageContainerComponent implements OnInit {
 
   addToCompare(sku) {
     this.store.dispatch(new AddToCompare(sku));
+  }
+
+  addToQuote({ sku, quantity }) {
+    this.store.dispatch(new AddProductToQuoteRequest({ sku: sku, quantity: quantity }));
   }
 }

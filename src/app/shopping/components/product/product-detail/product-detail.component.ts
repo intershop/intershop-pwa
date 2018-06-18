@@ -10,6 +10,7 @@ import { Product } from '../../../../models/product/product.model';
 export class ProductDetailComponent implements OnInit {
   @Input() product: Product;
   @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
+  @Output() productToQuote = new EventEmitter<{ sku: string; quantity: number }>();
   @Output() productToCompare = new EventEmitter<string>();
 
   productDetailForm: FormGroup;
@@ -30,5 +31,12 @@ export class ProductDetailComponent implements OnInit {
 
   addToCompare() {
     this.productToCompare.emit(this.product.sku);
+  }
+
+  addToQuote() {
+    this.productToQuote.emit({
+      sku: this.product.sku,
+      quantity: this.productDetailForm.get(this.quantityControlName).value,
+    });
   }
 }

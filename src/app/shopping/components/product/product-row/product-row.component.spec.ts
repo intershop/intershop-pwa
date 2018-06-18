@@ -31,6 +31,11 @@ describe('Product Row Component', () => {
           template: 'Product Add To Basket Component',
           inputs: ['product'],
         }),
+        MockComponent({
+          selector: 'ish-product-add-to-quote',
+          template: 'Product Add To Quote Component',
+          inputs: ['product'],
+        }),
       ],
     }).compileComponents();
   }));

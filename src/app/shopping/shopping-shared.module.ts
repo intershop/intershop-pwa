@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { B2bSharedModule } from '../b2b/b2b-shared.module';
 import { FormsSharedModule } from '../forms/forms-shared.module';
 import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
@@ -21,7 +22,7 @@ import { ProductTileContainerComponent } from './containers/product-tile/product
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
-  imports: [SharedModule, FormsSharedModule, SharedProductModule],
+  imports: [SharedModule, FormsSharedModule, SharedProductModule, B2bSharedModule],
   declarations: [
     CategoryListComponent,
     CategoryNavigationComponent,
