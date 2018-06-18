@@ -13,7 +13,6 @@ describe('Product Add To Basket Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [TranslateService],
       declarations: [ProductAddToBasketComponent],
     }).compileComponents();
   }));

@@ -25,7 +25,6 @@ describe('Search Result Component', () => {
           inputs: ['products', 'viewType'],
         }),
       ],
-      providers: [TranslateService],
     }).compileComponents();
   }));
 
