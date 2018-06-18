@@ -7,7 +7,7 @@ import { basketReducer, initialState } from './basket.reducer';
 
 describe('Basket Reducer', () => {
   describe('LoadBasket actions', () => {
-    describe('LoadCategory action', () => {
+    describe('LoadBasket action', () => {
       it('should set loading to true', () => {
         const action = new fromActions.LoadBasket('test');
         const state = basketReducer(initialState, action);
