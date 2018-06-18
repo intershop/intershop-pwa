@@ -13,6 +13,7 @@ import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { B2bModule } from './b2b/b2b.module';
 import { CheckoutModule } from './checkout/checkout.module';
 import * as injectionKeys from './core/configurations/injection-keys';
 import { CoreModule } from './core/core.module';
@@ -62,6 +63,7 @@ export const metaReducers: MetaReducer<any>[] = [
     CheckoutModule,
     RegistrationModule,
     AccountModule,
+    B2bModule,
     // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
     AppRoutingModule,
     StoreModule.forRoot(coreReducers, { metaReducers }),
