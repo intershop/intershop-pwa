@@ -9,6 +9,8 @@ import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
 
+export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
+
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
  */
@@ -23,6 +25,19 @@ export class BasketService {
    */
   getBasket(basketId: string = '-'): Observable<Basket> {
     return this.apiService.get<BasketData>(`baskets/${basketId}`).pipe(map(BasketMapper.fromData));
+  }
+
+  /**
+   * Updates the basket for the given basket id or fallback to '-' as basket id.
+   * @param basketId  The basket id.
+   * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
+   * @returns         The basket.
+   */
+  updateBasket(basketId: string = '-', body: BasketUpdateType): Observable<Basket> {
+    if (!body) {
+      return throwError('updateBasket() called without body');
+    }
+    return this.apiService.put(`baskets/${basketId}`, body);
   }
 
   /**

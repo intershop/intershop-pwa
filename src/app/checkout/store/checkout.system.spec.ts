@@ -26,6 +26,7 @@ import { LoadProduct } from '../../shopping/store/products';
 import { shoppingEffects, shoppingReducers } from '../../shopping/store/shopping.system';
 import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
+import { AddressService } from '../services/address/address.service';
 import { BasketService } from '../services/basket/basket.service';
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
@@ -159,6 +160,7 @@ describe('Checkout System', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },

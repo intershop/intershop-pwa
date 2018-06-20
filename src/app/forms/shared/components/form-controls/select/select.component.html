@@ -6,22 +6,22 @@
           [id]="uuid"
           [formControlName]="controlName"
           [attr.data-testing-id]="controlName">
-        <option value="" *ngIf="showEmptyOption">{{'account.option.select.text' | translate}}</option>
+        <option value="" *ngIf="showEmptyOption">{{ emptyOptionLabel | translate}}</option>
 
         <!-- translate option values -->
         <ng-template [ngIf]="translateOptionValues" [ngIfElse]="notTranslateOptionValues">
-            <option *ngFor="let option of options" [value]="option.value | translate">
-                <span *ngIf="translateOptionLabels">{{option.label | translate}}</span>
-                <span *ngIf="!translateOptionLabels">{{option.label}}</span>
-              </option>
-          </ng-template>
-          <!-- does not translate values -->
-          <ng-template #notTranslateOptionValues>
-              <option *ngFor="let option of options" [value]="option.value">
-                  <span *ngIf="translateOptionLabels">{{option.label | translate}}</span>
-                  <span *ngIf="!translateOptionLabels">{{option.label}}</span>
-                </option>
-          </ng-template>
+          <option *ngFor="let option of options" [value]="option.value | translate">
+            <span *ngIf="translateOptionLabels">{{option.label | translate}}</span>
+            <span *ngIf="!translateOptionLabels">{{option.label}}</span>
+          </option>
+        </ng-template>
+        <!-- does not translate values -->
+        <ng-template #notTranslateOptionValues>
+          <option *ngFor="let option of options" [value]="option.value">
+            <span *ngIf="translateOptionLabels">{{option.label | translate}}</span>
+            <span *ngIf="!translateOptionLabels">{{option.label}}</span>
+          </option>
+        </ng-template>
 
       </select>
       <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
