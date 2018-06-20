@@ -41,6 +41,38 @@ describe('Basket Reducer', () => {
     });
   });
 
+  describe('UpdateBasket actions', () => {
+    describe('UpdateBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.UpdateBasket({ invoiceToAddress: { id: '1234' } });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('UpdateBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.UpdateBasketFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('UpdateBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.UpdateBasketSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toBeNull();
+      });
+    });
+  });
+
   describe('LoadBasketItems actions', () => {
     describe('LoadBasketItems action', () => {
       it('should set loading to true', () => {

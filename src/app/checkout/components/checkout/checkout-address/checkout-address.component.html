@@ -1,6 +1,15 @@
 <div class="row checkout-address-book">
   <!-- registered user -->
     <ng-container *ngIf="user; else checkoutAddressLogin">
+
+      <!-- error messages -->
+      <div *ngIf="!basket.invoiceToAddress || !basket.commonShipToAddress" class="col-sm-12">
+        <div class="alert alert-danger">
+          <p>{{ 'checkout.addresses.no_Selection.error' | translate }}</p>
+        </div>
+      </div>
+
+       <!-- invoice address -->
       <div class="col-sm-6 col-md-4" data-testing-id="invoiceToAddress">
         <h2> {{ 'checkout.address.billing.label' | translate }}</h2>
         <div *ngIf="basket.invoiceToAddress"  class="address-box">
@@ -9,7 +18,21 @@
         <p *ngIf="!basket.invoiceToAddress" class="text-danger">
           {{ 'checkout.addresses.no_Selection.invoice.error' | translate}}
         </p>
+
+        <ng-container *ngIf="invoiceAddresses && invoiceAddresses.length">
+          <form [formGroup]="invoiceAddressForm">
+            <ish-select-address
+              [form]="invoiceAddressForm"
+              controlName="id"
+              [addresses]="invoiceAddresses"
+              [emptyOptionLabel]="emptyInvoiceAddressOptionLabel"
+              inputClass=""
+            ></ish-select-address>
+          </form>
+        </ng-container>
       </div>
+
+      <!-- shipping address -->
       <div class="col-sm-6 col-md-4" data-testing-id="shipToAddress">
         <h2> {{ 'checkout.address.shipping.label' | translate }}</h2>
         <div *ngIf="basket.commonShipToAddress"  class="address-box">
@@ -19,10 +42,23 @@
           <p>
         </div>
         <p *ngIf="!basket.commonShipToAddress" class="text-danger">
-            {{ 'checkout.addresses.no_Selection.shipping.error' | translate}}
-          </p>
+          {{ 'checkout.addresses.no_Selection.shipping.error' | translate}}
+        </p>
+
+        <ng-container *ngIf="shippingAddresses &&shippingAddresses.length">
+          <form [formGroup]="shippingAddressForm">
+            <ish-select-address
+              [form]="shippingAddressForm"
+              controlName="id"
+              [addresses]="shippingAddresses"
+              [emptyOptionLabel]="emptyShippingAddressOptionLabel"
+              inputClass=""
+            ></ish-select-address>
+          </form>
+        </ng-container>
       </div>
     </ng-container>
+
     <!-- unregistered user -->
     <ng-template #checkoutAddressLogin>
       <div class="col-sm-12 col-md-8">
@@ -30,10 +66,10 @@
       </div>
     </ng-template>
 
+    <!-- Cart Summary -->
     <div class="col-sm-12 col-md-4">
       <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-      <!-- Begin Cart Summary -->
-      <!-- itemsInCart -->
+
       <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
 
       <div class="cost-summary">

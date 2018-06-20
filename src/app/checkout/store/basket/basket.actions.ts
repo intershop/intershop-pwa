@@ -2,11 +2,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { BasketUpdateType } from '../../services/basket/basket.service';
 
 export enum BasketActionTypes {
   LoadBasket = '[Basket Internal] Load Basket',
   LoadBasketFail = '[Basket API] Load Basket Fail',
   LoadBasketSuccess = '[Basket API] Load Basket Success',
+  UpdateBasketInvoiceAddress = '[Basket] Update Baskets Invoive Address',
+  UpdateBasketShippingAddress = '[Basket] Update Baskets Shipping Address',
+  UpdateBasket = '[Basket Internal] Update Basket',
+  UpdateBasketFail = '[Basket API] Update Basket Fail',
+  UpdateBasketSuccess = '[Basket API] Update Basket Success',
   LoadBasketItems = '[Basket Internal] Load Basket Items',
   LoadBasketItemsFail = '[Basket API] Load Basket Items Fail',
   LoadBasketItemsSuccess = '[Basket API] Load Basket Items Success',
@@ -36,6 +42,30 @@ export class LoadBasketFail implements Action {
 export class LoadBasketSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketSuccess;
   constructor(public payload: Basket) {}
+}
+
+export class UpdateBasketInvoiceAddress implements Action {
+  readonly type = BasketActionTypes.UpdateBasketInvoiceAddress;
+  constructor(public payload: string) {}
+}
+
+export class UpdateBasketShippingAddress implements Action {
+  readonly type = BasketActionTypes.UpdateBasketShippingAddress;
+  constructor(public payload: string) {}
+}
+
+export class UpdateBasket implements Action {
+  readonly type = BasketActionTypes.UpdateBasket;
+  constructor(public payload: BasketUpdateType) {}
+}
+
+export class UpdateBasketFail implements Action {
+  readonly type = BasketActionTypes.UpdateBasketFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class UpdateBasketSuccess implements Action {
+  readonly type = BasketActionTypes.UpdateBasketSuccess;
 }
 
 export class LoadBasketItems implements Action {
@@ -108,6 +138,11 @@ export type BasketAction =
   | LoadBasket
   | LoadBasketFail
   | LoadBasketSuccess
+  | UpdateBasketInvoiceAddress
+  | UpdateBasketShippingAddress
+  | UpdateBasket
+  | UpdateBasketFail
+  | UpdateBasketSuccess
   | LoadBasketItems
   | LoadBasketItemsFail
   | LoadBasketItemsSuccess
