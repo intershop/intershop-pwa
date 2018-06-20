@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { B2bState } from '../../store/b2b.state';
 import { DeleteQuote, DeleteQuoteRequest, getCurrentQuotes, getQuoteLoading } from '../../store/quote';
 
@@ -11,7 +12,7 @@ import { DeleteQuote, DeleteQuoteRequest, getCurrentQuotes, getQuoteLoading } fr
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteListPageContainerComponent implements OnInit {
-  quotes$: Observable<Quote[]>;
+  quotes$: Observable<(Quote | QuoteRequest)[]>;
   quoteLoading$: Observable<boolean>;
 
   constructor(private store: Store<B2bState>) {}
@@ -21,7 +22,7 @@ export class QuoteListPageContainerComponent implements OnInit {
     this.quoteLoading$ = this.store.pipe(select(getQuoteLoading));
   }
 
-  deleteItem(item: Quote) {
+  deleteItem(item: Quote | QuoteRequest) {
     if (item.type === 'QuoteRequest') {
       this.store.dispatch(new DeleteQuoteRequest(item.id));
     } else if (item.type === 'Quote') {

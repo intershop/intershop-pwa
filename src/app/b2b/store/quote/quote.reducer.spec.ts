@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import * as fromActions from './quote.actions';
 import { initialState, quoteReducer } from './quote.reducer';
 
@@ -40,7 +41,7 @@ describe('Quote Reducer', () => {
         const quoteRequests = [
           {
             id: 'test',
-          } as Quote,
+          } as QuoteRequest,
         ];
 
         const action = new fromActions.LoadQuoteRequestsSuccess(quoteRequests);

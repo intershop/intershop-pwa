@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { c } from '../../../utils/dev/marbles-utils';
@@ -36,10 +37,10 @@ describe('Quote Selectors', () => {
   let store$: Store<B2bState>;
 
   let getSelectedQuoteId$: Observable<string>;
-  let getSelectedQuote$: Observable<Quote>;
-  let quotes$: Observable<Quote[]>;
+  let getSelectedQuote$: Observable<Quote | QuoteRequest>;
+  let quotes$: Observable<(Quote | QuoteRequest)[]>;
   let quoteRequstItems$: Observable<QuoteRequestItem[]>;
-  let activeQuoteRequest$: Observable<Quote>;
+  let activeQuoteRequest$: Observable<QuoteRequest>;
   let quoteLoading$: Observable<boolean>;
   let quoteError$: Observable<HttpErrorResponse>;
 
@@ -72,7 +73,10 @@ describe('Quote Selectors', () => {
   describe('selecting a quote', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoadQuoteRequestsSuccess([{ id: 'test', items: [] }, { id: 'test2', editable: true, items: [] }] as Quote[])
+        new LoadQuoteRequestsSuccess([
+          { id: 'test', items: [] },
+          { id: 'test2', editable: true, items: [] },
+        ] as QuoteRequest[])
       );
       store$.dispatch(new LoadProductSuccess({ sku: 'test' } as Product));
       store$.dispatch(new LoadQuoteRequestItemsSuccess([{ productSKU: 'test' }] as QuoteRequestItem[]));
@@ -105,7 +109,7 @@ describe('Quote Selectors', () => {
     });
 
     it('should set loading to false and set quote state', () => {
-      const quoteRequests = [{ id: 'test', items: [] }, { id: 'test2', editable: true, items: [] }] as Quote[];
+      const quoteRequests = [{ id: 'test', items: [] }, { id: 'test2', editable: true, items: [] }] as QuoteRequest[];
       store$.dispatch(new LoadQuoteRequestsSuccess(quoteRequests));
 
       expect(quoteLoading$).toBeObservable(c(false));

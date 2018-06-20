@@ -10,6 +10,7 @@ import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-r
 import { QuoteRequestItemMapper } from '../../../models/quote-request-item/quote-request-item.mapper';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 /**
  * The Quote Service handles the interaction with the 'quote' related REST API.
@@ -38,12 +39,12 @@ export class QuoteService {
    * Get quote requests for the given customerId and userId.
    * @returns The list of quote requests
    */
-  getQuoteRequests(): Observable<Quote[]> {
+  getQuoteRequests(): Observable<QuoteRequest[]> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
         this.apiService
           .get(`customers/${customerId}/users/${userId}/quoterequests`)
-          .pipe(unpackEnvelope(), resolveLinks<Quote>(this.apiService))
+          .pipe(unpackEnvelope(), resolveLinks<QuoteRequest>(this.apiService))
       )
     );
   }

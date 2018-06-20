@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 /**
  * The Quote List Component displays a list of quotes.
@@ -16,7 +17,7 @@ import { Quote } from '../../../models/quote/quote.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteListComponent {
-  @Input() quotes: Quote[] = [];
+  @Input() quotes: (Quote | QuoteRequest)[] = [];
 
   @Output() deleteItem = new EventEmitter<Quote>();
 
