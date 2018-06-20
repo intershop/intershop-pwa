@@ -13,6 +13,7 @@ import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { User } from '../../../models/user/user.model';
 import { LoadProduct } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
@@ -32,7 +33,7 @@ describe('Quote Effects', () => {
   const quoteRequests = [
     {
       id: 'test',
-    } as Quote,
+    },
     {
       id: 'test2',
       editable: true,
@@ -44,8 +45,8 @@ describe('Quote Effects', () => {
           },
         },
       ],
-    } as Quote,
-  ];
+    },
+  ] as QuoteRequest[];
   const quoteRequestsWithLinkItem = [
     {
       id: 'test',
@@ -55,18 +56,18 @@ describe('Quote Effects', () => {
           title: 'test',
         },
       ],
-    } as Quote,
-  ];
+    },
+  ] as QuoteRequest[];
   const quotes = [
     {
       id: 'test',
-    } as Quote,
-  ];
+    },
+  ] as Quote[];
   const quoteRequestItems = [
     {
       productSKU: 'test',
-    } as QuoteRequestItem,
-  ];
+    },
+  ] as QuoteRequestItem[];
   const customer = {
     customerNo: 'test',
     type: 'SMBCustomer',

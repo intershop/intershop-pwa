@@ -2,8 +2,8 @@ import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 import { QuoteRequestItem, QuoteRequestItemView } from '../quote-request-item/quote-request-item.model';
 
-interface AbstractQuote<T> {
-  type: 'Quote';
+interface AbstractQuoteRequest<T> {
+  type: 'QuoteRequest';
   displayName: string;
   id: string;
   number: string;
@@ -13,14 +13,10 @@ interface AbstractQuote<T> {
   state?: number;
   modified?: number;
 
-  description?: string;
-  validFromDate?: number;
-  validToDate?: number;
-  sellerComment?: string;
-  originTotal?: Price;
-  rejected?: boolean;
+  editable?: boolean;
+  submitted?: boolean;
 }
 
-export interface Quote extends AbstractQuote<QuoteRequestItem> {}
+export interface QuoteRequest extends AbstractQuoteRequest<QuoteRequestItem> {}
 
-export interface QuoteView extends AbstractQuote<QuoteRequestItemView> {}
+export interface QuoteRequestView extends AbstractQuoteRequest<QuoteRequestItemView> {}

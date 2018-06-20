@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 export enum QuoteActionTypes {
   SelectQuote = '[Quote] Select Quote',
@@ -53,7 +54,7 @@ export class LoadQuoteRequestsFail implements Action {
 
 export class LoadQuoteRequestsSuccess implements Action {
   readonly type = QuoteActionTypes.LoadQuoteRequestsSuccess;
-  constructor(public payload: Quote[]) {}
+  constructor(public payload: QuoteRequest[]) {}
 }
 
 export class LoadQuotes implements Action {

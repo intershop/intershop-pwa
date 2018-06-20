@@ -18,12 +18,13 @@ import {
 import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized, UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { QuoteService } from '../../services/quote/quote.service';
 import { B2bState } from '../b2b.state';
 import { getActiveQuoteRequest, getCurrentQuotes, getSelectedQuoteId } from './';
 import * as quoteActions from './quote.actions';
+import { getCurrentQuoteRequests } from './quote.selectors';
 
 @Injectable()
 export class QuoteEffects {
@@ -207,7 +208,7 @@ export class QuoteEffects {
   updateQuoteRequestItems$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.UpdateQuoteRequestItems),
     map((action: quoteActions.UpdateQuoteRequestItems) => action.payload),
-    withLatestFrom(this.store.pipe(select(getCurrentQuotes))),
+    withLatestFrom(this.store.pipe(select(getCurrentQuoteRequests))),
     map(([payload, quotes]) => ({
       quoteRequestId: payload.quoteRequestId,
       updatedItems: this.filterQuotesForQuantityChanges(payload, quotes),
@@ -338,7 +339,7 @@ export class QuoteEffects {
    */
   filterQuotesForQuantityChanges(
     payload: { quoteRequestId; items: { itemId: string; quantity: number }[] },
-    quotes: Quote[]
+    quotes: QuoteRequest[]
   ) {
     const quoteRequestItems = quotes.filter(quote => quote.id === payload.quoteRequestId).pop().items;
     const updatedItems: { itemId: string; quantity: number }[] = [];
