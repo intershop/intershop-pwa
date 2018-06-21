@@ -10,5 +10,4 @@ export const checkoutReducers: ActionReducerMap<CheckoutState> = {
   addresses: addressesReducer,
 };
 
-// tslint:disable-next-line: no-any
-export const checkoutEffects: any[] = [BasketEffects, AddressesEffects];
+export const checkoutEffects = [BasketEffects, AddressesEffects];
