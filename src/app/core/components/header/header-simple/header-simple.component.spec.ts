@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SimpleHeaderComponent } from '../simple-header/simple-header.component';
+import { HeaderSimpleComponent } from '../header-simple/header-simple.component';
 
-describe('Simple Header Component', () => {
-  let fixture: ComponentFixture<SimpleHeaderComponent>;
+describe('Header Simple Component', () => {
+  let fixture: ComponentFixture<HeaderSimpleComponent>;
   let element: HTMLElement;
-  let component: SimpleHeaderComponent;
+  let component: HeaderSimpleComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SimpleHeaderComponent],
+      declarations: [HeaderSimpleComponent],
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(SimpleHeaderComponent);
+        fixture = TestBed.createComponent(HeaderSimpleComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
       });

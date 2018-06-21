@@ -1,5 +1,8 @@
-<ng-container *ngIf="generalError$ | async; else defaultHeader">
-  <ish-simple-header></ish-simple-header>
+<ng-container *ngIf="headerType$ | async as headerType; else defaultHeader">
+  <ng-container [ngSwitch]="headerType">
+    <ish-header-simple *ngSwitchCase="'simple'"></ish-header-simple>
+    <ish-header-checkout *ngSwitchCase="'checkout'"></ish-header-checkout>
+  </ng-container>
 </ng-container>
 
 <ng-template #defaultHeader>
