@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { errorReducer } from '../../../store/error/error.reducer';
@@ -15,11 +16,13 @@ describe('Header Container', () => {
         StoreModule.forRoot({
           error: combineReducers(errorReducer),
         }),
+        RouterTestingModule,
       ],
       declarations: [
         HeaderContainerComponent,
         MockComponent({ selector: 'ish-header', template: 'Header Component' }),
-        MockComponent({ selector: 'ish-simple-header', template: 'Simple Header Component' }),
+        MockComponent({ selector: 'ish-header-simple', template: 'Simple Header Component' }),
+        MockComponent({ selector: 'ish-header-checkout', template: 'Checkout Header Component' }),
       ],
     }).compileComponents();
   }));
@@ -34,5 +37,10 @@ describe('Header Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render default header component if no headerType is set', () => {
+    fixture.detectChanges();
+    expect(element.getElementsByTagName('ish-header')[0].textContent).toContain('Header Component');
   });
 });

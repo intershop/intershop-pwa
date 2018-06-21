@@ -1,1 +1,2 @@
-<ish-login-status [user]="user$ | async"></ish-login-status>
+<ish-login-status *ngIf="!logoutOnly" [user]="user$ | async"></ish-login-status>
+<ish-logout *ngIf="logoutOnly" [user]="user$ | async"></ish-logout>
