@@ -17,6 +17,11 @@ describe('Login Status Container', () => {
           template: 'Login Status',
           inputs: ['user'],
         }),
+        MockComponent({
+          selector: 'ish-logout',
+          template: 'Logout',
+          inputs: ['user'],
+        }),
         LoginStatusContainerComponent,
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],

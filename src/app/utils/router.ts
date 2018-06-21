@@ -1,6 +1,6 @@
-import { ActivatedRoute, ChildActivationEnd, Router } from '@angular/router';
+import { ActivatedRoute, ActivationEnd, ChildActivationEnd, Router } from '@angular/router';
 import { merge, Observable } from 'rxjs';
-import { distinctUntilChanged, filter, pluck } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, pluck } from 'rxjs/operators';
 
 /**
  * resolves data from child routes
@@ -16,4 +16,14 @@ export function resolveChildRouteData<T>(route: ActivatedRoute, router: Router, 
       filter((x: T) => !!x)
     )
   ).pipe(distinctUntilChanged());
+}
+
+/**
+ * resolves property headerType from routing
+ */
+export function resolveRouteHeaderType<T>(router: Router): Observable<T> {
+  return router.events.pipe(
+    filter(event => event instanceof ActivationEnd && !!event.snapshot && !event.snapshot.routeConfig.path),
+    map((event: ActivationEnd) => event.snapshot.data.headerType)
+  );
 }
