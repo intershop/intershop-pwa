@@ -21,7 +21,7 @@ describe('Header Container', () => {
       declarations: [
         HeaderContainerComponent,
         MockComponent({ selector: 'ish-header', template: 'Header Component' }),
-        MockComponent({ selector: 'ish-simple-header', template: 'Simple Header Component' }),
+        MockComponent({ selector: 'ish-header-simple', template: 'Simple Header Component' }),
         MockComponent({ selector: 'ish-header-checkout', template: 'Checkout Header Component' }),
       ],
     }).compileComponents();
