@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-sm-12 col-md-8">
+    <form  name="ShippingForm" class="form-horizontal">
+      Shipping Method Selection
+    </form>
+  </div>
+
+  <div class="col-sm-12 col-md-4 order-summary">
+			<h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+			<!-- ToDo: Addresses Box -->
+      <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
+      <div class="cost-summary">
+        <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+
+        <button class="btn btn-lg btn-block btn-primary" type="button">
+          {{'checkout.button.label' | translate}}
+        </button>
+      </div>
+			<!-- ToDo: Privacy policy link -->
+		</div>
+</div>
