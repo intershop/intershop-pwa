@@ -41,6 +41,11 @@
       "value": "10 s"
     },
     {
+      "name": "Shooting modes",
+      "type": "String",
+      "value": "FXP, XP+, SP, LP"
+    },
+    {
       "name": "Maximum video resolution",
       "type": "String",
       "value": "1920 x 1080 pixels"
@@ -49,11 +54,6 @@
       "name": "Camera shutter speed",
       "type": "String",
       "value": "1/2 - 1/20000 s"
-    },
-    {
-      "name": "Shooting modes",
-      "type": "String",
-      "value": "FXP, XP+, SP, LP"
     },
     {
       "name": "Depth",
@@ -65,14 +65,14 @@
       }
     },
     {
-      "name": "Battery technology",
-      "type": "String",
-      "value": "Lithium-Ion"
-    },
-    {
       "name": "S-Video out",
       "type": "String",
       "value": "0"
+    },
+    {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion"
     },
     {
       "name": "S-Video in",
@@ -118,14 +118,14 @@
       }
     },
     {
-      "name": "Effective megapixels (movie)",
-      "type": "String",
-      "value": "1.56 MP"
-    },
-    {
       "name": "Battery life (max)",
       "type": "String",
       "value": "3 h"
+    },
+    {
+      "name": "Effective megapixels (movie)",
+      "type": "String",
+      "value": "1.56 MP"
     },
     {
       "name": "Sports",
@@ -197,14 +197,14 @@
       "value": "Dolby Digital"
     },
     {
-      "name": "Optical sensor size",
-      "type": "String",
-      "value": "1/0.217 mm (1/5.5 \")"
-    },
-    {
       "name": "Auto focus",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Optical sensor size",
+      "type": "String",
+      "value": "1/0.217 mm (1/5.5 \")"
     },
     {
       "name": "Flash memory",
@@ -212,19 +212,14 @@
       "value": "8 GB"
     },
     {
-      "name": "Focus",
-      "type": "String",
-      "value": "TTL"
-    },
-    {
       "name": "Audio output",
       "type": "String",
       "value": "1"
     },
     {
-      "name": "Interface",
+      "name": "Focus",
       "type": "String",
-      "value": "USB 2.0"
+      "value": "TTL"
     },
     {
       "name": "Total megapixels",
@@ -232,14 +227,9 @@
       "value": "2.39 MP"
     },
     {
-      "name": "Image stabilizer",
+      "name": "Interface",
       "type": "String",
-      "value": "Y"
-    },
-    {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
+      "value": "USB 2.0"
     },
     {
       "name": "Colour_of_product",
@@ -250,15 +240,25 @@
       "name": "Display",
       "type": "String",
       "value": "LCD"
+    },
+    {
+      "name": "Camcorder tape type",
+      "type": "String",
+      "value": "Flash memory"
+    },
+    {
+      "name": "Image stabilizer",
+      "type": "String",
+      "value": "Y"
     }
   ],
   "availability": true,
   "availableGiftMessages": [
     {
-      "description": "A green message card.",
-      "title": "Gift Message Green",
+      "description": "A gift message card.",
+      "title": "Gift Message Pink",
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen"
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink"
     },
     {
       "description": "A blue gift card message.",
@@ -267,19 +267,13 @@
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue"
     },
     {
-      "description": "A gift message card.",
-      "title": "Gift Message Pink",
+      "description": "A green message card.",
+      "title": "Gift Message Green",
       "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink"
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageGreen"
     }
   ],
   "availableGiftWraps": [
-    {
-      "description": "Gift Wrap with phantasy pattern.",
-      "title": "Gift Wrap Phantasy",
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
-    },
     {
       "description": "Gift Wrap with a beautiful pink floral pattern",
       "title": "Gift Wrap Pink Flowers",
@@ -291,6 +285,12 @@
       "title": "Gift Wrap Nature",
       "type": "Link",
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature"
+    },
+    {
+      "description": "Gift Wrap with phantasy pattern.",
+      "title": "Gift Wrap Phantasy",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
     }
   ],
   "images": [
