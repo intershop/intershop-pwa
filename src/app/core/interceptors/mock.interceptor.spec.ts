@@ -1,5 +1,12 @@
 // tslint:disable:no-any
-import { HttpEventType, HttpHandler, HttpRequest, HttpResponse, HttpXhrBackend } from '@angular/common/http';
+import {
+  HttpEventType,
+  HttpHandler,
+  HttpParams,
+  HttpRequest,
+  HttpResponse,
+  HttpXhrBackend,
+} from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
@@ -44,6 +51,20 @@ describe('Mock Interceptor', () => {
         { url: BASE_URL + '/categories', willBeMocked: true, method: 'GET' },
         { url: BASE_URL + ';loc=en_US;cur=USD/categories', willBeMocked: true, method: 'GET' },
         { url: './assets/picture.png', willBeMocked: false, method: 'GET' },
+        {
+          url: BASE_URL + '/assets',
+          params: new HttpParams().set('foo', 'bar'),
+          willBeMocked: true,
+          method: 'GET',
+          target: './assets/mock-data/assets/get_foo_bar.json',
+        },
+        {
+          url: BASE_URL + '/assets',
+          params: new HttpParams().set('foo', 'bar?'),
+          willBeMocked: true,
+          method: 'GET',
+          target: './assets/mock-data/assets/get_foo_bar_.json',
+        },
       ];
     }
 
@@ -56,6 +77,9 @@ describe('Mock Interceptor', () => {
       it(`should ${dataSlice.willBeMocked ? '' : 'not '}change url for ${dataSlice.url}`, () => {
         if (dataSlice.willBeMocked) {
           expect(mockInterceptor.getMockUrl(dataSlice)).not.toBe(dataSlice.url);
+          if (dataSlice.target) {
+            expect(mockInterceptor.getMockUrl(dataSlice)).toBe(dataSlice.target);
+          }
         } else {
           expect(mockInterceptor.getMockUrl(dataSlice)).toBe(dataSlice.url);
         }

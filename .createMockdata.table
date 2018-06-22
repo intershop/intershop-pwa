@@ -14,13 +14,13 @@
 
 # path params jq-query login?
 
-categories ?view=tree&limit=2&imageView=NO-IMAGE
+categories ?imageView=NO-IMAGE&limit=2&view=tree
 categories/Cameras-Camcorders
-categories/Cameras-Camcorders/products ?returnSortKeys=true&attrs=sku
+categories/Cameras-Camcorders/products ?attrs=sku&returnSortKeys=true
 categories/Cameras-Camcorders/584
-categories/Cameras-Camcorders/584/products ?returnSortKeys=true&attrs=sku {elements:[.elements[]|select(.uri|test(".*/(3953312|7912061)"))],name,type,sortKeys}
+categories/Cameras-Camcorders/584/products ?attrs=sku&returnSortKeys=true {elements:[.elements[]|select(.uri|test(".*/(3953312|7912061)"))],name,type,sortKeys}
 categories/Cameras-Camcorders/832
-categories/Cameras-Camcorders/832/products ?returnSortKeys=true&attrs=sku {elements:[.elements[]|select(.uri|test(".*/(8182790134362|8182790134363)"))],name,type,sortKeys}
+categories/Cameras-Camcorders/832/products ?attrs=sku&returnSortKeys=true {elements:[.elements[]|select(.uri|test(".*/(8182790134362|8182790134363)"))],name,type,sortKeys}
 categories/Computers
 categories/Computers/106
 categories/Computers/106/236
@@ -31,6 +31,7 @@ products/3953312 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_
 products/7912061 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/8182790134362 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
-customers/- ? . login
 suggest ?SearchTerm=k
-products ?searchTerm=Kodak&attrs=sku&returnSortKeys=true {elements:[.elements[]|select(.uri|test(".*/7912061"))],name,type,sortKeys}
+suggest ?SearchTerm=kodak
+products ?attrs=sku&returnSortKeys=true&searchTerm=kodak {elements:[.elements[]|select(.uri|test(".*/7912061"))],name,type,sortKeys}
+customers/- ? . login

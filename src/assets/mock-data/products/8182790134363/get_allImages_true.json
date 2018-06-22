@@ -46,6 +46,11 @@
       "value": "3840 x 2160 pixels"
     },
     {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "GoPro App|GoPro Studio"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -53,11 +58,6 @@
         "unit": "g",
         "value": 83
       }
-    },
-    {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "GoPro App|GoPro Studio"
     },
     {
       "name": "Video formats supported",
@@ -80,11 +80,6 @@
       "value": "USB"
     },
     {
-      "name": "Battery technology",
-      "type": "String",
-      "value": "Lithium-Ion (Li-Ion)"
-    },
-    {
       "name": "Full HD",
       "type": "String",
       "value": "Yes"
@@ -95,18 +90,14 @@
       "value": "Yes"
     },
     {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion (Li-Ion)"
+    },
+    {
       "name": "Compatible memory cards",
       "type": "String",
       "value": "MicroSD (TransFlash)"
-    },
-    {
-      "name": "Maximum frame rate",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "fps",
-        "value": 240
-      }
     },
     {
       "name": "Battery life (max)",
@@ -115,6 +106,15 @@
         "type": "Quantity",
         "unit": "h",
         "value": 2
+      }
+    },
+    {
+      "name": "Maximum frame rate",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "fps",
+        "value": 240
       }
     },
     {
@@ -140,6 +140,12 @@
   "availability": true,
   "availableGiftMessages": [
     {
+      "description": "A blue gift card message.",
+      "title": "Gift Message Blue",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue"
+    },
+    {
       "description": "A green message card.",
       "title": "Gift Message Green",
       "type": "Link",
@@ -150,12 +156,6 @@
       "title": "Gift Message Pink",
       "type": "Link",
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessagePink"
-    },
-    {
-      "description": "A blue gift card message.",
-      "title": "Gift Message Blue",
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftMessageBlue"
     }
   ],
   "availableGiftWraps": [
@@ -166,16 +166,16 @@
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature"
     },
     {
-      "description": "Gift Wrap with a beautiful pink floral pattern",
-      "title": "Gift Wrap Pink Flowers",
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers"
-    },
-    {
       "description": "Gift Wrap with phantasy pattern.",
       "title": "Gift Wrap Phantasy",
       "type": "Link",
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
+    },
+    {
+      "description": "Gift Wrap with a beautiful pink floral pattern",
+      "title": "Gift Wrap Pink Flowers",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPinkFlowers"
     }
   ],
   "crosssells": "inSPIRED-inTRONICS-Site/-/products/8182790134363/crosssells",

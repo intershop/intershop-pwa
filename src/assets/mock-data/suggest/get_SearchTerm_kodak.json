@@ -1,0 +1,10 @@
+{
+  "elements": [
+    {
+      "term": "kodak",
+      "type": "SuggestTerm"
+    }
+  ],
+  "name": "suggest",
+  "type": "SuggestTerms"
+}

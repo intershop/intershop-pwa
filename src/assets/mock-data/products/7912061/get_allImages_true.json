@@ -6,14 +6,14 @@
       "value": "Y"
     },
     {
-      "name": "Sensor type",
-      "type": "String",
-      "value": "CMOS"
-    },
-    {
       "name": "Video out",
       "type": "String",
       "value": "1"
+    },
+    {
+      "name": "Sensor type",
+      "type": "String",
+      "value": "CMOS"
     },
     {
       "name": "Tripod mountable",
@@ -36,14 +36,14 @@
       "value": "JPG,EXIF"
     },
     {
-      "name": "Focal length (35mm film equivalent)",
-      "type": "String",
-      "value": "3.9 - 44 mm"
-    },
-    {
       "name": "Built-in speakers",
       "type": "String",
       "value": "Y"
+    },
+    {
+      "name": "Focal length (35mm film equivalent)",
+      "type": "String",
+      "value": "3.9 - 44 mm"
     },
     {
       "name": "Video formats supported",
@@ -60,14 +60,14 @@
       }
     },
     {
-      "name": "Battery technology",
-      "type": "String",
-      "value": "Lithium-Ion"
-    },
-    {
       "name": "Minimum processor",
       "type": "String",
       "value": "Pentium 4, 1.4 GHz"
+    },
+    {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion"
     },
     {
       "name": "Internal memory",
@@ -75,9 +75,9 @@
       "value": "128 MB"
     },
     {
-      "name": "USB 2.0 ports quantity",
+      "name": "Capture modes",
       "type": "String",
-      "value": "1"
+      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
     },
     {
       "name": "Minimum system requirements",
@@ -85,9 +85,9 @@
       "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
     },
     {
-      "name": "Capture modes",
+      "name": "USB 2.0 ports quantity",
       "type": "String",
-      "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
+      "value": "1"
     },
     {
       "name": "Compatible memory cards",
@@ -148,6 +148,11 @@
       "value": "38.1 mm (1.5 \")"
     },
     {
+      "name": "Bundled software",
+      "type": "String",
+      "value": "Arcsoft Media Impression"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -155,11 +160,6 @@
         "unit": "g",
         "value": 95
       }
-    },
-    {
-      "name": "Bundled software",
-      "type": "String",
-      "value": "Arcsoft Media Impression"
     },
     {
       "name": "HDMI ports quantity",
@@ -177,29 +177,14 @@
       "value": "1/0.126 mm (1/3.2 \")"
     },
     {
-      "name": "Interface",
-      "type": "String",
-      "value": "USB 2.0"
-    },
-    {
       "name": "Total megapixels",
       "type": "String",
       "value": "5 MP"
     },
     {
-      "name": "Image stabilizer",
+      "name": "Interface",
       "type": "String",
-      "value": "Y"
-    },
-    {
-      "name": "Compatible operating systems",
-      "type": "String",
-      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
-    },
-    {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
+      "value": "USB 2.0"
     },
     {
       "name": "Colour_of_product",
@@ -213,6 +198,21 @@
       "name": "Display",
       "type": "String",
       "value": "LCD"
+    },
+    {
+      "name": "Camcorder tape type",
+      "type": "String",
+      "value": "Flash memory"
+    },
+    {
+      "name": "Image stabilizer",
+      "type": "String",
+      "value": "Y"
+    },
+    {
+      "name": "Compatible operating systems",
+      "type": "String",
+      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
     }
   ],
   "availability": true,
@@ -238,12 +238,6 @@
   ],
   "availableGiftWraps": [
     {
-      "description": "Gift Wrap with phantasy pattern.",
-      "title": "Gift Wrap Phantasy",
-      "type": "Link",
-      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
-    },
-    {
       "description": "Gift Wrap with a beautiful pink floral pattern",
       "title": "Gift Wrap Pink Flowers",
       "type": "Link",
@@ -254,6 +248,12 @@
       "title": "Gift Wrap Nature",
       "type": "Link",
       "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapNature"
+    },
+    {
+      "description": "Gift Wrap with phantasy pattern.",
+      "title": "Gift Wrap Phantasy",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/GiftWrapPhantasy"
     }
   ],
   "images": [
