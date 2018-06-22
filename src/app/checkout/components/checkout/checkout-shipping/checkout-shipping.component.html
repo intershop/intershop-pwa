@@ -7,7 +7,7 @@
 
   <div class="col-sm-12 col-md-4 order-summary">
 			<h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-			<!-- ToDo: Addresses Box -->
+      <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
       <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
 
       <div class="cost-summary">

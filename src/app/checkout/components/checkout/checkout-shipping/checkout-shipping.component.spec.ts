@@ -25,6 +25,11 @@ describe('Checkout Shipping Component', () => {
           template: 'Basket Items Summary Component',
           inputs: ['basket'],
         }),
+        MockComponent({
+          selector: 'ish-basket-address-summary',
+          template: 'Basket Address Summary Component',
+          inputs: ['basket'],
+        }),
       ],
       imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule],
     }).compileComponents();
