@@ -9,6 +9,11 @@ const routes: Routes = [
     loadChildren: './containers/checkout-address-page/checkout-address-page.module#CheckoutAddressPageModule',
     canActivate: [AuthGuard],
   },
+  {
+    path: 'checkout/shipping',
+    loadChildren: './containers/checkout-shipping-page/checkout-shipping-page.module#CheckoutShippingPageModule',
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

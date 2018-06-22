@@ -1,0 +1,9 @@
+<ish-checkout-progress-bar [step]="2"></ish-checkout-progress-bar>
+
+<div data-testing-id="checkout-shipping-page">
+  <h1>{{ 'checkout.shipping.pagetitle' | translate }}</h1>
+
+  <ish-checkout-shipping [basket]="basket$ | async"></ish-checkout-shipping>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>
