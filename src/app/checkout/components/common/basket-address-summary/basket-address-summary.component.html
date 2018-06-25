@@ -1,0 +1,29 @@
+<div class="address-summary">
+
+  <!-- Invoice Address -->
+  <div class="clearfix">
+    <a class="pull-right btn-tool" routerLink="/checkout/address">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+    <h5 class="pull-left">{{'checkout.address.billing.label' | translate}}</h5>
+  </div>
+  <div data-testing-id="address-summary-invoice-to-address">
+    <ish-address [address]="basket.invoiceToAddress"></ish-address>
+  </div>
+
+  <!-- Shipping Address -->
+  <div class="clearfix">
+    <a class="pull-right btn-tool" routerLink="/checkout/address" title="{{'checkout.address.update.label' | translate}} />">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+    <h5>{{'checkout.address.shipping.label' | translate}}</h5>
+  </div>
+  <div data-testing-id="address-summary-ship-to-address">
+    <address *ngIf="basket.invoiceToAddress.id === basket.commonShipToAddress.id; else shippingAddress">
+      {{'checkout.same_as_billing_address.text' | translate}}
+    </address>
+    <ng-template #shippingAddress>
+      <ish-address [address]="basket.commonShipToAddress"></ish-address>
+    </ng-template>
+  </div>
+</div>

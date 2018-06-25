@@ -9,6 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Address } from '../../../../models/address/address.model';
@@ -37,6 +38,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   emptyShippingAddressOptionLabel: string;
 
   destroy$ = new Subject();
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
     // create invoice address form
@@ -87,6 +90,14 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.emptyShippingAddressOptionLabel = this.basket.commonShipToAddress
       ? 'checkout.addresses.select_a_different_address.default'
       : 'checkout.addresses.select_shipping_address.button';
+  }
+
+  /**
+   * leads to next checkout page (checkout shipping)
+   */
+  nextStep() {
+    // ToDo: routing should be handled in another way, see #ISREST-317
+    this.router.navigate(['/checkout/shipping']);
   }
 
   ngOnDestroy() {
