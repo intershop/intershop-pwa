@@ -27,11 +27,11 @@ export class QuoteEditPageContainerComponent implements OnInit {
     this.quoteLoading$ = this.store.pipe(select(getQuoteLoading));
   }
 
-  deleteBasketItem(payload: { quoteRequestId: string; itemId: string }) {
+  deleteQuoteItem(payload: { quoteRequestId: string; itemId: string }) {
     this.store.dispatch(new DeleteItemFromQuoteRequest(payload));
   }
 
-  updateBasketItems(payload: { quoteRequestId: string; items: { itemId: string; quantity: number }[] }) {
+  updateQuoteItems(payload: { quoteRequestId: string; items: { itemId: string; quantity: number }[] }) {
     this.store.dispatch(new UpdateQuoteRequestItems(payload));
   }
 }
