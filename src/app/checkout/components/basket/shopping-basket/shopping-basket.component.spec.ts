@@ -63,7 +63,7 @@ describe('Shopping Basket Component', () => {
     );
 
     component.updateItems.subscribe(firedFormValue => {
-      expect(firedFormValue.length).toBe(component.form.value.inner.items.length);
+      expect(firedFormValue.length).toBe(0);
       done();
     });
 
