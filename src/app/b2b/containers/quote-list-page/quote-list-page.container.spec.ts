@@ -1,10 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
-import { Customer } from '../../../models/customer/customer.model';
 import { Quote } from '../../../models/quote/quote.model';
-import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { B2bState } from '../../store/b2b.state';
 import { b2bReducers } from '../../store/b2b.system';
@@ -17,22 +14,10 @@ describe('Quote List Page Container', () => {
   let element: HTMLElement;
   let store$: Store<B2bState>;
 
-  const customer = {
-    customerNo: 'test',
-    type: 'SMBCustomer',
-  } as Customer;
-  const user = {
-    email: 'test',
-  } as User;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         QuoteListPageContainerComponent,
-        MockComponent({
-          selector: 'ish-account-navigation',
-          template: 'Account Naviation Component',
-        }),
         MockComponent({ selector: 'ish-quote-list', template: 'Quote List Component', inputs: ['quotes'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
@@ -51,9 +36,6 @@ describe('Quote List Page Container', () => {
     element = fixture.nativeElement;
 
     store$ = TestBed.get(Store);
-
-    store$.dispatch(new LoginUserSuccess(customer as Customer));
-    store$.dispatch(new LoadCompanyUserSuccess(user));
   });
 
   it('should be created', () => {
