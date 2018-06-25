@@ -201,7 +201,7 @@
           <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
         <iselse>
         -->
-        <a class="btn btn-link" [routerLink]="['/account/quote-list']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+        <a class="btn btn-link" routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
       </div>
     </div>
 
@@ -243,6 +243,6 @@
       <a href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
     <iselse>
     -->
-    <a [routerLink]="['/account/quote-list']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+    <a routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
   </div>
 </form>
