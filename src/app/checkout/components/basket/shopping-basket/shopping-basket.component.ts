@@ -39,8 +39,10 @@ export class ShoppingBasketComponent {
 
     // convert quantity form values to number
     const items = this.form.value.inner.items.map(item => {
-      item.quantity = parseInt(item.quantity, 10);
-      return item;
+      return {
+        ...item,
+        quantity: parseInt(item.quantity, 10),
+      };
     });
 
     this.updateItems.emit(items);
