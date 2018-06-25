@@ -62,17 +62,17 @@
   <iselse> -->
 
     <!-- Title and Description -->
-    <ng-template [ngIf]="quote.displayName">
+    <ng-container *ngIf="quote.displayName">
       <h1>
         <!-- <isif condition="#(Quote:State==4) OR ( (Quote:State==6) AND (EditMode EQ "true") )#"> -->
-        <ng-template [ngIf]="quote.state === 4 || ( quote.state === 6 && true)" [ngIfElse]="unsubmitted">
+        <ng-container *ngIf="quote.state === 4 || ( quote.state === 6 && true); else unsubmitted">
           {{ 'quote.edit.responded.quote_details.text' | translate}} - {{ quote.displayName }}
-        </ng-template>
+        </ng-container>
         <ng-template #unsubmitted>
           {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate}} - {{ quote.displayName }}
         </ng-template>
       </h1>
-    </ng-template>
+    </ng-container>
     <!--
     <iselse>
       <h1>
@@ -206,7 +206,7 @@
     </div>
 
     <!--- here are the buttons -->
-    <ng-template [ngIf]="quote.items.length > 0 && quote.total && quote.total.value > 0">
+    <ng-container *ngIf="quote.items.length > 0 && quote.total && quote.total.value > 0">
       <!-- TODO: IF EDIT MODE -->
       <!--
       <isif condition="#EditMode EQ "true"#">
@@ -215,26 +215,26 @@
       <iselseif condition="#(Quote:State==3)#">
       -->
       <!-- TODO: IF STATE 3 (SUBMITTED) -->
-      <ng-template [ngIf]="quote.state === 3">
+      <ng-container *ngIf="quote.state === 3">
           <!--
           <isif condition="#LinkSource EQ "Shopping"#">
             <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
           <iselse>
           -->
           <button class="btn btn-default" name="copy" type="submit" value="copy">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
-      </ng-template>
+      </ng-container>
       <!-- TODO: ELSE -->
-      <ng-template [ngIf]="quote.state !== 3"> <!-- represents else branch in the old isml representation -->
-        <ng-template [ngIf]="quote.state === 4">
+      <ng-container *ngIf="quote.state !== 3"> <!-- represents else branch in the old isml representation -->
+        <ng-container *ngIf="quote.state === 4">
           <!-- <isif condition="#ValidQuote#"> -->
           <button type="submit" class="btn btn-primary pull-right" name="add2cart" value="add2cart">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
-        </ng-template>
+        </ng-container>
 
         <button  type="submit" class="btn btn-default" name="copy" value="copy">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
 
         <button *ngIf="quote.state === 4" type="submit" id="button-reject" class="btn btn-default" name="refuse" value="refuse">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
-      </ng-template>
-    </ng-template>
+      </ng-container>
+    </ng-container>
   </div>
 
   <div class="hidden-xs clearfix">

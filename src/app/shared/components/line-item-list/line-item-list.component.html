@@ -37,12 +37,12 @@
             </div>
 
             <!-- TODO: #IS-23184 : display rebate details -->
-            <ng-template [ngIf]="pli.valueRebates">
+            <ng-container *ngIf="pli.valueRebates">
               <div *ngFor="let rebate of pli.valueRebates">
                 {{ rebate.rebateType }}
                 <span class="text-nowrap">{{ rebate.amount | ishPrice }}</span>
               </div>
-            </ng-template>
+            </ng-container>
           </div>
           <div class="quantity col-lg-3 list-item text-right" [formGroupName]="i">
             <div class="form-group">
