@@ -43,31 +43,6 @@ describe('Quote List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  describe('get valid to date', () => {
-    it("should return '-' as SafeHtml if no timestamp is set ", () => {
-      expect(component.getValidToDate()).toEqual({ changingThisBreaksApplicationSecurity: '-' });
-    });
-
-    it('should return propper date string as SafeHtml if timestamp is set', () => {
-      const dateTime = new Date().getTime() + 1000;
-
-      expect(component.getValidToDate(dateTime)).toEqual({
-        changingThisBreaksApplicationSecurity: new DatePipe('en-US').transform(dateTime, 'shortDate'),
-      });
-    });
-
-    it('should return propper, danger themed date string as SafeHtml if timestamp is set and smaller current date', () => {
-      const dateTime = new Date().getTime() - 1000;
-
-      expect(component.getValidToDate(dateTime)).toEqual({
-        changingThisBreaksApplicationSecurity: `<span class="text-danger">${new DatePipe('en-US').transform(
-          dateTime,
-          'shortDate'
-        )}</span>`,
-      });
-    });
-  });
-
   it('should throw deleteItem event when delete item is tapped', done => {
     component.deleteItem.subscribe(item => {
       expect(item.type).toBe('Quote');
