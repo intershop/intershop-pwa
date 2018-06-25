@@ -10,9 +10,9 @@
   *ngIf="product.inStock && product.availability"
 >
 
-  <ng-template [ngIf]="isDisplayTypeGlyphicon" [ngIfElse]="defaultButton">
+  <ng-container *ngIf="isDisplayTypeGlyphicon; else defaultButton">
     <span class="glyphicon glyphicon-inbox"></span>
-  </ng-template>
+  </ng-container>
 
   <ng-template #defaultButton>
     {{'quote.add_product_to_quote.button.add_to_quote.label' | translate}}
