@@ -16,7 +16,7 @@ export class CheckoutShippingComponent implements OnInit {
 
   ngOnInit() {
     this.shippingForm = new FormGroup({
-      id: new FormControl(''),
+      id: new FormControl(this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : ''),
     });
   }
 }
