@@ -187,6 +187,7 @@
   <div class="section">
     <h3>{{ 'quote.items.table.heading' | translate }}</h3>
     <ish-line-item-list
+      *ngIf="quote.items"
       [lineItems]="quote.items"
       (formChange)="onFormChange($event)"
       (deleteItem)="onDeleteItem($event)"
@@ -206,7 +207,7 @@
     </div>
 
     <!--- here are the buttons -->
-    <ng-container *ngIf="quote.items.length > 0 && quote.total && quote.total.value > 0">
+    <ng-container *ngIf="quote.items && quote.items.length > 0 && quote.total && quote.total.value > 0">
       <!-- TODO: IF EDIT MODE -->
       <!--
       <isif condition="#EditMode EQ "true"#">
