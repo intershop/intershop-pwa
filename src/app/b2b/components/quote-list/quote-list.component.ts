@@ -21,6 +21,9 @@ export class QuoteListComponent {
 
   @Output() deleteItem = new EventEmitter<Quote>();
 
+  // TODO: is the API using UTC?
+  currentDateTime = new Date().getTime();
+
   // TODO: find a better solution for specific, selection related variables in modal dialog content
   selectedQuoteName: string;
 
@@ -32,7 +35,6 @@ export class QuoteListComponent {
    * @returns         Sanitized Html
    */
   getValidToDate(timestamp?: number): SafeHtml {
-    // TODO: is the API using UTC?
     const currentDateTime = new Date().getTime();
     let dateString: string;
 

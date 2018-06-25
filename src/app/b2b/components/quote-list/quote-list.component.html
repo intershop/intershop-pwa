@@ -19,7 +19,16 @@
         <td><a [routerLink]="['/account/quote', quote.id]">{{ quote.displayName }}</a></td>
         <td>{{ quote.items.length }}</td>
         <td>{{ quote.creationDate | date: 'shortDate' }}</td>
-        <td [innerHTML]="getValidToDate(quote.validToDate)"></td>
+
+        <!-- valid to date-->
+        <td *ngIf="!quote.validToDate">-</td>
+        <td *ngIf="quote['validToDate'] && quote['validToDate'] <= currentDateTime">
+          <span class="text-danger">{{ quote['validToDate'] | date : 'shortDate' }}</span>
+        </td>
+        <td *ngIf="quote['validToDate'] && quote['validToDate'] > currentDateTime">
+            {{ quote['validToDate'] | date : 'shortDate' }}
+        </td>
+
         <td align="left" nowrap="nowrap">
           <ish-quote-state [quote]="quote"></ish-quote-state>
         </td>
