@@ -2,8 +2,8 @@
   <ish-quote-edit
   *ngIf="quote$ | async"
   [quote]="quote$ | async"
-  (deleteItem)="deleteBasketItem($event)"
-  (updateItems)="updateBasketItems($event)"
+  (deleteItem)="deleteQuoteItem($event)"
+  (updateItems)="updateQuoteItems($event)"
   ></ish-quote-edit>
 
   <ish-loading *ngIf="quoteLoading$ | async"></ish-loading>
