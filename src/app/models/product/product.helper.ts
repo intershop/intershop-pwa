@@ -92,4 +92,11 @@ export class ProductHelper {
     }
     return product.attributes.find(attribute => attribute.name === attributeName);
   }
+
+  /**
+   * Check if product can be added to quote request
+   */
+  static canAddToQuote(product: Product): boolean {
+    return !!(product.inStock && product.availability);
+  }
 }

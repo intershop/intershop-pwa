@@ -7,7 +7,7 @@
   [attr.title]="'quote.add_product_to_quote.button.add_to_quote.label' | translate"
   data-testing-id="addToQuoteButton"
   (click)="addToQuote()"
-  *ngIf="product.inStock && product.availability"
+  *ngIf="canAddToQuote(product)"
 >
 
   <ng-container *ngIf="isDisplayTypeGlyphicon; else defaultButton">
