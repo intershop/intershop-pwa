@@ -17,5 +17,5 @@ import { Quote } from '../../../models/quote/quote.model';
 export class QuoteStateComponent {
   @Input() quote: Quote;
 
-  currentDateTime$ = interval(1000).pipe(startWith(0), mapTo(new Date().getTime()));
+  currentDateTime$ = interval(1000).pipe(startWith(0), mapTo(Date.now()));
 }

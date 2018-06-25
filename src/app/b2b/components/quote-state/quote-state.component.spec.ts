@@ -8,6 +8,8 @@ describe('Quote State Component', () => {
   let component: QuoteStateComponent;
   let element: HTMLElement;
 
+  const timestamp = 1000;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [QuoteStateComponent],
@@ -20,6 +22,8 @@ describe('Quote State Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.quote = {} as Quote;
+
+    jest.spyOn(Date, 'now').mockImplementation(() => timestamp);
   });
 
   it('should be created', () => {
@@ -49,7 +53,7 @@ describe('Quote State Component', () => {
   it('should display new expired if quote state is 4 and validToDate < current date', () => {
     component.quote = {
       state: 4,
-      validToDate: new Date().getTime() - 1000,
+      validToDate: timestamp - 1,
     } as Quote;
     fixture.detectChanges();
 
@@ -59,7 +63,7 @@ describe('Quote State Component', () => {
   it('should display new responded if quote state is 4 and validToDate > current date', () => {
     component.quote = {
       state: 4,
-      validToDate: new Date().getTime() + 1000,
+      validToDate: timestamp + 1,
     } as Quote;
     fixture.detectChanges();
 
@@ -87,7 +91,7 @@ describe('Quote State Component', () => {
   it('should display confirmed state and modified state if quote state is 6 and modified is set', () => {
     component.quote = {
       state: 6,
-      modified: new Date().getTime(),
+      modified: timestamp,
     } as Quote;
     fixture.detectChanges();
 
@@ -107,7 +111,7 @@ describe('Quote State Component', () => {
   it('should display accepted state and expired state if quote state is 7 and validToDate < current date', () => {
     component.quote = {
       state: 7,
-      validToDate: new Date().getTime() - 1000,
+      validToDate: timestamp - 1,
     } as Quote;
     fixture.detectChanges();
 
@@ -127,7 +131,7 @@ describe('Quote State Component', () => {
   it('should display auto_accepted state and expired state if quote state is 8 and validToDate < current date', () => {
     component.quote = {
       state: 8,
-      validToDate: new Date().getTime() - 1000,
+      validToDate: timestamp - 1,
     } as Quote;
     fixture.detectChanges();
 
