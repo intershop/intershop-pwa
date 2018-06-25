@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CheckoutShippingComponent } from './checkout-shipping.component';
 
@@ -39,6 +40,7 @@ describe('Checkout Shipping Component', () => {
     fixture = TestBed.createComponent(CheckoutShippingComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    component.basket = BasketMockData.getBasket();
   });
 
   it('should be created', () => {
