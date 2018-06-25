@@ -33,7 +33,7 @@ describe('Quote Edit Component', () => {
     fixture = TestBed.createComponent(QuoteEditComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.quote = { id: 'test', items: [] } as Quote;
+    component.quote = { id: 'test' } as Quote;
   });
 
   it('should be created', () => {
