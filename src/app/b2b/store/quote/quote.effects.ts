@@ -142,21 +142,15 @@ export class QuoteEffects {
     ofType(quoteActions.QuoteActionTypes.LoadQuoteRequestItems),
     map((action: quoteActions.LoadQuoteRequestItems) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentQuotes))),
-    mergeMap(([payload, quotes]) => {
-      const quote = quotes.filter(item => item.id === payload).pop();
-
-      if (!quote) {
-        return of(undefined);
-      }
-
-      return forkJoin(quote.items.map(item => this.quoteService.getQuoteRequestItem(payload, item['title']))).pipe(
+    map(([quoteId, quotes]) => quotes.filter(item => item.id === quoteId).pop()),
+    filter(quote => !!quote),
+    mergeMap(quote =>
+      forkJoin(quote.items.map(item => this.quoteService.getQuoteRequestItem(quote.id, item['title']))).pipe(
         defaultIfEmpty(undefined),
-        map(items => {
-          return new quoteActions.LoadQuoteRequestItemsSuccess(items);
-        }),
+        map(items => new quoteActions.LoadQuoteRequestItemsSuccess(items)),
         catchError(error => of(new quoteActions.LoadQuoteRequestItemsFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
