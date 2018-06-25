@@ -157,7 +157,7 @@ export class AddProductToQuoteRequestSuccess implements Action {
 
 export class UpdateQuoteRequestItems implements Action {
   readonly type = QuoteActionTypes.UpdateQuoteRequestItems;
-  constructor(public payload: { quoteRequestId: string; items: { itemId: string; quantity: number }[] }) {}
+  constructor(public payload: { quoteRequestId?: string; items: { itemId: string; quantity: number }[] }) {}
 }
 
 export class UpdateQuoteRequestItemsFail implements Action {
@@ -171,7 +171,7 @@ export class UpdateQuoteRequestItemsSuccess implements Action {
 
 export class DeleteItemFromQuoteRequest implements Action {
   readonly type = QuoteActionTypes.DeleteItemFromQuoteRequest;
-  constructor(public payload: { quoteRequestId: string; itemId: string }) {}
+  constructor(public payload: { quoteRequestId?: string; itemId: string }) {}
 }
 
 export class DeleteItemFromQuoteRequestFail implements Action {

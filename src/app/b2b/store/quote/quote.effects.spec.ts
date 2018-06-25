@@ -596,6 +596,26 @@ describe('Quote Effects', () => {
       });
     });
 
+    it('should call the quoteService for updateQuoteRequestItems without quoteRequestId set in payload and if quantity > 0', done => {
+      store$.dispatch(new quoteActions.SelectQuote('test2'));
+
+      const payload = {
+        items: [
+          {
+            itemId: 'test',
+            quantity: 2,
+          },
+        ],
+      };
+      const action = new quoteActions.UpdateQuoteRequestItems(payload);
+      actions$ = of(action);
+
+      effects.updateQuoteRequestItems$.subscribe(() => {
+        verify(quoteServiceMock.updateQuoteRequestItem('test2', payload.items[0])).once();
+        done();
+      });
+    });
+
     it('should map to action of type UpdateQuoteRequestItemsSuccess', () => {
       const payload = {
         quoteRequestId: 'test2',
@@ -651,6 +671,22 @@ describe('Quote Effects', () => {
 
       effects.deleteItemFromQuoteRequest$.subscribe(() => {
         verify(quoteServiceMock.removeItemFromQuoteRequest(payload.quoteRequestId, payload.itemId)).once();
+
+        done();
+      });
+    });
+
+    it('should call the quoteService for removeItemFromQuoteRequest even if quoteRequestId is not set in payload', done => {
+      store$.dispatch(new quoteActions.SelectQuote('test2'));
+
+      const payload = {
+        itemId: 'test',
+      };
+      const action = new quoteActions.DeleteItemFromQuoteRequest(payload);
+      actions$ = of(action);
+
+      effects.deleteItemFromQuoteRequest$.subscribe(() => {
+        verify(quoteServiceMock.removeItemFromQuoteRequest('test2', payload.itemId)).once();
 
         done();
       });

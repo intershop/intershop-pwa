@@ -11,8 +11,8 @@ import { Quote } from '../../../models/quote/quote.model';
 export class QuoteEditComponent {
   @Input() quote: Quote;
 
-  @Output() updateItems = new EventEmitter<{ quoteRequestId: string; items: { itemId: string; quantity: number }[] }>();
-  @Output() deleteItem = new EventEmitter<{ quoteRequestId: string; itemId: string }>();
+  @Output() updateItems = new EventEmitter<{ items: { itemId: string; quantity: number }[] }>();
+  @Output() deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
 
@@ -34,6 +34,6 @@ export class QuoteEditComponent {
    * Throws deleteItem event when delete button was clicked.
    */
   onDeleteItem(itemId) {
-    this.deleteItem.emit({ quoteRequestId: this.quote.id, itemId });
+    this.deleteItem.emit(itemId);
   }
 }

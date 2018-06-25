@@ -208,10 +208,14 @@ export class QuoteEffects {
   updateQuoteRequestItems$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.UpdateQuoteRequestItems),
     map((action: quoteActions.UpdateQuoteRequestItems) => action.payload),
-    withLatestFrom(this.store.pipe(select(getCurrentQuoteRequests))),
-    map(([payload, quotes]) => ({
-      quoteRequestId: payload.quoteRequestId,
-      updatedItems: this.filterQuotesForQuantityChanges(payload, quotes),
+    withLatestFrom(this.store.pipe(select(getCurrentQuoteRequests)), this.store.pipe(select(getSelectedQuoteId))),
+    map(([payload, quotes, quoteRequestId]) => ({
+      quoteRequestId: payload.quoteRequestId || quoteRequestId,
+      updatedItems: this.filterQuotesForQuantityChanges(
+        payload.items,
+        quotes,
+        payload.quoteRequestId || quoteRequestId
+      ),
     })),
     concatMap(payload =>
       forkJoin(
@@ -236,9 +240,10 @@ export class QuoteEffects {
   deleteItemFromQuoteRequest$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.DeleteItemFromQuoteRequest),
     map((action: quoteActions.DeleteItemFromQuoteRequest) => action.payload),
-    concatMap(payload => {
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
+    concatMap(([payload, quoteRequestId]) => {
       return this.quoteService
-        .removeItemFromQuoteRequest(payload.quoteRequestId, payload.itemId)
+        .removeItemFromQuoteRequest(payload.quoteRequestId || quoteRequestId, payload.itemId)
         .pipe(
           map(quotes => new quoteActions.DeleteItemFromQuoteRequestSuccess()),
           catchError(error => of(new quoteActions.DeleteItemFromQuoteRequestFail(error)))
@@ -333,19 +338,21 @@ export class QuoteEffects {
 
   /**
    * Filter for itemId and quantity pairs with actual quantity changes.
-   * @param payload The action payload, containing items to update.
-   * @param quotes  An array of current quotes.
-   * @returns       An array of filtered itemId and quantity pairs.
+   * @param payloadItems    The items of the action payload, containing items to update.
+   * @param quotes          An array of current quotes.
+   * @param quoteRequestId  The id of the quote request.
+   * @returns               An array of filtered itemId and quantity pairs.
    */
   filterQuotesForQuantityChanges(
-    payload: { quoteRequestId; items: { itemId: string; quantity: number }[] },
-    quotes: QuoteRequest[]
+    payloadItems: { itemId: string; quantity: number }[],
+    quotes: QuoteRequest[],
+    quoteRequestId: string
   ) {
-    const quoteRequestItems = quotes.filter(quote => quote.id === payload.quoteRequestId).pop().items;
+    const quoteRequestItems = quotes.filter(quote => quote.id === quoteRequestId).pop().items;
     const updatedItems: { itemId: string; quantity: number }[] = [];
     if (quoteRequestItems) {
       for (const quoteRequestItem of quoteRequestItems as QuoteRequestItem[]) {
-        for (const item of payload.items) {
+        for (const item of payloadItems) {
           if (quoteRequestItem.id === item.itemId && quoteRequestItem.quantity.value !== item.quantity) {
             updatedItems.push(item);
           }

@@ -44,7 +44,7 @@ describe('Quote Edit Component', () => {
 
   it('should throw deleteItem event when delete item is clicked', done => {
     component.deleteItem.subscribe(itemId => {
-      expect(itemId).toEqual({ itemId: '4712', quoteRequestId: 'test' });
+      expect(itemId).toEqual('4712');
       done();
     });
 
