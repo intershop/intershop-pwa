@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 // TODO: documentation
 @Component({
@@ -9,7 +10,7 @@ import { Quote } from '../../../models/quote/quote.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteEditComponent {
-  @Input() quote: Quote;
+  @Input() quote: Quote | QuoteRequest;
 
   @Output() updateItems = new EventEmitter<{ items: { itemId: string; quantity: number }[] }>();
   @Output() deleteItem = new EventEmitter<string>();

@@ -6,6 +6,7 @@ import { MockComponent } from '../../../utils/dev/mock.component';
 import { B2bState } from '../../store/b2b.state';
 import { b2bReducers } from '../../store/b2b.system';
 import { LoadQuotes } from '../../store/quote';
+import { LoadQuoteRequests } from '../../store/quote-request';
 import { QuoteEditPageContainerComponent } from './quote-edit-page.container';
 
 describe('Quote Edit Page Container', () => {
@@ -52,6 +53,12 @@ describe('Quote Edit Page Container', () => {
 
   it('should render loading component if quotes loading', () => {
     store$.dispatch(new LoadQuotes());
+    fixture.detectChanges();
+    expect(element.querySelector('ish-loading')).toBeTruthy();
+  });
+
+  it('should render loading component if quote requests loading', () => {
+    store$.dispatch(new LoadQuoteRequests());
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
