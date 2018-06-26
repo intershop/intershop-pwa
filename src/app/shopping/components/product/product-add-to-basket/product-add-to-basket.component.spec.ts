@@ -29,7 +29,6 @@ describe('Product Add To Basket Component', () => {
     product.availability = true;
     element = fixture.nativeElement;
     component.product = product;
-    component.ngOnChanges();
   });
 
   it('should be created', () => {
@@ -56,14 +55,12 @@ describe('Product Add To Basket Component', () => {
 
   it('should show glyphicon button when display type is glyphicon ', () => {
     component.displayType = 'glyphicon';
-    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('span').className).toContain('glyphicon');
   });
 
   it('should show disable button when "disabled" is set to "false" ', () => {
     component.disabled = true;
-    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
   });
