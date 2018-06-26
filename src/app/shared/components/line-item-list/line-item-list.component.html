@@ -16,7 +16,7 @@
           </a>
         </div>
 
-        <div class="col-xs-7 col-sm-6 list-item descr-container">
+        <div *ngIf="form.controls['items'].controls[i]" class="col-xs-7 col-sm-6 list-item descr-container">
           <!--Product Description -->
           <div class="col-lg-9 list-item">
             <div class="pli-description">
