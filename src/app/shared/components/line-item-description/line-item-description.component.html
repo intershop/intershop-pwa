@@ -21,7 +21,7 @@
   <ish-product-shipment [product]="pli.product"></ish-product-shipment>
 
   <!-- Surcharges -->
-  <div *ngFor="let surcharge of pli['itemSurcharges']">
+  <div *ngFor="let surcharge of itemSurcharges">
     {{surcharge.displayName}}
     <span *ngIf="!surcharge.displayName">{{surcharge.text}}</span>
     <span class="text-nowrap">

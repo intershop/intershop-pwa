@@ -39,13 +39,18 @@ describe('Line Item Description Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display sku for the basket item', () => {
+  it('should display sku for the line item', () => {
     fixture.detectChanges();
     expect(element.querySelector('.product-id').textContent).toContain('4713');
   });
 
-  it('should display in stock for the basket item', () => {
+  it('should display in stock for the line item', () => {
     fixture.detectChanges();
     expect(element.querySelector('.product-in-stock')).toBeTruthy();
+  });
+
+  it('should hold itemSurcharges for the line item', () => {
+    component.ngOnChanges();
+    expect(component.itemSurcharges.length).toBe(1);
   });
 });
