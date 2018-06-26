@@ -3,17 +3,17 @@ import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { B2bState } from '../../store/b2b.state';
-import { b2bReducers } from '../../store/b2b.system';
 import { LoadQuotes } from '../../store/quote';
 import { LoadQuoteRequests } from '../../store/quote-request';
+import { QuotingState } from '../../store/quoting.state';
+import { quotingReducers } from '../../store/quoting.system';
 import { QuoteEditPageContainerComponent } from './quote-edit-page.container';
 
 describe('Quote Edit Page Container', () => {
   let component: QuoteEditPageContainerComponent;
   let fixture: ComponentFixture<QuoteEditPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<B2bState>;
+  let store$: Store<QuotingState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -30,7 +30,7 @@ describe('Quote Edit Page Container', () => {
       imports: [
         TranslateModule.forRoot(),
         StoreModule.forRoot({
-          b2b: combineReducers(b2bReducers),
+          quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
         }),
       ],

@@ -5,9 +5,9 @@ import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { Quote } from '../../../models/quote/quote.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
-import { B2bState } from '../../store/b2b.state';
 import { DeleteQuote, getCurrentQuotes, getQuoteLoading } from '../../store/quote';
 import { DeleteQuoteRequest, getCurrentQuoteRequests, getQuoteRequestLoading } from '../../store/quote-request';
+import { QuotingState } from '../../store/quoting.state';
 
 @Component({
   selector: 'ish-quote-list-page-container',
@@ -19,7 +19,7 @@ export class QuoteListPageContainerComponent implements OnInit {
   quoteLoading$: Observable<boolean>;
   quoteRequestLoading$: Observable<boolean>;
 
-  constructor(private store: Store<B2bState>) {}
+  constructor(private store: Store<QuotingState>) {}
 
   ngOnInit() {
     // TODO: move to selector?

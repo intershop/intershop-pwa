@@ -20,4 +20,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [AuthGuard],
 })
-export class B2bRoutingModule {}
+export class QuotingRoutingModule {}

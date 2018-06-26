@@ -1,13 +1,13 @@
 import { ActionReducerMap } from '@ngrx/store';
-import { B2bState } from './b2b.state';
 import { QuoteRequestEffects } from './quote-request/quote-request.effects';
 import { quoteRequestReducer } from './quote-request/quote-request.reducer';
 import { QuoteEffects } from './quote/quote.effects';
 import { quoteReducer } from './quote/quote.reducer';
+import { QuotingState } from './quoting.state';
 
-export const b2bReducers: ActionReducerMap<B2bState> = {
+export const quotingReducers: ActionReducerMap<QuotingState> = {
   quote: quoteReducer,
   quoteRequest: quoteRequestReducer,
 };
 
-export const b2bEffects = [QuoteEffects, QuoteRequestEffects];
+export const quotingEffects = [QuoteEffects, QuoteRequestEffects];

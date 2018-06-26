@@ -21,7 +21,7 @@ import { QuoteRequestItem } from '../../../models/quote-request-item/quote-reque
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
-import { B2bState } from '../b2b.state';
+import { QuotingState } from '../quoting.state';
 import { getActiveQuoteRequest, getSelectedQuoteRequestId } from './';
 import * as quoteRequestActions from './quote-request.actions';
 import { getCurrentQuoteRequests } from './quote-request.selectors';
@@ -30,7 +30,7 @@ import { getCurrentQuoteRequests } from './quote-request.selectors';
 export class QuoteRequestEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<B2bState | CoreState>,
+    private store: Store<QuotingState | CoreState>,
     private quoteRequestService: QuoteRequestService,
     private router: Router
   ) {}
