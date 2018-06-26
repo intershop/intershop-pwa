@@ -108,11 +108,11 @@ describe('Quote Effects', () => {
       }
     });
 
-    when(quoteServiceMock.updateQuoteRequest(anything())).thenCall(() => {
+    when(quoteServiceMock.updateQuoteRequest(anything())).thenCall(quoteRequest => {
       if (invalid === true) {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
-        return of(null);
+        return of(quoteRequest);
       }
     });
 
@@ -120,7 +120,7 @@ describe('Quote Effects', () => {
       if (invalid === true) {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
-        return of(quoteRequest.id);
+        return of('test');
       }
     });
 
@@ -128,7 +128,7 @@ describe('Quote Effects', () => {
       if (invalid === true) {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
-        return of(quote.id);
+        return of('test');
       }
     });
 
@@ -144,7 +144,7 @@ describe('Quote Effects', () => {
       if (invalid === true) {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
-        return of(null);
+        return of('test');
       }
     });
 
@@ -152,7 +152,7 @@ describe('Quote Effects', () => {
       if (invalid === true) {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
-        return of(null);
+        return of('test');
       }
     });
 
@@ -160,7 +160,7 @@ describe('Quote Effects', () => {
       if (invalid === true) {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
-        return of(null);
+        return of('test');
       }
     });
 
@@ -274,7 +274,7 @@ describe('Quote Effects', () => {
 
     it('should map to action of type AddQuoteRequestSuccess', () => {
       const action = new quoteActions.AddQuoteRequest();
-      const completion = new quoteActions.AddQuoteRequestSuccess();
+      const completion = new quoteActions.AddQuoteRequestSuccess('test');
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -302,7 +302,7 @@ describe('Quote Effects', () => {
     it('should call the quoteService for updateQuoteRequest', done => {
       const payload = {
         id: 'test',
-      } as Quote;
+      } as QuoteRequest;
       const action = new quoteActions.UpdateQuoteRequest(payload);
       actions$ = of(action);
 
@@ -315,9 +315,9 @@ describe('Quote Effects', () => {
     it('should map to action of type UpdateQuoteRequestSuccess', () => {
       const payload = {
         id: 'test',
-      } as Quote;
+      } as QuoteRequest;
       const action = new quoteActions.UpdateQuoteRequest(payload);
-      const completion = new quoteActions.UpdateQuoteRequestSuccess();
+      const completion = new quoteActions.UpdateQuoteRequestSuccess(payload);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -328,7 +328,7 @@ describe('Quote Effects', () => {
       invalid = true;
       const payload = {
         id: 'test',
-      } as Quote;
+      } as QuoteRequest;
       const action = new quoteActions.UpdateQuoteRequest(payload);
       const completion = new quoteActions.UpdateQuoteRequestFail({ message: 'invalid' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
@@ -358,7 +358,7 @@ describe('Quote Effects', () => {
     it('should map to action of type deleteQuoteRequestSuccess', () => {
       const payload = 'test';
       const action = new quoteActions.DeleteQuoteRequest(payload);
-      const completion = new quoteActions.DeleteQuoteRequestSuccess();
+      const completion = new quoteActions.DeleteQuoteRequestSuccess('test');
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -397,7 +397,7 @@ describe('Quote Effects', () => {
     it('should map to action of type deleteQuoteSuccess', () => {
       const payload = 'test';
       const action = new quoteActions.DeleteQuote(payload);
-      const completion = new quoteActions.DeleteQuoteSuccess();
+      const completion = new quoteActions.DeleteQuoteSuccess('test');
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -509,7 +509,7 @@ describe('Quote Effects', () => {
         quantity: 1,
       };
       const action = new quoteActions.AddProductToQuoteRequest(payload);
-      const completion = new quoteActions.AddProductToQuoteRequestSuccess();
+      const completion = new quoteActions.AddProductToQuoteRequestSuccess('test');
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -627,7 +627,7 @@ describe('Quote Effects', () => {
         ],
       };
       const action = new quoteActions.UpdateQuoteRequestItems(payload);
-      const completion = new quoteActions.UpdateQuoteRequestItemsSuccess();
+      const completion = new quoteActions.UpdateQuoteRequestItemsSuccess(['test']);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -698,7 +698,7 @@ describe('Quote Effects', () => {
         itemId: 'test',
       };
       const action = new quoteActions.DeleteItemFromQuoteRequest(payload);
-      const completion = new quoteActions.DeleteItemFromQuoteRequestSuccess();
+      const completion = new quoteActions.DeleteItemFromQuoteRequestSuccess('test');
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -784,7 +784,7 @@ describe('Quote Effects', () => {
 
   describe('loadQuoteRequestsAfterChangeSuccess$', () => {
     it('should map to action of type LoadQuoteRequests if AddQuoteRequestSuccess action triggered', () => {
-      const action = new quoteActions.AddQuoteRequestSuccess();
+      const action = new quoteActions.AddQuoteRequestSuccess('test');
       const completion = new quoteActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -793,7 +793,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if UpdateQuoteRequestSuccess action triggered', () => {
-      const action = new quoteActions.UpdateQuoteRequestSuccess();
+      const action = new quoteActions.UpdateQuoteRequestSuccess(quoteRequests[0]);
       const completion = new quoteActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -802,7 +802,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if DeleteQuoteRequestSuccess action triggered', () => {
-      const action = new quoteActions.DeleteQuoteRequestSuccess();
+      const action = new quoteActions.DeleteQuoteRequestSuccess('test');
       const completion = new quoteActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -811,7 +811,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if AddProductToQuoteRequestSuccess action triggered', () => {
-      const action = new quoteActions.AddProductToQuoteRequestSuccess();
+      const action = new quoteActions.AddProductToQuoteRequestSuccess('test');
       const completion = new quoteActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -820,7 +820,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if UpdateQuoteRequestItemsSuccess action triggered', () => {
-      const action = new quoteActions.UpdateQuoteRequestItemsSuccess();
+      const action = new quoteActions.UpdateQuoteRequestItemsSuccess(['test']);
       const completion = new quoteActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -829,7 +829,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if DeleteItemFromQuoteRequestSuccess action triggered', () => {
-      const action = new quoteActions.DeleteItemFromQuoteRequestSuccess();
+      const action = new quoteActions.DeleteItemFromQuoteRequestSuccess('test');
       const completion = new quoteActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -849,7 +849,7 @@ describe('Quote Effects', () => {
 
   describe('loadQuotesAfterChangeSuccess$', () => {
     it('should map to action of type LoadQuotes if DeleteQuoteSuccess action triggered', () => {
-      const action = new quoteActions.DeleteQuoteSuccess();
+      const action = new quoteActions.DeleteQuoteSuccess('test');
       const completion = new quoteActions.LoadQuotes();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

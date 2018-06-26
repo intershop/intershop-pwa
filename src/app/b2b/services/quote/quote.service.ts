@@ -82,10 +82,10 @@ export class QuoteService {
    * @param data The quote request data to be updated
    * @return     The updated quote request
    */
-  updateQuoteRequest(data: Quote): Observable<Quote> {
+  updateQuoteRequest(data: QuoteRequest): Observable<QuoteRequest> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
-        this.apiService.put<Quote>(`customers/${customerId}/users/${userId}/quoterequests/${data.id}`, data)
+        this.apiService.put<QuoteRequest>(`customers/${customerId}/users/${userId}/quoterequests/${data.id}`, data)
       )
     );
   }

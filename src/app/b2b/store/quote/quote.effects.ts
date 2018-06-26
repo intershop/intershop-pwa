@@ -77,7 +77,7 @@ export class QuoteEffects {
       return this.quoteService
         .addQuoteRequest()
         .pipe(
-          map(() => new quoteActions.AddQuoteRequestSuccess()),
+          map(id => new quoteActions.AddQuoteRequestSuccess(id)),
           catchError(error => of(new quoteActions.AddQuoteRequestFail(error)))
         );
     })
@@ -94,7 +94,7 @@ export class QuoteEffects {
       return this.quoteService
         .updateQuoteRequest(payload)
         .pipe(
-          map(() => new quoteActions.UpdateQuoteRequestSuccess()),
+          map(quoteRequest => new quoteActions.UpdateQuoteRequestSuccess(quoteRequest)),
           catchError(error => of(new quoteActions.UpdateQuoteRequestFail(error)))
         );
     })
@@ -111,7 +111,7 @@ export class QuoteEffects {
       return this.quoteService
         .deleteQuoteRequest(quoteRequestId)
         .pipe(
-          map(() => new quoteActions.DeleteQuoteRequestSuccess()),
+          map(id => new quoteActions.DeleteQuoteRequestSuccess(id)),
           catchError(error => of(new quoteActions.DeleteQuoteRequestFail(error)))
         );
     })
@@ -128,7 +128,7 @@ export class QuoteEffects {
       return this.quoteService
         .deleteQuote(quoteId)
         .pipe(
-          map(() => new quoteActions.DeleteQuoteSuccess()),
+          map(id => new quoteActions.DeleteQuoteSuccess(id)),
           catchError(error => of(new quoteActions.DeleteQuoteFail(error)))
         );
     })
@@ -187,7 +187,7 @@ export class QuoteEffects {
       this.quoteService
         .addProductToQuoteRequest(quoteRequestId, item)
         .pipe(
-          map(() => new quoteActions.AddProductToQuoteRequestSuccess()),
+          map(id => new quoteActions.AddProductToQuoteRequestSuccess(id)),
           catchError(error => of(new quoteActions.AddProductToQuoteRequestFail(error)))
         )
     )
@@ -221,7 +221,7 @@ export class QuoteEffects {
         )
       ).pipe(
         defaultIfEmpty(undefined),
-        map(() => new quoteActions.UpdateQuoteRequestItemsSuccess()),
+        map(ids => new quoteActions.UpdateQuoteRequestItemsSuccess(ids)),
         catchError(error => of(new quoteActions.UpdateQuoteRequestItemsFail(error)))
       )
     )
@@ -239,7 +239,7 @@ export class QuoteEffects {
       return this.quoteService
         .removeItemFromQuoteRequest(payload.quoteRequestId || quoteRequestId, payload.itemId)
         .pipe(
-          map(quotes => new quoteActions.DeleteItemFromQuoteRequestSuccess()),
+          map(id => new quoteActions.DeleteItemFromQuoteRequestSuccess(id)),
           catchError(error => of(new quoteActions.DeleteItemFromQuoteRequestFail(error)))
         );
     })

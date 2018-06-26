@@ -97,17 +97,19 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for AddQuoteRequestSuccess', () => {
-      const action = new fromActions.AddQuoteRequestSuccess();
+      const payload = 'test';
+      const action = new fromActions.AddQuoteRequestSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteActionTypes.AddQuoteRequestSuccess,
+        payload,
       });
     });
   });
 
   describe('Update Quote Request Actions', () => {
     it('should create new action for UpdateQuoteRequest', () => {
-      const payload = { id: '123' } as Quote;
+      const payload = { id: '123' } as QuoteRequest;
       const action = new fromActions.UpdateQuoteRequest(payload);
 
       expect({ ...action }).toEqual({
@@ -127,10 +129,12 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for UpdateQuoteRequestSuccess', () => {
-      const action = new fromActions.UpdateQuoteRequestSuccess();
+      const payload = { id: '123' } as QuoteRequest;
+      const action = new fromActions.UpdateQuoteRequestSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteActionTypes.UpdateQuoteRequestSuccess,
+        payload,
       });
     });
   });
@@ -157,10 +161,12 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for DeleteQuoteRequestSuccess', () => {
-      const action = new fromActions.DeleteQuoteRequestSuccess();
+      const payload = 'test';
+      const action = new fromActions.DeleteQuoteRequestSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteActionTypes.DeleteQuoteRequestSuccess,
+        payload,
       });
     });
   });
@@ -187,10 +193,12 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for DeleteQuoteSuccess', () => {
-      const action = new fromActions.DeleteQuoteSuccess();
+      const payload = 'test';
+      const action = new fromActions.DeleteQuoteSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteActionTypes.DeleteQuoteSuccess,
+        payload,
       });
     });
   });
@@ -252,10 +260,12 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for AddProductToQuoteRequestSuccess', () => {
-      const action = new fromActions.AddProductToQuoteRequestSuccess();
+      const payload = 'test';
+      const action = new fromActions.AddProductToQuoteRequestSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteActionTypes.AddProductToQuoteRequestSuccess,
+        payload,
       });
     });
   });
@@ -290,10 +300,12 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for UpdateQuoteRequestItemsSuccess', () => {
-      const action = new fromActions.UpdateQuoteRequestItemsSuccess();
+      const payload = ['test'];
+      const action = new fromActions.UpdateQuoteRequestItemsSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteActionTypes.UpdateQuoteRequestItemsSuccess,
+        payload,
       });
     });
   });
@@ -323,10 +335,12 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for DeleteItemFromQuoteRequestSuccess', () => {
-      const action = new fromActions.DeleteItemFromQuoteRequestSuccess();
+      const payload = 'test';
+      const action = new fromActions.DeleteItemFromQuoteRequestSuccess(payload);
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteActionTypes.DeleteItemFromQuoteRequestSuccess,
+        payload,
       });
     });
   });

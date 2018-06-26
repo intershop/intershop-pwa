@@ -82,11 +82,12 @@ export class AddQuoteRequestFail implements Action {
 
 export class AddQuoteRequestSuccess implements Action {
   readonly type = QuoteActionTypes.AddQuoteRequestSuccess;
+  constructor(public payload: string) {}
 }
 
 export class UpdateQuoteRequest implements Action {
   readonly type = QuoteActionTypes.UpdateQuoteRequest;
-  constructor(public payload: Quote) {}
+  constructor(public payload: QuoteRequest) {}
 }
 
 export class UpdateQuoteRequestFail implements Action {
@@ -96,6 +97,7 @@ export class UpdateQuoteRequestFail implements Action {
 
 export class UpdateQuoteRequestSuccess implements Action {
   readonly type = QuoteActionTypes.UpdateQuoteRequestSuccess;
+  constructor(public payload: QuoteRequest) {}
 }
 
 export class DeleteQuoteRequest implements Action {
@@ -110,6 +112,7 @@ export class DeleteQuoteRequestFail implements Action {
 
 export class DeleteQuoteRequestSuccess implements Action {
   readonly type = QuoteActionTypes.DeleteQuoteRequestSuccess;
+  constructor(public payload: string) {}
 }
 
 export class DeleteQuote implements Action {
@@ -124,6 +127,7 @@ export class DeleteQuoteFail implements Action {
 
 export class DeleteQuoteSuccess implements Action {
   readonly type = QuoteActionTypes.DeleteQuoteSuccess;
+  constructor(public payload: string) {}
 }
 
 export class LoadQuoteRequestItems implements Action {
@@ -153,6 +157,7 @@ export class AddProductToQuoteRequestFail implements Action {
 
 export class AddProductToQuoteRequestSuccess implements Action {
   readonly type = QuoteActionTypes.AddProductToQuoteRequestSuccess;
+  constructor(public payload: string) {}
 }
 
 export class UpdateQuoteRequestItems implements Action {
@@ -167,6 +172,7 @@ export class UpdateQuoteRequestItemsFail implements Action {
 
 export class UpdateQuoteRequestItemsSuccess implements Action {
   readonly type = QuoteActionTypes.UpdateQuoteRequestItemsSuccess;
+  constructor(public payload: string[]) {}
 }
 
 export class DeleteItemFromQuoteRequest implements Action {
@@ -181,6 +187,7 @@ export class DeleteItemFromQuoteRequestFail implements Action {
 
 export class DeleteItemFromQuoteRequestSuccess implements Action {
   readonly type = QuoteActionTypes.DeleteItemFromQuoteRequestSuccess;
+  constructor(public payload: string) {}
 }
 
 export type QuoteAction =
