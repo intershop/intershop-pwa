@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
-import { getB2bState } from '../b2b.state';
+import { getQuotingState } from '../quoting.state';
 
-const getQuoteState = createSelector(getB2bState, state => state.quote);
+const getQuoteState = createSelector(getQuotingState, state => state.quote);
 
 export const getCurrentQuotes = createSelector(getQuoteState, state => state.quotes);
 

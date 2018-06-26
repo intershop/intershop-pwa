@@ -17,8 +17,8 @@ import { User } from '../../../models/user/user.model';
 import { LoadProduct } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
-import { B2bState } from '../b2b.state';
-import { b2bReducers } from '../b2b.system';
+import { QuotingState } from '../quoting.state';
+import { quotingReducers } from '../quoting.system';
 import * as quoteRequestActions from './quote-request.actions';
 import { QuoteRequestEffects } from './quote-request.effects';
 
@@ -27,7 +27,7 @@ describe('Quote Request Effects', () => {
   let quoteRequestServiceMock: QuoteRequestService;
   let routerMock: Router;
   let effects: QuoteRequestEffects;
-  let store$: Store<B2bState | CoreState>;
+  let store$: Store<QuotingState | CoreState>;
 
   const quoteRequests = [
     {
@@ -145,7 +145,7 @@ describe('Quote Request Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          b2b: combineReducers(b2bReducers),
+          quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
           user: userReducer,
         }),

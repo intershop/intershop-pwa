@@ -9,4 +9,4 @@ import { QuoteStateComponent } from './components/quote-state/quote-state.compon
   declarations: [ProductAddToQuoteComponent, QuoteStateComponent],
   exports: [ProductAddToQuoteComponent, QuoteStateComponent],
 })
-export class B2bSharedModule {}
+export class QuotingSharedModule {}

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { B2bSharedModule } from '../../../b2b/b2b-shared.module';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { QuotingSharedModule } from '../../../quoting/quoting-shared.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { ProductDetailComponent } from '../../components/product/product-detail/product-detail.component';
 import { ShoppingSharedModule } from '../../shopping-shared.module';
@@ -14,7 +14,7 @@ import { productPageRoutes } from './product-page.routes';
     SharedModule,
     FormsSharedModule,
     ShoppingSharedModule,
-    B2bSharedModule,
+    QuotingSharedModule,
   ],
   declarations: [ProductPageContainerComponent, ProductDetailComponent],
 })

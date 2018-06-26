@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { B2bState } from '../../../b2b/store/b2b.state';
-import { AddProductToQuoteRequest } from '../../../b2b/store/quote-request';
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
+import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
+import { QuotingState } from '../../../quoting/store/quoting.state';
 import { getSelectedCategory } from '../../store/categories';
 import { AddToCompare } from '../../store/compare';
 import { getProductLoading, getSelectedProduct } from '../../store/products';
@@ -23,7 +23,7 @@ export class ProductPageContainerComponent implements OnInit {
   productLoading$: Observable<boolean>;
   category$: Observable<CategoryView>;
 
-  constructor(private store: Store<ShoppingState | CheckoutState | B2bState>) {}
+  constructor(private store: Store<ShoppingState | CheckoutState | QuotingState>) {}
 
   ngOnInit() {
     this.product$ = this.store.pipe(

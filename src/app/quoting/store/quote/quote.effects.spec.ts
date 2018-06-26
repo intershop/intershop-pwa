@@ -13,8 +13,8 @@ import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteService } from '../../services/quote/quote.service';
-import { B2bState } from '../b2b.state';
-import { b2bReducers } from '../b2b.system';
+import { QuotingState } from '../quoting.state';
+import { quotingReducers } from '../quoting.system';
 import * as quoteActions from './quote.actions';
 import { QuoteEffects } from './quote.effects';
 
@@ -22,7 +22,7 @@ describe('Quote Effects', () => {
   let actions$;
   let quoteServiceMock: QuoteService;
   let effects: QuoteEffects;
-  let store$: Store<B2bState | CoreState>;
+  let store$: Store<QuotingState | CoreState>;
 
   const quotes = [
     {
@@ -63,7 +63,7 @@ describe('Quote Effects', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          b2b: combineReducers(b2bReducers),
+          quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
           user: userReducer,
         }),

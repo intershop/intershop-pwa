@@ -6,13 +6,13 @@ import { Quote } from '../../../models/quote/quote.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { c } from '../../../utils/dev/marbles-utils';
-import { B2bState } from '../b2b.state';
-import { b2bReducers } from '../b2b.system';
+import { QuotingState } from '../quoting.state';
+import { quotingReducers } from '../quoting.system';
 import { LoadQuotes, LoadQuotesFail, LoadQuotesSuccess } from './quote.actions';
 import { getCurrentQuotes, getQuoteError, getQuoteLoading } from './quote.selectors';
 
 describe('Quote Selectors', () => {
-  let store$: Store<B2bState>;
+  let store$: Store<QuotingState>;
 
   let quotes$: Observable<(Quote | QuoteRequest)[]>;
   let quoteLoading$: Observable<boolean>;
@@ -22,7 +22,7 @@ describe('Quote Selectors', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          b2b: combineReducers(b2bReducers),
+          quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
         }),
       ],

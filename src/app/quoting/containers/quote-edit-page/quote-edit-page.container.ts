@@ -3,7 +3,6 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../../models/quote/quote.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
-import { B2bState } from '../../store/b2b.state';
 import { getQuoteLoading } from '../../store/quote';
 import {
   DeleteItemFromQuoteRequest,
@@ -11,6 +10,7 @@ import {
   getSelectedQuoteRequest,
   UpdateQuoteRequestItems,
 } from '../../store/quote-request';
+import { QuotingState } from '../../store/quoting.state';
 
 @Component({
   selector: 'ish-quote-edit-page-container',
@@ -22,7 +22,7 @@ export class QuoteEditPageContainerComponent implements OnInit {
   quoteLoading$: Observable<boolean>;
   quoteRequestLoading$: Observable<boolean>;
 
-  constructor(private store: Store<B2bState>) {}
+  constructor(private store: Store<QuotingState>) {}
 
   ngOnInit() {
     this.quote$ = this.store.pipe(select(getSelectedQuoteRequest));

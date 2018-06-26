@@ -8,8 +8,8 @@ import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { c } from '../../../utils/dev/marbles-utils';
-import { B2bState } from '../b2b.state';
-import { b2bReducers } from '../b2b.system';
+import { QuotingState } from '../quoting.state';
+import { quotingReducers } from '../quoting.system';
 import {
   LoadQuoteRequestItems,
   LoadQuoteRequestItemsFail,
@@ -30,7 +30,7 @@ import {
 } from './quote-request.selectors';
 
 describe('Quote Request Selectors', () => {
-  let store$: Store<B2bState>;
+  let store$: Store<QuotingState>;
 
   let getSelectedQuoteRequestId$: Observable<string>;
   let getSelectedQuoteRequest$: Observable<QuoteRequest>;
@@ -44,7 +44,7 @@ describe('Quote Request Selectors', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
-          b2b: combineReducers(b2bReducers),
+          quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
         }),
       ],
