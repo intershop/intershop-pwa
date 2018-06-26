@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { B2bState } from '../../../b2b/store/b2b.state';
-import { AddProductToQuoteRequest } from '../../../b2b/store/quote';
+import { AddProductToQuoteRequest } from '../../../b2b/store/quote-request';
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Category } from '../../../models/category/category.model';

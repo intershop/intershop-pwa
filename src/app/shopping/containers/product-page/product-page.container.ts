@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { B2bState } from '../../../b2b/store/b2b.state';
-import { AddProductToQuoteRequest } from '../../../b2b/store/quote';
+import { AddProductToQuoteRequest } from '../../../b2b/store/quote-request';
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CategoryView } from '../../../models/category-view/category-view.model';
