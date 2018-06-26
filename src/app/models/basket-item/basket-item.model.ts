@@ -19,6 +19,7 @@ export interface BasketItem {
       amount: Price;
       description?: string;
       displayName?: string;
+      text?: string;
     }
   ];
   valueRebates?: BasketRebate[];
