@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { Quote } from '../../../models/quote/quote.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { B2bState } from '../../store/b2b.state';
-import { DeleteQuote, getQuoteLoading } from '../../store/quote';
+import { DeleteQuote, getCurrentQuotes, getQuoteLoading } from '../../store/quote';
 import { DeleteQuoteRequest, getCurrentQuoteRequests, getQuoteRequestLoading } from '../../store/quote-request';
 
 @Component({
@@ -20,7 +22,15 @@ export class QuoteListPageContainerComponent implements OnInit {
   constructor(private store: Store<B2bState>) {}
 
   ngOnInit() {
-    this.quotes$ = this.store.pipe(select(getCurrentQuoteRequests));
+    // TODO: move to selector?
+    this.quotes$ = combineLatest(
+      this.store.pipe(select(getCurrentQuotes)),
+      this.store.pipe(select(getCurrentQuoteRequests))
+    ).pipe(
+      map(([quotes, quoteRequests]) => {
+        return [...quotes, ...quoteRequests];
+      })
+    );
     this.quoteLoading$ = this.store.pipe(select(getQuoteLoading));
     this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
   }
