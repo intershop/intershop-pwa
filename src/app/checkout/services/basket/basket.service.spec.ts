@@ -91,4 +91,13 @@ describe('Basket Service', () => {
       done();
     });
   });
+
+  it("should get basket payments for specific basketId when 'getBasketPayments' is called", done => {
+    when(apiService.get(`baskets/${basketMockData.id}/payments`)).thenReturn(of([]));
+
+    basketService.getBasketPayments(basketMockData.id).subscribe(() => {
+      verify(apiService.get(`baskets/${basketMockData.id}/payments`)).once();
+      done();
+    });
+  });
 });
