@@ -13,7 +13,6 @@ import { CheckoutState } from '../../store/checkout.state';
 })
 export class CheckoutPaymentPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
-  basketLoading$: Observable<boolean>;
   loading$: Observable<boolean>;
 
   constructor(private store: Store<CheckoutState>, private coreStore: Store<CoreState>) {}

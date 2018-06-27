@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { Address } from '../../../../models/address/address.model';
-import { User } from '../../../../models/user/user.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CheckoutAddressComponent } from './checkout-address.component';
@@ -42,7 +41,6 @@ describe('Checkout Address Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.basket = BasketMockData.getBasket();
-    component.user = { firstName: 'Patricia' } as User;
     component.addresses = [
       { id: 'ilMKAE8BlIUAAAFgEdAd1LZU', firstName: 'Patricia', invoiceToAddress: true, shipToAddress: true } as Address,
       { id: '4712', firstName: 'John', invoiceToAddress: true, shipToAddress: true } as Address,
@@ -57,7 +55,7 @@ describe('Checkout Address Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render invoiceToAddress and ShipToAddress sections if user is set', () => {
+  it('should render invoiceToAddress and ShipToAddress sections if set', () => {
     fixture.detectChanges();
     expect(element.querySelector('div[data-testing-id=invoiceToAddress]')).toBeTruthy();
     expect(element.querySelector('div[data-testing-id=shipToAddress]')).toBeTruthy();
