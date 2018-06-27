@@ -7,7 +7,7 @@ export const environment = {
   icmServer: 'INTERSHOP/rest/WFS',
   icmApplication: 'inSPIRED-inTRONICS-Site',
   mainNavigationMaxSubCategoriesDepth: 2,
-  syncLocalStorage: true,
+  syncLocalStorage: false, // experimental feature to transfer the application state to another tab or keep it after a full page refresh/load - disabled for now
 
   locales: [
     { lang: 'en_US', currency: 'USD', value: 'en', displayName: 'English', displayLong: 'English (United States)' },
