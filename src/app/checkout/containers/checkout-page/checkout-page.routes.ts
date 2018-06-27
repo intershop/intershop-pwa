@@ -11,14 +11,17 @@ export const checkoutPageRoutes: Routes = [
     children: [
       {
         path: 'address',
+        data: { checkoutStep: 1 },
         component: CheckoutAddressPageContainerComponent,
       },
       {
         path: 'shipping',
+        data: { checkoutStep: 2 },
         component: CheckoutShippingPageContainerComponent,
       },
       {
         path: 'payment',
+        data: { checkoutStep: 3 },
         component: CheckoutPaymentPageContainerComponent,
       },
       {
