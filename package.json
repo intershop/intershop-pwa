@@ -25,7 +25,7 @@
     "build:dynamic:prod": "npm run build:client-and-server-bundles:prod && npm run webpack:server",
     "generate:static": "cd dist && node prerender",
     "webpack:server": "webpack --config webpack.server.config.js --progress=false --colors",
-    "serve:static": "http-server ./dist/browser -c-1 -p 4000 --push-state",
+    "serve:static": "http-server ./dist/browser -c-1 -p 4200 --push-state",
     "serve:dynamic": "cd dist && node server",
     "start:static": "npm run build:static && npm run serve:static",
     "start:static:prod": "npm run build:static:prod && npm run serve:static",
