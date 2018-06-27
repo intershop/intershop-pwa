@@ -2,6 +2,7 @@ import { Address } from '../../models/address/address.model';
 import { BasketItemView } from '../../models/basket-item/basket-item.model';
 import { BasketRebate } from '../../models/basket-rebate/basket-rebate.model';
 import { BasketView } from '../../models/basket/basket.model';
+import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 
 export class BasketMockData {
@@ -12,6 +13,7 @@ export class BasketMockData {
       invoiceToAddress: this.getAddress(),
       commonShipToAddress: this.getAddress(),
       commonShippingMethod: this.getShippingMethod(),
+      paymentMethod: this.getPaymentMethod(),
       valueRebates: [
         {
           name: 'appliedRebate',
@@ -117,5 +119,13 @@ export class BasketMockData {
       shippingTimeMin: 3,
       shippingTimeMax: 7,
     } as ShippingMethod;
+  }
+
+  static getPaymentMethod(): PaymentMethod {
+    return {
+      name: 'Invoice',
+      type: 'Payment',
+      id: '4711',
+    } as PaymentMethod;
   }
 }

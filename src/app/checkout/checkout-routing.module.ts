@@ -14,6 +14,11 @@ const routes: Routes = [
     loadChildren: './containers/checkout-shipping-page/checkout-shipping-page.module#CheckoutShippingPageModule',
     canActivate: [AuthGuard],
   },
+  {
+    path: 'checkout/payment',
+    loadChildren: './containers/checkout-payment-page/checkout-payment-page.module#CheckoutPaymentPageModule',
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

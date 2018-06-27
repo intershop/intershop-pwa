@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { BasketUpdateType } from '../../services/basket/basket.service';
 
 export enum BasketActionTypes {
@@ -26,6 +27,9 @@ export enum BasketActionTypes {
   DeleteBasketItem = '[Basket] Delete Basket Item',
   DeleteBasketItemFail = '[Basket API] Delete Basket Item Fail',
   DeleteBasketItemSuccess = '[Basket API] Delete Basket Item Success',
+  LoadBasketPayments = '[Basket Internal] Load Basket Payments',
+  LoadBasketPaymentsFail = '[Basket API] Load Basket Payments Fail',
+  LoadBasketPaymentsSuccess = '[Basket API] Load Basket Payments Success',
   ResetBasket = '[Basket Internal] Reset Basket',
 }
 
@@ -130,6 +134,21 @@ export class DeleteBasketItemSuccess implements Action {
   readonly type = BasketActionTypes.DeleteBasketItemSuccess;
 }
 
+export class LoadBasketPayments implements Action {
+  readonly type = BasketActionTypes.LoadBasketPayments;
+  constructor(public payload: string) {}
+}
+
+export class LoadBasketPaymentsFail implements Action {
+  readonly type = BasketActionTypes.LoadBasketPaymentsFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class LoadBasketPaymentsSuccess implements Action {
+  readonly type = BasketActionTypes.LoadBasketPaymentsSuccess;
+  constructor(public payload: PaymentMethod[]) {}
+}
+
 export class ResetBasket implements Action {
   readonly type = BasketActionTypes.ResetBasket;
 }
@@ -156,4 +175,7 @@ export type BasketAction =
   | DeleteBasketItem
   | DeleteBasketItemFail
   | DeleteBasketItemSuccess
+  | LoadBasketPayments
+  | LoadBasketPaymentsFail
+  | LoadBasketPaymentsSuccess
   | ResetBasket;

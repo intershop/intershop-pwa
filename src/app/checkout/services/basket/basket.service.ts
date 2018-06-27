@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiService, unpackEnvelope } from '../../../core/services/api/api.service';
+import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../../models/basket-item/basket-item.mapper';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 
 export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
 
@@ -100,5 +102,20 @@ export class BasketService {
    */
   deleteBasketItem(itemId: string, basketId: string): Observable<void> {
     return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  }
+
+  /**
+   * Get basket payments for selected basket.
+   * @param basketId  The basket id.
+   * @returns         The basket payments.
+   */
+  getBasketPayments(basketId: string): Observable<PaymentMethod[]> {
+    if (!basketId) {
+      return throwError('getBasketPayments() called without basketId');
+    }
+
+    return this.apiService
+      .get(`baskets/${basketId}/payments`)
+      .pipe(unpackEnvelope<Link>(), resolveLinks<PaymentMethod>(this.apiService));
   }
 }

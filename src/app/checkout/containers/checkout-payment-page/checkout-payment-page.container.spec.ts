@@ -4,23 +4,23 @@ import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { checkoutReducers } from '../../store/checkout.system';
-import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';
+import { CheckoutPaymentPageContainerComponent } from './checkout-payment-page.container';
 
-describe('Checkout Address Page Container', () => {
-  let component: CheckoutAddressPageContainerComponent;
-  let fixture: ComponentFixture<CheckoutAddressPageContainerComponent>;
+describe('Checkout Payment Page Container', () => {
+  let component: CheckoutPaymentPageContainerComponent;
+  let fixture: ComponentFixture<CheckoutPaymentPageContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        CheckoutAddressPageContainerComponent,
+        CheckoutPaymentPageContainerComponent,
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         MockComponent({ selector: 'ish-checkout-progress-bar', inputs: ['step'], template: 'Checkout Progress Bar' }),
         MockComponent({
-          selector: 'ish-checkout-address',
-          template: 'Checkout Address Component',
-          inputs: ['basket', 'addresses'],
+          selector: 'ish-checkout-payment',
+          template: 'Checkout Payment Component',
+          inputs: ['basket', 'paymentMethods'],
         }),
       ],
 
@@ -35,7 +35,7 @@ describe('Checkout Address Page Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckoutAddressPageContainerComponent);
+    fixture = TestBed.createComponent(CheckoutPaymentPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

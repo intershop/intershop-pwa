@@ -9,6 +9,7 @@ import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.acti
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProduct, LoadProductSuccess } from '../../../shopping/store/products';
 import { ShoppingState } from '../../../shopping/store/shopping.state';
@@ -28,6 +29,7 @@ describe('Basket Effects', () => {
   const basket = {
     id: 'test',
     lineItems: [],
+    paymentMethod: null,
   } as Basket;
 
   const lineItems = [
@@ -106,6 +108,14 @@ describe('Basket Effects', () => {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of({});
+      }
+    });
+
+    when(basketServiceMock.getBasketPayments(anyString())).thenCall((id: string) => {
+      if (id === 'invalid') {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      } else {
+        return of([]);
       }
     });
 
@@ -513,6 +523,54 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketPayments$', () => {
+    beforeEach(() => {
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+    });
+
+    it('should call the basketService for loadBasketPayments', done => {
+      const id = 'test';
+      const action = new basketActions.LoadBasketPayments(id);
+      actions$ = of(action);
+
+      effects.loadBasketPayments$.subscribe(() => {
+        verify(basketServiceMock.getBasketPayments(id)).once();
+        done();
+      });
+    });
+
+    it('should map to action of type LoadBasketPaymentsSuccess', () => {
+      const id = 'test';
+      const action = new basketActions.LoadBasketPayments(id);
+      const completion = new basketActions.LoadBasketPaymentsSuccess([] as PaymentMethod[]);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketPayments$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadBasketPaymentsFail', () => {
+      const id = 'invalid';
+      const action = new basketActions.LoadBasketPayments(id);
+      const completion = new basketActions.LoadBasketPaymentsFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketPayments$).toBeObservable(expected$);
+    });
+
+    it('should trigger LoadBasketPayments action if LoadBasketSuccess action triggered', () => {
+      const action = new basketActions.LoadBasketSuccess({
+        id: 'test',
+      } as Basket);
+      const completion = new basketActions.LoadBasketPayments('test');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketPaymentsAfterBasketLoad$).toBeObservable(expected$);
     });
   });
 

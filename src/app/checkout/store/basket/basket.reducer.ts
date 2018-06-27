@@ -1,11 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { BasketAction, BasketActionTypes } from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
   lineItems: BasketItem[];
+  payments: PaymentMethod[];
   loading: boolean;
   error: HttpErrorResponse;
 }
@@ -13,6 +15,7 @@ export interface BasketState {
 export const initialState: BasketState = {
   basket: null,
   lineItems: [],
+  payments: [],
   loading: false,
   error: null,
 };
@@ -27,7 +30,8 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.AddProductToBasket:
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.UpdateBasketItems:
-    case BasketActionTypes.DeleteBasketItem: {
+    case BasketActionTypes.DeleteBasketItem:
+    case BasketActionTypes.LoadBasketPayments: {
       return {
         ...state,
         loading: true,
@@ -39,7 +43,8 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasketItemsFail:
     case BasketActionTypes.AddItemsToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
-    case BasketActionTypes.DeleteBasketItemFail: {
+    case BasketActionTypes.DeleteBasketItemFail:
+    case BasketActionTypes.LoadBasketPaymentsFail: {
       const error = action.payload;
 
       return {
@@ -74,10 +79,19 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
 
     case BasketActionTypes.LoadBasketItemsSuccess: {
       const lineItems = action.payload;
-
       return {
         ...state,
         lineItems,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.LoadBasketPaymentsSuccess: {
+      const payments = action.payload;
+
+      return {
+        ...state,
+        payments,
         loading: false,
       };
     }

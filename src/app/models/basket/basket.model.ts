@@ -1,6 +1,7 @@
 import { Address } from '../address/address.model';
 import { BasketItem, BasketItemView } from '../basket-item/basket-item.model';
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
+import { PaymentMethod } from '../payment-method/payment-method.model';
 import { Price } from '../price/price.model';
 import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
@@ -11,6 +12,7 @@ interface AbstractBasket<T> {
   invoiceToAddress?: Address;
   commonShipToAddress?: Address;
   commonShippingMethod?: ShippingMethod;
+  paymentMethod?: PaymentMethod;
   lineItems?: T[];
   totals: {
     basketShippingRebatesTotal?: Price;
