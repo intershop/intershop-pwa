@@ -47,7 +47,12 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
 
-      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="!basket.commonShippingMethod">
+      <button
+        class="btn btn-lg btn-block btn-primary"
+        type="button"
+        [disabled]="!basket.commonShippingMethod"
+        (click)="nextStep()"
+      >
         {{'checkout.button.label' | translate}}
       </button>
     </div>

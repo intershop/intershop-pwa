@@ -20,6 +20,7 @@ export const getCurrentBasket = createSelector(
             ...li,
             product: products[li.productSKU],
           })),
+          paymentMethod: basket.payments[0],
         }
 );
 

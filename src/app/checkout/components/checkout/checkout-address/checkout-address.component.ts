@@ -14,7 +14,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Address } from '../../../../models/address/address.model';
 import { Basket } from '../../../../models/basket/basket.model';
-import { User } from '../../../../models/user/user.model';
 
 @Component({
   selector: 'ish-checkout-address',
@@ -23,7 +22,6 @@ import { User } from '../../../../models/user/user.model';
 })
 export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Input() basket: Basket;
-  @Input() user: User;
   @Input() addresses: Address[];
 
   @Output() updateInvoiceAddress = new EventEmitter<string>();

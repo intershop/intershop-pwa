@@ -229,6 +229,33 @@ export class BasketEffects {
   );
 
   /**
+   * The load basket payments effect.
+   */
+  @Effect()
+  loadBasketPayments$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketPayments),
+    map((action: basketActions.LoadBasketPayments) => action.payload),
+    mergeMap(basketId => {
+      return this.basketService
+        .getBasketPayments(basketId)
+        .pipe(
+          map(basketPayments => new basketActions.LoadBasketPaymentsSuccess(basketPayments)),
+          catchError(error => of(new basketActions.LoadBasketPaymentsFail(error)))
+        );
+    })
+  );
+
+  /**
+   * Trigger a LoadBasketPayments action after a successful basket loading.
+   */
+  @Effect()
+  loadBasketPaymentsAfterBasketLoad$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketSuccess),
+    map((action: basketActions.LoadBasketSuccess) => action.payload),
+    map(basket => new basketActions.LoadBasketPayments(basket.id))
+  );
+
+  /**
    * Get current basket if missing and call AddItemsToBasketAction
    * Only triggers if basket is unset set and action payload does not contain basketId.
    */

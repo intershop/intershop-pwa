@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-sm-12 col-md-8">
+    <!-- Messages -->
+    <div *ngIf="!basket.paymentMethod" role="alert" class="alert alert-danger">
+      {{ 'checkout.payment.no_Selection.error' | translate }}
+    </div>
+    <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
+    <form [formGroup]="paymentForm" class="form-horizontal">
+      <!-- ToDo: List of payment methods instead -->
+      <ul *ngIf="basket.paymentMethod" class="list-unstyled" role="tablist" aria-multiselectable="true">
+        <li class="panel">
+          <div class="radio" role="tab">
+            <label>
+              <input
+                type="radio"
+                formControlName="id"
+                [id]="'paymentOption_'+ basket.paymentMethod.id"
+                [value]="basket.paymentMethod.id"
+              />
+              <strong>{{ basket.paymentMethod.name }}</strong>
+            </label>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <!-- basket summary -->
+  <div class="col-sm-12 col-md-4 order-summary">
+    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+    <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
+    <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
+    <div class="cost-summary">
+      <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+
+      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="!basket.paymentMethod">
+        {{'checkout.button.label' | translate}}
+      </button>
+    </div>
+    <!-- ToDo: Privacy policy link - ISREST-341 -->
+  </div>
+</div>
