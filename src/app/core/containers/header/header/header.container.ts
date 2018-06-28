@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { resolveRouteHeaderType } from '../../../../utils/router';
 import { CoreState } from '../../../store/core.state';
+import { getRoutingData } from '../../../store/routing-data';
 
 @Component({
   selector: 'ish-header-container',
@@ -13,9 +12,9 @@ import { CoreState } from '../../../store/core.state';
 export class HeaderContainerComponent implements OnInit {
   headerType$: Observable<string>;
 
-  constructor(private store: Store<CoreState>, private router: Router) {}
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.headerType$ = resolveRouteHeaderType<string>(this.router);
+    this.headerType$ = this.store.pipe(select(getRoutingData('headerType')));
   }
 }

@@ -40,7 +40,7 @@ export class LogEffects {
     let currentIdx = 0;
 
     return {
-      next: () => {
+      next: (): Action => {
         let current;
         do {
           currentIdx++;
