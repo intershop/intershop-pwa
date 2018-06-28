@@ -34,17 +34,6 @@ describe('Product Add To Quote Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should throw an error if input parameter product is not set', () => {
-    component.product = null;
-    expect(() => fixture.detectChanges()).toThrow();
-  });
-
-  it('should not render when inStock = false', () => {
-    product.inStock = false;
-    fixture.detectChanges();
-    expect(element.querySelector('button')).toBeFalsy();
-  });
-
   it('should show button when display type is not glyphicon ', () => {
     fixture.detectChanges();
     expect(element.querySelector('button').className).toContain('btn-default');

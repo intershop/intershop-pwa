@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Product, ProductHelper } from '../../../models/product/product.model';
+import { Product } from '../../../models/product/product.model';
 
 /**
  * The Product Add To Quote Component displays a button which emits productToQuote when triggered.
@@ -24,8 +24,6 @@ export class ProductAddToQuoteComponent {
   @Input() displayType?: string;
   @Input() class?: string;
   @Output() productToQuote = new EventEmitter<void>();
-
-  canAddToQuote = ProductHelper.canAddToQuote;
 
   addToQuote() {
     this.productToQuote.emit();

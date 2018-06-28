@@ -173,22 +173,4 @@ describe('Product Helper', () => {
       });
     });
   });
-
-  describe('canAddToQuote()', () => {
-    function dataProvider() {
-      return [
-        { product: {}, expected: false },
-        { product: { inStock: true }, expected: false },
-        { product: { availability: true }, expected: false },
-        { product: { inStock: true, availability: true }, expected: true },
-      ];
-    }
-
-    using(dataProvider, dataSlice => {
-      it(`should return ${dataSlice.expected} when supplying product '${JSON.stringify(dataSlice.product)}'`, () => {
-        const product = ProductMapper.fromData(dataSlice.product);
-        expect(ProductHelper.canAddToQuote(product)).toEqual(dataSlice.expected);
-      });
-    });
-  });
 });
