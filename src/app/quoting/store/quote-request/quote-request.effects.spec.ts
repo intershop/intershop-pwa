@@ -759,10 +759,10 @@ describe('Quote Request Effects', () => {
   });
 
   describe('routeListenerForSelectingQuoteRequest$', () => {
-    it('should fire SelectQuoteRequest when route /quote/XXX is navigated', () => {
+    it('should fire SelectQuoteRequest when route /quote-request/XXX is navigated', () => {
       const action = new RouteNavigation({
-        path: 'quote/:quoteId',
-        params: { quoteId: 'test' },
+        path: 'quote-request/:quoteRequestId',
+        params: { quoteRequestId: 'test' },
         queryParams: {},
       });
       const expected = new quoteRequestActions.SelectQuoteRequest('test');

@@ -6,16 +6,25 @@ export interface QuoteState {
   quotes: Quote[];
   loading: boolean;
   error: HttpErrorResponse;
+  selected: string;
 }
 
 export const initialState: QuoteState = {
   quotes: [],
   loading: false,
   error: undefined,
+  selected: undefined,
 };
 
 export function quoteReducer(state = initialState, action: QuoteAction): QuoteState {
   switch (action.type) {
+    case QuoteActionTypes.SelectQuote: {
+      return {
+        ...state,
+        selected: action.payload,
+      };
+    }
+
     case QuoteActionTypes.LoadQuotes:
     case QuoteActionTypes.DeleteQuote: {
       return {

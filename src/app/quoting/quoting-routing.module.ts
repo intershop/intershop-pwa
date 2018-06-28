@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: './containers/quote-edit-page/quote-edit-page.module#QuoteEditPageModule',
     canActivate: [AuthGuard],
   },
+  {
+    path: 'quote-request',
+    loadChildren: './containers/quote-request-edit-page/quote-request-edit-page.module#QuoteRequestEditPageModule',
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

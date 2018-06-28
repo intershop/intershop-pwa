@@ -3,6 +3,18 @@ import { Quote } from '../../../models/quote/quote.model';
 import * as fromActions from './quote.actions';
 
 describe('Quote Actions', () => {
+  describe('SelectQuote Actions', () => {
+    it('should create new action for SelectQuote', () => {
+      const payload = 'test';
+      const action = new fromActions.SelectQuote(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteActionTypes.SelectQuote,
+        payload,
+      });
+    });
+  });
+
   describe('Load Quote Actions', () => {
     it('should create new action for LoadQuotes', () => {
       const action = new fromActions.LoadQuotes();

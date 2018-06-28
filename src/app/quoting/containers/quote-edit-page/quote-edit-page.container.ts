@@ -2,14 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../../models/quote/quote.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
-import { getQuoteLoading } from '../../store/quote';
-import {
-  DeleteItemFromQuoteRequest,
-  getQuoteRequestLoading,
-  getSelectedQuoteRequest,
-  UpdateQuoteRequestItems,
-} from '../../store/quote-request';
+import { getQuoteLoading, getSelectedQuote } from '../../store/quote';
 import { QuotingState } from '../../store/quoting.state';
 
 @Component({
@@ -18,23 +11,13 @@ import { QuotingState } from '../../store/quoting.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteEditPageContainerComponent implements OnInit {
-  quote$: Observable<Quote | QuoteRequest>;
+  quote$: Observable<Quote>;
   quoteLoading$: Observable<boolean>;
-  quoteRequestLoading$: Observable<boolean>;
 
   constructor(private store: Store<QuotingState>) {}
 
   ngOnInit() {
-    this.quote$ = this.store.pipe(select(getSelectedQuoteRequest));
+    this.quote$ = this.store.pipe(select(getSelectedQuote));
     this.quoteLoading$ = this.store.pipe(select(getQuoteLoading));
-    this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
-  }
-
-  deleteQuoteItem(payload: string) {
-    this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
-  }
-
-  updateQuoteItems(payload: { items: { itemId: string; quantity: number }[] }) {
-    this.store.dispatch(new UpdateQuoteRequestItems(payload));
   }
 }

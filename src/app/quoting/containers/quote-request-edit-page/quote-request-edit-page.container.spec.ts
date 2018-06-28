@@ -3,21 +3,21 @@ import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { LoadQuotes } from '../../store/quote';
+import { LoadQuoteRequests } from '../../store/quote-request';
 import { QuotingState } from '../../store/quoting.state';
 import { quotingReducers } from '../../store/quoting.system';
-import { QuoteEditPageContainerComponent } from './quote-edit-page.container';
+import { QuoteRequestEditPageContainerComponent } from './quote-request-edit-page.container';
 
-describe('Quote Edit Page Container', () => {
-  let component: QuoteEditPageContainerComponent;
-  let fixture: ComponentFixture<QuoteEditPageContainerComponent>;
+describe('Quote Request Edit Page Container', () => {
+  let component: QuoteRequestEditPageContainerComponent;
+  let fixture: ComponentFixture<QuoteRequestEditPageContainerComponent>;
   let element: HTMLElement;
   let store$: Store<QuotingState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        QuoteEditPageContainerComponent,
+        QuoteRequestEditPageContainerComponent,
         MockComponent({ selector: 'ish-quote-edit', template: 'Quote Edit Component', inputs: ['quote'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         MockComponent({
@@ -37,7 +37,7 @@ describe('Quote Edit Page Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuoteEditPageContainerComponent);
+    fixture = TestBed.createComponent(QuoteRequestEditPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
@@ -50,8 +50,8 @@ describe('Quote Edit Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render loading component if quotes loading', () => {
-    store$.dispatch(new LoadQuotes());
+  it('should render loading component if quote requests loading', () => {
+    store$.dispatch(new LoadQuoteRequests());
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });

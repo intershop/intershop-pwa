@@ -3,12 +3,18 @@ import { Action } from '@ngrx/store';
 import { Quote } from '../../../models/quote/quote.model';
 
 export enum QuoteActionTypes {
+  SelectQuote = '[Quote] Select Quote',
   LoadQuotes = '[Quote Internal] Load Quotes',
   LoadQuotesFail = '[Quote API] Load Quotes Fail',
   LoadQuotesSuccess = '[Quote API] Load Quotes Success',
   DeleteQuote = '[Quote] Delete Quote',
   DeleteQuoteFail = '[Quote API] Delete Quote Fail',
   DeleteQuoteSuccess = '[Quote API] Delete Quote Success',
+}
+
+export class SelectQuote implements Action {
+  readonly type = QuoteActionTypes.SelectQuote;
+  constructor(public payload: string) {}
 }
 
 export class LoadQuotes implements Action {
@@ -41,6 +47,7 @@ export class DeleteQuoteSuccess implements Action {
 }
 
 export type QuoteAction =
+  | SelectQuote
   | LoadQuotes
   | LoadQuotesFail
   | LoadQuotesSuccess

@@ -4,7 +4,7 @@ import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import * as fromActions from './quote-request.actions';
 
 describe('Quote Request Actions', () => {
-  describe('SelectQuote Actions', () => {
+  describe('SelectQuoteRequest Actions', () => {
     it('should create new action for SelectQuoteRequest', () => {
       const payload = 'test';
       const action = new fromActions.SelectQuoteRequest(payload);
