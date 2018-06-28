@@ -24,41 +24,8 @@ describe('Quote Effects', () => {
   let effects: QuoteEffects;
   let store$: Store<QuotingState | CoreState>;
 
-  const quotes = [
-    {
-      id: 'test',
-    },
-  ] as Quote[];
-  const customer = {
-    customerNo: 'test',
-    type: 'SMBCustomer',
-  } as Customer;
-  const user = {
-    email: 'test',
-  } as User;
-
-  let invalid: boolean;
-
   beforeEach(() => {
     quoteServiceMock = mock(QuoteService);
-
-    invalid = false;
-
-    when(quoteServiceMock.getQuotes()).thenCall(() => {
-      if (invalid === true) {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
-      } else {
-        return of(quotes);
-      }
-    });
-
-    when(quoteServiceMock.deleteQuote(anyString())).thenCall(quote => {
-      if (invalid === true) {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
-      } else {
-        return of('test');
-      }
-    });
 
     TestBed.configureTestingModule({
       imports: [
@@ -77,12 +44,16 @@ describe('Quote Effects', () => {
 
     effects = TestBed.get(QuoteEffects);
     store$ = TestBed.get(Store);
+
+    store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
+    store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
   });
 
   describe('loadQuotes$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess(customer));
-      store$.dispatch(new LoadCompanyUserSuccess(user));
+      when(quoteServiceMock.getQuotes()).thenCall(() => {
+        return of([{ id: 'QID' } as Quote]);
+      });
     });
 
     it('should call the quoteService for getQuotes', done => {
@@ -97,7 +68,7 @@ describe('Quote Effects', () => {
 
     it('should map to action of type LoadQuotesSuccess', () => {
       const action = new quoteActions.LoadQuotes();
-      const completion = new quoteActions.LoadQuotesSuccess(quotes);
+      const completion = new quoteActions.LoadQuotesSuccess([{ id: 'QID' } as Quote]);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -105,7 +76,10 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuotesFail', () => {
-      invalid = true;
+      when(quoteServiceMock.getQuotes()).thenCall(() => {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      });
+
       const action = new quoteActions.LoadQuotes();
       const completion = new quoteActions.LoadQuotesFail({ message: 'invalid' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
@@ -117,12 +91,13 @@ describe('Quote Effects', () => {
 
   describe('deleteQuote$', () => {
     beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess(customer));
-      store$.dispatch(new LoadCompanyUserSuccess(user));
+      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() => {
+        return of('QID');
+      });
     });
 
     it('should call the quoteService for deleteQuote with specific quoteId', done => {
-      const payload = 'test';
+      const payload = 'QID';
       const action = new quoteActions.DeleteQuote(payload);
       actions$ = of(action);
 
@@ -133,9 +108,9 @@ describe('Quote Effects', () => {
     });
 
     it('should map to action of type deleteQuoteSuccess', () => {
-      const payload = 'test';
+      const payload = 'QID';
       const action = new quoteActions.DeleteQuote(payload);
-      const completion = new quoteActions.DeleteQuoteSuccess('test');
+      const completion = new quoteActions.DeleteQuoteSuccess(payload);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -143,9 +118,11 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteQuoteFail', () => {
-      invalid = true;
-      const payload = 'test';
-      const action = new quoteActions.DeleteQuote(payload);
+      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() => {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      });
+
+      const action = new quoteActions.DeleteQuote('QID');
       const completion = new quoteActions.DeleteQuoteFail({ message: 'invalid' } as HttpErrorResponse);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -156,7 +133,7 @@ describe('Quote Effects', () => {
 
   describe('loadQuotesAfterChangeSuccess$', () => {
     it('should map to action of type LoadQuotes if DeleteQuoteSuccess action triggered', () => {
-      const action = new quoteActions.DeleteQuoteSuccess('test');
+      const action = new quoteActions.DeleteQuoteSuccess(anyString());
       const completion = new quoteActions.LoadQuotes();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
