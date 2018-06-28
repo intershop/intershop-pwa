@@ -270,12 +270,12 @@ export class QuoteRequestEffects {
   );
 
   /**
-   * Triggers a SelectQuoteRequest action if route contains quoteId parameter
+   * Triggers a SelectQuoteRequest action if route contains quoteRequestId parameter
    */
   @Effect()
   routeListenerForSelectingQuote$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
-    map((action: RouteNavigation) => action.payload.params['quoteId']),
+    map((action: RouteNavigation) => action.payload.params['quoteRequestId']),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
     map(([itemId]) => new quoteRequestActions.SelectQuoteRequest(itemId))

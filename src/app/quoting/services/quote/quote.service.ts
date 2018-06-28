@@ -5,7 +5,9 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
+import { QuoteRequestItemMapper } from '../../../models/quote-request-item/quote-request-item.mapper';
+import { Quote, QuoteData } from '../../../models/quote/quote.model';
 
 /**
  * The Quote Service handles the interaction with the 'quote' related REST API.
@@ -37,9 +39,20 @@ export class QuoteService {
   getQuotes(): Observable<Quote[]> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
-        this.apiService
-          .get(`customers/${customerId}/users/${userId}/quotes`)
-          .pipe(unpackEnvelope(), resolveLinks<Quote>(this.apiService))
+        this.apiService.get(`customers/${customerId}/users/${userId}/quotes`).pipe(
+          unpackEnvelope(),
+          resolveLinks<QuoteData>(this.apiService),
+          map(quotes =>
+            quotes.map<Quote>(quoteData => {
+              return {
+                ...quoteData,
+                items: quoteData.items.map((quoteItemData: QuoteRequestItemData) =>
+                  QuoteRequestItemMapper.fromData(quoteItemData, undefined)
+                ),
+              };
+            })
+          )
+        )
       )
     );
   }

@@ -4,7 +4,7 @@ import { QuoteRequestItem } from '../../../models/quote-request-item/quote-reque
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 export enum QuoteRequestActionTypes {
-  SelectQuoteRequest = '[Quote] Select Quote',
+  SelectQuoteRequest = '[Quote] Select QuoteRequest',
   LoadQuoteRequests = '[Quote Internal] Load QuoteRequests',
   LoadQuoteRequestsFail = '[Quote API] Load QuoteRequests Fail',
   LoadQuoteRequestsSuccess = '[Quote API] Load QuoteRequests Success',

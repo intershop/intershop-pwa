@@ -15,8 +15,8 @@
       </thead>
 
       <tr *ngFor="let quote of quotes">
-        <td><a [routerLink]="['/account/quote', quote.id]">{{ quote.number }}</a></td>
-        <td><a [routerLink]="['/account/quote', quote.id]">{{ quote.displayName }}</a></td>
+        <td><a [routerLink]="generateDetailRoute(quote)">{{ quote.number }}</a></td>
+        <td><a [routerLink]="generateDetailRoute(quote)">{{ quote.displayName }}</a></td>
         <td>{{ quote.items.length }}</td>
         <td>{{ quote.creationDate | date: 'shortDate' }}</td>
 

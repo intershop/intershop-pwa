@@ -79,7 +79,7 @@ describe('Quote Request Selectors', () => {
       store$.dispatch(new SelectQuoteRequest('test'));
     });
 
-    it('should set "selected" to selected quote item id and set selected quote', () => {
+    it('should set "selected" to selected quote item id and set selected quote request', () => {
       const expected = {
         id: 'test',
         items: [

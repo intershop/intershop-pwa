@@ -33,6 +33,12 @@ export const accountPageRoutes: Routes = [
         loadChildren: '../../../quoting/containers/quote-edit-page/quote-edit-page.module#QuoteEditPageModule',
       },
       {
+        path: 'quote-request',
+        data: { breadcrumbKey: 'quote.quotes.link' },
+        loadChildren:
+          '../../../quoting/containers/quote-request-edit-page/quote-request-edit-page.module#QuoteRequestEditPageModule',
+      },
+      {
         path: '',
         pathMatch: 'full',
         redirectTo: 'overview',

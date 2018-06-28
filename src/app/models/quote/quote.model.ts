@@ -1,5 +1,6 @@
 import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
+import { QuoteRequestItemData } from '../quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem, QuoteRequestItemView } from '../quote-request-item/quote-request-item.model';
 
 interface AbstractQuote<T> {
@@ -20,6 +21,8 @@ interface AbstractQuote<T> {
   originTotal?: Price;
   rejected?: boolean;
 }
+
+export interface QuoteData extends AbstractQuote<QuoteRequestItemData> {}
 
 export interface Quote extends AbstractQuote<QuoteRequestItem> {}
 

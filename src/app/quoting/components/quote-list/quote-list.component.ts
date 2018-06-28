@@ -1,6 +1,4 @@
-import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Quote } from '../../../models/quote/quote.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
@@ -27,7 +25,19 @@ export class QuoteListComponent {
   // TODO: find a better solution for specific, selection related variables in modal dialog content
   selectedQuoteName: string;
 
-  constructor(private datePipe: DatePipe, private domSanitizer: DomSanitizer) {}
+  /**
+   * Generate quote and quote request detail route.
+   * @param item  The quote or quote request item.
+   * @returns     The items detail route.
+   */
+  generateDetailRoute(item: Quote | QuoteRequest): string | void {
+    if (item.type === 'Quote') {
+      return `/account/quote/${item.id}`;
+    }
+    if (item.type === 'QuoteRequest') {
+      return `/account/quote-request/${item.id}`;
+    }
+  }
 
   /**
    * Throws deleteItem event.

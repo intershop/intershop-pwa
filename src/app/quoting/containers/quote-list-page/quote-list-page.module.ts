@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AccountSharedModule } from '../../../account/account-shared.module';
@@ -10,7 +9,6 @@ import { quoteListPageRoutes } from './quote-list-page.routes';
 
 @NgModule({
   declarations: [QuoteListPageContainerComponent, QuoteListComponent],
-  providers: [DatePipe],
   imports: [RouterModule.forChild(quoteListPageRoutes), SharedModule, AccountSharedModule, QuotingSharedModule],
 })
 export class QuoteListPageModule {}

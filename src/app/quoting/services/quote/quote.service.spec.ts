@@ -8,6 +8,8 @@ import { CoreState } from '../../../core/store/core.state';
 import { coreReducers } from '../../../core/store/core.system';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
+import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
+import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { User } from '../../../models/user/user.model';
 import { QuoteService } from './quote.service';
 
@@ -54,11 +56,34 @@ describe('Quote Service', () => {
           elements: [{ type: 'Link', uri: 'customers/CID/users/UID/quotes/QID' }],
         })
       );
-      when(apiService.get(`BASE/customers/CID/users/UID/quotes/QID`)).thenReturn(of({ id: 'QID' }));
+      when(apiService.get(`BASE/customers/CID/users/UID/quotes/QID`)).thenReturn(
+        of({
+          id: 'QID',
+          items: [
+            {
+              singlePrice: {
+                type: 'test',
+                value: 1,
+                currencyMnemonic: 'EUR',
+              },
+              totalPrice: {
+                type: 'test',
+                value: 1,
+                currencyMnemonic: 'EUR',
+              },
+            } as QuoteRequestItemData,
+          ],
+        })
+      );
 
       quoteService.getQuotes().subscribe(data => {
         expect(data).toHaveLength(1);
         expect(data[0].id).toEqual('QID');
+
+        const quoteRequestItem = data[0].items[0] as QuoteRequestItem;
+        expect(quoteRequestItem.singleBasePrice.value).toBe(1);
+        expect(quoteRequestItem.totals.total.value).toBe(1);
+
         verify(apiService.get(`customers/CID/users/UID/quotes`)).once();
         verify(apiService.get(`BASE/customers/CID/users/UID/quotes/QID`)).once();
         done();

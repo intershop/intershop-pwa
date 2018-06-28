@@ -1,0 +1,10 @@
+<div class="col-md-9">
+  <ish-quote-edit
+    *ngIf="(quote$ | async) as quote"
+    [quote]="quote"
+    (deleteItem)="deleteQuoteRequestItem($event)"
+    (updateItems)="updateQuoteRequestItems($event)"
+  ></ish-quote-edit>
+
+  <ish-loading *ngIf="quoteRequestLoading$ | async"></ish-loading>
+</div>

@@ -5,6 +5,15 @@ import { initialState, quoteReducer } from './quote.reducer';
 
 describe('Quote Reducer', () => {
   describe('LoadQuotes actions', () => {
+    describe('SelectQuote', () => {
+      it('should select a quote when reduced', () => {
+        const action = new fromActions.SelectQuote('test');
+        const state = quoteReducer(initialState, action);
+
+        expect(state.selected).toEqual('test');
+      });
+    });
+
     describe('LoadQuotes action', () => {
       it('should set loading to true', () => {
         const action = new fromActions.LoadQuotes();
