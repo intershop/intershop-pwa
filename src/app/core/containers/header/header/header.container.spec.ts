@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { errorReducer } from '../../../store/error/error.reducer';
+import { coreReducers } from '../../../store/core.system';
 import { HeaderContainerComponent } from './header.container';
 
 describe('Header Container', () => {
@@ -12,12 +12,7 @@ describe('Header Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          error: combineReducers(errorReducer),
-        }),
-        RouterTestingModule,
-      ],
+      imports: [StoreModule.forRoot(coreReducers), RouterTestingModule],
       declarations: [
         HeaderContainerComponent,
         MockComponent({ selector: 'ish-header', template: 'Header Component' }),

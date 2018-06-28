@@ -7,6 +7,8 @@ import { ErrorEffects } from './error/error.effects';
 import { errorReducer } from './error/error.reducer';
 import { LocaleEffects } from './locale/locale.effects';
 import { localeReducer } from './locale/locale.reducer';
+import { RoutingDataEffects } from './routing-data/routing-data.effects';
+import { routingDataReducer } from './routing-data/routing-data.reducer';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducer';
 
@@ -15,6 +17,14 @@ export const coreReducers: ActionReducerMap<CoreState> = {
   locale: localeReducer,
   countries: countriesReducer,
   error: errorReducer,
+  routingData: routingDataReducer,
 };
 
-export const coreEffects = [UserEffects, LocaleEffects, CountriesEffects, ErrorEffects, RouterEffects];
+export const coreEffects = [
+  UserEffects,
+  LocaleEffects,
+  CountriesEffects,
+  ErrorEffects,
+  RouterEffects,
+  RoutingDataEffects,
+];
