@@ -108,7 +108,7 @@
   <div *ngIf="quote.state > 3 && quote.state < 7" class="row">
     <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.timeframe.label' | translate }}</label>
     <div class="col-lg-10 col-sm-9 col-xs-8">
-      <p class="form-control-static">{{ quote.validFromDate | date: 'shortDate' }} - {{ quote.validToDate | date: 'shortDate' }}</p>
+      <p class="form-control-static">{{ validFromDate | date: 'shortDate' }} - {{ validToDate | date: 'shortDate' }}</p>
     </div>
   </div>
 
@@ -147,7 +147,7 @@
     -->
 
     <!-- <isif condition="#(EditDescription EQ "true") OR (isDefined(Quote:Description) AND (Quote:Description NE ''))#"></isif> -->
-    <div *ngIf="quote.description" class="form-group">
+    <div *ngIf="description" class="form-group">
       <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
       <div class="col-lg-10 col-sm-9 col-xs-8">
         <!--
@@ -162,14 +162,14 @@
           ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea>
         <iselse>
         -->
-        <p class="form-control-static">{{ quote.description }}</p>
+        <p class="form-control-static">{{ description }}</p>
       </div>
     </div>
 
-    <div *ngIf="quote.sellerComment" class="form-group">
+    <div *ngIf="sellerComment" class="form-group">
       <label for="" class="control-label col-xs-4 col-sm-3 col-lg-2">{{ 'quote.edit.unsubmitted.seller_comment.label' | translate }}</label>
       <div class="col-xs-8 col-sm-9 col-lg-10">
-        <p class="form-control-static">{{ quote.sellerComment }}</p>
+        <p class="form-control-static">{{ sellerComment }}</p>
       </div>
     </div>
   </div>

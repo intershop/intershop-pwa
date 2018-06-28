@@ -26,6 +26,7 @@ export class LineItemDescriptionComponent implements OnChanges {
    * If the line item changes new itemSurcharges are set
    */
   ngOnChanges() {
+    this.itemSurcharges = undefined;
     const item = this.pli as BasketItemView;
 
     if (item.itemSurcharges) {
