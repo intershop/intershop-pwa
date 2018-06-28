@@ -1,0 +1,11 @@
+{
+  "elements": [],
+  "type": "ResourceCollection",
+  "sortKeys": [
+    "name-desc",
+    "name-asc",
+    "value-asc",
+    "value-desc"
+  ],
+  "name": "products"
+}
