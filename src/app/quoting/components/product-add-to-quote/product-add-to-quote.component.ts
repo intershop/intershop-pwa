@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product, ProductHelper } from '../../../models/product/product.model';
 
 /**
@@ -18,7 +18,7 @@ import { Product, ProductHelper } from '../../../models/product/product.model';
   templateUrl: './product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductAddToQuoteComponent implements OnChanges {
+export class ProductAddToQuoteComponent {
   @Input() product: Product;
   @Input() disabled = false;
   @Input() displayType?: string;
@@ -26,12 +26,6 @@ export class ProductAddToQuoteComponent implements OnChanges {
   @Output() productToQuote = new EventEmitter<void>();
 
   canAddToQuote = ProductHelper.canAddToQuote;
-
-  isDisplayTypeGlyphicon = false;
-
-  ngOnChanges() {
-    this.isDisplayTypeGlyphicon = this.displayType === 'glyphicon';
-  }
 
   addToQuote() {
     this.productToQuote.emit();
