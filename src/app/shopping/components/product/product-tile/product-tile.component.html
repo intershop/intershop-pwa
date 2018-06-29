@@ -19,6 +19,7 @@
       (productToBasket)="addToBasket()"
     ></ish-product-add-to-basket>
     <button
+      *ishFeature="'compare'"
       (click)="toggleCompare()"
       class="btn btn-link add-to-compare"
       [ngClass]="{ 'is-selected': isInCompareList }"
