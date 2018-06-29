@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CoreState } from '../../../core/store/core.state';
 import { Address } from '../../../models/address/address.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { getAddressesLoading, getAllAddresses } from '../../store/addresses';
@@ -26,7 +24,7 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   addresses$: Observable<Address[]>;
   loading$: Observable<boolean>;
 
-  constructor(private store: Store<CheckoutState>, private coreStore: Store<CoreState>) {}
+  constructor(private store: Store<CheckoutState>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
