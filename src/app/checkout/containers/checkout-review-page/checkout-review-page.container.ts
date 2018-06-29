@@ -6,11 +6,11 @@ import { getBasketLoading, getCurrentBasket } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
-  selector: 'ish-checkout-payment-page-container',
-  templateUrl: './checkout-payment-page.container.html',
+  selector: 'ish-checkout-review-page-container',
+  templateUrl: './checkout-review-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutPaymentPageContainerComponent implements OnInit {
+export class CheckoutReviewPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   loading$: Observable<boolean>;
 

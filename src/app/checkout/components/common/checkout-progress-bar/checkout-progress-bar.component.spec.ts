@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CheckoutProgressBarComponent } from './checkout-progress-bar.component';
 
@@ -10,7 +11,7 @@ describe('Checkout Progress Bar Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), RouterTestingModule],
       declarations: [CheckoutProgressBarComponent],
     }).compileComponents();
   }));
@@ -29,17 +30,13 @@ describe('Checkout Progress Bar Component', () => {
 
   it('should display 3 links (to address page, shipping page and payment page) if step = 4 (review)', () => {
     component.step = 4;
-    component.ngOnChanges();
     fixture.detectChanges();
-
-    expect(element.querySelectorAll('li a[routerLink]')).toHaveLength(3);
+    expect(element.querySelectorAll('li a')).toHaveLength(3);
   });
 
   it('should not display any links if basket step = 5 (receipt)', () => {
     component.step = 5;
-    component.ngOnChanges();
     fixture.detectChanges();
-
-    expect(element.querySelectorAll('li a[routerLink]')).toHaveLength(0);
+    expect(element.querySelectorAll('li a')).toHaveLength(0);
   });
 });

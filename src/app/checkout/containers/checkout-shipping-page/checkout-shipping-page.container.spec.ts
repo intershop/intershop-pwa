@@ -16,7 +16,6 @@ describe('Checkout Shipping Page Container', () => {
       declarations: [
         CheckoutShippingPageContainerComponent,
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-checkout-progress-bar', inputs: ['step'], template: 'Checkout Progress Bar' }),
         MockComponent({
           selector: 'ish-checkout-shipping',
           template: 'Checkout Shipping Component',

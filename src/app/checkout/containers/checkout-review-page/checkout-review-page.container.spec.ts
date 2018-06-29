@@ -4,25 +4,24 @@ import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito/lib/ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { checkoutReducers } from '../../store/checkout.system';
-import { CheckoutPaymentPageContainerComponent } from './checkout-payment-page.container';
+import { CheckoutReviewPageContainerComponent } from './checkout-review-page.container';
 
-describe('Checkout Payment Page Container', () => {
-  let component: CheckoutPaymentPageContainerComponent;
-  let fixture: ComponentFixture<CheckoutPaymentPageContainerComponent>;
+describe('Checkout Review Page Container', () => {
+  let component: CheckoutReviewPageContainerComponent;
+  let fixture: ComponentFixture<CheckoutReviewPageContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        CheckoutPaymentPageContainerComponent,
+        CheckoutReviewPageContainerComponent,
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         MockComponent({
-          selector: 'ish-checkout-payment',
-          template: 'Checkout Payment Component',
-          inputs: ['basket', 'paymentMethods'],
+          selector: 'ish-checkout-review',
+          template: 'Checkout Review Component',
+          inputs: ['basket'],
         }),
       ],
-
       imports: [
         TranslateModule.forRoot(),
         StoreModule.forRoot({
@@ -34,7 +33,7 @@ describe('Checkout Payment Page Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckoutPaymentPageContainerComponent);
+    fixture = TestBed.createComponent(CheckoutReviewPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
