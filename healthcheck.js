@@ -12,7 +12,7 @@ var optionsICMRest = {
 };
 var optionsAngularUniversal = {
   host : "localhost",
-  port : "4000",
+  port : "4200",
   timeout : 2000
 };
 

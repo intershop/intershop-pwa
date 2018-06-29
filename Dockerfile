@@ -10,8 +10,8 @@ RUN npm run build:dynamic:${env}
 
 FROM node:8-alpine
 COPY --from=buildstep /workspace/dist /workspace/healthcheck.js /
-EXPOSE 4000
+EXPOSE 4200
 USER nobody
 HEALTHCHECK --interval=60s --timeout=10s --start-period=20s CMD node /healthcheck.js
 ENTRYPOINT ["node", "server"]
-ENV ICM_BASE_URL=http://localhost:4000
+ENV ICM_BASE_URL=http://localhost:4200
