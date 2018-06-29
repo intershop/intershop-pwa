@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { CheckoutAddressPageContainerComponent } from '../checkout-address-page/checkout-address-page.container';
 import { CheckoutPaymentPageContainerComponent } from '../checkout-payment-page/checkout-payment-page.container';
+import { CheckoutReviewPageContainerComponent } from '../checkout-review-page/checkout-review-page.container';
 import { CheckoutShippingPageContainerComponent } from '../checkout-shipping-page/checkout-shipping-page.container';
 import { CheckoutPageContainerComponent } from './checkout-page.container';
 
@@ -23,6 +24,11 @@ export const checkoutPageRoutes: Routes = [
         path: 'payment',
         data: { checkoutStep: 3 },
         component: CheckoutPaymentPageContainerComponent,
+      },
+      {
+        path: 'review',
+        data: { checkoutStep: 4 },
+        component: CheckoutReviewPageContainerComponent,
       },
       {
         path: '',
