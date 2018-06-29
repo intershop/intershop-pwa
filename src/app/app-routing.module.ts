@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [{ path: '', redirectTo: '/home', pathMatch: 'full' }, { path: '**', redirectTo: '/error' }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { paramsInheritanceStrategy: 'always' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
