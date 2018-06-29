@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { resolveChildRouteData } from '../../../utils/router';
+import { CoreState } from '../../../core/store/core.state';
+import { getRoutingData } from '../../../core/store/routing-data';
 
 @Component({
   templateUrl: './checkout-page.container.html',
@@ -10,9 +11,9 @@ import { resolveChildRouteData } from '../../../utils/router';
 export class CheckoutPageContainerComponent implements OnInit {
   checkoutStep$: Observable<number>;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.checkoutStep$ = resolveChildRouteData<number>(this.route, this.router, 'checkoutStep');
+    this.checkoutStep$ = this.store.pipe(select(getRoutingData('checkoutStep')));
   }
 }
