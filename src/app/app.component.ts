@@ -10,11 +10,11 @@ import { getRoutingData } from './core/store/routing-data';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  className$: Observable<string>;
+  wrapperClass$: Observable<string>;
 
   constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.className$ = this.store.pipe(select(getRoutingData('className')));
+    this.wrapperClass$ = this.store.pipe(select(getRoutingData('wrapperClass')));
   }
 }
