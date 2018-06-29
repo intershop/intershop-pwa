@@ -3,14 +3,14 @@
   <ng-container *ngIf="!isMobileView; else mobileNavigation">
     <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
       <li *ngFor="let item of navigationItems" routerLinkActive="active">
-        <a routerLink="{{item.link}}">{{ item.localizationKey | translate}}</a>
+        <a [routerLink]="item.link">{{ item.localizationKey | translate}}</a>
       </li>
     </ul>
   </ng-container>
 
   <ng-template #mobileNavigation>
     <select (change)="navigateTo($event.target.value)" class="form-control">
-      <option *ngFor="let item of navigationItems" value="{{item.link}}" [attr.selected]="item.link === currentPath ? 'selected': null">
+      <option *ngFor="let item of navigationItems" [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': null">
         {{ item.localizationKey | translate}}
       </option>
     </select>
