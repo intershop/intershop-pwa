@@ -6,10 +6,10 @@ COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN npm install
 RUN npx webdriver-manager update --chrome --chrome.version=2.38 --gecko false
-ENV ICM_BASE_URL="http://localhost:4000"
+ENV ICM_BASE_URL="http://localhost:4200"
 COPY . /workspace/
 RUN npm run build:dynamic
 RUN (npm run serve:dynamic&) \
- && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4000 \
+ && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200 \
  && sh .gitlab-ci-test-universal.sh \
- && npx protractor e2e/protractor.conf.js --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4000
+ && npx protractor e2e/protractor.conf.js --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4200

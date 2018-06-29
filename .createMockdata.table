@@ -16,6 +16,7 @@
 
 categories ?view=tree&limit=2&imageView=NO-IMAGE
 categories/Cameras-Camcorders
+categories/Cameras-Camcorders/products ?returnSortKeys=true&attrs=sku
 categories/Cameras-Camcorders/584
 categories/Cameras-Camcorders/584/products ?returnSortKeys=true&attrs=sku {elements:[.elements[]|select(.uri|test(".*/(3953312|7912061)"))],name,type,sortKeys}
 categories/Cameras-Camcorders/832
