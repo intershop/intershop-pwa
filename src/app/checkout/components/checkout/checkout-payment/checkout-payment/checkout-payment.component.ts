@@ -22,4 +22,11 @@ export class CheckoutPaymentComponent implements OnInit {
       id: new FormControl(''),
     });
   }
+
+  /**
+   * leads to next checkout page (checkout review)
+   */
+  nextStep() {
+    this.router.navigate(['/checkout/review']);
+  }
 }

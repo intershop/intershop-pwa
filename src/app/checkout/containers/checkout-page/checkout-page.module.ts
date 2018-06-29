@@ -27,10 +27,10 @@ import { checkoutPageRoutes } from './checkout-page.routes';
   declarations: [
     CheckoutPageContainerComponent,
     CheckoutAddressPageContainerComponent,
-    CheckoutShippingPageContainerComponent,
-    CheckoutPaymentPageContainerComponent,
     CheckoutAddressComponent,
+    CheckoutShippingPageContainerComponent,
     CheckoutShippingComponent,
+    CheckoutPaymentPageContainerComponent,
     CheckoutPaymentComponent,
   ],
   providers: [AuthGuard],

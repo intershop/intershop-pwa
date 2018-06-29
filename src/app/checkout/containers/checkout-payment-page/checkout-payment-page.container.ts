@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { CoreState } from '../../../core/store/core.state';
+import { Observable } from 'rxjs';
 import { Basket } from '../../../models/basket/basket.model';
 import { getBasketLoading, getCurrentBasket } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
@@ -15,7 +14,7 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   loading$: Observable<boolean>;
 
-  constructor(private store: Store<CheckoutState>, private coreStore: Store<CoreState>) {}
+  constructor(private store: Store<CheckoutState>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
