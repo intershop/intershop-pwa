@@ -5,5 +5,11 @@ export const productPageRoutes: Routes = [
   {
     path: ':sku',
     component: ProductPageContainerComponent,
+    children: [
+      {
+        path: '**',
+        component: ProductPageContainerComponent,
+      },
+    ],
   },
 ];
