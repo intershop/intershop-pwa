@@ -14,6 +14,7 @@ import { Customer } from '../../../models/customer/customer.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { User } from '../../../models/user/user.model';
+import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { LoadProduct } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
@@ -40,6 +41,7 @@ describe('Quote Request Effects', () => {
           shopping: combineReducers(shoppingReducers),
           user: userReducer,
         }),
+        FeatureToggleModule.testingFeatures({ quoting: true }),
       ],
       providers: [
         QuoteRequestEffects,

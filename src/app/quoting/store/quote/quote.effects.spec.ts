@@ -11,6 +11,7 @@ import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
+import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuotingState } from '../quoting.state';
@@ -34,6 +35,7 @@ describe('Quote Effects', () => {
           shopping: combineReducers(shoppingReducers),
           user: userReducer,
         }),
+        FeatureToggleModule.testingFeatures({ quoting: true }),
       ],
       providers: [
         QuoteEffects,
