@@ -1,19 +1,11 @@
 <!-- <isset scope="request" name="EditMode" value="#(Quote:State==0) OR (  ( (Quote:State==4) OR (Quote:State==6) ) AND ( (Quote:Modified EQ "true") OR (EditMode EQ "true") ) )#" >
 
-<isset scope="request" name="EditDisplayName" value="false">
-<isset scope="request" name="EditDescription" value="false">
-<isif condition="#(Quote:State==0) OR ( (Quote:State==4) AND (EditMode EQ "true") )#">
-  <isset scope="request" name="EditDescription" value="true">
-  <isset scope="request" name="EditDisplayName" value="true">
-</isif>
-
 <isset name="ValidQuote" value="#NOT isDefined(ERRORCODE_QUOTEVALIDATION)#" scope="request"/> -->
 
 <!--- IS CONTRACT -->
 <!-- <isset scope="request" name="isContract" value="false"> -->
 
-
-<form class="form-horizontal form-horizontal-inline bv-form">
+<form [formGroup]="form" class="form-horizontal form-horizontal-inline bv-form">
 <!--<isform action="#URLEX(SecureURL,'',Action('ViewQuote-Dispatch'))#" method="post" name="#getValue(QuoteEditForm:Alias)#"
   class= "form-horizontal form-horizontal-inline bv-form"
   data-bv-message="This value is not valid"
@@ -62,10 +54,9 @@
   <iselse> -->
 
     <!-- Title and Description -->
-    <ng-container *ngIf="quote.displayName">
+    <ng-container *ngIf="quote.displayName; else noDisplayName">
       <h1>
-        <!-- <isif condition="#(Quote:State==4) OR ( (Quote:State==6) AND (EditMode EQ "true") )#"> -->
-        <ng-container *ngIf="quote.state === 4 || ( quote.state === 6 && true); else unsubmitted">
+        <ng-container *ngIf="quote.state === 4 || ( quote.state === 6 && editMode === true); else unsubmitted">
           {{ 'quote.edit.responded.quote_details.text' | translate}} - {{ quote.displayName }}
         </ng-container>
         <ng-template #unsubmitted>
@@ -73,19 +64,17 @@
         </ng-template>
       </h1>
     </ng-container>
-    <!--
-    <iselse>
+    <ng-template #noDisplayName> <!-- TODO: needed? -->
       <h1>
-        <isif condition="#(Quote:State==4) OR ( (Quote:State==6) AND (EditMode EQ "true") )#">
-          <istext key="quote.edit.responded.quote_details.text" /> - <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#">
-        <iselse>
-          <istext key="quote.edit.unsubmitted.quote_request_details.text" /> - <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#">
-        </isif>
+        <ng-container *ngIf="quote.state === 4 || ( quote.state === 6 && editMode === true); else unsubmitted">
+          {{ 'quote.edit.responded.quote_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
+        </ng-container>
+        <ng-template #unsubmitted>
+            {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
+        </ng-template>
       </h1>
-    </isif>
-    -->
+    </ng-template>
 
-    <!-- EO Titel and Description -->
     <!--
     <isif condition="#isDefined(ErrorCode)#">
       <p class="alert alert-info"><istext key="#'quote.edit.info.' . ErrorCode . '.text'#" /></p>
@@ -113,26 +102,28 @@
   </div>
 
   <div class="section">
-    <div class="form-group has-feedback">
-      <label for="#SHOUD_EQUAL_INPUT_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.name.label' | translate }}</label>
-      <div class="col-lg-10  col-sm-9 col-xs-8">
-        <!--
-        <isif condition="#EditDisplayName EQ "true"#">
-          <input type="text" id="<isprint value="#QuoteEditForm:DisplayName:QualifiedName#">"
-              name="<isprint value="#QuoteEditForm:DisplayName:QualifiedName#">"
-              value="<isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:DisplayName:Value#"><iselse><isprint value="#Quote:DisplayName#"></isif>"
-              maxlength="256"
-              class="quote_name form-control"
-              placeholder="<istext key="quote.edit.unsubmitted.enter_an_optional_name.text" />"
-              data-validate="required"
-              required data-bv-notempty-message ="<istext key="shopping_cart.quote.name.required.validation.message" />"
-              aria-required="true"
-          />
-        <iselse>
-        -->
-        <p class="form-control-static">{{ quote.displayName }}</p>
+    <!-- displayName -->
+    <ish-input
+      *ngIf="editDisplayName === true; else staticDisplayName"
+      [form]="form"
+      controlName="displayName"
+      label="quote.edit.unsubmitted.name.label"
+      labelClass="col-lg-2 col-sm-3 col-xs-4"
+      inputClass="col-lg-10 col-sm-9 col-xs-8"
+      maxLength="256"
+      [placeholderText]="'quote.edit.unsubmitted.enter_an_optional_name.text'"
+      [errorMessages]="{
+        'required':'shopping_cart.quote.name.required.validation.message'
+      }"
+    ></ish-input>
+    <ng-template #staticDisplayName>
+      <div class="form-group has-feedback">
+        <label for="#SHOUD_EQUAL_INPUT_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.name.label' | translate }}</label>
+        <div class="col-lg-10  col-sm-9 col-xs-8">
+          <p class="form-control-static">{{ quote.displayName }}</p>
+        </div>
       </div>
-    </div>
+    </ng-template>
 
     <!--- CONTRACT - TIME FRAME -->
     <!--
@@ -146,23 +137,21 @@
     </isif>
     -->
 
-    <!-- <isif condition="#(EditDescription EQ "true") OR (isDefined(Quote:Description) AND (Quote:Description NE ''))#"></isif> -->
-    <div *ngIf="description" class="form-group">
+    <div *ngIf="editDescription === true || (quote.description && quote.description.length > 0)" class="form-group">
       <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
       <div class="col-lg-10 col-sm-9 col-xs-8">
-        <!--
-        <isif condition="#EditDescription EQ "true"#">
-        <isif condition="#QuoteEditForm:Description:isError("error.required")#"><istext key="quote.edit.unsubmitted.enter_description.text" /></isif>
+        <ng-container *ngIf="editDescription === true; else staticDescription">
           <textarea
-              type="text"
-              id="<isprint value="#QuoteEditForm:Description:QualifiedName#">"
-              name="<isprint value="#QuoteEditForm:Description:QualifiedName#">"
-              class="form-control"
-              placeholder="<istext key="quote.edit.unsubmitted.provide_comment.text" />"
-          ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea>
-        <iselse>
-        -->
-        <p class="form-control-static">{{ description }}</p>
+            formControlName="description"
+            class="form-control"
+            [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
+          >
+          </textarea>
+          <!-- ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea> -->
+        </ng-container>
+        <ng-template #staticDescription>
+          <p class="form-control-static">{{ quote.description }}</p>
+        </ng-template>
       </div>
     </div>
 
@@ -208,14 +197,15 @@
 
     <!--- here are the buttons -->
     <ng-container *ngIf="quote.items && quote.items.length > 0 && quote.total && quote.total.value > 0">
-      <!-- TODO: IF EDIT MODE -->
-      <!--
-      <isif condition="#EditMode EQ "true"#">
-        <button type="submit" class="btn btn-primary pull-right" name="submitquote" <isif condition="#NOT hasElements(Quote:IndependentItems)#">disabled</isif>><istext key="quote.edit.button.submit.label" /></button>
-        <button type="submit" class="btn btn-default pull-right" name="update" value="update"><istext key="quote.edit.button.save.label" /></button>
-      <iselseif condition="#(Quote:State==3)#">
-      -->
-      <!-- TODO: IF STATE 3 (SUBMITTED) -->
+      <!-- IF EDIT MODE -->
+      <ng-container *ngIf="editMode === true">
+        <!-- TODO: IndependentItems check ? -->
+        <!-- <button type="submit" class="btn btn-primary pull-right" name="submitquote" <isif condition="#NOT hasElements(Quote:IndependentItems)#">disabled</isif>>{{ 'quote.edit.button.submit.label' | translate }}</button> -->
+        <button type="submit" class="btn btn-primary pull-right" (click)="submit()">{{ 'quote.edit.button.submit.label' | translate }}</button>
+        <button type="submit" class="btn btn-default pull-right" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
+      </ng-container>
+
+      <!-- IF STATE 3 (SUBMITTED) -->
       <ng-container *ngIf="quote.state === 3">
           <!--
           <isif condition="#LinkSource EQ "Shopping"#">
@@ -224,7 +214,8 @@
           -->
           <button class="btn btn-default" name="copy" type="submit" value="copy">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
       </ng-container>
-      <!-- TODO: ELSE -->
+
+      <!-- ELSE -->
       <ng-container *ngIf="quote.state !== 3"> <!-- represents else branch in the old isml representation -->
         <ng-container *ngIf="quote.state === 4">
           <!-- <isif condition="#ValidQuote#"> -->

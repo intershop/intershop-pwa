@@ -69,7 +69,7 @@ describe('Quote Request Service', () => {
     });
 
     it('should throw error for updateQuoteRequest', () => {
-      expect(quoteRequestService.updateQuoteRequest(null)).toBeObservable(
+      expect(quoteRequestService.updateQuoteRequest(null, null)).toBeObservable(
         cold('#', null, { message: 'not logged in' })
       );
     });
@@ -166,7 +166,7 @@ describe('Quote Request Service', () => {
         of({ id: 'QID' } as QuoteRequest)
       );
 
-      quoteRequestService.updateQuoteRequest({ id: 'QID' } as QuoteRequest).subscribe(data => {
+      quoteRequestService.updateQuoteRequest('QID', { displayName: 'test' }).subscribe(data => {
         expect(data).toHaveProperty('id', 'QID');
         verify(apiService.put(`customers/CID/users/UID/quoterequests/QID`, anything())).once();
         done();

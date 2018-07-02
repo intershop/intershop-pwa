@@ -25,7 +25,7 @@ import { QuoteRequestService } from '../../services/quote-request/quote-request.
 import { QuotingState } from '../quoting.state';
 import { getActiveQuoteRequest, getSelectedQuoteRequestId } from './';
 import * as quoteRequestActions from './quote-request.actions';
-import { getCurrentQuoteRequests } from './quote-request.selectors';
+import { getCurrentQuoteRequests, getSelectedQuoteRequest } from './quote-request.selectors';
 
 @Injectable()
 export class QuoteRequestEffects {
@@ -76,9 +76,10 @@ export class QuoteRequestEffects {
   updateQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequest),
     map((action: quoteRequestActions.UpdateQuoteRequest) => action.payload),
-    concatMap(payload => {
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
+    concatMap(([payload, quoteRequestId]) => {
       return this.quoteRequestService
-        .updateQuoteRequest(payload)
+        .updateQuoteRequest(quoteRequestId, payload)
         .pipe(
           map(quoteRequest => new quoteRequestActions.UpdateQuoteRequestSuccess(quoteRequest)),
           catchError(error => of(new quoteRequestActions.UpdateQuoteRequestFail(error)))
@@ -173,17 +174,10 @@ export class QuoteRequestEffects {
   updateQuoteRequestItems$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItems),
     map((action: quoteRequestActions.UpdateQuoteRequestItems) => action.payload),
-    withLatestFrom(
-      this.store.pipe(select(getCurrentQuoteRequests)),
-      this.store.pipe(select(getSelectedQuoteRequestId))
-    ),
-    map(([payload, quoteRequests, quoteRequestId]) => ({
-      quoteRequestId: payload.quoteRequestId || quoteRequestId,
-      updatedItems: this.filterQuoteRequestsForQuantityChanges(
-        payload.items,
-        quoteRequests,
-        payload.quoteRequestId || quoteRequestId
-      ),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
+    map(([payloadItems, selectedQuoteRequest]) => ({
+      quoteRequestId: selectedQuoteRequest.id,
+      updatedItems: this.filterQuoteRequestsForQuantityChanges(payloadItems, selectedQuoteRequest),
     })),
     concatMap(payload =>
       forkJoin(
@@ -211,7 +205,7 @@ export class QuoteRequestEffects {
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([payload, quoteRequestId]) => {
       return this.quoteRequestService
-        .removeItemFromQuoteRequest(payload.quoteRequestId || quoteRequestId, payload.itemId)
+        .removeItemFromQuoteRequest(quoteRequestId, payload.itemId)
         .pipe(
           map(id => new quoteRequestActions.DeleteItemFromQuoteRequestSuccess(id)),
           catchError(error => of(new quoteRequestActions.DeleteItemFromQuoteRequestFail(error)))
@@ -298,17 +292,15 @@ export class QuoteRequestEffects {
 
   /**
    * Filter for itemId and quantity pairs with actual quantity changes.
-   * @param payloadItems    The items of the action payload, containing items to update.
-   * @param quotes          An array of current quotes.
-   * @param quoteRequestId  The id of the quote request.
-   * @returns               An array of filtered itemId and quantity pairs.
+   * @param payloadItems          The items of the action payload, containing items to update.
+   * @param selectedQuoteRequest  The selected quote request item.
+   * @returns                     An array of filtered itemId and quantity pairs.
    */
   filterQuoteRequestsForQuantityChanges(
     payloadItems: { itemId: string; quantity: number }[],
-    quotes: QuoteRequest[],
-    quoteRequestId: string
+    selectedQuoteRequest: QuoteRequest
   ) {
-    const quoteRequestItems = quotes.filter(quote => quote.id === quoteRequestId).pop().items;
+    const quoteRequestItems = selectedQuoteRequest.items;
     const updatedItems: { itemId: string; quantity: number }[] = [];
     if (quoteRequestItems) {
       for (const quoteRequestItem of quoteRequestItems as QuoteRequestItem[]) {
