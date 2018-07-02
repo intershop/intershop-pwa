@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
+import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { ProductDetailComponent } from './product-detail.component';
 
 describe('Product Detail Component', () => {
@@ -14,7 +15,7 @@ describe('Product Detail Component', () => {
     const prod = { sku: 'sku' } as Product;
 
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot(), FeatureToggleModule.testingFeatures({ compare: true })],
       declarations: [ProductDetailComponent],
       // TODO: prepare more detailed test
       schemas: [NO_ERRORS_SCHEMA],

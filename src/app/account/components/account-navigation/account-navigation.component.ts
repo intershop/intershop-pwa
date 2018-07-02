@@ -15,11 +15,11 @@ export class AccountNavigationComponent implements OnInit {
   /**
    * Manages the Account Navigation items.
    */
-  navigationItems = [
+  navigationItems: { link: string; localizationKey: string; feature?: string }[] = [
     { link: '/account/overview', localizationKey: 'account.my_account.link' },
     { link: '/account/orders', localizationKey: 'account.order_history.link' },
     { link: '/account/profile', localizationKey: 'account.profile.link' },
-    { link: '/account/quote-list', localizationKey: 'account.navigation.quotes.link' },
+    { link: '/account/quote-list', localizationKey: 'account.navigation.quotes.link', feature: 'quoting' },
     { link: '/logout', localizationKey: 'account.navigation.logout.link' },
   ];
 

@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Product } from '../../../../models/product/product.model';
+import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductRowComponent } from './product-row.component';
 
@@ -12,7 +13,7 @@ describe('Product Row Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot()],
+      imports: [RouterTestingModule, TranslateModule.forRoot(), FeatureToggleModule.testingFeatures({ compare: true })],
       declarations: [
         ProductRowComponent,
         MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),

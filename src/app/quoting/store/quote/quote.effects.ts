@@ -7,6 +7,7 @@ import { catchError, concatMap, filter, map, withLatestFrom } from 'rxjs/operato
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
+import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuotingState } from '../quoting.state';
@@ -17,6 +18,7 @@ import { getSelectedQuoteId } from './quote.selectors';
 export class QuoteEffects {
   constructor(
     private actions$: Actions,
+    private featureToggleService: FeatureToggleService,
     private quoteService: QuoteService,
     private store: Store<QuotingState | CoreState>
   ) {}
@@ -60,6 +62,7 @@ export class QuoteEffects {
   @Effect()
   loadQuotesAfterChangeSuccess$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.DeleteQuoteSuccess, UserActionTypes.LoadCompanyUserSuccess),
+    filter(() => this.featureToggleService.enabled('quoting')),
     map(() => new quoteActions.LoadQuotes())
   );
 

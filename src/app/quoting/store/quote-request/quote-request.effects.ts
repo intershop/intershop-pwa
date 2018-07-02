@@ -19,6 +19,7 @@ import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized, UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuotingState } from '../quoting.state';
@@ -30,9 +31,10 @@ import { getCurrentQuoteRequests } from './quote-request.selectors';
 export class QuoteRequestEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<QuotingState | CoreState>,
+    private featureToggleService: FeatureToggleService,
     private quoteRequestService: QuoteRequestService,
-    private router: Router
+    private router: Router,
+    private store: Store<QuotingState | CoreState>
   ) {}
 
   /**
@@ -266,6 +268,7 @@ export class QuoteRequestEffects {
       quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess,
       UserActionTypes.LoadCompanyUserSuccess
     ),
+    filter(() => this.featureToggleService.enabled('quoting')),
     map(() => new quoteRequestActions.LoadQuoteRequests())
   );
 

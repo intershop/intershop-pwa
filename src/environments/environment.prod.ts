@@ -25,5 +25,6 @@ export const environment = {
   features: {
     compare: true,
     recently: true,
+    quoting: true,
   },
 };
