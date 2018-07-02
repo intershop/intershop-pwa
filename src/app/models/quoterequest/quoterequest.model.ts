@@ -12,6 +12,7 @@ interface AbstractQuoteRequest<T> {
   items: (Link | T)[];
   state?: number;
   modified?: number;
+  description?: string;
 
   editable?: boolean;
   submitted?: boolean;

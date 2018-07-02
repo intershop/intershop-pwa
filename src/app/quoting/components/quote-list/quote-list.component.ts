@@ -4,7 +4,6 @@ import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 /**
  * The Quote List Component displays a list of quotes.
- * It uses the {@link AccountNavigationComponent} to display the profile menu and it's current state
  *
  * @example
  * <ish-quote-list [quotes]="quotes$ | async" (deleteItem)="deleteItem($event)"></ish-quote-list>

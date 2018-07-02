@@ -8,6 +8,6 @@ import { quoteEditPageRoutes } from './quote-edit-page.routes';
 
 @NgModule({
   declarations: [QuoteEditPageContainerComponent],
-  imports: [RouterModule.forChild(quoteEditPageRoutes), SharedModule, AccountSharedModule, QuotingSharedModule],
+  imports: [AccountSharedModule, QuotingSharedModule, RouterModule.forChild(quoteEditPageRoutes), SharedModule],
 })
 export class QuoteEditPageModule {}

@@ -13,8 +13,8 @@ interface AbstractQuote<T> {
   items: (Link | T)[];
   state?: number;
   modified?: number;
-
   description?: string;
+
   validFromDate?: number;
   validToDate?: number;
   sellerComment?: string;

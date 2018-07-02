@@ -78,7 +78,7 @@ describe('Quote Request Actions', () => {
 
   describe('Update Quote Request Actions', () => {
     it('should create new action for UpdateQuoteRequest', () => {
-      const payload = { id: '123' } as QuoteRequest;
+      const payload = { displayName: '123' };
       const action = new fromActions.UpdateQuoteRequest(payload);
 
       expect({ ...action }).toEqual({
@@ -209,15 +209,12 @@ describe('Quote Request Actions', () => {
 
   describe('Update Quote Request Items Actions', () => {
     it('should create new action for UpdateQuoteRequestItems', () => {
-      const payload = {
-        quoteRequestId: 'test',
-        items: [
-          {
-            itemId: 'test',
-            quantity: 1,
-          },
-        ],
-      };
+      const payload = [
+        {
+          itemId: 'test',
+          quantity: 1,
+        },
+      ];
       const action = new fromActions.UpdateQuoteRequestItems(payload);
 
       expect({ ...action }).toEqual({
@@ -250,7 +247,6 @@ describe('Quote Request Actions', () => {
   describe('Delete Item From Quote Request Actions', () => {
     it('should create new action for DeleteItemFromQuoteRequest', () => {
       const payload = {
-        quoteRequestId: 'test',
         itemId: 'test',
       };
       const action = new fromActions.DeleteItemFromQuoteRequest(payload);

@@ -6,6 +6,7 @@ import {
   DeleteItemFromQuoteRequest,
   getQuoteRequestLoading,
   getSelectedQuoteRequest,
+  UpdateQuoteRequest,
   UpdateQuoteRequestItems,
 } from '../../store/quote-request';
 import { QuotingState } from '../../store/quoting.state';
@@ -31,7 +32,11 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
     this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
   }
 
-  updateQuoteRequestItems(payload: { items: { itemId: string; quantity: number }[] }) {
+  updateQuoteRequestItems(payload: { itemId: string; quantity: number }[]) {
     this.store.dispatch(new UpdateQuoteRequestItems(payload));
+  }
+
+  updateQuoteRequest(payload: { displayName?: string; description?: string }) {
+    this.store.dispatch(new UpdateQuoteRequest(payload));
   }
 }
