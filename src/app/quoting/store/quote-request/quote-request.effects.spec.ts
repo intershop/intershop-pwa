@@ -243,6 +243,50 @@ describe('Quote Request Effects', () => {
     });
   });
 
+  describe('submitQuoteRequest$', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
+      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
+
+      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenCall(() => {
+        return of('QRID');
+      });
+    });
+
+    it('should call the quoteService for submitQuoteRequest with specific quoteRequestId', done => {
+      const action = new quoteRequestActions.SubmitQuoteRequest();
+      actions$ = of(action);
+
+      effects.submitQuoteRequest$.subscribe(() => {
+        verify(quoteRequestServiceMock.submitQuoteRequest('QRID')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type submitQuoteRequestSuccess', () => {
+      const action = new quoteRequestActions.SubmitQuoteRequest();
+      const completion = new quoteRequestActions.SubmitQuoteRequestSuccess('QRID');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.submitQuoteRequest$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type SubmitQuoteRequestFail', () => {
+      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenCall(() => {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      });
+
+      const action = new quoteRequestActions.SubmitQuoteRequest();
+      const completion = new quoteRequestActions.SubmitQuoteRequestFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.submitQuoteRequest$).toBeObservable(expected$);
+    });
+  });
+
   describe('loadQuoteRequestItems$', () => {
     beforeEach(() => {
       store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
@@ -663,6 +707,15 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type LoadQuoteRequests if DeleteQuoteRequestSuccess action triggered', () => {
       const action = new quoteRequestActions.DeleteQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.LoadQuoteRequests();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadQuoteRequestsAfterChangeSuccess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadQuoteRequests if SubmitQuoteRequestSuccess action triggered', () => {
+      const action = new quoteRequestActions.SubmitQuoteRequestSuccess('QRID');
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

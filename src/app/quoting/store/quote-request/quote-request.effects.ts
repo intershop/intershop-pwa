@@ -105,6 +105,23 @@ export class QuoteRequestEffects {
   );
 
   /**
+   * Submit quote request from a specific user of a specific customer.
+   */
+  @Effect()
+  submitQuoteRequest$ = this.actions$.pipe(
+    ofType(quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequest),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
+    concatMap(([action, quoteRequestId]) => {
+      return this.quoteRequestService
+        .submitQuoteRequest(quoteRequestId)
+        .pipe(
+          map(id => new quoteRequestActions.SubmitQuoteRequestSuccess(id)),
+          catchError(error => of(new quoteRequestActions.SubmitQuoteRequestFail(error)))
+        );
+    })
+  );
+
+  /**
    * The load quote requests items effect.
    */
   @Effect()
@@ -257,6 +274,7 @@ export class QuoteRequestEffects {
       quoteRequestActions.QuoteRequestActionTypes.AddQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequestSuccess,
+      quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess,
       quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess,

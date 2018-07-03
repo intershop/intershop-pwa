@@ -6,6 +6,7 @@ import {
   DeleteItemFromQuoteRequest,
   getQuoteRequestLoading,
   getSelectedQuoteRequest,
+  SubmitQuoteRequest,
   UpdateQuoteRequest,
   UpdateQuoteRequestItems,
 } from '../../store/quote-request';
@@ -38,5 +39,9 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {
     this.store.dispatch(new UpdateQuoteRequest(payload));
+  }
+
+  submitQuoteRequest() {
+    this.store.dispatch(new SubmitQuoteRequest());
   }
 }

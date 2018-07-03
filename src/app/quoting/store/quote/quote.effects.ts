@@ -10,6 +10,7 @@ import { QuoteRequestItem } from '../../../models/quote-request-item/quote-reque
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { QuoteService } from '../../services/quote/quote.service';
+import { QuoteRequestActionTypes } from '../quote-request';
 import { QuotingState } from '../quoting.state';
 import * as quoteActions from './quote.actions';
 import { getSelectedQuoteId } from './quote.selectors';
@@ -61,7 +62,11 @@ export class QuoteEffects {
    */
   @Effect()
   loadQuotesAfterChangeSuccess$ = this.actions$.pipe(
-    ofType(quoteActions.QuoteActionTypes.DeleteQuoteSuccess, UserActionTypes.LoadCompanyUserSuccess),
+    ofType(
+      quoteActions.QuoteActionTypes.DeleteQuoteSuccess,
+      QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
+      UserActionTypes.LoadCompanyUserSuccess
+    ),
     filter(() => this.featureToggleService.enabled('quoting')),
     map(() => new quoteActions.LoadQuotes())
   );

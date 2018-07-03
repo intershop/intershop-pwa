@@ -32,6 +32,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction): 
     case QuoteRequestActionTypes.AddQuoteRequest:
     case QuoteRequestActionTypes.UpdateQuoteRequest:
     case QuoteRequestActionTypes.DeleteQuoteRequest:
+    case QuoteRequestActionTypes.SubmitQuoteRequest:
     case QuoteRequestActionTypes.LoadQuoteRequestItems:
     case QuoteRequestActionTypes.AddProductToQuoteRequest:
     case QuoteRequestActionTypes.UpdateQuoteRequestItems:
@@ -46,6 +47,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction): 
     case QuoteRequestActionTypes.AddQuoteRequestFail:
     case QuoteRequestActionTypes.UpdateQuoteRequestFail:
     case QuoteRequestActionTypes.DeleteQuoteRequestFail:
+    case QuoteRequestActionTypes.SubmitQuoteRequestFail:
     case QuoteRequestActionTypes.LoadQuoteRequestItemsFail:
     case QuoteRequestActionTypes.AddProductToQuoteRequestFail:
     case QuoteRequestActionTypes.UpdateQuoteRequestItemsFail:
@@ -82,6 +84,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction): 
     case QuoteRequestActionTypes.AddQuoteRequestSuccess:
     case QuoteRequestActionTypes.UpdateQuoteRequestSuccess:
     case QuoteRequestActionTypes.DeleteQuoteRequestSuccess:
+    case QuoteRequestActionTypes.SubmitQuoteRequestSuccess:
     case QuoteRequestActionTypes.AddProductToQuoteRequestSuccess:
     case QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess:
     case QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess: {
