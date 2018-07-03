@@ -26,12 +26,10 @@ export class FilterEffects {
   loadAvailableFilterForCategories$ = this.actions$.pipe(
     ofType(filterActions.FilterActionTypes.LoadFilterForCategory),
     mergeMap((action: filterActions.LoadFilterForCategory) =>
-      this.filterService
-        .getFilterForCategory(action.payload)
-        .pipe(
-          map(filterNavigation => new filterActions.LoadFilterForCategorySuccess(filterNavigation)),
-          catchError(error => of(new filterActions.LoadFilterForCategoryFail(error)))
-        )
+      this.filterService.getFilterForCategory(action.payload).pipe(
+        map(filterNavigation => new filterActions.LoadFilterForCategorySuccess(filterNavigation)),
+        catchError(error => of(new filterActions.LoadFilterForCategoryFail(error)))
+      )
     )
   );
 
@@ -39,12 +37,10 @@ export class FilterEffects {
   loadFilterForSearch$ = this.actions$.pipe(
     ofType(filterActions.FilterActionTypes.LoadFilterForSearch),
     mergeMap((action: filterActions.LoadFilterForSearch) =>
-      this.filterService
-        .getFilterForSearch(action.payload)
-        .pipe(
-          map(filterNavigation => new filterActions.LoadFilterForSearchSuccess(filterNavigation)),
-          catchError(error => of(new filterActions.LoadFilterForSearchFail(error)))
-        )
+      this.filterService.getFilterForSearch(action.payload).pipe(
+        map(filterNavigation => new filterActions.LoadFilterForSearchSuccess(filterNavigation)),
+        catchError(error => of(new filterActions.LoadFilterForSearchFail(error)))
+      )
     )
   );
 
@@ -75,15 +71,13 @@ export class FilterEffects {
     ofType(filterActions.FilterActionTypes.ApplyFilter),
     map((f: filterActions.ApplyFilter) => f.payload),
     mergeMap(emit =>
-      this.filterService
-        .applyFilter(emit.filterId, emit.searchParameter)
-        .pipe(
-          map(
-            filterNavigation =>
-              new filterActions.ApplyFilterSuccess(filterNavigation, emit.filterId, emit.searchParameter)
-          ),
-          catchError(error => of(new filterActions.ApplyFilterFail(error)))
-        )
+      this.filterService.applyFilter(emit.filterId, emit.searchParameter).pipe(
+        map(
+          filterNavigation =>
+            new filterActions.ApplyFilterSuccess(filterNavigation, emit.filterId, emit.searchParameter)
+        ),
+        catchError(error => of(new filterActions.ApplyFilterFail(error)))
+      )
     )
   );
 

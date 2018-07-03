@@ -1,31 +1,32 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Filter } from '../../../../models/filter/filter.model';
-import { FilterCheckboxComponent } from './filter-checkbox.component';
+import { FilterSwatchImagesComponent } from './filter-swatch-images.component';
 
-describe('Filter Checkbox Component', () => {
-  let component: FilterCheckboxComponent;
-  let fixture: ComponentFixture<FilterCheckboxComponent>;
+describe('Filter Swatch Images Component', () => {
+  let component: FilterSwatchImagesComponent;
+  let fixture: ComponentFixture<FilterSwatchImagesComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FilterCheckboxComponent],
+      declarations: [FilterSwatchImagesComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     const filterElement = {
-      name: 'Brands',
+      name: 'Color',
       facets: [
-        { name: 'AsusName', count: 4, link: { title: 'Asus' } },
-        { name: 'LogitechName', count: 5, link: { title: 'Logitech' }, selected: true },
+        { name: 'ColorBlack', count: 4, link: { title: 'Black' } },
+        { name: 'ColorRed', count: 5, link: { title: 'Red' }, selected: true },
       ],
     } as Filter;
-    fixture = TestBed.createComponent(FilterCheckboxComponent);
+    fixture = TestBed.createComponent(FilterSwatchImagesComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.filterElement = filterElement;
+    fixture.detectChanges();
   });
 
   it('should be created', () => {

@@ -36,8 +36,7 @@ import {
   SelectCategory,
   SelectedCategoryAvailable,
 } from './categories';
-import { FilterActionTypes } from './filter/filter.actions';
-
+import { FilterActionTypes } from './filter';
 import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
 import { getRecentlyProducts, RecentlyActionTypes } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
@@ -119,6 +118,7 @@ describe('Shopping System', () => {
     when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
 
     filterServiceMock = mock(FilterService);
+    when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
     when(filterServiceMock.getFilterForCategory(anything())).thenReturn(of({} as FilterNavigation));
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -249,7 +249,6 @@ describe('Shopping System', () => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectCategory('A.123'));
           expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
-          expect(i.next()).toEqual(new LoadCategory('A'));
           expect(i.next()).toEqual(new LoadCategory('A.123'));
           expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
@@ -305,6 +304,8 @@ describe('Shopping System', () => {
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -362,10 +363,10 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
-        expect(i.next()).toEqual(new LoadCategory('A'));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+        expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
 
         expect(i.next()).toBeUndefined();
       })
@@ -455,15 +456,15 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next()).toBeUndefined();
@@ -623,9 +624,9 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -869,12 +870,12 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductFail);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
 
         const errorPageRouting = i.next() as RouteNavigation;
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
@@ -979,7 +980,9 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
         expect(i.next()).toBeUndefined();
       })
     );

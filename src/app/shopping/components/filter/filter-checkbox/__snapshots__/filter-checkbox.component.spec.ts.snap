@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter Checkbox Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.0.7"
+>
+  <div
+    class="filter-group"
+  >
+    <h3>
+      Brands
+    </h3>
+    <ul
+      class="filter-list"
+    >
+      
+      
+      
+      
+      
+      
+      <li
+        class="filter-item filter-selected"
+      >
+        <span
+          class="icon-selected"
+        />
+        Logitech 
+        <a
+          class="filter-clear"
+        >
+          <span
+            class="glyphicon glyphicon-minus pull-right"
+          />
+        </a>
+      </li>
+      
+    </ul>
+    <ul
+      class="filter-list"
+    >
+      
+      
+      
+      <li
+        class="filter-item"
+      >
+        <a
+          class="filter-item-name"
+          data-testing-id="filter-link-AsusName"
+        >
+          <span
+            class="icon-notselected"
+          />
+          Asus 
+        </a>
+      </li>
+      
+      
+      
+      
+    </ul>
+  </div>
+</div>
+`;

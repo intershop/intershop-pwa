@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiService } from '../../../core/services/api.service';
+import { ApiService, unpackEnvelope } from '../../../core/services/api/api.service';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigationData } from '../../../models/filter-navigation/filter-navigation.interface';
 import { FilterNavigationMapper } from '../../../models/filter-navigation/filter-navigation.mapper';
@@ -23,7 +23,7 @@ export class FilterService {
       .set('CategoryDomainName', categoryDomainName)
       .set('CategoryName', idList[idList.length - 1]);
     return this.apiService
-      .get<FilterNavigationData>('filters', params)
+      .get<FilterNavigationData>('filters', { params })
       .pipe(map(filter => FilterNavigationMapper.fromData(filter)));
   }
 
@@ -43,7 +43,10 @@ export class FilterService {
   getProductSkusForFilter(filterName: string, searchParameter: string): Observable<string[]> {
     return this.apiService
       .get<{ elements: Link[] }>(`filters/${filterName};SearchParameter=${searchParameter}/hits`)
-      .pipe(map(e => e.elements), map((e: Link[]) => e.map(n => n.uri.split('/')[1])));
+      .pipe(
+        unpackEnvelope(),
+        map((e: Link[]) => e.map(n => n.uri.split('/')[1]))
+      );
   }
 
   private getDomainId(rootName: string) {

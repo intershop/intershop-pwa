@@ -7,6 +7,7 @@ import { CategoryNavigationComponent } from './components/category//category-nav
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
+import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
 import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
@@ -48,6 +49,7 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     FilterNavigationContainerComponent,
     FilterDropdownComponent,
     FilterCheckboxComponent,
+    FilterSwatchImagesComponent,
   ],
   exports: [
     SharedProductModule,
@@ -69,8 +71,6 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     RecentlyViewedContainerComponent,
     RecentlyViewedComponent,
     FilterNavigationContainerComponent,
-    FilterDropdownComponent,
-    FilterCheckboxComponent,
   ],
 })
 export class ShoppingSharedModule {}

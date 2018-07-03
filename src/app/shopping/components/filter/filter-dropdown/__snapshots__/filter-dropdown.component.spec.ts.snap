@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filter Dropdown Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.0.7"
+>
+  <div
+    class="filter-group"
+  >
+    <h3>
+      Brands
+    </h3>
+    <ul
+      class="filter-list"
+    >
+      
+      
+      
+      
+      
+      
+      <li
+        class="filter-item filter-selected"
+      >
+        <span
+          class="icon-selected"
+        />
+        Logitech 
+        <span
+          class="filter-count"
+        >
+          (5)
+        </span>
+        <a
+          class="filter-clear"
+        >
+          <span
+            class="glyphicon glyphicon-minus pull-right"
+          />
+        </a>
+      </li>
+      
+    </ul>
+    <form
+      class="ng-untouched ng-pristine ng-valid"
+      name="Filter"
+      ng-reflect-form="[object Object]"
+      novalidate=""
+      role="filter"
+    >
+      <select
+        class="ws-submit-search-param form-control ng-untouched ng-pristine ng-valid"
+        formcontrolname="filterDropdown"
+        name="SearchParameter"
+        ng-reflect-name="filterDropdown"
+      >
+        <option
+          ng-reflect-value=""
+          value=""
+        >
+          search.filter.select_option.text
+        </option>
+        
+        
+        
+        <option
+          ng-reflect-value="AsusName"
+          value="AsusName"
+        >
+          Asus
+        </option>
+        
+        
+        
+        
+      </select>
+    </form>
+  </div>
+</div>
+`;
