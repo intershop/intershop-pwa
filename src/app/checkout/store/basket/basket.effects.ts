@@ -146,7 +146,7 @@ export class BasketEffects {
     map((action: basketActions.AddItemsToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([payload, basket]) => !!basket || !!payload.basketId),
-    switchMap(([payload, basket]) => {
+    concatMap(([payload, basket]) => {
       // get basket id from AddItemsToBasket action if set, otherwise use current basket id
       const basketId = payload.basketId || basket.id;
 
@@ -184,7 +184,7 @@ export class BasketEffects {
       return { updatedItems, basket };
     }),
 
-    switchMap(({ updatedItems, basket }) =>
+    concatMap(({ updatedItems, basket }) =>
       forkJoin(
         updatedItems.map(item => {
           if (item.quantity > 0) {
