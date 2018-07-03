@@ -8,5 +8,8 @@ export interface Partiton<T> {
 
 export function partitionBy<T>(predicate: (value: T) => boolean): OperatorFunction<T, Partiton<T>> {
   return (source$: Observable<T>) =>
-    source$.pipe(inp => of(partition(predicate)(inp)), map(([a, b]) => ({ isTrue: a, isFalse: b })));
+    source$.pipe(
+      inp => of(partition(predicate)(inp)),
+      map(([a, b]) => ({ isTrue: a, isFalse: b }))
+    );
 }

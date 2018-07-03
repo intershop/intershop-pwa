@@ -10,10 +10,7 @@ describe('Crosstab Service', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([CrosstabService], (service: CrosstabService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([CrosstabService], (service: CrosstabService) => {
+    expect(service).toBeTruthy();
+  }));
 });

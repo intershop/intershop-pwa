@@ -36,12 +36,10 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasket),
     map((action: basketActions.LoadBasket) => action.payload),
     mergeMap(basketId => {
-      return this.basketService
-        .getBasket(basketId)
-        .pipe(
-          map(basket => new basketActions.LoadBasketSuccess(basket)),
-          catchError(error => of(new basketActions.LoadBasketFail(error)))
-        );
+      return this.basketService.getBasket(basketId).pipe(
+        map(basket => new basketActions.LoadBasketSuccess(basket)),
+        catchError(error => of(new basketActions.LoadBasketFail(error)))
+      );
     })
   );
 
@@ -84,12 +82,10 @@ export class BasketEffects {
     map((action: basketActions.UpdateBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([payload, basket]) => {
-      return this.basketService
-        .updateBasket(basket.id, payload)
-        .pipe(
-          map(() => new basketActions.UpdateBasketSuccess()),
-          catchError(error => of(new basketActions.UpdateBasketFail(error)))
-        );
+      return this.basketService.updateBasket(basket.id, payload).pipe(
+        map(() => new basketActions.UpdateBasketSuccess()),
+        catchError(error => of(new basketActions.UpdateBasketFail(error)))
+      );
     })
   );
 
@@ -101,12 +97,10 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketItems),
     map((action: basketActions.LoadBasketItems) => action.payload),
     mergeMap(basketId => {
-      return this.basketService
-        .getBasketItems(basketId)
-        .pipe(
-          map(basketItems => new basketActions.LoadBasketItemsSuccess(basketItems)),
-          catchError(error => of(new basketActions.LoadBasketItemsFail(error)))
-        );
+      return this.basketService.getBasketItems(basketId).pipe(
+        map(basketItems => new basketActions.LoadBasketItemsSuccess(basketItems)),
+        catchError(error => of(new basketActions.LoadBasketItemsFail(error)))
+      );
     })
   );
 
@@ -150,12 +144,10 @@ export class BasketEffects {
       // get basket id from AddItemsToBasket action if set, otherwise use current basket id
       const basketId = payload.basketId || basket.id;
 
-      return this.basketService
-        .addItemsToBasket(payload.items, basketId)
-        .pipe(
-          map(() => new basketActions.AddItemsToBasketSuccess()),
-          catchError(error => of(new basketActions.AddItemsToBasketFail(error)))
-        );
+      return this.basketService.addItemsToBasket(payload.items, basketId).pipe(
+        map(() => new basketActions.AddItemsToBasketSuccess()),
+        catchError(error => of(new basketActions.AddItemsToBasketFail(error)))
+      );
     })
   );
 
@@ -209,12 +201,10 @@ export class BasketEffects {
     map((action: basketActions.DeleteBasketItem) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([itemId, basket]) => {
-      return this.basketService
-        .deleteBasketItem(itemId, basket.id)
-        .pipe(
-          map(() => new basketActions.DeleteBasketItemSuccess()),
-          catchError(error => of(new basketActions.DeleteBasketItemFail(error)))
-        );
+      return this.basketService.deleteBasketItem(itemId, basket.id).pipe(
+        map(() => new basketActions.DeleteBasketItemSuccess()),
+        catchError(error => of(new basketActions.DeleteBasketItemFail(error)))
+      );
     })
   );
 
@@ -236,12 +226,10 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketPayments),
     map((action: basketActions.LoadBasketPayments) => action.payload),
     mergeMap(basketId => {
-      return this.basketService
-        .getBasketPayments(basketId)
-        .pipe(
-          map(basketPayments => new basketActions.LoadBasketPaymentsSuccess(basketPayments)),
-          catchError(error => of(new basketActions.LoadBasketPaymentsFail(error)))
-        );
+      return this.basketService.getBasketPayments(basketId).pipe(
+        map(basketPayments => new basketActions.LoadBasketPaymentsSuccess(basketPayments)),
+        catchError(error => of(new basketActions.LoadBasketPaymentsFail(error)))
+      );
     })
   );
 

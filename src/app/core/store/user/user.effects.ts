@@ -27,12 +27,10 @@ export class UserEffects {
     ofType(userActions.UserActionTypes.LoginUser),
     map((action: userActions.LoginUser) => action.payload),
     mergeMap(credentials => {
-      return this.registrationService
-        .signinUser(credentials)
-        .pipe(
-          map(customer => new userActions.LoginUserSuccess(customer)),
-          catchError(error => of(this.dispatchLogin(error)))
-        );
+      return this.registrationService.signinUser(credentials).pipe(
+        map(customer => new userActions.LoginUserSuccess(customer)),
+        catchError(error => of(this.dispatchLogin(error)))
+      );
     })
   );
 
@@ -40,12 +38,10 @@ export class UserEffects {
   loadCompanyUser$ = this.actions$.pipe(
     ofType(userActions.UserActionTypes.LoadCompanyUser),
     mergeMap(() => {
-      return this.registrationService
-        .getCompanyUserData()
-        .pipe(
-          map(user => new userActions.LoadCompanyUserSuccess(user)),
-          catchError(error => of(new userActions.LoadCompanyUserFail(error)))
-        );
+      return this.registrationService.getCompanyUserData().pipe(
+        map(user => new userActions.LoadCompanyUserSuccess(user)),
+        catchError(error => of(new userActions.LoadCompanyUserFail(error)))
+      );
     })
   );
 
@@ -75,12 +71,10 @@ export class UserEffects {
     ofType(userActions.UserActionTypes.CreateUser),
     map((action: userActions.CreateUser) => action.payload),
     mergeMap((customerData: Customer) => {
-      return this.registrationService
-        .createUser(customerData)
-        .pipe(
-          map(customer => new userActions.CreateUserSuccess(customer)),
-          catchError(error => of(this.dispatchCreation(error)))
-        );
+      return this.registrationService.createUser(customerData).pipe(
+        map(customer => new userActions.CreateUserSuccess(customer)),
+        catchError(error => of(this.dispatchCreation(error)))
+      );
     })
   );
 

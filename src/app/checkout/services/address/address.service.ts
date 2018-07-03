@@ -17,8 +17,9 @@ export class AddressService {
    * @returns           The customer's addresses.
    */
   getCustomerAddresses(customerId: string = '-'): Observable<Address[]> {
-    return this.apiService
-      .get(`customers/${customerId}/addresses`)
-      .pipe(unpackEnvelope<Link>(), resolveLinks<Address>(this.apiService));
+    return this.apiService.get(`customers/${customerId}/addresses`).pipe(
+      unpackEnvelope<Link>(),
+      resolveLinks<Address>(this.apiService)
+    );
   }
 }
