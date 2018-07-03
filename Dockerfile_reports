@@ -1,0 +1,19 @@
+FROM caltha/protractor as reporting
+RUN apt-get update
+RUN apt-get install -y wget
+COPY package.json package-lock.json /workspace/
+COPY tslint-rules /workspace/tslint-rules/
+WORKDIR /workspace
+RUN npm install
+RUN npx webdriver-manager update --chrome --chrome.version=2.38 --gecko false
+ENV ICM_BASE_URL="http://localhost:4200"
+COPY . /workspace/
+RUN npx jest -c jest-reports.config.js
+RUN npm run build:dynamic
+RUN (npm run serve:dynamic&) \
+ && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200 \
+ && npx protractor e2e/protractor.conf.js --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4200
+
+FROM danjellz/http-server
+COPY --from=reporting /workspace/reports /public
+
