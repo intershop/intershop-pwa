@@ -17,6 +17,9 @@ export enum QuoteRequestActionTypes {
   DeleteQuoteRequest = '[Quote] Delete Quote Request',
   DeleteQuoteRequestFail = '[Quote API] Delete Quote Request Fail',
   DeleteQuoteRequestSuccess = '[Quote API] Delete Quote Request Success',
+  SubmitQuoteRequest = '[Quote] Submit Quote Request',
+  SubmitQuoteRequestFail = '[Quote API] Submit Quote Request Fail',
+  SubmitQuoteRequestSuccess = '[Quote API] Submit Quote Request Success',
   LoadQuoteRequestItems = '[Quote] Load QuoteRequestItems',
   LoadQuoteRequestItemsFail = '[Quote API] Load QuoteRequestItems Fail',
   LoadQuoteRequestItemsSuccess = '[Quote API] Load QuoteRequestItems Success',
@@ -94,6 +97,20 @@ export class DeleteQuoteRequestSuccess implements Action {
   constructor(public payload: string) {}
 }
 
+export class SubmitQuoteRequest implements Action {
+  readonly type = QuoteRequestActionTypes.SubmitQuoteRequest;
+}
+
+export class SubmitQuoteRequestFail implements Action {
+  readonly type = QuoteRequestActionTypes.SubmitQuoteRequestFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class SubmitQuoteRequestSuccess implements Action {
+  readonly type = QuoteRequestActionTypes.SubmitQuoteRequestSuccess;
+  constructor(public payload: string) {}
+}
+
 export class LoadQuoteRequestItems implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestItems;
   constructor(public payload: string) {}
@@ -168,6 +185,9 @@ export type QuoteAction =
   | DeleteQuoteRequest
   | DeleteQuoteRequestFail
   | DeleteQuoteRequestSuccess
+  | SubmitQuoteRequest
+  | SubmitQuoteRequestFail
+  | SubmitQuoteRequestSuccess
   | LoadQuoteRequestItems
   | LoadQuoteRequestItemsFail
   | LoadQuoteRequestItemsSuccess

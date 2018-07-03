@@ -14,6 +14,7 @@ import { User } from '../../../models/user/user.model';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteService } from '../../services/quote/quote.service';
+import { SubmitQuoteRequestSuccess } from '../quote-request';
 import { QuotingState } from '../quoting.state';
 import { quotingReducers } from '../quoting.system';
 import * as quoteActions from './quote.actions';
@@ -136,6 +137,15 @@ describe('Quote Effects', () => {
   describe('loadQuotesAfterChangeSuccess$', () => {
     it('should map to action of type LoadQuotes if DeleteQuoteSuccess action triggered', () => {
       const action = new quoteActions.DeleteQuoteSuccess(anyString());
+      const completion = new quoteActions.LoadQuotes();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadQuotesAfterChangeSuccess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadQuotes if SubmitQuoteRequestSuccess action triggered', () => {
+      const action = new SubmitQuoteRequestSuccess(anyString());
       const completion = new quoteActions.LoadQuotes();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

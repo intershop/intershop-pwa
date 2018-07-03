@@ -79,13 +79,28 @@ export class QuoteRequestService {
   /**
    * Delete specific quote request for the given customerId and userId.
    * @param quoteRequestId The quote request id.
-   * @return               The deleted quote request id
+   * @return               The deleted quote request id.
    */
   deleteQuoteRequest(quoteRequestId: string): Observable<string> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
         this.apiService
           .delete(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}`)
+          .pipe(map(() => quoteRequestId))
+      )
+    );
+  }
+
+  /**
+   * Submit specific quote request for the given customerId and userId.
+   * @param quoteRequestId The quote request id.
+   * @return               The submitted quote request id.
+   */
+  submitQuoteRequest(quoteRequestId: string): Observable<string> {
+    return this.ids$.pipe(
+      concatMap(({ userId, customerId }) =>
+        this.apiService
+          .post(`customers/${customerId}/users/${userId}/quotes`, { quoteRequestID: quoteRequestId })
           .pipe(map(() => quoteRequestId))
       )
     );

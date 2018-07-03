@@ -5,6 +5,7 @@
     (deleteItem)="deleteQuoteRequestItem($event)"
     (updateItems)="updateQuoteRequestItems($event)"
     (updateQuoteRequest)="updateQuoteRequest($event)"
+    (submitQuoteRequest)="submitQuoteRequest($event)"
   ></ish-quote-edit>
 
   <ish-loading *ngIf="quoteRequestLoading$ | async"></ish-loading>

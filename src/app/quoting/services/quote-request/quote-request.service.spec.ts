@@ -52,6 +52,12 @@ describe('Quote Request Service', () => {
       );
     });
 
+    it('should throw error for submitQuoteRequest', () => {
+      expect(quoteRequestService.submitQuoteRequest(null)).toBeObservable(
+        cold('#', null, { message: 'not logged in' })
+      );
+    });
+
     it('should throw error for getQuoteRequestItem', () => {
       expect(quoteRequestService.getQuoteRequestItem(null, null)).toBeObservable(
         cold('#', null, { message: 'not logged in' })
@@ -179,6 +185,16 @@ describe('Quote Request Service', () => {
       quoteRequestService.deleteQuoteRequest('QRID').subscribe(id => {
         expect(id).toEqual('QRID');
         verify(apiService.delete(`customers/CID/users/UID/quoterequests/QRID`)).once();
+        done();
+      });
+    });
+
+    it("should submit quote request when 'submitQuoteRequest' is called", done => {
+      when(apiService.post(`customers/CID/users/UID/quotes`, anything())).thenReturn(of(null));
+
+      quoteRequestService.submitQuoteRequest('QRID').subscribe(id => {
+        expect(id).toEqual('QRID');
+        verify(apiService.post(`customers/CID/users/UID/quotes`, anything())).once();
         done();
       });
     });
