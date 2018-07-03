@@ -9,10 +9,7 @@ describe('Country Service', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([CountryService], (service: CountryService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([CountryService], (service: CountryService) => {
+    expect(service).toBeTruthy();
+  }));
 });

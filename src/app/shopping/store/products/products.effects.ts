@@ -39,12 +39,10 @@ export class ProductsEffects {
     ofType(productsActions.ProductsActionTypes.LoadProduct),
     map((action: productsActions.LoadProduct) => action.payload),
     mergeMap(sku => {
-      return this.productsService
-        .getProduct(sku)
-        .pipe(
-          map(product => new productsActions.LoadProductSuccess(product)),
-          catchError(error => of(new productsActions.LoadProductFail(error)))
-        );
+      return this.productsService.getProduct(sku).pipe(
+        map(product => new productsActions.LoadProductSuccess(product)),
+        catchError(error => of(new productsActions.LoadProductFail(error)))
+      );
     })
   );
 
@@ -54,17 +52,15 @@ export class ProductsEffects {
     map((action: productsActions.LoadProductsForCategory) => action.payload),
     withLatestFrom(this.store.pipe(select(fromViewconf.getSortBy))),
     concatMap(([categoryUniqueId, sortBy]) =>
-      this.productsService
-        .getCategoryProducts(categoryUniqueId, sortBy)
-        .pipe(
-          withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
-          switchMap(([res, entities]) => [
-            new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
-            new fromViewconf.SetSortKeys(res.sortKeys),
-            ...res.skus.filter(sku => !entities[sku]).map(sku => new productsActions.LoadProduct(sku)),
-          ]),
-          catchError(error => of(new productsActions.LoadProductFail(error)))
-        )
+      this.productsService.getCategoryProducts(categoryUniqueId, sortBy).pipe(
+        withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+        switchMap(([res, entities]) => [
+          new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
+          new fromViewconf.SetSortKeys(res.sortKeys),
+          ...res.skus.filter(sku => !entities[sku]).map(sku => new productsActions.LoadProduct(sku)),
+        ]),
+        catchError(error => of(new productsActions.LoadProductFail(error)))
+      )
     )
   );
 

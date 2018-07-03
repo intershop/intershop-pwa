@@ -14,12 +14,10 @@ export class AddressesEffects {
   loadAddresses$ = this.actions$.pipe(
     ofType(addressActions.AddressActionTypes.LoadAddresses),
     switchMap(() => {
-      return this.addressService
-        .getCustomerAddresses()
-        .pipe(
-          map(addresses => new addressActions.LoadAddressesSuccess(addresses)),
-          catchError(error => of(new addressActions.LoadAddressesFail(error)))
-        );
+      return this.addressService.getCustomerAddresses().pipe(
+        map(addresses => new addressActions.LoadAddressesSuccess(addresses)),
+        catchError(error => of(new addressActions.LoadAddressesFail(error)))
+      );
     })
   );
 
