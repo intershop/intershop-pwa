@@ -18,6 +18,7 @@
 *.properties
 *.jar
 *config*.json
+.gitignore
 /*.*
 /node_modules
 /build
