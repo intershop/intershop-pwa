@@ -70,7 +70,10 @@ export class CategoriesEffects {
       map((action: actions.SelectCategory) => action.payload),
       filter(x => !!x)
     ),
-    this.store.pipe(select(selectors.getSelectedCategory), filter(CategoryHelper.isCategoryCompletelyLoaded))
+    this.store.pipe(
+      select(selectors.getSelectedCategory),
+      filter(CategoryHelper.isCategoryCompletelyLoaded)
+    )
   ).pipe(
     filter(([selectId, category]) => selectId === category.uniqueId),
     distinctUntilChanged((x, y) => x[0] === y[0]),
@@ -85,12 +88,10 @@ export class CategoriesEffects {
     ofType(actions.CategoriesActionTypes.LoadCategory),
     map((action: actions.LoadCategory) => action.payload),
     mergeMap(categoryUniqueId => {
-      return this.categoryService
-        .getCategory(categoryUniqueId)
-        .pipe(
-          map(category => new actions.LoadCategorySuccess(category)),
-          catchError(error => of(new actions.LoadCategoryFail(error)))
-        );
+      return this.categoryService.getCategory(categoryUniqueId).pipe(
+        map(category => new actions.LoadCategorySuccess(category)),
+        catchError(error => of(new actions.LoadCategoryFail(error)))
+      );
     })
   );
 
@@ -108,12 +109,10 @@ export class CategoriesEffects {
     ofType(actions.CategoriesActionTypes.LoadTopLevelCategories),
     map((action: actions.LoadTopLevelCategories) => action.payload),
     mergeMap(limit => {
-      return this.categoryService
-        .getTopLevelCategories(limit)
-        .pipe(
-          map(category => new actions.LoadTopLevelCategoriesSuccess(category)),
-          catchError(error => of(new actions.LoadTopLevelCategoriesFail(error)))
-        );
+      return this.categoryService.getTopLevelCategories(limit).pipe(
+        map(category => new actions.LoadTopLevelCategoriesSuccess(category)),
+        catchError(error => of(new actions.LoadTopLevelCategoriesFail(error)))
+      );
     })
   );
 
@@ -127,9 +126,17 @@ export class CategoriesEffects {
     this.actions$.pipe(ofRoute('category/:categoryUniqueId'))
   ).pipe(
     switchMap(() =>
-      this.store.pipe(select(selectors.productsForSelectedCategoryAreNotLoaded), filter(needed => needed))
+      this.store.pipe(
+        select(selectors.productsForSelectedCategoryAreNotLoaded),
+        filter(needed => needed)
+      )
     ),
-    switchMap(() => this.store.pipe(select(selectors.getSelectedCategoryId), filter(uniqueId => !!uniqueId))),
+    switchMap(() =>
+      this.store.pipe(
+        select(selectors.getSelectedCategoryId),
+        filter(uniqueId => !!uniqueId)
+      )
+    ),
     map(uniqueId => new LoadProductsForCategory(uniqueId))
   );
 

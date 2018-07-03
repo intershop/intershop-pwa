@@ -24,8 +24,14 @@ export class ProductPageContainerComponent implements OnInit {
   constructor(private store: Store<ShoppingState | CheckoutState>) {}
 
   ngOnInit() {
-    this.product$ = this.store.pipe(select(getSelectedProduct), filter(product => !!product));
-    this.category$ = this.store.pipe(select(getSelectedCategory), filter(category => !!category));
+    this.product$ = this.store.pipe(
+      select(getSelectedProduct),
+      filter(product => !!product)
+    );
+    this.category$ = this.store.pipe(
+      select(getSelectedCategory),
+      filter(category => !!category)
+    );
     this.productLoading$ = this.store.pipe(select(getProductLoading));
   }
 
