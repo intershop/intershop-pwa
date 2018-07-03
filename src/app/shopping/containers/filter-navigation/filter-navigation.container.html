@@ -1,10 +1,15 @@
-<div *ngIf="(filter$|async) as filterNavigation">
+<div class="filter-panel" *ngIf="(filter$|async) as filterNavigation">
   <div *ngFor="let element of filterNavigation.filter" [ngSwitch]="element.displayType">
     <ish-filter-checkbox
-      *ngSwitchCase="'text_clear'" [filterElement]="element"
+      *ngSwitchDefault [filterElement]="element"
       (applyFilter)="applyFilter($event)"
       >
     </ish-filter-checkbox>
+    <ish-filter-swatch-images
+      *ngSwitchCase="'swatch'" [filterElement]="element"
+      (applyFilter)="applyFilter($event)"
+      >
+    </ish-filter-swatch-images>
     <ish-filter-dropdown
       *ngSwitchCase="'dropdown'" [filterElement]="element"
       (applyFilter)="applyFilter($event)"

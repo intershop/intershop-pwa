@@ -1,0 +1,16 @@
+<div class="filter-group">
+
+  <h3>{{filterElement.name}}</h3>
+
+  <ul class="filter-list clearfix">
+    <ng-container *ngFor="let facet of filterElement.facets">
+      <li class="filter-item filter-colour" [ngClass]="{'filter-selected' : facet.selected}">
+        <a class="filter-swatch" title="facet.name" [title]=facet.name (click)="filter(facet)">
+          <!--- TODO: use color code from REST call as background color-->
+          <span [style.background-color]="facet.name.toLowerCase()"></span>
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+
+</div>

@@ -8,35 +8,36 @@ describe('Filter Dropdown Component', () => {
   let component: FilterDropdownComponent;
   let fixture: ComponentFixture<FilterDropdownComponent>;
   let element: HTMLElement;
-  let filterElement: Filter;
 
-  let translate: TranslateService;
-
-  beforeEach(async(() => {
-    filterElement = { facets: [] } as Filter;
-  }));
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), ReactiveFormsModule],
       declarations: [FilterDropdownComponent],
-      providers: [TranslateService],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const filterElement = {
+      name: 'Brands',
+      facets: [
+        { name: 'AsusName', count: 4, link: { title: 'Asus' } },
+        { name: 'LogitechName', count: 5, link: { title: 'Logitech' }, selected: true },
+      ],
+    } as Filter;
+
     fixture = TestBed.createComponent(FilterDropdownComponent);
     component = fixture.componentInstance;
-    translate = TestBed.get(TranslateService);
+    const translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
     element = fixture.nativeElement;
     component.filterElement = filterElement;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+    expect(element).toMatchSnapshot();
   });
 });

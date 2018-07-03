@@ -22,7 +22,7 @@ import { shoppingReducers } from '../shopping.system';
 import * as fromActions from './filter.actions';
 import { FilterEffects } from './filter.effects';
 
-describe('FilterEffects', () => {
+describe('Filter Effects', () => {
   let actions$: Observable<Action>;
   let effects: FilterEffects;
   let store$: Store<ShoppingState>;
@@ -83,12 +83,13 @@ describe('FilterEffects', () => {
   });
 
   describe('loadAvailableFilterForCategories$', () => {
-    it('should call the filterService for LoadFilterForCategories action', () => {
+    it('should call the filterService for LoadFilterForCategories action', done => {
       const action = new fromActions.LoadFilterForCategory({ name: 'c' } as Category);
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadAvailableFilterForCategories$.subscribe(() => {
         verify(filterServiceMock.getFilterForCategory(anything())).once();
+        done();
       });
     });
 
@@ -141,12 +142,13 @@ describe('FilterEffects', () => {
   });
 
   describe('applyFilter$', () => {
-    it('should call the filterService for ApplyFilter action', () => {
+    it('should call the filterService for ApplyFilter action', done => {
       const action = new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' });
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.applyFilter$.subscribe(() => {
         verify(filterServiceMock.applyFilter('a', 'b')).once();
+        done();
       });
     });
 
@@ -183,12 +185,13 @@ describe('FilterEffects', () => {
   });
 
   describe('loadFilterForSearch$', () => {
-    it('should call the filterService for LoadFilterForSearch action', () => {
+    it('should call the filterService for LoadFilterForSearch action', done => {
       const action = new fromActions.LoadFilterForSearch('search');
-      actions$ = hot('-a', { a: action });
+      actions$ = of(action);
 
       effects.loadFilterForSearch$.subscribe(() => {
         verify(filterServiceMock.getFilterForSearch(anything())).once();
+        done();
       });
     });
 

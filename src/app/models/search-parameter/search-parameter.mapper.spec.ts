@@ -1,7 +1,7 @@
 import { SearchParameterMapper } from './search-parameter.mapper';
 import { SearchParameter } from './search-parameter.model';
 
-describe('SearchParameterMapper', () => {
+describe('Search Parameter Mapper', () => {
   describe('fromData', () => {
     it(`should return SearchParameter when queryTerm is applied`, () => {
       const data = 'QFF1ZXJ5VGVybT1jYW1lcmE='; // equals @QueryTerm=camera
