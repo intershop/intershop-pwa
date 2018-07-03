@@ -26,7 +26,10 @@ export class CategoryPageContainerComponent implements OnInit {
   constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
-    this.category$ = this.store.pipe(select(fromStore.getSelectedCategory), filter(e => !!e));
+    this.category$ = this.store.pipe(
+      select(fromStore.getSelectedCategory),
+      filter(e => !!e)
+    );
     this.categoryLoading$ = this.store.pipe(select(fromStore.getCategoryLoading));
 
     this.products$ = this.store.pipe(select(fromStore.getProductsForSelectedCategory));

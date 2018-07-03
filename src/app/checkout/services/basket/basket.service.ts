@@ -52,9 +52,10 @@ export class BasketService {
       return throwError('getBasketItems() called without basketId');
     }
 
-    return this.apiService
-      .get(`baskets/${basketId}/items`)
-      .pipe(unpackEnvelope<BasketItemData>(), map(basketItemsData => basketItemsData.map(BasketItemMapper.fromData)));
+    return this.apiService.get(`baskets/${basketId}/items`).pipe(
+      unpackEnvelope<BasketItemData>(),
+      map(basketItemsData => basketItemsData.map(BasketItemMapper.fromData))
+    );
   }
 
   /**
@@ -114,8 +115,9 @@ export class BasketService {
       return throwError('getBasketPayments() called without basketId');
     }
 
-    return this.apiService
-      .get(`baskets/${basketId}/payments`)
-      .pipe(unpackEnvelope<Link>(), resolveLinks<PaymentMethod>(this.apiService));
+    return this.apiService.get(`baskets/${basketId}/payments`).pipe(
+      unpackEnvelope<Link>(),
+      resolveLinks<PaymentMethod>(this.apiService)
+    );
   }
 }
