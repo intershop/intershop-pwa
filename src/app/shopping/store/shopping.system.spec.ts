@@ -54,8 +54,8 @@ describe('Shopping System', () => {
       { lang: 'fr_FR', currency: 'EUR', value: 'fr' },
     ] as Locale[];
 
-    const catA = { uniqueId: 'A', categoryPath: ['A'], hasOnlineSubCategories: true } as Category;
-    const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'], hasOnlineSubCategories: true } as Category;
+    const catA = { uniqueId: 'A', categoryPath: ['A'] } as Category;
+    const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'] } as Category;
     const catA123456 = {
       uniqueId: 'A.123.456',
       categoryPath: ['A', 'A.123', 'A.456'],
