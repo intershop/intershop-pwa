@@ -5,4 +5,4 @@ const getViewconfState = (state: CoreState) => state.viewconf;
 
 export const getWrapperClass = createSelector(getViewconfState, state => state.wrapperClass);
 export const getHeaderType = createSelector(getViewconfState, state => state.headerType);
-export const getBreadcrumbKey = createSelector(getViewconfState, state => state.breadcrumbKey);
+export const getBreadcrumbData = createSelector(getViewconfState, state => state.breadcrumbData);
