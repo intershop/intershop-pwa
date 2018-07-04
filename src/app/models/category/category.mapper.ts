@@ -96,7 +96,6 @@ export class CategoryMapper {
         categoryPath,
         name: categoryData.name,
         hasOnlineProducts: categoryData.hasOnlineProducts,
-        hasOnlineSubCategories: categoryData.hasOnlineSubCategories,
         description: categoryData.description,
         images: categoryData.images,
         completenessLevel: CategoryMapper.computeCompleteness(categoryData),

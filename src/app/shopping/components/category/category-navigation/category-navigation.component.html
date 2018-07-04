@@ -1,4 +1,4 @@
-<div *ngIf="category.pathCategories()[categoryNavigationLevel]?.hasOnlineSubCategories" class="non-parametric-panel">
+<div *ngIf="category.pathCategories()[categoryNavigationLevel]?.hasChildren()" class="non-parametric-panel">
   <div class="filter-group">
     <ul class="filter-list">
       <li *ngFor="let subCategory of category.pathCategories()[categoryNavigationLevel].children()" class="filter-item">

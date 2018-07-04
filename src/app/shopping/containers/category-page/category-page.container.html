@@ -3,7 +3,7 @@
   <ish-breadcrumb [category]="category"></ish-breadcrumb>
 
   <!-- category with subcategories -->
-  <ng-container *ngIf="category.hasOnlineSubCategories; else productListing">
+  <ng-container *ngIf="category.hasChildren(); else productListing">
     <ish-category-page
       [category]="category"
     ></ish-category-page>
@@ -26,7 +26,7 @@
   </ng-template>
 
   <!-- empty category without subcategories and without products -->
-  <ng-container *ngIf="!category.hasOnlineSubCategories && !category.hasOnlineProducts">
+  <ng-container *ngIf="!category.hasChildren() && !category.hasOnlineProducts">
     <!-- TODO: decide how to handle empty categories -->
     <h1>{{category.name}}</h1>
   </ng-container>

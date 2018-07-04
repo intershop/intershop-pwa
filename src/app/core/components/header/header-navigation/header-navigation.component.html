@@ -8,7 +8,7 @@
     #submenu (mouseover)="subMenuShow(submenu)" (mouseout)="subMenuHide(submenu)" (click)="subMenuHide(submenu)"
   >
     <a [routerLink]="['/category', category.uniqueId]" [attr.data-testing-id]="category.uniqueId + '-link'"
-      [ngStyle]="{'width' : (!category.hasOnlineSubCategories) ? '100%' : ''}"
+      [ngStyle]="{'width' : (!category.hasChildren()) ? '100%' : ''}"
     >
       {{category.name}}
     </a>
