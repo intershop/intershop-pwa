@@ -74,8 +74,8 @@ describe('Category Page Container', () => {
 
   it('should display category-page when category has sub categories', () => {
     const category = { uniqueId: 'dummy', categoryPath: ['dummy'] } as Category;
-    category.hasOnlineSubCategories = true;
-    store$.dispatch(new LoadCategorySuccess(categoryTree([category])));
+    const subCategory = { uniqueId: 'dummy.A', categoryPath: ['dummy', 'dummy.A'] } as Category;
+    store$.dispatch(new LoadCategorySuccess(categoryTree([category, subCategory])));
     store$.dispatch(new SelectCategory(category.uniqueId));
 
     fixture.detectChanges();

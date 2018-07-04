@@ -11,6 +11,7 @@ import { capture } from 'ts-mockito/lib/ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
+import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
@@ -127,13 +128,12 @@ describe('Categories Effects', () => {
     });
 
     describe('for root categories', () => {
-      let category: Category;
+      let category: CategoryView;
 
       beforeEach(() => {
         category = {
           uniqueId: '123',
-          hasOnlineSubCategories: false,
-        } as Category;
+        } as CategoryView;
       });
 
       it('should reload category if it isnt completely loaded yet', () => {
@@ -161,7 +161,7 @@ describe('Categories Effects', () => {
       });
 
       it('should trigger LoadCategory if category exists but subcategories have not been loaded', () => {
-        category.hasOnlineSubCategories = true;
+        category.hasChildren = () => true;
         category.completenessLevel = 0;
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         actions$ = hot('a', { a: new fromActions.SelectCategory(category.uniqueId) });
@@ -178,7 +178,6 @@ describe('Categories Effects', () => {
       beforeEach(() => {
         category = {
           uniqueId: '123.456.789',
-          hasOnlineSubCategories: false,
         } as Category;
       });
 
