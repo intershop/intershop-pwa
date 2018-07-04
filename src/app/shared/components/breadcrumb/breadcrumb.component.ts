@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
 
@@ -14,5 +15,5 @@ export class BreadcrumbComponent {
   @Input() product: Product;
   @Input() searchTerm: string;
   @Input() account: boolean;
-  @Input() trailText: string;
+  @Input() trail: BreadcrumbItem[] = [];
 }

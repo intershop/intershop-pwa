@@ -20,7 +20,7 @@ describe('Account Page Container', () => {
         MockComponent({
           selector: 'ish-breadcrumb',
           template: 'Breadcrumb Component',
-          inputs: ['account', 'trailText'],
+          inputs: ['account', 'trail'],
         }),
         MockComponent({
           selector: 'ish-account-page',

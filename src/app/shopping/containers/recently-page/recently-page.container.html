@@ -1,4 +1,4 @@
-<ish-breadcrumb [trailText]="'application.recentlyViewed.breadcrumb.label' | translate"></ish-breadcrumb>
+<ish-breadcrumb [trail]="[{ key: 'application.recentlyViewed.breadcrumb.label' }]"></ish-breadcrumb>
 
 <ng-container *ngIf="(products$ | async) as products">
 

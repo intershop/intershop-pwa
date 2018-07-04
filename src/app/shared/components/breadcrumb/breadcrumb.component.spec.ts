@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
 describe('Breadcrumb Component', () => {
@@ -38,5 +39,27 @@ describe('Breadcrumb Component', () => {
     component.searchTerm = null;
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=breadcrumb-search-term]')).toBeFalsy();
+  });
+
+  describe('trail', () => {
+    it('should render items with translation keys if set', () => {
+      component.trail = [{ key: 'KEY' }, { key: 'KEY2' }];
+      fixture.detectChanges();
+      expect(element.textContent).toContain('KEY');
+      expect(element.textContent).toContain('KEY2');
+    });
+
+    it('should render items with text if set', () => {
+      component.trail = [{ text: 'TEXT' }, { text: 'TEXT2' }];
+      fixture.detectChanges();
+      expect(element.textContent).toContain('TEXT');
+      expect(element.textContent).toContain('TEXT2');
+    });
+
+    it('should render items with link if set', () => {
+      component.trail = [{ link: '/LINK' }, { link: '/LINK' }];
+      fixture.detectChanges();
+      expect(element.querySelectorAll('a').length).toBe(3);
+    });
   });
 });
