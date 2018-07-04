@@ -1,6 +1,14 @@
 {
   "elements": [
     {
+      "categoryPath": [
+        {
+          "id": "Cameras-Camcorders",
+          "name": "Cameras",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders"
+        }
+      ],
       "description": "The cameras and camcorders products catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -159,6 +167,14 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Cameras-Camcorders"
     },
     {
+      "categoryPath": [
+        {
+          "id": "Computers",
+          "name": "Computers",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+        }
+      ],
       "description": "The Computers products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -1712,6 +1728,14 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
     },
     {
+      "categoryPath": [
+        {
+          "id": "Home-Entertainment",
+          "name": "Home Entertainment",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
+        }
+      ],
       "description": "The TV & Home Entertainment products and services catalog.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,
@@ -2196,6 +2220,14 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
     },
     {
+      "categoryPath": [
+        {
+          "id": "Specials",
+          "name": "Specials",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Specials"
+        }
+      ],
       "description": "Special products and services.",
       "hasOnlineProducts": false,
       "hasOnlineSubCategories": true,

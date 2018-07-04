@@ -7,14 +7,14 @@
 # Depends on:
 # - curl: commandline http client.
 # - jq: commandline json editor.
-# - a running ICM instance with inSPIRED Storefront and HTTP port open on 8081.
+# - a running ICM instance with inSPIRED Storefront and HTTP port open on 4322.
 
 set -e
 set -o pipefail
 
 if ! command -v curl >/dev/null ; then echo "curl is not installed" ; exit 1 ; fi
 if ! command -v jq >/dev/null ; then echo "curl is not installed" ; exit 1 ; fi
-if ! curl -f "http://localhost:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-" &>/dev/null ; then echo "icm is not running" ; exit 1 ; fi
+if ! curl -f "http://localhost:4322/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-" &>/dev/null ; then echo "icm is not running" ; exit 1 ; fi
 if ! test -f .createMockdata.table ; then echo "input table does not exist" ; exit 1 ; fi
 
 cat .createMockdata.table | egrep -v '^#' | while read path params jqquery login
@@ -22,7 +22,14 @@ do
     test -z "$path" && continue
     test -z "$jqquery" && jqquery="."
     test ! -z "$login" && header="Authorization: BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ=="
+    [ "$params" = "?" ] && params=''
     echo "generating ${path}${params} $login-> '$jqquery'"
     mkdir -p src/assets/mock-data/$path
-    curl -sf -H "$header" "http://localhost:8081/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -S -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%/assets/product_img/a.jpg%' > src/assets/mock-data/$path/get-data.json
+    paramsEncoded=''
+    if [ ! -z "$params" ]
+    then
+        paramsEncoded="$(echo "$params" | sed -e 's/[^a-zA-Z0-9-]/_/g')"
+    fi
+    echo "  to src/assets/mock-data/$path/get$paramsEncoded.json"
+    curl -sf -H "$header" "http://localhost:4322/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -S -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%/assets/product_img/a.jpg%' > src/assets/mock-data/$path/get$paramsEncoded.json
 done
