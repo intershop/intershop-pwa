@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CoreState } from '../../../core/store/core.state';
-import { getRoutingData } from '../../../core/store/routing-data';
 import { getLoggedInUser } from '../../../core/store/user';
+import { getBreadcrumbKey } from '../../../core/store/viewconf';
 import { User } from '../../../models/user/user.model';
 
 @Component({
@@ -18,6 +18,6 @@ export class AccountPageContainerComponent implements OnInit {
 
   ngOnInit() {
     this.user$ = this.store.pipe(select(getLoggedInUser));
-    this.breadcrumbKey$ = this.store.pipe(select(getRoutingData('breadcrumbKey')));
+    this.breadcrumbKey$ = this.store.pipe(select(getBreadcrumbKey));
   }
 }
