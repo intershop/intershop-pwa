@@ -59,7 +59,7 @@
     "express": "^4.16.3",
     "ng-recaptcha": "^3.0.3",
     "ng2-validation": "^4.2.0",
-    "ngrx-router": "^1.0.0",
+    "ngrx-router": "^2.0.1",
     "ngrx-store-localstorage": "^5.0.0",
     "ngx-bootstrap": "^3.0.1",
     "rxjs": "^6.2.1",
