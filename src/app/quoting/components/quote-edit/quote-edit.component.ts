@@ -17,6 +17,7 @@ import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
  *   (updateItems)="updateQuoteRequestItems($event)"
  *   (updateQuoteRequest)="updateQuoteRequest($event)"
  *   (submitQuoteRequest)="submitQuoteRequest()"
+ *   (copyQuote)="copyQuote()"
  * >
  * </ish-quote-edit>
  */
@@ -32,6 +33,7 @@ export class QuoteEditComponent implements OnChanges {
   @Output() submitQuoteRequest = new EventEmitter<void>();
   @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
   @Output() deleteItem = new EventEmitter<string>();
+  @Output() copyQuote = new EventEmitter<void>();
 
   form: FormGroup;
 
@@ -150,5 +152,12 @@ export class QuoteEditComponent implements OnChanges {
       displayName: this.form.value.displayName,
       description: this.form.value.description,
     });
+  }
+
+  /**
+   * Throws copyQuote event if copy button was clicked.
+   */
+  copy() {
+    this.copyQuote.emit();
   }
 }

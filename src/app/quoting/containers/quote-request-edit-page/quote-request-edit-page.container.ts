@@ -3,6 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import {
+  CreateQuoteRequestFromQuote,
   DeleteItemFromQuoteRequest,
   getQuoteRequestLoading,
   getSelectedQuoteRequest,
@@ -43,5 +44,9 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
 
   submitQuoteRequest() {
     this.store.dispatch(new SubmitQuoteRequest());
+  }
+
+  copyQuote() {
+    this.store.dispatch(new CreateQuoteRequestFromQuote());
   }
 }

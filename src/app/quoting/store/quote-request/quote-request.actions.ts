@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
@@ -20,6 +21,9 @@ export enum QuoteRequestActionTypes {
   SubmitQuoteRequest = '[Quote] Submit Quote Request',
   SubmitQuoteRequestFail = '[Quote API] Submit Quote Request Fail',
   SubmitQuoteRequestSuccess = '[Quote API] Submit Quote Request Success',
+  CreateQuoteRequestFromQuote = '[Quote] Create Quote Request from Quote Request',
+  CreateQuoteRequestFromQuoteFail = '[Quote API] Create Quote Request from Quote Request Fail',
+  CreateQuoteRequestFromQuoteSuccess = '[Quote API] Create Quote Request from Quote Request Success',
   LoadQuoteRequestItems = '[Quote] Load QuoteRequestItems',
   LoadQuoteRequestItemsFail = '[Quote API] Load QuoteRequestItems Fail',
   LoadQuoteRequestItemsSuccess = '[Quote API] Load QuoteRequestItems Success',
@@ -111,6 +115,20 @@ export class SubmitQuoteRequestSuccess implements Action {
   constructor(public payload: string) {}
 }
 
+export class CreateQuoteRequestFromQuote implements Action {
+  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuote;
+}
+
+export class CreateQuoteRequestFromQuoteFail implements Action {
+  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class CreateQuoteRequestFromQuoteSuccess implements Action {
+  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess;
+  constructor(public payload: QuoteLineItemResultModel) {}
+}
+
 export class LoadQuoteRequestItems implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestItems;
   constructor(public payload: string) {}
@@ -188,6 +206,9 @@ export type QuoteAction =
   | SubmitQuoteRequest
   | SubmitQuoteRequestFail
   | SubmitQuoteRequestSuccess
+  | CreateQuoteRequestFromQuote
+  | CreateQuoteRequestFromQuoteFail
+  | CreateQuoteRequestFromQuoteSuccess
   | LoadQuoteRequestItems
   | LoadQuoteRequestItemsFail
   | LoadQuoteRequestItemsSuccess

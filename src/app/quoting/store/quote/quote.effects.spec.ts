@@ -4,11 +4,13 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { of, throwError } from 'rxjs';
-import { anyString, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
 import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
+import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
@@ -131,6 +133,62 @@ describe('Quote Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.deleteQuote$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createQuoteRequestFromQuote$', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
+      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(
+        new quoteActions.LoadQuotesSuccess([
+          {
+            id: 'QID',
+            items: [{ productSKU: 'SKU', quantity: { value: 1 } } as QuoteRequestItem],
+          } as Quote,
+        ])
+      );
+      store$.dispatch(new quoteActions.SelectQuote('QID'));
+
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() => {
+        return of({ type: 'test' } as QuoteLineItemResultModel);
+      });
+    });
+
+    it('should call the quoteService for createQuoteRequestFromQuote', done => {
+      const action = new quoteActions.CreateQuoteRequestFromQuote();
+      actions$ = of(action);
+
+      effects.createQuoteRequestFromQuote$.subscribe(() => {
+        verify(quoteServiceMock.createQuoteRequestFromQuote(anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type CreateQuoteRequestFromQuoteSuccess', () => {
+      const action = new quoteActions.CreateQuoteRequestFromQuote();
+      const completion = new quoteActions.CreateQuoteRequestFromQuoteSuccess({
+        type: 'test',
+      } as QuoteLineItemResultModel);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createQuoteRequestFromQuote$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() => {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      });
+
+      const action = new quoteActions.CreateQuoteRequestFromQuote();
+      const completion = new quoteActions.CreateQuoteRequestFromQuoteFail({
+        message: 'invalid',
+      } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createQuoteRequestFromQuote$).toBeObservable(expected$);
     });
   });
 

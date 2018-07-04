@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { Quote } from '../../../models/quote/quote.model';
 
 export enum QuoteActionTypes {
@@ -10,6 +11,9 @@ export enum QuoteActionTypes {
   DeleteQuote = '[Quote] Delete Quote',
   DeleteQuoteFail = '[Quote API] Delete Quote Fail',
   DeleteQuoteSuccess = '[Quote API] Delete Quote Success',
+  CreateQuoteRequestFromQuote = '[Quote] Create Quote Request from Quote',
+  CreateQuoteRequestFromQuoteFail = '[Quote API] Create Quote Request from Quote Fail',
+  CreateQuoteRequestFromQuoteSuccess = '[Quote API] Create Quote Request from Quote Success',
 }
 
 export class SelectQuote implements Action {
@@ -46,6 +50,20 @@ export class DeleteQuoteSuccess implements Action {
   constructor(public payload: string) {}
 }
 
+export class CreateQuoteRequestFromQuote implements Action {
+  readonly type = QuoteActionTypes.CreateQuoteRequestFromQuote;
+}
+
+export class CreateQuoteRequestFromQuoteFail implements Action {
+  readonly type = QuoteActionTypes.CreateQuoteRequestFromQuoteFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class CreateQuoteRequestFromQuoteSuccess implements Action {
+  readonly type = QuoteActionTypes.CreateQuoteRequestFromQuoteSuccess;
+  constructor(public payload: QuoteLineItemResultModel) {}
+}
+
 export type QuoteAction =
   | SelectQuote
   | LoadQuotes
@@ -53,4 +71,7 @@ export type QuoteAction =
   | LoadQuotesSuccess
   | DeleteQuote
   | DeleteQuoteFail
-  | DeleteQuoteSuccess;
+  | DeleteQuoteSuccess
+  | CreateQuoteRequestFromQuote
+  | CreateQuoteRequestFromQuoteFail
+  | CreateQuoteRequestFromQuoteSuccess;
