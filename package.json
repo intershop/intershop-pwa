@@ -1,6 +1,6 @@
 {
   "name": "intershop-pwa",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "scripts": {
     "precommit": "lint-staged",
     "ng": "ng",
