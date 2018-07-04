@@ -13,7 +13,7 @@ import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 import { QuotingState } from '../quoting.state';
 import * as quoteActions from './quote.actions';
-import { getSelectedQuoteId } from './quote.selectors';
+import { getSelectedQuote, getSelectedQuoteId } from './quote.selectors';
 
 @Injectable()
 export class QuoteEffects {
@@ -53,6 +53,23 @@ export class QuoteEffects {
         .pipe(
           map(id => new quoteActions.DeleteQuoteSuccess(id)),
           catchError(error => of(new quoteActions.DeleteQuoteFail(error)))
+        );
+    })
+  );
+
+  /**
+   * Create quote request based on selected quote from a specific user of a specific customer.
+   */
+  @Effect()
+  createQuoteRequestFromQuote$ = this.actions$.pipe(
+    ofType(quoteActions.QuoteActionTypes.CreateQuoteRequestFromQuote),
+    withLatestFrom(this.store.pipe(select(getSelectedQuote))),
+    concatMap(([action, currentQuoteRequest]) => {
+      return this.quoteService
+        .createQuoteRequestFromQuote(currentQuoteRequest)
+        .pipe(
+          map(res => new quoteActions.CreateQuoteRequestFromQuoteSuccess(res)),
+          catchError(error => of(new quoteActions.CreateQuoteRequestFromQuoteFail(error)))
         );
     })
   );

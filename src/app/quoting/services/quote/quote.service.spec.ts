@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { coreReducers } from '../../../core/store/core.system';
@@ -10,12 +10,15 @@ import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/us
 import { Customer } from '../../../models/customer/customer.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
+import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
+import { QuoteRequestService } from '../quote-request/quote-request.service';
 import { QuoteService } from './quote.service';
 
 describe('Quote Service', () => {
   let quoteService: QuoteService;
   let apiService: ApiService;
+  let quoteRequestService: QuoteRequestService;
   let store$: Store<CoreState>;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
@@ -23,11 +26,16 @@ describe('Quote Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    quoteRequestService = mock(QuoteRequestService);
     when(apiService.icmServerURL).thenReturn('BASE');
 
     TestBed.configureTestingModule({
       imports: [StoreModule.forRoot(coreReducers)],
-      providers: [QuoteService, { provide: ApiService, useFactory: () => instance(apiService) }],
+      providers: [
+        QuoteService,
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: QuoteRequestService, useFactory: () => instance(quoteRequestService) },
+      ],
     });
 
     quoteService = TestBed.get(QuoteService);
@@ -41,6 +49,12 @@ describe('Quote Service', () => {
 
     it('should throw error for getQuotes', () => {
       expect(quoteService.getQuotes()).toBeObservable(cold('#', null, { message: 'not logged in' }));
+    });
+
+    it('should throw error for createQuoteRequestFromQuote', () => {
+      expect(quoteService.createQuoteRequestFromQuote({ items: [] } as Quote)).toBeObservable(
+        cold('#', null, { message: 'not logged in' })
+      );
     });
   });
 
@@ -96,6 +110,17 @@ describe('Quote Service', () => {
       quoteService.deleteQuote('QID').subscribe(id => {
         expect(id).toEqual('QID');
         verify(apiService.delete(`customers/CID/users/UID/quotes/QID`)).once();
+        done();
+      });
+    });
+
+    it("should create quote request and add list of items when 'createQuoteRequestFromQuote' is called", done => {
+      when(quoteRequestService.addQuoteRequest()).thenReturn(of('QRID'));
+      when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(null));
+
+      quoteService.createQuoteRequestFromQuote({ items: [] } as Quote).subscribe(() => {
+        verify(quoteRequestService.addQuoteRequest()).once();
+        verify(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).once();
         done();
       });
     });

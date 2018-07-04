@@ -1,4 +1,3 @@
-import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 import { QuoteRequestItemData } from '../quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem, QuoteRequestItemView } from '../quote-request-item/quote-request-item.model';
@@ -10,7 +9,7 @@ interface AbstractQuote<T> {
   number: string;
   creationDate: number;
   total: Price;
-  items: (Link | T)[];
+  items: T[];
   state?: number;
   modified?: number;
   description?: string;

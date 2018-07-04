@@ -26,7 +26,8 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
     }
 
     case QuoteActionTypes.LoadQuotes:
-    case QuoteActionTypes.DeleteQuote: {
+    case QuoteActionTypes.DeleteQuote:
+    case QuoteActionTypes.CreateQuoteRequestFromQuote: {
       return {
         ...state,
         loading: true,
@@ -34,7 +35,8 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
     }
 
     case QuoteActionTypes.LoadQuotesFail:
-    case QuoteActionTypes.DeleteQuoteFail: {
+    case QuoteActionTypes.DeleteQuoteFail:
+    case QuoteActionTypes.CreateQuoteRequestFromQuoteFail: {
       const error = action.payload;
 
       return {
@@ -54,7 +56,8 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
       };
     }
 
-    case QuoteActionTypes.DeleteQuoteSuccess: {
+    case QuoteActionTypes.DeleteQuoteSuccess:
+    case QuoteActionTypes.CreateQuoteRequestFromQuoteSuccess: {
       return {
         ...state,
         loading: false,

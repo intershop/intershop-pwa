@@ -6,6 +6,7 @@ import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
 import { Link } from '../../../models/link/link.model';
+import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItemMapper } from '../../../models/quote-request-item/quote-request-item.mapper';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
@@ -144,6 +145,36 @@ export class QuoteRequestService {
         this.apiService
           .post(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`, body)
           .pipe(map(() => quoteRequestId))
+      )
+    );
+  }
+
+  /**
+   * Creates a new quote request and sets list of quote request line items from a submitted quote request for the given customerId and userId
+   * @param quoteRequest  A quote request containing quote line items
+   * @returns             Information about successful and unsuccessful line item adds
+   */
+  createQuoteRequestFromQuote(quoteRequest: QuoteRequest): Observable<QuoteLineItemResultModel> {
+    if (quoteRequest.submitted !== true) {
+      return throwError({ message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' });
+    }
+
+    const body = {
+      elements: quoteRequest.items.map((item: QuoteRequestItem) => {
+        return { productSKU: item.productSKU, quantity: { value: item.quantity.value } };
+      }),
+    };
+
+    return this.ids$.pipe(
+      concatMap(({ userId, customerId }) =>
+        this.addQuoteRequest().pipe(
+          concatMap(quoteRequestId =>
+            this.apiService.put<QuoteLineItemResultModel>(
+              `customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`,
+              body
+            )
+          )
+        )
       )
     );
   }

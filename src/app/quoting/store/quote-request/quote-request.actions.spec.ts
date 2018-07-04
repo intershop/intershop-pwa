@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import * as fromActions from './quote-request.actions';
@@ -165,6 +166,36 @@ describe('Quote Request Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
+        payload,
+      });
+    });
+  });
+
+  describe('Create Quote Request from Quote Actions', () => {
+    it('should create new action for CreateQuoteRequestFromQuote', () => {
+      const action = new fromActions.CreateQuoteRequestFromQuote();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuote,
+      });
+    });
+
+    it('should create new action for CreateQuoteRequestFromQuoteFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.CreateQuoteRequestFromQuoteFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteFail,
+        payload,
+      });
+    });
+
+    it('should create new action for CreateQuoteRequestFromQuoteSuccess', () => {
+      const payload = {} as QuoteLineItemResultModel;
+      const action = new fromActions.CreateQuoteRequestFromQuoteSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess,
         payload,
       });
     });

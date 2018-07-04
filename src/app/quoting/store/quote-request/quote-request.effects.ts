@@ -22,6 +22,7 @@ import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
+import { QuoteActionTypes } from '../quote/quote.actions';
 import { QuotingState } from '../quoting.state';
 import { getActiveQuoteRequest, getSelectedQuoteRequestId } from './';
 import * as quoteRequestActions from './quote-request.actions';
@@ -117,6 +118,23 @@ export class QuoteRequestEffects {
         .pipe(
           map(id => new quoteRequestActions.SubmitQuoteRequestSuccess(id)),
           catchError(error => of(new quoteRequestActions.SubmitQuoteRequestFail(error)))
+        );
+    })
+  );
+
+  /**
+   * Create quote request based on selected, submited quote request from a specific user of a specific customer.
+   */
+  @Effect()
+  createQuoteRequestFromQuote$ = this.actions$.pipe(
+    ofType(quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuote),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
+    concatMap(([action, currentQuoteRequest]) => {
+      return this.quoteRequestService
+        .createQuoteRequestFromQuote(currentQuoteRequest)
+        .pipe(
+          map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess(res)),
+          catchError(error => of(new quoteRequestActions.CreateQuoteRequestFromQuoteFail(error)))
         );
     })
   );
@@ -275,9 +293,11 @@ export class QuoteRequestEffects {
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
+      quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess,
       quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess,
       quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess,
+      QuoteActionTypes.CreateQuoteRequestFromQuoteSuccess,
       UserActionTypes.LoadCompanyUserSuccess
     ),
     filter(() => this.featureToggleService.enabled('quoting')),

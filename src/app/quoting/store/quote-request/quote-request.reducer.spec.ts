@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import * as fromActions from './quote-request.actions';
@@ -152,8 +153,7 @@ describe('Quote Request Reducer', () => {
   describe('SubmitQuoteRequest actions', () => {
     describe('SubmitQuoteRequest action', () => {
       it('should set loading to true', () => {
-        const payload = 'test';
-        const action = new fromActions.SubmitQuoteRequest(payload);
+        const action = new fromActions.SubmitQuoteRequest();
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toEqual(true);
@@ -175,6 +175,38 @@ describe('Quote Request Reducer', () => {
       it('should set loading to false', () => {
         const payload = 'test';
         const action = new fromActions.SubmitQuoteRequestSuccess(payload);
+        const state = quoteRequestReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+      });
+    });
+  });
+
+  describe('CreateQuoteRequestFromQuote actions', () => {
+    describe('CreateQuoteRequestFromQuote action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.CreateQuoteRequestFromQuote();
+        const state = quoteRequestReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('CreateQuoteRequestFromQuoteFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.CreateQuoteRequestFromQuoteFail(error);
+        const state = quoteRequestReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('CreateQuoteRequestFromQuoteSuccess action', () => {
+      it('should set loading to false', () => {
+        const payload = {} as QuoteLineItemResultModel;
+        const action = new fromActions.CreateQuoteRequestFromQuoteSuccess(payload);
         const state = quoteRequestReducer(initialState, action);
 
         expect(state.loading).toEqual(false);

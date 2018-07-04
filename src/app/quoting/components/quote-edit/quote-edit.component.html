@@ -212,7 +212,7 @@
             <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
           <iselse>
           -->
-          <button class="btn btn-default" name="copy" type="submit" value="copy">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+          <button class="btn btn-default" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
       </ng-container>
 
       <!-- ELSE -->
@@ -222,7 +222,7 @@
           <button type="submit" class="btn btn-primary pull-right" name="add2cart" value="add2cart">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
         </ng-container>
 
-        <button  type="submit" class="btn btn-default" name="copy" value="copy">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+        <button  type="submit" class="btn btn-default" name="copy" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
 
         <button *ngIf="quote.state === 4" type="submit" id="button-reject" class="btn btn-default" name="refuse" value="refuse">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
       </ng-container>

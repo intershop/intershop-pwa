@@ -11,6 +11,7 @@ import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
+import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { User } from '../../../models/user/user.model';
@@ -254,7 +255,7 @@ describe('Quote Request Effects', () => {
       });
     });
 
-    it('should call the quoteService for submitQuoteRequest with specific quoteRequestId', done => {
+    it('should call the quoteService for submitQuoteRequest', done => {
       const action = new quoteRequestActions.SubmitQuoteRequest();
       actions$ = of(action);
 
@@ -264,7 +265,7 @@ describe('Quote Request Effects', () => {
       });
     });
 
-    it('should map to action of type submitQuoteRequestSuccess', () => {
+    it('should map to action of type SubmitQuoteRequestSuccess', () => {
       const action = new quoteRequestActions.SubmitQuoteRequest();
       const completion = new quoteRequestActions.SubmitQuoteRequestSuccess('QRID');
       actions$ = hot('-a-a-a', { a: action });
@@ -284,6 +285,68 @@ describe('Quote Request Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.submitQuoteRequest$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createQuoteRequestFromQuote$', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
+      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(
+        new quoteRequestActions.LoadQuoteRequestsSuccess([
+          {
+            id: 'QRID',
+            items: [],
+            submitted: true,
+          } as QuoteRequest,
+        ])
+      );
+      store$.dispatch(
+        new quoteRequestActions.LoadQuoteRequestItemsSuccess([
+          { productSKU: 'SKU', quantity: { value: 1 } } as QuoteRequestItem,
+        ])
+      );
+      store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
+
+      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() => {
+        return of({ type: 'test' } as QuoteLineItemResultModel);
+      });
+    });
+
+    it('should call the quoteService for createQuoteRequestFromQuote', done => {
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuote();
+      actions$ = of(action);
+
+      effects.createQuoteRequestFromQuote$.subscribe(() => {
+        verify(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type CreateQuoteRequestFromQuoteSuccess', () => {
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuote();
+      const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess({
+        type: 'test',
+      } as QuoteLineItemResultModel);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createQuoteRequestFromQuote$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
+      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() => {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      });
+
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuote();
+      const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteFail({
+        message: 'invalid',
+      } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createQuoteRequestFromQuote$).toBeObservable(expected$);
     });
   });
 
@@ -716,6 +779,15 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type LoadQuoteRequests if SubmitQuoteRequestSuccess action triggered', () => {
       const action = new quoteRequestActions.SubmitQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.LoadQuoteRequests();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadQuoteRequestsAfterChangeSuccess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadQuoteRequests if CreateQuoteRequestFromQuoteSuccess action triggered', () => {
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess({} as QuoteLineItemResultModel);
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

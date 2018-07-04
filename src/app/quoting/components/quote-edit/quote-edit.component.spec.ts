@@ -178,5 +178,14 @@ describe('Quote Edit Component', () => {
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/2/70');
     });
+
+    it('should throw copyQuote event when copy is clicked', done => {
+      component.copyQuote.subscribe(() => {
+        expect(true).toBeTruthy();
+        done();
+      });
+
+      component.copy();
+    });
   });
 });
