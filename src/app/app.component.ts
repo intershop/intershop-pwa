@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CoreState } from './core/store/core.state';
-import { getRoutingData } from './core/store/routing-data';
+import { getWrapperClass } from './core/store/viewconf';
 
 @Component({
   selector: 'ish-root',
@@ -15,6 +15,6 @@ export class AppComponent implements OnInit {
   constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.wrapperClass$ = this.store.pipe(select(getRoutingData('wrapperClass')));
+    this.wrapperClass$ = this.store.pipe(select(getWrapperClass));
   }
 }
