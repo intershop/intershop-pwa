@@ -3,25 +3,27 @@
   <ish-breadcrumb [category]="category"></ish-breadcrumb>
 
   <!-- category with subcategories -->
-  <ng-container *ngIf="category.hasOnlineSubCategories">
+  <ng-container *ngIf="category.hasOnlineSubCategories; else productListing">
     <ish-category-page
       [category]="category"
     ></ish-category-page>
   </ng-container>
 
   <!-- category with products -->
-  <ng-container *ngIf="category.hasOnlineProducts">
-    <ish-family-page
-      [category]="category"
-      [products]="products$ | async"
-      [totalItems]="totalItems$ | async"
-      [viewType]="viewType$ | async"
-      [sortBy]="sortBy$ | async"
-      [sortKeys]="sortKeys$ | async"
-      (viewTypeChange)="changeViewType($event)"
-      (sortByChange)="changeSortBy($event)"
-    ></ish-family-page>
-  </ng-container>
+  <ng-template #productListing>
+    <ng-container *ngIf="category.hasOnlineProducts">
+      <ish-family-page
+        [category]="category"
+        [products]="products$ | async"
+        [totalItems]="totalItems$ | async"
+        [viewType]="viewType$ | async"
+        [sortBy]="sortBy$ | async"
+        [sortKeys]="sortKeys$ | async"
+        (viewTypeChange)="changeViewType($event)"
+        (sortByChange)="changeSortBy($event)"
+      ></ish-family-page>
+    </ng-container>
+  </ng-template>
 
   <!-- empty category without subcategories and without products -->
   <ng-container *ngIf="!category.hasOnlineSubCategories && !category.hasOnlineProducts">

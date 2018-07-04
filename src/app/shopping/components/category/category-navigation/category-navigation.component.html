@@ -1,7 +1,7 @@
 <div *ngIf="category.pathCategories()[categoryNavigationLevel]?.hasOnlineSubCategories" class="non-parametric-panel">
   <div class="filter-group">
     <ul class="filter-list">
-      <li *ngFor="let subCategory of category.pathCategories()[categoryNavigationLevel].subCategories" class="filter-item">
+      <li *ngFor="let subCategory of category.pathCategories()[categoryNavigationLevel].children()" class="filter-item">
         <a class="filter-item-name" [ngClass]="{'filter-selected': categoryEquals(subCategory, category)}"
           [routerLink]="['/category', subCategory.uniqueId]">
           {{subCategory.name}}
