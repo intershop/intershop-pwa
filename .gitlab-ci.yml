@@ -62,6 +62,7 @@ push_reports:
   tags:
   - shell-executor
   - docker
+  - performance
   script:
   - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF}
            --label revision="${CI_BUILD_REF}"
