@@ -16,12 +16,21 @@ export class ProductHelper {
       return '/';
     }
     let productRoute = '/product/' + product.sku;
+    const productSlug = ProductHelper.generateProductSlug(product);
+    if (productSlug) {
+      productRoute += '/' + productSlug;
+    }
+
     if (category) {
       productRoute = '/category/' + category.uniqueId + productRoute;
     } else {
       // TODO: add defaultCategory to route once this information is available with the products REST call
     }
     return productRoute;
+  }
+
+  static generateProductSlug(product: Product) {
+    return product && product.name ? product.name.replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+$/g, '') : undefined;
   }
 
   /**
