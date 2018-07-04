@@ -13,7 +13,8 @@ RUN npm run build:dynamic
 RUN (npm run serve:dynamic&) \
  && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200 \
  && npx protractor e2e/protractor.conf.js --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4200
+RUN npm run docs
 
 FROM danjellz/http-server
 COPY --from=reporting /workspace/reports /public
-
+COPY --from=reporting /workspace/docs /public/docs
