@@ -2,6 +2,7 @@ stages:
   - build
   - e2e
   - publish
+  - distribute
   - deploy
 
 build:
@@ -34,17 +35,16 @@ e2e:
   - shell-executor
   - docker
   script:
-  - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-${ENVIRONMENT}:${CI_BUILD_REF}
+  - docker build -t ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
            --build-arg env=${ENVIRONMENT}
            --label environment="${ENVIRONMENT}"
            --label revision="${CI_BUILD_REF}"
            --label project="${CI_PROJECT_URL}"
            .
-  - timeout 10m sh .gitlab-ci-wait-registry.sh
-  - docker login -u ${BUILD_USER} -p ${BUILD_PASSWORD} ${CI_REGISTRY}
-  - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-${ENVIRONMENT}:${CI_BUILD_REF}
-  - curl -v -X DELETE -u ${BUILD_USER}:${BUILD_PASSWORD} "http://rnd-repo.rnd.j.intershop.de/local-docker-dev/${CI_PROJECT_PATH_SLUG}-${ENVIRONMENT}/latest"
-  - curl -v -f -X POST -u ${BUILD_USER}:${BUILD_PASSWORD} "http://rnd-repo.rnd.j.intershop.de/api/copy/local-docker-snapshots/${CI_PROJECT_PATH_SLUG}-${ENVIRONMENT}/${CI_BUILD_REF}?to=/local-docker-dev/${CI_PROJECT_PATH_SLUG}-${ENVIRONMENT}/latest"
+  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
+  - docker tag ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:latest
+  - docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:latest
 
 push_dev:
   <<: *job_definition
@@ -67,16 +67,29 @@ push_reports:
   - docker
   - performance
   script:
-  - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF}
+  - docker build -t ${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}
            --label revision="${CI_BUILD_REF}"
            --label project="${CI_PROJECT_URL}"
            --file Dockerfile_reports
            .
-  - timeout 10m sh .gitlab-ci-wait-registry.sh
-  - docker login -u ${BUILD_USER} -p ${BUILD_PASSWORD} ${CI_REGISTRY}
-  - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF}
-  - curl -v -X DELETE -u ${BUILD_USER}:${BUILD_PASSWORD} "http://rnd-repo.rnd.j.intershop.de/local-docker-dev/${CI_PROJECT_PATH_SLUG}-reports/latest"
-  - curl -v -f -X POST -u ${BUILD_USER}:${BUILD_PASSWORD} "http://rnd-repo.rnd.j.intershop.de/api/copy/local-docker-snapshots/${CI_PROJECT_PATH_SLUG}-reports/${CI_BUILD_REF}?to=/local-docker-dev/${CI_PROJECT_PATH_SLUG}-reports/latest"
+  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - docker push ${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}
+  - docker tag ${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}/reports:latest
+  - docker push ${CI_REGISTRY_IMAGE}/reports:latest
+
+pull_images:
+  stage: distribute
+  only:
+    refs:
+      - develop
+  tags:
+  - shell-executor
+  - docker
+  - demoserver
+  script:
+  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - docker pull "${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}"
+  - docker pull "${CI_REGISTRY_IMAGE}/prod:${CI_BUILD_REF}"
 
 deploy_demo:
   stage: deploy
@@ -89,7 +102,10 @@ deploy_demo:
   - chuck-norris-swarm-manager
   variables:
     SERVICE: "intershop-pwa"
-  script: docker service create --replicas $SERVICE_REPLICAS --publish mode=host,target=4200,published=4321 --name $SERVICE --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true $IMAGE || docker service update -d --image $IMAGE --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue $SERVICE
+    IMAGE: "${CI_REGISTRY_IMAGE}/prod:${CI_BUILD_REF}"
+  script: 
+  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - docker service create --with-registry-auth --replicas $SERVICE_REPLICAS --publish mode=host,target=4200,published=4321 --name ${SERVICE} --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue ${SERVICE}
   environment:
     name: demo
     url: http://jdevbuildslave01.rnd.j.intershop.de:4321
@@ -104,8 +120,12 @@ deploy_reports:
   - shell-executor
   - docker
   - chuck-norris-swarm-manager
-  script: docker service create --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish mode=host,target=8080,published=4324 --name intershop-pwa-reports ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF} || docker service update --image ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF} intershop-pwa-reports
+  variables:
+    SERVICE: "intershop-pwa-reports"
+    IMAGE: "${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}"
+  script: 
+  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+  - docker service create --with-registry-auth --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish mode=host,target=8080,published=4324 --name ${SERVICE} ${IMAGE} || docker service update --with-registry-auth --image ${IMAGE} ${SERVICE}
   environment:
     name: reports
     url: http://jdevbuildslave01.rnd.j.intershop.de:4324
-
