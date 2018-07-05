@@ -53,6 +53,28 @@ push_prod:
   variables:
     ENVIRONMENT: "prod"
 
+push_reports:
+  stage: publish
+  only:
+    refs:
+      - develop
+  allow_failure: true
+  tags:
+  - shell-executor
+  - docker
+  - performance
+  script:
+  - docker build -t ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF}
+           --label revision="${CI_BUILD_REF}"
+           --label project="${CI_PROJECT_URL}"
+           --file Dockerfile_reports
+           .
+  - timeout 10m sh .gitlab-ci-wait-registry.sh
+  - docker login -u ${BUILD_USER} -p ${BUILD_PASSWORD} ${CI_REGISTRY}
+  - docker push ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF}
+  - curl -v -X DELETE -u ${BUILD_USER}:${BUILD_PASSWORD} "http://rnd-repo.rnd.j.intershop.de/local-docker-dev/${CI_PROJECT_PATH_SLUG}-reports/latest"
+  - curl -v -f -X POST -u ${BUILD_USER}:${BUILD_PASSWORD} "http://rnd-repo.rnd.j.intershop.de/api/copy/local-docker-snapshots/${CI_PROJECT_PATH_SLUG}-reports/${CI_BUILD_REF}?to=/local-docker-dev/${CI_PROJECT_PATH_SLUG}-reports/latest"
+
 deploy_demo:
   stage: deploy
   only:
@@ -66,3 +88,19 @@ deploy_demo:
   environment:
     name: demo
     url: http://jdevbuildslave01.rnd.j.intershop.de:4321
+
+deploy_reports:
+  stage: deploy
+  only:
+    refs:
+      - develop
+  allow_failure: true
+  tags:
+  - shell-executor
+  - docker
+  - chuck-norris-swarm-manager
+  script: docker service create --constraint node.hostname==jdevbuildslave01.rnd.j.intershop.de --publish mode=host,target=8080,published=4324 --name intershop-pwa-reports ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF} || docker service update --image ${CI_REGISTRY}/${CI_PROJECT_PATH_SLUG}-reports:${CI_BUILD_REF} intershop-pwa-reports
+  environment:
+    name: reports
+    url: http://jdevbuildslave01.rnd.j.intershop.de:4324
+
