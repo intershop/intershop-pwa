@@ -84,7 +84,9 @@ deploy_demo:
   - shell-executor
   - docker
   - chuck-norris-swarm-manager
-  script: bash .gitlab-ci-deploy.sh
+  variables:
+    SERVICE: "intershop-pwa"
+  script: docker service create --replicas $SERVICE_REPLICAS --publish mode=host,target=4200,published=4321 --name $SERVICE --env ICM_BASE_URL=$ICM_BASE_URL --env LOGGING=true $IMAGE || docker service update -d --image $IMAGE --env-add ICM_BASE_URL=$ICM_BASE_URL --env-add LOGGING=true --force --replicas $SERVICE_REPLICAS --update-delay 0s --update-parallelism 0 --update-order stop-first --update-failure-action continue $SERVICE
   environment:
     name: demo
     url: http://jdevbuildslave01.rnd.j.intershop.de:4321
