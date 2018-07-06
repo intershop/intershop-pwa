@@ -64,6 +64,8 @@ export class SearchResultComponent {
    */
   @Output() sortByChange = new EventEmitter<string>();
 
+  @Output() loadMore = new EventEmitter<void>();
+
   /**
    * Emits the event for switching the view type of the product list.
    * @param viewType The new view type.

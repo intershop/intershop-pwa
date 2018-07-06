@@ -1,4 +1,4 @@
-<div class="product-list row">
+<div class="product-list row" infiniteScroll (scrolled)="loadMore.emit()">
 
   <!--Grid View -->
   <ng-container *ngIf="viewType === 'grid'">

@@ -15,6 +15,7 @@
         [sortKeys]="sortKeys$ | async"
         (viewTypeChange)="changeViewType($event)"
         (sortByChange)="changeSortBy($event)"
+        (loadMore)="loadMore.emit()"
       ></ish-search-result>
     </ng-container>
 

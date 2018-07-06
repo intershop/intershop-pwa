@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -21,6 +21,8 @@ export class SearchPageContainerComponent implements OnInit {
   viewType$: Observable<ViewType>;
   sortBy$: Observable<string>;
   sortKeys$: Observable<string[]>;
+
+  loadMore = new EventEmitter<void>();
 
   constructor(private store: Store<ShoppingState>) {}
 
