@@ -7,6 +7,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AccordionItemComponent } from './components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -27,6 +28,7 @@ import { PipesModule } from './pipes.module';
     PopoverModule,
     PipesModule,
     FeatureToggleModule,
+    InfiniteScrollModule,
   ],
   declarations: [
     BreadcrumbComponent,
@@ -51,6 +53,7 @@ import { PipesModule } from './pipes.module';
     AccordionItemComponent,
     PipesModule,
     FeatureToggleModule,
+    InfiniteScrollModule,
   ],
 })
 export class SharedModule {}
