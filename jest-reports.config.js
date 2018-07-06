@@ -17,7 +17,8 @@ module.exports = {
       ["jest-html-reporter", {
         pageTitle: "Intershop Progressive Webapp Unit Test Report",
         outputPath: "reports/unit-tests.html",
-        includeFailureMsg: true
+        includeFailureMsg: true,
+        sort: "status"
       }]
     ]
 }
