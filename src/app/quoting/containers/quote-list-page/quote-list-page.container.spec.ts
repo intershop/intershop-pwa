@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteData } from '../../../models/quote/quote.interface';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuotes, LoadQuotesSuccess } from '../../store/quote';
 import { LoadQuoteRequests } from '../../store/quote-request';
@@ -61,7 +61,7 @@ describe('Quote List Page Container', () => {
     const quotes = [
       {
         id: 'test',
-      } as Quote,
+      } as QuoteData,
     ];
 
     store$.dispatch(new LoadQuotesSuccess(quotes));

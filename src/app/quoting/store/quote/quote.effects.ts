@@ -31,12 +31,10 @@ export class QuoteEffects {
   loadQuotes$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.LoadQuotes),
     concatMap(() => {
-      return this.quoteService
-        .getQuotes()
-        .pipe(
-          map(quotes => new quoteActions.LoadQuotesSuccess(quotes)),
-          catchError(error => of(new quoteActions.LoadQuotesFail(error)))
-        );
+      return this.quoteService.getQuotes().pipe(
+        map(quotes => new quoteActions.LoadQuotesSuccess(quotes)),
+        catchError(error => of(new quoteActions.LoadQuotesFail(error)))
+      );
     })
   );
 
@@ -48,12 +46,10 @@ export class QuoteEffects {
     ofType(quoteActions.QuoteActionTypes.DeleteQuote),
     map((action: quoteActions.DeleteQuote) => action.payload),
     concatMap(quoteId => {
-      return this.quoteService
-        .deleteQuote(quoteId)
-        .pipe(
-          map(id => new quoteActions.DeleteQuoteSuccess(id)),
-          catchError(error => of(new quoteActions.DeleteQuoteFail(error)))
-        );
+      return this.quoteService.deleteQuote(quoteId).pipe(
+        map(id => new quoteActions.DeleteQuoteSuccess(id)),
+        catchError(error => of(new quoteActions.DeleteQuoteFail(error)))
+      );
     })
   );
 
@@ -65,12 +61,10 @@ export class QuoteEffects {
     ofType(quoteActions.QuoteActionTypes.CreateQuoteRequestFromQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuote))),
     concatMap(([action, currentQuoteRequest]) => {
-      return this.quoteService
-        .createQuoteRequestFromQuote(currentQuoteRequest)
-        .pipe(
-          map(res => new quoteActions.CreateQuoteRequestFromQuoteSuccess(res)),
-          catchError(error => of(new quoteActions.CreateQuoteRequestFromQuoteFail(error)))
-        );
+      return this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
+        map(res => new quoteActions.CreateQuoteRequestFromQuoteSuccess(res)),
+        catchError(error => of(new quoteActions.CreateQuoteRequestFromQuoteFail(error)))
+      );
     })
   );
 

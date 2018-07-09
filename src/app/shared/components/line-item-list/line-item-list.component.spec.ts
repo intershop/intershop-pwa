@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { BasketItemView } from '../../../models/basket-item/basket-item.model';
+import { Price } from '../../../models/price/price.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { PipesModule } from '../../pipes.module';
 import { LineItemListComponent } from './line-item-list.component';
@@ -100,5 +101,46 @@ describe('Line Item List Component', () => {
 
     component.onDeleteItem('4712');
     expect(firedItem).toBe('4712');
+  });
+
+  describe('editable', () => {
+    beforeEach(() => {
+      component.editable = true;
+    });
+
+    it('should render item quantity change input field if editable === true', () => {
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(!!element.querySelector('ish-input[controlname=quantity]')).toBeTruthy();
+    });
+
+    it('should not render item quantity change input field if editable === false', () => {
+      component.editable = false;
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(!!element.querySelector('ish-input[controlname=quantity]')).not.toBeTruthy();
+    });
+
+    it('should render item delete button if editable === true', () => {
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(!!element.querySelector('.glyphicon-trash')).toBeTruthy();
+    });
+
+    it('should not render item delete button if editable === false', () => {
+      component.editable = false;
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(!!element.querySelector('.glyphicon-trash')).not.toBeTruthy();
+    });
+  });
+
+  describe('totals', () => {
+    it('should render totals if set', () => {
+      component.total = { value: 1 } as Price;
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(element.textContent).toContain('quote.items.total.label');
+    });
   });
 });

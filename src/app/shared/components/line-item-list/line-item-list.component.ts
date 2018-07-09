@@ -2,15 +2,19 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { BasketItemView } from '../../../models/basket-item/basket-item.model';
+import { Price } from '../../../models/price/price.model';
 import { ProductHelper } from '../../../models/product/product.model';
 
 /**
  * The Line Item List Component displays a line items.
- * It prodived delete and edit functionality
+ * It prodives optional delete and edit functionality
+ * It provides optional total cost output
  *
  * @example
  * <ish-line-item-list
  *   [lineItems]="lineItems"
+ *   [editable]="editable"
+ *   [total]="total"
  *   (formChange)="onFormChange($event)"
  *   (deleteItem)="onDeleteItem($event)"
  * ></ish-line-item-list>
@@ -22,6 +26,8 @@ import { ProductHelper } from '../../../models/product/product.model';
 })
 export class LineItemListComponent implements OnChanges {
   @Input() lineItems: BasketItemView[];
+  @Input() editable = true;
+  @Input() total: Price;
 
   @Output() formChange = new EventEmitter<FormGroup>();
   @Output() deleteItem = new EventEmitter<string>();
@@ -54,7 +60,7 @@ export class LineItemListComponent implements OnChanges {
     const itemsForm: FormGroup[] = [];
 
     for (const item of lineItems) {
-      if (item.id && item.product) {
+      if (item.product) {
         itemsForm.push(
           this.formBuilder.group({
             itemId: item.id,

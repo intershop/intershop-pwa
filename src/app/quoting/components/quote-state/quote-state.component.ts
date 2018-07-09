@@ -20,7 +20,10 @@ export class QuoteStateComponent implements OnChanges {
 
   validToDate: number;
 
-  currentDateTime$ = interval(1000).pipe(startWith(0), mapTo(Date.now()));
+  currentDateTime$ = interval(1000).pipe(
+    startWith(0),
+    mapTo(Date.now())
+  );
 
   ngOnChanges() {
     this.validToDate = undefined;

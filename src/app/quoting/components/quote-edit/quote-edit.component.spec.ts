@@ -25,7 +25,7 @@ describe('Quote Edit Component', () => {
         MockComponent({
           selector: 'ish-line-item-list',
           template: 'Line Item List Component',
-          inputs: ['lineItems'],
+          inputs: ['lineItems', 'editable', 'total'],
         }),
       ],
       imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule],

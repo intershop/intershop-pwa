@@ -1,7 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
 describe('Breadcrumb Component', () => {
