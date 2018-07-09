@@ -9,9 +9,16 @@ export interface QuoteRequestItem {
     value: number;
     unit?: string;
   };
+  originQuantity: {
+    type: string;
+    value: number;
+    unit?: string;
+  };
   singleBasePrice: Price;
+  originSingleBasePrice: Price;
   totals: {
     total: Price;
+    originTotal: Price;
   };
   productSKU: string;
 }

@@ -43,9 +43,10 @@ export class QuoteRequestService {
   getQuoteRequests(): Observable<QuoteRequestData[]> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
-        this.apiService
-          .get(`customers/${customerId}/users/${userId}/quoterequests`)
-          .pipe(unpackEnvelope(), resolveLinks<QuoteRequestData>(this.apiService))
+        this.apiService.get(`customers/${customerId}/users/${userId}/quoterequests`).pipe(
+          unpackEnvelope(),
+          resolveLinks<QuoteRequestData>(this.apiService)
+        )
       )
     );
   }

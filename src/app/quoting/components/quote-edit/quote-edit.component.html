@@ -48,20 +48,20 @@
     <!-- Title and Description -->
     <ng-container *ngIf="quote.displayName; else noDisplayName">
       <h1>
-        <ng-container *ngIf="quote.state === 'Submitted'; else unsubmitted">
+        <ng-container *ngIf="quote.state === 'Responded'; else unresponded">
           {{ 'quote.edit.responded.quote_details.text' | translate}} - {{ quote.displayName }}
         </ng-container>
-        <ng-template #unsubmitted>
+        <ng-template #unresponded>
           {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate}} - {{ quote.displayName }}
         </ng-template>
       </h1>
     </ng-container>
     <ng-template #noDisplayName> <!-- TODO: needed? -->
       <h1>
-        <ng-container *ngIf="quote.state === 'Submitted'; else unsubmitted">
+        <ng-container *ngIf="quote.state === 'Responded'; else unresponded">
           {{ 'quote.edit.responded.quote_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
         </ng-container>
-        <ng-template #unsubmitted>
+        <ng-template #unresponded>
             {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
         </ng-template>
       </h1>
@@ -87,7 +87,7 @@
 
     <!--- Shows the valid from/to date  -->
     <div *ngIf="quote.state === 'Responded'" class="row">
-      <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.timeframe.label' | translate }}</label>
+      <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</label>
       <div class="col-lg-10 col-sm-9 col-xs-8">
         <p class="form-control-static">{{ validFromDate | date: 'shortDate' }} - {{ validToDate | date: 'shortDate' }}</p>
       </div>
@@ -171,6 +171,8 @@
     <ish-line-item-list
       *ngIf="quote.items"
       [lineItems]="quote.items"
+      [editable]="quote.state === 'New'"
+      [total]="quote.total"
       (formChange)="onFormChange($event)"
       (deleteItem)="onDeleteItem($event)"
     ></ish-line-item-list>

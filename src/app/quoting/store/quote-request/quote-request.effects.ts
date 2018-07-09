@@ -4,17 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { combineLatest, forkJoin, of } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  defaultIfEmpty,
-  filter,
-  map,
-  mergeMap,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { catchError, concatMap, defaultIfEmpty, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized, UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
@@ -45,12 +35,10 @@ export class QuoteRequestEffects {
   loadQuoteRequests$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequests),
     concatMap(() => {
-      return this.quoteRequestService
-        .getQuoteRequests()
-        .pipe(
-          map(quoteRequests => new quoteRequestActions.LoadQuoteRequestsSuccess(quoteRequests)),
-          catchError(error => of(new quoteRequestActions.LoadQuoteRequestsFail(error)))
-        );
+      return this.quoteRequestService.getQuoteRequests().pipe(
+        map(quoteRequests => new quoteRequestActions.LoadQuoteRequestsSuccess(quoteRequests)),
+        catchError(error => of(new quoteRequestActions.LoadQuoteRequestsFail(error)))
+      );
     })
   );
 
@@ -61,12 +49,10 @@ export class QuoteRequestEffects {
   addQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.AddQuoteRequest),
     concatMap(() => {
-      return this.quoteRequestService
-        .addQuoteRequest()
-        .pipe(
-          map(id => new quoteRequestActions.AddQuoteRequestSuccess(id)),
-          catchError(error => of(new quoteRequestActions.AddQuoteRequestFail(error)))
-        );
+      return this.quoteRequestService.addQuoteRequest().pipe(
+        map(id => new quoteRequestActions.AddQuoteRequestSuccess(id)),
+        catchError(error => of(new quoteRequestActions.AddQuoteRequestFail(error)))
+      );
     })
   );
 
@@ -79,12 +65,10 @@ export class QuoteRequestEffects {
     map((action: quoteRequestActions.UpdateQuoteRequest) => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([payload, quoteRequestId]) => {
-      return this.quoteRequestService
-        .updateQuoteRequest(quoteRequestId, payload)
-        .pipe(
-          map(quoteRequest => new quoteRequestActions.UpdateQuoteRequestSuccess(quoteRequest)),
-          catchError(error => of(new quoteRequestActions.UpdateQuoteRequestFail(error)))
-        );
+      return this.quoteRequestService.updateQuoteRequest(quoteRequestId, payload).pipe(
+        map(quoteRequest => new quoteRequestActions.UpdateQuoteRequestSuccess(quoteRequest)),
+        catchError(error => of(new quoteRequestActions.UpdateQuoteRequestFail(error)))
+      );
     })
   );
 
@@ -96,12 +80,10 @@ export class QuoteRequestEffects {
     ofType(quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequest),
     map((action: quoteRequestActions.DeleteQuoteRequest) => action.payload),
     concatMap(quoteRequestId => {
-      return this.quoteRequestService
-        .deleteQuoteRequest(quoteRequestId)
-        .pipe(
-          map(id => new quoteRequestActions.DeleteQuoteRequestSuccess(id)),
-          catchError(error => of(new quoteRequestActions.DeleteQuoteRequestFail(error)))
-        );
+      return this.quoteRequestService.deleteQuoteRequest(quoteRequestId).pipe(
+        map(id => new quoteRequestActions.DeleteQuoteRequestSuccess(id)),
+        catchError(error => of(new quoteRequestActions.DeleteQuoteRequestFail(error)))
+      );
     })
   );
 
@@ -113,12 +95,10 @@ export class QuoteRequestEffects {
     ofType(quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequest),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([action, quoteRequestId]) => {
-      return this.quoteRequestService
-        .submitQuoteRequest(quoteRequestId)
-        .pipe(
-          map(id => new quoteRequestActions.SubmitQuoteRequestSuccess(id)),
-          catchError(error => of(new quoteRequestActions.SubmitQuoteRequestFail(error)))
-        );
+      return this.quoteRequestService.submitQuoteRequest(quoteRequestId).pipe(
+        map(id => new quoteRequestActions.SubmitQuoteRequestSuccess(id)),
+        catchError(error => of(new quoteRequestActions.SubmitQuoteRequestFail(error)))
+      );
     })
   );
 
@@ -130,12 +110,10 @@ export class QuoteRequestEffects {
     ofType(quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
     concatMap(([action, currentQuoteRequest]) => {
-      return this.quoteRequestService
-        .createQuoteRequestFromQuote(currentQuoteRequest)
-        .pipe(
-          map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess(res)),
-          catchError(error => of(new quoteRequestActions.CreateQuoteRequestFromQuoteFail(error)))
-        );
+      return this.quoteRequestService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
+        map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess(res)),
+        catchError(error => of(new quoteRequestActions.CreateQuoteRequestFromQuoteFail(error)))
+      );
     })
   );
 
@@ -191,12 +169,10 @@ export class QuoteRequestEffects {
       item: { sku: payload.sku, quantity: payload.quantity },
     })),
     concatMap(({ quoteRequestId, item }) =>
-      this.quoteRequestService
-        .addProductToQuoteRequest(quoteRequestId, item)
-        .pipe(
-          map(id => new quoteRequestActions.AddProductToQuoteRequestSuccess(id)),
-          catchError(error => of(new quoteRequestActions.AddProductToQuoteRequestFail(error)))
-        )
+      this.quoteRequestService.addProductToQuoteRequest(quoteRequestId, item).pipe(
+        map(id => new quoteRequestActions.AddProductToQuoteRequestSuccess(id)),
+        catchError(error => of(new quoteRequestActions.AddProductToQuoteRequestFail(error)))
+      )
     )
   );
 
@@ -239,12 +215,10 @@ export class QuoteRequestEffects {
     map((action: quoteRequestActions.DeleteItemFromQuoteRequest) => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
     concatMap(([payload, quoteRequestId]) => {
-      return this.quoteRequestService
-        .removeItemFromQuoteRequest(quoteRequestId, payload.itemId)
-        .pipe(
-          map(id => new quoteRequestActions.DeleteItemFromQuoteRequestSuccess(id)),
-          catchError(error => of(new quoteRequestActions.DeleteItemFromQuoteRequestFail(error)))
-        );
+      return this.quoteRequestService.removeItemFromQuoteRequest(quoteRequestId, payload.itemId).pipe(
+        map(id => new quoteRequestActions.DeleteItemFromQuoteRequestSuccess(id)),
+        catchError(error => of(new quoteRequestActions.DeleteItemFromQuoteRequestFail(error)))
+      );
     })
   );
 
@@ -275,7 +249,7 @@ export class QuoteRequestEffects {
   @Effect({ dispatch: false })
   goToLoginOnAddQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequest),
-    switchMap(() => this.store.pipe(select(getUserAuthorized))),
+    mergeMap(() => this.store.pipe(select(getUserAuthorized))),
     filter(authorized => !authorized),
     tap(() => {
       const queryParams = { returnUrl: this.router.routerState.snapshot.url };
@@ -326,7 +300,10 @@ export class QuoteRequestEffects {
       map((action: quoteRequestActions.SelectQuoteRequest) => action.payload)
     ),
     this.actions$.pipe(ofType(quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequestsSuccess))
-  ).pipe(filter(([quoteId]) => !!quoteId), map(([quoteId]) => new quoteRequestActions.LoadQuoteRequestItems(quoteId)));
+  ).pipe(
+    filter(([quoteId]) => !!quoteId),
+    map(([quoteId]) => new quoteRequestActions.LoadQuoteRequestItems(quoteId))
+  );
 
   /**
    * Filter for itemId and quantity pairs with actual quantity changes.

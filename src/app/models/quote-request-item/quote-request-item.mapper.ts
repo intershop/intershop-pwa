@@ -7,9 +7,12 @@ export class QuoteRequestItemMapper {
       id: itemId,
       type: data.type,
       quantity: data.quantity,
+      originQuantity: data.originQuantity,
       singleBasePrice: data.singlePrice,
+      originSingleBasePrice: data.originSinglePrice,
       totals: {
         total: data.totalPrice,
+        originTotal: data.originTotalPrice,
       },
       productSKU: data.productSKU,
     };

@@ -51,4 +51,14 @@ describe('Quote List Component', () => {
 
     component.onDeleteItem({ id: 'test', type: 'Quote' } as Quote);
   });
+
+  it('should sort quote items using there creation date if ngOnChanges triggered', () => {
+    component.quotes = [
+      { creationDate: 1, displayName: 'FIRST', items: [] } as Quote,
+      { creationDate: 2, displayName: 'SECOND', items: [] } as Quote,
+    ];
+
+    component.ngOnChanges();
+    expect(component.quotes[0].displayName).toBe('SECOND');
+  });
 });
