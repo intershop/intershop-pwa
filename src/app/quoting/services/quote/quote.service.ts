@@ -9,7 +9,8 @@ import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItemMapper } from '../../../models/quote-request-item/quote-request-item.mapper';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { Quote, QuoteData } from '../../../models/quote/quote.model';
+import { QuoteData } from '../../../models/quote/quote.interface';
+import { Quote } from '../../../models/quote/quote.model';
 import { QuoteRequestService } from '../quote-request/quote-request.service';
 
 /**
@@ -43,14 +44,14 @@ export class QuoteService {
    * Get quotes for the given customerId and userId.
    * @returns The list of quotes
    */
-  getQuotes(): Observable<Quote[]> {
+  getQuotes(): Observable<QuoteData[]> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
         this.apiService.get(`customers/${customerId}/users/${userId}/quotes`).pipe(
           unpackEnvelope(),
           resolveLinks<QuoteData>(this.apiService),
           map(quotes =>
-            quotes.map<Quote>(quoteData => {
+            quotes.map<QuoteData>(quoteData => {
               return {
                 ...quoteData,
                 items: quoteData.items.map((quoteItemData: QuoteRequestItemData) =>

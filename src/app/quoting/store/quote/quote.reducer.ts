@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteData } from '../../../models/quote/quote.interface';
 import { QuoteAction, QuoteActionTypes } from './';
 
 export interface QuoteState {
-  quotes: Quote[];
+  quotes: QuoteData[];
   loading: boolean;
   error: HttpErrorResponse;
   selected: string;

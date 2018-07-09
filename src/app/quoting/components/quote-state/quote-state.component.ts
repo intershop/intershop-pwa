@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { interval } from 'rxjs';
 import { mapTo, startWith } from 'rxjs/operators';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
 
 /**
@@ -14,8 +15,20 @@ import { Quote } from '../../../models/quote/quote.model';
   templateUrl: './quote-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteStateComponent {
-  @Input() quote: Quote;
+export class QuoteStateComponent implements OnChanges {
+  @Input() quote: Quote | QuoteRequest;
+
+  validToDate: number;
 
   currentDateTime$ = interval(1000).pipe(startWith(0), mapTo(Date.now()));
+
+  ngOnChanges() {
+    this.validToDate = undefined;
+
+    const quote = this.quote as Quote;
+
+    if (quote.validToDate) {
+      this.validToDate = quote.validToDate;
+    }
+  }
 }

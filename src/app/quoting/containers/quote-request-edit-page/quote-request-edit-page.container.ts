@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import {
   CreateQuoteRequestFromQuote,
   DeleteItemFromQuoteRequest,

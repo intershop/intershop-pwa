@@ -10,7 +10,8 @@ import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from '../../../c
 import { Customer } from '../../../models/customer/customer.model';
 import { Link } from '../../../models/link/link.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { User } from '../../../models/user/user.model';
 import { QuoteRequestService } from './quote-request.service';
 
@@ -175,7 +176,7 @@ describe('Quote Request Service', () => {
 
     it("should update quote request when 'updateQuoteRequest' is called", done => {
       when(apiService.put(`customers/CID/users/UID/quoterequests/QID`, anything())).thenReturn(
-        of({ id: 'QID' } as QuoteRequest)
+        of({ id: 'QID' } as QuoteRequestData)
       );
 
       quoteRequestService.updateQuoteRequest('QID', { displayName: 'test' }).subscribe(data => {

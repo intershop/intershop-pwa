@@ -2,6 +2,8 @@ import { Price } from '../price/price.model';
 import { QuoteRequestItemData } from '../quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem, QuoteRequestItemView } from '../quote-request-item/quote-request-item.model';
 
+export type QuoteStateType = 'Responded' | 'Rejected' | 'Converted' | 'Expired';
+
 interface AbstractQuote<T> {
   type: 'Quote';
   displayName: string;
@@ -10,7 +12,7 @@ interface AbstractQuote<T> {
   creationDate: number;
   total: Price;
   items: T[];
-  state?: number;
+  state: QuoteStateType;
   modified?: number;
   description?: string;
 
@@ -21,8 +23,6 @@ interface AbstractQuote<T> {
   rejected?: boolean;
 }
 
-export interface QuoteData extends AbstractQuote<QuoteRequestItemData> {}
-
-export interface Quote extends AbstractQuote<QuoteRequestItem> {}
+export interface Quote extends AbstractQuote<QuoteRequestItem | QuoteRequestItemData> {}
 
 export interface QuoteView extends AbstractQuote<QuoteRequestItemView> {}

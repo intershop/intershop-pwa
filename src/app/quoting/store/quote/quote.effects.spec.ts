@@ -11,6 +11,7 @@ import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
+import { QuoteData } from '../../../models/quote/quote.interface';
 import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
@@ -73,7 +74,7 @@ describe('Quote Effects', () => {
 
     it('should map to action of type LoadQuotesSuccess', () => {
       const action = new quoteActions.LoadQuotes();
-      const completion = new quoteActions.LoadQuotesSuccess([{ id: 'QID' } as Quote]);
+      const completion = new quoteActions.LoadQuotesSuccess([{ id: 'QID' } as QuoteData]);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -145,7 +146,7 @@ describe('Quote Effects', () => {
           {
             id: 'QID',
             items: [{ productSKU: 'SKU', quantity: { value: 1 } } as QuoteRequestItem],
-          } as Quote,
+          } as QuoteData,
         ])
       );
       store$.dispatch(new quoteActions.SelectQuote('QID'));

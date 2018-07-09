@@ -18,7 +18,7 @@ import {
 import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized, UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';

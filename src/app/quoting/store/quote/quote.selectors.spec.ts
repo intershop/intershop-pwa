@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
+import { QuoteData } from '../../../models/quote/quote.interface';
 import { Quote } from '../../../models/quote/quote.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
@@ -54,7 +55,10 @@ describe('Quote Selectors', () => {
   describe('selecting a quote', () => {
     beforeEach(() => {
       store$.dispatch(
-        new LoadQuotesSuccess([{ id: 'test', items: [{ productSKU: 'test' }] }, { id: 'test2', items: [] }] as Quote[])
+        new LoadQuotesSuccess([
+          { id: 'test', items: [{ productSKU: 'test' }] },
+          { id: 'test2', items: [] },
+        ] as QuoteData[])
       );
       store$.dispatch(new LoadProductSuccess({ sku: 'test' } as Product));
       store$.dispatch(new SelectQuote('test'));
@@ -63,6 +67,7 @@ describe('Quote Selectors', () => {
     it('should set "selected" to selected quote item id and set selected quote', () => {
       const expected = {
         id: 'test',
+        state: 'Responded',
         items: [
           {
             productSKU: 'test',
@@ -86,11 +91,11 @@ describe('Quote Selectors', () => {
     });
 
     it('should set loading to false and set quote state', () => {
-      const quotes = [{ id: 'test' }] as Quote[];
+      const quotes = [{ id: 'test' }] as QuoteData[];
       store$.dispatch(new LoadQuotesSuccess(quotes));
 
       expect(quoteLoading$).toBeObservable(c(false));
-      expect(quotes$).toBeObservable(c(quotes));
+      expect(quotes$).toBeObservable(c([{ id: 'test', state: 'Responded' } as Quote]));
     });
 
     it('should set loading to false and set error state', () => {
