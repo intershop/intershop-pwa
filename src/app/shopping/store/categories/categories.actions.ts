@@ -56,7 +56,7 @@ export class LoadCategorySuccess implements Action {
 
 export class SetProductSkusForCategory implements Action {
   readonly type = CategoriesActionTypes.SetProductSkusForCategory;
-  constructor(public categoryUniqueId: string, public payload: string[]) {}
+  constructor(public payload: { categoryUniqueId: string; skus: string[] }) {}
 }
 
 export type CategoriesAction =

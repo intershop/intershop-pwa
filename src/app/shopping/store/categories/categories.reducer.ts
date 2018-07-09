@@ -49,8 +49,7 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
     }
 
     case CategoriesActionTypes.SetProductSkusForCategory: {
-      const skus = action.payload;
-      const categoryUniqueId = action.categoryUniqueId;
+      const { skus, categoryUniqueId } = action.payload;
 
       const categoriesProductSKUs = {
         ...state.categoriesProductSKUs,

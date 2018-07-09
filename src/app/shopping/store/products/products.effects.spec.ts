@@ -120,7 +120,7 @@ describe('Products Effects', () => {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       const expectedValues = {
-        a: new fromCategories.SetProductSkusForCategory('123', ['P222', 'P333']),
+        a: new fromCategories.SetProductSkusForCategory({ categoryUniqueId: '123', skus: ['P222', 'P333'] }),
         b: new fromViewconf.SetSortKeys(['name-asc', 'name-desc']),
         c: new fromActions.LoadProduct('P222'),
         d: new fromActions.LoadProduct('P333'),

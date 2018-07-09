@@ -69,15 +69,17 @@ describe('Categories Actions', () => {
   });
 
   it('should create new action for SetProductSkusForCategory', () => {
-    const payload = ['123', '456'];
+    const skus = ['123', '456'];
     const categoryUniqueId = '789';
 
-    const action = new fromActions.SetProductSkusForCategory(categoryUniqueId, payload);
+    const action = new fromActions.SetProductSkusForCategory({ categoryUniqueId, skus });
 
     expect({ ...action }).toEqual({
       type: fromActions.CategoriesActionTypes.SetProductSkusForCategory,
-      payload,
-      categoryUniqueId,
+      payload: {
+        skus,
+        categoryUniqueId,
+      },
     });
   });
 });
