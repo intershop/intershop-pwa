@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteData } from '../../../models/quote/quote.interface';
 import * as fromActions from './quote.actions';
 
 describe('Quote Actions', () => {
@@ -36,7 +36,7 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for LoadQuotesSuccess', () => {
-      const payload = [{ id: '123' } as Quote];
+      const payload = [{ id: '123' } as QuoteData];
       const action = new fromActions.LoadQuotesSuccess(payload);
 
       expect({ ...action }).toEqual({

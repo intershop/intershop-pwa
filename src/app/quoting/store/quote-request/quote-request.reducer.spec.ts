@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import * as fromActions from './quote-request.actions';
 import { initialState, quoteRequestReducer } from './quote-request.reducer';
 
@@ -41,7 +41,7 @@ describe('Quote Request Reducer', () => {
         const quoteRequests = [
           {
             id: 'test',
-          } as QuoteRequest,
+          } as QuoteRequestData,
         ];
 
         const action = new fromActions.LoadQuoteRequestsSuccess(quoteRequests);
@@ -87,7 +87,7 @@ describe('Quote Request Reducer', () => {
   describe('UpdateQuoteRequest actions', () => {
     describe('UpdateQuoteRequest action', () => {
       it('should set loading to true', () => {
-        const payload = { id: 'test' } as QuoteRequest;
+        const payload = { displayName: 'test' };
         const action = new fromActions.UpdateQuoteRequest(payload);
         const state = quoteRequestReducer(initialState, action);
 
@@ -108,7 +108,7 @@ describe('Quote Request Reducer', () => {
 
     describe('UpdateQuoteRequestSuccess action', () => {
       it('should set loading to false', () => {
-        const payload = { id: 'test' } as QuoteRequest;
+        const payload = { id: 'test' } as QuoteRequestData;
         const action = new fromActions.UpdateQuoteRequestSuccess(payload);
         const state = quoteRequestReducer(initialState, action);
 

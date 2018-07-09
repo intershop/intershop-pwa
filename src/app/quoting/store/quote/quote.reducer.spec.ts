@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteData } from '../../../models/quote/quote.interface';
 import * as fromActions from './quote.actions';
 import { initialState, quoteReducer } from './quote.reducer';
 
@@ -40,7 +40,7 @@ describe('Quote Reducer', () => {
         const quotes = [
           {
             id: 'test',
-          } as Quote,
+          } as QuoteData,
         ];
 
         const action = new fromActions.LoadQuotesSuccess(quotes);

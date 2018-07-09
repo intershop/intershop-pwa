@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 /**
  * The Quote Edit Component displays and updates quote or quote request data.
@@ -41,34 +41,7 @@ export class QuoteEditComponent implements OnChanges {
   sellerComment: string;
   validFromDate: number;
   validToDate: number;
-
-  /**
-   * Indicates if quote request is editable.
-   */
-  // TODO: dynamic implementation
-  get editMode(): boolean {
-    return true;
-  }
-
-  /**
-   * Indicates if display name is editable.
-   */
-  get editDisplayName(): boolean {
-    if (this.quote && (this.quote.state === 0 || (this.quote.state === 4 && this.editMode === true))) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Indicates if description is editable.
-   */
-  get editDescription(): boolean {
-    if (this.quote && (this.quote.state === 0 || (this.quote.state === 4 && this.editMode === true))) {
-      return true;
-    }
-    return false;
-  }
+  submitted = false;
 
   constructor() {
     this.form = new FormGroup({
@@ -84,9 +57,6 @@ export class QuoteEditComponent implements OnChanges {
     this.validToDate = undefined;
 
     const quote = this.quote as Quote;
-
-    // TODO: remove
-    quote.state = 0;
 
     if (quote.displayName) {
       this.form.patchValue({ displayName: quote.displayName });
@@ -129,6 +99,7 @@ export class QuoteEditComponent implements OnChanges {
    */
   submit() {
     this.submitQuoteRequest.emit();
+    this.submitted = true;
   }
 
   /**

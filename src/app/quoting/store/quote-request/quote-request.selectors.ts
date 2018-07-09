@@ -1,4 +1,6 @@
 import { createSelector } from '@ngrx/store';
+import { QuoteRequestHelper } from '../../../models/quote-request/quote-request.helper';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { getQuotingState } from '../quoting.state';
 
@@ -6,12 +8,31 @@ const getQuoteRequestState = createSelector(getQuotingState, state => state.quot
 
 export const getSelectedQuoteRequestId = createSelector(getQuoteRequestState, state => state.selected);
 
-export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, state => state.quoteRequests);
+export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, state => {
+  const quoteRequests: QuoteRequest[] = [];
+
+  for (const item of state.quoteRequests) {
+    quoteRequests.push({
+      ...item,
+      state: QuoteRequestHelper.getQuoteRequestState(item),
+    });
+  }
+
+  return quoteRequests;
+});
 
 export const getQuoteRequstItems = createSelector(getQuoteRequestState, state => state.quoteRequestItems);
 
 export const getActiveQuoteRequest = createSelector(getQuoteRequestState, state => {
-  return state.quoteRequests.filter(item => item.editable === true).pop() || null;
+  const quoteRequest = state.quoteRequests.filter(item => item.editable === true).pop() || null;
+  if (quoteRequest) {
+    return {
+      ...quoteRequest,
+      state: QuoteRequestHelper.getQuoteRequestState(quoteRequest),
+    } as QuoteRequest;
+  }
+
+  return null;
 });
 
 /**
@@ -28,6 +49,7 @@ export const getSelectedQuoteRequest = createSelector(
       ? null
       : {
           ...quote,
+          state: QuoteRequestHelper.getQuoteRequestState(quote),
           items: quoteRequestItems.map(item => ({
             ...item,
             product: item.productSKU ? products[item.productSKU] : undefined,

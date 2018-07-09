@@ -3,8 +3,8 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { QuoteEditComponent } from './quote-edit.component';
 
@@ -49,20 +49,21 @@ describe('Quote Edit Component', () => {
     beforeEach(() => {
       component.quote = {
         id: 'ID',
+        type: 'QuoteRequest',
         displayName: 'DNAME',
         description: 'DESC',
-        state: 0,
+        state: 'New',
       } as QuoteRequest;
     });
 
     describe('displayName', () => {
-      it('should render as input if editDisplayName === true', () => {
+      it('should render as input if state === New', () => {
         fixture.detectChanges();
         expect(element.querySelector('ish-input[controlName=displayName]')).toBeTruthy();
       });
 
-      it('should render displayName as text if editDisplayName === false', () => {
-        component.quote.state = -1;
+      it('should render displayName as text if state !== New', () => {
+        component.quote.state = 'Rejected';
         fixture.detectChanges();
         expect(element.querySelector('ish-input[controlName=displayName]')).toBeFalsy();
         expect(element.textContent).toContain('DNAME');
@@ -70,13 +71,13 @@ describe('Quote Edit Component', () => {
     });
 
     describe('description', () => {
-      it('should render as input if editDescription === true', () => {
+      it('should render as input if state === New', () => {
         fixture.detectChanges();
         expect(element.querySelector('textarea[formControlName=description]')).toBeTruthy();
       });
 
-      it('should render displayName as text if editDescription === false', () => {
-        component.quote.state = -1;
+      it('should render displayName as text if state !== New', () => {
+        component.quote.state = 'Rejected';
         fixture.detectChanges();
         expect(element.querySelector('textarea[formControlName=description]')).toBeFalsy();
         expect(element.textContent).toContain('DESC');
@@ -105,6 +106,12 @@ describe('Quote Edit Component', () => {
       });
 
       component.submit();
+    });
+
+    it('should render submitted heading if submit is clicked', () => {
+      component.submit();
+      fixture.detectChanges();
+      expect(element.textContent).toContain('quote.edit.submitted.your_quote_number.text');
     });
 
     it('should throw updateItems event when update is clicked', done => {
@@ -139,42 +146,43 @@ describe('Quote Edit Component', () => {
     beforeEach(() => {
       component.quote = {
         id: 'ID',
+        type: 'Quote',
         sellerComment: 'SCOM',
         validFromDate: 1,
         validToDate: 1000 * 60 * 60 * 24,
       } as Quote;
     });
 
-    it('should render sellerComment if ngOnChanges fired', () => {
+    it('should render sellerComment if type Quote and ngOnChanges fired', () => {
       component.ngOnChanges();
       fixture.detectChanges();
       expect(element.textContent).toContain('SCOM');
     });
 
-    it('should render validFromDate if state between 3 and 7 and ngOnChanges fired', () => {
+    it('should render validFromDate if state === Responded and ngOnChanges fired', () => {
       component.ngOnChanges();
-      component.quote.state = 4;
+      component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/1/70');
     });
 
-    it('should not render validFromDate if state is not between 3 and 7 and ngOnChanges fired', () => {
+    it('should not render validFromDate if state is !== Responded and ngOnChanges fired', () => {
       component.ngOnChanges();
-      component.quote.state = -1;
+      component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/1/70');
     });
 
-    it('should render validToDate if state between 3 and 7 and ngOnChanges fired', () => {
+    it('should render validToDate if state state === Responded and ngOnChanges fired', () => {
       component.ngOnChanges();
-      component.quote.state = 4;
+      component.quote.state = 'Responded';
       fixture.detectChanges();
       expect(element.textContent).toContain('1/2/70');
     });
 
-    it('should not render validToDate if state is not between 3 and 7 and ngOnChanges fired', () => {
+    it('should not render validToDate if state is  !== Responded and ngOnChanges fired', () => {
       component.ngOnChanges();
-      component.quote.state = -1;
+      component.quote.state = 'Rejected';
       fixture.detectChanges();
       expect(element.textContent).not.toContain('1/2/70');
     });

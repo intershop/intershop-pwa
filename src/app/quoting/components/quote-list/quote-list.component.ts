@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
 
 /**
  * The Quote List Component displays a list of quotes.

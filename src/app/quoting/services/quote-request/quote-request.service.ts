@@ -10,7 +10,8 @@ import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItemMapper } from '../../../models/quote-request-item/quote-request-item.mapper';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 
 /**
  * The Quote Request Service handles the interaction with the 'quoteRequest' related REST API.
@@ -39,12 +40,12 @@ export class QuoteRequestService {
    * Get quote requests for the given customerId and userId.
    * @returns The list of quote requests
    */
-  getQuoteRequests(): Observable<QuoteRequest[]> {
+  getQuoteRequests(): Observable<QuoteRequestData[]> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
         this.apiService
           .get(`customers/${customerId}/users/${userId}/quoterequests`)
-          .pipe(unpackEnvelope(), resolveLinks<QuoteRequest>(this.apiService))
+          .pipe(unpackEnvelope(), resolveLinks<QuoteRequestData>(this.apiService))
       )
     );
   }
@@ -69,10 +70,10 @@ export class QuoteRequestService {
    * @param data  The quote request data to be updated
    * @return      The updated quote request
    */
-  updateQuoteRequest(id: string, data: { displayName?: string; description?: string }): Observable<QuoteRequest> {
+  updateQuoteRequest(id: string, data: { displayName?: string; description?: string }): Observable<QuoteRequestData> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
-        this.apiService.put<QuoteRequest>(`customers/${customerId}/users/${userId}/quoterequests/${id}`, data)
+        this.apiService.put<QuoteRequestData>(`customers/${customerId}/users/${userId}/quoterequests/${id}`, data)
       )
     );
   }

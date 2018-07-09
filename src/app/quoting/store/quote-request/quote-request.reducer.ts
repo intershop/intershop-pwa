@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import { QuoteAction, QuoteRequestActionTypes } from './';
 
 export interface QuoteRequestState {
-  quoteRequests: QuoteRequest[];
+  quoteRequests: QuoteRequestData[];
   quoteRequestItems: QuoteRequestItem[];
   loading: boolean;
   error: HttpErrorResponse;

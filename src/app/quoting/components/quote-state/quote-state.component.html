@@ -1,39 +1,22 @@
 <ng-container [ngSwitch]="quote.state" *ngIf="(currentDateTime$ | async) as currentDateTime">
-  <ng-template [ngSwitchCase]="0">{{ 'quote.state.new' | translate}}</ng-template>
-  <ng-template [ngSwitchCase]="3">{{ 'quote.state.submitted' | translate}}</ng-template>
-  <ng-template [ngSwitchCase]="4">
-    <ng-container *ngIf="quote.validToDate < currentDateTime">
+  <ng-template [ngSwitchCase]="'New'">{{ 'quote.state.new' | translate}}</ng-template>
+  <ng-template [ngSwitchCase]="'Submitted'">{{ 'quote.state.submitted' | translate}}</ng-template>
+  <ng-template [ngSwitchCase]="'Responded'">
+    <ng-container *ngIf="validToDate < currentDateTime">
       <span class="text-danger">{{ 'quote.state.expired' | translate }}</span>
     </ng-container>
-    <ng-container *ngIf="quote.validToDate > currentDateTime">
+    <ng-container *ngIf="validToDate > currentDateTime">
       {{ 'quote.state.responded' | translate }}
     </ng-container>
   </ng-template>
-  <ng-template [ngSwitchCase]="5">{{ 'quote.state.submitted' | translate}}</ng-template>
-  <ng-template [ngSwitchCase]="6">
-    {{ 'quote.state.confirmed' | translate}}
-    <ng-container *ngIf="!!quote.modified">
-      &nbsp;
-      {{ 'quote.state.modified' | translate }}
-    </ng-container>
-  </ng-template>
-  <ng-template [ngSwitchCase]="7">
+  <!-- TODO: implement accepted? -->
+  <!-- <ng-template [ngSwitchCase]="7">
     {{ 'quote.state.accepted' | translate}}
     <ng-container *ngIf="quote.validToDate < currentDateTime">
         &nbsp;
         {{ 'quote.state.expired' | translate }}
     </ng-container>
-  </ng-template>
-  <ng-template [ngSwitchCase]="8">
-    {{ 'quote.state.auto_accepted' | translate}}
-    <ng-container *ngIf="quote.validToDate < currentDateTime">
-        &nbsp;
-        {{ 'quote.state.expired' | translate }}
-    </ng-container>
-  </ng-template>
-  <ng-template [ngSwitchCase]="9">{{ 'quote.state.rejected' | translate}}</ng-template>
-  <ng-template [ngSwitchCase]="10">{{ 'quote.state.cancelled' | translate}}</ng-template>
-  <ng-template [ngSwitchCase]="11">{{ 'quote.state.cancelled' | translate}}</ng-template>
-  <ng-template [ngSwitchCase]="12">{{ 'quote.state.closed' | translate}}</ng-template>
+  </ng-template> -->
+  <ng-template [ngSwitchCase]="'Rejected'">{{ 'quote.state.rejected' | translate}}</ng-template>
   <ng-template ngSwitchDefault>{{ 'quote.state.unknown' | translate}}</ng-template>
 </ng-container >

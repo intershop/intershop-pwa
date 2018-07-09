@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { QuoteStateComponent } from './quote-state.component';
 
@@ -32,147 +33,53 @@ describe('Quote State Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display new state if quote state is 0', () => {
+  it('should display new state if quote state is New', () => {
     component.quote = {
-      state: 0,
-    } as Quote;
+      state: 'New',
+    } as QuoteRequest;
     fixture.detectChanges();
 
     expect(element.textContent).toContain('quote.state.new');
   });
 
-  it('should display submitted state if quote state is 3', () => {
+  it('should display submitted state if quote state is submitted', () => {
     component.quote = {
-      state: 3,
-    } as Quote;
+      state: 'Submitted',
+    } as QuoteRequest;
     fixture.detectChanges();
 
     expect(element.textContent).toContain('quote.state.submitted');
   });
 
-  it('should display new expired if quote state is 4 and validToDate < current date', () => {
+  it('should display new expired if quote state is Responded and validToDate < current date', () => {
     component.quote = {
-      state: 4,
+      state: 'Responded',
       validToDate: timestamp - 1,
     } as Quote;
+    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(element.textContent).toContain('quote.state.expired');
   });
 
-  it('should display new responded if quote state is 4 and validToDate > current date', () => {
+  it('should display new responded if quote state is Responded and validToDate > current date', () => {
     component.quote = {
-      state: 4,
+      state: 'Responded',
       validToDate: timestamp + 1,
     } as Quote;
+    component.ngOnChanges();
     fixture.detectChanges();
 
     expect(element.textContent).toContain('quote.state.responded');
   });
 
-  it('should display submitted state if quote state is 5', () => {
+  it('should display rejected state if quote state is Rejected', () => {
     component.quote = {
-      state: 5,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.submitted');
-  });
-
-  it('should display confirmed state if quote state is 6', () => {
-    component.quote = {
-      state: 6,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.confirmed');
-  });
-
-  it('should display confirmed state and modified state if quote state is 6 and modified is set', () => {
-    component.quote = {
-      state: 6,
-      modified: timestamp,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.confirmed');
-    expect(element.textContent).toContain('quote.state.modified');
-  });
-
-  it('should display accepted state if quote state is 7', () => {
-    component.quote = {
-      state: 7,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.accepted');
-  });
-
-  it('should display accepted state and expired state if quote state is 7 and validToDate < current date', () => {
-    component.quote = {
-      state: 7,
-      validToDate: timestamp - 1,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.accepted');
-    expect(element.textContent).toContain('quote.state.expired');
-  });
-
-  it('should display auto_accepted state if quote state is 8', () => {
-    component.quote = {
-      state: 8,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.auto_accepted');
-  });
-
-  it('should display auto_accepted state and expired state if quote state is 8 and validToDate < current date', () => {
-    component.quote = {
-      state: 8,
-      validToDate: timestamp - 1,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.auto_accepted');
-    expect(element.textContent).toContain('quote.state.expired');
-  });
-
-  it('should display rejected state if quote state is 9', () => {
-    component.quote = {
-      state: 9,
+      state: 'Rejected',
     } as Quote;
     fixture.detectChanges();
 
     expect(element.textContent).toContain('quote.state.rejected');
-  });
-
-  it('should display cancelled state if quote state is 10', () => {
-    component.quote = {
-      state: 10,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.cancelled');
-  });
-
-  it('should display cancelled state if quote state is 11', () => {
-    component.quote = {
-      state: 11,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.cancelled');
-  });
-
-  it('should display closed state if quote state is 12', () => {
-    component.quote = {
-      state: 12,
-    } as Quote;
-    fixture.detectChanges();
-
-    expect(element.textContent).toContain('quote.state.closed');
   });
 
   it('should display unknown state if no quote state is set', () => {

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import * as fromActions from './quote-request.actions';
 
 describe('Quote Request Actions', () => {
@@ -37,7 +37,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for LoadQuoteRequestsSuccess', () => {
-      const payload = [{ id: '123' } as QuoteRequest];
+      const payload = [{ id: '123' } as QuoteRequestData];
       const action = new fromActions.LoadQuoteRequestsSuccess(payload);
 
       expect({ ...action }).toEqual({
@@ -99,7 +99,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for UpdateQuoteRequestSuccess', () => {
-      const payload = { id: '123' } as QuoteRequest;
+      const payload = { id: '123' } as QuoteRequestData;
       const action = new fromActions.UpdateQuoteRequestSuccess(payload);
 
       expect({ ...action }).toEqual({

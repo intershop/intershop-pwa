@@ -4,7 +4,8 @@ import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Product } from '../../../models/product/product.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequest } from '../../../models/quoterequest/quoterequest.model';
+import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { c } from '../../../utils/dev/marbles-utils';
@@ -72,7 +73,7 @@ describe('Quote Request Selectors', () => {
         new LoadQuoteRequestsSuccess([
           { id: 'test', items: [] },
           { id: 'test2', editable: true, items: [] },
-        ] as QuoteRequest[])
+        ] as QuoteRequestData[])
       );
       store$.dispatch(new LoadProductSuccess({ sku: 'test' } as Product));
       store$.dispatch(new LoadQuoteRequestItemsSuccess([{ productSKU: 'test' }] as QuoteRequestItem[]));
@@ -82,6 +83,7 @@ describe('Quote Request Selectors', () => {
     it('should set "selected" to selected quote item id and set selected quote request', () => {
       const expected = {
         id: 'test',
+        state: 'New',
         items: [
           {
             productSKU: 'test',
@@ -105,7 +107,10 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set loading to false and set quote state', () => {
-      const quoteRequests = [{ id: 'test', items: [] }, { id: 'test2', editable: true, items: [] }] as QuoteRequest[];
+      const quoteRequests = [
+        { id: 'test', items: [] },
+        { id: 'test2', editable: true, items: [], state: 'New' },
+      ] as QuoteRequestData[];
       store$.dispatch(new LoadQuoteRequestsSuccess(quoteRequests));
 
       expect(quoteRequestLoading$).toBeObservable(c(false));
