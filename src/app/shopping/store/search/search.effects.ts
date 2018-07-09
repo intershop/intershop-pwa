@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { ofRoute, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   debounceTime,
   distinctUntilChanged,
   distinctUntilKeyChanged,
@@ -13,11 +15,14 @@ import {
   mergeMap,
   switchMap,
   tap,
+  withLatestFrom,
 } from 'rxjs/operators';
+import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProduct } from '../products';
-import { SetSortKeys } from '../viewconf';
+import { ShoppingState } from '../shopping.state';
+import { canRequestMore, getPagingPage, ResetPagingInfo, SetPagingInfo, SetSortKeys } from '../viewconf';
 import {
   SearchActionTypes,
   SearchProducts,
@@ -31,9 +36,11 @@ import {
 export class SearchEffects {
   constructor(
     private actions$: Actions,
+    private store: Store<ShoppingState>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private router: Router
+    private router: Router,
+    @Inject(ENDLESS_SCROLLING_ITEMS_PER_PAGE) private itemsPerPage: number
   ) {}
 
   /**
@@ -45,23 +52,33 @@ export class SearchEffects {
     map((action: RouteNavigation) => action.payload.params['searchTerm']),
     filter(x => !!x),
     distinctUntilChanged(),
-    map(searchTerm => new SearchProducts(searchTerm))
+    concatMap(searchTerm => [new ResetPagingInfo(), new SearchProducts(searchTerm)])
   );
 
   /**
    * Effect that triggers a products search request via REST service and additional actions to fetch the product data of the search results.
    */
-  // TODO: API returns only maximum of 50 products -- handle more products (e.g. via paging or lazy loading)
   @Effect()
   searchProducts$ = this.actions$.pipe(
-    ofType(SearchActionTypes.SearchProducts),
-    map((action: SearchProducts) => action.payload),
-    switchMap(searchTerm =>
+    ofType<{ type: string; payload: string }>(SearchActionTypes.SearchProducts, SearchActionTypes.SearchMoreProducts),
+    withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(canRequestMore(this.itemsPerPage)))),
+    filter(([, , canSearchMore]) => canSearchMore),
+    map(([action, currentPage]) => ({ searchTerm: action.payload, nextPage: currentPage + 1 })),
+    distinctUntilChanged(),
+    concatMap(({ searchTerm, nextPage }) =>
       // get products
-      this.productsService.searchProducts(searchTerm).pipe(
+      this.productsService.searchProducts(searchTerm, nextPage, this.itemsPerPage).pipe(
         mergeMap(res => [
           // dispatch action with search result
-          new SearchProductsSuccess({ searchTerm: searchTerm, products: res.skus }),
+          new SearchProductsSuccess({
+            searchTerm: searchTerm,
+            products: res.skus,
+          }),
+          // dispatch viewconf action
+          new SetPagingInfo({
+            currentPage: nextPage,
+            totalItems: res.total,
+          }),
           // dispatch actions to load the product information of the found products
           ...res.skus.map(sku => new LoadProduct(sku)),
           // dispatch action to store the returned sorting options

@@ -72,25 +72,31 @@ export class ProductsService {
    * @param searchTerm  The search term to look for matching products.
    * @returns           A list of matching Product SKUs [skus] with a list of possible sortings [sortKeys].
    */
-  // TODO: handle and document paging (total, offset, amount)
-  searchProducts(searchTerm: string): Observable<{ skus: string[]; sortKeys: string[] }> {
+  searchProducts(
+    searchTerm: string,
+    page: number,
+    itemsPerPage: number
+  ): Observable<{ skus: string[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
 
     const params = new HttpParams()
       .set('searchTerm', searchTerm)
+      .set('amount', itemsPerPage.toString())
+      .set('offset', (page * itemsPerPage).toString())
       .set('attrs', 'sku')
       .set('returnSortKeys', 'true');
 
     return this.apiService
-      .get<{ elements: { attributes: Attribute[] }[]; sortKeys: string[] }>('products', { params })
+      .get<{ elements: { attributes: Attribute[] }[]; sortKeys: string[]; total: number }>('products', { params })
       .pipe(
         map(response => ({
           skus: response.elements.map(
             (element: Product) => ProductHelper.getAttributeByAttributeName(element, 'sku').value
           ),
           sortKeys: response.sortKeys,
+          total: !!response.total ? response.total : response.elements.length,
         }))
       );
   }

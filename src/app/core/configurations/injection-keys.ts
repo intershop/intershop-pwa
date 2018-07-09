@@ -23,3 +23,7 @@ export const USER_REGISTRATION_LOGIN_TYPE = new InjectionToken<string>('userRegi
 export const MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH = new InjectionToken<number>(
   'mainNavigationMaxSubCategoriesDepth'
 );
+/**
+ * global definition of the endless scrolling page size
+ */
+export const ENDLESS_SCROLLING_ITEMS_PER_PAGE = new InjectionToken<number>('endlessScrollingItemsPerPage');
