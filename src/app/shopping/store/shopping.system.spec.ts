@@ -9,7 +9,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
+import {
+  AVAILABLE_LOCALES,
+  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+} from '../../core/configurations/injection-keys';
 import { CountryService } from '../../core/services/countries/country.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { SelectLocale } from '../../core/store/locale';
@@ -100,7 +104,9 @@ describe('Shopping System', () => {
         sortKeys: [],
       })
     );
-    when(productsServiceMock.searchProducts('something')).thenReturn(of({ skus: ['P2'], sortKeys: [] }));
+    when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
+      of({ skus: ['P2'], sortKeys: [], total: 1 })
+    );
 
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
@@ -153,6 +159,7 @@ describe('Shopping System', () => {
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
+        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 
@@ -279,8 +286,10 @@ describe('Shopping System', () => {
         fakeAsync(() => {
           const i = store.actionsIterator([/Shopping/]);
 
+          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next()).toEqual(new SearchProducts('something'));
           expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next()).toEqual(new LoadProduct('P2'));
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
@@ -945,8 +954,10 @@ describe('Shopping System', () => {
       fakeAsync(() => {
         const i = store.actionsIterator([/Shopping/]);
 
+        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SearchProducts('something'));
         expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
+        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next()).toEqual(new LoadProduct('P2'));
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);

@@ -27,10 +27,10 @@ describe('Searching User', () => {
 
   it(`should click and end on product detail page to check product data`, () => {
     at(SearchResultPage, page => {
-      page.productList.gotoProductDetailPageBySku('7912061');
+      page.productList.gotoProductDetailPageBySku('7912057');
     });
     at(ProductDetailPage, page => {
-      expect(page.getSku()).toBe('7912061');
+      expect(page.getSku()).toBe('7912057');
     });
   });
 });

@@ -58,7 +58,7 @@ describe('Products Service', () => {
     const searchTerm = 'aaa';
 
     when(apiService.get(anything(), anything())).thenReturn(of(productsMockData));
-    productsService.searchProducts(searchTerm);
+    productsService.searchProducts(searchTerm, 0, 10);
 
     verify(apiService.get(anything(), anything())).once();
   });
