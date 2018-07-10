@@ -121,8 +121,8 @@ describe('Categories Selectors', () => {
 
     describe('with category route', () => {
       beforeEach(() => {
-        store$.dispatch(new SetProductSkusForCategory({ categoryUniqueId: cat.uniqueId, skus: [prod.sku] }));
         store$.dispatch(new SelectCategory(cat.uniqueId));
+        store$.dispatch(new SetProductSkusForCategory({ categoryUniqueId: cat.uniqueId, skus: [prod.sku] }));
       });
 
       it('should return the category information when used', () => {

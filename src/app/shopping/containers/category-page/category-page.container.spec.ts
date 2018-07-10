@@ -39,7 +39,7 @@ describe('Category Page Container', () => {
           template: 'Family Page Component',
           inputs: ['category', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
         }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-loading-spinner', template: 'Loading Component' }),
       ],
     }).compileComponents();
   }));
@@ -69,7 +69,7 @@ describe('Category Page Container', () => {
 
     fixture.detectChanges();
 
-    expect(findAllIshElements(element)).toEqual(['ish-loading']);
+    expect(findAllIshElements(element)).toEqual(['ish-loading-spinner']);
   });
 
   it('should display category-page when category has sub categories', () => {
