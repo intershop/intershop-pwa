@@ -37,7 +37,8 @@ export function resolveLinks<T>(apiService: ApiService): OperatorFunction<Link[]
       filter(links => !!links && !!links.length),
       // transform Link elements to API Observables
       map(links => links.map(item => apiService.get<T>(`${apiService.icmServerURL}/${item.uri}`))),
-      // flatten O(O[]) -> O([])
+      // flatten O<O<T>[]> -> O<T[]>
+      // tslint:disable-next-line:no-unnecessary-callback-wrapper
       switchMap(obsArray => forkJoin(obsArray)),
       // return empty Array if no links were supplied to be resolved
       defaultIfEmpty([])

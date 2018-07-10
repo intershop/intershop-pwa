@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiService, unpackEnvelope } from '../../../core/services/api/api.service';
+import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../../models/basket-item/basket-item.mapper';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { BasketData } from '../../../models/basket/basket.interface';
 import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+
+export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -22,9 +26,20 @@ export class BasketService {
    * @returns         The basket.
    */
   getBasket(basketId: string = '-'): Observable<Basket> {
-    return this.apiService
-      .get<BasketData>(`baskets/${basketId}`)
-      .pipe(map(basketData => BasketMapper.fromData(basketData)));
+    return this.apiService.get<BasketData>(`baskets/${basketId}`).pipe(map(BasketMapper.fromData));
+  }
+
+  /**
+   * Updates the basket for the given basket id or fallback to '-' as basket id.
+   * @param basketId  The basket id.
+   * @param body      Basket related data (invoice address, shipping address, shipping method ...), which should be changed
+   * @returns         The basket.
+   */
+  updateBasket(basketId: string = '-', body: BasketUpdateType): Observable<Basket> {
+    if (!body) {
+      return throwError('updateBasket() called without body');
+    }
+    return this.apiService.put(`baskets/${basketId}`, body);
   }
 
   /**
@@ -37,12 +52,10 @@ export class BasketService {
       return throwError('getBasketItems() called without basketId');
     }
 
-    return this.apiService
-      .get(`baskets/${basketId}/items`)
-      .pipe(
-        unpackEnvelope<BasketItemData>(),
-        map(basketItemsData => basketItemsData.map(basketItemData => BasketItemMapper.fromData(basketItemData)))
-      );
+    return this.apiService.get(`baskets/${basketId}/items`).pipe(
+      unpackEnvelope<BasketItemData>(),
+      map(basketItemsData => basketItemsData.map(BasketItemMapper.fromData))
+    );
   }
 
   /**
@@ -90,5 +103,21 @@ export class BasketService {
    */
   deleteBasketItem(itemId: string, basketId: string): Observable<void> {
     return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  }
+
+  /**
+   * Get basket payments for selected basket.
+   * @param basketId  The basket id.
+   * @returns         The basket payments.
+   */
+  getBasketPayments(basketId: string): Observable<PaymentMethod[]> {
+    if (!basketId) {
+      return throwError('getBasketPayments() called without basketId');
+    }
+
+    return this.apiService.get(`baskets/${basketId}/payments`).pipe(
+      unpackEnvelope<Link>(),
+      resolveLinks<PaymentMethod>(this.apiService)
+    );
   }
 }

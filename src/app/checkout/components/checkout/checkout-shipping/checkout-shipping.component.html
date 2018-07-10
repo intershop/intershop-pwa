@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-sm-12 col-md-8">
+    <!-- Messages -->
+    <div *ngIf="!basket.commonShippingMethod" role="alert" class="alert alert-danger">
+      {{ 'checkout.shipping_method.no_Selection.error' | translate }}
+    </div>
+    <!-- shipping method selection -->
+    <form [formGroup]="shippingForm" class="form-horizontal" >
+      <div class="shipping-methods">
+        {{ 'checkout.shipping_method.selection.heading' | translate }}
+        <!-- ToDo: Should loop here over available shipping methods instead -->
+        <div *ngIf="basket.commonShippingMethod" class="radio">
+          <label [for]="'ShippingMethod_'+ basket.commonShippingMethod.id">
+            <input
+              formControlName="id"
+              [id]="'ShippingMethod_'+ basket.commonShippingMethod.id"
+              [value]="basket.commonShippingMethod.id"
+               type="radio"
+            />
+
+            <span>{{ basket.commonShippingMethod.name }}:</span>&nbsp;
+            <span *ngIf="basket.commonShippingMethod.shippingTimeMin && basket.commonShippingMethod.shippingTimeMax" class="help-block help-block-inline">
+              {{ 'checkout.shipping.delivery_time.description' | translate }}
+              <span *ngIf="basket.commonShippingMethod.shippingTimeMin === 0 && basket.commonShippingMethod.shippingTimeMax === 1">
+                  {{ 'checkout.shipping.delivery_time.within24' | translate}}
+              </span>
+              <span *ngIf="basket.commonShippingMethod.shippingTimeMin === 0 && basket.commonShippingMethod.shippingTimeMax > 1">
+                  {{ 'checkout.shipping.delivery_time.within' | translate :{'0': basket.commonShippingMethod.shippingTimeMax} }}
+              </span>
+              <span *ngIf="basket.commonShippingMethod.shippingTimeMin > 0">
+                  {{ 'checkout.shipping.delivery_time' | translate :{'0': basket.commonShippingMethod.shippingTimeMin, '1': basket.commonShippingMethod.shippingTimeMax} }}
+              </span>
+            </span>
+            <!-- ToDo: Tooltip displaying shipping method description: see #IS-23744 -->
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- basket summary -->
+  <div class="col-sm-12 col-md-4 order-summary">
+    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+    <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
+    <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
+
+    <div class="cost-summary">
+      <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+
+      <button
+        class="btn btn-lg btn-block btn-primary"
+        type="button"
+        [disabled]="!basket.commonShippingMethod"
+        (click)="nextStep()"
+      >
+        {{'checkout.button.label' | translate}}
+      </button>
+    </div>
+    <!-- ToDo: Privacy policy link -->
+  </div>
+</div>

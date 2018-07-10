@@ -1,14 +1,12 @@
-<ish-checkout-progress-bar [step]="1"></ish-checkout-progress-bar>
-
 <div data-testing-id="checkout-address-page">
   <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
 
   <ish-checkout-address
     [basket]="basket$ | async"
-    [user]="user$ | async"
+    [addresses]="addresses$ | async"
+    (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
+    (updateShippingAddress)="updateBasketShippingAddress($event)"
   ></ish-checkout-address>
 
-  <ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>
-
-

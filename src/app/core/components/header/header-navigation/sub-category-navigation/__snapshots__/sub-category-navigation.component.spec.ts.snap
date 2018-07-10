@@ -3,7 +3,7 @@
 exports[`Sub Category Navigation Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="6.0.3"
+  ng-version="6.0.7"
 >
   
   <ul
@@ -21,7 +21,6 @@ exports[`Sub Category Navigation Component should be created 1`] = `
         href="/category/A.1"
         ng-reflect-ng-style="[object Object]"
         ng-reflect-router-link="/category,A.1"
-        style="width: 100%;"
       >
         CAT_A1
       </a>

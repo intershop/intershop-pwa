@@ -11,8 +11,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
+import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
-import { StyleWrapperDirective } from './directives/style-wrapper.directive';
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
 import { CrosstabService } from './services/crosstab/crosstab.service';
@@ -42,9 +42,9 @@ export function translateFactory(http: HttpClient) {
     HeaderModule,
     FooterModule,
     PipesModule,
+    FeatureToggleModule.forRoot(),
   ],
-  declarations: [StyleWrapperDirective],
-  exports: [StyleWrapperDirective, HeaderModule, FooterModule],
+  exports: [HeaderModule, FooterModule],
 })
 export class CoreModule {
   constructor(

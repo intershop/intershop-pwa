@@ -17,8 +17,8 @@ import { Basket } from '../../models/basket/basket.model';
 import { LoginCredentials } from '../../models/credentials/credentials.model';
 import { Customer } from '../../models/customer/customer.model';
 import { Locale } from '../../models/locale/locale.model';
+import { PaymentMethod } from '../../models/payment-method/payment-method.model';
 import { Price } from '../../models/price/price.model';
-import { Product } from '../../models/product/product.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { CategoriesService } from '../../shopping/services/categories/categories.service';
 import { ProductsService } from '../../shopping/services/products/products.service';
@@ -27,6 +27,7 @@ import { LoadProduct } from '../../shopping/store/products';
 import { shoppingEffects, shoppingReducers } from '../../shopping/store/shopping.system';
 import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
+import { AddressService } from '../services/address/address.service';
 import { BasketService } from '../services/basket/basket.service';
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
@@ -66,7 +67,7 @@ describe('Checkout System', () => {
     name: 'test',
     position: 1,
     quantity: { type: 'test', value: 1 },
-    product: { sku: 'test' } as Product,
+    productSKU: 'test',
     price: null,
     singleBasePrice: null,
     isHiddenGift: false,
@@ -135,6 +136,7 @@ describe('Checkout System', () => {
     });
     when(basketServiceMock.getBasketItems(anything())).thenReturn(of([lineItem]));
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(null));
+    when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));
 
     const productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anything())).thenReturn(of(product));
@@ -160,6 +162,7 @@ describe('Checkout System', () => {
         TranslateModule.forRoot(),
       ],
       providers: [
+        { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
@@ -198,7 +201,9 @@ describe('Checkout System', () => {
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
+        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
+        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });
     });
@@ -215,7 +220,9 @@ describe('Checkout System', () => {
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasket);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketSuccess);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItems);
+        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPayments);
         expect(i.next().type).toEqual(BasketActionTypes.LoadBasketItemsSuccess);
+        expect(i.next().type).toEqual(BasketActionTypes.LoadBasketPaymentsSuccess);
         expect(i.next()).toBeUndefined();
       });
     });

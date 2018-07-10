@@ -1,11 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { CoreState } from '../../../core/store/core.state';
-import { getLoggedInUser } from '../../../core/store/user';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Address } from '../../../models/address/address.model';
 import { Basket } from '../../../models/basket/basket.model';
-import { User } from '../../../models/user/user.model';
-import { getBasketLoading, getCurrentBasket } from '../../store/basket';
+import { getAddressesLoading, getAllAddresses } from '../../store/addresses';
+import { LoadAddresses } from '../../store/addresses/addresses.actions';
+import {
+  getBasketLoading,
+  getCurrentBasket,
+  UpdateBasketInvoiceAddress,
+  UpdateBasketShippingAddress,
+} from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
@@ -14,16 +20,28 @@ import { CheckoutState } from '../../store/checkout.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressPageContainerComponent implements OnInit {
-  user$: Observable<User>;
   basket$: Observable<Basket>;
-  basketLoading$: Observable<boolean>;
+  addresses$: Observable<Address[]>;
+  loading$: Observable<boolean>;
 
-  constructor(private store: Store<CheckoutState>, private coreStore: Store<CoreState>) {}
+  constructor(private store: Store<CheckoutState>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
-    this.basketLoading$ = this.store.pipe(select(getBasketLoading));
+    this.store.dispatch(new LoadAddresses());
+    this.addresses$ = this.store.pipe(select(getAllAddresses));
 
-    this.user$ = this.coreStore.pipe(select(getLoggedInUser));
+    this.loading$ = combineLatest(
+      this.store.pipe(select(getBasketLoading)),
+      this.store.pipe(select(getAddressesLoading))
+    ).pipe(map(([basketLoading, addressesLoading]) => basketLoading || addressesLoading));
+  }
+
+  updateBasketInvoiceAddress(addressId: string) {
+    this.store.dispatch(new UpdateBasketInvoiceAddress(addressId));
+  }
+
+  updateBasketShippingAddress(addressId: string) {
+    this.store.dispatch(new UpdateBasketShippingAddress(addressId));
   }
 }

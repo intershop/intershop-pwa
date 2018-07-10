@@ -4,8 +4,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BasketItem } from '../../../../models/basket-item/basket-item.model';
-import { Basket } from '../../../../models/basket/basket.model';
+import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
+import { BasketView } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
@@ -15,8 +15,8 @@ describe('Mini Basket Component', () => {
   let fixture: ComponentFixture<MiniBasketComponent>;
   let component: MiniBasketComponent;
   let element: HTMLElement;
-  let lineItem: BasketItem;
-  let basket: Basket;
+  let lineItem: BasketItemView;
+  let basket: BasketView;
   let translate: TranslateService;
 
   beforeEach(async(() => {

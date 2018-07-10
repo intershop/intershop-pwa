@@ -66,8 +66,8 @@ describe('Api Service', () => {
 
       verify(storeMock$.dispatch(anything())).once();
       const [action] = capture(storeMock$.dispatch).last();
-      expect((<Action>action).type).toEqual(ErrorActionTypes.ServerError);
-      expect((<ServerError>action).error.statusText).toEqual(statusText);
+      expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
+      expect((action as ServerError).error.statusText).toEqual(statusText);
     });
 
     it('should call the httpClient.put method when apiService.put method is called.', done => {
@@ -194,7 +194,10 @@ describe('Api Service', () => {
     it('should perform both operations when requested', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(
+          unpackEnvelope(),
+          resolveLinks(apiService)
+        )
         .subscribe(data => {
           expect(data).toEqual([webcamResponse]);
           done();
@@ -240,7 +243,10 @@ describe('Api Service', () => {
     it('should return empty array on element and link translation when source is empty', done => {
       apiService
         .get('categories')
-        .pipe(unpackEnvelope(), resolveLinks(apiService))
+        .pipe(
+          unpackEnvelope(),
+          resolveLinks(apiService)
+        )
         .subscribe(data => {
           expect(data).toBeEmpty();
           done();

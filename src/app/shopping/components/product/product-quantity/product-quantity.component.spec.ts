@@ -14,7 +14,6 @@ describe('Product Quantity Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), ReactiveFormsModule],
-      providers: [TranslateService],
       declarations: [
         ProductQuantityComponent,
         MockComponent({
@@ -64,9 +63,7 @@ describe('Product Quantity Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() {
-      fixture.detectChanges();
-    }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should not render when inStock = false', () => {

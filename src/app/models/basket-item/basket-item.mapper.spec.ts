@@ -17,7 +17,7 @@ describe('Basket Item Mapper', () => {
       const basketItem: BasketItem = BasketItemMapper.fromData(basketItemData);
 
       expect(basketItem).toBeTruthy();
-      expect(basketItem.product.sku).toBe(basketItemData.product.title);
+      expect(basketItem.productSKU).toBe(basketItemData.product.title);
     });
   });
 });

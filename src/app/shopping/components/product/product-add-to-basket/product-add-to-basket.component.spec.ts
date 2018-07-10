@@ -13,7 +13,6 @@ describe('Product Add To Basket Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [TranslateService],
       declarations: [ProductAddToBasketComponent],
     }).compileComponents();
   }));
@@ -30,22 +29,17 @@ describe('Product Add To Basket Component', () => {
     product.availability = true;
     element = fixture.nativeElement;
     component.product = product;
-    component.ngOnChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    expect(function() {
-      fixture.detectChanges();
-    }).not.toThrow();
+    expect(() => fixture.detectChanges()).not.toThrow();
   });
 
   it('should throw an error if input parameter product is not set', () => {
     component.product = null;
-    expect(function() {
-      fixture.detectChanges();
-    }).toThrow();
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should not render when inStock = false', () => {
@@ -61,14 +55,12 @@ describe('Product Add To Basket Component', () => {
 
   it('should show glyphicon button when display type is glyphicon ', () => {
     component.displayType = 'glyphicon';
-    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('span').className).toContain('glyphicon');
   });
 
   it('should show disable button when "disabled" is set to "false" ', () => {
     component.disabled = true;
-    component.ngOnChanges();
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
   });

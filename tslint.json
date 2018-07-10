@@ -3,6 +3,7 @@
     "rxjs-tslint-rules",
     "tslint-clean-code",
     "tslint-consistent-codestyle",
+    "tslint-etc",
     "intershop-tslint-rules"
   ],
   "rulesDirectory": [
@@ -11,6 +12,10 @@
   ],
   "rules": {
     "arrow-return-shorthand": true,
+    "only-arrow-functions": [true, "allow-named-functions"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "no-unnecessary-callback-wrapper": { "severity": "warning" },
+    "no-unsafe-callback-scope": false,
     "no-commented-out-code": { "severity": "warning" },
     "no-consecutive-blank-lines": true,
     "callable-types": true,
@@ -84,6 +89,7 @@
       true,
       "ignore-params"
     ],
+    "no-angle-bracket-type-assertion": true,
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
@@ -93,7 +99,8 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-unused-variable": true,
+    "no-unused-declaration": true,
+    "throw-error": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,

@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { CoreState } from '../../../store/core.state';
-import { ErrorState } from '../../../store/error/error.reducer';
-import { getErrorState } from '../../../store/error/error.selectors';
+import { getHeaderType } from '../../../store/viewconf';
 
 @Component({
   selector: 'ish-header-container',
@@ -11,11 +10,11 @@ import { getErrorState } from '../../../store/error/error.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderContainerComponent implements OnInit {
-  generalError$: Observable<ErrorState>;
+  headerType$: Observable<string>;
 
   constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.generalError$ = this.store.pipe(select(getErrorState));
+    this.headerType$ = this.store.pipe(select(getHeaderType));
   }
 }

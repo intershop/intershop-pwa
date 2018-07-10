@@ -1,0 +1,8 @@
+<ng-container *ngIf="user; else notLoggedIn">
+  <a routerLink="/logout" data-testing-id="link-logout">
+    <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>{{'account.logout.link' | translate}}
+  </a>
+</ng-container>
+<ng-template #notLoggedIn>
+  &nbsp;
+</ng-template>

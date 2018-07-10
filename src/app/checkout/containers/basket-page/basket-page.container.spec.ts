@@ -64,7 +64,7 @@ describe('Basket Page Container', () => {
 
   it('should render shopping basket component if there is a basket with line items', () => {
     const basket = { id: 'dummy' } as Basket;
-    const lineItems = [{ id: '123', product: { sku: 'SKU_123' } }] as BasketItem[];
+    const lineItems = [{ id: '123', productSKU: 'SKU_123' }] as BasketItem[];
     store$.dispatch(new LoadBasketSuccess(basket));
     store$.dispatch(new LoadBasketItemsSuccess(lineItems));
     fixture.detectChanges();

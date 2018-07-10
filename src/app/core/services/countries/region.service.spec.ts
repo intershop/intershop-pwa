@@ -9,10 +9,7 @@ describe('Region Service', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([RegionService], (service: RegionService) => {
-      expect(service).toBeTruthy();
-    })
-  );
+  it('should be created', inject([RegionService], (service: RegionService) => {
+    expect(service).toBeTruthy();
+  }));
 });

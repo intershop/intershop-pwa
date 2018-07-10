@@ -3,6 +3,7 @@ import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { CoreState } from '../../../core/store/core.state';
 import { Product } from '../../../models/product/product.model';
+import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadProduct, LoadProductSuccess, SelectProduct } from '../../store/products';
@@ -21,6 +22,7 @@ describe('Product Page Container', () => {
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
+        FeatureToggleModule.testingFeatures({ recently: true }),
       ],
       declarations: [
         ProductPageContainerComponent,

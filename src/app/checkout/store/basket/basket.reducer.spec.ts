@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import * as fromActions from './basket.actions';
 import { basketReducer, initialState } from './basket.reducer';
 
@@ -37,6 +38,38 @@ describe('Basket Reducer', () => {
 
         expect(state.basket).toEqual(basket);
         expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('UpdateBasket actions', () => {
+    describe('UpdateBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.UpdateBasket({ invoiceToAddress: { id: '1234' } });
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('UpdateBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.UpdateBasketFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('UpdateBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.UpdateBasketSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toBeNull();
       });
     });
   });
@@ -188,6 +221,45 @@ describe('Basket Reducer', () => {
         const state = basketReducer(oldState, action);
 
         expect(state).toEqual(initialState);
+      });
+    });
+  });
+
+  describe('LoadBasketPayments actions', () => {
+    describe('LoadBasketPayments action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadBasketPayments('test');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('LoadBasketPaymentsFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.LoadBasketPaymentsFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('LoadBasketPaymentsSuccess action', () => {
+      it('should set basketPayments and set loading to false', () => {
+        const basket = {
+          id: 'test',
+        } as Basket;
+        const payments = [] as PaymentMethod[];
+
+        const basketAction = new fromActions.LoadBasketSuccess(basket);
+        const basketPaymentsAction = new fromActions.LoadBasketPaymentsSuccess(payments);
+        let state = basketReducer(initialState, basketAction);
+        state = basketReducer(state, basketPaymentsAction);
+
+        expect(state.payments).toEqual(payments);
+        expect(state.loading).toBeFalse();
       });
     });
   });

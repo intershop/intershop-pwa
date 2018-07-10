@@ -47,6 +47,15 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should update data to basket of a specific basket when 'updateBasket' is called", done => {
+    when(apiService.put(anything(), anything())).thenReturn(of({}));
+
+    basketService.updateBasket(basketMockData.id, { invoiceToAddress: { id: '123456' } }).subscribe(() => {
+      verify(apiService.put(`baskets/${basketMockData.id}`, anything())).once();
+      done();
+    });
+  });
+
   it("should get basket items for specific basketId when 'getBasketItems' is called", done => {
     when(apiService.get(`baskets/${basketMockData.id}/items`)).thenReturn(of([]));
 
@@ -79,6 +88,15 @@ describe('Basket Service', () => {
 
     basketService.deleteBasketItem(lineItemData.id, basketMockData.id).subscribe(() => {
       verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+      done();
+    });
+  });
+
+  it("should get basket payments for specific basketId when 'getBasketPayments' is called", done => {
+    when(apiService.get(`baskets/${basketMockData.id}/payments`)).thenReturn(of([]));
+
+    basketService.getBasketPayments(basketMockData.id).subscribe(() => {
+      verify(apiService.get(`baskets/${basketMockData.id}/payments`)).once();
       done();
     });
   });

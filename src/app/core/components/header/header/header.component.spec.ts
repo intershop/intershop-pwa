@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { HeaderComponent } from './header.component';
 
@@ -12,7 +13,12 @@ describe('Header Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule, TranslateModule.forRoot(), RouterTestingModule],
+      imports: [
+        CollapseModule,
+        TranslateModule.forRoot(),
+        RouterTestingModule,
+        FeatureToggleModule.testingFeatures({ compare: true }),
+      ],
       declarations: [
         HeaderComponent,
         MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
@@ -45,35 +51,43 @@ describe('Header Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render User Links on template', () => {
-    expect(element.getElementsByTagName('ish-login-status-container')[0].textContent).toContain(
-      'Login Status Container'
-    );
-    expect(element.getElementsByTagName('ish-product-compare-status-container')[0].textContent).toContain(
-      'Product Compare Status Container'
-    );
-  });
+  describe('rendering', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
 
-  it('should render Language Switch on template', () => {
-    expect(element.getElementsByTagName('ish-language-switch-container')[0].textContent).toContain(
-      'Language Switch Container'
-    );
-  });
+    it('should render User Links on template', () => {
+      expect(element.getElementsByTagName('ish-login-status-container')[0].textContent).toContain(
+        'Login Status Container'
+      );
+      expect(element.getElementsByTagName('ish-product-compare-status-container')[0].textContent).toContain(
+        'Product Compare Status Container'
+      );
+    });
 
-  it('should render Search Box on template', () => {
-    expect(element.getElementsByTagName('ish-search-box-container')[0].textContent).toContain('Search Box Container');
-  });
+    it('should render Language Switch on template', () => {
+      expect(element.getElementsByTagName('ish-language-switch-container')[0].textContent).toContain(
+        'Language Switch Container'
+      );
+    });
 
-  it('should render Header Navigation on template', () => {
-    expect(element.getElementsByTagName('ish-header-navigation-container')[0].textContent).toContain(
-      'Header Navigation Container'
-    );
-  });
+    it('should render Search Box on template', () => {
+      expect(element.getElementsByTagName('ish-search-box-container')[0].textContent).toContain('Search Box Container');
+    });
 
-  it('should render Basket on template', () => {
-    expect(element.getElementsByTagName('ish-mobile-basket-container')[0].textContent).toContain(
-      'Mobile Basket Container'
-    );
-    expect(element.getElementsByTagName('ish-mini-basket-container')[0].textContent).toContain('Mini Basket Container');
+    it('should render Header Navigation on template', () => {
+      expect(element.getElementsByTagName('ish-header-navigation-container')[0].textContent).toContain(
+        'Header Navigation Container'
+      );
+    });
+
+    it('should render Basket on template', () => {
+      expect(element.getElementsByTagName('ish-mobile-basket-container')[0].textContent).toContain(
+        'Mobile Basket Container'
+      );
+      expect(element.getElementsByTagName('ish-mini-basket-container')[0].textContent).toContain(
+        'Mini Basket Container'
+      );
+    });
   });
 });

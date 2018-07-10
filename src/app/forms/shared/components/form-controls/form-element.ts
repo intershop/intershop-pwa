@@ -11,7 +11,8 @@ export class FormElement {
   @Input() labelClass = 'col-sm-4';
   @Input() inputClass = 'col-sm-8';
   @Input()
-  markRequiredLabel = 'auto'; /* values: 'auto' (default) - label is marked, if an required validator is set
+  markRequiredLabel =
+    'auto'; /* values: 'auto' (default) - label is marked, if an required validator is set
                                                   'on' (label is always marked as required),
                                                   'off' (label is never marked as required) */
   uuid: string;

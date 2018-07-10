@@ -16,7 +16,6 @@ describe('Product Shipment Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot(), ModalModule.forRoot()],
-      providers: [TranslateService],
       declarations: [ProductShipmentComponent, ModalDialogComponent],
     }).compileComponents();
   }));
@@ -41,9 +40,7 @@ describe('Product Shipment Component', () => {
 
   it('should throw an error if input parameter product is not set properly', () => {
     component.product = null;
-    expect(function() {
-      component.ngOnChanges();
-    }).toThrow();
+    expect(() => component.ngOnChanges()).toThrow();
   });
 
   it('should not render when readyForShipmentMin and readyForShipmentMax are not available', () => {

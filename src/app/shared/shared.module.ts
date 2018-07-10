@@ -12,6 +12,7 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
+import { FeatureToggleModule } from './feature-toggle.module';
 import { PipesModule } from './pipes.module';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { PipesModule } from './pipes.module';
     ModalModule,
     PopoverModule,
     PipesModule,
+    FeatureToggleModule,
   ],
   declarations: [
     BreadcrumbComponent,
@@ -48,6 +50,7 @@ import { PipesModule } from './pipes.module';
     AccordionComponent,
     AccordionItemComponent,
     PipesModule,
+    FeatureToggleModule,
   ],
 })
 export class SharedModule {}

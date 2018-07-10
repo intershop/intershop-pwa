@@ -80,9 +80,10 @@ export class SearchEffects {
     map((action: SuggestSearch) => action.payload),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
-      this.suggestService
-        .search(searchTerm)
-        .pipe(map(results => new SuggestSearchSuccess(results)), catchError(() => EMPTY))
+      this.suggestService.search(searchTerm).pipe(
+        map(results => new SuggestSearchSuccess(results)),
+        catchError(() => EMPTY)
+      )
     ) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search
   );
 

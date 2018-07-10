@@ -51,7 +51,7 @@ see also [Server Configuration in Angular Docs](https://angular.io/guide/deploym
 
 ## Progressive Web App (PWA)
 
-To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started) use `npm run start:static:prod` to build an serve the application. After that open `http://localhost:4000` in your browser and test it or run a PWA Audit. Currently only `localhost` or `127.0.0.1` will work with the service worker since it requires `https` communication on any other domain.
+To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.io/guide/service-worker-getting-started) use `npm run start:static:prod` to build an serve the application. After that open `http://localhost:4200` in your browser and test it or run a PWA Audit. Currently only `localhost` or `127.0.0.1` will work with the service worker since it requires `https` communication on any other domain.
 
 ## Running unit tests
 

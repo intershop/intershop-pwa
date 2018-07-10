@@ -9,6 +9,7 @@ import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.acti
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProduct, LoadProductSuccess } from '../../../shopping/store/products';
 import { ShoppingState } from '../../../shopping/store/shopping.state';
@@ -28,6 +29,7 @@ describe('Basket Effects', () => {
   const basket = {
     id: 'test',
     lineItems: [],
+    paymentMethod: null,
   } as Basket;
 
   const lineItems = [
@@ -36,7 +38,7 @@ describe('Basket Effects', () => {
       name: 'test',
       position: 1,
       quantity: { type: 'test', value: 1 },
-      product: { sku: 'test' } as Product,
+      productSKU: 'test',
       price: null,
       singleBasePrice: null,
       isHiddenGift: false,
@@ -58,6 +60,16 @@ describe('Basket Effects', () => {
         return of({ id: id } as Basket);
       }
     });
+
+    when(basketServiceMock.updateBasket(anyString(), anything())).thenCall(
+      (basketId: string, payload: { invoiceToAddress: { id: string } }) => {
+        if (basketId === 'invalid') {
+          return throwError({ message: 'invalid' } as HttpErrorResponse);
+        } else {
+          return of({});
+        }
+      }
+    );
 
     when(basketServiceMock.getBasket()).thenCall((id: string) => {
       return of({ id: 'test' } as Basket);
@@ -96,6 +108,14 @@ describe('Basket Effects', () => {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of({});
+      }
+    });
+
+    when(basketServiceMock.getBasketPayments(anyString())).thenCall((id: string) => {
+      if (id === 'invalid') {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      } else {
+        return of([]);
       }
     });
 
@@ -147,6 +167,22 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasket$', () => {
+    it('should call the basketService for updateBasket', done => {
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+
+      const basketId = 'test';
+      const payload = { invoiceToAddress: { id: '7654' } };
+      const action = new basketActions.UpdateBasket(payload);
+      actions$ = of(action);
+
+      effects.updateBasket$.subscribe(() => {
+        verify(basketServiceMock.updateBasket(basketId, payload)).once();
+        done();
+      });
     });
   });
 
@@ -245,8 +281,7 @@ describe('Basket Effects', () => {
       const action = new basketActions.AddItemsToBasket(payload);
       actions$ = of(action);
 
-      // tslint:disable-next-line:use-async-synchronisation-in-tests
-      effects.addItemsToBasket$.subscribe(() => fail(), () => fail());
+      effects.addItemsToBasket$.subscribe(fail, fail);
 
       verify(basketServiceMock.addItemsToBasket(anything(), 'test')).never();
     });
@@ -320,7 +355,7 @@ describe('Basket Effects', () => {
       const completion = new basketActions.AddItemsToBasket({
         items: [
           {
-            sku: lineItems[0].product.sku,
+            sku: lineItems[0].productSKU,
             quantity: lineItems[0].quantity.value,
           },
         ],
@@ -488,6 +523,54 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketAfterBasketChangeSuccess$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadBasketPayments$', () => {
+    beforeEach(() => {
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+    });
+
+    it('should call the basketService for loadBasketPayments', done => {
+      const id = 'test';
+      const action = new basketActions.LoadBasketPayments(id);
+      actions$ = of(action);
+
+      effects.loadBasketPayments$.subscribe(() => {
+        verify(basketServiceMock.getBasketPayments(id)).once();
+        done();
+      });
+    });
+
+    it('should map to action of type LoadBasketPaymentsSuccess', () => {
+      const id = 'test';
+      const action = new basketActions.LoadBasketPayments(id);
+      const completion = new basketActions.LoadBasketPaymentsSuccess([] as PaymentMethod[]);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketPayments$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadBasketPaymentsFail', () => {
+      const id = 'invalid';
+      const action = new basketActions.LoadBasketPayments(id);
+      const completion = new basketActions.LoadBasketPaymentsFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketPayments$).toBeObservable(expected$);
+    });
+
+    it('should trigger LoadBasketPayments action if LoadBasketSuccess action triggered', () => {
+      const action = new basketActions.LoadBasketSuccess({
+        id: 'test',
+      } as Basket);
+      const completion = new basketActions.LoadBasketPayments('test');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketPaymentsAfterBasketLoad$).toBeObservable(expected$);
     });
   });
 

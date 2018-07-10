@@ -2,42 +2,33 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Basket } from '../../../models/basket/basket.model';
+import { map } from 'rxjs/operators';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
+import { Basket, BasketView } from '../../../models/basket/basket.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { c } from '../../../utils/dev/marbles-utils';
 import { CheckoutState } from '../checkout.state';
 import { checkoutReducers } from '../checkout.system';
-import { LoadBasket, LoadBasketFail, LoadBasketItemsSuccess, LoadBasketSuccess } from './basket.actions';
+import {
+  LoadBasket,
+  LoadBasketFail,
+  LoadBasketItemsSuccess,
+  LoadBasketPaymentsSuccess,
+  LoadBasketSuccess,
+} from './basket.actions';
 import { getBasketError, getBasketLoading, getCurrentBasket } from './basket.selectors';
 
 describe('Basket Selectors', () => {
   let store$: Store<CheckoutState>;
 
-  let basket$: Observable<Basket>;
+  let basket$: Observable<BasketView>;
   let basketLoading$: Observable<boolean>;
   let basketError$: Observable<HttpErrorResponse>;
 
-  let basket;
-  let lineItems;
-  let prod: Product;
-
   beforeEach(() => {
-    basket = {
-      id: 'test',
-      lineItems: [],
-    };
-    lineItems = [
-      {
-        id: 'test',
-        product: {
-          sku: 'test',
-        },
-      },
-    ];
-    prod = { sku: 'test' } as Product;
-
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
@@ -63,7 +54,7 @@ describe('Basket Selectors', () => {
   describe('loading a basket', () => {
     beforeEach(() => {
       store$.dispatch(new LoadBasket());
-      store$.dispatch(new LoadProductSuccess(prod));
+      store$.dispatch(new LoadProductSuccess({ sku: 'sku' } as Product));
     });
 
     it('should set the state to loading', () => {
@@ -71,20 +62,26 @@ describe('Basket Selectors', () => {
     });
 
     it('should set loading to false and set basket state', () => {
-      const expected = {
-        id: 'test',
-        lineItems: [
-          {
-            id: 'test',
-            product: prod,
-          },
-        ],
-      };
-
-      store$.dispatch(new LoadBasketSuccess(basket));
-      store$.dispatch(new LoadBasketItemsSuccess(lineItems));
+      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as Basket));
+      store$.dispatch(new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku' } as BasketItem]));
+      store$.dispatch(new LoadBasketPaymentsSuccess([{ id: 'p_test' } as PaymentMethod]));
       expect(basketLoading$).toBeObservable(c(false));
-      expect(basket$).toBeObservable(c(expected));
+      expect(basket$.pipe(map(b => b.id))).toBeObservable(c('test'));
+      expect(basket$.pipe(map(b => b.lineItems.length))).toBeObservable(c(1));
+      expect(basket$.pipe(map(b => b.lineItems[0].id))).toBeObservable(c('test'));
+      expect(basket$.pipe(map(b => b.lineItems[0].product))).toBeObservable(c({ sku: 'sku' }));
+      expect(basket$.pipe(map(b => b.paymentMethod.id))).toBeObservable(c('p_test'));
+    });
+
+    it('should change the product of the basket line item if the product is changing', () => {
+      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as Basket));
+      store$.dispatch(new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku' } as BasketItem]));
+
+      expect(basket$.pipe(map(b => b.lineItems[0].product))).toBeObservable(c({ sku: 'sku' }));
+
+      store$.dispatch(new LoadProductSuccess({ sku: 'sku', name: 'new name' } as Product));
+
+      expect(basket$.pipe(map(b => b.lineItems[0].product))).toBeObservable(c({ sku: 'sku', name: 'new name' }));
     });
 
     it('should set loading to false and set error state', () => {

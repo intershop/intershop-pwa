@@ -48,7 +48,7 @@ describe('Product Image Component', () => {
     TestBed.configureTestingModule({
       declarations: [ProductImageComponent],
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: ICM_BASE_URL, useValue: '' }, TranslateService],
+      providers: [{ provide: ICM_BASE_URL, useValue: '' }],
     }).compileComponents();
   }));
 

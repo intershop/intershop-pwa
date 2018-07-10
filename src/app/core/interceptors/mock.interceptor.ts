@@ -5,6 +5,7 @@ import {
   HttpHandler,
   HttpHeaders,
   HttpInterceptor,
+  HttpParams,
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
@@ -45,7 +46,6 @@ export class MockInterceptor implements HttpInterceptor {
     return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
       flatMap(event => {
         if (event instanceof HttpResponse) {
-          const response = <HttpResponse<any>>event;
           if (this.isLoginAttempt(req) && !this.isMockUserLoggingInSuccessfully(req)) {
             return throwError(
               new HttpErrorResponse({
@@ -55,7 +55,7 @@ export class MockInterceptor implements HttpInterceptor {
               })
             );
           }
-          return of(this.attachTokenIfNecessary(req, response));
+          return of(this.attachTokenIfNecessary(req, event));
         }
         return of(event);
       })
@@ -91,8 +91,22 @@ export class MockInterceptor implements HttpInterceptor {
     return this.urlHasToBeMocked(req.url)
       ? `${MOCK_DATA_ROOT}/${this.getRestPath(
           this.removeQueryStringParameter(req.url)
-        )}/${req.method.toLocaleLowerCase()}-data.json`
+        )}/${req.method.toLocaleLowerCase()}${this.sanitizeParams(req.params)}.json`
       : req.url;
+  }
+
+  private sanitize(value: string): string {
+    return value.replace(/[^a-zA-Z0-9-]/, '_');
+  }
+
+  private sanitizeParams(params: HttpParams): string {
+    return !params
+      ? ''
+      : params
+          .keys()
+          .sort((a, b) => a.localeCompare(b))
+          .map(key => `${this.sanitize(key)}_${this.sanitize(params.get(key))}`)
+          .reduce((a, b) => a + '_' + b, '');
   }
 
   private urlHasToBeMocked(url: string): boolean {

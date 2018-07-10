@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import * as fromActions from './basket.actions';
 
 describe('Basket Actions', () => {
@@ -32,6 +33,56 @@ describe('Basket Actions', () => {
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.LoadBasketSuccess,
         payload,
+      });
+    });
+  });
+
+  describe('Update Basket Actions', () => {
+    it('should create new action for UpdateBasketInvoiceAddress', () => {
+      const payload = '123';
+      const action = new fromActions.UpdateBasketInvoiceAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketInvoiceAddress,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketShippingAddress', () => {
+      const payload = '123';
+      const action = new fromActions.UpdateBasketShippingAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketShippingAddress,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasket', () => {
+      const payload = { invoiceToAddress: { id: '123' } };
+      const action = new fromActions.UpdateBasket(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasket,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.UpdateBasketFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketFail,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketSuccess', () => {
+      const action = new fromActions.UpdateBasketSuccess();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketSuccess,
       });
     });
   });
@@ -163,6 +214,38 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.DeleteBasketItemSuccess,
+      });
+    });
+  });
+
+  describe('Load Basket Payments Actions', () => {
+    it('should create new action for LoadBasketPayments', () => {
+      const payload = '123';
+      const action = new fromActions.LoadBasketPayments(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketPayments,
+        payload,
+      });
+    });
+
+    it('should create new action for LoadBasketPaymentsFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.LoadBasketPaymentsFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketPaymentsFail,
+        payload,
+      });
+    });
+
+    it('should create new action for LoadBasketPaymentsSuccess', () => {
+      const payload = [] as PaymentMethod[];
+      const action = new fromActions.LoadBasketPaymentsSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketPaymentsSuccess,
+        payload,
       });
     });
   });

@@ -7,7 +7,7 @@ SERVICE="intershop-pwa"
 if ! docker service ps $SERVICE ; then
   docker service create -d \
       --replicas $SERVICE_REPLICAS \
-      --publish mode=host,target=4000,published=4321 \
+      --publish mode=host,target=4200,published=4321 \
       --name $SERVICE \
       --env ICM_BASE_URL=$ICM_BASE_URL \
       --env LOGGING=true \
