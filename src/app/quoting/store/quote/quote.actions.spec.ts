@@ -78,6 +78,36 @@ describe('Quote Actions', () => {
     });
   });
 
+  describe('Reject Quote Actions', () => {
+    it('should create new action for RejectQuote', () => {
+      const action = new fromActions.RejectQuote();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteActionTypes.RejectQuote,
+      });
+    });
+
+    it('should create new action for RejectQuoteFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.RejectQuoteFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteActionTypes.RejectQuoteFail,
+        payload,
+      });
+    });
+
+    it('should create new action for RejectQuoteSuccess', () => {
+      const payload = 'test';
+      const action = new fromActions.RejectQuoteSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteActionTypes.RejectQuoteSuccess,
+        payload,
+      });
+    });
+  });
+
   describe('Create Quote Request from Quote Actions', () => {
     it('should create new action for CreateQuoteRequestFromQuote', () => {
       const action = new fromActions.CreateQuoteRequestFromQuote();
