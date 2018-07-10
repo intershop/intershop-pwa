@@ -54,6 +54,21 @@ export class QuoteEffects {
   );
 
   /**
+   * Reject quote from a specific user of a specific customer.
+   */
+  @Effect()
+  rejectQuote$ = this.actions$.pipe(
+    ofType(quoteActions.QuoteActionTypes.RejectQuote),
+    withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
+    concatMap(([action, quoteId]) => {
+      return this.quoteService.rejectQuote(quoteId).pipe(
+        map(id => new quoteActions.RejectQuoteSuccess(id)),
+        catchError(error => of(new quoteActions.RejectQuoteFail(error)))
+      );
+    })
+  );
+
+  /**
    * Create quote request based on selected quote from a specific user of a specific customer.
    */
   @Effect()
@@ -75,6 +90,7 @@ export class QuoteEffects {
   loadQuotesAfterChangeSuccess$ = this.actions$.pipe(
     ofType(
       quoteActions.QuoteActionTypes.DeleteQuoteSuccess,
+      quoteActions.QuoteActionTypes.RejectQuoteSuccess,
       QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
       UserActionTypes.LoadCompanyUserSuccess
     ),

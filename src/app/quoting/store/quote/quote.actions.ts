@@ -11,6 +11,9 @@ export enum QuoteActionTypes {
   DeleteQuote = '[Quote] Delete Quote',
   DeleteQuoteFail = '[Quote API] Delete Quote Fail',
   DeleteQuoteSuccess = '[Quote API] Delete Quote Success',
+  RejectQuote = '[Quote] Reject Quote',
+  RejectQuoteFail = '[Quote API] Reject Quote Fail',
+  RejectQuoteSuccess = '[Quote API] Reject Quote Success',
   CreateQuoteRequestFromQuote = '[Quote] Create Quote Request from Quote',
   CreateQuoteRequestFromQuoteFail = '[Quote API] Create Quote Request from Quote Fail',
   CreateQuoteRequestFromQuoteSuccess = '[Quote API] Create Quote Request from Quote Success',
@@ -50,6 +53,20 @@ export class DeleteQuoteSuccess implements Action {
   constructor(public payload: string) {}
 }
 
+export class RejectQuote implements Action {
+  readonly type = QuoteActionTypes.RejectQuote;
+}
+
+export class RejectQuoteFail implements Action {
+  readonly type = QuoteActionTypes.RejectQuoteFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class RejectQuoteSuccess implements Action {
+  readonly type = QuoteActionTypes.RejectQuoteSuccess;
+  constructor(public payload: string) {}
+}
+
 export class CreateQuoteRequestFromQuote implements Action {
   readonly type = QuoteActionTypes.CreateQuoteRequestFromQuote;
 }
@@ -72,6 +89,9 @@ export type QuoteAction =
   | DeleteQuote
   | DeleteQuoteFail
   | DeleteQuoteSuccess
+  | RejectQuote
+  | RejectQuoteFail
+  | RejectQuoteSuccess
   | CreateQuoteRequestFromQuote
   | CreateQuoteRequestFromQuoteFail
   | CreateQuoteRequestFromQuoteSuccess;
