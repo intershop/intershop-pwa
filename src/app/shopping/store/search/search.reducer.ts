@@ -25,6 +25,20 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
       };
     }
 
+    case SearchActionTypes.SearchMoreProducts: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case SearchActionTypes.SearchProductsAbort: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
     case SearchActionTypes.SearchProductsSuccess: {
       const searchResult = action.payload;
       const products = [...state.products, ...searchResult.products];

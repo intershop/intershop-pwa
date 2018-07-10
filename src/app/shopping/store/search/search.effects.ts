@@ -12,12 +12,14 @@ import {
   distinctUntilKeyChanged,
   filter,
   map,
+  mapTo,
   mergeMap,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
+import { partitionBy } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
@@ -26,6 +28,7 @@ import { canRequestMore, getPagingPage, ResetPagingInfo, SetPagingInfo, SetSortK
 import {
   SearchActionTypes,
   SearchProducts,
+  SearchProductsAbort,
   SearchProductsFail,
   SearchProductsSuccess,
   SuggestSearch,
@@ -56,13 +59,29 @@ export class SearchEffects {
   );
 
   /**
-   * Effect that triggers a products search request via REST service and additional actions to fetch the product data of the search results.
+   * partition that listens for product search requests
    */
-  @Effect()
-  searchProducts$ = this.actions$.pipe(
+  private canSearchMoreProducts$ = this.actions$.pipe(
     ofType<{ type: string; payload: string }>(SearchActionTypes.SearchProducts, SearchActionTypes.SearchMoreProducts),
     withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(canRequestMore(this.itemsPerPage)))),
-    filter(([, , canSearchMore]) => canSearchMore),
+    partitionBy(([, , canSearchMore]) => canSearchMore)
+  );
+
+  /**
+   * abort the current request if maximum of products was retrieved already
+   */
+  @Effect()
+  abortSearchProducts$ = this.canSearchMoreProducts$.pipe(
+    switchMap(canSearchMore => canSearchMore.isFalse),
+    mapTo(new SearchProductsAbort())
+  );
+
+  /**
+   * execute a product search respecting pagination
+   */
+  @Effect()
+  searchProducts$ = this.canSearchMoreProducts$.pipe(
+    switchMap(canSearchMore => canSearchMore.isTrue),
     map(([action, currentPage]) => ({ searchTerm: action.payload, nextPage: currentPage + 1 })),
     distinctUntilChanged(),
     concatMap(({ searchTerm, nextPage }) =>
@@ -70,15 +89,9 @@ export class SearchEffects {
       this.productsService.searchProducts(searchTerm, nextPage, this.itemsPerPage).pipe(
         mergeMap(res => [
           // dispatch action with search result
-          new SearchProductsSuccess({
-            searchTerm: searchTerm,
-            products: res.skus,
-          }),
+          new SearchProductsSuccess({ searchTerm: searchTerm, products: res.skus }),
           // dispatch viewconf action
-          new SetPagingInfo({
-            currentPage: nextPage,
-            totalItems: res.total,
-          }),
+          new SetPagingInfo({ currentPage: nextPage, totalItems: res.total }),
           // dispatch actions to load the product information of the found products
           ...res.products.map(product => new LoadProductSuccess(product)),
           // dispatch action to store the returned sorting options

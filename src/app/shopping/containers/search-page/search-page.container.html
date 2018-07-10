@@ -18,11 +18,11 @@
         (loadMore)="loadMore.emit()"
       ></ish-search-result>
     </ng-container>
-
+    
     <!-- empty search result -->
     <ng-template #noResult>
       <ish-search-no-result
-        [searchTerm]="searchTerm"
+      [searchTerm]="searchTerm"
       ></ish-search-no-result>
     </ng-template>
 
@@ -30,4 +30,4 @@
 
 </ng-container>
 
-<ish-loading *ngIf="searchLoading$ | async"></ish-loading>
+<ish-loading-spinner *ngIf="searchLoading$ | async"></ish-loading-spinner>
