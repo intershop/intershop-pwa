@@ -18,6 +18,7 @@ import { CategoriesService } from '../../services/categories/categories.service'
 import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
+import { ResetPagingInfo } from '../viewconf';
 import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
 
@@ -71,10 +72,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
-      const expected = new fromActions.SelectCategory('dummy');
+      const expected = { a: new ResetPagingInfo(), b: new fromActions.SelectCategory('dummy') };
 
       actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', { a: expected }));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('(ab)', expected));
     });
 
     it('should trigger SelectCategory when /category/XXX/product/YYY is visited', () => {
@@ -83,10 +84,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy', sku: 'foobar' },
         queryParams: {},
       });
-      const expected = new fromActions.SelectCategory('dummy');
+      const expected = { a: new ResetPagingInfo(), b: new fromActions.SelectCategory('dummy') };
 
       actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', { a: expected }));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('(ab)', expected));
     });
 
     it('should not trigger SelectCategory when /something is visited', () => {
@@ -106,10 +107,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
-      const expected = new fromActions.SelectCategory('dummy');
+      const expected = { a: new ResetPagingInfo(), b: new fromActions.SelectCategory('dummy') };
 
       actions$ = hot('-a-a-a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-a----', { a: expected }));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-(ab)----', expected));
     });
   });
 
@@ -326,7 +327,7 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
 
-        actions$ = hot('(ab)', {
+        actions$ = hot('--a--b)', {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId',
             params: { categoryUniqueId: category.uniqueId },
@@ -336,7 +337,7 @@ describe('Categories Effects', () => {
         });
 
         const action = new LoadProductsForCategory(category.uniqueId);
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-----a', { a: action }));
       });
 
       it('should not trigger action when we are on a product page', () => {

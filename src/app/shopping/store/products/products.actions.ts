@@ -8,6 +8,8 @@ export enum ProductsActionTypes {
   LoadProductFail = '[Shopping] Load Product Fail',
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
+  LoadMoreProductsForCategory = '[Shopping] Load More Products',
+  LoadProductsForCategoryAbort = '[Shopping] Abort Load Products for Category',
 }
 
 export class SelectProduct implements Action {
@@ -34,9 +36,20 @@ export class LoadProductsForCategory implements Action {
   constructor(public payload: string) {}
 }
 
+export class LoadMoreProductsForCategory implements Action {
+  readonly type = ProductsActionTypes.LoadMoreProductsForCategory;
+  constructor(public payload: string) {}
+}
+
+export class LoadProductsForCategoryAbort implements Action {
+  readonly type = ProductsActionTypes.LoadProductsForCategoryAbort;
+}
+
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
   | LoadProductFail
   | LoadProductSuccess
-  | LoadProductsForCategory;
+  | LoadProductsForCategory
+  | LoadMoreProductsForCategory
+  | LoadProductsForCategoryAbort;
