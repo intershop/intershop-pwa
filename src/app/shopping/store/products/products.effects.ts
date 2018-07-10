@@ -55,7 +55,7 @@ export class ProductsEffects {
       this.productsService.getCategoryProducts(categoryUniqueId, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([res, entities]) => [
-          new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
+          new categoriesActions.SetProductSkusForCategory({ categoryUniqueId: res.categoryUniqueId, skus: res.skus }),
           new fromViewconf.SetSortKeys(res.sortKeys),
           ...res.skus.filter(sku => !entities[sku]).map(sku => new productsActions.LoadProduct(sku)),
         ]),
