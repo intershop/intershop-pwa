@@ -142,9 +142,7 @@ describe('Quote Effects', () => {
       );
       store$.dispatch(new quoteActions.SelectQuote('QID'));
 
-      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() => {
-        return of('QID');
-      });
+      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() => of('QID'));
     });
 
     it('should call the quoteService for rejectQuote', done => {
@@ -167,9 +165,9 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type RejectQuoteFail', () => {
-      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() => {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
-      });
+      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() =>
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
 
       const action = new quoteActions.RejectQuote();
       const completion = new quoteActions.RejectQuoteFail({ message: 'invalid' } as HttpErrorResponse);

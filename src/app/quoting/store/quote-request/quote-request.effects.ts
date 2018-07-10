@@ -104,7 +104,7 @@ export class QuoteRequestEffects {
   submitQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequest),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
-    concatMap(([action, quoteRequestId]) =>
+    concatMap(([, quoteRequestId]) =>
       this.quoteRequestService.submitQuoteRequest(quoteRequestId).pipe(
         map(id => new quoteRequestActions.SubmitQuoteRequestSuccess(id)),
         catchError(error => of(new quoteRequestActions.SubmitQuoteRequestFail(error)))
@@ -119,7 +119,7 @@ export class QuoteRequestEffects {
   createQuoteRequestFromQuote$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
-    concatMap(([action, currentQuoteRequest]) =>
+    concatMap(([, currentQuoteRequest]) =>
       this.quoteRequestService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess(res)),
         catchError(error => of(new quoteRequestActions.CreateQuoteRequestFromQuoteFail(error)))

@@ -219,7 +219,7 @@
 
         <button  type="submit" class="btn btn-default" name="copy" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
 
-        <button *ngIf="quote.state === 'Responded'" type="submit" id="button-reject" class="btn btn-default" name="refuse" value="refuse">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
+        <button *ngIf="quote.state === 'Responded'" type="submit" id="button-reject" class="btn btn-default" name="refuse" (click)="reject()">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
       </ng-container>
     </ng-container>
   </div>

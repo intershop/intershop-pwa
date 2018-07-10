@@ -60,12 +60,12 @@ export class QuoteEffects {
   rejectQuote$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.RejectQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
-    concatMap(([action, quoteId]) => {
-      return this.quoteService.rejectQuote(quoteId).pipe(
+    concatMap(([, quoteId]) =>
+      this.quoteService.rejectQuote(quoteId).pipe(
         map(id => new quoteActions.RejectQuoteSuccess(id)),
         catchError(error => of(new quoteActions.RejectQuoteFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -75,7 +75,7 @@ export class QuoteEffects {
   createQuoteRequestFromQuote$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.CreateQuoteRequestFromQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuote))),
-    concatMap(([action, currentQuoteRequest]) =>
+    concatMap(([, currentQuoteRequest]) =>
       this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(res => new quoteActions.CreateQuoteRequestFromQuoteSuccess(res)),
         catchError(error => of(new quoteActions.CreateQuoteRequestFromQuoteFail(error)))

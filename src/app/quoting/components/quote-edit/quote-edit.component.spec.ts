@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { spy, verify } from 'ts-mockito';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
@@ -99,13 +100,11 @@ describe('Quote Edit Component', () => {
       component.onDeleteItem('4712');
     });
 
-    it('should throw submitQuoteRequest event when submit is clicked', done => {
-      component.submitQuoteRequest.subscribe(() => {
-        expect(true).toBeTruthy();
-        done();
-      });
+    it('should throw submitQuoteRequest event when submit is clicked', () => {
+      const emitter = spy(component.submitQuoteRequest);
 
       component.submit();
+      verify(emitter.emit()).once();
     });
 
     it('should render submitted heading if submit is clicked', () => {
@@ -187,13 +186,18 @@ describe('Quote Edit Component', () => {
       expect(element.textContent).not.toContain('1/2/70');
     });
 
-    it('should throw copyQuote event when copy is clicked', done => {
-      component.copyQuote.subscribe(() => {
-        expect(true).toBeTruthy();
-        done();
-      });
+    it('should throw copyQuote event when copy is clicked', () => {
+      const emitter = spy(component.copyQuote);
 
       component.copy();
+      verify(emitter.emit()).once();
+    });
+
+    it('should throw rejectQuote event when reject is clicked', () => {
+      const emitter = spy(component.rejectQuote);
+
+      component.reject();
+      verify(emitter.emit()).once();
     });
   });
 });
