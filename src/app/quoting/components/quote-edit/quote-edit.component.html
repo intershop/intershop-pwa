@@ -214,7 +214,7 @@
       <ng-container *ngIf="quote.type === 'Quote'">
         <ng-container *ngIf="quote.state === 'Responded'">
           <!-- <isif condition="#ValidQuote#"> -->
-          <button type="submit" class="btn btn-primary pull-right" name="add2cart" value="add2cart">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
+          <button type="submit" class="btn btn-primary pull-right" name="add2cart" (click)="addToBasket()">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
         </ng-container>
 
         <button  type="submit" class="btn btn-default" name="copy" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>

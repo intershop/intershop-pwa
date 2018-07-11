@@ -1,8 +1,11 @@
 // tslint:disable ccp-no-markup-in-containers
 // Since the quote edit component is also used in a modal, minor markup definitions had to been made in the containers template.
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { AddQuoteToBasket } from '../../../checkout/store/basket';
+import { Basket } from '../../../models/basket/basket.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { CreateQuoteRequestFromQuote, getQuoteLoading, getSelectedQuote, RejectQuote } from '../../store/quote';
 import { QuotingState } from '../../store/quoting.state';
@@ -13,10 +16,10 @@ import { QuotingState } from '../../store/quoting.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteEditPageContainerComponent implements OnInit {
-  quote$: Observable<Quote>;
+  quote$: Observable<Quote | Basket>;
   quoteLoading$: Observable<boolean>;
 
-  constructor(private store: Store<QuotingState>) {}
+  constructor(private store: Store<QuotingState>, private router: Router) {}
 
   ngOnInit() {
     this.quote$ = this.store.pipe(select(getSelectedQuote));
@@ -29,5 +32,10 @@ export class QuoteEditPageContainerComponent implements OnInit {
 
   rejectQuote() {
     this.store.dispatch(new RejectQuote());
+  }
+
+  addQuoteToBasket(quoteId: string) {
+    this.store.dispatch(new AddQuoteToBasket(quoteId));
+    this.router.navigate(['/basket']);
   }
 }
