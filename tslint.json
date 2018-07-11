@@ -11,7 +11,7 @@
     "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
-    "arrow-return-shorthand": true,
+    "arrow-return-shorthand": [true, "multiline"],
     "only-arrow-functions": [true, "allow-named-functions"],
     "arrow-parens": [true, "ban-single-arg-parens"],
     "no-unnecessary-callback-wrapper": { "severity": "warning" },
