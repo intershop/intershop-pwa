@@ -57,9 +57,7 @@ describe('Quote Effects', () => {
 
   describe('loadQuotes$', () => {
     beforeEach(() => {
-      when(quoteServiceMock.getQuotes()).thenCall(() => {
-        return of([{ id: 'QID' } as Quote]);
-      });
+      when(quoteServiceMock.getQuotes()).thenCall(() => of([{ id: 'QID' } as Quote]));
     });
 
     it('should call the quoteService for getQuotes', done => {
@@ -82,9 +80,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuotesFail', () => {
-      when(quoteServiceMock.getQuotes()).thenCall(() => {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
-      });
+      when(quoteServiceMock.getQuotes()).thenCall(() => throwError({ message: 'invalid' } as HttpErrorResponse));
 
       const action = new quoteActions.LoadQuotes();
       const completion = new quoteActions.LoadQuotesFail({ message: 'invalid' } as HttpErrorResponse);
@@ -97,9 +93,7 @@ describe('Quote Effects', () => {
 
   describe('deleteQuote$', () => {
     beforeEach(() => {
-      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() => {
-        return of('QID');
-      });
+      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() => of('QID'));
     });
 
     it('should call the quoteService for deleteQuote with specific quoteId', done => {
@@ -124,9 +118,9 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteQuoteFail', () => {
-      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() => {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
-      });
+      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() =>
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
 
       const action = new quoteActions.DeleteQuote('QID');
       const completion = new quoteActions.DeleteQuoteFail({ message: 'invalid' } as HttpErrorResponse);
@@ -151,9 +145,9 @@ describe('Quote Effects', () => {
       );
       store$.dispatch(new quoteActions.SelectQuote('QID'));
 
-      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() => {
-        return of({ type: 'test' } as QuoteLineItemResultModel);
-      });
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() =>
+        of({ type: 'test' } as QuoteLineItemResultModel)
+      );
     });
 
     it('should call the quoteService for createQuoteRequestFromQuote', done => {
@@ -178,9 +172,9 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
-      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() => {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
-      });
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() =>
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
 
       const action = new quoteActions.CreateQuoteRequestFromQuote();
       const completion = new quoteActions.CreateQuoteRequestFromQuoteFail({

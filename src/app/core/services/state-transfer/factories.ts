@@ -8,9 +8,7 @@ import { StatePropertiesService } from './state-properties.service';
 export const REST_ENDPOINT = new InjectionToken<string>('restEndpoint');
 
 export function getRestEndPoint() {
-  return (service: StatePropertiesService): string => {
-    return service.getRestEndPoint();
-  };
+  return (service: StatePropertiesService): string => service.getRestEndPoint();
 }
 
 /**
@@ -20,9 +18,7 @@ export function getRestEndPoint() {
 export const ICM_BASE_URL = new InjectionToken<string>('icmBaseURL');
 
 export function getICMBaseURL() {
-  return (service: StatePropertiesService): string => {
-    return service.getICMBaseURL();
-  };
+  return (service: StatePropertiesService): string => service.getICMBaseURL();
 }
 
 /**
@@ -32,9 +28,7 @@ export function getICMBaseURL() {
 export const ICM_APPLICATION = new InjectionToken<string>('icmApplication');
 
 export function getICMApplication() {
-  return (service: StatePropertiesService): string => {
-    return service.getICMApplication();
-  };
+  return (service: StatePropertiesService): string => service.getICMApplication();
 }
 
 /**
@@ -44,7 +38,5 @@ export function getICMApplication() {
 export const ICM_SERVER_URL = new InjectionToken<string>('icmServerURL');
 
 export function getICMServerURL() {
-  return (service: StatePropertiesService): string => {
-    return service.getICMServerURL();
-  };
+  return (service: StatePropertiesService): string => service.getICMServerURL();
 }

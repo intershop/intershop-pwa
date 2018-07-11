@@ -162,9 +162,10 @@ export class QuoteRequestService {
     }
 
     const body = {
-      elements: quoteRequest.items.map((item: QuoteRequestItem) => {
-        return { productSKU: item.productSKU, quantity: { value: item.quantity.value } };
-      }),
+      elements: quoteRequest.items.map((item: QuoteRequestItem) => ({
+        productSKU: item.productSKU,
+        quantity: { value: item.quantity.value },
+      })),
     };
 
     return this.ids$.pipe(

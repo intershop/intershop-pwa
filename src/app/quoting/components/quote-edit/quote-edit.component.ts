@@ -111,12 +111,10 @@ export class QuoteEditComponent implements OnChanges {
     }
 
     // convert quantity form values to number
-    const items = this.form.value.inner.items.map(item => {
-      return {
-        ...item,
-        quantity: parseInt(item.quantity, 10),
-      };
-    });
+    const items = this.form.value.inner.items.map(item => ({
+      ...item,
+      quantity: parseInt(item.quantity, 10),
+    }));
 
     this.updateItems.emit(items);
     this.updateQuoteRequest.emit({

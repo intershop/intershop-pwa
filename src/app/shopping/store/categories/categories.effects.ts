@@ -87,12 +87,12 @@ export class CategoriesEffects {
   loadCategory$ = this.actions$.pipe(
     ofType(actions.CategoriesActionTypes.LoadCategory),
     map((action: actions.LoadCategory) => action.payload),
-    mergeMap(categoryUniqueId => {
-      return this.categoryService.getCategory(categoryUniqueId).pipe(
+    mergeMap(categoryUniqueId =>
+      this.categoryService.getCategory(categoryUniqueId).pipe(
         map(category => new actions.LoadCategorySuccess(category)),
         catchError(error => of(new actions.LoadCategoryFail(error)))
-      );
-    })
+      )
+    )
   );
 
   @Effect()
@@ -108,12 +108,12 @@ export class CategoriesEffects {
   loadTopLevelCategories$ = this.actions$.pipe(
     ofType(actions.CategoriesActionTypes.LoadTopLevelCategories),
     map((action: actions.LoadTopLevelCategories) => action.payload),
-    mergeMap(limit => {
-      return this.categoryService.getTopLevelCategories(limit).pipe(
+    mergeMap(limit =>
+      this.categoryService.getTopLevelCategories(limit).pipe(
         map(category => new actions.LoadTopLevelCategoriesSuccess(category)),
         catchError(error => of(new actions.LoadTopLevelCategoriesFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**

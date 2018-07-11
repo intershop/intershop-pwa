@@ -84,13 +84,7 @@ export class ProductCompareListComponent implements OnChanges {
       return commonAttributeNameList;
     }, []);
 
-    return new Set(
-      result.shift().filter(attribute => {
-        return result.every(x => {
-          return x.indexOf(attribute) !== -1;
-        });
-      })
-    );
+    return new Set(result.shift().filter(attribute => result.every(x => x.indexOf(attribute) !== -1)));
   }
 
   /**

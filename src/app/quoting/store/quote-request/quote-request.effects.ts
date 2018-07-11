@@ -34,12 +34,12 @@ export class QuoteRequestEffects {
   @Effect()
   loadQuoteRequests$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.LoadQuoteRequests),
-    concatMap(() => {
-      return this.quoteRequestService.getQuoteRequests().pipe(
+    concatMap(() =>
+      this.quoteRequestService.getQuoteRequests().pipe(
         map(quoteRequests => new quoteRequestActions.LoadQuoteRequestsSuccess(quoteRequests)),
         catchError(error => of(new quoteRequestActions.LoadQuoteRequestsFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -48,12 +48,12 @@ export class QuoteRequestEffects {
   @Effect()
   addQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.AddQuoteRequest),
-    concatMap(() => {
-      return this.quoteRequestService.addQuoteRequest().pipe(
+    concatMap(() =>
+      this.quoteRequestService.addQuoteRequest().pipe(
         map(id => new quoteRequestActions.AddQuoteRequestSuccess(id)),
         catchError(error => of(new quoteRequestActions.AddQuoteRequestFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -64,12 +64,12 @@ export class QuoteRequestEffects {
     ofType(quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequest),
     map((action: quoteRequestActions.UpdateQuoteRequest) => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
-    concatMap(([payload, quoteRequestId]) => {
-      return this.quoteRequestService.updateQuoteRequest(quoteRequestId, payload).pipe(
+    concatMap(([payload, quoteRequestId]) =>
+      this.quoteRequestService.updateQuoteRequest(quoteRequestId, payload).pipe(
         map(quoteRequest => new quoteRequestActions.UpdateQuoteRequestSuccess(quoteRequest)),
         catchError(error => of(new quoteRequestActions.UpdateQuoteRequestFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -79,12 +79,12 @@ export class QuoteRequestEffects {
   deleteQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequest),
     map((action: quoteRequestActions.DeleteQuoteRequest) => action.payload),
-    concatMap(quoteRequestId => {
-      return this.quoteRequestService.deleteQuoteRequest(quoteRequestId).pipe(
+    concatMap(quoteRequestId =>
+      this.quoteRequestService.deleteQuoteRequest(quoteRequestId).pipe(
         map(id => new quoteRequestActions.DeleteQuoteRequestSuccess(id)),
         catchError(error => of(new quoteRequestActions.DeleteQuoteRequestFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -94,12 +94,12 @@ export class QuoteRequestEffects {
   submitQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequest),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
-    concatMap(([action, quoteRequestId]) => {
-      return this.quoteRequestService.submitQuoteRequest(quoteRequestId).pipe(
+    concatMap(([action, quoteRequestId]) =>
+      this.quoteRequestService.submitQuoteRequest(quoteRequestId).pipe(
         map(id => new quoteRequestActions.SubmitQuoteRequestSuccess(id)),
         catchError(error => of(new quoteRequestActions.SubmitQuoteRequestFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -109,12 +109,12 @@ export class QuoteRequestEffects {
   createQuoteRequestFromQuote$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
-    concatMap(([action, currentQuoteRequest]) => {
-      return this.quoteRequestService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
+    concatMap(([action, currentQuoteRequest]) =>
+      this.quoteRequestService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess(res)),
         catchError(error => of(new quoteRequestActions.CreateQuoteRequestFromQuoteFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -214,12 +214,12 @@ export class QuoteRequestEffects {
     ofType(quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequest),
     map((action: quoteRequestActions.DeleteItemFromQuoteRequest) => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequestId))),
-    concatMap(([payload, quoteRequestId]) => {
-      return this.quoteRequestService.removeItemFromQuoteRequest(quoteRequestId, payload.itemId).pipe(
+    concatMap(([payload, quoteRequestId]) =>
+      this.quoteRequestService.removeItemFromQuoteRequest(quoteRequestId, payload.itemId).pipe(
         map(id => new quoteRequestActions.DeleteItemFromQuoteRequestSuccess(id)),
         catchError(error => of(new quoteRequestActions.DeleteItemFromQuoteRequestFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -231,16 +231,15 @@ export class QuoteRequestEffects {
     map((action: quoteRequestActions.AddProductToQuoteRequest) => action.payload),
     withLatestFrom(this.store.pipe(select(getUserAuthorized)), this.store.pipe(select(getActiveQuoteRequest))),
     filter(([payload, authorized, quoteRequest]) => authorized && !quoteRequest && !payload.quoteRequestId),
-    mergeMap(([payload]) => {
-      return forkJoin(of(payload), this.quoteRequestService.addQuoteRequest());
-    }),
-    map(([payload, quoteRequestId]) => {
-      return new quoteRequestActions.AddProductToQuoteRequest({
-        quoteRequestId: quoteRequestId,
-        sku: payload.sku,
-        quantity: payload.quantity,
-      });
-    })
+    mergeMap(([payload]) => forkJoin(of(payload), this.quoteRequestService.addQuoteRequest())),
+    map(
+      ([payload, quoteRequestId]) =>
+        new quoteRequestActions.AddProductToQuoteRequest({
+          quoteRequestId: quoteRequestId,
+          sku: payload.sku,
+          quantity: payload.quantity,
+        })
+    )
   );
 
   /**

@@ -56,9 +56,9 @@ export class SearchEffects {
   searchProducts$ = this.actions$.pipe(
     ofType(SearchActionTypes.SearchProducts),
     map((action: SearchProducts) => action.payload),
-    switchMap(searchTerm => {
+    switchMap(searchTerm =>
       // get products
-      return this.productsService.searchProducts(searchTerm).pipe(
+      this.productsService.searchProducts(searchTerm).pipe(
         mergeMap(res => [
           // dispatch action with search result
           new SearchProductsSuccess({ searchTerm: searchTerm, products: res.skus }),
@@ -68,8 +68,8 @@ export class SearchEffects {
           new SetSortKeys(res.sortKeys),
         ]),
         catchError(error => of(new SearchProductsFail(error)))
-      );
-    })
+      )
+    )
   );
 
   @Effect()

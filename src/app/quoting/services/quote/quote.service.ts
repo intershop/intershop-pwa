@@ -51,14 +51,12 @@ export class QuoteService {
           unpackEnvelope(),
           resolveLinks<QuoteData>(this.apiService),
           map(quotes =>
-            quotes.map<QuoteData>(quoteData => {
-              return {
-                ...quoteData,
-                items: quoteData.items.map((quoteItemData: QuoteRequestItemData) =>
-                  QuoteRequestItemMapper.fromData(quoteItemData, undefined)
-                ),
-              };
-            })
+            quotes.map<QuoteData>(quoteData => ({
+              ...quoteData,
+              items: quoteData.items.map((quoteItemData: QuoteRequestItemData) =>
+                QuoteRequestItemMapper.fromData(quoteItemData, undefined)
+              ),
+            }))
           )
         )
       )
@@ -85,9 +83,10 @@ export class QuoteService {
    */
   createQuoteRequestFromQuote(quoteRequest: Quote): Observable<QuoteLineItemResultModel> {
     const body = {
-      elements: quoteRequest.items.map((item: QuoteRequestItem) => {
-        return { productSKU: item.productSKU, quantity: { value: item.quantity.value } };
-      }),
+      elements: quoteRequest.items.map((item: QuoteRequestItem) => ({
+        productSKU: item.productSKU,
+        quantity: { value: item.quantity.value },
+      })),
     };
 
     return this.ids$.pipe(

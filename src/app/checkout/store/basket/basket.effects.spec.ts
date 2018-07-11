@@ -71,9 +71,7 @@ describe('Basket Effects', () => {
       }
     );
 
-    when(basketServiceMock.getBasket()).thenCall((id: string) => {
-      return of({ id: 'test' } as Basket);
-    });
+    when(basketServiceMock.getBasket()).thenCall((id: string) => of({ id: 'test' } as Basket));
 
     when(basketServiceMock.getBasketItems(anyString())).thenCall((id: string) => {
       if (id === 'invalid') {

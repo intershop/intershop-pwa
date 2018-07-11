@@ -46,12 +46,10 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
 
     if (securityQuestions) {
       // Map questions array to an array of type SelectOption
-      options = securityQuestions.map(question => {
-        return {
-          label: question,
-          value: question,
-        };
-      });
+      options = securityQuestions.map(question => ({
+        label: question,
+        value: question,
+      }));
     }
     return options;
   }
