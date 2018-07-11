@@ -81,6 +81,20 @@ export class BasketService {
   }
 
   /**
+   * Add quote to basket.
+   * @param quoteId   The id of the quote that should be added to basket.
+   * @param basketId  The id of the basket which the quote should be added to.
+   * @returns         Link to the updated basket items.
+   */
+  addQuoteToBasket(quoteId: string, basketId: string): Observable<Link> {
+    const body = {
+      quoteID: quoteId,
+    };
+
+    return this.apiService.post(`baskets/${basketId}/items`, body);
+  }
+
+  /**
    * Updates specific line items quantity in the given basket.
    * @param itemId    The id of the line item that should be updated.
    * @param quantity  The new quantity.

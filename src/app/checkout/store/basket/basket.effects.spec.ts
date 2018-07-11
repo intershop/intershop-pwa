@@ -9,6 +9,7 @@ import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.acti
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { Link } from '../../../models/link/link.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProduct, LoadProductSuccess } from '../../../shopping/store/products';
@@ -329,6 +330,52 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.addProductToBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('addQuoteToBasket$', () => {
+    it('should call the basketService for addQuoteToBasket', done => {
+      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+
+      const payload = 'QID';
+      const action = new basketActions.AddQuoteToBasket(payload);
+      actions$ = of(action);
+
+      effects.addQuoteToBasket$.subscribe(() => {
+        verify(basketServiceMock.addQuoteToBasket(payload, 'test')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type AddQuoteToBasketSuccess', () => {
+      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(of({} as Link));
+
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+
+      const payload = 'QID';
+      const action = new basketActions.AddQuoteToBasket(payload);
+      const completion = new basketActions.AddQuoteToBasketSuccess({} as Link);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.addQuoteToBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type AddQuoteToBasketFail', () => {
+      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenCall(() => {
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
+      });
+
+      store$.dispatch(new basketActions.LoadBasketSuccess(basket));
+
+      const payload = 'QID';
+      const action = new basketActions.AddQuoteToBasket(payload);
+      const completion = new basketActions.AddQuoteToBasketFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.addQuoteToBasket$).toBeObservable(expected$);
     });
   });
 

@@ -153,6 +153,23 @@ export class BasketEffects {
   );
 
   /**
+   * Add quote to the current basket.
+   * Only triggers if basket is set.
+   */
+  @Effect()
+  addQuoteToBasket$ = this.actions$.pipe(
+    ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
+    map((action: basketActions.AddQuoteToBasket) => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([quoteId, basket]) => {
+      return this.basketService.addQuoteToBasket(quoteId, basket.id).pipe(
+        map(link => new basketActions.AddQuoteToBasketSuccess(link)),
+        catchError(error => of(new basketActions.AddQuoteToBasketFail(error)))
+      );
+    })
+  );
+
+  /**
    * Update basket items effect.
    * Triggers update item request if item quantity has changed and is greater zero
    * Triggers delete item request if item quantity set to zero
@@ -302,6 +319,7 @@ export class BasketEffects {
     ofType(
       basketActions.BasketActionTypes.UpdateBasketSuccess,
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
+      basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
       basketActions.BasketActionTypes.DeleteBasketItemSuccess
     ),
