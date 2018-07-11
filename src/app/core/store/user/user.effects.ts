@@ -5,7 +5,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, select, Store } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { of } from 'rxjs';
-import { catchError, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Customer } from '../../../models/customer/customer.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { CoreState } from '../core.state';
@@ -83,7 +83,7 @@ export class UserEffects {
     ofType(ROUTER_NAVIGATION_TYPE),
     withLatestFrom(this.store$.pipe(select(getUserError))),
     filter(([action, error]) => !!error),
-    map(() => new userActions.UserErrorReset())
+    mapTo(new userActions.UserErrorReset())
   );
 
   @Effect()
@@ -97,7 +97,7 @@ export class UserEffects {
     ofType(userActions.UserActionTypes.LoginUserSuccess),
     map((action: userActions.LoginUserSuccess) => action.payload),
     filter(customer => customer.type === 'SMBCustomer'),
-    map(() => new userActions.LoadCompanyUser())
+    mapTo(new userActions.LoadCompanyUser())
   );
 
   dispatchLogin(error): Action {

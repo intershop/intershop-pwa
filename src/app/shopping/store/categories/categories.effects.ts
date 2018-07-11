@@ -9,6 +9,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  mapTo,
   mergeMap,
   switchMap,
   tap,
@@ -101,7 +102,7 @@ export class CategoriesEffects {
     map((action: SelectLocale) => action.payload),
     filter(locale => !!locale && !!locale.lang),
     distinctUntilChanged(),
-    map(() => new actions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
+    mapTo(new actions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
   );
 
   @Effect()

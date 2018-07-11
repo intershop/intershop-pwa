@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable, of, throwError } from 'rxjs';
-import { concatMap, map, take } from 'rxjs/operators';
+import { concatMap, map, mapTo, take } from 'rxjs/operators';
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
@@ -71,7 +71,7 @@ export class QuoteService {
   deleteQuote(quoteId: string): Observable<string> {
     return this.ids$.pipe(
       concatMap(({ userId, customerId }) =>
-        this.apiService.delete(`customers/${customerId}/users/${userId}/quotes/${quoteId}`).pipe(map(() => quoteId))
+        this.apiService.delete(`customers/${customerId}/users/${userId}/quotes/${quoteId}`).pipe(mapTo(quoteId))
       )
     );
   }

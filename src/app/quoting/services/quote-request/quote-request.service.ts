@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable, of, throwError } from 'rxjs';
-import { concatMap, map, take } from 'rxjs/operators';
+import { concatMap, map, mapTo, take } from 'rxjs/operators';
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
@@ -89,7 +89,7 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.apiService
           .delete(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}`)
-          .pipe(map(() => quoteRequestId))
+          .pipe(mapTo(quoteRequestId))
       )
     );
   }
@@ -104,7 +104,7 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.apiService
           .post(`customers/${customerId}/users/${userId}/quotes`, { quoteRequestID: quoteRequestId })
-          .pipe(map(() => quoteRequestId))
+          .pipe(mapTo(quoteRequestId))
       )
     );
   }
@@ -146,7 +146,7 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.apiService
           .post(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`, body)
-          .pipe(map(() => quoteRequestId))
+          .pipe(mapTo(quoteRequestId))
       )
     );
   }
@@ -199,7 +199,7 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.apiService
           .put(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items/${item.itemId}`, body)
-          .pipe(map(() => quoteRequestId))
+          .pipe(mapTo(quoteRequestId))
       )
     );
   }
@@ -215,7 +215,7 @@ export class QuoteRequestService {
       concatMap(({ userId, customerId }) =>
         this.apiService
           .delete(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items/${itemId}`)
-          .pipe(map(() => quoteRequestId))
+          .pipe(mapTo(quoteRequestId))
       )
     );
   }
