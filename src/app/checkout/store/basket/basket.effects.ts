@@ -161,12 +161,12 @@ export class BasketEffects {
     ofType<basketActions.AddQuoteToBasket>(basketActions.BasketActionTypes.AddQuoteToBasket),
     map((action: basketActions.AddQuoteToBasket) => action.payload),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    concatMap(([quoteId, basket]) => {
-      return this.basketService.addQuoteToBasket(quoteId, basket.id).pipe(
+    concatMap(([quoteId, basket]) =>
+      this.basketService.addQuoteToBasket(quoteId, basket.id).pipe(
         map(link => new basketActions.AddQuoteToBasketSuccess(link)),
         catchError(error => of(new basketActions.AddQuoteToBasketFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
