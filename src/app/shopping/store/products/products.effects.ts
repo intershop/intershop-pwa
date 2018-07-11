@@ -38,12 +38,12 @@ export class ProductsEffects {
   loadProduct$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProduct),
     map((action: productsActions.LoadProduct) => action.payload),
-    mergeMap(sku => {
-      return this.productsService.getProduct(sku).pipe(
+    mergeMap(sku =>
+      this.productsService.getProduct(sku).pipe(
         map(product => new productsActions.LoadProductSuccess(product)),
         catchError(error => of(new productsActions.LoadProductFail(error)))
-      );
-    })
+      )
+    )
   );
 
   @Effect()

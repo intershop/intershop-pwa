@@ -12,11 +12,11 @@ export class CountriesEffects {
   @Effect()
   loadCountries$ = this.actions$.pipe(
     ofType(ROOT_EFFECTS_INIT),
-    switchMap(() => {
-      return this.countryService.getCountries().pipe(
+    switchMap(() =>
+      this.countryService.getCountries().pipe(
         map(countries => new countryActions.LoadCountriesSuccess(countries)),
         catchError(error => of(new countryActions.LoadCountriesFail(error)))
-      );
-    })
+      )
+    )
   );
 }

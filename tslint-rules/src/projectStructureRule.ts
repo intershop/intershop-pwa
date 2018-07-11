@@ -6,13 +6,11 @@ interface RuleDeclaration {
   file: string;
 }
 
-const kebabCaseFromPascalCase = (input: string): string => {
-  return input.replace(/[A-Z]+/g, match => `-${match.toLowerCase()}`).replace(/^-/, '');
-};
+const kebabCaseFromPascalCase = (input: string): string =>
+  input.replace(/[A-Z]+/g, match => `-${match.toLowerCase()}`).replace(/^-/, '');
 
-const camelCaseFromPascalCase = (input: string): string => {
-  return `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
-};
+const camelCaseFromPascalCase = (input: string): string =>
+  `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
 
 class ProjectStructureWalker extends Lint.RuleWalker {
   warnUnmatched = false;
