@@ -1,4 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Location } from '@angular/common';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
@@ -13,6 +15,7 @@ describe('Quote Edit Page Container', () => {
   let fixture: ComponentFixture<QuoteEditPageContainerComponent>;
   let element: HTMLElement;
   let store$: Store<QuotingState>;
+  let location: Location;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,6 +35,7 @@ describe('Quote Edit Page Container', () => {
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
         }),
+        RouterTestingModule.withRoutes([{ path: 'basket', component: QuoteEditPageContainerComponent }]),
       ],
     }).compileComponents();
   }));
@@ -42,6 +46,7 @@ describe('Quote Edit Page Container', () => {
     element = fixture.nativeElement;
 
     store$ = TestBed.get(Store);
+    location = TestBed.get(Location);
   });
 
   it('should be created', () => {
@@ -55,4 +60,13 @@ describe('Quote Edit Page Container', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
+
+  it(
+    'should navigate to basket when addToBasket is clicked',
+    fakeAsync(() => {
+      component.addQuoteToBasket(null);
+      tick(50);
+      expect(location.path()).toBe('/basket');
+    })
+  );
 });

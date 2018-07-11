@@ -4,6 +4,7 @@
     [quote]="quote"
     (copyQuote)="copyQuote()"
     (rejectQuote)="rejectQuote()"
+    (addQuoteToBasket)="addQuoteToBasket($event)"
   ></ish-quote-edit>
 
   <ish-loading *ngIf="quoteLoading$ | async"></ish-loading>
