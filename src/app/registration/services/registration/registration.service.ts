@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMapTo } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api/api.service';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { Customer } from '../../../models/customer/customer.model';
@@ -35,7 +35,7 @@ export class RegistrationService {
   createUser(newCustomer: Customer): Observable<Customer> {
     return this.apiService.post<Customer>('customers', newCustomer).pipe(
       // TODO:see #IS-22750 - user should actually be logged in after registration
-      switchMap(() => this.signinUser(newCustomer.credentials))
+      switchMapTo(this.signinUser(newCustomer.credentials))
     );
   }
 

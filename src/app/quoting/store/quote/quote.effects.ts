@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { combineLatest, of } from 'rxjs';
-import { catchError, concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
@@ -79,7 +79,7 @@ export class QuoteEffects {
       UserActionTypes.LoadCompanyUserSuccess
     ),
     filter(() => this.featureToggleService.enabled('quoting')),
-    map(() => new quoteActions.LoadQuotes())
+    mapTo(new quoteActions.LoadQuotes())
   );
 
   /**

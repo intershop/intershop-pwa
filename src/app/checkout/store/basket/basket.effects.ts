@@ -8,6 +8,7 @@ import {
   defaultIfEmpty,
   filter,
   map,
+  mapTo,
   mergeMap,
   switchMap,
   withLatestFrom,
@@ -83,7 +84,7 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([payload, basket]) =>
       this.basketService.updateBasket(basket.id, payload).pipe(
-        map(() => new basketActions.UpdateBasketSuccess()),
+        mapTo(new basketActions.UpdateBasketSuccess()),
         catchError(error => of(new basketActions.UpdateBasketFail(error)))
       )
     )
@@ -145,7 +146,7 @@ export class BasketEffects {
       const basketId = payload.basketId || basket.id;
 
       return this.basketService.addItemsToBasket(payload.items, basketId).pipe(
-        map(() => new basketActions.AddItemsToBasketSuccess()),
+        mapTo(new basketActions.AddItemsToBasketSuccess()),
         catchError(error => of(new basketActions.AddItemsToBasketFail(error)))
       );
     })
@@ -186,7 +187,7 @@ export class BasketEffects {
         })
       ).pipe(
         defaultIfEmpty(undefined),
-        map(() => new basketActions.UpdateBasketItemsSuccess()),
+        mapTo(new basketActions.UpdateBasketItemsSuccess()),
         catchError(error => of(new basketActions.UpdateBasketItemsFail(error)))
       )
     )
@@ -202,7 +203,7 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([itemId, basket]) =>
       this.basketService.deleteBasketItem(itemId, basket.id).pipe(
-        map(() => new basketActions.DeleteBasketItemSuccess()),
+        mapTo(new basketActions.DeleteBasketItemSuccess()),
         catchError(error => of(new basketActions.DeleteBasketItemFail(error)))
       )
     )
@@ -290,7 +291,7 @@ export class BasketEffects {
     filter(
       ([newBasket, currentBasket]) => !currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0
     ),
-    map(() => new basketActions.LoadBasket())
+    mapTo(new basketActions.LoadBasket())
   );
 
   /**
@@ -304,7 +305,7 @@ export class BasketEffects {
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
       basketActions.BasketActionTypes.DeleteBasketItemSuccess
     ),
-    map(() => new basketActions.LoadBasket())
+    mapTo(new basketActions.LoadBasket())
   );
 
   /**
@@ -313,6 +314,6 @@ export class BasketEffects {
   @Effect()
   resetBasketAfterLogout$ = this.actions$.pipe(
     ofType(UserActionTypes.LogoutUser),
-    map(() => new basketActions.ResetBasket())
+    mapTo(new basketActions.ResetBasket())
   );
 }

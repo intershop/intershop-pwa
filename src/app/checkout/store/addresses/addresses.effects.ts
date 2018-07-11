@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
 import { AddressService } from '../../services/address/address.service';
 import * as addressActions from './addresses.actions';
@@ -27,6 +27,6 @@ export class AddressesEffects {
   @Effect()
   resetAddressesAfterLogout$ = this.actions$.pipe(
     ofType(UserActionTypes.LogoutUser),
-    map(() => new addressActions.ResetAddresses())
+    mapTo(new addressActions.ResetAddresses())
   );
 }
