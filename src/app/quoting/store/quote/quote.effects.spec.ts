@@ -12,7 +12,6 @@ import { Customer } from '../../../models/customer/customer.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteData } from '../../../models/quote/quote.interface';
-import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
@@ -57,7 +56,7 @@ describe('Quote Effects', () => {
 
   describe('loadQuotes$', () => {
     beforeEach(() => {
-      when(quoteServiceMock.getQuotes()).thenCall(() => of([{ id: 'QID' } as Quote]));
+      when(quoteServiceMock.getQuotes()).thenReturn(of([{ id: 'QID' } as QuoteData]));
     });
 
     it('should call the quoteService for getQuotes', done => {
@@ -80,7 +79,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuotesFail', () => {
-      when(quoteServiceMock.getQuotes()).thenCall(() => throwError({ message: 'invalid' } as HttpErrorResponse));
+      when(quoteServiceMock.getQuotes()).thenReturn(throwError({ message: 'invalid' } as HttpErrorResponse));
 
       const action = new quoteActions.LoadQuotes();
       const completion = new quoteActions.LoadQuotesFail({ message: 'invalid' } as HttpErrorResponse);
@@ -93,7 +92,7 @@ describe('Quote Effects', () => {
 
   describe('deleteQuote$', () => {
     beforeEach(() => {
-      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() => of('QID'));
+      when(quoteServiceMock.deleteQuote(anyString())).thenReturn(of('QID'));
     });
 
     it('should call the quoteService for deleteQuote with specific quoteId', done => {
@@ -118,7 +117,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteQuoteFail', () => {
-      when(quoteServiceMock.deleteQuote(anyString())).thenCall(() =>
+      when(quoteServiceMock.deleteQuote(anyString())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -145,7 +144,7 @@ describe('Quote Effects', () => {
       );
       store$.dispatch(new quoteActions.SelectQuote('QID'));
 
-      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() =>
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
         of({ type: 'test' } as QuoteLineItemResultModel)
       );
     });
@@ -172,7 +171,7 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
-      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() =>
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 

@@ -63,7 +63,7 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
       store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
 
-      when(quoteRequestServiceMock.getQuoteRequests()).thenCall(() => of([{ id: 'QRID' }]));
+      when(quoteRequestServiceMock.getQuoteRequests()).thenReturn(of([{ id: 'QRID' } as QuoteRequestData]));
     });
 
     it('should call the quoteService for getQuoteRequests', done => {
@@ -86,7 +86,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuoteRequestsFail', () => {
-      when(quoteRequestServiceMock.getQuoteRequests()).thenCall(() =>
+      when(quoteRequestServiceMock.getQuoteRequests()).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -104,7 +104,7 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
       store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
 
-      when(quoteRequestServiceMock.addQuoteRequest()).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for addQuoteRequest', done => {
@@ -127,7 +127,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type AddQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.addQuoteRequest()).thenCall(() =>
+      when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -178,7 +178,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenCall(() =>
+      when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -199,7 +199,7 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
       store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
 
-      when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for deleteQuoteRequest with specific quoteRequestId', done => {
@@ -224,7 +224,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenCall(() =>
+      when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -244,7 +244,7 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
 
-      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for submitQuoteRequest', done => {
@@ -267,7 +267,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type SubmitQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenCall(() =>
+      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -300,7 +300,7 @@ describe('Quote Request Effects', () => {
       );
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
 
-      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() =>
+      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
         of({ type: 'test' } as QuoteLineItemResultModel)
       );
     });
@@ -327,7 +327,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
-      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenCall(() =>
+      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -356,7 +356,7 @@ describe('Quote Request Effects', () => {
         ])
       );
 
-      when(quoteRequestServiceMock.getQuoteRequestItem(anyString(), anything())).thenCall(() =>
+      when(quoteRequestServiceMock.getQuoteRequestItem(anyString(), anything())).thenReturn(
         of({ productSKU: 'SKU' } as QuoteRequestItem)
       );
     });
@@ -385,7 +385,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuoteRequestItemsFail', () => {
-      when(quoteRequestServiceMock.getQuoteRequestItem(anyString(), anything())).thenCall(() =>
+      when(quoteRequestServiceMock.getQuoteRequestItem(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -429,7 +429,7 @@ describe('Quote Request Effects', () => {
         ])
       );
 
-      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for addProductToQuoteRequest', done => {
@@ -475,7 +475,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type AddProductToQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenCall(() =>
+      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -519,7 +519,7 @@ describe('Quote Request Effects', () => {
       );
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
 
-      when(quoteRequestServiceMock.updateQuoteRequestItem(anyString(), anything())).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.updateQuoteRequestItem(anyString(), anything())).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for updateQuoteRequestItems if quantity > 0', done => {
@@ -555,7 +555,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should call the quoteService for removeItemFromQuoteRequest if quantity is 0', done => {
-      when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenReturn(of('QRID'));
 
       const payload = [
         {
@@ -589,7 +589,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateQuoteRequestItemsFail', () => {
-      when(quoteRequestServiceMock.updateQuoteRequestItem(anyString(), anything())).thenCall(() =>
+      when(quoteRequestServiceMock.updateQuoteRequestItem(anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -617,7 +617,7 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new quoteRequestActions.LoadQuoteRequestsSuccess([{ id: 'QRID' } as QuoteRequestData]));
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
 
-      when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for removeItemFromQuoteRequest', done => {
@@ -647,7 +647,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteItemFromQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenCall(() =>
+      when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 
@@ -670,7 +670,7 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
       store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
 
-      when(quoteRequestServiceMock.addQuoteRequest()).thenCall(() => of('QRID'));
+      when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(of('QRID'));
     });
 
     it('should call the quoteService for addQuoteRequest', done => {
