@@ -58,7 +58,7 @@ describe('Shopping System', () => {
     const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'] } as Category;
     const catA123456 = {
       uniqueId: 'A.123.456',
-      categoryPath: ['A', 'A.123', 'A.456'],
+      categoryPath: ['A', 'A.123', 'A.123.456'],
       hasOnlineProducts: true,
     } as Category;
     const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
@@ -232,6 +232,8 @@ describe('Shopping System', () => {
           expect(i.next()).toEqual(new LoadCategory('A.123'));
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
           expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
+          expect(i.next()).toEqual(new LoadCategory('A'));
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -336,6 +338,8 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -422,7 +426,11 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next()).toEqual(new LoadProduct('P1'));
@@ -581,6 +589,10 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -820,6 +832,10 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductFail);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
 
         const errorPageRouting = i.next() as RouteNavigation;
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
