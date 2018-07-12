@@ -1,4 +1,4 @@
-<ng-container *ngIf="category$ | async as category">
+<ng-container *ngIf="(category$ | async) as category">
 
   <ish-breadcrumb [category]="category"></ish-breadcrumb>
 

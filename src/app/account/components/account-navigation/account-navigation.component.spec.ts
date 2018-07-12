@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { AccountNavigationComponent } from './account-navigation.component';
 
 describe('Account Navigation Component', () => {
@@ -11,7 +12,7 @@ describe('Account Navigation Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccountNavigationComponent],
-      imports: [TranslateModule.forRoot(), RouterTestingModule],
+      imports: [FeatureToggleModule.testingFeatures({ quoting: true }), RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
@@ -25,5 +26,10 @@ describe('Account Navigation Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display link to quote list', () => {
+    fixture.detectChanges();
+    expect(!!element.querySelector('a[href="/account/quote-list"]')).toBeTrue();
   });
 });

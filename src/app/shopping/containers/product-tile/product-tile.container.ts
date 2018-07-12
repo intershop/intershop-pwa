@@ -5,6 +5,8 @@ import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
+import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
+import { QuotingState } from '../../../quoting/store/quoting.state';
 import { isInCompareProducts, ToggleCompare } from '../../store/compare';
 import { ShoppingState } from '../../store/shopping.state';
 
@@ -19,7 +21,7 @@ export class ProductTileContainerComponent implements OnInit {
 
   isInCompareList$: Observable<boolean>;
 
-  constructor(private store: Store<ShoppingState | CheckoutState>) {}
+  constructor(private store: Store<ShoppingState | CheckoutState | QuotingState>) {}
 
   ngOnInit() {
     this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(this.product.sku)));
@@ -31,5 +33,11 @@ export class ProductTileContainerComponent implements OnInit {
 
   addToBasket() {
     this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
+  }
+
+  addToQuote() {
+    this.store.dispatch(
+      new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
+    );
   }
 }

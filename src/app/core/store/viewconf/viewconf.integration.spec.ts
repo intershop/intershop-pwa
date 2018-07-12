@@ -5,7 +5,7 @@ import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { coreReducers } from '../core.system';
 import { ViewconfEffects } from './viewconf.effects';
-import { getBreadcrumbKey, getHeaderType, getWrapperClass } from './viewconf.selectors';
+import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 
 describe('Viewconf Integration', () => {
   let store$: LogEffects;
@@ -36,13 +36,13 @@ describe('Viewconf Integration', () => {
     expect(getHeaderType(store$.state)).toEqual('something');
   });
 
-  it('should extract breadcrumbKey from routing to state', () => {
+  it('should extract breadcrumbData from routing to state', () => {
     store$.dispatch({
       type: ROUTER_NAVIGATION_TYPE,
-      payload: { data: { breadcrumbKey: 'something' } },
+      payload: { data: { breadcrumbData: { text: 'TEXT' } } },
     } as Action);
 
-    expect(getBreadcrumbKey(store$.state)).toEqual('something');
+    expect(getBreadcrumbData(store$.state)).toEqual({ text: 'TEXT' });
   });
 
   it('should reset wrapperClass when no longer available in routing data', () => {

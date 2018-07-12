@@ -1,0 +1,235 @@
+
+<!-- <isset name="ValidQuote" value="#NOT isDefined(ERRORCODE_QUOTEVALIDATION)#" scope="request"/> -->
+
+<!--- IS CONTRACT -->
+<!-- <isset scope="request" name="isContract" value="false"> -->
+
+<form [formGroup]="form" class="form-horizontal form-horizontal-inline">
+  <!-- <input type="hidden" name="LocaleId" value="<isprint value="#CurrentRequest:Locale:LocaleID#">"/>
+  <input type="hidden" name="QuoteUUID" value="<isprint value="#Quote:UUID#">"/>
+  <input type="hidden" name="QuoteExport" value="<isprint value="#QuoteExport#">"/>
+  <input type="hidden" name="StateGroup" value="<isprint value="#StateGroup#">"/>
+  <input type="hidden" name="PageNumber" value="<isprint value="#PageNumber#">"/>
+  <input type="hidden" name="EditMode" value="<isprint value="#EditMode#">"/>
+  <input type="hidden" name="LinkSource" value="<isprint value="#LinkSource#">"/>
+  <input type="hidden" name="DateFormatString" value="<isprint value="#CurrentSession:Locale:DefaultRegionalSettings:inputDatePattern#">"/>
+  <input type="hidden" name="TimeFormatString" value="<isprint value="#CurrentSession:Locale:DefaultRegionalSettings:inputTimePattern#">"/> -->
+
+  <!--- Error messages -->
+  <!-- <isif condition="#isDefined(ERROR_submit_quote_failed)#">
+    <istext key="quote.edit.already_submitted.text" />
+  </isif>
+  <isif condition="#isDefined(ERROR_accept_quote_failed)#">
+    <istext key="quote.edit.already_accepted.text" />
+  </isif>
+  <isif condition="#isDefined(ERROR_refuse_quote_failed)#">
+    <istext key="quote.edit.already_refused.text" />
+  </isif> -->
+
+  <!--- Quote Header ( shown once if quote request submitted ) -->
+  <ng-container *ngIf="submitted === true">
+    <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
+    <p>
+      {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
+      {{ quote.number }}
+      <!-- <a href="#URLEX(SecureURL,'',Action("ViewQuote-Edit"), Parameter("QuoteUUID", Quote:UUID))#"><isprint value="#Quote:DocumentNo#"></a> -->
+    </p>
+    <p>
+      {{ 'quote.edit.submitted.your_quote.text' | translate }}
+      <br>
+      <!-- <istext key="quote.edit.submitted.you_can_check.text" parameter0="#URLEX(SecureURL,'',Action("ViewQuoteList-List"))#" parameter1="#URLEX(SecureURL,'',Action("ViewUserAccount-Start"))#" encoding="off" /> -->
+    </p>
+    <!-- <p>
+      <istext key="quote.edit.submitted.we_will_email.text" parameter0="#CurrentUser:Profile:Credentials:Login#" />
+    </p> -->
+  </ng-container>
+
+  <ng-container *ngIf="submitted === false">
+    <!-- Title and Description -->
+    <ng-container *ngIf="quote.displayName; else noDisplayName">
+      <h1>
+        <ng-container *ngIf="quote.state === 'Responded'; else unresponded">
+          {{ 'quote.edit.responded.quote_details.text' | translate}} - {{ quote.displayName }}
+        </ng-container>
+        <ng-template #unresponded>
+          {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate}} - {{ quote.displayName }}
+        </ng-template>
+      </h1>
+    </ng-container>
+    <ng-template #noDisplayName> <!-- TODO: needed? -->
+      <h1>
+        <ng-container *ngIf="quote.state === 'Responded'; else unresponded">
+          {{ 'quote.edit.responded.quote_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
+        </ng-container>
+        <ng-template #unresponded>
+            {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
+        </ng-template>
+      </h1>
+    </ng-template>
+
+    <!--
+    <isif condition="#isDefined(ErrorCode)#">
+      <p class="alert alert-info"><istext key="#'quote.edit.info.' . ErrorCode . '.text'#" /></p>
+    </isif>-->
+
+    <div class="row">
+      <label class="col-lg-2 col-sm-3 col-xs-4 control-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
+      <div class="col-lg-10 col-sm-9 col-xs-8">
+        <p class="form-control-static">{{ quote.number }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
+      <div class="col-lg-10 col-sm-9 col-xs-8">
+        <p class="form-control-static"><ish-quote-state [quote]="quote"></ish-quote-state></p>
+      </div>
+    </div>
+
+    <!--- Shows the valid from/to date  -->
+    <div *ngIf="quote.state === 'Responded'" class="row">
+      <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</label>
+      <div class="col-lg-10 col-sm-9 col-xs-8">
+        <p class="form-control-static">{{ validFromDate | date: 'shortDate' }} - {{ validToDate | date: 'shortDate' }}</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <!-- displayName -->
+      <ish-input
+        *ngIf="quote.state === 'New'; else staticDisplayName"
+        [form]="form"
+        controlName="displayName"
+        label="quote.edit.unsubmitted.name.label"
+        labelClass="col-lg-2 col-sm-3 col-xs-4"
+        inputClass="col-lg-10 col-sm-9 col-xs-8"
+        maxLength="256"
+        [placeholderText]="'quote.edit.unsubmitted.enter_an_optional_name.text'"
+        [errorMessages]="{
+          'required':'shopping_cart.quote.name.required.validation.message'
+        }"
+      ></ish-input>
+      <ng-template #staticDisplayName>
+        <div class="form-group has-feedback">
+          <label for="#SHOUD_EQUAL_INPUT_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.name.label' | translate }}</label>
+          <div class="col-lg-10  col-sm-9 col-xs-8">
+            <p class="form-control-static">{{ quote.displayName }}</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <!--- CONTRACT - TIME FRAME -->
+      <!--
+      <isif condition="#isDefined(Quote:Timeframe)#">
+        <div class="row">
+          <label for="" class="control-label col-lg-2 col-sm-3 col-xs-4"><istext key="quote.edit.unsubmitted.timeframe.label" /></label>
+          <div class="col-lg-10 col-sm-9 col-xs-8">
+            <isprint value="#Quote:Timeframe#">
+          </div>
+        </div>
+      </isif>
+      -->
+
+      <div *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)" class="form-group">
+        <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
+        <div class="col-lg-10 col-sm-9 col-xs-8">
+          <ng-container *ngIf="quote.state === 'New'; else staticDescription">
+            <textarea
+              formControlName="description"
+              class="form-control"
+              [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
+            >
+            </textarea>
+            <!-- ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea> -->
+          </ng-container>
+          <ng-template #staticDescription>
+            <p class="form-control-static">{{ quote.description }}</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <div *ngIf="quote.type === 'Quote' && sellerComment" class="form-group">
+        <label for="" class="control-label col-xs-4 col-sm-3 col-lg-2">{{ 'quote.edit.unsubmitted.seller_comment.label' | translate }}</label>
+        <div class="col-xs-8 col-sm-9 col-lg-10">
+          <p class="form-control-static">{{ sellerComment }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!--
+  <isif condition="#(Quote:State==3) AND (LinkSource NE "Shopping")#">
+    <div class="alert alert-info"><istext key="quote.edit.submitted.your_quote_has_been_submitted.text" parameter0="#getValue(Quote:ProductListEventByType("SubmittedToSeller"):EventDate, DATE_INPUT)#" /></div>
+    <iselseif condition="#isDefined(ERRORCODE_QUOTEVALIDATION)#">
+    <div class="alert alert-info">
+      <istext key="#ERRORCODE_QUOTEVALIDATION#"/>
+    </div>
+  </isif> -->
+
+  <!--- Quote Item List -->
+  <div class="section">
+    <h3>{{ 'quote.items.table.heading' | translate }}</h3>
+    <ish-line-item-list
+      *ngIf="quote.items"
+      [lineItems]="quote.items"
+      [editable]="quote.state === 'New'"
+      [total]="quote.total"
+      (formChange)="onFormChange($event)"
+      (deleteItem)="onDeleteItem($event)"
+    ></ish-line-item-list>
+  </div>
+
+  <div class="form-btn-group clearfix">
+    <div class="visible-xs form-group">
+      <div class="col-xs-6 pull-right text-right">
+        <!--
+        <isif condition="#LinkSource EQ "Shopping"#">
+          <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
+        <iselse>
+        -->
+        <a class="btn btn-link" routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+      </div>
+    </div>
+
+    <!--- here are the buttons -->
+    <ng-container *ngIf="quote.items && quote.items.length > 0 && quote.total && quote.total.value > 0">
+      <!-- IF STATE NEW -->
+      <ng-container *ngIf="quote.state === 'New'">
+        <!-- TODO: IndependentItems check ? -->
+        <!-- <button type="submit" class="btn btn-primary pull-right" name="submitquote" <isif condition="#NOT hasElements(Quote:IndependentItems)#">disabled</isif>>{{ 'quote.edit.button.submit.label' | translate }}</button> -->
+        <button type="submit" class="btn btn-primary pull-right" (click)="submit()">{{ 'quote.edit.button.submit.label' | translate }}</button>
+        <button type="submit" class="btn btn-default pull-right" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
+      </ng-container>
+
+      <!-- IF STATE SUBMITTED -->
+      <ng-container *ngIf="quote.state === 'Submitted'">
+          <!--
+          <isif condition="#LinkSource EQ "Shopping"#">
+            <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
+          <iselse>
+          -->
+          <button class="btn btn-default" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+      </ng-container>
+
+      <!-- ELSE ( if type === Quote )-->
+      <ng-container *ngIf="quote.type === 'Quote'">
+        <ng-container *ngIf="quote.state === 'Responded'">
+          <!-- <isif condition="#ValidQuote#"> -->
+          <button type="submit" class="btn btn-primary pull-right" name="add2cart" value="add2cart">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
+        </ng-container>
+
+        <button  type="submit" class="btn btn-default" name="copy" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+
+        <button *ngIf="quote.state === 'Responded'" type="submit" id="button-reject" class="btn btn-default" name="refuse" value="refuse">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div class="hidden-xs clearfix">
+    <!--
+    <isif condition="#LinkSource EQ "Shopping"#">
+      <a href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
+    <iselse>
+    -->
+    <a routerLink="/account/quote-list">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+  </div>
+</form>

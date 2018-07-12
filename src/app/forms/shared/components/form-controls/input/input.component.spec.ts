@@ -67,6 +67,12 @@ describe('Input Component', () => {
     expect(element.querySelector('input[autocomplete=off]')).toBeTruthy();
   });
 
+  it('should render placeholder text if placeholderText set', () => {
+    component.placeholderText = 'placeholder';
+    fixture.detectChanges();
+    expect(element.querySelector('input[placeholder=placeholder]')).toBeTruthy();
+  });
+
   /*
     tests for parent class: form-element
   */

@@ -1,0 +1,9 @@
+<div class="col-md-9">
+  <ish-quote-edit
+    *ngIf="(quote$ | async) as quote"
+    [quote]="quote"
+    (copyQuote)="copyQuote()"
+  ></ish-quote-edit>
+
+  <ish-loading *ngIf="quoteLoading$ | async"></ish-loading>
+</div>

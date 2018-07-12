@@ -1,6 +1,6 @@
 <ng-template #template>
   <div class="modal-header">
-    <h2 *ngIf="title" class="modal-title pull-left">{{title}}</h2>
+    <h2 *ngIf="options" class="modal-title pull-left">{{ options.titleText }}</h2>
     <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()">
       <span aria-hidden="true" [attr.title]="'dialog.close.text' | translate">&times;</span>
     </button>
@@ -8,5 +8,14 @@
 
   <div class="modal-body">
     <ng-content></ng-content>
+  </div>
+
+  <div class="modal-footer" *ngIf="options.confirmText || options.rejectText">
+    <button class='btn btn-primary' *ngIf="options.confirmText" (click)="confirm()">
+      {{ options.confirmText }}
+    </button>
+    <button class='btn btn-default' *ngIf="options.rejectText" (click)="hide()">
+      {{ options.rejectText }}
+    </button>
   </div>
 </ng-template>
