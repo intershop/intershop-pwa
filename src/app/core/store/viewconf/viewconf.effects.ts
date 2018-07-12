@@ -5,8 +5,8 @@ import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { map } from 'rxjs/operators';
 import { distinctCompareWith } from '../../../utils/operators';
 import { CoreState } from '../core.state';
-import { SetBreadcrumbKey, SetHeaderType, SetWrapperClass } from './viewconf.actions';
-import { getBreadcrumbKey, getHeaderType, getWrapperClass } from './viewconf.selectors';
+import { SetBreadcrumbData, SetHeaderType, SetWrapperClass } from './viewconf.actions';
+import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
@@ -29,10 +29,10 @@ export class ViewconfEffects {
   );
 
   @Effect()
-  retrieveBreadcrumbKeyFromRouting$ = this.actions$.pipe(
+  retrieveBreadcrumbDataFromRouting$ = this.actions$.pipe(
     ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.data.breadcrumbKey),
-    distinctCompareWith(this.store.pipe(select(getBreadcrumbKey))),
-    map(breadcrumbKey => new SetBreadcrumbKey(breadcrumbKey))
+    map(action => action.payload.data.breadcrumbData),
+    distinctCompareWith(this.store.pipe(select(getBreadcrumbData))),
+    map(breadcrumbData => new SetBreadcrumbData(breadcrumbData))
   );
 }

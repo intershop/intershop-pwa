@@ -83,11 +83,16 @@ export class BasketMockData {
       name: 'pli name',
       quantity: { value: 10 },
       productSKU: '4713',
-      product: { sku: '4713' },
-      availability: true,
-      inStock: true,
+      product: { sku: '4713', availability: true, inStock: true },
       singleBasePrice: { value: 3, currencyMnemonic: 'USD' },
       price: { value: 3, currencyMnemonic: 'USD' },
+      itemSurcharges: [
+        {
+          amount: {},
+          description: 'test',
+          displayName: 'test',
+        },
+      ],
       totals: {},
     } as BasketItemView;
   }

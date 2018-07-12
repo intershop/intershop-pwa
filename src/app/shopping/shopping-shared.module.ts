@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsSharedModule } from '../forms/forms-shared.module';
+import { QuotingSharedModule } from '../quoting/quoting-shared.module';
 import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
 import { CategoryNavigationComponent } from './components/category//category-navigation/category-navigation.component';
@@ -21,7 +22,7 @@ import { ProductTileContainerComponent } from './containers/product-tile/product
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
-  imports: [SharedModule, FormsSharedModule, SharedProductModule],
+  imports: [SharedModule, FormsSharedModule, SharedProductModule, QuotingSharedModule],
   declarations: [
     CategoryListComponent,
     CategoryNavigationComponent,

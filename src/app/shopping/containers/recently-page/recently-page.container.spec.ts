@@ -14,7 +14,7 @@ describe('Recently Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         RecentlyPageContainerComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trailText'] }),
+        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trail'] }),
         MockComponent({
           selector: 'ish-recently-viewed-all',
           template: 'Recently Viewed All Component',

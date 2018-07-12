@@ -19,9 +19,9 @@
           name="search"
           [title]="('search.searchbox.button.title' | translate)">
   <!-- search button with icon -->
-    <ng-template [ngIf]="!buttonText" [ngIfElse]="textBlock">
+    <ng-container *ngIf="!buttonText; else textBlock">
       <span class="glyphicon glyphicon-search"></span>
-    </ng-template>
+    </ng-container>
     <!-- search button with text -->
     <ng-template #textBlock>
       {{buttonText}}

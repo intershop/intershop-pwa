@@ -16,6 +16,8 @@ export class InputComponent extends FormElement implements OnInit {
   @Input() min?: number;
   @Input() max?: number;
 
+  @Input() placeholderText?: string;
+
   constructor(protected translate: TranslateService) {
     super(translate);
   }

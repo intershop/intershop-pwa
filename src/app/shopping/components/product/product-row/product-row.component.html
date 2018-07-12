@@ -17,6 +17,16 @@
           <span class="product-number-label">{{ 'product.itemNumber.label' | translate }}</span>
           <span itemprop="sku">{{product.sku}}</span>
         </div>
+        <!-- TODO: remove style attribute -->
+        <div class="product-tile-actions btn-group" style="position: relative">
+          <ish-product-add-to-quote
+            *ishFeature="'quoting'"
+            [product]="product"
+            displayType="glyphicon"
+            class="btn-link"
+            (productToQuote)="addToQuote()"
+          ></ish-product-add-to-quote>
+        </div>
       </div>
       <div class="col-sm-4 col-xs-12 pull-right text-right text-left-xs">
         <ish-product-price [product]="product" [showInformationalPrice]="true"></ish-product-price>

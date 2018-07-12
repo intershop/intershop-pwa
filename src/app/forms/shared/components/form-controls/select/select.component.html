@@ -9,12 +9,12 @@
         <option value="" *ngIf="showEmptyOption">{{ emptyOptionLabel | translate}}</option>
 
         <!-- translate option values -->
-        <ng-template [ngIf]="translateOptionValues" [ngIfElse]="notTranslateOptionValues">
+        <ng-container *ngIf="translateOptionValues; else notTranslateOptionValues">
           <option *ngFor="let option of options" [value]="option.value | translate">
             <span *ngIf="translateOptionLabels">{{option.label | translate}}</span>
             <span *ngIf="!translateOptionLabels">{{option.label}}</span>
           </option>
-        </ng-template>
+        </ng-container>
         <!-- does not translate values -->
         <ng-template #notTranslateOptionValues>
           <option *ngFor="let option of options" [value]="option.value">

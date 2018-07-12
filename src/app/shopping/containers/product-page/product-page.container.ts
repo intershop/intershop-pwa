@@ -6,6 +6,8 @@ import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
+import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
+import { QuotingState } from '../../../quoting/store/quoting.state';
 import { getSelectedCategory } from '../../store/categories';
 import { AddToCompare } from '../../store/compare';
 import { getProductLoading, getSelectedProduct } from '../../store/products';
@@ -21,7 +23,7 @@ export class ProductPageContainerComponent implements OnInit {
   productLoading$: Observable<boolean>;
   category$: Observable<CategoryView>;
 
-  constructor(private store: Store<ShoppingState | CheckoutState>) {}
+  constructor(private store: Store<ShoppingState | CheckoutState | QuotingState>) {}
 
   ngOnInit() {
     this.product$ = this.store.pipe(
@@ -41,5 +43,9 @@ export class ProductPageContainerComponent implements OnInit {
 
   addToCompare(sku) {
     this.store.dispatch(new AddToCompare(sku));
+  }
+
+  addToQuote({ sku, quantity }) {
+    this.store.dispatch(new AddProductToQuoteRequest({ sku: sku, quantity: quantity }));
   }
 }
