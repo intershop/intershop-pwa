@@ -30,7 +30,7 @@ describe('Header Component', () => {
         MockComponent({
           selector: 'ish-search-box-container',
           template: 'Search Box Container',
-          inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
+          inputs: ['configuration'],
         }),
         MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
         MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),

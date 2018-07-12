@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 import { getSearchTerm, getSuggestSearchResults, SuggestSearch } from '../../../../shopping/store/search';
 import { ShoppingState } from '../../../../shopping/store/shopping.state';
+import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
 /**
  * The search box container component
@@ -22,21 +23,9 @@ import { ShoppingState } from '../../../../shopping/store/shopping.state';
 })
 export class SearchBoxContainerComponent implements OnInit {
   /**
-   * text for search button on search box, glyphicon is used if no text is provided
+   * the configuration for this component
    */
-  @Input() buttonText?: string;
-  /**
-   * placeholder text for search input field
-   */
-  @Input() placeholderText = '';
-  /**
-   * if autoSuggest is set to true auto suggestion is provided for search box, else no auto suggestion is provided
-   */
-  @Input() autoSuggest: boolean;
-  /**
-   * configures the number of suggestions if auto suggestion is provided
-   */
-  @Input() maxAutoSuggests: number;
+  @Input() configuration?: SearchBoxConfiguration;
 
   searchResults$: Observable<SuggestTerm[]>;
   previousSearchTerm$: Observable<string>;
