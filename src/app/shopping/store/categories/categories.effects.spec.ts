@@ -44,9 +44,7 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(
       throwError({ message: 'invalid category' } as HttpErrorResponse)
     );
-    when(categoriesServiceMock.getTopLevelCategories(2)).thenCall(() => {
-      return of(TOP_LEVEL_CATEGORIES);
-    });
+    when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of(TOP_LEVEL_CATEGORIES));
     when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(
       throwError({ message: 'invalid number' } as HttpErrorResponse)
     );

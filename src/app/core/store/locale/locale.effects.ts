@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { map, take, tap } from 'rxjs/operators';
+import { map, mapTo, take, tap } from 'rxjs/operators';
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import * as fromActions from './locale.actions';
@@ -29,7 +29,7 @@ export class LocaleEffects {
   loadAllLocales$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
     take(1),
-    map(() => new fromActions.SetAvailableLocales(this.availableLocales))
+    mapTo(new fromActions.SetAvailableLocales(this.availableLocales))
   );
 
   @Effect()

@@ -39,7 +39,7 @@ describe('Products Effects', () => {
       }
     });
 
-    when(productsServiceMock.getCategoryProducts('123', 'name-asc')).thenCall(() =>
+    when(productsServiceMock.getCategoryProducts('123', 'name-asc')).thenReturn(
       of({
         skus: ['P222', 'P333'],
         categoryUniqueId: '123',

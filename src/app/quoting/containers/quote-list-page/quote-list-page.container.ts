@@ -26,11 +26,7 @@ export class QuoteListPageContainerComponent implements OnInit {
     this.quotes$ = combineLatest(
       this.store.pipe(select(getCurrentQuotes)),
       this.store.pipe(select(getCurrentQuoteRequests))
-    ).pipe(
-      map(([quotes, quoteRequests]) => {
-        return [...quotes, ...quoteRequests];
-      })
-    );
+    ).pipe(map(([quotes, quoteRequests]) => [...quotes, ...quoteRequests]));
     this.quoteLoading$ = this.store.pipe(select(getQuoteLoading));
     this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
   }

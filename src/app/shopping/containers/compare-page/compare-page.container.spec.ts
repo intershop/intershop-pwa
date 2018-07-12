@@ -43,8 +43,8 @@ describe('Compare Page Container', () => {
   });
 
   it('should not display compare product list when no compare products available', () => {
-    when(storeMock$.pipe(anything())).thenCall(selector => {
-      return selector(
+    when(storeMock$.pipe(anything())).thenCall(selector =>
+      selector(
         of({
           shopping: {
             compare: {
@@ -52,15 +52,15 @@ describe('Compare Page Container', () => {
             },
           },
         })
-      );
-    });
+      )
+    );
     fixture.detectChanges();
     expect(findAllIshElements(element)).toBeEmpty();
   });
 
   it('should display compare product list when compare products available', () => {
-    when(storeMock$.pipe(anything())).thenCall(selector => {
-      return selector(
+    when(storeMock$.pipe(anything())).thenCall(selector =>
+      selector(
         of({
           shopping: {
             products: {
@@ -74,8 +74,8 @@ describe('Compare Page Container', () => {
             },
           },
         })
-      );
-    });
+      )
+    );
     fixture.detectChanges();
     expect(findAllIshElements(element)).toEqual(['ish-product-compare-list']);
   });
