@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { combineLatest, of } from 'rxjs';
-import { catchError, concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
@@ -30,12 +30,12 @@ export class QuoteEffects {
   @Effect()
   loadQuotes$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.LoadQuotes),
-    concatMap(() => {
-      return this.quoteService.getQuotes().pipe(
+    concatMap(() =>
+      this.quoteService.getQuotes().pipe(
         map(quotes => new quoteActions.LoadQuotesSuccess(quotes)),
         catchError(error => of(new quoteActions.LoadQuotesFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -45,12 +45,12 @@ export class QuoteEffects {
   deleteQuote$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.DeleteQuote),
     map((action: quoteActions.DeleteQuote) => action.payload),
-    concatMap(quoteId => {
-      return this.quoteService.deleteQuote(quoteId).pipe(
+    concatMap(quoteId =>
+      this.quoteService.deleteQuote(quoteId).pipe(
         map(id => new quoteActions.DeleteQuoteSuccess(id)),
         catchError(error => of(new quoteActions.DeleteQuoteFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -60,12 +60,12 @@ export class QuoteEffects {
   createQuoteRequestFromQuote$ = this.actions$.pipe(
     ofType(quoteActions.QuoteActionTypes.CreateQuoteRequestFromQuote),
     withLatestFrom(this.store.pipe(select(getSelectedQuote))),
-    concatMap(([action, currentQuoteRequest]) => {
-      return this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
+    concatMap(([action, currentQuoteRequest]) =>
+      this.quoteService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(res => new quoteActions.CreateQuoteRequestFromQuoteSuccess(res)),
         catchError(error => of(new quoteActions.CreateQuoteRequestFromQuoteFail(error)))
-      );
-    })
+      )
+    )
   );
 
   /**
@@ -79,7 +79,7 @@ export class QuoteEffects {
       UserActionTypes.LoadCompanyUserSuccess
     ),
     filter(() => this.featureToggleService.enabled('quoting')),
-    map(() => new quoteActions.LoadQuotes())
+    mapTo(new quoteActions.LoadQuotes())
   );
 
   /**
