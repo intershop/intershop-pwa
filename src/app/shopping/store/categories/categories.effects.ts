@@ -19,6 +19,7 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configur
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
 import { CategoryHelper } from '../../../models/category/category.model';
+import { distinctCompareWith } from '../../../utils/operators';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
@@ -37,14 +38,17 @@ export class CategoriesEffects {
 
   /**
    * listens to routing and fires {@link SelectCategory} if a category route is selected
+   * and {@link DeselectCategory} if deselected
    */
   @Effect()
   routeListenerForSelectingCategory$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
-    map((action: RouteNavigation) => action.payload.params['categoryUniqueId']),
-    withLatestFrom(this.store.pipe(select(selectors.getSelectedCategoryId))),
-    filter(([fromAction, fromStore]) => fromAction !== fromStore),
-    map(([categoryUniqueId, old]) => new actions.SelectCategory(categoryUniqueId))
+    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
+    map(action => action.payload.params['categoryUniqueId']),
+    distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
+    map(
+      categoryUniqueId =>
+        !!categoryUniqueId ? new actions.SelectCategory(categoryUniqueId) : new actions.DeselectCategory()
+    )
   );
 
   /**
@@ -55,7 +59,6 @@ export class CategoriesEffects {
   selectedCategory$ = this.actions$.pipe(
     ofType(actions.CategoriesActionTypes.SelectCategory),
     map((action: actions.SelectCategory) => action.payload),
-    filter(id => !!id),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
     map(([id]) => new actions.LoadCategory(id))
@@ -68,8 +71,7 @@ export class CategoriesEffects {
   selectedCategoryAvailable$ = combineLatest(
     this.actions$.pipe(
       ofType(actions.CategoriesActionTypes.SelectCategory),
-      map((action: actions.SelectCategory) => action.payload),
-      filter(x => !!x)
+      map((action: actions.SelectCategory) => action.payload)
     ),
     this.store.pipe(
       select(selectors.getSelectedCategory),

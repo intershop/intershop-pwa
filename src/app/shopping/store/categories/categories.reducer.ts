@@ -17,6 +17,7 @@ export const initialState: CategoriesState = {
 
 export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
+    case CategoriesActionTypes.DeselectCategory:
     case CategoriesActionTypes.SelectCategory: {
       return {
         ...state,
