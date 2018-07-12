@@ -1,18 +1,21 @@
 // tslint:disable:no-any
 import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { Store, StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { _setToken, AuthInterceptor } from './auth.interceptor';
+import { CoreState } from '../store/core.state';
+import { coreReducers } from '../store/core.system';
+import { SetAPIToken } from '../store/user';
+import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor', () => {
   const responseData = `{"name":"test","age":"34"}`;
   let getRequest: HttpRequest<any>;
-
   let mockRequest: HttpRequest<any>;
-
   let authInterceptor: AuthInterceptor;
-
   let mockInterceptor: any;
+  let store$: Store<CoreState>;
+
   beforeEach(() => {
     getRequest = new HttpRequest<any>('GET', ' ');
     mockRequest = null;
@@ -25,9 +28,11 @@ describe('Auth Interceptor', () => {
       },
     };
     TestBed.configureTestingModule({
+      imports: [StoreModule.forRoot(coreReducers)],
       providers: [AuthInterceptor],
     });
     authInterceptor = TestBed.get(AuthInterceptor);
+    store$ = TestBed.get(Store);
   });
 
   it('should return mocked body in response when requested', done => {
@@ -40,7 +45,7 @@ describe('Auth Interceptor', () => {
 
   it(`should set request's header token on receiving from jwt service`, done => {
     const TOKEN = 'testtoken';
-    _setToken(TOKEN);
+    store$.dispatch(new SetAPIToken(TOKEN));
 
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe(data => {
       expect(mockRequest.headers.get('authentication-token')).toEqual(TOKEN);
@@ -58,7 +63,7 @@ describe('Auth Interceptor', () => {
   });
 
   it('should not set token when token is empty', done => {
-    _setToken('');
+    store$.dispatch(new SetAPIToken(undefined));
 
     authInterceptor.intercept(getRequest, mockInterceptor).subscribe(data => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
