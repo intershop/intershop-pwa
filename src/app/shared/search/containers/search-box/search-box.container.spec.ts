@@ -19,7 +19,7 @@ describe('Search Box Container', () => {
         MockComponent({
           selector: 'ish-search-box',
           template: 'Search Box',
-          inputs: ['results', 'buttonText', 'placeholderText', 'searchTerm', 'autoSuggest', 'maxAutoSuggests'],
+          inputs: ['results', 'configuration', 'searchTerm'],
         }),
         SearchBoxContainerComponent,
       ],

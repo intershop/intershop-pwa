@@ -14,16 +14,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
+import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
 /**
  * displays the search box with search button
  *
  * @example
  * <ish-search-box
- *               [buttonText]="buttonText"
- *               [placeholderText] ="placeholderText"
- *               [autoSuggest] = "autoSuggest"
- *               [maxAutoSuggests] = "maxAutoSuggests"
+ *               [configuration] = "{ maxAutoSuggests: 3 }"
  *               [results]="searchResults$ | async"
  *               [searchTerm]="previousSearchTerm$ | async"
  *               (searchTermChange)="suggestSearch($event)"
@@ -36,23 +34,7 @@ import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
-  /**
-   * text for search button on search box
-   * glyphicon is used if no text is provided
-   */
-  @Input() buttonText?: string;
-  /**
-   * placeholder text for search input field
-   */
-  @Input() placeholderText = '';
-  /**
-   * if autoSuggest is set to true auto suggestion is provided for search box, else no auto suggestion is provided
-   */
-  @Input() autoSuggest: boolean;
-  /**
-   * configures the number of suggestions if auto suggestion is provided
-   */
-  @Input() maxAutoSuggests: number;
+  @Input() configuration: SearchBoxConfiguration = {};
   @Input() searchTerm: string;
   @Input() results: SuggestTerm[];
   @Output() searchTermChange = new EventEmitter<string>();
@@ -68,7 +50,7 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
       search: new FormControl(''),
     });
 
-    if (this.autoSuggest) {
+    if (this.configuration && this.configuration.autoSuggest) {
       this.searchForm
         .get('search')
         .valueChanges.pipe(takeUntil(this.destroy$))
@@ -119,7 +101,7 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   selectSuggestedTerm(index: number) {
     if (
       this.isHidden ||
-      (this.maxAutoSuggests && index > this.maxAutoSuggests - 1) ||
+      (this.configuration && this.configuration.maxAutoSuggests && index > this.configuration.maxAutoSuggests - 1) ||
       index < -1 ||
       index > this.results.length - 1
     ) {
