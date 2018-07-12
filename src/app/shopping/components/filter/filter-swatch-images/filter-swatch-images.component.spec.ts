@@ -1,5 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { Filter } from '../../../../models/filter/filter.model';
 import { FilterSwatchImagesComponent } from './filter-swatch-images.component';
 
@@ -10,6 +10,7 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [CollapseModule.forRoot()],
       declarations: [FilterSwatchImagesComponent],
     }).compileComponents();
   }));
@@ -35,4 +36,18 @@ describe('Filter Swatch Images Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });
+
+  it(
+    'should toggle all swatch images when filter group header is clicked',
+    fakeAsync(() => {
+      fixture.detectChanges();
+      const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
+      filterGroupHead.click();
+      tick(500);
+      fixture.detectChanges();
+
+      const hiddenFilterFacet = element.getElementsByTagName('ul')[0];
+      expect(hiddenFilterFacet.getAttribute('style')).toContain('display: none;');
+    })
+  );
 });

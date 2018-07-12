@@ -1,6 +1,9 @@
 <div class="filter-group">
 
-  <h3>{{filterElement.name}}</h3>
+  <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
+    {{filterElement.name}}
+    <span class="glyphicon pull-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span>
+  </h3>
 
   <ul class="filter-list">
     <ng-container *ngFor="let facet of filterElement.facets">
@@ -13,13 +16,15 @@
     </ng-container>
   </ul>
 
-  <form role="filter" name="Filter" [formGroup]="filterForm">
-    <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
-      <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
-      <ng-container *ngFor="let facet of filterElement.facets">
-        <option *ngIf="!facet.selected  && facet.name !== 'Show all'" [value]="facet.name">{{facet.link.title}}</option>
-      </ng-container>
-    </select>
-  </form>
+  <div id="collapseFilter" [collapse]="isCollapsed" [attr.data-testing-id]="'collapseFilter' + filterElement.name">
+    <form role="filter" name="Filter" [formGroup]="filterForm">
+      <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
+        <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
+        <ng-container *ngFor="let facet of filterElement.facets">
+          <option *ngIf="!facet.selected  && facet.name !== 'Show all'" [value]="facet.name">{{facet.link.title}}</option>
+        </ng-container>
+      </select>
+    </form>
+  </div>
 
 </div>

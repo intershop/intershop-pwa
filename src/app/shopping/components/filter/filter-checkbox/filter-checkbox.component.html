@@ -1,6 +1,9 @@
 <div class="filter-group">
 
-  <h3>{{filterElement.name}}</h3>
+  <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
+    {{filterElement.name}}
+    <span class="glyphicon pull-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span>
+  </h3>
 
   <ul class="filter-list">
     <!--- TODO: implement Show All-->
@@ -14,7 +17,7 @@
     </ng-container>
   </ul>
 
-  <ul class="filter-list">
+  <ul class="filter-list" id="collapseFilter" [collapse]="isCollapsed">
     <ng-container *ngFor="let facet of filterElement.facets">
       <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item">
         <!--- TODO: add filter count -->
