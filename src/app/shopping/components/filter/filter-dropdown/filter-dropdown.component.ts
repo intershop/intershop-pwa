@@ -26,6 +26,7 @@ export class FilterDropdownComponent implements OnInit {
   @Output() applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
   destroy$ = new Subject();
   filterForm: FormGroup;
+  isCollapsed = false;
 
   ngOnInit() {
     this.filterForm = new FormGroup({

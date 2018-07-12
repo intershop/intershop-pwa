@@ -8,11 +8,24 @@ exports[`Filter Swatch Images Component should be created 1`] = `
   <div
     class="filter-group"
   >
-    <h3>
-      Color
+    <h3
+      aria-controls="collapseFilter"
+      aria-expanded="true"
+    >
+       Color 
+      <span
+        class="glyphicon pull-right glyphicon-chevron-down"
+        ng-reflect-klass="glyphicon pull-right"
+        ng-reflect-ng-class="[object Object]"
+      />
     </h3>
     <ul
-      class="filter-list clearfix"
+      aria-expanded="true"
+      aria-hidden="false"
+      class="filter-list clearfix collapse in show"
+      id="collapseFilter"
+      ng-reflect-collapse="false"
+      style="overflow: visible; height: auto; display: block;"
     >
       
       

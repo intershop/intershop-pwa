@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Facet } from '../../../../models/facet/facet.model';
 import { Filter } from '../../../../models/filter/filter.model';
 
@@ -16,15 +16,11 @@ import { Filter } from '../../../../models/filter/filter.model';
   templateUrl: './filter-checkbox.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterCheckboxComponent implements OnInit {
+export class FilterCheckboxComponent {
   @Input() filterElement: Filter;
   @Output() applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
-  hasSelected: boolean;
+  isCollapsed = false;
 
-  ngOnInit() {
-    const facet: Facet[] = this.filterElement.facets;
-    this.hasSelected = !!facet.find(e => e.selected);
-  }
   filter(facet: Facet) {
     this.applyFilter.emit({ filterId: facet.filterId, searchParameter: facet.searchParameter });
   }

@@ -8,8 +8,16 @@ exports[`Filter Checkbox Component should be created 1`] = `
   <div
     class="filter-group"
   >
-    <h3>
-      Brands
+    <h3
+      aria-controls="collapseFilter"
+      aria-expanded="true"
+    >
+       Brands 
+      <span
+        class="glyphicon pull-right glyphicon-chevron-down"
+        ng-reflect-klass="glyphicon pull-right"
+        ng-reflect-ng-class="[object Object]"
+      />
     </h3>
     <ul
       class="filter-list"
@@ -38,7 +46,12 @@ exports[`Filter Checkbox Component should be created 1`] = `
       
     </ul>
     <ul
-      class="filter-list"
+      aria-expanded="true"
+      aria-hidden="false"
+      class="filter-list collapse in show"
+      id="collapseFilter"
+      ng-reflect-collapse="false"
+      style="overflow: visible; height: auto; display: block;"
     >
       
       
