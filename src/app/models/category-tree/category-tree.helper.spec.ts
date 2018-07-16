@@ -1,4 +1,6 @@
 import * as using from 'jasmine-data-provider';
+import { CategoryData } from '../category/category.interface';
+import { CategoryMapper } from '../category/category.mapper';
 import { Category } from '../category/category.model';
 import { CategoryTreeHelper } from './category-tree.helper';
 import { CategoryTree } from './category-tree.model';
@@ -270,7 +272,115 @@ describe('Category Tree Helper', () => {
       });
       expect(combined.rootIds).toEqual(['A', 'B']);
     });
+
+    describe('sorting order', () => {
+      const catAbRaw = { categoryPath: [{ id: 'A' }, { id: 'b' }] } as CategoryData;
+      const catARaw = {
+        categoryPath: [{ id: 'A' }],
+        subCategories: [
+          { categoryPath: [{ id: 'A' }, { id: 'a' }] },
+          catAbRaw,
+          { categoryPath: [{ id: 'A' }, { id: 'c' }] },
+        ],
+      } as CategoryData;
+      const catBRaw = { categoryPath: [{ id: 'B' }] } as CategoryData;
+      let tree: CategoryTree;
+
+      beforeEach(() => {
+        tree = [catARaw, catBRaw].reduce(
+          (acc, val) => CategoryTreeHelper.merge(acc, CategoryMapper.fromData(val)),
+          CategoryTreeHelper.empty()
+        );
+      });
+
+      it('should be created', () => {
+        expect(tree.edges).toEqual({
+          A: ['A.a', 'A.b', 'A.c'],
+        });
+        expect(tree.rootIds).toEqual(['A', 'B']);
+        const catAb = tree.nodes['A.b'];
+        expect(catAb.categoryPath).toEqual(['A', 'A.b']);
+        expect(catAb.name).toBeUndefined();
+      });
+
+      describe('with sub category update', () => {
+        let catAbUpdateTree: CategoryTree;
+
+        beforeEach(() => {
+          const catAbUpdateRaw = { ...catAbRaw, name: 'update' };
+          catAbUpdateTree = CategoryMapper.fromData(catAbUpdateRaw);
+          // increase completeness level to always perform an update
+          catAbUpdateTree.nodes['A.b'].completenessLevel = tree.nodes['A.b'].completenessLevel + 1;
+        });
+
+        it('should be created', () => {
+          const catAbUpdate = catAbUpdateTree.nodes['A.b'];
+          expect(catAbUpdate.name).not.toBeUndefined();
+
+          expect(catAbUpdateTree.nodes['A.b'].completenessLevel).toBeGreaterThan(tree.nodes['A.b'].completenessLevel);
+        });
+
+        it('should update category when trees are merged to left', () => {
+          const mergeResult = CategoryTreeHelper.merge(tree, catAbUpdateTree);
+          expect(mergeResult.nodes['A.b'].name).not.toBeUndefined();
+        });
+
+        it('should update category when trees are merged to right', () => {
+          const mergeResult = CategoryTreeHelper.merge(catAbUpdateTree, tree);
+          expect(mergeResult.nodes['A.b'].name).not.toBeUndefined();
+        });
+
+        it('should not change sorting order when merged to left', () => {
+          const mergeResult = CategoryTreeHelper.merge(tree, catAbUpdateTree);
+          expect(mergeResult.edges['A']).toEqual(['A.a', 'A.b', 'A.c']);
+        });
+
+        it('should not change sorting order when merged to right', () => {
+          const mergeResult = CategoryTreeHelper.merge(catAbUpdateTree, tree);
+          expect(mergeResult.edges['A']).toEqual(['A.a', 'A.b', 'A.c']);
+        });
+      });
+
+      describe('with root category update', () => {
+        let catBUpdateTree: CategoryTree;
+
+        beforeEach(() => {
+          const catBUpdateRaw = { ...catBRaw, name: 'update' };
+          catBUpdateTree = CategoryMapper.fromData(catBUpdateRaw);
+          // increase completeness level to always perform an update
+          catBUpdateTree.nodes['B'].completenessLevel = tree.nodes['B'].completenessLevel + 1;
+        });
+
+        it('should be created', () => {
+          const catBUpdate = catBUpdateTree.nodes['B'];
+          expect(catBUpdate.name).not.toBeUndefined();
+
+          expect(catBUpdateTree.nodes['B'].completenessLevel).toBeGreaterThan(tree.nodes['B'].completenessLevel);
+        });
+
+        it('should update category when trees are merged to left', () => {
+          const mergeResult = CategoryTreeHelper.merge(tree, catBUpdateTree);
+          expect(mergeResult.nodes['B'].name).not.toBeUndefined();
+        });
+
+        it('should update category when trees are merged to right', () => {
+          const mergeResult = CategoryTreeHelper.merge(catBUpdateTree, tree);
+          expect(mergeResult.nodes['B'].name).not.toBeUndefined();
+        });
+
+        it('should not change sorting order when merged to left', () => {
+          const mergeResult = CategoryTreeHelper.merge(tree, catBUpdateTree);
+          expect(mergeResult.rootIds).toEqual(['A', 'B']);
+        });
+
+        it('should not change sorting order when merged to right', () => {
+          const mergeResult = CategoryTreeHelper.merge(catBUpdateTree, tree);
+          expect(mergeResult.rootIds).toEqual(['A', 'B']);
+        });
+      });
+    });
   });
+
   describe('updateStrategy()', () => {
     using(
       [
