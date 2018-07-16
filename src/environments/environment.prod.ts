@@ -27,6 +27,9 @@ export const environment = {
   // global definition of the endless scrolling page size
   endlessScrollingItemsPerPage: 9,
 
+  // enable or disable service worker
+  serviceWorker: true,
+
   // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
   syncLocalStorage: false,
 

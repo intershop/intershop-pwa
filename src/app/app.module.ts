@@ -55,7 +55,7 @@ export const metaReducers: MetaReducer<any>[] = [
     BrowserModule.withServerTransition({
       appId: 'intershop-pwa',
     }),
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.serviceWorker }),
     HttpClientModule,
     BrowserTransferStateModule,
     CoreModule,
