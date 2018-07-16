@@ -84,6 +84,19 @@ export class CategoriesEffects {
   );
 
   /**
+   * fires {@link LoadCategory} for category path categories of the selected category that are not yet completely loaded
+   */
+  @Effect()
+  loadCategoriesOfCategoryPath$ = this.actions$.pipe(
+    ofType(actions.CategoriesActionTypes.SelectedCategoryAvailable),
+    withLatestFrom(this.store.pipe(select(selectors.getSelectedCategory))),
+    map(([, category]) => category.categoryPath),
+    withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
+    map(([ids, entities]) => ids.filter(id => !CategoryHelper.isCategoryCompletelyLoaded(entities[id]))),
+    mergeMap(ids => ids.map(id => new actions.LoadCategory(id)))
+  );
+
+  /**
    * loads a {@link Category} using the {@link CategoriesService}
    */
   @Effect()

@@ -58,7 +58,7 @@ describe('Shopping System', () => {
     const catA123 = { uniqueId: 'A.123', categoryPath: ['A', 'A.123'] } as Category;
     const catA123456 = {
       uniqueId: 'A.123.456',
-      categoryPath: ['A', 'A.123', 'A.456'],
+      categoryPath: ['A', 'A.123', 'A.123.456'],
       hasOnlineProducts: true,
     } as Category;
     const catB = { uniqueId: 'B', categoryPath: ['B'] } as Category;
@@ -182,7 +182,8 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toBeUndefined();
 
-        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
+        expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
+        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
         expect(getProductIds(store.state)).toBeEmpty();
       })
     );
@@ -219,7 +220,8 @@ describe('Shopping System', () => {
       it(
         'should load necessary data when going to a category page',
         fakeAsync(() => {
-          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+          expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+          expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toBeEmpty();
         })
       );
@@ -232,6 +234,8 @@ describe('Shopping System', () => {
           expect(i.next()).toEqual(new LoadCategory('A.123'));
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
           expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
+          expect(i.next()).toEqual(new LoadCategory('A'));
+          expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -320,7 +324,8 @@ describe('Shopping System', () => {
     it(
       'should load necessary data when going to a category page',
       fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toBeEmpty();
       })
     );
@@ -336,6 +341,8 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -372,7 +379,8 @@ describe('Shopping System', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+          expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+          expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toBeEmpty();
         })
       );
@@ -407,7 +415,8 @@ describe('Shopping System', () => {
     it(
       'should load all products and required categories when going to a family page',
       fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
       })
     );
@@ -422,7 +431,11 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next()).toEqual(new LoadProduct('P1'));
@@ -527,7 +540,8 @@ describe('Shopping System', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+          expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+          expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
         })
       );
@@ -562,7 +576,8 @@ describe('Shopping System', () => {
     it(
       'should load the product and its required categories when going to a product page',
       fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
@@ -581,6 +596,10 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -633,7 +652,8 @@ describe('Shopping System', () => {
       it(
         'should load the sibling products when they are not yet loaded',
         fakeAsync(() => {
-          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+          expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+          expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1', 'P2']);
         })
       );
@@ -672,7 +692,8 @@ describe('Shopping System', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+          expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+          expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1']);
         })
       );
@@ -708,7 +729,8 @@ describe('Shopping System', () => {
     it(
       'should load the product ang top level categories when going to a product page',
       fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
+        expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
+        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
         expect(getProductIds(store.state)).toEqual(['P1']);
       })
     );
@@ -761,7 +783,8 @@ describe('Shopping System', () => {
       it(
         'should not load anything additionally when going to compare page',
         fakeAsync(() => {
-          expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
+          expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
+          expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
           expect(getProductIds(store.state)).toEqual(['P1']);
         })
       );
@@ -796,7 +819,8 @@ describe('Shopping System', () => {
     it(
       'should load only family page content and redirect to error when product was not found',
       fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B', 'A.123.456']);
+        expect(getCategoryIds(store.state)).toBeArrayOfSize(4);
+        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'A.123.456', 'B']);
         expect(getProductIds(store.state)).toBeEmpty();
       })
     );
@@ -820,6 +844,10 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductFail);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
 
         const errorPageRouting = i.next() as RouteNavigation;
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
@@ -858,7 +886,8 @@ describe('Shopping System', () => {
     it(
       'should load only some categories and redirect to error when category was not found',
       fakeAsync(() => {
-        expect(getCategoryIds(store.state)).toEqual(['A', 'A.123', 'B']);
+        expect(getCategoryIds(store.state)).toBeArrayOfSize(3);
+        expect(getCategoryIds(store.state)).toIncludeAllMembers(['A', 'A.123', 'B']);
         expect(getProductIds(store.state)).toBeEmpty();
       })
     );
