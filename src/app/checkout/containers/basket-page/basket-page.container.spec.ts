@@ -3,6 +3,8 @@ import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { AddBasketToQuoteRequest } from '../../../quoting/store/quote-request';
+import { quotingReducers } from '../../../quoting/store/quoting.system';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from '../../store/basket/basket.actions';
@@ -30,6 +32,7 @@ describe('Basket Page Container', () => {
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
           shopping: combineReducers(shoppingReducers),
+          quoting: combineReducers(quotingReducers),
         }),
       ],
     }).compileComponents();
@@ -51,6 +54,12 @@ describe('Basket Page Container', () => {
 
   it('should render loading component if there is no basket', () => {
     store$.dispatch(new LoadBasket('BASKET_ID'));
+    fixture.detectChanges();
+    expect(element.querySelector('ish-loading')).toBeTruthy();
+  });
+
+  it('should render loading component if AddBasketToQuoteRequest', () => {
+    store$.dispatch(new AddBasketToQuoteRequest());
     fixture.detectChanges();
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });

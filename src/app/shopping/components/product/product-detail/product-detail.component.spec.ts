@@ -15,7 +15,11 @@ describe('Product Detail Component', () => {
     const prod = { sku: 'sku' } as Product;
 
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot(), FeatureToggleModule.testingFeatures({ compare: true })],
+      imports: [
+        ReactiveFormsModule,
+        TranslateModule.forRoot(),
+        FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
+      ],
       declarations: [ProductDetailComponent],
       // TODO: prepare more detailed test
       schemas: [NO_ERRORS_SCHEMA],

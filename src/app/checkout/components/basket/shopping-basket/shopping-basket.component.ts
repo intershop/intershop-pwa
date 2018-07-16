@@ -4,6 +4,23 @@ import { Router } from '@angular/router';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 import { BasketView } from '../../../../models/basket/basket.model';
 
+/**
+ * The Shopping Basket Component displays the users basket items and cost summary.
+ * It provides update cart and add cart to quote functionality.
+ * It is the starting point for the checkout workflow.
+ *
+ * It uses the {@link LineItemListComponent} for the rendering of line items.
+ * It uses the {@link BasketCostSummaryComponent} to render the cost summary.
+ * It uses the {@link BasketAddToQuoteComponent} to provide add to quote functionality.
+ *
+ * @example
+ * <ish-shopping-basket
+ *   [basket]="basket"
+ *   (updateItems)="updateItems()"
+ *   (deleteItem)="deleteItem()"
+ *   (addBasketToQuote)="addBasketToQuote()"
+ * ></ish-shopping-basket>
+ */
 @Component({
   selector: 'ish-shopping-basket',
   templateUrl: './shopping-basket.component.html',
@@ -14,6 +31,7 @@ export class ShoppingBasketComponent {
 
   @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
   @Output() deleteItem = new EventEmitter<string>();
+  @Output() addBasketToQuote = new EventEmitter<void>();
 
   form: FormGroup;
   submitted = false;
@@ -69,5 +87,12 @@ export class ShoppingBasketComponent {
   checkout() {
     // ToDo: routing should be handled in another way, see #ISREST-317
     this.router.navigate(['/checkout/address']);
+  }
+
+  /**
+   * Throws addBasketToQuote event when addToQuote is triggered.
+   */
+  onAddToQuote() {
+    this.addBasketToQuote.emit();
   }
 }

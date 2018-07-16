@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Product } from '../../../models/product/product.model';
+import { spy, verify } from 'ts-mockito';
 import { ProductAddToQuoteComponent } from './product-add-to-quote.component';
 
 describe('Product Add To Quote Component', () => {
   let component: ProductAddToQuoteComponent;
   let fixture: ComponentFixture<ProductAddToQuoteComponent>;
-  let product: Product;
   let translate: TranslateService;
   let element: HTMLElement;
 
@@ -23,9 +22,7 @@ describe('Product Add To Quote Component', () => {
     translate = TestBed.get(TranslateService);
     translate.setDefaultLang('en');
     translate.use('en');
-    product = { sku: 'sku', inStock: true, availability: true, minOrderQuantity: 1 } as Product;
     element = fixture.nativeElement;
-    component.product = product;
   });
 
   it('should be created', () => {
@@ -49,5 +46,13 @@ describe('Product Add To Quote Component', () => {
     component.disabled = true;
     fixture.detectChanges();
     expect(element.querySelector('button').disabled).toBeTruthy();
+  });
+
+  it('should throw productToQuote event when addToQuote is triggered.', () => {
+    const emitter = spy(component.productToQuote);
+
+    component.addToQuote();
+
+    verify(emitter.emit()).once();
   });
 });
