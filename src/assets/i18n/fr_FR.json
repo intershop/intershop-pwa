@@ -2450,6 +2450,7 @@
   "quote.state.unknown": "Inconnu",
   "quote.state.modified": "(Modifi\u00E9)",
   "quote.state.expired": "(Expir\u00E9)",
+  "shopping_cart.quote.create.button": "Cr\u00E9er une nouvelle demande de devis",
 
   "NEW_ADDITIONAL_LOCALIZATIONS": "------------------------------",
   "recentlyViewed.component.heading": "Récemment consultés",

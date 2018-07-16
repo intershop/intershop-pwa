@@ -7,9 +7,14 @@ import { cold, hot } from 'jasmine-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { LoadBasketItemsSuccess, LoadBasketSuccess } from '../../../checkout/store/basket';
+import { CheckoutState } from '../../../checkout/store/checkout.state';
+import { checkoutReducers } from '../../../checkout/store/checkout.system';
 import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
+import { BasketItem } from '../../../models/basket-item/basket-item.model';
+import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
 import { Price } from '../../../models/price/price.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
@@ -31,7 +36,7 @@ describe('Quote Request Effects', () => {
   let quoteRequestServiceMock: QuoteRequestService;
   let routerMock: Router;
   let effects: QuoteRequestEffects;
-  let store$: Store<QuotingState | CoreState>;
+  let store$: Store<QuotingState | CheckoutState | CoreState>;
 
   beforeEach(() => {
     quoteRequestServiceMock = mock(QuoteRequestService);
@@ -42,6 +47,7 @@ describe('Quote Request Effects', () => {
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
+          checkout: combineReducers(checkoutReducers),
           user: userReducer,
         }),
         FeatureToggleModule.testingFeatures({ quoting: true }),
@@ -441,22 +447,7 @@ describe('Quote Request Effects', () => {
       actions$ = of(action);
 
       effects.addProductToQuoteRequest$.subscribe(() => {
-        verify(quoteRequestServiceMock.addProductToQuoteRequest('QRID', anything())).once();
-        done();
-      });
-    });
-
-    it('should call the quoteService for addProductToQuoteRequest with specific quoteRequestId', done => {
-      const payload = {
-        quoteRequestId: 'QRID',
-        sku: 'SKU',
-        quantity: 1,
-      };
-      const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
-      actions$ = of(action);
-
-      effects.addProductToQuoteRequest$.subscribe(() => {
-        verify(quoteRequestServiceMock.addProductToQuoteRequest('QRID', anything())).once();
+        verify(quoteRequestServiceMock.addProductToQuoteRequest('SKU', 1)).once();
         done();
       });
     });
@@ -491,6 +482,81 @@ describe('Quote Request Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.addProductToQuoteRequest$).toBeObservable(expected$);
+    });
+  });
+
+  describe('addBasketToQuoteRequest$', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
+      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
+      store$.dispatch(
+        new quoteRequestActions.LoadQuoteRequestsSuccess([
+          {
+            id: 'QRID',
+            type: 'QuoteRequest',
+            displayName: 'DNAME',
+            number: 'NUM',
+            editable: true,
+            creationDate: 1,
+            total: {} as Price,
+            items: [],
+          } as QuoteRequestData,
+        ])
+      );
+      store$.dispatch(
+        new LoadBasketSuccess({
+          id: 'BID',
+          lineItems: [],
+          paymentMethod: null,
+        } as Basket)
+      );
+      store$.dispatch(
+        new LoadBasketItemsSuccess([
+          {
+            id: 'BIID',
+            name: 'NAME',
+            position: 1,
+            quantity: { value: 1 },
+            productSKU: 'SKU',
+          } as BasketItem,
+        ])
+      );
+
+      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(of('QRID'));
+    });
+
+    it('should call the quoteService for addProductToQuoteRequest', done => {
+      const action = new quoteRequestActions.AddBasketToQuoteRequest();
+      actions$ = of(action);
+
+      effects.addBasketToQuoteRequest$.subscribe(() => {
+        verify(quoteRequestServiceMock.addProductToQuoteRequest('SKU', 1)).once();
+        done();
+      });
+    });
+
+    it('should map to action of type AddBasketToQuoteRequestSuccess', () => {
+      const action = new quoteRequestActions.AddBasketToQuoteRequest();
+      const completion = new quoteRequestActions.AddBasketToQuoteRequestSuccess('QRID');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.addBasketToQuoteRequest$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type AddBasketToQuoteRequestFail', () => {
+      when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
+
+      const action = new quoteRequestActions.AddBasketToQuoteRequest();
+      const completion = new quoteRequestActions.AddBasketToQuoteRequestFail({
+        message: 'invalid',
+      } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.addBasketToQuoteRequest$).toBeObservable(expected$);
     });
   });
 
@@ -665,42 +731,6 @@ describe('Quote Request Effects', () => {
     });
   });
 
-  describe('addQuoteRequestBeforeAddProductToQuoteRequest$', () => {
-    beforeEach(() => {
-      store$.dispatch(new LoginUserSuccess({ customerNo: 'test', type: 'SMBCustomer' } as Customer));
-      store$.dispatch(new LoadCompanyUserSuccess({ email: 'test' } as User));
-
-      when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(of('QRID'));
-    });
-
-    it('should call the quoteService for addQuoteRequest', done => {
-      const payload = {
-        sku: 'SKU',
-        quantity: 1,
-      };
-      const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
-      actions$ = of(action);
-
-      effects.addQuoteRequestBeforeAddProductToQuoteRequest$.subscribe(() => {
-        verify(quoteRequestServiceMock.addQuoteRequest()).once();
-        done();
-      });
-    });
-
-    it('should map to action of type AddProductToQuoteRequest', () => {
-      const payload = {
-        sku: 'SKU',
-        quantity: 1,
-      };
-      const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
-      const completion = new quoteRequestActions.AddProductToQuoteRequest({ quoteRequestId: 'QRID', ...payload });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.addQuoteRequestBeforeAddProductToQuoteRequest$).toBeObservable(expected$);
-    });
-  });
-
   describe('goToLoginOnAddQuoteRequest$', () => {
     it('should navigate to /login with returnUrl set if AddQuoteRequest called without propper login.', done => {
       when(routerMock.routerState).thenReturn({
@@ -724,6 +754,21 @@ describe('Quote Request Effects', () => {
         verify(routerMock.navigate(anything(), anything())).once();
         const [param] = capture(routerMock.navigate).last();
         expect(param).toEqual(['/login']);
+        done();
+      });
+    });
+  });
+
+  describe('goToQuoteRequestDetail$', () => {
+    it('should navigate to /account/quote-request/QRID if AddBasketToQuoteRequestSuccess called.', done => {
+      const payload = 'QRID';
+      const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess(payload);
+      actions$ = of(action);
+
+      effects.goToQuoteRequestDetail$.subscribe(() => {
+        verify(routerMock.navigate(anything())).once();
+        const [param] = capture(routerMock.navigate).last();
+        expect(param).toEqual(['/account/quote-request/QRID']);
         done();
       });
     });
@@ -777,6 +822,15 @@ describe('Quote Request Effects', () => {
 
     it('should map to action of type LoadQuoteRequests if AddProductToQuoteRequestSuccess action triggered', () => {
       const action = new quoteRequestActions.AddProductToQuoteRequestSuccess('QRID');
+      const completion = new quoteRequestActions.LoadQuoteRequests();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadQuoteRequestsAfterChangeSuccess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadQuoteRequests if AddBasketToQuoteRequestSuccess action triggered', () => {
+      const action = new quoteRequestActions.AddBasketToQuoteRequestSuccess('QRID');
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

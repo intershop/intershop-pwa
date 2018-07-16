@@ -22,6 +22,11 @@
           (deleteItem)="onDeleteItem($event)"
         ></ish-line-item-list>
 
+        <ish-basket-add-to-quote
+          *ishFeature="'quoting'"
+          (basketToQuote)="onAddToQuote()"
+        ></ish-basket-add-to-quote>
+
         <button
           type="submit"
           data-testing-id="button-update-cart"

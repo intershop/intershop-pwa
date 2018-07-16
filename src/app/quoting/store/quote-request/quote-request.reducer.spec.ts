@@ -290,6 +290,37 @@ describe('Quote Request Reducer', () => {
     });
   });
 
+  describe('AddBasketToQuoteRequest actions', () => {
+    describe('AddBasketToQuoteRequest action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.AddBasketToQuoteRequest();
+        const state = quoteRequestReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('AddBasketToQuoteRequestFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.AddBasketToQuoteRequestFail(error);
+        const state = quoteRequestReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('AddBasketToQuoteRequestSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.AddBasketToQuoteRequestSuccess('QRID');
+        const state = quoteRequestReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+      });
+    });
+  });
+
   describe('UpdateQuoteRequestItems actions', () => {
     describe('UpdateQuoteRequestItems action', () => {
       it('should set loading to true', () => {

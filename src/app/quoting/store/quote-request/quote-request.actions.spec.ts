@@ -268,6 +268,36 @@ describe('Quote Request Actions', () => {
     });
   });
 
+  describe('Add Basket to Quote Request Actions', () => {
+    it('should create new action for AddBasketToQuoteRequest', () => {
+      const action = new fromActions.AddBasketToQuoteRequest();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteRequestActionTypes.AddBasketToQuoteRequest,
+      });
+    });
+
+    it('should create new action for AddBasketToQuoteRequestFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.AddBasketToQuoteRequestFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteRequestActionTypes.AddBasketToQuoteRequestFail,
+        payload,
+      });
+    });
+
+    it('should create new action for AddBasketToQuoteRequestSuccess', () => {
+      const payload = 'QRID';
+      const action = new fromActions.AddBasketToQuoteRequestSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess,
+        payload,
+      });
+    });
+  });
+
   describe('Update Quote Request Items Actions', () => {
     it('should create new action for UpdateQuoteRequestItems', () => {
       const payload = [

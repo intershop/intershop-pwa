@@ -12,6 +12,8 @@ import { QuoteRequestItemMapper } from '../../../models/quote-request-item/quote
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
+import { getActiveQuoteRequest } from '../../store/quote-request';
+import { QuotingState } from '../../store/quoting.state';
 
 /**
  * The Quote Request Service handles the interaction with the 'quoteRequest' related REST API.
@@ -24,7 +26,9 @@ export class QuoteRequestService {
    */
   private ids$: Observable<{ userId: string; customerId: string }>;
 
-  constructor(private apiService: ApiService, store: Store<CoreState>) {
+  private quoteRequest$: Observable<string>;
+
+  constructor(private apiService: ApiService, store: Store<CoreState | QuotingState>) {
     this.ids$ = combineLatest(store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))).pipe(
       take(1),
       concatMap(
@@ -33,6 +37,11 @@ export class QuoteRequestService {
             ? of({ userId: user.email, customerId: customer.customerNo })
             : throwError({ message: 'not logged in' })
       )
+    );
+
+    this.quoteRequest$ = store.pipe(select(getActiveQuoteRequest)).pipe(
+      take(1),
+      concatMap(quoteRequest => (!!quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest()))
     );
   }
 
@@ -130,20 +139,20 @@ export class QuoteRequestService {
 
   /**
    * Adds item with the given sku and quantity to a specific quote request for the given customerId and userId.
-   * @param quoteRequestId  The id of the quote request.
-   * @param item            The product SKU and quantity pair to be added to the quote request.
-   * @returns               The id of the updated quote request
+   * @param sku       The SKU of the product that should be added.
+   * @param quantity  The quantity of the product that should be added.
+   * @returns         The id of the updated quote request
    */
-  addProductToQuoteRequest(quoteRequestId: string, item: { sku: string; quantity: number }): Observable<string> {
+  addProductToQuoteRequest(sku: string, quantity: number): Observable<string> {
     const body = {
-      productSKU: item.sku,
+      productSKU: sku,
       quantity: {
-        value: item.quantity,
+        value: quantity,
       },
     };
 
-    return this.ids$.pipe(
-      concatMap(({ userId, customerId }) =>
+    return combineLatest(this.ids$, this.quoteRequest$).pipe(
+      concatMap(([{ userId, customerId }, quoteRequestId]) =>
         this.apiService
           .post(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items`, body)
           .pipe(mapTo(quoteRequestId))
