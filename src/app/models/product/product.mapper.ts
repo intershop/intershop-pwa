@@ -12,17 +12,28 @@ function filterPrice(price: Price): Price {
   return undefined;
 }
 
+/**
+ * check if attribute is available and return value, otherwise undefined
+ */
 function retrieveStubAttributeValue(data: ProductDataStub, attributeName: string) {
   const attribute = ProductHelper.getAttributeByAttributeName(data, attributeName);
   return !!attribute ? attribute.value : undefined;
 }
 
 export class ProductMapper {
+  /**
+   * construct a {@link Product} stub from data returned by link list responses with additional data
+   */
   static fromStubData(data: ProductDataStub) {
+    const sku = retrieveStubAttributeValue(data, 'sku');
+    if (!sku) {
+      throw new Error('cannot construct product stub without SKU');
+    }
+
     const productStub: Product = {
       shortDescription: data.description,
       name: data.title,
-      sku: retrieveStubAttributeValue(data, 'sku'),
+      sku,
       listPrice: filterPrice(retrieveStubAttributeValue(data, 'listPrice')),
       salePrice: filterPrice(retrieveStubAttributeValue(data, 'salePrice')),
       images: [
@@ -49,6 +60,7 @@ export class ProductMapper {
       ],
       manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
       availability: retrieveStubAttributeValue(data, 'availability'),
+      // TODO: will be supplied by REST API with ISREST-389
       inStock: retrieveStubAttributeValue(data, 'availability'),
       longDescription: undefined,
       minOrderQuantity: undefined,
@@ -60,6 +72,9 @@ export class ProductMapper {
     return productStub;
   }
 
+  /**
+   * map API Response to fully qualified {@link Product}s
+   */
   static fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
     const product: Product = {
       type: ProductType.Product,
