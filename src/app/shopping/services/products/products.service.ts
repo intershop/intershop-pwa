@@ -71,15 +71,17 @@ export class ProductsService {
   }
 
   /**
-   * Get products (as SKU list) for a given search term.
-   * @param searchTerm  The search term to look for matching products.
-   * @returns           A list of matching Product SKUs [skus] with a list of possible sortings [sortKeys].
+   * Get products for a given search term respecting pagination.
+   * @param searchTerm    The search term to look for matching products.
+   * @param page          The page to request (0-based numbering)
+   * @param itemsPerPage  The number of items on each page.
+   * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
    */
   searchProducts(
     searchTerm: string,
     page: number,
     itemsPerPage: number
-  ): Observable<{ skus: string[]; products: Product[]; sortKeys: string[]; total: number }> {
+  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
@@ -95,7 +97,6 @@ export class ProductsService {
       .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
       .pipe(
         map(response => ({
-          skus: response.elements.map(element => ProductHelper.getAttributeByAttributeName(element, 'sku').value),
           products: response.elements.map(element => ProductMapper.fromStubData(element) as Product),
           sortKeys: response.sortKeys,
           total: !!response.total ? response.total : response.elements.length,

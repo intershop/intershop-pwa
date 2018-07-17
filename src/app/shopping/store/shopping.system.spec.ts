@@ -107,7 +107,7 @@ describe('Shopping System', () => {
       })
     );
     when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
-      of({ skus: ['P2'], products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
+      of({ products: [{ sku: 'P2' } as Product], sortKeys: [], total: 1 })
     );
 
     suggestServiceMock = mock(SuggestService);

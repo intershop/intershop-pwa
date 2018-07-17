@@ -89,7 +89,7 @@ export class SearchEffects {
       this.productsService.searchProducts(searchTerm, nextPage, this.itemsPerPage).pipe(
         mergeMap(res => [
           // dispatch action with search result
-          new SearchProductsSuccess({ searchTerm: searchTerm, products: res.skus }),
+          new SearchProductsSuccess({ searchTerm: searchTerm, products: res.products.map(p => p.sku) }),
           // dispatch viewconf action
           new SetPagingInfo({ currentPage: nextPage, totalItems: res.total }),
           // dispatch actions to load the product information of the found products
