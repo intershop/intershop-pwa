@@ -38,7 +38,6 @@ describe('Search Effects', () => {
         } else {
           const currentSlice = skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
           return of({
-            skus: currentSlice,
             products: currentSlice.map(sku => ({ sku })),
             sortKeys: [],
             total: skus.length,
