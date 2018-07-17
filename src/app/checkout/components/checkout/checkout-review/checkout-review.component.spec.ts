@@ -19,6 +19,16 @@ describe('Checkout Review Component', () => {
           template: 'Basket Cost Summary Component',
           inputs: ['basket'],
         }),
+        MockComponent({
+          selector: 'ish-info-box',
+          template: 'Checkout Infobox Component',
+          inputs: ['heading', 'editRouterLink'],
+        }),
+        MockComponent({
+          selector: 'ish-address',
+          template: 'Address Component',
+          inputs: ['address'],
+        }),
       ],
       imports: [TranslateModule.forRoot(), RouterTestingModule],
     }).compileComponents();
