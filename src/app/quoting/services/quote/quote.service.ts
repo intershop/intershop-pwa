@@ -77,6 +77,21 @@ export class QuoteService {
   }
 
   /**
+   * Reject specific quote for the given customerId and userId.
+   * @param quoteId The quote id.
+   * @return        The rejected quote id
+   */
+  rejectQuote(quoteId: string): Observable<string> {
+    return this.ids$.pipe(
+      concatMap(({ userId, customerId }) =>
+        this.apiService
+          .put(`customers/${customerId}/users/${userId}/quotes/${quoteId}`, { rejected: true })
+          .pipe(map(() => quoteId))
+      )
+    );
+  }
+
+  /**
    * Creates a new quote request and sets list of quote request line items from a quote for the given customerId and userId
    * @param quote A quote containing quote line items
    * @returns     Information about successful and unsuccessful line item adds
