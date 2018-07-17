@@ -17,6 +17,7 @@
 *.txt
 *.properties
 *.jar
+*.snap
 *config*.json
 .gitignore
 /*.*
