@@ -6,6 +6,7 @@ import { BasketAddressSummaryComponent } from './components/common/basket-addres
 import { BasketCostSummaryComponent } from './components/common/basket-cost-summary/basket-cost-summary.component';
 import { BasketItemsSummaryComponent } from './components/common/basket-items-summary/basket-items-summary.component';
 import { CheckoutProgressBarComponent } from './components/common/checkout-progress-bar/checkout-progress-bar.component';
+import { InfoBoxComponent } from './components/common/info-box/info-box.component';
 
 const sharedComponents = [
   AddressComponent,
@@ -13,6 +14,7 @@ const sharedComponents = [
   BasketItemsSummaryComponent,
   BasketCostSummaryComponent,
   CheckoutProgressBarComponent,
+  InfoBoxComponent,
 ];
 @NgModule({
   imports: [SharedModule, SharedProductModule],
