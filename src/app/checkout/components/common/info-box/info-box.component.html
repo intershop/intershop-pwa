@@ -1,0 +1,8 @@
+<div class="infobox">
+  <a *ngIf="editRouterLink" class="pull-right btn-tool" [routerLink]="editRouterLink" [title]="'checkout.address.update.label' | translate">
+    <span class="glyphicon glyphicon-pencil"></span>
+  </a>
+  <h3>{{ heading | translate }}</h3>
+  <ng-content></ng-content>
+</div>
+
