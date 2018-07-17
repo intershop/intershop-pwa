@@ -106,7 +106,7 @@ describe('Quote Effects', () => {
       });
     });
 
-    it('should map to action of type deleteQuoteSuccess', () => {
+    it('should map to action of type DeleteQuoteSuccess', () => {
       const payload = 'QID';
       const action = new quoteActions.DeleteQuote(payload);
       const completion = new quoteActions.DeleteQuoteSuccess(payload);
@@ -127,6 +127,54 @@ describe('Quote Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.deleteQuote$).toBeObservable(expected$);
+    });
+  });
+
+  describe('rejectQuote$', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new quoteActions.LoadQuotesSuccess([
+          {
+            id: 'QID',
+            items: [{ productSKU: 'SKU', quantity: { value: 1 } } as QuoteRequestItem],
+          } as QuoteData,
+        ])
+      );
+      store$.dispatch(new quoteActions.SelectQuote('QID'));
+
+      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() => of('QID'));
+    });
+
+    it('should call the quoteService for rejectQuote', done => {
+      const action = new quoteActions.RejectQuote();
+      actions$ = of(action);
+
+      effects.rejectQuote$.subscribe(() => {
+        verify(quoteServiceMock.rejectQuote('QID')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type RejectQuoteSuccess', () => {
+      const action = new quoteActions.RejectQuote();
+      const completion = new quoteActions.RejectQuoteSuccess('QID');
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.rejectQuote$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type RejectQuoteFail', () => {
+      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() =>
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
+
+      const action = new quoteActions.RejectQuote();
+      const completion = new quoteActions.RejectQuoteFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.rejectQuote$).toBeObservable(expected$);
     });
   });
 
@@ -189,6 +237,15 @@ describe('Quote Effects', () => {
   describe('loadQuotesAfterChangeSuccess$', () => {
     it('should map to action of type LoadQuotes if DeleteQuoteSuccess action triggered', () => {
       const action = new quoteActions.DeleteQuoteSuccess(anyString());
+      const completion = new quoteActions.LoadQuotes();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadQuotesAfterChangeSuccess$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type LoadQuotes if RejectQuoteSuccess action triggered', () => {
+      const action = new quoteActions.RejectQuoteSuccess(anyString());
       const completion = new quoteActions.LoadQuotes();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

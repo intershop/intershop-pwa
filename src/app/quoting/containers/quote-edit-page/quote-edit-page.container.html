@@ -3,6 +3,7 @@
     *ngIf="(quote$ | async) as quote"
     [quote]="quote"
     (copyQuote)="copyQuote()"
+    (rejectQuote)="rejectQuote()"
   ></ish-quote-edit>
 
   <ish-loading *ngIf="quoteLoading$ | async"></ish-loading>

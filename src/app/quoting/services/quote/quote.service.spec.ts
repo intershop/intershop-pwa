@@ -43,12 +43,16 @@ describe('Quote Service', () => {
   });
 
   describe('when not logged in', () => {
+    it('should throw error for getQuotes', () => {
+      expect(quoteService.getQuotes()).toBeObservable(cold('#', null, { message: 'not logged in' }));
+    });
+
     it('should throw error for deleteQuote', () => {
       expect(quoteService.deleteQuote(null)).toBeObservable(cold('#', null, { message: 'not logged in' }));
     });
 
-    it('should throw error for getQuotes', () => {
-      expect(quoteService.getQuotes()).toBeObservable(cold('#', null, { message: 'not logged in' }));
+    it('should throw error for rejectQuote', () => {
+      expect(quoteService.rejectQuote(null)).toBeObservable(cold('#', null, { message: 'not logged in' }));
     });
 
     it('should throw error for createQuoteRequestFromQuote', () => {
@@ -104,12 +108,22 @@ describe('Quote Service', () => {
       });
     });
 
-    it("should delete quote  when 'deleteQuote' is called", done => {
+    it("should delete quote when 'deleteQuote' is called", done => {
       when(apiService.delete(`customers/CID/users/UID/quotes/QID`)).thenReturn(of(null));
 
       quoteService.deleteQuote('QID').subscribe(id => {
         expect(id).toEqual('QID');
         verify(apiService.delete(`customers/CID/users/UID/quotes/QID`)).once();
+        done();
+      });
+    });
+
+    it("should reject quote when 'rejectQuote' is called", done => {
+      when(apiService.put(`customers/CID/users/UID/quotes/QID`, anything())).thenReturn(of(null));
+
+      quoteService.rejectQuote('QID').subscribe(id => {
+        expect(id).toEqual('QID');
+        verify(apiService.put(`customers/CID/users/UID/quotes/QID`, anything())).once();
         done();
       });
     });

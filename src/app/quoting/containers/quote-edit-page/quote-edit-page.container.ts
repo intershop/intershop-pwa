@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../../models/quote/quote.model';
-import { CreateQuoteRequestFromQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
+import { CreateQuoteRequestFromQuote, getQuoteLoading, getSelectedQuote, RejectQuote } from '../../store/quote';
 import { QuotingState } from '../../store/quoting.state';
 
 @Component({
@@ -23,5 +23,9 @@ export class QuoteEditPageContainerComponent implements OnInit {
 
   copyQuote() {
     this.store.dispatch(new CreateQuoteRequestFromQuote());
+  }
+
+  rejectQuote() {
+    this.store.dispatch(new RejectQuote());
   }
 }

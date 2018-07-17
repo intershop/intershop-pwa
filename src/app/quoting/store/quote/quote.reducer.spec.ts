@@ -85,6 +85,38 @@ describe('Quote Reducer', () => {
     });
   });
 
+  describe('RejectQuote actions', () => {
+    describe('RejectQuote action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.RejectQuote();
+        const state = quoteReducer(initialState, action);
+
+        expect(state.loading).toEqual(true);
+      });
+    });
+
+    describe('RejectQuoteFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.RejectQuoteFail(error);
+        const state = quoteReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('RejectQuoteSuccess action', () => {
+      it('should set loading to false', () => {
+        const payload = 'test';
+        const action = new fromActions.RejectQuoteSuccess(payload);
+        const state = quoteReducer(initialState, action);
+
+        expect(state.loading).toEqual(false);
+      });
+    });
+  });
+
   describe('CreateQuoteRequestFromQuote actions', () => {
     describe('CreateQuoteRequestFromQuote action', () => {
       it('should set loading to true', () => {
