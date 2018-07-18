@@ -1,0 +1,15 @@
+<div class="form-group form-group-checkbox has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
+  <div class="checkbox form-control">
+    <label [for]="uuid">
+      <input
+        type="checkbox"
+        [id]="uuid"
+        [formControlName]="controlName"
+        [attr.data-testing-id]="controlName"
+      >
+      <span *ngIf="label">{{label | translate}}<span *ngIf="required" class="required">*</span></span>
+      <ng-content></ng-content>
+    </label>
+  </div>
+  <ish-form-control-feedback [messages]="errorMessages" [control]="formControl"></ish-form-control-feedback>
+</div>
