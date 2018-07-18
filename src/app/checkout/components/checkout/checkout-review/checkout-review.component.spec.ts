@@ -14,6 +14,7 @@ describe('Checkout Review Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
@@ -33,6 +34,11 @@ describe('Checkout Review Component', () => {
           selector: 'ish-line-item-list',
           template: 'Line Item List Component',
           inputs: ['lineItems', 'editable'],
+        }),
+        MockComponent({
+          selector: 'ish-checkbox',
+          template: 'Checkbox Component',
+          inputs: ['form', 'controlName', 'errorMessages'],
         }),
       ],
       imports: [TranslateModule.forRoot(), RouterTestingModule],

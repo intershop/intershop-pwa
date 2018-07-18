@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 import { Basket } from '../../../../models/basket/basket.model';
 
 @Component({
@@ -7,15 +9,34 @@ import { Basket } from '../../../../models/basket/basket.model';
   templateUrl: './checkout-review.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutReviewComponent {
+export class CheckoutReviewComponent implements OnInit {
   @Input() basket: Basket;
+
+  form: FormGroup;
+  submitted = false;
 
   constructor(private router: Router) {}
 
+  ngOnInit() {
+    // create t&c form
+    this.form = new FormGroup({
+      termsAndConditions: new FormControl(false, Validators.pattern('true')),
+    });
+  }
+
   /**
-   * leads to next checkout page (checkout receipt)
+   * submits order and leads to next checkout page (checkout receipt)
    */
-  nextStep() {
+  submitOrder() {
+    if (this.form.invalid) {
+      this.submitted = true;
+      markAsDirtyRecursive(this.form);
+      return;
+    }
     this.router.navigate(['/checkout/receipt']);
+  }
+
+  get formDisabled() {
+    return this.form.invalid && this.submitted;
   }
 }
