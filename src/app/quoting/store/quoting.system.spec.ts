@@ -157,7 +157,7 @@ describe('Quoting System', () => {
       // influenced by ISREST-400: Rapidly adding items to quote request behaves unexpected
       beforeEach(() => {
         when(apiServiceMock.get('http://example.org/customers/CID/users/UID/quoterequests/QRID2')).thenReturn(
-          of({ id: 'QRID2', editable: true, items: [{}] } as QuoteRequestData).pipe(delay(100))
+          of({ id: 'QRID2', editable: true } as QuoteRequestData).pipe(delay(100))
         );
         when(apiServiceMock.get('http://example.org/customers/CID/users/UID/quoterequests/QRID3')).thenReturn(
           of({ id: 'QRID3' } as QuoteRequestData).pipe(delay(100))
@@ -198,7 +198,6 @@ describe('Quoting System', () => {
 
           const active = getActiveQuoteRequest(store$.state);
           expect(active.editable).toBeTrue();
-          expect(active.items).toHaveLength(1);
 
           verify(apiServiceMock.post('customers/CID/users/UID/quoterequests')).once();
           verify(apiServiceMock.post('customers/CID/users/UID/quoterequests/QRID2/items', anything())).times(3);
