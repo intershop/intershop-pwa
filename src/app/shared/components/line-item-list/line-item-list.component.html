@@ -2,7 +2,7 @@
   <!-- Line Items Overview -->
   <div class="list-header hidden-xs">
     <div class="col-sm-8 col-lg-6 list-header-item list-header-item-descr">{{ 'shopping_cart.product_description.heading' | translate }}</div>
-    <div class="hidden-sm hidden-md col-lg-2 list-header-item text-right">{{ 'shopping_cart.qty.heading' | translate }}</div>
+    <div class="hidden-sm hidden-md col-lg-2 list-header-item" [ngClass]="{'text-right': editable !== false}">{{ 'shopping_cart.qty.heading' | translate }}</div>
     <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
     <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
@@ -45,7 +45,7 @@
               </div>
             </ng-container>
           </div>
-          <div class="quantity col-lg-3 list-item text-right" [formGroupName]="i">
+          <div class="quantity col-lg-3 list-item" [ngClass]="{'text-right': editable !== false}" [formGroupName]="i">
             <div class="form-group">
               <ng-container *ngIf="!pli.isFreeGift && editable === true">
                 <ish-input
