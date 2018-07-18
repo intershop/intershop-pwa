@@ -8,6 +8,8 @@ export enum SearchActionTypes {
   SearchProductsFail = '[Shopping] Search Products Fail',
   SuggestSearch = '[Shopping] Suggest Search',
   SuggestSearchSuccess = '[Shopping] Suggest Search Success',
+  SearchMoreProducts = '[Shopping] Search More Products',
+  SearchProductsAbort = '[Shopping] Cancel Search Products',
 }
 
 export class SearchProducts implements Action {
@@ -35,9 +37,20 @@ export class SuggestSearchSuccess implements Action {
   constructor(public payload: SuggestTerm[]) {}
 }
 
+export class SearchMoreProducts implements Action {
+  readonly type = SearchActionTypes.SearchMoreProducts;
+  constructor(public payload: string) {}
+}
+
+export class SearchProductsAbort implements Action {
+  readonly type = SearchActionTypes.SearchProductsAbort;
+}
+
 export type SearchAction =
   | SearchProducts
   | SearchProductsSuccess
   | SearchProductsFail
   | SuggestSearch
-  | SuggestSearchSuccess;
+  | SuggestSearchSuccess
+  | SearchMoreProducts
+  | SearchProductsAbort;

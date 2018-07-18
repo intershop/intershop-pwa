@@ -96,7 +96,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   private sanitize(value: string): string {
-    return value.replace(/[^a-zA-Z0-9-]/, '_');
+    return value.replace(/[^a-zA-Z0-9-]/g, '_');
   }
 
   private sanitizeParams(params: HttpParams): string {

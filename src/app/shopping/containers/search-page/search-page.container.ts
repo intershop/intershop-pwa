@@ -1,19 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
-import { getSearchLoading, getSearchProducts, getSearchTerm } from '../../store/search';
+import { getSearchLoading, getSearchProducts, getSearchTerm, SearchMoreProducts } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
-import { ChangeSortBy, ChangeViewType, getSortBy, getSortKeys, getViewType } from '../../store/viewconf';
+import { ChangeSortBy, ChangeViewType, getSortBy, getSortKeys, getTotalItems, getViewType } from '../../store/viewconf';
 
 @Component({
   selector: 'ish-search-page-container',
   templateUrl: './search-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchPageContainerComponent implements OnInit {
+export class SearchPageContainerComponent implements OnInit, OnDestroy {
   searchTerm$: Observable<string>;
   searchLoading$: Observable<boolean>;
   products$: Observable<Product[]>;
@@ -22,16 +22,31 @@ export class SearchPageContainerComponent implements OnInit {
   sortBy$: Observable<string>;
   sortKeys$: Observable<string[]>;
 
+  loadMore = new EventEmitter<void>();
+
+  private destroy$ = new Subject();
+
   constructor(private store: Store<ShoppingState>) {}
 
   ngOnInit() {
     this.searchTerm$ = this.store.pipe(select(getSearchTerm));
     this.searchLoading$ = this.store.pipe(select(getSearchLoading));
     this.products$ = this.store.pipe(select(getSearchProducts));
-    this.totalItems$ = this.products$.pipe(map(products => products.length));
+    this.totalItems$ = this.store.pipe(select(getTotalItems));
     this.viewType$ = this.store.pipe(select(getViewType));
     this.sortBy$ = this.store.pipe(select(getSortBy));
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
+
+    this.loadMore
+      .pipe(
+        withLatestFrom(this.searchTerm$),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(([, searchTerm]) => this.store.dispatch(new SearchMoreProducts(searchTerm)));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 
   changeViewType(viewType: ViewType) {

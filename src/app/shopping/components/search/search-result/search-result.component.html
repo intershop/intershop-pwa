@@ -21,6 +21,7 @@
     <ish-product-list
       [products]="products"
       [viewType]="viewType"
+      (loadMore)="loadMore.emit()"
     ></ish-product-list>
   </div>
 

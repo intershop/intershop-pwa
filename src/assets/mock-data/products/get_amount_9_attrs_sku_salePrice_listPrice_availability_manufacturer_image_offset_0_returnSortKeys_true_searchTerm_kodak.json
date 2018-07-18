@@ -1,0 +1,61 @@
+{
+  "amount": 9,
+  "elements": [
+    {
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "value": "7912057"
+        },
+        {
+          "name": "image",
+          "type": "String",
+          "value": "/assets/product_img/a.jpg"
+        },
+        {
+          "name": "listPrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 132.24
+          }
+        },
+        {
+          "name": "salePrice",
+          "type": "ResourceAttribute",
+          "value": {
+            "currencyMnemonic": "USD",
+            "type": "Money",
+            "value": 132.24
+          }
+        },
+        {
+          "name": "availability",
+          "type": "Boolean",
+          "value": true
+        },
+        {
+          "name": "manufacturer",
+          "type": "String",
+          "value": "Kodak"
+        }
+      ],
+      "description": "EasyShare M552, 14MP, 6.858 cm (2.7 \") LCD, 4x, 28mm, HD 720p, Black",
+      "title": "Kodak M series EasyShare M552",
+      "type": "Link",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/7912057"
+    }
+  ],
+  "name": "products",
+  "offset": 0,
+  "sortKeys": [
+    "name-desc",
+    "name-asc",
+    "value-asc",
+    "value-desc"
+  ],
+  "total": 1,
+  "type": "ResourceCollection"
+}

@@ -1,24 +1,21 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { cold } from 'jasmine-marbles';
-import { Observable } from 'rxjs';
+import { EffectsModule } from '@ngrx/effects';
+import { combineReducers, StoreModule } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { LoadProductSuccess } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import { SearchProductsSuccess } from './search.actions';
-import { SearchState } from './search.reducer';
+import { initialState, SearchState } from './search.reducer';
 import { getSearchLoading, getSearchProducts, getSearchTerm } from './search.selectors';
 
 describe('Search Selectors', () => {
-  let store$: Store<ShoppingState>;
-  let searchProducts$: Observable<Product[]>;
+  let store$: LogEffects;
 
   const state: SearchState = {
+    ...initialState,
     searchTerm: 'a',
     products: ['9780321934161', '0818279012576'],
-    loading: false,
-    suggestSearchResults: [],
   };
 
   beforeEach(() => {
@@ -27,11 +24,11 @@ describe('Search Selectors', () => {
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
+        EffectsModule.forRoot([LogEffects]),
       ],
     });
 
-    store$ = TestBed.get(Store);
-    searchProducts$ = store$.pipe(select(getSearchProducts));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('getSearchLoading', () => {
@@ -58,9 +55,10 @@ describe('Search Selectors', () => {
         new SearchProductsSuccess({ searchTerm: 'search', products: ['9780321934161', '0818279012576'] })
       );
 
-      expect(searchProducts$).toBeObservable(
-        cold('a', { a: [{ sku: '9780321934161' }, { sku: '0818279012576' }] as Product[] })
-      );
+      expect(getSearchProducts(store$.state)).toEqual([
+        { sku: '9780321934161' },
+        { sku: '0818279012576' },
+      ] as Product[]);
     });
   });
 });
