@@ -29,6 +29,11 @@ describe('Checkout Review Component', () => {
           template: 'Address Component',
           inputs: ['address'],
         }),
+        MockComponent({
+          selector: 'ish-line-item-list',
+          template: 'Line Item List Component',
+          inputs: ['lineItems', 'editable'],
+        }),
       ],
       imports: [TranslateModule.forRoot(), RouterTestingModule],
     }).compileComponents();

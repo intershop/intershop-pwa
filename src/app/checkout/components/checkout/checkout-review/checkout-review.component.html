@@ -38,6 +38,8 @@
             </ish-info-box>
         </div>
       </div>
+      <!-- Line Items -->
+      <ish-line-item-list *ngIf="basket.lineItems?.length > 0" [lineItems]="basket.lineItems" [editable]="false"></ish-line-item-list>
   </div>
 
   <!-- basket summary -->
