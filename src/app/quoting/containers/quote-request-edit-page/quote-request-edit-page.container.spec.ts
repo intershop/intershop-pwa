@@ -20,11 +20,6 @@ describe('Quote Request Edit Page Container', () => {
         QuoteRequestEditPageContainerComponent,
         MockComponent({ selector: 'ish-quote-edit', template: 'Quote Edit Component', inputs: ['quote'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({
-          selector: 'ish-breadcrumb',
-          template: 'Breadcrumb Component',
-          inputs: ['account', 'trailText'],
-        }),
       ],
       imports: [
         TranslateModule.forRoot(),

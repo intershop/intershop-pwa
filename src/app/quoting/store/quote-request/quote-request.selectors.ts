@@ -23,17 +23,26 @@ export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, stat
 
 export const getQuoteRequstItems = createSelector(getQuoteRequestState, state => state.quoteRequestItems);
 
-export const getActiveQuoteRequest = createSelector(getQuoteRequestState, state => {
-  const quoteRequest = state.quoteRequests.filter(item => item.editable).pop() || undefined;
-  if (quoteRequest) {
-    return {
-      ...quoteRequest,
-      state: QuoteRequestHelper.getQuoteRequestState(quoteRequest),
-    } as QuoteRequest;
-  }
+export const getActiveQuoteRequest = createSelector(
+  getCurrentQuoteRequests,
+  getQuoteRequstItems,
+  getProductEntities,
+  (quoteRequests, quoteRequestItems, products) => {
+    const quoteRequest = quoteRequests.filter(item => item.editable).pop() || undefined;
+    if (quoteRequest) {
+      return {
+        ...quoteRequest,
+        state: QuoteRequestHelper.getQuoteRequestState(quoteRequest),
+        items: quoteRequestItems.map(item => ({
+          ...item,
+          product: item.productSKU ? products[item.productSKU] : undefined,
+        })),
+      } as QuoteRequest;
+    }
 
-  return;
-});
+    return;
+  }
+);
 
 /**
  * Select the selected quote request with the appended line item and product data if available.
