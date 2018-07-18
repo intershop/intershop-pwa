@@ -17,6 +17,7 @@ export class FamilyPageComponent {
   @Input() sortKeys: string[];
   @Output() viewTypeChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<string>();
+  @Output() loadMore = new EventEmitter<void>();
 
   changeViewType(viewType: ViewType) {
     this.viewTypeChange.emit(viewType);

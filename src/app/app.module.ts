@@ -81,6 +81,7 @@ export const metaReducers: MetaReducer<any>[] = [
       provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
       useValue: environment.mainNavigationMaxSubCategoriesDepth,
     },
+    { provide: injectionKeys.ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: environment.endlessScrollingItemsPerPage },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },

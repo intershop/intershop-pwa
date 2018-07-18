@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { Product } from '../../../../models/product/product.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ProductListComponent } from './product-list.component';
@@ -10,6 +11,7 @@ describe('Product List Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [InfiniteScrollModule],
       declarations: [
         ProductListComponent,
         MockComponent({
