@@ -19,6 +19,7 @@ import { Quote } from '../../../models/quote/quote.model';
  *   (submitQuoteRequest)="submitQuoteRequest()"
  *   (copyQuote)="copyQuote()"
  *   (rejectQuote)="rejectQuote()"
+ *   (addQuoteToBasket)="addQuoteToBasket($event)"
  * >
  * </ish-quote-edit>
  */
@@ -36,6 +37,7 @@ export class QuoteEditComponent implements OnChanges {
   @Output() deleteItem = new EventEmitter<string>();
   @Output() copyQuote = new EventEmitter<void>();
   @Output() rejectQuote = new EventEmitter<void>();
+  @Output() addQuoteToBasket = new EventEmitter<string>();
 
   form: FormGroup;
 
@@ -137,5 +139,12 @@ export class QuoteEditComponent implements OnChanges {
    */
   reject() {
     this.rejectQuote.emit();
+  }
+
+  /**
+   * Throws addQuoteToBasket event if addToBasket button was clicked.
+   */
+  addToBasket() {
+    this.addQuoteToBasket.emit(this.quote.id);
   }
 }

@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { BasketUpdateType } from '../../services/basket/basket.service';
 
@@ -21,6 +22,9 @@ export enum BasketActionTypes {
   AddItemsToBasket = '[Basket Internal] Add Items To Basket',
   AddItemsToBasketFail = '[Basket API] Add Items To Basket Fail',
   AddItemsToBasketSuccess = '[Basket API] Add Items To Basket Success',
+  AddQuoteToBasket = '[Basket] Add Quote To Basket',
+  AddQuoteToBasketFail = '[Basket API] Add Quote To Basket Fail',
+  AddQuoteToBasketSuccess = '[Basket API] Add Quote To Basket Success',
   UpdateBasketItems = '[Basket] Update Basket Items',
   UpdateBasketItemsFail = '[Basket API] Update Basket Items Fail',
   UpdateBasketItemsSuccess = '[Basket API] Update Basket Items Success',
@@ -106,6 +110,21 @@ export class AddItemsToBasketSuccess implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketSuccess;
 }
 
+export class AddQuoteToBasket implements Action {
+  readonly type = BasketActionTypes.AddQuoteToBasket;
+  constructor(public payload: string) {}
+}
+
+export class AddQuoteToBasketFail implements Action {
+  readonly type = BasketActionTypes.AddQuoteToBasketFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class AddQuoteToBasketSuccess implements Action {
+  readonly type = BasketActionTypes.AddQuoteToBasketSuccess;
+  constructor(public payload: Link) {}
+}
+
 export class UpdateBasketItems implements Action {
   readonly type = BasketActionTypes.UpdateBasketItems;
   constructor(public payload: { itemId: string; quantity: number }[]) {}
@@ -169,6 +188,9 @@ export type BasketAction =
   | AddItemsToBasket
   | AddItemsToBasketFail
   | AddItemsToBasketSuccess
+  | AddQuoteToBasket
+  | AddQuoteToBasketFail
+  | AddQuoteToBasketSuccess
   | UpdateBasketItems
   | UpdateBasketItemsFail
   | UpdateBasketItemsSuccess

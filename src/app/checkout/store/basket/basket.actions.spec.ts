@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import * as fromActions from './basket.actions';
 
@@ -145,6 +146,38 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.AddItemsToBasketSuccess,
+      });
+    });
+  });
+
+  describe('Add Quote To Basket Actions', () => {
+    it('should create new action for AddQuoteToBasket', () => {
+      const payload = 'QID';
+      const action = new fromActions.AddQuoteToBasket(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.AddQuoteToBasket,
+        payload,
+      });
+    });
+
+    it('should create new action for AddQuoteToBasketFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.AddQuoteToBasketFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.AddQuoteToBasketFail,
+        payload,
+      });
+    });
+
+    it('should create new action for AddQuoteToBasketSuccess', () => {
+      const payload = {} as Link;
+      const action = new fromActions.AddQuoteToBasketSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.AddQuoteToBasketSuccess,
+        payload,
       });
     });
   });

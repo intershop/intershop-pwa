@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import * as fromActions from './basket.actions';
 import { basketReducer, initialState } from './basket.reducer';
@@ -137,6 +138,38 @@ describe('Basket Reducer', () => {
     describe('AddItemsToBasketSuccess action', () => {
       it('should set loading to false', () => {
         const action = new fromActions.AddItemsToBasketSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('AddQuoteToBasket actions', () => {
+    describe('AddQuoteToBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.AddQuoteToBasket('QID');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('AddQuoteToBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.AddQuoteToBasketFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('AddQuoteToBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const payload = {} as Link;
+        const action = new fromActions.AddQuoteToBasketSuccess(payload);
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormGroup } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
+import { BasketPageContainerComponent } from '../../../checkout/containers/basket-page/basket-page.container';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
@@ -17,6 +17,7 @@ describe('Quote Edit Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        BasketPageContainerComponent,
         QuoteEditComponent,
         MockComponent({
           selector: 'ish-quote-state',
@@ -28,8 +29,12 @@ describe('Quote Edit Component', () => {
           template: 'Line Item List Component',
           inputs: ['lineItems', 'editable', 'total'],
         }),
+        MockComponent({ selector: 'ish-shopping-basket', template: 'Shopping Basket Component', inputs: ['basket'] }),
+        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
+        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule],
+      imports: [TranslateModule.forRoot(), FormsSharedModule],
     }).compileComponents();
   }));
 
@@ -49,7 +54,7 @@ describe('Quote Edit Component', () => {
   describe('Quote Request', () => {
     beforeEach(() => {
       component.quote = {
-        id: 'ID',
+        id: 'QRID',
         type: 'QuoteRequest',
         displayName: 'DNAME',
         description: 'DESC',
@@ -93,11 +98,11 @@ describe('Quote Edit Component', () => {
 
     it('should throw deleteItem event when delete item is clicked', done => {
       component.deleteItem.subscribe(itemId => {
-        expect(itemId).toEqual('4712');
+        expect(itemId).toEqual('QRID');
         done();
       });
 
-      component.onDeleteItem('4712');
+      component.onDeleteItem('QRID');
     });
 
     it('should throw submitQuoteRequest event when submit is clicked', () => {
@@ -144,7 +149,7 @@ describe('Quote Edit Component', () => {
   describe('Quote', () => {
     beforeEach(() => {
       component.quote = {
-        id: 'ID',
+        id: 'QID',
         type: 'Quote',
         sellerComment: 'SCOM',
         validFromDate: 1,
@@ -198,6 +203,17 @@ describe('Quote Edit Component', () => {
 
       component.reject();
       verify(emitter.emit()).once();
+    });
+
+    describe('addQuoteToBasket', () => {
+      it('should throw addQuoteToBasket event when addToBasket is clicked', done => {
+        component.addQuoteToBasket.subscribe(payload => {
+          expect(payload).toBe('QID');
+          done();
+        });
+
+        component.addToBasket();
+      });
     });
   });
 });
