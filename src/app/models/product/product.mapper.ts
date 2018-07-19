@@ -63,7 +63,8 @@ export class ProductMapper {
       // TODO: will be supplied by REST API with ISREST-389
       inStock: retrieveStubAttributeValue(data, 'availability'),
       longDescription: undefined,
-      minOrderQuantity: undefined,
+      // TODO: will be supplied by REST API with ISREST-401
+      minOrderQuantity: 1,
       attributes: [],
       readyForShipmentMin: undefined,
       readyForShipmentMax: undefined,
