@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit } from '@angular/core';
-import { createSelector, select, Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { firstTruthy } from '../../../utils/selectors';
 import * as fromStore from '../../store/categories';
 import { getFilteredProducts, getNumberOfFilteredProducts } from '../../store/filter/filter.selectors';
 import { ShoppingState } from '../../store/shopping.state';
@@ -36,22 +37,10 @@ export class CategoryPageContainerComponent implements OnInit {
     this.categoryLoading$ = this.store.pipe(select(fromStore.getCategoryLoading));
 
     this.products$ = this.store.pipe(
-      select(
-        createSelector(
-          getFilteredProducts,
-          fromStore.getProductsForSelectedCategory,
-          (filtered, all) => (!!filtered ? filtered : all)
-        )
-      )
+      select(firstTruthy(getFilteredProducts, fromStore.getProductsForSelectedCategory))
     );
     this.totalItems$ = this.store.pipe(
-      select(
-        createSelector(
-          getNumberOfFilteredProducts,
-          fromStore.getProductCountForSelectedCategory,
-          (filtered, all) => (!!filtered ? filtered : all)
-        )
-      )
+      select(firstTruthy(getNumberOfFilteredProducts, fromStore.getProductCountForSelectedCategory))
     );
     this.viewType$ = this.store.pipe(select(fromViewconf.getViewType));
     this.sortBy$ = this.store.pipe(select(fromViewconf.getSortBy));

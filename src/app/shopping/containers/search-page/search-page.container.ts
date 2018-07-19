@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { createSelector, select, Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { firstTruthy } from '../../../utils/selectors';
 import { getFilteredProducts, getNumberOfFilteredProducts } from '../../store/filter';
 import { getSearchLoading, getSearchProducts, getSearchTerm, SearchMoreProducts } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
@@ -32,14 +33,8 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.searchTerm$ = this.store.pipe(select(getSearchTerm));
     this.searchLoading$ = this.store.pipe(select(getSearchLoading));
-    this.products$ = this.store.pipe(
-      select(createSelector(getFilteredProducts, getSearchProducts, (filtered, all) => (!!filtered ? filtered : all)))
-    );
-    this.totalItems$ = this.store.pipe(
-      select(
-        createSelector(getNumberOfFilteredProducts, getTotalItems, (filtered, all) => (!!filtered ? filtered : all))
-      )
-    );
+    this.products$ = this.store.pipe(select(firstTruthy(getFilteredProducts, getSearchProducts)));
+    this.totalItems$ = this.store.pipe(select(firstTruthy(getNumberOfFilteredProducts, getTotalItems)));
     this.viewType$ = this.store.pipe(select(getViewType));
     this.sortBy$ = this.store.pipe(select(getSortBy));
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
