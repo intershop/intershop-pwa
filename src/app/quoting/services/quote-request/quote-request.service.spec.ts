@@ -1,18 +1,20 @@
 import { TestBed } from '@angular/core/testing';
-import { Store, StoreModule } from '@ngrx/store';
+import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
-import { coreReducers } from '../../../core/store/core.system';
 import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from '../../../core/store/user';
+import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
 import { Link } from '../../../models/link/link.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { User } from '../../../models/user/user.model';
+import { LoadQuoteRequestsSuccess } from '../../store/quote-request';
+import { quotingReducers } from '../../store/quoting.system';
 import { QuoteRequestService } from './quote-request.service';
 
 describe('Quote Request Service', () => {
@@ -28,7 +30,12 @@ describe('Quote Request Service', () => {
     when(apiService.icmServerURL).thenReturn('BASE');
 
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      imports: [
+        StoreModule.forRoot({
+          quoting: combineReducers(quotingReducers),
+          user: userReducer,
+        }),
+      ],
       providers: [QuoteRequestService, { provide: ApiService, useFactory: () => instance(apiService) }],
     });
 
@@ -38,9 +45,9 @@ describe('Quote Request Service', () => {
 
   describe('when not logged in', () => {
     it('should throw error for addProductToQuoteRequest', () => {
-      expect(
-        quoteRequestService.addProductToQuoteRequest(null, { sku: undefined, quantity: undefined })
-      ).toBeObservable(cold('#', null, { message: 'not logged in' }));
+      expect(quoteRequestService.addProductToQuoteRequest(undefined, undefined)).toBeObservable(
+        cold('#', null, { message: 'not logged in' })
+      );
     });
 
     it('should throw error for createQuoteRequestFromQuote', () => {
@@ -231,9 +238,30 @@ describe('Quote Request Service', () => {
     });
 
     it("should post new item to quote request when 'addProductToQuoteRequest' is called", done => {
+      store$.dispatch(
+        new LoadQuoteRequestsSuccess([
+          {
+            id: 'QRID',
+            editable: true,
+          } as QuoteRequestData,
+        ])
+      );
+
       when(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(null));
 
-      quoteRequestService.addProductToQuoteRequest('QRID', { sku: 'sku', quantity: 3 }).subscribe(id => {
+      quoteRequestService.addProductToQuoteRequest('sku', 3).subscribe(id => {
+        expect(id).toEqual('QRID');
+        verify(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).once();
+        done();
+      });
+    });
+
+    it("should post new item to quote request when 'addProductToQuoteRequest' is called and no quote request is present", done => {
+      const link = { title: 'QRID' } as Link;
+      when(apiService.post(`customers/CID/users/UID/quoterequests`)).thenReturn(of(link));
+      when(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(null));
+
+      quoteRequestService.addProductToQuoteRequest('sku', 3).subscribe(id => {
         expect(id).toEqual('QRID');
         verify(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).once();
         done();

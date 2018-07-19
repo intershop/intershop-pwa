@@ -28,8 +28,11 @@ export enum QuoteRequestActionTypes {
   LoadQuoteRequestItemsFail = '[Quote API] Load QuoteRequestItems Fail',
   LoadQuoteRequestItemsSuccess = '[Quote API] Load QuoteRequestItems Success',
   AddProductToQuoteRequest = '[Quote] Add Item to Quote Request',
-  AddProductToQuoteRequestFail = '[Quote API] Add Item to  Quote Request Fail',
+  AddProductToQuoteRequestFail = '[Quote API] Add Item to Quote Request Fail',
   AddProductToQuoteRequestSuccess = '[Quote API] Add Item to Quote Request Success',
+  AddBasketToQuoteRequest = '[Quote] Add Basket to Quote Request',
+  AddBasketToQuoteRequestFail = '[Quote API] Add Basket to Quote Request Fail',
+  AddBasketToQuoteRequestSuccess = '[Quote API] Add Basket to Quote Request Success',
   UpdateQuoteRequestItems = '[Quote] Update Quote Request Items',
   UpdateQuoteRequestItemsFail = '[Quote API] Update Quote Request Items Fail',
   UpdateQuoteRequestItemsSuccess = '[Quote API] Update Quote Request Items Success',
@@ -146,7 +149,7 @@ export class LoadQuoteRequestItemsSuccess implements Action {
 
 export class AddProductToQuoteRequest implements Action {
   readonly type = QuoteRequestActionTypes.AddProductToQuoteRequest;
-  constructor(public payload: { quoteRequestId?: string; sku: string; quantity: number }) {}
+  constructor(public payload: { sku: string; quantity: number }) {}
 }
 
 export class AddProductToQuoteRequestFail implements Action {
@@ -156,6 +159,20 @@ export class AddProductToQuoteRequestFail implements Action {
 
 export class AddProductToQuoteRequestSuccess implements Action {
   readonly type = QuoteRequestActionTypes.AddProductToQuoteRequestSuccess;
+  constructor(public payload: string) {}
+}
+
+export class AddBasketToQuoteRequest implements Action {
+  readonly type = QuoteRequestActionTypes.AddBasketToQuoteRequest;
+}
+
+export class AddBasketToQuoteRequestFail implements Action {
+  readonly type = QuoteRequestActionTypes.AddBasketToQuoteRequestFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class AddBasketToQuoteRequestSuccess implements Action {
+  readonly type = QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess;
   constructor(public payload: string) {}
 }
 
@@ -215,6 +232,9 @@ export type QuoteAction =
   | AddProductToQuoteRequest
   | AddProductToQuoteRequestFail
   | AddProductToQuoteRequestSuccess
+  | AddBasketToQuoteRequest
+  | AddBasketToQuoteRequestFail
+  | AddBasketToQuoteRequestSuccess
   | UpdateQuoteRequestItems
   | UpdateQuoteRequestItemsFail
   | UpdateQuoteRequestItemsSuccess

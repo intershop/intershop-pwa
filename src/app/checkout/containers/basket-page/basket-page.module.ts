@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { QuotingSharedModule } from '../../../quoting/quoting-shared.module';
 import { SharedLineItemListModule } from '../../../shared/shared-line-item-list.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { ShoppingSharedModule } from '../../../shopping/shopping-shared.module';
@@ -17,6 +18,7 @@ import { basketPageRoutes } from './basket-page.routes';
     CheckoutSharedModule,
     ShoppingSharedModule,
     FormsSharedModule,
+    QuotingSharedModule,
     SharedLineItemListModule,
   ],
   declarations: [BasketPageContainerComponent, ShoppingBasketComponent, ShoppingBasketEmptyComponent],

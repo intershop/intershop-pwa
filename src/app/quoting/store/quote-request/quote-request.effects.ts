@@ -15,6 +15,8 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+import { getCurrentBasket } from '../../../checkout/store/basket';
+import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized, UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
@@ -24,7 +26,7 @@ import { getProductEntities, LoadProduct } from '../../../shopping/store/product
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';
 import { QuotingState } from '../quoting.state';
-import { getActiveQuoteRequest, getSelectedQuoteRequestId } from './';
+import { getSelectedQuoteRequestId } from './';
 import * as quoteRequestActions from './quote-request.actions';
 import { getCurrentQuoteRequests, getSelectedQuoteRequest } from './quote-request.selectors';
 
@@ -35,7 +37,7 @@ export class QuoteRequestEffects {
     private featureToggleService: FeatureToggleService,
     private quoteRequestService: QuoteRequestService,
     private router: Router,
-    private store: Store<QuotingState | CoreState>
+    private store: Store<QuotingState | CheckoutState | CoreState>
   ) {}
 
   /**
@@ -171,17 +173,31 @@ export class QuoteRequestEffects {
   addProductToQuoteRequest$ = this.actions$.pipe(
     ofType(quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequest),
     map((action: quoteRequestActions.AddProductToQuoteRequest) => action.payload),
-    withLatestFrom(this.store.pipe(select(getUserAuthorized)), this.store.pipe(select(getActiveQuoteRequest))),
-    filter(([payload, authorized, quoteRequest]) => authorized && (!!quoteRequest || !!payload.quoteRequestId)),
-    map(([payload, , quoteRequest]) => ({
-      // get quote request id from AddProductToQuoteRequest action if set, otherwise use id from current quote request state
-      quoteRequestId: payload.quoteRequestId || quoteRequest.id,
-      item: { sku: payload.sku, quantity: payload.quantity },
-    })),
-    concatMap(({ quoteRequestId, item }) =>
-      this.quoteRequestService.addProductToQuoteRequest(quoteRequestId, item).pipe(
+    withLatestFrom(this.store.pipe(select(getUserAuthorized))),
+    filter(([, authorized]) => authorized),
+    concatMap(([item]) =>
+      this.quoteRequestService.addProductToQuoteRequest(item.sku, item.quantity).pipe(
         map(id => new quoteRequestActions.AddProductToQuoteRequestSuccess(id)),
         catchError(error => of(new quoteRequestActions.AddProductToQuoteRequestFail(error)))
+      )
+    )
+  );
+
+  /**
+   * Trigger a AddProductToQuoteRequest action for each line item thats in the current basket.
+   */
+  @Effect()
+  addBasketToQuoteRequest$ = this.actions$.pipe(
+    ofType(quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequest),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([, currentBasket]) =>
+      forkJoin(
+        currentBasket.lineItems.map(lineItem =>
+          this.quoteRequestService.addProductToQuoteRequest(lineItem.productSKU, lineItem.quantity.value)
+        )
+      ).pipe(
+        map(ids => new quoteRequestActions.AddBasketToQuoteRequestSuccess(ids[0])),
+        catchError(error => of(new quoteRequestActions.AddBasketToQuoteRequestFail(error)))
       )
     )
   );
@@ -233,26 +249,6 @@ export class QuoteRequestEffects {
   );
 
   /**
-   * Call quoteRequestService for addQuoteRequest before triggering AddProductToQuoteRequest with valid quote request id if user logged in
-   */
-  @Effect()
-  addQuoteRequestBeforeAddProductToQuoteRequest$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequest),
-    map((action: quoteRequestActions.AddProductToQuoteRequest) => action.payload),
-    withLatestFrom(this.store.pipe(select(getUserAuthorized)), this.store.pipe(select(getActiveQuoteRequest))),
-    filter(([payload, authorized, quoteRequest]) => authorized && !quoteRequest && !payload.quoteRequestId),
-    mergeMap(([payload]) => forkJoin(of(payload), this.quoteRequestService.addQuoteRequest())),
-    map(
-      ([payload, quoteRequestId]) =>
-        new quoteRequestActions.AddProductToQuoteRequest({
-          quoteRequestId: quoteRequestId,
-          sku: payload.sku,
-          quantity: payload.quantity,
-        })
-    )
-  );
-
-  /**
    * Call router for navigate to login on AddProductToQuoteRequest if not logged in.
    */
   @Effect({ dispatch: false })
@@ -263,6 +259,15 @@ export class QuoteRequestEffects {
     tap(() => {
       const queryParams = { returnUrl: this.router.routerState.snapshot.url };
       this.router.navigate(['/login'], { queryParams });
+    })
+  );
+
+  @Effect({ dispatch: false })
+  goToQuoteRequestDetail$ = this.actions$.pipe(
+    ofType(quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess),
+    map((action: quoteRequestActions.AddBasketToQuoteRequestSuccess) => action.payload),
+    tap(quoteRequestId => {
+      this.router.navigate([`/account/quote-request/${quoteRequestId}`]);
     })
   );
 
@@ -278,6 +283,7 @@ export class QuoteRequestEffects {
       quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess,
       quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequestSuccess,
+      quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess,
       quoteRequestActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess,
       QuoteActionTypes.CreateQuoteRequestFromQuoteSuccess,
@@ -323,7 +329,7 @@ export class QuoteRequestEffects {
   filterQuoteRequestsForQuantityChanges(
     payloadItems: { itemId: string; quantity: number }[],
     selectedQuoteRequest: QuoteRequest
-  ) {
+  ): { itemId: string; quantity: number }[] {
     const quoteRequestItems = selectedQuoteRequest.items;
     const updatedItems: { itemId: string; quantity: number }[] = [];
     if (quoteRequestItems) {
