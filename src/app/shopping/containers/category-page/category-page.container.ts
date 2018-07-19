@@ -5,7 +5,9 @@ import { filter } from 'rxjs/operators';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { firstTruthy } from '../../../utils/selectors';
 import * as fromStore from '../../store/categories';
+import { getFilteredProducts, getNumberOfFilteredProducts } from '../../store/filter/filter.selectors';
 import { ShoppingState } from '../../store/shopping.state';
 import * as fromViewconf from '../../store/viewconf';
 
@@ -34,8 +36,12 @@ export class CategoryPageContainerComponent implements OnInit {
     );
     this.categoryLoading$ = this.store.pipe(select(fromStore.getCategoryLoading));
 
-    this.products$ = this.store.pipe(select(fromStore.getProductsForSelectedCategory));
-    this.totalItems$ = this.store.pipe(select(fromStore.getProductCountForSelectedCategory));
+    this.products$ = this.store.pipe(
+      select(firstTruthy(getFilteredProducts, fromStore.getProductsForSelectedCategory))
+    );
+    this.totalItems$ = this.store.pipe(
+      select(firstTruthy(getNumberOfFilteredProducts, fromStore.getProductCountForSelectedCategory))
+    );
     this.viewType$ = this.store.pipe(select(fromViewconf.getViewType));
     this.sortBy$ = this.store.pipe(select(fromViewconf.getSortBy));
     this.sortKeys$ = this.store.pipe(select(fromViewconf.getSortKeys));

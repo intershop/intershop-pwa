@@ -18,12 +18,14 @@ import { CountryService } from '../../core/services/countries/country.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { SelectLocale } from '../../core/store/locale';
 import { Category } from '../../models/category/category.model';
+import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
 import { Locale } from '../../models/locale/locale.model';
 import { Product } from '../../models/product/product.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { CategoriesService } from '../services/categories/categories.service';
+import { FilterService } from '../services/filter/filter.service';
 import { ProductsService } from '../services/products/products.service';
 import { SuggestService } from '../services/suggest/suggest.service';
 import {
@@ -34,6 +36,7 @@ import {
   SelectCategory,
   SelectedCategoryAvailable,
 } from './categories';
+import { FilterActionTypes } from './filter';
 import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
 import { getRecentlyProducts, RecentlyActionTypes } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
@@ -47,6 +50,7 @@ describe('Shopping System', () => {
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
   let suggestServiceMock: SuggestService;
+  let filterServiceMock: FilterService;
   let locales: Locale[];
 
   beforeEach(() => {
@@ -113,6 +117,9 @@ describe('Shopping System', () => {
     suggestServiceMock = mock(SuggestService);
     when(suggestServiceMock.search('some')).thenReturn(of([{ term: 'something' }]));
 
+    filterServiceMock = mock(FilterService);
+    when(filterServiceMock.getFilterForSearch(anything())).thenReturn(of({} as FilterNavigation));
+    when(filterServiceMock.getFilterForCategory(anything())).thenReturn(of({} as FilterNavigation));
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
@@ -159,6 +166,7 @@ describe('Shopping System', () => {
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
         { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
@@ -240,7 +248,9 @@ describe('Shopping System', () => {
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectCategory('A.123'));
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
           expect(i.next()).toEqual(new LoadCategory('A.123'));
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
           expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
           expect(i.next()).toEqual(new LoadCategory('A'));
@@ -294,6 +304,8 @@ describe('Shopping System', () => {
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -351,8 +363,11 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+
         expect(i.next()).toBeUndefined();
       })
     );
@@ -441,9 +456,11 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
@@ -603,9 +620,11 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toBeUndefined();
@@ -851,8 +870,10 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductFail);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
 
@@ -959,7 +980,9 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
         expect(i.next()).toBeUndefined();
       })
     );

@@ -25,6 +25,7 @@ import { PaymentMethod } from '../../models/payment-method/payment-method.model'
 import { Price } from '../../models/price/price.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { CategoriesService } from '../../shopping/services/categories/categories.service';
+import { FilterService } from '../../shopping/services/filter/filter.service';
 import { ProductsService } from '../../shopping/services/products/products.service';
 import { SuggestService } from '../../shopping/services/suggest/suggest.service';
 import { LoadProduct } from '../../shopping/store/products';
@@ -148,6 +149,8 @@ describe('Checkout System', () => {
     const registrationServiceMock = mock(RegistrationService);
     when(registrationServiceMock.signinUser(anything())).thenReturn(of(user));
 
+    const filterServiceMock = mock(FilterService);
+
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
@@ -172,6 +175,7 @@ describe('Checkout System', () => {
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: RegistrationService, useFactory: () => instance(registrationServiceMock) },
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },

@@ -237,7 +237,7 @@
     "ccp-no-markup-in-containers": {
       "severity": "warning",
       "options": {
-        "patterns": [ "<img", "<ul", "<li", "<table", "<(?![^>]*(clearfix))[^>]*class" ]
+        "patterns": [ "<img", "<ul", "<li", "<table", "<(?![^>]*(clearfix|-panel))[^>]*class" ]
       }
     },
     "project-structure": {
