@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
@@ -11,6 +11,7 @@ import { Basket } from '../../../../models/basket/basket.model';
 })
 export class CheckoutReviewComponent implements OnInit {
   @Input() basket: Basket;
+  @Output() createOrder = new EventEmitter<Basket>();
 
   form: FormGroup;
   submitted = false;
@@ -25,7 +26,7 @@ export class CheckoutReviewComponent implements OnInit {
   }
 
   /**
-   * submits order and leads to next checkout page (checkout receipt)
+   * sends an event to submit order
    */
   submitOrder() {
     if (this.form.invalid) {
@@ -33,7 +34,7 @@ export class CheckoutReviewComponent implements OnInit {
       markAsDirtyRecursive(this.form);
       return;
     }
-    this.router.navigate(['/checkout/receipt']);
+    this.createOrder.emit(this.basket);
   }
 
   get formDisabled() {

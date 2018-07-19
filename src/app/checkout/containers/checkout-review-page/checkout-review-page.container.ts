@@ -20,4 +20,11 @@ export class CheckoutReviewPageContainerComponent implements OnInit {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.loading$ = this.store.pipe(select(getBasketLoading));
   }
+
+  /**
+   * creates an order and routes to receipt page in case of success
+   */
+  onCreateOrder(basket: Basket) {
+    console.log(basket.id); // ToDo: Call createOrder action
+  }
 }

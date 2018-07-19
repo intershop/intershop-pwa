@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { anything, spy, verify } from 'ts-mockito/lib/ts-mockito';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CheckoutReviewComponent } from './checkout-review.component';
@@ -56,5 +57,23 @@ describe('Checkout Review Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should emit an event if t&c checkbox is checked', done => {
+    component.createOrder.subscribe(basket => {
+      expect(basket.id).toEqual(component.basket.id);
+      done();
+    });
+    fixture.detectChanges();
+    component.form.get('termsAndConditions').setValue('true');
+    component.submitOrder();
+  });
+
+  it('should not emit an event if t&c checkbox is empty', () => {
+    const emitter = spy(component.createOrder);
+
+    fixture.detectChanges();
+    component.submitOrder();
+    verify(emitter.emit(anything())).never();
   });
 });
