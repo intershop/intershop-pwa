@@ -2561,6 +2561,7 @@
   "quote.state.unknown": "Unbekannt",
   "quote.state.modified": "(Ge\u00E4ndert)",
   "quote.state.expired": "(Abgelaufen)",
+  "shopping_cart.quote.create.button": "Preisanfrage anlegen",
 
   "NEW_ADDITIONAL_LOCALIZATIONS": "------------------------------",
   "recentlyViewed.component.heading": "Zuletzt angesehen",

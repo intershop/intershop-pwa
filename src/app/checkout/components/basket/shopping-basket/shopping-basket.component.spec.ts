@@ -3,7 +3,9 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { spy, verify } from 'ts-mockito';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -28,8 +30,18 @@ describe('Shopping Basket Component', () => {
           template: 'Basket Cost Summary Component',
           inputs: ['basket'],
         }),
+        MockComponent({
+          selector: 'ish-basket-add-to-quote',
+          template: 'Baskt add To Quote Component',
+        }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule],
+      imports: [
+        TranslateModule.forRoot(),
+        RouterTestingModule,
+        FormsSharedModule,
+        PipesModule,
+        FeatureToggleModule.testingFeatures({ quoting: true }),
+      ],
       providers: [FormBuilder],
     }).compileComponents();
   }));
@@ -68,5 +80,13 @@ describe('Shopping Basket Component', () => {
     });
 
     component.submitForm();
+  });
+
+  it('should throw addBasketToQuote event when addToQuote is triggered.', () => {
+    const emitter = spy(component.addBasketToQuote);
+
+    component.onAddToQuote();
+
+    verify(emitter.emit()).once();
   });
 });

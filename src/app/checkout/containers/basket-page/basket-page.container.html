@@ -4,6 +4,7 @@
       [basket]="basket"
       (deleteItem)="deleteBasketItem($event)"
       (updateItems)="updateBasketItems($event)"
+      (addBasketToQuote)="addBasketToQuote()"
     ></ish-shopping-basket>
   </ng-container>
 </ng-container>
@@ -12,6 +13,6 @@
   <ish-shopping-basket-empty></ish-shopping-basket-empty>
 </ng-template>
 
-<ish-loading *ngIf="basketLoading$ | async"></ish-loading>
+<ish-loading *ngIf="(basketLoading$ | async) || (quoteRequestLoading$ | async)"></ish-loading>
 
 <ish-recently-viewed-container></ish-recently-viewed-container>

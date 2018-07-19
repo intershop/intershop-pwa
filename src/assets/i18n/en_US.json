@@ -2561,6 +2561,7 @@
   "quote.state.unknown": "Unknown",
   "quote.state.modified": "(Modified)",
   "quote.state.expired": "(Expired)",
+  "shopping_cart.quote.create.button": "Create Quote Request",
 
   "NEW_ADDITIONAL_LOCALIZATIONS": "------------------------------",
   "recentlyViewed.component.heading": "Recently Viewed",

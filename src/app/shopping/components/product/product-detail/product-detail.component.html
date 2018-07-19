@@ -51,7 +51,6 @@
 
         <ish-product-add-to-quote
           *ishFeature="'quoting'"
-          [product]="product"
           [disabled]="!productDetailForm.valid"
           (productToQuote)="addToQuote()"
           [class]="'btn-block'"

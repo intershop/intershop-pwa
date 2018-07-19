@@ -36,6 +36,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction): 
     case QuoteRequestActionTypes.CreateQuoteRequestFromQuote:
     case QuoteRequestActionTypes.LoadQuoteRequestItems:
     case QuoteRequestActionTypes.AddProductToQuoteRequest:
+    case QuoteRequestActionTypes.AddBasketToQuoteRequest:
     case QuoteRequestActionTypes.UpdateQuoteRequestItems:
     case QuoteRequestActionTypes.DeleteItemFromQuoteRequest: {
       return {
@@ -52,6 +53,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction): 
     case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteFail:
     case QuoteRequestActionTypes.LoadQuoteRequestItemsFail:
     case QuoteRequestActionTypes.AddProductToQuoteRequestFail:
+    case QuoteRequestActionTypes.AddBasketToQuoteRequestFail:
     case QuoteRequestActionTypes.UpdateQuoteRequestItemsFail:
     case QuoteRequestActionTypes.DeleteItemFromQuoteRequestFail: {
       const error = action.payload;
@@ -89,6 +91,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction): 
     case QuoteRequestActionTypes.SubmitQuoteRequestSuccess:
     case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess:
     case QuoteRequestActionTypes.AddProductToQuoteRequestSuccess:
+    case QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess:
     case QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess:
     case QuoteRequestActionTypes.DeleteItemFromQuoteRequestSuccess: {
       return {
