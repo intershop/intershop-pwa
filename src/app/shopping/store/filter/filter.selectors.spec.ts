@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { Product } from '../../../models/product/product.model';
@@ -94,7 +94,13 @@ describe('Filter Selectors', () => {
 
   describe('with ApplyFilterSuccess state', () => {
     beforeEach(() => {
-      store$.dispatch(new fromActions.ApplyFilterSuccess({} as FilterNavigation, 'a', 'b'));
+      store$.dispatch(
+        new fromActions.ApplyFilterSuccess({
+          availableFilter: {} as FilterNavigation,
+          filterName: 'a',
+          searchParameter: 'b',
+        })
+      );
     });
 
     it('should set the state to loaded', () => {

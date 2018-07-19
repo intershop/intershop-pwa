@@ -1,18 +1,16 @@
-import { Category } from '../../../models/category/category.model';
-import { FilterService } from '../../services/filter/filter.service';
-import { SelectProduct } from '../products/products.actions';
-import { ApplyFilterSuccess } from './filter.actions';
-
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { catchError, distinctUntilKeyChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
+import { FilterService } from '../../services/filter/filter.service';
 import * as fromStore from '../../store/categories';
 import * as filterActions from '../filter/filter.actions';
+import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
+import { ApplyFilterSuccess } from './filter.actions';
 
 @Injectable()
 export class FilterEffects {
@@ -49,15 +47,7 @@ export class FilterEffects {
     select(fromStore.getSelectedCategory),
     filter(category => !!category),
     distinctUntilKeyChanged('uniqueId'),
-    map(
-      category =>
-        new filterActions.LoadFilterForCategory({
-          ...category,
-          children: undefined,
-          hasChildren: undefined,
-          pathCategories: undefined,
-        } as Category)
-    )
+    map(category => new filterActions.LoadFilterForCategory(category))
   );
 
   @Effect()
@@ -69,13 +59,10 @@ export class FilterEffects {
   @Effect()
   applyFilter$ = this.actions$.pipe(
     ofType(filterActions.FilterActionTypes.ApplyFilter),
-    map((f: filterActions.ApplyFilter) => f.payload),
-    mergeMap(emit =>
-      this.filterService.applyFilter(emit.filterId, emit.searchParameter).pipe(
-        map(
-          filterNavigation =>
-            new filterActions.ApplyFilterSuccess(filterNavigation, emit.filterId, emit.searchParameter)
-        ),
+    map((action: filterActions.ApplyFilter) => action.payload),
+    mergeMap(({ filterId: filterName, searchParameter }) =>
+      this.filterService.applyFilter(filterName, searchParameter).pipe(
+        map(availableFilter => new filterActions.ApplyFilterSuccess({ availableFilter, filterName, searchParameter })),
         catchError(error => of(new filterActions.ApplyFilterFail(error)))
       )
     )
@@ -84,14 +71,16 @@ export class FilterEffects {
   @Effect()
   loadFilteredProducts$ = this.actions$.pipe(
     ofType(filterActions.FilterActionTypes.ApplyFilterSuccess),
-    switchMap((action: ApplyFilterSuccess) =>
-      this.filterService.getProductSkusForFilter(action.filterName, action.searchParameter).pipe(
-        mergeMap((skus: string[]) => {
-          // TODO: ??
-          const actions = skus.map(b => new SelectProduct(b));
-          return [...actions, new filterActions.SetFilteredProducts(skus)];
-        })
-      )
+    map((action: ApplyFilterSuccess) => action.payload),
+    switchMap(({ filterName, searchParameter }) =>
+      this.filterService
+        .getProductSkusForFilter(filterName, searchParameter)
+        .pipe(
+          mergeMap((skus: string[]) => [
+            ...skus.map(sku => new LoadProduct(sku)),
+            new filterActions.SetFilteredProducts(skus),
+          ])
+        )
     )
   );
 }

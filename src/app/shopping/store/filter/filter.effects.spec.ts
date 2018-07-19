@@ -4,18 +4,14 @@ import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
-import { anyString, anything, mock, verify } from 'ts-mockito';
-import { instance, when } from 'ts-mockito/lib/ts-mockito';
-import { CategoryView } from '../../../models/category-view/category-view.model';
+import { Observable, of, throwError } from 'rxjs';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { FilterService } from '../../services/filter/filter.service';
-import { LoadCategorySuccess, SelectCategory } from '../categories/categories.actions';
-import { SelectProduct } from '../products/products.actions';
+import { LoadCategorySuccess, SelectCategory } from '../categories';
+import { LoadProduct } from '../products';
 import { SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
@@ -36,14 +32,14 @@ describe('Filter Effects', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of(filterNav);
       }
     });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
       if (a.name === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of(filterNav);
       }
@@ -51,7 +47,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.getProductSkusForFilter(anything(), anything())).thenCall((a, b) => {
       if (a.name === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of(['123', '234']);
       }
@@ -59,7 +55,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.applyFilter(anyString(), anyString())).thenCall((a, b) => {
       if (a === 'invalid') {
-        return _throw({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
         return of(filterNav);
       }
@@ -113,31 +109,26 @@ describe('Filter Effects', () => {
   });
 
   describe('loadFilterIfCategoryWasSelected$', () => {
-    it('should trigger LoadFilterForCategory for SelectCategory action', () => {
-      const action = new LoadCategorySuccess(
-        categoryTree([
-          {
-            uniqueId: 'Cameras.Camcorder',
-            categoryPath: ['Cameras', 'Cameras.Camcorder'],
-          } as Category,
-          {
-            uniqueId: 'Cameras',
-            categoryPath: ['Cameras'],
-          } as Category,
-        ])
-      );
-      store$.dispatch(new SelectCategory('Cameras.Camcorder'));
-      store$.dispatch(action);
+    it('should trigger LoadFilterForCategory for SelectCategory action', done => {
+      const tree = categoryTree([
+        {
+          uniqueId: 'Cameras.Camcorder',
+          categoryPath: ['Cameras', 'Cameras.Camcorder'],
+        } as Category,
+        {
+          uniqueId: 'Cameras',
+          categoryPath: ['Cameras'],
+        } as Category,
+      ]);
 
-      const completion = new fromActions.LoadFilterForCategory({
-        categoryPath: ['Cameras', 'Cameras.Camcorder'],
-        uniqueId: 'Cameras.Camcorder',
-        children: undefined,
-        hasChildren: undefined,
-        pathCategories: undefined,
-      } as CategoryView);
-      const expected$ = cold('c', { c: completion });
-      expect(effects.loadFilterIfCategoryWasSelected$).toBeObservable(expected$);
+      effects.loadFilterIfCategoryWasSelected$.subscribe(action => {
+        expect(action.type).toEqual(fromActions.FilterActionTypes.LoadFilterForCategory);
+        expect(action.payload.uniqueId).toEqual('Cameras.Camcorder');
+        done();
+      });
+
+      store$.dispatch(new LoadCategorySuccess(tree));
+      store$.dispatch(new SelectCategory('Cameras.Camcorder'));
     });
   });
 
@@ -154,7 +145,11 @@ describe('Filter Effects', () => {
 
     it('should map to action of type ApplyFilterSuccess', () => {
       const action = new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' });
-      const completion = new fromActions.ApplyFilterSuccess(filterNav, 'a', 'b');
+      const completion = new fromActions.ApplyFilterSuccess({
+        availableFilter: filterNav,
+        filterName: 'a',
+        searchParameter: 'b',
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -173,11 +168,15 @@ describe('Filter Effects', () => {
 
   describe('loadFilteredProducts$', () => {
     it('should trigger SetFilteredProducts and LoadProduct for ApplyFilterSuccess action', () => {
-      const action = new fromActions.ApplyFilterSuccess(filterNav, 'a', 'b');
+      const action = new fromActions.ApplyFilterSuccess({
+        availableFilter: filterNav,
+        filterName: 'a',
+        searchParameter: 'b',
+      });
       store$.dispatch(action);
       const completion = new fromActions.SetFilteredProducts(['123', '234']);
-      const loadProducts1 = new SelectProduct('123');
-      const loadProducts2 = new SelectProduct('234');
+      const loadProducts1 = new LoadProduct('123');
+      const loadProducts2 = new LoadProduct('234');
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(bcd)', { b: loadProducts1, c: loadProducts2, d: completion });
       expect(effects.loadFilteredProducts$).toBeObservable(expected$);

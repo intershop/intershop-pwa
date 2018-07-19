@@ -3,6 +3,7 @@ import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import * as fromActions from './filter.actions';
 import { filterReducer, initialState } from './filter.reducer';
+
 describe('Filter Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state when previous state is undefined', () => {
@@ -28,7 +29,7 @@ describe('Filter Reducer', () => {
       const action = new fromActions.LoadFilterForCategorySuccess(filter);
       const state = filterReducer(initialState, action);
 
-      expect(state.availablefilter).toEqual(filter);
+      expect(state.availableFilter).toEqual(filter);
       expect(state.loading).toEqual(false);
     });
   });
@@ -38,7 +39,7 @@ describe('Filter Reducer', () => {
       const action = new fromActions.LoadFilterForCategoryFail({} as HttpErrorResponse);
       const state = filterReducer(initialState, action);
 
-      expect(state.availablefilter).toBeFalsy();
+      expect(state.availableFilter).toBeFalsy();
       expect(state.loading).toEqual(false);
     });
   });
@@ -58,7 +59,7 @@ describe('Filter Reducer', () => {
       const action = new fromActions.LoadFilterForSearchSuccess(filter);
       const state = filterReducer(initialState, action);
 
-      expect(state.availablefilter).toEqual(filter);
+      expect(state.availableFilter).toEqual(filter);
       expect(state.loading).toEqual(false);
     });
   });
@@ -68,7 +69,7 @@ describe('Filter Reducer', () => {
       const action = new fromActions.LoadFilterForSearchFail({} as HttpErrorResponse);
       const state = filterReducer(initialState, action);
 
-      expect(state.availablefilter).toBeFalsy();
+      expect(state.availableFilter).toBeFalsy();
       expect(state.loading).toEqual(false);
     });
   });
@@ -85,10 +86,14 @@ describe('Filter Reducer', () => {
   describe('ApplyFilterSuccess', () => {
     it('should set filter when reduced', () => {
       const filter = { filter: [{ name: 'a' }] } as FilterNavigation;
-      const action = new fromActions.ApplyFilterSuccess(filter, 'a', 'b');
+      const action = new fromActions.ApplyFilterSuccess({
+        availableFilter: filter,
+        filterName: 'a',
+        searchParameter: 'b',
+      });
       const state = filterReducer(initialState, action);
 
-      expect(state.availablefilter).toEqual(filter);
+      expect(state.availableFilter).toEqual(filter);
       expect(state.loading).toEqual(false);
     });
   });

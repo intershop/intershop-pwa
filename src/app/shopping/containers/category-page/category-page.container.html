@@ -10,20 +10,8 @@
   </ng-container>
 
   <!-- category with products -->
-  <ng-container *ngIf="category.hasOnlineProducts">
-    <ng-container *ngIf="(filteredProducts$ | async) as filteredProducts; else allProductView">
-      <ish-family-page
-        [category]="category"
-        [products]="filteredProducts$ | async"
-        [totalItems]="totalItems$ | async"
-        [viewType]="viewType$ | async"
-        [sortBy]="sortBy$ | async"
-        [sortKeys]="sortKeys$ | async"
-        (viewTypeChange)="changeViewType($event)"
-        (sortByChange)="changeSortBy($event)"
-      ></ish-family-page>
-    </ng-container>
-    <ng-template #allProductView>
+  <ng-template #productListing>
+    <ng-container *ngIf="category.hasOnlineProducts">
       <ish-family-page
         [category]="category"
         [products]="products$ | async"
@@ -33,9 +21,10 @@
         [sortKeys]="sortKeys$ | async"
         (viewTypeChange)="changeViewType($event)"
         (sortByChange)="changeSortBy($event)"
+        (loadMore)="loadMore.emit()"
       ></ish-family-page>
-    </ng-template>
-  </ng-container>
+    </ng-container>
+  </ng-template>
 
   <!-- empty category without subcategories and without products -->
   <ng-container *ngIf="!category.hasChildren() && !category.hasOnlineProducts">
