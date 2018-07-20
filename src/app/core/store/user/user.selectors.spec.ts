@@ -77,7 +77,7 @@ describe('User Selectors', () => {
     expect(getLoggedInUser(store$.state)).toBeNull();
     expect(getUserAuthorized(store$.state)).toBeFalse();
 
-    const err: HttpErrorResponse = getUserError(store$.state);
+    const err = getUserError(store$.state);
     expect(err).toBeTruthy();
     expect(err.status).toEqual(401);
   });

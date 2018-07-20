@@ -15,6 +15,7 @@ export class CaptchaComponent {
    * Emits true when captcha is resolved as true
    * @param  {string} captchaResponse
    */
+  // tslint:disable-next-line:no-unused
   resolved(captchaResponse: string) {
     this.parentForm.get(this.controlName).setValue(true);
   }

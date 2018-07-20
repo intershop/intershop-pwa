@@ -51,7 +51,7 @@ describe('Filter Navigation Container', () => {
 
   it('should not display anything when filter is not set', () => {
     fixture.detectChanges();
-    expect(findAllIshElements(element)).toEqual([]);
+    expect(findAllIshElements(element)).toBeEmpty();
   });
 
   it('should display filter-dropdown if facet with displayType dropdown is present', () => {

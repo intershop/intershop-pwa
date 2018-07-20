@@ -82,7 +82,7 @@ export class UserEffects {
   resetUserError$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
     withLatestFrom(this.store$.pipe(select(getUserError))),
-    filter(([action, error]) => !!error),
+    filter(([, error]) => !!error),
     mapTo(new userActions.UserErrorReset())
   );
 

@@ -2,8 +2,8 @@ import { QuoteRequestItemData } from './quote-request-item.interface';
 import { QuoteRequestItem } from './quote-request-item.model';
 
 export class QuoteRequestItemMapper {
-  static fromData(data: QuoteRequestItemData, itemId: string) {
-    const quoteRequestItem: QuoteRequestItem = {
+  static fromData(data: QuoteRequestItemData, itemId: string): QuoteRequestItem {
+    return {
       id: itemId,
       type: data.type,
       quantity: data.quantity,
@@ -16,7 +16,5 @@ export class QuoteRequestItemMapper {
       },
       productSKU: data.productSKU,
     };
-
-    return quoteRequestItem;
   }
 }

@@ -49,7 +49,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasket({ invoiceToAddress: { id: '1234' } });
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -59,7 +59,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasketFail(error);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -69,7 +69,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasketSuccess();
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toBeNull();
       });
     });

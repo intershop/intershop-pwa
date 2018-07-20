@@ -51,13 +51,12 @@ var RuleHelpers = (function () {
         var statements = sourceFile.statements.filter(function (stmt) { return stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'; });
         if (statements.length && statements[0].getChildAt(0)) {
             var describeStatement = statements[0].getChildAt(0).getChildAt(2);
-            var describeBody = describeStatement
+            return describeStatement
                 .getChildAt(2)
                 .getChildAt(4)
                 .getChildAt(1);
-            return describeBody;
         }
-        return undefined;
+        return;
     };
     return RuleHelpers;
 }());

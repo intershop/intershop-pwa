@@ -47,7 +47,7 @@ describe('Auth Interceptor', () => {
     const TOKEN = 'testtoken';
     store$.dispatch(new SetAPIToken(TOKEN));
 
-    authInterceptor.intercept(getRequest, mockInterceptor).subscribe(data => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe(() => {
       expect(mockRequest.headers.get('authentication-token')).toEqual(TOKEN);
       done();
     });
@@ -56,7 +56,7 @@ describe('Auth Interceptor', () => {
   it(`should not set token when request's header contains 'Authorization'`, done => {
     const headers = new HttpHeaders().set('Authorization', 'Basic');
     const request = new HttpRequest<any>('GET', ' ', { headers: headers });
-    authInterceptor.intercept(request, mockInterceptor).subscribe(data => {
+    authInterceptor.intercept(request, mockInterceptor).subscribe(() => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
       done();
     });
@@ -65,7 +65,7 @@ describe('Auth Interceptor', () => {
   it('should not set token when token is empty', done => {
     store$.dispatch(new SetAPIToken(undefined));
 
-    authInterceptor.intercept(getRequest, mockInterceptor).subscribe(data => {
+    authInterceptor.intercept(getRequest, mockInterceptor).subscribe(() => {
       expect(mockRequest.headers.has('authentication-token')).toBeFalsy();
       done();
     });

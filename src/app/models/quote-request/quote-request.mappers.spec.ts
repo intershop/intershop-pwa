@@ -2,7 +2,6 @@ import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
 import { QuoteRequestData } from './quote-request.interface';
 import { QuoteRequestMapper } from './quote-request.mapper';
-import { QuoteRequest } from './quote-request.model';
 
 describe('Quote Request Mappers', () => {
   describe('fromData', () => {
@@ -19,7 +18,7 @@ describe('Quote Request Mappers', () => {
         submitted: false,
       } as QuoteRequestData;
 
-      const quoteRequestItem: QuoteRequest = QuoteRequestMapper.fromData(quoteRequestData);
+      const quoteRequestItem = QuoteRequestMapper.fromData(quoteRequestData);
 
       expect(quoteRequestItem).toBeTruthy();
       expect(!!quoteRequestItem).toBeTruthy();

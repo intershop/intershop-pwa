@@ -36,7 +36,7 @@ export class ProductQuantityComponent implements OnInit {
   get quantityOptions(): SelectOption[] {
     return Array.from(
       { length: this.product.maxOrderQuantity - this.product.minOrderQuantity + 1 },
-      (value, index) =>
+      (_, index) =>
         ({
           label: (this.product.minOrderQuantity + index).toString(),
           value: (this.product.minOrderQuantity + index).toString(),

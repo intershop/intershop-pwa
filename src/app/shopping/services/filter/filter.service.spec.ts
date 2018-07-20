@@ -40,8 +40,8 @@ describe('Filter Service', () => {
   it("should get Filter data when 'getFilterForCategory' is called", done => {
     when(apiService.get('filters', anything())).thenReturn(of(filterMock as FilterNavigationData));
     filterService.getFilterForCategory({ name: 'a', uniqueId: 'A.B' } as Category).subscribe(data => {
-      expect(data.filter.length).toEqual(1);
-      expect(data.filter[0].facets.length).toEqual(2);
+      expect(data.filter).toHaveLength(1);
+      expect(data.filter[0].facets).toHaveLength(2);
       expect(data.filter[0].facets[0].name).toEqual('a');
       expect(data.filter[0].facets[1].name).toEqual('b');
       verify(apiService.get(`filters`, anything())).once();
@@ -52,8 +52,8 @@ describe('Filter Service', () => {
   it("should get Filter data when 'applyFilter' is called", done => {
     when(apiService.get('filters/a;SearchParameter=b')).thenReturn(of(filterMock as FilterNavigationData));
     filterService.applyFilter('a', 'b').subscribe(data => {
-      expect(data.filter.length).toEqual(1);
-      expect(data.filter[0].facets.length).toEqual(2);
+      expect(data.filter).toHaveLength(1);
+      expect(data.filter[0].facets).toHaveLength(2);
       expect(data.filter[0].facets[0].name).toEqual('a');
       expect(data.filter[0].facets[1].name).toEqual('b');
       verify(apiService.get('filters/a;SearchParameter=b')).once();
