@@ -272,7 +272,7 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([payload, basket]) => !basket && !payload.basketId),
     // TODO: add create basket if LoadBasket does not create basket anymore
-    mergeMap(([payload, basket]) => forkJoin(of(payload), this.basketService.getBasket())),
+    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.getBasket())),
     map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
   );
 
@@ -284,9 +284,7 @@ export class BasketEffects {
     ofType(UserActionTypes.LoginUserSuccess),
     switchMap(() => this.basketService.getBasket()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(
-      ([newBasket, currentBasket]) => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0
-    ),
+    filter(([, currentBasket]) => currentBasket && currentBasket.lineItems && currentBasket.lineItems.length > 0),
     map(([newBasket, currentBasket]) => {
       const items = currentBasket.lineItems.map(lineItem => ({
         sku: lineItem.productSKU,
@@ -305,9 +303,7 @@ export class BasketEffects {
     ofType(UserActionTypes.LoginUserSuccess),
     switchMap(() => this.basketService.getBasket()),
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
-    filter(
-      ([newBasket, currentBasket]) => !currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0
-    ),
+    filter(([, currentBasket]) => !currentBasket || !currentBasket.lineItems || currentBasket.lineItems.length === 0),
     mapTo(new basketActions.LoadBasket())
   );
 

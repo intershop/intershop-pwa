@@ -36,7 +36,7 @@ export class CategoryMapper {
 
     const treeFromPath = path
       // remove the last
-      .filter((val, idx, arr) => idx !== arr.length - 1)
+      .filter((_, idx, arr) => idx !== arr.length - 1)
       .map(pathElement => {
         // accumulate and construct uniqueId and categoryPath
         uniqueId = !uniqueId ? pathElement.id : uniqueId + CategoryHelper.uniqueIdSeparator + pathElement.id;

@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Address } from '../../../models/address/address.model';
 import { AddressAction, AddressActionTypes } from './addresses.actions';
-import { AddressesState } from './addresses.reducer';
 
 export const addressAdapter = createEntityAdapter<Address>({});
 

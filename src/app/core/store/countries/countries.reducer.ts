@@ -1,7 +1,6 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Country } from '../../../models/country/country.model';
 import { CountryAction, CountryActionTypes } from './countries.actions';
-import { CountriesState } from './countries.reducer';
 
 export const countryAdapter = createEntityAdapter<Country>({
   selectId: country => country.countryCode,

@@ -26,17 +26,11 @@ describe('Registration Service', () => {
     const errorMessage = '401 and Unauthorized';
     const userDetails = { login: 'intershop@123.com', password: 'wrong' };
     when(apiServiceMock.get(anything(), anything())).thenReturn(throwError(new Error(errorMessage)));
-    registrationService.signinUser(userDetails).subscribe(
-      data => {
-        fail('no data in this path is expected');
-        done();
-      },
-      error => {
-        expect(error).toBeTruthy();
-        expect(error.message).toBe(errorMessage);
-        done();
-      }
-    );
+    registrationService.signinUser(userDetails).subscribe(fail, error => {
+      expect(error).toBeTruthy();
+      expect(error.message).toBe(errorMessage);
+      done();
+    });
   });
 
   it("should get comapny user data  data when 'getCompanyUserData' is called", done => {

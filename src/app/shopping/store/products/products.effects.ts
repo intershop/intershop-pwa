@@ -90,8 +90,8 @@ export class ProductsEffects {
     distinctUntilChanged(),
     skip(1), // ignore app init language selection
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-    filter(([locale, sku]) => !!sku),
-    map(([locale, sku]) => new productsActions.LoadProduct(sku))
+    filter(([, sku]) => !!sku),
+    map(([, sku]) => new productsActions.LoadProduct(sku))
   );
 
   @Effect({ dispatch: false })

@@ -25,7 +25,7 @@ describe('Logout Guard', () => {
     });
 
     it('should log out when called', () => {
-      logoutGuard.canActivate(null, null);
+      logoutGuard.canActivate();
       verify(storeMock$.dispatch(anything())).called();
 
       const [arg] = capture(storeMock$.dispatch).last();
