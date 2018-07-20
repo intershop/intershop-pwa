@@ -12,10 +12,10 @@ export interface CategoryView extends Category {
 
 export function createCategoryView(tree: CategoryTree, uniqueId: string): CategoryView {
   if (!tree || !uniqueId) {
-    return undefined;
+    return;
   }
   if (!tree.nodes[uniqueId]) {
-    return undefined;
+    return;
   }
 
   return {

@@ -56,7 +56,7 @@ var RuleHelpers = (function () {
                 .getChildAt(4)
                 .getChildAt(1);
         }
-        return undefined;
+        return;
     };
     return RuleHelpers;
 }());

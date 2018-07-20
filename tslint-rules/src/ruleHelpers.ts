@@ -57,6 +57,6 @@ export class RuleHelpers {
         .getChildAt(4)
         .getChildAt(1);
     }
-    return undefined;
+    return;
   }
 }
