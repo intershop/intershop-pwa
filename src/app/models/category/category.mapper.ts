@@ -34,26 +34,26 @@ export class CategoryMapper {
     let uniqueId;
     const newCategoryPath = [];
 
-    const treeFromPath = path
-      // remove the last
-      .filter((_, idx, arr) => idx !== arr.length - 1)
-      .map(pathElement => {
-        // accumulate and construct uniqueId and categoryPath
-        uniqueId = !uniqueId ? pathElement.id : uniqueId + CategoryHelper.uniqueIdSeparator + pathElement.id;
-        newCategoryPath.push(uniqueId);
+    return (
+      path
+        // remove the last
+        .filter((_, idx, arr) => idx !== arr.length - 1)
+        .map(pathElement => {
+          // accumulate and construct uniqueId and categoryPath
+          uniqueId = !uniqueId ? pathElement.id : uniqueId + CategoryHelper.uniqueIdSeparator + pathElement.id;
+          newCategoryPath.push(uniqueId);
 
-        // yield category stub
-        return {
-          uniqueId,
-          name: pathElement.name,
-          completenessLevel: 0,
-          categoryPath: [...newCategoryPath],
-        };
-      })
-      // construct a tree from it
-      .reduce((tree, cat: Category) => CategoryTreeHelper.add(tree, cat), CategoryTreeHelper.empty());
-
-    return treeFromPath;
+          // yield category stub
+          return {
+            uniqueId,
+            name: pathElement.name,
+            completenessLevel: 0,
+            categoryPath: [...newCategoryPath],
+          };
+        })
+        // construct a tree from it
+        .reduce((tree, cat: Category) => CategoryTreeHelper.add(tree, cat), CategoryTreeHelper.empty())
+    );
   }
 
   /**
@@ -132,9 +132,7 @@ export class CategoryMapper {
       const treeWithSubCategories = CategoryTreeHelper.merge(tree, subTrees);
 
       // merge categoryPath stubs onto current tree
-      const treeWithEverything = CategoryTreeHelper.merge(treeWithSubCategories, categoryPathTree);
-
-      return treeWithEverything;
+      return CategoryTreeHelper.merge(treeWithSubCategories, categoryPathTree);
     } else {
       throw new Error(`'categoryData' is required`);
     }

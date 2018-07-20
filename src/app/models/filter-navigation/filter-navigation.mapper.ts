@@ -5,7 +5,7 @@ import { FilterNavigation } from './filter-navigation.model';
 
 export class FilterNavigationMapper {
   static fromData(data: FilterNavigationData): FilterNavigation {
-    const filterNavigation: FilterNavigation = {
+    return {
       filter: data.elements.map(
         filterData =>
           ({
@@ -27,7 +27,5 @@ export class FilterNavigationMapper {
           } as Filter)
       ),
     };
-
-    return filterNavigation;
   }
 }

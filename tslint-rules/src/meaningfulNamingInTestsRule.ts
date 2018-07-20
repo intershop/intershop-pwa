@@ -12,11 +12,10 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
       .split('/')
       .filter((_, idx, array) => idx === array.length - 1)[0]
       .replace('.spec.ts', '');
-    const className = fileName
+    return fileName
       .split(/[\.-]+/)
       .map(part => part.substring(0, 1).toUpperCase() + part.substring(1))
       .reduce((acc, val) => acc + ' ' + val);
-    return className;
   }
 
   visitSourceFile(sourceFile: SourceFile) {
