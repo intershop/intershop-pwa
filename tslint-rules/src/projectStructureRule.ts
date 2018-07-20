@@ -56,7 +56,7 @@ class ProjectStructureWalker extends Lint.RuleWalker {
 
     if (matchingPatterns.length >= 1 && matchingPatterns[0].match[1]) {
       const config = matchingPatterns[0];
-      const matched: string = config.match[1];
+      const matched = config.match[1];
       const pathPattern = config.pattern.file
         .replace(/<kebab>/g, kebabCaseFromPascalCase(matched))
         .replace(/<camel>/g, camelCaseFromPascalCase(matched));

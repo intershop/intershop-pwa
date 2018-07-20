@@ -44,7 +44,7 @@ describe('Mock Interceptor', () => {
   });
 
   describe('Request URL Modification', () => {
-    const request: HttpRequest<any> = new HttpRequest('GET', '');
+    const request = new HttpRequest('GET', '');
 
     function dataProvider() {
       return [

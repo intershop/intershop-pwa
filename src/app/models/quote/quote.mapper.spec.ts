@@ -2,7 +2,6 @@ import { Price } from '../price/price.model';
 import { QuoteRequestItem } from '../quote-request-item/quote-request-item.model';
 import { QuoteData } from './quote.interface';
 import { QuoteMapper } from './quote.mapper';
-import { Quote } from './quote.model';
 
 describe('Quote Mapper', () => {
   describe('fromData', () => {
@@ -17,7 +16,7 @@ describe('Quote Mapper', () => {
         items: [] as QuoteRequestItem[],
       } as QuoteData;
 
-      const quoteItem: Quote = QuoteMapper.fromData(quoteData);
+      const quoteItem = QuoteMapper.fromData(quoteData);
 
       expect(quoteItem).toBeTruthy();
       expect(!!quoteItem.state).toBeTruthy();

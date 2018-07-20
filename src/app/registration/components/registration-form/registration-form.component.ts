@@ -88,9 +88,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
       if (c.error.currentValue.headers.get('error-missing-attributes')) {
         const missingAttributes: string = c.error.currentValue.headers.get('error-missing-attributes');
         // map missing 'email' response to login field
-        const list: string[] = missingAttributes
-          .split(',')
-          .map(attr => (attr === 'email' ? 'credentials.login' : attr));
+        const list = missingAttributes.split(',').map(attr => (attr === 'email' ? 'credentials.login' : attr));
 
         markFormControlsAsInvalid(this.form, list);
       }
