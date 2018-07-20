@@ -9,7 +9,7 @@ function filterPrice(price: Price): Price {
   if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
     return price;
   }
-  return undefined;
+  return;
 }
 
 /**
