@@ -48,7 +48,7 @@ describe('Select Address Component', () => {
     component.ngOnChanges(changes);
 
     fixture.detectChanges();
-    expect(component.options.length).toEqual(2);
+    expect(component.options).toHaveLength(2);
     expect(element.querySelector('select[data-testing-id=addressId]')).toBeTruthy();
   });
 });

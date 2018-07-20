@@ -86,7 +86,7 @@ describe('Checkout Address Component', () => {
   it('should determine invoice addresses for the select box', () => {
     fixture.detectChanges();
     component.ngOnChanges();
-    expect(component.invoiceAddresses.length).toEqual(2);
+    expect(component.invoiceAddresses).toHaveLength(2);
     expect(component.invoiceAddresses[0].id).toEqual('4712');
     expect(component.invoiceAddresses[1].id).toEqual('4714');
   });
@@ -95,7 +95,7 @@ describe('Checkout Address Component', () => {
   it('should determine shipping addresses for the select box', () => {
     fixture.detectChanges();
     component.ngOnChanges();
-    expect(component.shippingAddresses.length).toEqual(2);
+    expect(component.shippingAddresses).toHaveLength(2);
     expect(component.shippingAddresses[0].id).toEqual('4712');
     expect(component.shippingAddresses[1].id).toEqual('4713');
   });

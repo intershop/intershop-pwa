@@ -63,7 +63,7 @@ describe('Line Item List Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
     expect(component.form.get('items')).toBeTruthy();
-    expect(component.form.get('items').value.length).toEqual(1);
+    expect(component.form.get('items').value).toHaveLength(1);
   });
 
   it('should throw formChange event when ngOnChanges is called', done => {
@@ -80,7 +80,7 @@ describe('Line Item List Component', () => {
       done();
     });
     component.ngOnChanges();
-    expect(firedGroup.value.items.length).toBe(1);
+    expect(firedGroup.value.items).toHaveLength(1);
   });
 
   it('should render sub components if basket changes', () => {
