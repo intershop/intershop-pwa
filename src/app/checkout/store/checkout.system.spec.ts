@@ -34,6 +34,7 @@ import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { AddressService } from '../services/address/address.service';
 import { BasketService } from '../services/basket/basket.service';
+import { OrderService } from '../services/order/order.service';
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
 
@@ -150,6 +151,7 @@ describe('Checkout System', () => {
     when(registrationServiceMock.signinUser(anything())).thenReturn(of(user));
 
     const filterServiceMock = mock(FilterService);
+    const orderServiceMock = mock(OrderService);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -171,6 +173,7 @@ describe('Checkout System', () => {
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },

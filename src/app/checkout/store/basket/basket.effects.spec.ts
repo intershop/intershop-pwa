@@ -1,21 +1,25 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.actions';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
 import { Link } from '../../../models/link/link.model';
+import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProduct, LoadProductSuccess } from '../../../shopping/store/products';
 import { ShoppingState } from '../../../shopping/store/shopping.state';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { BasketService } from '../../services/basket/basket.service';
+import { OrderService } from '../../services/order/order.service';
 import { CheckoutState } from '../checkout.state';
 import { checkoutReducers } from '../checkout.system';
 import * as basketActions from './basket.actions';
@@ -24,11 +28,15 @@ import { BasketEffects } from './basket.effects';
 describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
+  let orderServiceMock: OrderService;
   let effects: BasketEffects;
+  let routerMock: Router;
   let store$: Store<CheckoutState | ShoppingState>;
 
   beforeEach(() => {
+    routerMock = mock(Router);
     basketServiceMock = mock(BasketService);
+    orderServiceMock = mock(OrderService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -41,6 +49,8 @@ describe('Basket Effects', () => {
         BasketEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
+        { provide: Router, useFactory: () => instance(routerMock) },
       ],
     });
 
@@ -676,6 +686,61 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.resetBasketAfterLogout$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createOrder$', () => {
+    it('should call the orderService for createOrder', done => {
+      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(null));
+      const payload = BasketMockData.getBasket();
+      const action = new basketActions.CreateOrder(payload);
+      actions$ = of(action);
+
+      effects.createOrder$.subscribe(() => {
+        verify(orderServiceMock.createOrder(payload, true)).once();
+        done();
+      });
+    });
+
+    it('should map a valid request to action of type CreateOrderSuccess', () => {
+      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
+        of({ id: BasketMockData.getBasket().id } as Order)
+      );
+      const payload = BasketMockData.getBasket();
+      const order = { id: payload.id } as Order;
+      const action = new basketActions.CreateOrder(payload);
+      const completion = new basketActions.CreateOrderSuccess(order);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createOrder$).toBeObservable(expected$);
+    });
+
+    it('should map an invalid request to action of type CreateOrderFail', () => {
+      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
+      const payload = BasketMockData.getBasket();
+      const action = new basketActions.CreateOrder(payload);
+      const completion = new basketActions.CreateOrderFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createOrder$).toBeObservable(expected$);
+    });
+  });
+
+  describe('goToCheckoutReceiptPageAfterOrderCreation', () => {
+    it('should navigate to /checkout/receipt after CreateOrderSuccess', done => {
+      const action = new basketActions.CreateOrderSuccess({ id: '123' } as Order);
+      actions$ = of(action);
+
+      effects.goToCheckoutReceiptPageAfterOrderCreation$.subscribe(() => {
+        verify(routerMock.navigate(anything())).once();
+        const [param] = capture(routerMock.navigate).last();
+        expect(param).toEqual(['/checkout/receipt']);
+        done();
+      });
     });
   });
 });

@@ -32,7 +32,8 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.UpdateBasketItems:
     case BasketActionTypes.DeleteBasketItem:
-    case BasketActionTypes.LoadBasketPayments: {
+    case BasketActionTypes.LoadBasketPayments:
+    case BasketActionTypes.CreateOrder: {
       return {
         ...state,
         loading: true,
@@ -46,7 +47,8 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
-    case BasketActionTypes.LoadBasketPaymentsFail: {
+    case BasketActionTypes.LoadBasketPaymentsFail:
+    case BasketActionTypes.CreateOrderFail: {
       const error = action.payload;
 
       return {
@@ -99,7 +101,8 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
-    case BasketActionTypes.ResetBasket: {
+    case BasketActionTypes.ResetBasket:
+    case BasketActionTypes.CreateOrderSuccess: {
       return initialState;
     }
   }
