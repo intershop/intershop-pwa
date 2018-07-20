@@ -1,3 +1,4 @@
+// tslint:disable:no-console
 import { getNextToken } from 'tsutils';
 import * as ts from 'typescript';
 

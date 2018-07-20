@@ -1,4 +1,4 @@
-// tslint:disable:ordered-imports
+// tslint:disable:ordered-imports no-console
 import 'reflect-metadata';
 import 'zone.js/dist/zone-node';
 import { enableProdMode } from '@angular/core';
