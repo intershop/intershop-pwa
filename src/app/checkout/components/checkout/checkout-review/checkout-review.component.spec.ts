@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { anything, spy, verify } from 'ts-mockito/lib/ts-mockito';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CheckoutReviewComponent } from './checkout-review.component';
@@ -14,10 +15,31 @@ describe('Checkout Review Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
           inputs: ['basket'],
+        }),
+        MockComponent({
+          selector: 'ish-info-box',
+          template: 'Checkout Infobox Component',
+          inputs: ['heading', 'editRouterLink'],
+        }),
+        MockComponent({
+          selector: 'ish-address',
+          template: 'Address Component',
+          inputs: ['address'],
+        }),
+        MockComponent({
+          selector: 'ish-line-item-list',
+          template: 'Line Item List Component',
+          inputs: ['lineItems', 'editable'],
+        }),
+        MockComponent({
+          selector: 'ish-checkbox',
+          template: 'Checkbox Component',
+          inputs: ['form', 'controlName', 'errorMessages'],
         }),
       ],
       imports: [TranslateModule.forRoot(), RouterTestingModule],
@@ -35,5 +57,23 @@ describe('Checkout Review Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should emit an event if t&c checkbox is checked', done => {
+    component.createOrder.subscribe(basket => {
+      expect(basket.id).toEqual(component.basket.id);
+      done();
+    });
+    fixture.detectChanges();
+    component.form.get('termsAndConditions').setValue('true');
+    component.submitOrder();
+  });
+
+  it('should not emit an event if t&c checkbox is empty', () => {
+    const emitter = spy(component.createOrder);
+
+    fixture.detectChanges();
+    component.submitOrder();
+    verify(emitter.emit(anything())).never();
   });
 });
