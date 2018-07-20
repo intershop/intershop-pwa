@@ -39,12 +39,10 @@ var LocalImportsFormatPluginWalker = (function (_super) {
                 this.addFailureAtNode(token, 'local import statements must start with "./", consider using AutoImport Plugin', fix);
             }
         }
-        else {
-            if (text.substring(1, 4) === './.') {
-                var replaceString = text.substring(0, 1) + text.substring(3, text.length);
-                var fix = new Lint.Replacement(token.getStart(), token.getWidth(), replaceString);
-                this.addFailureAtNode(token, 'local relative import statements must not start with "./", consider using TypeScript Hero Plugin', fix);
-            }
+        else if (text.substring(1, 4) === './.') {
+            var replaceString = text.substring(0, 1) + text.substring(3, text.length);
+            var fix = new Lint.Replacement(token.getStart(), token.getWidth(), replaceString);
+            this.addFailureAtNode(token, 'local relative import statements must not start with "./", consider using TypeScript Hero Plugin', fix);
         }
     };
     return LocalImportsFormatPluginWalker;

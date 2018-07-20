@@ -13,14 +13,13 @@ class UseAsyncSynchronisationInTestsWalker extends Lint.RuleWalker {
       block.parent
         .getChildAt(0)
         .getText()
-        .endsWith('.subscribe')
+        .endsWith('.subscribe') &&
+      block.getText().search(/\sdone\(\);/) < 0
     ) {
-      if (block.getText().search(/\sdone\(\);/) < 0) {
-        this.addFailureAtNode(
-          block,
-          'asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html'
-        );
-      }
+      this.addFailureAtNode(
+        block,
+        'asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html'
+      );
     }
     super.visitArrowFunction(block);
   }
