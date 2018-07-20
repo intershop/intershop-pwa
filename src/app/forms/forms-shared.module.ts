@@ -6,6 +6,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { SharedModule } from '../shared/shared.module';
 import { FormControlFeedbackComponent } from './shared/components/form-control-feedback/form-control-feedback.component';
 import { CaptchaComponent } from './shared/components/form-controls/captcha/captcha.component';
+import { CheckboxComponent } from './shared/components/form-controls/checkbox/checkbox.component';
 import { InputBirthdayComponent } from './shared/components/form-controls/input-birthday/input-birthday.component';
 import { InputComponent } from './shared/components/form-controls/input/input.component';
 import { selectComponents } from './shared/components/form-controls/select/index';
@@ -16,6 +17,7 @@ import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedbac
   declarations: [
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
+    CheckboxComponent,
     InputComponent,
     ...selectComponents,
     InputBirthdayComponent,
@@ -28,6 +30,7 @@ import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedbac
     TranslateModule,
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
+    CheckboxComponent,
     InputComponent,
     ...selectComponents,
     InputBirthdayComponent,

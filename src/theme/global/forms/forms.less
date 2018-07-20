@@ -37,3 +37,30 @@ input[type="file"] {
   box-shadow: none;
   padding: 0;
 }
+
+.form-group-checkbox {
+	font-size: @font-size-base;
+	border: none;
+	margin-bottom:0;
+	
+	&.has-error {
+		.form-control {
+						
+			a {
+				color: inherit;
+				text-decoration: underline;
+			}				
+		}	
+	}
+	.form-control {
+		background-color: inherit;
+		border: none;			
+		.box-shadow(none);
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.form-control-feedback {
+		display: none !important;
+	}
+}
