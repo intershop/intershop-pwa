@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService, unpackEnvelope } from '../../../core/services/api/api.service';
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
-import { CategoryData, CategoryPathElement } from '../../../models/category/category.interface';
+import { CategoryData } from '../../../models/category/category.interface';
 import { CategoryMapper } from '../../../models/category/category.mapper';
 import { CategoryHelper } from '../../../models/category/category.model';
 
@@ -43,14 +43,6 @@ export class CategoriesService {
 
     return this.apiService.get('categories', { params }).pipe(
       unpackEnvelope<CategoryData>(),
-      // TODO: ISREST-312 - REST call doesn't insert categoryPath for top-level categories
-      map(array =>
-        array.map(tlelem => {
-          const id = tlelem['id'];
-          tlelem.categoryPath = [{ id } as CategoryPathElement];
-          return tlelem;
-        })
-      ),
       map(categoriesData =>
         categoriesData.map(CategoryMapper.fromData).reduce((a, b) => CategoryTreeHelper.merge(a, b))
       )
