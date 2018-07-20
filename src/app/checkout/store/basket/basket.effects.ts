@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, of } from 'rxjs';
@@ -11,12 +12,15 @@ import {
   mapTo,
   mergeMap,
   switchMap,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
+import { Basket } from '../../../models/basket/basket.model';
 import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
 import { BasketService } from '../../services/basket/basket.service';
+import { OrderService } from '../../services/order/order.service';
 import { CheckoutState } from '../checkout.state';
 import * as basketActions from './basket.actions';
 import { getCurrentBasket } from './basket.selectors';
@@ -26,7 +30,9 @@ export class BasketEffects {
   constructor(
     private actions$: Actions,
     private store: Store<CheckoutState | CoreState>,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private orderService: OrderService,
+    private router: Router
   ) {}
 
   /**
@@ -329,5 +335,26 @@ export class BasketEffects {
   resetBasketAfterLogout$ = this.actions$.pipe(
     ofType(UserActionTypes.LogoutUser),
     mapTo(new basketActions.ResetBasket())
+  );
+
+  /**
+   * Creates an order based on the given basket.
+   */
+  @Effect()
+  createOrder$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.CreateOrder),
+    map((action: basketActions.CreateOrder) => action.payload),
+    mergeMap((basket: Basket) =>
+      this.orderService.createOrder(basket, true).pipe(
+        map(order => new basketActions.CreateOrderSuccess(order)),
+        catchError(error => of(new basketActions.CreateOrderFail(error)))
+      )
+    )
+  );
+
+  @Effect({ dispatch: false })
+  goToCheckoutReceiptPageAfterOrderCreation$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.CreateOrderSuccess),
+    tap(() => this.router.navigate(['/checkout/receipt']))
   );
 }

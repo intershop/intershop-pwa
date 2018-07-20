@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
+import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { BasketUpdateType } from '../../services/basket/basket.service';
 
@@ -35,6 +36,10 @@ export enum BasketActionTypes {
   LoadBasketPaymentsFail = '[Basket API] Load Basket Payments Fail',
   LoadBasketPaymentsSuccess = '[Basket API] Load Basket Payments Success',
   ResetBasket = '[Basket Internal] Reset Basket',
+
+  CreateOrder = '[Order] Create Order',
+  CreateOrderFail = '[Order API] Create Order Fail',
+  CreateOrderSuccess = '[Order API] Create Order Success',
 }
 
 export class LoadBasket implements Action {
@@ -172,6 +177,21 @@ export class ResetBasket implements Action {
   readonly type = BasketActionTypes.ResetBasket;
 }
 
+export class CreateOrder implements Action {
+  readonly type = BasketActionTypes.CreateOrder;
+  constructor(public payload: Basket) {}
+}
+
+export class CreateOrderFail implements Action {
+  readonly type = BasketActionTypes.CreateOrderFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class CreateOrderSuccess implements Action {
+  readonly type = BasketActionTypes.CreateOrderSuccess;
+  constructor(public payload: Order) {}
+}
+
 export type BasketAction =
   | LoadBasket
   | LoadBasketFail
@@ -200,4 +220,7 @@ export type BasketAction =
   | LoadBasketPayments
   | LoadBasketPaymentsFail
   | LoadBasketPaymentsSuccess
-  | ResetBasket;
+  | ResetBasket
+  | CreateOrder
+  | CreateOrderFail
+  | CreateOrderSuccess;
