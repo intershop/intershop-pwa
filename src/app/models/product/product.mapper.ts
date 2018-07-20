@@ -24,13 +24,13 @@ export class ProductMapper {
   /**
    * construct a {@link Product} stub from data returned by link list responses with additional data
    */
-  static fromStubData(data: ProductDataStub) {
+  static fromStubData(data: ProductDataStub): Product {
     const sku = retrieveStubAttributeValue(data, 'sku');
     if (!sku) {
       throw new Error('cannot construct product stub without SKU');
     }
 
-    const productStub: Product = {
+    return {
       shortDescription: data.description,
       name: data.title,
       sku,
@@ -70,7 +70,6 @@ export class ProductMapper {
       readyForShipmentMax: undefined,
       type: ProductType.Product,
     };
-    return productStub;
   }
 
   /**
@@ -97,19 +96,17 @@ export class ProductMapper {
     };
 
     if (data.productMaster) {
-      const productMaster: VariationProductMaster = {
+      return {
         ...product,
         variationProducts: [],
         type: ProductType.VariationProductMaster,
       };
-      return productMaster;
     } else if (data.mastered) {
-      const variationProduct: VariationProduct = {
+      return {
         ...product,
         productMasterSKU: data.productMasterSKU,
         type: ProductType.VariationProduct,
       };
-      return variationProduct;
     } else {
       return product;
     }

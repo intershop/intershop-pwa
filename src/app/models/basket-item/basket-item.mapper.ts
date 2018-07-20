@@ -2,8 +2,8 @@ import { BasketItemData } from './basket-item.interface';
 import { BasketItem } from './basket-item.model';
 
 export class BasketItemMapper {
-  static fromData(data: BasketItemData) {
-    const basketItem: BasketItem = {
+  static fromData(data: BasketItemData): BasketItem {
+    return {
       id: data.id,
       name: data.name,
       position: data.position,
@@ -22,7 +22,5 @@ export class BasketItemMapper {
 
       productSKU: data.product.title,
     };
-
-    return basketItem;
   }
 }

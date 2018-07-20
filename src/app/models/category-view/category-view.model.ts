@@ -18,11 +18,10 @@ export function createCategoryView(tree: CategoryTree, uniqueId: string): Catego
     return undefined;
   }
 
-  const categoryView: CategoryView = {
+  return {
     ...tree.nodes[uniqueId],
     hasChildren: () => !!tree.edges[uniqueId] && !!tree.edges[uniqueId].length,
     children: () => (tree.edges[uniqueId] || []).map(id => createCategoryView(tree, id)),
     pathCategories: () => tree.nodes[uniqueId].categoryPath.map(id => createCategoryView(tree, id)),
   };
-  return categoryView;
 }

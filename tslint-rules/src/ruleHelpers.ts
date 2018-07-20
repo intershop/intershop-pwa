@@ -52,11 +52,10 @@ export class RuleHelpers {
     );
     if (statements.length && statements[0].getChildAt(0)) {
       const describeStatement = statements[0].getChildAt(0).getChildAt(2);
-      const describeBody = describeStatement
+      return describeStatement
         .getChildAt(2)
         .getChildAt(4)
         .getChildAt(1);
-      return describeBody;
     }
     return undefined;
   }

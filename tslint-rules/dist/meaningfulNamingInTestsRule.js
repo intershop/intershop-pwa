@@ -25,11 +25,10 @@ var MeaningfulNamingInTestsWalker = (function (_super) {
             .split('/')
             .filter(function (_, idx, array) { return idx === array.length - 1; })[0]
             .replace('.spec.ts', '');
-        var className = fileName
+        return fileName
             .split(/[\.-]+/)
             .map(function (part) { return part.substring(0, 1).toUpperCase() + part.substring(1); })
             .reduce(function (acc, val) { return acc + ' ' + val; });
-        return className;
     };
     MeaningfulNamingInTestsWalker.prototype.visitSourceFile = function (sourceFile) {
         if (sourceFile.fileName.endsWith('.spec.ts')) {
