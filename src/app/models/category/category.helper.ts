@@ -25,7 +25,7 @@ export class CategoryHelper {
    */
   static getCategoryPath(uniqueId: string): string {
     if (!uniqueId) {
-      return undefined;
+      return;
     }
     const regEx = new RegExp(`\\${CategoryHelper.uniqueIdSeparator}`, 'g');
     return uniqueId.replace(regEx, '/');

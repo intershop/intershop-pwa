@@ -5,23 +5,23 @@ export class SearchParameterMapper {
     Converts base64 encoded parameter string into a SearchParameter object
   */
   static fromData(data: string): SearchParameter {
-    const searchParameter: SearchParameter = new SearchParameter();
-    const decodedData: string = atob(data);
+    const searchParameter = new SearchParameter();
+    const decodedData = atob(data);
 
-    const terms: string[] = decodedData.split('&');
+    const terms = decodedData.split('&');
     terms.forEach(term => {
-      const parts: string[] = term.split('=');
+      const parts = term.split('=');
       if (parts.length !== 2) {
         return;
       }
 
-      const paramName: string = parts[0];
-      const paramValue: string = parts[1];
+      const paramName = parts[0];
+      const paramValue = parts[1];
 
       if ('@QueryTerm' === paramName) {
         searchParameter.queryTerm = paramValue;
       } else if (paramName.startsWith('@Sort.')) {
-        let name: string = paramName.substr('@Sort.'.length, paramName.length);
+        let name = paramName.substr('@Sort.'.length, paramName.length);
         if (paramValue === '0') {
           name += '-asc';
         }
@@ -29,7 +29,7 @@ export class SearchParameterMapper {
           name += '-desc';
         }
 
-        const sortings: string[] = [name];
+        const sortings = [name];
         if (searchParameter.sortings) {
           searchParameter.sortings.concat(sortings);
         } else {

@@ -19,7 +19,7 @@ describe('Filter Reducer', () => {
       const action = new fromActions.LoadFilterForCategory({} as Category);
       const state = filterReducer(initialState, action);
 
-      expect(state.loading).toEqual(true);
+      expect(state.loading).toBeTrue();
     });
   });
 
@@ -30,7 +30,7 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filter);
-      expect(state.loading).toEqual(false);
+      expect(state.loading).toBeFalse();
     });
   });
 
@@ -40,7 +40,7 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
-      expect(state.loading).toEqual(false);
+      expect(state.loading).toBeFalse();
     });
   });
 
@@ -49,7 +49,7 @@ describe('Filter Reducer', () => {
       const action = new fromActions.LoadFilterForSearch('');
       const state = filterReducer(initialState, action);
 
-      expect(state.loading).toEqual(true);
+      expect(state.loading).toBeTrue();
     });
   });
 
@@ -60,7 +60,7 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filter);
-      expect(state.loading).toEqual(false);
+      expect(state.loading).toBeFalse();
     });
   });
 
@@ -70,7 +70,7 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
-      expect(state.loading).toEqual(false);
+      expect(state.loading).toBeFalse();
     });
   });
 
@@ -79,7 +79,7 @@ describe('Filter Reducer', () => {
       const action = new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' });
       const state = filterReducer(initialState, action);
 
-      expect(state.loading).toEqual(true);
+      expect(state.loading).toBeTrue();
     });
   });
 
@@ -94,7 +94,7 @@ describe('Filter Reducer', () => {
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toEqual(filter);
-      expect(state.loading).toEqual(false);
+      expect(state.loading).toBeFalse();
     });
   });
 

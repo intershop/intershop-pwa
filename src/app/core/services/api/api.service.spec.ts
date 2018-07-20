@@ -58,8 +58,7 @@ describe('Api Service', () => {
     it('should create Error Action if httpClient.get throws Error.', () => {
       const statusText = 'ERROAAR';
 
-      // tslint:disable-next-line:use-async-synchronisation-in-tests
-      apiService.get('data').subscribe(data => fail(), data => fail());
+      apiService.get('data').subscribe(fail, fail);
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
 
       req.flush('err', { status: 500, statusText });

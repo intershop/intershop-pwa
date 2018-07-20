@@ -16,7 +16,7 @@ describe('Feature Toggle Service', () => {
     });
 
     it('should report feature as activated, when no settings are defined', () => {
-      expect(featureToggle.enabled('something')).toBe(true);
+      expect(featureToggle.enabled('something')).toBeTrue();
     });
   });
 

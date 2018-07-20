@@ -45,7 +45,7 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.getProductSkusForFilter(anything(), anything())).thenCall((a, b) => {
+    when(filterServiceMock.getProductSkusForFilter(anything(), anything())).thenCall(a => {
       if (a.name === 'invalid') {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {
@@ -53,7 +53,7 @@ describe('Filter Effects', () => {
       }
     });
 
-    when(filterServiceMock.applyFilter(anyString(), anyString())).thenCall((a, b) => {
+    when(filterServiceMock.applyFilter(anyString(), anyString())).thenCall(a => {
       if (a === 'invalid') {
         return throwError({ message: 'invalid' } as HttpErrorResponse);
       } else {

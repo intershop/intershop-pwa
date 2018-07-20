@@ -1,6 +1,5 @@
 import { Location } from '@angular/common';
 import { async, inject, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProductCompareStatusComponent } from './product-compare-status.component';
@@ -31,7 +30,7 @@ describe('Product Compare Status Component', () => {
   });
 
   it('should navigate to compare page when compare icon is clicked', async(
-    inject([Router, Location], (router: Router, location: Location) => {
+    inject([Location], (location: Location) => {
       fixture.detectChanges();
       element.querySelector('a').click();
       fixture.whenStable().then(() => {

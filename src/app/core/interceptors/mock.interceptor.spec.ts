@@ -44,7 +44,7 @@ describe('Mock Interceptor', () => {
   });
 
   describe('Request URL Modification', () => {
-    const request: HttpRequest<any> = new HttpRequest('GET', '');
+    const request = new HttpRequest('GET', '');
 
     function dataProvider() {
       return [
@@ -148,19 +148,13 @@ describe('Mock Interceptor', () => {
     it('should return error response when patricia is not logged in correctly', done => {
       mockInterceptor
         .intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler)
-        .subscribe(
-          event => {
-            fail();
-            done();
-          },
-          event => {
-            expect(event.ok).toBeFalsy();
-            expect(event.status).toBe(401);
-            expect(event.headers.get('authentication-token')).toBeFalsy();
-            expect(event.headers.get('error-key')).toBeTruthy();
-            done();
-          }
-        );
+        .subscribe(fail, event => {
+          expect(event.ok).toBeFalsy();
+          expect(event.status).toBe(401);
+          expect(event.headers.get('authentication-token')).toBeFalsy();
+          expect(event.headers.get('error-key')).toBeTruthy();
+          done();
+        });
     });
   });
 });

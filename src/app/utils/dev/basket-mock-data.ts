@@ -9,11 +9,11 @@ export class BasketMockData {
   static getBasket(): BasketView {
     return {
       id: '4711',
-      lineItems: [this.getBasketItem()],
-      invoiceToAddress: this.getAddress(),
-      commonShipToAddress: this.getAddress(),
-      commonShippingMethod: this.getShippingMethod(),
-      paymentMethod: this.getPaymentMethod(),
+      lineItems: [BasketMockData.getBasketItem()],
+      invoiceToAddress: BasketMockData.getAddress(),
+      commonShipToAddress: BasketMockData.getAddress(),
+      commonShippingMethod: BasketMockData.getShippingMethod(),
+      paymentMethod: BasketMockData.getPaymentMethod(),
       valueRebates: [
         {
           name: 'appliedRebate',

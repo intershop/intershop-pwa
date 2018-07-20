@@ -1,5 +1,4 @@
 import { QuoteRequestItemMapper } from './quote-request-item.mapper';
-import { QuoteRequestItem } from './quote-request-item.model';
 
 describe('Quote Request Item Mapper', () => {
   describe('fromData', () => {
@@ -38,7 +37,7 @@ describe('Quote Request Item Mapper', () => {
         },
         productSKU: '9438012',
       };
-      const quoteRequestItem: QuoteRequestItem = QuoteRequestItemMapper.fromData(quoteRequestItemData, 'test');
+      const quoteRequestItem = QuoteRequestItemMapper.fromData(quoteRequestItemData, 'test');
 
       expect(quoteRequestItem).toBeTruthy();
       expect(quoteRequestItem.totals.total).toBe(quoteRequestItemData.totalPrice);

@@ -26,24 +26,23 @@ var BanSpecificImportsWalker = (function (_super) {
         var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, typescript_1.SyntaxKind.StringLiteral);
         var fromStringText = fromStringToken.getText();
         this.patterns.forEach(function (pattern) {
-            if (new RegExp(pattern.filePattern).test(importStatement.getSourceFile().fileName)) {
-                if (new RegExp(pattern.from).test(fromStringText)) {
-                    var importList = importStatement
-                        .getChildAt(1)
-                        .getChildAt(0)
-                        .getChildAt(1);
-                    if (pattern.import) {
-                        importList
-                            .getChildren()
-                            .filter(function (token) { return token.kind === typescript_1.SyntaxKind.ImportSpecifier; })
-                            .filter(function (token) { return new RegExp(pattern.import).test(token.getText()); })
-                            .forEach(function (token) {
-                            return _this.addFailureAtNode(token, pattern.message || "Using '" + token.getText() + "' from " + fromStringText + " is banned.");
-                        });
-                    }
-                    else {
-                        _this.addFailureAtNode(importStatement, pattern.message || "Importing from " + fromStringText + " is banned.");
-                    }
+            if (new RegExp(pattern.filePattern).test(importStatement.getSourceFile().fileName) &&
+                new RegExp(pattern.from).test(fromStringText)) {
+                var importList = importStatement
+                    .getChildAt(1)
+                    .getChildAt(0)
+                    .getChildAt(1);
+                if (pattern.import) {
+                    importList
+                        .getChildren()
+                        .filter(function (token) { return token.kind === typescript_1.SyntaxKind.ImportSpecifier; })
+                        .filter(function (token) { return new RegExp(pattern.import).test(token.getText()); })
+                        .forEach(function (token) {
+                        return _this.addFailureAtNode(token, pattern.message || "Using '" + token.getText() + "' from " + fromStringText + " is banned.");
+                    });
+                }
+                else {
+                    _this.addFailureAtNode(importStatement, pattern.message || "Importing from " + fromStringText + " is banned.");
                 }
             }
         });

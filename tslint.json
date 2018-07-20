@@ -11,6 +11,12 @@
     "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
+    "no-static-this": true,
+    "no-unnecessary-type-annotation": true,
+    "no-collapsible-if": { "severity": "warning" },
+    "no-unused": true,
+    "no-var-before-return": true,
+    "no-return-undefined": true,
     "arrow-return-shorthand": [true, "multiline"],
     "only-arrow-functions": [true, "allow-named-functions"],
     "arrow-parens": [true, "ban-single-arg-parens"],
@@ -71,14 +77,14 @@
     ],
     "no-arg": true,
     "no-bitwise": true,
-    "no-console": [
-      true,
+    "no-console": { "severity": "warning", "options": [
       "debug",
       "info",
       "time",
       "timeEnd",
-      "trace"
-    ],
+      "trace",
+      "log"
+    ]},
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
@@ -209,6 +215,7 @@
     },
     "meaningful-naming-in-tests": { "severity": "warning" },
     "use-async-synchronisation-in-tests": true,
+    "use-jest-extended-matchers-in-tests": true,
     "no-any": { "severity": "warning" },
     "no-commented-out-tests": true,
     "no-focused-tests": true,

@@ -153,8 +153,8 @@ describe('Quote Request Effects', () => {
       store$.dispatch(new quoteRequestActions.LoadQuoteRequestsSuccess([{ id: 'QRID' } as QuoteRequestData]));
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
 
-      when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenCall(
-        (quoteRequestId, quoteRequest) => of(quoteRequest)
+      when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenCall((_, quoteRequest) =>
+        of(quoteRequest)
       );
     });
 

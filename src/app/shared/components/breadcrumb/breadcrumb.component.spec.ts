@@ -58,7 +58,7 @@ describe('Breadcrumb Component', () => {
     it('should render items with link if set', () => {
       component.trail = [{ link: '/LINK' }, { link: '/LINK' }];
       fixture.detectChanges();
-      expect(element.querySelectorAll('a').length).toBe(3);
+      expect(element.querySelectorAll('a')).toHaveLength(3);
     });
   });
 });

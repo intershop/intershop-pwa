@@ -27,16 +27,14 @@ class LocalImportsFormatPluginWalker extends Lint.RuleWalker {
           fix
         );
       }
-    } else {
-      if (text.substring(1, 4) === './.') {
-        const replaceString = text.substring(0, 1) + text.substring(3, text.length);
-        const fix = new Lint.Replacement(token.getStart(), token.getWidth(), replaceString);
-        this.addFailureAtNode(
-          token,
-          'local relative import statements must not start with "./", consider using TypeScript Hero Plugin',
-          fix
-        );
-      }
+    } else if (text.substring(1, 4) === './.') {
+      const replaceString = text.substring(0, 1) + text.substring(3, text.length);
+      const fix = new Lint.Replacement(token.getStart(), token.getWidth(), replaceString);
+      this.addFailureAtNode(
+        token,
+        'local relative import statements must not start with "./", consider using TypeScript Hero Plugin',
+        fix
+      );
     }
   }
 }

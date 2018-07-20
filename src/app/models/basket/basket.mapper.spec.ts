@@ -1,6 +1,5 @@
 import { BasketData } from './basket.interface';
 import { BasketMapper } from './basket.mapper';
-import { Basket } from './basket.model';
 
 describe('Basket Mapper', () => {
   describe('fromData', () => {
@@ -23,7 +22,7 @@ describe('Basket Mapper', () => {
           },
         ],
       } as BasketData;
-      const basket: Basket = BasketMapper.fromData(basketData);
+      const basket = BasketMapper.fromData(basketData);
 
       expect(basket).toBeTruthy();
       expect(basket.lineItems).toBe(basketData.shippingBuckets[0].lineItems);

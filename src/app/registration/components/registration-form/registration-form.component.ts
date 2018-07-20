@@ -84,16 +84,12 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
     if (c.regions && stateControl) {
       updateValidatorsByDataLength(stateControl, this.regions, Validators.required, true);
     }
-    if (c.error && c.error.currentValue) {
-      if (c.error.currentValue.headers.get('error-missing-attributes')) {
-        const missingAttributes: string = c.error.currentValue.headers.get('error-missing-attributes');
-        // map missing 'email' response to login field
-        const list: string[] = missingAttributes
-          .split(',')
-          .map(attr => (attr === 'email' ? 'credentials.login' : attr));
+    if (c.error && c.error.currentValue && c.error.currentValue.headers.get('error-missing-attributes')) {
+      const missingAttributes: string = c.error.currentValue.headers.get('error-missing-attributes');
+      // map missing 'email' response to login field
+      const list = missingAttributes.split(',').map(attr => (attr === 'email' ? 'credentials.login' : attr));
 
-        markFormControlsAsInvalid(this.form, list);
-      }
+      markFormControlsAsInvalid(this.form, list);
     }
   }
 

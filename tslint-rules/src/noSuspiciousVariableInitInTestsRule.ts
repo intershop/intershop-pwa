@@ -23,7 +23,7 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
       const describeBody = RuleHelpers.getDescribeBody(sourceFile);
       if (describeBody) {
         for (let i = 0; i < describeBody.getChildCount(); i++) {
-          const child: ts.Node = describeBody.getChildAt(i);
+          const child = describeBody.getChildAt(i);
           if (child.kind === ts.SyntaxKind.VariableStatement) {
             this.checkVariableStatementInDescribe(child.getChildAt(0));
           }

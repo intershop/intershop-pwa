@@ -6,14 +6,14 @@ describe('Search Parameter Mapper', () => {
     it(`should return SearchParameter when queryTerm is applied`, () => {
       const data = 'QFF1ZXJ5VGVybT1jYW1lcmE='; // equals @QueryTerm=camera
 
-      const searchParameter: SearchParameter = SearchParameterMapper.fromData(data);
+      const searchParameter = SearchParameterMapper.fromData(data);
       expect(searchParameter.queryTerm).toEqual('camera');
     });
   });
 
   describe('toData', () => {
     it(`should return parameter string with encoded query term and sortings when SearchParameter query is applied`, () => {
-      const searchParameter: SearchParameter = new SearchParameter();
+      const searchParameter = new SearchParameter();
       searchParameter.queryTerm = 'camera';
       searchParameter.sortings = ['name-asc', 'sku-desc'];
 

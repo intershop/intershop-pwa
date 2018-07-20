@@ -50,7 +50,6 @@ export class FilterService {
   }
 
   private getDomainId(rootName: string) {
-    console.log(rootName);
     if (rootName === 'Specials' || rootName === 'Cameras') {
       return 'inSPIRED-inTRONICS-' + rootName;
     }

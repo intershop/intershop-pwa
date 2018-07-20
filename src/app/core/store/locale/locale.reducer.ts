@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Locale } from '../../../models/locale/locale.model';
 import { LocaleAction, LocaleActionTypes } from './locale.actions';
 
@@ -6,7 +6,7 @@ export interface LocaleState extends EntityState<Locale> {
   current: string | null;
 }
 
-export const adapter: EntityAdapter<Locale> = createEntityAdapter<Locale>({
+export const adapter = createEntityAdapter<Locale>({
   selectId: l => l.lang,
 });
 
