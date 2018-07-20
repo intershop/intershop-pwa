@@ -23,7 +23,7 @@ var MeaningfulNamingInTestsWalker = (function (_super) {
     MeaningfulNamingInTestsWalker.prototype.interpolatedName = function (filePath) {
         var fileName = filePath
             .split('/')
-            .filter(function (val, idx, array) { return idx === array.length - 1; })[0]
+            .filter(function (_, idx, array) { return idx === array.length - 1; })[0]
             .replace('.spec.ts', '');
         var className = fileName
             .split(/[\.-]+/)

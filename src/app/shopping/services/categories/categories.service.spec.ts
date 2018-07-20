@@ -51,31 +51,19 @@ describe('Categories Service', () => {
     });
 
     it('should return error when called with null', done => {
-      categoriesService.getCategory(null).subscribe(
-        data => {
-          fail();
-          done();
-        },
-        err => {
-          expect(err).toBeTruthy();
-          done();
-        }
-      );
+      categoriesService.getCategory(null).subscribe(fail, err => {
+        expect(err).toBeTruthy();
+        done();
+      });
 
       verify(apiServiceMock.get(anything())).never();
     });
 
     it('should return error when called with empty category', done => {
-      categoriesService.getCategory('').subscribe(
-        data => {
-          fail();
-          done();
-        },
-        err => {
-          expect(err).toBeTruthy();
-          done();
-        }
-      );
+      categoriesService.getCategory('').subscribe(fail, err => {
+        expect(err).toBeTruthy();
+        done();
+      });
 
       verify(apiServiceMock.get(anything(), anything())).never();
     });

@@ -14,6 +14,7 @@
     "no-static-this": true,
     "no-unnecessary-type-annotation": true,
     "no-collapsible-if": { "severity": "warning" },
+    "no-unused": true,
     "arrow-return-shorthand": [true, "multiline"],
     "only-arrow-functions": [true, "allow-named-functions"],
     "arrow-parens": [true, "ban-single-arg-parens"],

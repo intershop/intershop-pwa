@@ -10,7 +10,7 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
   interpolatedName(filePath: string) {
     const fileName = filePath
       .split('/')
-      .filter((val, idx, array) => idx === array.length - 1)[0]
+      .filter((_, idx, array) => idx === array.length - 1)[0]
       .replace('.spec.ts', '');
     const className = fileName
       .split(/[\.-]+/)
