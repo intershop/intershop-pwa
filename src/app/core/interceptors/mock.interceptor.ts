@@ -41,6 +41,7 @@ export class MockInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     const newUrl = this.getMockUrl(req);
+    // tslint:disable-next-line:no-console
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
     return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
@@ -78,6 +79,7 @@ export class MockInterceptor implements HttpInterceptor {
    */
   private attachTokenIfNecessary(req: HttpRequest<any>, response: HttpResponse<any>): HttpResponse<any> {
     if ((this.isLoginAttempt(req) && this.isMockUserLoggingInSuccessfully(req)) || req.url.indexOf('customers') > -1) {
+      // tslint:disable-next-line:no-console
       console.log('attaching dummy token');
       return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
     }

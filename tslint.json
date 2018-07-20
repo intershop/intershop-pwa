@@ -75,14 +75,14 @@
     ],
     "no-arg": true,
     "no-bitwise": true,
-    "no-console": [
-      true,
+    "no-console": { "severity": "warning", "options": [
       "debug",
       "info",
       "time",
       "timeEnd",
-      "trace"
-    ],
+      "trace",
+      "log"
+    ]},
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
