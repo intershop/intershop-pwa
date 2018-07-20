@@ -102,7 +102,7 @@ describe('Quote Request Service', () => {
   });
 
   describe('completion', () => {
-    const expectEmptyArray = data => expect(data).toEqual([]);
+    const expectEmptyArray = data => expect(data).toBeEmpty();
 
     beforeEach(() => {
       when(apiService.get(anything())).thenReturn(of({ elements: [] }));

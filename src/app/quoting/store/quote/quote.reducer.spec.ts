@@ -20,7 +20,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.LoadQuotes();
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -30,7 +30,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.LoadQuotesFail(error);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -47,7 +47,7 @@ describe('Quote Reducer', () => {
         const state = quoteReducer(initialState, action);
 
         expect(state.quotes).toEqual(quotes);
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });
@@ -59,7 +59,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.DeleteQuote(payload);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -69,7 +69,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.DeleteQuoteFail(error);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -80,7 +80,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.DeleteQuoteSuccess(payload);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });
@@ -91,7 +91,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.RejectQuote();
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -101,7 +101,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.RejectQuoteFail(error);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -112,7 +112,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.RejectQuoteSuccess(payload);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });
@@ -123,7 +123,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.CreateQuoteRequestFromQuote();
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -133,7 +133,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.CreateQuoteRequestFromQuoteFail(error);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -144,7 +144,7 @@ describe('Quote Reducer', () => {
         const action = new fromActions.CreateQuoteRequestFromQuoteSuccess(payload);
         const state = quoteReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
       });
     });
   });

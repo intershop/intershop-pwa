@@ -80,7 +80,7 @@ describe('Mini Basket Component', () => {
 
   it('should render product rows if loaded', () => {
     fixture.detectChanges();
-    expect(element.getElementsByClassName('product-row').length).toEqual(3);
+    expect(element.getElementsByClassName('product-row')).toHaveLength(3);
   });
 
   it('should hold propper product count if loaded', () => {
@@ -123,7 +123,7 @@ describe('Mini Basket Component', () => {
 
   it('should render product image component on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image').length).toEqual(3);
+    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(3);
   });
 
   it('should set isCollapsed to propper value if toggleCollapsed is called', () => {

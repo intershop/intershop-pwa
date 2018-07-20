@@ -75,7 +75,7 @@ describe('Shopping Basket Component', () => {
     );
 
     component.updateItems.subscribe(firedFormValue => {
-      expect(firedFormValue.length).toBe(0);
+      expect(firedFormValue).toHaveLength(0);
       done();
     });
 

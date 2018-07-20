@@ -51,6 +51,6 @@ describe('Line Item Description Component', () => {
 
   it('should hold itemSurcharges for the line item', () => {
     component.ngOnChanges();
-    expect(component.itemSurcharges.length).toBe(1);
+    expect(component.itemSurcharges).toHaveLength(1);
   });
 });
