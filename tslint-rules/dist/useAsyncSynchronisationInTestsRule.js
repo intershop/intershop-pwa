@@ -25,10 +25,9 @@ var UseAsyncSynchronisationInTestsWalker = (function (_super) {
         if (block.parent
             .getChildAt(0)
             .getText()
-            .endsWith('.subscribe')) {
-            if (block.getText().search(/\sdone\(\);/) < 0) {
-                this.addFailureAtNode(block, 'asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html');
-            }
+            .endsWith('.subscribe') &&
+            block.getText().search(/\sdone\(\);/) < 0) {
+            this.addFailureAtNode(block, 'asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html');
         }
         _super.prototype.visitArrowFunction.call(this, block);
     };
