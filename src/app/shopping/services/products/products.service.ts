@@ -26,7 +26,7 @@ export class ProductsService {
       return throwError('getProduct() called without a sku');
     }
 
-    const params: HttpParams = new HttpParams().set('allImages', 'true');
+    const params = new HttpParams().set('allImages', 'true');
 
     return this.apiService.get<ProductData>(`products/${sku}`, { params }).pipe(map(ProductMapper.fromData));
   }
@@ -46,7 +46,7 @@ export class ProductsService {
       return throwError('getCategoryProducts() called without categoryUniqueId');
     }
 
-    let params: HttpParams = new HttpParams()
+    let params = new HttpParams()
       .set('attrs', 'sku,salePrice,listPrice,availability,manufacturer,image')
       .set('returnSortKeys', 'true');
     if (sortKey) {
