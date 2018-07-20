@@ -11,6 +11,7 @@
     "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
+    "no-static-this": true,
     "arrow-return-shorthand": [true, "multiline"],
     "only-arrow-functions": [true, "allow-named-functions"],
     "arrow-parens": [true, "ban-single-arg-parens"],
