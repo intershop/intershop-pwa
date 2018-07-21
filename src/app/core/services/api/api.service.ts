@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable, OperatorFunction } from 'rxjs';
-import { catchError, defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, defaultIfEmpty, filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
 import { Link } from '../../../models/link/link.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { CoreState } from '../../store/core.state';
@@ -20,6 +20,22 @@ export function unpackEnvelope<T>(): OperatorFunction<{ elements: T[] }, T[]> {
       filter(data => !!data.elements && !!data.elements.length),
       map(data => data.elements),
       defaultIfEmpty([])
+    );
+}
+
+/**
+ * Pipable operator for link translation (resolving one single link).
+ * @param apiService  The API service to be used for the link translation.
+ * @returns           The link resolved to its actual REST response data.
+ */
+export function resolveLink<T>(apiService: ApiService): OperatorFunction<Link, T> {
+  return source$ =>
+    source$.pipe(
+      // check if link data is propery formatted
+      filter(link => !!link && link.type === 'Link' && !!link.uri),
+      throwIfEmpty(() => new Error('link was not properly formatted')),
+      // flat map to API request
+      switchMap(item => apiService.get<T>(`${apiService.icmServerURL}/${item.uri}`))
     );
 }
 
