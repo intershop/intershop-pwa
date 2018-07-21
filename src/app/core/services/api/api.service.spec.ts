@@ -7,7 +7,7 @@ import { Link } from '../../../models/link/link.model';
 import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes, ServerError } from '../../store/error';
 import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
-import { ApiService, resolveLinks, unpackEnvelope } from './api.service';
+import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('Api Service', () => {
@@ -253,6 +253,38 @@ describe('Api Service', () => {
 
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush({});
+    });
+
+    it('should resolve data when resolveLink is used', done => {
+      apiService
+        .get('something')
+        .pipe(resolveLink(apiService))
+        .subscribe(data => {
+          expect(data).toHaveProperty('data', 'dummy');
+          done();
+        });
+
+      httpTestingController.expectOne(`${BASE_URL}/site/something`).flush({ type: 'Link', uri: 'site/dummy' });
+
+      httpTestingController.expectOne(`${BASE_URL}/site/dummy`).flush({ data: 'dummy' });
+    });
+
+    it('should not resolve data when resolveLink is used and an invalid link is supplied', done => {
+      apiService
+        .get('something')
+        .pipe(resolveLink(apiService))
+        .subscribe(
+          fail,
+          err => {
+            expect(err).toBeTruthy();
+            done();
+          },
+          fail
+        );
+
+      httpTestingController.expectOne(`${BASE_URL}/site/something`).flush({ uri: 'site/dummy' });
+
+      httpTestingController.expectNone(`${BASE_URL}/site/dummy`);
     });
   });
 });
