@@ -37,7 +37,7 @@ import { BasketService } from '../services/basket/basket.service';
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
 
-let basketId: string = null;
+let basketId: string;
 
 describe('Checkout System', () => {
   const DEBUG = false;
@@ -73,8 +73,8 @@ describe('Checkout System', () => {
     position: 1,
     quantity: { type: 'test', value: 1 },
     productSKU: 'test',
-    price: null,
-    singleBasePrice: null,
+    price: undefined,
+    singleBasePrice: undefined,
     isHiddenGift: false,
     isFreeGift: false,
     inStock: false,
@@ -140,7 +140,7 @@ describe('Checkout System', () => {
       return of(newBasket);
     });
     when(basketServiceMock.getBasketItems(anything())).thenReturn(of([lineItem]));
-    when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(null));
+    when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
     when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));
 
     const productsServiceMock = mock(ProductsService);
@@ -237,7 +237,7 @@ describe('Checkout System', () => {
     });
 
     afterEach(() => {
-      basketId = null;
+      basketId = undefined;
     });
   });
 });

@@ -48,7 +48,7 @@ describe('Products Selectors', () => {
     });
 
     it('should not select a current product when used', () => {
-      // TODO: shouldn't this be null?
+      // TODO: shouldn't this be undefined?
       expect(selected$).toBeObservable(c(undefined));
       expect(selectedId$).toBeObservable(c(undefined));
     });

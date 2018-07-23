@@ -127,7 +127,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
         securityQuestion: formCustomer.credentials.securityQuestion,
         securityQuestionAnswer: formCustomer.credentials.securityQuestionAnswer,
       },
-      birthday: formCustomer.birthday === '' ? null : formCustomer.birthday, // TODO: see IS-22276
+      birthday: formCustomer.birthday === '' ? undefined : formCustomer.birthday, // TODO: see IS-22276
       preferredLanguage: formCustomer.preferredLanguage,
     };
 

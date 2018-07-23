@@ -36,7 +36,7 @@ describe('Logout Component', () => {
   });
 
   it('should not render logout link if user is not logged in', () => {
-    component.user = null;
+    component.user = undefined;
 
     fixture.detectChanges();
     expect(element.querySelector('a[data-testing-id=link-logout]')).toBeFalsy();

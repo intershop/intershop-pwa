@@ -123,12 +123,12 @@ describe('Input Component', () => {
 
   // error are thrown if required input parameters are missing
   it('should throw an error if there is no form set as input parameter', () => {
-    component.form = null;
+    component.form = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should throw an error if there is no controlName set as input parameter', () => {
-    component.controlName = null;
+    component.controlName = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 

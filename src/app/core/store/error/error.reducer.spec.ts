@@ -9,7 +9,7 @@ import { errorReducer, initialState } from './error.reducer';
 describe('Error Reducer', () => {
   describe('initialState', () => {
     it('should not have a error when unmodified', () => {
-      expect(initialState.current).toBeNull();
+      expect(initialState.current).toBeUndefined();
     });
 
     it('should not have an type when unmodified', () => {

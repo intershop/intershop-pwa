@@ -37,19 +37,19 @@ describe('Basket Cost Summary Component', () => {
   });
 
   it('should set estimated flag to true if there is no invoice address', () => {
-    component.basket.invoiceToAddress = null;
+    component.basket.invoiceToAddress = undefined;
     component.ngOnChanges();
     expect(component.estimated).toBeTruthy();
   });
 
   it('should set estimated flag to true if there is no shipping address', () => {
-    component.basket.commonShipToAddress = null;
+    component.basket.commonShipToAddress = undefined;
     component.ngOnChanges();
     expect(component.estimated).toBeTruthy();
   });
 
   it('should set estimated flag to true if there is no shipping method', () => {
-    component.basket.commonShippingMethod = null;
+    component.basket.commonShippingMethod = undefined;
     component.ngOnChanges();
     expect(component.estimated).toBeTruthy();
   });

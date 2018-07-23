@@ -48,7 +48,7 @@ describe('Select Country Component', () => {
 
   it('should display countries if component input changes', () => {
     const changes: SimpleChanges = {
-      countries: new SimpleChange(null, component.countries, false),
+      countries: new SimpleChange(undefined, component.countries, false),
     };
     component.ngOnChanges(changes);
 

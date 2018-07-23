@@ -24,7 +24,7 @@ describe('Error Selectors', () => {
 
   it('should have nothing when just initialized', done => {
     getErrorState$.subscribe(error => {
-      expect(error).toBeNull();
+      expect(error).toBeUndefined();
       done();
     });
   });

@@ -41,7 +41,7 @@ describe('Api Service Errorhandler', () => {
       const result$ = apiServiceErrorHandler.dispatchCommunicationErrors(dataSlice.error);
 
       verify(storeMock$.dispatch(anything())).never();
-      expect(result$).toBeObservable(cold('#', null, dataSlice.error));
+      expect(result$).toBeObservable(cold('#', undefined, dataSlice.error));
     });
   });
 

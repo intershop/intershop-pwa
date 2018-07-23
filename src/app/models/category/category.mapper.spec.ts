@@ -8,7 +8,7 @@ describe('Category Mapper', () => {
   describe('mapCategoryPath()', () => {
     it('should throw on falsy or empty input', () => {
       expect(() => CategoryMapper.mapCategoryPath(undefined)).toThrowError('input is falsy');
-      expect(() => CategoryMapper.mapCategoryPath(null)).toThrow('input is falsy');
+      expect(() => CategoryMapper.mapCategoryPath(undefined)).toThrow('input is falsy');
       expect(() => CategoryMapper.mapCategoryPath([])).toThrow('input is falsy');
     });
 
@@ -29,7 +29,6 @@ describe('Category Mapper', () => {
   describe('categoriesFromCategoryPath()', () => {
     it('should return empty tree on falsy or empty imput', () => {
       expect(CategoryMapper.categoriesFromCategoryPath(undefined)).toEqual(categoryTree());
-      expect(CategoryMapper.categoriesFromCategoryPath(null)).toEqual(categoryTree());
       expect(CategoryMapper.categoriesFromCategoryPath([])).toEqual(categoryTree());
     });
 
@@ -63,9 +62,7 @@ describe('Category Mapper', () => {
 
   describe('computeCompleteness()', () => {
     it('should return -1 for falsy inputs', () => {
-      expect(CategoryMapper.computeCompleteness(null)).toEqual(-1);
       expect(CategoryMapper.computeCompleteness(undefined)).toEqual(-1);
-      expect(CategoryMapper.computeCompleteness(null)).toEqual(-1);
     });
     it('should return 0 for input from top level call', () => {
       expect(CategoryMapper.computeCompleteness({ uri: 'some' } as CategoryData)).toEqual(0);
@@ -107,7 +104,7 @@ describe('Category Mapper', () => {
 
   describe('fromData', () => {
     it(`should throw error when input is falsy`, () => {
-      expect(() => CategoryMapper.fromData(null)).toThrow();
+      expect(() => CategoryMapper.fromData(undefined)).toThrow();
     });
 
     it(`should return something truthy when mapping a raw CategoryData`, () => {

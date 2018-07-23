@@ -1,13 +1,13 @@
 import { ErrorGroupTypes, HttpError } from './error.actions';
 
 export interface ErrorState {
-  current: Error | null;
+  current: Error;
   type: String;
 }
 
 export const initialState: ErrorState = {
-  current: null,
-  type: null,
+  current: undefined,
+  type: undefined,
 };
 
 export function errorReducer(state = initialState, action: HttpError): ErrorState {

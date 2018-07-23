@@ -47,7 +47,7 @@ describe('Basket Selectors', () => {
 
   describe('with empty state', () => {
     it('should be present if no basket is present', () => {
-      expect(basket$).toBeObservable(c(null));
+      expect(basket$).toBeObservable(c(undefined));
     });
   });
 
@@ -87,7 +87,7 @@ describe('Basket Selectors', () => {
     it('should set loading to false and set error state', () => {
       store$.dispatch(new LoadBasketFail({ message: 'invalid' } as HttpErrorResponse));
       expect(basketLoading$).toBeObservable(c(false));
-      expect(basket$).toBeObservable(c(null));
+      expect(basket$).toBeObservable(c(undefined));
       expect(basketError$).toBeObservable(c({ message: 'invalid' }));
     });
   });

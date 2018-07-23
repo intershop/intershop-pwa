@@ -21,14 +21,14 @@ describe('Locale Selectors', () => {
   });
 
   it('should have nothing when just initialized', () => {
-    expect(getCurrentLocale(store$.state)).toBeNull();
+    expect(getCurrentLocale(store$.state)).toBeUndefined();
     expect(getAvailableLocales(store$.state)).toBeEmpty();
   });
 
   it('should select a available locales when SetAvailableLocales action is reduced', () => {
     store$.dispatch(new SetAvailableLocales(locales));
 
-    expect(getCurrentLocale(store$.state)).toBeNull();
+    expect(getCurrentLocale(store$.state)).toBeUndefined();
     expect(getAvailableLocales(store$.state)).toEqual(locales);
   });
 

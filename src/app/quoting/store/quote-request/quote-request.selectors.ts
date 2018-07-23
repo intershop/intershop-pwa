@@ -24,7 +24,7 @@ export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, stat
 export const getQuoteRequstItems = createSelector(getQuoteRequestState, state => state.quoteRequestItems);
 
 export const getActiveQuoteRequest = createSelector(getQuoteRequestState, state => {
-  const quoteRequest = state.quoteRequests.filter(item => item.editable === true).pop() || null;
+  const quoteRequest = state.quoteRequests.filter(item => item.editable === true).pop() || undefined;
   if (quoteRequest) {
     return {
       ...quoteRequest,
@@ -32,7 +32,7 @@ export const getActiveQuoteRequest = createSelector(getQuoteRequestState, state 
     } as QuoteRequest;
   }
 
-  return null;
+  return;
 });
 
 /**
@@ -46,7 +46,7 @@ export const getSelectedQuoteRequest = createSelector(
   getProductEntities,
   (quote, quoteRequestItems, products) =>
     !quote
-      ? null
+      ? undefined
       : {
           ...quote,
           state: QuoteRequestHelper.getQuoteRequestState(quote),

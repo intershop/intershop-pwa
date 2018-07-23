@@ -146,10 +146,7 @@
       true,
       "always"
     ],
-    "triple-equals": [
-      true,
-      "allow-null-check"
-    ],
+    "triple-equals": true,
     "typedef-whitespace": [
       true,
       {
@@ -163,6 +160,7 @@
     "unified-signatures": true,
     "ban-comma-operator": true,
     "no-invalid-template-strings": true,
+    "no-null-keyword": true,
     "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
       true,

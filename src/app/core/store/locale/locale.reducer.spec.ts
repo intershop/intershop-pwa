@@ -5,7 +5,7 @@ import { initialState, localeReducer } from './locale.reducer';
 describe('Locale Reducer', () => {
   describe('initialState', () => {
     it('should have nothing in it when unmodified', () => {
-      expect(initialState.current).toBeNull();
+      expect(initialState.current).toBeUndefined();
       expect(initialState.entities).toBeEmpty();
       expect(initialState.ids).toBeEmpty();
     });
@@ -39,7 +39,7 @@ describe('Locale Reducer', () => {
       const action = new SetAvailableLocales(locales);
       const response = localeReducer(initialState, action);
 
-      expect(response.current).toBeNull();
+      expect(response.current).toBeUndefined();
       expect(response.ids).toEqual(locales.map(locale => locale.lang));
       expect(response.entities['cn']).toBeTruthy();
     });

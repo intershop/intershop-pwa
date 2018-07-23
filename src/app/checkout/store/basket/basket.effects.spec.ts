@@ -89,7 +89,7 @@ describe('Basket Effects', () => {
 
   describe('updateBasket$', () => {
     it('should call the basketService for updateBasket', done => {
-      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(null));
+      when(basketServiceMock.updateBasket(anyString(), anything())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -187,7 +187,7 @@ describe('Basket Effects', () => {
           name: 'NAME',
           quantity: { value: 1 },
           productSKU: 'SKU',
-          price: null,
+          price: undefined,
         } as BasketItem,
       ]);
       const completion = new LoadProduct('SKU');
@@ -200,7 +200,7 @@ describe('Basket Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(of(null));
+      when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(of(undefined));
     });
 
     it('should call the basketService for addItemsToBasket', done => {
@@ -402,7 +402,7 @@ describe('Basket Effects', () => {
             name: 'NAME',
             quantity: { value: 1 },
             productSKU: 'SKU',
-            price: null,
+            price: undefined,
           } as BasketItem,
         ])
       );
@@ -455,7 +455,7 @@ describe('Basket Effects', () => {
             name: 'NAME',
             quantity: { value: 1 },
             productSKU: 'SKU',
-            price: null,
+            price: undefined,
           } as BasketItem,
         ])
       );
@@ -553,7 +553,7 @@ describe('Basket Effects', () => {
 
   describe('deleteBasketItem$', () => {
     beforeEach(() => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of(null));
+      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(of(undefined));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -618,7 +618,7 @@ describe('Basket Effects', () => {
         new basketActions.LoadBasketSuccess({
           id: 'BID',
           lineItems: [],
-          paymentMethod: null,
+          paymentMethod: undefined,
         } as Basket)
       );
     });

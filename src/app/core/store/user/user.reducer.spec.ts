@@ -23,11 +23,11 @@ describe('User Reducer', () => {
 
   describe('initialState', () => {
     it('should not have a customer when unmodified', () => {
-      expect(initialState.customer).toBeNull();
+      expect(initialState.customer).toBeUndefined();
     });
 
     it('should not have a user when unmodified', () => {
-      expect(initialState.user).toBeNull();
+      expect(initialState.user).toBeUndefined();
     });
 
     it('should not have an error when unmodified', () => {
@@ -121,7 +121,7 @@ describe('User Reducer', () => {
 
       const newState = userReducer(oldState, new LogoutUser());
 
-      expect(newState).toEqual({ ...initialState, customer: null, user: null, authorized: false });
+      expect(newState).toEqual({ ...initialState, customer: undefined, user: undefined, authorized: false });
     });
 
     it('should unset authorized and customer when reducing LoginUser', () => {
@@ -129,7 +129,7 @@ describe('User Reducer', () => {
 
       const newState = userReducer(oldState, new LoginUser({ login: 'dummy', password: 'dummy' }));
 
-      expect(newState).toEqual({ ...initialState, customer: null, user: null, authorized: false });
+      expect(newState).toEqual({ ...initialState, customer: undefined, user: undefined, authorized: false });
     });
   });
 });

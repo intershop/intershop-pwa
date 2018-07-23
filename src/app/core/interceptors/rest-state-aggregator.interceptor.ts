@@ -51,7 +51,7 @@ export class RestStateAggregatorInterceptor implements HttpInterceptor {
         );
       } else if (!!this.cache[key]) {
         const content = JSON.parse(this.cache[key]);
-        this.cache[key] = null;
+        this.cache[key] = undefined;
         this.persistCacheInState();
         return of(new HttpResponse<any>({ body: content }));
       }

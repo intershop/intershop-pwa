@@ -47,7 +47,7 @@ describe('Select Region Component', () => {
 
   it('should get and display regions for a certain country', () => {
     const changes: SimpleChanges = {
-      regions: new SimpleChange(null, component.regions, false),
+      regions: new SimpleChange(undefined, component.regions, false),
     };
     component.ngOnChanges(changes);
 
