@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,6 +12,7 @@ import { Basket } from '../../../../models/basket/basket.model';
 })
 export class CheckoutReviewComponent implements OnInit {
   @Input() basket: Basket;
+  @Input() error: HttpErrorResponse;
   @Output() createOrder = new EventEmitter<Basket>();
 
   form: FormGroup;
