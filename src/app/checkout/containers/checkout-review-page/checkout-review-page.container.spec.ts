@@ -19,7 +19,7 @@ describe('Checkout Review Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-review',
           template: 'Checkout Review Component',
-          inputs: ['basket'],
+          inputs: ['basket', 'error'],
         }),
       ],
       imports: [
