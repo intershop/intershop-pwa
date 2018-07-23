@@ -97,6 +97,7 @@
     ],
     "no-angle-bracket-type-assertion": true,
     "no-misused-new": true,
+    "new-parens": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
     "no-string-literal": true,
