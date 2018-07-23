@@ -192,7 +192,6 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "no-access-missing-member": false,
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": true,
     "no-duplicate-imports": true,
