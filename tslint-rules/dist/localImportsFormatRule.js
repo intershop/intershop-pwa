@@ -34,7 +34,7 @@ var LocalImportsFormatPluginWalker = (function (_super) {
         var text = token.getText();
         if (applyLikeAutoImportPlugin) {
             if (text.charAt(1) === '.' && text.charAt(2) !== '/') {
-                var replaceString = text.substring(0, 1) + './' + text.substring(1, text.length);
+                var replaceString = text.substring(0, 1) + "./" + text.substring(1, text.length);
                 var fix = new Lint.Replacement(token.getStart(), token.getWidth(), replaceString);
                 this.addFailureAtNode(token, 'local import statements must start with "./", consider using AutoImport Plugin', fix);
             }

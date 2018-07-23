@@ -36,7 +36,7 @@ export class SearchParameterMapper {
           searchParameter.sortings = sortings;
         }
       } else {
-        searchParameter.data += '&' + paramName + '=' + paramValue;
+        searchParameter.data += `&${paramName}=${paramValue}`;
       }
     });
 
@@ -50,7 +50,7 @@ export class SearchParameterMapper {
     let data = '';
 
     if (searchParameter.queryTerm) {
-      data += '&' + '@QueryTerm=' + searchParameter.queryTerm;
+      data += '&@QueryTerm=' + searchParameter.queryTerm;
     }
     if (searchParameter.data) {
       data += searchParameter.data;
@@ -58,10 +58,10 @@ export class SearchParameterMapper {
     if (searchParameter.sortings) {
       searchParameter.sortings.forEach(sorting => {
         if (sorting.endsWith('-asc')) {
-          data += '&@Sort.' + sorting.substr(0, sorting.length - '-asc'.length) + '=0';
+          data += `&@Sort.${sorting.substr(0, sorting.length - '-asc'.length)}=0`;
         }
         if (sorting.endsWith('-desc')) {
-          data += '&@Sort.' + sorting.substr(0, sorting.length - '-desc'.length) + '=1';
+          data += `&@Sort.${sorting.substr(0, sorting.length - '-desc'.length)}=1`;
         }
       });
     }

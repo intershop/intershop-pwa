@@ -86,7 +86,7 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     ) {
       day = day.length === 1 ? '0' + day : day;
       month = month.length === 1 ? '0' + month : month;
-      birthday = year + '-' + month + '-' + day;
+      birthday = `${year}-${month}-${day}`;
     }
 
     this.form.get(this.controlName).setValue(birthday);

@@ -22,7 +22,7 @@ export class RegistrationService {
   signinUser(loginCredentials: LoginCredentials): Observable<Customer> {
     const headers = new HttpHeaders().set(
       'Authorization',
-      'BASIC ' + btoa(loginCredentials.login + ':' + loginCredentials.password)
+      'BASIC ' + btoa(`${loginCredentials.login}:${loginCredentials.password}`)
     );
     return this.apiService.get<Customer>('customers/-', { headers });
   }

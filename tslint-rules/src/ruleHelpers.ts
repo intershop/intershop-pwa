@@ -11,16 +11,16 @@ export class RuleHelpers {
       console.log('child count: ' + node.getChildCount());
       for (let index = 0; index < node.getChildCount(); index++) {
         const c = node.getChildAt(index);
-        console.log('child #' + index + ' ' + c.kind + ': ' + c.getText());
+        console.log(`child #${index} ${c.kind}:${c.getText()}`);
       }
       if (dumpTokens) {
         let pointer = node.getFirstToken();
         while (pointer !== node.getLastToken()) {
-          console.log(pointer.kind + ':' + pointer.getText());
+          console.log(`${pointer.kind}:${pointer.getText()}`);
           pointer = getNextToken(pointer);
         }
         if (pointer) {
-          console.log(pointer.kind + ':' + pointer.getText());
+          console.log(`${pointer.kind}:${pointer.getText()}`);
         }
       }
     } else {

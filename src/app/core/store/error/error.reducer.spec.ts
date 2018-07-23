@@ -52,7 +52,7 @@ describe('Error Reducer', () => {
 
   using(dataProvider, dataSlice => {
     it(`should return ${
-      dataSlice.expected === initialState ? ' initialState' : " '" + dataSlice.expected.type + "' "
+      dataSlice.expected === initialState ? ' initialState' : ` '${dataSlice.expected.type}'`
     } when Action ${dataSlice.action.type} is reduced on state ${dataSlice.state.type}`, () => {
       const newState = errorReducer(dataSlice.state, dataSlice.action);
       expect(newState).toEqual(dataSlice.expected);

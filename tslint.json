@@ -220,6 +220,7 @@
     "meaningful-naming-in-tests": { "severity": "warning" },
     "prefer-method-signature": true,
     "prefer-switch": true,
+    "prefer-template": [true, "allow-single-concat"],
     "use-async-synchronisation-in-tests": true,
     "use-jest-extended-matchers-in-tests": true,
     "no-any": { "severity": "warning" },

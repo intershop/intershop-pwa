@@ -46,7 +46,7 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
       missingReinit.forEach(key =>
         this.addFailureAtNode(
           key,
-          'variable "' + RuleHelpers.extractVariableNameInDeclaration(key) + '" is not re-initialized in beforeEach'
+          `variable "${RuleHelpers.extractVariableNameInDeclaration(key)}" is not re-initialized in beforeEach`
         )
       );
     }
