@@ -108,7 +108,7 @@ export class MockInterceptor implements HttpInterceptor {
           .keys()
           .sort((a, b) => a.localeCompare(b))
           .map(key => `${this.sanitize(key)}_${this.sanitize(params.get(key))}`)
-          .reduce((a, b) => a + '_' + b, '');
+          .reduce((a, b) => `${a}_${b}`, '');
   }
 
   private urlHasToBeMocked(url: string): boolean {
@@ -141,7 +141,7 @@ export class MockInterceptor implements HttpInterceptor {
 
   matchPath(requestedPath: string, pathArray: string[]) {
     for (const configPath of pathArray || []) {
-      if (new RegExp('^' + configPath + '$').test(requestedPath)) {
+      if (new RegExp(`^${configPath}$`).test(requestedPath)) {
         return true;
       }
     }

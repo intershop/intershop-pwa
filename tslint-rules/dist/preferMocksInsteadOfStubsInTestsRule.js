@@ -28,9 +28,7 @@ var PreferMocksInsteadOfStubsInTestsWalker = (function (_super) {
         var classToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(node, typescript_1.SyntaxKind.ClassKeyword);
         var classNameToken = tsutils_1.getNextToken(classToken);
         var className = classNameToken.getText();
-        this.addFailureAtNode(classNameToken, 'Do not use stub classes like "' +
-            className +
-            '" in tests. Use ts-mockito or reusable testhelper classes instead.');
+        this.addFailureAtNode(classNameToken, "Do not use stub classes like \"" + className + "\" in tests. Use ts-mockito or reusable testhelper classes instead.");
         _super.prototype.visitClassDeclaration.call(this, node);
     };
     return PreferMocksInsteadOfStubsInTestsWalker;

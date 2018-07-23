@@ -15,7 +15,7 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
     return fileName
       .split(/[\.-]+/)
       .map(part => part.substring(0, 1).toUpperCase() + part.substring(1))
-      .reduce((acc, val) => acc + ' ' + val);
+      .reduce((acc, val) => `${acc} ${val}`);
   }
 
   visitSourceFile(sourceFile: SourceFile) {
@@ -57,7 +57,7 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
             `describe what the component is doing, not what the test is doing (found "${description}")`
           );
         } else if (!DESCRIPTION_REGEX.test(description)) {
-          this.addFailureAtNode(descriptionToken, '"' + description + '" does not match ' + DESCRIPTION_REGEX);
+          this.addFailureAtNode(descriptionToken, `"${description}" does not match ${DESCRIPTION_REGEX}`);
         }
       } else {
         this.addFailureAtNode(node, 'could not find a valid description');

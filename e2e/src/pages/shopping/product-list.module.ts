@@ -6,10 +6,10 @@ export class ProductListModule {
   }
 
   gotoProductDetailPageBySku(sku) {
-    $('ish-product-tile div[data-testing-sku="' + sku + '"]').click();
+    $(`ish-product-tile div[data-testing-sku="${sku}"]`).click();
   }
 
   addProductToCompareBySku(sku) {
-    $('ish-product-tile div[data-testing-sku="' + sku + '"] button.add-to-compare').click();
+    $(`ish-product-tile div[data-testing-sku="${sku}"] button.add-to-compare`).click();
   }
 }

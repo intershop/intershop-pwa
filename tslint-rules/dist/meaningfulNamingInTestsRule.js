@@ -28,7 +28,7 @@ var MeaningfulNamingInTestsWalker = (function (_super) {
         return fileName
             .split(/[\.-]+/)
             .map(function (part) { return part.substring(0, 1).toUpperCase() + part.substring(1); })
-            .reduce(function (acc, val) { return acc + ' ' + val; });
+            .reduce(function (acc, val) { return acc + " " + val; });
     };
     MeaningfulNamingInTestsWalker.prototype.visitSourceFile = function (sourceFile) {
         if (sourceFile.fileName.endsWith('.spec.ts')) {
@@ -59,7 +59,7 @@ var MeaningfulNamingInTestsWalker = (function (_super) {
                     this.addFailureAtNode(descriptionToken, "describe what the component is doing, not what the test is doing (found \"" + description + "\")");
                 }
                 else if (!DESCRIPTION_REGEX.test(description)) {
-                    this.addFailureAtNode(descriptionToken, '"' + description + '" does not match ' + DESCRIPTION_REGEX);
+                    this.addFailureAtNode(descriptionToken, "\"" + description + "\" does not match " + DESCRIPTION_REGEX);
                 }
             }
             else {
