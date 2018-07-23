@@ -5,9 +5,9 @@ import { Category } from '../category/category.model';
  * View on a {@link Category} with additional methods for navigating to sub categories or category path
  */
 export interface CategoryView extends Category {
-  children: () => CategoryView[];
-  hasChildren: () => boolean;
-  pathCategories: () => CategoryView[];
+  children(): CategoryView[];
+  hasChildren(): boolean;
+  pathCategories(): CategoryView[];
 }
 
 export function createCategoryView(tree: CategoryTree, uniqueId: string): CategoryView {
