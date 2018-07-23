@@ -140,7 +140,7 @@ describe('Category Mapper', () => {
       expect(node).toBeTruthy();
       expect(node.uniqueId).toEqual('1.2');
 
-      expect(tree.edges).toEqual({ '1': ['1.2'] });
+      expect(tree.edges).toEqual({ 1: ['1.2'] });
     });
 
     it(`should handle sub categories on raw CategoryData`, () => {
@@ -160,7 +160,7 @@ describe('Category Mapper', () => {
 
       expect(Object.keys(tree.nodes)).toEqual(['1', '1.2']);
 
-      expect(tree.edges).toEqual({ '1': ['1.2'] });
+      expect(tree.edges).toEqual({ 1: ['1.2'] });
     });
   });
 });
