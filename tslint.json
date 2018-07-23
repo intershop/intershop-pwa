@@ -162,6 +162,7 @@
     ],
     "unified-signatures": true,
     "ban-comma-operator": true,
+    "no-invalid-template-strings": true,
     "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
       true,
