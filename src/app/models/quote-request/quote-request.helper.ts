@@ -3,7 +3,7 @@ import { QuoteRequest, QuoteRequestStateType } from './quote-request.model';
 
 export class QuoteRequestHelper {
   static getQuoteRequestState(quoteRequest: QuoteRequest | QuoteRequestData): QuoteRequestStateType {
-    if (quoteRequest.submitted === true) {
+    if (quoteRequest.submitted) {
       return 'Submitted';
     }
 
