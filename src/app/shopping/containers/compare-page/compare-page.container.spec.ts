@@ -65,8 +65,8 @@ describe('Compare Page Container', () => {
           shopping: {
             products: {
               entities: {
-                '1': { sku: '1' },
-                '2': { sku: '2' },
+                1: { sku: '1' },
+                2: { sku: '2' },
               },
             },
             compare: {
