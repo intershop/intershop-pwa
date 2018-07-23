@@ -47,6 +47,7 @@ class MeaningfulNamingInTestsWalker extends Lint.RuleWalker {
       const descriptionToken = getNextToken(getNextToken(node));
       if (!!descriptionToken) {
         let description = descriptionToken.getText();
+        // tslint:disable-next-line:no-invalid-template-strings
         if (description.indexOf('${') >= 0) {
           description = descriptionToken.parent.getText();
         }
