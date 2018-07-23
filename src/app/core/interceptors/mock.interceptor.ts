@@ -140,8 +140,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   matchPath(requestedPath: string, pathArray: string[]) {
-    pathArray = pathArray || [];
-    for (const configPath of pathArray) {
+    for (const configPath of pathArray || []) {
       if (new RegExp('^' + configPath + '$').test(requestedPath)) {
         return true;
       }
