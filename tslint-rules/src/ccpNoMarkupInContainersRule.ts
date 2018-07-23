@@ -9,7 +9,7 @@ class CCPNoMarkupInContainersWalker extends Lint.RuleWalker {
 
   constructor(sourceFile: SourceFile, options: Lint.IOptions) {
     super(sourceFile, options);
-    this.patterns = options['ruleArguments'][0]['patterns'];
+    this.patterns = options.ruleArguments[0].patterns;
   }
 
   visitSourceFile(sourceFile: SourceFile) {

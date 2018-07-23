@@ -41,7 +41,7 @@ describe('Locale Reducer', () => {
 
       expect(response.current).toBeUndefined();
       expect(response.ids).toEqual(locales.map(locale => locale.lang));
-      expect(response.entities['cn']).toBeTruthy();
+      expect(response.entities.cn).toBeTruthy();
     });
 
     it('should reset available locales when reduced', () => {
@@ -49,14 +49,14 @@ describe('Locale Reducer', () => {
       let response = localeReducer(initialState, action);
 
       expect(response.ids).toEqual(['cn', 'ru']);
-      expect(response.entities['cn']).toBeTruthy();
+      expect(response.entities.cn).toBeTruthy();
 
       action = new SetAvailableLocales([{ lang: 'de' }, { lang: 'jp' }] as Locale[]);
       response = localeReducer(response, action);
 
       expect(response.ids).toEqual(['de', 'jp']);
-      expect(response.entities['cn']).toBeFalsy();
-      expect(response.entities['de']).toBeTruthy();
+      expect(response.entities.cn).toBeFalsy();
+      expect(response.entities.de).toBeTruthy();
     });
   });
 });

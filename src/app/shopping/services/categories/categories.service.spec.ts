@@ -36,7 +36,8 @@ describe('Categories Service', () => {
       verify(apiServiceMock.get('categories', anything())).once();
       const args = capture(apiServiceMock.get).last();
       expect(args[0]).toBe('categories');
-      const params = args[1]['params'] as HttpParams;
+      // tslint:disable-next-line:no-any
+      const params = (args[1] as any).params as HttpParams;
       expect(params).toBeTruthy();
       expect(params.get('view')).toBe('tree');
       expect(params.get('limit')).toBe('1');

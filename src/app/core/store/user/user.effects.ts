@@ -57,8 +57,8 @@ export class UserEffects {
     tap(() => {
       const state = this.router.routerState;
       let navigateTo: string;
-      if (state && state.snapshot && state.snapshot.root.queryParams['returnUrl']) {
-        navigateTo = state.snapshot.root.queryParams['returnUrl'];
+      if (state && state.snapshot && state.snapshot.root.queryParams.returnUrl) {
+        navigateTo = state.snapshot.root.queryParams.returnUrl;
       } else {
         navigateTo = '/account';
       }

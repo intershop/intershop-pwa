@@ -18,8 +18,8 @@ var NoSuspiciousVariableInitInTestsWalker = (function (_super) {
     function NoSuspiciousVariableInitInTestsWalker(sourceFile, options) {
         var _this = _super.call(this, sourceFile, options) || this;
         _this.excludes = [];
-        if (options['ruleArguments'] && options['ruleArguments'][0] && options['ruleArguments'][0]['exclude']) {
-            _this.excludes = options['ruleArguments'][0]['exclude'];
+        if (options.ruleArguments && options.ruleArguments[0] && options.ruleArguments[0].exclude) {
+            _this.excludes = options.ruleArguments[0].exclude;
         }
         _this.interestingVariables = [];
         _this.correctlyReinitializedVariables = [];

@@ -186,10 +186,8 @@ describe('Product Price Component', () => {
 
     it('should generate rich snippet meta tag when sale price is available', () => {
       fixture.detectChanges();
-      expect(element.querySelector('meta[itemprop="price"]').attributes['content'].value === '10.00').toBeTruthy();
-      expect(
-        element.querySelector('meta[itemprop="priceCurrency"]').attributes['content'].value === 'USD'
-      ).toBeTruthy();
+      expect(element.querySelector('meta[itemprop="price"]').getAttribute('content')).toEqual('10.00');
+      expect(element.querySelector('meta[itemprop="priceCurrency"]').getAttribute('content')).toEqual('USD');
     });
   });
 });

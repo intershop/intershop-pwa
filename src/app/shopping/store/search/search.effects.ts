@@ -52,7 +52,7 @@ export class SearchEffects {
   @Effect()
   triggerSearch$ = this.actions$.pipe(
     ofRoute('search/:searchTerm'),
-    map((action: RouteNavigation) => action.payload.params['searchTerm']),
+    map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
     distinctUntilChanged(),
     concatMap(searchTerm => [new ResetPagingInfo(), new SearchProducts(searchTerm)])
