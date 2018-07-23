@@ -691,7 +691,7 @@ describe('Basket Effects', () => {
 
   describe('createOrder$', () => {
     it('should call the orderService for createOrder', done => {
-      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(null));
+      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(undefined));
       const payload = BasketMockData.getBasket();
       const action = new basketActions.CreateOrder(payload);
       actions$ = of(action);

@@ -11,14 +11,18 @@ describe('Order Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    when(apiService.icmServerURL).thenReturn('http://server');
     orderService = new OrderService(instance(apiService));
   });
 
   it("should create an order when 'createOrder' is called", done => {
-    when(apiService.post(anything(), anything())).thenReturn(of({}));
+    when(apiService.post(anything(), anything())).thenReturn(of({ type: 'Link', uri: 'site/-/orders/orderid' }));
+    when(apiService.get(anything())).thenReturn(of({ id: 'basket' }));
 
-    orderService.createOrder(basketMock, true).subscribe(() => {
+    orderService.createOrder(basketMock, true).subscribe(data => {
       verify(apiService.post('orders', anything())).once();
+      verify(apiService.get('http://server/site/-/orders/orderid')).once();
+      expect(data).toHaveProperty('id', 'basket');
       done();
     });
   });
