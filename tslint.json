@@ -161,6 +161,7 @@
       }
     ],
     "unified-signatures": true,
+    "ban-comma-operator": true,
     "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
       true,
