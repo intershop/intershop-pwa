@@ -74,9 +74,9 @@ describe('Locale Effects', () => {
       expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
     });
 
-    it('should trigger SelectLocale with null locale when SetAvailableLocales action was received with no locales', () => {
+    it('should trigger SelectLocale with undefined locale when SetAvailableLocales action was received with no locales', () => {
       const action = new SetAvailableLocales([]);
-      const expected = new SelectLocale(null);
+      const expected = new SelectLocale(undefined);
 
       actions$ = hot('-a', { a: action });
 

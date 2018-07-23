@@ -13,11 +13,11 @@ export interface BasketState {
 }
 
 export const initialState: BasketState = {
-  basket: null,
+  basket: undefined,
   lineItems: [],
   payments: [],
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export function basketReducer(state = initialState, action: BasketAction): BasketState {

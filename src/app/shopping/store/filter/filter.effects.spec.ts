@@ -215,7 +215,7 @@ describe('Filter Effects', () => {
 
   describe('loadFilterForSearchIfSearchSuccess$', () => {
     it('should trigger LoadFilterForSearch for SearchProductsSuccess action', () => {
-      const action = new SearchProductsSuccess({ searchTerm: 'a', products: null });
+      const action = new SearchProductsSuccess({ searchTerm: 'a', products: undefined });
 
       const completion = new fromActions.LoadFilterForSearch('a');
       actions$ = hot('a', { a: action });

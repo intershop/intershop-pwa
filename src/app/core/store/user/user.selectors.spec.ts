@@ -21,8 +21,8 @@ describe('User Selectors', () => {
   });
 
   it('should select no customer/user when no event was sent', () => {
-    expect(getLoggedInCustomer(store$.state)).toBeNull();
-    expect(getLoggedInUser(store$.state)).toBeNull();
+    expect(getLoggedInCustomer(store$.state)).toBeUndefined();
+    expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeFalse();
     expect(getUserError(store$.state)).toBeFalsy();
   });
@@ -32,7 +32,7 @@ describe('User Selectors', () => {
     store$.dispatch(new LoginUserSuccess({ customerNo } as Customer));
 
     expect(getLoggedInCustomer(store$.state)).toHaveProperty('customerNo', customerNo);
-    expect(getLoggedInUser(store$.state)).toBeNull();
+    expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeTrue();
     expect(getUserError(store$.state)).toBeFalsy();
   });
@@ -53,7 +53,7 @@ describe('User Selectors', () => {
     store$.dispatch(new LoginUserSuccess({ type } as Customer));
 
     expect(getLoggedInCustomer(store$.state)).toBeTruthy();
-    expect(getLoggedInUser(store$.state)).toBeNull();
+    expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeTrue();
     expect(getUserError(store$.state)).toBeFalsy();
   });
@@ -63,7 +63,7 @@ describe('User Selectors', () => {
     const type = 'PrivateCustomer';
     store$.dispatch(new LoadCompanyUserSuccess({ firstName, type } as User));
 
-    expect(getLoggedInCustomer(store$.state)).toBeNull();
+    expect(getLoggedInCustomer(store$.state)).toBeUndefined();
     expect(getLoggedInUser(store$.state)).toHaveProperty('firstName', firstName);
     expect(getUserAuthorized(store$.state)).toBeFalse();
     expect(getUserError(store$.state)).toBeFalsy();
@@ -73,8 +73,8 @@ describe('User Selectors', () => {
     const error = { status: 401, headers: new HttpHeaders().set('error-key', 'dummy') } as HttpErrorResponse;
     store$.dispatch(new LoginUserFail(error));
 
-    expect(getLoggedInCustomer(store$.state)).toBeNull();
-    expect(getLoggedInUser(store$.state)).toBeNull();
+    expect(getLoggedInCustomer(store$.state)).toBeUndefined();
+    expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeFalse();
 
     const err = getUserError(store$.state);

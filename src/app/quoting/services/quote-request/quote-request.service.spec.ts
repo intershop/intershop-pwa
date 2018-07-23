@@ -46,58 +46,58 @@ describe('Quote Request Service', () => {
   describe('when not logged in', () => {
     it('should throw error for addProductToQuoteRequest', () => {
       expect(quoteRequestService.addProductToQuoteRequest(undefined, undefined)).toBeObservable(
-        cold('#', null, { message: 'not logged in' })
+        cold('#', undefined, { message: 'not logged in' })
       );
     });
 
     it('should throw error for createQuoteRequestFromQuote', () => {
       expect(
         quoteRequestService.createQuoteRequestFromQuote({ submitted: true, items: [] } as QuoteRequest)
-      ).toBeObservable(cold('#', null, { message: 'not logged in' }));
+      ).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
     it('should throw error for addQuoteRequest', () => {
-      expect(quoteRequestService.addQuoteRequest()).toBeObservable(cold('#', null, { message: 'not logged in' }));
+      expect(quoteRequestService.addQuoteRequest()).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
     it('should throw error for deleteQuoteRequest', () => {
-      expect(quoteRequestService.deleteQuoteRequest(null)).toBeObservable(
-        cold('#', null, { message: 'not logged in' })
+      expect(quoteRequestService.deleteQuoteRequest(undefined)).toBeObservable(
+        cold('#', undefined, { message: 'not logged in' })
       );
     });
 
     it('should throw error for submitQuoteRequest', () => {
-      expect(quoteRequestService.submitQuoteRequest(null)).toBeObservable(
-        cold('#', null, { message: 'not logged in' })
+      expect(quoteRequestService.submitQuoteRequest(undefined)).toBeObservable(
+        cold('#', undefined, { message: 'not logged in' })
       );
     });
 
     it('should throw error for getQuoteRequestItem', () => {
-      expect(quoteRequestService.getQuoteRequestItem(null, null)).toBeObservable(
-        cold('#', null, { message: 'not logged in' })
+      expect(quoteRequestService.getQuoteRequestItem(undefined, undefined)).toBeObservable(
+        cold('#', undefined, { message: 'not logged in' })
       );
     });
 
     it('should throw error for getQuoteRequests', () => {
-      expect(quoteRequestService.getQuoteRequests()).toBeObservable(cold('#', null, { message: 'not logged in' }));
+      expect(quoteRequestService.getQuoteRequests()).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
     it('should throw error for removeItemFromQuoteRequest', () => {
-      expect(quoteRequestService.removeItemFromQuoteRequest(null, null)).toBeObservable(
-        cold('#', null, { message: 'not logged in' })
+      expect(quoteRequestService.removeItemFromQuoteRequest(undefined, undefined)).toBeObservable(
+        cold('#', undefined, { message: 'not logged in' })
       );
     });
 
     it('should throw error for updateQuoteRequest', () => {
-      expect(quoteRequestService.updateQuoteRequest(null, null)).toBeObservable(
-        cold('#', null, { message: 'not logged in' })
+      expect(quoteRequestService.updateQuoteRequest(undefined, undefined)).toBeObservable(
+        cold('#', undefined, { message: 'not logged in' })
       );
     });
 
     it('should throw error for updateQuoteRequestItem', () => {
       expect(
-        quoteRequestService.updateQuoteRequestItem(null, { itemId: undefined, quantity: undefined })
-      ).toBeObservable(cold('#', null, { message: 'not logged in' }));
+        quoteRequestService.updateQuoteRequestItem(undefined, { itemId: undefined, quantity: undefined })
+      ).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
   });
 
@@ -194,7 +194,7 @@ describe('Quote Request Service', () => {
     });
 
     it("should delete quote request when 'deleteQuoteRequest' is called", done => {
-      when(apiService.delete(`customers/CID/users/UID/quoterequests/QRID`)).thenReturn(of(null));
+      when(apiService.delete(`customers/CID/users/UID/quoterequests/QRID`)).thenReturn(of(undefined));
 
       quoteRequestService.deleteQuoteRequest('QRID').subscribe(id => {
         expect(id).toEqual('QRID');
@@ -204,7 +204,7 @@ describe('Quote Request Service', () => {
     });
 
     it("should submit quote request when 'submitQuoteRequest' is called", done => {
-      when(apiService.post(`customers/CID/users/UID/quotes`, anything())).thenReturn(of(null));
+      when(apiService.post(`customers/CID/users/UID/quotes`, anything())).thenReturn(of(undefined));
 
       quoteRequestService.submitQuoteRequest('QRID').subscribe(id => {
         expect(id).toEqual('QRID');
@@ -247,7 +247,7 @@ describe('Quote Request Service', () => {
         ])
       );
 
-      when(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(null));
+      when(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(undefined));
 
       quoteRequestService.addProductToQuoteRequest('sku', 3).subscribe(id => {
         expect(id).toEqual('QRID');
@@ -259,7 +259,7 @@ describe('Quote Request Service', () => {
     it("should post new item to quote request when 'addProductToQuoteRequest' is called and no quote request is present", done => {
       const link = { title: 'QRID' } as Link;
       when(apiService.post(`customers/CID/users/UID/quoterequests`)).thenReturn(of(link));
-      when(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(null));
+      when(apiService.post(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(undefined));
 
       quoteRequestService.addProductToQuoteRequest('sku', 3).subscribe(id => {
         expect(id).toEqual('QRID');
@@ -270,7 +270,7 @@ describe('Quote Request Service', () => {
 
     it("should create quote request and add list of items when 'createQuoteRequestFromQuote' is called", done => {
       when(apiService.post(`customers/CID/users/UID/quoterequests`)).thenReturn(of({ title: 'QRID' } as Link));
-      when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(null));
+      when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(undefined));
 
       quoteRequestService.createQuoteRequestFromQuote({ submitted: true, items: [] } as QuoteRequest).subscribe(() => {
         verify(apiService.post(`customers/CID/users/UID/quoterequests`)).once();
@@ -283,12 +283,14 @@ describe('Quote Request Service', () => {
       expect(
         quoteRequestService.createQuoteRequestFromQuote({ submitted: false, items: [] } as QuoteRequest)
       ).toBeObservable(
-        cold('#', null, { message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' })
+        cold('#', undefined, { message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' })
       );
     });
 
     it("should update line item of quote request when 'updateQuoteRequestItem' is called", done => {
-      when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items/itemId`, anything())).thenReturn(of(null));
+      when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items/itemId`, anything())).thenReturn(
+        of(undefined)
+      );
 
       quoteRequestService.updateQuoteRequestItem('QRID', { itemId: 'itemId', quantity: 1 }).subscribe(id => {
         expect(id).toEqual('QRID');
@@ -298,7 +300,7 @@ describe('Quote Request Service', () => {
     });
 
     it("should remove line item from quote request when 'deleteItemFromQuoteRequest' is called", done => {
-      when(apiService.delete(`customers/CID/users/UID/quoterequests/QRID/items/itemId`)).thenReturn(of(null));
+      when(apiService.delete(`customers/CID/users/UID/quoterequests/QRID/items/itemId`)).thenReturn(of(undefined));
 
       quoteRequestService.removeItemFromQuoteRequest('QRID', 'itemId').subscribe(id => {
         expect(id).toEqual('QRID');

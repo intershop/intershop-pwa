@@ -858,8 +858,8 @@ describe('Shopping System', () => {
 
         const productPageRouting = i.next() as RouteNavigation;
         expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
-        expect(productPageRouting.payload.params['sku']).toEqual('P3');
-        expect(productPageRouting.payload.params['categoryUniqueId']).toEqual('A.123.456');
+        expect(productPageRouting.payload.params.sku).toEqual('P3');
+        expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.456');
 
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
         expect(i.next()).toEqual(new SelectProduct('P3'));
@@ -927,7 +927,7 @@ describe('Shopping System', () => {
 
         const productPageRouting = i.next() as RouteNavigation;
         expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
-        expect(productPageRouting.payload.params['categoryUniqueId']).toEqual('A.123.XXX');
+        expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.XXX');
 
         expect(i.next()).toEqual(new SelectCategory('A.123.XXX'));
         expect(i.next()).toEqual(new LoadCategory('A.123.XXX'));

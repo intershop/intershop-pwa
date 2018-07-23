@@ -37,7 +37,7 @@ describe('Basket Items Summary Component', () => {
   });
 
   it('should not show anything if there are no basket items', () => {
-    component.basket.lineItems = null;
+    component.basket.lineItems = undefined;
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelector('.row')).toBeFalsy();
   });

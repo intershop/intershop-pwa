@@ -48,7 +48,7 @@ describe('Select Language Component', () => {
 
   it('should get and display languages on creation', () => {
     const changes: SimpleChanges = {
-      languages: new SimpleChange(null, component.languages, false),
+      languages: new SimpleChange(undefined, component.languages, false),
     };
     component.ngOnChanges(changes);
     fixture.detectChanges();

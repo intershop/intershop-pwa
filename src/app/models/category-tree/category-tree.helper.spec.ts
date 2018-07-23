@@ -87,11 +87,11 @@ describe('Category Tree Helper', () => {
       const root = CategoryTreeHelper.empty();
       const tree = CategoryTreeHelper.add(root, category);
 
-      expect(tree.nodes['A'].uniqueId).toEqual('A');
+      expect(tree.nodes.A.uniqueId).toEqual('A');
 
       category.uniqueId = 'something';
 
-      expect(tree.nodes['A'].uniqueId).toEqual('A');
+      expect(tree.nodes.A.uniqueId).toEqual('A');
     });
 
     it('should fail if the supplied category has no uniqueId', () => {
@@ -332,12 +332,12 @@ describe('Category Tree Helper', () => {
 
         it('should not change sorting order when merged to left', () => {
           const mergeResult = CategoryTreeHelper.merge(tree, catAbUpdateTree);
-          expect(mergeResult.edges['A']).toEqual(['A.a', 'A.b', 'A.c']);
+          expect(mergeResult.edges.A).toEqual(['A.a', 'A.b', 'A.c']);
         });
 
         it('should not change sorting order when merged to right', () => {
           const mergeResult = CategoryTreeHelper.merge(catAbUpdateTree, tree);
-          expect(mergeResult.edges['A']).toEqual(['A.a', 'A.b', 'A.c']);
+          expect(mergeResult.edges.A).toEqual(['A.a', 'A.b', 'A.c']);
         });
       });
 
@@ -348,24 +348,24 @@ describe('Category Tree Helper', () => {
           const catBUpdateRaw = { ...catBRaw, name: 'update' };
           catBUpdateTree = CategoryMapper.fromData(catBUpdateRaw);
           // increase completeness level to always perform an update
-          catBUpdateTree.nodes['B'].completenessLevel = tree.nodes['B'].completenessLevel + 1;
+          catBUpdateTree.nodes.B.completenessLevel = tree.nodes.B.completenessLevel + 1;
         });
 
         it('should be created', () => {
-          const catBUpdate = catBUpdateTree.nodes['B'];
+          const catBUpdate = catBUpdateTree.nodes.B;
           expect(catBUpdate.name).not.toBeUndefined();
 
-          expect(catBUpdateTree.nodes['B'].completenessLevel).toBeGreaterThan(tree.nodes['B'].completenessLevel);
+          expect(catBUpdateTree.nodes.B.completenessLevel).toBeGreaterThan(tree.nodes.B.completenessLevel);
         });
 
         it('should update category when trees are merged to left', () => {
           const mergeResult = CategoryTreeHelper.merge(tree, catBUpdateTree);
-          expect(mergeResult.nodes['B'].name).not.toBeUndefined();
+          expect(mergeResult.nodes.B.name).not.toBeUndefined();
         });
 
         it('should update category when trees are merged to right', () => {
           const mergeResult = CategoryTreeHelper.merge(catBUpdateTree, tree);
-          expect(mergeResult.nodes['B'].name).not.toBeUndefined();
+          expect(mergeResult.nodes.B.name).not.toBeUndefined();
         });
 
         it('should not change sorting order when merged to left', () => {

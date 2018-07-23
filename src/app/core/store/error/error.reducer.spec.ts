@@ -9,7 +9,7 @@ import { errorReducer, initialState } from './error.reducer';
 describe('Error Reducer', () => {
   describe('initialState', () => {
     it('should not have a error when unmodified', () => {
-      expect(initialState.current).toBeNull();
+      expect(initialState.current).toBeUndefined();
     });
 
     it('should not have an type when unmodified', () => {
@@ -52,7 +52,7 @@ describe('Error Reducer', () => {
 
   using(dataProvider, dataSlice => {
     it(`should return ${
-      dataSlice.expected === initialState ? ' initialState' : " '" + dataSlice.expected.type + "' "
+      dataSlice.expected === initialState ? ' initialState' : ` '${dataSlice.expected.type}'`
     } when Action ${dataSlice.action.type} is reduced on state ${dataSlice.state.type}`, () => {
       const newState = errorReducer(dataSlice.state, dataSlice.action);
       expect(newState).toEqual(dataSlice.expected);

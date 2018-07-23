@@ -43,7 +43,7 @@ describe('Select Address Component', () => {
 
   it('should display addresses if component input changes', () => {
     const changes: SimpleChanges = {
-      addresses: new SimpleChange(null, component.addresses, false),
+      addresses: new SimpleChange(undefined, component.addresses, false),
     };
     component.ngOnChanges(changes);
 

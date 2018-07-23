@@ -48,7 +48,7 @@ describe('Product Price Component', () => {
   });
 
   it('should throw an error if input parameter product is not set properly', () => {
-    component.product = null;
+    component.product = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 
@@ -96,7 +96,7 @@ describe('Product Price Component', () => {
   describe('template rendering', () => {
     it('should show "N/A" text when sale price is not available', () => {
       translate.set('product.price.na.text', 'N/A');
-      product.salePrice = null;
+      product.salePrice = undefined;
       component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('.current-price').textContent.trim()).toEqual('N/A');
@@ -104,7 +104,7 @@ describe('Product Price Component', () => {
 
     it('should show "$10.00" when no list price is available but a sale price', () => {
       translate.set('product.price.salePriceFallback.text', '{{0}}');
-      product.listPrice = null;
+      product.listPrice = undefined;
       component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('.current-price').textContent.trim()).toEqual('$10.00');
@@ -186,10 +186,8 @@ describe('Product Price Component', () => {
 
     it('should generate rich snippet meta tag when sale price is available', () => {
       fixture.detectChanges();
-      expect(element.querySelector('meta[itemprop="price"]').attributes['content'].value === '10.00').toBeTruthy();
-      expect(
-        element.querySelector('meta[itemprop="priceCurrency"]').attributes['content'].value === 'USD'
-      ).toBeTruthy();
+      expect(element.querySelector('meta[itemprop="price"]').getAttribute('content')).toEqual('10.00');
+      expect(element.querySelector('meta[itemprop="priceCurrency"]').getAttribute('content')).toEqual('USD');
     });
   });
 });

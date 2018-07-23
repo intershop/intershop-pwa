@@ -43,7 +43,7 @@ export class CategoriesEffects {
   @Effect()
   routeListenerForSelectingCategory$ = this.actions$.pipe(
     ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
-    map(action => action.payload.params['categoryUniqueId']),
+    map(action => action.payload.params.categoryUniqueId),
     distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
     map(
       categoryUniqueId =>

@@ -36,11 +36,11 @@ describe('Filter Selectors', () => {
 
   describe('with empty state', () => {
     it('should not select any filters when used', () => {
-      expect(filter$).toBeObservable(c(null));
+      expect(filter$).toBeObservable(c(undefined));
     });
 
     it('should not select any filteredProducts product when used', () => {
-      expect(filteredProducts$).toBeObservable(c(null));
+      expect(filteredProducts$).toBeObservable(c(undefined));
     });
   });
 
@@ -77,8 +77,8 @@ describe('Filter Selectors', () => {
       expect(loading$).toBeObservable(c(false));
     });
 
-    it('should set null to the filter in the state', () => {
-      expect(filter$).toBeObservable(c(null));
+    it('should set undefined to the filter in the state', () => {
+      expect(filter$).toBeObservable(c(undefined));
     });
   });
 

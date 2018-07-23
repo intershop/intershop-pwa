@@ -1,6 +1,7 @@
 import { of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api/api.service';
+import { Customer } from '../../../models/customer/customer.model';
 import { User } from '../../../models/user/user.model';
 import { RegistrationService } from './registration.service';
 
@@ -14,10 +15,10 @@ describe('Registration Service', () => {
 
   it('should login the user when correct credentials are entered', done => {
     const loginDetail = { login: 'patricia@test.intershop.de', password: '!InterShop00!' };
-    when(apiServiceMock.get(anything(), anything())).thenReturn(of({ authorized: true }));
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of({ firstName: 'PC' } as Customer));
 
     registrationService.signinUser(loginDetail).subscribe(data => {
-      expect(data['authorized']).toBeTrue();
+      expect(data).toHaveProperty('firstName', 'PC');
       done();
     });
   });

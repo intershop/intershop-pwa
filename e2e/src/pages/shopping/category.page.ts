@@ -4,7 +4,7 @@ export class CategoryPage {
   readonly tag = 'ish-category-page';
 
   gotoSubCategory(categoryUniqueId) {
-    $('div[data-testing-id="category-' + categoryUniqueId + '"] a').click();
+    $(`div[data-testing-id="category-${categoryUniqueId}"] a`).click();
   }
 
   getSubCategoryCount(): promise.Promise<number> {

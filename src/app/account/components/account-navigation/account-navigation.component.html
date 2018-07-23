@@ -21,12 +21,12 @@
     <select (change)="navigateTo($event.target.value)" class="form-control">
       <ng-container *ngFor="let item of navigationItems">
         <ng-container *ngIf="item.feature; else unrestricted">
-          <option *ishFeature="item.feature" [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': null">
+          <option *ishFeature="item.feature" [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
             {{ item.localizationKey | translate}}
           </option>
         </ng-container>
         <ng-template #unrestricted>
-          <option [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': null">
+          <option [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
             {{ item.localizationKey | translate}}
           </option>
         </ng-template>

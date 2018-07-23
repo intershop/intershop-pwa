@@ -13,7 +13,7 @@ export const getLoadingStatus = createSelector(getFilterState, state => state.lo
 export const getFilteredProducts = createSelector(
   getFilteredProductSkus,
   getProductEntities,
-  (skus, products) => (skus && skus.map(sku => products[sku])) || null
+  (skus, products) => (skus && skus.map(sku => products[sku])) || undefined
 );
 
 export const getNumberOfFilteredProducts = createSelector(getFilteredProductSkus, skus => (!!skus ? skus.length : 0));

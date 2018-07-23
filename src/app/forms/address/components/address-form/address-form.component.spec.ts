@@ -38,7 +38,7 @@ describe('Address Form Component', () => {
   });
 
   it('should throw an error if input parameter parentForm is missing', () => {
-    component.parentForm = null;
+    component.parentForm = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 

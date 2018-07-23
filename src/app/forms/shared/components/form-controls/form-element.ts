@@ -60,7 +60,7 @@ export class FormElement {
         const formControl = new FormControl();
         if (this.form.get(this.controlName).validator) {
           const validationResult = this.form.get(this.controlName).validator(formControl);
-          required = validationResult !== null && validationResult.required === true;
+          required = validationResult !== undefined && validationResult.required === true;
         }
         return required;
       }

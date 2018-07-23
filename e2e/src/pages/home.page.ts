@@ -11,7 +11,7 @@ export class HomePage {
   }
 
   gotoCategoryPage(categoryUniqueId) {
-    $('[data-testing-id="' + categoryUniqueId + '-link"]').click();
+    $(`[data-testing-id="${categoryUniqueId}-link"]`).click();
   }
 
   getContent() {

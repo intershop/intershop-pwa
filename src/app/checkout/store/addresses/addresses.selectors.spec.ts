@@ -37,7 +37,7 @@ describe('Addresses Selectors', () => {
     it('should not select any addresses when used', () => {
       expect(addresses$).toBeObservable(c([]));
       expect(addressesLoading$).toBeObservable(c(false));
-      expect(addressesError$).toBeObservable(c(null));
+      expect(addressesError$).toBeObservable(c(undefined));
     });
   });
 

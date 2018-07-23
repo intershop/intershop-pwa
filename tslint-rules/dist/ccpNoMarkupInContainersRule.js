@@ -17,7 +17,7 @@ var CCPNoMarkupInContainersWalker = (function (_super) {
     __extends(CCPNoMarkupInContainersWalker, _super);
     function CCPNoMarkupInContainersWalker(sourceFile, options) {
         var _this = _super.call(this, sourceFile, options) || this;
-        _this.patterns = options['ruleArguments'][0]['patterns'];
+        _this.patterns = options.ruleArguments[0].patterns;
         return _this;
     }
     CCPNoMarkupInContainersWalker.prototype.visitSourceFile = function (sourceFile) {
