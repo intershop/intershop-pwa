@@ -22,7 +22,7 @@ export class StatePropertiesService {
    */
   getStateOrEnvOrDefault(key: StateKey<string>, envKey: string, envPropKey: string): string {
     if (this.transferState.hasKey(key)) {
-      return this.transferState.get(key, null);
+      return this.transferState.get(key, undefined);
     } else if (isPlatformServer(this.platformId) && !!process.env[envKey]) {
       return process.env[envKey];
     } else {

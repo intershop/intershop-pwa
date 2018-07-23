@@ -16,9 +16,7 @@ class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {
     const className = classNameToken.getText();
     this.addFailureAtNode(
       classNameToken,
-      'Do not use stub classes like "' +
-        className +
-        '" in tests. Use ts-mockito or reusable testhelper classes instead.'
+      `Do not use stub classes like "${className}" in tests. Use ts-mockito or reusable testhelper classes instead.`
     );
 
     super.visitClassDeclaration(node);

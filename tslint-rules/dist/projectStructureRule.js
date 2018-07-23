@@ -24,12 +24,12 @@ var ProjectStructureWalker = (function (_super) {
         var _this = _super.call(this, sourceFile, options) || this;
         _this.warnUnmatched = false;
         _this.patterns = [];
-        if (options['ruleArguments'][0]) {
-            _this.warnUnmatched = !!options['ruleArguments'][0]['warnUnmatched'];
-            _this.patterns = options['ruleArguments'][0]['patterns'];
-            _this.ignoredFiles = options['ruleArguments'][0]['ignoredFiles'] || [];
-            if (options['ruleArguments'][0]['pathPatterns']) {
-                _this.pathPatterns = options['ruleArguments'][0]['pathPatterns'];
+        if (options.ruleArguments[0]) {
+            _this.warnUnmatched = !!options.ruleArguments[0].warnUnmatched;
+            _this.patterns = options.ruleArguments[0].patterns;
+            _this.ignoredFiles = options.ruleArguments[0].ignoredFiles || [];
+            if (options.ruleArguments[0].pathPatterns) {
+                _this.pathPatterns = options.ruleArguments[0].pathPatterns;
             }
         }
         return _this;

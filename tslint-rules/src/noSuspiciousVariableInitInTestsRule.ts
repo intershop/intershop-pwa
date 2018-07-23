@@ -11,8 +11,8 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
     super(sourceFile, options);
 
-    if (options['ruleArguments'] && options['ruleArguments'][0] && options['ruleArguments'][0]['exclude']) {
-      this.excludes = options['ruleArguments'][0]['exclude'];
+    if (options.ruleArguments && options.ruleArguments[0] && options.ruleArguments[0].exclude) {
+      this.excludes = options.ruleArguments[0].exclude;
     }
     this.interestingVariables = [];
     this.correctlyReinitializedVariables = [];
@@ -46,7 +46,7 @@ class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {
       missingReinit.forEach(key =>
         this.addFailureAtNode(
           key,
-          'variable "' + RuleHelpers.extractVariableNameInDeclaration(key) + '" is not re-initialized in beforeEach'
+          `variable "${RuleHelpers.extractVariableNameInDeclaration(key)}" is not re-initialized in beforeEach`
         )
       );
     }

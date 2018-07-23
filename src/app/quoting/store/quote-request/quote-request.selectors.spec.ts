@@ -139,7 +139,7 @@ describe('Quote Request Selectors', () => {
 
       expect(quoteRequestLoading$).toBeObservable(c(false));
       expect(quoteRequstItems$).toBeObservable(c(quoteRequestItems));
-      expect(activeQuoteRequest$).toBeObservable(c(null));
+      expect(activeQuoteRequest$).toBeObservable(c(undefined));
     });
 
     it('should set loading to false and set error state', () => {

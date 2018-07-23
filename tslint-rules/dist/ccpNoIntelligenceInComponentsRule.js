@@ -18,8 +18,8 @@ var CCPNoIntelligenceInComponentsWalker = (function (_super) {
     function CCPNoIntelligenceInComponentsWalker(sourceFile, options) {
         var _this = _super.call(this, sourceFile, options) || this;
         _this.ruleSettings = {};
-        _this.ruleSettings['component'] = options['ruleArguments'][0]['component'];
-        _this.ruleSettings['container'] = options['ruleArguments'][0]['container'];
+        _this.ruleSettings.component = options.ruleArguments[0].component;
+        _this.ruleSettings.container = options.ruleArguments[0].container;
         return _this;
     }
     CCPNoIntelligenceInComponentsWalker.prototype.visitSourceFile = function (sourceFile) {

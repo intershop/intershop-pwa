@@ -75,6 +75,7 @@ export const metaReducers: MetaReducer<any>[] = [
     { provide: ICM_APPLICATION, useFactory: getICMApplication(), deps: [StatePropertiesService] },
     { provide: ICM_SERVER_URL, useFactory: getICMServerURL(), deps: [StatePropertiesService] },
     { provide: injectionKeys.NEED_MOCK, useValue: environment.needMock },
+    // tslint:disable-next-line:no-string-literal
     { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
     {
       provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
@@ -87,6 +88,7 @@ export const metaReducers: MetaReducer<any>[] = [
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+    // tslint:disable-next-line:no-string-literal
     { provide: FEATURE_TOGGLES, useValue: environment['features'] },
   ],
   bootstrap: [AppComponent],

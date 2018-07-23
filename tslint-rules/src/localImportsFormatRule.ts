@@ -19,7 +19,7 @@ class LocalImportsFormatPluginWalker extends Lint.RuleWalker {
     const text = token.getText();
     if (applyLikeAutoImportPlugin) {
       if (text.charAt(1) === '.' && text.charAt(2) !== '/') {
-        const replaceString = text.substring(0, 1) + './' + text.substring(1, text.length);
+        const replaceString = `${text.substring(0, 1)}./${text.substring(1, text.length)}`;
         const fix = new Lint.Replacement(token.getStart(), token.getWidth(), replaceString);
         this.addFailureAtNode(
           token,

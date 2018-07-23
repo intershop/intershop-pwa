@@ -39,7 +39,7 @@ export class RegionService {
         return this.regionDataBG$;
       }
       default: {
-        return null;
+        return;
       }
     }
   }

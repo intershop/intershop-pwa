@@ -3,7 +3,7 @@ import { Locale } from '../../../models/locale/locale.model';
 import { LocaleAction, LocaleActionTypes } from './locale.actions';
 
 export interface LocaleState extends EntityState<Locale> {
-  current: string | null;
+  current: string;
 }
 
 export const adapter = createEntityAdapter<Locale>({
@@ -11,12 +11,12 @@ export const adapter = createEntityAdapter<Locale>({
 });
 
 export const getCurrent = (state: LocaleState) =>
-  state && state.entities && state.current ? state.entities[state.current] : null;
+  state && state.entities && state.current ? state.entities[state.current] : undefined;
 
 export const { selectAll: getAvailable } = adapter.getSelectors();
 
 export const initialState: LocaleState = adapter.getInitialState({
-  current: null,
+  current: undefined,
 });
 
 export function localeReducer(state = initialState, action: LocaleAction): LocaleState {

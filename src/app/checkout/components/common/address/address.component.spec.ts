@@ -27,7 +27,7 @@ describe('Address Component', () => {
   });
 
   it('should render nothing if address is missing', () => {
-    component.address = null;
+    component.address = undefined;
     fixture.detectChanges();
     expect(element.querySelector('address')).toBeFalsy();
   });

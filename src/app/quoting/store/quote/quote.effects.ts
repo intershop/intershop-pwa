@@ -104,7 +104,7 @@ export class QuoteEffects {
   @Effect()
   routeListenerForSelectingQuote$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
-    map((action: RouteNavigation) => action.payload.params['quoteId']),
+    map((action: RouteNavigation) => action.payload.params.quoteId),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
     filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
     map(([itemId]) => new quoteActions.SelectQuote(itemId))

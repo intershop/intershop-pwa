@@ -14,8 +14,8 @@ class CCPNoIntelligenceInComponentsWalker extends Lint.RuleWalker {
   constructor(sourceFile: SourceFile, options: Lint.IOptions) {
     super(sourceFile, options);
 
-    this.ruleSettings['component'] = options['ruleArguments'][0]['component'];
-    this.ruleSettings['container'] = options['ruleArguments'][0]['container'];
+    this.ruleSettings.component = options.ruleArguments[0].component;
+    this.ruleSettings.container = options.ruleArguments[0].container;
   }
 
   visitSourceFile(sourceFile: SourceFile) {

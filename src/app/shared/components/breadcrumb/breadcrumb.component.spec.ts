@@ -35,7 +35,7 @@ describe('Breadcrumb Component', () => {
   });
 
   it('should not render search term when not available', () => {
-    component.searchTerm = null;
+    component.searchTerm = undefined;
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=breadcrumb-search-term]')).toBeFalsy();
   });

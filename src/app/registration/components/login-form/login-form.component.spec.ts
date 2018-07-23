@@ -70,13 +70,13 @@ describe('Login Form Component', () => {
     });
 
     it('should not detect error if email is well formed', () => {
-      component.form.controls['login'].setValue('test@test.com');
-      expect(component.form.controls['login'].valid).toBeTruthy();
+      component.form.controls.login.setValue('test@test.com');
+      expect(component.form.controls.login.valid).toBeTruthy();
     });
 
     it('should detect error if email is malformed', () => {
-      component.form.controls['login'].setValue('testtest.com');
-      expect(component.form.controls['login'].valid).toBeFalsy();
+      component.form.controls.login.setValue('testtest.com');
+      expect(component.form.controls.login.valid).toBeFalsy();
     });
   });
 });

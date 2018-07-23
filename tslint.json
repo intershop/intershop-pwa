@@ -48,6 +48,7 @@
       2
     ],
     "interface-over-type-literal": true,
+    "type-literal-delimiter": true,
     "label-position": true,
     "max-line-length": [
       false,
@@ -97,19 +98,22 @@
     ],
     "no-angle-bracket-type-assertion": true,
     "no-misused-new": true,
+    "new-parens": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
-    "no-string-literal": false,
+    "no-string-literal": true,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
     "no-unused-declaration": true,
+    "no-parameter-reassignment": true,
     "throw-error": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
+    "object-literal-key-quotes": [true, "as-needed"],
     "one-line": [
       true,
       "check-open-brace",
@@ -145,10 +149,7 @@
       true,
       "always"
     ],
-    "triple-equals": [
-      true,
-      "allow-null-check"
-    ],
+    "triple-equals": true,
     "typedef-whitespace": [
       true,
       {
@@ -160,6 +161,11 @@
       }
     ],
     "unified-signatures": true,
+    "ban-comma-operator": true,
+    "no-boolean-literal-compare": true,
+    "no-invalid-template-strings": true,
+    "no-irregular-whitespace": true,
+    "no-null-keyword": true,
     "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
       true,
@@ -191,7 +197,6 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "no-access-missing-member": false,
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": true,
     "no-duplicate-imports": true,
@@ -214,6 +219,9 @@
       }
     },
     "meaningful-naming-in-tests": { "severity": "warning" },
+    "prefer-method-signature": true,
+    "prefer-switch": true,
+    "prefer-template": [true, "allow-single-concat"],
     "use-async-synchronisation-in-tests": true,
     "use-jest-extended-matchers-in-tests": true,
     "no-any": { "severity": "warning" },

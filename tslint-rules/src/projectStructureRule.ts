@@ -22,12 +22,12 @@ class ProjectStructureWalker extends Lint.RuleWalker {
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
     super(sourceFile, options);
-    if (options['ruleArguments'][0]) {
-      this.warnUnmatched = !!options['ruleArguments'][0]['warnUnmatched'];
-      this.patterns = options['ruleArguments'][0]['patterns'];
-      this.ignoredFiles = options['ruleArguments'][0]['ignoredFiles'] || [];
-      if (options['ruleArguments'][0]['pathPatterns']) {
-        this.pathPatterns = options['ruleArguments'][0]['pathPatterns'];
+    if (options.ruleArguments[0]) {
+      this.warnUnmatched = !!options.ruleArguments[0].warnUnmatched;
+      this.patterns = options.ruleArguments[0].patterns;
+      this.ignoredFiles = options.ruleArguments[0].ignoredFiles || [];
+      if (options.ruleArguments[0].pathPatterns) {
+        this.pathPatterns = options.ruleArguments[0].pathPatterns;
       }
     }
   }

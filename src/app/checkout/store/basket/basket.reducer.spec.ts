@@ -70,7 +70,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
-        expect(state.error).toBeNull();
+        expect(state.error).toBeUndefined();
       });
     });
   });

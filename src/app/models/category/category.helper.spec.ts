@@ -13,7 +13,7 @@ describe('Category Helper', () => {
       const category5 = { name: 'd', uniqueId: '0' } as Category;
       return [
         { cat1: emptyCategory, cat2: undefined, result: false },
-        { cat1: emptyCategory, cat2: null, result: false },
+        { cat1: emptyCategory, cat2: undefined, result: false },
         { cat1: emptyCategory, cat2: emptyCategory, result: true },
         { cat1: category1, cat2: category1, result: true },
         { cat1: category2, cat2: category1, result: false },

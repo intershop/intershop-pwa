@@ -91,7 +91,7 @@ describe('Mock Interceptor', () => {
     function dataProvider() {
       return [
         { item: 'categories', in: undefined, expect: false },
-        { item: 'categories', in: null, expect: false },
+        { item: 'categories', in: undefined, expect: false },
         { item: 'categories', in: [], expect: false },
         { item: 'categories', in: ['categories'], expect: true },
         { item: 'catego', in: ['categories'], expect: false },

@@ -49,8 +49,8 @@ export class QuoteEditComponent implements OnChanges {
 
   constructor() {
     this.form = new FormGroup({
-      displayName: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
-      description: new FormControl(null, []),
+      displayName: new FormControl(undefined, [Validators.required, Validators.maxLength(255)]),
+      description: new FormControl(undefined, []),
     });
   }
 

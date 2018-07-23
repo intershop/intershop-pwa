@@ -30,7 +30,7 @@ describe('Info Box Component', () => {
   });
 
   it('should not display an edit link if no editRouterLink is given', () => {
-    component.editRouterLink = null;
+    component.editRouterLink = undefined;
     fixture.detectChanges();
     expect(element.querySelector('a.btn-tool')).toBeFalsy();
   });

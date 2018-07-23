@@ -22,7 +22,7 @@ export class ProductHelper {
     }
 
     if (category) {
-      productRoute = '/category/' + category.uniqueId + productRoute;
+      productRoute = `/category/${category.uniqueId}${productRoute}`;
     } else {
       // TODO: add defaultCategory to route once this information is available with the products REST call
     }
