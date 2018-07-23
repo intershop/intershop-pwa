@@ -166,7 +166,7 @@ export class QuoteRequestService {
    * @returns             Information about successful and unsuccessful line item adds
    */
   createQuoteRequestFromQuote(quoteRequest: QuoteRequest): Observable<QuoteLineItemResultModel> {
-    if (quoteRequest.submitted !== true) {
+    if (!quoteRequest.submitted) {
       return throwError({ message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' });
     }
 

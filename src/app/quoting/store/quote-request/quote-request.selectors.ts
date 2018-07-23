@@ -24,7 +24,7 @@ export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, stat
 export const getQuoteRequstItems = createSelector(getQuoteRequestState, state => state.quoteRequestItems);
 
 export const getActiveQuoteRequest = createSelector(getQuoteRequestState, state => {
-  const quoteRequest = state.quoteRequests.filter(item => item.editable === true).pop() || undefined;
+  const quoteRequest = state.quoteRequests.filter(item => item.editable).pop() || undefined;
   if (quoteRequest) {
     return {
       ...quoteRequest,
