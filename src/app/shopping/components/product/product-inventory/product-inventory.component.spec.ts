@@ -45,7 +45,7 @@ describe('Product Inventory Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('In Stock');
     expect(
-      element.querySelector("link[itemprop='availability']").attributes['href'].value === 'http://schema.org/InStock'
+      element.querySelector("link[itemprop='availability']").getAttribute('href') === 'http://schema.org/InStock'
     ).toBeTruthy();
   });
 
@@ -55,7 +55,7 @@ describe('Product Inventory Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('.product-availability').textContent).toContain('Out of Stock');
     expect(
-      element.querySelector("link[itemprop='availability']").attributes['href'].value === 'http://schema.org/OutOfStock'
+      element.querySelector("link[itemprop='availability']").getAttribute('href') === 'http://schema.org/OutOfStock'
     ).toBeTruthy();
   });
 });

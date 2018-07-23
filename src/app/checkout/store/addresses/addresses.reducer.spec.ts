@@ -37,7 +37,7 @@ describe('Addresses Reducer', () => {
         const state = addressesReducer(initialState, action);
 
         expect(state.ids).toHaveLength(1);
-        expect(state.entities['test']).toEqual({ id: 'test' } as Address);
+        expect(state.entities.test).toEqual({ id: 'test' } as Address);
         expect(state.loading).toBeFalse();
       });
     });

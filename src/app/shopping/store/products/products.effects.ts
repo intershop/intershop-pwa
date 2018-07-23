@@ -67,7 +67,7 @@ export class ProductsEffects {
   @Effect()
   routeListenerForSelectingProducts$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
-    map((action: RouteNavigation) => action.payload.params['sku']),
+    map((action: RouteNavigation) => action.payload.params.sku),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
     map(([sku]) => new productsActions.SelectProduct(sku))
