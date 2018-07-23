@@ -57,7 +57,7 @@ describe('Select Component', () => {
   });
 
   it('should not be rendered if there are no options and no required validator', () => {
-    component.options = null;
+    component.options = undefined;
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=simpleField]')).toBeFalsy();
   });

@@ -41,7 +41,7 @@ var RuleHelpers = (function () {
         var pointer = node.getFirstToken();
         while (pointer && pointer.kind !== kind) {
             if (pointer === node.getLastToken()) {
-                return null;
+                return;
             }
             pointer = tsutils_1.getNextToken(pointer);
         }

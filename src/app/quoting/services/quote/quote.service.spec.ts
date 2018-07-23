@@ -44,20 +44,20 @@ describe('Quote Service', () => {
 
   describe('when not logged in', () => {
     it('should throw error for getQuotes', () => {
-      expect(quoteService.getQuotes()).toBeObservable(cold('#', null, { message: 'not logged in' }));
+      expect(quoteService.getQuotes()).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
     it('should throw error for deleteQuote', () => {
-      expect(quoteService.deleteQuote(null)).toBeObservable(cold('#', null, { message: 'not logged in' }));
+      expect(quoteService.deleteQuote(undefined)).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
     it('should throw error for rejectQuote', () => {
-      expect(quoteService.rejectQuote(null)).toBeObservable(cold('#', null, { message: 'not logged in' }));
+      expect(quoteService.rejectQuote(undefined)).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
     it('should throw error for createQuoteRequestFromQuote', () => {
       expect(quoteService.createQuoteRequestFromQuote({ items: [] } as Quote)).toBeObservable(
-        cold('#', null, { message: 'not logged in' })
+        cold('#', undefined, { message: 'not logged in' })
       );
     });
   });
@@ -109,7 +109,7 @@ describe('Quote Service', () => {
     });
 
     it("should delete quote when 'deleteQuote' is called", done => {
-      when(apiService.delete(`customers/CID/users/UID/quotes/QID`)).thenReturn(of(null));
+      when(apiService.delete(`customers/CID/users/UID/quotes/QID`)).thenReturn(of(undefined));
 
       quoteService.deleteQuote('QID').subscribe(id => {
         expect(id).toEqual('QID');
@@ -119,7 +119,7 @@ describe('Quote Service', () => {
     });
 
     it("should reject quote when 'rejectQuote' is called", done => {
-      when(apiService.put(`customers/CID/users/UID/quotes/QID`, anything())).thenReturn(of(null));
+      when(apiService.put(`customers/CID/users/UID/quotes/QID`, anything())).thenReturn(of(undefined));
 
       quoteService.rejectQuote('QID').subscribe(id => {
         expect(id).toEqual('QID');
@@ -130,7 +130,7 @@ describe('Quote Service', () => {
 
     it("should create quote request and add list of items when 'createQuoteRequestFromQuote' is called", done => {
       when(quoteRequestService.addQuoteRequest()).thenReturn(of('QRID'));
-      when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(null));
+      when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(undefined));
 
       quoteService.createQuoteRequestFromQuote({ items: [] } as Quote).subscribe(() => {
         verify(quoteRequestService.addQuoteRequest()).once();

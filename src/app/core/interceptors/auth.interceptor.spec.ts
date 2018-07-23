@@ -18,7 +18,7 @@ describe('Auth Interceptor', () => {
 
   beforeEach(() => {
     getRequest = new HttpRequest<any>('GET', ' ');
-    mockRequest = null;
+    mockRequest = undefined;
     mockInterceptor = {
       handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
         const headers = new HttpHeaders();

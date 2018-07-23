@@ -48,7 +48,7 @@ describe('Product Price Component', () => {
   });
 
   it('should throw an error if input parameter product is not set properly', () => {
-    component.product = null;
+    component.product = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 
@@ -96,7 +96,7 @@ describe('Product Price Component', () => {
   describe('template rendering', () => {
     it('should show "N/A" text when sale price is not available', () => {
       translate.set('product.price.na.text', 'N/A');
-      product.salePrice = null;
+      product.salePrice = undefined;
       component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('.current-price').textContent.trim()).toEqual('N/A');
@@ -104,7 +104,7 @@ describe('Product Price Component', () => {
 
     it('should show "$10.00" when no list price is available but a sale price', () => {
       translate.set('product.price.salePriceFallback.text', '{{0}}');
-      product.listPrice = null;
+      product.listPrice = undefined;
       component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('.current-price').textContent.trim()).toEqual('$10.00');

@@ -64,7 +64,7 @@ describe('Quote Edit Page Container', () => {
   it(
     'should navigate to basket when addToBasket is clicked',
     fakeAsync(() => {
-      component.addQuoteToBasket(null);
+      component.addQuoteToBasket(undefined);
       tick(50);
       expect(location.path()).toBe('/basket');
     })

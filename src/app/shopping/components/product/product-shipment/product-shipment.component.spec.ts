@@ -39,7 +39,7 @@ describe('Product Shipment Component', () => {
   });
 
   it('should throw an error if input parameter product is not set properly', () => {
-    component.product = null;
+    component.product = undefined;
     expect(() => component.ngOnChanges()).toThrow();
   });
 

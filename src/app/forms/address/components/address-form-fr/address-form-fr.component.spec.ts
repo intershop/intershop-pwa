@@ -45,7 +45,7 @@ describe('Address Form Fr Component', () => {
   });
 
   it('should throw an error if input parameter addressForm is not set', () => {
-    component.addressForm = null;
+    component.addressForm = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 

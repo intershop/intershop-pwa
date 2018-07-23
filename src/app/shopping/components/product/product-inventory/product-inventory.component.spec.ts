@@ -35,7 +35,7 @@ describe('Product Inventory Component', () => {
   });
 
   it('should throw an error if input parameter product is not set properly', () => {
-    component.product = null;
+    component.product = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 

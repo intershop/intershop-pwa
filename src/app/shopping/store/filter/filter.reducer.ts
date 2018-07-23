@@ -9,8 +9,8 @@ export interface FilterState {
 
 export const initialState: FilterState = {
   loading: false,
-  availableFilter: null,
-  products: null,
+  availableFilter: undefined,
+  products: undefined,
 };
 
 export function filterReducer(state = initialState, action: FilterActions): FilterState {
@@ -31,7 +31,7 @@ export function filterReducer(state = initialState, action: FilterActions): Filt
     case FilterActionTypes.LoadFilterForSearchFail: {
       return {
         ...state,
-        availableFilter: null,
+        availableFilter: undefined,
         loading: false,
       };
     }

@@ -50,8 +50,8 @@ describe('Categories Service', () => {
       verify(apiServiceMock.get('categories/dummyid')).once();
     });
 
-    it('should return error when called with null', done => {
-      categoriesService.getCategory(null).subscribe(fail, err => {
+    it('should return error when called with undefined', done => {
+      categoriesService.getCategory(undefined).subscribe(fail, err => {
         expect(err).toBeTruthy();
         done();
       });

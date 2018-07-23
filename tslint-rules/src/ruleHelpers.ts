@@ -39,7 +39,7 @@ export class RuleHelpers {
     let pointer = node.getFirstToken();
     while (pointer && pointer.kind !== kind) {
       if (pointer === node.getLastToken()) {
-        return null;
+        return;
       }
       pointer = getNextToken(pointer);
     }

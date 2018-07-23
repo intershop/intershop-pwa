@@ -30,7 +30,7 @@ export const getSelectedQuote = createSelector(
   getProductEntities,
   (quote, products) =>
     !quote
-      ? null
+      ? undefined
       : {
           ...quote,
           state: QuoteHelper.getQuoteState(quote),

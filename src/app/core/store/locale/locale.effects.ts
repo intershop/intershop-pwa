@@ -35,7 +35,7 @@ export class LocaleEffects {
   @Effect()
   setFirstAvailableLocale$ = this.actions$.pipe(
     ofType<fromActions.SetAvailableLocales>(fromActions.LocaleActionTypes.SetAvailableLocales),
-    map(action => (action.payload && action.payload[0] ? action.payload[0] : null)),
+    map(action => (action.payload && action.payload[0] ? action.payload[0] : undefined)),
     map(locale => new fromActions.SelectLocale(locale))
   );
 }

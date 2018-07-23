@@ -12,7 +12,7 @@ export interface AddressesState extends EntityState<Address> {
 
 export const initialState: AddressesState = addressAdapter.getInitialState({
   loading: false,
-  error: null,
+  error: undefined,
 });
 
 export function addressesReducer(state = initialState, action: AddressAction): AddressesState {
@@ -39,7 +39,7 @@ export function addressesReducer(state = initialState, action: AddressAction): A
 
       return {
         ...addressAdapter.addAll(loadedAddresses, state),
-        error: null,
+        error: undefined,
         loading: false,
       };
     }

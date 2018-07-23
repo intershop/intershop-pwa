@@ -507,7 +507,7 @@ describe('Quote Request Effects', () => {
         new LoadBasketSuccess({
           id: 'BID',
           lineItems: [],
-          paymentMethod: null,
+          paymentMethod: undefined,
         } as Basket)
       );
       store$.dispatch(

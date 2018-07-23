@@ -18,8 +18,8 @@ export const getAuthToken = (state: UserState) => state.authToken;
 export const getError = (state: UserState) => state.error;
 
 export const initialState: UserState = {
-  customer: null,
-  user: null,
+  customer: undefined,
+  user: undefined,
   authorized: false,
   authToken: undefined,
   error: undefined,
