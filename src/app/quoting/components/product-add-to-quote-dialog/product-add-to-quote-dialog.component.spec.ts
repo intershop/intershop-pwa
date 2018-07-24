@@ -42,7 +42,9 @@ describe('Product Add To Quote Dialog Component', () => {
     fixture = TestBed.createComponent(ProductAddToQuoteDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.quote = {} as QuoteRequest;
+    component.quote = {
+      items: [],
+    } as QuoteRequest;
     component.bsModalRef = { hide: () => noop };
   });
 
@@ -60,6 +62,7 @@ describe('Product Add To Quote Dialog Component', () => {
         displayName: 'DNAME',
         description: 'DESC',
         state: 'New',
+        items: [],
       } as QuoteRequest;
     });
 

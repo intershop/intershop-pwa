@@ -142,5 +142,13 @@ describe('Line Item List Component', () => {
       fixture.detectChanges();
       expect(element.textContent).toContain('quote.items.total.label');
     });
+
+    it('should not render totals if no line items present', () => {
+      component.total = { value: 1 } as Price;
+      component.lineItems = [];
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(element.textContent).not.toContain('quote.items.total.label');
+    });
   });
 });
