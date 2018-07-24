@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Basket } from '../../../../models/basket/basket.model';
+import { Order } from '../../../../models/order/order.model';
+import { User } from '../../../../models/user/user.model';
 
 @Component({
   selector: 'ish-checkout-receipt',
@@ -7,5 +8,6 @@ import { Basket } from '../../../../models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReceiptComponent {
-  @Input() basket: Basket;
+  @Input() order: Order;
+  @Input() user: User;
 }
