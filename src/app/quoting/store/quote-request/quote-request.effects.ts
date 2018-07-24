@@ -143,7 +143,7 @@ export class QuoteRequestEffects {
         // tslint:disable-next-line:no-string-literal
         quoteRequest.items.map(item => this.quoteRequestService.getQuoteRequestItem(quoteRequest.id, item['title']))
       ).pipe(
-        defaultIfEmpty(undefined),
+        defaultIfEmpty([]),
         map(items => new quoteRequestActions.LoadQuoteRequestItemsSuccess(items)),
         catchError(error => of(new quoteRequestActions.LoadQuoteRequestItemsFail(error)))
       )

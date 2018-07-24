@@ -113,7 +113,7 @@
     </ng-template>
   </div>
 
-  <div *ngIf="total && form.controls['items']" class="clearfix section section-seperator">
+  <div *ngIf="total && form.controls['items'] && lineItems.length > 0" class="clearfix section section-seperator">
     <div class="list-body">
         <!-- TODO: remove style attribute -->
         <div class="col-sm-2 col-sm-offset-8 text-right" style="padding-right: 0;">
