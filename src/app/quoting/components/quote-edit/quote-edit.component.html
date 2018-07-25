@@ -31,17 +31,18 @@
     <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
     <p>
       {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
-      {{ quote.number }}
-      <!-- <a href="#URLEX(SecureURL,'',Action("ViewQuote-Edit"), Parameter("QuoteUUID", Quote:UUID))#"><isprint value="#Quote:DocumentNo#"></a> -->
+      <!-- TODO: redirecting to the exact same url is not that useful -->
+      <a [routerLink]="'/account/quote-request/' + quote.id">{{ quote.number }}</a>
     </p>
     <p>
       {{ 'quote.edit.submitted.your_quote.text' | translate }}
       <br>
+      <!-- TODO: Using links in the translation pipe are currently not possible. Is this really necessary? -->
       <!-- <istext key="quote.edit.submitted.you_can_check.text" parameter0="#URLEX(SecureURL,'',Action("ViewQuoteList-List"))#" parameter1="#URLEX(SecureURL,'',Action("ViewUserAccount-Start"))#" encoding="off" /> -->
     </p>
-    <!-- <p>
-      <istext key="quote.edit.submitted.we_will_email.text" parameter0="#CurrentUser:Profile:Credentials:Login#" />
-    </p> -->
+    <p>
+      {{ 'quote.edit.submitted.we_will_email.text' | translate : { '0': user.email } }}
+    </p>
   </ng-container>
 
   <ng-container *ngIf="!submitted">
