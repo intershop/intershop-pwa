@@ -25,7 +25,7 @@
           <!-- valid to date-->
           <td *ngIf="!quote.validToDate">-</td>
           <td *ngIf="quote['validToDate'] && quote['validToDate'] <= currentDateTime">
-            <span class="text-danger">{{ quote['validToDate'] | date : 'shortDate' }}</span>
+            <span class="text-danger">{{ 'quote.edit.submitted.your_quote_expired.text' | translate : { '0' : (quote['validToDate'] | date : 'shortDate'), '1' : (quote['validToDate'] | date : 'mediumTime') } }}</span>
           </td>
           <td *ngIf="quote['validToDate'] && quote['validToDate'] > currentDateTime">
               {{ quote['validToDate'] | date : 'shortDate' }}
