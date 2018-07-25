@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito/lib/ts-mockito';
 import { Country } from '../../../models/country/country.model';

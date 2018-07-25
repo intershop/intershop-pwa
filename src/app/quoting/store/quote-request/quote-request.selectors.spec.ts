@@ -1,15 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { EffectsModule } from '@ngrx/effects';
+import { combineReducers, StoreModule } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
-import { c } from '../../../utils/dev/marbles-utils';
-import { QuotingState } from '../quoting.state';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { quotingReducers } from '../quoting.system';
 import {
   LoadQuoteRequestItems,
@@ -31,15 +29,7 @@ import {
 } from './quote-request.selectors';
 
 describe('Quote Request Selectors', () => {
-  let store$: Store<QuotingState>;
-
-  let getSelectedQuoteRequestId$: Observable<string>;
-  let getSelectedQuoteRequest$: Observable<QuoteRequest>;
-  let quoteRequests$: Observable<QuoteRequest[]>;
-  let quoteRequstItems$: Observable<QuoteRequestItem[]>;
-  let activeQuoteRequest$: Observable<QuoteRequest>;
-  let quoteRequestLoading$: Observable<boolean>;
-  let quoteRequestError$: Observable<HttpErrorResponse>;
+  let store$: LogEffects;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -48,22 +38,16 @@ describe('Quote Request Selectors', () => {
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
         }),
+        EffectsModule.forRoot([LogEffects]),
       ],
     });
 
-    store$ = TestBed.get(Store);
-    getSelectedQuoteRequestId$ = store$.pipe(select(getSelectedQuoteRequestId));
-    getSelectedQuoteRequest$ = store$.pipe(select(getSelectedQuoteRequest));
-    quoteRequests$ = store$.pipe(select(getCurrentQuoteRequests));
-    quoteRequstItems$ = store$.pipe(select(getQuoteRequstItems));
-    activeQuoteRequest$ = store$.pipe(select(getActiveQuoteRequest));
-    quoteRequestLoading$ = store$.pipe(select(getQuoteRequestLoading));
-    quoteRequestError$ = store$.pipe(select(getQuoteRequestError));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('with empty state', () => {
     it('should be present if no quoteRequest are present', () => {
-      expect(quoteRequests$).toBeObservable(c([]));
+      expect(getCurrentQuoteRequests(store$.state)).toBeEmpty();
     });
   });
 
@@ -92,8 +76,8 @@ describe('Quote Request Selectors', () => {
         ],
       };
 
-      expect(getSelectedQuoteRequestId$).toBeObservable(c('test'));
-      expect(getSelectedQuoteRequest$).toBeObservable(c(expected));
+      expect(getSelectedQuoteRequestId(store$.state)).toEqual('test');
+      expect(getSelectedQuoteRequest(store$.state)).toEqual(expected);
     });
   });
 
@@ -103,7 +87,7 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(quoteRequestLoading$).toBeObservable(c(true));
+      expect(getQuoteRequestLoading(store$.state)).toBeTrue();
     });
 
     it('should set loading to false and set quote state', () => {
@@ -113,14 +97,14 @@ describe('Quote Request Selectors', () => {
       ] as QuoteRequestData[];
       store$.dispatch(new LoadQuoteRequestsSuccess(quoteRequests));
 
-      expect(quoteRequestLoading$).toBeObservable(c(false));
-      expect(activeQuoteRequest$).toBeObservable(c(quoteRequests[1]));
+      expect(getQuoteRequestLoading(store$.state)).toBeFalse();
+      expect(getActiveQuoteRequest(store$.state)).toEqual(quoteRequests[1]);
     });
 
     it('should set loading to false and set error state', () => {
       store$.dispatch(new LoadQuoteRequestsFail({ message: 'invalid' } as HttpErrorResponse));
-      expect(quoteRequestLoading$).toBeObservable(c(false));
-      expect(quoteRequestError$).toBeObservable(c({ message: 'invalid' }));
+      expect(getQuoteRequestLoading(store$.state)).toBeFalse();
+      expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
     });
   });
 
@@ -130,23 +114,23 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(quoteRequestLoading$).toBeObservable(c(true));
+      expect(getQuoteRequestLoading(store$.state)).toBeTrue();
     });
 
     it('should set loading to false and set quote state', () => {
       const quoteRequestItems = [{ productSKU: 'test' }] as QuoteRequestItem[];
       store$.dispatch(new LoadQuoteRequestItemsSuccess(quoteRequestItems));
 
-      expect(quoteRequestLoading$).toBeObservable(c(false));
-      expect(quoteRequstItems$).toBeObservable(c(quoteRequestItems));
-      expect(activeQuoteRequest$).toBeObservable(c(undefined));
+      expect(getQuoteRequestLoading(store$.state)).toBeFalse();
+      expect(getQuoteRequstItems(store$.state)).toEqual(quoteRequestItems);
+      expect(getActiveQuoteRequest(store$.state)).toBeUndefined();
     });
 
     it('should set loading to false and set error state', () => {
       store$.dispatch(new LoadQuoteRequestItemsFail({ message: 'invalid' } as HttpErrorResponse));
-      expect(quoteRequestLoading$).toBeObservable(c(false));
-      expect(quoteRequstItems$).toBeObservable(c([]));
-      expect(quoteRequestError$).toBeObservable(c({ message: 'invalid' }));
+      expect(getQuoteRequestLoading(store$.state)).toBeFalse();
+      expect(getQuoteRequstItems(store$.state)).toBeEmpty();
+      expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
     });
   });
 });

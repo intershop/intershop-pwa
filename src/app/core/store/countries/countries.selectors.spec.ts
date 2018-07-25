@@ -1,37 +1,30 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { Country } from '../../../models/country/country.model';
-import { c } from '../../../utils/dev/marbles-utils';
-import { CoreState } from '../core.state';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { coreReducers } from '../core.system';
 import { LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { getAllCountries, getCountriesLoading } from './countries.selectors';
 
 describe('Countries Selectors', () => {
-  let store$: Store<CoreState>;
-
-  let countries$: Observable<Country[]>;
-  let countriesLoading$: Observable<boolean>;
+  let store$: LogEffects;
 
   const countries = [{ countryCode: 'BG', name: 'Bulgaria' }, { countryCode: 'DE', name: 'Germany' }] as Country[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers)],
+      imports: [StoreModule.forRoot(coreReducers), EffectsModule.forRoot([LogEffects])],
     });
 
-    store$ = TestBed.get(Store);
-
-    countries$ = store$.pipe(select(getAllCountries));
-    countriesLoading$ = store$.pipe(select(getCountriesLoading));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('with empty state', () => {
     it('should not select any countries when used', () => {
-      expect(countries$).toBeObservable(c([]));
-      expect(countriesLoading$).toBeObservable(c(false));
+      expect(getAllCountries(store$.state)).toBeEmpty();
+      expect(getCountriesLoading(store$.state)).toBeFalse();
     });
   });
 
@@ -41,7 +34,7 @@ describe('Countries Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(countriesLoading$).toBeObservable(c(true));
+      expect(getCountriesLoading(store$.state)).toBeTrue();
     });
 
     describe('and reporting success', () => {
@@ -50,8 +43,8 @@ describe('Countries Selectors', () => {
       });
 
       it('should set loading to false', () => {
-        expect(countriesLoading$).toBeObservable(c(false));
-        expect(countries$).toBeObservable(c(countries));
+        expect(getCountriesLoading(store$.state)).toBeFalse();
+        expect(getAllCountries(store$.state)).toEqual(countries);
       });
     });
 
@@ -61,8 +54,8 @@ describe('Countries Selectors', () => {
       });
 
       it('should not have loaded category on error', () => {
-        expect(countriesLoading$).toBeObservable(c(false));
-        expect(countries$).toBeObservable(c([]));
+        expect(getCountriesLoading(store$.state)).toBeFalse();
+        expect(getAllCountries(store$.state)).toBeEmpty();
       });
     });
   });
