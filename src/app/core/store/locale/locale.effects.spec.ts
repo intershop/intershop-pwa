@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';

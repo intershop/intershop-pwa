@@ -1,22 +1,21 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { EffectsModule } from '@ngrx/effects';
+import { combineReducers, StoreModule } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
-import { c } from '../../../utils/dev/marbles-utils';
-import { ShoppingState } from '../shopping.state';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { shoppingReducers } from '../shopping.system';
 import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
-import * as s from './products.selectors';
+import {
+  getProductEntities,
+  getProductLoading,
+  getProducts,
+  getSelectedProduct,
+  getSelectedProductId,
+} from './products.selectors';
 
 describe('Products Selectors', () => {
-  let store$: Store<ShoppingState>;
-
-  let products$: Observable<Product[]>;
-  let productEntities$: Observable<{ [id: string]: Product }>;
-  let productLoading$: Observable<boolean>;
-  let selected$: Observable<Product>;
-  let selectedId$: Observable<string>;
+  let store$: LogEffects;
 
   let prod: Product;
 
@@ -28,29 +27,24 @@ describe('Products Selectors', () => {
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
+        EffectsModule.forRoot([LogEffects]),
       ],
     });
 
-    store$ = TestBed.get(Store);
-
-    products$ = store$.pipe(select(s.getProducts));
-    productEntities$ = store$.pipe(select(s.getProductEntities));
-    productLoading$ = store$.pipe(select(s.getProductLoading));
-    selected$ = store$.pipe(select(s.getSelectedProduct));
-    selectedId$ = store$.pipe(select(s.getSelectedProductId));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('with empty state', () => {
     it('should not select any products when used', () => {
-      expect(products$).toBeObservable(c([]));
-      expect(productEntities$).toBeObservable(c({}));
-      expect(productLoading$).toBeObservable(c(false));
+      expect(getProducts(store$.state)).toBeEmpty();
+      expect(getProductEntities(store$.state)).toBeEmpty();
+      expect(getProductLoading(store$.state)).toBeFalse();
     });
 
     it('should not select a current product when used', () => {
       // TODO: shouldn't this be undefined?
-      expect(selected$).toBeObservable(c(undefined));
-      expect(selectedId$).toBeObservable(c(undefined));
+      expect(getSelectedProduct(store$.state)).toBeUndefined();
+      expect(getSelectedProductId(store$.state)).toBeUndefined();
     });
   });
 
@@ -60,7 +54,7 @@ describe('Products Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(productLoading$).toBeObservable(c(true));
+      expect(getProductLoading(store$.state)).toBeTrue();
     });
 
     describe('and reporting success', () => {
@@ -69,8 +63,8 @@ describe('Products Selectors', () => {
       });
 
       it('should set loading to false', () => {
-        expect(productLoading$).toBeObservable(c(false));
-        expect(productEntities$).toBeObservable(c({ [prod.sku]: prod }));
+        expect(getProductLoading(store$.state)).toBeFalse();
+        expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
       });
     });
 
@@ -80,8 +74,8 @@ describe('Products Selectors', () => {
       });
 
       it('should not have loaded product on error', () => {
-        expect(productLoading$).toBeObservable(c(false));
-        expect(productEntities$).toBeObservable(c({}));
+        expect(getProductLoading(store$.state)).toBeFalse();
+        expect(getProductEntities(store$.state)).toBeEmpty();
       });
     });
   });
@@ -93,14 +87,14 @@ describe('Products Selectors', () => {
 
     describe('but no current router state', () => {
       it('should return the product information when used', () => {
-        expect(products$).toBeObservable(c([prod]));
-        expect(productEntities$).toBeObservable(c({ [prod.sku]: prod }));
-        expect(productLoading$).toBeObservable(c(false));
+        expect(getProducts(store$.state)).toEqual([prod]);
+        expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
+        expect(getProductLoading(store$.state)).toBeFalse();
       });
 
       it('should not select the irrelevant product when used', () => {
-        expect(selected$).toBeObservable(c(undefined));
-        expect(selectedId$).toBeObservable(c(undefined));
+        expect(getSelectedProduct(store$.state)).toBeUndefined();
+        expect(getSelectedProductId(store$.state)).toBeUndefined();
       });
     });
 
@@ -110,14 +104,14 @@ describe('Products Selectors', () => {
       });
 
       it('should return the product information when used', () => {
-        expect(products$).toBeObservable(c([prod]));
-        expect(productEntities$).toBeObservable(c({ [prod.sku]: prod }));
-        expect(productLoading$).toBeObservable(c(false));
+        expect(getProducts(store$.state)).toEqual([prod]);
+        expect(getProductEntities(store$.state)).toEqual({ [prod.sku]: prod });
+        expect(getProductLoading(store$.state)).toBeFalse();
       });
 
       it('should select the selected product when used', () => {
-        expect(selected$).toBeObservable(c(prod));
-        expect(selectedId$).toBeObservable(c(prod.sku));
+        expect(getSelectedProduct(store$.state)).toEqual(prod);
+        expect(getSelectedProductId(store$.state)).toEqual(prod.sku);
       });
     });
   });

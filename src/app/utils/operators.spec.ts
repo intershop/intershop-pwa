@@ -1,6 +1,6 @@
-import { cold, getTestScheduler, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { merge, Observable, of } from 'rxjs';
-import { concatMap, delay, filter, last, mapTo } from 'rxjs/operators';
+import { concatMap, filter, last, mapTo } from 'rxjs/operators';
 import { distinctCompareWith, Partition, partitionBy } from './operators';
 
 describe('Operators', () => {
@@ -26,22 +26,18 @@ describe('Operators', () => {
     describe('merge usage', () => {
       it('should always split input into two streams', () => {
         const input$ = hot('1-2-3-4-5-6-7-8-9--|') as Observable<number>;
-        const resu$ = cold('--X-Y-X--5X--7X--9-C|');
+        const resu$ = cold('--X---X-5-X-7-X-9--(C|)');
 
         const output$ = input$.pipe(
           partitionBy(num => num % 2 === 0),
           concatMap(part =>
             merge(
               part.isTrue.pipe(mapTo('X')),
-              part.isFalse.pipe(
-                delay(10, getTestScheduler()),
-                filter(x => x > 4)
-              ),
+              part.isFalse.pipe(filter(x => x > 4)),
               part.isTrue.pipe(
                 last(),
                 mapTo('C')
-              ),
-              of('Y').pipe(delay(40, getTestScheduler()))
+              )
             )
           )
         );

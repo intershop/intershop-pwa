@@ -1,101 +1,102 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { EffectsModule } from '@ngrx/effects';
+import { combineReducers, StoreModule } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { Product } from '../../../models/product/product.model';
-import { c } from '../../../utils/dev/marbles-utils';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { LoadProductSuccess } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import * as fromActions from './filter.actions';
-import * as s from './filter.selectors';
+import {
+  ApplyFilter,
+  ApplyFilterFail,
+  ApplyFilterSuccess,
+  LoadFilterForCategory,
+  LoadFilterForCategoryFail,
+  LoadFilterForCategorySuccess,
+  SetFilteredProducts,
+} from './filter.actions';
+import { getAvailableFilter, getFilteredProducts, getLoadingStatus } from './filter.selectors';
 
 describe('Filter Selectors', () => {
-  let store$: Store<ShoppingState>;
+  let store$: LogEffects;
 
-  let filter$: Observable<FilterNavigation>;
-  let filteredProducts$: Observable<Product[]>;
-  let loading$: Observable<boolean>;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
+        EffectsModule.forRoot([LogEffects]),
       ],
     });
 
-    store$ = TestBed.get(Store);
-
-    filter$ = store$.pipe(select(s.getAvailableFilter));
-    filteredProducts$ = store$.pipe(select(s.getFilteredProducts));
-    loading$ = store$.pipe(select(s.getLoadingStatus));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('with empty state', () => {
     it('should not select any filters when used', () => {
-      expect(filter$).toBeObservable(c(undefined));
+      expect(getAvailableFilter(store$.state)).toBeUndefined();
     });
 
     it('should not select any filteredProducts product when used', () => {
-      expect(filteredProducts$).toBeObservable(c(undefined));
+      expect(getFilteredProducts(store$.state)).toBeUndefined();
     });
   });
 
   describe('with LoadFilterForCategory state', () => {
     beforeEach(() => {
-      store$.dispatch(new fromActions.LoadFilterForCategory({} as Category));
+      store$.dispatch(new LoadFilterForCategory({} as Category));
     });
 
     it('should set the state to loading', () => {
-      expect(loading$).toBeObservable(c(true));
+      expect(getLoadingStatus(store$.state)).toBeTrue();
     });
   });
 
   describe('with LoadFilterForCategorySuccess state', () => {
     beforeEach(() => {
-      store$.dispatch(new fromActions.LoadFilterForCategorySuccess({ filter: [{ name: 'a' }] } as FilterNavigation));
+      store$.dispatch(new LoadFilterForCategorySuccess({ filter: [{ name: 'a' }] } as FilterNavigation));
     });
 
     it('should set the state to loaded', () => {
-      expect(loading$).toBeObservable(c(false));
+      expect(getLoadingStatus(store$.state)).toBeFalse();
     });
 
     it('should add the filter to the state', () => {
-      expect(filter$).toBeObservable(c({ filter: [{ name: 'a' }] } as FilterNavigation));
+      expect(getAvailableFilter(store$.state)).toEqual({ filter: [{ name: 'a' }] } as FilterNavigation);
     });
   });
 
   describe('with LoadFilterForCategoryFail state', () => {
     beforeEach(() => {
-      store$.dispatch(new fromActions.LoadFilterForCategoryFail({} as HttpErrorResponse));
+      store$.dispatch(new LoadFilterForCategoryFail({} as HttpErrorResponse));
     });
 
     it('should set the state to loaded', () => {
-      expect(loading$).toBeObservable(c(false));
+      expect(getLoadingStatus(store$.state)).toBeFalse();
     });
 
     it('should set undefined to the filter in the state', () => {
-      expect(filter$).toBeObservable(c(undefined));
+      expect(getAvailableFilter(store$.state)).toBeUndefined();
     });
   });
 
   describe('with ApplyFilter state', () => {
     beforeEach(() => {
-      store$.dispatch(new fromActions.ApplyFilter({ filterId: 'a', searchParameter: 'b' }));
+      store$.dispatch(new ApplyFilter({ filterId: 'a', searchParameter: 'b' }));
     });
 
     it('should set the state to loaded', () => {
-      expect(loading$).toBeObservable(c(true));
+      expect(getLoadingStatus(store$.state)).toBeTrue();
     });
   });
 
   describe('with ApplyFilterSuccess state', () => {
     beforeEach(() => {
       store$.dispatch(
-        new fromActions.ApplyFilterSuccess({
+        new ApplyFilterSuccess({
           availableFilter: {} as FilterNavigation,
           filterName: 'a',
           searchParameter: 'b',
@@ -104,17 +105,17 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(loading$).toBeObservable(c(false));
+      expect(getLoadingStatus(store$.state)).toBeFalse();
     });
   });
 
   describe('with ApplyFilterFail state', () => {
     beforeEach(() => {
-      store$.dispatch(new fromActions.ApplyFilterFail({} as HttpErrorResponse));
+      store$.dispatch(new ApplyFilterFail({} as HttpErrorResponse));
     });
 
     it('should set the state to loaded', () => {
-      expect(loading$).toBeObservable(c(false));
+      expect(getLoadingStatus(store$.state)).toBeFalse();
     });
   });
 
@@ -122,11 +123,11 @@ describe('Filter Selectors', () => {
     beforeEach(() => {
       store$.dispatch(new LoadProductSuccess({ sku: '123' } as Product));
       store$.dispatch(new LoadProductSuccess({ sku: '234' } as Product));
-      store$.dispatch(new fromActions.SetFilteredProducts(['123', '234']));
+      store$.dispatch(new SetFilteredProducts(['123', '234']));
     });
 
     it('should set the product state to the skus', () => {
-      expect(filteredProducts$).toBeObservable(c([{ sku: '123' }, { sku: '234' }]));
+      expect(getFilteredProducts(store$.state)).toEqual([{ sku: '123' }, { sku: '234' }]);
     });
   });
 });
