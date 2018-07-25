@@ -1,6 +1,7 @@
 import { Address } from '../../models/address/address.model';
 import { BasketItemView } from '../../models/basket-item/basket-item.model';
 import { BasketRebate } from '../../models/basket-rebate/basket-rebate.model';
+import { BasketTotal } from '../../models/basket-total/basket-total.model';
 import { BasketView } from '../../models/basket/basket.model';
 import { OrderView } from '../../models/order/order.model';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
@@ -15,66 +16,7 @@ export class BasketMockData {
       commonShipToAddress: BasketMockData.getAddress(),
       commonShippingMethod: BasketMockData.getShippingMethod(),
       paymentMethod: BasketMockData.getPaymentMethod(),
-      valueRebates: [
-        {
-          name: 'appliedRebate',
-          amount: {
-            value: 11.9,
-            currencyMnemonic: 'USD',
-          },
-          rebateType: 'OrderValueOffDiscount',
-        } as BasketRebate,
-      ],
-      itemSurchargeTotalsByType: [
-        {
-          name: 'surcharge',
-          amount: {
-            value: 595,
-            currencyMnemonic: 'USD',
-          },
-          description: 'Surcharge for battery deposit',
-          displayName: 'Battery Deposit Surcharge',
-        },
-      ],
-
-      totals: {
-        itemTotal: {
-          value: 141796.98,
-          currencyMnemonic: 'USD',
-        },
-        itemRebatesTotal: {
-          value: 4446,
-          currencyMnemonic: 'USD',
-        },
-        shippingTotal: {
-          value: 87.06,
-          currencyMnemonic: 'USD',
-        },
-        itemShippingRebatesTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-        },
-        basketValueRebatesTotal: {
-          value: 4457.9,
-          currencyMnemonic: 'USD',
-        },
-        basketShippingRebatesTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-        },
-        paymentCostsTotal: {
-          value: 3.57,
-          currencyMnemonic: 'USD',
-        },
-        taxTotal: {
-          value: 22747.55,
-          currencyMnemonic: 'USD',
-        },
-        basketTotal: {
-          value: 142470.71,
-          currencyMnemonic: 'USD',
-        },
-      },
+      totals: BasketMockData.getTotals(),
     } as BasketView;
   }
 
@@ -107,66 +49,7 @@ export class BasketMockData {
       commonShipToAddress: BasketMockData.getAddress(),
       commonShippingMethod: BasketMockData.getShippingMethod(),
       paymentMethod: BasketMockData.getPaymentMethod(),
-      valueRebates: [
-        {
-          name: 'appliedRebate',
-          amount: {
-            value: 11.9,
-            currencyMnemonic: 'USD',
-          },
-          rebateType: 'OrderValueOffDiscount',
-        } as BasketRebate,
-      ],
-      itemSurchargeTotalsByType: [
-        {
-          name: 'surcharge',
-          amount: {
-            value: 595,
-            currencyMnemonic: 'USD',
-          },
-          description: 'Surcharge for battery deposit',
-          displayName: 'Battery Deposit Surcharge',
-        },
-      ],
-
-      totals: {
-        itemTotal: {
-          value: 141796.98,
-          currencyMnemonic: 'USD',
-        },
-        itemRebatesTotal: {
-          value: 4446,
-          currencyMnemonic: 'USD',
-        },
-        shippingTotal: {
-          value: 87.06,
-          currencyMnemonic: 'USD',
-        },
-        itemShippingRebatesTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-        },
-        basketValueRebatesTotal: {
-          value: 4457.9,
-          currencyMnemonic: 'USD',
-        },
-        basketShippingRebatesTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-        },
-        paymentCostsTotal: {
-          value: 3.57,
-          currencyMnemonic: 'USD',
-        },
-        taxTotal: {
-          value: 22747.55,
-          currencyMnemonic: 'USD',
-        },
-        basketTotal: {
-          value: 142470.71,
-          currencyMnemonic: 'USD',
-        },
-      },
+      totals: BasketMockData.getTotals(),
     } as OrderView;
   }
 
@@ -205,5 +88,67 @@ export class BasketMockData {
       type: 'Payment',
       id: '4711',
     } as PaymentMethod;
+  }
+
+  static getTotals(): BasketTotal {
+    return {
+      itemTotal: {
+        value: 141796.98,
+        currencyMnemonic: 'USD',
+      },
+      itemRebatesTotal: {
+        value: 4446,
+        currencyMnemonic: 'USD',
+      },
+      shippingTotal: {
+        value: 87.06,
+        currencyMnemonic: 'USD',
+      },
+      itemShippingRebatesTotal: {
+        value: 0,
+        currencyMnemonic: 'USD',
+      },
+      valueRebatesTotal: {
+        value: 4457.9,
+        currencyMnemonic: 'USD',
+      },
+      shippingRebatesTotal: {
+        value: 0,
+        currencyMnemonic: 'USD',
+      },
+      paymentCostsTotal: {
+        value: 3.57,
+        currencyMnemonic: 'USD',
+      },
+      taxTotal: {
+        value: 22747.55,
+        currencyMnemonic: 'USD',
+      },
+      total: {
+        value: 142470.71,
+        currencyMnemonic: 'USD',
+      },
+      valueRebates: [
+        {
+          name: 'appliedRebate',
+          amount: {
+            value: 11.9,
+            currencyMnemonic: 'USD',
+          },
+          rebateType: 'OrderValueOffDiscount',
+        } as BasketRebate,
+      ],
+      itemSurchargeTotalsByType: [
+        {
+          name: 'surcharge',
+          amount: {
+            value: 595,
+            currencyMnemonic: 'USD',
+          },
+          description: 'Surcharge for battery deposit',
+          displayName: 'Battery Deposit Surcharge',
+        },
+      ],
+    } as BasketTotal;
   }
 }

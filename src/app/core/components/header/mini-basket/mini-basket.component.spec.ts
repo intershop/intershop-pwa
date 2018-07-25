@@ -49,23 +49,7 @@ describe('Mini Basket Component', () => {
       id: '4711',
       lineItems: [lineItem, lineItem, lineItem],
       purchaseCurrency: 'USD',
-      totals: {
-        itemTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-          type: 'Money',
-        },
-        basketTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-          type: 'Money',
-        },
-        taxTotal: {
-          value: 0,
-          currencyMnemonic: 'USD',
-          type: 'Money',
-        },
-      },
+      totals: BasketMockData.getTotals(),
     };
 
     component.basket = basket;

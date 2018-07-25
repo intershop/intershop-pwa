@@ -1,5 +1,6 @@
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api/api.service';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { OrderService } from './order.service';
@@ -12,12 +13,17 @@ describe('Order Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     when(apiService.icmServerURL).thenReturn('http://server');
-    orderService = new OrderService(instance(apiService));
+
+    TestBed.configureTestingModule({
+      providers: [OrderService, { provide: ApiService, useFactory: () => instance(apiService) }],
+    });
+
+    orderService = TestBed.get(OrderService);
   });
 
   it("should create an order when 'createOrder' is called", done => {
     when(apiService.post(anything(), anything())).thenReturn(of({ type: 'Link', uri: 'site/-/orders/orderid' }));
-    when(apiService.get(anything())).thenReturn(of({ id: 'basket' }));
+    when(apiService.get(anything())).thenReturn(of({ id: 'basket', totals: {} }));
 
     orderService.createOrder(basketMock, true).subscribe(data => {
       verify(apiService.post('orders', anything())).once();

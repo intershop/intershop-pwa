@@ -1,8 +1,7 @@
 import { Address } from '../address/address.model';
 import { BasketItem, BasketItemView } from '../basket-item/basket-item.model';
-import { BasketRebate } from '../basket-rebate/basket-rebate.model';
+import { BasketTotal } from '../basket-total/basket-total.model';
 import { PaymentMethod } from '../payment-method/payment-method.model';
-import { Price } from '../price/price.model';
 import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
 export interface AbstractBasket<T> {
@@ -14,28 +13,7 @@ export interface AbstractBasket<T> {
   commonShippingMethod?: ShippingMethod;
   paymentMethod?: PaymentMethod;
   lineItems?: T[];
-  totals: {
-    basketShippingRebatesTotal?: Price;
-    basketTotal: Price;
-    basketValueRebatesTotal?: Price;
-    dutiesAndSurchargesTotal?: Price;
-    itemRebatesTotal?: Price;
-    itemShippingRebatesTotal?: Price;
-    itemTotal: Price;
-    paymentCostsTotal?: Price;
-    shippingTotal?: Price;
-    taxTotal?: Price;
-  };
-  valueRebates?: BasketRebate[];
-  itemSurchargeTotalsByType?: [
-    {
-      amount: Price;
-      description: string;
-      displayName: string;
-      name: string;
-      type: string;
-    }
-  ];
+  totals: BasketTotal;
 }
 
 export interface Basket extends AbstractBasket<BasketItem> {}
