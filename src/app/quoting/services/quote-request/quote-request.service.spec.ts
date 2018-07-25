@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold } from 'jasmine-marbles';
+import { cold } from 'jest-marbles';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api/api.service';
