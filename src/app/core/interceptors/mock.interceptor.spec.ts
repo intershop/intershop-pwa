@@ -20,6 +20,8 @@ describe('Mock Interceptor', () => {
 
   let mockInterceptor: MockInterceptor;
   beforeEach(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => undefined);
+
     TestBed.configureTestingModule({
       providers: [
         MockInterceptor,
