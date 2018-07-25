@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -69,23 +69,6 @@ describe('Line Item List Component', () => {
     expect(component.form.get('items').value).toHaveLength(1);
   });
 
-  it('should throw formChange event when ngOnChanges is called', done => {
-    let firedGroup = new FormGroup({});
-    component.lineItems = [
-      {
-        id: 'test',
-        quantity: { value: 1 },
-        product: { maxOrderQuantity: 1 },
-      } as BasketItemView,
-    ];
-    component.formChange.subscribe(form => {
-      firedGroup = form;
-      done();
-    });
-    component.ngOnChanges();
-    expect(firedGroup.value.items).toHaveLength(1);
-  });
-
   it('should render sub components if basket changes', () => {
     component.ngOnChanges();
     fixture.detectChanges();
@@ -93,6 +76,30 @@ describe('Line Item List Component', () => {
     expect(element.getElementsByTagName('ish-line-item-description')[0].textContent).toContain(
       'Line Item Description Component'
     );
+  });
+
+  it('should throw updateItem event when form group item changes', done => {
+    let firedItem = {} as { itemId: string; quantity: number };
+    component.lineItems = [
+      {
+        id: 'IID',
+        quantity: { value: 1, type: 'quantity' },
+        product: { maxOrderQuantity: 2 },
+      } as BasketItemView,
+    ];
+
+    component.updateItem.subscribe(item => {
+      firedItem = item;
+      done();
+    });
+
+    component.ngOnChanges();
+
+    (component.form.controls.items as FormArray).controls[0].patchValue({ quantity: 2 });
+    fixture.detectChanges();
+
+    expect(firedItem.itemId).toBe('IID');
+    expect(firedItem.quantity).toBe(2);
   });
 
   it('should throw deleteItem event when delete item is clicked', done => {

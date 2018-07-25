@@ -69,7 +69,7 @@
           [lineItems]="quote.items"
           [editable]="quote.state === 'New'"
           [total]="quote.total"
-          (formChange)="onFormChange($event)"
+          (updateItem)="onUpdateItem($event)"
           (deleteItem)="onDeleteItem($event)"
         ></ish-line-item-list>
       </div>
