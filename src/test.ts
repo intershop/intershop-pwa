@@ -5,6 +5,7 @@ beforeEach(() => {
   // tslint:disable-next-line: no-any
   getTestBed().configureCompiler({ preserveWhitespaces: false } as any);
 });
+afterEach(() => jest.clearAllTimers());
 Object.defineProperty(document.body.style, 'transform', {
   value: () => ({
     enumerable: true,
