@@ -10,6 +10,11 @@ class UseJestExtendedMatchersInTestsWalker extends Lint.RuleWalker {
     { pattern: /(toBe|toEqual)\(\[\]\)$/, replacement: 'toBeEmpty()', text: 'toBeEmpty' },
     { pattern: /(toBe|toEqual)\(\{\}\)$/, replacement: 'toBeEmpty()', text: 'toBeEmpty' },
     { pattern: /\.length\)\.(toBe|toEqual)\(([0-9]+)\)$/, replacement: ').toHaveLength($2)', text: 'toHaveLength' },
+    /*{
+      pattern: /\.(\w{7,})\)\.(toBe|toEqual)\((.*)\)$/,
+      replacement: `).toHaveProperty('$1', $3)`,
+      text: 'toHaveProperty',
+    },*/
   ];
 
   visitSourceFile(sourceFile: ts.SourceFile) {
