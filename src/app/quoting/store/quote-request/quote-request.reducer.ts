@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserAction, UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
-import { QuoteAction, QuoteRequestActionTypes } from './';
+import { QuoteAction, QuoteRequestActionTypes } from './quote-request.actions';
 
 export interface QuoteRequestState {
   quoteRequests: QuoteRequestData[];
@@ -19,8 +20,12 @@ export const initialState: QuoteRequestState = {
   selected: undefined,
 };
 
-export function quoteRequestReducer(state = initialState, action: QuoteAction): QuoteRequestState {
+export function quoteRequestReducer(state = initialState, action: QuoteAction | UserAction): QuoteRequestState {
   switch (action.type) {
+    case UserActionTypes.LogoutUser: {
+      return initialState;
+    }
+
     case QuoteRequestActionTypes.SelectQuoteRequest: {
       return {
         ...state,

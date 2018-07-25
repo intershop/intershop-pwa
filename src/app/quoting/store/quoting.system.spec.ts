@@ -11,7 +11,13 @@ import { checkoutReducers } from '../../checkout/store/checkout.system';
 import { AVAILABLE_LOCALES } from '../../core/configurations/injection-keys';
 import { ApiService } from '../../core/services/api/api.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
-import { getLoggedInCustomer, getLoggedInUser, LoadCompanyUserSuccess, LoginUserSuccess } from '../../core/store/user';
+import {
+  getLoggedInCustomer,
+  getLoggedInUser,
+  LoadCompanyUserSuccess,
+  LoginUserSuccess,
+  LogoutUser,
+} from '../../core/store/user';
 import { Customer } from '../../models/customer/customer.model';
 import { Locale } from '../../models/locale/locale.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
@@ -35,6 +41,7 @@ describe('Quoting System', () => {
   let apiServiceMock: ApiService;
   let quoteServiceMock: QuoteService;
   let locales: Locale[];
+  const user = { email: 'UID', customerNo: 'CID' } as User;
 
   beforeEach(() => {
     jest.useRealTimers();
@@ -65,7 +72,10 @@ describe('Quoting System', () => {
           checkout: combineReducers(checkoutReducers),
         }),
         EffectsModule.forRoot([LogEffects, ...coreEffects, ...quotingEffects]),
-        RouterTestingModule.withRoutes([{ path: 'account', component: DummyComponent }]),
+        RouterTestingModule.withRoutes([
+          { path: 'account', component: DummyComponent },
+          { path: 'home', component: DummyComponent },
+        ]),
         TranslateModule.forRoot(),
         FeatureToggleModule.testingFeatures({ quoting: true }),
       ],
@@ -96,7 +106,6 @@ describe('Quoting System', () => {
     let quoteRequestCount;
 
     beforeEach(() => {
-      const user = { email: 'UID', customerNo: 'CID' } as User;
       when(apiServiceMock.get('customers/CID/users/UID/quoterequests')).thenReturn(
         of({
           elements: [{ type: 'Link', uri: 'customers/CID/users/UID/quoterequests/QRID1' }],
@@ -195,7 +204,36 @@ describe('Quoting System', () => {
           verify(apiServiceMock.post('customers/CID/users/UID/quoterequests/QRID2/items', anything())).times(3);
 
           done();
-        }, 4000));
+        }, 2000));
+
+      describe('user logs out', () => {
+        beforeEach(() => {
+          store$.reset();
+          store$.dispatch(new LogoutUser());
+        });
+
+        it('should no longer have any quoting related data after user logout', () => {
+          expect(getActiveQuoteRequest(store$.state)).toBeUndefined();
+          expect(getCurrentQuoteRequests(store$.state)).toBeEmpty();
+          expect(getCurrentQuotes(store$.state)).toBeEmpty();
+        });
+
+        describe('user logs in again', () => {
+          beforeEach(() => {
+            store$.reset();
+            store$.dispatch(new LoginUserSuccess(user as Customer));
+            store$.dispatch(new LoadCompanyUserSuccess(user));
+          });
+
+          it('should load all the quotes when logging in again', done =>
+            setTimeout(() => {
+              expect(getActiveQuoteRequest(store$.state)).not.toBeUndefined();
+              expect(getCurrentQuoteRequests(store$.state)).toHaveLength(4);
+              expect(getCurrentQuotes(store$.state)).toBeEmpty();
+              done();
+            }, 2000));
+        });
+      });
     });
   });
 });
