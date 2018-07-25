@@ -18,4 +18,13 @@ export class BasketHelper {
 
     return basket.lineItems.map(item => item.quantity.value).reduce((l, r) => l + r, 0);
   }
+
+  /**
+   * Calculates whether the total is still estimated because of missing address or shipping data - ToDo: should be returned by the REST call
+   * @param basket The basket
+   * @returns if the basket total is estimated
+   */
+  static isEstimatedTotal(basket: Basket): boolean {
+    return !(basket.invoiceToAddress && basket.commonShipToAddress && basket.commonShippingMethod);
+  }
 }

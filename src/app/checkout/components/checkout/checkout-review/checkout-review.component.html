@@ -54,7 +54,7 @@
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">
-      <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
       <form>
         <ish-checkbox

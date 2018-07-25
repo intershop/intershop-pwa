@@ -49,9 +49,13 @@
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">
-      <!-- TODO: basket summary should probably be a order summary -->
+      <ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary>
     </div>
-
-    <a routerLink="/home">{{ 'checkout.receipt.continue.shopping' | translate }}</a>
+    <div class="cart-summary">
+        <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
+        {{ 'checkout.account.email.registered.text' | translate}}&nbsp;
+        <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{ 'checkout.account.email.registered.link' | translate }}</a>.
+    </div>
+    <a routerLink="/home" data-testing-id="home-link">{{ 'checkout.receipt.continue.shopping' | translate }}</a>
   </div>
 </div>

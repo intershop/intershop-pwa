@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Address } from '../../../../models/address/address.model';
-import { Basket } from '../../../../models/basket/basket.model';
+import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
 
 @Component({
   selector: 'ish-checkout-address',
@@ -35,6 +35,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   shippingAddressForm: FormGroup;
   emptyShippingAddressOptionLabel: string;
 
+  isEstimated: Boolean;
   destroy$ = new Subject();
 
   constructor(private router: Router) {}
@@ -88,6 +89,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
     this.emptyShippingAddressOptionLabel = this.basket.commonShipToAddress
       ? 'checkout.addresses.select_a_different_address.default'
       : 'checkout.addresses.select_shipping_address.button';
+
+    this.isEstimated = this.isEstimated = BasketHelper.isEstimatedTotal(this.basket);
   }
 
   /**
