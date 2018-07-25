@@ -18,7 +18,7 @@ export const getUserRecentOrder = createSelector(
   getProductEntities,
   (user, products): OrderView =>
     !user.recentOrder
-      ? null
+      ? undefined
       : {
           ...user.recentOrder,
           lineItems: user.recentOrder.lineItems.map(li => ({

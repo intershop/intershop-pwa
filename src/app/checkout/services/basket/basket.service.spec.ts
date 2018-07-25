@@ -16,6 +16,7 @@ describe('Basket Service', () => {
         shipToAddress: {},
       },
     ],
+    totals: {},
   };
 
   const lineItemData = {

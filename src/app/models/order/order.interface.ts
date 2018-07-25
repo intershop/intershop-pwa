@@ -1,5 +1,6 @@
 import { Address } from '../address/address.model';
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
+import { OrderTotalData } from '../order-total/order-total.interface';
 import { PaymentMethod } from '../payment-method/payment-method.model';
 import { Price } from '../price/price.model';
 import { ShippingBucketData } from '../shipping-bucket/shipping-bucket.interface';
@@ -15,18 +16,7 @@ export interface OrderData {
   dynamicMessages?: string[];
   invoiceToAddress?: Address;
   shippingBuckets: ShippingBucketData[];
-  totals: {
-    basketShippingRebatesTotal?: Price;
-    basketTotal: Price;
-    basketValueRebatesTotal?: Price;
-    dutiesAndSurchargesTotal?: Price;
-    itemRebatesTotal?: Price;
-    itemShippingRebatesTotal?: Price;
-    itemTotal: Price;
-    paymentCostsTotal?: Price;
-    shippingTotal?: Price;
-    taxTotal: Price;
-  };
+  totals: OrderTotalData;
   valueRebates?: BasketRebate[];
   itemSurchargeTotalsByType: [
     {

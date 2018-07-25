@@ -9,7 +9,7 @@
 
     <!-- list all applied order level promotions -->
     <!-- TODO: #IS-23184 : display rebate details -->
-    <ng-container *ngFor="let rebate of basket.valueRebates">
+    <ng-container *ngFor="let rebate of basket.totals.valueRebates">
       <dt>{{ 'checkout.widget.promotion.discount' | translate }}</dt>
       <dd>
         {{ invert(rebate.amount) | ishPrice }}
@@ -34,7 +34,7 @@
     </ng-container>
 
     <!-- Surcharges -->
-    <ng-container *ngFor="let surcharge of basket.itemSurchargeTotalsByType">
+    <ng-container *ngFor="let surcharge of basket.totals.itemSurchargeTotalsByType">
       <ng-template #SurchargeDescription>
         <span [innerHTML]="surcharge.description"></span>
       </ng-template>
@@ -77,7 +77,7 @@
       <span *ngIf="!estimated">{{'checkout.order.total_cost.label' | translate }}</span>
     </dt>
     <dd class="total-price">
-      {{ basket.totals.basketTotal | ishPrice }}
+      {{ basket.totals.total | ishPrice }}
     </dd>
   </dl>
 </div>
