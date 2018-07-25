@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Basket } from '../../../../models/basket/basket.model';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { BasketTotal } from '../../../../models/basket-total/basket-total.model';
 import { PriceHelper } from '../../../../models/price/price.model';
 
 @Component({
@@ -7,18 +7,9 @@ import { PriceHelper } from '../../../../models/price/price.model';
   templateUrl: './basket-cost-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasketCostSummaryComponent implements OnChanges {
-  @Input() basket: Basket;
+export class BasketCostSummaryComponent {
+  @Input() totals: BasketTotal;
+  @Input() isEstimated = false;
 
-  estimated = true;
   invert = PriceHelper.invert;
-
-  /**
-   * If the basket changes estimated flag is recalculated
-   */
-  ngOnChanges() {
-    if (this.basket.invoiceToAddress && this.basket.commonShipToAddress && this.basket.commonShippingMethod) {
-      this.estimated = false;
-    }
-  }
 }

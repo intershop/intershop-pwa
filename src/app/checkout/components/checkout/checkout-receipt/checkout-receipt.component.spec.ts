@@ -17,7 +17,7 @@ describe('Checkout Receipt Component', () => {
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
-          inputs: ['basket'],
+          inputs: ['totals'],
         }),
         MockComponent({
           selector: 'ish-info-box',
@@ -56,5 +56,15 @@ describe('Checkout Receipt Component', () => {
   it('should display the document number after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('strong[data-testing-id="order-document-number"]').innerHTML).toEqual('12345678');
+  });
+
+  it('should display the home link after creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('a[data-testing-id="home-link"]')).toBeTruthy();
+  });
+
+  it('should display the my account link after creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('a[data-testing-id="myaccount-link"]')).toBeTruthy();
   });
 });
