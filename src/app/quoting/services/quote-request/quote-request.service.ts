@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable, of, throwError } from 'rxjs';
-import { concatMap, map, mapTo, take } from 'rxjs/operators';
+import { concatMap, filter, map, mapTo, shareReplay, take } from 'rxjs/operators';
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
@@ -26,6 +26,10 @@ export class QuoteRequestService {
    */
   private ids$: Observable<{ userId: string; customerId: string }>;
 
+  /**
+   * observable contains the current active quoterequest id
+   * or adds a new quoterequest when not available.
+   */
   private quoteRequest$: Observable<string>;
 
   constructor(private apiService: ApiService, store: Store<CoreState | QuotingState>) {
@@ -39,10 +43,20 @@ export class QuoteRequestService {
       )
     );
 
-    this.quoteRequest$ = store.pipe(select(getActiveQuoteRequest)).pipe(
-      take(1),
-      concatMap(quoteRequest => (!!quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest()))
-    );
+    // rebuild the stream everytime the selected id switches back to undefined
+    store
+      .pipe(
+        select(getActiveQuoteRequest),
+        filter(x => !x)
+      )
+      .subscribe(
+        () =>
+          (this.quoteRequest$ = store.pipe(select(getActiveQuoteRequest)).pipe(
+            take(1),
+            concatMap(quoteRequest => (!!quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
+            shareReplay(1)
+          ))
+      );
   }
 
   /**
