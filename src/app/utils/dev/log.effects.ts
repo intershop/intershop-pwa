@@ -1,19 +1,32 @@
-// tslint:disable:no-console
+// tslint:disable:no-console no-any
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { filter, tap } from 'rxjs/operators';
-import { CoreState } from '../../core/store/core.state';
+
+export const containsActionWithType = (type: string) =>
+  ((actions: Action[]) => !!actions.filter(a => a.type === type).length) as (() => boolean);
+
+export const containsActionWithTypeAndPayload = (type: string, predicate: (payload: any) => boolean) =>
+  ((actions: { type: string; payload: any }[]) =>
+    !!actions.filter(a => a.type === type && predicate(a.payload)).length) as (() => boolean);
+
+function includeAction(action: Action, include: (string | RegExp)[]) {
+  const type = action.type;
+  return include
+    .map(inc => (typeof inc === 'string' ? type.indexOf(inc) >= 0 : type.search(inc) >= 0))
+    .reduce((l, r) => l || r);
+}
 
 @Injectable()
 export class LogEffects {
   private actions: Action[] = [];
-  state: CoreState;
+  state: any;
 
   logActions = false;
   logState = false;
 
-  constructor(private actions$: Actions, private store$: Store<CoreState>) {}
+  constructor(private actions$: Actions, private store$: Store<any>) {}
 
   @Effect({ dispatch: false })
   logActions$ = this.actions$.pipe(
@@ -37,6 +50,12 @@ export class LogEffects {
     this.actions = [];
   }
 
+  actionsArray(include: (string | RegExp)[]) {
+    return this.actions
+      .filter(current => !!current && !!current.type)
+      .filter(current => includeAction(current, include));
+  }
+
   actionsIterator(include: (string | RegExp)[]) {
     let currentIdx = 0;
 
@@ -46,18 +65,7 @@ export class LogEffects {
         do {
           currentIdx++;
           current = this.actions[currentIdx];
-        } while (
-          !!current &&
-          !!current.type &&
-          !include
-            .map(inc => {
-              if (typeof inc === 'string') {
-                return (current.type as string).indexOf(inc) >= 0;
-              }
-              return (current.type as string).search(inc) >= 0;
-            })
-            .reduce((l, r) => l || r)
-        );
+        } while (!!current && !!current.type && !includeAction(current, include));
         return current;
       },
     };
