@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, StoreModule } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
