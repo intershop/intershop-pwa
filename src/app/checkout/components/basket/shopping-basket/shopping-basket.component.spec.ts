@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
@@ -62,7 +62,7 @@ describe('Shopping Basket Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should throw deleteItem event when delete item is clicked', done => {
+  it('should throw deleteItem event when onDeleteItem is triggered.', done => {
     component.deleteItem.subscribe(firedItem => {
       expect(firedItem).toBe('4712');
       done();
@@ -71,19 +71,15 @@ describe('Shopping Basket Component', () => {
     component.onDeleteItem('4712');
   });
 
-  it('should throw updateItems event when form is submitted', done => {
-    component.onFormChange(
-      new FormGroup({
-        items: new FormArray([]),
-      })
-    );
+  it('should throw update item event when onUpdateItem is triggered.', done => {
+    const payload = { itemId: 'IID', quantity: 1 };
 
-    component.updateItems.subscribe(firedFormValue => {
-      expect(firedFormValue).toHaveLength(0);
+    component.updateItem.subscribe(firedItem => {
+      expect(firedItem).toBe(payload);
       done();
     });
 
-    component.submitForm();
+    component.onUpdateItem(payload);
   });
 
   it('should throw addBasketToQuote event when addToQuote is triggered.', () => {

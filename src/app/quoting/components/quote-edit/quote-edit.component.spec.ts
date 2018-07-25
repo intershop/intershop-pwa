@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormArray, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
@@ -99,10 +98,15 @@ describe('Quote Edit Component', () => {
       });
     });
 
-    it('should add line item form to form group if onFormChange triggered', () => {
-      const innerFormGroup = new FormGroup({ items: new FormArray([]) });
-      component.onFormChange(innerFormGroup);
-      expect(component.form.get('inner')).toBe(innerFormGroup);
+    it('should throw update item event when onUpdateItem is triggered.', done => {
+      const payload = { itemId: 'IID', quantity: 1 };
+
+      component.updateItem.subscribe(firedItem => {
+        expect(firedItem).toBe(payload);
+        done();
+      });
+
+      component.onUpdateItem(payload);
     });
 
     it('should throw deleteItem event when delete item is clicked', done => {
@@ -127,22 +131,7 @@ describe('Quote Edit Component', () => {
       expect(element.textContent).toContain('quote.edit.submitted.your_quote_number.text');
     });
 
-    it('should throw updateItems event when update is clicked', done => {
-      const innerFormGroup = new FormGroup({ items: new FormArray([]) });
-      component.onFormChange(innerFormGroup);
-      component.form.value.inner.items = [{ itemId: 'IID', quantity: '1' }];
-
-      component.updateItems.subscribe(payload => {
-        expect(payload).toEqual([{ itemId: 'IID', quantity: 1 }]);
-        done();
-      });
-
-      component.update();
-    });
-
     it('should throw updateQuoteRequest event when update is clicked', done => {
-      const innerFormGroup = new FormGroup({ items: new FormArray([]) });
-      component.onFormChange(innerFormGroup);
       component.form.value.displayName = 'DNAME';
       component.form.value.description = 'DESC';
 

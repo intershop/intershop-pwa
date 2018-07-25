@@ -116,7 +116,7 @@
             {{ pli.singleBasePrice | ishPrice }}
           </p>
         </div>
-        <div class="col-3 col-md-2 list-item column-price">
+        <div *ngIf="pli.totals" class="col-3 col-md-2 list-item column-price">
           <div>
             <!-- Original Total Price  -->
             <p *ngIf="pli.totals.originTotal" class="text-nowrap">

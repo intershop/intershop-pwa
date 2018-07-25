@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { BasketItemView } from '../../../models/basket-item/basket-item.model';
@@ -16,7 +18,7 @@ import { ProductHelper } from '../../../models/product/product.model';
  *   [lineItems]="lineItems"
  *   [editable]="editable"
  *   [total]="total"
- *   (formChange)="onFormChange($event)"
+ *   (updateItem)="onUpdateItem($event)"
  *   (deleteItem)="onDeleteItem($event)"
  * ></ish-line-item-list>
  */
@@ -25,7 +27,7 @@ import { ProductHelper } from '../../../models/product/product.model';
   templateUrl: './line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LineItemListComponent implements OnChanges {
+export class LineItemListComponent implements OnChanges, OnDestroy {
   @Input()
   lineItems: BasketItemView[];
   @Input()
@@ -34,12 +36,14 @@ export class LineItemListComponent implements OnChanges {
   total: Price;
 
   @Output()
-  formChange = new EventEmitter<FormGroup>();
+  updateItem = new EventEmitter<{ itemId: string; quantity: number }>();
   @Output()
   deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
   generateProductRoute = ProductHelper.generateProductRoute;
+
+  destroy$ = new Subject();
 
   constructor(private formBuilder: FormBuilder) {
     this.form = new FormGroup({});
@@ -53,7 +57,6 @@ export class LineItemListComponent implements OnChanges {
       this.form = new FormGroup({
         items: new FormArray(this.createItemForm(this.lineItems)),
       });
-      this.formChange.emit(this.form);
     }
   }
 
@@ -64,27 +67,50 @@ export class LineItemListComponent implements OnChanges {
    */
   createItemForm(lineItems: BasketItemView[]): FormGroup[] {
     const itemsForm: FormGroup[] = [];
+    this.destroy$.next();
 
-    for (const item of lineItems) {
-      if (item.product) {
-        itemsForm.push(
-          this.formBuilder.group({
-            itemId: item.id,
-            quantity: [
-              item.quantity.value,
-              [Validators.required, Validators.max(item.product.maxOrderQuantity), SpecialValidators.integer],
-            ],
-          })
-        );
+    for (const lineItem of lineItems) {
+      if (lineItem.product) {
+        const formGroup = this.formBuilder.group({
+          itemId: lineItem.id,
+          quantity: [
+            lineItem.quantity.value,
+            [Validators.required, Validators.max(lineItem.product.maxOrderQuantity), SpecialValidators.integer],
+          ],
+        });
+
+        // Subscribe on form value changes
+        formGroup.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(item => {
+          this.onUpdateItem(item);
+        });
+
+        itemsForm.push(formGroup);
       }
     }
+
     return itemsForm;
   }
 
   /**
+   * Throws updateItem event when item quantity was changed.
+   * @param item ItemId and quantity pair that should be updated
+   */
+  onUpdateItem(item: { itemId: string; quantity: number }) {
+    this.updateItem.emit(item);
+  }
+
+  /**
    * Throws deleteItem event when delete button was clicked.
+   * @param itemId The id of the item that should be deleted.
    */
   onDeleteItem(itemId) {
     this.deleteItem.emit(itemId);
+  }
+
+  /**
+   * Unsubscribe observabled on view destroy.
+   */
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }
