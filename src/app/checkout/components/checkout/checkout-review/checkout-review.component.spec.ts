@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { anything, spy, verify } from 'ts-mockito/lib/ts-mockito';
+import { anything, spy, verify } from 'ts-mockito';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CheckoutReviewComponent } from './checkout-review.component';
