@@ -1,7 +1,7 @@
 <div data-testing-id="checkout-receipt-page">
   <h1>{{ 'checkout.receipt.tankyou.message' | translate }}</h1>
 
-  <ish-checkout-receipt [basket]="basket$ | async"></ish-checkout-receipt>
+  <ish-checkout-receipt [order]="order$ | async" [user]="user$ | async"></ish-checkout-receipt>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>

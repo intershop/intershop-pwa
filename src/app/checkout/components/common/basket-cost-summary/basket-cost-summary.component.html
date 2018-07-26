@@ -4,12 +4,13 @@
     <!-- SubTotal -->
     <dt>{{'checkout.cart.subtotal.heading' | translate }}</dt>
     <dd>
-      {{ basket.totals.itemTotal | ishPrice }}
+      {{ totals.itemTotal | ishPrice }}
     </dd>
 
     <!-- list all applied order level promotions -->
     <!-- TODO: #IS-23184 : display rebate details -->
-    <ng-container *ngFor="let rebate of basket.valueRebates">
+    <ng-container *ngFor="let rebate of totals.valueRebates">
+
       <dt>{{ 'checkout.widget.promotion.discount' | translate }}</dt>
       <dd>
         {{ invert(rebate.amount) | ishPrice }}
@@ -18,23 +19,30 @@
 
     <!-- Shipping -->
     <dt>
-      <span *ngIf="estimated">{{'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
-      <span *ngIf="!estimated">{{'checkout.order.shipping.label' | translate }}</span>
+      <span *ngIf="totals.isEstimated">{{'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
+      <span *ngIf="!totals.isEstimated">{{'checkout.order.shipping.label' | translate }}</span>
     </dt>
     <dd>
-      {{ basket.totals.shippingTotal | ishPrice }}
+      {{ totals.shippingTotal | ishPrice }}
     </dd>
 
     <!-- Shipping promotions -->
-    <ng-container *ngIf="basket.totals.itemShippingRebatesTotal && basket.totals.itemShippingRebatesTotal.value">
+    <ng-container *ngIf="totals.itemShippingRebatesTotal && totals.itemShippingRebatesTotal.value">
       <dt>{{ 'checkout.widget.promotion.discount' | translate }}</dt>
       <dd>
-        {{ invert(basket.totals.itemShippingRebatesTotal) | ishPrice }}
+        {{ invert(totals.itemShippingRebatesTotal) | ishPrice }}
+      </dd>
+    </ng-container>
+
+    <ng-container *ngIf="totals.shippingRebatesTotal && totals.shippingRebatesTotal.value">
+      <dt>{{ 'checkout.widget.promotion.discount' | translate }}</dt>
+      <dd>
+        {{ invert(totals.shippingRebatesTotal) | ishPrice }}
       </dd>
     </ng-container>
 
     <!-- Surcharges -->
-    <ng-container *ngFor="let surcharge of basket.itemSurchargeTotalsByType">
+    <ng-container *ngFor="let surcharge of totals.itemSurchargeTotalsByType">
       <ng-template #SurchargeDescription>
         <span [innerHTML]="surcharge.description"></span>
       </ng-template>
@@ -55,29 +63,29 @@
     </ng-container>
 
     <!-- Payment costs -->
-    <ng-container *ngIf="basket.totals.paymentCostsTotal && basket.totals.paymentCostsTotal.value">
+    <ng-container *ngIf="totals.paymentCostsTotal && totals.paymentCostsTotal.value">
       <dt>{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
       <dd>
-        {{ basket.totals.paymentCostsTotal | ishPrice}}
+        {{ totals.paymentCostsTotal | ishPrice}}
       </dd>
     </ng-container>
 
     <!-- Tax -->
     <!-- ToDo: display tax in dependence of price calculation preferences -->
-    <ng-container *ngIf="basket.totals.taxTotal && basket.totals.taxTotal.value">
+    <ng-container *ngIf="totals.taxTotal && totals.taxTotal.value">
       <dt>{{ 'checkout.tax.text' | translate }}</dt>
       <dd>
-        {{ basket.totals.taxTotal | ishPrice}}
+        {{ totals.taxTotal | ishPrice}}
       </dd>
     </ng-container>
 
     <!-- Cart total -->
     <dt class="total-price">
-      <span *ngIf="estimated">{{'checkout.cart.estimated_total.label' | translate }}</span>
-      <span *ngIf="!estimated">{{'checkout.order.total_cost.label' | translate }}</span>
+      <span *ngIf="totals.isEstimated">{{'checkout.cart.estimated_total.label' | translate }}</span>
+      <span *ngIf="!totals.isEstimated">{{'checkout.order.total_cost.label' | translate }}</span>
     </dt>
     <dd class="total-price">
-      {{ basket.totals.basketTotal | ishPrice }}
+      {{ totals.total | ishPrice }}
     </dd>
   </dl>
 </div>

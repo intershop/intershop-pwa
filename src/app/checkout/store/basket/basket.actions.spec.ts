@@ -2,10 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
+import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import * as fromActions from './basket.actions';
 
 describe('Basket Actions', () => {
+  const basket = BasketMockData.getBasket();
   describe('Load Basket Actions', () => {
     it('should create new action for LoadBasket', () => {
       const payload = '123';
@@ -289,6 +292,37 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.ResetBasket,
+      });
+    });
+  });
+
+  describe('Create Order Actions', () => {
+    it('should create new action for Create Order', () => {
+      const payload = basket;
+      const action = new fromActions.CreateOrder(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateOrder,
+        payload,
+      });
+    });
+    it('should create new action for CreateOrderFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.CreateOrderFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateOrderFail,
+        payload,
+      });
+    });
+
+    it('should create new action for CreateOrderSuccess', () => {
+      const payload = { id: '123' } as Order;
+      const action = new fromActions.CreateOrderSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateOrderSuccess,
+        payload,
       });
     });
   });

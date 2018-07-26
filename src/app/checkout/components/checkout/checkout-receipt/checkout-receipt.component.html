@@ -1,6 +1,47 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
+    <p *ngIf="order.status === 'PENDING'" class="alert alert-info">{{ 'checkout.receipt.order_pending.message' | translate }}</p>
 
+    <!-- Receipt message -->
+    <div class="section">
+      <p>
+        <span>{{ 'checkout.order.number.label' | translate }}</span>
+        <strong data-testing-id="order-document-number">{{ order.documentNo }}</strong>
+      </p>
+      <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate:{'0': user.email }"></p>
+    </div>
+
+  <div class="row equal">
+      <!-- Invoice Address -->
+      <div class="col-sm-6">
+        <ish-info-box heading="checkout.widget.billing-address.heading">
+          <ish-address [address]="order.invoiceToAddress"></ish-address>
+        </ish-info-box>
+      </div>
+      <!-- Shipping Address -->
+      <div class="col-sm-6">
+        <ish-info-box heading="checkout.widget.shipping-address.heading">
+          <ish-address [address]="order.commonShipToAddress"></ish-address>
+        </ish-info-box>
+      </div>
+    </div>
+
+    <div class="row equal">
+        <!-- Shipping Method -->
+        <div class="col-sm-6">
+          <ish-info-box heading="checkout.widget.shipping_method.heading">
+            <p>{{ order.commonShippingMethod.name }}</p>
+          </ish-info-box>
+        </div>
+        <!-- Payment Method -->
+        <div class="col-sm-6">
+          <ish-info-box heading="checkout.widget.payment_method.heading">
+            <p>{{ order.paymentMethod.name }}</p>
+          </ish-info-box>
+        </div>
+      </div>
+      <!-- Line Items -->
+      <ish-line-item-list *ngIf="order.lineItems?.length > 0" [lineItems]="order.lineItems" [editable]="false"></ish-line-item-list>
   </div>
 
   <!-- basket summary -->
@@ -8,10 +49,13 @@
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">
-      <!-- TODO: basket summary should probably be a order summary -->
-      <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary>
     </div>
-
-    <a routerLink="/home">{{ 'checkout.receipt.continue.shopping' | translate }}</a>
+    <div class="cart-summary">
+        <h3>{{ 'checkout.account.email.registered.heading' | translate }}</h3>
+        {{ 'checkout.account.email.registered.text' | translate}}&nbsp;
+        <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{ 'checkout.account.email.registered.link' | translate }}</a>.
+    </div>
+    <a routerLink="/home" data-testing-id="home-link">{{ 'checkout.receipt.continue.shopping' | translate }}</a>
   </div>
 </div>

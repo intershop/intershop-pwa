@@ -1,5 +1,13 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
+    <div *ngIf="error as error" role="alert" class="alert alert-danger">
+      <ng-container *ngIf = "error.status === 406; else generalError">
+        {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures}}
+      </ng-container>
+      <ng-template #generalError>
+        {{ error.status }}: {{ error.error }}
+      </ng-template>
+    </div>
     <div class="row">
       <p class="col-sm-9">
         {{ 'checkout.order_review.heading.text' | translate }}
@@ -46,12 +54,12 @@
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">
-      <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
       <form>
-        <ish-checkbox 
-          [form]="form" 
-          controlName="termsAndConditions" 
+        <ish-checkbox
+          [form]="form"
+          controlName="termsAndConditions"
           [errorMessages]="{pattern: 'checkout.tac.error.tip'}"
         >
           {{ 'checkout.tac' | translate }}
@@ -67,7 +75,7 @@
   </div>
 </div>
 
-<ish-modal-dialog #modalDialog 
+<ish-modal-dialog #modalDialog
   [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, modalClass: 'modal-lg' }"
 >
   <div [innerHTML]="'checkout.termsandconditions.details.text' | translate"></div>
