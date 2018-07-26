@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
-import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import { coreReducers } from '../core.system';

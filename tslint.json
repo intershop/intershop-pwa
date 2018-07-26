@@ -210,7 +210,10 @@
     ],
     "ban-specific-imports": [
       true,
-      { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." }
+      { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." },
+      { "import": ".*", "from": ".*node_modules.*", "message": "import with 'node_modules' seems to be wrong" },
+      { "import": ".*", "from": ".*/src/.*", "message": "import with 'src' seems to be wrong" },
+      { "import": ".*", "from": "ts-mockito/lib/ts-mockito", "message": "use import from 'ts-mockito'" }
     ],
     "ban-types": [
       true,

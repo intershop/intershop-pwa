@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Store, StoreModule } from '@ngrx/store';
-import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 import { CommunicationTimeoutError } from './error.actions';
