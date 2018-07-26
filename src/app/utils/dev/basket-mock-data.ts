@@ -149,6 +149,7 @@ export class BasketMockData {
           displayName: 'Battery Deposit Surcharge',
         },
       ],
+      isEstimated: false,
     } as BasketTotal;
   }
 }

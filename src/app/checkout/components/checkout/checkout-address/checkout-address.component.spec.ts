@@ -19,7 +19,7 @@ describe('Checkout Address Component', () => {
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
-          inputs: ['totals', 'isEstimated'],
+          inputs: ['totals'],
         }),
         MockComponent({
           selector: 'ish-basket-items-summary',

@@ -9,7 +9,6 @@ import { PriceHelper } from '../../../../models/price/price.model';
 })
 export class BasketCostSummaryComponent {
   @Input() totals: BasketTotal;
-  @Input() isEstimated = false;
 
   invert = PriceHelper.invert;
 }

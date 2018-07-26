@@ -13,13 +13,12 @@ export interface BasketTotal {
   shippingTotal?: Price;
   taxTotal?: Price;
   valueRebates?: BasketRebate[];
-  itemSurchargeTotalsByType: [
-    {
-      amount: Price;
-      description: string;
-      displayName: string;
-      name: string;
-      type: string;
-    }
-  ];
+  itemSurchargeTotalsByType: {
+    amount: Price;
+    description: string;
+    displayName: string;
+    name: string;
+    type: string;
+  }[];
+  isEstimated: boolean;
 }

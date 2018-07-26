@@ -4,7 +4,7 @@ import { BasketTotal } from '../basket-total/basket-total.model';
 import { PaymentMethod } from '../payment-method/payment-method.model';
 import { ShippingMethod } from '../shipping-method/shipping-method.model';
 
-export interface AbstractBasket<T> {
+interface AbstractBasket<T> {
   id: string;
   purchaseCurrency: string;
   dynamicMessages?: string[];

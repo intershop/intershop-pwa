@@ -14,14 +14,12 @@ export interface BasketItem {
   productSKU: string;
   price: Price;
   singleBasePrice: Price;
-  itemSurcharges?: [
-    {
-      amount: Price;
-      description?: string;
-      displayName?: string;
-      text?: string;
-    }
-  ];
+  itemSurcharges?: {
+    amount: Price;
+    description?: string;
+    displayName?: string;
+    text?: string;
+  }[];
   valueRebates?: BasketRebate[];
   totals: {
     salesTaxTotal?: Price;
