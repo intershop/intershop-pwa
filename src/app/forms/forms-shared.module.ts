@@ -9,7 +9,7 @@ import { CaptchaComponent } from './shared/components/form-controls/captcha/capt
 import { CheckboxComponent } from './shared/components/form-controls/checkbox/checkbox.component';
 import { InputBirthdayComponent } from './shared/components/form-controls/input-birthday/input-birthday.component';
 import { InputComponent } from './shared/components/form-controls/input/input.component';
-import { selectComponents } from './shared/components/form-controls/select/index';
+import { selectComponents } from './shared/components/form-controls/select';
 import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedback.directive';
 
 @NgModule({

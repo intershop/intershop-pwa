@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { ProductRowContainerComponent } from '../product-row/product-row.container';
+import { ProductRowContainerComponent } from './product-row.container';
 
 describe('Product Row Container', () => {
   let component: ProductRowContainerComponent;

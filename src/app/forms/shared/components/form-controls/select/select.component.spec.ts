@@ -1,8 +1,8 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { SelectOption } from '../select/select-option.interface';
+import { SelectOption } from './select-option.interface';
 import { SelectComponent } from './select.component';
 
 describe('Select Component', () => {
