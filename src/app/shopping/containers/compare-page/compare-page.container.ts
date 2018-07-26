@@ -14,7 +14,7 @@ import { ShoppingState } from '../../store/shopping.state';
 })
 export class ComparePageContainerComponent implements OnInit {
   compareProducts$: Observable<Product[]>;
-  compareProductsCount$: Observable<Number>;
+  compareProductsCount$: Observable<number>;
 
   constructor(private store: Store<ShoppingState | CheckoutState>) {}
 

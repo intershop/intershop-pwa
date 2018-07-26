@@ -2,7 +2,7 @@ import { ErrorGroupTypes, HttpError } from './error.actions';
 
 export interface ErrorState {
   current: Error;
-  type: String;
+  type: string;
 }
 
 export const initialState: ErrorState = {
