@@ -133,4 +133,25 @@ describe('Quote Request Selectors', () => {
       expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
     });
   });
+
+  describe('loading an active quote request', () => {
+    beforeEach(() => {
+      const quoteRequests = [
+        { id: 'test', items: [] },
+        { id: 'test2', editable: true, items: [{ title: 'item1' }], state: 'New' },
+      ] as QuoteRequestData[];
+      store$.dispatch(new LoadQuoteRequestsSuccess(quoteRequests));
+      const quoteRequestItems = [{ id: 'item1', productSKU: 'test' }] as QuoteRequestItem[];
+      store$.dispatch(new LoadQuoteRequestItemsSuccess(quoteRequestItems));
+      store$.dispatch(new LoadProductSuccess({ sku: 'test' } as Product));
+    });
+
+    it('should have a product on the active quote request', () => {
+      const activeQuoteRequest = getActiveQuoteRequest(store$.state);
+      expect(activeQuoteRequest).toBeTruthy();
+      const items = activeQuoteRequest.items;
+      expect(items).toHaveLength(1);
+      expect(items[0]).toHaveProperty('product', { sku: 'test' });
+    });
+  });
 });

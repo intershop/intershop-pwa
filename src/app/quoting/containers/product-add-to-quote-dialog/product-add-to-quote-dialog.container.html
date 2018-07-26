@@ -1,0 +1,9 @@
+<ish-product-add-to-quote-dialog
+  [bsModalRef]="bsModalRef"
+  [quote]="activeQuoteRequest$ | async"
+  [quoteLoading]="quoteRequestLoading$ | async"
+  (deleteItem)="deleteQuoteRequestItem($event)"
+  (updateItems)="updateQuoteRequestItems($event)"
+  (updateQuoteRequest)="updateQuoteRequest($event)"
+  (submitQuoteRequest)="submitQuoteRequest()"
+></ish-product-add-to-quote-dialog>

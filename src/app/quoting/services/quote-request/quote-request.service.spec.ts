@@ -13,6 +13,7 @@ import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-r
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { User } from '../../../models/user/user.model';
+import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { LoadQuoteRequestsSuccess } from '../../store/quote-request';
 import { quotingReducers } from '../../store/quoting.system';
 import { QuoteRequestService } from './quote-request.service';
@@ -33,6 +34,7 @@ describe('Quote Request Service', () => {
       imports: [
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
+          shopping: combineReducers(shoppingReducers),
           user: userReducer,
         }),
       ],
