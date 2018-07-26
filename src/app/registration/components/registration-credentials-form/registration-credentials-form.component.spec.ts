@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';

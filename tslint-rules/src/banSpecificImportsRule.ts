@@ -44,7 +44,7 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
               )
             );
         } else {
-          this.addFailureAtNode(importStatement, pattern.message || `Importing from '${fromStringText} is banned.`);
+          this.addFailureAtNode(fromStringToken, pattern.message || `Importing from '${fromStringText} is banned.`);
         }
       }
     });

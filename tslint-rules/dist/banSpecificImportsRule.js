@@ -42,7 +42,7 @@ var BanSpecificImportsWalker = (function (_super) {
                     });
                 }
                 else {
-                    _this.addFailureAtNode(importStatement, pattern.message || "Importing from '" + fromStringText + " is banned.");
+                    _this.addFailureAtNode(fromStringToken, pattern.message || "Importing from '" + fromStringText + " is banned.");
                 }
             }
         });

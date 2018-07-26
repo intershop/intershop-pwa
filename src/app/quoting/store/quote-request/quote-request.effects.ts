@@ -26,9 +26,8 @@ import { getProductEntities, LoadProduct } from '../../../shopping/store/product
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';
 import { QuotingState } from '../quoting.state';
-import { getSelectedQuoteRequestId } from './';
 import * as quoteRequestActions from './quote-request.actions';
-import { getCurrentQuoteRequests, getSelectedQuoteRequest } from './quote-request.selectors';
+import { getCurrentQuoteRequests, getSelectedQuoteRequest, getSelectedQuoteRequestId } from './quote-request.selectors';
 
 @Injectable()
 export class QuoteRequestEffects {

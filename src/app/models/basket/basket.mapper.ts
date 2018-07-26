@@ -1,4 +1,4 @@
-import { BasketData } from '../basket/basket.interface';
+import { BasketData } from './basket.interface';
 import { Basket } from './basket.model';
 
 export class BasketMapper {

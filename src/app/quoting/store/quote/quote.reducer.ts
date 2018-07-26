@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { QuoteData } from '../../../models/quote/quote.interface';
-import { QuoteAction, QuoteActionTypes } from './';
+import { QuoteAction, QuoteActionTypes } from './quote.actions';
 
 export interface QuoteState {
   quotes: QuoteData[];

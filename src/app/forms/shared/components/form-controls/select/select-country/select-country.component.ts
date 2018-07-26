@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Country } from '../../../../../../models/country/country.model';
-import { SelectOption } from '../../select/select-option.interface';
+import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';
 
 @Component({
