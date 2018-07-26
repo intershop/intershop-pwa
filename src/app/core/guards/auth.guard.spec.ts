@@ -2,7 +2,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
-import { anything, spy, verify } from 'ts-mockito/lib/ts-mockito';
+import { anything, spy, verify } from 'ts-mockito';
 import { Customer } from '../../models/customer/customer.model';
 import { MockComponent } from '../../utils/dev/mock.component';
 import { CoreState } from '../store/core.state';

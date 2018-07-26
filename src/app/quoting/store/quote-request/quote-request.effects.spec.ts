@@ -6,7 +6,7 @@ import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { of, throwError } from 'rxjs';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { LoadBasketItemsSuccess, LoadBasketSuccess } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { checkoutReducers } from '../../../checkout/store/checkout.system';

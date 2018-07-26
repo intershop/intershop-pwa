@@ -24,7 +24,7 @@ var BanSpecificImportsWalker = (function (_super) {
     BanSpecificImportsWalker.prototype.visitImportDeclaration = function (importStatement) {
         var _this = this;
         var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, typescript_1.SyntaxKind.StringLiteral);
-        var fromStringText = fromStringToken.getText();
+        var fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
         this.patterns.forEach(function (pattern) {
             if (new RegExp(pattern.filePattern).test(importStatement.getSourceFile().fileName) &&
                 new RegExp(pattern.from).test(fromStringText)) {
@@ -38,11 +38,11 @@ var BanSpecificImportsWalker = (function (_super) {
                         .filter(function (token) { return token.kind === typescript_1.SyntaxKind.ImportSpecifier; })
                         .filter(function (token) { return new RegExp(pattern.import).test(token.getText()); })
                         .forEach(function (token) {
-                        return _this.addFailureAtNode(token, pattern.message || "Using '" + token.getText() + "' from " + fromStringText + " is banned.");
+                        return _this.addFailureAtNode(token, pattern.message || "Using '" + token.getText() + "' from '" + fromStringText + "' is banned.");
                     });
                 }
                 else {
-                    _this.addFailureAtNode(importStatement, pattern.message || "Importing from " + fromStringText + " is banned.");
+                    _this.addFailureAtNode(fromStringToken, pattern.message || "Importing from '" + fromStringText + " is banned.");
                 }
             }
         });

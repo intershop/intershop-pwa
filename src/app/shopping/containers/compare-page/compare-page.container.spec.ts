@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { ShoppingState } from '../../store/shopping.state';

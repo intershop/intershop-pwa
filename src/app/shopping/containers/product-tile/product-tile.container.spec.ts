@@ -3,7 +3,7 @@ import { combineReducers, StoreModule } from '@ngrx/store';
 import { Product } from '../../../models/product/product.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { shoppingReducers } from '../../store/shopping.system';
-import { ProductTileContainerComponent } from '../product-tile/product-tile.container';
+import { ProductTileContainerComponent } from './product-tile.container';
 
 describe('Product Tile Container', () => {
   let component: ProductTileContainerComponent;

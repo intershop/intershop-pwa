@@ -5,12 +5,11 @@ import { of } from 'rxjs';
 import { catchError, distinctUntilKeyChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { FilterService } from '../../services/filter/filter.service';
-import * as fromStore from '../../store/categories';
-import * as filterActions from '../filter/filter.actions';
+import * as fromStore from '../categories';
 import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
-import { ApplyFilterSuccess } from './filter.actions';
+import * as filterActions from './filter.actions';
 
 @Injectable()
 export class FilterEffects {
@@ -71,7 +70,7 @@ export class FilterEffects {
   @Effect()
   loadFilteredProducts$ = this.actions$.pipe(
     ofType(filterActions.FilterActionTypes.ApplyFilterSuccess),
-    map((action: ApplyFilterSuccess) => action.payload),
+    map((action: filterActions.ApplyFilterSuccess) => action.payload),
     switchMap(({ filterName, searchParameter }) =>
       this.filterService
         .getProductSkusForFilter(filterName, searchParameter)

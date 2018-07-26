@@ -6,7 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { anyNumber, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
+import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,

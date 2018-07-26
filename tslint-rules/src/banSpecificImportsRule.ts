@@ -20,7 +20,7 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
 
   visitImportDeclaration(importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
-    const fromStringText = fromStringToken.getText();
+    const fromStringText = fromStringToken.getText().substring(1, fromStringToken.getText().length - 1);
 
     this.patterns.forEach(pattern => {
       if (
@@ -40,11 +40,11 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
             .forEach(token =>
               this.addFailureAtNode(
                 token,
-                pattern.message || `Using '${token.getText()}' from ${fromStringText} is banned.`
+                pattern.message || `Using '${token.getText()}' from '${fromStringText}' is banned.`
               )
             );
         } else {
-          this.addFailureAtNode(importStatement, pattern.message || `Importing from ${fromStringText} is banned.`);
+          this.addFailureAtNode(fromStringToken, pattern.message || `Importing from '${fromStringText} is banned.`);
         }
       }
     });

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { instance, mock } from 'ts-mockito/lib/ts-mockito';
+import { instance, mock } from 'ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { CheckoutPageContainerComponent } from './checkout-page.container';
 

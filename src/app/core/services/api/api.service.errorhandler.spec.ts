@@ -4,7 +4,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
 import { cold } from 'jest-marbles';
-import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
 import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes } from '../../store/error';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';

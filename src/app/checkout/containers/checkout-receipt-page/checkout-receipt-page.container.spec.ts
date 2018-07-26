@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { instance, mock } from 'ts-mockito/lib/ts-mockito';
+import { instance, mock } from 'ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { checkoutReducers } from '../../store/checkout.system';
 import { CheckoutReceiptPageContainerComponent } from './checkout-receipt-page.container';
