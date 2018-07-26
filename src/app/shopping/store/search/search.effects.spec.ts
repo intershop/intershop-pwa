@@ -7,7 +7,7 @@ import { Action, combineReducers, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { ApiService } from '../../../core/services/api/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';

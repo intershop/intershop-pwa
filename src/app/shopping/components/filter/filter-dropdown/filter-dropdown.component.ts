@@ -42,7 +42,7 @@ export class FilterDropdownComponent implements OnInit {
   /**
    * Applies a facet of the filter group and shows the new filtered result.
    */
-  filter(facetName: String) {
+  filter(facetName: string) {
     const facet = this.filterElement.facets.find(f => f.name === facetName);
     this.applyFilter.emit({ filterId: facet.filterId, searchParameter: facet.searchParameter });
   }

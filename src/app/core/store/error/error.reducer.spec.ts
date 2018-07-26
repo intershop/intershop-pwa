@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import * as using from 'jasmine-data-provider';
 import { RouteNavigation } from 'ngrx-router';
-import { anything } from 'ts-mockito/lib/ts-mockito';
+import { anything } from 'ts-mockito';
 import { CreateUserSuccess } from '../user';
 import { CommunicationTimeoutError, ErrorActionTypes, HttpError } from './error.actions';
 import { errorReducer, initialState } from './error.reducer';

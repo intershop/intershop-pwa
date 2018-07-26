@@ -2,7 +2,7 @@ import { CommonModule, Location } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
-import { instance, mock, spy, verify } from 'ts-mockito/lib/ts-mockito';
+import { instance, mock, spy, verify } from 'ts-mockito';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product, ProductType } from '../../../../models/product/product.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';

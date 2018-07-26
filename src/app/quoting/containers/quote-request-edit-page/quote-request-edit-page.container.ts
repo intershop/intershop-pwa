@@ -2,7 +2,7 @@
 // Since the quote edit component is also used in a modal, minor markup definitions had to been made in the containers template.
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import {
   CreateQuoteRequestFromQuote,

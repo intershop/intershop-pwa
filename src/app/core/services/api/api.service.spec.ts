@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Link } from '../../../models/link/link.model';
 import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes, ServerError } from '../../store/error';

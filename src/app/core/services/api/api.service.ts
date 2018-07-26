@@ -103,11 +103,8 @@ export class ApiService {
 
   /**
    * http put request
-   * @param  {string} path
-   * @param  {Object={}} body
-   * @returns Observable
    */
-  put<T>(path: string, body: Object = {}): Observable<T> {
+  put<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
       .put<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
       .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
@@ -115,11 +112,9 @@ export class ApiService {
 
   /**
    * http post request
-   * @param  {string} path
-   * @param  {Object={}} body
    * @returns Observable
    */
-  post<T>(path: string, body: Object = {}): Observable<T> {
+  post<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
       .post<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
       .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
