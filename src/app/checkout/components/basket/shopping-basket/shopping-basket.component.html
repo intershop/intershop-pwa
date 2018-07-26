@@ -42,7 +42,7 @@
 
         <div class="cost-summary">
           <!-- Cost Summary Component -->
-          <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+          <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
           <!-- ToDo: ISREST-275: disable button if basket max value is exceeded -->
           <button type="submit" class="btn btn-lg btn-block btn-primary" (click)="checkout()">

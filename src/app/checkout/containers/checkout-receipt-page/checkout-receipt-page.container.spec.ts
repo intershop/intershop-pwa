@@ -19,7 +19,7 @@ describe('Checkout Receipt Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-receipt',
           template: 'Checkout Receipt Component',
-          inputs: ['basket'],
+          inputs: ['order', 'user'],
         }),
       ],
       imports: [

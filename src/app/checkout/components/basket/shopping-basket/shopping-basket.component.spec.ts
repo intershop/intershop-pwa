@@ -7,6 +7,7 @@ import { spy, verify } from 'ts-mockito';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { PipesModule } from '../../../../shared/pipes.module';
+import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { ShoppingBasketComponent } from './shopping-basket.component';
 
@@ -28,7 +29,7 @@ describe('Shopping Basket Component', () => {
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
-          inputs: ['basket'],
+          inputs: ['totals'],
         }),
         MockComponent({
           selector: 'ish-basket-add-to-quote',
@@ -50,6 +51,7 @@ describe('Shopping Basket Component', () => {
     fixture = TestBed.createComponent(ShoppingBasketComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    component.basket = BasketMockData.getBasket();
   });
 
   it('should be created', () => {

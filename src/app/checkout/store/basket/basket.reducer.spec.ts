@@ -2,7 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
+import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import * as fromActions from './basket.actions';
 import { basketReducer, initialState } from './basket.reducer';
 
@@ -293,6 +295,42 @@ describe('Basket Reducer', () => {
 
         expect(state.payments).toEqual(payments);
         expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('CreateOrder actions', () => {
+    describe('CreateOrder action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.CreateOrder(BasketMockData.getBasket());
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('CreateOrderFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.CreateOrderFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('CreateOrderSuccess action', () => {
+      it('should reset the checkout state if called', () => {
+        const oldState = {
+          ...initialState,
+          loading: true,
+          lineItems: [{ id: 'test' } as BasketItem],
+        };
+        const action = new fromActions.CreateOrderSuccess({ id: '123' } as Order);
+        const state = basketReducer(oldState, action);
+
+        expect(state).toEqual(initialState);
       });
     });
   });

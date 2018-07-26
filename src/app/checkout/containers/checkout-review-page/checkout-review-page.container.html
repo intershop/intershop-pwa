@@ -3,6 +3,7 @@
 
   <ish-checkout-review
     [basket]="basket$ | async"
+    [error]="basketError$ | async"
     (createOrder)="onCreateOrder($event)"
   ></ish-checkout-review>
 

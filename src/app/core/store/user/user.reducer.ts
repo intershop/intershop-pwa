@@ -1,11 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { BasketAction, BasketActionTypes } from '../../../checkout/store/basket';
 import { Customer } from '../../../models/customer/customer.model';
+import { Order } from '../../../models/order/order.model';
 import { User } from '../../../models/user/user.model';
 import { UserAction, UserActionTypes } from './user.actions';
 
 export interface UserState {
   customer: Customer;
   user: User;
+  recentOrder: Order;
   authorized: boolean;
   authToken: string;
   error: HttpErrorResponse;
@@ -20,12 +23,13 @@ export const getError = (state: UserState) => state.error;
 export const initialState: UserState = {
   customer: undefined,
   user: undefined,
+  recentOrder: undefined,
   authorized: false,
   authToken: undefined,
   error: undefined,
 };
 
-export function userReducer(state = initialState, action: UserAction): UserState {
+export function userReducer(state = initialState, action: UserAction | BasketAction): UserState {
   switch (action.type) {
     case UserActionTypes.UserErrorReset: {
       return {
@@ -80,6 +84,15 @@ export function userReducer(state = initialState, action: UserAction): UserState
       return {
         ...state,
         user: payload,
+      };
+    }
+
+    case BasketActionTypes.CreateOrderSuccess: {
+      const payload = action.payload;
+
+      return {
+        ...state,
+        recentOrder: payload,
       };
     }
   }
