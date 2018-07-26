@@ -5,14 +5,14 @@ import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 export interface CategoriesState {
   categories: CategoryTree;
   loading: boolean;
-  categoriesProductSKUs: { [uniqueId: string]: string[] };
+  currentProductSKUs: string[];
   selected: string;
 }
 
 export const initialState: CategoriesState = {
   loading: false,
   categories: CategoryTreeHelper.empty(),
-  categoriesProductSKUs: {},
+  currentProductSKUs: [],
   selected: undefined,
 };
 
@@ -27,10 +27,7 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
       return {
         ...state,
         selected: action.payload,
-        categoriesProductSKUs: {
-          ...state.categoriesProductSKUs,
-          [action.payload]: [],
-        },
+        currentProductSKUs: initialState.currentProductSKUs,
       };
     }
 
@@ -63,14 +60,11 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
     }
 
     case CategoriesActionTypes.SetProductSkusForCategory: {
-      const { skus, categoryUniqueId } = action.payload;
+      const { skus } = action.payload;
 
-      const categoriesProductSKUs = {
-        ...state.categoriesProductSKUs,
-        [categoryUniqueId]: removeDuplicates([...state.categoriesProductSKUs[categoryUniqueId], ...skus]),
-      };
+      const currentProductSKUs = removeDuplicates([...state.currentProductSKUs, ...skus]);
 
-      return { ...state, loading: false, categoriesProductSKUs };
+      return { ...state, loading: false, currentProductSKUs };
     }
   }
 
