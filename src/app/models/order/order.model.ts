@@ -1,5 +1,4 @@
-import { BasketItem, BasketItemView } from '../basket-item/basket-item.model';
-import { AbstractBasket } from '../basket/basket.model';
+import { Basket, BasketView } from '../basket/basket.model';
 
 export interface AbstractOrder {
   documentNo: string;
@@ -7,6 +6,6 @@ export interface AbstractOrder {
   status: string;
 }
 
-export interface Order extends AbstractBasket<BasketItem>, AbstractOrder {}
+export interface Order extends Basket, AbstractOrder {}
 
-export interface OrderView extends AbstractBasket<BasketItemView>, AbstractOrder {}
+export interface OrderView extends BasketView, AbstractOrder {}

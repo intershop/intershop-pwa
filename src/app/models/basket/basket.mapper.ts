@@ -1,9 +1,15 @@
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { BasketData } from '../basket/basket.interface';
+import { ShippingBucket } from '../shipping-bucket/shipping-bucket.model';
 import { Basket } from './basket.model';
 
 export class BasketMapper {
   static fromData(data: BasketData) {
+    let shippingBucket: ShippingBucket;
+    if (data.shippingBuckets && data.shippingBuckets.length > 0) {
+      shippingBucket = data.shippingBuckets[0];
+    }
+
     const totals: BasketTotal = {
       shippingRebatesTotal: data.totals.basketShippingRebatesTotal,
       total: data.totals.basketTotal,
@@ -17,6 +23,8 @@ export class BasketMapper {
       taxTotal: data.totals.taxTotal,
       valueRebates: data.valueRebates,
       itemSurchargeTotalsByType: data.itemSurchargeTotalsByType,
+      isEstimated:
+        !data.invoiceToAddress || !shippingBucket || !shippingBucket.shipToAddress || !shippingBucket.shippingMethod,
     };
 
     const basket: Basket = {
@@ -27,9 +35,7 @@ export class BasketMapper {
       totals: totals,
     };
 
-    if (data.shippingBuckets && data.shippingBuckets.length > 0) {
-      const shippingBucket = data.shippingBuckets[0];
-
+    if (shippingBucket) {
       basket.commonShippingMethod = shippingBucket.shippingMethod;
       basket.commonShipToAddress = shippingBucket.shipToAddress;
       basket.lineItems = shippingBucket.lineItems;

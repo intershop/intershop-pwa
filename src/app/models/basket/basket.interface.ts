@@ -12,13 +12,11 @@ export interface BasketData {
   shippingBuckets: ShippingBucket[];
   totals: BasketTotalData;
   valueRebates?: BasketRebate[];
-  itemSurchargeTotalsByType: [
-    {
-      amount: Price;
-      description: string;
-      displayName: string;
-      name: string;
-      type: string;
-    }
-  ];
+  itemSurchargeTotalsByType: {
+    amount: Price;
+    description: string;
+    displayName: string;
+    name: string;
+    type: string;
+  }[];
 }

@@ -19,6 +19,7 @@ export class OrderMapper {
       taxTotal: data.totals.taxTotal,
       valueRebates: data.valueRebates,
       itemSurchargeTotalsByType: data.itemSurchargeTotalsByType,
+      isEstimated: false,
     };
 
     const order: Order = {

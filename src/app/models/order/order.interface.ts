@@ -18,13 +18,11 @@ export interface OrderData {
   shippingBuckets: ShippingBucketData[];
   totals: OrderTotalData;
   valueRebates?: BasketRebate[];
-  itemSurchargeTotalsByType: [
-    {
-      amount: Price;
-      description: string;
-      displayName: string;
-      name: string;
-      type: string;
-    }
-  ];
+  itemSurchargeTotalsByType: {
+    amount: Price;
+    description: string;
+    displayName: string;
+    name: string;
+    type: string;
+  }[];
 }

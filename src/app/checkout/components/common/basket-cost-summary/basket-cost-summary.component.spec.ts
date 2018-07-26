@@ -35,7 +35,7 @@ describe('Basket Cost Summary Component', () => {
     expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.order.total_cost.label');
   });
   it('should display estimated prices if estimated flag is set', () => {
-    component.isEstimated = true;
+    component.totals.isEstimated = true;
     fixture.detectChanges();
     expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.cart.estimated_total.label');
   });

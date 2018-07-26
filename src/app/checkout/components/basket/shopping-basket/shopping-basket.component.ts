@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
-import { BasketHelper, BasketView } from '../../../../models/basket/basket.model';
+import { BasketView } from '../../../../models/basket/basket.model';
 
 /**
  * The Shopping Basket Component displays the users basket items and cost summary.
@@ -26,7 +26,7 @@ import { BasketHelper, BasketView } from '../../../../models/basket/basket.model
   templateUrl: './shopping-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShoppingBasketComponent implements OnChanges {
+export class ShoppingBasketComponent {
   @Input() basket: BasketView;
 
   @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
@@ -35,17 +35,9 @@ export class ShoppingBasketComponent implements OnChanges {
 
   form: FormGroup;
   submitted = false;
-  isEstimated: Boolean;
 
   constructor(private router: Router) {
     this.form = new FormGroup({});
-  }
-
-  /**
-   * If the basket changes estimated flag is recalculated
-   */
-  ngOnChanges() {
-    this.isEstimated = BasketHelper.isEstimatedTotal(this.basket);
   }
 
   /**

@@ -19,8 +19,8 @@
 
     <!-- Shipping -->
     <dt>
-      <span *ngIf="isEstimated">{{'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
-      <span *ngIf="!isEstimated">{{'checkout.order.shipping.label' | translate }}</span>
+      <span *ngIf="totals.isEstimated">{{'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
+      <span *ngIf="!totals.isEstimated">{{'checkout.order.shipping.label' | translate }}</span>
     </dt>
     <dd>
       {{ totals.shippingTotal | ishPrice }}
@@ -81,8 +81,8 @@
 
     <!-- Cart total -->
     <dt class="total-price">
-      <span *ngIf="isEstimated">{{'checkout.cart.estimated_total.label' | translate }}</span>
-      <span *ngIf="!isEstimated">{{'checkout.order.total_cost.label' | translate }}</span>
+      <span *ngIf="totals.isEstimated">{{'checkout.cart.estimated_total.label' | translate }}</span>
+      <span *ngIf="!totals.isEstimated">{{'checkout.order.total_cost.label' | translate }}</span>
     </dt>
     <dd class="total-price">
       {{ totals.total | ishPrice }}
