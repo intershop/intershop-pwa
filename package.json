@@ -54,7 +54,7 @@
     "@ngx-translate/core": "^10.0.2",
     "@ngx-translate/http-loader": "^3.0.1",
     "angular2-uuid": "^1.1.1",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.1.3",
     "core-js": "^2.5.7",
     "express": "^4.16.3",
     "ng-recaptcha": "^3.0.5",
