@@ -212,6 +212,13 @@
       true,
       { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." }
     ],
+    "ban-types": [
+      true,
+      ["Object", "Use {} instead."],
+      ["String", "Use 'string'"],
+      ["Boolean", "Use 'boolean'"],
+      ["Number", "Use 'number'"]
+    ],
     "no-suspicious-variable-init-in-tests": {
       "severity": "error",
       "options": {
