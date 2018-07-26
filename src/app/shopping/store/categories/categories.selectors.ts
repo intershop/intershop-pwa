@@ -28,13 +28,7 @@ export const getCategoryIds = createSelector(getCategoryTree, tree => Object.key
  */
 export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, createCategoryView);
 
-export const getCategoriesProductSKUs = createSelector(getCategoryState, state => state.categoriesProductSKUs);
-
-export const getProductSKUsForSelectedCategory = createSelector(
-  getCategoriesProductSKUs,
-  getSelectedCategory,
-  (categoriesProductSKUs, category) => (!!category ? categoriesProductSKUs[category.uniqueId] || [] : [])
-);
+export const getProductSKUsForSelectedCategory = createSelector(getCategoryState, state => state.currentProductSKUs);
 
 export const getProductsForSelectedCategory = createSelector(
   getSelectedCategory,
