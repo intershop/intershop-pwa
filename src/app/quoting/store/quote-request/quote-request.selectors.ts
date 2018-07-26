@@ -8,32 +8,37 @@ const getQuoteRequestState = createSelector(getQuotingState, state => state.quot
 
 export const getSelectedQuoteRequestId = createSelector(getQuoteRequestState, state => state.selected);
 
-export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, state => {
-  const quoteRequests: QuoteRequest[] = [];
-
-  for (const item of state.quoteRequests) {
-    quoteRequests.push({
-      ...item,
-      state: QuoteRequestHelper.getQuoteRequestState(item),
-    });
-  }
-
-  return quoteRequests;
-});
+export const getCurrentQuoteRequests = createSelector(getQuoteRequestState, state =>
+  state.quoteRequests.map(
+    item =>
+      ({
+        ...item,
+        state: QuoteRequestHelper.getQuoteRequestState(item),
+      } as QuoteRequest)
+  )
+);
 
 export const getQuoteRequstItems = createSelector(getQuoteRequestState, state => state.quoteRequestItems);
 
-export const getActiveQuoteRequest = createSelector(getQuoteRequestState, state => {
-  const quoteRequest = state.quoteRequests.filter(item => item.editable).pop() || undefined;
-  if (quoteRequest) {
-    return {
-      ...quoteRequest,
-      state: QuoteRequestHelper.getQuoteRequestState(quoteRequest),
-    } as QuoteRequest;
-  }
-
-  return;
-});
+export const getActiveQuoteRequest = createSelector(
+  createSelector(
+    getCurrentQuoteRequests,
+    quoteRequests => quoteRequests.filter(item => item.editable).pop() || undefined
+  ),
+  getQuoteRequstItems,
+  getProductEntities,
+  (quoteRequest, quoteRequestItems, products) =>
+    !quoteRequest
+      ? undefined
+      : {
+          ...quoteRequest,
+          state: QuoteRequestHelper.getQuoteRequestState(quoteRequest),
+          items: quoteRequestItems.map(item => ({
+            ...item,
+            product: item.productSKU ? products[item.productSKU] : undefined,
+          })),
+        }
+);
 
 /**
  * Select the selected quote request with the appended line item and product data if available.

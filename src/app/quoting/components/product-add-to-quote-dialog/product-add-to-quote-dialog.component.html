@@ -1,0 +1,105 @@
+
+
+<div class="modal-header">
+  <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()"><span aria-hidden="true">&times;</span></button>
+  <h2 class="modal-title" *ngIf="!!quote">
+    <!-- Titel and Description -->
+    <ng-container *ngIf="quote.displayName; else noDisplayName">
+      {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate}} - {{ quote.displayName }}
+    </ng-container>
+    <ng-template #noDisplayName>
+      {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.number }}
+    </ng-template>
+  </h2>
+</div>
+
+<form [formGroup]="form" class="form-horizontal form-horizontal-inline">
+  <div class="modal-body">
+    <ng-container *ngIf="!!quote">
+
+      <div class="row">
+        <label class="col-lg-2 col-sm-3 col-xs-4 control-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
+        <div class="col-lg-10 col-sm-9 col-xs-8">
+          <p class="form-control-static">{{ quote.number }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
+        <div class="col-lg-10 col-sm-9 col-xs-8">
+          <p class="form-control-static"><ish-quote-state [quote]="quote"></ish-quote-state></p>
+        </div>
+      </div>
+
+      <div class="section">
+        <!-- displayName -->
+        <ish-input
+          [form]="form"
+          controlName="displayName"
+          label="quote.edit.unsubmitted.name.label"
+          labelClass="col-lg-2 col-sm-3 col-xs-4"
+          inputClass="col-lg-10 col-sm-9 col-xs-8"
+          maxLength="256"
+          [placeholderText]="'quote.edit.unsubmitted.enter_an_optional_name.text'"
+          [errorMessages]="{
+            'required':'shopping_cart.quote.name.required.validation.message'
+          }"
+        ></ish-input>
+
+        <div class="form-group">
+          <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
+          <div class="col-lg-10 col-sm-9 col-xs-8">
+            <textarea
+              formControlName="description"
+              class="form-control"
+              [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
+            >
+            </textarea>
+            <!-- ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea> -->
+          </div>
+        </div>
+
+      </div>
+
+      <!--- Quote Item List -->
+      <div class="section">
+        <h3>{{ 'quote.items.table.heading' | translate }}</h3>
+        <ish-line-item-list
+          *ngIf="quote.items"
+          [lineItems]="quote.items"
+          [editable]="quote.state === 'New'"
+          [total]="quote.total"
+          (formChange)="onFormChange($event)"
+          (deleteItem)="onDeleteItem($event)"
+        ></ish-line-item-list>
+      </div>
+    </ng-container>
+
+    <ish-loading *ngIf="quoteLoading"></ish-loading>
+
+  </div>
+
+  <div class="modal-footer">
+
+    <div class="hidden-xs clearfix pull-left">
+        <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+    </div>
+
+    <div class="visible-xs form-group pull-left">
+      <div class="col-xs-6">
+        <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-default" [disabled]="!quote" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
+    <button
+      *ngIf="quote"
+      [routerLink]="'/account/quote-request/' + quote.id"
+      type="submit" class="btn btn-primary"
+      [disabled]="quote.items.length === 0"
+      (click)="submit()"
+    >
+      {{ 'quote.edit.button.submit.label' | translate }}
+    </button>
+  </div>
+</form>

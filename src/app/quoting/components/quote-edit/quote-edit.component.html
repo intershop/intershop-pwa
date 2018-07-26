@@ -56,13 +56,13 @@
         </ng-template>
       </h1>
     </ng-container>
-    <ng-template #noDisplayName> <!-- TODO: needed? -->
+    <ng-template #noDisplayName>
       <h1>
         <ng-container *ngIf="quote.state === 'Responded'; else unresponded">
-          {{ 'quote.edit.responded.quote_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
+          {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ quote.number }}
         </ng-container>
         <ng-template #unresponded>
-            {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - quote.number <!-- TODO: <isprint value="#Quote:Domain:DomainName.'_'.Quote:DocumentNo#"> -->
+          {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.number }}
         </ng-template>
       </h1>
     </ng-template>
