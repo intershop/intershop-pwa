@@ -1,0 +1,146 @@
+
+//
+// PRODUCT DETAILS
+
+.product-details {
+	padding: 0px;
+	
+	.label-quantity {
+		padding-top: 7px;
+	}
+	
+	.bundled-product-list,
+	.retail-product-list {
+		margin-bottom: $space-default;
+		
+		.product-number {
+			clear: both;
+		}
+		
+		.quantity {
+			font-family: $font-family-condensedregular;
+			font-size: $font-size-large;
+		}
+		
+		.bundled-product-list-item,
+		.retail-product-list-item {
+			list-style: none;
+		}
+		
+	}
+	
+	.bundled-product-list-actions {
+		
+		form {
+			display: inline;
+		}
+		.add-to-wishlist,
+		.price-notification {
+			display: inline;
+			padding-left: 0px;
+		}
+	}
+}
+
+.product-details-top-line {
+	margin-bottom: ($space-default *3);
+		
+	@media (max-width: $screen-sm-max) {
+		margin-top: ($space-default /3);
+		margin-bottom: ($space-default);
+	}
+	
+	.product-rating {
+		float: right;
+		
+		.rating-display {
+			margin-left: $space-default;
+		}
+	}
+}
+
+.product-photo {
+	float: left;
+}
+.product-alt-images {
+	float: left;
+	
+	.product-alt-images-list {
+		
+		list-style: none;
+		float: left;
+		padding-left: 0px;
+		
+		.product-alt-images-list-item
+		{	
+			border: 1px solid $border-color-lighter;
+			margin-bottom: $space-default;
+			padding: $space-default;
+		}
+	}
+}
+
+.panel-group {
+	margin: $space-default 0;
+	
+	.panel-heading {
+		padding: ($space-default /3) 0px;
+		
+		a {
+			color: $text-color-quarternary;
+			
+			&:hover {
+				color: darken($text-color-quarternary, 10%);
+			}
+		}
+		+ .panel-collapse {
+			.panel-body {
+				border-top: none;
+			}
+		}
+	}
+	
+	.panel-body {
+		color: $text-color-primary;
+		padding: $space-default 0;
+		
+		.product-attachments-list-item {
+			
+			span.glyphicon {
+				font-size: 22px;
+				margin-left: $space-default *2/3;
+			}
+		}
+	}
+}
+
+.product-warranty {
+	color: $text-color-primary;
+	font-family: $font-family-regular;
+	margin-top: $space-default;
+	
+	.product-warranty-title {
+		font-weight: bold;
+	}
+	
+	.product-warranty-list {
+		margin-top: $space-default /3;
+	} 
+}
+
+// product links with tabs or as accordion
+.collection .tab-content > .tab-pane,
+.accordion .panel-collapse {
+  display: block;
+  visibility: hidden;
+  pointer-events: none;
+  height: 0px;
+}
+
+.collection .tab-content > .active,
+.accordion .panel-collapse.in {
+  display: block;
+  visibility: visible;
+  pointer-events: auto;
+  height: auto;
+}

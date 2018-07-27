@@ -1,0 +1,81 @@
+
+/**** SVG ICONS *****/
+.icon-svg {
+	background: url('/assets/img/icons/sprite-icons.svg') no-repeat;
+}
+/* Fallback to PNG Icon for browsers that do not support SVG */
+.no-svg .icon-svg {
+	background: url('/assets/img/icons/sprite-icons.png') no-repeat;
+}
+.icon-facebook {
+	background-position:0 0;
+}
+.icon-twitter {
+	background-position:0 -30px;
+}
+.icon-youtube {
+	background-position:0 -60px;
+}
+.icon-vimeo {
+	background-position:0 -90px;
+}
+.icon-pinterest {
+	background-position:0 -120px;
+}
+.icon-googleplus {
+	background-position:0 -150px;
+}
+.icon-instagram {
+	background-position:0 -180px;
+}
+
+
+
+.btn-tool {
+	
+	.glyphicon {
+		font-size: 22px;
+	}
+	
+	& ~ .btn-tool {
+		margin-left: $space-default * 2 / 3;
+	}
+	
+}
+
+.btn-circle .glyphicon {
+	font-size: 12px;
+}
+
+
+/* Icons (.btn-tool) after a list within a product line item description */
+.pli-description {
+	
+	.dl-horizontal {
+		
+		+ .btn-tool {
+			margin-top: 7.5px;
+			
+			& ~ .btn-tool {
+				margin-top: 7.5px;
+				margin-left: $space-default * 2 / 3;
+			}
+			
+		}
+		
+	}
+	
+}
+
+/* small arrow beside a link/button that opens a drop box */
+.switch_arrow {
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid $text-color-corporate;
+	display: inline-block;
+	height: 0;
+	margin-left: 3px;
+	margin-top: -2px;
+	vertical-align: middle;
+	width: 0;
+}

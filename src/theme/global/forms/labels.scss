@@ -1,0 +1,39 @@
+.form-horizontal {
+	.control-label {
+		text-align: left;
+
+		&.control-label-right {
+			text-align: right;
+			padding-right: 0;
+			@media (max-width:$screen-xs-max) {
+				text-align: left;
+			}
+		}
+	}
+}
+
+.form-inline {
+	label {
+		padding-right: ($space-default / 4);
+	}
+}
+
+label {
+	font-weight: normal;
+
+	&.disabled {
+		opacity: 0.5;
+	}
+}
+
+.input-help {
+	color: $text-color-quarternary;
+}
+
+.radio {
+	label {
+		label {
+			padding-left: 0;
+		}
+	}
+}

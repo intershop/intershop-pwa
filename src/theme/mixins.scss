@@ -1,0 +1,23 @@
+
+//
+// SPECIFIC THEME MIXINS
+
+
+//
+// Rounded corners
+
+@mixin round-corner($r)
+{
+	-webkit-border-radius: $r;
+	-moz-border-radius: $r;
+	border-radius: $r;
+}
+
+
+//
+// Design View - Tree
+
+@mixin filter-list-item-layer($layer)
+{
+	padding-left: $layer * $space-default;
+}
