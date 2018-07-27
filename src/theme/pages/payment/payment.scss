@@ -1,0 +1,61 @@
+//
+// Payment
+// --------------------------------------------------
+
+#payment-accordion {
+	margin-bottom: $space-default*2;
+	
+	.panel {
+		margin-bottom: 0;
+		@include box-shadow(none);
+		
+		.panel-collapse {
+			padding-left: 20px; // like radio buttons
+		}
+		
+		.radio {
+			margin-bottom: $space-default;
+		}
+		
+		.radio > label {
+			display: block;
+		}
+	}
+
+	.propertygroup-property-noneditable {
+		margin: 0;
+		
+		@media (max-width: $screen-xs-max) {
+			.propertygroup-property-content {
+				padding-left: 0
+			}
+		}
+	}
+	.creditcards {
+		li {
+			background-image: url('/assets/img/checkout/checkout-sprite.png');
+			background-repeat: no-repeat;
+			width: 55px;
+			height: 35px;
+			margin: $space-default/3;
+			
+			text-indent: -9999px;			
+			
+			&.creditcards-vsa {
+				background-position: 0 -70px;
+			}
+			&.creditcards-dcv {
+				background-position: -55px -70px;
+			}
+			&.creditcards-amx {
+				background-position: -110px -70px;
+			}			
+			&.creditcards-mas {
+				background-position: -165px -70px;
+			}
+			&.creditcards-jcb {
+				background-position: -220px -70px;
+			}
+		}	
+	}
+}

@@ -1,0 +1,211 @@
+
+//
+// LAYOUT
+// contains layout and presentation classes for the global page structure (header, footer, global navigation, ...)
+
+.main-container {
+    background: $color-inverse;
+}
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: ($grid-gutter-width / 2);
+    padding-right: ($grid-gutter-width / 2);
+}
+
+body {
+	font-family: $font-family-base;
+}
+
+
+// Global Styles
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+	text-transform: uppercase;
+	margin-top: $space-default;
+	margin-bottom: $space-default;
+}
+h4,
+.h4
+h5,
+.h5
+h6,
+.h6 {
+	font-family: $font-family-regular;
+	margin-top: ($space-default *2/3);
+	margin-bottom: $space-default;
+}
+
+a {
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+	
+	h3:hover {
+		color: $text-color-quarternary;
+	}
+	
+	&.teaser-link {
+		display: block;
+	}
+}
+	
+.glyphicon {
+	&.glyphicon-footer-icon:before {
+		color: $text-color-inverse;
+		font-size: 50px;
+	}
+}
+
+.top-header {
+	.glyphicon {
+		top: 3px;
+	}
+}
+
+
+//
+// Main working area
+
+.wrapper {
+	padding: 0px 0px 50px 0px;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+}
+
+img-responsive {
+	width: 100%;
+}
+
+// General styles
+.show-inline {
+	display: inline;
+}
+
+//
+// Global Panels
+.grey-panel {
+	background: $color-tertiary;
+	padding: ($space-default + ($space-default / 2)) 0;
+}
+
+// Help Text
+.help-block {
+	color: $text-color-quarternary;
+}
+
+h4.help-block {
+	color: $text-color-quarternary;
+}
+
+.help-block-inline {
+	display: inline-block;
+	margin:0;
+}
+
+// Marketing Area
+.marketing-area {
+	img {
+		padding-bottom: $space-default;
+	}
+}
+img.marketing {
+	padding-bottom: $space-default;
+}
+
+//
+// Text alignments
+
+.text-right-lg {
+	@media (min-width: $screen-lg-min) {
+        text-align: right;
+    }
+}
+.text-left-lg {
+	@media (min-width: $screen-lg-min) {
+        text-align: left;
+    }
+}
+
+.text-right-md {
+	@media (max-width: $screen-md-max) {
+        text-align: right;
+    }
+}
+.text-left-md {
+	@media (max-width: $screen-md-max) {
+        text-align: left;
+    }
+}
+
+.text-right-sm {
+	@media (max-width: $screen-sm-max) {
+        text-align: right;
+    }
+}
+.text-left-sm {
+	@media (max-width: $screen-sm-max) {
+        text-align: left;
+    }
+}
+
+.text-right-xs {
+	@media (max-width: $screen-xs-max) {
+        text-align: right;
+    }
+}
+.text-left-xs {
+	@media (max-width: $screen-xs-max) {
+        text-align: left;
+    }
+}
+
+
+// Detail links and tooltips
+
+[data-toggle="popover"] {
+	.glyphicon {
+		padding-left: $space-default/4;
+		font-size: 120%;
+	}
+}
+
+.details-link,
+.details-tooltip {
+	padding-left: $space-default/2;
+	font-size: 90%;
+	font-family: $font-family-regular;
+	text-transform: none;
+	white-space: nowrap;
+	display: inline-block;
+}
+
+
+//
+// SETS BOXES TO THE SAME HEIGHT
+@media (min-width: $screen-sm-min) {
+	.equal, .equal > div[class*='col-'] {
+	    display: -webkit-box;
+	    display: -moz-box;
+	    display: -ms-flexbox;
+	    display: -webkit-flex;
+	    display: flex;
+	    flex:1 0 auto;
+	}
+	// do not use flexbox if there is only one box
+	.equal > div[class*='col-']:only-child {
+		display: inherit;
+		flex: 0 0 auto;
+	}
+}
