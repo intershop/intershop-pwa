@@ -28,8 +28,8 @@
       <p>
         {{ 'quote.edit.submitted.your_quote.text' | translate }}
         <br>
-        <!-- TODO: Using links in the translation pipe are currently not possible. Is this really necessary? -->
-        <!-- <istext key="quote.edit.submitted.you_can_check.text" parameter0="#URLEX(SecureURL,'',Action("ViewQuoteList-List"))#" parameter1="#URLEX(SecureURL,'',Action("ViewUserAccount-Start"))#" encoding="off" /> -->
+        <!-- TODO: current redirect implementation causes complete reload of the app -->
+        <span [innerHTML]="'quote.edit.submitted.you_can_check.text' | translate : { '0': '/account/quote-list', '1': '/account' }"></span>
       </p>
       <p>
         {{ 'quote.edit.submitted.we_will_email.text' | translate : { '0': user.email } }}
@@ -148,7 +148,7 @@
       </div>
     </div>
 
-    <!--
+    <!-- TODO: SubmittedToSeller date is missing in api. Please implement when available.
     <isif condition="#(Quote:State==3) AND (LinkSource NE "Shopping")#">
       <div class="alert alert-info"><istext key="quote.edit.submitted.your_quote_has_been_submitted.text" parameter0="#getValue(Quote:ProductListEventByType("SubmittedToSeller"):EventDate, DATE_INPUT)#" /></div>
       <iselseif condition="#isDefined(ERRORCODE_QUOTEVALIDATION)#">
@@ -183,12 +183,10 @@
       </div>
 
       <!--- here are the buttons -->
-      <ng-container *ngIf="quote.items && quote.items.length > 0 && quote.total && quote.total.value > 0">
+      <ng-container *ngIf="quote.items">
         <!-- IF STATE NEW -->
         <ng-container *ngIf="quote.state === 'New'">
-          <!-- TODO: IndependentItems check ? -->
-          <!-- <button type="submit" class="btn btn-primary pull-right" name="submitquote" <isif condition="#NOT hasElements(Quote:IndependentItems)#">disabled</isif>>{{ 'quote.edit.button.submit.label' | translate }}</button> -->
-          <button type="submit" class="btn btn-primary pull-right" (click)="submit()">{{ 'quote.edit.button.submit.label' | translate }}</button>
+          <button type="submit" class="btn btn-primary pull-right" [disabled]="quote.items.length === 0" (click)="submit()">{{ 'quote.edit.button.submit.label' | translate }}</button>
           <button type="submit" class="btn btn-default pull-right" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
         </ng-container>
 
