@@ -39,15 +39,18 @@ describe('Viewconf Selectors', () => {
     });
 
     it('should return true when page size is smaller than total size', () => {
-      expect(fromSelectors.canRequestMore(1).projector(state)).toBeTrue();
+      state = { ...state, itemsPerPage: 1 };
+      expect(fromSelectors.canRequestMore.projector(state)).toBeTrue();
     });
 
     it('should return false when page size is equal to total size', () => {
-      expect(fromSelectors.canRequestMore(2).projector(state)).toBeFalse();
+      state = { ...state, itemsPerPage: 2 };
+      expect(fromSelectors.canRequestMore.projector(state)).toBeFalse();
     });
 
     it('should return false when page size is greater than total size', () => {
-      expect(fromSelectors.canRequestMore(3).projector(state)).toBeFalse();
+      state = { ...state, itemsPerPage: 3 };
+      expect(fromSelectors.canRequestMore.projector(state)).toBeFalse();
     });
   });
 });

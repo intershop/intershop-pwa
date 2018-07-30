@@ -2,12 +2,18 @@ import { Action } from '@ngrx/store';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
 
 export enum ViewconfActionTypes {
+  SetEndlessScrollingPageSize = '[Shopping Internal] Set Endless Scrolling Page Size',
   ChangeViewType = '[Shopping] Change ViewType Setting',
   ChangeSortBy = '[Shopping] Change SortBy Setting',
   SetSortKeys = '[Shopping] Set SortKey List',
   SetPagingLoading = '[Shopping] Set Paging Loading',
   SetPagingInfo = '[Shopping] Set Paging Info',
   ResetPagingInfo = '[Shopping] Reset Paging Info',
+}
+
+export class SetEndlessScrollingPageSize implements Action {
+  readonly type = ViewconfActionTypes.SetEndlessScrollingPageSize;
+  constructor(public payload: number) {}
 }
 
 export class ChangeViewType implements Action {
@@ -39,6 +45,7 @@ export class ResetPagingInfo implements Action {
 }
 
 export type ViewconfAction =
+  | SetEndlessScrollingPageSize
   | ChangeViewType
   | ChangeSortBy
   | SetSortKeys
