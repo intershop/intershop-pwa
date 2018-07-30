@@ -8,6 +8,7 @@ export interface ViewconfState {
   loading: boolean;
   page: number;
   total: number;
+  itemsPerPage: number;
 }
 
 export const initialState: ViewconfState = {
@@ -17,10 +18,18 @@ export const initialState: ViewconfState = {
   loading: false,
   page: -1,
   total: -1,
+  itemsPerPage: -1,
 };
 
 export function viewconfReducer(state = initialState, action: fromViewconf.ViewconfAction): ViewconfState {
   switch (action.type) {
+    case fromViewconf.ViewconfActionTypes.SetEndlessScrollingPageSize: {
+      return {
+        ...state,
+        itemsPerPage: action.payload,
+      };
+    }
+
     case fromViewconf.ViewconfActionTypes.ChangeViewType: {
       const viewType = action.payload;
       return { ...state, viewType };

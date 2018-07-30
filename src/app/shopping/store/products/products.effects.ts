@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -15,14 +15,21 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes } from '../../../core/store/locale';
 import { mapErrorToAction, partitionBy } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SetProductSkusForCategory } from '../categories';
 import { ShoppingState } from '../shopping.state';
-import { canRequestMore, getPagingPage, getSortBy, SetPagingInfo, SetSortKeys } from '../viewconf';
+import {
+  canRequestMore,
+  getItemsPerPage,
+  getPagingPage,
+  getSortBy,
+  SetPagingInfo,
+  SetPagingLoading,
+  SetSortKeys,
+} from '../viewconf';
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
 
@@ -32,8 +39,7 @@ export class ProductsEffects {
     private actions$: Actions,
     private store: Store<ShoppingState | CoreState>,
     private productsService: ProductsService,
-    private router: Router,
-    @Inject(ENDLESS_SCROLLING_ITEMS_PER_PAGE) private itemsPerPage: number
+    private router: Router
   ) {}
 
   @Effect()
@@ -59,9 +65,10 @@ export class ProductsEffects {
     withLatestFrom(
       this.store.pipe(select(getPagingPage)),
       this.store.pipe(select(getSortBy)),
-      this.store.pipe(select(canRequestMore(this.itemsPerPage)))
+      this.store.pipe(select(getItemsPerPage)),
+      this.store.pipe(select(canRequestMore))
     ),
-    partitionBy(([, , , canSearchMore]) => canSearchMore)
+    partitionBy(([, , , , canSearchMore]) => canSearchMore)
   );
 
   /**
@@ -70,7 +77,7 @@ export class ProductsEffects {
   @Effect()
   setPagingLoading$ = this.canRetrieveMoreProducts$.pipe(
     switchMap(canSearchMore => canSearchMore.isTrue),
-    mapTo(new fromViewconf.SetPagingLoading())
+    mapTo(new SetPagingLoading())
   );
 
   /**
@@ -79,10 +86,15 @@ export class ProductsEffects {
   @Effect()
   loadProductsForCategory$ = this.canRetrieveMoreProducts$.pipe(
     switchMap(canSearchMore => canSearchMore.isTrue),
-    map(([action, currentPage, sortBy]) => ({ categoryUniqueId: action.payload, nextPage: currentPage + 1, sortBy })),
+    map(([action, currentPage, sortBy, itemsPerPage]) => ({
+      categoryUniqueId: action.payload,
+      nextPage: currentPage + 1,
+      sortBy,
+      itemsPerPage,
+    })),
     distinctUntilChanged(),
-    concatMap(({ categoryUniqueId, nextPage, sortBy }) =>
-      this.productsService.getCategoryProducts(categoryUniqueId, nextPage, this.itemsPerPage, sortBy).pipe(
+    concatMap(({ categoryUniqueId, nextPage, sortBy, itemsPerPage }) =>
+      this.productsService.getCategoryProducts(categoryUniqueId, nextPage, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([res, entities]) => [
           new SetProductSkusForCategory({

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -7,6 +7,7 @@ import { EMPTY } from 'rxjs';
 import {
   catchError,
   concatMap,
+  debounce,
   debounceTime,
   distinctUntilChanged,
   distinctUntilKeyChanged,
@@ -18,7 +19,6 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { mapErrorToAction, partitionBy } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
@@ -26,6 +26,7 @@ import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
 import {
   canRequestMore,
+  getItemsPerPage,
   getPagingPage,
   ResetPagingInfo,
   SetPagingInfo,
@@ -48,8 +49,7 @@ export class SearchEffects {
     private store: Store<ShoppingState>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private router: Router,
-    @Inject(ENDLESS_SCROLLING_ITEMS_PER_PAGE) private itemsPerPage: number
+    private router: Router
   ) {}
 
   /**
@@ -58,6 +58,8 @@ export class SearchEffects {
   @Effect()
   triggerSearch$ = this.actions$.pipe(
     ofRoute('search/:searchTerm'),
+    // wait until config parameter is set
+    debounce(() => this.store.pipe(select(getItemsPerPage), filter(x => x > 0))),
     map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
     distinctUntilChanged(),
@@ -69,8 +71,12 @@ export class SearchEffects {
    */
   private canSearchMoreProducts$ = this.actions$.pipe(
     ofType<{ type: string; payload: string }>(SearchActionTypes.SearchProducts, SearchActionTypes.SearchMoreProducts),
-    withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(canRequestMore(this.itemsPerPage)))),
-    partitionBy(([, , canSearchMore]) => canSearchMore)
+    withLatestFrom(
+      this.store.pipe(select(getPagingPage)),
+      this.store.pipe(select(getItemsPerPage)),
+      this.store.pipe(select(canRequestMore))
+    ),
+    partitionBy(([, , , canSearchMore]) => canSearchMore)
   );
 
   /**
@@ -88,11 +94,15 @@ export class SearchEffects {
   @Effect()
   searchProducts$ = this.canSearchMoreProducts$.pipe(
     switchMap(canSearchMore => canSearchMore.isTrue),
-    map(([action, currentPage]) => ({ searchTerm: action.payload, nextPage: currentPage + 1 })),
+    map(([action, currentPage, itemsPerPage]) => ({
+      searchTerm: action.payload,
+      nextPage: currentPage + 1,
+      itemsPerPage,
+    })),
     distinctUntilChanged(),
-    concatMap(({ searchTerm, nextPage }) =>
+    concatMap(({ searchTerm, nextPage, itemsPerPage }) =>
       // get products
-      this.productsService.searchProducts(searchTerm, nextPage, this.itemsPerPage).pipe(
+      this.productsService.searchProducts(searchTerm, nextPage, itemsPerPage).pipe(
         mergeMap(res => [
           // dispatch action with search result
           new SearchProductsSuccess({ searchTerm: searchTerm, products: res.products.map(p => p.sku) }),

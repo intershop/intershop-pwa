@@ -13,5 +13,9 @@ export const getPagingLoading = createSelector(getViewconfState, state => state.
 
 export const getTotalItems = createSelector(getViewconfState, state => state.total);
 
-export const canRequestMore = (itemsPerPage: number) =>
-  createSelector(getViewconfState, state => state.total < 0 || (state.page + 1) * itemsPerPage < state.total);
+export const getItemsPerPage = createSelector(getViewconfState, state => state.itemsPerPage);
+
+export const canRequestMore = createSelector(
+  getViewconfState,
+  state => state.total < 0 || (state.page + 1) * state.itemsPerPage < state.total
+);
