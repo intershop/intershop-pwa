@@ -27,7 +27,7 @@
   </isif> -->
 
   <!--- Quote Header ( shown once if quote request submitted ) -->
-  <ng-container *ngIf="submitted === true">
+  <ng-container *ngIf="submitted">
     <h1>{{ 'quote.edit.submitted.heading' | translate }}</h1>
     <p>
       {{ 'quote.edit.submitted.your_quote_number.text' | translate }}
@@ -44,7 +44,7 @@
     </p> -->
   </ng-container>
 
-  <ng-container *ngIf="submitted === false">
+  <ng-container *ngIf="!submitted">
     <!-- Title and Description -->
     <ng-container *ngIf="quote.displayName; else noDisplayName">
       <h1>

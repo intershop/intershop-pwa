@@ -2,7 +2,7 @@
   <!-- Line Items Overview -->
   <div class="list-header hidden-xs">
     <div class="col-sm-8 col-lg-6 list-header-item list-header-item-descr">{{ 'shopping_cart.product_description.heading' | translate }}</div>
-    <div class="hidden-sm hidden-md col-lg-2 list-header-item" [ngClass]="{'text-right': editable !== false}">{{ 'shopping_cart.qty.heading' | translate }}</div>
+    <div class="hidden-sm hidden-md col-lg-2 list-header-item" [ngClass]="{'text-right': editable}">{{ 'shopping_cart.qty.heading' | translate }}</div>
     <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
     <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
@@ -27,7 +27,7 @@
               <ish-line-item-description [pli]="pli"></ish-line-item-description>
 
               <a class="btn-tool"
-                *ngIf="editable === true"
+                *ngIf="editable"
                 [attr.data-testing-id]="'remove-pli-'+pli.id+'-element'"
                 [attr.data-id]="pli.id"
                 title="{{'shopping_cart.remove.item.button.label' | translate }}"
@@ -45,9 +45,9 @@
               </div>
             </ng-container>
           </div>
-          <div class="quantity col-lg-3 list-item" [ngClass]="{'text-right': editable !== false}" [formGroupName]="i">
+          <div class="quantity col-lg-3 list-item" [ngClass]="{'text-right': editable}" [formGroupName]="i">
             <div class="form-group">
-              <ng-container *ngIf="!pli.isFreeGift && editable === true">
+              <ng-container *ngIf="!pli.isFreeGift && editable">
                 <ish-input
                   [form]="form.controls['items'].controls[i]"
                   controlName="quantity"
@@ -64,7 +64,7 @@
                   }"
                 ></ish-input>
               </ng-container>
-              <ng-container *ngIf="(pli.isFreeGift && editable === true) || editable === false">
+              <ng-container *ngIf="(pli.isFreeGift && editable) || !editable">
                 <label class="hidden-lg control-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
                 {{ pli.quantity.value | number }}
               </ng-container>
