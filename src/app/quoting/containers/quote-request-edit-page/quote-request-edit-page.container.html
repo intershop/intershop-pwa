@@ -1,14 +1,12 @@
-<div class="col-md-9">
-  <ish-quote-edit
-    *ngIf="(quote$ | async) as quote"
-    [quote]="quote"
-    [user]="user$ | async"
-    (deleteItem)="deleteQuoteRequestItem($event)"
-    (updateItems)="updateQuoteRequestItems($event)"
-    (updateQuoteRequest)="updateQuoteRequest($event)"
-    (submitQuoteRequest)="submitQuoteRequest($event)"
-    (copyQuote)="copyQuote()"
-  ></ish-quote-edit>
+<ish-quote-edit
+  *ngIf="(quote$ | async) as quote"
+  [quote]="quote"
+  [user]="user$ | async"
+  (deleteItem)="deleteQuoteRequestItem($event)"
+  (updateItems)="updateQuoteRequestItems($event)"
+  (updateQuoteRequest)="updateQuoteRequest($event)"
+  (submitQuoteRequest)="submitQuoteRequest($event)"
+  (copyQuote)="copyQuote()"
+></ish-quote-edit>
 
-  <ish-loading *ngIf="quoteRequestLoading$ | async"></ish-loading>
-</div>
+<ish-loading *ngIf="quoteRequestLoading$ | async"></ish-loading>
