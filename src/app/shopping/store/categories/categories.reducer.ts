@@ -32,16 +32,14 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
     }
 
     case CategoriesActionTypes.LoadCategory:
-    case ProductsActionTypes.LoadProductsForCategory:
-    case ProductsActionTypes.LoadMoreProductsForCategory: {
+    case ProductsActionTypes.LoadProductsForCategory: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case CategoriesActionTypes.LoadCategoryFail:
-    case ProductsActionTypes.LoadProductsForCategoryAbort: {
+    case CategoriesActionTypes.LoadCategoryFail: {
       return {
         ...state,
         loading: false,

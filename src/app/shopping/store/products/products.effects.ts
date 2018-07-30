@@ -65,12 +65,12 @@ export class ProductsEffects {
   );
 
   /**
-   * abort the current request if maximum of products was retrieved already
+   * set loading state of paging
    */
   @Effect()
-  abortSearchProducts$ = this.canRetrieveMoreProducts$.pipe(
-    switchMap(canSearchMore => canSearchMore.isFalse),
-    mapTo(new productsActions.LoadProductsForCategoryAbort())
+  setPagingLoading$ = this.canRetrieveMoreProducts$.pipe(
+    switchMap(canSearchMore => canSearchMore.isTrue),
+    mapTo(new fromViewconf.SetPagingLoading())
   );
 
   /**

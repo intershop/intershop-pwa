@@ -9,6 +9,8 @@ export const getSortKeys = createSelector(getViewconfState, state => state.sortK
 
 export const getPagingPage = createSelector(getViewconfState, state => state.page);
 
+export const getPagingLoading = createSelector(getViewconfState, state => state.loading);
+
 export const getTotalItems = createSelector(getViewconfState, state => state.total);
 
 export const canRequestMore = (itemsPerPage: number) =>

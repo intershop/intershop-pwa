@@ -13,6 +13,7 @@
         [viewType]="viewType$ | async"
         [sortBy]="sortBy$ | async"
         [sortKeys]="sortKeys$ | async"
+        [loadingMore]="loadingMore$ | async"
         (viewTypeChange)="changeViewType($event)"
         (sortByChange)="changeSortBy($event)"
         (loadMore)="loadMore.emit()"
@@ -30,4 +31,4 @@
 
 </ng-container>
 
-<ish-loading-spinner *ngIf="searchLoading$ | async"></ish-loading-spinner>
+<ish-loading *ngIf="searchLoading$ | async"></ish-loading>

@@ -54,6 +54,7 @@ export function filterReducer(state = initialState, action: FilterActions): Filt
       return {
         ...state,
         products: action.payload,
+        loading: false,
       };
     }
   }

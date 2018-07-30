@@ -22,7 +22,7 @@ describe('Search Result Component', () => {
         MockComponent({
           selector: 'ish-product-list',
           template: 'Products List Component',
-          inputs: ['products', 'viewType'],
+          inputs: ['products', 'viewType', 'loadingMore'],
         }),
         MockComponent({
           selector: 'ish-filter-navigation',
