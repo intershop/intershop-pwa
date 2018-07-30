@@ -32,7 +32,7 @@ export class QuoteRequestService {
    */
   private quoteRequest$: Observable<string>;
 
-  constructor(private apiService: ApiService, store: Store<CoreState | QuotingState>) {
+  constructor(private apiService: ApiService, private store: Store<CoreState | QuotingState>) {
     this.ids$ = combineLatest(store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))).pipe(
       take(1),
       concatMap(
@@ -49,14 +49,9 @@ export class QuoteRequestService {
         select(getActiveQuoteRequest),
         filter(x => !x)
       )
-      .subscribe(
-        () =>
-          (this.quoteRequest$ = store.pipe(select(getActiveQuoteRequest)).pipe(
-            take(1),
-            concatMap(quoteRequest => (!!quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
-            shareReplay(1)
-          ))
-      );
+      .subscribe(() => this.buildActiveQuoteRequestStream());
+
+    this.buildActiveQuoteRequestStream();
   }
 
   /**
@@ -240,6 +235,18 @@ export class QuoteRequestService {
           .delete(`customers/${customerId}/users/${userId}/quoterequests/${quoteRequestId}/items/${itemId}`)
           .pipe(mapTo(quoteRequestId))
       )
+    );
+  }
+
+  /**
+   * Build active quote request stream
+   * selects or creates editable quote request
+   */
+  private buildActiveQuoteRequestStream() {
+    this.quoteRequest$ = this.store.pipe(select(getActiveQuoteRequest)).pipe(
+      take(1),
+      concatMap(quoteRequest => (!!quoteRequest ? of(quoteRequest.id) : this.addQuoteRequest())),
+      shareReplay(1)
     );
   }
 }
