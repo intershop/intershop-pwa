@@ -16,8 +16,9 @@ RUN set -x \
 &&  after=$(md5sum package-lock.json | awk '{ print $1 }') \
 &&  test "$before" = "$after"
 COPY . /workspace/
-RUN npm run test --silent -- --ci --runInBand --testPathIgnorePatterns '.*.component.spec.ts'
-RUN npm run test --silent -- --ci --runInBand '.*.component.spec.ts'
+RUN npm run test --silent -- --ci --testPathIgnorePatterns '.*.(component|container).spec.ts'
+RUN npm run test --silent -- --ci '.*.component.spec.ts'
+RUN npm run test --silent -- --ci '.*.container.spec.ts'
 RUN npm run lint
 RUN npm run build:dynamic:prod
 RUN set -x \
