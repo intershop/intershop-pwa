@@ -301,6 +301,7 @@ describe('Shopping System', () => {
 
           expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next()).toEqual(new SearchProducts('something'));
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
           expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
@@ -467,6 +468,7 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
@@ -698,6 +700,7 @@ describe('Shopping System', () => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
           expect(i.next()).toEqual(new SelectProduct(undefined));
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
           expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
@@ -988,6 +991,7 @@ describe('Shopping System', () => {
 
         expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SearchProducts('something'));
+        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
         expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);

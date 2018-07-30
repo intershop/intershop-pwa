@@ -25,6 +25,8 @@ export class FamilyPageComponent {
   viewTypeChange = new EventEmitter<string>();
   @Output()
   sortByChange = new EventEmitter<string>();
+  @Input()
+  loadingMore: boolean;
   @Output()
   loadMore = new EventEmitter<void>();
 

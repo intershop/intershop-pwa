@@ -27,7 +27,7 @@ describe('Family Page Component', () => {
         MockComponent({
           selector: 'ish-product-list',
           template: 'Products List Component',
-          inputs: ['products', 'category', 'viewType'],
+          inputs: ['products', 'category', 'viewType', 'loadingMore'],
         }),
         MockComponent({
           selector: 'ish-filter-navigation',

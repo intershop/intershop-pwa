@@ -24,11 +24,17 @@ import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
-import { canRequestMore, getPagingPage, ResetPagingInfo, SetPagingInfo, SetSortKeys } from '../viewconf';
+import {
+  canRequestMore,
+  getPagingPage,
+  ResetPagingInfo,
+  SetPagingInfo,
+  SetPagingLoading,
+  SetSortKeys,
+} from '../viewconf';
 import {
   SearchActionTypes,
   SearchProducts,
-  SearchProductsAbort,
   SearchProductsFail,
   SearchProductsSuccess,
   SuggestSearch,
@@ -68,12 +74,12 @@ export class SearchEffects {
   );
 
   /**
-   * abort the current request if maximum of products was retrieved already
+   * set paging loading
    */
   @Effect()
-  abortSearchProducts$ = this.canSearchMoreProducts$.pipe(
-    switchMap(canSearchMore => canSearchMore.isFalse),
-    mapTo(new SearchProductsAbort())
+  setPagingLoading$ = this.canSearchMoreProducts$.pipe(
+    switchMap(canSearchMore => canSearchMore.isTrue),
+    mapTo(new SetPagingLoading())
   );
 
   /**

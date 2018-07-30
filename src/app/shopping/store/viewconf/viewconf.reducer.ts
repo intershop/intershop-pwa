@@ -5,6 +5,7 @@ export interface ViewconfState {
   viewType: ViewType;
   sortBy: string;
   sortKeys: string[];
+  loading: boolean;
   page: number;
   total: number;
 }
@@ -13,6 +14,7 @@ export const initialState: ViewconfState = {
   viewType: 'grid',
   sortBy: '',
   sortKeys: [],
+  loading: false,
   page: -1,
   total: -1,
 };
@@ -37,13 +39,22 @@ export function viewconfReducer(state = initialState, action: fromViewconf.Viewc
       };
     }
 
+    case fromViewconf.ViewconfActionTypes.SetPagingLoading: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
     case fromViewconf.ViewconfActionTypes.SetPagingInfo: {
       const page = action.payload.currentPage;
       const total = action.payload.totalItems;
+      const loading = false;
       return {
         ...state,
         page,
         total,
+        loading,
       };
     }
 

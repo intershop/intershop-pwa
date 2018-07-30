@@ -1,14 +1,22 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
 import { firstTruthy } from '../../../utils/selectors';
-import { getFilteredProducts, getNumberOfFilteredProducts } from '../../store/filter';
+import { getFilteredProducts, getLoadingStatus, getNumberOfFilteredProducts } from '../../store/filter';
 import { getSearchLoading, getSearchProducts, getSearchTerm, SearchMoreProducts } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
-import { ChangeSortBy, ChangeViewType, getSortBy, getSortKeys, getTotalItems, getViewType } from '../../store/viewconf';
+import {
+  ChangeSortBy,
+  ChangeViewType,
+  getPagingLoading,
+  getSortBy,
+  getSortKeys,
+  getTotalItems,
+  getViewType,
+} from '../../store/viewconf';
 
 @Component({
   selector: 'ish-search-page-container',
@@ -18,6 +26,7 @@ import { ChangeSortBy, ChangeViewType, getSortBy, getSortKeys, getTotalItems, ge
 export class SearchPageContainerComponent implements OnInit, OnDestroy {
   searchTerm$: Observable<string>;
   searchLoading$: Observable<boolean>;
+  loadingMore$: Observable<boolean>;
   products$: Observable<Product[]>;
   totalItems$: Observable<number>;
   viewType$: Observable<ViewType>;
@@ -32,7 +41,13 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.searchTerm$ = this.store.pipe(select(getSearchTerm));
-    this.searchLoading$ = this.store.pipe(select(getSearchLoading));
+    this.searchLoading$ = combineLatest(
+      this.store.pipe(select(getSearchLoading)),
+      this.store.pipe(select(getLoadingStatus))
+    ).pipe(map(([a, b]) => a || b));
+    this.loadingMore$ = combineLatest(this.store.pipe(select(getPagingLoading)), this.searchLoading$).pipe(
+      map(([a, b]) => a && !b)
+    );
     this.products$ = this.store.pipe(select(firstTruthy(getFilteredProducts, getSearchProducts)));
     this.totalItems$ = this.store.pipe(select(firstTruthy(getNumberOfFilteredProducts, getTotalItems)));
     this.viewType$ = this.store.pipe(select(getViewType));

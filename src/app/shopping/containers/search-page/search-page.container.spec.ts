@@ -25,14 +25,14 @@ describe('Search Page Container', () => {
         MockComponent({
           selector: 'ish-search-result',
           template: 'Search Result Component',
-          inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
+          inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys', 'loadingMore'],
         }),
         MockComponent({
           selector: 'ish-search-no-result',
           template: 'Search No Result Component',
           inputs: ['searchTerm'],
         }),
-        MockComponent({ selector: 'ish-loading-spinner', template: 'ish-loading-spinner' }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
     }).compileComponents();
   }));

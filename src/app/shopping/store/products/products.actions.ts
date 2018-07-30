@@ -9,7 +9,6 @@ export enum ProductsActionTypes {
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
   LoadMoreProductsForCategory = '[Shopping] Load More Products',
-  LoadProductsForCategoryAbort = '[Shopping] Abort Load Products for Category',
 }
 
 export class SelectProduct implements Action {
@@ -41,15 +40,10 @@ export class LoadMoreProductsForCategory implements Action {
   constructor(public payload: string) {}
 }
 
-export class LoadProductsForCategoryAbort implements Action {
-  readonly type = ProductsActionTypes.LoadProductsForCategoryAbort;
-}
-
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
   | LoadProductFail
   | LoadProductSuccess
   | LoadProductsForCategory
-  | LoadMoreProductsForCategory
-  | LoadProductsForCategoryAbort;
+  | LoadMoreProductsForCategory;
