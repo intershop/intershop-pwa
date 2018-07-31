@@ -9,8 +9,10 @@ import { FormElement } from '../form-element';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class InputBirthdayComponent extends FormElement implements OnInit {
-  @Input() minYear = 0;
-  @Input() maxYear = 9999;
+  @Input()
+  minYear = 0;
+  @Input()
+  maxYear = 9999;
   dateForm: FormGroup;
   minDay = 1;
   maxDay = 31;

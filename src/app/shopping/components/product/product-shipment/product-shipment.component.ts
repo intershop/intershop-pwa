@@ -7,7 +7,8 @@ import { Product } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductShipmentComponent implements OnChanges {
-  @Input() product: Product;
+  @Input()
+  product: Product;
 
   isShipmentInformationAvailable = false;
 

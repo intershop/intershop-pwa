@@ -25,7 +25,8 @@ export class SearchBoxContainerComponent implements OnInit {
   /**
    * the configuration for this component
    */
-  @Input() configuration?: SearchBoxConfiguration;
+  @Input()
+  configuration?: SearchBoxConfiguration;
 
   searchResults$: Observable<SuggestTerm[]>;
   previousSearchTerm$: Observable<string>;

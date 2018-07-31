@@ -7,8 +7,10 @@ import { FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressFormFRComponent implements OnInit {
-  @Input() addressForm: FormGroup;
-  @Input() titles: string[];
+  @Input()
+  addressForm: FormGroup;
+  @Input()
+  titles: string[];
 
   ngOnInit() {
     if (!this.addressForm) {

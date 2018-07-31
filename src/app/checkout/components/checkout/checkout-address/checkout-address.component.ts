@@ -21,11 +21,15 @@ import { Basket } from '../../../../models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() basket: Basket;
-  @Input() addresses: Address[];
+  @Input()
+  basket: Basket;
+  @Input()
+  addresses: Address[];
 
-  @Output() updateInvoiceAddress = new EventEmitter<string>();
-  @Output() updateShippingAddress = new EventEmitter<string>();
+  @Output()
+  updateInvoiceAddress = new EventEmitter<string>();
+  @Output()
+  updateShippingAddress = new EventEmitter<string>();
 
   invoiceAddresses: Address[] = [];
   invoiceAddressForm: FormGroup;

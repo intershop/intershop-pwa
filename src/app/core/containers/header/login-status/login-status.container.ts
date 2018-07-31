@@ -11,7 +11,8 @@ import { getLoggedInUser } from '../../../store/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginStatusContainerComponent implements OnInit {
-  @Input() logoutOnly = false;
+  @Input()
+  logoutOnly = false;
 
   user$: Observable<User>;
 

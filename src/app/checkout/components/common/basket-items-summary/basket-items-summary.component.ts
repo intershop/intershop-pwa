@@ -8,7 +8,8 @@ import { ProductHelper } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketItemsSummaryComponent {
-  @Input() basket: BasketView;
+  @Input()
+  basket: BasketView;
 
   generateProductRoute = ProductHelper.generateProductRoute;
   isCollapsed = true;

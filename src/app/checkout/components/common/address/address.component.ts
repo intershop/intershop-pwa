@@ -7,5 +7,6 @@ import { Address } from '../../../../models/address/address.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressComponent {
-  @Input() address: Address;
+  @Input()
+  address: Address;
 }

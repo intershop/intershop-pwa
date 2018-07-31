@@ -11,9 +11,12 @@ import { Basket } from '../../../../models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReviewComponent implements OnInit {
-  @Input() basket: Basket;
-  @Input() error: HttpErrorResponse;
-  @Output() createOrder = new EventEmitter<Basket>();
+  @Input()
+  basket: Basket;
+  @Input()
+  error: HttpErrorResponse;
+  @Output()
+  createOrder = new EventEmitter<Basket>();
 
   form: FormGroup;
   submitted = false;

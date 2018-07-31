@@ -9,15 +9,24 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FamilyPageComponent {
-  @Input() category: CategoryView;
-  @Input() products: Product[];
-  @Input() totalItems: number;
-  @Input() viewType: ViewType;
-  @Input() sortBy: string;
-  @Input() sortKeys: string[];
-  @Output() viewTypeChange = new EventEmitter<string>();
-  @Output() sortByChange = new EventEmitter<string>();
-  @Output() loadMore = new EventEmitter<void>();
+  @Input()
+  category: CategoryView;
+  @Input()
+  products: Product[];
+  @Input()
+  totalItems: number;
+  @Input()
+  viewType: ViewType;
+  @Input()
+  sortBy: string;
+  @Input()
+  sortKeys: string[];
+  @Output()
+  viewTypeChange = new EventEmitter<string>();
+  @Output()
+  sortByChange = new EventEmitter<string>();
+  @Output()
+  loadMore = new EventEmitter<void>();
 
   changeViewType(viewType: ViewType) {
     this.viewTypeChange.emit(viewType);

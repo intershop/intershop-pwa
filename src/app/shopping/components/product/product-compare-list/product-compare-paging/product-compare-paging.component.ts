@@ -22,22 +22,26 @@ export class ProductComparePagingComponent implements OnChanges {
   /**
    * The total items number to be considered for paging
    */
-  @Input() totalItems: number;
+  @Input()
+  totalItems: number;
 
   /**
    * The maximum number of items that should be displayed on one page
    */
-  @Input() itemsPerPage: number;
+  @Input()
+  itemsPerPage: number;
 
   /**
    * The current page number
    */
-  @Input() currentPage: number;
+  @Input()
+  currentPage: number;
 
   /**
    * Trigger an event to change the page to the given page number
    */
-  @Output() changePage = new EventEmitter<number>();
+  @Output()
+  changePage = new EventEmitter<number>();
 
   showNext = false;
   showPrevious = false;

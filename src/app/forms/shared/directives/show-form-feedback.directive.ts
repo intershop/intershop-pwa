@@ -20,7 +20,8 @@ export class ShowFormFeedbackDirective {
    * FormControl which validation status is considered
    */
   // tslint:disable-next-line:no-input-rename
-  @Input('ishShowFormFeedback') control: AbstractControl;
+  @Input('ishShowFormFeedback')
+  control: AbstractControl;
 
   /**
    *  If form control is invalid and dirty 'has-error' class is added

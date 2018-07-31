@@ -33,14 +33,8 @@ export class ProductPageContainerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.product$ = this.store.pipe(
-      select(getSelectedProduct),
-      filter(product => !!product)
-    );
-    this.category$ = this.store.pipe(
-      select(getSelectedCategory),
-      filter(category => !!category)
-    );
+    this.product$ = this.store.pipe(select(getSelectedProduct), filter(product => !!product));
+    this.category$ = this.store.pipe(select(getSelectedCategory), filter(category => !!category));
     this.productLoading$ = this.store.pipe(select(getProductLoading));
   }
 
@@ -54,14 +48,8 @@ export class ProductPageContainerComponent implements OnInit {
 
   addToQuote({ sku, quantity }) {
     this.store.dispatch(new AddProductToQuoteRequest({ sku: sku, quantity: quantity }));
-    this.store
-      .pipe(
-        select(getUserAuthorized),
-        take(1),
-        filter(b => b)
-      )
-      .subscribe(() => {
-        this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
-      });
+    this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
+      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
+    });
   }
 }

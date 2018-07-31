@@ -29,15 +29,23 @@ import { Quote } from '../../../models/quote/quote.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteEditComponent implements OnChanges {
-  @Input() quote: Quote | QuoteRequest;
+  @Input()
+  quote: Quote | QuoteRequest;
 
-  @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
-  @Output() submitQuoteRequest = new EventEmitter<void>();
-  @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
-  @Output() deleteItem = new EventEmitter<string>();
-  @Output() copyQuote = new EventEmitter<void>();
-  @Output() rejectQuote = new EventEmitter<void>();
-  @Output() addQuoteToBasket = new EventEmitter<string>();
+  @Output()
+  updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
+  @Output()
+  submitQuoteRequest = new EventEmitter<void>();
+  @Output()
+  updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
+  @Output()
+  deleteItem = new EventEmitter<string>();
+  @Output()
+  copyQuote = new EventEmitter<void>();
+  @Output()
+  rejectQuote = new EventEmitter<void>();
+  @Output()
+  addQuoteToBasket = new EventEmitter<string>();
 
   form: FormGroup;
 

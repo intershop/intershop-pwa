@@ -21,8 +21,10 @@ import { ShoppingState } from '../../store/shopping.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductTileContainerComponent implements OnInit {
-  @Input() product: Product;
-  @Input() category?: Category;
+  @Input()
+  product: Product;
+  @Input()
+  category?: Category;
 
   isInCompareList$: Observable<boolean>;
 
@@ -47,14 +49,8 @@ export class ProductTileContainerComponent implements OnInit {
     this.store.dispatch(
       new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
     );
-    this.store
-      .pipe(
-        select(getUserAuthorized),
-        take(1),
-        filter(b => b)
-      )
-      .subscribe(() => {
-        this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
-      });
+    this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
+      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
+    });
   }
 }

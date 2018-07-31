@@ -18,7 +18,8 @@ import { QuoteRequestItemView } from '../../../models/quote-request-item/quote-r
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemDescriptionComponent implements OnChanges {
-  @Input() pli: BasketItemView | QuoteRequestItemView;
+  @Input()
+  pli: BasketItemView | QuoteRequestItemView;
 
   itemSurcharges: { amount: Price; description?: string; displayName?: string; text?: string }[] = [];
 

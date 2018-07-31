@@ -33,15 +33,23 @@ import { Region } from '../../../models/region/region.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() countries: Country[];
-  @Input() regions: Region[];
-  @Input() languages: Locale[];
-  @Input() titles: string[];
-  @Input() error: HttpErrorResponse;
+  @Input()
+  countries: Country[];
+  @Input()
+  regions: Region[];
+  @Input()
+  languages: Locale[];
+  @Input()
+  titles: string[];
+  @Input()
+  error: HttpErrorResponse;
 
-  @Output() create = new EventEmitter<Customer>();
-  @Output() cancel = new EventEmitter<void>();
-  @Output() countryChange = new EventEmitter<string>();
+  @Output()
+  create = new EventEmitter<Customer>();
+  @Output()
+  cancel = new EventEmitter<void>();
+  @Output()
+  countryChange = new EventEmitter<string>();
 
   destroy$ = new Subject();
   form: FormGroup;

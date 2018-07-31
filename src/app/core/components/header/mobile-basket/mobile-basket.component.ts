@@ -16,7 +16,8 @@ export class MobileBasketComponent implements OnChanges {
   /**
    * The basket whos information (the item count) should be displayed.
    */
-  @Input() basket: Basket;
+  @Input()
+  basket: Basket;
 
   itemCount = 0;
 
