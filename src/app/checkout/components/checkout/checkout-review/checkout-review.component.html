@@ -19,13 +19,13 @@
     <div class="row equal">
       <!-- Invoice Address -->
       <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address">
+        <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address" class="infobox-wrapper">
           <ish-address [address]="basket.invoiceToAddress"></ish-address>
         </ish-info-box>
       </div>
       <!-- Shipping Address -->
       <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.shipping-address.heading" editRouterLink="/checkout/address">
+        <ish-info-box heading="checkout.widget.shipping-address.heading" editRouterLink="/checkout/address" class="infobox-wrapper">
           <ish-address [address]="basket.commonShipToAddress"></ish-address>
         </ish-info-box>
       </div>
@@ -34,13 +34,13 @@
     <div class="row equal">
       <!-- Shipping Method -->
       <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.shipping_method.heading" editRouterLink="/checkout/shipping">
+        <ish-info-box heading="checkout.widget.shipping_method.heading" editRouterLink="/checkout/shipping" class="infobox-wrapper">
           <p>{{ basket.commonShippingMethod.name }}</p>
         </ish-info-box>
       </div>
       <!-- Payment Method -->
       <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.payment_method.heading" editRouterLink="/checkout/payment">
+        <ish-info-box heading="checkout.widget.payment_method.heading" editRouterLink="/checkout/payment" class="infobox-wrapper">
           <p>{{ basket.paymentMethod.name }}</p>
         </ish-info-box>
       </div>

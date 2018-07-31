@@ -12,11 +12,6 @@ trim_trailing_whitespace = true
 max_line_length = off
 trim_trailing_whitespace = false
 
-[*.less]
-indent_style = tab
-insert_final_newline = false
-trim_trailing_whitespace = false
-
 [*.groovy]
 insert_final_newline = false
 trim_trailing_whitespace = false
