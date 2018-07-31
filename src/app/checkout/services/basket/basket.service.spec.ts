@@ -16,6 +16,10 @@ describe('Basket Service', () => {
         shipToAddress: {},
       },
     ],
+    paymentMethod: {
+      name: 'testPayment',
+      id: 'paymentId',
+    },
     totals: {},
   };
 
@@ -98,6 +102,24 @@ describe('Basket Service', () => {
 
     basketService.getBasketPayments(basketMockData.id).subscribe(() => {
       verify(apiService.get(`baskets/${basketMockData.id}/payments`)).once();
+      done();
+    });
+  });
+
+  it("should add a payment to the basket when 'addBasketPayment' is called", done => {
+    when(apiService.post(`baskets/${basketMockData.id}/payments`, anything())).thenReturn(of([]));
+
+    basketService.addBasketPayment(basketMockData.id, basketMockData.paymentMethod.name).subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.id}/payments`, anything())).once();
+      done();
+    });
+  });
+
+  it("should delete a payment from the basket when 'deleteBasketPayment' is called", done => {
+    when(apiService.delete(anything())).thenReturn(of({}));
+
+    basketService.deleteBasketPayment(basketMockData.id, basketMockData.paymentMethod.id).subscribe(() => {
+      verify(apiService.delete(`baskets/${basketMockData.id}/payments/${basketMockData.paymentMethod.id}`)).once();
       done();
     });
   });

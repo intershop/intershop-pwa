@@ -299,6 +299,38 @@ describe('Basket Reducer', () => {
     });
   });
 
+  describe('SetBasketPayment actions', () => {
+    describe('SetBasketPayment action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.SetBasketPayment('testPayment');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('SetBasketPaymentFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.SetBasketPaymentFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('SetBasketPaymentSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.SetBasketPaymentSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
+      });
+    });
+  });
+
   describe('CreateOrder actions', () => {
     describe('CreateOrder action', () => {
       it('should set loading to true', () => {
