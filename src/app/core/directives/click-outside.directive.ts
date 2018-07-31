@@ -12,7 +12,8 @@ export class ClickOutsideDirective {
   /**
    * Event to tell the listener, when there was an outside click
    */
-  @Output() isClickedOutside = new EventEmitter<boolean>();
+  @Output()
+  isClickedOutside = new EventEmitter<boolean>();
 
   /**
    * Method to check click outside of the targetElement. Emits true, when a click outside was checked.

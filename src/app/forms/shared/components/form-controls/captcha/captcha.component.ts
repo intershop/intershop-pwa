@@ -8,8 +8,10 @@ import { FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptchaComponent {
-  @Input() parentForm: FormGroup;
-  @Input() controlName: string;
+  @Input()
+  parentForm: FormGroup;
+  @Input()
+  controlName: string;
 
   /**
    * Emits true when captcha is resolved as true

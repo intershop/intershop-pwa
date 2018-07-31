@@ -10,8 +10,10 @@ import { FormErrorMessages } from './form-error-messages.interface';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormControlFeedbackComponent implements DoCheck {
-  @Input() messages: FormErrorMessages = {};
-  @Input() control: AbstractControl;
+  @Input()
+  messages: FormErrorMessages = {};
+  @Input()
+  control: AbstractControl;
 
   errors: Array<Observable<string>>;
 

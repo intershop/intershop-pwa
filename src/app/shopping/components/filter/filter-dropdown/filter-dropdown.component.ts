@@ -22,8 +22,10 @@ export class FilterDropdownComponent implements OnInit {
   /**
    * The filter group.
    */
-  @Input() filterElement: Filter;
-  @Output() applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
+  @Input()
+  filterElement: Filter;
+  @Output()
+  applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
   destroy$ = new Subject();
   filterForm: FormGroup;
   isCollapsed = false;

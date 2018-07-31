@@ -11,10 +11,14 @@ import { LoginCredentials } from '../../../models/credentials/credentials.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnInit {
-  @Input() loginType: string;
-  @Input() isLoggedIn: boolean;
-  @Input() error: HttpErrorResponse;
-  @Output() login = new EventEmitter<LoginCredentials>();
+  @Input()
+  loginType: string;
+  @Input()
+  isLoggedIn: boolean;
+  @Input()
+  error: HttpErrorResponse;
+  @Output()
+  login = new EventEmitter<LoginCredentials>();
 
   form: FormGroup;
   submitted = false;

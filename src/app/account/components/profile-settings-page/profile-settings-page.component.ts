@@ -7,7 +7,8 @@ import { User } from '../../../models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSettingsPageComponent {
-  @Input() user: User;
+  @Input()
+  user: User;
 
   showSuccessMessage: string;
 }

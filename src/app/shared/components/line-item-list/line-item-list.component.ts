@@ -25,12 +25,17 @@ import { ProductHelper } from '../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemListComponent implements OnChanges {
-  @Input() lineItems: BasketItemView[];
-  @Input() editable = true;
-  @Input() total: Price;
+  @Input()
+  lineItems: BasketItemView[];
+  @Input()
+  editable = true;
+  @Input()
+  total: Price;
 
-  @Output() formChange = new EventEmitter<FormGroup>();
-  @Output() deleteItem = new EventEmitter<string>();
+  @Output()
+  formChange = new EventEmitter<FormGroup>();
+  @Output()
+  deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
   generateProductRoute = ProductHelper.generateProductRoute;

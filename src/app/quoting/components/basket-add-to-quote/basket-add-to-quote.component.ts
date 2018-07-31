@@ -14,7 +14,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketAddToQuoteComponent {
-  @Output() basketToQuote = new EventEmitter<void>();
+  @Output()
+  basketToQuote = new EventEmitter<void>();
 
   addToQuote() {
     this.basketToQuote.emit();

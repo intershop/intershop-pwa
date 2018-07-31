@@ -7,5 +7,6 @@ import { Basket } from '../../../../models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketAddressSummaryComponent {
-  @Input() basket: Basket;
+  @Input()
+  basket: Basket;
 }

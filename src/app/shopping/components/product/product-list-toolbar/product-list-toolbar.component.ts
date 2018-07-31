@@ -21,12 +21,18 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() itemCount: number;
-  @Input() viewType: ViewType = 'grid';
-  @Input() sortBy = 'default';
-  @Input() sortKeys: string[];
-  @Output() viewTypeChange = new EventEmitter<string>();
-  @Output() sortByChange = new EventEmitter<string>();
+  @Input()
+  itemCount: number;
+  @Input()
+  viewType: ViewType = 'grid';
+  @Input()
+  sortBy = 'default';
+  @Input()
+  sortKeys: string[];
+  @Output()
+  viewTypeChange = new EventEmitter<string>();
+  @Output()
+  sortByChange = new EventEmitter<string>();
 
   destroy$ = new Subject();
   sortForm: FormControl;

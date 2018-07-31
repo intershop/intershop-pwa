@@ -10,8 +10,10 @@ import { ShippingMethod } from '../../../../models/shipping-method/shipping-meth
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutShippingComponent implements OnInit {
-  @Input() basket: Basket;
-  @Input() shippingMethods: ShippingMethod[];
+  @Input()
+  basket: Basket;
+  @Input()
+  shippingMethods: ShippingMethod[];
 
   shippingForm: FormGroup;
 

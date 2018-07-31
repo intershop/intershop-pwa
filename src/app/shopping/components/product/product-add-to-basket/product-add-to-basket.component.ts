@@ -7,11 +7,16 @@ import { Product } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToBasketComponent {
-  @Input() product: Product;
-  @Input() disabled = false;
-  @Input() displayType?: string;
-  @Input() class?: string;
-  @Output() productToBasket = new EventEmitter<void>();
+  @Input()
+  product: Product;
+  @Input()
+  disabled = false;
+  @Input()
+  displayType?: string;
+  @Input()
+  class?: string;
+  @Output()
+  productToBasket = new EventEmitter<void>();
 
   addToBasket() {
     this.productToBasket.emit();
