@@ -19,7 +19,7 @@ describe('Checkout Payment Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-payment',
           template: 'Checkout Payment Component',
-          inputs: ['basket', 'paymentMethods'],
+          inputs: ['basket', 'paymentMethods', 'error'],
         }),
       ],
 
@@ -43,5 +43,10 @@ describe('Checkout Payment Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render payment component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-checkout-payment')).toBeTruthy();
   });
 });

@@ -286,6 +286,36 @@ describe('Basket Actions', () => {
     });
   });
 
+  describe('Set Basket Payment Actions', () => {
+    it('should create new action for SetBasketPayment', () => {
+      const payload = 'paymentName';
+      const action = new fromActions.SetBasketPayment(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.SetBasketPayment,
+        payload,
+      });
+    });
+
+    it('should create new action for SetBasketPaymentFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.SetBasketPaymentFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.SetBasketPaymentFail,
+        payload,
+      });
+    });
+
+    it('should create new action for SetBasketPaymentSuccess', () => {
+      const action = new fromActions.SetBasketPaymentSuccess();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.SetBasketPaymentSuccess,
+      });
+    });
+  });
+
   describe('Reset Basket Action', () => {
     it('should create new action for ResetBasket', () => {
       const action = new fromActions.ResetBasket();
