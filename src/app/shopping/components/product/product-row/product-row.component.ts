@@ -8,10 +8,14 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRowComponent {
-  @Input() product: Product;
-  @Input() category?: Category;
-  @Output() productToBasket = new EventEmitter<void>();
-  @Output() productToQuote = new EventEmitter<void>();
+  @Input()
+  product: Product;
+  @Input()
+  category?: Category;
+  @Output()
+  productToBasket = new EventEmitter<void>();
+  @Output()
+  productToQuote = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 

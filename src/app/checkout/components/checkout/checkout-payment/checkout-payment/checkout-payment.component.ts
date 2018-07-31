@@ -10,8 +10,10 @@ import { PaymentMethod } from '../../../../../models/payment-method/payment-meth
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutPaymentComponent implements OnInit {
-  @Input() basket: Basket;
-  @Input() paymentMethods: PaymentMethod;
+  @Input()
+  basket: Basket;
+  @Input()
+  paymentMethods: PaymentMethod;
 
   paymentForm: FormGroup;
 

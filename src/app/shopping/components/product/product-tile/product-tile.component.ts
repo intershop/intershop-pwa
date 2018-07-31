@@ -8,12 +8,18 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductTileComponent {
-  @Input() product: Product;
-  @Input() category?: Category;
-  @Input() isInCompareList: boolean;
-  @Output() compareToggle = new EventEmitter<void>();
-  @Output() productToBasket = new EventEmitter<void>();
-  @Output() productToQuote = new EventEmitter<void>();
+  @Input()
+  product: Product;
+  @Input()
+  category?: Category;
+  @Input()
+  isInCompareList: boolean;
+  @Output()
+  compareToggle = new EventEmitter<void>();
+  @Output()
+  productToBasket = new EventEmitter<void>();
+  @Output()
+  productToQuote = new EventEmitter<void>();
 
   generateProductRoute = ProductHelper.generateProductRoute;
 

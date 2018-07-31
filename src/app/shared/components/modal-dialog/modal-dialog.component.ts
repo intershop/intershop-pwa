@@ -39,13 +39,16 @@ export interface ModalOptions {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalDialogComponent {
-  @Input() options: ModalOptions;
+  @Input()
+  options: ModalOptions;
 
+  @Output()
   // tslint:disable-next-line:no-any
-  @Output() confirmed = new EventEmitter<any>();
+  confirmed = new EventEmitter<any>();
 
+  @ViewChild('template')
   // tslint:disable-next-line:no-any
-  @ViewChild('template') modalDialogTemplate: TemplateRef<any>;
+  modalDialogTemplate: TemplateRef<any>;
 
   bsModalDialog: BsModalRef;
 

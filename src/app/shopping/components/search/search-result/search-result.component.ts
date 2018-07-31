@@ -27,44 +27,53 @@ export class SearchResultComponent {
   /**
    * The the search term leading to the displayed result.
    */
-  @Input() searchTerm: string;
+  @Input()
+  searchTerm: string;
 
   /**
    * The list of products as the result of a search (with paging applied if necessary).
    */
-  @Input() products: Product[];
+  @Input()
+  products: Product[];
 
   /**
    * The total number of product search results (might be different from products.length if paging is applied).
    */
-  @Input() totalItems: number;
+  @Input()
+  totalItems: number;
 
   /**
    * The view type for the product list, values are 'grid' [default] or 'list'.
    */
-  @Input() viewType: ViewType;
+  @Input()
+  viewType: ViewType;
 
   /**
    * The value that is used to sort the product list.
    */
-  @Input() sortBy: string;
+  @Input()
+  sortBy: string;
 
   /**
    * The list of available sortings to sort the product list.
    */
-  @Input() sortKeys: string[];
+  @Input()
+  sortKeys: string[];
 
   /**
    * Event for switching the view type of the product list.
    */
-  @Output() viewTypeChange = new EventEmitter<string>();
+  @Output()
+  viewTypeChange = new EventEmitter<string>();
 
   /**
    * Event for changing the sorting of the product list.
    */
-  @Output() sortByChange = new EventEmitter<string>();
+  @Output()
+  sortByChange = new EventEmitter<string>();
 
-  @Output() loadMore = new EventEmitter<void>();
+  @Output()
+  loadMore = new EventEmitter<void>();
 
   /**
    * Emits the event for switching the view type of the product list.

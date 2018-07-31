@@ -17,8 +17,10 @@ import { Filter } from '../../../../models/filter/filter.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterCheckboxComponent {
-  @Input() filterElement: Filter;
-  @Output() applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
+  @Input()
+  filterElement: Filter;
+  @Output()
+  applyFilter: EventEmitter<{ filterId: string; searchParameter: string }> = new EventEmitter();
   isCollapsed = false;
 
   filter(facet: Facet) {

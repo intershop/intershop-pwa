@@ -19,7 +19,8 @@ export class ProductImagesComponent {
   /**
    * The product for which the images should be displayed
    */
-  @Input() product: Product;
+  @Input()
+  product: Product;
 
   activeSlide = 0;
 

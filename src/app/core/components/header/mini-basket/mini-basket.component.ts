@@ -19,12 +19,14 @@ export class MiniBasketComponent implements OnChanges {
   /**
    * The basket that should be displayed.
    */
-  @Input() basket: BasketView;
+  @Input()
+  basket: BasketView;
 
   /**
    * The vertical product slider element reference.
    */
-  @ViewChild('slider') slider: ElementRef;
+  @ViewChild('slider')
+  slider: ElementRef;
 
   isCollapsed = true;
   itemCount = 0;

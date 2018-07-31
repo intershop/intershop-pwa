@@ -14,9 +14,11 @@ import { Quote } from '../../../models/quote/quote.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteListComponent implements OnChanges {
-  @Input() quotes: (Quote | QuoteRequest)[] = [];
+  @Input()
+  quotes: (Quote | QuoteRequest)[] = [];
 
-  @Output() deleteItem = new EventEmitter<Quote>();
+  @Output()
+  deleteItem = new EventEmitter<Quote>();
 
   sortedQuotes: (Quote | QuoteRequest)[] = [];
 
