@@ -2,35 +2,29 @@
 // Page Navigation
 
 .page-navigation {
-	.page-navigation-contents {
+  .page-navigation-contents {
+    ul {
+      list-style: none outside none;
+      padding-left: 0;
 
-		ul {
-			list-style: none outside none;
-			padding-left: 0;
+      &.page-navigation-0 {
+        ul {
+          padding-left: $space-default;
 
+          &.page-navigation-1 {
+          }
+        }
+      }
 
-			&.page-navigation-0 {
-				
-				ul {
-					padding-left: $space-default;
+      li {
+        line-height: 24px;
 
-					&.page-navigation-1 {
-
-					}
-				}
-			}
-
-			li {
-				line-height: 24px;
-
-				&.page-navigation-active {
-					> a {
-						font-weight: bold;
-					}
-				}
-			}
-		}
-
-		
-	}
+        &.page-navigation-active {
+          > a {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
 }

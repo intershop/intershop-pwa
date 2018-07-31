@@ -8,7 +8,6 @@
 *.png
 *.xml
 *.less
-*.scss
 *.css
 *.gradle
 *.groovy

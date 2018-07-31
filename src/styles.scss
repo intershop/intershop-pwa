@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 // set theme specific variables
-@import "theme/variables";
+@import 'theme/variables';
 
 // theme specific customization of Bootstrap variables
-@import "theme/variables-bootstrap-customized";
+@import 'theme/variables-bootstrap-customized';
 
 // import Bootstrap styles
 @import '~bootstrap/scss/bootstrap';

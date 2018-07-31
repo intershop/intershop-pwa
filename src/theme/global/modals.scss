@@ -2,27 +2,25 @@
 // Modals
 // --------------------------------------------------
 
-
-
 .modal-dialog {
-	.close {
+  .close {
     opacity: 1;
-	}
+  }
 
-	.modal-header {
-		min-height: 50px;
+  .modal-header {
+    min-height: 50px;
 
-		h2 {
-			font-family: $font-family-condensedregular;
-			margin-bottom: 0;
-		}
-	}
+    h2 {
+      font-family: $font-family-condensedregular;
+      margin-bottom: 0;
+    }
+  }
 
-	.modal-footer {
-		.btn {
-			width: auto;
-			display: inline-block;
-			margin-bottom: 0;
-		}
-	}
+  .modal-footer {
+    .btn {
+      width: auto;
+      display: inline-block;
+      margin-bottom: 0;
+    }
+  }
 }
