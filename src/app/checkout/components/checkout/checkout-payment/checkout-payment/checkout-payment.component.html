@@ -1,23 +1,26 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
     <!-- Messages -->
-    <div *ngIf="!basket.paymentMethod" role="alert" class="alert alert-danger">
+    <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
+      {{ error.status }}: {{ error.error }}
+    </div>
+    <div *ngIf="!basket.paymentMethod && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>
     <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
     <form [formGroup]="paymentForm" class="form-horizontal">
       <!-- ToDo: List of payment methods instead -->
-      <ul *ngIf="basket.paymentMethod" class="list-unstyled" role="tablist" aria-multiselectable="true">
-        <li class="panel">
+      <ul *ngIf="paymentMethods && paymentMethods.length > 0" class="list-unstyled" role="tablist" aria-multiselectable="true">
+        <li *ngFor="let paymentMethod of paymentMethods" class="panel">
           <div class="radio" role="tab">
             <label>
               <input
                 type="radio"
-                formControlName="id"
-                [id]="'paymentOption_'+ basket.paymentMethod.id"
-                [value]="basket.paymentMethod.id"
+                formControlName="name"
+                [id]="'paymentOption_'+ paymentMethod.id"
+                [value]="paymentMethod.id"
               />
-              <strong>{{ basket.paymentMethod.name }}</strong>
+              <strong>{{ paymentMethod.displayName }}<ng-container *ngIf="!paymentMethod.displayName">{{ paymentMethod.name }}</ng-container></strong>
             </label>
           </div>
         </li>

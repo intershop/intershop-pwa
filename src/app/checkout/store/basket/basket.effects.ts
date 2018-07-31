@@ -268,6 +268,26 @@ export class BasketEffects {
   );
 
   /**
+   * Sets a payment at the current basket.
+   */
+  @Effect()
+  setPaymentAtBasket$ = this.actions$.pipe(
+    ofType<basketActions.SetBasketPayment>(basketActions.BasketActionTypes.SetBasketPayment),
+    map((action: basketActions.SetBasketPayment) => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([paymentName, basket]) => {
+      const addPayment$ = this.basketService.addBasketPayment(basket.id, paymentName);
+      return (basket.paymentMethod
+        ? this.basketService.deleteBasketPayment(basket.id, basket.paymentMethod.id).pipe(concatMap(() => addPayment$))
+        : addPayment$
+      ).pipe(
+        mapTo(new basketActions.SetBasketPaymentSuccess()),
+        catchError(error => of(new basketActions.SetBasketPaymentFail(error)))
+      );
+    })
+  );
+
+  /**
    * Get current basket if missing and call AddItemsToBasketAction
    * Only triggers if basket is unset set and action payload does not contain basketId.
    */
@@ -323,7 +343,9 @@ export class BasketEffects {
       basketActions.BasketActionTypes.AddItemsToBasketSuccess,
       basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
-      basketActions.BasketActionTypes.DeleteBasketItemSuccess
+      basketActions.BasketActionTypes.DeleteBasketItemSuccess,
+      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
+      basketActions.BasketActionTypes.SetBasketPaymentFail // is necessary because current payment method might be deleted
     ),
     mapTo(new basketActions.LoadBasket())
   );

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mapTo } from 'rxjs/operators';
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../../models/basket-item/basket-item.mapper';
@@ -133,5 +133,42 @@ export class BasketService {
       unpackEnvelope<Link>(),
       resolveLinks<PaymentMethod>(this.apiService)
     );
+  }
+
+  /**
+   * Add a payment at the selected basket.
+   * @param basketId    The basket id.
+   * @param paymentName The unique name of the payment method.
+   */
+  addBasketPayment(basketId: string, paymentName: string): Observable<string> {
+    if (!basketId) {
+      return throwError('setBasketPayment() called without basketId');
+    }
+    if (!paymentName) {
+      return throwError('setBasketPayment() called without paymentName');
+    }
+
+    const body = {
+      name: paymentName,
+      type: 'Payment',
+    };
+
+    return this.apiService.post(`baskets/${basketId}/payments`, body).pipe(mapTo(paymentName));
+  }
+
+  /**
+   * Delete a payment from the selected basket.
+   * @param basketId  The basket id.
+   * @param paymentId The id of the payment that should be removed from basket.
+   */
+  deleteBasketPayment(basketId: string, paymentId: string): Observable<string> {
+    if (!basketId) {
+      return throwError('deleteBasketPayment() called without basketId');
+    }
+    if (!paymentId) {
+      return throwError('deleteBasketPayment() called without paymentId');
+    }
+
+    return this.apiService.delete(`baskets/${basketId}/payments/${paymentId}`).pipe(mapTo(paymentId));
   }
 }
