@@ -1,315 +1,312 @@
 /************* SHOPPING CART LAYOUT ***************/
 
 .cart-header {
-	.share-tools {
-		margin-top: $space-default;
-		margin-bottom: $space-default;
-	}	
-	
-	.cart-header-title {
-		padding-right: 10px;	
-	}	
-	
-	.cart-header-note {	
-		font-size: $font-size-base;
-		font-family: $font-family-regular;
-		color: $text-color-quarternary;
-		text-transform: none;
+  .share-tools {
+    margin-top: $space-default;
+    margin-bottom: $space-default;
+  }
 
-		span, a {
-			white-space: nowrap;
-		}		
-	}
+  .cart-header-title {
+    padding-right: 10px;
+  }
+
+  .cart-header-note {
+    font-size: $font-size-base;
+    font-family: $font-family-regular;
+    color: $text-color-quarternary;
+    text-transform: none;
+
+    span,
+    a {
+      white-space: nowrap;
+    }
+  }
 }
 
 .cart-line-img {
-	float: left;
-	width: 20%;
-	margin-right: 5%;
-	
-	img {
-		max-width: 100%;
-	}
+  float: left;
+  width: 20%;
+  margin-right: 5%;
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .cart-line-details {
-	float: left;
-	max-width: 70%;
+  float: left;
+  max-width: 70%;
 }
 
 .cart-group-details {
-	padding-bottom: ($space-default / 2);
+  padding-bottom: ($space-default / 2);
 }
 
 .cart-line-actions {
-	padding: ($space-default * 2) 0 0 0;
+  padding: ($space-default * 2) 0 0 0;
 }
 
 .cart-summary {
-	border: $border-width-default solid $border-color-light;
-	border-width: 1px 1px 0 1px;	
-	padding: ($space-default + ($space-default / 2));	
-	
-	.form-inline {
-		* {
-			margin-right: ($space-default / 2);
-			margin-top: $space-default;
-		}
-		
-		*:last-child {
-			margin-right: 0;
-		}
-	}
-	
-	.alert {
-		margin-top: ($space-default / 2);
-		margin-bottom: 0;
-		
-		a {
-			color: inherit;
-			text-decoration: underline;
-			
-			&.btn {
-				text-decoration: none;
-			}
-		}
-	}
-	
-	h3 {
-		margin-top:0;
-	}
-	
+  border: $border-width-default solid $border-color-light;
+  border-width: 1px 1px 0 1px;
+  padding: ($space-default + ($space-default / 2));
+
+  .form-inline {
+    * {
+      margin-right: ($space-default / 2);
+      margin-top: $space-default;
+    }
+
+    *:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .alert {
+    margin-top: ($space-default / 2);
+    margin-bottom: 0;
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+
+      &.btn {
+        text-decoration: none;
+      }
+    }
+  }
+
+  h3 {
+    margin-top: 0;
+  }
 }
 
 .cart-summary-subscription {
-	margin-top: -$space-default;
+  margin-top: -$space-default;
 }
 
 .address-summary {
-	border: $border-width-default solid $border-color-light;	
-	border-width: 1px 1px 0 1px;
-	padding: ($space-default + ($space-default / 2));
-	
-	h5 {
-		margin-top: 0;
-	}
-	
-	&>div:last-child {
-		address {
-			margin-bottom: 0;
-		}
-	}
-	
-	address {
-		font-size: $font-size-small;		
-	}
+  border: $border-width-default solid $border-color-light;
+  border-width: 1px 1px 0 1px;
+  padding: ($space-default + ($space-default / 2));
+
+  h5 {
+    margin-top: 0;
+  }
+
+  & > div:last-child {
+    address {
+      margin-bottom: 0;
+    }
+  }
+
+  address {
+    font-size: $font-size-small;
+  }
 }
 
 .cost-summary {
-	background: $color-tertiary;
-	border: $border-width-default solid $border-color-light;
-	padding: ($space-default + ($space-default / 2));
-	margin-bottom: $space-default;
-	font-size: $font-size-small;
-	
-	.dl-horizontal {
-		font-size: 100%;
-		color: $text-color-primary;
-		
-		.promo-applied {
-			font-family: $font-family-bold;
-		}
-		dt {
-			float: left;
-			width: ($dl-horizontal-offset - 10);
-			clear: left;
-			white-space: normal;
-			
-			@media (min-width:$screen-sm-min) and (max-width:$screen-sm-max) { 
-				width: ($dl-horizontal-offset*2 - 10);
-			}	
-		}
-   
-		dd	{
-			text-align: right;
-			margin-left: $dl-horizontal-offset;	
-			@media (min-width:$screen-sm-min) and (max-width:$screen-sm-max) { 
-				margin-left: ($dl-horizontal-offset*2);
-			}				
-		}
-		.total-price {
-			font-size: $font-size-base;
-			font-family: $font-family-bold;
-		}
-	}
-	
-	& ~ .cart-summary {
-		border-bottom-width: 1px;
-		margin-bottom: $space-default;
-	}
-	
-	& ~ .cart-summary-subscription {
-		border-width: 0 1px 0 1px;
-		margin-bottom: 0;
-	}
+  background: $color-tertiary;
+  border: $border-width-default solid $border-color-light;
+  padding: ($space-default + ($space-default / 2));
+  margin-bottom: $space-default;
+  font-size: $font-size-small;
+
+  .dl-horizontal {
+    font-size: 100%;
+    color: $text-color-primary;
+
+    .promo-applied {
+      font-family: $font-family-bold;
+    }
+    dt {
+      float: left;
+      width: ($dl-horizontal-offset - 10);
+      clear: left;
+      white-space: normal;
+
+      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        width: ($dl-horizontal-offset * 2 - 10);
+      }
+    }
+
+    dd {
+      text-align: right;
+      margin-left: $dl-horizontal-offset;
+      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        margin-left: ($dl-horizontal-offset * 2);
+      }
+    }
+    .total-price {
+      font-size: $font-size-base;
+      font-family: $font-family-bold;
+    }
+  }
+
+  & ~ .cart-summary {
+    border-bottom-width: 1px;
+    margin-bottom: $space-default;
+  }
+
+  & ~ .cart-summary-subscription {
+    border-width: 0 1px 0 1px;
+    margin-bottom: 0;
+  }
 }
 
 .mobile-cart-label {
-	display: none;
+  display: none;
 }
 
 .product-out-of-stock {
-	color: $text-color-special;	
+  color: $text-color-special;
 }
 
 .cart-variations {
-	padding-top: ($space-default / 2);
-	font-size: 90%;
-	
-	dd {
-		float: left;
-	}
-	
-	dt {
-		float: left;
-		width: 70px;
-		clear: left;
-	}
+  padding-top: ($space-default / 2);
+  font-size: 90%;
+
+  dd {
+    float: left;
+  }
+
+  dt {
+    float: left;
+    width: 70px;
+    clear: left;
+  }
 }
 
 .cart-line-items {
-	@media (max-width:$screen-xs-max) {
-		padding-top: $space-default;
-		
-		.col-xs-4 {
-			background: $color-tertiary;
-			margin-top: $space-default;
-			min-height: ($space-default * 9);
-		}
-	}
-	
-	@media (max-width:$screen-sm-max) { 
-		label {
-			line-height: 18px;
-		}
-	}
+  @media (max-width: $screen-xs-max) {
+    padding-top: $space-default;
+
+    .col-xs-4 {
+      background: $color-tertiary;
+      margin-top: $space-default;
+      min-height: ($space-default * 9);
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    label {
+      line-height: 18px;
+    }
+  }
 }
 
 .order-summary {
-	@media (min-width:$screen-md-min) {	
-		h2 {
-			margin-top: ($space-default / 4); 
-		}
-	}	
-	
-	@media (max-width:$screen-xs-max) {	
-		margin: ($space-default + ($space-default / 2)) 0;		
-	}
-}	
+  @media (min-width: $screen-md-min) {
+    h2 {
+      margin-top: ($space-default / 4);
+    }
+  }
 
-@media (max-width:$screen-xs-max) {		
-	.mobile-cart-item-label {
-		font-size: 90%;
-		font-weight: bold;
-		padding: ($space-default / 2) 0 3px 0;
-		margin: 0;
-	}
-	
-	.cart-line-qty {
-		clear: left;
-	}
-	
-	.cart-separator {
-		margin: 0 -($space-default + ($space-default / 2)) ($space-default * 2) -($space-default + ($space-default / 2));
-	}
-	
-	.mobile-cart-img {
-		width: 20%;
-		float: left;
-		padding-right: 0;
-	}
-	
-	.mobile-cart-label {
-		display: inline-block;
-		text-transform: uppercase;
-		color: $text-color-secondary;
-		width: 150px;
-		font-size:13px;
-		float: left;
-		text-align: left;
-	}
-	
-	.text-right {
+  @media (max-width: $screen-xs-max) {
+    margin: ($space-default + ($space-default / 2)) 0;
+  }
+}
 
-		.mobile-cart-label {
-			width: auto;
-		}
-		
-	}
-	
-	.mobile-cart-counter {
-		position: absolute;
-		top: ($space-default / 2);
-		right: 16.5px;
-		background: $color-corporate;
-		color: $text-color-inverse;
-		text-align: center;
-		font-weight: normal;
-		width: 19px;
-		height: 19px;
-		line-height: 18px;
-		font-size: 10px;
-		@include round-corner(50%);
-	}
+@media (max-width: $screen-xs-max) {
+  .mobile-cart-item-label {
+    font-size: 90%;
+    font-weight: bold;
+    padding: ($space-default / 2) 0 3px 0;
+    margin: 0;
+  }
+
+  .cart-line-qty {
+    clear: left;
+  }
+
+  .cart-separator {
+    margin: 0 - ($space-default + ($space-default / 2)) ($space-default * 2) - ($space-default + ($space-default / 2));
+  }
+
+  .mobile-cart-img {
+    width: 20%;
+    float: left;
+    padding-right: 0;
+  }
+
+  .mobile-cart-label {
+    display: inline-block;
+    text-transform: uppercase;
+    color: $text-color-secondary;
+    width: 150px;
+    font-size: 13px;
+    float: left;
+    text-align: left;
+  }
+
+  .text-right {
+    .mobile-cart-label {
+      width: auto;
+    }
+  }
+
+  .mobile-cart-counter {
+    position: absolute;
+    top: ($space-default / 2);
+    right: 16.5px;
+    background: $color-corporate;
+    color: $text-color-inverse;
+    text-align: center;
+    font-weight: normal;
+    width: 19px;
+    height: 19px;
+    line-height: 18px;
+    font-size: 10px;
+    @include round-corner(50%);
+  }
 }
 
 .empty-cart {
-	text-align: center;
-	padding-bottom: ($space-default * 5);
-	border-bottom: $border-width-default solid $border-color-light;
-	margin-bottom: $space-default *2;
-	
-	.empty-cart-icon {
-		padding: ($space-default * 7) 0 ($space-default * 2);
-		
-	}
-	h2 {
-		font-family: $font-family-condensedregular;
-		margin-bottom: ($space-default * 2);
-	}
+  text-align: center;
+  padding-bottom: ($space-default * 5);
+  border-bottom: $border-width-default solid $border-color-light;
+  margin-bottom: $space-default * 2;
+
+  .empty-cart-icon {
+    padding: ($space-default * 7) 0 ($space-default * 2);
+  }
+  h2 {
+    font-family: $font-family-condensedregular;
+    margin-bottom: ($space-default * 2);
+  }
 }
 
 .pli-description {
-	ul {
-		padding-left:$space-default;
-		list-style-position: outside;
-	}
-	
-	.btn-tool {
-		margin-top: ($space-default);
-		display:inline-block;
+  ul {
+    padding-left: $space-default;
+    list-style-position: outside;
+  }
 
-		@media (max-width:$screen-md-max) {				
-			margin-bottom: $space-default;
-		}
-	}
+  .btn-tool {
+    margin-top: ($space-default);
+    display: inline-block;
 
-	.dl-horizontal {
-		dt {
-			width: auto;
-			padding-right: $space-default/6;
-			float: left;
-		}
-		dd {
-			margin-left: auto;			
-		}
-	}
+    @media (max-width: $screen-md-max) {
+      margin-bottom: $space-default;
+    }
+  }
+
+  .dl-horizontal {
+    dt {
+      width: auto;
+      padding-right: $space-default/6;
+      float: left;
+    }
+    dd {
+      margin-left: auto;
+    }
+  }
 }
 
 .warranty {
-	select {
-		width: auto;
-		max-width: 100%;
-		display: inline-block;
-	}
+  select {
+    width: auto;
+    max-width: 100%;
+    display: inline-block;
+  }
 }
