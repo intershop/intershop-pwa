@@ -8,7 +8,6 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  mapTo,
   mergeMap,
   skip,
   switchMap,
@@ -17,7 +16,7 @@ import {
 } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes } from '../../../core/store/locale';
-import { mapErrorToAction, partitionBy } from '../../../utils/operators';
+import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SetProductSkusForCategory } from '../categories';
 import { ShoppingState } from '../shopping.state';
@@ -26,6 +25,8 @@ import {
   getItemsPerPage,
   getPagingPage,
   getSortBy,
+  isEndlessScrollingEnabled,
+  SetPage,
   SetPagingInfo,
   SetPagingLoading,
   SetSortKeys,
@@ -54,54 +55,46 @@ export class ProductsEffects {
     )
   );
 
-  /**
-   * partition that listens for category product retrieval requests
-   */
-  private canRetrieveMoreProducts$ = this.actions$.pipe(
-    ofType<{ type: string; payload: string }>(
-      productsActions.ProductsActionTypes.LoadProductsForCategory,
+  @Effect()
+  loadMoreProductsForCategory$ = this.actions$.pipe(
+    ofType<productsActions.LoadMoreProductsForCategory>(
       productsActions.ProductsActionTypes.LoadMoreProductsForCategory
     ),
     withLatestFrom(
-      this.store.pipe(select(getPagingPage)),
-      this.store.pipe(select(getSortBy)),
-      this.store.pipe(select(getItemsPerPage)),
-      this.store.pipe(select(canRequestMore))
+      this.store.pipe(select(isEndlessScrollingEnabled)),
+      this.store.pipe(select(canRequestMore)),
+      this.store.pipe(select(getPagingPage), map(n => n + 1))
     ),
-    partitionBy(([, , , , canSearchMore]) => canSearchMore)
-  );
-
-  /**
-   * set loading state of paging
-   */
-  @Effect()
-  setPagingLoading$ = this.canRetrieveMoreProducts$.pipe(
-    switchMap(canSearchMore => canSearchMore.isTrue),
-    mapTo(new SetPagingLoading())
+    filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
+    mergeMap(([action, , , page]) => [
+      new SetPagingLoading(),
+      new SetPage(page),
+      new productsActions.LoadProductsForCategory(action.payload),
+    ])
   );
 
   /**
    * retrieve products for category incremental respecting paging
    */
   @Effect()
-  loadProductsForCategory$ = this.canRetrieveMoreProducts$.pipe(
-    switchMap(canSearchMore => canSearchMore.isTrue),
-    map(([action, currentPage, sortBy, itemsPerPage]) => ({
-      categoryUniqueId: action.payload,
-      nextPage: currentPage + 1,
-      sortBy,
-      itemsPerPage,
-    })),
+  loadProductsForCategory$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
+    map(action => action.payload),
+    withLatestFrom(
+      this.store.pipe(select(getPagingPage)),
+      this.store.pipe(select(getSortBy)),
+      this.store.pipe(select(getItemsPerPage))
+    ),
     distinctUntilChanged(),
-    concatMap(({ categoryUniqueId, nextPage, sortBy, itemsPerPage }) =>
-      this.productsService.getCategoryProducts(categoryUniqueId, nextPage, itemsPerPage, sortBy).pipe(
+    concatMap(([categoryUniqueId, page, sortBy, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryUniqueId, page, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([res, entities]) => [
           new SetProductSkusForCategory({
             categoryUniqueId: res.categoryUniqueId,
             skus: res.products.map(p => p.sku),
           }),
-          new SetPagingInfo({ currentPage: nextPage, totalItems: res.total }),
+          new SetPagingInfo({ currentPage: page, totalItems: res.total }),
           new SetSortKeys(res.sortKeys),
           ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
         ]),

@@ -9,6 +9,7 @@ export interface ViewconfState {
   page: number;
   total: number;
   itemsPerPage: number;
+  endlessScrollingEnabled: boolean;
 }
 
 export const initialState: ViewconfState = {
@@ -16,9 +17,10 @@ export const initialState: ViewconfState = {
   sortBy: '',
   sortKeys: [],
   loading: false,
-  page: -1,
+  page: 0,
   total: -1,
   itemsPerPage: -1,
+  endlessScrollingEnabled: true,
 };
 
 export function viewconfReducer(state = initialState, action: fromViewconf.ViewconfAction): ViewconfState {
@@ -56,22 +58,24 @@ export function viewconfReducer(state = initialState, action: fromViewconf.Viewc
     }
 
     case fromViewconf.ViewconfActionTypes.SetPagingInfo: {
-      const page = action.payload.currentPage;
-      const total = action.payload.totalItems;
-      const loading = false;
       return {
         ...state,
-        page,
-        total,
-        loading,
+        total: action.payload.totalItems,
+        loading: false,
       };
     }
 
-    case fromViewconf.ViewconfActionTypes.ResetPagingInfo: {
+    case fromViewconf.ViewconfActionTypes.SetPage: {
       return {
         ...state,
-        page: initialState.page,
-        total: initialState.total,
+        page: action.payload,
+      };
+    }
+
+    case fromViewconf.ViewconfActionTypes.DisableEndlessScrolling: {
+      return {
+        ...state,
+        endlessScrollingEnabled: false,
       };
     }
   }

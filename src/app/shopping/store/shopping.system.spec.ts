@@ -247,7 +247,6 @@ describe('Shopping System', () => {
         'should have toplevel loading and category loading actions when going to a category page',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next()).toEqual(new SelectCategory('A.123'));
           expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
           expect(i.next()).toEqual(new LoadCategory('A.123'));
@@ -299,9 +298,7 @@ describe('Shopping System', () => {
         fakeAsync(() => {
           const i = store.actionsIterator([/Shopping/]);
 
-          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next()).toEqual(new SearchProducts('something'));
-          expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
           expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
@@ -359,7 +356,6 @@ describe('Shopping System', () => {
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]', '[Router]']);
         expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SelectCategory('A.123'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
@@ -417,7 +413,6 @@ describe('Shopping System', () => {
         'should trigger actions for deselecting category and product when no longer in category or product',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
           expect(i.next()).toBeUndefined();
         })
@@ -454,7 +449,6 @@ describe('Shopping System', () => {
       'should have all required actions when going to a family page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
         expect(i.next()).toEqual(new LoadCategory('A.123.456'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
@@ -468,7 +462,6 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
         expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
@@ -582,7 +575,6 @@ describe('Shopping System', () => {
         'should trigger actions for deselecting category and product when no longer in category or product',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
           expect(i.next()).toBeUndefined();
         })
@@ -619,7 +611,6 @@ describe('Shopping System', () => {
       'should trigger required load actions when going to a product page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
         expect(i.next()).toEqual(new SelectProduct('P1'));
         expect(i.next()).toEqual(new LoadCategory('A.123.456'));
@@ -700,7 +691,6 @@ describe('Shopping System', () => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
           expect(i.next()).toEqual(new SelectProduct(undefined));
-          expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
           expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
@@ -739,7 +729,6 @@ describe('Shopping System', () => {
         'should trigger actions for deselecting category and product when no longer in category or product',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
-          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
           expect(i.next()).toEqual(new SelectProduct(undefined));
           expect(i.next()).toBeUndefined();
@@ -873,7 +862,6 @@ describe('Shopping System', () => {
         expect(productPageRouting.payload.params.sku).toEqual('P3');
         expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.456');
 
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
         expect(i.next()).toEqual(new SelectProduct('P3'));
         expect(i.next()).toEqual(new LoadCategory('A.123.456'));
@@ -894,7 +882,6 @@ describe('Shopping System', () => {
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(errorPageRouting.payload.path).toEqual('error');
 
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
         expect(i.next()).toEqual(new SelectProduct(undefined));
         expect(i.next()).toBeUndefined();
@@ -943,7 +930,6 @@ describe('Shopping System', () => {
         expect(productPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.XXX');
 
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SelectCategory('A.123.XXX'));
         expect(i.next()).toEqual(new LoadCategory('A.123.XXX'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
@@ -954,7 +940,6 @@ describe('Shopping System', () => {
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(errorPageRouting.payload.path).toEqual('error');
 
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next().type).toEqual(CategoriesActionTypes.DeselectCategory);
         expect(i.next()).toBeUndefined();
       })
@@ -989,10 +974,8 @@ describe('Shopping System', () => {
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
 
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SearchProducts('something'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingLoading);
         expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);

@@ -18,7 +18,6 @@ import { CategoriesService } from '../../services/categories/categories.service'
 import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { ResetPagingInfo } from '../viewconf';
 import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
 
@@ -72,10 +71,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
-      const expected = { a: new ResetPagingInfo(), b: new fromActions.SelectCategory('dummy') };
+      const expected = { a: new fromActions.SelectCategory('dummy') };
 
       actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('(ab)', expected));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', expected));
     });
 
     it('should trigger SelectCategory when /category/XXX/product/YYY is visited', () => {
@@ -84,10 +83,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy', sku: 'foobar' },
         queryParams: {},
       });
-      const expected = { a: new ResetPagingInfo(), b: new fromActions.SelectCategory('dummy') };
+      const expected = { a: new fromActions.SelectCategory('dummy') };
 
       actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('(ab)', expected));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', expected));
     });
 
     it('should not trigger SelectCategory when /something is visited', () => {
@@ -107,10 +106,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
-      const expected = { a: new ResetPagingInfo(), b: new fromActions.SelectCategory('dummy') };
+      const expected = { a: new fromActions.SelectCategory('dummy') };
 
       actions$ = hot('-a-a-a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-(ab)----', expected));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-a----', expected));
     });
   });
 

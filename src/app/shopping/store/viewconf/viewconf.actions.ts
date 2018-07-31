@@ -8,7 +8,8 @@ export enum ViewconfActionTypes {
   SetSortKeys = '[Shopping] Set SortKey List',
   SetPagingLoading = '[Shopping] Set Paging Loading',
   SetPagingInfo = '[Shopping] Set Paging Info',
-  ResetPagingInfo = '[Shopping] Reset Paging Info',
+  SetPage = '[Shopping Internal] Set Page',
+  DisableEndlessScrolling = '[Shopping Internal] Disable Endless Scrolling',
 }
 
 export class SetEndlessScrollingPageSize implements Action {
@@ -40,8 +41,13 @@ export class SetPagingLoading implements Action {
   readonly type = ViewconfActionTypes.SetPagingLoading;
 }
 
-export class ResetPagingInfo implements Action {
-  readonly type = ViewconfActionTypes.ResetPagingInfo;
+export class SetPage implements Action {
+  readonly type = ViewconfActionTypes.SetPage;
+  constructor(public payload: number) {}
+}
+
+export class DisableEndlessScrolling implements Action {
+  readonly type = ViewconfActionTypes.DisableEndlessScrolling;
 }
 
 export type ViewconfAction =
@@ -51,4 +57,5 @@ export type ViewconfAction =
   | SetSortKeys
   | SetPagingLoading
   | SetPagingInfo
-  | ResetPagingInfo;
+  | SetPage
+  | DisableEndlessScrolling;

@@ -16,13 +16,16 @@ import { getFilteredProducts, getLoadingStatus, getNumberOfFilteredProducts } fr
 import { LoadMoreProductsForCategory } from '../../store/products';
 import { ShoppingState } from '../../store/shopping.state';
 import {
+  canRequestMore,
   ChangeSortBy,
   ChangeViewType,
   getPagingLoading,
+  getPagingPage,
   getSortBy,
   getSortKeys,
   getTotalItems,
   getViewType,
+  isEndlessScrollingEnabled,
 } from '../../store/viewconf';
 
 @Component({
@@ -41,6 +44,10 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
   sortKeys$: Observable<string[]>;
 
   loadMore = new EventEmitter<void>();
+  canRequestMore$: Observable<boolean>;
+  currentPage$: Observable<number>;
+  endlessScrolling$: Observable<boolean>;
+  filterMode$: Observable<boolean>;
 
   private destroy$ = new Subject();
 
@@ -48,13 +55,14 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.category$ = this.store.pipe(select(getSelectedCategory), filter(e => !!e));
+    this.loadingMore$ = this.store.pipe(select(getPagingLoading));
     this.categoryLoading$ = combineLatest(
       this.store.pipe(select(getCategoryLoading)),
-      this.store.pipe(select(getLoadingStatus))
-    ).pipe(map(([a, b]) => a || b));
-    this.loadingMore$ = combineLatest(this.store.pipe(select(getPagingLoading)), this.categoryLoading$).pipe(
-      map(([a, b]) => a && !b)
-    );
+      this.store.pipe(select(getLoadingStatus)),
+      this.loadingMore$
+    ).pipe(map(([a, b, c]) => (a || b) && !c));
+
+    this.products$ = this.store.pipe(select(firstTruthy(getFilteredProducts, getProductsForSelectedCategory)));
 
     this.products$ = this.store.pipe(select(firstTruthy(getFilteredProducts, getProductsForSelectedCategory)));
     this.totalItems$ = this.store.pipe(select(firstTruthy(getNumberOfFilteredProducts, getTotalItems)));
@@ -62,13 +70,18 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
     this.sortBy$ = this.store.pipe(select(getSortBy));
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
 
+    this.filterMode$ = this.store.pipe(select(getFilteredProducts), map(x => !!x));
     this.loadMore
       .pipe(
-        withLatestFrom(this.store.pipe(select(getSelectedCategoryId)), this.store.pipe(select(getFilteredProducts))),
+        withLatestFrom(this.store.pipe(select(getSelectedCategoryId)), this.filterMode$),
         filter(([, , filterMode]) => !filterMode),
         takeUntil(this.destroy$)
       )
       .subscribe(([, categoryUniqueId]) => this.store.dispatch(new LoadMoreProductsForCategory(categoryUniqueId)));
+
+    this.canRequestMore$ = this.store.pipe(select(canRequestMore));
+    this.currentPage$ = this.store.pipe(select(getPagingPage), map(x => x + 1));
+    this.endlessScrolling$ = this.store.pipe(select(isEndlessScrollingEnabled));
   }
 
   ngOnDestroy() {
