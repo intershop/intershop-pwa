@@ -1,5 +1,6 @@
 <ng-container [ngSwitch]="pagelet.definitionQualifiedName">
   <ish-cms-text *ngSwitchCase="'app_sf_responsive_cm:component.common.text.pagelet2-Component'" [pagelet]="pagelet"></ish-cms-text>
+  <ish-cms-freestyle *ngSwitchCase="'app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component'" [pagelet]="pagelet"></ish-cms-freestyle>
 
   <!-- default rendering for unknown pagelet definitions -->
   <div *ngSwitchDefault class="content-pagelet" style="border: 1px solid yellow; padding: 10px;">

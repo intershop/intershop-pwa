@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cms Freestyle Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.1.6"
+>
+  
+</div>
+`;
+
+exports[`Cms Freestyle Component should render content if available 1`] = `
+<div
+  id="root1"
+  ng-version="6.1.6"
+>
+  
+  <div>
+    <h3>
+      foo
+    </h3>
+    bar
+  </div>
+</div>
+`;
