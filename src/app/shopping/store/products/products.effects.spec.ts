@@ -16,7 +16,7 @@ import { ProductsService } from '../../services/products/products.service';
 import { SetProductSkusForCategory } from '../categories';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import { ChangeSortBy, SetPagingInfo, SetSortKeys } from '../viewconf';
+import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
 
@@ -142,6 +142,20 @@ describe('Products Effects', () => {
       expect(effects.loadProductsForCategory$).toBeObservable(
         cold('-a-a-a', { a: new fromActions.LoadProductFail({ message: 'ERROR' } as HttpError) })
       );
+    });
+  });
+
+  describe('loadMoreProductsForCategory$', () => {
+    it('should trigger if more products are available', () => {
+      actions$ = hot('a', {
+        a: new fromActions.LoadMoreProductsForCategory('123'),
+      });
+      const expectedValues = {
+        a: new SetPagingLoading(),
+        b: new SetPage(1),
+        c: new fromActions.LoadProductsForCategory('123'),
+      };
+      expect(effects.loadMoreProductsForCategory$).toBeObservable(cold('(abc)', expectedValues));
     });
   });
 

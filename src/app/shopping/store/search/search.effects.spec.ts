@@ -15,7 +15,7 @@ import { LogEffects } from '../../../utils/dev/log.effects';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { shoppingReducers } from '../shopping.system';
-import { ResetPagingInfo, SetEndlessScrollingPageSize, ViewconfActionTypes } from '../viewconf';
+import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading, ViewconfActionTypes } from '../viewconf';
 import {
   SearchActionTypes,
   SearchMoreProducts,
@@ -90,9 +90,7 @@ describe('Search Effects', () => {
         });
         actions$ = hot('a', { a: action });
 
-        expect(effects.triggerSearch$).toBeObservable(
-          cold('(ab)', { a: new ResetPagingInfo(), b: new SearchProducts('dummy') })
-        );
+        expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts('dummy') }));
       });
     });
 
@@ -103,20 +101,29 @@ describe('Search Effects', () => {
         actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
+          verify(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).once();
+          const [term, page, itemsPerPage] = capture(productsServiceMock.searchProducts).last();
+          expect(term).toEqual('123');
+          expect(page).toEqual(0);
+          expect(itemsPerPage).toEqual(3);
           done();
         });
       });
+    });
 
-      it('should perform a continued search with given search term when search is requested', done => {
+    describe('searchMoreProducts$', () => {
+      it('should perform a continued search with given search term when search is requested', () => {
         const searchTerm = '123';
         const action = new SearchMoreProducts(searchTerm);
-        actions$ = of(action);
+        actions$ = hot('a', { a: action });
 
-        effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
-          done();
-        });
+        expect(effects.searchMoreProducts$).toBeObservable(
+          cold('(abc)', {
+            a: new SetPagingLoading(),
+            b: new SetPage(1),
+            c: new SearchProducts('123'),
+          })
+        );
       });
     });
   });

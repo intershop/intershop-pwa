@@ -13,7 +13,6 @@ import { distinctCompareWith, mapErrorToAction } from '../../../utils/operators'
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
-import { ResetPagingInfo } from '../viewconf';
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
 
@@ -36,10 +35,10 @@ export class CategoriesEffects {
     ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
     map(action => action.payload.params.categoryUniqueId),
     distinctCompareWith(this.store.pipe(select(selectors.getSelectedCategoryId))),
-    mergeMap(categoryUniqueId => [
-      new ResetPagingInfo(),
-      !!categoryUniqueId ? new actions.SelectCategory(categoryUniqueId) : new actions.DeselectCategory(),
-    ])
+    map(
+      categoryUniqueId =>
+        !!categoryUniqueId ? new actions.SelectCategory(categoryUniqueId) : new actions.DeselectCategory()
+    )
   );
 
   /**

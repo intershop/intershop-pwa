@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
@@ -24,6 +25,7 @@ describe('Viewconf Effects', () => {
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
+        RouterTestingModule,
       ],
       providers: [
         ViewconfEffects,

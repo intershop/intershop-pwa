@@ -21,28 +21,24 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
       return {
         ...state,
         loading: true,
-        products: [],
       };
     }
 
     case SearchActionTypes.SearchProductsSuccess: {
-      const searchResult = action.payload;
-      const products = [...state.products, ...searchResult.products];
-      const searchTerm = searchResult.searchTerm;
-      const loading = false;
+      const { searchTerm, products: newProducts } = action.payload;
+      const products = searchTerm === state.searchTerm ? [...state.products, ...newProducts] : [...newProducts];
       return {
         ...state,
-        products,
         searchTerm,
-        loading,
+        products,
+        loading: false,
       };
     }
 
     case SearchActionTypes.SuggestSearchSuccess: {
-      const suggestSearchResults = action.payload;
       return {
         ...state,
-        suggestSearchResults,
+        suggestSearchResults: action.payload,
       };
     }
   }

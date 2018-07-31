@@ -1,3 +1,4 @@
+import * as using from 'jasmine-data-provider';
 import { ViewconfState } from './viewconf.reducer';
 import * as fromSelectors from './viewconf.selectors';
 
@@ -29,28 +30,19 @@ describe('Viewconf Selectors', () => {
   });
 
   describe('canSearchForMore', () => {
-    let state: ViewconfState;
-
-    beforeEach(() => {
-      state = {
-        page: 0,
-        total: 2,
-      } as ViewconfState;
-    });
-
-    it('should return true when page size is smaller than total size', () => {
-      state = { ...state, itemsPerPage: 1 };
-      expect(fromSelectors.canRequestMore.projector(state)).toBeTrue();
-    });
-
-    it('should return false when page size is equal to total size', () => {
-      state = { ...state, itemsPerPage: 2 };
-      expect(fromSelectors.canRequestMore.projector(state)).toBeFalse();
-    });
-
-    it('should return false when page size is greater than total size', () => {
-      state = { ...state, itemsPerPage: 3 };
-      expect(fromSelectors.canRequestMore.projector(state)).toBeFalse();
-    });
+    using(
+      [
+        { page: 0, total: 2, itemsPerPage: 1, expected: true },
+        { page: 0, total: 2, itemsPerPage: 2, expected: false },
+        { page: 0, total: 2, itemsPerPage: 3, expected: false },
+      ],
+      slice => {
+        it(`should validate for ${slice}`, () => {
+          expect(fromSelectors.canRequestMore.projector(slice.page, slice.itemsPerPage, slice.total)).toEqual(
+            slice.expected
+          );
+        });
+      }
+    );
   });
 });

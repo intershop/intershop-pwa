@@ -24,6 +24,17 @@
         (sortByChange)="changeSortBy($event)"
         (loadMore)="loadMore.emit()"
       ></ish-family-page>
+
+      <ng-container *ngIf="!(filterMode$ | async)">
+        <ng-container *ngIf="currentPage$ | async as currentPage">
+          <a *ngIf="currentPage > 1" [style.display]="(endlessScrolling$ | async) ? 'none' : 'block'"
+            [href]="'/category/' + category.uniqueId + '?page=' + (currentPage - 1)"
+          >Load Previous Page</a>
+          <a *ngIf="canRequestMore$ | async" [style.display]="(endlessScrolling$ | async) ? 'none' : 'block'"
+            [href]="'/category/' + category.uniqueId + '?page=' + (currentPage + 1)"
+          >Load Next Page</a>
+        </ng-container>
+      </ng-container>
     </ng-container>
   </ng-template>
 
