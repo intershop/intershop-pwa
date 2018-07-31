@@ -14,13 +14,13 @@
   <div class="row equal">
       <!-- Invoice Address -->
       <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.billing-address.heading">
+        <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper">
           <ish-address [address]="order.invoiceToAddress"></ish-address>
         </ish-info-box>
       </div>
       <!-- Shipping Address -->
       <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.shipping-address.heading">
+        <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper">
           <ish-address [address]="order.commonShipToAddress"></ish-address>
         </ish-info-box>
       </div>
@@ -29,13 +29,13 @@
     <div class="row equal">
         <!-- Shipping Method -->
         <div class="col-sm-6">
-          <ish-info-box heading="checkout.widget.shipping_method.heading">
+          <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper">
             <p>{{ order.commonShippingMethod.name }}</p>
           </ish-info-box>
         </div>
         <!-- Payment Method -->
         <div class="col-sm-6">
-          <ish-info-box heading="checkout.widget.payment_method.heading">
+          <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper">
             <p>{{ order.paymentMethod.name }}</p>
           </ish-info-box>
         </div>

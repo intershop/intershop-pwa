@@ -1,16 +1,11 @@
 //
 // ACCOUNT NAVIGATION
 
-.account-navigation li:hover {
-  background: $color-tertiary none repeat scroll 0 0;
-}
-
 .account-navigation {
   li {
-    padding-bottom: ($space-default / 2);
     background: $color-tertiary;
     border: $border-width-default solid $border-color-lighter;
-    padding: $space-default * 2/3;
+    padding: $space-default * 2/3 $space-default * 2/3 ($space-default / 2);
     border-width: 0 1px 1px 1px;
 
     &.collapse,
@@ -20,7 +15,7 @@
     }
 
     &:hover {
-      background: darken($color-tertiary, 10%);
+      background: darken($color-tertiary, 10%) none repeat scroll 0 0;
     }
 
     &.account-nav-header {
