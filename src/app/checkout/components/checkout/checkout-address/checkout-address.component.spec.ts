@@ -103,14 +103,12 @@ describe('Checkout Address Component', () => {
   it('should throw updateInvoiceAddress event when invoice address form value id changes', done => {
     fixture.detectChanges();
 
-    let formValue = '';
-    component.updateInvoiceAddress.subscribe(x => {
-      formValue = x;
+    component.updateInvoiceAddress.subscribe(formValue => {
+      expect(formValue).toBe('testId');
       done();
     });
 
     component.invoiceAddressForm.get('id').setValue('testId');
-    expect(formValue).toBe('testId');
   });
 
   it('should throw updateshippingAddress event when shipping address form value id changes', done => {
