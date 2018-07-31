@@ -73,10 +73,7 @@ export class CategoriesEffects {
       ofType(actions.CategoriesActionTypes.SelectCategory),
       map((action: actions.SelectCategory) => action.payload)
     ),
-    this.store.pipe(
-      select(selectors.getSelectedCategory),
-      filter(CategoryHelper.isCategoryCompletelyLoaded)
-    )
+    this.store.pipe(select(selectors.getSelectedCategory), filter(CategoryHelper.isCategoryCompletelyLoaded))
   ).pipe(
     filter(([selectId, category]) => selectId === category.uniqueId),
     distinctUntilChanged((x, y) => x[0] === y[0]),
@@ -142,17 +139,9 @@ export class CategoriesEffects {
     this.actions$.pipe(ofRoute('category/:categoryUniqueId'))
   ).pipe(
     switchMap(() =>
-      this.store.pipe(
-        select(selectors.productsForSelectedCategoryAreNotLoaded),
-        filter(needed => needed)
-      )
+      this.store.pipe(select(selectors.productsForSelectedCategoryAreNotLoaded), filter(needed => needed))
     ),
-    switchMap(() =>
-      this.store.pipe(
-        select(selectors.getSelectedCategoryId),
-        filter(uniqueId => !!uniqueId)
-      )
-    ),
+    switchMap(() => this.store.pipe(select(selectors.getSelectedCategoryId), filter(uniqueId => !!uniqueId))),
     map(uniqueId => new LoadProductsForCategory(uniqueId))
   );
 

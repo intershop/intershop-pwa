@@ -18,8 +18,10 @@ import { QuotingState } from '../../../quoting/store/quoting.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductRowContainerComponent {
-  @Input() product: Product;
-  @Input() category?: Category;
+  @Input()
+  product: Product;
+  @Input()
+  category?: Category;
 
   constructor(private bsModalService: BsModalService, private store: Store<CoreState | CheckoutState | QuotingState>) {}
 
@@ -31,14 +33,8 @@ export class ProductRowContainerComponent {
     this.store.dispatch(
       new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
     );
-    this.store
-      .pipe(
-        select(getUserAuthorized),
-        take(1),
-        filter(b => b)
-      )
-      .subscribe(() => {
-        this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
-      });
+    this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
+      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
+    });
   }
 }

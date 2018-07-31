@@ -8,15 +8,20 @@ import { FormElement } from '../form-element';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class InputComponent extends FormElement implements OnInit {
-  @Input() type = 'text'; // values: 'text' (default), 'password', 'email'
-  @Input() maxlength = '60';
+  @Input()
+  type = 'text'; // values: 'text' (default), 'password', 'email'
+  @Input()
+  maxlength = '60';
   @Input()
   autocomplete?: string; /* default = undefined  for input type 'text' and 'email' (autocomplete not set)
                                              = 'off' for input type 'password' */
-  @Input() min?: number;
-  @Input() max?: number;
+  @Input()
+  min?: number;
+  @Input()
+  max?: number;
 
-  @Input() placeholderText?: string;
+  @Input()
+  placeholderText?: string;
 
   constructor(protected translate: TranslateService) {
     super(translate);

@@ -8,6 +8,8 @@ import { User } from '../../../../models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReceiptComponent {
-  @Input() order: Order;
-  @Input() user: User;
+  @Input()
+  order: Order;
+  @Input()
+  user: User;
 }

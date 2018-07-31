@@ -8,7 +8,8 @@ import { Category } from '../../../../models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryListComponent {
-  @Input() categories: Category[];
+  @Input()
+  categories: Category[];
 
   constructor(@Inject(ICM_BASE_URL) public icmBaseURL) {}
 }

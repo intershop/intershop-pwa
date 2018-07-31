@@ -28,14 +28,21 @@ import { QuoteRequest } from '../../../models/quote-request/quote-request.model'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteDialogComponent implements OnChanges {
-  @Input() bsModalRef: BsModalRef;
-  @Input() quote: QuoteRequest;
-  @Input() quoteLoading = false;
+  @Input()
+  bsModalRef: BsModalRef;
+  @Input()
+  quote: QuoteRequest;
+  @Input()
+  quoteLoading = false;
 
-  @Output() updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
-  @Output() submitQuoteRequest = new EventEmitter<void>();
-  @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
-  @Output() deleteItem = new EventEmitter<string>();
+  @Output()
+  updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
+  @Output()
+  submitQuoteRequest = new EventEmitter<void>();
+  @Output()
+  updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
+  @Output()
+  deleteItem = new EventEmitter<string>();
 
   form: FormGroup;
 

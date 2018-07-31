@@ -9,8 +9,10 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailActionsComponent {
-  @Input() product: Product;
-  @Output() productToCompare = new EventEmitter<void>();
+  @Input()
+  product: Product;
+  @Output()
+  productToCompare = new EventEmitter<void>();
 
   // TODO: to be removed once channelName inforamtion available in system
   channelName = 'inTRONICS';

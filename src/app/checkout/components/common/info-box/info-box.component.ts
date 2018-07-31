@@ -6,6 +6,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoBoxComponent {
-  @Input() heading = '';
-  @Input() editRouterLink: string;
+  @Input()
+  heading = '';
+  @Input()
+  editRouterLink: string;
 }

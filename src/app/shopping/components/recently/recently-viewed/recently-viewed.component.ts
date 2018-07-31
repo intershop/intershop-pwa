@@ -7,5 +7,6 @@ import { Product } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecentlyViewedComponent {
-  @Input() products: Product[];
+  @Input()
+  products: Product[];
 }

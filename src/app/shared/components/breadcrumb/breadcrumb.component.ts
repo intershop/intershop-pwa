@@ -9,11 +9,18 @@ import { Product } from '../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent {
-  @Input() separator = '/';
-  @Input() showHome = true;
-  @Input() category: CategoryView;
-  @Input() product: Product;
-  @Input() searchTerm: string;
-  @Input() account: boolean;
-  @Input() trail: BreadcrumbItem[] = [];
+  @Input()
+  separator = '/';
+  @Input()
+  showHome = true;
+  @Input()
+  category: CategoryView;
+  @Input()
+  product: Product;
+  @Input()
+  searchTerm: string;
+  @Input()
+  account: boolean;
+  @Input()
+  trail: BreadcrumbItem[] = [];
 }

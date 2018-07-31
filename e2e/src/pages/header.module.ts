@@ -5,7 +5,7 @@ export class HeaderModule {
   getNumberOfCompareItems() {
     return $('#compare-count')
       .getText()
-      .then(s => Number.parseInt(s));
+      .then(s => Number.parseInt(s, 10));
   }
 
   gotoLoginPage() {

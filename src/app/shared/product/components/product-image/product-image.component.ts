@@ -9,11 +9,16 @@ import { Product, ProductHelper } from '../../../../models/product/product.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent implements OnChanges {
-  @Input() product: Product;
-  @Input() imageType: string;
-  @Input() imageView?: string;
-  @Input() class?: string;
-  @Input() altText?: string;
+  @Input()
+  product: Product;
+  @Input()
+  imageType: string;
+  @Input()
+  imageView?: string;
+  @Input()
+  class?: string;
+  @Input()
+  altText?: string;
 
   productImage: Image;
 

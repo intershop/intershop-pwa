@@ -9,10 +9,14 @@ import { SelectComponent } from '../select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectRegionComponent extends SelectComponent implements OnChanges {
-  @Input() regions: Region[];
-  @Input() controlName = 'state';
-  @Input() label = 'State/Province';
-  @Input() errorMessages = { required: 'Please select a region' }; // ToDo: Translation key
+  @Input()
+  regions: Region[];
+  @Input()
+  controlName = 'state';
+  @Input()
+  label = 'State/Province';
+  @Input()
+  errorMessages = { required: 'Please select a region' }; // ToDo: Translation key
 
   ngOnChanges(c: SimpleChanges) {
     if (c.regions) {

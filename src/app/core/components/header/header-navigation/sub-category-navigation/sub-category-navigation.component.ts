@@ -9,8 +9,10 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../../configurat
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubCategoryNavigationComponent {
-  @Input() category: CategoryView;
-  @Input() subCategoriesDepth: number;
+  @Input()
+  category: CategoryView;
+  @Input()
+  subCategoriesDepth: number;
 
   openedCategories = [];
 

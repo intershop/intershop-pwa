@@ -27,11 +27,15 @@ import { BasketView } from '../../../../models/basket/basket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShoppingBasketComponent {
-  @Input() basket: BasketView;
+  @Input()
+  basket: BasketView;
 
-  @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
-  @Output() deleteItem = new EventEmitter<string>();
-  @Output() addBasketToQuote = new EventEmitter<void>();
+  @Output()
+  updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
+  @Output()
+  deleteItem = new EventEmitter<string>();
+  @Output()
+  addBasketToQuote = new EventEmitter<void>();
 
   form: FormGroup;
   submitted = false;

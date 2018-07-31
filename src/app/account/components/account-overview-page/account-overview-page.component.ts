@@ -7,5 +7,6 @@ import { User } from '../../../models/user/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOverviewPageComponent {
-  @Input() user: User;
+  @Input()
+  user: User;
 }

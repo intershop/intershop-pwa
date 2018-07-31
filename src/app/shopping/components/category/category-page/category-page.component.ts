@@ -7,5 +7,6 @@ import { CategoryView } from '../../../../models/category-view/category-view.mod
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryPageComponent {
-  @Input() category: CategoryView;
+  @Input()
+  category: CategoryView;
 }
