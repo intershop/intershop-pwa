@@ -112,7 +112,7 @@
   margin-bottom: $space-default;
   font-size: $font-size-sm;
 
-  .dl-horizontal {
+  dl {
     font-size: 100%;
     color: $text-color-primary;
 
@@ -120,22 +120,11 @@
       font-family: $font-family-bold;
     }
     dt {
-      float: left;
-      width: ($dl-horizontal-offset - 10);
-      clear: left;
       white-space: normal;
-
-      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-        width: ($dl-horizontal-offset * 2 - 10);
-      }
     }
 
     dd {
       text-align: right;
-      margin-left: $dl-horizontal-offset;
-      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-        margin-left: ($dl-horizontal-offset * 2);
-      }
     }
     .total-price {
       font-size: $font-size-base;
@@ -291,7 +280,7 @@
     }
   }
 
-  .dl-horizontal {
+  dl {
     dt {
       width: auto;
       padding-right: $space-default/6;

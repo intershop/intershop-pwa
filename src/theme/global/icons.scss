@@ -44,7 +44,7 @@
 
 /* Icons (.btn-tool) after a list within a product line item description */
 .pli-description {
-  .dl-horizontal {
+  dl {
     + .btn-tool {
       margin-top: 7.5px;
 

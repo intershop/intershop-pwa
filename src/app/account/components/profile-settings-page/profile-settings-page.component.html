@@ -30,9 +30,9 @@
       <h3>{{'account.profile.email.heading' | translate}}</h3>
       <div class="row">
         <div class="col-md-12">
-          <dl class="dl-horizontal dl-separator">
-            <dt>{{'account.profile.email.label' | translate}}</dt>
-            <dd data-testing-id="email-field">
+          <dl class="row">
+            <dt class="col-md-4">{{'account.profile.email.label' | translate}}</dt>
+            <dd class="col-md-8" data-testing-id="email-field">
               {{user.email}}
             </dd>
             <!-- TODO: implement logic (extend REST response) to present email subscriptions
@@ -64,9 +64,9 @@
       <h3>{{'account.profile.password.heading' | translate}}</h3>
       <div class="row">
         <div class="col-md-12">
-          <dl class="dl-horizontal dl-separator">
-            <dt>{{'account.profile.password.label' | translate}}</dt>
-            <dd>
+          <dl class="row">
+            <dt class="col-md-4">{{'account.profile.password.label' | translate}}</dt>
+            <dd class="col-md-8">
               ******
             </dd>
           </dl>
@@ -88,26 +88,26 @@
       <h3>{{'account.profile.detail.heading' | translate}}</h3>
       <div class="row">
         <div class="col-md-12">
-          <dl class="dl-horizontal dl-separator">
-            <dt>{{'account.profile.name.label' | translate}}</dt>
-            <dd>
+          <dl class="row">
+            <dt class="col-md-4">{{'account.profile.name.label' | translate}}</dt>
+            <dd class="col-md-8">
               {{(user.title) ? (user.title + ' ') : ''}}{{user.firstName + ' ' + user.lastName}}
             </dd>
             <!-- Phone Template -->
-            <dt>{{'account.profile.phone.label' | translate}}</dt>
-            <dd>
+            <dt class="col-md-4">{{'account.profile.phone.label' | translate}}</dt>
+            <dd class="col-md-8">
               {{user.phoneHome}}
             </dd>
-            <dt>{{'account.profile.fax.label' | translate}}</dt>
-            <dd>
+            <dt class="col-md-4">{{'account.profile.fax.label' | translate}}</dt>
+            <dd class="col-md-8">
               {{user.fax}}
             </dd>
-            <dt>{{'account.profile.birthday.label' | translate}}</dt>
-            <dd>
+            <dt class="col-md-4">{{'account.profile.birthday.label' | translate}}</dt>
+            <dd class="col-md-8">
               {{(user.birthday) ? (user.birthday | date) : ('account.profile.birthday.not_available' | translate)}}
             </dd>
-            <dt>{{'account.profile.language.label' | translate}}</dt>
-            <dd>
+            <dt class="col-md-4">{{'account.profile.language.label' | translate}}</dt>
+            <dd class="col-md-8">
               <!-- TODO: get information for <isprint value="#PreferredLocale:DisplayName(PreferredLocale)#"> -->
             </dd>
           </dl>
@@ -128,9 +128,9 @@
       <h3>{{'account.newsletter.label' | translate}}</h3>
       <div class="row">
         <div class="col-md-12">
-          <dl class="dl-horizontal dl-separator">
-            <dt>{{'account.newsletter.label' | translate}}</dt>
-            <dd>
+          <dl class="row">
+            <dt class="col-md-4">{{'account.newsletter.label' | translate}}</dt>
+            <dd class="col-md-8">
 
             </dd>
           </dl>
