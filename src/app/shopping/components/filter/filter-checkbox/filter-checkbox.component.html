@@ -2,7 +2,7 @@
 
   <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
     {{filterElement.name}}
-    <span class="glyphicon pull-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span>
+    <span class="glyphicon float-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span>
   </h3>
 
   <ul class="filter-list">
@@ -12,7 +12,7 @@
         <!--- TODO: add filter count -->
         <span class="icon-selected"></span>{{facet.link.title}}
         <!--- TODO: implement delete filter -->
-        <a class="filter-clear"><span class="glyphicon glyphicon-minus pull-right"></span></a>
+        <a class="filter-clear"><span class="glyphicon glyphicon-minus float-right"></span></a>
       </li>
     </ng-container>
   </ul>
