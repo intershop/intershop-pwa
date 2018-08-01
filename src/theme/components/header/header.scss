@@ -230,6 +230,10 @@ header {
 
 .bottom-header {
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+
+  .global-nav .container {
+    padding: 0;
+  }
 }
 
 @media (max-width: $screen-xs-max) {
