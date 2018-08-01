@@ -2,6 +2,7 @@
 // BUTTONS
 
 .btn {
+  border-radius: 0;
   font-family: $font-family-bold;
   text-transform: uppercase;
 
@@ -34,6 +35,17 @@
     line-height: inherit;
     vertical-align: baseline;
     display: inline;
+  }
+
+  &.btn-primary {
+    background-color: $button-primary-bg;
+    border-color: $button-primary-border;
+  }
+
+  &.btn-secondary {
+    color: $button-default-color;
+    background-color: $button-default-bg;
+    border-color: $button-default-border;
   }
 }
 

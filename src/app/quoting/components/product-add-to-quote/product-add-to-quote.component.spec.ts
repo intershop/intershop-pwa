@@ -33,7 +33,7 @@ describe('Product Add To Quote Component', () => {
 
   it('should show button when display type is not glyphicon ', () => {
     fixture.detectChanges();
-    expect(element.querySelector('button').className).toContain('btn-default');
+    expect(element.querySelector('button').className).toContain('btn-secondary');
   });
 
   it('should show glyphicon button when display type is glyphicon ', () => {
