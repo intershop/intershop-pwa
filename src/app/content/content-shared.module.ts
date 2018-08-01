@@ -3,13 +3,14 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
 
+import { CMSContainerComponent } from './components/cms-container/cms-container.component';
 import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.component';
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
 import { ContentIncludeContainerComponent } from './containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './containers/content-pagelet/content-pagelet.container';
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
 
-const cmsComponents = [CMSTextComponent, CMSFreestyleComponent];
+const cmsComponents = [CMSTextComponent, CMSFreestyleComponent, CMSContainerComponent];
 
 @NgModule({
   imports: [CommonModule, SharedModule],
