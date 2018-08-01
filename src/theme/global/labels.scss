@@ -6,6 +6,6 @@
   font-size: 100%;
 
   &.label-info {
-    background-color: lighten($brand-info, 10%);
+    background-color: lighten(map-get($theme-colors, 'info'), 10%);
   }
 }

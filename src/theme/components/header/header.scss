@@ -111,7 +111,7 @@ header {
       color: $text-color-quinary;
 
       @media (max-width: $screen-xs-max) {
-        color: $brand-primary;
+        color: map-get($theme-colors, 'primary');
       }
     }
 
@@ -268,7 +268,7 @@ header {
           a {
             padding: ($space-default / 2) $grid-gutter-width; // ~ 5px 15px
             display: block;
-            color: lighten($text-color, 100%);
+            color: $white;
             font-size: 16px;
           }
         }

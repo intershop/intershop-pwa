@@ -14,7 +14,7 @@
       width: auto;
 
       span:before {
-        font-size: $font-size-large;
+        font-size: $font-size-lg;
         color: $text-color-inverse;
       }
     }
@@ -108,7 +108,7 @@
       padding-left: (38 / 2);
       float: right;
       font-size: 14px;
-      color: lighten($text-color, 100%);
+      color: $white;
 
       &::-ms-clear {
         display: none;

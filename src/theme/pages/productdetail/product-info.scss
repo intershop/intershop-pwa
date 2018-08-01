@@ -179,7 +179,7 @@ ul {
 
       &.selected {
         a {
-          background-color: $brand-success;
+          background-color: map-get($theme-colors, 'success');
         }
       }
     }
@@ -274,6 +274,6 @@ ul {
 
   span.product-lifecycle-status-title {
     font-family: $font-family-bold;
-    font-size: $font-size-large;
+    font-size: $font-size-lg;
   }
 }

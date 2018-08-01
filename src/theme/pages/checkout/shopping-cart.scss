@@ -101,7 +101,7 @@
   }
 
   address {
-    font-size: $font-size-small;
+    font-size: $font-size-sm;
   }
 }
 
@@ -110,7 +110,7 @@
   border: $border-width-default solid $border-color-light;
   padding: ($space-default + ($space-default / 2));
   margin-bottom: $space-default;
-  font-size: $font-size-small;
+  font-size: $font-size-sm;
 
   .dl-horizontal {
     font-size: 100%;
