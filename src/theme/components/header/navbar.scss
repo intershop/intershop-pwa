@@ -24,17 +24,4 @@
       background: $color-inverse;
     }
   }
-
-  .navbar-collapse {
-    .container {
-      margin: 0 -$navbar-padding-x;
-    }
-  }
-}
-
-.navbar-nav {
-  > li > a {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
 }
