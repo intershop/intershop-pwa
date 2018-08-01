@@ -76,7 +76,7 @@
 
         @media (max-width: $screen-xs-max) {
           > a {
-            background: $brand-primary;
+            background: map-get($theme-colors, 'primary');
             border-bottom: $border-width-default solid $border-color-default;
             width: 85%;
             float: left;

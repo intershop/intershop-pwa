@@ -68,7 +68,7 @@
     float: left;
     margin-right: 2px;
     color: lighten($text-color-quarternary, 17%);
-    font-size: $font-size-large;
+    font-size: $font-size-lg;
 
     &.rating-total {
       font-size: $font-size-base;
@@ -165,7 +165,7 @@ div.rating-description {
   }
 
   .review-item-header-title {
-    font-size: $font-size-large;
+    font-size: $font-size-lg;
   }
 
   .review-item-text {

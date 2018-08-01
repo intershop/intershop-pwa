@@ -48,7 +48,7 @@ ul {
       }
     }
     .glyphicon:before {
-      font-size: $font-size-large;
+      font-size: $font-size-lg;
       margin-right: ($space-default / 2);
     }
   }
@@ -123,7 +123,7 @@ ul {
 
     .view-cart {
       font-family: $font-family-condensedbold;
-      font-size: $font-size-large;
+      font-size: $font-size-lg;
       margin-top: ($space-default * 2);
     }
   }
@@ -168,7 +168,7 @@ ul {
     .product-price {
       font-family: $font-family-condensedbold;
       color: $text-color-primary;
-      font-size: $font-size-large;
+      font-size: $font-size-lg;
       padding-bottom: ($space-default / 4);
     }
 

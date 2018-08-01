@@ -5,7 +5,7 @@
 
 .has-feedback {
   .form-control[type='number'] {
-    padding: $padding-base-vertical $padding-base-horizontal;
+    padding: $grid-gutter-width / 5 $grid-gutter-width / 2.5;
   }
 
   .form-control[type='number'] + * .form-control-feedback {

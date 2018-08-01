@@ -3,7 +3,7 @@
 
 .system-notification {
   padding: 15px 0;
-  background-color: $brand-warning;
+  background-color: map-get($theme-colors, 'warning');
 
   .system-notification-icon {
     float: left;

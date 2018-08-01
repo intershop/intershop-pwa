@@ -28,7 +28,7 @@
       &.form-control {
         border: $border-width-default solid $border-color-default;
         background: $color-primary;
-        color: lighten($text-color, 100%);
+        color: $white;
         height: 38px;
 
         &:focus {

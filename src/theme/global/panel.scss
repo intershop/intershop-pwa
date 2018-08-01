@@ -1,6 +1,6 @@
 //
 // PANEL
-
+// TODO: reimplement as cards? https://getbootstrap.com/docs/4.0/migration/#components
 .panel {
   margin-bottom: ($space-default * 2);
   background-color: $color-inverse;
@@ -138,7 +138,7 @@
   border-color: $border-color-corporate;
 
   > .panel-heading {
-    color: lighten($text-color, 100%);
+    color: $white;
     background-color: $color-corporate;
     border-color: $border-color-corporate;
 
@@ -164,19 +164,19 @@
       padding: 0;
 
       h4 {
-        padding: $panel-heading-padding;
+        padding: $grid-gutter-width / 3 $grid-gutter-width / 2;
       }
 
       a {
         display: block;
-        color: $gray;
+        color: $gray-600;
         &:hover {
-          color: $gray-dark;
+          color: $gray-800;
         }
       }
       + .panel-collapse {
         .panel-body {
-          padding: $panel-body-padding;
+          padding: $grid-gutter-width / 2;
           border-top: 1px solid $border-color-light;
         }
       }

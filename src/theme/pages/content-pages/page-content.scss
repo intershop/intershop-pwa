@@ -48,11 +48,11 @@ ol {
   li {
     padding-bottom: $space-default;
     font-family: $font-family-condensedbold;
-    font-size: $font-size-large;
+    font-size: $font-size-lg;
 
     a {
       color: $text-color-primary;
-      font-size: $font-size-large;
+      font-size: $font-size-lg;
       text-transform: uppercase;
     }
   }
@@ -63,7 +63,7 @@ ol {
     li {
       text-decoration: none;
       font-family: $font-family-regular;
-      font-size: $font-size-large;
+      font-size: $font-size-lg;
       padding-top: 0px;
       padding-bottom: $space-default / 3;
 
@@ -82,7 +82,7 @@ ol {
     a {
       text-decoration: none;
       font-family: $font-family-condensedregular;
-      font-size: $font-size-large;
+      font-size: $font-size-lg;
     }
   }
 }
