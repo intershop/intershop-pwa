@@ -35,12 +35,12 @@ input[type='file'] {
   padding: 0;
 }
 
-.form-group-checkbox {
+.form-control-checkbox {
   font-size: $font-size-base;
   border: none;
   margin-bottom: 0;
 
-  &.has-error {
+  &:invalid {
     .form-control {
       a {
         color: inherit;

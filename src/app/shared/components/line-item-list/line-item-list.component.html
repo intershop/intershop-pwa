@@ -53,7 +53,7 @@
                   controlName="quantity"
                   type="number"
                   label="shopping_cart.pli.qty.label"
-                  labelClass="d-xl-none control-label"
+                  labelClass="d-xl-none col-form-label"
                   inputClass=""
                   min="0"
                   [max]="pli.product.maxOrderQuantity"
@@ -65,7 +65,7 @@
                 ></ish-input>
               </ng-container>
               <ng-container *ngIf="(pli.isFreeGift && editable) || !editable">
-                <label class="d-xl-none control-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+                <label class="d-xl-none col-form-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
                 {{ pli.quantity.value | number }}
               </ng-container>
             </div>

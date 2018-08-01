@@ -12,7 +12,7 @@
       <!-- ToDo: List of payment methods instead -->
       <ul *ngIf="paymentMethods && paymentMethods.length > 0" class="list-unstyled" role="tablist" aria-multiselectable="true">
         <li *ngFor="let paymentMethod of paymentMethods" class="panel">
-          <div class="radio" role="tab">
+          <div class="form-check" role="tab">
             <label>
               <input
                 type="radio"
