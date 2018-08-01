@@ -187,7 +187,7 @@
         <!-- IF STATE NEW -->
         <ng-container *ngIf="quote.state === 'New'">
           <button type="submit" class="btn btn-primary pull-right" [disabled]="quote.items.length === 0" (click)="submit()">{{ 'quote.edit.button.submit.label' | translate }}</button>
-          <button type="submit" class="btn btn-default pull-right" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
+          <button type="submit" class="btn btn-secondary pull-right" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
         </ng-container>
 
         <!-- IF STATE SUBMITTED -->
@@ -197,7 +197,7 @@
               <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
             <iselse>
             -->
-            <button class="btn btn-default" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+            <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
         </ng-container>
 
         <!-- ELSE ( if type === Quote )-->
@@ -207,9 +207,9 @@
             <button type="submit" class="btn btn-primary pull-right" name="add2cart" (click)="addToBasket()">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
           </ng-container>
 
-          <button  type="submit" class="btn btn-default" name="copy" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
+          <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
 
-          <button *ngIf="quote.state === 'Responded'" type="submit" id="button-reject" class="btn btn-default" name="refuse" (click)="reject()">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
+          <button *ngIf="quote.state === 'Responded'" type="submit" id="button-reject" class="btn btn-secondary" name="refuse" (click)="reject()">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
         </ng-container>
       </ng-container>
     </div>
