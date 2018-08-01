@@ -1,6 +1,6 @@
 <ng-container *ngIf="control.dirty">
   <i class="form-control-feedback glyphicon" [ngClass]="iconClasses"></i>
-  <small *ngFor="let e$ of errors" class="help-block">
+  <small *ngFor="let e$ of errors" class="form-text">
     {{ e$ | async }}
   </small>
 </ng-container>

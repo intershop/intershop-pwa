@@ -20,9 +20,9 @@
               [value]="shippingMethod.id"
                type="radio"
             />
-            <span>{{ shippingMethod.name }}:</span>&nbsp;
-            <!-- ToDo: #IS-24215: add product delivery times to the shipping method delivery times -->
-            <span *ngIf="shippingMethod.shippingTimeMin !== undefined && shippingMethod.shippingTimeMax" class="help-block help-block-inline">
+
+            <span>{{ basket.commonShippingMethod.name }}:</span>&nbsp;
+            <span *ngIf="basket.commonShippingMethod.shippingTimeMin && basket.commonShippingMethod.shippingTimeMax" class="form-text form-text-inline">
               {{ 'checkout.shipping.delivery_time.description' | translate }}
               <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
                   {{ 'checkout.shipping.delivery_time.within24' | translate}}

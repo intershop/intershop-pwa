@@ -1,14 +1,6 @@
 .form-horizontal {
-  .control-label {
+  .col-form-label {
     text-align: left;
-
-    &.control-label-right {
-      text-align: right;
-      padding-right: 0;
-      @media (max-width: $screen-xs-max) {
-        text-align: left;
-      }
-    }
   }
 }
 
@@ -30,7 +22,7 @@ label {
   color: $text-color-quarternary;
 }
 
-.radio {
+.form-check {
   label {
     label {
       padding-left: 0;

@@ -66,23 +66,23 @@
     </isif>-->
 
     <div class="row">
-      <label class="col-4 col-md-3 col-xl-2 control-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
+      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
       <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-static">{{ quote.number }}</p>
+        <p class="form-control-plaintext">{{ quote.number }}</p>
       </div>
     </div>
     <div class="row">
-      <label class="col-4 col-md-3 col-xl-2 control-label">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
+      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
       <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-static"><ish-quote-state [quote]="quote"></ish-quote-state></p>
+        <p class="form-control-plaintext"><ish-quote-state [quote]="quote"></ish-quote-state></p>
       </div>
     </div>
 
     <!--- Shows the valid from/to date  -->
     <div *ngIf="quote.state === 'Responded'" class="row">
-      <label class="col-4 col-md-3 col-xl-2 control-label">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</label>
+      <label class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.valid.label' | translate }}</label>
       <div class="col-8 col-md-9 col-xl-10">
-        <p class="form-control-static">{{ validFromDate | date: 'shortDate' }} - {{ validToDate | date: 'shortDate' }}</p>
+        <p class="form-control-plaintext">{{ validFromDate | date: 'shortDate' }} - {{ validToDate | date: 'shortDate' }}</p>
       </div>
     </div>
 
@@ -102,10 +102,10 @@
         }"
       ></ish-input>
       <ng-template #staticDisplayName>
-        <div class="form-group has-feedback">
-          <label for="#SHOUD_EQUAL_INPUT_ID#" class="col-4 col-md-3 col-xl-2 control-label">{{ 'quote.edit.unsubmitted.name.label' | translate }}</label>
+        <div class="row form-group has-feedback">
+          <label for="#SHOUD_EQUAL_INPUT_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.name.label' | translate }}</label>
           <div class="col-8 col-md-9 col-xl-10">
-            <p class="form-control-static">{{ quote.displayName }}</p>
+            <p class="form-control-plaintext">{{ quote.displayName }}</p>
           </div>
         </div>
       </ng-template>
@@ -114,7 +114,7 @@
       <!--
       <isif condition="#isDefined(Quote:Timeframe)#">
         <div class="row">
-          <label for="" class="col-4 col-md-3 col-xl-2 control-label"><istext key="quote.edit.unsubmitted.timeframe.label" /></label>
+          <label for="" class="col-4 col-md-3 col-xl-2 col-form-label"><istext key="quote.edit.unsubmitted.timeframe.label" /></label>
           <div class="col-8 col-md-9 col-xl-10">
             <isprint value="#Quote:Timeframe#">
           </div>
@@ -122,8 +122,8 @@
       </isif>
       -->
 
-      <div *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)" class="form-group">
-        <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-4 col-md-3 col-xl-2 control-label">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
+      <div *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)" class="row form-group">
+        <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
         <div class="col-8 col-md-9 col-xl-10">
           <ng-container *ngIf="quote.state === 'New'; else staticDescription">
             <textarea
@@ -135,15 +135,15 @@
             <!-- ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea> -->
           </ng-container>
           <ng-template #staticDescription>
-            <p class="form-control-static">{{ quote.description }}</p>
+            <p class="form-control-plaintext">{{ quote.description }}</p>
           </ng-template>
         </div>
       </div>
 
-      <div *ngIf="quote.type === 'Quote' && sellerComment" class="form-group">
-        <label for="" class="col-4 col-md-3 col-xl-2 control-label">{{ 'quote.edit.unsubmitted.seller_comment.label' | translate }}</label>
+      <div *ngIf="quote.type === 'Quote' && sellerComment" class="row form-group">
+        <label for="" class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.seller_comment.label' | translate }}</label>
         <div class="col-8 col-md-9 col-xl-10">
-          <p class="form-control-static">{{ sellerComment }}</p>
+          <p class="form-control-plaintext">{{ sellerComment }}</p>
         </div>
       </div>
     </div>
@@ -172,7 +172,7 @@
 
     <div class="form-btn-group clearfix">
       <div class="d-md-none form-group">
-        <div class="d-md-none pull-right text-right">
+        <div class="col-6 pull-right text-right">
           <!--
           <isif condition="#LinkSource EQ "Shopping"#">
             <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
