@@ -1,8 +1,8 @@
 <form [formGroup]="form">
   <!-- Line Items Overview -->
-  <div class="list-header hidden-xs">
+  <div class="list-header d-none d-md-block">
     <div class="col-sm-8 col-lg-6 list-header-item list-header-item-descr">{{ 'shopping_cart.product_description.heading' | translate }}</div>
-    <div class="hidden-sm hidden-md col-lg-2 list-header-item" [ngClass]="{'text-right': editable}">{{ 'shopping_cart.qty.heading' | translate }}</div>
+    <div class="d-md-none d-lg-none col-lg-2 list-header-item" [ngClass]="{'text-right': editable}">{{ 'shopping_cart.qty.heading' | translate }}</div>
     <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
     <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
@@ -53,7 +53,7 @@
                   controlName="quantity"
                   type="number"
                   label="shopping_cart.pli.qty.label"
-                  labelClass="hidden-lg control-label"
+                  labelClass="d-xl-none control-label"
                   inputClass=""
                   min="0"
                   [max]="pli.product.maxOrderQuantity"
@@ -65,7 +65,7 @@
                 ></ish-input>
               </ng-container>
               <ng-container *ngIf="(pli.isFreeGift && editable) || !editable">
-                <label class="hidden-lg control-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+                <label class="d-xl-none control-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
                 {{ pli.quantity.value | number }}
               </ng-container>
             </div>
@@ -73,7 +73,7 @@
         </div>
 
         <!-- Prices -->
-        <div class="col-sm-2 hidden-xs list-item column-price single-price">
+        <div class="col-sm-2 d-none d-md-block list-item column-price single-price">
           <!-- Original Single Base Price  -->
           <p *ngIf="pli.originSingleBasePrice" class="text-nowrap">
             {{ 'quote.items.original_price.label' | translate }}

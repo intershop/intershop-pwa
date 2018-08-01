@@ -1,5 +1,5 @@
 <ul class="navbar-nav main-navigation-list">
-  <li class="home hidden-xs">
+  <li class="home d-none d-md-block">
     <a routerLink="/home" title="home">
       <span class="glyphicon glyphicon-home"></span>
     </a>
@@ -12,7 +12,7 @@
     >
       {{category.name}}
     </a>
-    <a *ngIf="category.hasChildren()" (click)="toggleOpen(category)" class="dropdown-toggle visible-xs">
+    <a *ngIf="category.hasChildren()" (click)="toggleOpen(category)" class="dropdown-toggle d-md-none">
       <span class="glyphicon" [ngClass]="isOpened(category) ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
     </a>
     <ish-sub-category-navigation [category]="category" [subCategoriesDepth]="1"></ish-sub-category-navigation>

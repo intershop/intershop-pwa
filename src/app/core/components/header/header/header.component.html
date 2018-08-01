@@ -1,10 +1,10 @@
 <div class="top-header">
   <nav class="container">
     <div class="row">
-      <a rel="home" routerLink="/home" class="visible-xs mobile-logo">
+      <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
         <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
       </a>
-      <div class="visible-xs pull-right">
+      <div class="d-md-none pull-right">
         <button class="navbar-toggle" type="button" (click)="navbarCollapsed = !navbarCollapsed">
           <span class="sr-only">{{'common.button.navbarCollapsed.text' | translate}}</span>
           <span class="icon-bar"></span>
@@ -20,12 +20,12 @@
           <li *ishFeature="'compare'">
             <ish-product-compare-status-container></ish-product-compare-status-container>
           </li>
-          <li class="visible-xs">
+          <li class="d-md-none">
             <ish-mobile-basket-container></ish-mobile-basket-container>
           </li>
         </ul>
         <div class="header-utility">
-          <ul class="customer-info hidden-xs">
+          <ul class="customer-info d-none d-md-block">
             <li>
               <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span>
               {{'common.header.contact_no.text' | translate}}
@@ -41,17 +41,17 @@
 <div class="mid-header">
   <div class="container">
     <div class="row">
-      <div class="col-sm-3 logo-wrapper hidden-xs">
+      <div class="col-sm-3 logo-wrapper d-none d-md-block">
         <a rel="home" routerLink="/home">
           <img src="assets/img/logo.png" alt="Logo">
         </a>
       </div>
-      <div class="col-sm-5 header-info-wrapper hidden-xs"></div>
+      <div class="col-sm-5 header-info-wrapper d-none d-md-block"></div>
       <div class="col-sm-4 search-container header-search-container">
         <ish-search-box-container
           [configuration]="{
-            placeholderText: 'search.searchbox.instructional_text' | translate, 
-            autoSuggest: true, 
+            placeholderText: 'search.searchbox.instructional_text' | translate,
+            autoSuggest: true,
             maxAutoSuggests: 10
           }"
         ></ish-search-box-container>

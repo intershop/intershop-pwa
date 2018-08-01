@@ -26,7 +26,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
       </a>
       
       <a
-        class="dropdown-toggle visible-xs"
+        class="dropdown-toggle d-md-none"
       >
         <span
           class="glyphicon glyphicon-plus"
@@ -60,7 +60,7 @@ exports[`Sub Category Navigation Component should be created 1`] = `
             </a>
             
             <a
-              class="dropdown-toggle visible-xs"
+              class="dropdown-toggle d-md-none"
             >
               <span
                 class="glyphicon glyphicon-plus"
