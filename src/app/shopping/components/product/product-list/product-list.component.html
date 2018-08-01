@@ -2,7 +2,7 @@
 
   <!--Grid View -->
   <ng-container *ngIf="viewType === 'grid'">
-    <div *ngFor="let product of products" class="product-list-item col-md-4 col-xs-6 grid-view">
+    <div *ngFor="let product of products" class="col-6 col-lg-4 product-list-item grid-view">
       <ish-product-tile-container *ngIf="product else loading"
         [product]="product"
         [category]="category"
@@ -15,7 +15,7 @@
 
   <!--List View-->
   <ng-container *ngIf="viewType === 'list'">
-    <div *ngFor="let product of products" class="product-list-item col-md-12 list-view">
+    <div *ngFor="let product of products" class="col-lg-12 product-list-item list-view">
       <ish-product-row-container *ngIf="product else loading"
         [product]="product"
         [category]="category"

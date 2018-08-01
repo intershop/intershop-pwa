@@ -10,8 +10,8 @@
     <tbody>
 
       <tr>
-        <th class="col-xs-6 col-sm-3">&nbsp;</th>
-        <td *ngFor="let product of visibleProducts" class="col-xs-6 col-sm-3">
+        <th class="col-6 col-md-3">&nbsp;</th>
+        <td *ngFor="let product of visibleProducts" class="col-6 col-md-3">
           <div class="product-image">
             <a [routerLink]="generateProductRoute(product)">
               <ish-product-image [product]="product" imageType="M"></ish-product-image>

@@ -3,7 +3,7 @@
   <label [attr.for]="'month-'+uuid" class="control-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
   <div [ngClass]="inputClass">
     <div class="clearfix row">
-      <div class="col-xs-4">
+      <div class="col-4">
         <input
           [type]="'number'"
           class="form-control"
@@ -15,7 +15,7 @@
         >
         <div class="input-help text-center">mm</div>
       </div>
-      <div class="col-xs-4">
+      <div class="col-4">
         <input
           [type]="'number'"
           class="form-control"
@@ -27,7 +27,7 @@
         >
         <div class="input-help text-center">dd</div>
       </div>
-      <div class="col-xs-4">
+      <div class="col-4">
         <input
           [type]="'number'"
           class="form-control"

@@ -1,5 +1,5 @@
 <ul class="category-list row">
-  <li *ngFor="let category of categories" class="category-list-item col-xs-6 col-md-4">
+  <li *ngFor="let category of categories" class="category-list-item col-6 col-lg-4">
     <div class="category-name" [attr.data-testing-id]="'category-' + category.uniqueId">
       <a [routerLink]="['/category', category.uniqueId]">
         <!-- TODO: image generation with all attributes should be more generic, e.g. with an image component, with fallback for no images -->

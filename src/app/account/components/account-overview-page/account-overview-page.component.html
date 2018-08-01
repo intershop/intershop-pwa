@@ -1,10 +1,10 @@
-<div class="col-md-9">
+<div class="col-lg-9">
 
   <h1 *ngIf="user" [innerHTML]="'account.overview.personal_message.text' | translate:{'0' : (user.firstName || user.credentials.login)}"></h1>
   <p>{{'account.overview.message.text' | translate}}</p>
 
   <div class="row account-dashboard">
-    <div class="col-sm-3 col-xs-6 dashboard-item">
+    <div class="col-6 col-md-3 dashboard-item">
       <a routerLink="/account/orders">
         <div class="circle-icon">
           <span class="glyphicon glyphicon-list-alt"></span>
@@ -12,7 +12,7 @@
         {{'account.order_history.link' | translate}}
       </a>
     </div>
-    <div class="col-sm-3 col-xs-6 dashboard-item">
+    <div class="col-6 col-md-3 dashboard-item">
       <a routerLink="/account/profile">
         <div class="circle-icon">
           <span class="glyphicon glyphicon-cog"></span>

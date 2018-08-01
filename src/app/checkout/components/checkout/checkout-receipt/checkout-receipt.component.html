@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12 col-md-8">
+  <div class="col-md-12 col-lg-8">
     <p *ngIf="order.status === 'PENDING'" class="alert alert-info">{{ 'checkout.receipt.order_pending.message' | translate }}</p>
 
     <!-- Receipt message -->
@@ -13,13 +13,13 @@
 
   <div class="row equal">
       <!-- Invoice Address -->
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper">
           <ish-address [address]="order.invoiceToAddress"></ish-address>
         </ish-info-box>
       </div>
       <!-- Shipping Address -->
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper">
           <ish-address [address]="order.commonShipToAddress"></ish-address>
         </ish-info-box>
@@ -28,13 +28,13 @@
 
     <div class="row equal">
         <!-- Shipping Method -->
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper">
             <p>{{ order.commonShippingMethod.name }}</p>
           </ish-info-box>
         </div>
         <!-- Payment Method -->
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper">
             <p>{{ order.paymentMethod.name }}</p>
           </ish-info-box>
@@ -45,7 +45,7 @@
   </div>
 
   <!-- basket summary -->
-  <div class="col-sm-12 col-md-4 order-summary">
+  <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">

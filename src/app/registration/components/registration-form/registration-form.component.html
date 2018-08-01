@@ -12,7 +12,7 @@
     <p>{{'account.register.email_password.message' | translate}}</p>
     <div class="section">
       <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="col-md-10 col-lg-8 col-xl-6">
           <ish-registration-credentials-form
             [parentForm]="form"
           ></ish-registration-credentials-form>
@@ -24,7 +24,7 @@
     <div class="section">
       <p>{{'account.register.address.message' | translate}}</p>
       <div class="row">
-        <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="col-md-10 col-lg-8 col-xl-6">
           <ish-address-form
             [parentForm]="form"
             [countryCode]="countryCode"
@@ -44,7 +44,7 @@
           -->
 
           <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
+            <div class="col-md-offset-4 col-md-8">
               <input type="submit" [disabled]="formDisabled" class="btn btn-primary" value="{{'account.create.button.label' | translate}}" />
               <input type="button" class="btn btn-default" value="{{'account.cancel.link' | translate}}" (click)="cancelForm()" />
             </div>

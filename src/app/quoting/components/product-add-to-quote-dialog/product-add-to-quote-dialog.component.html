@@ -18,15 +18,15 @@
     <ng-container *ngIf="!!quote">
 
       <div class="row">
-        <label class="col-lg-2 col-sm-3 col-xs-4 control-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
-        <div class="col-lg-10 col-sm-9 col-xs-8">
+        <label class="col-4 col-md-3 col-xl-2 control-label">{{ 'quote.edit.unsubmitted.quote_no.label' | translate }}</label>
+        <div class="col-8 col-md-9 col-xl-10">
           <p class="form-control-static">{{ quote.number }}</p>
         </div>
       </div>
 
       <div class="row">
-        <label class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
-        <div class="col-lg-10 col-sm-9 col-xs-8">
+        <label class="col-4 col-md-3 col-xl-2 control-label ">{{ 'quote.edit.unsubmitted.status.label' | translate }}</label>
+        <div class="col-8 col-md-9 col-xl-10">
           <p class="form-control-static"><ish-quote-state [quote]="quote"></ish-quote-state></p>
         </div>
       </div>
@@ -37,8 +37,8 @@
           [form]="form"
           controlName="displayName"
           label="quote.edit.unsubmitted.name.label"
-          labelClass="col-lg-2 col-sm-3 col-xs-4"
-          inputClass="col-lg-10 col-sm-9 col-xs-8"
+          labelClass="col-4 col-md-3 col-xl-2"
+          inputClass="col-8 col-md-9 col-xl-10"
           maxLength="256"
           [placeholderText]="'quote.edit.unsubmitted.enter_an_optional_name.text'"
           [errorMessages]="{
@@ -47,8 +47,8 @@
         ></ish-input>
 
         <div class="form-group">
-          <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="control-label col-lg-2 col-sm-3 col-xs-4">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
-          <div class="col-lg-10 col-sm-9 col-xs-8">
+          <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="control-label col-4 col-md-3 col-xl-2">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
+          <div class="col-8 col-md-9 col-xl-10">
             <textarea
               formControlName="description"
               class="form-control"
@@ -86,7 +86,7 @@
     </div>
 
     <div class="d-md-none form-group pull-left">
-      <div class="col-xs-6">
+      <div class="col-6">
         <a routerLink="/account/quote-list" (click)="hide()">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
       </div>
     </div>
