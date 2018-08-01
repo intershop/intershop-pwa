@@ -44,6 +44,31 @@ describe('Api Service', () => {
       httpTestingController.verify();
     });
 
+    it('should call the httpClient.options method when apiService.options method is called.', done => {
+      apiService.options('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
+      expect(req.request.method).toEqual('OPTIONS');
+    });
+
+    it('should create Error Action if httpClient.options throws Error.', () => {
+      const statusText = 'ERROAAR';
+
+      apiService.options('data').subscribe(fail, fail);
+      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+
+      req.flush('err', { status: 500, statusText });
+
+      verify(storeMock$.dispatch(anything())).once();
+      const [action] = capture(storeMock$.dispatch).last();
+      expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
+      expect((action as ServerError).error.statusText).toEqual(statusText);
+    });
+
     it('should call the httpClient.get method when apiService.get method is called.', done => {
       apiService.get('data').subscribe(data => {
         expect(data).toBeTruthy();
