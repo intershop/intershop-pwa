@@ -111,7 +111,7 @@
     "tslint-consistent-codestyle": "^1.13.3",
     "tslint-etc": "^1.2.3",
     "tslint-html-report": "^2.0.0",
-    "tslint-jasmine-rules": "1.5.1",
+    "tslint-jasmine-rules": "1.4.0",
     "typescript": "~2.9.2",
     "webpack-cli": "^2.1.5"
   }
