@@ -12,7 +12,7 @@
         </a>
       </li>
 
-      <li class="hidden-xs">
+      <li class="d-md-none">
         <a href="javascript:window.print();" class="link-print" rel="nofollow">
           <span class="glyphicon glyphicon-print"></span>
           <span class="share-label">{{ 'product.print_page.link' | translate }}</span>
@@ -20,7 +20,7 @@
       </li>
 
       <ng-container *ishFeature="'compare'">
-        <li *ngIf="!isMasterProduct(product)" class="hidden-xs" [attr.data-testing-id]="'compare-' + product.sku">
+        <li *ngIf="!isMasterProduct(product)" class="d-md-none" [attr.data-testing-id]="'compare-' + product.sku">
           <a routerLink="/compare" (click)="addToCompare()" rel="nofollow" >
             <span class="glyphicon glyphicon-equalizer"></span>
             <span class="share-label">{{ 'product.compare.link' | translate }}</span>

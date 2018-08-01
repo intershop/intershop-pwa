@@ -2,22 +2,22 @@
 <ng-container *ngIf="user; else notLoggedIn">
   <a routerLink="/account" class="my-account-link" attr.data-testing-id="link-myaccount">
     <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
-    <span *ngIf="user.lastName" class="hidden-xs login-name">{{user.firstName + ' ' + user.lastName}}</span>
-    <span class="hidden-xs">{{'account.login_status.myaccount.link' | translate}}</span>
+    <span *ngIf="user.lastName" class="d-none d-md-inline login-name">{{user.firstName + ' ' + user.lastName}}</span>
+    <span class="d-none d-md-inline">{{'account.login_status.myaccount.link' | translate}}</span>
   </a>
-  <span class="hidden-xs seperator">&#124; </span>
+  <span class="d-none d-md-inline seperator">&#124; </span>
   <a routerLink="/logout" class="my-account-link my-account-logout" attr.data-testing-id="link-logout">
-    <span class="hidden-xs">{{'account.logout.link' | translate}}</span>
+    <span class="d-none d-md-inline">{{'account.logout.link' | translate}}</span>
   </a>
 </ng-container>
 <!-- not logged in -->
 <ng-template #notLoggedIn>
   <a routerLink="/login" class="my-account-link my-account-login" attr.rel="nofollow">
     <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
-    <span class="hidden-xs">{{'account.login.link' | translate}}</span>
+    <span class="d-none d-md-inline">{{'account.login.link' | translate}}</span>
   </a>
-  <span class="hidden-xs seperator">&#124; </span>
+  <span class="d-none d-md-inline seperator">&#124; </span>
   <a routerLink="/register" class="my-account-link my-account-register" attr.rel="nofollow">
-    <span class="hidden-xs">{{'account.register.link' | translate}}</span>
+    <span class="d-none d-md-inline">{{'account.register.link' | translate}}</span>
   </a>
 </ng-template>
