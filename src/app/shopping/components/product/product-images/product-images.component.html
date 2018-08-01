@@ -1,4 +1,4 @@
-<div class="col-md-2 d-none d-lg-block">
+<div class="col-lg-2 d-none d-lg-block">
   <div class="product-img-thumbs" data-type="S">
     <div class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(0) }" (click)="setActiveSlide(0)">
       <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
@@ -9,7 +9,7 @@
     </div>
   </div>
 </div>
-<div class="col-sm-6 col-xs-12 product-detail-img clearfix">
+<div class="col-12 col-md-6 product-detail-img clearfix">
   <div class="product-image-container">
     <carousel [(activeSlide)]="activeSlide" [showIndicators]="false" [interval]="false">
       <slide>
