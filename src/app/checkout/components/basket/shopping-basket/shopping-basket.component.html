@@ -22,19 +22,21 @@
           (deleteItem)="onDeleteItem($event)"
         ></ish-line-item-list>
 
-        <ish-basket-add-to-quote
-          *ishFeature="'quoting'"
-          (basketToQuote)="onAddToQuote()"
-        ></ish-basket-add-to-quote>
+        <div class="row justify-content-between">
+          <ish-basket-add-to-quote
+            *ishFeature="'quoting'"
+            (basketToQuote)="onAddToQuote()"
+          ></ish-basket-add-to-quote>
 
-        <button
-          type="submit"
-          data-testing-id="button-update-cart"
-          [disabled]="form.invalid"
-          class="btn btn-secondary pull-right"
-         >
-          {{'shopping_cart.update.quantity.button.label' | translate }}
-        </button>
+          <button
+            type="submit"
+            data-testing-id="button-update-cart"
+            [disabled]="form.invalid"
+            class="btn btn-secondary"
+           >
+            {{'shopping_cart.update.quantity.button.label' | translate }}
+          </button>
+        </div>
       </div>
 
       <div class="col-md-12 col-lg-4 order-summary">

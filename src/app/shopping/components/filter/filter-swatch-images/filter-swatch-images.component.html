@@ -2,7 +2,7 @@
 
   <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
     {{filterElement.name}}
-    <span class="glyphicon pull-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span>
+    <span class="glyphicon float-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span>
   </h3>
 
   <ul class="filter-list clearfix" id="collapseFilter" [collapse]="isCollapsed">

@@ -1,12 +1,12 @@
 <div class="top-header">
   <nav class="container">
-    <div class="row">
+    <div class="row justify-content-between">
       <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
         <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
       </a>
-      <div class="d-md-none pull-right">
+      <div class="d-md-none">
         <button class="navbar-toggle" type="button" (click)="navbarCollapsed = !navbarCollapsed">
-          <span class="sr-only">{{'common.button.navbarCollapsed.text' | translate}}</span>
+          <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -67,7 +67,7 @@
         <div class="main-navigation col-md-8 col-lg-9" role="navigation">
           <ish-header-navigation-container></ish-header-navigation-container>
         </div>
-        <div class="col-md-4 col-lg-3 pull-right main-navigation-right">
+        <div class="col-md-4 col-lg-3 main-navigation-right">
           <ish-mini-basket-container></ish-mini-basket-container>
         </div>
       </div>
