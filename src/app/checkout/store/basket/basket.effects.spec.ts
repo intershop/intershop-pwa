@@ -620,6 +620,57 @@ describe('Basket Effects', () => {
     });
   });
 
+  describe('loadBasketEligibleShippingMethods$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.getBasketItemOptions(anyString(), anyString())).thenReturn(
+        of({ eligibleShippingMethods: { shippingMethods: [BasketMockData.getShippingMethod()] } })
+      );
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          id: 'BID',
+          lineItems: [],
+        } as Basket)
+      );
+
+      store$.dispatch(new basketActions.LoadBasketItemsSuccess([BasketMockData.getBasketItem()]));
+    });
+    it('should call the basketService for loadBasketItemOptions', done => {
+      const action = new basketActions.LoadBasketEligibleShippingMethods();
+      actions$ = of(action);
+
+      effects.loadBasketEligibleShippingMethods$.subscribe(() => {
+        verify(basketServiceMock.getBasketItemOptions('BID', '4712')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type loadBasketEligibleShippingMethodsSuccess', () => {
+      const action = new basketActions.LoadBasketEligibleShippingMethods();
+      const completion = new basketActions.LoadBasketEligibleShippingMethodsSuccess([
+        BasketMockData.getShippingMethod(),
+      ]);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketEligibleShippingMethods$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
+      when(basketServiceMock.getBasketItemOptions(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
+      const action = new basketActions.LoadBasketEligibleShippingMethods();
+      const completion = new basketActions.LoadBasketEligibleShippingMethodsFail({
+        message: 'invalid',
+      } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketEligibleShippingMethods$).toBeObservable(expected$);
+    });
+  });
+
   describe('loadBasketPayments$', () => {
     beforeEach(() => {
       when(basketServiceMock.getBasketPayments(anyString())).thenReturn(of([]));

@@ -1,7 +1,10 @@
 <div data-testing-id="checkout-shipping-page">
   <h1>{{ 'checkout.shipping.pagetitle' | translate }}</h1>
 
-  <ish-checkout-shipping [basket]="basket$ | async"></ish-checkout-shipping>
+  <ish-checkout-shipping
+    [basket]="basket$ | async"
+    [shippingMethods]="shippingMethods$ | async"
+  ></ish-checkout-shipping>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>
