@@ -19,7 +19,7 @@ describe('Checkout Shipping Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-shipping',
           template: 'Checkout Shipping Component',
-          inputs: ['basket'],
+          inputs: ['basket', 'shippingMethods'],
         }),
       ],
 
@@ -43,5 +43,10 @@ describe('Checkout Shipping Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render shipping component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-checkout-shipping')).toBeTruthy();
   });
 });

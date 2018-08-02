@@ -5,6 +5,7 @@ import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
 import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from '../../services/basket/basket.service';
 
 export enum BasketActionTypes {
@@ -32,6 +33,9 @@ export enum BasketActionTypes {
   DeleteBasketItem = '[Basket] Delete Basket Item',
   DeleteBasketItemFail = '[Basket API] Delete Basket Item Fail',
   DeleteBasketItemSuccess = '[Basket API] Delete Basket Item Success',
+  LoadBasketEligibleShippingMethods = '[Basket] Load Basket Eligible Shipping Methods',
+  LoadBasketEligibleShippingMethodsFail = '[Basket API] Load Basket Eligible Shipping Methods Fail',
+  LoadBasketEligibleShippingMethodsSuccess = '[Basket API] Load Basket Eligible Shipping Methods Success',
   LoadBasketPayments = '[Basket Internal] Load Basket Payments',
   LoadBasketPaymentsFail = '[Basket API] Load Basket Payments Fail',
   LoadBasketPaymentsSuccess = '[Basket API] Load Basket Payments Success',
@@ -161,6 +165,20 @@ export class DeleteBasketItemSuccess implements Action {
   readonly type = BasketActionTypes.DeleteBasketItemSuccess;
 }
 
+export class LoadBasketEligibleShippingMethods implements Action {
+  readonly type = BasketActionTypes.LoadBasketEligibleShippingMethods;
+}
+
+export class LoadBasketEligibleShippingMethodsFail implements Action {
+  readonly type = BasketActionTypes.LoadBasketEligibleShippingMethodsFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class LoadBasketEligibleShippingMethodsSuccess implements Action {
+  readonly type = BasketActionTypes.LoadBasketEligibleShippingMethodsSuccess;
+  constructor(public payload: ShippingMethod[]) {}
+}
+
 /* payload: BasketId */
 export class LoadBasketPayments implements Action {
   readonly type = BasketActionTypes.LoadBasketPayments;
@@ -236,6 +254,9 @@ export type BasketAction =
   | DeleteBasketItem
   | DeleteBasketItemFail
   | DeleteBasketItemSuccess
+  | LoadBasketEligibleShippingMethods
+  | LoadBasketEligibleShippingMethodsFail
+  | LoadBasketEligibleShippingMethodsSuccess
   | LoadBasketPayments
   | LoadBasketPaymentsFail
   | LoadBasketPaymentsSuccess

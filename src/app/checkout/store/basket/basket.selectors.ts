@@ -27,3 +27,8 @@ export const getCurrentBasket = createSelector(
 export const getBasketLoading = createSelector(getBasketState, basket => basket.loading);
 
 export const getBasketError = createSelector(getBasketState, basket => basket.error);
+
+export const getBasketEligibleShippingMethods = createSelector(
+  getBasketState,
+  basket => basket.eligibleShippingMethods
+);

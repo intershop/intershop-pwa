@@ -97,6 +97,15 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should get line item options for a basket item when 'getBasketOptions' is called", done => {
+    when(apiService.options(anything())).thenReturn(of({}));
+
+    basketService.getBasketItemOptions(basketMockData.id, lineItemData.id).subscribe(() => {
+      verify(apiService.options(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+      done();
+    });
+  });
+
   it("should get basket payments for specific basketId when 'getBasketPayments' is called", done => {
     when(apiService.get(`baskets/${basketMockData.id}/payments`)).thenReturn(of([]));
 

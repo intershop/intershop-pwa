@@ -10,6 +10,7 @@ import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 
 export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
 
@@ -117,6 +118,28 @@ export class BasketService {
    */
   deleteBasketItem(itemId: string, basketId: string): Observable<void> {
     return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  }
+
+  /**
+   * Get basket item options for selected basket item.
+   * @param basketId  The basket id.
+   * @param itemId    The id of the line item that should be updated.
+   * @returns         The basket item options.
+   */
+  getBasketItemOptions(
+    basketId: string,
+    itemId: string
+  ): Observable<{
+    eligibleShippingMethods: { shippingMethods: ShippingMethod[] };
+  }> {
+    if (!basketId) {
+      return throwError('getBasketItemOptions() called without basketId');
+    }
+    if (!itemId) {
+      return throwError('getBasketItemOptions() called without itemId');
+    }
+
+    return this.apiService.options(`baskets/${basketId}/items/${itemId}`);
   }
 
   /**

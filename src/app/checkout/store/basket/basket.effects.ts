@@ -243,6 +243,26 @@ export class BasketEffects {
   );
 
   /**
+   * The load basket eligible shipping methods effect.
+   */
+  @Effect()
+  loadBasketEligibleShippingMethods$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketEligibleShippingMethods),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([, basket]) =>
+      /* simplified solution: get eligible shipping methods only for the first item
+       ToDo: differentiate between multi and single shipment */
+      this.basketService.getBasketItemOptions(basket.id, basket.lineItems[0].id).pipe(
+        map(
+          result =>
+            new basketActions.LoadBasketEligibleShippingMethodsSuccess(result.eligibleShippingMethods.shippingMethods)
+        ),
+        catchError(error => of(new basketActions.LoadBasketEligibleShippingMethodsFail(error)))
+      )
+    )
+  );
+
+  /**
    * The load basket payments effect.
    */
   @Effect()
