@@ -62,6 +62,16 @@ describe('Basket Actions', () => {
       });
     });
 
+    it('should create new action for UpdateBasketShippingMethod', () => {
+      const payload = 'shippingId';
+      const action = new fromActions.UpdateBasketShippingMethod(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketShippingMethod,
+        payload,
+      });
+    });
+
     it('should create new action for UpdateBasket', () => {
       const payload = { invoiceToAddress: { id: '123' } };
       const action = new fromActions.UpdateBasket(payload);

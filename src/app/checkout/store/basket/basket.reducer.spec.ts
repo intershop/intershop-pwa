@@ -55,6 +55,15 @@ describe('Basket Reducer', () => {
       });
     });
 
+    describe('UpdateBasketShippingMethod action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.UpdateBasketShippingMethod('1234');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
     describe('UpdateBasketFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpErrorResponse;

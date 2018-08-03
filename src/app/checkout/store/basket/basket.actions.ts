@@ -14,6 +14,7 @@ export enum BasketActionTypes {
   LoadBasketSuccess = '[Basket API] Load Basket Success',
   UpdateBasketInvoiceAddress = '[Basket] Update Baskets Invoive Address',
   UpdateBasketShippingAddress = '[Basket] Update Baskets Shipping Address',
+  UpdateBasketShippingMethod = '[Basket] Update Baskets Shipping Method',
   UpdateBasket = '[Basket Internal] Update Basket',
   UpdateBasketFail = '[Basket API] Update Basket Fail',
   UpdateBasketSuccess = '[Basket API] Update Basket Success',
@@ -71,6 +72,12 @@ export class UpdateBasketInvoiceAddress implements Action {
 
 export class UpdateBasketShippingAddress implements Action {
   readonly type = BasketActionTypes.UpdateBasketShippingAddress;
+  constructor(public payload: string) {}
+}
+
+/* payload: Shipping Method Id */
+export class UpdateBasketShippingMethod implements Action {
+  readonly type = BasketActionTypes.UpdateBasketShippingMethod;
   constructor(public payload: string) {}
 }
 
@@ -235,6 +242,7 @@ export type BasketAction =
   | LoadBasketSuccess
   | UpdateBasketInvoiceAddress
   | UpdateBasketShippingAddress
+  | UpdateBasketShippingMethod
   | UpdateBasket
   | UpdateBasketFail
   | UpdateBasketSuccess
