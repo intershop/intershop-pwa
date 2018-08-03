@@ -4,13 +4,11 @@ import { FilterActions, FilterActionTypes } from './filter.actions';
 export interface FilterState {
   loading: boolean;
   availableFilter: FilterNavigation;
-  products: string[];
 }
 
 export const initialState: FilterState = {
   loading: false,
   availableFilter: undefined,
-  products: undefined,
 };
 
 export function filterReducer(state = initialState, action: FilterActions): FilterState {
@@ -46,14 +44,6 @@ export function filterReducer(state = initialState, action: FilterActions): Filt
       return {
         ...state,
         availableFilter,
-        loading: false,
-      };
-    }
-
-    case FilterActionTypes.SetFilteredProducts: {
-      return {
-        ...state,
-        products: action.payload,
         loading: false,
       };
     }

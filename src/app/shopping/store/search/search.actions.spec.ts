@@ -14,7 +14,7 @@ describe('Search Actions', () => {
     });
 
     it('should create new action for SearchProductsSuccess', () => {
-      const payload = { searchTerm: 'search', products: ['a', 'b'] };
+      const payload = 'search';
       const action = new SearchProductsSuccess(payload);
 
       expect({ ...action }).toEqual({

@@ -18,7 +18,7 @@ export class SearchProducts implements Action {
 
 export class SearchProductsSuccess implements Action {
   readonly type = SearchActionTypes.SearchProductsSuccess;
-  constructor(public payload: { searchTerm: string; products: string[] }) {}
+  constructor(public payload: string) {}
 }
 
 export class SearchProductsFail implements Action {

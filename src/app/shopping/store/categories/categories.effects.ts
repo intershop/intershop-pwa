@@ -4,7 +4,17 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ofRoute, RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  switchMap,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
@@ -128,11 +138,9 @@ export class CategoriesEffects {
     this.actions$.pipe(ofType(actions.CategoriesActionTypes.SelectedCategoryAvailable)),
     this.actions$.pipe(ofRoute('category/:categoryUniqueId'))
   ).pipe(
-    switchMap(() =>
-      this.store.pipe(select(selectors.productsForSelectedCategoryAreNotLoaded), filter(needed => needed))
-    ),
-    switchMap(() => this.store.pipe(select(selectors.getSelectedCategoryId), filter(uniqueId => !!uniqueId))),
-    map(uniqueId => new LoadProductsForCategory(uniqueId))
+    switchMap(() => this.store.pipe(select(selectors.getSelectedCategory), filter(x => !!x), take(1))),
+    filter(category => category.hasOnlineProducts),
+    map(category => new LoadProductsForCategory(category.uniqueId))
   );
 
   @Effect({ dispatch: false })

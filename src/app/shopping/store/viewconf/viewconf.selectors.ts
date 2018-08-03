@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
 export const getViewconfState = createSelector(getShoppingState, (state: ShoppingState) => state.viewconf);
@@ -6,6 +7,7 @@ export const getViewconfState = createSelector(getShoppingState, (state: Shoppin
 export const getViewType = createSelector(getViewconfState, state => state.viewType);
 export const getSortBy = createSelector(getViewconfState, state => state.sortBy);
 export const getSortKeys = createSelector(getViewconfState, state => state.sortKeys);
+const getProducts = createSelector(getViewconfState, state => state.products);
 
 export const getPagingPage = createSelector(getViewconfState, state => state.page || 0);
 
@@ -22,4 +24,8 @@ export const canRequestMore = createSelector(
   getItemsPerPage,
   getTotalItems,
   (page, itemsPerPage, total) => total < 0 || (page + 1) * itemsPerPage < total
+);
+
+export const getVisibleProducts = createSelector(getProductEntities, getProducts, (entities, skus) =>
+  skus.map(sku => entities[sku])
 );

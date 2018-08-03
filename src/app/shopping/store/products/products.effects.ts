@@ -18,7 +18,6 @@ import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes } from '../../../core/store/locale';
 import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
-import { SetProductSkusForCategory } from '../categories';
 import { ShoppingState } from '../shopping.state';
 import {
   canRequestMore,
@@ -90,11 +89,11 @@ export class ProductsEffects {
       this.productsService.getCategoryProducts(categoryUniqueId, page, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([res, entities]) => [
-          new SetProductSkusForCategory({
-            categoryUniqueId: res.categoryUniqueId,
-            skus: res.products.map(p => p.sku),
+          new SetPagingInfo({
+            currentPage: page,
+            totalItems: res.total,
+            newProducts: res.products.map(p => p.sku),
           }),
-          new SetPagingInfo({ currentPage: page, totalItems: res.total }),
           new SetSortKeys(res.sortKeys),
           ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
         ]),

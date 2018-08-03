@@ -9,6 +9,7 @@ import { getSelectedCategory } from '../categories';
 import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
+import { SetPagingInfo } from '../viewconf';
 import * as filterActions from './filter.actions';
 
 @Injectable()
@@ -51,8 +52,8 @@ export class FilterEffects {
 
   @Effect()
   loadFilterForSearchIfSearchSuccess$ = this.actions$.pipe(
-    ofType(SearchActionTypes.SearchProductsSuccess),
-    map((action: SearchProductsSuccess) => new filterActions.LoadFilterForSearch(action.payload.searchTerm))
+    ofType<SearchProductsSuccess>(SearchActionTypes.SearchProductsSuccess),
+    map(action => new filterActions.LoadFilterForSearch(action.payload))
   );
 
   @Effect()
@@ -75,9 +76,9 @@ export class FilterEffects {
       this.filterService
         .getProductSkusForFilter(filterName, searchParameter)
         .pipe(
-          mergeMap((skus: string[]) => [
-            ...skus.map(sku => new LoadProduct(sku)),
-            new filterActions.SetFilteredProducts(skus),
+          mergeMap((newProducts: string[]) => [
+            ...newProducts.map(sku => new LoadProduct(sku)),
+            new SetPagingInfo({ currentPage: 0, totalItems: newProducts.length, newProducts }),
           ])
         )
     )

@@ -6,6 +6,7 @@ export interface ViewconfState {
   sortBy: string;
   sortKeys: string[];
   loading: boolean;
+  products: string[];
   page: number;
   total: number;
   itemsPerPage: number;
@@ -17,6 +18,7 @@ export const initialState: ViewconfState = {
   sortBy: '',
   sortKeys: [],
   loading: false,
+  products: [],
   page: 0,
   total: -1,
   itemsPerPage: -1,
@@ -58,9 +60,13 @@ export function viewconfReducer(state = initialState, action: fromViewconf.Viewc
     }
 
     case fromViewconf.ViewconfActionTypes.SetPagingInfo: {
+      const { totalItems: total, currentPage: page, newProducts } = action.payload;
+      const products = page === 0 ? newProducts : [...state.products, ...newProducts];
       return {
         ...state,
-        total: action.payload.totalItems,
+        total,
+        page,
+        products,
         loading: false,
       };
     }

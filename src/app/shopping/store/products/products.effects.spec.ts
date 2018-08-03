@@ -13,7 +13,6 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
-import { SetProductSkusForCategory } from '../categories';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
@@ -123,13 +122,12 @@ describe('Products Effects', () => {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       const expectedValues = {
-        a: new SetProductSkusForCategory({ categoryUniqueId: '123', skus: ['P222', 'P333'] }),
-        b: new SetPagingInfo({ currentPage: 0, totalItems: 2 }),
+        b: new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['P222', 'P333'] }),
         c: new SetSortKeys(['name-asc', 'name-desc']),
         d: new fromActions.LoadProductSuccess({ sku: 'P222' } as Product),
         e: new fromActions.LoadProductSuccess({ sku: 'P333' } as Product),
       };
-      expect(effects.loadProductsForCategory$).toBeObservable(cold('(abcde)', expectedValues));
+      expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcde)', expectedValues));
     });
 
     it('should not die if repeating errors are encountered', () => {

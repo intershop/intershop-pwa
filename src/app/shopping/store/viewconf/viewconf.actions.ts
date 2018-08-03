@@ -9,6 +9,7 @@ export enum ViewconfActionTypes {
   SetPagingLoading = '[Shopping] Set Paging Loading',
   SetPagingInfo = '[Shopping] Set Paging Info',
   SetPage = '[Shopping Internal] Set Page',
+  AppendProducts = '[Shopping Internal] Append Products',
   DisableEndlessScrolling = '[Shopping Internal] Disable Endless Scrolling',
 }
 
@@ -34,7 +35,7 @@ export class SetSortKeys implements Action {
 
 export class SetPagingInfo implements Action {
   readonly type = ViewconfActionTypes.SetPagingInfo;
-  constructor(public payload: { totalItems: number; currentPage: number }) {}
+  constructor(public payload: { totalItems: number; currentPage: number; newProducts: string[] }) {}
 }
 
 export class SetPagingLoading implements Action {

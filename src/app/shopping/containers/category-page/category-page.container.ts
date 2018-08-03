@@ -5,14 +5,8 @@ import { filter, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
-import { firstTruthy } from '../../../utils/selectors';
-import {
-  getCategoryLoading,
-  getProductsForSelectedCategory,
-  getSelectedCategory,
-  getSelectedCategoryId,
-} from '../../store/categories';
-import { getFilteredProducts, getLoadingStatus, getNumberOfFilteredProducts } from '../../store/filter';
+import { getCategoryLoading, getSelectedCategory, getSelectedCategoryId } from '../../store/categories';
+import { getLoadingStatus } from '../../store/filter';
 import { LoadMoreProductsForCategory } from '../../store/products';
 import { ShoppingState } from '../../store/shopping.state';
 import {
@@ -25,6 +19,7 @@ import {
   getSortKeys,
   getTotalItems,
   getViewType,
+  getVisibleProducts,
   isEndlessScrollingEnabled,
 } from '../../store/viewconf';
 
@@ -47,7 +42,6 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
   canRequestMore$: Observable<boolean>;
   currentPage$: Observable<number>;
   endlessScrolling$: Observable<boolean>;
-  filterMode$: Observable<boolean>;
 
   private destroy$ = new Subject();
 
@@ -62,26 +56,23 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
       this.loadingMore$
     ).pipe(map(([a, b, c]) => (a || b) && !c));
 
-    this.products$ = this.store.pipe(select(firstTruthy(getFilteredProducts, getProductsForSelectedCategory)));
-
-    this.products$ = this.store.pipe(select(firstTruthy(getFilteredProducts, getProductsForSelectedCategory)));
-    this.totalItems$ = this.store.pipe(select(firstTruthy(getNumberOfFilteredProducts, getTotalItems)));
+    this.products$ = this.store.pipe(select(getVisibleProducts));
+    this.totalItems$ = this.store.pipe(select(getTotalItems));
     this.viewType$ = this.store.pipe(select(getViewType));
     this.sortBy$ = this.store.pipe(select(getSortBy));
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
 
-    this.filterMode$ = this.store.pipe(select(getFilteredProducts), map(x => !!x));
+    this.canRequestMore$ = this.store.pipe(select(canRequestMore));
+    this.endlessScrolling$ = this.store.pipe(select(isEndlessScrollingEnabled));
     this.loadMore
       .pipe(
-        withLatestFrom(this.store.pipe(select(getSelectedCategoryId)), this.filterMode$),
-        filter(([, , filterMode]) => !filterMode),
+        withLatestFrom(this.store.pipe(select(getSelectedCategoryId)), this.canRequestMore$, this.endlessScrolling$),
+        filter(([, , moreAvailable, endlessScrolling]) => moreAvailable && endlessScrolling),
         takeUntil(this.destroy$)
       )
       .subscribe(([, categoryUniqueId]) => this.store.dispatch(new LoadMoreProductsForCategory(categoryUniqueId)));
 
-    this.canRequestMore$ = this.store.pipe(select(canRequestMore));
     this.currentPage$ = this.store.pipe(select(getPagingPage), map(x => x + 1));
-    this.endlessScrolling$ = this.store.pipe(select(isEndlessScrollingEnabled));
   }
 
   ngOnDestroy() {
