@@ -5,7 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.actions';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
@@ -117,6 +117,71 @@ describe('Basket Effects', () => {
         verify(basketServiceMock.updateBasket(basketId, payload)).once();
         done();
       });
+    });
+  });
+
+  describe('updateBasketShippingMethod$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of(undefined));
+
+      const basketId = 'BID';
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          id: basketId,
+          lineItems: [],
+        } as Basket)
+      );
+
+      store$.dispatch(
+        new basketActions.LoadBasketItemsSuccess([
+          {
+            id: 'BIID1',
+          } as BasketItem,
+          {
+            id: 'BIID2',
+          } as BasketItem,
+        ])
+      );
+    });
+
+    it('should call the basketService for updateBasketItem', done => {
+      const basketId = 'BID';
+      const payload = 'shippingId';
+      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      actions$ = of(action);
+
+      effects.updateBasketShippingMethod$.subscribe(() => {
+        verify(basketServiceMock.updateBasketItem(basketId, anything(), anything())).twice();
+        verify(
+          basketServiceMock.updateBasketItem(basketId, 'BIID1', deepEqual({ shippingMethod: { id: 'shippingId' } }))
+        ).once();
+
+        done();
+      });
+    });
+
+    it('should map to action of type UpdateBasketSuccess', () => {
+      const payload = 'shippingId';
+      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const completion = new basketActions.UpdateBasketSuccess();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type UpdateBasketFail', () => {
+      const payload = 'shippingId';
+      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
+
+      const action = new basketActions.UpdateBasketShippingMethod(payload);
+      const completion = new basketActions.UpdateBasketFail({ message: 'invalid' } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
     });
   });
 
@@ -450,7 +515,7 @@ describe('Basket Effects', () => {
 
   describe('updateBasketItems$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyNumber(), anyString())).thenReturn(of());
+      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anyNumber())).thenReturn(of());
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -490,9 +555,10 @@ describe('Basket Effects', () => {
       actions$ = of(action);
 
       effects.updateBasketItems$.subscribe(() => {
-        verify(basketServiceMock.updateBasketItem(payload[0].itemId, payload[0].quantity, 'BID')).once();
-        verify(basketServiceMock.updateBasketItem(payload[1].itemId, payload[1].quantity, 'BID')).once();
-        verify(basketServiceMock.updateBasketItem(payload[2].itemId, payload[2].quantity, 'BID')).once();
+        verify(basketServiceMock.updateBasketItem('BID', payload[1].itemId, anything())).thrice();
+        verify(
+          basketServiceMock.updateBasketItem('BID', payload[1].itemId, deepEqual({ quantity: { value: 2 } }))
+        ).once();
         done();
       });
     });
@@ -531,7 +597,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyNumber(), anyString())).thenReturn(
+      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
         throwError({ message: 'invalid' } as HttpErrorResponse)
       );
 

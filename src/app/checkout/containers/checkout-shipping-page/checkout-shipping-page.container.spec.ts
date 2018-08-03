@@ -19,7 +19,7 @@ describe('Checkout Shipping Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-shipping',
           template: 'Checkout Shipping Component',
-          inputs: ['basket', 'shippingMethods'],
+          inputs: ['basket', 'shippingMethods', 'error'],
         }),
       ],
 

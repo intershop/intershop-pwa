@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -5,9 +6,11 @@ import { Basket } from '../../../models/basket/basket.model';
 import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import {
   getBasketEligibleShippingMethods,
+  getBasketError,
   getBasketLoading,
   getCurrentBasket,
   LoadBasketEligibleShippingMethods,
+  UpdateBasketShippingMethod,
 } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
@@ -20,6 +23,7 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   loading$: Observable<boolean>;
   shippingMethods$: Observable<ShippingMethod[]>;
+  basketError$: Observable<HttpErrorResponse>;
 
   constructor(private store: Store<CheckoutState>) {}
 
@@ -29,5 +33,10 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
 
     this.store.dispatch(new LoadBasketEligibleShippingMethods());
     this.shippingMethods$ = this.store.pipe(select(getBasketEligibleShippingMethods));
+  }
+
+  updateBasketShippingMethod(shippingId: string) {
+    this.store.dispatch(new UpdateBasketShippingMethod(shippingId));
+    this.basketError$ = this.store.pipe(select(getBasketError));
   }
 }
