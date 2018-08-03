@@ -1,0 +1,41 @@
+<ng-container *ngIf="getConfigurationParameterValue(pagelet, 'Link') && !(getConfigurationParameterValue(pagelet, 'LinkText')); else imageEnhanced">
+  <a [routerLink]="getRouterLink(getConfigurationParameterValue(pagelet, 'Link'))"
+    [attr.title]="getConfigurationParameterValue(pagelet, 'LinkTitle')"
+    class="teaser-link"
+  >
+    <ng-container *ngTemplateOutlet="imageEnhanced"></ng-container>
+  </a>
+</ng-container>
+
+<ng-template #imageEnhanced>
+  <div class="enhanced-image-container" [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')">
+    <picture class="enhanced-image">
+      <source *ngIf="getConfigurationParameterValue(pagelet, 'ImageXS')"
+        [srcset]="getImagePath(getConfigurationParameterValue(pagelet, 'ImageXS'))" media="(max-width: 767px)"
+      >
+      <source *ngIf="getConfigurationParameterValue(pagelet, 'ImageSM')"
+        [srcset]="getImagePath(getConfigurationParameterValue(pagelet, 'ImageSM'))" media="(max-width: 991px)"
+      >
+      <source *ngIf="getConfigurationParameterValue(pagelet, 'ImageMD')"
+        [srcset]="getImagePath(getConfigurationParameterValue(pagelet, 'ImageMD'))" media="(max-width: 1199px)"
+      >
+      <img [src]="getImagePath(getConfigurationParameterValue(pagelet, 'Image'))"
+        [attr.alt]="getConfigurationParameterValue(pagelet, 'AlternateText')"
+        [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')"
+        class="enhanced-image"
+      >
+    </picture>
+    <div class="enhanced-image-text">
+      <h1 *ngIf="getConfigurationParameterValue(pagelet, 'Heading1')">{{ getConfigurationParameterValue(pagelet, 'Heading1') }}</h1>
+      <h2 *ngIf="getConfigurationParameterValue(pagelet, 'Heading2')">{{ getConfigurationParameterValue(pagelet, 'Heading2') }}</h2>
+      <p *ngIf="getConfigurationParameterValue(pagelet, 'Description')" class="hidden-xs" [innerHTML]="getConfigurationParameterValue(pagelet, 'Description') | safeHtml"></p>
+      <a *ngIf="getConfigurationParameterValue(pagelet, 'Link') && getConfigurationParameterValue(pagelet, 'LinkText')"
+        [routerLink]="getRouterLink(getConfigurationParameterValue(pagelet, 'Link'))"
+        [attr.title]="getConfigurationParameterValue(pagelet, 'LinkTitle')"
+        class="btn btn-lg btn-primary"
+      >
+        {{ getConfigurationParameterValue(pagelet, 'LinkText') }}
+      </a>
+    </div>
+  </div>
+</ng-template>
