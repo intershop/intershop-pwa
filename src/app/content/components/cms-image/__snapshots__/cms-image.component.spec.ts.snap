@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cms Image Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.1.6"
+>
+  
+  
+  <a
+    class="teaser-link"
+    href="/home"
+    ng-reflect-router-link="/home"
+    title="bar"
+  >
+    
+    <img
+      alt="foo"
+      class="foo"
+      ng-reflect-ng-class="foo"
+      src="http://www.example.org/foo/-bar.png"
+    />
+  </a>
+  
+</div>
+`;
