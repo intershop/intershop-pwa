@@ -97,13 +97,4 @@ describe('Filter Reducer', () => {
       expect(state.loading).toBeFalse();
     });
   });
-
-  describe('SetFilteredProducts', () => {
-    it('should set product skus when reduced', () => {
-      const action = new fromActions.SetFilteredProducts(['123', '234']);
-      const state = filterReducer(initialState, action);
-
-      expect(state.products).toEqual(['123', '234']);
-    });
-  });
 });

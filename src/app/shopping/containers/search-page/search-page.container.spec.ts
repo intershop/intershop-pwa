@@ -1,9 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { SearchProductsSuccess } from '../../store/search/search.actions';
+import { SearchProductsSuccess } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { shoppingReducers } from '../../store/shopping.system';
+import { SetPagingInfo } from '../../store/viewconf';
 import { SearchPageContainerComponent } from './search-page.container';
 
 describe('Search Page Container', () => {
@@ -52,16 +53,18 @@ describe('Search Page Container', () => {
   });
 
   it('should render search no result component if search has no results', () => {
-    const products = [];
-    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search', products }));
+    const newProducts = [];
+    store$.dispatch(new SearchProductsSuccess('search'));
+    store$.dispatch(new SetPagingInfo({ newProducts, currentPage: 0, totalItems: newProducts.length }));
     fixture.detectChanges();
     expect(element.querySelector('ish-search-no-result')).toBeTruthy();
     expect(element.querySelector('ish-search-result')).toBeFalsy();
   });
 
   it('should render search result component if search has results', () => {
-    const products = ['testSKU1', 'testSKU2'];
-    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search', products }));
+    const newProducts = ['testSKU1', 'testSKU2'];
+    store$.dispatch(new SearchProductsSuccess('search'));
+    store$.dispatch(new SetPagingInfo({ newProducts, currentPage: 0, totalItems: newProducts.length }));
     fixture.detectChanges();
     expect(element.querySelector('ish-search-result')).toBeTruthy();
     expect(element.querySelector('ish-search-no-result')).toBeFalsy();

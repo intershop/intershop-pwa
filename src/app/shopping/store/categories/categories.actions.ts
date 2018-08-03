@@ -12,7 +12,6 @@ export enum CategoriesActionTypes {
   LoadCategory = '[Shopping] Load Category',
   LoadCategoryFail = '[Shopping] Load Category Fail',
   LoadCategorySuccess = '[Shopping] Load Category Success',
-  SetProductSkusForCategory = '[Shopping] Set Product SKUs For Category',
 }
 
 export class SelectCategory implements Action {
@@ -60,11 +59,6 @@ export class LoadCategorySuccess implements Action {
   constructor(public payload: CategoryTree) {}
 }
 
-export class SetProductSkusForCategory implements Action {
-  readonly type = CategoriesActionTypes.SetProductSkusForCategory;
-  constructor(public payload: { categoryUniqueId: string; skus: string[] }) {}
-}
-
 export type CategoriesAction =
   | SelectCategory
   | DeselectCategory
@@ -73,5 +67,4 @@ export type CategoriesAction =
   | LoadTopLevelCategoriesSuccess
   | LoadCategory
   | LoadCategoryFail
-  | LoadCategorySuccess
-  | SetProductSkusForCategory;
+  | LoadCategorySuccess;

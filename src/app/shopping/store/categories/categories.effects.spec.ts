@@ -71,10 +71,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
-      const expected = { a: new fromActions.SelectCategory('dummy') };
+      const expected = new fromActions.SelectCategory('dummy');
 
       actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', expected));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', { a: expected }));
     });
 
     it('should trigger SelectCategory when /category/XXX/product/YYY is visited', () => {
@@ -83,10 +83,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy', sku: 'foobar' },
         queryParams: {},
       });
-      const expected = { a: new fromActions.SelectCategory('dummy') };
+      const expected = new fromActions.SelectCategory('dummy');
 
       actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', expected));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('a', { a: expected }));
     });
 
     it('should not trigger SelectCategory when /something is visited', () => {
@@ -106,10 +106,10 @@ describe('Categories Effects', () => {
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
-      const expected = { a: new fromActions.SelectCategory('dummy') };
+      const expected = new fromActions.SelectCategory('dummy');
 
       actions$ = hot('-a-a-a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-a----', expected));
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-a----', { a: expected }));
     });
   });
 
@@ -297,15 +297,6 @@ describe('Categories Effects', () => {
     describe('when product is not selected', () => {
       it('should do nothing when category doesnt have online products', () => {
         category.hasOnlineProducts = false;
-        store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
-        store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
-      });
-
-      it('should do nothing when category already has an SKU list', () => {
-        store$.dispatch(
-          new fromActions.SetProductSkusForCategory({ categoryUniqueId: category.uniqueId, skus: ['P222', 'P333'] })
-        );
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));

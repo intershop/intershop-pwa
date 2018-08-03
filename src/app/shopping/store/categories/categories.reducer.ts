@@ -1,24 +1,18 @@
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
-import { ProductsAction, ProductsActionTypes } from '../products';
+import { ProductsAction } from '../products';
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 
 export interface CategoriesState {
   categories: CategoryTree;
   loading: boolean;
-  currentProductSKUs: string[];
   selected: string;
 }
 
 export const initialState: CategoriesState = {
   loading: false,
   categories: CategoryTreeHelper.empty(),
-  currentProductSKUs: [],
   selected: undefined,
 };
-
-function removeDuplicates(arr: string[]) {
-  return arr.filter((value, index, array) => array.indexOf(value) === index);
-}
 
 export function categoriesReducer(state = initialState, action: CategoriesAction | ProductsAction): CategoriesState {
   switch (action.type) {
@@ -27,12 +21,10 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
       return {
         ...state,
         selected: action.payload,
-        currentProductSKUs: initialState.currentProductSKUs,
       };
     }
 
-    case CategoriesActionTypes.LoadCategory:
-    case ProductsActionTypes.LoadProductsForCategory: {
+    case CategoriesActionTypes.LoadCategory: {
       return {
         ...state,
         loading: true,
@@ -55,14 +47,6 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
         categories,
         loading: false,
       };
-    }
-
-    case CategoriesActionTypes.SetProductSkusForCategory: {
-      const { skus } = action.payload;
-
-      const currentProductSKUs = removeDuplicates([...state.currentProductSKUs, ...skus]);
-
-      return { ...state, loading: false, currentProductSKUs };
     }
   }
 

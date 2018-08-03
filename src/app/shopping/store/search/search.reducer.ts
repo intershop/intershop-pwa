@@ -3,14 +3,12 @@ import { SearchAction, SearchActionTypes } from './search.actions';
 
 export interface SearchState {
   searchTerm: string;
-  products: string[];
   loading: boolean;
   suggestSearchResults: SuggestTerm[];
 }
 
 export const initialState: SearchState = {
   searchTerm: undefined,
-  products: [],
   loading: false,
   suggestSearchResults: [],
 };
@@ -25,12 +23,9 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
     }
 
     case SearchActionTypes.SearchProductsSuccess: {
-      const { searchTerm, products: newProducts } = action.payload;
-      const products = searchTerm === state.searchTerm ? [...state.products, ...newProducts] : [...newProducts];
       return {
         ...state,
-        searchTerm,
-        products,
+        searchTerm: action.payload,
         loading: false,
       };
     }

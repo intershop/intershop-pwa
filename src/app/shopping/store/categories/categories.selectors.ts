@@ -1,6 +1,5 @@
 import { createSelector } from '@ngrx/store';
 import { createCategoryView } from '../../../models/category-view/category-view.model';
-import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
 const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
@@ -27,26 +26,6 @@ export const getCategoryIds = createSelector(getCategoryTree, tree => Object.key
  * Retrieves the currently resolved selected category.
  */
 export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, createCategoryView);
-
-export const getProductSKUsForSelectedCategory = createSelector(getCategoryState, state => state.currentProductSKUs);
-
-export const getProductsForSelectedCategory = createSelector(
-  getSelectedCategory,
-  getProductSKUsForSelectedCategory,
-  getProductEntities,
-  (category, skus, products) => (category && skus && skus.map(sku => products[sku])) || []
-);
-
-export const getProductCountForSelectedCategory = createSelector(
-  getProductSKUsForSelectedCategory,
-  skus => (skus && skus.length) || 0
-);
-
-export const productsForSelectedCategoryAreNotLoaded = createSelector(
-  getSelectedCategory,
-  getProductSKUsForSelectedCategory,
-  (c, skus) => c && c.hasOnlineProducts && !skus.length
-);
 
 export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);
 
