@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
 
+import { CMSCarouselComponent } from './components/cms-carousel/cms-carousel.component';
 import { CMSContainerComponent } from './components/cms-container/cms-container.component';
 import { CMSFreestyleComponent } from './components/cms-freestyle/cms-freestyle.component';
 import { CMSImageEnhancedComponent } from './components/cms-image-enhanced/cms-image-enhanced.component';
@@ -18,6 +19,7 @@ const cmsComponents = [
   CMSContainerComponent,
   CMSImageComponent,
   CMSImageEnhancedComponent,
+  CMSCarouselComponent,
 ];
 
 @NgModule({
