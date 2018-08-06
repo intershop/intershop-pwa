@@ -11,6 +11,7 @@ import {
   canRequestMore,
   ChangeSortBy,
   ChangeViewType,
+  getPageIndices,
   getPagingLoading,
   getPagingPage,
   getSortBy,
@@ -19,6 +20,7 @@ import {
   getViewType,
   getVisibleProducts,
   isEndlessScrollingEnabled,
+  isEveryProductDisplayed,
 } from '../../store/viewconf';
 
 @Component({
@@ -37,7 +39,8 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
   sortKeys$: Observable<string[]>;
   canRequestMore$: Observable<boolean>;
   currentPage$: Observable<number>;
-  endlessScrolling$: Observable<boolean>;
+  pageIndices$: Observable<number[]>;
+  displayPaging$: Observable<boolean>;
 
   loadMore = new EventEmitter<void>();
 
@@ -53,6 +56,7 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
       this.store.pipe(select(getLoadingStatus)),
       this.loadingMore$
     ).pipe(map(([a, b, c]) => (a || b) && !c));
+
     this.products$ = this.store.pipe(select(getVisibleProducts));
     this.totalItems$ = this.store.pipe(select(getTotalItems));
     this.viewType$ = this.store.pipe(select(getViewType));
@@ -60,15 +64,16 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
 
     this.canRequestMore$ = this.store.pipe(select(canRequestMore));
-    this.endlessScrolling$ = this.store.pipe(select(isEndlessScrollingEnabled));
+    this.displayPaging$ = this.store.pipe(select(isEveryProductDisplayed), map(b => !b));
     this.loadMore
       .pipe(
-        withLatestFrom(this.searchTerm$, this.canRequestMore$, this.endlessScrolling$),
+        withLatestFrom(this.searchTerm$, this.canRequestMore$, this.store.pipe(select(isEndlessScrollingEnabled))),
         filter(([, , moreAvailable, endlessScrolling]) => moreAvailable && endlessScrolling),
         takeUntil(this.destroy$)
       )
       .subscribe(([, searchTerm]) => this.store.dispatch(new SearchMoreProducts(searchTerm)));
 
+    this.pageIndices$ = this.store.pipe(select(getPageIndices));
     this.currentPage$ = this.store.pipe(select(getPagingPage), map(x => x + 1));
   }
 
