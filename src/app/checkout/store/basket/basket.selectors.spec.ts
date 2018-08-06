@@ -8,16 +8,25 @@ import { PaymentMethod } from '../../../models/payment-method/payment-method.mod
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { checkoutReducers } from '../checkout.system';
 import {
   LoadBasket,
+  LoadBasketEligibleShippingMethods,
+  LoadBasketEligibleShippingMethodsFail,
+  LoadBasketEligibleShippingMethodsSuccess,
   LoadBasketFail,
   LoadBasketItemsSuccess,
   LoadBasketPaymentsSuccess,
   LoadBasketSuccess,
 } from './basket.actions';
-import { getBasketError, getBasketLoading, getCurrentBasket } from './basket.selectors';
+import {
+  getBasketEligibleShippingMethods,
+  getBasketError,
+  getBasketLoading,
+  getCurrentBasket,
+} from './basket.selectors';
 
 describe('Basket Selectors', () => {
   let store$: LogEffects;
@@ -39,6 +48,12 @@ describe('Basket Selectors', () => {
   describe('with empty state', () => {
     it('should be present if no basket is present', () => {
       expect(getCurrentBasket(store$.state)).toBeUndefined();
+    });
+
+    it('should not select any shipping methods if it is in initial state', () => {
+      expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+      expect(getBasketLoading(store$.state)).toBeFalse();
+      expect(getBasketError(store$.state)).toBeUndefined();
     });
   });
 
@@ -84,6 +99,38 @@ describe('Basket Selectors', () => {
       expect(getBasketLoading(store$.state)).toBeFalse();
       expect(getCurrentBasket(store$.state)).toBeUndefined();
       expect(getBasketError(store$.state)).toEqual({ message: 'invalid' });
+    });
+  });
+
+  describe('loading eligible shipping methods', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadBasketEligibleShippingMethods());
+    });
+
+    it('should set the state to loading', () => {
+      expect(getBasketLoading(store$.state)).toBeTrue();
+    });
+
+    describe('and reporting success', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadBasketEligibleShippingMethodsSuccess([BasketMockData.getShippingMethod()]));
+      });
+
+      it('should set loading to false', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligibleShippingMethods(store$.state)).toEqual([BasketMockData.getShippingMethod()]);
+      });
+    });
+
+    describe('and reporting failure', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadBasketEligibleShippingMethodsFail({ message: 'error' } as HttpErrorResponse));
+      });
+
+      it('should not have loaded addresses on error', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketError(store$.state)).toEqual({ message: 'error' });
+      });
     });
   });
 });

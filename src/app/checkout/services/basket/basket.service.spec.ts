@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api/api.service';
-import { BasketService } from './basket.service';
+import { BasketItemUpdateType, BasketService } from './basket.service';
 
 describe('Basket Service', () => {
   let basketService: BasketService;
@@ -79,11 +79,12 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should put updated data to basket line item of spefic basket when 'updateBasketItem' is called", done => {
-    when(apiService.put(anything(), anything())).thenReturn(of({}));
+  it("should put updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
+    when(apiService.put(anyString(), anything())).thenReturn(of({}));
 
-    basketService.updateBasketItem(lineItemData.id, 2, basketMockData.id).subscribe(() => {
-      verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, anything())).once();
+    const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
+    basketService.updateBasketItem(basketMockData.id, lineItemData.id, payload).subscribe(() => {
+      verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, payload)).once();
       done();
     });
   });
@@ -93,6 +94,15 @@ describe('Basket Service', () => {
 
     basketService.deleteBasketItem(lineItemData.id, basketMockData.id).subscribe(() => {
       verify(apiService.delete(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+      done();
+    });
+  });
+
+  it("should get line item options for a basket item when 'getBasketOptions' is called", done => {
+    when(apiService.options(anything())).thenReturn(of({}));
+
+    basketService.getBasketItemOptions(basketMockData.id, lineItemData.id).subscribe(() => {
+      verify(apiService.options(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
       done();
     });
   });

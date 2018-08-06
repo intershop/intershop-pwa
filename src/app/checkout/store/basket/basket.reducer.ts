@@ -2,11 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import { BasketAction, BasketActionTypes } from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
   lineItems: BasketItem[];
+  eligibleShippingMethods: ShippingMethod[];
   payments: PaymentMethod[];
   loading: boolean;
   error: HttpErrorResponse;
@@ -15,6 +17,7 @@ export interface BasketState {
 export const initialState: BasketState = {
   basket: undefined,
   lineItems: [],
+  eligibleShippingMethods: [],
   payments: [],
   loading: false,
   error: undefined,
@@ -25,6 +28,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasket:
     case BasketActionTypes.UpdateBasketInvoiceAddress:
     case BasketActionTypes.UpdateBasketShippingAddress:
+    case BasketActionTypes.UpdateBasketShippingMethod:
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.LoadBasketItems:
     case BasketActionTypes.AddProductToBasket:
@@ -32,6 +36,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.UpdateBasketItems:
     case BasketActionTypes.DeleteBasketItem:
+    case BasketActionTypes.LoadBasketEligibleShippingMethods:
     case BasketActionTypes.LoadBasketPayments:
     case BasketActionTypes.SetBasketPayment:
     case BasketActionTypes.CreateOrder: {
@@ -48,6 +53,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
+    case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
     case BasketActionTypes.LoadBasketPaymentsFail:
     case BasketActionTypes.SetBasketPaymentFail:
     case BasketActionTypes.CreateOrderFail: {
@@ -90,6 +96,15 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       return {
         ...state,
         lineItems,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.LoadBasketEligibleShippingMethodsSuccess: {
+      const eligibleShippingMethods = action.payload;
+      return {
+        ...state,
+        eligibleShippingMethods,
         loading: false,
       };
     }

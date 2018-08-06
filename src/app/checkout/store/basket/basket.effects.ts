@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { forkJoin, of } from 'rxjs';
+import { concat, forkJoin, of } from 'rxjs';
 import {
   catchError,
   concatMap,
   defaultIfEmpty,
   filter,
+  last,
   map,
   mapTo,
   mergeMap,
@@ -73,10 +74,32 @@ export class BasketEffects {
   updateBasketShippingAddress$ = this.actions$.pipe(
     ofType(basketActions.BasketActionTypes.UpdateBasketShippingAddress),
     map(
-      (action: basketActions.UpdateBasketInvoiceAddress) =>
+      (action: basketActions.UpdateBasketShippingAddress) =>
         new basketActions.UpdateBasket({
           commonShipToAddress: { id: action.payload },
         })
+    )
+  );
+
+  /**
+   * Updates the common shipping method of the basket.
+   * Works currently only if multipleShipment flag is set to true !!
+   */
+  @Effect()
+  updateBasketShippingMethod$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.UpdateBasketShippingMethod),
+    map((action: basketActions.UpdateBasketShippingMethod) => action.payload),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([id, basket]) =>
+      concat(
+        ...basket.lineItems.map(item =>
+          this.basketService.updateBasketItem(basket.id, item.id, { shippingMethod: { id } })
+        )
+      ).pipe(
+        last(),
+        mapTo(new basketActions.UpdateBasketSuccess()),
+        catchError(error => of(new basketActions.UpdateBasketFail(error)))
+      )
     )
   );
 
@@ -201,15 +224,20 @@ export class BasketEffects {
     }),
 
     concatMap(({ updatedItems, basket }) =>
-      forkJoin(
-        updatedItems.map(item => {
+      concat(
+        ...updatedItems.map(item => {
           if (item.quantity > 0) {
-            return this.basketService.updateBasketItem(item.itemId, item.quantity, basket.id);
+            return this.basketService.updateBasketItem(basket.id, item.itemId, {
+              quantity: {
+                value: item.quantity,
+              },
+            });
           }
           return this.basketService.deleteBasketItem(item.itemId, basket.id);
         })
       ).pipe(
         defaultIfEmpty(undefined),
+        last(),
         mapTo(new basketActions.UpdateBasketItemsSuccess()),
         catchError(error => of(new basketActions.UpdateBasketItemsFail(error)))
       )
@@ -240,6 +268,26 @@ export class BasketEffects {
     ofType(basketActions.BasketActionTypes.LoadBasketSuccess),
     map((action: basketActions.LoadBasketSuccess) => action.payload),
     map(basket => new basketActions.LoadBasketItems(basket.id))
+  );
+
+  /**
+   * The load basket eligible shipping methods effect.
+   */
+  @Effect()
+  loadBasketEligibleShippingMethods$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketEligibleShippingMethods),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([, basket]) =>
+      /* simplified solution: get eligible shipping methods only for the first item
+       ToDo: differentiate between multi and single shipment */
+      this.basketService.getBasketItemOptions(basket.id, basket.lineItems[0].id).pipe(
+        map(
+          result =>
+            new basketActions.LoadBasketEligibleShippingMethodsSuccess(result.eligibleShippingMethods.shippingMethods)
+        ),
+        catchError(error => of(new basketActions.LoadBasketEligibleShippingMethodsFail(error)))
+      )
+    )
   );
 
   /**
