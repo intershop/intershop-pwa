@@ -62,6 +62,16 @@ describe('Basket Actions', () => {
       });
     });
 
+    it('should create new action for UpdateBasketShippingMethod', () => {
+      const payload = 'shippingId';
+      const action = new fromActions.UpdateBasketShippingMethod(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketShippingMethod,
+        payload,
+      });
+    });
+
     it('should create new action for UpdateBasket', () => {
       const payload = { invoiceToAddress: { id: '123' } };
       const action = new fromActions.UpdateBasket(payload);
@@ -250,6 +260,36 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.DeleteBasketItemSuccess,
+      });
+    });
+  });
+
+  describe('Load Basket Eligible Shipping Methods Actions', () => {
+    it('should create new action for LoadBasketEligibleShippingMethods', () => {
+      const action = new fromActions.LoadBasketEligibleShippingMethods();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligibleShippingMethods,
+      });
+    });
+
+    it('should create new action for LoadBasketEligibleShippingFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.LoadBasketEligibleShippingMethodsFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligibleShippingMethodsFail,
+        payload,
+      });
+    });
+
+    it('should create new action for LoadBasketEligibleShippingSuccess', () => {
+      const payload = [BasketMockData.getShippingMethod()];
+      const action = new fromActions.LoadBasketEligibleShippingMethodsSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligibleShippingMethodsSuccess,
+        payload,
       });
     });
   });

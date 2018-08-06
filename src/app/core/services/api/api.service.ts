@@ -79,6 +79,29 @@ export class ApiService {
   private defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
   /**
+   * http options request
+   * @param  {string} path
+   * @param  {URLSearchParams=newURLSearchParams(} params
+   * @returns Observable
+   */
+  options<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
+    let localeAndCurrency = '';
+    if (!!this.currentLocale) {
+      localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
+    }
+    let url;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      url = path;
+    } else {
+      url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
+    }
+
+    return this.httpClient
+      .options<T>(url, options)
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+  }
+
+  /**
    * http get request
    * @param  {string} path
    * @param  {URLSearchParams=newURLSearchParams(} params

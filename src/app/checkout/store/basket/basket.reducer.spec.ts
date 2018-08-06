@@ -55,6 +55,15 @@ describe('Basket Reducer', () => {
       });
     });
 
+    describe('UpdateBasketShippingMethod action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.UpdateBasketShippingMethod('1234');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
     describe('UpdateBasketFail action', () => {
       it('should set loading to false', () => {
         const error = { message: 'invalid' } as HttpErrorResponse;
@@ -241,6 +250,59 @@ describe('Basket Reducer', () => {
         const action = new fromActions.DeleteBasketItemSuccess();
         const state = basketReducer(initialState, action);
 
+        expect(state.loading).toBeFalse();
+      });
+    });
+
+    describe('ResetBasket action', () => {
+      it('should reset to initial state', () => {
+        const oldState = {
+          ...initialState,
+          loading: true,
+          lineItems: [{ id: 'test' } as BasketItem],
+        };
+        const action = new fromActions.ResetBasket();
+        const state = basketReducer(oldState, action);
+
+        expect(state).toEqual(initialState);
+      });
+    });
+  });
+
+  describe('LoadBasketEligibleShippingMethods actions', () => {
+    describe('LoadBasketEligibleShippingMethods action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadBasketEligibleShippingMethods();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('LoadBasketEligibleShippingMethodsFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.LoadBasketEligibleShippingMethodsFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('LoadBasketEligibleShippingMethodsSuccess action', () => {
+      it('should set loading to false', () => {
+        const basket = {
+          id: 'test',
+        } as Basket;
+        const payload = [BasketMockData.getShippingMethod()];
+
+        const basketAction = new fromActions.LoadBasketSuccess(basket);
+        const basketShippingAction = new fromActions.LoadBasketEligibleShippingMethodsSuccess(payload);
+        let state = basketReducer(initialState, basketAction);
+        state = basketReducer(state, basketShippingAction);
+
+        expect(state.eligibleShippingMethods).toEqual(payload);
         expect(state.loading).toBeFalse();
       });
     });

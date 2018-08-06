@@ -10,8 +10,10 @@ import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 
 export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
+export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -95,18 +97,12 @@ export class BasketService {
   }
 
   /**
-   * Updates specific line items quantity in the given basket.
-   * @param itemId    The id of the line item that should be updated.
-   * @param quantity  The new quantity.
+   * Updates specific line items (quantity/shipping method) for the given basket.
    * @param basketId  The id of the basket in which the item should be updated.
+   * @param itemId    The id of the line item that should be updated.
+   * @param body      request body
    */
-  updateBasketItem(itemId: string, quantity: number, basketId: string): Observable<void> {
-    const body = {
-      quantity: {
-        value: quantity,
-      },
-    };
-
+  updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<void> {
     return this.apiService.put(`baskets/${basketId}/items/${itemId}`, body);
   }
 
@@ -117,6 +113,28 @@ export class BasketService {
    */
   deleteBasketItem(itemId: string, basketId: string): Observable<void> {
     return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  }
+
+  /**
+   * Get basket item options for selected basket item.
+   * @param basketId  The basket id.
+   * @param itemId    The id of the line item that should be updated.
+   * @returns         The basket item options.
+   */
+  getBasketItemOptions(
+    basketId: string,
+    itemId: string
+  ): Observable<{
+    eligibleShippingMethods: { shippingMethods: ShippingMethod[] };
+  }> {
+    if (!basketId) {
+      return throwError('getBasketItemOptions() called without basketId');
+    }
+    if (!itemId) {
+      return throwError('getBasketItemOptions() called without itemId');
+    }
+
+    return this.apiService.options(`baskets/${basketId}/items/${itemId}`);
   }
 
   /**
