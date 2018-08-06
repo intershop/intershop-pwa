@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+import { range } from 'lodash';
 import { getProductEntities } from '../products';
 import { getShoppingState, ShoppingState } from '../shopping.state';
 
@@ -28,4 +29,14 @@ export const canRequestMore = createSelector(
 
 export const getVisibleProducts = createSelector(getProductEntities, getProducts, (entities, skus) =>
   skus.map(sku => entities[sku])
+);
+
+export const isEveryProductDisplayed = createSelector(
+  getTotalItems,
+  getProducts,
+  (total, skus) => skus.length >= total
+);
+
+export const getPageIndices = createSelector(getTotalItems, getItemsPerPage, (total, itemsPerPage) =>
+  range(1, Math.ceil(total / itemsPerPage) + 1)
 );

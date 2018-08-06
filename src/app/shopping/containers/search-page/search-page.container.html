@@ -19,14 +19,15 @@
         (loadMore)="loadMore.emit()"
       ></ish-search-result>
 
-      <ng-container *ngIf="!(filterMode$ | async)">
+      <ng-container *ngIf="displayPaging$ | async">
         <ng-container *ngIf="currentPage$ | async as currentPage">
-          <a *ngIf="currentPage > 1" [style.display]="(endlessScrolling$ | async) ? 'none' : 'block'"
-            [href]="'/search/' + searchTerm + '?page=' + (currentPage - 1)"
-          >Load Previous Page</a>
-          <a *ngIf="canRequestMore$ | async" [style.display]="(endlessScrolling$ | async) ? 'none' : 'block'"
-            [href]="'/search/' + searchTerm + '?page=' + (currentPage + 1)"
-          >Load Next Page</a>
+          <a *ngIf="currentPage > 1"
+            [href]="'/search/' + searchTerm + '?page=' + (currentPage - 1)">&lt;&lt;</a>
+          <a *ngFor="let p of (pageIndices$ | async)"
+            [style.text-decoration]="p === currentPage ? 'underline' : 'none'"
+            [href]="'/search/' + searchTerm + '?page=' + p">{{ p }}</a>
+          <a *ngIf="canRequestMore$ | async"
+            [href]="'/search/' + searchTerm + '?page=' + (currentPage + 1)">&gt;&gt;</a>
         </ng-container>
       </ng-container>
     </ng-container>

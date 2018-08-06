@@ -13,6 +13,7 @@ import {
   canRequestMore,
   ChangeSortBy,
   ChangeViewType,
+  getPageIndices,
   getPagingLoading,
   getPagingPage,
   getSortBy,
@@ -21,6 +22,7 @@ import {
   getViewType,
   getVisibleProducts,
   isEndlessScrollingEnabled,
+  isEveryProductDisplayed,
 } from '../../store/viewconf';
 
 @Component({
@@ -41,7 +43,8 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
   loadMore = new EventEmitter<void>();
   canRequestMore$: Observable<boolean>;
   currentPage$: Observable<number>;
-  endlessScrolling$: Observable<boolean>;
+  pageIndices$: Observable<number[]>;
+  displayPaging$: Observable<boolean>;
 
   private destroy$ = new Subject();
 
@@ -63,15 +66,20 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
 
     this.canRequestMore$ = this.store.pipe(select(canRequestMore));
-    this.endlessScrolling$ = this.store.pipe(select(isEndlessScrollingEnabled));
+    this.displayPaging$ = this.store.pipe(select(isEveryProductDisplayed), map(b => !b));
     this.loadMore
       .pipe(
-        withLatestFrom(this.store.pipe(select(getSelectedCategoryId)), this.canRequestMore$, this.endlessScrolling$),
+        withLatestFrom(
+          this.store.pipe(select(getSelectedCategoryId)),
+          this.canRequestMore$,
+          this.store.pipe(select(isEndlessScrollingEnabled))
+        ),
         filter(([, , moreAvailable, endlessScrolling]) => moreAvailable && endlessScrolling),
         takeUntil(this.destroy$)
       )
       .subscribe(([, categoryUniqueId]) => this.store.dispatch(new LoadMoreProductsForCategory(categoryUniqueId)));
 
+    this.pageIndices$ = this.store.pipe(select(getPageIndices));
     this.currentPage$ = this.store.pipe(select(getPagingPage), map(x => x + 1));
   }
 
