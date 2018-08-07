@@ -5,4 +5,5 @@ export interface PaymentMethod {
   displayName?: string;
   applicability?: string;
   restrictions?: string[];
+  paymentParameters?: { name: string; type: string; key: string }[];
 }
