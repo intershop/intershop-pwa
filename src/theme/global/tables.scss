@@ -1,6 +1,7 @@
 // SPECIFIC TABLE MIXINS
 @mixin list-header-mixin() {
   border-bottom: 1px solid $border-color-default;
+  border-top: 0;
 
   &.no-separator {
     border-bottom: 0;
@@ -22,6 +23,7 @@
 }
 
 .table {
+  display: table;
   margin-bottom: $space-default * 2;
 
   > thead {
