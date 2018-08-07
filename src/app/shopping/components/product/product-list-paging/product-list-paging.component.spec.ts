@@ -28,7 +28,6 @@ describe('Product List Paging Component', () => {
 
   it('should render adequately for starting page', () => {
     component.currentPage = 1;
-    component.canRequestMore = true;
     fixture.detectChanges();
 
     expect(element).toMatchSnapshot();
@@ -36,7 +35,6 @@ describe('Product List Paging Component', () => {
 
   it('should render adequately for middle page', () => {
     component.currentPage = 2;
-    component.canRequestMore = true;
     fixture.detectChanges();
 
     expect(element).toMatchSnapshot();
@@ -44,7 +42,6 @@ describe('Product List Paging Component', () => {
 
   it('should render adequately for last page', () => {
     component.currentPage = 3;
-    component.canRequestMore = false;
     fixture.detectChanges();
 
     expect(element).toMatchSnapshot();

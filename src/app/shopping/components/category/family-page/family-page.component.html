@@ -8,22 +8,11 @@
     </div>
 
     <div class="col-md-9">
-      <ish-product-list-toolbar
-        [itemCount]="totalItems"
-        [viewType]="viewType"
-        [sortBy]="sortBy"
-        [sortKeys]="sortKeys"
-        (viewTypeChange)="changeViewType($event)"
-        (sortByChange)="changeSortBy($event)"
-      ></ish-product-list-toolbar>
-
-      <ish-product-list
-        [products]="products"
+      <ish-product-list-container
+        [pageUrl]="'/category/' + category.uniqueId"
         [category]="category"
-        [viewType]="viewType"
-        [loadingMore]="loadingMore"
         (loadMore)="loadMore.emit()"
-      ></ish-product-list>
+      ></ish-product-list-container>
     </div>
   </div>
 </div>

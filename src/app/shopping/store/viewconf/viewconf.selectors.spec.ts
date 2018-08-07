@@ -83,4 +83,14 @@ describe('Viewconf Selectors', () => {
       }
     );
   });
+
+  describe('isProductsAvailable', () => {
+    it('should return true when sku list is not empty', () => {
+      expect(fromSelectors.isProductsAvailable.projector(new Array(2))).toBeTrue();
+    });
+
+    it('should return false when sku list is empty', () => {
+      expect(fromSelectors.isProductsAvailable.projector(new Array(0))).toBeFalse();
+    });
+  });
 });

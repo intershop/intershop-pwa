@@ -14,23 +14,8 @@
     <ng-container *ngIf="category.hasOnlineProducts">
       <ish-family-page
         [category]="category"
-        [products]="products$ | async"
-        [totalItems]="totalItems$ | async"
-        [viewType]="viewType$ | async"
-        [sortBy]="sortBy$ | async"
-        [sortKeys]="sortKeys$ | async"
-        [loadingMore]="loadingMore$ | async"
-        (viewTypeChange)="changeViewType($event)"
-        (sortByChange)="changeSortBy($event)"
         (loadMore)="loadMore.emit()"
       ></ish-family-page>
-
-      <ish-product-list-paging *ngIf="displayPaging$ | async"
-        [currentPage]="currentPage$ | async"
-        [canRequestMore]="canRequestMore$ | async"
-        [pageIndices]="pageIndices$ | async"
-        [pageUrl]="'/category/' + category.uniqueId"
-      ></ish-product-list-paging>
     </ng-container>
   </ng-template>
 

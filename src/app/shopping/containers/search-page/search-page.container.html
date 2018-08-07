@@ -2,39 +2,21 @@
 
   <ish-breadcrumb [searchTerm]="searchTerm"></ish-breadcrumb>
 
-  <ng-container *ngIf="(products$ | async) as products">
-
-    <!-- search result with products -->
-    <ng-container *ngIf="products.length; else noResult">
-      <ish-search-result
-        [searchTerm]="searchTerm"
-        [products]="products"
-        [totalItems]="totalItems$ | async"
-        [viewType]="viewType$ | async"
-        [sortBy]="sortBy$ | async"
-        [sortKeys]="sortKeys$ | async"
-        [loadingMore]="loadingMore$ | async"
-        (viewTypeChange)="changeViewType($event)"
-        (sortByChange)="changeSortBy($event)"
-        (loadMore)="loadMore.emit()"
-      ></ish-search-result>
-
-      <ish-product-list-paging *ngIf="displayPaging$ | async"
-        [currentPage]="currentPage$ | async"
-        [canRequestMore]="canRequestMore$ | async"
-        [pageIndices]="pageIndices$ | async"
-        [pageUrl]="'/search/' + searchTerm"
-      ></ish-product-list-paging>
-    </ng-container>
-    
-    <!-- empty search result -->
-    <ng-template #noResult>
-      <ish-search-no-result *ngIf="!(searchLoading$ | async)"
+  <!-- search result with products -->
+  <ng-container *ngIf="productsAvailable$ | async; else noResult">
+    <ish-search-result
       [searchTerm]="searchTerm"
-      ></ish-search-no-result>
-    </ng-template>
-
+      [totalItems]="totalItems$ | async"
+      (loadMore)="loadMore.emit()"
+    ></ish-search-result>
   </ng-container>
+  
+  <!-- empty search result -->
+  <ng-template #noResult>
+    <ish-search-no-result *ngIf="!(searchLoading$ | async)"
+      [searchTerm]="searchTerm"
+    ></ish-search-no-result>
+  </ng-template>
 
 </ng-container>
 

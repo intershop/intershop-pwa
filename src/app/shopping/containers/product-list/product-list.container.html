@@ -1,0 +1,22 @@
+<ish-product-list-toolbar
+  [itemCount]="totalItems$ | async"
+  [viewType]="viewType$ | async"
+  [sortBy]="sortBy$ | async"
+  [sortKeys]="sortKeys$ | async"
+  (viewTypeChange)="changeViewType($event)"
+  (sortByChange)="changeSortBy($event)"
+></ish-product-list-toolbar>
+
+<ish-product-list
+  [products]="products$ | async"
+  [category]="category"
+  [viewType]="viewType$ | async"
+  [loadingMore]="loadingMore$ | async"
+  (loadMore)="loadMoreProducts()"
+></ish-product-list>
+
+<ish-product-list-paging *ngIf="displayPaging$ | async"
+  [currentPage]="currentPage$ | async"
+  [pageIndices]="pageIndices$ | async"
+  [pageUrl]="pageUrl"
+></ish-product-list-paging>
