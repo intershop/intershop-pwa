@@ -37,6 +37,9 @@ export enum BasketActionTypes {
   LoadBasketEligibleShippingMethods = '[Basket] Load Basket Eligible Shipping Methods',
   LoadBasketEligibleShippingMethodsFail = '[Basket API] Load Basket Eligible Shipping Methods Fail',
   LoadBasketEligibleShippingMethodsSuccess = '[Basket API] Load Basket Eligible Shipping Methods Success',
+  LoadBasketEligiblePaymentMethods = '[Basket] Load Basket Eligible Payment Methods',
+  LoadBasketEligiblePaymentMethodsFail = '[Basket API] Load Basket Eligible Payment Methods Fail',
+  LoadBasketEligiblePaymentMethodsSuccess = '[Basket API] Load Basket Eligible Payment Methods Success',
   LoadBasketPayments = '[Basket Internal] Load Basket Payments',
   LoadBasketPaymentsFail = '[Basket API] Load Basket Payments Fail',
   LoadBasketPaymentsSuccess = '[Basket API] Load Basket Payments Success',
@@ -186,6 +189,20 @@ export class LoadBasketEligibleShippingMethodsSuccess implements Action {
   constructor(public payload: ShippingMethod[]) {}
 }
 
+export class LoadBasketEligiblePaymentMethods implements Action {
+  readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethods;
+}
+
+export class LoadBasketEligiblePaymentMethodsFail implements Action {
+  readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethodsFail;
+  constructor(public payload: HttpErrorResponse) {}
+}
+
+export class LoadBasketEligiblePaymentMethodsSuccess implements Action {
+  readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethodsSuccess;
+  constructor(public payload: PaymentMethod[]) {}
+}
+
 /* payload: BasketId */
 export class LoadBasketPayments implements Action {
   readonly type = BasketActionTypes.LoadBasketPayments;
@@ -265,6 +282,9 @@ export type BasketAction =
   | LoadBasketEligibleShippingMethods
   | LoadBasketEligibleShippingMethodsFail
   | LoadBasketEligibleShippingMethodsSuccess
+  | LoadBasketEligiblePaymentMethods
+  | LoadBasketEligiblePaymentMethodsFail
+  | LoadBasketEligiblePaymentMethodsSuccess
   | LoadBasketPayments
   | LoadBasketPaymentsFail
   | LoadBasketPaymentsSuccess

@@ -737,6 +737,51 @@ describe('Basket Effects', () => {
     });
   });
 
+  describe('loadBasketEligiblePaymentMethods$', () => {
+    beforeEach(() => {
+      when(basketServiceMock.getBasketPaymentOptions(anyString())).thenReturn(of([BasketMockData.getPaymentMethod()]));
+
+      store$.dispatch(
+        new basketActions.LoadBasketSuccess({
+          id: 'BID',
+          lineItems: [],
+        } as Basket)
+      );
+    });
+    it('should call the basketService for loadBasketPaymentOptions', done => {
+      const action = new basketActions.LoadBasketEligiblePaymentMethods();
+      actions$ = of(action);
+
+      effects.loadBasketEligiblePaymentMethods$.subscribe(() => {
+        verify(basketServiceMock.getBasketPaymentOptions('BID')).once();
+        done();
+      });
+    });
+
+    it('should map to action of type loadBasketEligiblePaymentMethodsSuccess', () => {
+      const action = new basketActions.LoadBasketEligiblePaymentMethods();
+      const completion = new basketActions.LoadBasketEligiblePaymentMethodsSuccess([BasketMockData.getPaymentMethod()]);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketEligiblePaymentMethods$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type LoadBasketEligiblePaymentMethodsFail', () => {
+      when(basketServiceMock.getBasketPaymentOptions(anyString())).thenReturn(
+        throwError({ message: 'invalid' } as HttpErrorResponse)
+      );
+      const action = new basketActions.LoadBasketEligiblePaymentMethods();
+      const completion = new basketActions.LoadBasketEligiblePaymentMethodsFail({
+        message: 'invalid',
+      } as HttpErrorResponse);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadBasketEligiblePaymentMethods$).toBeObservable(expected$);
+    });
+  });
+
   describe('loadBasketPayments$', () => {
     beforeEach(() => {
       when(basketServiceMock.getBasketPayments(anyString())).thenReturn(of([]));

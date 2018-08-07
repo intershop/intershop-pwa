@@ -32,3 +32,5 @@ export const getBasketEligibleShippingMethods = createSelector(
   getBasketState,
   basket => basket.eligibleShippingMethods
 );
+
+export const getBasketEligiblePaymentMethods = createSelector(getBasketState, basket => basket.eligiblePaymentMethods);

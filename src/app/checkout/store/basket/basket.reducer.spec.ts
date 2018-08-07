@@ -306,18 +306,43 @@ describe('Basket Reducer', () => {
         expect(state.loading).toBeFalse();
       });
     });
+  });
 
-    describe('ResetBasket action', () => {
-      it('should reset to initial state', () => {
-        const oldState = {
-          ...initialState,
-          loading: true,
-          lineItems: [{ id: 'test' } as BasketItem],
-        };
-        const action = new fromActions.ResetBasket();
-        const state = basketReducer(oldState, action);
+  describe('LoadBasketEligiblePaymentMethods actions', () => {
+    describe('LoadBasketEligiblePaymentMethods action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadBasketEligiblePaymentMethods();
+        const state = basketReducer(initialState, action);
 
-        expect(state).toEqual(initialState);
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('LoadBasketEligiblePaymentMethodsFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.LoadBasketEligiblePaymentMethodsFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('LoadBasketEligiblePaymentMethodsSuccess action', () => {
+      it('should set loading to false', () => {
+        const basket = {
+          id: 'test',
+        } as Basket;
+        const payload = [BasketMockData.getPaymentMethod()];
+
+        const basketAction = new fromActions.LoadBasketSuccess(basket);
+        const basketPaymentAction = new fromActions.LoadBasketEligiblePaymentMethodsSuccess(payload);
+        let state = basketReducer(initialState, basketAction);
+        state = basketReducer(state, basketPaymentAction);
+
+        expect(state.eligiblePaymentMethods).toEqual(payload);
+        expect(state.loading).toBeFalse();
       });
     });
   });
