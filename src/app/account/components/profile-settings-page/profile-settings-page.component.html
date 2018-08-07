@@ -1,146 +1,142 @@
-<div class="col-lg-9 user-profile">
+<h1>{{'account.profile.heading' | translate}}</h1>
 
-  <h1>{{'account.profile.heading' | translate}}</h1>
-
-  <!-- SuccessMessage Template -->
-  <!-- TODO: implement showSuccessMessage handling -->
-  <div *ngIf="showSuccessMessage" class="alert alert-success alert-fade">
-    <p *ngIf="showSuccessMessage === 'UpdateEmail'">
-      {{'account.profile.update_email.message' | translate}}
-    </p>
-    <p *ngIf="showSuccessMessage === 'UpdateProfile'">
-      {{'account.profile.update_profile.message' | translate}}
-    </p>
-    <p *ngIf="showSuccessMessage === 'UpdatePassword'">
-      {{'account.profile.update_password.message' | translate}}
-    </p>
-    <p *ngIf="showSuccessMessage === 'UpdateNewsletter'">
-      {{'account.profile.update_newsletter.message' | translate}}
-    </p>
-  </div>
-
-  <!-- Email Template -->
-  <div class="row section">
-    <div class="col-10 col-lg-8">
-      <h3>{{'account.profile.email.heading' | translate}}</h3>
-      <div class="row">
-        <div class="col-md-12">
-          <dl class="row">
-            <dt class="col-md-4">{{'account.profile.email.label' | translate}}</dt>
-            <dd class="col-md-8" data-testing-id="email-field">
-              {{user.email}}
-            </dd>
-            <!-- TODO: implement logic (extend REST response) to present email subscriptions
-            <dt>{{'account.profile.order_confirmation_subscription.text' | translate}}</dt>
-            <dd>
-
-                <isif condition="#Preferences:OrderConfirmationEmails#">
-                  {{'account.profile.order_confirmation_email.text' | translate}}&nbsp;
-                </isif>
-                <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#">
-                  {{'account.profile.newsletter.text' | translate}}
-                </isif>
-            </dd>
-            -->
-          </dl>
-        </div>
-      </div>
-    </div>
-    <div class="col-2 col-lg-4">
-      <a class="btn-tool" [title]="'account.profile.update.link' | translate">
-        <span class="glyphicon glyphicon-pencil"></span>
-      </a>
-    </div>
-  </div>
-
-  <!-- Password Template -->
-  <div class="row section">
-    <div class="col-10 col-lg-8">
-      <h3>{{'account.profile.password.heading' | translate}}</h3>
-      <div class="row">
-        <div class="col-md-12">
-          <dl class="row">
-            <dt class="col-md-4">{{'account.profile.password.label' | translate}}</dt>
-            <dd class="col-md-8">
-              ******
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-    <div class="col-2 col-lg-4">
-      <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
-        <span class="glyphicon glyphicon-pencil"></span>
-      </a>
-    </div>
-  </div>
-
-  <!-- TODO: handle functionality of <isinclude extensionpoint="AccountProfileDepartmentExtensions"> -->
-
-  <!-- Profile Template -->
-  <div class="row section">
-    <div class="col-10 col-lg-8">
-      <h3>{{'account.profile.detail.heading' | translate}}</h3>
-      <div class="row">
-        <div class="col-md-12">
-          <dl class="row">
-            <dt class="col-md-4">{{'account.profile.name.label' | translate}}</dt>
-            <dd class="col-md-8">
-              {{(user.title) ? (user.title + ' ') : ''}}{{user.firstName + ' ' + user.lastName}}
-            </dd>
-            <!-- Phone Template -->
-            <dt class="col-md-4">{{'account.profile.phone.label' | translate}}</dt>
-            <dd class="col-md-8">
-              {{user.phoneHome}}
-            </dd>
-            <dt class="col-md-4">{{'account.profile.fax.label' | translate}}</dt>
-            <dd class="col-md-8">
-              {{user.fax}}
-            </dd>
-            <dt class="col-md-4">{{'account.profile.birthday.label' | translate}}</dt>
-            <dd class="col-md-8">
-              {{(user.birthday) ? (user.birthday | date) : ('account.profile.birthday.not_available' | translate)}}
-            </dd>
-            <dt class="col-md-4">{{'account.profile.language.label' | translate}}</dt>
-            <dd class="col-md-8">
-              <!-- TODO: get information for <isprint value="#PreferredLocale:DisplayName(PreferredLocale)#"> -->
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-    <div class="col-2 col-lg-4">
-      <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
-        <span class="glyphicon glyphicon-pencil"></span>
-      </a>
-    </div>
-  </div>
-
-  <!-- Newsletter Template -->
-  <!-- TODO: Newsletter configuration currently not available via REST API, need to get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif>
-  <div class="row section">
-    <div class="col-10 col-lg-8">
-      <h3>{{'account.newsletter.label' | translate}}</h3>
-      <div class="row">
-        <div class="col-md-12">
-          <dl class="row">
-            <dt class="col-md-4">{{'account.newsletter.label' | translate}}</dt>
-            <dd class="col-md-8">
-
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-    <div class="col-2 col-lg-4">
-      <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
-        <span class="glyphicon glyphicon-pencil"></span>
-      </a>
-    </div>
-  </div>
-  -->
-
-  <!-- Note -->
-  <p class="form-text">{{'account.overview.note.heading' | translate}}: <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span></p>
-
+<!-- SuccessMessage Template -->
+<!-- TODO: implement showSuccessMessage handling -->
+<div *ngIf="showSuccessMessage" class="alert alert-success alert-fade">
+  <p *ngIf="showSuccessMessage === 'UpdateEmail'">
+    {{'account.profile.update_email.message' | translate}}
+  </p>
+  <p *ngIf="showSuccessMessage === 'UpdateProfile'">
+    {{'account.profile.update_profile.message' | translate}}
+  </p>
+  <p *ngIf="showSuccessMessage === 'UpdatePassword'">
+    {{'account.profile.update_password.message' | translate}}
+  </p>
+  <p *ngIf="showSuccessMessage === 'UpdateNewsletter'">
+    {{'account.profile.update_newsletter.message' | translate}}
+  </p>
 </div>
+
+<!-- Email Template -->
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{'account.profile.email.heading' | translate}}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row">
+          <dt class="col-md-4">{{'account.profile.email.label' | translate}}</dt>
+          <dd class="col-md-8" data-testing-id="email-field">
+            {{user.email}}
+          </dd>
+          <!-- TODO: implement logic (extend REST response) to present email subscriptions
+          <dt>{{'account.profile.order_confirmation_subscription.text' | translate}}</dt>
+          <dd>
+
+              <isif condition="#Preferences:OrderConfirmationEmails#">
+                {{'account.profile.order_confirmation_email.text' | translate}}&nbsp;
+              </isif>
+              <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#">
+                {{'account.profile.newsletter.text' | translate}}
+              </isif>
+          </dd>
+          -->
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a class="btn-tool" [title]="'account.profile.update.link' | translate">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+  </div>
+</div>
+
+<!-- Password Template -->
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{'account.profile.password.heading' | translate}}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row">
+          <dt class="col-md-4">{{'account.profile.password.label' | translate}}</dt>
+          <dd class="col-md-8">
+            ******
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+  </div>
+</div>
+
+<!-- TODO: handle functionality of <isinclude extensionpoint="AccountProfileDepartmentExtensions"> -->
+
+<!-- Profile Template -->
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{'account.profile.detail.heading' | translate}}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row">
+          <dt class="col-md-4">{{'account.profile.name.label' | translate}}</dt>
+          <dd class="col-md-8">
+            {{(user.title) ? (user.title + ' ') : ''}}{{user.firstName + ' ' + user.lastName}}
+          </dd>
+          <!-- Phone Template -->
+          <dt class="col-md-4">{{'account.profile.phone.label' | translate}}</dt>
+          <dd class="col-md-8">
+            {{user.phoneHome}}
+          </dd>
+          <dt class="col-md-4">{{'account.profile.fax.label' | translate}}</dt>
+          <dd class="col-md-8">
+            {{user.fax}}
+          </dd>
+          <dt class="col-md-4">{{'account.profile.birthday.label' | translate}}</dt>
+          <dd class="col-md-8">
+            {{(user.birthday) ? (user.birthday | date) : ('account.profile.birthday.not_available' | translate)}}
+          </dd>
+          <dt class="col-md-4">{{'account.profile.language.label' | translate}}</dt>
+          <dd class="col-md-8">
+            <!-- TODO: get information for <isprint value="#PreferredLocale:DisplayName(PreferredLocale)#"> -->
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+  </div>
+</div>
+
+<!-- Newsletter Template -->
+<!-- TODO: Newsletter configuration currently not available via REST API, need to get information for <isif condition="#isDefined(ReceiveNewsletters) AND ReceiveNewsletters#"><istext key="account.newsletter.subscribed"/><iselse> <istext key="account.newsletter.unsubscribed"/></isif>
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h3>{{'account.newsletter.label' | translate}}</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row">
+          <dt class="col-md-4">{{'account.newsletter.label' | translate}}</dt>
+          <dd class="col-md-8">
+
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a class="btn-tool" title="{{'account.profile.update.link' | translate}}">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+  </div>
+</div>
+-->
+
+<!-- Note -->
+<p class="form-text">{{'account.overview.note.heading' | translate}}: <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span></p>
