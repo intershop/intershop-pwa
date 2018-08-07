@@ -9,6 +9,7 @@ export interface BasketState {
   basket: Basket;
   lineItems: BasketItem[];
   eligibleShippingMethods: ShippingMethod[];
+  eligiblePaymentMethods: PaymentMethod[];
   payments: PaymentMethod[];
   loading: boolean;
   error: HttpErrorResponse;
@@ -18,6 +19,7 @@ export const initialState: BasketState = {
   basket: undefined,
   lineItems: [],
   eligibleShippingMethods: [],
+  eligiblePaymentMethods: [],
   payments: [],
   loading: false,
   error: undefined,
@@ -37,6 +39,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.UpdateBasketItems:
     case BasketActionTypes.DeleteBasketItem:
     case BasketActionTypes.LoadBasketEligibleShippingMethods:
+    case BasketActionTypes.LoadBasketEligiblePaymentMethods:
     case BasketActionTypes.LoadBasketPayments:
     case BasketActionTypes.SetBasketPayment:
     case BasketActionTypes.CreateOrder: {
@@ -54,6 +57,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
     case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
+    case BasketActionTypes.LoadBasketEligiblePaymentMethodsFail:
     case BasketActionTypes.LoadBasketPaymentsFail:
     case BasketActionTypes.SetBasketPaymentFail:
     case BasketActionTypes.CreateOrderFail: {
@@ -105,6 +109,15 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       return {
         ...state,
         eligibleShippingMethods,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.LoadBasketEligiblePaymentMethodsSuccess: {
+      const eligiblePaymentMethods = action.payload;
+      return {
+        ...state,
+        eligiblePaymentMethods,
         loading: false,
       };
     }
