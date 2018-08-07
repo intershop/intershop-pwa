@@ -19,17 +19,12 @@
         (loadMore)="loadMore.emit()"
       ></ish-search-result>
 
-      <ng-container *ngIf="displayPaging$ | async">
-        <ng-container *ngIf="currentPage$ | async as currentPage">
-          <a *ngIf="currentPage > 1"
-            [href]="'/search/' + searchTerm + '?page=' + (currentPage - 1)">&lt;&lt;</a>
-          <a *ngFor="let p of (pageIndices$ | async)"
-            [style.text-decoration]="p === currentPage ? 'underline' : 'none'"
-            [href]="'/search/' + searchTerm + '?page=' + p">{{ p }}</a>
-          <a *ngIf="canRequestMore$ | async"
-            [href]="'/search/' + searchTerm + '?page=' + (currentPage + 1)">&gt;&gt;</a>
-        </ng-container>
-      </ng-container>
+      <ish-product-list-paging *ngIf="displayPaging$ | async"
+        [currentPage]="currentPage$ | async"
+        [canRequestMore]="canRequestMore$ | async"
+        [pageIndices]="pageIndices$ | async"
+        [pageUrl]="'/search/' + searchTerm"
+      ></ish-product-list-paging>
     </ng-container>
     
     <!-- empty search result -->

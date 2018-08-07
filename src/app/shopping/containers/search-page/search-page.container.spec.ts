@@ -29,6 +29,11 @@ describe('Search Page Container', () => {
           inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys', 'loadingMore'],
         }),
         MockComponent({
+          selector: 'ish-product-list-paging',
+          template: 'Product List Paging Component',
+          inputs: ['currentPage', 'canRequestMore', 'pageIndices', 'pageUrl'],
+        }),
+        MockComponent({
           selector: 'ish-search-no-result',
           template: 'Search No Result Component',
           inputs: ['searchTerm'],

@@ -39,6 +39,11 @@ describe('Category Page Container', () => {
           template: 'Family Page Component',
           inputs: ['category', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys', 'loadingMore'],
         }),
+        MockComponent({
+          selector: 'ish-product-list-paging',
+          template: 'Product List Paging Component',
+          inputs: ['currentPage', 'canRequestMore', 'pageIndices', 'pageUrl'],
+        }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
     }).compileComponents();
