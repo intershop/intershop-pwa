@@ -1,5 +1,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { IconModule } from '../../../../core/icon.module';
 import { Filter } from '../../../../models/filter/filter.model';
 import { FilterSwatchImagesComponent } from './filter-swatch-images.component';
 
@@ -10,7 +11,7 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule.forRoot()],
+      imports: [CollapseModule.forRoot(), IconModule],
       declarations: [FilterSwatchImagesComponent],
     }).compileComponents();
   }));

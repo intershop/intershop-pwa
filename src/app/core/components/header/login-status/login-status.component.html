@@ -1,7 +1,8 @@
 <!-- logged in -->
 <ng-container *ngIf="user; else notLoggedIn">
   <a routerLink="/account" class="my-account-link" attr.data-testing-id="link-myaccount">
-    <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
+    <!-- <span class="glyphicon-user glyphicon glyphicon-header-icon"></span> -->
+    <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
     <span *ngIf="user.lastName" class="d-none d-md-inline login-name">{{user.firstName + ' ' + user.lastName}}</span>
     <span class="d-none d-md-inline">{{'account.login_status.myaccount.link' | translate}}</span>
   </a>
@@ -13,7 +14,8 @@
 <!-- not logged in -->
 <ng-template #notLoggedIn>
   <a routerLink="/login" class="my-account-link my-account-login" attr.rel="nofollow">
-    <span class="glyphicon-user glyphicon glyphicon-header-icon"></span>
+    <!-- <span class="glyphicon-user glyphicon glyphicon-header-icon"></span> -->
+    <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
     <span class="d-none d-md-inline">{{'account.login.link' | translate}}</span>
   </a>
   <span class="d-none d-md-inline seperator">&#124; </span>

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
+import { IconModule } from '../../../core/icon.module';
 import { ProductAddToQuoteComponent } from './product-add-to-quote.component';
 
 describe('Product Add To Quote Component', () => {
@@ -11,7 +12,7 @@ describe('Product Add To Quote Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), IconModule],
       declarations: [ProductAddToQuoteComponent],
     }).compileComponents();
   }));
@@ -31,15 +32,15 @@ describe('Product Add To Quote Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should show button when display type is not glyphicon ', () => {
+  it('should show button when display type is not icon ', () => {
     fixture.detectChanges();
     expect(element.querySelector('button').className).toContain('btn-secondary');
   });
 
-  it('should show glyphicon button when display type is glyphicon ', () => {
-    component.displayType = 'glyphicon';
+  it('should show icon button when display type is icon ', () => {
+    component.displayType = 'icon';
     fixture.detectChanges();
-    expect(element.querySelector('span').className).toContain('glyphicon');
+    expect(element.querySelector('fa-icon').className).toBeTruthy();
   });
 
   it('should show disable button when "disabled" is set to "false" ', () => {

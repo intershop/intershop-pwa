@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { IconModule } from '../../../../core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
@@ -34,7 +35,7 @@ describe('Checkout Shipping Component', () => {
           inputs: ['basket'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), RouterTestingModule, FormsSharedModule],
+      imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), RouterTestingModule, FormsSharedModule, IconModule],
     }).compileComponents();
   }));
 
@@ -70,7 +71,7 @@ describe('Checkout Shipping Component', () => {
 
   it('should render an error if the user has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
-    fixture.detectChanges();
+    expect(() => fixture.detectChanges()).toThrow();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 

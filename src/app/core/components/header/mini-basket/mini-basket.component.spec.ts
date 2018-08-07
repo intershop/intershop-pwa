@@ -9,6 +9,7 @@ import { BasketView } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+import { IconModule } from '../../../icon.module';
 import { MiniBasketComponent } from './mini-basket.component';
 
 describe('Mini Basket Component', () => {
@@ -28,6 +29,7 @@ describe('Mini Basket Component', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
         PipesModule,
+        IconModule,
       ],
       declarations: [
         MiniBasketComponent,

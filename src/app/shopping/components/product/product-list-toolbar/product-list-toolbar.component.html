@@ -7,10 +7,12 @@
   <div class="col-4 col-md-3 col-lg-2 switch-layout">
     <div class="pull-right sort-by">
       <a class="list-view-link" [ngClass]="{'list-active' : listView}" data-testing-id="list-view-link" (click)="setViewType('list')">
-        <span class="glyphicon glyphicon-list"></span>
+        <!-- <span class="glyphicon glyphicon-list"></span> -->
+        <fa-icon [icon]="['fas', 'list']"></fa-icon>
       </a>
       <a class="grid-view-link" [ngClass]="{'grid-active' : gridView}" data-testing-id="grid-view-link" (click)="setViewType('grid')">
-        <span class="glyphicon glyphicon-th"></span>
+        <!-- <span class="glyphicon glyphicon-th"></span> -->
+        <fa-icon [icon]="['fas', 'th']"></fa-icon>
       </a>
     </div>
   </div>

@@ -27,11 +27,11 @@ dl {
 
     color: $disabled-link-color;
 
-    .glyphicon {
+    .ng-fa-icon {
       color: $disabled-link-color;
     }
 
-    &:hover &:hover > .glyphicon {
+    &:hover &:hover > .ng-fa-icon {
       color: darken($disabled-link-color, $default-color-adjust);
     }
   }

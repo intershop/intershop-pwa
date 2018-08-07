@@ -25,13 +25,6 @@ export class FormControlFeedbackComponent implements DoCheck {
     }
   }
 
-  get iconClasses(): { [key: string]: boolean } {
-    return {
-      'glyphicon-remove': this.control.validator && this.control.invalid,
-      'glyphicon-ok': this.control.validator && this.control.valid,
-    };
-  }
-
   getErrorList(): Observable<string>[] {
     if (!this.control.errors) {
       return [];

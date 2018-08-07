@@ -5,7 +5,8 @@
   <div class="col-6 col-md-3 dashboard-item">
     <a routerLink="/account/orders">
       <div class="circle-icon">
-        <span class="glyphicon glyphicon-list-alt"></span>
+        <!-- <span class="glyphicon glyphicon-list-alt"></span> -->
+        <fa-icon [icon]="['fas', 'list-alt']"></fa-icon>
       </div>
       {{'account.order_history.link' | translate}}
     </a>
@@ -13,7 +14,8 @@
   <div class="col-6 col-md-3 dashboard-item">
     <a routerLink="/account/profile">
       <div class="circle-icon">
-        <span class="glyphicon glyphicon-cog"></span>
+        <!-- <span class="glyphicon glyphicon-cog"></span> -->
+        <fa-icon [icon]="['fas', 'cog']"></fa-icon>
       </div>
       {{'account.profile.link' | translate}}
     </a>

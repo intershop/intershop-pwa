@@ -100,7 +100,7 @@
     padding: $space-default 0;
 
     .product-attachments-list-item {
-      span.glyphicon {
+      .ng-fa-icon {
         font-size: 22px;
         margin-left: $space-default * 2/3;
       }

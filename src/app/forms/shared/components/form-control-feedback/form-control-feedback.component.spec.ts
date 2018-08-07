@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { IconModule } from '../../../../core/icon.module';
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
 describe('Form Control Feedback Component', () => {
@@ -12,7 +13,7 @@ describe('Form Control Feedback Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserModule, TranslateModule.forRoot()],
+      imports: [BrowserModule, TranslateModule.forRoot(), IconModule],
       declarations: [FormControlFeedbackComponent],
     }).compileComponents();
 
@@ -76,7 +77,7 @@ describe('Form Control Feedback Component', () => {
   });
 
   function getIcon() {
-    return fixture.debugElement.query(By.css('i.glyphicon'));
+    return fixture.debugElement.query(By.css('fa-icon'));
   }
 
   it('should display contextual icons for control', () => {
@@ -92,15 +93,15 @@ describe('Form Control Feedback Component', () => {
     fixture.detectChanges();
     icon = getIcon();
     expect(icon).toBeTruthy();
-    expect(icon.classes['glyphicon-remove']).toBeTruthy();
-    expect(icon.classes['glyphicon-ok']).toBeFalsy();
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).toBe('fas,times');
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).not.toBe('fas,check');
 
     // form valid and dirty
     component.control.setValue('abcd');
     fixture.detectChanges();
     icon = getIcon();
     expect(icon).toBeTruthy();
-    expect(icon.classes['glyphicon-remove']).toBeFalsy();
-    expect(icon.classes['glyphicon-ok']).toBeTruthy();
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).not.toBe('fas,times');
+    expect(icon.nativeElement.getAttributeNode('ng-reflect-icon-prop').value).toBe('fas,check');
   });
 });

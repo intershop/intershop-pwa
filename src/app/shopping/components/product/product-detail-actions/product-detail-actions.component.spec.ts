@@ -1,8 +1,8 @@
 import { CommonModule, Location } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import * as using from 'jasmine-data-provider';
 import { instance, mock, spy, verify } from 'ts-mockito';
+import { IconModule } from '../../../../core/icon.module';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product, ProductType } from '../../../../models/product/product.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
@@ -17,7 +17,12 @@ describe('Product Detail Actions Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, TranslateModule.forRoot(), FeatureToggleModule.testingFeatures({ compare: true })],
+      imports: [
+        CommonModule,
+        TranslateModule.forRoot(),
+        FeatureToggleModule.testingFeatures({ compare: true }),
+        IconModule,
+      ],
       providers: [
         { provide: Location, useFactory: () => instance(mock(Location)) },
         { provide: ICM_BASE_URL, useValue: 'http://example.org' },
@@ -45,36 +50,28 @@ describe('Product Detail Actions Component', () => {
   });
 
   describe('link rendering', () => {
-    function dataProvider() {
-      return [
-        {
-          className: '.glyphicon-send',
-          linkName: 'email to friend',
-          localeKey: 'product.email_a_friend.link',
-          localeValue: 'Email a friend',
-        },
-        {
-          className: '.glyphicon-print',
-          linkName: 'print page',
-          localeKey: 'product.print_page.link',
-          localeValue: 'Print Page',
-        },
-        {
-          className: '.glyphicon-equalizer',
-          linkName: 'compare',
-          localeKey: 'product.compare.link',
-          localeValue: 'Compare',
-        },
-      ];
-    }
-    using(dataProvider, dataSlice => {
-      it(`should show "${dataSlice.linkName}" link when product inforamtion is available`, () => {
-        translate.set(dataSlice.localeKey, dataSlice.localeValue);
-        fixture.detectChanges();
-        expect(element.querySelector(dataSlice.className).nextElementSibling.textContent).toContain(
-          dataSlice.localeValue
-        );
-      });
+    it(`should show "email to friend" link when product inforamtion is available`, () => {
+      translate.set('product.email_a_friend.link', 'Email a friend');
+      fixture.detectChanges();
+      expect(
+        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,paper-plane"]').nextElementSibling.textContent
+      ).toContain('Email a friend');
+    });
+
+    it(`should show "print page" link when product inforamtion is available`, () => {
+      translate.set('product.print_page.link', 'Print Page');
+      fixture.detectChanges();
+      expect(
+        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,print"]').nextElementSibling.textContent
+      ).toContain('Print Page');
+    });
+
+    it(`should show "compare" link when product inforamtion is available`, () => {
+      translate.set('product.compare.link', 'Compare');
+      fixture.detectChanges();
+      expect(
+        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,check"]').nextElementSibling.textContent
+      ).toContain('Compare');
     });
 
     it('should not show "compare" link when product inforamtion is available and productMaster = true', () => {

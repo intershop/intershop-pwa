@@ -33,7 +33,8 @@
                 title="{{'shopping_cart.remove.item.button.label' | translate }}"
                 (click)="onDeleteItem(pli.id)"
               >
-                <span class="glyphicon glyphicon-trash"></span>
+                <!-- <span class="glyphicon glyphicon-trash"></span> -->
+                <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
               </a>
             </div>
 

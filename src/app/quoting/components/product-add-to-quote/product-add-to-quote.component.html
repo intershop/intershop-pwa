@@ -1,15 +1,16 @@
 <button type="submit"
   class="btn"
   [ngClass]="class"
-  [class.btn-secondary]="displayType !== 'glyphicon'"
+  [class.btn-secondary]="displayType !== 'icon'"
   [disabled]="disabled"
   [attr.title]="'quote.add_product_to_quote.button.add_to_quote.label' | translate"
   data-testing-id="addToQuoteButton"
   (click)="addToQuote()"
 >
 
-  <ng-container *ngIf="displayType === 'glyphicon'; else defaultButton">
-    <span class="glyphicon glyphicon-inbox"></span>
+  <ng-container *ngIf="displayType === 'icon'; else defaultButton">
+    <!-- <span class="glyphicon glyphicon-inbox"></span> -->
+    <fa-icon [icon]="['fas', 'inbox']"></fa-icon>
   </ng-container>
 
   <ng-template #defaultButton>

@@ -15,12 +15,12 @@ import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
+import { IconModule } from './icon.module';
 import { CrosstabService } from './services/crosstab/crosstab.service';
 
 export function translateFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
-
 @NgModule({
   imports: [
     CommonModule,
@@ -40,11 +40,12 @@ export function translateFactory(http: HttpClient) {
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
     HeaderModule,
+    IconModule,
     FooterModule,
     PipesModule,
     FeatureToggleModule.forRoot(),
   ],
-  exports: [HeaderModule, FooterModule],
+  exports: [IconModule, HeaderModule, FooterModule],
 })
 export class CoreModule {
   constructor(

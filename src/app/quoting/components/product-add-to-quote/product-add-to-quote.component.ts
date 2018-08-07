@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 /**
  * The Product Add To Quote Component displays a button which emits productToQuote when triggered.
- * It provides two display types, text and glyphicon.
+ * It provides two display types, text and icon.
  *
  * @example
  * <ish-product-add-to-quote
