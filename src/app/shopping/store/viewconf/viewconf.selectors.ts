@@ -37,6 +37,8 @@ export const isEveryProductDisplayed = createSelector(
   (total, skus) => skus.length >= total
 );
 
+export const isProductsAvailable = createSelector(getProducts, skus => !!skus.length);
+
 export const getPageIndices = createSelector(getTotalItems, getItemsPerPage, (total, itemsPerPage) =>
   range(1, Math.ceil(total / itemsPerPage) + 1)
 );

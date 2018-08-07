@@ -19,8 +19,6 @@ export class ProductListPagingComponent {
   @Input()
   currentPage: number;
   @Input()
-  canRequestMore: boolean;
-  @Input()
   pageIndices: number[];
   @Input()
   pageUrl: string;

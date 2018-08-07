@@ -15,14 +15,9 @@ describe('Search Result Component', () => {
       declarations: [
         SearchResultComponent,
         MockComponent({
-          selector: 'ish-product-list-toolbar',
+          selector: 'ish-product-list-container',
           template: 'Products List Toolbar Component',
-          inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
-        }),
-        MockComponent({
-          selector: 'ish-product-list',
-          template: 'Products List Component',
-          inputs: ['products', 'viewType', 'loadingMore'],
+          inputs: ['pageUrl'],
         }),
         MockComponent({
           selector: 'ish-filter-navigation',
