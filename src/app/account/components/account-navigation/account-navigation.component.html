@@ -1,37 +1,33 @@
-<div class="col-lg-3 account-nav-box">
-
-  <ng-container *ngIf="!isMobileView; else mobileNavigation">
-    <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
-      <ng-container *ngFor="let item of navigationItems">
-        <ng-container *ngIf="item.feature; else unrestricted">
-          <li *ishFeature="item.feature" routerLinkActive="active">
-            <a [routerLink]="item.link">{{ item.localizationKey | translate}}</a>
-          </li>
-        </ng-container>
-        <ng-template #unrestricted>
-          <li routerLinkActive="active">
-            <a [routerLink]="item.link">{{ item.localizationKey | translate}}</a>
-          </li>
-        </ng-template>
+<ng-container *ngIf="!isMobileView; else mobileNavigation">
+  <ul id="AccountNav" class="account-navigation list-unstyled" data-testing-id="myaccount-navigation">
+    <ng-container *ngFor="let item of navigationItems">
+      <ng-container *ngIf="item.feature; else unrestricted">
+        <li *ishFeature="item.feature" routerLinkActive="active">
+          <a [routerLink]="item.link">{{ item.localizationKey | translate}}</a>
+        </li>
       </ng-container>
-    </ul>
-  </ng-container>
+      <ng-template #unrestricted>
+        <li routerLinkActive="active">
+          <a [routerLink]="item.link">{{ item.localizationKey | translate}}</a>
+        </li>
+      </ng-template>
+    </ng-container>
+  </ul>
+</ng-container>
 
-  <ng-template #mobileNavigation>
-    <select (change)="navigateTo($event.target.value)" class="form-control">
-      <ng-container *ngFor="let item of navigationItems">
-        <ng-container *ngIf="item.feature; else unrestricted">
-          <option *ishFeature="item.feature" [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
-            {{ item.localizationKey | translate}}
-          </option>
-        </ng-container>
-        <ng-template #unrestricted>
-          <option [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
-            {{ item.localizationKey | translate}}
-          </option>
-        </ng-template>
+<ng-template #mobileNavigation>
+  <select (change)="navigateTo($event.target.value)" class="form-control">
+    <ng-container *ngFor="let item of navigationItems">
+      <ng-container *ngIf="item.feature; else unrestricted">
+        <option *ishFeature="item.feature" [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
+          {{ item.localizationKey | translate}}
+        </option>
       </ng-container>
-    </select>
-  </ng-template>
-
-</div>
+      <ng-template #unrestricted>
+        <option [value]="item.link" [attr.selected]="item.link === currentPath ? 'selected': undefined">
+          {{ item.localizationKey | translate}}
+        </option>
+      </ng-template>
+    </ng-container>
+  </select>
+</ng-template>
