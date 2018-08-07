@@ -1,5 +1,5 @@
 <ng-container *ngIf="options?.length > 0 || required">
-  <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
+  <div class="row form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
     <label *ngIf="label" [for]="uuid"  class="col-form-label" [ngClass]="labelClass">{{label | translate}}<span *ngIf="required" class="required">*</span></label>
     <div [ngClass]="inputClass">
       <select class="form-control"
