@@ -1,5 +1,5 @@
 
-<div class="form-group has-feedback" [formGroup]="dateForm" [ishShowFormFeedback]="formControl">
+<div class="row form-group has-feedback" [formGroup]="dateForm" [ishShowFormFeedback]="formControl">
   <label [attr.for]="'month-'+uuid" class="col-form-label" [ngClass]="labelClass">{{label}}<span *ngIf="required" class="required">*</span></label>
   <div [ngClass]="inputClass">
     <div class="clearfix row">
