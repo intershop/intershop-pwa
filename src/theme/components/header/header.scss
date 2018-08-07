@@ -193,23 +193,22 @@ header {
   }
 }
 
-.glyphicon.glyphicon-header-icon:before {
+.ng-fa-icon.header-icon {
   color: $text-color-quarternary;
   font-size: 17px;
   margin-right: $space-default/2;
 }
 
 .mid-header {
-  .glyphicon {
-    &.glyphicon-header-icon:before {
-      font-size: 20px;
-      margin-right: 4px;
-      color: $text-color-secondary;
-    }
+  .ng-fa-icon.header-icon {
+    font-size: 20px;
+    margin-right: 4px;
+    color: $text-color-secondary;
   }
 
+  // TODO: refactor
   .delivery-info-wrapper {
-    .glyphicon {
+    .ng-fa-icon {
       top: 6px;
 
       @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
@@ -221,7 +220,7 @@ header {
     }
 
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-      .glyphicon-send {
+      .fa-paper-plane {
         clear: left;
       }
     }
@@ -230,10 +229,6 @@ header {
 
 .bottom-header {
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
-
-  .global-nav .container {
-    padding: 0;
-  }
 }
 
 @media (max-width: $screen-xs-max) {
@@ -247,10 +242,8 @@ header {
     margin-right: -$grid-gutter-width;
   }
 
-  .glyphicon {
-    &.glyphicon-header-icon:before {
-      color: $text-color-primary;
-    }
+  .ng-fa-icon.header-icon {
+    color: $text-color-primary;
   }
 
   .global-nav {
@@ -291,10 +284,8 @@ header {
   .mobile-promos {
     display: none;
 
-    .glyphicon {
-      &:before {
-        font-size: 12px;
-      }
+    .ng-fa-icon {
+      font-size: 12px;
     }
 
     > div {

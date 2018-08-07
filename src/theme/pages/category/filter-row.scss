@@ -19,11 +19,9 @@
       color: $text-color-corporate;
     }
 
-    span {
-      &.glyphicon {
-        font-size: 24px;
-        line-height: $input-height;
-      }
+    .ng-fa-icon {
+      font-size: 24px;
+      line-height: $input-height;
     }
   }
 

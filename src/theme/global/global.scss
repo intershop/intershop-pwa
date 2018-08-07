@@ -51,15 +51,15 @@ a {
   }
 }
 
-.glyphicon {
-  &.glyphicon-footer-icon:before {
+.ng-fa-icon {
+  &.footer-icon:before {
     color: $text-color-inverse;
     font-size: 50px;
   }
 }
 
 .top-header {
-  .glyphicon {
+  .ng-fa-icon {
     top: 3px;
   }
 }
@@ -169,7 +169,7 @@ img.marketing {
 
 // Detail links and tooltips
 [data-toggle='popover'] {
-  .glyphicon {
+  .ng-fa-icon {
     padding-left: $space-default/4;
     font-size: 120%;
   }

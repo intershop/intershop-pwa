@@ -53,7 +53,7 @@
     list-style: none;
   }
 
-  .glyphicon {
+  .ng-fa-icon {
     &:hover {
       color: $link-hover-color;
       cursor: pointer;
@@ -221,14 +221,13 @@ label {
   }
 }
 
-.filter-clear .glyphicon {
+.filter-clear .ng-fa-icon {
   font-size: 10px;
   line-height: 14px;
 }
 
 .filter-colour {
   float: left;
-  display: inline-block;
   margin-right: 3px;
 }
 
@@ -257,7 +256,7 @@ label {
     margin-bottom: $space-default;
 
     &.collapsed {
-      .glyphicon-chevron-up {
+      .fa-angle-up {
         &:before {
           content: '\e114';
         }
@@ -268,7 +267,7 @@ label {
       text-decoration: none;
     }
 
-    .glyphicon {
+    .ng-fa-icon {
       display: block;
       font-size: 12px;
     }

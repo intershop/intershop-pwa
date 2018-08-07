@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { IconModule } from '../core/icon.module';
 import { FormsSharedModule } from '../forms/forms-shared.module';
 import { LineItemDescriptionComponent } from './components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './components/line-item-list/line-item-list.component';
@@ -20,6 +21,7 @@ import { SharedProductModule } from './shared-product.module';
     RouterModule,
     SharedProductModule,
     TranslateModule,
+    IconModule,
   ],
   declarations: [LineItemListComponent, LineItemDescriptionComponent],
   exports: [LineItemListComponent, LineItemDescriptionComponent],

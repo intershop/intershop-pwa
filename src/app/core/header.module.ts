@@ -29,6 +29,7 @@ import { MiniBasketContainerComponent } from './containers/header/mini-basket/mi
 import { MobileBasketContainerComponent } from './containers/header/mobile-basket/mobile-basket.container';
 import { ProductCompareStatusContainerComponent } from './containers/header/product-compare-status/product-compare-status.container';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
+import { IconModule } from './icon.module';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     SharedSearchModule,
     BrowserAnimationsModule,
     FeatureToggleModule,
+    IconModule,
   ],
   declarations: [
     HeaderSimpleComponent,
@@ -65,6 +67,6 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     LogoutComponent,
     ClickOutsideDirective,
   ],
-  exports: [HeaderComponent, HeaderCheckoutComponent, HeaderContainerComponent],
+  exports: [HeaderComponent, HeaderCheckoutComponent, HeaderContainerComponent, IconModule],
 })
 export class HeaderModule {}

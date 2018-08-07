@@ -37,7 +37,12 @@
       <div class="row">
         <div class="col-md-4 col-lg-2">
           <a class="d-md-none" (click)="GroupInSpired.toggle()">
-            <h4 class="link-group-title"><span style="text-transform: none;">in</span>SPIRED<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+            <h4 class="link-group-title">
+              <span style="text-transform: none;">in</span>
+              SPIRED
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+          </h4>
           </a>
           <h4 class="d-none d-md-block"><span style="text-transform: none;">in</span>SPIRED</h4>
           <div id="GroupInSpired" class="mobile-collapse link-group" collapse #GroupInSpired="bs-collapse">
@@ -52,7 +57,11 @@
         </div>
         <div class="col-md-4 col-lg-2">
           <a class="d-md-none" (click)="GroupService.toggle()">
-            <h4 class="link-group-title">SERVICE<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+            <h4 class="link-group-title">
+              SERVICE
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
           <h4 class="d-none d-md-block">SERVICE</h4>
           <div id="GroupService" class="mobile-collapse link-group" collapse #GroupService="bs-collapse">
@@ -68,7 +77,11 @@
         </div>
         <div class="col-md-4 col-lg-2">
           <a class="d-md-none" (click)="GroupAccount.toggle()">
-            <h4 class="link-group-title">MY ACCOUNT<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+            <h4 class="link-group-title">
+              MY ACCOUNT
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
           <h4 class="d-none d-md-block">MY ACCOUNT</h4>
           <div id="GroupAccount" class="mobile-collapse link-group" collapse #GroupAccount="bs-collapse">
@@ -86,7 +99,11 @@
         </div>
         <div class="col-md-4 col-lg-2">
           <a class="d-md-none" (click)="GroupTopCat.toggle()">
-            <h4 class="link-group-title">TOP CATEGORIES<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+            <h4 class="link-group-title">
+              TOP CATEGORIES
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
           <h4 class="d-none d-md-block">TOP CATEGORIES</h4>
           <div id="GroupTopCat" class="mobile-collapse link-group" collapse #GroupTopCat="bs-collapse">
@@ -102,7 +119,11 @@
         </div>
         <div class="col-md-4 col-lg-2">
           <a class="d-md-none" (click)="GroupTopProd.toggle()">
-            <h4 class="link-group-title">TOP PRODUCTS<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+            <h4 class="link-group-title">
+              TOP PRODUCTS
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
           <h4 class="d-none d-md-block">TOP PRODUCTS</h4>
           <div id="GroupTopProd" class="mobile-collapse link-group" collapse #GroupTopProd="bs-collapse">
@@ -117,7 +138,11 @@
         </div>
         <div class="col-md-4 col-lg-2">
           <a class="d-md-none" (click)="GroupDemoContent.toggle()">
-            <h4 class="link-group-title">DEMO CONTENT<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+            <h4 class="link-group-title">
+              DEMO CONTENT
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
           <h4 class="d-none d-md-block">DEMO CONTENT</h4>
           <div id="GroupDemoContent" class="mobile-collapse link-group" collapse #GroupDemoContent="bs-collapse">
@@ -175,7 +200,8 @@
                   Selection will make the wish list public and allow other consumers to search and view it.
                 </ng-template>
                 <a [popover]="publicDUMMYsPopover" popoverTitle="Make Public">Details
-                  <span class="glyphicon glyphicon-info-sign"></span>
+                  <!-- <span class="glyphicon glyphicon-info-sign"></span> -->
+                  <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
                 </a>
               </div>
               <div class="form-check">
@@ -192,7 +218,8 @@
                   will be added by default to this wish list.
                 </ng-template>
                 <a [popover]="preferedDUMMYsPopover" popoverTitle="Set as Preferred">Details
-                  <span class="glyphicon glyphicon-info-sign"></span>
+                  <!-- <span class="glyphicon glyphicon-info-sign"></span> -->
+                  <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
                 </a>
               </div>
             </div>

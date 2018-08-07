@@ -30,7 +30,7 @@
     }
   }
 
-  .glyphicon {
+  .ng-fa-icon {
     color: $text-color-corporate;
     float: left;
     font-size: 22px;
@@ -38,7 +38,7 @@
 
   li {
     &:hover {
-      .glyphicon {
+      .ng-fa-icon {
         color: $text-color-corporate;
       }
     }
