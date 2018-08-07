@@ -13,6 +13,7 @@ import { ProductAttributesComponent } from './components/product/product-attribu
 import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
+import { ProductListPagingComponent } from './components/product/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
@@ -38,6 +39,7 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductTileComponent,
     ProductPriceComponent,
     ProductInventoryComponent,
+    ProductListPagingComponent,
     ProductListToolbarComponent,
     ProductTileContainerComponent,
     ProductRowContainerComponent,
@@ -62,6 +64,7 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductTileComponent,
     ProductPriceComponent,
     ProductInventoryComponent,
+    ProductListPagingComponent,
     ProductListToolbarComponent,
     ProductTileContainerComponent,
     ProductRowContainerComponent,

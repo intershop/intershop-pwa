@@ -298,3 +298,16 @@
     }
   }
 }
+
+.product-list-paging {
+  padding: 50px 0px 0px 0px;
+  text-align: center;
+  a {
+    display: inline-block;
+    padding: 0px 5px;
+    min-width: 26px;
+    &.active {
+      text-decoration: underline;
+    }
+  }
+}
