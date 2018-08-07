@@ -3,6 +3,7 @@
 
   <ish-checkout-payment
     [basket]="basket$ | async"
+    [paymentMethods]="paymentMethods$ | async"
     [error]="basketError$ | async"
     (updatePaymentMethod)="updateBasketPaymentMethod($event)"
   ></ish-checkout-payment>

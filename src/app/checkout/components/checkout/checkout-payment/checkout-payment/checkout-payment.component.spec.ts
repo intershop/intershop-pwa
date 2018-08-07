@@ -42,6 +42,7 @@ describe('Checkout Payment Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.basket = BasketMockData.getBasket();
+    component.paymentMethods = [BasketMockData.getPaymentMethod()];
   });
 
   it('should be created', () => {

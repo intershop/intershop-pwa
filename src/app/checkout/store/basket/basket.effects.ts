@@ -291,6 +291,21 @@ export class BasketEffects {
   );
 
   /**
+   * The load basket eligible payment methods effect.
+   */
+  @Effect()
+  loadBasketEligiblePaymentMethods$ = this.actions$.pipe(
+    ofType(basketActions.BasketActionTypes.LoadBasketEligiblePaymentMethods),
+    withLatestFrom(this.store.pipe(select(getCurrentBasket))),
+    concatMap(([, basket]) =>
+      this.basketService.getBasketPaymentOptions(basket.id).pipe(
+        map(result => new basketActions.LoadBasketEligiblePaymentMethodsSuccess(result)),
+        catchError(error => of(new basketActions.LoadBasketEligiblePaymentMethodsFail(error)))
+      )
+    )
+  );
+
+  /**
    * The load basket payments effect.
    */
   @Effect()

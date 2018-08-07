@@ -138,6 +138,31 @@ export class BasketService {
   }
 
   /**
+   * Get basket payment options for selected basket item.
+   * @param basketId  The basket id.
+   * @returns         The basket payment options (eligible payment methods).
+   */
+  getBasketPaymentOptions(basketId: string): Observable<PaymentMethod[]> {
+    if (!basketId) {
+      return throwError('getBasketPaymentOptions() called without basketId');
+    }
+
+    /* ToDo: Exchange this fix filter for a dynamic one */
+    const validPaymentMethods = 'ISH_INVOICE|ISH_CASH_ON_DELIVERY|ISH_CASH_IN_ADVANCE';
+
+    return this.apiService
+      .options<{ methods: { payments: PaymentMethod[] }[] }>(`baskets/${basketId}/payments`)
+      .pipe(
+        map(
+          data =>
+            data && data.methods && data.methods.length
+              ? data.methods[0].payments.filter(payment => validPaymentMethods.includes(payment.id))
+              : []
+        )
+      );
+  }
+
+  /**
    * Get basket payments for selected basket.
    * @param basketId  The basket id.
    * @returns         The basket payments.
