@@ -18,7 +18,7 @@ describe('Quote Request Edit Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         QuoteRequestEditPageContainerComponent,
-        MockComponent({ selector: 'ish-quote-edit', template: 'Quote Edit Component', inputs: ['quote'] }),
+        MockComponent({ selector: 'ish-quote-edit', template: 'Quote Edit Component', inputs: ['quote', 'user'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
       imports: [

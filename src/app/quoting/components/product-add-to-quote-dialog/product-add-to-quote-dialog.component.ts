@@ -111,6 +111,7 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
       displayName: this.form.value.displayName,
       description: this.form.value.description,
     });
+    this.hide();
   }
 
   /**

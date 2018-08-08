@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
+import { User } from '../../../models/user/user.model';
 
 /**
  * The Quote Edit Component displays and updates quote or quote request data.
@@ -13,6 +14,7 @@ import { Quote } from '../../../models/quote/quote.model';
  * @example
  * <ish-quote-edit
  *   [quote]="quoteRequest"
+ *   [user]="user"
  *   (deleteItem)="deleteQuoteRequestItem($event)"
  *   (updateItems)="updateQuoteRequestItems($event)"
  *   (updateQuoteRequest)="updateQuoteRequest($event)"
@@ -31,6 +33,8 @@ import { Quote } from '../../../models/quote/quote.model';
 export class QuoteEditComponent implements OnChanges {
   @Input()
   quote: Quote | QuoteRequest;
+  @Input()
+  user: User;
 
   @Output()
   updateQuoteRequest = new EventEmitter<{ displayName: string; description?: string }>();
