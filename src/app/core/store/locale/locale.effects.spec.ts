@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
-import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
 import { coreReducers } from '../core.system';
@@ -74,9 +74,9 @@ describe('Locale Effects', () => {
       expect(effects.setFirstAvailableLocale$).toBeObservable(cold('-b', { b: expected }));
     });
 
-    it('should trigger SelectLocale with null locale when SetAvailableLocales action was received with no locales', () => {
+    it('should trigger SelectLocale with undefined locale when SetAvailableLocales action was received with no locales', () => {
       const action = new SetAvailableLocales([]);
-      const expected = new SelectLocale(null);
+      const expected = new SelectLocale(undefined);
 
       actions$ = hot('-a', { a: action });
 

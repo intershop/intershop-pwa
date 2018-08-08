@@ -1,6 +1,6 @@
 <div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity row">
 
-  <ng-template [ngIf]="type === selectType" [ngIfElse]="inputType">
+  <ng-container *ngIf="type === selectType; else inputType">
     <ish-select
       [options]="quantityOptions"
       [form]="parentForm"
@@ -9,7 +9,7 @@
       labelClass="label-quantity col-xs-6"
       [inputClass]="'col-xs-6 form-group ' + (class || '')"
     ></ish-select>
-  </ng-template>
+  </ng-container>
 
   <ng-template #inputType>
     <ish-input

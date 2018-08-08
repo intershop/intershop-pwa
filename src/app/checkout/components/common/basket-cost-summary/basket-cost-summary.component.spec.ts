@@ -21,36 +21,22 @@ describe('Basket Cost Summary Component', () => {
     fixture = TestBed.createComponent(BasketCostSummaryComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.basket = BasketMockData.getBasket();
+    component.totals = BasketMockData.getTotals();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
-    component.ngOnChanges();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should set estimated flag to false if invoice address, shipping address and shipping method are set', () => {
-    component.ngOnChanges();
-    expect(component.estimated).toBeFalsy();
+  it('should not display estimated prices if estimated flag is not set', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.order.total_cost.label');
   });
-
-  it('should set estimated flag to true if there is no invoice address', () => {
-    component.basket.invoiceToAddress = null;
-    component.ngOnChanges();
-    expect(component.estimated).toBeTruthy();
-  });
-
-  it('should set estimated flag to true if there is no shipping address', () => {
-    component.basket.commonShipToAddress = null;
-    component.ngOnChanges();
-    expect(component.estimated).toBeTruthy();
-  });
-
-  it('should set estimated flag to true if there is no shipping method', () => {
-    component.basket.commonShippingMethod = null;
-    component.ngOnChanges();
-    expect(component.estimated).toBeTruthy();
+  it('should display estimated prices if estimated flag is set', () => {
+    component.totals.isEstimated = true;
+    fixture.detectChanges();
+    expect(element.querySelector('.total-price span').innerHTML).toEqual('checkout.cart.estimated_total.label');
   });
 });

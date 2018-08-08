@@ -16,7 +16,7 @@ export class ViewconfEffects {
     ofType(viewconfActions.ViewconfActionTypes.ChangeSortBy),
     map((action: viewconfActions.ChangeSortBy) => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedCategory))),
-    filter(([sortBy, category]) => !!category && !!category.uniqueId),
-    map(([sortBy, category]) => new LoadProductsForCategory(category.uniqueId))
+    filter(([, category]) => !!category && !!category.uniqueId),
+    map(([, category]) => new LoadProductsForCategory(category.uniqueId))
   );
 }

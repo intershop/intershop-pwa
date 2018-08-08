@@ -1,8 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold } from 'jasmine-marbles';
+import { cold } from 'jest-marbles';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { CoreState } from '../../../core/store/core.state';
+import { coreReducers } from '../../../core/store/core.system';
 import { Product } from '../../../models/product/product.model';
+import { quotingReducers } from '../../../quoting/store/quoting.system';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
@@ -20,9 +23,12 @@ describe('Product Page Container', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
+          ...coreReducers,
           shopping: combineReducers(shoppingReducers),
+          quoting: combineReducers(quotingReducers),
         }),
         FeatureToggleModule.testingFeatures({ recently: true }),
+        ModalModule.forRoot(),
       ],
       declarations: [
         ProductPageContainerComponent,
@@ -34,6 +40,11 @@ describe('Product Page Container', () => {
         MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        MockComponent({
+          selector: 'ish-product-add-to-quote-dialog',
+          template: 'Product Add To Quote Dialog',
+          inputs: ['quote', 'quoteLoading'],
+        }),
       ],
     }).compileComponents();
   }));

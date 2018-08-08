@@ -1,6 +1,52 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
+    <div *ngIf="error as error" role="alert" class="alert alert-danger">
+      <ng-container *ngIf = "error.status === 406; else generalError">
+        {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures}}
+      </ng-container>
+      <ng-template #generalError>
+        {{ error.status }}: {{ error.error }}
+      </ng-template>
+    </div>
+    <div class="row">
+      <p class="col-sm-9">
+        {{ 'checkout.order_review.heading.text' | translate }}
+      </p>
+      <p class="col-sm-3 text-right">
+        <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
+      </p>
+    </div>
+    <div class="row equal">
+      <!-- Invoice Address -->
+      <div class="col-sm-6">
+        <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address">
+          <ish-address [address]="basket.invoiceToAddress"></ish-address>
+        </ish-info-box>
+      </div>
+      <!-- Shipping Address -->
+      <div class="col-sm-6">
+        <ish-info-box heading="checkout.widget.shipping-address.heading" editRouterLink="/checkout/address">
+          <ish-address [address]="basket.commonShipToAddress"></ish-address>
+        </ish-info-box>
+      </div>
+    </div>
 
+    <div class="row equal">
+      <!-- Shipping Method -->
+      <div class="col-sm-6">
+        <ish-info-box heading="checkout.widget.shipping_method.heading" editRouterLink="/checkout/shipping">
+          <p>{{ basket.commonShippingMethod.name }}</p>
+        </ish-info-box>
+      </div>
+      <!-- Payment Method -->
+      <div class="col-sm-6">
+        <ish-info-box heading="checkout.widget.payment_method.heading" editRouterLink="/checkout/payment">
+          <p>{{ basket.paymentMethod.name }}</p>
+        </ish-info-box>
+      </div>
+    </div>
+    <!-- Line Items -->
+    <ish-line-item-list *ngIf="basket.lineItems?.length > 0" [lineItems]="basket.lineItems" [editable]="false"></ish-line-item-list>
   </div>
 
   <!-- basket summary -->
@@ -8,12 +54,29 @@
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">
-      <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
-      <button class="btn btn-lg btn-block btn-primary" type="button" (click)="nextStep()">
+      <form>
+        <ish-checkbox
+          [form]="form"
+          controlName="termsAndConditions"
+          [errorMessages]="{pattern: 'checkout.tac.error.tip'}"
+        >
+          {{ 'checkout.tac' | translate }}
+          <a (click)="modalDialog.show()" rel="nofollow">{{ 'checkout.tac.link' | translate }}</a>
+        </ish-checkbox>
+      </form>
+
+      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="formDisabled" (click)="submitOrder()">
         {{'checkout.order_review.send.button' | translate}}
       </button>
     </div>
     <!-- ToDo: Privacy policy link - ISREST-341 -->
   </div>
 </div>
+
+<ish-modal-dialog #modalDialog
+  [options]="{ titleText: 'checkout.termsandconditions.details.title' | translate, modalClass: 'modal-lg' }"
+>
+  <div [innerHTML]="'checkout.termsandconditions.details.text' | translate"></div>
+</ish-modal-dialog>

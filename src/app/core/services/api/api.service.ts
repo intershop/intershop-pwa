@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable, OperatorFunction } from 'rxjs';
-import { catchError, defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, defaultIfEmpty, filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
 import { Link } from '../../../models/link/link.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { CoreState } from '../../store/core.state';
@@ -20,6 +20,22 @@ export function unpackEnvelope<T>(): OperatorFunction<{ elements: T[] }, T[]> {
       filter(data => !!data.elements && !!data.elements.length),
       map(data => data.elements),
       defaultIfEmpty([])
+    );
+}
+
+/**
+ * Pipable operator for link translation (resolving one single link).
+ * @param apiService  The API service to be used for the link translation.
+ * @returns           The link resolved to its actual REST response data.
+ */
+export function resolveLink<T>(apiService: ApiService): OperatorFunction<Link, T> {
+  return source$ =>
+    source$.pipe(
+      // check if link data is propery formatted
+      filter(link => !!link && link.type === 'Link' && !!link.uri),
+      throwIfEmpty(() => new Error('link was not properly formatted')),
+      // flat map to API request
+      switchMap(item => apiService.get<T>(`${apiService.icmServerURL}/${item.uri}`))
     );
 }
 
@@ -63,6 +79,29 @@ export class ApiService {
   private defaultHeaders = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
 
   /**
+   * http options request
+   * @param  {string} path
+   * @param  {URLSearchParams=newURLSearchParams(} params
+   * @returns Observable
+   */
+  options<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
+    let localeAndCurrency = '';
+    if (!!this.currentLocale) {
+      localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
+    }
+    let url;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      url = path;
+    } else {
+      url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
+    }
+
+    return this.httpClient
+      .options<T>(url, options)
+      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+  }
+
+  /**
    * http get request
    * @param  {string} path
    * @param  {URLSearchParams=newURLSearchParams(} params
@@ -87,11 +126,8 @@ export class ApiService {
 
   /**
    * http put request
-   * @param  {string} path
-   * @param  {Object={}} body
-   * @returns Observable
    */
-  put<T>(path: string, body: Object = {}): Observable<T> {
+  put<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
       .put<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
       .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
@@ -99,11 +135,9 @@ export class ApiService {
 
   /**
    * http post request
-   * @param  {string} path
-   * @param  {Object={}} body
    * @returns Observable
    */
-  post<T>(path: string, body: Object = {}): Observable<T> {
+  post<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
       .post<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
       .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));

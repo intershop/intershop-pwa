@@ -11,7 +11,13 @@
     "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
-    "arrow-return-shorthand": true,
+    "no-static-this": true,
+    "no-unnecessary-type-annotation": true,
+    "no-collapsible-if": { "severity": "warning" },
+    "no-unused": true,
+    "no-var-before-return": true,
+    "no-return-undefined": true,
+    "arrow-return-shorthand": [true, "multiline"],
     "only-arrow-functions": [true, "allow-named-functions"],
     "arrow-parens": [true, "ban-single-arg-parens"],
     "no-unnecessary-callback-wrapper": { "severity": "warning" },
@@ -42,6 +48,7 @@
       2
     ],
     "interface-over-type-literal": true,
+    "type-literal-delimiter": true,
     "label-position": true,
     "max-line-length": [
       false,
@@ -71,14 +78,14 @@
     ],
     "no-arg": true,
     "no-bitwise": true,
-    "no-console": [
-      true,
+    "no-console": { "severity": "warning", "options": [
       "debug",
       "info",
       "time",
       "timeEnd",
-      "trace"
-    ],
+      "trace",
+      "log"
+    ]},
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-super": true,
@@ -91,19 +98,22 @@
     ],
     "no-angle-bracket-type-assertion": true,
     "no-misused-new": true,
+    "new-parens": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
-    "no-string-literal": false,
+    "no-string-literal": true,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
     "no-unused-declaration": true,
+    "no-parameter-reassignment": true,
     "throw-error": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
+    "object-literal-key-quotes": [true, "as-needed"],
     "one-line": [
       true,
       "check-open-brace",
@@ -132,14 +142,14 @@
     "rxjs-no-patched": true,
     "rxjs-no-deep-operators": true,
     "rxjs-no-unsafe-switchmap": true,
+    "rxjs-no-unsafe-catch": true,
+    "rxjs-no-unsafe-scope": { "severity": "off" },
+    "rxjs-no-unsafe-takeuntil": true,
     "semicolon": [
       true,
       "always"
     ],
-    "triple-equals": [
-      true,
-      "allow-null-check"
-    ],
+    "triple-equals": true,
     "typedef-whitespace": [
       true,
       {
@@ -151,6 +161,11 @@
       }
     ],
     "unified-signatures": true,
+    "ban-comma-operator": true,
+    "no-boolean-literal-compare": true,
+    "no-invalid-template-strings": true,
+    "no-irregular-whitespace": true,
+    "no-null-keyword": true,
     "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
       true,
@@ -182,7 +197,6 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "no-access-missing-member": false,
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": true,
     "no-duplicate-imports": true,
@@ -196,7 +210,20 @@
     ],
     "ban-specific-imports": [
       true,
-      { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." }
+      { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." },
+      { "from": ".*node_modules.*", "message": "import with 'node_modules' seems to be wrong" },
+      { "from": ".*\/src\/.*", "message": "import with 'src' seems to be wrong" },
+      { "from": ".*\/$", "message": "trailing '/' seems to be wrong" },
+      { "from": ".*\/index$", "message": "trailing '/index' seems to be wrong" },
+      { "from": "rxjs(?!($|\/operators$))", "message": "deep import from rxjs seems to be wrong, use 'rxjs' or 'rxjs/operators'" },
+      { "from": "ts-mockito\/lib\/ts-mockito", "message": "use import from 'ts-mockito'" }
+    ],
+    "ban-types": [
+      true,
+      ["Object", "Use {} instead."],
+      ["String", "Use 'string'"],
+      ["Boolean", "Use 'boolean'"],
+      ["Number", "Use 'number'"]
     ],
     "no-suspicious-variable-init-in-tests": {
       "severity": "error",
@@ -205,7 +232,11 @@
       }
     },
     "meaningful-naming-in-tests": { "severity": "warning" },
+    "prefer-method-signature": true,
+    "prefer-switch": true,
+    "prefer-template": [true, "allow-single-concat"],
     "use-async-synchronisation-in-tests": true,
+    "use-jest-extended-matchers-in-tests": true,
     "no-any": { "severity": "warning" },
     "no-commented-out-tests": true,
     "no-focused-tests": true,
@@ -234,7 +265,7 @@
     "ccp-no-markup-in-containers": {
       "severity": "warning",
       "options": {
-        "patterns": [ "<img", "<ul", "<li", "<table", "<(?![^>]*(clearfix))[^>]*class" ]
+        "patterns": [ "<img", "<ul", "<li", "<table", "<(?![^>]*(clearfix|-panel))[^>]*class" ]
       }
     },
     "project-structure": {
@@ -253,9 +284,9 @@
           // allow only app related content directly in src/app
           "^.*/src/app/app[\\w\\.\\-]+\\.ts$",
           // enforce specific folder structure for modules
-          "^.*/src/app/[a-z-]+/(components/|containers/|store/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$",
+          "^.*/src/app/[a-z][a-z0-9-]+/(components/|containers/|store/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$",
           // forms and shared may have submodules
-          "^.*/src/app/(forms|shared)/[a-z-]+/(components/|containers/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/|utils/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
+          "^.*/src/app/(forms|shared)/[a-z][a-z0-9-]+/(components/|containers/|directives/|validators/|services/|interceptors/|guards/|configurations/|pipes/|utils/)(.*/|)[\\w\\.\\-]+\\.(ts|html)$"
         ],
         "patterns": [
           // root components

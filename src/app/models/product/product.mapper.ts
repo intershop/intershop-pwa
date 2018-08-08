@@ -2,17 +2,79 @@ import { mergeObjectsMutably } from '../../utils/merge-objects';
 import { Price } from '../price/price.model';
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
-import { ProductData } from './product.interface';
-import { Product, ProductType } from './product.model';
+import { ProductData, ProductDataStub } from './product.interface';
+import { Product, ProductHelper, ProductType } from './product.model';
 
 function filterPrice(price: Price): Price {
   if (price && price.currencyMnemonic && price.currencyMnemonic !== 'N/A') {
     return price;
   }
-  return undefined;
+  return;
+}
+
+/**
+ * check if attribute is available and return value, otherwise undefined
+ */
+function retrieveStubAttributeValue(data: ProductDataStub, attributeName: string) {
+  const attribute = ProductHelper.getAttributeByAttributeName(data, attributeName);
+  return !!attribute ? attribute.value : undefined;
 }
 
 export class ProductMapper {
+  /**
+   * construct a {@link Product} stub from data returned by link list responses with additional data
+   */
+  static fromStubData(data: ProductDataStub): Product {
+    const sku = retrieveStubAttributeValue(data, 'sku');
+    if (!sku) {
+      throw new Error('cannot construct product stub without SKU');
+    }
+
+    return {
+      shortDescription: data.description,
+      name: data.title,
+      sku,
+      listPrice: filterPrice(retrieveStubAttributeValue(data, 'listPrice')),
+      salePrice: filterPrice(retrieveStubAttributeValue(data, 'salePrice')),
+      images: [
+        {
+          effectiveUrl: retrieveStubAttributeValue(data, 'image'),
+          name: 'front M',
+          primaryImage: true,
+          type: 'Image',
+          typeID: 'M',
+          viewID: 'front',
+          imageActualHeight: undefined,
+          imageActualWidth: undefined,
+        },
+        {
+          effectiveUrl: retrieveStubAttributeValue(data, 'image'),
+          name: 'front S',
+          primaryImage: true,
+          type: 'Image',
+          typeID: 'S',
+          viewID: 'front',
+          imageActualHeight: undefined,
+          imageActualWidth: undefined,
+        },
+      ],
+      manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
+      availability: retrieveStubAttributeValue(data, 'availability'),
+      // TODO: will be supplied by REST API with ISREST-389
+      inStock: retrieveStubAttributeValue(data, 'availability'),
+      longDescription: undefined,
+      // TODO: will be supplied by REST API with ISREST-401
+      minOrderQuantity: 1,
+      attributes: [],
+      readyForShipmentMin: undefined,
+      readyForShipmentMax: undefined,
+      type: ProductType.Product,
+    };
+  }
+
+  /**
+   * map API Response to fully qualified {@link Product}s
+   */
   static fromData(data: ProductData): Product | VariationProductMaster | VariationProduct {
     const product: Product = {
       type: ProductType.Product,
@@ -34,19 +96,17 @@ export class ProductMapper {
     };
 
     if (data.productMaster) {
-      const productMaster: VariationProductMaster = {
+      return {
         ...product,
         variationProducts: [],
         type: ProductType.VariationProductMaster,
       };
-      return productMaster;
     } else if (data.mastered) {
-      const variationProduct: VariationProduct = {
+      return {
         ...product,
         productMasterSKU: data.productMasterSKU,
         type: ProductType.VariationProduct,
       };
-      return variationProduct;
     } else {
       return product;
     }

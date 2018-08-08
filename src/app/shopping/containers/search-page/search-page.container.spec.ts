@@ -32,7 +32,7 @@ describe('Search Page Container', () => {
           template: 'Search No Result Component',
           inputs: ['searchTerm'],
         }),
-        MockComponent({ selector: 'ish-loading', template: 'ish-loading', inputs: ['searchLoading'] }),
+        MockComponent({ selector: 'ish-loading-spinner', template: 'ish-loading-spinner' }),
       ],
     }).compileComponents();
   }));

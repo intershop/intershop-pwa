@@ -1,10 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
+import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import * as fromActions from './basket.actions';
 
 describe('Basket Actions', () => {
+  const basket = BasketMockData.getBasket();
   describe('Load Basket Actions', () => {
     it('should create new action for LoadBasket', () => {
       const payload = '123';
@@ -54,6 +58,16 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.UpdateBasketShippingAddress,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateBasketShippingMethod', () => {
+      const payload = 'shippingId';
+      const action = new fromActions.UpdateBasketShippingMethod(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.UpdateBasketShippingMethod,
         payload,
       });
     });
@@ -149,6 +163,38 @@ describe('Basket Actions', () => {
     });
   });
 
+  describe('Add Quote To Basket Actions', () => {
+    it('should create new action for AddQuoteToBasket', () => {
+      const payload = 'QID';
+      const action = new fromActions.AddQuoteToBasket(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.AddQuoteToBasket,
+        payload,
+      });
+    });
+
+    it('should create new action for AddQuoteToBasketFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.AddQuoteToBasketFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.AddQuoteToBasketFail,
+        payload,
+      });
+    });
+
+    it('should create new action for AddQuoteToBasketSuccess', () => {
+      const payload = {} as Link;
+      const action = new fromActions.AddQuoteToBasketSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.AddQuoteToBasketSuccess,
+        payload,
+      });
+    });
+  });
+
   describe('Update Basket Items Actions', () => {
     it('should create new action for UpdateBasketItems', () => {
       const payload = [
@@ -218,6 +264,66 @@ describe('Basket Actions', () => {
     });
   });
 
+  describe('Load Basket Eligible Shipping Methods Actions', () => {
+    it('should create new action for LoadBasketEligibleShippingMethods', () => {
+      const action = new fromActions.LoadBasketEligibleShippingMethods();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligibleShippingMethods,
+      });
+    });
+
+    it('should create new action for LoadBasketEligibleShippingFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.LoadBasketEligibleShippingMethodsFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligibleShippingMethodsFail,
+        payload,
+      });
+    });
+
+    it('should create new action for LoadBasketEligibleShippingSuccess', () => {
+      const payload = [BasketMockData.getShippingMethod()];
+      const action = new fromActions.LoadBasketEligibleShippingMethodsSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligibleShippingMethodsSuccess,
+        payload,
+      });
+    });
+  });
+
+  describe('Load Basket Eligible Payment Methods Actions', () => {
+    it('should create new action for LoadBasketEligiblePaymentMethods', () => {
+      const action = new fromActions.LoadBasketEligiblePaymentMethods();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligiblePaymentMethods,
+      });
+    });
+
+    it('should create new action for LoadBasketEligiblePaymentFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.LoadBasketEligiblePaymentMethodsFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligiblePaymentMethodsFail,
+        payload,
+      });
+    });
+
+    it('should create new action for LoadBasketEligiblePaymentSuccess', () => {
+      const payload = [BasketMockData.getPaymentMethod()];
+      const action = new fromActions.LoadBasketEligiblePaymentMethodsSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.LoadBasketEligiblePaymentMethodsSuccess,
+        payload,
+      });
+    });
+  });
+
   describe('Load Basket Payments Actions', () => {
     it('should create new action for LoadBasketPayments', () => {
       const payload = '123';
@@ -250,12 +356,73 @@ describe('Basket Actions', () => {
     });
   });
 
+  describe('Set Basket Payment Actions', () => {
+    it('should create new action for SetBasketPayment', () => {
+      const payload = 'paymentName';
+      const action = new fromActions.SetBasketPayment(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.SetBasketPayment,
+        payload,
+      });
+    });
+
+    it('should create new action for SetBasketPaymentFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.SetBasketPaymentFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.SetBasketPaymentFail,
+        payload,
+      });
+    });
+
+    it('should create new action for SetBasketPaymentSuccess', () => {
+      const action = new fromActions.SetBasketPaymentSuccess();
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.SetBasketPaymentSuccess,
+      });
+    });
+  });
+
   describe('Reset Basket Action', () => {
     it('should create new action for ResetBasket', () => {
       const action = new fromActions.ResetBasket();
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.ResetBasket,
+      });
+    });
+  });
+
+  describe('Create Order Actions', () => {
+    it('should create new action for Create Order', () => {
+      const payload = basket;
+      const action = new fromActions.CreateOrder(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateOrder,
+        payload,
+      });
+    });
+    it('should create new action for CreateOrderFail', () => {
+      const payload = { message: 'error' } as HttpErrorResponse;
+      const action = new fromActions.CreateOrderFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateOrderFail,
+        payload,
+      });
+    });
+
+    it('should create new action for CreateOrderSuccess', () => {
+      const payload = { id: '123' } as Order;
+      const action = new fromActions.CreateOrderSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateOrderSuccess,
+        payload,
       });
     });
   });

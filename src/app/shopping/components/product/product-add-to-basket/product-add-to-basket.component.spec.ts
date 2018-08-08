@@ -38,7 +38,7 @@ describe('Product Add To Basket Component', () => {
   });
 
   it('should throw an error if input parameter product is not set', () => {
-    component.product = null;
+    component.product = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 

@@ -1,8 +1,8 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { SelectOption } from '../select/select-option.interface';
+import { SelectOption } from './select-option.interface';
 import { SelectComponent } from './select.component';
 
 describe('Select Component', () => {
@@ -57,7 +57,7 @@ describe('Select Component', () => {
   });
 
   it('should not be rendered if there are no options and no required validator', () => {
-    component.options = null;
+    component.options = undefined;
     fixture.detectChanges();
     expect(element.querySelector('select[data-testing-id=simpleField]')).toBeFalsy();
   });

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mapTo } from 'rxjs/operators';
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
 import { BasketItemMapper } from '../../../models/basket-item/basket-item.mapper';
@@ -10,8 +10,10 @@ import { BasketMapper } from '../../../models/basket/basket.mapper';
 import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 
 export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
+export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -81,18 +83,26 @@ export class BasketService {
   }
 
   /**
-   * Updates specific line items quantity in the given basket.
-   * @param itemId    The id of the line item that should be updated.
-   * @param quantity  The new quantity.
-   * @param basketId  The id of the basket in which the item should be updated.
+   * Add quote to basket.
+   * @param quoteId   The id of the quote that should be added to basket.
+   * @param basketId  The id of the basket which the quote should be added to.
+   * @returns         Link to the updated basket items.
    */
-  updateBasketItem(itemId: string, quantity: number, basketId: string): Observable<void> {
+  addQuoteToBasket(quoteId: string, basketId: string): Observable<Link> {
     const body = {
-      quantity: {
-        value: quantity,
-      },
+      quoteID: quoteId,
     };
 
+    return this.apiService.post(`baskets/${basketId}/items`, body);
+  }
+
+  /**
+   * Updates specific line items (quantity/shipping method) for the given basket.
+   * @param basketId  The id of the basket in which the item should be updated.
+   * @param itemId    The id of the line item that should be updated.
+   * @param body      request body
+   */
+  updateBasketItem(basketId: string, itemId: string, body: BasketItemUpdateType): Observable<void> {
     return this.apiService.put(`baskets/${basketId}/items/${itemId}`, body);
   }
 
@@ -103,6 +113,53 @@ export class BasketService {
    */
   deleteBasketItem(itemId: string, basketId: string): Observable<void> {
     return this.apiService.delete(`baskets/${basketId}/items/${itemId}`);
+  }
+
+  /**
+   * Get basket item options for selected basket item.
+   * @param basketId  The basket id.
+   * @param itemId    The id of the line item that should be updated.
+   * @returns         The basket item options.
+   */
+  getBasketItemOptions(
+    basketId: string,
+    itemId: string
+  ): Observable<{
+    eligibleShippingMethods: { shippingMethods: ShippingMethod[] };
+  }> {
+    if (!basketId) {
+      return throwError('getBasketItemOptions() called without basketId');
+    }
+    if (!itemId) {
+      return throwError('getBasketItemOptions() called without itemId');
+    }
+
+    return this.apiService.options(`baskets/${basketId}/items/${itemId}`);
+  }
+
+  /**
+   * Get basket payment options for selected basket item.
+   * @param basketId  The basket id.
+   * @returns         The basket payment options (eligible payment methods).
+   */
+  getBasketPaymentOptions(basketId: string): Observable<PaymentMethod[]> {
+    if (!basketId) {
+      return throwError('getBasketPaymentOptions() called without basketId');
+    }
+
+    /* ToDo: Exchange this fix filter for a dynamic one */
+    const validPaymentMethods = 'ISH_INVOICE|ISH_CASH_ON_DELIVERY|ISH_CASH_IN_ADVANCE';
+
+    return this.apiService
+      .options<{ methods: { payments: PaymentMethod[] }[] }>(`baskets/${basketId}/payments`)
+      .pipe(
+        map(
+          data =>
+            data && data.methods && data.methods.length
+              ? data.methods[0].payments.filter(payment => validPaymentMethods.includes(payment.id))
+              : []
+        )
+      );
   }
 
   /**
@@ -119,5 +176,42 @@ export class BasketService {
       unpackEnvelope<Link>(),
       resolveLinks<PaymentMethod>(this.apiService)
     );
+  }
+
+  /**
+   * Add a payment at the selected basket.
+   * @param basketId    The basket id.
+   * @param paymentName The unique name of the payment method.
+   */
+  addBasketPayment(basketId: string, paymentName: string): Observable<string> {
+    if (!basketId) {
+      return throwError('setBasketPayment() called without basketId');
+    }
+    if (!paymentName) {
+      return throwError('setBasketPayment() called without paymentName');
+    }
+
+    const body = {
+      name: paymentName,
+      type: 'Payment',
+    };
+
+    return this.apiService.post(`baskets/${basketId}/payments`, body).pipe(mapTo(paymentName));
+  }
+
+  /**
+   * Delete a payment from the selected basket.
+   * @param basketId  The basket id.
+   * @param paymentId The id of the payment that should be removed from basket.
+   */
+  deleteBasketPayment(basketId: string, paymentId: string): Observable<string> {
+    if (!basketId) {
+      return throwError('deleteBasketPayment() called without basketId');
+    }
+    if (!paymentId) {
+      return throwError('deleteBasketPayment() called without paymentId');
+    }
+
+    return this.apiService.delete(`baskets/${basketId}/payments/${paymentId}`).pipe(mapTo(paymentId));
   }
 }

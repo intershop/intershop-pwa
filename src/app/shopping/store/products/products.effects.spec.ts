@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
@@ -39,11 +39,12 @@ describe('Products Effects', () => {
       }
     });
 
-    when(productsServiceMock.getCategoryProducts('123', 'name-asc')).thenCall(() =>
+    when(productsServiceMock.getCategoryProducts('123', 'name-asc')).thenReturn(
       of({
         skus: ['P222', 'P333'],
         categoryUniqueId: '123',
         sortKeys: ['name-asc', 'name-desc'],
+        products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
       })
     );
 
@@ -115,15 +116,15 @@ describe('Products Effects', () => {
       });
     });
 
-    it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProduct for each product in the list', () => {
+    it('should trigger actions of type SetProductSkusForCategory, SetSortKeys and LoadProductSuccess for each product in the list', () => {
       actions$ = hot('a', {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       const expectedValues = {
-        a: new fromCategories.SetProductSkusForCategory('123', ['P222', 'P333']),
+        a: new fromCategories.SetProductSkusForCategory({ categoryUniqueId: '123', skus: ['P222', 'P333'] }),
         b: new fromViewconf.SetSortKeys(['name-asc', 'name-desc']),
-        c: new fromActions.LoadProduct('P222'),
-        d: new fromActions.LoadProduct('P333'),
+        c: new fromActions.LoadProductSuccess({ sku: 'P222' } as Product),
+        d: new fromActions.LoadProductSuccess({ sku: 'P333' } as Product),
       };
       expect(effects.loadProductsForCategory$).toBeObservable(cold('(abcd)', expectedValues));
     });

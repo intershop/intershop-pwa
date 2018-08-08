@@ -6,4 +6,5 @@ node_modules
 .git
 .gitattributes
 .gitignore
+.gitlab-ci.yml
 Dockerfile*

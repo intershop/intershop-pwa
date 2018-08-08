@@ -1,0 +1,4 @@
+
+<ish-quote-list *ngIf="(quotes$ | async) as quotes" [quotes]="quotes" (deleteItem)="deleteItem($event)"></ish-quote-list>
+
+<ish-loading *ngIf="(quoteLoading$ | async) || (quoteRequestLoading$ | async)"></ish-loading>

@@ -76,20 +76,24 @@
 	display:none;
 }
 
-.infobox {
-	padding: @space-default;
-	margin-bottom: @space-default;
-	background-color:@color-tertiary;
-	width: 100%;
-	h3 	{
-		margin-top:0;
-	}
-	
-	@media (min-width:@screen-sm-min) { 
-		.col-sm-6 ~ .col-sm-6 {
-			padding-left: @space-default*2;
+ish-info-box {
+	width: 100%;  
+
+	.infobox {
+		padding: @space-default;
+		margin-bottom: @space-default;
+		background-color:@color-tertiary;
+		width: 100%;
+		h3 	{
+			margin-top:0;
 		}
-	}	
+		
+		@media (min-width:@screen-sm-min) { 
+			.col-sm-6 ~ .col-sm-6 {
+				padding-left: @space-default*2;
+			}
+		}	
+	}
 }
 
 /* Promotions Carousel */

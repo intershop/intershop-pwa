@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -47,7 +47,7 @@ describe('Select Region Component', () => {
 
   it('should get and display regions for a certain country', () => {
     const changes: SimpleChanges = {
-      regions: new SimpleChange(null, component.regions, false),
+      regions: new SimpleChange(undefined, component.regions, false),
     };
     component.ngOnChanges(changes);
 

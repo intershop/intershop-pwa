@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -38,7 +38,7 @@ describe('Address Form Component', () => {
   });
 
   it('should throw an error if input parameter parentForm is missing', () => {
-    component.parentForm = null;
+    component.parentForm = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 

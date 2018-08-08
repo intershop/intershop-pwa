@@ -3,8 +3,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import * as using from 'jasmine-data-provider';
-import { cold } from 'jasmine-marbles';
-import { anything, capture, instance, mock, verify } from 'ts-mockito/lib/ts-mockito';
+import { cold } from 'jest-marbles';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
 import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes } from '../../store/error';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
@@ -41,7 +41,7 @@ describe('Api Service Errorhandler', () => {
       const result$ = apiServiceErrorHandler.dispatchCommunicationErrors(dataSlice.error);
 
       verify(storeMock$.dispatch(anything())).never();
-      expect(result$).toBeObservable(cold('#', null, dataSlice.error));
+      expect(result$).toBeObservable(cold('#', undefined, dataSlice.error));
     });
   });
 

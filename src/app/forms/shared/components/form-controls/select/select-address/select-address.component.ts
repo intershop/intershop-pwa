@@ -9,8 +9,10 @@ import { SelectComponent } from '../select.component';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectAddressComponent extends SelectComponent implements OnChanges {
-  @Input() addresses: Address[];
-  @Input() emptyOptionLabel: string;
+  @Input()
+  addresses: Address[];
+  @Input()
+  emptyOptionLabel: string;
 
   ngOnChanges(c: SimpleChanges) {
     if (c.addresses) {

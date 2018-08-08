@@ -1,0 +1,31 @@
+<div class="filter-group">
+
+  <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
+    {{filterElement.name}}
+    <span class="glyphicon pull-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span>
+  </h3>
+
+  <ul class="filter-list">
+    <!--- TODO: implement Show All-->
+    <ng-container *ngFor="let facet of filterElement.facets">
+      <li *ngIf="facet.selected && facet.name !== 'Show all'" class="filter-item filter-selected">
+        <!--- TODO: add filter count -->
+        <span class="icon-selected"></span>{{facet.link.title}}
+        <!--- TODO: implement delete filter -->
+        <a class="filter-clear"><span class="glyphicon glyphicon-minus pull-right"></span></a>
+      </li>
+    </ng-container>
+  </ul>
+
+  <ul class="filter-list" id="collapseFilter" [collapse]="isCollapsed">
+    <ng-container *ngFor="let facet of filterElement.facets">
+      <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item">
+        <!--- TODO: add filter count -->
+        <a class="filter-item-name" (click)="filter(facet)" [attr.data-testing-id]="'filter-link-' + facet.name">
+          <span class="icon-notselected"></span>{{facet.link.title}}
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+
+</div>

@@ -22,7 +22,7 @@ export class ProductHelper {
     }
 
     if (category) {
-      productRoute = '/category/' + category.uniqueId + productRoute;
+      productRoute = `/category/${category.uniqueId}${productRoute}`;
     } else {
       // TODO: add defaultCategory to route once this information is available with the products REST call
     }
@@ -41,7 +41,7 @@ export class ProductHelper {
    */
   static getPrimaryImage(product: Product, imageType: string): Image {
     if (!(product && product.images)) {
-      return undefined;
+      return;
     }
     return product.images.find(image => image.typeID === imageType && image.primaryImage);
   }
@@ -55,7 +55,7 @@ export class ProductHelper {
    */
   static getImageByImageTypeAndImageView(product: Product, imageType: string, imageView: string): Image {
     if (!(product && product.images)) {
-      return undefined;
+      return;
     }
     return product.images.find(image => image.typeID === imageType && image.viewID === imageView);
   }
@@ -86,9 +86,9 @@ export class ProductHelper {
    * @param attributeName The attribute name of the attribute to get
    * @returns              The matching product attribute
    */
-  static getAttributeByAttributeName(product: Product, attributeName: string): Attribute {
+  static getAttributeByAttributeName(product: { attributes: Attribute[] }, attributeName: string): Attribute {
     if (!(product && product.attributes)) {
-      return undefined;
+      return;
     }
     return product.attributes.find(attribute => attribute.name === attributeName);
   }

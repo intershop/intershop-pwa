@@ -1,4 +1,4 @@
-<ng-container *ngIf="category$ | async as category">
+<ng-container *ngIf="(category$ | async) as category">
 
   <ish-breadcrumb [category]="category"></ish-breadcrumb>
 
@@ -21,6 +21,7 @@
         [sortKeys]="sortKeys$ | async"
         (viewTypeChange)="changeViewType($event)"
         (sortByChange)="changeSortBy($event)"
+        (loadMore)="loadMore.emit()"
       ></ish-family-page>
     </ng-container>
   </ng-template>

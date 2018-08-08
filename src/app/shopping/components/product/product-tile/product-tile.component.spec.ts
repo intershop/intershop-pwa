@@ -13,7 +13,11 @@ describe('Product Tile Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot(), FeatureToggleModule.testingFeatures({ compare: true })],
+      imports: [
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
+      ],
       declarations: [
         ProductTileComponent,
         MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
@@ -26,6 +30,10 @@ describe('Product Tile Component', () => {
           selector: 'ish-product-add-to-basket',
           template: 'Product Add To Basket',
           inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-add-to-quote',
+          template: 'Product Add To Quote',
         }),
       ],
     }).compileComponents();

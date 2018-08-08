@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product Mapper fromStubData should construct a stub when supplied with a complex API response 1`] = `
+Object {
+  "attributes": Array [],
+  "availability": true,
+  "images": Array [
+    Object {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": undefined,
+      "imageActualWidth": undefined,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front",
+    },
+    Object {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": undefined,
+      "imageActualWidth": undefined,
+      "name": "front S",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "front",
+    },
+  ],
+  "inStock": true,
+  "listPrice": Object {
+    "currencyMnemonic": "USD",
+    "type": "Money",
+    "value": 132.24,
+  },
+  "longDescription": undefined,
+  "manufacturer": "Kodak",
+  "minOrderQuantity": 1,
+  "name": "Kodak M series EasyShare M552",
+  "readyForShipmentMax": undefined,
+  "readyForShipmentMin": undefined,
+  "salePrice": Object {
+    "currencyMnemonic": "USD",
+    "type": "Money",
+    "value": 132.24,
+  },
+  "shortDescription": "EasyShare M552, 14MP, 6.858 cm (2.7 \\") LCD, 4x, 28mm, HD 720p, Black",
+  "sku": "7912057",
+  "type": 0,
+}
+`;
+
+exports[`Product Mapper fromStubData should throw an error when stub data has no sku attribute 1`] = `"cannot construct product stub without SKU"`;

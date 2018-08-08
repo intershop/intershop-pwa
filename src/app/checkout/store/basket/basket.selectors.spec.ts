@@ -1,32 +1,39 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { EffectsModule } from '@ngrx/effects';
+import { combineReducers, StoreModule } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { Basket, BasketView } from '../../../models/basket/basket.model';
+import { Basket } from '../../../models/basket/basket.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
-import { c } from '../../../utils/dev/marbles-utils';
-import { CheckoutState } from '../checkout.state';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { checkoutReducers } from '../checkout.system';
 import {
   LoadBasket,
+  LoadBasketEligiblePaymentMethods,
+  LoadBasketEligiblePaymentMethodsFail,
+  LoadBasketEligiblePaymentMethodsSuccess,
+  LoadBasketEligibleShippingMethods,
+  LoadBasketEligibleShippingMethodsFail,
+  LoadBasketEligibleShippingMethodsSuccess,
   LoadBasketFail,
   LoadBasketItemsSuccess,
   LoadBasketPaymentsSuccess,
   LoadBasketSuccess,
 } from './basket.actions';
-import { getBasketError, getBasketLoading, getCurrentBasket } from './basket.selectors';
+import {
+  getBasketEligiblePaymentMethods,
+  getBasketEligibleShippingMethods,
+  getBasketError,
+  getBasketLoading,
+  getCurrentBasket,
+} from './basket.selectors';
 
 describe('Basket Selectors', () => {
-  let store$: Store<CheckoutState>;
-
-  let basket$: Observable<BasketView>;
-  let basketLoading$: Observable<boolean>;
-  let basketError$: Observable<HttpErrorResponse>;
+  let store$: LogEffects;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,19 +42,22 @@ describe('Basket Selectors', () => {
           checkout: combineReducers(checkoutReducers),
           shopping: combineReducers(shoppingReducers),
         }),
+        EffectsModule.forRoot([LogEffects]),
       ],
     });
 
-    store$ = TestBed.get(Store);
-    basket$ = store$.pipe(select(getCurrentBasket));
-    basketLoading$ = store$.pipe(select(getBasketLoading));
-    basketError$ = store$.pipe(select(getBasketError));
-    basketError$ = store$.pipe(select(getBasketError));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('with empty state', () => {
     it('should be present if no basket is present', () => {
-      expect(basket$).toBeObservable(c(null));
+      expect(getCurrentBasket(store$.state)).toBeUndefined();
+    });
+
+    it('should not select any shipping methods if it is in initial state', () => {
+      expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+      expect(getBasketLoading(store$.state)).toBeFalse();
+      expect(getBasketError(store$.state)).toBeUndefined();
     });
   });
 
@@ -58,37 +68,107 @@ describe('Basket Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(basketLoading$).toBeObservable(c(true));
+      expect(getBasketLoading(store$.state)).toBeTrue();
     });
 
     it('should set loading to false and set basket state', () => {
       store$.dispatch(new LoadBasketSuccess({ id: 'test' } as Basket));
       store$.dispatch(new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku' } as BasketItem]));
       store$.dispatch(new LoadBasketPaymentsSuccess([{ id: 'p_test' } as PaymentMethod]));
-      expect(basketLoading$).toBeObservable(c(false));
-      expect(basket$.pipe(map(b => b.id))).toBeObservable(c('test'));
-      expect(basket$.pipe(map(b => b.lineItems.length))).toBeObservable(c(1));
-      expect(basket$.pipe(map(b => b.lineItems[0].id))).toBeObservable(c('test'));
-      expect(basket$.pipe(map(b => b.lineItems[0].product))).toBeObservable(c({ sku: 'sku' }));
-      expect(basket$.pipe(map(b => b.paymentMethod.id))).toBeObservable(c('p_test'));
+      expect(getBasketLoading(store$.state)).toBeFalse();
+
+      const currentBasket = getCurrentBasket(store$.state);
+      expect(currentBasket.id).toEqual('test');
+      expect(currentBasket.lineItems).toHaveLength(1);
+      expect(currentBasket.lineItems[0].id).toEqual('test');
+      expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
+      expect(currentBasket.paymentMethod.id).toEqual('p_test');
     });
 
     it('should change the product of the basket line item if the product is changing', () => {
       store$.dispatch(new LoadBasketSuccess({ id: 'test' } as Basket));
       store$.dispatch(new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku' } as BasketItem]));
 
-      expect(basket$.pipe(map(b => b.lineItems[0].product))).toBeObservable(c({ sku: 'sku' }));
+      let currentBasket = getCurrentBasket(store$.state);
+      expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
 
       store$.dispatch(new LoadProductSuccess({ sku: 'sku', name: 'new name' } as Product));
 
-      expect(basket$.pipe(map(b => b.lineItems[0].product))).toBeObservable(c({ sku: 'sku', name: 'new name' }));
+      currentBasket = getCurrentBasket(store$.state);
+      expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku', name: 'new name' });
     });
 
     it('should set loading to false and set error state', () => {
       store$.dispatch(new LoadBasketFail({ message: 'invalid' } as HttpErrorResponse));
-      expect(basketLoading$).toBeObservable(c(false));
-      expect(basket$).toBeObservable(c(null));
-      expect(basketError$).toBeObservable(c({ message: 'invalid' }));
+      expect(getBasketLoading(store$.state)).toBeFalse();
+      expect(getCurrentBasket(store$.state)).toBeUndefined();
+      expect(getBasketError(store$.state)).toEqual({ message: 'invalid' });
+    });
+  });
+
+  describe('loading eligible shipping methods', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadBasketEligibleShippingMethods());
+    });
+
+    it('should set the state to loading', () => {
+      expect(getBasketLoading(store$.state)).toBeTrue();
+    });
+
+    describe('and reporting success', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadBasketEligibleShippingMethodsSuccess([BasketMockData.getShippingMethod()]));
+      });
+
+      it('should set loading to false', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligibleShippingMethods(store$.state)).toEqual([BasketMockData.getShippingMethod()]);
+      });
+    });
+
+    describe('and reporting failure', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadBasketEligibleShippingMethodsFail({ message: 'error' } as HttpErrorResponse));
+      });
+
+      it('should not have loaded shipping methods on error', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligibleShippingMethods(store$.state)).toBeEmpty();
+        expect(getBasketError(store$.state)).toEqual({ message: 'error' });
+      });
+    });
+  });
+
+  describe('loading eligible payment methods', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadBasketEligiblePaymentMethods());
+    });
+
+    it('should set the state to loading', () => {
+      expect(getBasketLoading(store$.state)).toBeTrue();
+    });
+
+    describe('and reporting success', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadBasketEligiblePaymentMethodsSuccess([BasketMockData.getPaymentMethod()]));
+      });
+
+      it('should set loading to false', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligiblePaymentMethods(store$.state)).toEqual([BasketMockData.getPaymentMethod()]);
+      });
+    });
+
+    describe('and reporting failure', () => {
+      beforeEach(() => {
+        store$.dispatch(new LoadBasketEligiblePaymentMethodsFail({ message: 'error' } as HttpErrorResponse));
+      });
+
+      it('should not have loaded payment methods on error', () => {
+        expect(getBasketLoading(store$.state)).toBeFalse();
+        expect(getBasketEligiblePaymentMethods(store$.state)).toBeEmpty();
+        expect(getBasketError(store$.state)).toEqual({ message: 'error' });
+      });
     });
   });
 });

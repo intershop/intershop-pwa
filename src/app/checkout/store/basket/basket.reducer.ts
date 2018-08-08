@@ -2,22 +2,27 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import { BasketAction, BasketActionTypes } from './basket.actions';
 
 export interface BasketState {
   basket: Basket;
   lineItems: BasketItem[];
+  eligibleShippingMethods: ShippingMethod[];
+  eligiblePaymentMethods: PaymentMethod[];
   payments: PaymentMethod[];
   loading: boolean;
   error: HttpErrorResponse;
 }
 
 export const initialState: BasketState = {
-  basket: null,
+  basket: undefined,
   lineItems: [],
+  eligibleShippingMethods: [],
+  eligiblePaymentMethods: [],
   payments: [],
   loading: false,
-  error: null,
+  error: undefined,
 };
 
 export function basketReducer(state = initialState, action: BasketAction): BasketState {
@@ -25,13 +30,19 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.LoadBasket:
     case BasketActionTypes.UpdateBasketInvoiceAddress:
     case BasketActionTypes.UpdateBasketShippingAddress:
+    case BasketActionTypes.UpdateBasketShippingMethod:
     case BasketActionTypes.UpdateBasket:
     case BasketActionTypes.LoadBasketItems:
     case BasketActionTypes.AddProductToBasket:
+    case BasketActionTypes.AddQuoteToBasket:
     case BasketActionTypes.AddItemsToBasket:
     case BasketActionTypes.UpdateBasketItems:
     case BasketActionTypes.DeleteBasketItem:
-    case BasketActionTypes.LoadBasketPayments: {
+    case BasketActionTypes.LoadBasketEligibleShippingMethods:
+    case BasketActionTypes.LoadBasketEligiblePaymentMethods:
+    case BasketActionTypes.LoadBasketPayments:
+    case BasketActionTypes.SetBasketPayment:
+    case BasketActionTypes.CreateOrder: {
       return {
         ...state,
         loading: true,
@@ -42,9 +53,14 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.LoadBasketItemsFail:
     case BasketActionTypes.AddItemsToBasketFail:
+    case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
-    case BasketActionTypes.LoadBasketPaymentsFail: {
+    case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
+    case BasketActionTypes.LoadBasketEligiblePaymentMethodsFail:
+    case BasketActionTypes.LoadBasketPaymentsFail:
+    case BasketActionTypes.SetBasketPaymentFail:
+    case BasketActionTypes.CreateOrderFail: {
       const error = action.payload;
 
       return {
@@ -56,8 +72,10 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
 
     case BasketActionTypes.UpdateBasketSuccess:
     case BasketActionTypes.AddItemsToBasketSuccess:
+    case BasketActionTypes.AddQuoteToBasketSuccess:
     case BasketActionTypes.UpdateBasketItemsSuccess:
-    case BasketActionTypes.DeleteBasketItemSuccess: {
+    case BasketActionTypes.DeleteBasketItemSuccess:
+    case BasketActionTypes.SetBasketPaymentSuccess: {
       return {
         ...state,
         loading: false,
@@ -86,6 +104,24 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
+    case BasketActionTypes.LoadBasketEligibleShippingMethodsSuccess: {
+      const eligibleShippingMethods = action.payload;
+      return {
+        ...state,
+        eligibleShippingMethods,
+        loading: false,
+      };
+    }
+
+    case BasketActionTypes.LoadBasketEligiblePaymentMethodsSuccess: {
+      const eligiblePaymentMethods = action.payload;
+      return {
+        ...state,
+        eligiblePaymentMethods,
+        loading: false,
+      };
+    }
+
     case BasketActionTypes.LoadBasketPaymentsSuccess: {
       const payments = action.payload;
 
@@ -96,7 +132,8 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       };
     }
 
-    case BasketActionTypes.ResetBasket: {
+    case BasketActionTypes.ResetBasket:
+    case BasketActionTypes.CreateOrderSuccess: {
       return initialState;
     }
   }

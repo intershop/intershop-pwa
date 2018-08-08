@@ -36,7 +36,8 @@ describe('Categories Service', () => {
       verify(apiServiceMock.get('categories', anything())).once();
       const args = capture(apiServiceMock.get).last();
       expect(args[0]).toBe('categories');
-      const params = args[1]['params'] as HttpParams;
+      // tslint:disable-next-line:no-any
+      const params = (args[1] as any).params as HttpParams;
       expect(params).toBeTruthy();
       expect(params.get('view')).toBe('tree');
       expect(params.get('limit')).toBe('1');
@@ -50,32 +51,20 @@ describe('Categories Service', () => {
       verify(apiServiceMock.get('categories/dummyid')).once();
     });
 
-    it('should return error when called with null', done => {
-      categoriesService.getCategory(null).subscribe(
-        data => {
-          fail();
-          done();
-        },
-        err => {
-          expect(err).toBeTruthy();
-          done();
-        }
-      );
+    it('should return error when called with undefined', done => {
+      categoriesService.getCategory(undefined).subscribe(fail, err => {
+        expect(err).toBeTruthy();
+        done();
+      });
 
       verify(apiServiceMock.get(anything())).never();
     });
 
     it('should return error when called with empty category', done => {
-      categoriesService.getCategory('').subscribe(
-        data => {
-          fail();
-          done();
-        },
-        err => {
-          expect(err).toBeTruthy();
-          done();
-        }
-      );
+      categoriesService.getCategory('').subscribe(fail, err => {
+        expect(err).toBeTruthy();
+        done();
+      });
 
       verify(apiServiceMock.get(anything(), anything())).never();
     });

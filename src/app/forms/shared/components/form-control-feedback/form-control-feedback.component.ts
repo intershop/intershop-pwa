@@ -10,8 +10,10 @@ import { FormErrorMessages } from './form-error-messages.interface';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormControlFeedbackComponent implements DoCheck {
-  @Input() messages: FormErrorMessages = {};
-  @Input() control: AbstractControl;
+  @Input()
+  messages: FormErrorMessages = {};
+  @Input()
+  control: AbstractControl;
 
   errors: Array<Observable<string>>;
 
@@ -40,7 +42,7 @@ export class FormControlFeedbackComponent implements DoCheck {
         key =>
           this.messages && key in this.messages && this.messages[key]
             ? this.messages[key]
-            : this.control.errors['customError']
+            : this.control.errors.customError
       )
       .filter(locString => !!locString)
       .map(locString => this.translate.get(locString));

@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,7 +44,7 @@ describe('Select Title Component', () => {
 
   it('should get and display titles for a certain country', () => {
     const changes: SimpleChanges = {
-      titles: new SimpleChange(null, component.titles, false),
+      titles: new SimpleChange(undefined, component.titles, false),
     };
     component.ngOnChanges(changes);
 

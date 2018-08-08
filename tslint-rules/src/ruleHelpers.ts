@@ -1,3 +1,4 @@
+// tslint:disable:no-console
 import { getNextToken } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -9,17 +10,17 @@ export class RuleHelpers {
       console.log('text: ' + node.getText());
       console.log('child count: ' + node.getChildCount());
       for (let index = 0; index < node.getChildCount(); index++) {
-        const c: ts.Node = node.getChildAt(index);
-        console.log('child #' + index + ' ' + c.kind + ': ' + c.getText());
+        const c = node.getChildAt(index);
+        console.log(`child #${index} ${c.kind}:${c.getText()}`);
       }
       if (dumpTokens) {
         let pointer = node.getFirstToken();
         while (pointer !== node.getLastToken()) {
-          console.log(pointer.kind + ':' + pointer.getText());
+          console.log(`${pointer.kind}:${pointer.getText()}`);
           pointer = getNextToken(pointer);
         }
         if (pointer) {
-          console.log(pointer.kind + ':' + pointer.getText());
+          console.log(`${pointer.kind}:${pointer.getText()}`);
         }
       }
     } else {
@@ -35,10 +36,10 @@ export class RuleHelpers {
   }
 
   static getNextChildTokenOfKind(node: ts.Node, kind: ts.SyntaxKind): ts.Node {
-    let pointer: ts.Node = node.getFirstToken();
+    let pointer = node.getFirstToken();
     while (pointer && pointer.kind !== kind) {
       if (pointer === node.getLastToken()) {
-        return null;
+        return;
       }
       pointer = getNextToken(pointer);
     }
@@ -50,13 +51,12 @@ export class RuleHelpers {
       stmt => stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'
     );
     if (statements.length && statements[0].getChildAt(0)) {
-      const describeStatement: ts.Node = statements[0].getChildAt(0).getChildAt(2);
-      const describeBody = describeStatement
+      const describeStatement = statements[0].getChildAt(0).getChildAt(2);
+      return describeStatement
         .getChildAt(2)
         .getChildAt(4)
         .getChildAt(1);
-      return describeBody;
     }
-    return undefined;
+    return;
   }
 }

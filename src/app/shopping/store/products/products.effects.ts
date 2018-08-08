@@ -38,12 +38,12 @@ export class ProductsEffects {
   loadProduct$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProduct),
     map((action: productsActions.LoadProduct) => action.payload),
-    mergeMap(sku => {
-      return this.productsService.getProduct(sku).pipe(
+    mergeMap(sku =>
+      this.productsService.getProduct(sku).pipe(
         map(product => new productsActions.LoadProductSuccess(product)),
         catchError(error => of(new productsActions.LoadProductFail(error)))
-      );
-    })
+      )
+    )
   );
 
   @Effect()
@@ -55,9 +55,9 @@ export class ProductsEffects {
       this.productsService.getCategoryProducts(categoryUniqueId, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([res, entities]) => [
-          new categoriesActions.SetProductSkusForCategory(res.categoryUniqueId, res.skus),
+          new categoriesActions.SetProductSkusForCategory({ categoryUniqueId: res.categoryUniqueId, skus: res.skus }),
           new fromViewconf.SetSortKeys(res.sortKeys),
-          ...res.skus.filter(sku => !entities[sku]).map(sku => new productsActions.LoadProduct(sku)),
+          ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
         ]),
         catchError(error => of(new productsActions.LoadProductFail(error)))
       )
@@ -67,7 +67,7 @@ export class ProductsEffects {
   @Effect()
   routeListenerForSelectingProducts$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
-    map((action: RouteNavigation) => action.payload.params['sku']),
+    map((action: RouteNavigation) => action.payload.params.sku),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
     map(([sku]) => new productsActions.SelectProduct(sku))
@@ -90,8 +90,8 @@ export class ProductsEffects {
     distinctUntilChanged(),
     skip(1), // ignore app init language selection
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-    filter(([locale, sku]) => !!sku),
-    map(([locale, sku]) => new productsActions.LoadProduct(sku))
+    filter(([, sku]) => !!sku),
+    map(([, sku]) => new productsActions.LoadProduct(sku))
   );
 
   @Effect({ dispatch: false })

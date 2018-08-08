@@ -2,12 +2,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Link } from '../../../models/link/link.model';
 import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes, ServerError } from '../../store/error';
 import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
-import { ApiService, resolveLinks, unpackEnvelope } from './api.service';
+import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 
 describe('Api Service', () => {
@@ -44,6 +44,31 @@ describe('Api Service', () => {
       httpTestingController.verify();
     });
 
+    it('should call the httpClient.options method when apiService.options method is called.', done => {
+      apiService.options('data').subscribe(data => {
+        expect(data).toBeTruthy();
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+      req.flush({});
+      expect(req.request.method).toEqual('OPTIONS');
+    });
+
+    it('should create Error Action if httpClient.options throws Error.', () => {
+      const statusText = 'ERROAAR';
+
+      apiService.options('data').subscribe(fail, fail);
+      const req = httpTestingController.expectOne(`${BASE_URL}/data`);
+
+      req.flush('err', { status: 500, statusText });
+
+      verify(storeMock$.dispatch(anything())).once();
+      const [action] = capture(storeMock$.dispatch).last();
+      expect((action as Action).type).toEqual(ErrorActionTypes.ServerError);
+      expect((action as ServerError).error.statusText).toEqual(statusText);
+    });
+
     it('should call the httpClient.get method when apiService.get method is called.', done => {
       apiService.get('data').subscribe(data => {
         expect(data).toBeTruthy();
@@ -58,8 +83,7 @@ describe('Api Service', () => {
     it('should create Error Action if httpClient.get throws Error.', () => {
       const statusText = 'ERROAAR';
 
-      // tslint:disable-next-line:use-async-synchronisation-in-tests
-      apiService.get('data').subscribe(data => fail(), data => fail());
+      apiService.get('data').subscribe(fail, fail);
       const req = httpTestingController.expectOne(`${BASE_URL}/data`);
 
       req.flush('err', { status: 500, statusText });
@@ -254,6 +278,38 @@ describe('Api Service', () => {
 
       const req = httpTestingController.expectOne(categoriesPath);
       req.flush({});
+    });
+
+    it('should resolve data when resolveLink is used', done => {
+      apiService
+        .get('something')
+        .pipe(resolveLink(apiService))
+        .subscribe(data => {
+          expect(data).toHaveProperty('data', 'dummy');
+          done();
+        });
+
+      httpTestingController.expectOne(`${BASE_URL}/site/something`).flush({ type: 'Link', uri: 'site/dummy' });
+
+      httpTestingController.expectOne(`${BASE_URL}/site/dummy`).flush({ data: 'dummy' });
+    });
+
+    it('should not resolve data when resolveLink is used and an invalid link is supplied', done => {
+      apiService
+        .get('something')
+        .pipe(resolveLink(apiService))
+        .subscribe(
+          fail,
+          err => {
+            expect(err).toBeTruthy();
+            done();
+          },
+          fail
+        );
+
+      httpTestingController.expectOne(`${BASE_URL}/site/something`).flush({ uri: 'site/dummy' });
+
+      httpTestingController.expectNone(`${BASE_URL}/site/dummy`);
     });
   });
 });

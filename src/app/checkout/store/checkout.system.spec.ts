@@ -6,8 +6,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { anyNumber, anything, instance, mock, when } from 'ts-mockito/lib/ts-mockito';
-import { AVAILABLE_LOCALES, MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../core/configurations/injection-keys';
+import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
+import {
+  AVAILABLE_LOCALES,
+  ENDLESS_SCROLLING_ITEMS_PER_PAGE,
+  MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
+} from '../../core/configurations/injection-keys';
 import { CountryService } from '../../core/services/countries/country.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
 import { LoginUser } from '../../core/store/user';
@@ -21,6 +25,7 @@ import { PaymentMethod } from '../../models/payment-method/payment-method.model'
 import { Price } from '../../models/price/price.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { CategoriesService } from '../../shopping/services/categories/categories.service';
+import { FilterService } from '../../shopping/services/filter/filter.service';
 import { ProductsService } from '../../shopping/services/products/products.service';
 import { SuggestService } from '../../shopping/services/suggest/suggest.service';
 import { LoadProduct } from '../../shopping/store/products';
@@ -29,10 +34,11 @@ import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { AddressService } from '../services/address/address.service';
 import { BasketService } from '../services/basket/basket.service';
+import { OrderService } from '../services/order/order.service';
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
 
-let basketId: string = null;
+let basketId: string;
 
 describe('Checkout System', () => {
   const DEBUG = false;
@@ -68,8 +74,8 @@ describe('Checkout System', () => {
     position: 1,
     quantity: { type: 'test', value: 1 },
     productSKU: 'test',
-    price: null,
-    singleBasePrice: null,
+    price: undefined,
+    singleBasePrice: undefined,
     isHiddenGift: false,
     isFreeGift: false,
     inStock: false,
@@ -135,7 +141,7 @@ describe('Checkout System', () => {
       return of(newBasket);
     });
     when(basketServiceMock.getBasketItems(anything())).thenReturn(of([lineItem]));
-    when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(null));
+    when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
     when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));
 
     const productsServiceMock = mock(ProductsService);
@@ -143,6 +149,9 @@ describe('Checkout System', () => {
 
     const registrationServiceMock = mock(RegistrationService);
     when(registrationServiceMock.signinUser(anything())).thenReturn(of(user));
+
+    const filterServiceMock = mock(FilterService);
+    const orderServiceMock = mock(OrderService);
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -164,13 +173,16 @@ describe('Checkout System', () => {
       providers: [
         { provide: AddressService, useFactory: () => instance(mock(AddressService)) },
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: RegistrationService, useFactory: () => instance(registrationServiceMock) },
+        { provide: FilterService, useFactory: () => instance(filterServiceMock) },
         { provide: SuggestService, useFactory: () => instance(mock(SuggestService)) },
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 1 },
         { provide: AVAILABLE_LOCALES, useValue: locales },
+        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 
@@ -228,7 +240,7 @@ describe('Checkout System', () => {
     });
 
     afterEach(() => {
-      basketId = null;
+      basketId = undefined;
     });
   });
 });

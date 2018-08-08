@@ -17,6 +17,7 @@ export const initialState: CategoriesState = {
 
 export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
   switch (action.type) {
+    case CategoriesActionTypes.DeselectCategory:
     case CategoriesActionTypes.SelectCategory: {
       return {
         ...state,
@@ -38,6 +39,7 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
       };
     }
 
+    case CategoriesActionTypes.LoadTopLevelCategoriesSuccess:
     case CategoriesActionTypes.LoadCategorySuccess: {
       const loadedTree = action.payload;
       const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
@@ -49,8 +51,7 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
     }
 
     case CategoriesActionTypes.SetProductSkusForCategory: {
-      const skus = action.payload;
-      const categoryUniqueId = action.categoryUniqueId;
+      const { skus, categoryUniqueId } = action.payload;
 
       const categoriesProductSKUs = {
         ...state.categoriesProductSKUs,
@@ -58,17 +59,6 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
       };
 
       return { ...state, categoriesProductSKUs };
-    }
-
-    case CategoriesActionTypes.LoadTopLevelCategoriesSuccess: {
-      const loadedTree = action.payload;
-      // merge the current tree onto the incoming to respect the sorting order from ICM
-      const categories = CategoryTreeHelper.merge(loadedTree, state.categories);
-      return {
-        ...state,
-        categories,
-        loading: false,
-      };
     }
   }
 

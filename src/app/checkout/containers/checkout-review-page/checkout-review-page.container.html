@@ -1,7 +1,11 @@
 <div data-testing-id="checkout-review-page">
   <h1>{{ 'checkout.order_review.heading.title' | translate }}</h1>
 
-  <ish-checkout-review [basket]="basket$ | async"></ish-checkout-review>
+  <ish-checkout-review
+    [basket]="basket$ | async"
+    [error]="basketError$ | async"
+    (createOrder)="onCreateOrder($event)"
+  ></ish-checkout-review>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
 </div>

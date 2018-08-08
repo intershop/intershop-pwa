@@ -8,9 +8,12 @@ import { Product } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPriceComponent implements OnChanges {
-  @Input() product: Product;
-  @Input() showInformationalPrice: boolean;
-  @Input() showPriceSavings: boolean;
+  @Input()
+  product: Product;
+  @Input()
+  showInformationalPrice: boolean;
+  @Input()
+  showPriceSavings: boolean;
 
   isListPriceGreaterThanSalePrice = false;
   isListPriceLessThanSalePrice = false;

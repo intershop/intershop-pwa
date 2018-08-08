@@ -1,4 +1,4 @@
-// tslint:disable:ordered-imports
+// tslint:disable:ordered-imports no-console
 import 'reflect-metadata';
 import 'zone.js/dist/zone-node';
 import { enableProdMode } from '@angular/core';
@@ -8,7 +8,7 @@ import { join } from 'path';
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
-const logging: boolean = !!process.env['LOGGING'];
+const logging = !!process.env.LOGGING;
 
 // Express server
 const app = express();

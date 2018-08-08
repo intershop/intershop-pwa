@@ -59,3 +59,9 @@ export interface ProductData {
   readyForShipmentMax: number;
   attributes?: Attribute[];
 }
+
+export interface ProductDataStub {
+  attributes: Attribute[];
+  description: string;
+  title: string;
+}

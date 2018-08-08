@@ -13,7 +13,7 @@ describe('Basket Helper', () => {
     });
 
     it('should return 0 if there is no basket given', () => {
-      expect(BasketHelper.getBasketItemsCount(null)).toEqual(0);
+      expect(BasketHelper.getBasketItemsCount(undefined)).toEqual(0);
     });
 
     it('should return the number of item if there is a basket given', () => {

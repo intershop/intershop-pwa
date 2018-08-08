@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PWA Reports</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.get("junit.xml", function (data, status) {
+                $xml = $(data).find('testsuites');
+                var tests = $xml.attr('tests');
+                var failures = $xml.attr('failures');
+                $("#unit-tests").text(`Tests: ${tests}, Failures: ${failures}`);
+            });
+            $.get("e2e/junit.xml", function (data, status) {
+                $xml = $(data).find('testsuites');
+                var tests = $xml.attr('tests');
+                var failures = $xml.attr('failures');
+                $("#e2e-tests").text(`Tests: ${tests}, Failures: ${failures}`);
+            });
+            $.get("coverage/index.html", function (data, status) {
+                var html = $.parseHTML(data);
+                var summary = $('div.clearfix', html)[0];
+                $("#coverage").append(summary);
+            });
+            $.get("tslint/index.html", function (data, status) {
+                var html = $.parseHTML(data);
+                var summary = $('span.badge', html)[0];
+                $("#tslint").append("TSLint: ").append(summary);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Intershop Progressive Webapp Reporting</h1>
+    <a href="docs/compodoc/index.html">
+        <h2>Documentation</h2>
+    </a>
+    <hr/>
+    <a href="unit-tests.html">
+        <h2>Unit Test Report</h2>
+        <div id="unit-tests"></div>
+    </a>
+    <a href="coverage/index.html">
+        <h2>Coverage Report</h2>
+        <div id="coverage"></div>
+    </a>
+    <a href="e2e/htmlReport.html">
+        <h2>End-to-end Test Report</h2>
+        <div id="e2e-tests"></div>
+    </a>
+    <a href="tslint/index.html">
+        <h2>TSLint Report</h2>
+        <div id="tslint"></div>
+    </a>
+    <hr/>
+    <a href="junit.xml">
+        <h2>JUnit XML</h2>
+    </a>
+    <a href="e2e/junit.xml">
+        <h2>E2E JUnit XML</h2>
+    </a>
+</body>
+
+</html>

@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api/api.service';
 import { Attribute } from '../../../models/attribute/attribute.model';
 import { CategoryHelper } from '../../../models/category/category.model';
-import { ProductData } from '../../../models/product/product.interface';
+import { ProductData, ProductDataStub } from '../../../models/product/product.interface';
 import { ProductMapper } from '../../../models/product/product.mapper';
 import { Product, ProductHelper } from '../../../models/product/product.model';
 
@@ -26,7 +26,7 @@ export class ProductsService {
       return throwError('getProduct() called without a sku');
     }
 
-    const params: HttpParams = new HttpParams().set('allImages', 'true');
+    const params = new HttpParams().set('allImages', 'true');
 
     return this.apiService.get<ProductData>(`products/${sku}`, { params }).pipe(map(ProductMapper.fromData));
   }
@@ -41,12 +41,14 @@ export class ProductsService {
   getCategoryProducts(
     categoryUniqueId: string,
     sortKey = ''
-  ): Observable<{ skus: string[]; categoryUniqueId: string; sortKeys: string[] }> {
+  ): Observable<{ skus: string[]; products: Product[]; categoryUniqueId: string; sortKeys: string[] }> {
     if (!categoryUniqueId) {
       return throwError('getCategoryProducts() called without categoryUniqueId');
     }
 
-    let params: HttpParams = new HttpParams().set('attrs', 'sku').set('returnSortKeys', 'true');
+    let params = new HttpParams()
+      .set('attrs', 'sku,salePrice,listPrice,availability,manufacturer,image')
+      .set('returnSortKeys', 'true');
     if (sortKey) {
       params = params.set('sortKey', sortKey);
     }
@@ -61,6 +63,7 @@ export class ProductsService {
           skus: response.elements.map(
             (element: Product) => ProductHelper.getAttributeByAttributeName(element, 'sku').value
           ),
+          products: response.elements.map((element: ProductDataStub) => ProductMapper.fromStubData(element) as Product),
           sortKeys: response.sortKeys,
           categoryUniqueId: categoryUniqueId,
         }))
@@ -68,29 +71,35 @@ export class ProductsService {
   }
 
   /**
-   * Get products (as SKU list) for a given search term.
-   * @param searchTerm  The search term to look for matching products.
-   * @returns           A list of matching Product SKUs [skus] with a list of possible sortings [sortKeys].
+   * Get products for a given search term respecting pagination.
+   * @param searchTerm    The search term to look for matching products.
+   * @param page          The page to request (0-based numbering)
+   * @param itemsPerPage  The number of items on each page.
+   * @returns             A list of matching Product stubs with a list of possible sortings and the total amount of results.
    */
-  // TODO: handle and document paging (total, offset, amount)
-  searchProducts(searchTerm: string): Observable<{ skus: string[]; sortKeys: string[] }> {
+  searchProducts(
+    searchTerm: string,
+    page: number,
+    itemsPerPage: number
+  ): Observable<{ products: Product[]; sortKeys: string[]; total: number }> {
     if (!searchTerm) {
       return throwError('searchProducts() called without searchTerm');
     }
 
     const params = new HttpParams()
       .set('searchTerm', searchTerm)
-      .set('attrs', 'sku')
+      .set('amount', itemsPerPage.toString())
+      .set('offset', (page * itemsPerPage).toString())
+      .set('attrs', 'sku,salePrice,listPrice,availability,manufacturer,image')
       .set('returnSortKeys', 'true');
 
     return this.apiService
-      .get<{ elements: { attributes: Attribute[] }[]; sortKeys: string[] }>('products', { params })
+      .get<{ elements: ProductDataStub[]; sortKeys: string[]; total: number }>('products', { params })
       .pipe(
         map(response => ({
-          skus: response.elements.map(
-            (element: Product) => ProductHelper.getAttributeByAttributeName(element, 'sku').value
-          ),
+          products: response.elements.map(element => ProductMapper.fromStubData(element) as Product),
           sortKeys: response.sortKeys,
+          total: !!response.total ? response.total : response.elements.length,
         }))
       );
   }

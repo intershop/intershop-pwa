@@ -6,7 +6,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutProgressBarComponent {
-  @Input() step = 1;
+  @Input()
+  step = 1;
 
   /**
    * Define the checkout steps.

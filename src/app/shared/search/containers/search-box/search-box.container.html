@@ -1,8 +1,5 @@
 <ish-search-box
-  [buttonText]="buttonText"
-  [placeholderText] ="placeholderText"
-  [autoSuggest] = "autoSuggest"
-  [maxAutoSuggests] = "maxAutoSuggests"
+  [configuration]="configuration"
   [results]="searchResults$ | async"
   [searchTerm]="previousSearchTerm$ | async"
   (searchTermChange)="suggestSearch($event)"

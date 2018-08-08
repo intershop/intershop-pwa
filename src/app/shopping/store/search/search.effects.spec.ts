@@ -4,18 +4,20 @@ import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, StoreModule } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito/lib/ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { ApiService } from '../../../core/services/api/api.service';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
-import { SearchProducts, SearchProductsFail, SuggestSearch } from './search.actions';
+import { shoppingReducers } from '../shopping.system';
+import { ResetPagingInfo } from '../viewconf';
+import { SearchMoreProducts, SearchProducts, SearchProductsFail, SuggestSearch } from './search.actions';
 import { SearchEffects } from './search.effects';
-import { searchReducer } from './search.reducer';
 
 describe('Search Effects', () => {
   let productsServiceMock: ProductsService;
@@ -28,13 +30,21 @@ describe('Search Effects', () => {
     const result = [{ type: undefined, term: 'Goods' }];
     when(suggestServiceMock.search(anyString())).thenReturn(of<SuggestTerm[]>(result));
     productsServiceMock = mock(ProductsService);
-    when(productsServiceMock.searchProducts(anyString())).thenCall((searchTerm: string) => {
-      if (!searchTerm) {
-        return throwError('');
-      } else {
-        return of('Product SKU 1');
+    const skus = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+    when(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).thenCall(
+      (searchTerm: string, page: number, itemsPerPage: number) => {
+        if (!searchTerm) {
+          return throwError('');
+        } else {
+          const currentSlice = skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
+          return of({
+            products: currentSlice.map(sku => ({ sku })),
+            sortKeys: [],
+            total: skus.length,
+          });
+        }
       }
-    });
+    );
   });
 
   describe('with marbles', () => {
@@ -43,6 +53,11 @@ describe('Search Effects', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        imports: [
+          StoreModule.forRoot({
+            shopping: combineReducers(shoppingReducers),
+          }),
+        ],
         providers: [
           SearchEffects,
           provideMockActions(() => actions$),
@@ -50,6 +65,7 @@ describe('Search Effects', () => {
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
           { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
           { provide: Router, useFactory: () => instance(routerMock) },
+          { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
         ],
       });
 
@@ -65,18 +81,31 @@ describe('Search Effects', () => {
         });
         actions$ = hot('a', { a: action });
 
-        expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts('dummy') }));
+        expect(effects.triggerSearch$).toBeObservable(
+          cold('(ab)', { a: new ResetPagingInfo(), b: new SearchProducts('dummy') })
+        );
       });
     });
 
     describe('searchProducts$', () => {
-      it('should perform a search with given search term and trigger actions when search is requested', done => {
+      it('should perform a search with given search term when search is requested', done => {
         const searchTerm = '123';
         const action = new SearchProducts(searchTerm);
         actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm)).once();
+          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
+          done();
+        });
+      });
+
+      it('should perform a continued search with given search term when search is requested', done => {
+        const searchTerm = '123';
+        const action = new SearchMoreProducts(searchTerm);
+        actions$ = of(action);
+
+        effects.searchProducts$.subscribe(() => {
+          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
           done();
         });
       });
@@ -91,7 +120,7 @@ describe('Search Effects', () => {
       TestBed.configureTestingModule({
         imports: [
           StoreModule.forRoot({
-            search: combineReducers(searchReducer),
+            shopping: combineReducers(shoppingReducers),
           }),
           EffectsModule.forRoot([SearchEffects, LogEffects]),
         ],
@@ -100,6 +129,7 @@ describe('Search Effects', () => {
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
           { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
           { provide: Router, useFactory: () => instance(routerMock) },
+          { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
         ],
       });
 
@@ -206,6 +236,27 @@ describe('Search Effects', () => {
           verify(routerMock.navigate(anything())).once();
           const [param] = capture(routerMock.navigate).last();
           expect(param).toEqual(['/error']);
+        })
+      );
+    });
+
+    describe('searchProducts$', () => {
+      it(
+        'should perform an additional search with given search term and trigger actions until maximum pages is reached',
+        fakeAsync(() => {
+          const searchTerm = '123';
+
+          store$.dispatch(new SearchProducts(searchTerm));
+          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
+
+          store$.dispatch(new SearchMoreProducts(searchTerm));
+          verify(productsServiceMock.searchProducts(searchTerm, 1, 3)).once();
+
+          store$.dispatch(new SearchMoreProducts(searchTerm));
+          verify(productsServiceMock.searchProducts(searchTerm, 2, 3)).once();
+
+          store$.dispatch(new SearchMoreProducts(searchTerm));
+          verify(productsServiceMock.searchProducts(searchTerm, 3, 3)).never();
         })
       );
     });

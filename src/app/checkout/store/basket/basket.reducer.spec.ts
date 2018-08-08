@@ -1,13 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
+import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import * as fromActions from './basket.actions';
 import { basketReducer, initialState } from './basket.reducer';
 
 describe('Basket Reducer', () => {
   describe('LoadBasket actions', () => {
-    describe('LoadCategory action', () => {
+    describe('LoadBasket action', () => {
       it('should set loading to true', () => {
         const action = new fromActions.LoadBasket('test');
         const state = basketReducer(initialState, action);
@@ -48,7 +51,16 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasket({ invoiceToAddress: { id: '1234' } });
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(true);
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('UpdateBasketShippingMethod action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.UpdateBasketShippingMethod('1234');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
       });
     });
 
@@ -58,7 +70,7 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasketFail(error);
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
+        expect(state.loading).toBeFalse();
         expect(state.error).toEqual(error);
       });
     });
@@ -68,8 +80,8 @@ describe('Basket Reducer', () => {
         const action = new fromActions.UpdateBasketSuccess();
         const state = basketReducer(initialState, action);
 
-        expect(state.loading).toEqual(false);
-        expect(state.error).toBeNull();
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
   });
@@ -137,6 +149,38 @@ describe('Basket Reducer', () => {
     describe('AddItemsToBasketSuccess action', () => {
       it('should set loading to false', () => {
         const action = new fromActions.AddItemsToBasketSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('AddQuoteToBasket actions', () => {
+    describe('AddQuoteToBasket action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.AddQuoteToBasket('QID');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('AddQuoteToBasketFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.AddQuoteToBasketFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('AddQuoteToBasketSuccess action', () => {
+      it('should set loading to false', () => {
+        const payload = {} as Link;
+        const action = new fromActions.AddQuoteToBasketSuccess(payload);
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -225,6 +269,84 @@ describe('Basket Reducer', () => {
     });
   });
 
+  describe('LoadBasketEligibleShippingMethods actions', () => {
+    describe('LoadBasketEligibleShippingMethods action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadBasketEligibleShippingMethods();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('LoadBasketEligibleShippingMethodsFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.LoadBasketEligibleShippingMethodsFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('LoadBasketEligibleShippingMethodsSuccess action', () => {
+      it('should set loading to false', () => {
+        const basket = {
+          id: 'test',
+        } as Basket;
+        const payload = [BasketMockData.getShippingMethod()];
+
+        const basketAction = new fromActions.LoadBasketSuccess(basket);
+        const basketShippingAction = new fromActions.LoadBasketEligibleShippingMethodsSuccess(payload);
+        let state = basketReducer(initialState, basketAction);
+        state = basketReducer(state, basketShippingAction);
+
+        expect(state.eligibleShippingMethods).toEqual(payload);
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('LoadBasketEligiblePaymentMethods actions', () => {
+    describe('LoadBasketEligiblePaymentMethods action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadBasketEligiblePaymentMethods();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('LoadBasketEligiblePaymentMethodsFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.LoadBasketEligiblePaymentMethodsFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('LoadBasketEligiblePaymentMethodsSuccess action', () => {
+      it('should set loading to false', () => {
+        const basket = {
+          id: 'test',
+        } as Basket;
+        const payload = [BasketMockData.getPaymentMethod()];
+
+        const basketAction = new fromActions.LoadBasketSuccess(basket);
+        const basketPaymentAction = new fromActions.LoadBasketEligiblePaymentMethodsSuccess(payload);
+        let state = basketReducer(initialState, basketAction);
+        state = basketReducer(state, basketPaymentAction);
+
+        expect(state.eligiblePaymentMethods).toEqual(payload);
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
   describe('LoadBasketPayments actions', () => {
     describe('LoadBasketPayments action', () => {
       it('should set loading to true', () => {
@@ -260,6 +382,74 @@ describe('Basket Reducer', () => {
 
         expect(state.payments).toEqual(payments);
         expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('SetBasketPayment actions', () => {
+    describe('SetBasketPayment action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.SetBasketPayment('testPayment');
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('SetBasketPaymentFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.SetBasketPaymentFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('SetBasketPaymentSuccess action', () => {
+      it('should set loading to false', () => {
+        const action = new fromActions.SetBasketPaymentSuccess();
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
+      });
+    });
+  });
+
+  describe('CreateOrder actions', () => {
+    describe('CreateOrder action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.CreateOrder(BasketMockData.getBasket());
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('CreateOrderFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpErrorResponse;
+        const action = new fromActions.CreateOrderFail(error);
+        const state = basketReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('CreateOrderSuccess action', () => {
+      it('should reset the checkout state if called', () => {
+        const oldState = {
+          ...initialState,
+          loading: true,
+          lineItems: [{ id: 'test' } as BasketItem],
+        };
+        const action = new fromActions.CreateOrderSuccess({ id: '123' } as Order);
+        const state = basketReducer(oldState, action);
+
+        expect(state).toEqual(initialState);
       });
     });
   });

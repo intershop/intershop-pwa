@@ -3,6 +3,8 @@ import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CompareEffects } from './compare/compare.effects';
 import { compareReducer } from './compare/compare.reducer';
+import { FilterEffects } from './filter/filter.effects';
+import { filterReducer } from './filter/filter.reducer';
 import { ProductsEffects } from './products/products.effects';
 import { productsReducer } from './products/products.reducer';
 import { RecentlyEffects } from './recently/recently.effects';
@@ -20,6 +22,7 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   recently: recentlyReducer,
   search: searchReducer,
   viewconf: viewconfReducer,
+  filter: filterReducer,
 };
 
 export const shoppingEffects = [
@@ -29,4 +32,5 @@ export const shoppingEffects = [
   RecentlyEffects,
   SearchEffects,
   ViewconfEffects,
+  FilterEffects,
 ];

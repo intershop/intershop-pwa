@@ -1,61 +1,57 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
-import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
 import { BasketView } from '../../../../models/basket/basket.model';
-import { ProductHelper } from '../../../../models/product/product.model';
 
+/**
+ * The Shopping Basket Component displays the users basket items and cost summary.
+ * It provides update cart and add cart to quote functionality.
+ * It is the starting point for the checkout workflow.
+ *
+ * It uses the {@link LineItemListComponent} for the rendering of line items.
+ * It uses the {@link BasketCostSummaryComponent} to render the cost summary.
+ * It uses the {@link BasketAddToQuoteComponent} to provide add to quote functionality.
+ *
+ * @example
+ * <ish-shopping-basket
+ *   [basket]="basket"
+ *   (updateItems)="updateItems()"
+ *   (deleteItem)="deleteItem()"
+ *   (addBasketToQuote)="addBasketToQuote()"
+ * ></ish-shopping-basket>
+ */
 @Component({
   selector: 'ish-shopping-basket',
   templateUrl: './shopping-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShoppingBasketComponent implements OnChanges {
-  @Input() basket: BasketView;
+export class ShoppingBasketComponent {
+  @Input()
+  basket: BasketView;
 
-  @Output() updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
-  @Output() deleteItem = new EventEmitter<string>();
+  @Output()
+  updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
+  @Output()
+  deleteItem = new EventEmitter<string>();
+  @Output()
+  addBasketToQuote = new EventEmitter<void>();
 
   form: FormGroup;
   submitted = false;
-  generateProductRoute = ProductHelper.generateProductRoute;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
-
-  /**
-   * If the basket changes a new form is created for basket quantities update.
-   */
-  ngOnChanges() {
-    this.form = new FormGroup({
-      items: new FormArray(this.createItemForm(this.basket)),
-    });
-  }
-
-  /**
-   * Returns an array of formgroups (itemId and quantity) according to the given basket.
-   */
-  createItemForm(basket: BasketView): FormGroup[] {
-    const itemsForm: FormGroup[] = [];
-
-    for (const item of basket.lineItems) {
-      itemsForm.push(
-        this.formBuilder.group({
-          itemId: item.id,
-          quantity: [
-            item.quantity.value,
-            [Validators.required, Validators.max(item.product.maxOrderQuantity), SpecialValidators.integer],
-          ],
-        })
-      );
-    }
-    return itemsForm;
+  constructor(private router: Router) {
+    this.form = new FormGroup({});
   }
 
   /**
    * Submits quantities form and throws updateItems event when form is valid.
    */
   submitForm() {
+    if (!this.form || !this.form.value.inner) {
+      return;
+    }
+
     // handle invalid form: should actually never happen because button is disabled in this case
     if (this.form.invalid) {
       this.submitted = true;
@@ -64,10 +60,22 @@ export class ShoppingBasketComponent implements OnChanges {
     }
 
     // convert quantity form values to number
-    for (const item of this.form.value.items) {
-      item.quantity = parseInt(item.quantity, 10);
-    }
-    this.updateItems.emit(this.form.value.items);
+    const items = this.form.value.inner.items.map(item => ({
+      ...item,
+      quantity: parseInt(item.quantity, 10),
+    }));
+
+    this.updateItems.emit(items);
+  }
+
+  /**
+   * Create new Form Group which contains line items from child component
+   * @param lineItemForm The child components form group.
+   */
+  onFormChange(lineItemForm: FormGroup) {
+    this.form = new FormGroup({
+      inner: lineItemForm,
+    });
   }
 
   /**
@@ -83,5 +91,12 @@ export class ShoppingBasketComponent implements OnChanges {
   checkout() {
     // ToDo: routing should be handled in another way, see #ISREST-317
     this.router.navigate(['/checkout/address']);
+  }
+
+  /**
+   * Throws addBasketToQuote event when addToQuote is triggered.
+   */
+  onAddToQuote() {
+    this.addBasketToQuote.emit();
   }
 }

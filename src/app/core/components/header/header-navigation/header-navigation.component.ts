@@ -8,7 +8,8 @@ import { Category } from '../../../../models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderNavigationComponent {
-  @Input() categories: CategoryView[];
+  @Input()
+  categories: CategoryView[];
 
   openedCategories = [];
 

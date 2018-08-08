@@ -1,14 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { EffectsModule } from '@ngrx/effects';
+import { combineReducers, StoreModule } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
-import { c } from '../../../utils/dev/marbles-utils';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadProductSuccess } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import {
   LoadCategory,
@@ -18,18 +16,18 @@ import {
   SelectCategory,
   SetProductSkusForCategory,
 } from './categories.actions';
-import * as s from './categories.selectors';
+import {
+  getCategoryEntities,
+  getCategoryLoading,
+  getProductCountForSelectedCategory,
+  getProductsForSelectedCategory,
+  getSelectedCategory,
+  getSelectedCategoryId,
+  getTopLevelCategories,
+} from './categories.selectors';
 
 describe('Categories Selectors', () => {
-  let store$: Store<ShoppingState>;
-
-  let categoryEntities$: Observable<{ [id: string]: Category }>;
-  let categoryLoading$: Observable<boolean>;
-  let productCount$: Observable<number>;
-  let products$: Observable<Product[]>;
-  let selectedCategory$: Observable<Category>;
-  let selectedCategoryId$: Observable<string>;
-  let topLevelCategories$: Observable<Category[]>;
+  let store$: LogEffects;
 
   let cat: Category;
   let prod: Product;
@@ -44,35 +42,28 @@ describe('Categories Selectors', () => {
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
+        EffectsModule.forRoot([LogEffects]),
       ],
     });
 
-    store$ = TestBed.get(Store);
-
-    categoryEntities$ = store$.pipe(select(s.getCategoryEntities));
-    categoryLoading$ = store$.pipe(select(s.getCategoryLoading));
-    productCount$ = store$.pipe(select(s.getProductCountForSelectedCategory));
-    products$ = store$.pipe(select(s.getProductsForSelectedCategory));
-    selectedCategory$ = store$.pipe(select(s.getSelectedCategory));
-    selectedCategoryId$ = store$.pipe(select(s.getSelectedCategoryId));
-    topLevelCategories$ = store$.pipe(select(s.getTopLevelCategories));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('with empty state', () => {
     it('should not select any categories when used', () => {
-      expect(categoryEntities$).toBeObservable(c({}));
-      expect(categoryLoading$).toBeObservable(c(false));
+      expect(getCategoryEntities(store$.state)).toBeEmpty();
+      expect(getCategoryLoading(store$.state)).toBeFalse();
     });
 
     it('should not select any selected category when used', () => {
-      expect(selectedCategory$).toBeObservable(c(undefined));
-      expect(selectedCategoryId$).toBeObservable(c(undefined));
-      expect(productCount$).toBeObservable(c(0));
-      expect(products$).toBeObservable(c([]));
+      expect(getSelectedCategory(store$.state)).toBeUndefined();
+      expect(getSelectedCategoryId(store$.state)).toBeUndefined();
+      expect(getProductCountForSelectedCategory(store$.state)).toEqual(0);
+      expect(getProductsForSelectedCategory(store$.state)).toBeEmpty();
     });
 
     it('should not select any top level categories when used', () => {
-      expect(topLevelCategories$).toBeObservable(c([]));
+      expect(getTopLevelCategories(store$.state)).toBeEmpty();
     });
   });
 
@@ -82,7 +73,7 @@ describe('Categories Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(categoryLoading$).toBeObservable(c(true));
+      expect(getCategoryLoading(store$.state)).toBeTrue();
     });
 
     describe('and reporting success', () => {
@@ -91,8 +82,8 @@ describe('Categories Selectors', () => {
       });
 
       it('should set loading to false', () => {
-        expect(categoryLoading$).toBeObservable(c(false));
-        expect(categoryEntities$).toBeObservable(c({ [cat.uniqueId]: cat }));
+        expect(getCategoryLoading(store$.state)).toBeFalse();
+        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
       });
     });
 
@@ -102,8 +93,8 @@ describe('Categories Selectors', () => {
       });
 
       it('should not have loaded category on error', () => {
-        expect(categoryLoading$).toBeObservable(c(false));
-        expect(categoryEntities$).toBeObservable(c({}));
+        expect(getCategoryLoading(store$.state)).toBeFalse();
+        expect(getCategoryEntities(store$.state)).toBeEmpty();
       });
     });
   });
@@ -116,34 +107,34 @@ describe('Categories Selectors', () => {
 
     describe('but no current router state', () => {
       it('should return the category information when used', () => {
-        expect(categoryEntities$).toBeObservable(c({ [cat.uniqueId]: cat }));
-        expect(categoryLoading$).toBeObservable(c(false));
+        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
+        expect(getCategoryLoading(store$.state)).toBeFalse();
       });
 
       it('should not select the irrelevant category when used', () => {
-        expect(selectedCategory$).toBeObservable(c(undefined));
-        expect(selectedCategoryId$).toBeObservable(c(undefined));
-        expect(productCount$).toBeObservable(c(0));
-        expect(products$).toBeObservable(c([]));
+        expect(getSelectedCategory(store$.state)).toBeUndefined();
+        expect(getSelectedCategoryId(store$.state)).toBeUndefined();
+        expect(getProductCountForSelectedCategory(store$.state)).toEqual(0);
+        expect(getProductsForSelectedCategory(store$.state)).toBeEmpty();
       });
     });
 
     describe('with category route', () => {
       beforeEach(() => {
-        store$.dispatch(new SetProductSkusForCategory(cat.uniqueId, [prod.sku]));
+        store$.dispatch(new SetProductSkusForCategory({ categoryUniqueId: cat.uniqueId, skus: [prod.sku] }));
         store$.dispatch(new SelectCategory(cat.uniqueId));
       });
 
       it('should return the category information when used', () => {
-        expect(categoryEntities$).toBeObservable(c({ [cat.uniqueId]: cat }));
-        expect(categoryLoading$).toBeObservable(c(false));
+        expect(getCategoryEntities(store$.state)).toEqual({ [cat.uniqueId]: cat });
+        expect(getCategoryLoading(store$.state)).toBeFalse();
       });
 
       it('should select the selected category when used', () => {
-        expect(selectedCategory$.pipe(map(ca => ca.uniqueId))).toBeObservable(c(cat.uniqueId));
-        expect(selectedCategoryId$).toBeObservable(c(cat.uniqueId));
-        expect(productCount$).toBeObservable(c(1));
-        expect(products$).toBeObservable(c([prod]));
+        expect(getSelectedCategory(store$.state).uniqueId).toEqual(cat.uniqueId);
+        expect(getSelectedCategoryId(store$.state)).toEqual(cat.uniqueId);
+        expect(getProductCountForSelectedCategory(store$.state)).toEqual(1);
+        expect(getProductsForSelectedCategory(store$.state)).toEqual([prod]);
       });
     });
   });
@@ -159,7 +150,7 @@ describe('Categories Selectors', () => {
     });
 
     it('should select root categories when used', () => {
-      expect(topLevelCategories$.pipe(map(ca => ca.map(x => x.uniqueId)))).toBeObservable(c(['A', 'B']));
+      expect(getTopLevelCategories(store$.state).map(x => x.uniqueId)).toEqual(['A', 'B']);
     });
   });
 });

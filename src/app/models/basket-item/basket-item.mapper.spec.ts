@@ -1,6 +1,5 @@
 import { BasketItemData } from './basket-item.interface';
 import { BasketItemMapper } from './basket-item.mapper';
-import { BasketItem } from './basket-item.model';
 
 describe('Basket Item Mapper', () => {
   describe('fromData', () => {
@@ -14,7 +13,7 @@ describe('Basket Item Mapper', () => {
           uri: 'some-shop/products/SKU',
         },
       } as BasketItemData;
-      const basketItem: BasketItem = BasketItemMapper.fromData(basketItemData);
+      const basketItem = BasketItemMapper.fromData(basketItemData);
 
       expect(basketItem).toBeTruthy();
       expect(basketItem.productSKU).toBe(basketItemData.product.title);

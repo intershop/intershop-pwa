@@ -33,15 +33,23 @@ import { Region } from '../../../models/region/region.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() countries: Country[];
-  @Input() regions: Region[];
-  @Input() languages: Locale[];
-  @Input() titles: string[];
-  @Input() error: HttpErrorResponse;
+  @Input()
+  countries: Country[];
+  @Input()
+  regions: Region[];
+  @Input()
+  languages: Locale[];
+  @Input()
+  titles: string[];
+  @Input()
+  error: HttpErrorResponse;
 
-  @Output() create = new EventEmitter<Customer>();
-  @Output() cancel = new EventEmitter<void>();
-  @Output() countryChange = new EventEmitter<string>();
+  @Output()
+  create = new EventEmitter<Customer>();
+  @Output()
+  cancel = new EventEmitter<void>();
+  @Output()
+  countryChange = new EventEmitter<string>();
 
   destroy$ = new Subject();
   form: FormGroup;
@@ -84,16 +92,12 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
     if (c.regions && stateControl) {
       updateValidatorsByDataLength(stateControl, this.regions, Validators.required, true);
     }
-    if (c.error && c.error.currentValue) {
-      if (c.error.currentValue.headers.get('error-missing-attributes')) {
-        const missingAttributes: string = c.error.currentValue.headers.get('error-missing-attributes');
-        // map missing 'email' response to login field
-        const list: string[] = missingAttributes
-          .split(',')
-          .map(attr => (attr === 'email' ? 'credentials.login' : attr));
+    if (c.error && c.error.currentValue && c.error.currentValue.headers.get('error-missing-attributes')) {
+      const missingAttributes: string = c.error.currentValue.headers.get('error-missing-attributes');
+      // map missing 'email' response to login field
+      const list = missingAttributes.split(',').map(attr => (attr === 'email' ? 'credentials.login' : attr));
 
-        markFormControlsAsInvalid(this.form, list);
-      }
+      markFormControlsAsInvalid(this.form, list);
     }
   }
 
@@ -131,7 +135,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
         securityQuestion: formCustomer.credentials.securityQuestion,
         securityQuestionAnswer: formCustomer.credentials.securityQuestionAnswer,
       },
-      birthday: formCustomer.birthday === '' ? null : formCustomer.birthday, // TODO: see IS-22276
+      birthday: formCustomer.birthday === '' ? undefined : formCustomer.birthday, // TODO: see IS-22276
       preferredLanguage: formCustomer.preferredLanguage,
     };
 

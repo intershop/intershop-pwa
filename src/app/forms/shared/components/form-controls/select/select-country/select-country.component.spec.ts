@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -48,7 +48,7 @@ describe('Select Country Component', () => {
 
   it('should display countries if component input changes', () => {
     const changes: SimpleChanges = {
-      countries: new SimpleChange(null, component.countries, false),
+      countries: new SimpleChange(undefined, component.countries, false),
     };
     component.ngOnChanges(changes);
 

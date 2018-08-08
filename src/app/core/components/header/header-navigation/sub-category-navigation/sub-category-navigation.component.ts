@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 import { CategoryView } from '../../../../../models/category-view/category-view.model';
 import { Category } from '../../../../../models/category/category.model';
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../../configurations/injection-keys';
 
 @Component({
   selector: 'ish-sub-category-navigation',
@@ -8,10 +9,14 @@ import { Category } from '../../../../../models/category/category.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubCategoryNavigationComponent {
-  @Input() category: CategoryView;
-  @Input() subCategoriesDepth: number;
+  @Input()
+  category: CategoryView;
+  @Input()
+  subCategoriesDepth: number;
 
   openedCategories = [];
+
+  constructor(@Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) public mainNavigationMaxSubCategoriesDepth: number) {}
 
   isOpened(category: Category): boolean {
     return this.openedCategories.includes(category.uniqueId);

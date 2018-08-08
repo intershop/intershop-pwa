@@ -6,13 +6,11 @@ interface RuleDeclaration {
   file: string;
 }
 
-const kebabCaseFromPascalCase = (input: string): string => {
-  return input.replace(/[A-Z]+/g, match => `-${match.toLowerCase()}`).replace(/^-/, '');
-};
+const kebabCaseFromPascalCase = (input: string): string =>
+  input.replace(/[A-Z]+/g, match => `-${match.toLowerCase()}`).replace(/^-/, '');
 
-const camelCaseFromPascalCase = (input: string): string => {
-  return `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
-};
+const camelCaseFromPascalCase = (input: string): string =>
+  `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
 
 class ProjectStructureWalker extends Lint.RuleWalker {
   warnUnmatched = false;
@@ -24,12 +22,12 @@ class ProjectStructureWalker extends Lint.RuleWalker {
 
   constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
     super(sourceFile, options);
-    if (options['ruleArguments'][0]) {
-      this.warnUnmatched = !!options['ruleArguments'][0]['warnUnmatched'];
-      this.patterns = options['ruleArguments'][0]['patterns'];
-      this.ignoredFiles = options['ruleArguments'][0]['ignoredFiles'] || [];
-      if (options['ruleArguments'][0]['pathPatterns']) {
-        this.pathPatterns = options['ruleArguments'][0]['pathPatterns'];
+    if (options.ruleArguments[0]) {
+      this.warnUnmatched = !!options.ruleArguments[0].warnUnmatched;
+      this.patterns = options.ruleArguments[0].patterns;
+      this.ignoredFiles = options.ruleArguments[0].ignoredFiles || [];
+      if (options.ruleArguments[0].pathPatterns) {
+        this.pathPatterns = options.ruleArguments[0].pathPatterns;
       }
     }
   }
@@ -58,7 +56,7 @@ class ProjectStructureWalker extends Lint.RuleWalker {
 
     if (matchingPatterns.length >= 1 && matchingPatterns[0].match[1]) {
       const config = matchingPatterns[0];
-      const matched: string = config.match[1];
+      const matched = config.match[1];
       const pathPattern = config.pattern.file
         .replace(/<kebab>/g, kebabCaseFromPascalCase(matched))
         .replace(/<camel>/g, camelCaseFromPascalCase(matched));

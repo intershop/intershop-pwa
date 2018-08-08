@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from '../../../core/services/api/api.service';
-import { BasketService } from './basket.service';
+import { BasketItemUpdateType, BasketService } from './basket.service';
 
 describe('Basket Service', () => {
   let basketService: BasketService;
@@ -16,6 +16,11 @@ describe('Basket Service', () => {
         shipToAddress: {},
       },
     ],
+    paymentMethod: {
+      name: 'testPayment',
+      id: 'paymentId',
+    },
+    totals: {},
   };
 
   const lineItemData = {
@@ -74,11 +79,12 @@ describe('Basket Service', () => {
     });
   });
 
-  it("should put updated data to basket line item of spefic basket when 'updateBasketItem' is called", done => {
-    when(apiService.put(anything(), anything())).thenReturn(of({}));
+  it("should put updated data to basket line item of a basket when 'updateBasketItem' is called", done => {
+    when(apiService.put(anyString(), anything())).thenReturn(of({}));
 
-    basketService.updateBasketItem(lineItemData.id, 2, basketMockData.id).subscribe(() => {
-      verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, anything())).once();
+    const payload = { quantity: { value: 2 } } as BasketItemUpdateType;
+    basketService.updateBasketItem(basketMockData.id, lineItemData.id, payload).subscribe(() => {
+      verify(apiService.put(`baskets/${basketMockData.id}/items/${lineItemData.id}`, payload)).once();
       done();
     });
   });
@@ -92,11 +98,47 @@ describe('Basket Service', () => {
     });
   });
 
+  it("should get line item options for a basket item when 'getBasketItemOptions' is called", done => {
+    when(apiService.options(anything())).thenReturn(of({}));
+
+    basketService.getBasketItemOptions(basketMockData.id, lineItemData.id).subscribe(() => {
+      verify(apiService.options(`baskets/${basketMockData.id}/items/${lineItemData.id}`)).once();
+      done();
+    });
+  });
+
+  it("should get basket payment options for a basket when 'getBasketPaymentOptions' is called", done => {
+    when(apiService.options(anything())).thenReturn(of({ methods: [] }));
+
+    basketService.getBasketPaymentOptions(basketMockData.id).subscribe(() => {
+      verify(apiService.options(`baskets/${basketMockData.id}/payments`)).once();
+      done();
+    });
+  });
+
   it("should get basket payments for specific basketId when 'getBasketPayments' is called", done => {
     when(apiService.get(`baskets/${basketMockData.id}/payments`)).thenReturn(of([]));
 
     basketService.getBasketPayments(basketMockData.id).subscribe(() => {
       verify(apiService.get(`baskets/${basketMockData.id}/payments`)).once();
+      done();
+    });
+  });
+
+  it("should add a payment to the basket when 'addBasketPayment' is called", done => {
+    when(apiService.post(`baskets/${basketMockData.id}/payments`, anything())).thenReturn(of([]));
+
+    basketService.addBasketPayment(basketMockData.id, basketMockData.paymentMethod.name).subscribe(() => {
+      verify(apiService.post(`baskets/${basketMockData.id}/payments`, anything())).once();
+      done();
+    });
+  });
+
+  it("should delete a payment from the basket when 'deleteBasketPayment' is called", done => {
+    when(apiService.delete(anything())).thenReturn(of({}));
+
+    basketService.deleteBasketPayment(basketMockData.id, basketMockData.paymentMethod.id).subscribe(() => {
+      verify(apiService.delete(`baskets/${basketMockData.id}/payments/${basketMockData.paymentMethod.id}`)).once();
       done();
     });
   });

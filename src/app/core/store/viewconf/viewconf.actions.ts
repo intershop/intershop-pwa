@@ -1,9 +1,10 @@
 import { Action } from '@ngrx/store';
+import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
 
 export enum ViewconfActionTypes {
   SetWrapperClass = '[Viewconf Internal] Set Wrapper Class',
   SetHeaderType = '[Viewconf Internal] Set Header Type',
-  SetBreadcrumbKey = '[Viewconf Internal] Set Breadcrumb Key',
+  SetBreadcrumbData = '[Viewconf Internal] Set Breadcrumb Data',
 }
 
 export class SetWrapperClass implements Action {
@@ -16,9 +17,9 @@ export class SetHeaderType implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetBreadcrumbKey implements Action {
-  readonly type = ViewconfActionTypes.SetBreadcrumbKey;
-  constructor(public payload: string) {}
+export class SetBreadcrumbData implements Action {
+  readonly type = ViewconfActionTypes.SetBreadcrumbData;
+  constructor(public payload: BreadcrumbItem[]) {}
 }
 
-export declare type ViewconfActions = SetWrapperClass | SetHeaderType | SetBreadcrumbKey;
+export declare type ViewconfActions = SetWrapperClass | SetHeaderType | SetBreadcrumbData;

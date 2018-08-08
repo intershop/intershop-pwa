@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { combineReducers, Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { instance, mock } from 'ts-mockito/lib/ts-mockito';
+import { instance, mock } from 'ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { checkoutReducers } from '../../store/checkout.system';
 import { CheckoutShippingPageContainerComponent } from './checkout-shipping-page.container';
@@ -19,7 +19,7 @@ describe('Checkout Shipping Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-shipping',
           template: 'Checkout Shipping Component',
-          inputs: ['basket'],
+          inputs: ['basket', 'shippingMethods', 'error'],
         }),
       ],
 
@@ -43,5 +43,10 @@ describe('Checkout Shipping Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render shipping component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-checkout-shipping')).toBeTruthy();
   });
 });

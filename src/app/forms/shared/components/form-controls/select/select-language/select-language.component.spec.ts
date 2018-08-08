@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core/';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -48,7 +48,7 @@ describe('Select Language Component', () => {
 
   it('should get and display languages on creation', () => {
     const changes: SimpleChanges = {
-      languages: new SimpleChange(null, component.languages, false),
+      languages: new SimpleChange(undefined, component.languages, false),
     };
     component.ngOnChanges(changes);
     fixture.detectChanges();

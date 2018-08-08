@@ -1,20 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, select, Store, StoreModule } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { EffectsModule } from '@ngrx/effects';
+import { combineReducers, StoreModule } from '@ngrx/store';
 import { Address } from '../../../models/address/address.model';
-import { c } from '../../../utils/dev/marbles-utils';
-import { CheckoutState } from '../checkout.state';
+import { LogEffects } from '../../../utils/dev/log.effects';
 import { checkoutReducers } from '../checkout.system';
 import { LoadAddresses, LoadAddressesFail, LoadAddressesSuccess } from './addresses.actions';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from './addresses.selectors';
 
 describe('Addresses Selectors', () => {
-  let store$: Store<CheckoutState>;
-
-  let addresses$: Observable<Address[]>;
-  let addressesLoading$: Observable<boolean>;
-  let addressesError$: Observable<HttpErrorResponse>;
+  let store$: LogEffects;
 
   const addresses = [{ id: '4711', firstname: 'Patricia' }, { id: '4712', firstName: 'John' }] as Address[];
 
@@ -24,20 +19,17 @@ describe('Addresses Selectors', () => {
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
         }),
+        EffectsModule.forRoot([LogEffects]),
       ],
     });
-    store$ = TestBed.get(Store);
-
-    addresses$ = store$.pipe(select(getAllAddresses));
-    addressesLoading$ = store$.pipe(select(getAddressesLoading));
-    addressesError$ = store$.pipe(select(getAddressesError));
+    store$ = TestBed.get(LogEffects);
   });
 
   describe('with empty state', () => {
     it('should not select any addresses when used', () => {
-      expect(addresses$).toBeObservable(c([]));
-      expect(addressesLoading$).toBeObservable(c(false));
-      expect(addressesError$).toBeObservable(c(null));
+      expect(getAllAddresses(store$.state)).toBeEmpty();
+      expect(getAddressesLoading(store$.state)).toBeFalse();
+      expect(getAddressesError(store$.state)).toBeUndefined();
     });
   });
 
@@ -47,7 +39,7 @@ describe('Addresses Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(addressesLoading$).toBeObservable(c(true));
+      expect(getAddressesLoading(store$.state)).toBeTrue();
     });
 
     describe('and reporting success', () => {
@@ -56,8 +48,8 @@ describe('Addresses Selectors', () => {
       });
 
       it('should set loading to false', () => {
-        expect(addressesLoading$).toBeObservable(c(false));
-        expect(addresses$).toBeObservable(c(addresses));
+        expect(getAddressesLoading(store$.state)).toBeFalse();
+        expect(getAllAddresses(store$.state)).toEqual(addresses);
       });
     });
 
@@ -67,9 +59,9 @@ describe('Addresses Selectors', () => {
       });
 
       it('should not have loaded addresses on error', () => {
-        expect(addressesLoading$).toBeObservable(c(false));
-        expect(addresses$).toBeObservable(c([]));
-        expect(addressesError$).toBeObservable(c({ message: 'error' }));
+        expect(getAddressesLoading(store$.state)).toBeFalse();
+        expect(getAllAddresses(store$.state)).toBeEmpty();
+        expect(getAddressesError(store$.state)).toEqual({ message: 'error' });
       });
     });
   });

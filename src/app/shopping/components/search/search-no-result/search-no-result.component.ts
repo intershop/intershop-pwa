@@ -18,5 +18,6 @@ export class SearchNoResultComponent {
   /**
    * The search term leading to no result.
    */
-  @Input() searchTerm: string;
+  @Input()
+  searchTerm: string;
 }

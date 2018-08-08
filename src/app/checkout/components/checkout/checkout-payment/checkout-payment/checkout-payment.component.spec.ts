@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsSharedModule } from '../../../../../forms/forms-shared.module';
@@ -19,7 +20,7 @@ describe('Checkout Payment Component', () => {
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
-          inputs: ['basket'],
+          inputs: ['totals'],
         }),
         MockComponent({
           selector: 'ish-basket-items-summary',
@@ -41,11 +42,45 @@ describe('Checkout Payment Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.basket = BasketMockData.getBasket();
+    component.paymentMethods = [BasketMockData.getPaymentMethod()];
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render available payment methods on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ul.list-unstyled')).toBeTruthy();
+  });
+
+  it('should not render an error if no error occurs', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+  });
+
+  it('should render an error if an error occurs', () => {
+    component.error = { status: 404 } as HttpErrorResponse;
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+  });
+
+  it('should render an error if the user has currently no payment method selected', () => {
+    component.basket.paymentMethod = undefined;
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+  });
+
+  it('should throw updatePaymentMethod event when the user changes payment selection', done => {
+    fixture.detectChanges();
+
+    component.updatePaymentMethod.subscribe(formValue => {
+      expect(formValue).toBe('testPayment');
+      done();
+    });
+
+    component.paymentForm.get('name').setValue('testPayment');
   });
 });

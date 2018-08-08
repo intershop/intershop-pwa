@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeaderSimpleComponent } from '../header-simple/header-simple.component';
+import { HeaderSimpleComponent } from './header-simple.component';
 
 describe('Header Simple Component', () => {
   let fixture: ComponentFixture<HeaderSimpleComponent>;

@@ -14,16 +14,16 @@ var RuleHelpers = (function () {
             console.log('child count: ' + node.getChildCount());
             for (var index = 0; index < node.getChildCount(); index++) {
                 var c = node.getChildAt(index);
-                console.log('child #' + index + ' ' + c.kind + ': ' + c.getText());
+                console.log("child #" + index + " " + c.kind + ":" + c.getText());
             }
             if (dumpTokens) {
                 var pointer = node.getFirstToken();
                 while (pointer !== node.getLastToken()) {
-                    console.log(pointer.kind + ':' + pointer.getText());
+                    console.log(pointer.kind + ":" + pointer.getText());
                     pointer = tsutils_1.getNextToken(pointer);
                 }
                 if (pointer) {
-                    console.log(pointer.kind + ':' + pointer.getText());
+                    console.log(pointer.kind + ":" + pointer.getText());
                 }
             }
         }
@@ -41,7 +41,7 @@ var RuleHelpers = (function () {
         var pointer = node.getFirstToken();
         while (pointer && pointer.kind !== kind) {
             if (pointer === node.getLastToken()) {
-                return null;
+                return;
             }
             pointer = tsutils_1.getNextToken(pointer);
         }
@@ -51,13 +51,12 @@ var RuleHelpers = (function () {
         var statements = sourceFile.statements.filter(function (stmt) { return stmt.kind === ts.SyntaxKind.ExpressionStatement && stmt.getFirstToken().getText() === 'describe'; });
         if (statements.length && statements[0].getChildAt(0)) {
             var describeStatement = statements[0].getChildAt(0).getChildAt(2);
-            var describeBody = describeStatement
+            return describeStatement
                 .getChildAt(2)
                 .getChildAt(4)
                 .getChildAt(1);
-            return describeBody;
         }
-        return undefined;
+        return;
     };
     return RuleHelpers;
 }());

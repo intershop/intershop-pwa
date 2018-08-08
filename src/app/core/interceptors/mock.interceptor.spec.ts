@@ -11,8 +11,8 @@ import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
-import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
 import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
+import { REST_ENDPOINT } from '../services/state-transfer/factories';
 import { MockInterceptor } from './mock.interceptor';
 
 describe('Mock Interceptor', () => {
@@ -20,6 +20,8 @@ describe('Mock Interceptor', () => {
 
   let mockInterceptor: MockInterceptor;
   beforeEach(() => {
+    jest.spyOn(console, 'log').mockImplementation(() => undefined);
+
     TestBed.configureTestingModule({
       providers: [
         MockInterceptor,
@@ -44,7 +46,7 @@ describe('Mock Interceptor', () => {
   });
 
   describe('Request URL Modification', () => {
-    const request: HttpRequest<any> = new HttpRequest('GET', '');
+    const request = new HttpRequest('GET', '');
 
     function dataProvider() {
       return [
@@ -91,7 +93,7 @@ describe('Mock Interceptor', () => {
     function dataProvider() {
       return [
         { item: 'categories', in: undefined, expect: false },
-        { item: 'categories', in: null, expect: false },
+        { item: 'categories', in: undefined, expect: false },
         { item: 'categories', in: [], expect: false },
         { item: 'categories', in: ['categories'], expect: true },
         { item: 'catego', in: ['categories'], expect: false },
@@ -148,19 +150,13 @@ describe('Mock Interceptor', () => {
     it('should return error response when patricia is not logged in correctly', done => {
       mockInterceptor
         .intercept(request.clone({ headers: request.headers.append('Authorization', 'invalid') }), handler)
-        .subscribe(
-          event => {
-            fail();
-            done();
-          },
-          event => {
-            expect(event.ok).toBeFalsy();
-            expect(event.status).toBe(401);
-            expect(event.headers.get('authentication-token')).toBeFalsy();
-            expect(event.headers.get('error-key')).toBeTruthy();
-            done();
-          }
-        );
+        .subscribe(fail, event => {
+          expect(event.ok).toBeFalsy();
+          expect(event.status).toBe(401);
+          expect(event.headers.get('authentication-token')).toBeFalsy();
+          expect(event.headers.get('error-key')).toBeTruthy();
+          done();
+        });
     });
   });
 });

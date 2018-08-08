@@ -18,8 +18,8 @@ var NoSuspiciousVariableInitInTestsWalker = (function (_super) {
     function NoSuspiciousVariableInitInTestsWalker(sourceFile, options) {
         var _this = _super.call(this, sourceFile, options) || this;
         _this.excludes = [];
-        if (options['ruleArguments'] && options['ruleArguments'][0] && options['ruleArguments'][0]['exclude']) {
-            _this.excludes = options['ruleArguments'][0]['exclude'];
+        if (options.ruleArguments && options.ruleArguments[0] && options.ruleArguments[0].exclude) {
+            _this.excludes = options.ruleArguments[0].exclude;
         }
         _this.interestingVariables = [];
         _this.correctlyReinitializedVariables = [];
@@ -48,7 +48,7 @@ var NoSuspiciousVariableInitInTestsWalker = (function (_super) {
                 .filter(function (node) { return _this.correctlyReinitializedVariables.indexOf(ruleHelpers_1.RuleHelpers.extractVariableNameInDeclaration(node)) < 0; })
                 .filter(function (node) { return _this.excludes.indexOf(ruleHelpers_1.RuleHelpers.extractVariableNameInDeclaration(node)) < 0; });
             missingReinit.forEach(function (key) {
-                return _this.addFailureAtNode(key, 'variable "' + ruleHelpers_1.RuleHelpers.extractVariableNameInDeclaration(key) + '" is not re-initialized in beforeEach');
+                return _this.addFailureAtNode(key, "variable \"" + ruleHelpers_1.RuleHelpers.extractVariableNameInDeclaration(key) + "\" is not re-initialized in beforeEach");
             });
         }
     };

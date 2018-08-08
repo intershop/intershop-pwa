@@ -19,7 +19,7 @@ describe('Checkout Address Component', () => {
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
-          inputs: ['basket'],
+          inputs: ['totals'],
         }),
         MockComponent({
           selector: 'ish-basket-items-summary',
@@ -86,7 +86,7 @@ describe('Checkout Address Component', () => {
   it('should determine invoice addresses for the select box', () => {
     fixture.detectChanges();
     component.ngOnChanges();
-    expect(component.invoiceAddresses.length).toEqual(2);
+    expect(component.invoiceAddresses).toHaveLength(2);
     expect(component.invoiceAddresses[0].id).toEqual('4712');
     expect(component.invoiceAddresses[1].id).toEqual('4714');
   });
@@ -95,7 +95,7 @@ describe('Checkout Address Component', () => {
   it('should determine shipping addresses for the select box', () => {
     fixture.detectChanges();
     component.ngOnChanges();
-    expect(component.shippingAddresses.length).toEqual(2);
+    expect(component.shippingAddresses).toHaveLength(2);
     expect(component.shippingAddresses[0].id).toEqual('4712');
     expect(component.shippingAddresses[1].id).toEqual('4713');
   });
@@ -103,14 +103,12 @@ describe('Checkout Address Component', () => {
   it('should throw updateInvoiceAddress event when invoice address form value id changes', done => {
     fixture.detectChanges();
 
-    let formValue = '';
-    component.updateInvoiceAddress.subscribe(x => {
-      formValue = x;
+    component.updateInvoiceAddress.subscribe(formValue => {
+      expect(formValue).toBe('testId');
       done();
     });
 
     component.invoiceAddressForm.get('id').setValue('testId');
-    expect(formValue).toBe('testId');
   });
 
   it('should throw updateshippingAddress event when shipping address form value id changes', done => {

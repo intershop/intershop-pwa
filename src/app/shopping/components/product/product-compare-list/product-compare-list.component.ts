@@ -22,22 +22,26 @@ export class ProductCompareListComponent implements OnChanges {
   /**
    * The list of products to compare
    */
-  @Input() compareProducts: Product[] = [];
+  @Input()
+  compareProducts: Product[] = [];
 
   /**
    * The maximum number of products to be compared on one page
    */
-  @Input() itemsPerPage = 3;
+  @Input()
+  itemsPerPage = 3;
 
   /**
    * Trigger an add product to basket event
    */
-  @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
+  @Output()
+  productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
 
   /**
    * Trigger a remove product from compare event
    */
-  @Output() removeProductCompare = new EventEmitter<string>();
+  @Output()
+  removeProductCompare = new EventEmitter<string>();
 
   commonAttributeNames: Set<string>;
   visibleProducts: Product[] = [];
@@ -84,13 +88,7 @@ export class ProductCompareListComponent implements OnChanges {
       return commonAttributeNameList;
     }, []);
 
-    return new Set(
-      result.shift().filter(attribute => {
-        return result.every(x => {
-          return x.indexOf(attribute) !== -1;
-        });
-      })
-    );
+    return new Set(result.shift().filter(attribute => result.every(x => x.indexOf(attribute) !== -1)));
   }
 
   /**

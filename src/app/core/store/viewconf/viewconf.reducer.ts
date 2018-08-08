@@ -1,15 +1,16 @@
+import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
 import { ViewconfActions, ViewconfActionTypes } from './viewconf.actions';
 
 export interface ViewconfState {
   wrapperClass: string;
   headerType: string;
-  breadcrumbKey: string;
+  breadcrumbData: BreadcrumbItem[];
 }
 
 export const initialState: ViewconfState = {
   wrapperClass: undefined,
   headerType: undefined,
-  breadcrumbKey: undefined,
+  breadcrumbData: [],
 };
 
 export function viewconfReducer(state: ViewconfState = initialState, action: ViewconfActions) {
@@ -24,10 +25,10 @@ export function viewconfReducer(state: ViewconfState = initialState, action: Vie
         ...state,
         headerType: action.payload,
       };
-    case ViewconfActionTypes.SetBreadcrumbKey:
+    case ViewconfActionTypes.SetBreadcrumbData:
       return {
         ...state,
-        breadcrumbKey: action.payload,
+        breadcrumbData: action.payload,
       };
   }
 

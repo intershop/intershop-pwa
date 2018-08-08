@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { ModalDialogComponent } from './modal-dialog.component';
 
 describe('Modal Dialog Component', () => {
@@ -11,7 +11,6 @@ describe('Modal Dialog Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ModalModule.forRoot(), TranslateModule.forRoot()],
-      providers: [BsModalService],
       declarations: [ModalDialogComponent],
     }).compileComponents();
   }));
@@ -20,7 +19,9 @@ describe('Modal Dialog Component', () => {
     fixture = TestBed.createComponent(ModalDialogComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.title = 'title';
+    component.options = {
+      titleText: 'test',
+    };
   });
 
   it('should be created', () => {
@@ -38,5 +39,18 @@ describe('Modal Dialog Component', () => {
   it('should not display modal dialog when show function is not called', () => {
     fixture.detectChanges();
     expect(component.bsModalDialog).toBeFalsy();
+  });
+
+  it('should output input data on confirm', done => {
+    let firedData;
+
+    component.show('test');
+    component.confirmed.subscribe(data => {
+      firedData = data;
+      done();
+    });
+    component.confirm();
+
+    expect(firedData).toBe('test');
   });
 });

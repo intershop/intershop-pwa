@@ -14,93 +14,18 @@
   <form [formGroup]="form" (ngSubmit)="submitForm()">
     <div class="row">
       <div class="col-sm-12 col-md-8">
-        <!-- Line Items Overview -->
-        <div class="list-header hidden-xs">
-          <div class="col-sm-8 col-lg-6 list-header-item list-header-item-descr">{{ 'shopping_cart.product_description.heading' | translate }}</div>
-          <div class="hidden-sm hidden-md col-lg-2 list-header-item text-right">{{ 'shopping_cart.qty.heading' | translate }}</div>
-          <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
-          <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
-        </div>
-        <div class="list-body" formArrayName="items">
-          <div *ngFor="let pli of basket.lineItems; let i = index" class="list-item-row list-item-row-big">
 
-            <!-- Product Image -->
-            <div class="col-xs-2 list-item">
-              <a [routerLink]="generateProductRoute(pli.product)">
-                <ish-product-image [product]="pli.product" imageType="S" class="product-image"></ish-product-image>
-              </a>
-            </div>
+        <ish-line-item-list
+          *ngIf="basket"
+          [lineItems]="basket.lineItems"
+          (formChange)="onFormChange($event)"
+          (deleteItem)="onDeleteItem($event)"
+        ></ish-line-item-list>
 
-            <div class="col-xs-7 col-sm-6 list-item descr-container">
-              <!--Product Description -->
-              <div class="col-lg-9 list-item">
-                <div class="pli-description">
-                  <a [routerLink]="generateProductRoute(pli.product)">
-                    {{ pli.name }}
-                  </a>
-
-                  <ish-basket-item-description [pli]="pli"></ish-basket-item-description>
-
-                  <a class="btn-tool"
-                    [attr.data-testing-id]="'remove-pli-'+pli.id+'-element'"
-                    [attr.data-id]="pli.id"
-                    title="{{'shopping_cart.remove.item.button.label' | translate }}"
-                    (click)="onDeleteItem(pli.id)"
-                  >
-                    <span class="glyphicon glyphicon-trash"></span>
-                  </a>
-                </div>
-
-                <!-- TODO: #IS-23184 : display rebate details -->
-                <div *ngFor="let rebate of pli.valueRebates">
-                  {{ rebate.rebateType}}
-                  <span class="text-nowrap">{{ rebate.amount | ishPrice }}</span>
-                </div>
-              </div>
-              <div class="quantity col-lg-3 list-item text-right" [formGroupName]="i">
-                <div class="form-group">
-                  <ng-container *ngIf="!pli.isFreeGift">
-                    <ish-input
-                      [form]="form.controls['items'].controls[i]"
-                      controlName="quantity"
-                      type="number"
-                      label="shopping_cart.pli.qty.label"
-                      labelClass="hidden-lg control-label"
-                      inputClass=""
-                      min="0"
-                      [max]="pli.product.maxOrderQuantity"
-                      [errorMessages]="{
-                        'required':'shopping_cart.quantity.invalid.error',
-                        'max':'shopping_cart.quantity.invalid.error.maxvalue',
-                        'integer': 'shopping_cart.quantity.invalid.error'
-                      }"
-                    ></ish-input>
-                  </ng-container>
-                  <ng-container *ngIf="pli.isFreeGift">
-                    <label class="hidden-lg control-label">{{'shopping_cart.pli.qty.label' | translate}}</label>
-                    {{pli.quantity.value | number}}
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-
-            <!-- Prices -->
-            <div class="col-sm-2 hidden-xs list-item column-price single-price">
-              {{ pli.singleBasePrice | ishPrice }}
-            </div>
-            <div class="col-xs-3 col-sm-2 list-item column-price">
-              <div>
-                {{ pli.totals.total | ishPrice }}
-              </div>
-              <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
-                {{ pli.price | ishPrice }}
-              </div>
-              <div *ngIf="pli.isFreeGift" class="list-item-promo">
-                {{ 'checkout.pli.freegift.text' | translate }}
-              </div>
-            </div>
-          </div>
-        </div>
+        <ish-basket-add-to-quote
+          *ishFeature="'quoting'"
+          (basketToQuote)="onAddToQuote()"
+        ></ish-basket-add-to-quote>
 
         <button
           type="submit"
@@ -117,7 +42,7 @@
 
         <div class="cost-summary">
           <!-- Cost Summary Component -->
-          <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+          <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
           <!-- ToDo: ISREST-275: disable button if basket max value is exceeded -->
           <button type="submit" class="btn btn-lg btn-block btn-primary" (click)="checkout()">
@@ -130,8 +55,7 @@
 </div>
 
 <ish-modal-dialog #modalDialog
-  [title]="'checkout.safeandsecure.details.title' | translate"
-  modalClass="modal-lg"
+  [options]="{ titleText: 'checkout.safeandsecure.details.title' | translate, modalClass: 'modal-lg' }"
 >
   <div [innerHTML]="'checkout.safeandsecure.details.text' | translate"></div>
 </ish-modal-dialog>

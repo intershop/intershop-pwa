@@ -128,7 +128,7 @@ describe('Product Image Component', () => {
     });
 
     it('should show product sku when product name not available', () => {
-      product.name = null;
+      product.name = undefined;
       product.sku = '1234';
       fixture.detectChanges();
       expect(element.querySelector('img').getAttribute('alt')).toBe('1234 product photo');

@@ -8,8 +8,10 @@ import { Locale } from '../../../models/locale/locale.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationPersonalFormComponent implements OnInit {
-  @Input() parentForm: FormGroup;
-  @Input() languages: Locale[];
+  @Input()
+  parentForm: FormGroup;
+  @Input()
+  languages: Locale[];
 
   ngOnInit() {
     if (!this.parentForm) {

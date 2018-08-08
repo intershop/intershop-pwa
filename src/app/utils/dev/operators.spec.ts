@@ -1,6 +1,6 @@
-// tslint:disable:use-async-synchronisation-in-tests
-import { cold, hot } from 'jasmine-marbles';
-import { Subject } from 'rxjs';
+// tslint:disable:no-console
+import { cold, hot } from 'jest-marbles';
+import { noop, Subject } from 'rxjs';
 import { log } from './operators';
 
 describe('Operators', () => {
@@ -8,14 +8,15 @@ describe('Operators', () => {
     let subject$: Subject<string>;
 
     beforeEach(() => {
-      // tslint:disable-next-line:ban
-      spyOn(console, 'log');
-      subject$ = new Subject<string>();
+      jest.spyOn(console, 'log').mockImplementation(noop);
+      subject$ = new Subject();
     });
 
-    it('should call console.log with custom message for each emitted value', () => {
-      // tslint:disable-next-line:no-empty
-      subject$.pipe(log('message')).subscribe(() => {});
+    it('should call console.log with custom message for each emitted value', done => {
+      subject$.pipe(log('message')).subscribe(noop, fail, () => {
+        expect(console.log).toHaveBeenCalledTimes(3);
+        done();
+      });
 
       subject$.next('a');
       expect(console.log).toHaveBeenCalledWith('message', 'a');
@@ -23,32 +24,31 @@ describe('Operators', () => {
       subject$.next('b');
       subject$.next('c');
 
-      expect(console.log).toHaveBeenCalledTimes(3);
+      subject$.complete();
     });
 
-    it('should leave message blank if none given', () => {
-      // tslint:disable-next-line:no-empty
-      subject$.pipe(log()).subscribe(() => {});
+    it('should leave message blank if none given', done => {
+      subject$.pipe(log()).subscribe(() => {
+        expect(console.log).toHaveBeenCalledWith('', 'a');
+        done();
+      });
 
       subject$.next('a');
-      expect(console.log).toHaveBeenCalledWith('', 'a');
     });
 
-    it('should leave emitted values for stream unchanged', () => {
-      let result;
-      subject$.pipe(log()).subscribe(e => (result = e));
+    it('should leave emitted values for stream unchanged', done => {
+      subject$.pipe(log()).subscribe(e => {
+        expect(e).toEqual('a');
+        done();
+      });
 
       subject$.next('a');
-      expect(result).toEqual('a');
-
-      subject$.next('b');
-      expect(result).toEqual('b');
     });
 
     it('should leave emitted values for stream unchanged (marble test)', () => {
-      const source$ = hot('-a-a-bc', { a: 'a', b: 'b', c: 'c' });
+      const source$ = hot('-a-a-bc---|');
       const piped$ = source$.pipe(log());
-      const expected$ = cold('-a-a-bc', { a: 'a', b: 'b', c: 'c' });
+      const expected$ = cold('-a-a-bc---|');
 
       expect(piped$).toBeObservable(expected$);
     });

@@ -6,7 +6,7 @@ import { FeatureToggleService } from '../services/feature-toggle.service';
 export class FeatureToggleGuard implements CanActivate {
   constructor(private featureToggleService: FeatureToggleService, private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): boolean {
     if (!this.featureToggleService.enabled(route.data.feature)) {
       this.router.navigate(['/error']);
       return false;

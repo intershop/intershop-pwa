@@ -8,8 +8,10 @@ import { Region } from '../../../../models/region/region.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressFormDefaultComponent implements OnInit {
-  @Input() addressForm: FormGroup;
-  @Input() regions: Region[];
+  @Input()
+  addressForm: FormGroup;
+  @Input()
+  regions: Region[];
 
   ngOnInit() {
     if (!this.addressForm) {

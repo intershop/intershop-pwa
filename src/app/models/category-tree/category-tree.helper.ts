@@ -34,14 +34,13 @@ export class CategoryTreeHelper {
     }
 
     // set category as root if it has just one element in categoryPath
-    const rootIds = [];
-    if (category.categoryPath && category.categoryPath.length === 1) {
-      rootIds.push(category.uniqueId);
-    }
+    const rootIds = category.categoryPath && category.categoryPath.length === 1 ? [category.uniqueId] : [];
+
+    const nodes = { [category.uniqueId]: { ...category } };
 
     return {
       edges,
-      nodes: { [category.uniqueId]: { ...category } },
+      nodes,
       rootIds,
     };
   }
@@ -60,6 +59,54 @@ export class CategoryTreeHelper {
     return current;
   }
 
+  private static mergeEdges(
+    current: { [id: string]: string[] },
+    incoming: { [id: string]: string[] }
+  ): { [id: string]: string[] } {
+    const edges = { ...current };
+    Object.keys(incoming).forEach(key => {
+      if (current[key]) {
+        let master: string[];
+        let slave: string[];
+
+        // node with more available edges is trustworthy
+        if (incoming[key] && incoming[key].length > current[key].length) {
+          master = incoming[key];
+          slave = current[key];
+        } else {
+          master = current[key];
+          slave = incoming[key];
+        }
+
+        // add edges from both and remove duplicates
+        edges[key] = CategoryTreeHelper.removeDuplicates([...master, ...slave]);
+      } else {
+        edges[key] = [...incoming[key]];
+      }
+    });
+    return edges;
+  }
+
+  private static mergeRootIDs(current: string[], incoming: string[]): string[] {
+    // node with more available rootIDs is trustworthy
+    if (incoming && incoming.length > current.length) {
+      return CategoryTreeHelper.removeDuplicates([...incoming, ...current]);
+    } else {
+      return CategoryTreeHelper.removeDuplicates([...current, ...incoming]);
+    }
+  }
+
+  private static mergeNodes(
+    current: { [id: string]: Category },
+    incoming: { [id: string]: Category }
+  ): { [id: string]: Category } {
+    const nodes = { ...current };
+    Object.keys(incoming).forEach(key => {
+      nodes[key] = { ...CategoryTreeHelper.updateStrategy(current[key], incoming[key]) };
+    });
+    return nodes;
+  }
+
   /**
    * Merge two trees to a new tree.
    * Updates category nodes according to updateStrategy.
@@ -69,26 +116,11 @@ export class CategoryTreeHelper {
       throw new Error('falsy input');
     }
 
-    // merge edges
-    const edges = { ...current.edges };
-    Object.keys(incoming.edges).forEach(key => {
-      if (current.edges[key]) {
-        // add edges from both and remove duplicates
-        edges[key] = this.removeDuplicates([...edges[key], ...incoming.edges[key]]);
-      } else {
-        edges[key] = [...incoming.edges[key]];
-      }
-    });
-
-    // overwriting nodes
-    const nodes = { ...current.nodes };
-    Object.keys(incoming.nodes).forEach(key => {
-      nodes[key] = { ...this.updateStrategy(current.nodes[key], incoming.nodes[key]) };
-    });
-
-    const rootIds = this.removeDuplicates([...current.rootIds, ...incoming.rootIds]);
-
-    return { edges, nodes, rootIds };
+    return {
+      edges: CategoryTreeHelper.mergeEdges(current.edges, incoming.edges),
+      nodes: CategoryTreeHelper.mergeNodes(current.nodes, incoming.nodes),
+      rootIds: CategoryTreeHelper.mergeRootIDs(current.rootIds, incoming.rootIds),
+    };
   }
 
   /**

@@ -27,6 +27,12 @@
     >
       <span class="glyphicon glyphicon-equalizer"></span>
     </button>
+    <ish-product-add-to-quote
+      *ishFeature="'quoting'"
+      displayType="glyphicon"
+      class="btn-link"
+      (productToQuote)="addToQuote()"
+    ></ish-product-add-to-quote>
   </div>
 
 </div>

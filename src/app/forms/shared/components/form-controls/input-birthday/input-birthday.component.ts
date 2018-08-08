@@ -9,8 +9,10 @@ import { FormElement } from '../form-element';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class InputBirthdayComponent extends FormElement implements OnInit {
-  @Input() minYear = 0;
-  @Input() maxYear = 9999;
+  @Input()
+  minYear = 0;
+  @Input()
+  maxYear = 9999;
   dateForm: FormGroup;
   minDay = 1;
   maxDay = 31;
@@ -86,7 +88,7 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     ) {
       day = day.length === 1 ? '0' + day : day;
       month = month.length === 1 ? '0' + month : month;
-      birthday = year + '-' + month + '-' + day;
+      birthday = `${year}-${month}-${day}`;
     }
 
     this.form.get(this.controlName).setValue(birthday);

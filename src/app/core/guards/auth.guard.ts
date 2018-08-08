@@ -13,7 +13,7 @@ import { getUserAuthorized } from '../store/user';
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private store: Store<CoreState>, private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.store.pipe(
       select(getUserAuthorized),
       take(1),

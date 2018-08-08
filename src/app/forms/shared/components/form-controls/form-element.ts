@@ -4,12 +4,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 
 export class FormElement {
-  @Input() form: FormGroup; // required
-  @Input() controlName: string; // required
-  @Input() errorMessages: { [key: string]: string };
-  @Input() label: string; // localization key or a string
-  @Input() labelClass = 'col-sm-4';
-  @Input() inputClass = 'col-sm-8';
+  @Input()
+  form: FormGroup; // required
+  @Input()
+  controlName: string; // required
+  @Input()
+  errorMessages: { [key: string]: string };
+  @Input()
+  label: string; // localization key or a string
+  @Input()
+  labelClass = 'col-sm-4';
+  @Input()
+  inputClass = 'col-sm-8';
   @Input()
   markRequiredLabel =
     'auto'; /* values: 'auto' (default) - label is marked, if an required validator is set
@@ -60,7 +66,7 @@ export class FormElement {
         const formControl = new FormControl();
         if (this.form.get(this.controlName).validator) {
           const validationResult = this.form.get(this.controlName).validator(formControl);
-          required = validationResult !== null && validationResult.required === true;
+          required = !!validationResult && validationResult.required;
         }
         return required;
       }

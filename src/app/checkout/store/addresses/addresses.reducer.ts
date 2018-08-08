@@ -1,10 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Address } from '../../../models/address/address.model';
 import { AddressAction, AddressActionTypes } from './addresses.actions';
-import { AddressesState } from './addresses.reducer';
 
-export const addressAdapter: EntityAdapter<Address> = createEntityAdapter<Address>({});
+export const addressAdapter = createEntityAdapter<Address>({});
 
 export interface AddressesState extends EntityState<Address> {
   loading: boolean;
@@ -13,7 +12,7 @@ export interface AddressesState extends EntityState<Address> {
 
 export const initialState: AddressesState = addressAdapter.getInitialState({
   loading: false,
-  error: null,
+  error: undefined,
 });
 
 export function addressesReducer(state = initialState, action: AddressAction): AddressesState {
@@ -40,7 +39,7 @@ export function addressesReducer(state = initialState, action: AddressAction): A
 
       return {
         ...addressAdapter.addAll(loadedAddresses, state),
-        error: null,
+        error: undefined,
         loading: false,
       };
     }

@@ -1,0 +1,128 @@
+<form [formGroup]="form">
+  <!-- Line Items Overview -->
+  <div class="list-header hidden-xs">
+    <div class="col-sm-8 col-lg-6 list-header-item list-header-item-descr">{{ 'shopping_cart.product_description.heading' | translate }}</div>
+    <div class="hidden-sm hidden-md col-lg-2 list-header-item" [ngClass]="{'text-right': editable}">{{ 'shopping_cart.qty.heading' | translate }}</div>
+    <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
+    <div class="col-sm-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
+  </div>
+  <div *ngIf="form.controls['items']" class="list-body" formArrayName="items">
+    <ng-template ngFor let-pli [ngForOf]= "lineItems" let-i="index">
+      <div *ngIf="pli.product" class="list-item-row list-item-row-big">
+        <!-- Product Image -->
+        <div class="col-xs-2 list-item">
+          <a [routerLink]="generateProductRoute(pli.product)">
+            <ish-product-image [product]="pli.product" imageType="S" class="product-image"></ish-product-image>
+          </a>
+        </div>
+
+        <div *ngIf="form.controls['items'].controls[i]" class="col-xs-7 col-sm-6 list-item descr-container">
+          <!--Product Description -->
+          <div class="col-lg-9 list-item">
+            <div class="pli-description">
+              <a [routerLink]="generateProductRoute(pli.product)">
+                {{ pli.product.name }}
+              </a>
+
+              <ish-line-item-description [pli]="pli"></ish-line-item-description>
+
+              <a class="btn-tool"
+                *ngIf="editable"
+                [attr.data-testing-id]="'remove-pli-'+pli.id+'-element'"
+                [attr.data-id]="pli.id"
+                title="{{'shopping_cart.remove.item.button.label' | translate }}"
+                (click)="onDeleteItem(pli.id)"
+              >
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            </div>
+
+            <!-- TODO: #IS-23184 : display rebate details -->
+            <ng-container *ngIf="pli.valueRebates">
+              <div *ngFor="let rebate of pli.valueRebates">
+                {{ rebate.rebateType }}
+                <span class="text-nowrap">{{ rebate.amount | ishPrice }}</span>
+              </div>
+            </ng-container>
+          </div>
+          <div class="quantity col-lg-3 list-item" [ngClass]="{'text-right': editable}" [formGroupName]="i">
+            <div class="form-group">
+              <ng-container *ngIf="!pli.isFreeGift && editable">
+                <ish-input
+                  [form]="form.controls['items'].controls[i]"
+                  controlName="quantity"
+                  type="number"
+                  label="shopping_cart.pli.qty.label"
+                  labelClass="hidden-lg control-label"
+                  inputClass=""
+                  min="0"
+                  [max]="pli.product.maxOrderQuantity"
+                  [errorMessages]="{
+                    'required':'shopping_cart.quantity.invalid.error',
+                    'max':'shopping_cart.quantity.invalid.error.maxvalue',
+                    'integer': 'shopping_cart.quantity.invalid.error'
+                  }"
+                ></ish-input>
+              </ng-container>
+              <ng-container *ngIf="(pli.isFreeGift && editable) || !editable">
+                <label class="hidden-lg control-label">{{ 'shopping_cart.pli.qty.label' | translate }}</label>
+                {{ pli.quantity.value | number }}
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prices -->
+        <div class="col-sm-2 hidden-xs list-item column-price single-price">
+          <!-- Original Single Base Price  -->
+          <p *ngIf="pli.originSingleBasePrice" class="text-nowrap">
+            {{ 'quote.items.original_price.label' | translate }}
+            {{ pli.originSingleBasePrice | ishPrice }}
+          </p>
+
+          <!-- (Suggested) Single Base Price  -->
+          <p class="text-nowrap">
+            <ng-container *ngIf="pli.originSingleBasePrice">{{ 'quote.items.suggested_price.label' | translate }}</ng-container>
+            {{ pli.singleBasePrice | ishPrice }}
+          </p>
+        </div>
+        <div class="col-xs-3 col-sm-2 list-item column-price">
+          <div>
+            <!-- Original Total Price  -->
+            <p *ngIf="pli.totals.originTotal" class="text-nowrap">
+              {{ pli.totals.originTotal | ishPrice }}
+            </p>
+
+            <!-- (Suggested) Total Price  -->
+            <p class="text-nowrap">
+              {{ pli.totals.total | ishPrice }}
+            </p>
+          </div>
+
+          <!-- Value Rebates Total -->
+          <div *ngIf="pli.totals.valueRebatesTotal" class="old-price">
+            {{ pli.price | ishPrice }}
+          </div>
+
+          <!-- Gift -->
+          <div *ngIf="pli.isFreeGift" class="list-item-promo">
+            {{ 'checkout.pli.freegift.text' | translate }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <div *ngIf="total && form.controls['items'] && lineItems.length > 0" class="clearfix section section-seperator">
+    <div class="list-body">
+        <!-- TODO: remove style attribute -->
+        <div class="col-sm-2 col-sm-offset-8 text-right" style="padding-right: 0;">
+          {{ 'quote.items.total.label' | translate }}
+        </div>
+        <!-- TODO: remove style attribute -->
+        <div class="col-sm-2" style="padding-right: 0;">
+          <div class="total-price text-right" >{{ total | ishPrice }}</div>
+        </div>
+    </div>
+  </div>
+</form>

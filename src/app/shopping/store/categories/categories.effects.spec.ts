@@ -3,11 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
-import { capture } from 'ts-mockito/lib/ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
@@ -44,9 +43,7 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategory('invalid')).thenReturn(
       throwError({ message: 'invalid category' } as HttpErrorResponse)
     );
-    when(categoriesServiceMock.getTopLevelCategories(2)).thenCall(() => {
-      return of(TOP_LEVEL_CATEGORIES);
-    });
+    when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of(TOP_LEVEL_CATEGORIES));
     when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(
       throwError({ message: 'invalid number' } as HttpErrorResponse)
     );
@@ -108,25 +105,19 @@ describe('Categories Effects', () => {
     });
 
     it('should not trigger SelectCategory when category is already selected', () => {
-      store$.dispatch(new fromActions.SelectCategory('dummy'));
-
       const action = new RouteNavigation({
         path: 'category/:categoryUniqueId',
         params: { categoryUniqueId: 'dummy' },
         queryParams: {},
       });
+      const expected = new fromActions.SelectCategory('dummy');
 
-      actions$ = hot('a', { a: action });
-      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-'));
+      actions$ = hot('-a-a-a', { a: action });
+      expect(effects.routeListenerForSelectingCategory$).toBeObservable(cold('-a----', { a: expected }));
     });
   });
 
   describe('selectedCategory$', () => {
-    it('should do nothing for undefined category id', () => {
-      actions$ = hot('a', { a: new fromActions.SelectCategory(undefined) });
-      expect(effects.selectedCategory$).toBeObservable(cold('-'));
-    });
-
     describe('for root categories', () => {
       let category: CategoryView;
 
@@ -316,7 +307,9 @@ describe('Categories Effects', () => {
       });
 
       it('should do nothing when category already has an SKU list', () => {
-        store$.dispatch(new fromActions.SetProductSkusForCategory(category.uniqueId, ['P222', 'P333']));
+        store$.dispatch(
+          new fromActions.SetProductSkusForCategory({ categoryUniqueId: category.uniqueId, skus: ['P222', 'P333'] })
+        );
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));

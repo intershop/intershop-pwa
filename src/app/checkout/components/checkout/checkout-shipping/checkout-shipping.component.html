@@ -1,37 +1,49 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
     <!-- Messages -->
-    <div *ngIf="!basket.commonShippingMethod" role="alert" class="alert alert-danger">
+    <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
+      {{ error.status }}: {{ error.message }}
+    </div>
+    <div *ngIf="!basket.commonShippingMethod && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping_method.no_Selection.error' | translate }}
     </div>
     <!-- shipping method selection -->
     <form [formGroup]="shippingForm" class="form-horizontal" >
-      <div class="shipping-methods">
+      <div *ngIf="shippingMethods && shippingMethods.length > 0" class="shipping-methods">
         {{ 'checkout.shipping_method.selection.heading' | translate }}
-        <!-- ToDo: Should loop here over available shipping methods instead -->
-        <div *ngIf="basket.commonShippingMethod" class="radio">
-          <label [for]="'ShippingMethod_'+ basket.commonShippingMethod.id">
+
+        <div *ngFor="let shippingMethod of shippingMethods" class="radio">
+          <label [for]="'ShippingMethod_'+ shippingMethod.id">
             <input
               formControlName="id"
-              [id]="'ShippingMethod_'+ basket.commonShippingMethod.id"
-              [value]="basket.commonShippingMethod.id"
+              [id]="'ShippingMethod_'+ shippingMethod"
+              [value]="shippingMethod.id"
                type="radio"
             />
-
-            <span>{{ basket.commonShippingMethod.name }}:</span>&nbsp;
-            <span *ngIf="basket.commonShippingMethod.shippingTimeMin && basket.commonShippingMethod.shippingTimeMax" class="help-block help-block-inline">
+            <span>{{ shippingMethod.name }}:</span>&nbsp;
+            <!-- ToDo: #IS-24215: add product delivery times to the shipping method delivery times -->
+            <span *ngIf="shippingMethod.shippingTimeMin !== undefined && shippingMethod.shippingTimeMax" class="help-block help-block-inline">
               {{ 'checkout.shipping.delivery_time.description' | translate }}
-              <span *ngIf="basket.commonShippingMethod.shippingTimeMin === 0 && basket.commonShippingMethod.shippingTimeMax === 1">
+              <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
                   {{ 'checkout.shipping.delivery_time.within24' | translate}}
               </span>
-              <span *ngIf="basket.commonShippingMethod.shippingTimeMin === 0 && basket.commonShippingMethod.shippingTimeMax > 1">
-                  {{ 'checkout.shipping.delivery_time.within' | translate :{'0': basket.commonShippingMethod.shippingTimeMax} }}
+              <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax > 1">
+                  {{ 'checkout.shipping.delivery_time.within' | translate :{'0': shippingMethod.shippingTimeMax} }}
               </span>
-              <span *ngIf="basket.commonShippingMethod.shippingTimeMin > 0">
-                  {{ 'checkout.shipping.delivery_time' | translate :{'0': basket.commonShippingMethod.shippingTimeMin, '1': basket.commonShippingMethod.shippingTimeMax} }}
+              <span *ngIf="shippingMethod.shippingTimeMin > 0">
+                  {{ 'checkout.shipping.delivery_time' | translate :{'0': shippingMethod.shippingTimeMin, '1': shippingMethod.shippingTimeMax} }}
               </span>
             </span>
-            <!-- ToDo: Tooltip displaying shipping method description: see #IS-23744 -->
+            <ng-template #ShippingMethodDescription>
+              <span [innerHTML]="shippingMethod.description"></span>
+            </ng-template>
+            <a class="details-tooltip"
+              [popover]="ShippingMethodDescription"
+              placement="top"
+            >
+              {{'checkout.detail.text' | translate }}
+              <span class="glyphicon glyphicon-info-sign"></span>
+           </a>
           </label>
         </div>
       </div>
@@ -45,7 +57,7 @@
     <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>
 
     <div class="cost-summary">
-      <ish-basket-cost-summary [basket]="basket"></ish-basket-cost-summary>
+      <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
       <button
         class="btn btn-lg btn-block btn-primary"

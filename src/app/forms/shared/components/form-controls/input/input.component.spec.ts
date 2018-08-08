@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core/';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -67,6 +67,12 @@ describe('Input Component', () => {
     expect(element.querySelector('input[autocomplete=off]')).toBeTruthy();
   });
 
+  it('should render placeholder text if placeholderText set', () => {
+    component.placeholderText = 'placeholder';
+    fixture.detectChanges();
+    expect(element.querySelector('input[placeholder=placeholder]')).toBeTruthy();
+  });
+
   /*
     tests for parent class: form-element
   */
@@ -117,12 +123,12 @@ describe('Input Component', () => {
 
   // error are thrown if required input parameters are missing
   it('should throw an error if there is no form set as input parameter', () => {
-    component.form = null;
+    component.form = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should throw an error if there is no controlName set as input parameter', () => {
-    component.controlName = null;
+    component.controlName = undefined;
     expect(() => fixture.detectChanges()).toThrow();
   });
 

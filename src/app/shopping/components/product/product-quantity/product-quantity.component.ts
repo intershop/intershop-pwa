@@ -10,11 +10,16 @@ import { Product } from '../../../../models/product/product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductQuantityComponent implements OnInit {
-  @Input() product: Product;
-  @Input() parentForm: FormGroup;
-  @Input() controlName: string;
-  @Input() type?: string;
-  @Input() class?: string;
+  @Input()
+  product: Product;
+  @Input()
+  parentForm: FormGroup;
+  @Input()
+  controlName: string;
+  @Input()
+  type?: string;
+  @Input()
+  class?: string;
 
   readonly selectType = 'select';
 
@@ -36,7 +41,7 @@ export class ProductQuantityComponent implements OnInit {
   get quantityOptions(): SelectOption[] {
     return Array.from(
       { length: this.product.maxOrderQuantity - this.product.minOrderQuantity + 1 },
-      (value, index) =>
+      (_, index) =>
         ({
           label: (this.product.minOrderQuantity + index).toString(),
           value: (this.product.minOrderQuantity + index).toString(),

@@ -13,7 +13,7 @@ export const getCurrentBasket = createSelector(
   getProductEntities,
   (basket, products): BasketView =>
     !basket.basket
-      ? null
+      ? undefined
       : {
           ...basket.basket,
           lineItems: basket.lineItems.map(li => ({
@@ -27,3 +27,10 @@ export const getCurrentBasket = createSelector(
 export const getBasketLoading = createSelector(getBasketState, basket => basket.loading);
 
 export const getBasketError = createSelector(getBasketState, basket => basket.error);
+
+export const getBasketEligibleShippingMethods = createSelector(
+  getBasketState,
+  basket => basket.eligibleShippingMethods
+);
+
+export const getBasketEligiblePaymentMethods = createSelector(getBasketState, basket => basket.eligiblePaymentMethods);

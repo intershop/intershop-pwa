@@ -22,6 +22,9 @@ export const environment = {
   // global definition of the maximal depth of the main navigation sub categories
   mainNavigationMaxSubCategoriesDepth: 2,
 
+  // global definition of the endless scrolling page size
+  endlessScrollingItemsPerPage: 9,
+
   // experimental feature: enable the transfer of the application state to another tab or keep it after a full page refresh/load - disabled for now
   syncLocalStorage: false,
 
@@ -29,5 +32,6 @@ export const environment = {
   features: {
     compare: true,
     recently: true,
+    quoting: false,
   },
 };

@@ -17,7 +17,9 @@
 *.txt
 *.properties
 *.jar
+*.snap
 *config*.json
+.gitignore
 /*.*
 /node_modules
 /build

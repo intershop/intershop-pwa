@@ -46,25 +46,22 @@ export class SelectSecurityQuestionComponent extends SelectComponent implements 
 
     if (securityQuestions) {
       // Map questions array to an array of type SelectOption
-      options = securityQuestions.map(question => {
-        return {
-          label: question,
-          value: question,
-        };
-      });
+      options = securityQuestions.map(question => ({
+        label: question,
+        value: question,
+      }));
     }
     return options;
   }
 
   // define which security questions are shown - ToDo: should be done in a service
   private getSecurityQuestions() {
-    const questions = [
+    return [
       'account.security_question.maiden_name.text',
       'account.security_question.pet_name.text',
       'account.security_question.street_name.text',
       'account.security_question.elementary_school.text',
       'account.security_question.first_employer.text',
     ];
-    return questions;
   }
 }

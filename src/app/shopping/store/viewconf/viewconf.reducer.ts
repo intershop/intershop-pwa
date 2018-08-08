@@ -5,12 +5,16 @@ export interface ViewconfState {
   viewType: ViewType;
   sortBy: string;
   sortKeys: string[];
+  page: number;
+  total: number;
 }
 
 export const initialState: ViewconfState = {
   viewType: 'grid',
   sortBy: '',
   sortKeys: [],
+  page: -1,
+  total: -1,
 };
 
 export function viewconfReducer(state = initialState, action: fromViewconf.ViewconfAction): ViewconfState {
@@ -30,6 +34,24 @@ export function viewconfReducer(state = initialState, action: fromViewconf.Viewc
       return {
         ...state,
         sortKeys: [...sortKeys],
+      };
+    }
+
+    case fromViewconf.ViewconfActionTypes.SetPagingInfo: {
+      const page = action.payload.currentPage;
+      const total = action.payload.totalItems;
+      return {
+        ...state,
+        page,
+        total,
+      };
+    }
+
+    case fromViewconf.ViewconfActionTypes.ResetPagingInfo: {
+      return {
+        ...state,
+        page: initialState.page,
+        total: initialState.total,
       };
     }
   }

@@ -35,8 +35,30 @@ describe('Breadcrumb Component', () => {
   });
 
   it('should not render search term when not available', () => {
-    component.searchTerm = null;
+    component.searchTerm = undefined;
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id=breadcrumb-search-term]')).toBeFalsy();
+  });
+
+  describe('trail', () => {
+    it('should render items with translation keys if set', () => {
+      component.trail = [{ key: 'KEY' }, { key: 'KEY2' }];
+      fixture.detectChanges();
+      expect(element.textContent).toContain('KEY');
+      expect(element.textContent).toContain('KEY2');
+    });
+
+    it('should render items with text if set', () => {
+      component.trail = [{ text: 'TEXT' }, { text: 'TEXT2' }];
+      fixture.detectChanges();
+      expect(element.textContent).toContain('TEXT');
+      expect(element.textContent).toContain('TEXT2');
+    });
+
+    it('should render items with link if set', () => {
+      component.trail = [{ link: '/LINK' }, { link: '/LINK' }];
+      fixture.detectChanges();
+      expect(element.querySelectorAll('a')).toHaveLength(3);
+    });
   });
 });

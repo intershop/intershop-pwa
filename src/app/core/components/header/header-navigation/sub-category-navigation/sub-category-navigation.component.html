@@ -4,6 +4,10 @@
     <a *ngIf="subcategory.hasChildren()" (click)="toggleOpen(subcategory)" class="dropdown-toggle visible-xs">
       <span class="glyphicon" [ngClass]="isOpened(subcategory) ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
     </a>
-    <ish-sub-category-navigation [category]="subcategory" [subCategoriesDepth]="subCategoriesDepth+1"></ish-sub-category-navigation>
+    <ish-sub-category-navigation
+      *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth"
+      [category]="subcategory"
+      [subCategoriesDepth]="subCategoriesDepth + 1"
+     ></ish-sub-category-navigation>
   </li>
 </ul>

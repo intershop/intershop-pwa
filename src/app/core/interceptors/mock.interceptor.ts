@@ -12,8 +12,8 @@ import {
 import { Inject, Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import { MUST_MOCK_PATHS, NEED_MOCK } from '../../core/configurations/injection-keys';
-import { REST_ENDPOINT } from '../../core/services/state-transfer/factories';
+import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
+import { REST_ENDPOINT } from '../services/state-transfer/factories';
 
 const MOCK_DATA_ROOT = './assets/mock-data';
 
@@ -41,6 +41,7 @@ export class MockInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     const newUrl = this.getMockUrl(req);
+    // tslint:disable-next-line:no-console
     console.log(`redirecting '${req.url}' to '${newUrl}'`);
 
     return next.handle(req.clone({ url: newUrl, method: 'GET' })).pipe(
@@ -78,6 +79,7 @@ export class MockInterceptor implements HttpInterceptor {
    */
   private attachTokenIfNecessary(req: HttpRequest<any>, response: HttpResponse<any>): HttpResponse<any> {
     if ((this.isLoginAttempt(req) && this.isMockUserLoggingInSuccessfully(req)) || req.url.indexOf('customers') > -1) {
+      // tslint:disable-next-line:no-console
       console.log('attaching dummy token');
       return response.clone({ headers: response.headers.append('authentication-token', 'Dummy Token') });
     }
@@ -96,7 +98,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   private sanitize(value: string): string {
-    return value.replace(/[^a-zA-Z0-9-]/, '_');
+    return value.replace(/[^a-zA-Z0-9-]/g, '_');
   }
 
   private sanitizeParams(params: HttpParams): string {
@@ -106,7 +108,7 @@ export class MockInterceptor implements HttpInterceptor {
           .keys()
           .sort((a, b) => a.localeCompare(b))
           .map(key => `${this.sanitize(key)}_${this.sanitize(params.get(key))}`)
-          .reduce((a, b) => a + '_' + b, '');
+          .reduce((a, b) => `${a}_${b}`, '');
   }
 
   private urlHasToBeMocked(url: string): boolean {
@@ -138,9 +140,8 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   matchPath(requestedPath: string, pathArray: string[]) {
-    pathArray = pathArray || [];
-    for (const configPath of pathArray) {
-      if (new RegExp('^' + configPath + '$').test(requestedPath)) {
+    for (const configPath of pathArray || []) {
+      if (new RegExp(`^${configPath}$`).test(requestedPath)) {
         return true;
       }
     }

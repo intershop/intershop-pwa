@@ -1,3 +1,6 @@
+// TODO: this is needed to set properties from environment to providers.
+// In theory the platformBrowserDynamic method in main.ts could handle this but this breaks server-side rendering.
+// tslint:disable: do-not-import-environment
 import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
@@ -10,6 +13,7 @@ import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { TranslateService } from '@ngx-translate/core';
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
+import { environment } from '../environments/environment';
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,14 +36,10 @@ import {
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers } from './core/store/core.system';
 import { localStorageSyncReducer } from './core/store/local-storage-sync/local-storage-sync.reducer';
+import { QuotingModule } from './quoting/quoting.module';
 import { RegistrationModule } from './registration/registration.module';
-import { ShoppingModule } from './shopping/shopping.module';
-
-// TODO: this is needed to set properties from environment to providers.
-// In theory the platformBrowserDynamic method in main.ts could handle this but this breaks server-side rendering.
-// tslint:disable-next-line: do-not-import-environment
-import { environment } from '../environments/environment';
 import { FEATURE_TOGGLES } from './shared/feature-toggle/configurations/injection-keys';
+import { ShoppingModule } from './shopping/shopping.module';
 
 // tslint:disable-next-line: no-any
 export const metaReducers: MetaReducer<any>[] = [
@@ -62,6 +62,7 @@ export const metaReducers: MetaReducer<any>[] = [
     CheckoutModule,
     RegistrationModule,
     AccountModule,
+    QuotingModule,
     // AppRoutingModule needs to be imported last since it handles the '**' route that would otherwise overwrite any route that comes after it
     AppRoutingModule,
     StoreModule.forRoot(coreReducers, { metaReducers }),
@@ -74,17 +75,20 @@ export const metaReducers: MetaReducer<any>[] = [
     { provide: ICM_APPLICATION, useFactory: getICMApplication(), deps: [StatePropertiesService] },
     { provide: ICM_SERVER_URL, useFactory: getICMServerURL(), deps: [StatePropertiesService] },
     { provide: injectionKeys.NEED_MOCK, useValue: environment.needMock },
+    // tslint:disable-next-line:no-string-literal
     { provide: injectionKeys.MUST_MOCK_PATHS, useValue: environment['mustMockPaths'] },
     {
       provide: injectionKeys.MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
       useValue: environment.mainNavigationMaxSubCategoriesDepth,
     },
+    { provide: injectionKeys.ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: environment.endlessScrollingItemsPerPage },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
+    // tslint:disable-next-line:no-string-literal
     { provide: FEATURE_TOGGLES, useValue: environment['features'] },
   ],
   bootstrap: [AppComponent],

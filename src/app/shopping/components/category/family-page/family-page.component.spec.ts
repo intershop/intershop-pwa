@@ -29,6 +29,10 @@ describe('Family Page Component', () => {
           template: 'Products List Component',
           inputs: ['products', 'category', 'viewType'],
         }),
+        MockComponent({
+          selector: 'ish-filter-navigation',
+          template: 'Filter Navigation',
+        }),
       ],
     }).compileComponents();
   }));
