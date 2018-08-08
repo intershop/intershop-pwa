@@ -1,7 +1,6 @@
 
 
 <div class="modal-header">
-  <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()"><span aria-hidden="true">&times;</span></button>
   <h2 class="modal-title" *ngIf="!!quote">
     <!-- Titel and Description -->
     <ng-container *ngIf="quote.displayName; else noDisplayName">
@@ -11,6 +10,7 @@
       {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.number }}
     </ng-template>
   </h2>
+  <button type="button" class="close" [attr.aria-label]="'dialog.close.text' | translate" (click)="hide()"><span aria-hidden="true">&times;</span></button>
 </div>
 
 <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
