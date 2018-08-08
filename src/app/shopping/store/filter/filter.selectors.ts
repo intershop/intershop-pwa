@@ -5,4 +5,4 @@ const getFilterState = createSelector(getShoppingState, (state: ShoppingState) =
 
 export const getAvailableFilter = createSelector(getFilterState, state => state.availableFilter);
 
-export const getLoadingStatus = createSelector(getFilterState, state => state.loading);
+export const getFilterLoading = createSelector(getFilterState, state => state.loading);

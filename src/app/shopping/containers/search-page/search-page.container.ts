@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } f
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
-import { getLoadingStatus } from '../../store/filter';
+import { getFilterLoading } from '../../store/filter';
 import { getSearchLoading, getSearchTerm, SearchMoreProducts } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { getPagingLoading, getTotalItems, isProductsAvailable } from '../../store/viewconf';
@@ -30,7 +30,7 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
 
     this.searchLoading$ = combineLatest(
       this.store.pipe(select(getSearchLoading)),
-      this.store.pipe(select(getLoadingStatus)),
+      this.store.pipe(select(getFilterLoading)),
       this.store.pipe(select(getPagingLoading))
     ).pipe(map(([a, b, c]) => (a || b) && !c));
 
