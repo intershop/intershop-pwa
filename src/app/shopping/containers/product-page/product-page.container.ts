@@ -49,7 +49,7 @@ export class ProductPageContainerComponent implements OnInit {
   addToQuote({ sku, quantity }) {
     this.store.dispatch(new AddProductToQuoteRequest({ sku: sku, quantity: quantity }));
     this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
-      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
+      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent, { class: 'modal-lg' });
     });
   }
 }

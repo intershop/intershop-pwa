@@ -25,3 +25,9 @@
     }
   }
 }
+
+@media (max-width: $screen-sm-max) {
+  .navbar-expand-md > .container {
+    padding: 0 $space-default;
+  }
+}
