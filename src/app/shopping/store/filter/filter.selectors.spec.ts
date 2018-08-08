@@ -14,7 +14,7 @@ import {
   LoadFilterForCategoryFail,
   LoadFilterForCategorySuccess,
 } from './filter.actions';
-import { getAvailableFilter, getLoadingStatus } from './filter.selectors';
+import { getAvailableFilter, getFilterLoading } from './filter.selectors';
 
 describe('Filter Selectors', () => {
   let store$: LogEffects;
@@ -44,7 +44,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(getLoadingStatus(store$.state)).toBeTrue();
+      expect(getFilterLoading(store$.state)).toBeTrue();
     });
   });
 
@@ -54,7 +54,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
 
     it('should add the filter to the state', () => {
@@ -68,7 +68,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
 
     it('should set undefined to the filter in the state', () => {
@@ -82,7 +82,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeTrue();
+      expect(getFilterLoading(store$.state)).toBeTrue();
     });
   });
 
@@ -98,7 +98,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
   });
 
@@ -108,7 +108,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
   });
 });
