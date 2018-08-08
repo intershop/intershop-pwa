@@ -4,6 +4,7 @@ import { RuleHelpers } from './ruleHelpers';
 
 interface ImportPattern {
   import: string;
+  starImport: boolean;
   from: string;
   message: string;
   filePattern: string;
@@ -32,7 +33,14 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
           .getChildAt(0)
           .getChildAt(1);
 
-        if (pattern.import) {
+        if (pattern.starImport) {
+          if (importList.kind === SyntaxKind.AsKeyword) {
+            this.addFailureAtNode(
+              importStatement,
+              pattern.message || `Star imports from '${fromStringText}' are banned.`
+            );
+          }
+        } else if (pattern.import) {
           importList
             .getChildren()
             .filter(token => token.kind === SyntaxKind.ImportSpecifier)

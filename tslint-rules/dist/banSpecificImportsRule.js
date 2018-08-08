@@ -32,7 +32,12 @@ var BanSpecificImportsWalker = (function (_super) {
                     .getChildAt(1)
                     .getChildAt(0)
                     .getChildAt(1);
-                if (pattern.import) {
+                if (pattern.starImport) {
+                    if (importList.kind === typescript_1.SyntaxKind.AsKeyword) {
+                        _this.addFailureAtNode(importStatement, pattern.message || "Star imports from '" + fromStringText + "' are banned.");
+                    }
+                }
+                else if (pattern.import) {
                     importList
                         .getChildren()
                         .filter(function (token) { return token.kind === typescript_1.SyntaxKind.ImportSpecifier; })
