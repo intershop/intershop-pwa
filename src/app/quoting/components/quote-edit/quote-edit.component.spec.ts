@@ -1,11 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormGroup } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 import { BasketPageContainerComponent } from '../../../checkout/containers/basket-page/basket-page.container';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
+import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { QuoteEditComponent } from './quote-edit.component';
 
@@ -34,7 +36,7 @@ describe('Quote Edit Component', () => {
         MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
-      imports: [TranslateModule.forRoot(), FormsSharedModule],
+      imports: [TranslateModule.forRoot(), FormsSharedModule, RouterTestingModule],
     }).compileComponents();
   }));
 
@@ -60,6 +62,7 @@ describe('Quote Edit Component', () => {
         description: 'DESC',
         state: 'New',
       } as QuoteRequest;
+      component.user = {} as User;
     });
 
     describe('displayName', () => {

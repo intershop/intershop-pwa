@@ -4,8 +4,13 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
-import { DeleteQuote, getCurrentQuotes, getQuoteLoading } from '../../store/quote';
-import { DeleteQuoteRequest, getCurrentQuoteRequests, getQuoteRequestLoading } from '../../store/quote-request';
+import { DeleteQuote, getCurrentQuotes, getQuoteLoading, LoadQuotes } from '../../store/quote';
+import {
+  DeleteQuoteRequest,
+  getCurrentQuoteRequests,
+  getQuoteRequestLoading,
+  LoadQuoteRequests,
+} from '../../store/quote-request';
 import { QuotingState } from '../../store/quoting.state';
 
 @Component({
@@ -28,6 +33,9 @@ export class QuoteListPageContainerComponent implements OnInit {
     ).pipe(map(([quotes, quoteRequests]) => [...quotes, ...quoteRequests]));
     this.quoteLoading$ = this.store.pipe(select(getQuoteLoading));
     this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
+
+    this.store.dispatch(new LoadQuoteRequests());
+    this.store.dispatch(new LoadQuotes());
   }
 
   deleteItem(item: Quote | QuoteRequest) {

@@ -91,11 +91,21 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-default" [disabled]="!quote" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
     <button
       *ngIf="quote"
       [routerLink]="'/account/quote-request/' + quote.id"
-      type="submit" class="btn btn-primary"
+      type="submit"
+      class="btn btn-default"
+      [disabled]="!quote"
+      (click)="update()"
+    >
+      {{ 'quote.edit.button.save.label' | translate }}
+    </button>
+    <button
+      *ngIf="quote"
+      [routerLink]="'/account/quote-request/' + quote.id"
+      type="submit"
+      class="btn btn-primary"
       [disabled]="quote.items.length === 0"
       (click)="submit()"
     >
