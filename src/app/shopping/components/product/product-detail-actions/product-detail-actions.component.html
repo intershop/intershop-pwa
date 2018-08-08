@@ -13,7 +13,7 @@
         </a>
       </li>
 
-      <li class="d-xs-none d-md-block">
+      <li class="d-none d-md-block">
         <a href="javascript:window.print();" class="link-print" rel="nofollow">
           <!-- <span class="glyphicon glyphicon-print"></span> -->
           <fa-icon class="float-right" [icon]="['fas', 'print']"></fa-icon>
@@ -22,7 +22,7 @@
       </li>
 
       <ng-container *ishFeature="'compare'">
-        <li *ngIf="!isMasterProduct(product)" class="d-xs-none d-md-block" [attr.data-testing-id]="'compare-' + product.sku">
+        <li *ngIf="!isMasterProduct(product)" class="d-none d-md-block" [attr.data-testing-id]="'compare-' + product.sku">
           <a routerLink="/compare" (click)="addToCompare()" rel="nofollow" >
             <!-- <span class="glyphicon glyphicon-equalizer"></span> -->
             <fa-icon class="float-right" [icon]="['fas', 'check']"></fa-icon>
