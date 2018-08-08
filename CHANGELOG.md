@@ -8,6 +8,7 @@
 * new Homepage dummy teaser content
 * complete happy path Checkout steps
 * update Angular to 6.1.0 (+ update of other dependencies)
+* introduce manually managed change log
 
 
 # [0.2.0](https://repository.intershop.de//releases/com/intershop/public/source/intershop-pwa/0.2.0/) (2018-07-11)
