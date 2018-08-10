@@ -32,7 +32,12 @@ var BanSpecificImportsWalker = (function (_super) {
                     .getChildAt(1)
                     .getChildAt(0)
                     .getChildAt(1);
-                if (pattern.import) {
+                if (pattern.starImport) {
+                    if (importList.kind === typescript_1.SyntaxKind.AsKeyword) {
+                        _this.addFailureAtNode(importStatement, pattern.message || "Star imports from '" + fromStringText + "' are banned.");
+                    }
+                }
+                else if (pattern.import) {
                     importList
                         .getChildren()
                         .filter(function (token) { return token.kind === typescript_1.SyntaxKind.ImportSpecifier; })
@@ -42,7 +47,12 @@ var BanSpecificImportsWalker = (function (_super) {
                     });
                 }
                 else {
-                    _this.addFailureAtNode(fromStringToken, pattern.message || "Importing from '" + fromStringText + " is banned.");
+                    var fix = void 0;
+                    if (pattern.fix) {
+                        ruleHelpers_1.RuleHelpers.dumpNode(fromStringToken);
+                        fix = new Lint.Replacement(fromStringToken.getStart(), fromStringToken.getWidth(), "'" + fromStringText.replace(new RegExp(pattern.from), pattern.fix) + "'");
+                    }
+                    _this.addFailureAtNode(fromStringToken, pattern.message || "Importing from '" + fromStringText + " is banned.", fix);
                 }
             }
         });

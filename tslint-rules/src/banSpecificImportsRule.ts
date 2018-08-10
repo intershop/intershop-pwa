@@ -4,9 +4,11 @@ import { RuleHelpers } from './ruleHelpers';
 
 interface ImportPattern {
   import: string;
+  starImport: boolean;
   from: string;
   message: string;
   filePattern: string;
+  fix: string;
 }
 
 class BanSpecificImportsWalker extends Lint.RuleWalker {
@@ -32,7 +34,14 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
           .getChildAt(0)
           .getChildAt(1);
 
-        if (pattern.import) {
+        if (pattern.starImport) {
+          if (importList.kind === SyntaxKind.AsKeyword) {
+            this.addFailureAtNode(
+              importStatement,
+              pattern.message || `Star imports from '${fromStringText}' are banned.`
+            );
+          }
+        } else if (pattern.import) {
           importList
             .getChildren()
             .filter(token => token.kind === SyntaxKind.ImportSpecifier)
@@ -44,7 +53,20 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
               )
             );
         } else {
-          this.addFailureAtNode(fromStringToken, pattern.message || `Importing from '${fromStringText} is banned.`);
+          let fix;
+          if (pattern.fix) {
+            RuleHelpers.dumpNode(fromStringToken);
+            fix = new Lint.Replacement(
+              fromStringToken.getStart(),
+              fromStringToken.getWidth(),
+              `'${fromStringText.replace(new RegExp(pattern.from), pattern.fix)}'`
+            );
+          }
+          this.addFailureAtNode(
+            fromStringToken,
+            pattern.message || `Importing from '${fromStringText} is banned.`,
+            fix
+          );
         }
       }
     });
