@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { distinctUntilKeyChanged, filter, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
+import { ProductsActionTypes, SelectProduct } from '../products';
 import { getSelectedProduct } from '../products/products.selectors';
 import { ShoppingState } from '../shopping.state';
 
@@ -10,13 +12,16 @@ import * as recentlyActions from './recently.actions';
 
 @Injectable()
 export class RecentlyEffects {
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private actions: Actions, private store: Store<ShoppingState>) {}
 
   @Effect()
-  viewedProduct$ = this.store.pipe(
-    select(getSelectedProduct),
-    filter(product => !!product),
-    distinctUntilKeyChanged('sku'),
-    map(product => new recentlyActions.AddToRecently(product.sku))
+  viewedProduct$ = combineLatest(
+    this.actions.pipe(ofType<SelectProduct>(ProductsActionTypes.SelectProduct), filter(action => !!action.payload)),
+    this.store.pipe(select(getSelectedProduct), filter(product => !!product))
+  ).pipe(
+    filter(([action, product]) => action.payload === product.sku),
+    map(([, product]) => product.sku),
+    distinctUntilChanged(),
+    map(sku => new recentlyActions.AddToRecently(sku))
   );
 }

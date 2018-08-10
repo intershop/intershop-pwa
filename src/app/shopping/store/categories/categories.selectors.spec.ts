@@ -23,6 +23,7 @@ import {
   getSelectedCategory,
   getSelectedCategoryId,
   getTopLevelCategories,
+  isTopLevelCategoriesLoaded,
 } from './categories.selectors';
 
 describe('Categories Selectors', () => {
@@ -61,6 +62,7 @@ describe('Categories Selectors', () => {
 
     it('should not select any top level categories when used', () => {
       expect(getTopLevelCategories(store$.state)).toBeEmpty();
+      expect(isTopLevelCategoriesLoaded(store$.state)).toBeFalse();
     });
   });
 
@@ -143,6 +145,10 @@ describe('Categories Selectors', () => {
 
     it('should select root categories when used', () => {
       expect(getTopLevelCategories(store$.state).map(x => x.uniqueId)).toEqual(['A', 'B']);
+    });
+
+    it('should remember if top level categories are loaded', () => {
+      expect(isTopLevelCategoriesLoaded(store$.state)).toBeTrue();
     });
   });
 });

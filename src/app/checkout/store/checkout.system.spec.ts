@@ -117,7 +117,7 @@ describe('Checkout System', () => {
     when(categoriesServiceMock.getTopLevelCategories(anyNumber())).thenReturn(of(categoryTree()));
 
     const countryServiceMock = mock(CountryService);
-    when(countryServiceMock.getCountries()).thenReturn(of([]));
+    when(countryServiceMock.getCountries()).thenReturn(of([{ countryCode: 'DE', name: 'Germany' }]));
 
     const basketServiceMock = mock(BasketService);
     when(basketServiceMock.getBasket(anything())).thenCall(() => {

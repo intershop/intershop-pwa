@@ -11,7 +11,7 @@ import { FilterNavigation } from '../../../models/filter-navigation/filter-navig
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { FilterService } from '../../services/filter/filter.service';
-import { LoadCategorySuccess, SelectCategory } from '../categories';
+import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';
 import { LoadProduct } from '../products';
 import { SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
@@ -124,14 +124,16 @@ describe('Filter Effects', () => {
         } as Category,
       ]);
 
+      store$.dispatch(new LoadCategorySuccess(tree));
+      store$.dispatch(new SelectCategory('Cameras.Camcorder'));
+
+      actions$ = of(new SelectedCategoryAvailable('Cameras.Camcorder'));
+
       effects.loadFilterIfCategoryWasSelected$.subscribe(action => {
         expect(action.type).toEqual(fromActions.FilterActionTypes.LoadFilterForCategory);
         expect(action.payload.uniqueId).toEqual('Cameras.Camcorder');
         done();
       });
-
-      store$.dispatch(new LoadCategorySuccess(tree));
-      store$.dispatch(new SelectCategory('Cameras.Camcorder'));
     });
   });
 

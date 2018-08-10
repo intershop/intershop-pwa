@@ -206,13 +206,14 @@ describe('Products Effects', () => {
   });
 
   describe('languageChange$', () => {
-    it('should refetch product when language is changed distinctly ignoring the first time', () => {
+    it('should refetch product when language is changed distinctly', () => {
       const sku = 'P123';
 
+      store$.dispatch(new fromActions.LoadProductSuccess({ sku } as Product));
       store$.dispatch(new fromActions.SelectProduct(sku));
-      actions$ = hot('-a--b--b--a', { a: new SelectLocale(DE_DE), b: new SelectLocale(EN_US) });
+      actions$ = hot('-a--a--b--b--a', { a: new SelectLocale(DE_DE), b: new SelectLocale(EN_US) });
 
-      expect(effects.languageChange$).toBeObservable(cold('----a-----a', { a: new fromActions.LoadProduct(sku) }));
+      expect(effects.languageChange$).toBeObservable(cold('-a-----a-----a', { a: new fromActions.LoadProduct(sku) }));
     });
   });
 
