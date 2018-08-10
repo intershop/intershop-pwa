@@ -18,9 +18,9 @@ import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes } from '../../../core/store/locale';
 import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
-import * as categoriesActions from '../categories/categories.actions';
+import { SetProductSkusForCategory } from '../categories';
 import { ShoppingState } from '../shopping.state';
-import * as fromViewconf from '../viewconf';
+import { getSortBy, SetSortKeys } from '../viewconf';
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
 
@@ -49,13 +49,13 @@ export class ProductsEffects {
   loadProductsForCategory$ = this.actions$.pipe(
     ofType(productsActions.ProductsActionTypes.LoadProductsForCategory),
     map((action: productsActions.LoadProductsForCategory) => action.payload),
-    withLatestFrom(this.store.pipe(select(fromViewconf.getSortBy))),
+    withLatestFrom(this.store.pipe(select(getSortBy))),
     concatMap(([categoryUniqueId, sortBy]) =>
       this.productsService.getCategoryProducts(categoryUniqueId, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([res, entities]) => [
-          new categoriesActions.SetProductSkusForCategory({ categoryUniqueId: res.categoryUniqueId, skus: res.skus }),
-          new fromViewconf.SetSortKeys(res.sortKeys),
+          new SetProductSkusForCategory({ categoryUniqueId: res.categoryUniqueId, skus: res.skus }),
+          new SetSortKeys(res.sortKeys),
           ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
         ]),
         mapErrorToAction(productsActions.LoadProductFail)

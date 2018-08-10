@@ -10,7 +10,7 @@ import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { mapErrorToAction } from '../../../utils/operators';
 import { CoreState } from '../core.state';
-import * as errorActions from '../error/error.actions';
+import { GeneralError } from '../error';
 import * as userActions from './user.actions';
 import { getUserError } from './user.selectors';
 
@@ -22,7 +22,7 @@ function mapUserErrorToActionIfPossible<T>(specific) {
         of(
           error.headers.has('error-key')
             ? new specific(HttpErrorMapper.fromError(error))
-            : new errorActions.GeneralError(HttpErrorMapper.fromError(error))
+            : new GeneralError(HttpErrorMapper.fromError(error))
         )
       )
     );
