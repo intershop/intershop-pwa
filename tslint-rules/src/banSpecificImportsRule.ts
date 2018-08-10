@@ -8,6 +8,7 @@ interface ImportPattern {
   from: string;
   message: string;
   filePattern: string;
+  fix: string;
 }
 
 class BanSpecificImportsWalker extends Lint.RuleWalker {
@@ -52,7 +53,20 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
               )
             );
         } else {
-          this.addFailureAtNode(fromStringToken, pattern.message || `Importing from '${fromStringText} is banned.`);
+          let fix;
+          if (pattern.fix) {
+            RuleHelpers.dumpNode(fromStringToken);
+            fix = new Lint.Replacement(
+              fromStringToken.getStart(),
+              fromStringToken.getWidth(),
+              `'${fromStringText.replace(new RegExp(pattern.from), pattern.fix)}'`
+            );
+          }
+          this.addFailureAtNode(
+            fromStringToken,
+            pattern.message || `Importing from '${fromStringText} is banned.`,
+            fix
+          );
         }
       }
     });
