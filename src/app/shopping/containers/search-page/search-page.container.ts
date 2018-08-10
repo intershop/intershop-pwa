@@ -3,7 +3,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable, Subject, combineLatest } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
-import { getFilterLoading } from '../../store/filter';
 import { SearchMoreProducts, getSearchLoading, getSearchTerm } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { getPagingLoading, getTotalItems, isProductsAvailable } from '../../store/viewconf';
@@ -31,9 +30,8 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
 
     this.searchLoading$ = combineLatest(
       this.store.pipe(select(getSearchLoading)),
-      this.store.pipe(select(getFilterLoading)),
       this.store.pipe(select(getPagingLoading))
-    ).pipe(map(([a, b, c]) => (a || b) && !c));
+    ).pipe(map(([a, b]) => a && !b));
 
     this.productsAvailable$ = this.store.pipe(select(isProductsAvailable));
 

@@ -5,7 +5,6 @@ import { filter, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { getCategoryLoading, getSelectedCategory, getSelectedCategoryId } from '../../store/categories';
-import { getFilterLoading } from '../../store/filter';
 import { LoadMoreProductsForCategory } from '../../store/products';
 import { ShoppingState } from '../../store/shopping.state';
 import { getPagingLoading } from '../../store/viewconf';
@@ -30,9 +29,8 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
 
     this.categoryLoading$ = combineLatest(
       this.store.pipe(select(getCategoryLoading)),
-      this.store.pipe(select(getFilterLoading)),
       this.store.pipe(select(getPagingLoading))
-    ).pipe(map(([a, b, c]) => (a || b) && !c));
+    ).pipe(map(([a, b]) => a && !b));
 
     this.loadMore
       .pipe(withLatestFrom(this.store.pipe(select(getSelectedCategoryId))), takeUntil(this.destroy$))

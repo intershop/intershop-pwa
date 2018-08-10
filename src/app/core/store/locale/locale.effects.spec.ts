@@ -1,14 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jest-marbles';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
+import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
@@ -17,6 +18,7 @@ import { LocaleEffects } from './locale.effects';
 describe('Locale Effects', () => {
   let actions$: Observable<Action>;
   let effects: LocaleEffects;
+  let store$: Store<CoreState>;
   let translateServiceMock: TranslateService;
   const defaultLocales = [
     { lang: 'en_US', value: 'en', displayName: 'English' },
@@ -37,31 +39,31 @@ describe('Locale Effects', () => {
     });
 
     effects = TestBed.get(LocaleEffects);
+    store$ = TestBed.get(Store);
   });
 
   describe('setLocale$', () => {
-    it('should call TranslateService when SetLocale action is handled', done => {
-      const action = new SelectLocale({ lang: 'jp' } as Locale);
-
-      actions$ = of(action);
-
+    it('should call TranslateService when locale was selected', done => {
       effects.setLocale$.subscribe(() => {
         verify(translateServiceMock.use(anything())).once();
         const params = capture(translateServiceMock.use).last();
-        expect(params[0]).toEqual('jp');
+        expect(params[0]).toEqual('en_US');
         done();
       });
+
+      store$.dispatch(new SetAvailableLocales(defaultLocales));
+      store$.dispatch(new SelectLocale({ lang: 'en_US' } as Locale));
     });
   });
 
   describe('loadAllLocales$', () => {
-    it('should load all locales on first routing action and only then', () => {
+    it('should load all locales on first routing action', () => {
       const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
       const expected = new SetAvailableLocales(defaultLocales);
 
       actions$ = hot('-a--a-----a', { a: action });
 
-      expect(effects.loadAllLocales$).toBeObservable(cold('-(b|)-------------', { b: expected }));
+      expect(effects.loadAllLocales$).toBeObservable(cold('-b----------------', { b: expected }));
     });
   });
 

@@ -19,6 +19,7 @@ import { shoppingReducers } from '../shopping.system';
 import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading, ViewconfActionTypes } from '../viewconf';
 
 import {
+  PrepareNewSearch,
   SearchActionTypes,
   SearchMoreProducts,
   SearchProducts,
@@ -92,7 +93,9 @@ describe('Search Effects', () => {
         });
         actions$ = hot('a', { a: action });
 
-        expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts('dummy') }));
+        expect(effects.triggerSearch$).toBeObservable(
+          cold('(ab)', { a: new PrepareNewSearch(), b: new SearchProducts('dummy') })
+        );
       });
     });
 
