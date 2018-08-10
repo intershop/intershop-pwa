@@ -23,7 +23,7 @@ e2e:
   tags:
   - shell-executor
   - docker
-  script: docker build --file Dockerfile_e2e .
+  script: docker build --file Dockerfile_e2e --build-arg ICM_BASE_URL=${ICM_BASE_URL} .
 
 .job-template: &job_definition
   stage: publish
@@ -68,6 +68,7 @@ push_reports:
   - performance
   script:
   - docker build -t ${CI_REGISTRY_IMAGE}/reports:${CI_BUILD_REF}
+           --build-arg ICM_BASE_URL=${ICM_BASE_URL}
            --label revision="${CI_BUILD_REF}"
            --label project="${CI_PROJECT_URL}"
            --file Dockerfile_reports
