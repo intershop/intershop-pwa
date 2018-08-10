@@ -15,7 +15,7 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { CategoriesService } from '../../services/categories/categories.service';
-import * as productsActions from '../products/products.actions';
+import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import * as fromActions from './categories.actions';
@@ -289,7 +289,7 @@ describe('Categories Effects', () => {
 
     it('should do nothing when product is selected', () => {
       store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
-      store$.dispatch(new productsActions.SelectProduct('P222'));
+      store$.dispatch(new SelectProduct('P222'));
 
       expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
     });
@@ -335,7 +335,7 @@ describe('Categories Effects', () => {
           b: new fromActions.SelectedCategoryAvailable(category.uniqueId),
         });
 
-        const action = new productsActions.LoadProductsForCategory(category.uniqueId);
+        const action = new LoadProductsForCategory(category.uniqueId);
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
       });
 
