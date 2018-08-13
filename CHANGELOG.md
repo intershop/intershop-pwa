@@ -1,3 +1,11 @@
+# [0.4.0](https://repository.intershop.de//releases/com/intershop/public/source/intershop-pwa/0.4.0/) (2018-XX-XX)
+
+### Features
+
+* migration to Bootstrap 4
+* migration from Less to Sass
+
+
 # [0.3.0](https://repository.intershop.de//releases/com/intershop/public/source/intershop-pwa/0.3.0/) (2018-08-08)
 
 ### Features
