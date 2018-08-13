@@ -1,7 +1,13 @@
 <div class="row checkout-address-book">
 
     <!-- error messages -->
-    <div *ngIf="!basket.invoiceToAddress || !basket.commonShipToAddress" class="col-md-12">
+    <div *ngIf="error && error.status" class="col-md-12">
+      <div  role="alert" class="alert alert-danger">
+        {{ error.status }}: {{ error.error }}
+      </div>
+    </div>
+
+    <div *ngIf="(!basket.invoiceToAddress || !basket.commonShipToAddress) && !error" class="col-md-12">
       <div class="alert alert-danger">
         <p>{{ 'checkout.addresses.no_Selection.error' | translate }}</p>
       </div>
