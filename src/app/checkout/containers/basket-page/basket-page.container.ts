@@ -1,10 +1,17 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Basket } from '../../../models/basket/basket.model';
 import { AddBasketToQuoteRequest, getQuoteRequestLoading } from '../../../quoting/store/quote-request';
 import { QuotingState } from '../../../quoting/store/quoting.state';
-import { DeleteBasketItem, getBasketLoading, getCurrentBasket, UpdateBasketItems } from '../../store/basket';
+import {
+  DeleteBasketItem,
+  getBasketError,
+  getBasketLoading,
+  getCurrentBasket,
+  UpdateBasketItems,
+} from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
@@ -15,6 +22,7 @@ import { CheckoutState } from '../../store/checkout.state';
 export class BasketPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   basketLoading$: Observable<boolean>;
+  basketError$: Observable<HttpErrorResponse>;
   quoteRequestLoading$: Observable<boolean>;
 
   constructor(private store: Store<CheckoutState | QuotingState>) {}
@@ -22,6 +30,7 @@ export class BasketPageContainerComponent implements OnInit {
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.basketLoading$ = this.store.pipe(select(getBasketLoading));
+    this.basketError$ = this.store.pipe(select(getBasketError));
     this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
   }
 

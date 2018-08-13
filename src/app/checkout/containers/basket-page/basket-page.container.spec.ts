@@ -22,7 +22,11 @@ describe('Basket Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         BasketPageContainerComponent,
-        MockComponent({ selector: 'ish-shopping-basket', template: 'Shopping Basket Component', inputs: ['basket'] }),
+        MockComponent({
+          selector: 'ish-shopping-basket',
+          template: 'Shopping Basket Component',
+          inputs: ['basket', 'error'],
+        }),
         MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
         MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),

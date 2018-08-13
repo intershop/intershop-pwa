@@ -2,6 +2,7 @@
   <ng-container *ngIf="basket.lineItems.length; else emptyBasket">
     <ish-shopping-basket
       [basket]="basket"
+      [error]="basketError$ | async"
       (deleteItem)="deleteBasketItem($event)"
       (updateItems)="updateBasketItems($event)"
       (addBasketToQuote)="addBasketToQuote()"

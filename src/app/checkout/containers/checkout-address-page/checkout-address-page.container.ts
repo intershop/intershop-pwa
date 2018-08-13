@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
@@ -7,6 +8,7 @@ import { Basket } from '../../../models/basket/basket.model';
 import { getAddressesLoading, getAllAddresses } from '../../store/addresses';
 import { LoadAddresses } from '../../store/addresses/addresses.actions';
 import {
+  getBasketError,
   getBasketLoading,
   getCurrentBasket,
   UpdateBasketInvoiceAddress,
@@ -23,11 +25,13 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   addresses$: Observable<Address[]>;
   loading$: Observable<boolean>;
+  basketError$: Observable<HttpErrorResponse>;
 
   constructor(private store: Store<CheckoutState>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
+    this.basketError$ = this.store.pipe(select(getBasketError));
     this.store.dispatch(new LoadAddresses());
     this.addresses$ = this.store.pipe(select(getAllAddresses));
 

@@ -407,8 +407,7 @@ export class BasketEffects {
       basketActions.BasketActionTypes.AddQuoteToBasketSuccess,
       basketActions.BasketActionTypes.UpdateBasketItemsSuccess,
       basketActions.BasketActionTypes.DeleteBasketItemSuccess,
-      basketActions.BasketActionTypes.SetBasketPaymentSuccess,
-      basketActions.BasketActionTypes.SetBasketPaymentFail // is necessary because current payment method might be deleted
+      basketActions.BasketActionTypes.SetBasketPaymentSuccess
     ),
     mapTo(new basketActions.LoadBasket())
   );

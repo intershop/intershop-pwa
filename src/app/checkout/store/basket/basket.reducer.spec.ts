@@ -152,6 +152,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
   });
@@ -184,6 +185,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
   });
@@ -220,6 +222,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
   });
@@ -251,6 +254,7 @@ describe('Basket Reducer', () => {
         const state = basketReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
 
@@ -304,6 +308,7 @@ describe('Basket Reducer', () => {
 
         expect(state.eligibleShippingMethods).toEqual(payload);
         expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
   });
@@ -343,6 +348,7 @@ describe('Basket Reducer', () => {
 
         expect(state.eligiblePaymentMethods).toEqual(payload);
         expect(state.loading).toBeFalse();
+        expect(state.error).toBeUndefined();
       });
     });
   });
