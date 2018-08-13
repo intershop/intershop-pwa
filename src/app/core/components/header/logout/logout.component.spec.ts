@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { User } from '../../../../models/user/user.model';
+import { IconModule } from '../../../icon.module';
 import { LogoutComponent } from './logout.component';
 
 describe('Logout Component', () => {
@@ -11,7 +12,7 @@ describe('Logout Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), IconModule],
       declarations: [LogoutComponent],
     }).compileComponents();
   }));

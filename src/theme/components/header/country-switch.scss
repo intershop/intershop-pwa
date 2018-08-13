@@ -1,0 +1,100 @@
+header .header-utility {
+  .language-switch {
+    font-size: $font-size-sm;
+    font-family: $font-family-bold;
+    float: left;
+    margin-left: ($space-default * 2);
+    padding-left: $space-default/2;
+    padding-right: $space-default/2;
+
+    @media (max-width: $screen-xs-max) {
+      display: flex;
+      flex-direction: column;
+      float: none;
+      margin-right: $space-default * 3/2;
+      position: relative;
+
+      .language-switch-container {
+        top: 40px;
+      }
+    }
+
+    .dropdown-menu {
+      margin-top: 0;
+      min-width: 50px;
+    }
+
+    &.open {
+      background-color: $modal-content-bg;
+
+      .language-switch-link span {
+        color: $text-color-secondary;
+
+        &:hover {
+          color: $text-color-secondary;
+
+          .switch_arrow {
+            border-top: 4px solid $text-color-secondary;
+          }
+        }
+      }
+
+      .switch_arrow {
+        border-top: 4px solid $text-color-secondary;
+      }
+    }
+
+    .language-switch-link {
+      cursor: pointer;
+      color: $text-color-inverse;
+      text-transform: uppercase;
+
+      @media (max-width: $screen-xs-max) {
+        padding-top: 5px;
+      }
+
+      span {
+        color: $text-color-corporate;
+
+        &:hover {
+          color: darken($CORPORATE-PRIMARY, 10%);
+
+          .switch_arrow {
+            border-top: 4px solid darken($CORPORATE-PRIMARY, 10%);
+          }
+        }
+      }
+    }
+
+    .language-switch-menu-container {
+      box-shadow: 5px 0 4px -4px rgba(0, 0, 0, 0.12), -4px 0 4px -4px rgba(0, 0, 0, 0.12);
+      margin: -15px;
+      overflow: hidden;
+      padding: 15px;
+    }
+
+    .language-switch-container {
+      background: $color-inverse;
+      box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2);
+      padding: ($space-default * 2/3) $space-default;
+      position: absolute;
+      right: 15px;
+      z-index: 9999;
+
+      ul li {
+        font-family: $font-family-regular;
+        font-size: $font-size-base;
+        line-height: ($line-height-base * 1.5);
+        margin-right: 0px;
+
+        a {
+          color: $text-color-corporate;
+
+          &:hover {
+            color: darken($CORPORATE-PRIMARY, 10%);
+          }
+        }
+      }
+    }
+  }
+}

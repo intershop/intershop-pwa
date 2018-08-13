@@ -10,7 +10,7 @@ exports[`Category List Component should be created 1`] = `
   >
     
     <li
-      class="category-list-item col-xs-6 col-md-4"
+      class="category-list-item col-6 col-lg-4"
     >
       <div
         class="category-name"
@@ -34,7 +34,7 @@ exports[`Category List Component should be created 1`] = `
       </div>
     </li>
     <li
-      class="category-list-item col-xs-6 col-md-4"
+      class="category-list-item col-6 col-lg-4"
     >
       <div
         class="category-name"

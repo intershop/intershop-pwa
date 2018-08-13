@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12 col-md-8">
+  <div class="col-md-12 col-lg-8">
     <!-- Messages -->
     <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
       {{ error.status }}: {{ error.message }}
@@ -20,9 +20,9 @@
               [value]="shippingMethod.id"
                type="radio"
             />
-            <span>{{ shippingMethod.name }}:</span>&nbsp;
-            <!-- ToDo: #IS-24215: add product delivery times to the shipping method delivery times -->
-            <span *ngIf="shippingMethod.shippingTimeMin !== undefined && shippingMethod.shippingTimeMax" class="help-block help-block-inline">
+
+            <span>{{ basket.commonShippingMethod.name }}:</span>&nbsp;
+            <span *ngIf="basket.commonShippingMethod.shippingTimeMin && basket.commonShippingMethod.shippingTimeMax" class="form-text form-text-inline">
               {{ 'checkout.shipping.delivery_time.description' | translate }}
               <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
                   {{ 'checkout.shipping.delivery_time.within24' | translate}}
@@ -42,7 +42,8 @@
               placement="top"
             >
               {{'checkout.detail.text' | translate }}
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <!-- <span class="glyphicon glyphicon-info-sign"></span> -->
+              <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
            </a>
           </label>
         </div>
@@ -51,7 +52,7 @@
   </div>
 
   <!-- basket summary -->
-  <div class="col-sm-12 col-md-4 order-summary">
+  <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
     <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
     <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>

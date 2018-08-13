@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/c
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from '../../../../core/icon.module';
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 import { SearchBoxComponent } from './search-box.component';
 
@@ -13,7 +14,7 @@ describe('Search Box Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchBoxComponent],
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule],
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule, IconModule],
     })
       .overrideComponent(SearchBoxComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

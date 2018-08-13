@@ -13,9 +13,9 @@ export class FormElement {
   @Input()
   label: string; // localization key or a string
   @Input()
-  labelClass = 'col-sm-4';
+  labelClass = 'col-md-4';
   @Input()
-  inputClass = 'col-sm-8';
+  inputClass = 'col-md-8';
   @Input()
   markRequiredLabel =
     'auto'; /* values: 'auto' (default) - label is marked, if an required validator is set

@@ -2,6 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { TranslateModule } from '@ngx-translate/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Locale } from '../../../../models/locale/locale.model';
+import { IconModule } from '../../../icon.module';
 import { LanguageSwitchComponent } from './language-switch.component';
 
 describe('Language Switch Component', () => {
@@ -16,7 +17,7 @@ describe('Language Switch Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BsDropdownModule.forRoot(), TranslateModule.forRoot()],
+      imports: [BsDropdownModule.forRoot(), TranslateModule.forRoot(), IconModule],
       declarations: [LanguageSwitchComponent],
     })
       .compileComponents()

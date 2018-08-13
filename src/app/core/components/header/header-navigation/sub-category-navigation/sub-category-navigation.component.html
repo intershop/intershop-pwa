@@ -1,8 +1,12 @@
 <ul *ngIf="category.hasChildren()" class="category-level{{subCategoriesDepth}}" [ngClass]="{'dropdown-menu' : subCategoriesDepth === 1}">
   <li *ngFor="let subcategory of category.children()" class="main-navigation-level{{subCategoriesDepth}}-item" [ngClass]="{'open' : isOpened(subcategory)}">
     <a [routerLink]="['/category', subcategory.uniqueId]" [ngStyle]="{'width' : (!subcategory.hasChildren()) ? '100%' : ''}">{{subcategory.name}}</a>
-    <a *ngIf="subcategory.hasChildren()" (click)="toggleOpen(subcategory)" class="dropdown-toggle visible-xs">
-      <span class="glyphicon" [ngClass]="isOpened(subcategory) ? 'glyphicon-minus' : 'glyphicon-plus'"></span>
+    <a *ngIf="subcategory.hasChildren()" (click)="toggleOpen(subcategory)" class="dropdown-toggle d-md-none">
+      <!-- <span class="glyphicon" [ngClass]="isOpened(subcategory) ? 'glyphicon-minus' : 'glyphicon-plus'"></span> -->
+      <fa-icon *ngIf="isOpened(subcategory); else closed" [icon]="['fas', 'minus']"></fa-icon>
+      <ng-template #closed>
+        <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+      </ng-template>
     </a>
     <ish-sub-category-navigation
       *ngIf="subCategoriesDepth < mainNavigationMaxSubCategoriesDepth"

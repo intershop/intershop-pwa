@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+import { IconModule } from '../../../icon.module';
 import { HeaderComponent } from './header.component';
 
 describe('Header Component', () => {
@@ -18,6 +19,7 @@ describe('Header Component', () => {
         TranslateModule.forRoot(),
         RouterTestingModule,
         FeatureToggleModule.testingFeatures({ compare: true }),
+        IconModule,
       ],
       declarations: [
         HeaderComponent,

@@ -88,14 +88,14 @@ describe('Select Component', () => {
   });
 
   it('should set input parameter labelClass on html element', () => {
-    component.labelClass = 'col-sm-3';
+    component.labelClass = 'col-md-3';
     fixture.detectChanges();
-    expect(element.querySelector('label.col-sm-3')).toBeTruthy();
+    expect(element.querySelector('label.col-md-3')).toBeTruthy();
   });
 
   it('should set input parameter inputClass on html element: ', () => {
-    component.inputClass = 'col-sm-9';
+    component.inputClass = 'col-md-9';
     fixture.detectChanges();
-    expect(element.querySelector('label + div.col-sm-9')).toBeTruthy();
+    expect(element.querySelector('label + div.col-md-9')).toBeTruthy();
   });
 });

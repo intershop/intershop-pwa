@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12 col-md-8">
+  <div class="col-md-12 col-lg-8">
     <div *ngIf="error as error" role="alert" class="alert alert-danger">
       <ng-container *ngIf = "error.status === 406; else generalError">
         {{ error.statusText }}: {{ error.error.errorMessage }} <br />{{ error.error.failures}}
@@ -9,23 +9,23 @@
       </ng-template>
     </div>
     <div class="row">
-      <p class="col-sm-9">
+      <p class="col-md-9">
         {{ 'checkout.order_review.heading.text' | translate }}
       </p>
-      <p class="col-sm-3 text-right">
+      <p class="col-md-3 text-right">
         <a routerLink="/basket">{{ 'checkout.widget.return_to_cart.link' | translate }}</a>
       </p>
     </div>
     <div class="row equal">
       <!-- Invoice Address -->
-      <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address">
+      <div class="col-md-6">
+        <ish-info-box heading="checkout.widget.billing-address.heading" editRouterLink="/checkout/address" class="infobox-wrapper">
           <ish-address [address]="basket.invoiceToAddress"></ish-address>
         </ish-info-box>
       </div>
       <!-- Shipping Address -->
-      <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.shipping-address.heading" editRouterLink="/checkout/address">
+      <div class="col-md-6">
+        <ish-info-box heading="checkout.widget.shipping-address.heading" editRouterLink="/checkout/address" class="infobox-wrapper">
           <ish-address [address]="basket.commonShipToAddress"></ish-address>
         </ish-info-box>
       </div>
@@ -33,14 +33,14 @@
 
     <div class="row equal">
       <!-- Shipping Method -->
-      <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.shipping_method.heading" editRouterLink="/checkout/shipping">
+      <div class="col-md-6">
+        <ish-info-box heading="checkout.widget.shipping_method.heading" editRouterLink="/checkout/shipping" class="infobox-wrapper">
           <p>{{ basket.commonShippingMethod.name }}</p>
         </ish-info-box>
       </div>
       <!-- Payment Method -->
-      <div class="col-sm-6">
-        <ish-info-box heading="checkout.widget.payment_method.heading" editRouterLink="/checkout/payment">
+      <div class="col-md-6">
+        <ish-info-box heading="checkout.widget.payment_method.heading" editRouterLink="/checkout/payment" class="infobox-wrapper">
           <p>{{ basket.paymentMethod.name }}</p>
         </ish-info-box>
       </div>
@@ -50,7 +50,7 @@
   </div>
 
   <!-- basket summary -->
-  <div class="col-sm-12 col-md-4 order-summary">
+  <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
     <div class="cost-summary">
