@@ -84,54 +84,51 @@ $input-placeholder-color: $gray-500; // TODO: replace with matching gray shade
 
 $dropdown-border-color: rgba(0, 0, 0, 0.15);
 
-// Container sizes
+// Grid breakpoints
 //
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
+
+// Grid columns
+// Set the number of columns and specify the width of the gutters.
+$grid-gutter-width: 30px;
+// Grid containers
+
 // Define the maximum width of `.container` for different screen sizes.
-
-// Small screen / tablet
-// @container-tablet:             750px;
-
-// Medium screen / desktop
-// @container-desktop:            (@screen-md - @grid-gutter-width);
-
-// Large screen / wide desktop
-// @container-large-desktop:      (@screen-lg - @grid-gutter-width);
-
+$container-max-widths: (
+  sm: 540px,
+  md: 750px,
+  lg: map-get($grid-breakpoints, lg) - $grid-gutter-width,
+  xl: map-get($grid-breakpoints, xl) - $grid-gutter-width,
+);
 // Navbar
-
 $navbar-padding-x: 0;
 // @navbar-collapse-max-height:       none;
-
 // Inverted navbar
 // Reset inverted navbar basics
 // @navbar-inverse-color:                      @gray-light;
-
 // Inverted navbar links
 // @navbar-inverse-link-color:                 @gray-light;
-
 // Popovers
-
 $popover-max-width: 310px;
-
 $popover-border-color: rgba(0, 0, 0, 0.2);
-
 // Modals
-
 $modal-content-border-color: rgba(0, 0, 0, 0.2);
-
 $modal-header-border-color: $border-color-light;
-
 // Carousel
-
 // @carousel-text-shadow:                        0 1px 2px rgba(0,0,0,.6);
-
 $carousel-control-color: $color-secondary;
 $carousel-control-width: 5%;
-
 $carousel-indicator-active-bg: $CORPORATE-PRIMARY;
 // @carousel-indicator-border-color:             #999;
-
 // Close
-
 $close-color: $CORPORATE-PRIMARY;
 $close-text-shadow: none;
