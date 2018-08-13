@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { IconModule } from '../../../core/icon.module';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { BasketItemView } from '../../../models/basket-item/basket-item.model';
 import { Price } from '../../../models/price/price.model';
@@ -29,7 +30,7 @@ describe('Line Item List Component', () => {
           inputs: ['product'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule],
+      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule, IconModule],
       providers: [FormBuilder],
     }).compileComponents();
   }));
@@ -124,14 +125,14 @@ describe('Line Item List Component', () => {
     it('should render item delete button if editable === true', () => {
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(!!element.querySelector('.glyphicon-trash')).toBeTruthy();
+      expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,trash-alt"]')).toBeTruthy();
     });
 
     it('should not render item delete button if editable === false', () => {
       component.editable = false;
       component.ngOnChanges();
       fixture.detectChanges();
-      expect(!!element.querySelector('.glyphicon-trash')).not.toBeTruthy();
+      expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,trash-alt"]')).toBeFalsy();
     });
   });
 

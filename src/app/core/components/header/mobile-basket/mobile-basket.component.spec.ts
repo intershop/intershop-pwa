@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { IconModule } from '../../../icon.module';
 import { MobileBasketComponent } from './mobile-basket.component';
 
 describe('Mobile Basket Component', () => {
@@ -8,6 +9,7 @@ describe('Mobile Basket Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [IconModule],
       declarations: [MobileBasketComponent],
     })
       .compileComponents()

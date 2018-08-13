@@ -1,0 +1,31 @@
+.form-horizontal {
+  .col-form-label {
+    text-align: left;
+  }
+}
+
+.form-inline {
+  label {
+    padding-right: ($space-default / 4);
+  }
+}
+
+label {
+  font-weight: normal;
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+.input-help {
+  color: $text-color-quarternary;
+}
+
+.form-check {
+  label {
+    label {
+      padding-left: 0;
+    }
+  }
+}

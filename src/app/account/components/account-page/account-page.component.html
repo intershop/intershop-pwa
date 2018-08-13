@@ -1,9 +1,10 @@
 <div class="account-wrapper">
   <div class="row account-main">
-
-    <ish-account-navigation></ish-account-navigation>
-
-    <router-outlet></router-outlet>
-
+    <div class="col-lg-3 account-nav-box">
+      <ish-account-navigation></ish-account-navigation>
+    </div>
+    <div class="col-lg-9">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

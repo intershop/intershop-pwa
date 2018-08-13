@@ -4,6 +4,7 @@ import { createCategoryView } from '../../../../../models/category-view/category
 import { Category } from '../../../../../models/category/category.model';
 import { categoryTree } from '../../../../../utils/dev/test-data-utils';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../../configurations/injection-keys';
+import { IconModule } from '../../../../icon.module';
 import { SubCategoryNavigationComponent } from './sub-category-navigation.component';
 
 describe('Sub Category Navigation Component', () => {
@@ -13,7 +14,7 @@ describe('Sub Category Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, IconModule],
       declarations: [SubCategoryNavigationComponent],
       providers: [{ provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 }],
     }).compileComponents();

@@ -1,0 +1,95 @@
+/**************** SEARCH RESULT ******************/
+
+.search-product-list {
+  .product-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    @media (max-width: $screen-xs-max) {
+      margin-left: -($grid-gutter-width / 2);
+      margin-right: -($grid-gutter-width / 2);
+    }
+  }
+}
+
+.search-term {
+  font-family: $font-family-bold;
+}
+
+.product-search-result {
+  padding: 0 0 $space-default 0;
+}
+
+.search-content-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.form-check.search-result-toggle {
+  margin: $space-default 0;
+
+  label {
+    padding-left: 0;
+  }
+}
+
+.no-search-result {
+  clear: both;
+
+  .result-count-message {
+    padding-left: $space-default;
+  }
+}
+
+.no-search-result-title {
+  span {
+    font-size: $font-size-lg;
+
+    &.result-count-message {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+.search-guidelines {
+  clear: both;
+}
+
+.main-search-container {
+  padding: 0 0 ($space-default * 2) 0;
+  position: relative;
+  display: inline-block;
+
+  input {
+    border: $border-width-default solid $border-color-light;
+    height: 38px;
+    line-height: 38px;
+    width: 320px;
+    padding-left: 14px;
+    float: left;
+
+    &::-ms-clear {
+      display: none;
+    }
+  }
+
+  button {
+    &.btn-search {
+      position: absolute;
+      line-height: 33px;
+      height: 38px;
+      right: 0;
+      border: 0;
+      background: 0;
+
+      span {
+        &:before {
+          font-size: 18px;
+          color: $text-color-primary;
+        }
+      }
+    }
+  }
+}

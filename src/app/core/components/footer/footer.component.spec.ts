@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { IconModule } from '../../icon.module';
 import { FooterComponent } from './footer.component';
 
 describe('Footer Component', () => {
@@ -11,7 +12,7 @@ describe('Footer Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot()],
+      imports: [CollapseModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot(), IconModule],
       declarations: [FooterComponent],
     })
       .compileComponents()

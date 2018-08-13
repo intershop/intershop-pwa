@@ -4,9 +4,9 @@
   <div class="footer-top">
     <div class="container">
       <div class="row">
-        <div class="col-md-4 clearfix">
+        <div class="col-lg-4 clearfix">
         </div>
-        <div class="col-md-4 clearfix">
+        <div class="col-lg-4 clearfix">
         </div>
         <div class="social-links clearfix">
           <h4><strong>CONNECT</strong> WITH US</h4>
@@ -35,11 +35,16 @@
         </p>
       </div>
       <div class="row">
-        <div class="col-sm-4 col-md-2">
-          <a class="visible-xs" (click)="GroupInSpired.toggle()">
-            <h4 class="link-group-title"><span style="text-transform: none;">in</span>SPIRED<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+        <div class="col-md-4 col-lg-2">
+          <a class="d-md-none" (click)="GroupInSpired.toggle()">
+            <h4 class="link-group-title">
+              <span style="text-transform: none;">in</span>
+              SPIRED
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+          </h4>
           </a>
-          <h4 class="hidden-xs"><span style="text-transform: none;">in</span>SPIRED</h4>
+          <h4 class="d-none d-md-block"><span style="text-transform: none;">in</span>SPIRED</h4>
           <div id="GroupInSpired" class="mobile-collapse link-group" collapse #GroupInSpired="bs-collapse">
             <ul>
               <li><a href="">About Us</a></li>
@@ -50,11 +55,15 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-4 col-md-2">
-          <a class="visible-xs" (click)="GroupService.toggle()">
-            <h4 class="link-group-title">SERVICE<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+        <div class="col-md-4 col-lg-2">
+          <a class="d-md-none" (click)="GroupService.toggle()">
+            <h4 class="link-group-title">
+              SERVICE
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
-          <h4 class="hidden-xs">SERVICE</h4>
+          <h4 class="d-none d-md-block">SERVICE</h4>
           <div id="GroupService" class="mobile-collapse link-group" collapse #GroupService="bs-collapse">
             <ul>
               <li><a href="">Frequently Asked Questions</a></li>
@@ -66,11 +75,15 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-4 col-md-2">
-          <a class="visible-xs" (click)="GroupAccount.toggle()">
-            <h4 class="link-group-title">MY ACCOUNT<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+        <div class="col-md-4 col-lg-2">
+          <a class="d-md-none" (click)="GroupAccount.toggle()">
+            <h4 class="link-group-title">
+              MY ACCOUNT
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
-          <h4 class="hidden-xs">MY ACCOUNT</h4>
+          <h4 class="d-none d-md-block">MY ACCOUNT</h4>
           <div id="GroupAccount" class="mobile-collapse link-group" collapse #GroupAccount="bs-collapse">
             <ul>
               <li><a rel="nofollow" href="">Order History</a></li>
@@ -84,11 +97,15 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-4 col-md-2">
-          <a class="visible-xs" (click)="GroupTopCat.toggle()">
-            <h4 class="link-group-title">TOP CATEGORIES<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+        <div class="col-md-4 col-lg-2">
+          <a class="d-md-none" (click)="GroupTopCat.toggle()">
+            <h4 class="link-group-title">
+              TOP CATEGORIES
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
-          <h4 class="hidden-xs">TOP CATEGORIES</h4>
+          <h4 class="d-none d-md-block">TOP CATEGORIES</h4>
           <div id="GroupTopCat" class="mobile-collapse link-group" collapse #GroupTopCat="bs-collapse">
             <ul>
               <li><a routerLink="/category/Cameras-Camcorders.832">Action Cameras</a></li>
@@ -100,11 +117,15 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-4 col-md-2">
-          <a class="visible-xs" (click)="GroupTopProd.toggle()">
-            <h4 class="link-group-title">TOP PRODUCTS<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+        <div class="col-md-4 col-lg-2">
+          <a class="d-md-none" (click)="GroupTopProd.toggle()">
+            <h4 class="link-group-title">
+              TOP PRODUCTS
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
-          <h4 class="hidden-xs">TOP PRODUCTS</h4>
+          <h4 class="d-none d-md-block">TOP PRODUCTS</h4>
           <div id="GroupTopProd" class="mobile-collapse link-group" collapse #GroupTopProd="bs-collapse">
             <ul>
               <li><a routerLink="/category/Cameras-Camcorders.832/product/8182790134362">GoPro Hero 4 Silver</a></li>
@@ -115,11 +136,15 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-4 col-md-2">
-          <a class="visible-xs" (click)="GroupDemoContent.toggle()">
-            <h4 class="link-group-title">DEMO CONTENT<span class="glyphicon glyphicon-chevron-down link-group-icon"></span></h4>
+        <div class="col-md-4 col-lg-2">
+          <a class="d-md-none" (click)="GroupDemoContent.toggle()">
+            <h4 class="link-group-title">
+              DEMO CONTENT
+              <!-- <span class="glyphicon glyphicon-chevron-down link-group-icon"></span> -->
+              <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
+            </h4>
           </a>
-          <h4 class="hidden-xs">DEMO CONTENT</h4>
+          <h4 class="d-none d-md-block">DEMO CONTENT</h4>
           <div id="GroupDemoContent" class="mobile-collapse link-group" collapse #GroupDemoContent="bs-collapse">
             <ul>
               <li><a href="" title="Demo Content provided by Icecat" class="cms-footer-longLinks">Icecat Content</a></li>
@@ -145,24 +170,24 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="addDUMMYModal.hide()">
-              <span aria-hidden="true">&times;</span>
-            </button>
         <h2 class="modal-title">DUMMY: Add Wish List - Should be Signup</h2>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addDUMMYModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
 
       <form class="form-horizontal">
 
         <div class="modal-body">
-          <div class="form-group">
-            <label class="col-sm-4 control-label" for="awl">Wish List Name</label>
-            <div class="col-sm-8">
+          <div class="row form-group">
+            <label class="col-md-4 col-form-label" for="awl">Wish List Name</label>
+            <div class="col-md-8">
               <input class="form-control" maxlength="35" type="text" name="awl" value="" required />
             </div>
           </div>
-          <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
-              <div class="checkbox">
+          <div class="row form-group">
+            <div class="col-md-offset-4 col-md-8">
+              <div class="form-check">
                 <label for="awl2">
 								<input type="checkbox"
 									id="awl2"
@@ -175,10 +200,11 @@
                   Selection will make the wish list public and allow other consumers to search and view it.
                 </ng-template>
                 <a [popover]="publicDUMMYsPopover" popoverTitle="Make Public">Details
-                  <span class="glyphicon glyphicon-info-sign"></span>
+                  <!-- <span class="glyphicon glyphicon-info-sign"></span> -->
+                  <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
                 </a>
               </div>
-              <div class="checkbox">
+              <div class="form-check">
                 <label for="awl3">
 								<input type="checkbox"
 									id="awl3"
@@ -192,7 +218,8 @@
                   will be added by default to this wish list.
                 </ng-template>
                 <a [popover]="preferedDUMMYsPopover" popoverTitle="Set as Preferred">Details
-                  <span class="glyphicon glyphicon-info-sign"></span>
+                  <!-- <span class="glyphicon glyphicon-info-sign"></span> -->
+                  <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
                 </a>
               </div>
             </div>
@@ -201,7 +228,7 @@
 
         <div class="modal-footer">
           <button class="btn btn-primary" type="submit" name="awlsubmit">Create</button>
-          <button type="button" class="btn btn-default" name="cancel" (click)="addDUMMYModal.hide()">Cancel</button>
+          <button type="button" class="btn btn-secondary" name="cancel" (click)="addDUMMYModal.hide()">Cancel</button>
         </div>
 
       </form>

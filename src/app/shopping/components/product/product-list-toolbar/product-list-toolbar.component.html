@@ -1,20 +1,22 @@
 <div class="filters-row row">
-  <div class="col-md-7 col-sm-9 col-xs-12 switch-layout">
-    <div class="col-md-3 col-sm-3 col-xs-4">
+  <div class="col-12 col-md-9 col-lg-7 switch-layout">
+    <div class="col-4 col-md-3">
       <div class="pagination-total text-nowrap">{{ itemCount | i18nPlural: ( 'product.items.label' | translate ) || {"other": "#"} }}</div>
     </div>
   </div>
-  <div class="col-md-2 col-sm-3 col-xs-4 switch-layout">
+  <div class="col-4 col-md-3 col-lg-2 switch-layout">
     <div class="pull-right sort-by">
       <a class="list-view-link" [ngClass]="{'list-active' : listView}" data-testing-id="list-view-link" (click)="setViewType('list')">
-        <span class="glyphicon glyphicon-list"></span>
+        <!-- <span class="glyphicon glyphicon-list"></span> -->
+        <fa-icon [icon]="['fas', 'list']"></fa-icon>
       </a>
       <a class="grid-view-link" [ngClass]="{'grid-active' : gridView}" data-testing-id="grid-view-link" (click)="setViewType('grid')">
-        <span class="glyphicon glyphicon-th"></span>
+        <!-- <span class="glyphicon glyphicon-th"></span> -->
+        <fa-icon [icon]="['fas', 'th']"></fa-icon>
       </a>
     </div>
   </div>
-  <div class="col-md-3 col-sm-12 col-xs-8 pull-right sort-by">
+  <div class="col-8 col-md-12 col-lg-3 pull-right sort-by">
     <form class="sort-by-filter" method="post" name="sortByForm" novalidate=""> <!-- TODO: Remove form tag, it's not needed -->
       <select class="form-control" [formControl]="sortForm" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute">
         <option *ngFor="let o of sortOptions" [value]="o.value">{{ o.label }}</option>

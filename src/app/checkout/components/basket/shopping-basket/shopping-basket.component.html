@@ -1,6 +1,6 @@
 <div data-testing-id="cart-page">
   <div class="row">
-    <div class="cart-header col-xs-12">
+    <div class="cart-header col-12">
       <h1 class="pull-left">
         <span class="cart-header-title">{{'shopping_cart.heading' | translate}}</span>
         <span class="cart-header-note">
@@ -13,7 +13,7 @@
 
   <form [formGroup]="form" (ngSubmit)="submitForm()">
     <div class="row">
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-12 col-lg-8">
 
         <ish-line-item-list
           *ngIf="basket"
@@ -22,22 +22,24 @@
           (deleteItem)="onDeleteItem($event)"
         ></ish-line-item-list>
 
-        <ish-basket-add-to-quote
-          *ishFeature="'quoting'"
-          (basketToQuote)="onAddToQuote()"
-        ></ish-basket-add-to-quote>
+        <div class="row justify-content-between">
+          <ish-basket-add-to-quote
+            *ishFeature="'quoting'"
+            (basketToQuote)="onAddToQuote()"
+          ></ish-basket-add-to-quote>
 
-        <button
-          type="submit"
-          data-testing-id="button-update-cart"
-          [disabled]="form.invalid"
-          class="btn btn-default pull-right"
-         >
-          {{'shopping_cart.update.quantity.button.label' | translate }}
-        </button>
+          <button
+            type="submit"
+            data-testing-id="button-update-cart"
+            [disabled]="form.invalid"
+            class="btn btn-secondary"
+           >
+            {{'shopping_cart.update.quantity.button.label' | translate }}
+          </button>
+        </div>
       </div>
 
-      <div class="col-sm-12 col-md-4 order-summary">
+      <div class="col-md-12 col-lg-4 order-summary">
         <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
         <div class="cost-summary">

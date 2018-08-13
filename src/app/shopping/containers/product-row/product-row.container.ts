@@ -34,7 +34,7 @@ export class ProductRowContainerComponent {
       new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
     );
     this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
-      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
+      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent, { class: 'modal-lg' });
     });
   }
 }

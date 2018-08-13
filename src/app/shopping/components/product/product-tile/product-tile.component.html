@@ -14,7 +14,7 @@
   <div class="product-tile-actions btn-group">
     <ish-product-add-to-basket
       [product]="product"
-      displayType="glyphicon"
+      displayType="icon"
       class="btn-link"
       (productToBasket)="addToBasket()"
     ></ish-product-add-to-basket>
@@ -25,11 +25,12 @@
       [ngClass]="{ 'is-selected': isInCompareList }"
       title="{{ 'product.compare.link' | translate }}"
     >
-      <span class="glyphicon glyphicon-equalizer"></span>
+      <!-- <span class="glyphicon glyphicon-equalizer"></span> -->
+      <fa-icon [icon]="['fas', 'check']"></fa-icon>
     </button>
     <ish-product-add-to-quote
       *ishFeature="'quoting'"
-      displayType="glyphicon"
+      displayType="icon"
       class="btn-link"
       (productToQuote)="addToQuote()"
     ></ish-product-add-to-quote>

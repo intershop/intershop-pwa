@@ -1,7 +1,8 @@
 <div *ngIf="locale" class="language-switch" dropdown placement="bottom right">
   <a dropdownToggle (click)="false" class="language-switch-link">
-    <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span>
-    <span class="language-switch-current-selection hidden-xs">{{locale.value}}<span class="switch_arrow"></span></span>
+    <!-- <span class="glyphicon glyphicon-globe glyphicon-header-icon"></span> -->
+    <fa-icon [icon]="['fas', 'globe-americas']" class="header-icon"></fa-icon>
+    <span class="language-switch-current-selection d-none d-md-inline">{{locale.value}}<span class="switch_arrow"></span></span>
   </a>
   <div *dropdownMenu class="language-switch-container dropdown-menu dropdown-menu-right">
     <div class="language-switch-menu-container">
