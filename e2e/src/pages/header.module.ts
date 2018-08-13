@@ -28,4 +28,19 @@ export class HeaderModule {
     $('input.searchTerm').sendKeys(searchTerm);
     $('input.searchTerm').sendKeys(protractor.Key.ENTER);
   }
+
+  getTopLevelCategory(id: string) {
+    return $(`a[data-testing-id="${id}-link"]`);
+  }
+
+  switchLanguage(lang: string) {
+    $('span.language-switch-current-selection')
+      .click()
+      .then(() =>
+        $$('div.language-switch-menu-container a')
+          .filter(el => el.getText().then(text => text.search(lang) >= 0))
+          .first()
+          .click()
+      );
+  }
 }
