@@ -13,7 +13,7 @@
     "lint": "ng lint",
     "stylelint": "stylelint \"src/theme/**/*.scss\" --fix",
     "format": "node node_modules/prettier/bin-prettier.js --loglevel warn --write \"**/*.*\"",
-    "check": "ng build --aot && npx tsc --project src/tsconfig.spec.json && npm run lint -- --fix --format stylish && npm run format && npm run stylelint && npm run test && npm run e2e",
+    "check": "ng build --aot && npx tsc --project src/tsconfig.spec.json && npm run lint -- --fix --format stylish && npm run format && npm run stylelint && npm run test && npm run e2e -- --suite local",
     "docs": "./node_modules/.bin/compodoc -p src/tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
     "docs:serve": "npm run docs -- -s",
     "docs:watch": "npm run docs -- -s -w",
