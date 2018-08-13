@@ -5,6 +5,10 @@ export class ProductListModule {
     return $$('ish-product-tile').count();
   }
 
+  getProductTile(sku) {
+    return $(`ish-product-tile div[data-testing-sku="${sku}"]`);
+  }
+
   gotoProductDetailPageBySku(sku) {
     $(`ish-product-tile div[data-testing-sku="${sku}"]`).click();
   }
