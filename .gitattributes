@@ -5,23 +5,10 @@
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
 *.properties text
-*.java text
 *.xml text
 *.md text
 
-# always linux
-gradlew text eol=lf
-inventory text eol=lf
+# OS specific endings
 *.sh text eol=lf
-*.service text eol=lf
-gradle_with_log text eol=lf
-
-# always windows
 *.bat text eol=crlf
 *.cmd text eol=crlf
-
-# Denote all files that are truly binary and should not be modified.
-*.png binary
-*.jpg binary
-*.ico binary
-*.gz binary
