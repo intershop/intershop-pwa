@@ -15,6 +15,12 @@ export const environment = {
     { lang: 'fr_FR', currency: 'EUR', value: 'fr', displayName: 'French', displayLong: 'French (France)' },
   ],
 
+  // Bootstrap grid system breakpoint widths as defined in the variables-bootstrap-customized.scss for usage in Javascript logic
+  smallBreakpointWidth: 576,
+  mediumBreakpointWidth: 768,
+  largeBreakpointWidth: 992,
+  extralargeBreakpointWidth: 1200,
+
   // global definition of the maximal depth of the main navigation sub categories
   mainNavigationMaxSubCategoriesDepth: 2,
 

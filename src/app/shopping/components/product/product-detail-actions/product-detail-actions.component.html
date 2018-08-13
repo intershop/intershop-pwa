@@ -1,14 +1,13 @@
-<div class="row product-details-top-line">
+<div class="row product-details-top-line justify-content-end">
   <div class="col-lg-12">
     <ul class="share-tools">
-
       <li>
         <a href="mailto:
           ?subject={{ 'email.recommended_product.heading' | translate:{'0': channelName } }}
           &body={{ 'email.recommended_product.text' | translate:{'0': product.name + '%0A', '1': currentUrl} }}"
         >
           <!-- <span class="glyphicon glyphicon-send"></span> -->
-          <fa-icon class="float-right" [icon]="['fas', 'paper-plane']"></fa-icon>
+          <fa-icon [icon]="['fas', 'paper-plane']"></fa-icon>
           <span class="share-label">{{ 'product.email_a_friend.link' | translate }}</span>
         </a>
       </li>
@@ -16,7 +15,7 @@
       <li class="d-none d-md-block">
         <a href="javascript:window.print();" class="link-print" rel="nofollow">
           <!-- <span class="glyphicon glyphicon-print"></span> -->
-          <fa-icon class="float-right" [icon]="['fas', 'print']"></fa-icon>
+          <fa-icon [icon]="['fas', 'print']"></fa-icon>
           <span class="share-label">{{ 'product.print_page.link' | translate }}</span>
         </a>
       </li>
@@ -25,7 +24,7 @@
         <li *ngIf="!isMasterProduct(product)" class="d-none d-md-block" [attr.data-testing-id]="'compare-' + product.sku">
           <a routerLink="/compare" (click)="addToCompare()" rel="nofollow" >
             <!-- <span class="glyphicon glyphicon-equalizer"></span> -->
-            <fa-icon class="float-right" [icon]="['fas', 'check']"></fa-icon>
+            <fa-icon [icon]="['fas', 'columns']"></fa-icon>
             <span class="share-label">{{ 'product.compare.link' | translate }}</span>
           </a>
         </li>

@@ -2,26 +2,15 @@
 // NAVBAR ( Bootstrap )
 
 @media (max-width: $screen-xs-max) {
-  .navbar-toggle {
-    position: relative;
-    float: right;
-    margin: 0 0 0 0;
-    padding: 17px 17px;
+  .navbar-toggler {
     background-color: $color-primary;
-    background-image: none;
     border: $border-width-default solid transparent;
-    @include round-corner(0px);
+    color: $text-color-inverse;
+    font-size: 1.4rem;
+    padding: $space-default $space-default * 1.4;
 
     &:focus {
       outline: none;
-    }
-
-    & .icon-bar {
-      display: block;
-      width: 22px;
-      height: 2px;
-      @include round-corner(1px);
-      background: $color-inverse;
     }
   }
 }

@@ -22,6 +22,15 @@
   border: none;
 }
 
+@media (max-width: $screen-xs-max) {
+  .table-responsive {
+    td,
+    th {
+      white-space: nowrap;
+    }
+  }
+}
+
 .table {
   display: table;
   margin-bottom: $space-default * 2;
@@ -240,10 +249,15 @@ a.product-title {
 
         > th {
           border: none;
-          // TODO: (Bootstrap 4) - @include hidden-xs();
           border-bottom: 1px solid $border-color-lighter;
         }
       }
     }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .table-compare th {
+    display: none;
   }
 }
