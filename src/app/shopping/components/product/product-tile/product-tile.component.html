@@ -12,12 +12,12 @@
   </div>
 
   <div class="product-tile-actions btn-group">
-    <ish-product-add-to-basket
-      [product]="product"
+    <ish-product-add-to-quote
+      *ishFeature="'quoting'"
       displayType="icon"
       class="btn-link"
-      (productToBasket)="addToBasket()"
-    ></ish-product-add-to-basket>
+      (productToQuote)="addToQuote()"
+    ></ish-product-add-to-quote>
     <button
       *ishFeature="'compare'"
       (click)="toggleCompare()"
@@ -26,14 +26,14 @@
       title="{{ 'product.compare.link' | translate }}"
     >
       <!-- <span class="glyphicon glyphicon-equalizer"></span> -->
-      <fa-icon [icon]="['fas', 'check']"></fa-icon>
+      <fa-icon [icon]="['fas', 'columns']"></fa-icon>
     </button>
-    <ish-product-add-to-quote
-      *ishFeature="'quoting'"
+    <ish-product-add-to-basket
+      [product]="product"
       displayType="icon"
       class="btn-link"
-      (productToQuote)="addToQuote()"
-    ></ish-product-add-to-quote>
+      (productToBasket)="addToBasket()"
+    ></ish-product-add-to-basket>
   </div>
 
 </div>

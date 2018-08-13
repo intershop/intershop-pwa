@@ -10,7 +10,7 @@
 // @gray:                   lighten(#000, 33.5%); // #555
 // @gray-light:             lighten(#000, 60%);   // #999
 // @gray-lighter:           lighten(#000, 93.5%); // #eee
-
+// TODO: add propper intershop custom colors
 $white: #fff;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
@@ -100,7 +100,7 @@ $grid-breakpoints: (
 // Grid columns
 // Set the number of columns and specify the width of the gutters.
 $grid-gutter-width: 30px;
-// Grid containers
+// Container sizes
 
 // Define the maximum width of `.container` for different screen sizes.
 $container-max-widths: (
@@ -111,6 +111,7 @@ $container-max-widths: (
 );
 // Navbar
 $navbar-padding-x: 0;
+// TODO: navbar related vars needed?
 // @navbar-collapse-max-height:       none;
 // Inverted navbar
 // Reset inverted navbar basics
@@ -124,10 +125,12 @@ $popover-border-color: rgba(0, 0, 0, 0.2);
 $modal-content-border-color: rgba(0, 0, 0, 0.2);
 $modal-header-border-color: $border-color-light;
 // Carousel
+// TODO:  needed?
 // @carousel-text-shadow:                        0 1px 2px rgba(0,0,0,.6);
 $carousel-control-color: $color-secondary;
 $carousel-control-width: 5%;
 $carousel-indicator-active-bg: $CORPORATE-PRIMARY;
+// TODO:  needed?
 // @carousel-indicator-border-color:             #999;
 // Close
 $close-color: $CORPORATE-PRIMARY;

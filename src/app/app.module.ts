@@ -90,6 +90,10 @@ export const metaReducers: MetaReducer<any>[] = [
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
     // tslint:disable-next-line:no-string-literal
     { provide: FEATURE_TOGGLES, useValue: environment['features'] },
+    { provide: injectionKeys.SMALL_BREAKPOINT_WIDTH, useValue: environment.smallBreakpointWidth },
+    { provide: injectionKeys.MEDIUM_BREAKPOINT_WIDTH, useValue: environment.mediumBreakpointWidth },
+    { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },
+    { provide: injectionKeys.EXTRALARGE_BREAKPOINT_WIDTH, useValue: environment.extralargeBreakpointWidth },
   ],
   bootstrap: [AppComponent],
 })

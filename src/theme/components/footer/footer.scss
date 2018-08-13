@@ -97,7 +97,7 @@ footer {
 
   .link-group-title {
     border-bottom: $border-width-default solid $border-color-default;
-    margin: 0px - ($space-default);
+    margin: 0px (-$space-default);
     padding: $space-default ($space-default + ($space-default/2));
     cursor: pointer;
   }
