@@ -60,3 +60,29 @@ input[type='file'] {
     display: none !important;
   }
 }
+
+.has-error {
+  .col-form-label,
+  .form-text,
+  .ng-fa-icon {
+    color: $error-color;
+  }
+
+  input,
+  textarea {
+    border-color: $error-color;
+  }
+}
+
+.has-success {
+  .col-form-label,
+  .form-text,
+  .ng-fa-icon {
+    color: $success-color;
+  }
+
+  input,
+  textarea {
+    border-color: $success-color;
+  }
+}
