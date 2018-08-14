@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { ActionReducer, Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { CoreState } from '../store/core.state';
 
 const NGRX_STATE_SK = makeStateKey('ngrxState');
@@ -18,6 +18,17 @@ export function ngrxStateTransferMeta(reducer: ActionReducer<any>): ActionReduce
     }
     return reducer(state, action);
   };
+}
+
+export function filterState(store) {
+  if (typeof store === 'object' && !(store instanceof Array)) {
+    return Object.keys(store)
+      .filter(k => !k.startsWith('_'))
+      .map(k => ({ [k]: filterState(store[k]) }))
+      .reduce((acc, val) => Object.assign(acc, val), {});
+  } else {
+    return store;
+  }
 }
 
 /**
@@ -41,7 +52,7 @@ export class NgrxStateTransfer {
   private onServer() {
     this.transferState.onSerialize(NGRX_STATE_SK, () => {
       let state;
-      this.store.pipe(take(1)).subscribe((saveState: any) => {
+      this.store.pipe(take(1), map(filterState)).subscribe((saveState: any) => {
         /* console.debug('Set for browser', JSON.stringify(saveState));*/
         state = saveState;
       });
