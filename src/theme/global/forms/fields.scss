@@ -22,13 +22,19 @@ input[type='radio'] ~ input[type='text'] {
 
 // ERROR
 .has-feedback .form-control-feedback {
-  height: 34px;
-  line-height: 34px;
+  height: $input-line-height + ($input-padding-y * 2);
+  line-height: $input-line-height + ($input-padding-y * 2);
   position: absolute;
+  right: 25px; // TODO: dynamic field
+  top: 0;
 }
 
 .has-feedback select + * .form-control-feedback {
-  right: 28px !important;
+  right: 35px; // TODO: dynamic field
+}
+
+.has-feedback .form-control {
+  padding-right: 42.5px; // TODO: dynamic field
 }
 
 // 	REQUIRED FIELDS

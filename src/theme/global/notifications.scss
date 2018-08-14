@@ -28,10 +28,10 @@
 // alert box, e.g. for product out of stock notification
 
 .alert-box {
-  border: 3px solid $alert-danger-text;
+  border: 3px solid error-color;
 
   .alert-box-header {
-    color: $alert-danger-text;
+    color: error-color;
     padding-bottom: $space-default;
   }
 

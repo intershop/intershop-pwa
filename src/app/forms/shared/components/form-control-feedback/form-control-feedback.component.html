@@ -1,8 +1,8 @@
 <ng-container *ngIf="control.dirty">
   <!-- <i class="form-control-feedback glyphicon" [ngClass]="iconClasses"></i> -->
-  <fa-icon *ngIf="control.validator && this.control.valid; else invalid" [icon]="['fas', 'check']"></fa-icon>
+  <fa-icon class="form-control-feedback" *ngIf="control.validator && this.control.valid; else invalid" [icon]="['fas', 'check']"></fa-icon>
   <ng-template #invalid>
-    <fa-icon [icon]="['fas', 'times']"></fa-icon>
+    <fa-icon class="form-control-feedback" [icon]="['fas', 'times']"></fa-icon>
   </ng-template>
   <small *ngFor="let e$ of errors" class="form-text">
     {{ e$ | async }}
