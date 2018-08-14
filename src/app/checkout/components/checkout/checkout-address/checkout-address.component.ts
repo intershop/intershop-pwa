@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,6 +26,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   basket: Basket;
   @Input()
   addresses: Address[];
+  @Input()
+  error: HttpErrorResponse;
 
   @Output()
   updateInvoiceAddress = new EventEmitter<string>();

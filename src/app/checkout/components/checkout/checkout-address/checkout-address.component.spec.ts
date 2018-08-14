@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -120,5 +121,16 @@ describe('Checkout Address Component', () => {
     });
 
     component.shippingAddressForm.get('id').setValue('testId');
+  });
+
+  it('should not render an error if no error occurs', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+  });
+
+  it('should render an error if an error occurs', () => {
+    component.error = { status: 404 } as HttpErrorResponse;
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 });

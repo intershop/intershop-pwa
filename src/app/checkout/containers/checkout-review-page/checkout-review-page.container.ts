@@ -21,6 +21,7 @@ export class CheckoutReviewPageContainerComponent implements OnInit {
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.loading$ = this.store.pipe(select(getBasketLoading));
+    this.basketError$ = this.store.pipe(select(getBasketError));
   }
 
   /**
@@ -28,6 +29,5 @@ export class CheckoutReviewPageContainerComponent implements OnInit {
    */
   onCreateOrder(basket: Basket) {
     this.store.dispatch(new CreateOrder(basket));
-    this.basketError$ = this.store.pipe(select(getBasketError));
   }
 }

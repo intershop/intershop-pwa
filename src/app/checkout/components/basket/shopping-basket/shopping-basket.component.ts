@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,6 +30,8 @@ import { BasketView } from '../../../../models/basket/basket.model';
 export class ShoppingBasketComponent {
   @Input()
   basket: BasketView;
+  @Input()
+  error: HttpErrorResponse;
 
   @Output()
   updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();

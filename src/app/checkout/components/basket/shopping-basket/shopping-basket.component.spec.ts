@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { spy, verify } from 'ts-mockito';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
@@ -90,5 +91,16 @@ describe('Shopping Basket Component', () => {
     component.onAddToQuote();
 
     verify(emitter.emit()).once();
+  });
+
+  it('should not render an error if no error occurs', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+  });
+
+  it('should render an error if an error occurs', () => {
+    component.error = { status: 404 } as HttpErrorResponse;
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 });
