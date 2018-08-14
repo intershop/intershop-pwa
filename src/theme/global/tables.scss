@@ -14,7 +14,7 @@
   font-weight: normal;
   overflow: hidden;
   padding: $table-cell-padding $table-cell-padding $table-cell-padding 0;
-  border-right: 4px solid #fff;
+  // border-right: 4px solid #fff; // TODO: needed?
 }
 
 // RESPONSIVE TABLE
@@ -71,8 +71,6 @@
 // RESPONSIVE LIST
 
 .list-header {
-  @include clearfix();
-
   @include list-header-mixin();
 
   @media (max-width: $screen-xs-max) {
@@ -97,8 +95,6 @@
   margin-bottom: $space-default * 2;
 
   .list-item-row {
-    @include clearfix();
-
     @media (max-width: $screen-xs-max) {
       border-bottom: 1px solid $border-color-lighter;
       margin-bottom: ($space-default);
@@ -181,9 +177,10 @@
 .column-price,
 .column-action {
   text-align: right;
-  @media (max-width: $screen-xs-max) {
-    text-align: left;
-  }
+  // TODO: are we shure we want that?
+  // @media (max-width: $screen-xs-max) {
+  //   text-align: left;
+  // }
 }
 
 // SPECIAL TABLE INLINE STYLES
