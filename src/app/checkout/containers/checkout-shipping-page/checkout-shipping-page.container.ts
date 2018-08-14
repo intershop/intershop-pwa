@@ -30,6 +30,7 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.loading$ = this.store.pipe(select(getBasketLoading));
+    this.basketError$ = this.store.pipe(select(getBasketError));
 
     this.store.dispatch(new LoadBasketEligibleShippingMethods());
     this.shippingMethods$ = this.store.pipe(select(getBasketEligibleShippingMethods));
@@ -37,6 +38,5 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
 
   updateBasketShippingMethod(shippingId: string) {
     this.store.dispatch(new UpdateBasketShippingMethod(shippingId));
-    this.basketError$ = this.store.pipe(select(getBasketError));
   }
 }

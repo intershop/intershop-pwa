@@ -12,7 +12,7 @@ export interface BasketState {
   eligiblePaymentMethods: PaymentMethod[];
   payments: PaymentMethod[];
   loading: boolean;
-  error: HttpErrorResponse;
+  error: HttpErrorResponse; // add, update and delete errors
 }
 
 export const initialState: BasketState = {
@@ -50,17 +50,17 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.LoadBasketFail:
-    case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.LoadBasketItemsFail:
+    case BasketActionTypes.LoadBasketPaymentsFail:
+    case BasketActionTypes.CreateOrderFail:
+    case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.AddItemsToBasketFail:
     case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
     case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
     case BasketActionTypes.LoadBasketEligiblePaymentMethodsFail:
-    case BasketActionTypes.LoadBasketPaymentsFail:
-    case BasketActionTypes.SetBasketPaymentFail:
-    case BasketActionTypes.CreateOrderFail: {
+    case BasketActionTypes.SetBasketPaymentFail: {
       const error = action.payload;
 
       return {
@@ -79,6 +79,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       return {
         ...state,
         loading: false,
+        error: undefined,
       };
     }
 
@@ -92,6 +93,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         ...state,
         basket,
         loading: false,
+        error: undefined,
       };
     }
 
@@ -110,6 +112,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         ...state,
         eligibleShippingMethods,
         loading: false,
+        error: undefined,
       };
     }
 
@@ -119,6 +122,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         ...state,
         eligiblePaymentMethods,
         loading: false,
+        error: undefined,
       };
     }
 

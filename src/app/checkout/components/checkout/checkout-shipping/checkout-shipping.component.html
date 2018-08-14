@@ -2,7 +2,7 @@
   <div class="col-md-12 col-lg-8">
     <!-- Messages -->
     <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
-      {{ error.status }}: {{ error.message }}
+      {{ error.status }}: {{ error.error }}
     </div>
     <div *ngIf="!basket.commonShippingMethod && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping_method.no_Selection.error' | translate }}

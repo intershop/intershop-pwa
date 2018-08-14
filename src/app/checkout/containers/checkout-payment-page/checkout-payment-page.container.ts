@@ -30,6 +30,7 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.loading$ = this.store.pipe(select(getBasketLoading));
+    this.basketError$ = this.store.pipe(select(getBasketError));
 
     this.store.dispatch(new LoadBasketEligiblePaymentMethods());
     this.paymentMethods$ = this.store.pipe(select(getBasketEligiblePaymentMethods));
@@ -37,6 +38,5 @@ export class CheckoutPaymentPageContainerComponent implements OnInit {
 
   updateBasketPaymentMethod(paymentName: string) {
     this.store.dispatch(new SetBasketPayment(paymentName));
-    this.basketError$ = this.store.pipe(select(getBasketError));
   }
 }
