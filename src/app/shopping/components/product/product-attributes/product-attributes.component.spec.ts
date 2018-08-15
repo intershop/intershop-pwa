@@ -38,22 +38,22 @@ describe('Product Attributes Component', () => {
   it('should render product attributes when available', () => {
     fixture.detectChanges();
     expect(element.getElementsByTagName('dt')).toHaveLength(2);
-    expect(element.getElementsByClassName('ish-ca-type')).toHaveLength(2);
-    expect(element.getElementsByClassName('ish-ca-value')).toHaveLength(2);
+    expect(element.getElementsByClassName('attribute-type')).toHaveLength(2);
+    expect(element.getElementsByClassName('attribute-value')).toHaveLength(2);
   });
 
   it('should render product attributes name and value when available', () => {
     product.attributes = [{ name: 'A', type: 'String', value: 'A' }];
     fixture.detectChanges();
-    expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
-    expect(element.querySelector('.ish-ca-value').textContent).toEqual('A');
+    expect(element.querySelector('.attribute-type').textContent).toEqual('A:');
+    expect(element.querySelector('.attribute-value').textContent).toEqual('A');
   });
 
   it('should render product attributes name and multiple value when available', () => {
     product.attributes = [{ name: 'A', type: 'MultipleString', value: ['hallo', 'welt'] }];
     component.multipleValuesSeparator = ':::';
     fixture.detectChanges();
-    expect(element.querySelector('.ish-ca-type').textContent).toEqual('A:');
-    expect(element.querySelector('.ish-ca-value').textContent).toEqual('hallo:::welt');
+    expect(element.querySelector('.attribute-type').textContent).toEqual('A:');
+    expect(element.querySelector('.attribute-value').textContent).toEqual('hallo:::welt');
   });
 });
