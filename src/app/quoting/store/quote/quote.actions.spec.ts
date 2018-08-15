@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../../models/quote/quote.interface';
 import * as fromActions from './quote.actions';
@@ -26,7 +26,7 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for LoadQuotesFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadQuotesFail(payload);
 
       expect({ ...action }).toEqual({
@@ -58,7 +58,7 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for DeleteQuoteFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.DeleteQuoteFail(payload);
 
       expect({ ...action }).toEqual({
@@ -88,7 +88,7 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for RejectQuoteFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.RejectQuoteFail(payload);
 
       expect({ ...action }).toEqual({
@@ -118,7 +118,7 @@ describe('Quote Actions', () => {
     });
 
     it('should create new action for CreateQuoteRequestFromQuoteFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.CreateQuoteRequestFromQuoteFail(payload);
 
       expect({ ...action }).toEqual({

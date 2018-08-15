@@ -1,8 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
@@ -89,7 +89,7 @@ describe('Categories Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCategoryFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadCategoryFail({ message: 'error' } as HttpError));
       });
 
       it('should not have loaded category on error', () => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { mapErrorToAction } from '../../../utils/operators';
 import { CountryService } from '../../services/countries/country.service';
 import * as countryActions from './countries.actions';
 
@@ -15,7 +15,7 @@ export class CountriesEffects {
     switchMap(() =>
       this.countryService.getCountries().pipe(
         map(countries => new countryActions.LoadCountriesSuccess(countries)),
-        catchError(error => of(new countryActions.LoadCountriesFail(error)))
+        mapErrorToAction(countryActions.LoadCountriesFail)
       )
     )
   );

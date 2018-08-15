@@ -1,8 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Basket } from '../../../models/basket/basket.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { CreateOrder, getBasketError, getBasketLoading, getCurrentBasket } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
@@ -13,7 +13,7 @@ import { CheckoutState } from '../../store/checkout.state';
 })
 export class CheckoutReviewPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
-  basketError$: Observable<HttpErrorResponse>;
+  basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
 
   constructor(private store: Store<CheckoutState>) {}

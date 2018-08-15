@@ -1,7 +1,8 @@
-import { ErrorGroupTypes, HttpError } from './error.actions';
+import { HttpError } from '../../../models/http-error/http-error.model';
+import { ErrorActionTypes, HttpErrorAction } from './error.actions';
 
 export interface ErrorState {
-  current: Error;
+  current: HttpError;
   type: string;
 }
 
@@ -10,11 +11,12 @@ export const initialState: ErrorState = {
   type: undefined,
 };
 
-export function errorReducer(state = initialState, action: HttpError): ErrorState {
-  const httpAction = action as HttpError;
-  switch (httpAction.errorGroup) {
-    case ErrorGroupTypes.Http5XXError: {
-      return { ...state, current: httpAction.error, type: httpAction.type };
+export function errorReducer(state = initialState, action: HttpErrorAction): ErrorState {
+  switch (action.type) {
+    case ErrorActionTypes.GeneralError:
+    case ErrorActionTypes.ServerError:
+    case ErrorActionTypes.TimeoutError: {
+      return { ...state, current: action.error, type: action.type };
     }
   }
   return state;

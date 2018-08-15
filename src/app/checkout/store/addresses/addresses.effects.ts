@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
+import { mapErrorToAction } from '../../../utils/operators';
 import { AddressService } from '../../services/address/address.service';
 import * as addressActions from './addresses.actions';
 
@@ -16,7 +16,7 @@ export class AddressesEffects {
     switchMap(() =>
       this.addressService.getCustomerAddresses().pipe(
         map(addresses => new addressActions.LoadAddressesSuccess(addresses)),
-        catchError(error => of(new addressActions.LoadAddressesFail(error)))
+        mapErrorToAction(addressActions.LoadAddressesFail)
       )
     )
   );

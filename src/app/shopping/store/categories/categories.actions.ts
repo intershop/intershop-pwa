@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { CategoryTree } from '../../../models/category-tree/category-tree.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum CategoriesActionTypes {
   SelectCategory = '[Shopping] Select Category',
@@ -37,7 +37,7 @@ export class LoadTopLevelCategories implements Action {
 
 export class LoadTopLevelCategoriesFail implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadTopLevelCategoriesSuccess implements Action {
@@ -52,7 +52,7 @@ export class LoadCategory implements Action {
 
 export class LoadCategoryFail implements Action {
   readonly type = CategoriesActionTypes.LoadCategoryFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadCategorySuccess implements Action {

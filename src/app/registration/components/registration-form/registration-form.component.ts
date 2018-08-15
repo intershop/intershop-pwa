@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,6 +23,7 @@ import {
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { Country } from '../../../models/country/country.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Region } from '../../../models/region/region.model';
 
@@ -42,7 +42,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   titles: string[];
   @Input()
-  error: HttpErrorResponse;
+  error: HttpError;
 
   @Output()
   create = new EventEmitter<Customer>();

@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HttpErrorResponse } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { IconModule } from '../../../../core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { HttpError } from '../../../../models/http-error/http-error.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CheckoutShippingComponent } from './checkout-shipping.component';
@@ -64,7 +63,7 @@ describe('Checkout Shipping Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { status: 404 } as HttpErrorResponse;
+    component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });

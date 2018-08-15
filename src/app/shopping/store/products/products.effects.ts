@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { of } from 'rxjs';
 import {
-  catchError,
   concatMap,
   distinctUntilChanged,
   filter,
@@ -18,6 +16,7 @@ import {
 } from 'rxjs/operators';
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes } from '../../../core/store/locale';
+import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import * as categoriesActions from '../categories/categories.actions';
 import { ShoppingState } from '../shopping.state';
@@ -41,7 +40,7 @@ export class ProductsEffects {
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
         map(product => new productsActions.LoadProductSuccess(product)),
-        catchError(error => of(new productsActions.LoadProductFail(error)))
+        mapErrorToAction(productsActions.LoadProductFail)
       )
     )
   );
@@ -59,7 +58,7 @@ export class ProductsEffects {
           new fromViewconf.SetSortKeys(res.sortKeys),
           ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
         ]),
-        catchError(error => of(new productsActions.LoadProductFail(error)))
+        mapErrorToAction(productsActions.LoadProductFail)
       )
     )
   );

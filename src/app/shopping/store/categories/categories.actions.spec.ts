@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Category } from '../../../models/category/category.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import * as fromActions from './categories.actions';
 
@@ -16,7 +16,7 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadTopLevelCategoriesFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadTopLevelCategoriesFail(payload);
 
       expect({ ...action }).toEqual({
@@ -48,7 +48,7 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadCategoryFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadCategoryFail(payload);
 
       expect({ ...action }).toEqual({
