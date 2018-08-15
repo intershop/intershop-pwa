@@ -3,7 +3,7 @@ import { RouteNavigation } from 'ngrx-router';
 import { anything } from 'ts-mockito';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { CreateUserSuccess } from '../user';
-import { CommunicationTimeoutError, ErrorActionTypes, Http5XXError } from './error.actions';
+import { CommunicationTimeoutError, ErrorActionTypes, HttpErrorAction } from './error.actions';
 import { errorReducer, initialState } from './error.reducer';
 
 describe('Error Reducer', () => {
@@ -19,7 +19,7 @@ describe('Error Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = errorReducer(undefined, {} as Http5XXError);
+      const newState = errorReducer(undefined, {} as HttpErrorAction);
 
       expect(newState).toEqual(initialState);
     });
@@ -29,7 +29,7 @@ describe('Error Reducer', () => {
     return [
       {
         state: initialState,
-        action: {} as Http5XXError,
+        action: {} as HttpErrorAction,
         expected: initialState,
       },
       {
