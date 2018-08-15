@@ -6,6 +6,7 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
+import { OrderService } from '../../../account/services/order/order.service';
 import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.actions';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
@@ -20,7 +21,6 @@ import { ShoppingState } from '../../../shopping/store/shopping.state';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { BasketService } from '../../services/basket/basket.service';
-import { OrderService } from '../../services/order/order.service';
 import { CheckoutState } from '../checkout.state';
 import { checkoutReducers } from '../checkout.system';
 
