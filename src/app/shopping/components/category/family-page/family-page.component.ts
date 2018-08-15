@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CategoryView } from '../../../../models/category-view/category-view.model';
-import { Product } from '../../../../models/product/product.model';
-import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-family-page',
@@ -9,30 +7,15 @@ import { ViewType } from '../../../../models/viewtype/viewtype.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FamilyPageComponent {
+  /**
+   * The the category leading to the displayed result.
+   */
   @Input()
   category: CategoryView;
-  @Input()
-  products: Product[];
-  @Input()
-  totalItems: number;
-  @Input()
-  viewType: ViewType;
-  @Input()
-  sortBy: string;
-  @Input()
-  sortKeys: string[];
-  @Output()
-  viewTypeChange = new EventEmitter<string>();
-  @Output()
-  sortByChange = new EventEmitter<string>();
+
+  /**
+   * Request from the product-list to retrieve more products.
+   */
   @Output()
   loadMore = new EventEmitter<void>();
-
-  changeViewType(viewType: ViewType) {
-    this.viewTypeChange.emit(viewType);
-  }
-
-  changeSortBy(sortBy: string) {
-    this.sortByChange.emit(sortBy);
-  }
 }

@@ -24,7 +24,7 @@ describe('Product List Component', () => {
           template: 'Product Row Container',
           inputs: ['product', 'category'],
         }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component', inputs: ['standalone'] }),
       ],
     }).compileComponents();
   }));

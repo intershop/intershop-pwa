@@ -14,13 +14,10 @@ import {
   LoadCategorySuccess,
   LoadTopLevelCategoriesSuccess,
   SelectCategory,
-  SetProductSkusForCategory,
 } from './categories.actions';
 import {
   getCategoryEntities,
   getCategoryLoading,
-  getProductCountForSelectedCategory,
-  getProductsForSelectedCategory,
   getSelectedCategory,
   getSelectedCategoryId,
   getTopLevelCategories,
@@ -58,8 +55,6 @@ describe('Categories Selectors', () => {
     it('should not select any selected category when used', () => {
       expect(getSelectedCategory(store$.state)).toBeUndefined();
       expect(getSelectedCategoryId(store$.state)).toBeUndefined();
-      expect(getProductCountForSelectedCategory(store$.state)).toEqual(0);
-      expect(getProductsForSelectedCategory(store$.state)).toBeEmpty();
     });
 
     it('should not select any top level categories when used', () => {
@@ -114,14 +109,11 @@ describe('Categories Selectors', () => {
       it('should not select the irrelevant category when used', () => {
         expect(getSelectedCategory(store$.state)).toBeUndefined();
         expect(getSelectedCategoryId(store$.state)).toBeUndefined();
-        expect(getProductCountForSelectedCategory(store$.state)).toEqual(0);
-        expect(getProductsForSelectedCategory(store$.state)).toBeEmpty();
       });
     });
 
     describe('with category route', () => {
       beforeEach(() => {
-        store$.dispatch(new SetProductSkusForCategory({ categoryUniqueId: cat.uniqueId, skus: [prod.sku] }));
         store$.dispatch(new SelectCategory(cat.uniqueId));
       });
 
@@ -133,8 +125,6 @@ describe('Categories Selectors', () => {
       it('should select the selected category when used', () => {
         expect(getSelectedCategory(store$.state).uniqueId).toEqual(cat.uniqueId);
         expect(getSelectedCategoryId(store$.state)).toEqual(cat.uniqueId);
-        expect(getProductCountForSelectedCategory(store$.state)).toEqual(1);
-        expect(getProductsForSelectedCategory(store$.state)).toEqual([prod]);
       });
     });
   });

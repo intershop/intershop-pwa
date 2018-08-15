@@ -15,6 +15,7 @@ import { LoadProduct } from '../products';
 import { SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
+import { SetPagingInfo } from '../viewconf';
 import * as fromActions from './filter.actions';
 import { FilterEffects } from './filter.effects';
 
@@ -174,7 +175,7 @@ describe('Filter Effects', () => {
         searchParameter: 'b',
       });
       store$.dispatch(action);
-      const completion = new fromActions.SetFilteredProducts(['123', '234']);
+      const completion = new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['123', '234'] });
       const loadProducts1 = new LoadProduct('123');
       const loadProducts2 = new LoadProduct('234');
       actions$ = hot('-a', { a: action });
@@ -215,7 +216,7 @@ describe('Filter Effects', () => {
 
   describe('loadFilterForSearchIfSearchSuccess$', () => {
     it('should trigger LoadFilterForSearch for SearchProductsSuccess action', () => {
-      const action = new SearchProductsSuccess({ searchTerm: 'a', products: undefined });
+      const action = new SearchProductsSuccess('a');
 
       const completion = new fromActions.LoadFilterForSearch('a');
       actions$ = hot('a', { a: action });
