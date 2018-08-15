@@ -23,7 +23,7 @@
   &.form-horizontal-inline {
     @media (max-width: $screen-xs-max) {
       label {
-        padding-top: $space-default/2;
+        padding-top: $space-default / 2;
       }
     }
   }
@@ -58,5 +58,37 @@ input[type='file'] {
 
   .form-control-feedback {
     display: none !important;
+  }
+}
+
+.has-error {
+  .col-form-label,
+  .form-text,
+  .ng-fa-icon,
+  .form-check {
+    color: $error-color;
+  }
+
+  .form-check a {
+    color: $error-color;
+    text-decoration: underline;
+  }
+
+  input,
+  textarea {
+    border-color: $error-color;
+  }
+}
+
+.has-success {
+  .col-form-label,
+  .form-text,
+  .ng-fa-icon {
+    color: $success-color;
+  }
+
+  input,
+  textarea {
+    border-color: $success-color;
   }
 }
