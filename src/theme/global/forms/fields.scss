@@ -20,6 +20,12 @@ input[type='radio'] ~ input[type='text'] {
   }
 }
 
+input[type='radio'],
+input[type='checkbox'] {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
 // ERROR
 .has-feedback .form-control-feedback {
   height: $input-line-height + ($input-padding-y * 2);

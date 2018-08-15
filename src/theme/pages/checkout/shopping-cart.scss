@@ -141,6 +141,12 @@
     border-width: 0 1px 0 1px;
     margin-bottom: 0;
   }
+
+  .form-control {
+    background-color: inherit;
+    height: auto;
+    padding: 0;
+  }
 }
 
 .mobile-cart-label {
