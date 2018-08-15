@@ -5,7 +5,7 @@ import { distinctUntilKeyChanged, filter, map, mergeMap, switchMap } from 'rxjs/
 import { CoreState } from '../../../core/store/core.state';
 import { mapErrorToAction } from '../../../utils/operators';
 import { FilterService } from '../../services/filter/filter.service';
-import * as fromStore from '../categories';
+import { getSelectedCategory } from '../categories';
 import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
@@ -43,7 +43,7 @@ export class FilterEffects {
 
   @Effect()
   loadFilterIfCategoryWasSelected$ = this.store$.pipe(
-    select(fromStore.getSelectedCategory),
+    select(getSelectedCategory),
     filter(category => !!category),
     distinctUntilKeyChanged('uniqueId'),
     map(category => new filterActions.LoadFilterForCategory(category))
