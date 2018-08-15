@@ -8,11 +8,12 @@
   }
 
   .modal-header {
+    align-items: center;
     min-height: 50px;
 
     h2 {
       font-family: $font-family-condensedregular;
-      margin-bottom: 0;
+      margin: 0;
     }
   }
 
