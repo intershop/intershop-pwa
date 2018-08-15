@@ -12,10 +12,10 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
-import * as fromCategories from '../categories';
+import { SetProductSkusForCategory } from '../categories';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import * as fromViewconf from '../viewconf';
+import { ChangeSortBy, SetSortKeys } from '../viewconf';
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
 
@@ -104,7 +104,7 @@ describe('Products Effects', () => {
 
   describe('loadProductsForCategory$', () => {
     beforeEach(() => {
-      store$.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
+      store$.dispatch(new ChangeSortBy('name-asc'));
     });
 
     it('should call service for SKU list', done => {
@@ -121,8 +121,8 @@ describe('Products Effects', () => {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       const expectedValues = {
-        a: new fromCategories.SetProductSkusForCategory({ categoryUniqueId: '123', skus: ['P222', 'P333'] }),
-        b: new fromViewconf.SetSortKeys(['name-asc', 'name-desc']),
+        a: new SetProductSkusForCategory({ categoryUniqueId: '123', skus: ['P222', 'P333'] }),
+        b: new SetSortKeys(['name-asc', 'name-desc']),
         c: new fromActions.LoadProductSuccess({ sku: 'P222' } as Product),
         d: new fromActions.LoadProductSuccess({ sku: 'P333' } as Product),
       };
