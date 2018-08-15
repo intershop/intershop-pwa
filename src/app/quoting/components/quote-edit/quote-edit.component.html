@@ -171,7 +171,7 @@
 
   <div class="form-btn-group clearfix">
     <div class="d-md-none form-group">
-      <div class="col-6 pull-right text-right">
+      <div class="col-6 float-right text-right">
         <!--
         <isif condition="#LinkSource EQ "Shopping"#">
           <a class="btn btn-link" href="#URL(Action("Default-Start"))#"><istext key="quote.edit.back_to_shopping.link" /></a>
@@ -185,8 +185,8 @@
     <ng-container *ngIf="quote.items">
       <!-- IF STATE NEW -->
       <ng-container *ngIf="quote.state === 'New'">
-        <button type="submit" class="btn btn-primary pull-right" [disabled]="quote.items.length === 0" (click)="submit()">{{ 'quote.edit.button.submit.label' | translate }}</button>
-        <button type="submit" class="btn btn-secondary pull-right" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
+        <button type="submit" class="btn btn-primary float-right" [disabled]="quote.items.length === 0" (click)="submit()">{{ 'quote.edit.button.submit.label' | translate }}</button>
+        <button type="submit" class="btn btn-secondary float-right" (click)="update()">{{ 'quote.edit.button.save.label' | translate }}</button>
       </ng-container>
 
       <!-- IF STATE SUBMITTED -->
@@ -203,7 +203,7 @@
       <ng-container *ngIf="quote.type === 'Quote'">
         <ng-container *ngIf="quote.state === 'Responded'">
           <!-- <isif condition="#ValidQuote#"> -->
-          <button type="submit" class="btn btn-primary pull-right" name="add2cart" (click)="addToBasket()">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
+          <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
         </ng-container>
 
         <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>

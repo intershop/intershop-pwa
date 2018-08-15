@@ -9,8 +9,7 @@
       right: $space-default;
       border: 0;
       background: 0;
-      line-height: 33px;
-      height: 38px;
+      font-size: $font-size-lg;
       width: auto;
 
       span:before {
@@ -132,9 +131,7 @@
 
       + button {
         &.btn-search {
-          span:before {
-            color: $text-color-primary;
-          }
+          color: $text-color-primary;
         }
       }
     }
