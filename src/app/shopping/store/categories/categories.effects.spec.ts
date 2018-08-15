@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -12,6 +11,7 @@ import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { CategoriesService } from '../../services/categories/categories.service';
@@ -40,13 +40,9 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategory('123')).thenReturn(
       of(categoryTree([{ uniqueId: '123', categoryPath: ['123'] } as Category]))
     );
-    when(categoriesServiceMock.getCategory('invalid')).thenReturn(
-      throwError({ message: 'invalid category' } as HttpErrorResponse)
-    );
+    when(categoriesServiceMock.getCategory('invalid')).thenReturn(throwError({ message: 'invalid category' }));
     when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of(TOP_LEVEL_CATEGORIES));
-    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(
-      throwError({ message: 'invalid number' } as HttpErrorResponse)
-    );
+    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(throwError({ message: 'invalid number' }));
     router = mock(Router);
     TestBed.configureTestingModule({
       imports: [
@@ -221,7 +217,7 @@ describe('Categories Effects', () => {
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const categoryId = 'invalid';
       const action = new fromActions.LoadCategory(categoryId);
-      const completion = new fromActions.LoadCategoryFail({ message: 'invalid category' } as HttpErrorResponse);
+      const completion = new fromActions.LoadCategoryFail({ message: 'invalid category' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -273,7 +269,7 @@ describe('Categories Effects', () => {
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const limit = -1;
       const action = new fromActions.LoadTopLevelCategories(limit);
-      const completion = new fromActions.LoadTopLevelCategoriesFail({ message: 'invalid number' } as HttpErrorResponse);
+      const completion = new fromActions.LoadTopLevelCategoriesFail({ message: 'invalid number' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -364,7 +360,7 @@ describe('Categories Effects', () => {
 
   describe('redirectIfErrorInCategories$', () => {
     it('should redirect if triggered', done => {
-      const action = new fromActions.LoadCategoryFail({ status: 404 } as HttpErrorResponse);
+      const action = new fromActions.LoadCategoryFail({ status: 404 } as HttpError);
 
       actions$ = of(action);
 

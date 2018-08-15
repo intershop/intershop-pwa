@@ -8,6 +8,8 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { User } from '../../../models/user/user.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { CoreState } from '../core.state';
@@ -66,12 +68,13 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a LoginUserFail action on failed login', () => {
+      // tslint:disable-next-line:ban-types
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
 
       when(registrationServiceMock.signinUser(anything())).thenReturn(throwError(error));
 
       const action = new ua.LoginUser({ login: 'dummy', password: 'dummy' });
-      const completion = new ua.LoginUserFail(error);
+      const completion = new ua.LoginUserFail(HttpErrorMapper.fromError(error));
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -178,11 +181,12 @@ describe('User Effects', () => {
     });
 
     it('should dispatch a CreateUserFail action on failed user creation', () => {
+      // tslint:disable-next-line:ban-types
       const error = { status: 401, headers: new HttpHeaders().set('error-key', 'feld') } as HttpErrorResponse;
       when(registrationServiceMock.createUser(anything())).thenReturn(throwError(error));
 
       const action = new ua.CreateUser({} as Customer);
-      const completion = new ua.CreateUserFail(error);
+      const completion = new ua.CreateUserFail(HttpErrorMapper.fromError(error));
 
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-b', { b: completion });
@@ -199,7 +203,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch UserErrorReset action on router navigation if error was set', () => {
-      store$.dispatch(new ua.LoginUserFail({ message: 'error' } as HttpErrorResponse));
+      store$.dispatch(new ua.LoginUserFail({ message: 'error' } as HttpError));
 
       actions$ = hot('a', { a: new RouteNavigation({ path: 'any', params: {}, queryParams: {} }) });
 

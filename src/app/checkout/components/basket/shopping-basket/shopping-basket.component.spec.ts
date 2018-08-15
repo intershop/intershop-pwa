@@ -2,10 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { HttpErrorResponse } from '@angular/common/http';
 import { spy, verify } from 'ts-mockito';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { HttpError } from '../../../../models/http-error/http-error.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
@@ -99,7 +98,7 @@ describe('Shopping Basket Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { status: 404 } as HttpErrorResponse;
+    component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });

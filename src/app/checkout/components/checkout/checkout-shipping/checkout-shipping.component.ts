@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +14,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Basket } from '../../../../models/basket/basket.model';
+import { HttpError } from '../../../../models/http-error/http-error.model';
 import { ShippingMethod } from '../../../../models/shipping-method/shipping-method.model';
 
 @Component({
@@ -28,7 +28,7 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   shippingMethods: ShippingMethod[];
   @Input()
-  error: HttpErrorResponse;
+  error: HttpError;
 
   @Output()
   updateShippingMethod = new EventEmitter<string>();

@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 export enum SearchActionTypes {
@@ -24,7 +24,7 @@ export class SearchProductsSuccess implements Action {
 
 export class SearchProductsFail implements Action {
   readonly type = SearchActionTypes.SearchProductsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class SuggestSearch implements Action {

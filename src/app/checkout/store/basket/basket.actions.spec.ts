@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Link } from '../../../models/link/link.model';
 import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
@@ -21,7 +21,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for LoadBasketFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadBasketFail(payload);
 
       expect({ ...action }).toEqual({
@@ -83,7 +83,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for UpdateBasketFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.UpdateBasketFail(payload);
 
       expect({ ...action }).toEqual({
@@ -113,7 +113,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for LoadBasketItemsFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadBasketItemsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -145,7 +145,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for AddItemsToBasketFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.AddItemsToBasketFail(payload);
 
       expect({ ...action }).toEqual({
@@ -175,7 +175,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for AddQuoteToBasketFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.AddQuoteToBasketFail(payload);
 
       expect({ ...action }).toEqual({
@@ -216,7 +216,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for UpdateBasketItemsFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.UpdateBasketItemsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -246,7 +246,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for DeleteBasketItemFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.DeleteBasketItemFail(payload);
 
       expect({ ...action }).toEqual({
@@ -274,7 +274,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for LoadBasketEligibleShippingFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadBasketEligibleShippingMethodsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -304,7 +304,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for LoadBasketEligiblePaymentFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadBasketEligiblePaymentMethodsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -336,7 +336,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for LoadBasketPaymentsFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadBasketPaymentsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -368,7 +368,7 @@ describe('Basket Actions', () => {
     });
 
     it('should create new action for SetBasketPaymentFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.SetBasketPaymentFail(payload);
 
       expect({ ...action }).toEqual({
@@ -407,7 +407,7 @@ describe('Basket Actions', () => {
       });
     });
     it('should create new action for CreateOrderFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.CreateOrderFail(payload);
 
       expect({ ...action }).toEqual({

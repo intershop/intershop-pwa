@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Params, Router, RouterState } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -16,6 +15,7 @@ import { userReducer } from '../../../core/store/user/user.reducer';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Price } from '../../../models/price/price.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
@@ -92,12 +92,10 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuoteRequestsFail', () => {
-      when(quoteRequestServiceMock.getQuoteRequests()).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(quoteRequestServiceMock.getQuoteRequests()).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteRequestActions.LoadQuoteRequests();
-      const completion = new quoteRequestActions.LoadQuoteRequestsFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteRequestActions.LoadQuoteRequestsFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -133,12 +131,10 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type AddQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(quoteRequestServiceMock.addQuoteRequest()).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteRequestActions.AddQuoteRequest();
-      const completion = new quoteRequestActions.AddQuoteRequestFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteRequestActions.AddQuoteRequestFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -185,14 +181,14 @@ describe('Quote Request Effects', () => {
 
     it('should map invalid request to action of type UpdateQuoteRequestFail', () => {
       when(quoteRequestServiceMock.updateQuoteRequest(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const payload = {
         id: 'QRID',
       } as QuoteRequest;
       const action = new quoteRequestActions.UpdateQuoteRequest(payload);
-      const completion = new quoteRequestActions.UpdateQuoteRequestFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteRequestActions.UpdateQuoteRequestFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -230,13 +226,11 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(quoteRequestServiceMock.deleteQuoteRequest(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const payload = 'QRID';
       const action = new quoteRequestActions.DeleteQuoteRequest(payload);
-      const completion = new quoteRequestActions.DeleteQuoteRequestFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteRequestActions.DeleteQuoteRequestFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -273,12 +267,10 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map invalid request to action of type SubmitQuoteRequestFail', () => {
-      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(quoteRequestServiceMock.submitQuoteRequest(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteRequestActions.SubmitQuoteRequest();
-      const completion = new quoteRequestActions.SubmitQuoteRequestFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteRequestActions.SubmitQuoteRequestFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -334,13 +326,13 @@ describe('Quote Request Effects', () => {
 
     it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
       when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const action = new quoteRequestActions.CreateQuoteRequestFromQuote();
       const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -392,12 +384,12 @@ describe('Quote Request Effects', () => {
 
     it('should map invalid request to action of type LoadQuoteRequestItemsFail', () => {
       when(quoteRequestServiceMock.getQuoteRequestItem(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const payload = 'QRID';
       const action = new quoteRequestActions.LoadQuoteRequestItems(payload);
-      const completion = new quoteRequestActions.LoadQuoteRequestItemsFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteRequestActions.LoadQuoteRequestItemsFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -467,7 +459,7 @@ describe('Quote Request Effects', () => {
 
     it('should map invalid request to action of type AddProductToQuoteRequestFail', () => {
       when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const payload = {
@@ -477,7 +469,7 @@ describe('Quote Request Effects', () => {
       const action = new quoteRequestActions.AddProductToQuoteRequest(payload);
       const completion = new quoteRequestActions.AddProductToQuoteRequestFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -546,13 +538,13 @@ describe('Quote Request Effects', () => {
 
     it('should map invalid request to action of type AddBasketToQuoteRequestFail', () => {
       when(quoteRequestServiceMock.addProductToQuoteRequest(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const action = new quoteRequestActions.AddBasketToQuoteRequest();
       const completion = new quoteRequestActions.AddBasketToQuoteRequestFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -656,7 +648,7 @@ describe('Quote Request Effects', () => {
 
     it('should map invalid request to action of type UpdateQuoteRequestItemsFail', () => {
       when(quoteRequestServiceMock.updateQuoteRequestItem(anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const payload = [
@@ -668,7 +660,7 @@ describe('Quote Request Effects', () => {
       const action = new quoteRequestActions.UpdateQuoteRequestItems(payload);
       const completion = new quoteRequestActions.UpdateQuoteRequestItemsFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -714,7 +706,7 @@ describe('Quote Request Effects', () => {
 
     it('should map invalid request to action of type DeleteItemFromQuoteRequestFail', () => {
       when(quoteRequestServiceMock.removeItemFromQuoteRequest(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const payload = {
@@ -723,7 +715,7 @@ describe('Quote Request Effects', () => {
       const action = new quoteRequestActions.DeleteItemFromQuoteRequest(payload);
       const completion = new quoteRequestActions.DeleteItemFromQuoteRequestFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

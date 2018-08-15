@@ -87,7 +87,7 @@ describe('Shopping System', () => {
         case 'A.123.456':
           return of(categoryTree([{ ...catA123456, completenessLevel: 2 }]));
         default:
-          return throwError(`error loading category ${uniqueId}`);
+          return throwError({ message: `error loading category ${uniqueId}` });
       }
     });
 
@@ -99,7 +99,7 @@ describe('Shopping System', () => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku });
       } else {
-        return throwError(`error loading product ${sku}`);
+        return throwError({ message: `error loading product ${sku}` });
       }
     });
     when(productsServiceMock.getCategoryProducts('A.123.456', anything())).thenReturn(
