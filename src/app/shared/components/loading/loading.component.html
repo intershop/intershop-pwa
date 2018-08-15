@@ -1,0 +1,7 @@
+<div *ngIf="standalone; else loading" class="loading-wrapper">
+  <ng-container *ngTemplateOutlet="loading"></ng-container>
+</div>
+
+<ng-template #loading>
+  <div class="loading"></div>
+</ng-template>
