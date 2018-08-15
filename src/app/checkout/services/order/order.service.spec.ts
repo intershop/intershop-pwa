@@ -34,4 +34,23 @@ describe('Order Service', () => {
       done();
     });
   });
+
+  it("should get orders when 'getOrders' is called without amount", done => {
+    when(apiService.get(anything())).thenReturn(of([]));
+
+    orderService.getOrders().subscribe(() => {
+      verify(apiService.get(`orders?amount=30`)).once();
+      done();
+    });
+  });
+
+  it("should get orders when 'getOrders' is called with amount", done => {
+    when(apiService.get(anything())).thenReturn(of([]));
+
+    const amount = 10;
+    orderService.getOrders(amount).subscribe(() => {
+      verify(apiService.get(`orders?amount=${amount}`)).once();
+      done();
+    });
+  });
 });
