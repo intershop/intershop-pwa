@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { OrderHistoryPageComponent } from './order-history-page.component';
+import { OrderListComponent } from './order-list.component';
 
-describe('Order History Page Component', () => {
-  let component: OrderHistoryPageComponent;
-  let fixture: ComponentFixture<OrderHistoryPageComponent>;
+describe('Order List Component', () => {
+  let component: OrderListComponent;
+  let fixture: ComponentFixture<OrderListComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OrderHistoryPageComponent],
+      declarations: [OrderListComponent],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderHistoryPageComponent);
+    fixture = TestBed.createComponent(OrderListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
