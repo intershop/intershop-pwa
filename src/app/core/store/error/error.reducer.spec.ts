@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import * as using from 'jasmine-data-provider';
 import { RouteNavigation } from 'ngrx-router';
 import { anything } from 'ts-mockito';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { CreateUserSuccess } from '../user';
-import { CommunicationTimeoutError, ErrorActionTypes, HttpError } from './error.actions';
+import { CommunicationTimeoutError, ErrorActionTypes, Http5XXError } from './error.actions';
 import { errorReducer, initialState } from './error.reducer';
 
 describe('Error Reducer', () => {
@@ -19,7 +19,7 @@ describe('Error Reducer', () => {
 
   describe('reducer', () => {
     it('should return initial state when undefined state is supplied', () => {
-      const newState = errorReducer(undefined, {} as HttpError);
+      const newState = errorReducer(undefined, {} as Http5XXError);
 
       expect(newState).toEqual(initialState);
     });
@@ -29,12 +29,12 @@ describe('Error Reducer', () => {
     return [
       {
         state: initialState,
-        action: {} as HttpError,
+        action: {} as Http5XXError,
         expected: initialState,
       },
       {
         state: initialState,
-        action: new CommunicationTimeoutError({} as HttpErrorResponse),
+        action: new CommunicationTimeoutError({} as HttpError),
         expected: { current: {}, type: ErrorActionTypes.TimeoutError },
       },
       {

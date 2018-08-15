@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Link } from '../../../models/link/link.model';
 import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
@@ -60,7 +60,7 @@ export class LoadBasket implements Action {
 
 export class LoadBasketFail implements Action {
   readonly type = BasketActionTypes.LoadBasketFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadBasketSuccess implements Action {
@@ -91,7 +91,7 @@ export class UpdateBasket implements Action {
 
 export class UpdateBasketFail implements Action {
   readonly type = BasketActionTypes.UpdateBasketFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class UpdateBasketSuccess implements Action {
@@ -105,7 +105,7 @@ export class LoadBasketItems implements Action {
 
 export class LoadBasketItemsFail implements Action {
   readonly type = BasketActionTypes.LoadBasketItemsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadBasketItemsSuccess implements Action {
@@ -125,7 +125,7 @@ export class AddItemsToBasket implements Action {
 
 export class AddItemsToBasketFail implements Action {
   readonly type = BasketActionTypes.AddItemsToBasketFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class AddItemsToBasketSuccess implements Action {
@@ -139,7 +139,7 @@ export class AddQuoteToBasket implements Action {
 
 export class AddQuoteToBasketFail implements Action {
   readonly type = BasketActionTypes.AddQuoteToBasketFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class AddQuoteToBasketSuccess implements Action {
@@ -154,7 +154,7 @@ export class UpdateBasketItems implements Action {
 
 export class UpdateBasketItemsFail implements Action {
   readonly type = BasketActionTypes.UpdateBasketItemsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class UpdateBasketItemsSuccess implements Action {
@@ -168,7 +168,7 @@ export class DeleteBasketItem implements Action {
 
 export class DeleteBasketItemFail implements Action {
   readonly type = BasketActionTypes.DeleteBasketItemFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class DeleteBasketItemSuccess implements Action {
@@ -181,7 +181,7 @@ export class LoadBasketEligibleShippingMethods implements Action {
 
 export class LoadBasketEligibleShippingMethodsFail implements Action {
   readonly type = BasketActionTypes.LoadBasketEligibleShippingMethodsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadBasketEligibleShippingMethodsSuccess implements Action {
@@ -195,7 +195,7 @@ export class LoadBasketEligiblePaymentMethods implements Action {
 
 export class LoadBasketEligiblePaymentMethodsFail implements Action {
   readonly type = BasketActionTypes.LoadBasketEligiblePaymentMethodsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadBasketEligiblePaymentMethodsSuccess implements Action {
@@ -211,7 +211,7 @@ export class LoadBasketPayments implements Action {
 
 export class LoadBasketPaymentsFail implements Action {
   readonly type = BasketActionTypes.LoadBasketPaymentsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadBasketPaymentsSuccess implements Action {
@@ -227,7 +227,7 @@ export class SetBasketPayment implements Action {
 
 export class SetBasketPaymentFail implements Action {
   readonly type = BasketActionTypes.SetBasketPaymentFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class SetBasketPaymentSuccess implements Action {
@@ -245,7 +245,7 @@ export class CreateOrder implements Action {
 
 export class CreateOrderFail implements Action {
   readonly type = BasketActionTypes.CreateOrderFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class CreateOrderSuccess implements Action {

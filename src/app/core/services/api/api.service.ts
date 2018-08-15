@@ -61,6 +61,12 @@ export function resolveLinks<T>(apiService: ApiService): OperatorFunction<Link[]
     );
 }
 
+function catchApiError<T>(handler: ApiServiceErrorHandler) {
+  return (source$: Observable<T>) =>
+    // tslint:disable-next-line:ban
+    source$.pipe(catchError(error => handler.dispatchCommunicationErrors<T>(error)));
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private currentLocale: Locale;
@@ -96,9 +102,7 @@ export class ApiService {
       url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
     }
 
-    return this.httpClient
-      .options<T>(url, options)
-      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+    return this.httpClient.options<T>(url, options).pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
@@ -119,9 +123,7 @@ export class ApiService {
       url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
     }
 
-    return this.httpClient
-      .get<T>(url, options)
-      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+    return this.httpClient.get<T>(url, options).pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
@@ -130,7 +132,7 @@ export class ApiService {
   put<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
       .put<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
-      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+      .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
@@ -140,7 +142,7 @@ export class ApiService {
   post<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
       .post<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
-      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+      .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
@@ -149,8 +151,6 @@ export class ApiService {
    * @returns Observable
    */
   delete<T>(path): Observable<T> {
-    return this.httpClient
-      .delete<T>(`${this.restEndpoint}/${path}`)
-      .pipe(catchError(error => this.apiServiceErrorHandler.dispatchCommunicationErrors<T>(error)));
+    return this.httpClient.delete<T>(`${this.restEndpoint}/${path}`).pipe(catchApiError(this.apiServiceErrorHandler));
   }
 }

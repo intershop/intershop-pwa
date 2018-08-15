@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { LoadProductSuccess } from '../products';
@@ -71,7 +71,7 @@ describe('Filter Selectors', () => {
 
   describe('with LoadFilterForCategoryFail state', () => {
     beforeEach(() => {
-      store$.dispatch(new LoadFilterForCategoryFail({} as HttpErrorResponse));
+      store$.dispatch(new LoadFilterForCategoryFail({} as HttpError));
     });
 
     it('should set the state to loaded', () => {
@@ -111,7 +111,7 @@ describe('Filter Selectors', () => {
 
   describe('with ApplyFilterFail state', () => {
     beforeEach(() => {
-      store$.dispatch(new ApplyFilterFail({} as HttpErrorResponse));
+      store$.dispatch(new ApplyFilterFail({} as HttpError));
     });
 
     it('should set the state to loaded', () => {

@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { UserAction, UserActionTypes } from '../../../core/store/user';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import { QuoteAction, QuoteRequestActionTypes } from './quote-request.actions';
@@ -8,7 +8,7 @@ export interface QuoteRequestState {
   quoteRequests: QuoteRequestData[];
   quoteRequestItems: QuoteRequestItem[];
   loading: boolean;
-  error: HttpErrorResponse;
+  error: HttpError;
   selected: string;
 }
 

@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -9,6 +8,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
@@ -33,7 +33,7 @@ describe('Products Effects', () => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of({ sku } as Product);
       }
@@ -94,7 +94,7 @@ describe('Products Effects', () => {
     it('should map invalid request to action of type LoadProductFail', () => {
       const sku = 'invalid';
       const action = new fromActions.LoadProduct(sku);
-      const completion = new fromActions.LoadProductFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.LoadProductFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -130,13 +130,14 @@ describe('Products Effects', () => {
     });
 
     it('should not die if repeating errors are encountered', () => {
-      const error = { status: 500 } as HttpErrorResponse;
-      when(productsServiceMock.getCategoryProducts(anything(), anything())).thenReturn(throwError(error));
+      when(productsServiceMock.getCategoryProducts(anything(), anything())).thenReturn(
+        throwError({ message: 'ERROR' })
+      );
       actions$ = hot('-a-a-a', {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       expect(effects.loadProductsForCategory$).toBeObservable(
-        cold('-a-a-a', { a: new fromActions.LoadProductFail(error) })
+        cold('-a-a-a', { a: new fromActions.LoadProductFail({ message: 'ERROR' } as HttpError) })
       );
     });
   });
@@ -200,7 +201,7 @@ describe('Products Effects', () => {
 
   describe('redirectIfErrorInProducts$', () => {
     it('should redirect if triggered', done => {
-      const action = new fromActions.LoadProductFail({ status: 404 } as HttpErrorResponse);
+      const action = new fromActions.LoadProductFail({ status: 404 } as HttpError);
 
       actions$ = of(action);
 

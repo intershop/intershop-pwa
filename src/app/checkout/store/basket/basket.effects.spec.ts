@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -10,6 +9,7 @@ import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.acti
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Link } from '../../../models/link/link.model';
 import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
@@ -85,11 +85,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketFail', () => {
-      when(basketServiceMock.getBasket(anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.getBasket(anyString())).thenReturn(throwError({ message: 'invalid' }));
       const action = new basketActions.LoadBasket('BID');
-      const completion = new basketActions.LoadBasketFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.LoadBasketFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -173,11 +171,11 @@ describe('Basket Effects', () => {
     it('should map invalid request to action of type UpdateBasketFail', () => {
       const payload = 'shippingId';
       when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const action = new basketActions.UpdateBasketShippingMethod(payload);
-      const completion = new basketActions.UpdateBasketFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.UpdateBasketFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -219,12 +217,10 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketItemsFail', () => {
-      when(basketServiceMock.getBasketItems(anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.getBasketItems(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new basketActions.LoadBasketItems('BID');
-      const completion = new basketActions.LoadBasketItemsFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.LoadBasketItemsFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -355,9 +351,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type AddItemsToBasketFail', () => {
-      when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.addItemsToBasket(anything(), anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -368,7 +362,7 @@ describe('Basket Effects', () => {
 
       const payload = { items: [{ sku: 'invalid', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
-      const completion = new basketActions.AddItemsToBasketFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.AddItemsToBasketFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -428,9 +422,7 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type AddQuoteToBasketFail', () => {
-      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.addQuoteToBasket(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({
@@ -441,7 +433,7 @@ describe('Basket Effects', () => {
 
       const payload = 'QID';
       const action = new basketActions.AddQuoteToBasket(payload);
-      const completion = new basketActions.AddQuoteToBasketFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.AddQuoteToBasketFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -598,7 +590,7 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type UpdateBasketItemsFail', () => {
       when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
 
       const payload = [
@@ -608,7 +600,7 @@ describe('Basket Effects', () => {
         },
       ];
       const action = new basketActions.UpdateBasketItems(payload);
-      const completion = new basketActions.UpdateBasketItemsFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.UpdateBasketItemsFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -661,13 +653,11 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteBasketItemFail', () => {
-      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.deleteBasketItem(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const payload = 'BIID';
       const action = new basketActions.DeleteBasketItem(payload);
-      const completion = new basketActions.DeleteBasketItemFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.DeleteBasketItemFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -724,12 +714,12 @@ describe('Basket Effects', () => {
 
     it('should map invalid request to action of type LoadBasketEligibleShippingMethodsFail', () => {
       when(basketServiceMock.getBasketItemOptions(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
       const action = new basketActions.LoadBasketEligibleShippingMethods();
       const completion = new basketActions.LoadBasketEligibleShippingMethodsFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -768,13 +758,11 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketEligiblePaymentMethodsFail', () => {
-      when(basketServiceMock.getBasketPaymentOptions(anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.getBasketPaymentOptions(anyString())).thenReturn(throwError({ message: 'invalid' }));
       const action = new basketActions.LoadBasketEligiblePaymentMethods();
       const completion = new basketActions.LoadBasketEligiblePaymentMethodsFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -817,11 +805,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type LoadBasketPaymentsFail', () => {
-      when(basketServiceMock.getBasketPayments(anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.getBasketPayments(anyString())).thenReturn(throwError({ message: 'invalid' }));
       const action = new basketActions.LoadBasketPayments('BID');
-      const completion = new basketActions.LoadBasketPaymentsFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.LoadBasketPaymentsFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -875,11 +861,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid request to action of type SetPaymentFail', () => {
-      when(basketServiceMock.addBasketPayment(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.addBasketPayment(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
       const action = new basketActions.SetBasketPayment('newPayment');
-      const completion = new basketActions.SetBasketPaymentFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.SetBasketPaymentFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -936,11 +920,9 @@ describe('Basket Effects', () => {
     });
 
     it('should map invalid addBasketPayment request to action of type SetPaymentFail', () => {
-      when(basketServiceMock.addBasketPayment(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(basketServiceMock.addBasketPayment(anyString(), anyString())).thenReturn(throwError({ message: 'invalid' }));
       const action = new basketActions.SetBasketPayment('newPayment');
-      const completion = new basketActions.SetBasketPaymentFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.SetBasketPaymentFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -949,10 +931,10 @@ describe('Basket Effects', () => {
 
     it('should map invalid deleteBasketPayment request to action of type SetPaymentFail', () => {
       when(basketServiceMock.deleteBasketPayment(anyString(), anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
+        throwError({ message: 'invalid' })
       );
       const action = new basketActions.SetBasketPayment('newPayment');
-      const completion = new basketActions.SetBasketPaymentFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.SetBasketPaymentFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -999,12 +981,10 @@ describe('Basket Effects', () => {
     });
 
     it('should map an invalid request to action of type CreateOrderFail', () => {
-      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(orderServiceMock.createOrder(anything(), anything())).thenReturn(throwError({ message: 'invalid' }));
       const payload = BasketMockData.getBasket();
       const action = new basketActions.CreateOrder(payload);
-      const completion = new basketActions.CreateOrderFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new basketActions.CreateOrderFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

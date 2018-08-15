@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -8,6 +7,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { FilterService } from '../../services/filter/filter.service';
 import { LoadCategorySuccess, SelectCategory } from '../categories';
@@ -32,14 +32,14 @@ describe('Filter Effects', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
       }
     });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
       if (a.name === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
       }
@@ -47,7 +47,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.getProductSkusForFilter(anything(), anything())).thenCall(a => {
       if (a.name === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(['123', '234']);
       }
@@ -55,7 +55,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.applyFilter(anyString(), anyString())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
       }
@@ -100,7 +100,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type LoadFilterForCategoriesFail', () => {
       const action = new fromActions.LoadFilterForCategory({ name: 'invalid' } as Category);
-      const completion = new fromActions.LoadFilterForCategoryFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.LoadFilterForCategoryFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -158,7 +158,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type ApplyFilterFail', () => {
       const action = new fromActions.ApplyFilter({ filterId: 'invalid', searchParameter: 'b' });
-      const completion = new fromActions.ApplyFilterFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.ApplyFilterFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -205,7 +205,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type LoadFilterForSearchFail', () => {
       const action = new fromActions.LoadFilterForSearch('invalid');
-      const completion = new fromActions.LoadFilterForSearchFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.LoadFilterForSearchFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
