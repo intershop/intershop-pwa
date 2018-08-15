@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService, resolveLink } from '../../../core/services/api/api.service';
+import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { Basket } from '../../../models/basket/basket.model';
+import { Link } from '../../../models/link/link.model';
+import { OrderData } from '../../../models/order/order.interface';
 import { OrderMapper } from '../../../models/order/order.mapper';
 import { Order } from '../../../models/order/order.model';
 
@@ -30,5 +32,18 @@ export class OrderService {
         resolveLink<Order>(this.apiService),
         map(OrderMapper.fromData)
       );
+  }
+
+  /**
+   * Gets the orders of the logged-in user
+   * @param amount The count of items which should be fetched.
+   * @returns      A list of the user's orders
+   */
+  getOrders(amount: number = 30): Observable<Order[]> {
+    return this.apiService.get<Order>(`orders?amount=${amount}`).pipe(
+      unpackEnvelope<Link>(),
+      resolveLinks<OrderData>(this.apiService),
+      map(orders => orders.map(order => OrderMapper.fromData(order)))
+    );
   }
 }
