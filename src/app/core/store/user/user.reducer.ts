@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { BasketAction, BasketActionTypes } from '../../../checkout/store/basket';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Order } from '../../../models/order/order.model';
 import { User } from '../../../models/user/user.model';
 import { UserAction, UserActionTypes } from './user.actions';
@@ -11,7 +11,7 @@ export interface UserState {
   recentOrder: Order;
   authorized: boolean;
   authToken: string;
-  error: HttpErrorResponse;
+  error: HttpError;
 }
 
 export const getCustomer = (state: UserState) => state.customer;

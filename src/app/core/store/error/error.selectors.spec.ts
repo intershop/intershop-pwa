@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { select, Store, StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
@@ -30,12 +30,12 @@ describe('Error Selectors', () => {
   });
 
   it('should select a error when a HttpError action is reduced', done => {
-    const httpResponse = {} as HttpErrorResponse;
-    store$.dispatch(new CommunicationTimeoutError(httpResponse));
+    store$.dispatch(new CommunicationTimeoutError({ status: 123 } as HttpError));
 
     getErrorState$.subscribe(error => {
       expect(error.type).toBe(ErrorActionTypes.TimeoutError);
-      expect(error.current).toBe(httpResponse);
+      expect(error.current).toBeTruthy();
+      expect(error.current.status).toEqual(123);
       done();
     });
   });

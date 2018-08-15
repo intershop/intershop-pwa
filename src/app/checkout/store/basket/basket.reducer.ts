@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import { BasketAction, BasketActionTypes } from './basket.actions';
@@ -12,7 +12,7 @@ export interface BasketState {
   eligiblePaymentMethods: PaymentMethod[];
   payments: PaymentMethod[];
   loading: boolean;
-  error: HttpErrorResponse; // add, update and delete errors
+  error: HttpError; // add, update and delete errors
 }
 
 export const initialState: BasketState = {

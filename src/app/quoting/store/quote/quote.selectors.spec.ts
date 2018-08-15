@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { combineReducers, StoreModule } from '@ngrx/store';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { QuoteData } from '../../../models/quote/quote.interface';
 import { Quote } from '../../../models/quote/quote.model';
@@ -88,7 +88,7 @@ describe('Quote Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadQuotesFail({ message: 'invalid' } as HttpErrorResponse));
+      store$.dispatch(new LoadQuotesFail({ message: 'invalid' } as HttpError));
       expect(getQuoteLoading(store$.state)).toBeFalse();
       expect(getCurrentQuotes(store$.state)).toBeEmpty();
       expect(getQuoteError(store$.state)).toEqual({ message: 'invalid' });

@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { User } from '../../../models/user/user.model';
 
 export enum UserActionTypes {
@@ -26,7 +26,7 @@ export class LoginUser implements Action {
 
 export class LoginUserFail implements Action {
   readonly type = UserActionTypes.LoginUserFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoginUserSuccess implements Action {
@@ -45,7 +45,7 @@ export class LoadCompanyUser implements Action {
 
 export class LoadCompanyUserFail implements Action {
   readonly type = UserActionTypes.LoadCompanyUserFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadCompanyUserSuccess implements Action {
@@ -69,7 +69,7 @@ export class CreateUserSuccess implements Action {
 
 export class CreateUserFail implements Action {
   readonly type = UserActionTypes.CreateUserFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class UserErrorReset implements Action {

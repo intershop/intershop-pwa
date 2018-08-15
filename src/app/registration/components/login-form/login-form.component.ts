@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { markAsDirtyRecursive } from '../../../forms/shared/utils/form-utils';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-login-form',
@@ -16,7 +16,7 @@ export class LoginFormComponent implements OnInit {
   @Input()
   isLoggedIn: boolean;
   @Input()
-  error: HttpErrorResponse;
+  error: HttpError;
   @Output()
   login = new EventEmitter<LoginCredentials>();
 

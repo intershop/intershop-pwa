@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { Address } from '../../../models/address/address.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum AddressActionTypes {
   LoadAddresses = '[Address Internal] Load Addresses',
@@ -15,7 +15,7 @@ export class LoadAddresses implements Action {
 
 export class LoadAddressesFail implements Action {
   readonly type = AddressActionTypes.LoadAddressesFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadAddressesSuccess implements Action {

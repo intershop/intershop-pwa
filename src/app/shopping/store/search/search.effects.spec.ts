@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
@@ -10,6 +9,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { ApiService } from '../../../core/services/api/api.service';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { ProductsService } from '../../services/products/products.service';
@@ -34,7 +34,7 @@ describe('Search Effects', () => {
     when(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).thenCall(
       (searchTerm: string, page: number, itemsPerPage: number) => {
         if (!searchTerm) {
-          return throwError('');
+          return throwError({ message: 'ERROR' });
         } else {
           const currentSlice = skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
           return of({
@@ -207,7 +207,7 @@ describe('Search Effects', () => {
       it(
         'should not fire action when error is encountered at service level',
         fakeAsync(() => {
-          when(suggestServiceMock.search(anyString())).thenReturn(throwError(new HttpErrorResponse({ status: 500 })));
+          when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
           store$.dispatch(new SuggestSearch('good'));
           tick(4000);
@@ -227,7 +227,7 @@ describe('Search Effects', () => {
       it(
         'should redirect if triggered',
         fakeAsync(() => {
-          const action = new SearchProductsFail({ status: 404 } as HttpErrorResponse);
+          const action = new SearchProductsFail({ status: 404 } as HttpError);
 
           store$.dispatch(action);
 

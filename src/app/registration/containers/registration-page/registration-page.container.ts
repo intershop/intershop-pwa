@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
@@ -10,6 +9,7 @@ import { getAllCountries } from '../../../core/store/countries/countries.selecto
 import { CreateUser, getUserError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Region } from '../../../models/region/region.model';
 
@@ -22,7 +22,7 @@ export class RegistrationPageContainerComponent implements OnInit {
   languages$: Observable<Locale[]>;
   regionsForSelectedCountry$: Observable<Region[]>;
   titlesForSelectedCountry$: Observable<string[]>;
-  userCreateError$: Observable<HttpErrorResponse>;
+  userCreateError$: Observable<HttpError>;
 
   constructor(
     private store: Store<CoreState>,

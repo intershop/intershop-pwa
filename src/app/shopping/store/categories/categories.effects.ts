@@ -3,23 +3,13 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ofRoute, RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { combineLatest, of } from 'rxjs';
-import {
-  catchError,
-  distinctUntilChanged,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { distinctUntilChanged, filter, map, mapTo, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
 import { CategoryHelper } from '../../../models/category/category.model';
-import { distinctCompareWith } from '../../../utils/operators';
+import { distinctCompareWith, mapErrorToAction } from '../../../utils/operators';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
@@ -103,7 +93,7 @@ export class CategoriesEffects {
     mergeMap(categoryUniqueId =>
       this.categoryService.getCategory(categoryUniqueId).pipe(
         map(category => new actions.LoadCategorySuccess(category)),
-        catchError(error => of(new actions.LoadCategoryFail(error)))
+        mapErrorToAction(actions.LoadCategoryFail)
       )
     )
   );
@@ -124,7 +114,7 @@ export class CategoriesEffects {
     mergeMap(limit =>
       this.categoryService.getTopLevelCategories(limit).pipe(
         map(category => new actions.LoadTopLevelCategoriesSuccess(category)),
-        catchError(error => of(new actions.LoadTopLevelCategoriesFail(error)))
+        mapErrorToAction(actions.LoadTopLevelCategoriesFail)
       )
     )
   );

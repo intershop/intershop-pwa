@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ofRoute, RouteNavigation } from 'ngrx-router';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -19,7 +19,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
-import { partitionBy } from '../../../utils/operators';
+import { mapErrorToAction, partitionBy } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
@@ -97,7 +97,7 @@ export class SearchEffects {
           // dispatch action to store the returned sorting options
           new SetSortKeys(res.sortKeys),
         ]),
-        catchError(error => of(new SearchProductsFail(error)))
+        mapErrorToAction(SearchProductsFail)
       )
     )
   );
@@ -112,6 +112,7 @@ export class SearchEffects {
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(
         map(results => new SuggestSearchSuccess(results)),
+        // tslint:disable-next-line:ban
         catchError(() => EMPTY)
       )
     ) // switchMap is intentional here as it cancels old requests when new occur – which is the right thing for a search

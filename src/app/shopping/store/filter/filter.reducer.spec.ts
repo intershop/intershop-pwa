@@ -1,6 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import * as fromActions from './filter.actions';
 import { filterReducer, initialState } from './filter.reducer';
 
@@ -36,7 +36,7 @@ describe('Filter Reducer', () => {
 
   describe('LoadFilterForCategoryFailed', () => {
     it('should set filter when reduced', () => {
-      const action = new fromActions.LoadFilterForCategoryFail({} as HttpErrorResponse);
+      const action = new fromActions.LoadFilterForCategoryFail({} as HttpError);
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();
@@ -66,7 +66,7 @@ describe('Filter Reducer', () => {
 
   describe('LoadFilterForSearchFailed', () => {
     it('should set filter when reduced', () => {
-      const action = new fromActions.LoadFilterForSearchFail({} as HttpErrorResponse);
+      const action = new fromActions.LoadFilterForSearchFail({} as HttpError);
       const state = filterReducer(initialState, action);
 
       expect(state.availableFilter).toBeFalsy();

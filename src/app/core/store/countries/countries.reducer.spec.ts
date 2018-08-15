@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Country } from '../../../models/country/country.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { CountryAction, LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { countriesReducer, initialState } from './countries.reducer';
 
@@ -26,7 +26,7 @@ describe('Countries Reducer', () => {
 
     describe('LoadCountriesFail action', () => {
       it('should set loading to false', () => {
-        const action = new LoadCountriesFail({} as HttpErrorResponse);
+        const action = new LoadCountriesFail({} as HttpError);
         const state = countriesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

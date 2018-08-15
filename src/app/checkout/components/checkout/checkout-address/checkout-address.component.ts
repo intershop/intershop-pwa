@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Address } from '../../../../models/address/address.model';
 import { Basket } from '../../../../models/basket/basket.model';
+import { HttpError } from '../../../../models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-checkout-address',
@@ -27,7 +27,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   addresses: Address[];
   @Input()
-  error: HttpErrorResponse;
+  error: HttpError;
 
   @Output()
   updateInvoiceAddress = new EventEmitter<string>();
