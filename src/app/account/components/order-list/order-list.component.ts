@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'ish-order-history-page',
-  templateUrl: './order-history-page.component.html',
+  selector: 'ish-order-list',
+  templateUrl: './order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderHistoryPageComponent {}
+export class OrderListComponent {}

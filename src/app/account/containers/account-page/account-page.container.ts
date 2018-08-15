@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { CoreState } from '../../../core/store/core.state';
+import { LoadOrders } from '../../../core/store/orders';
 import { getLoggedInUser } from '../../../core/store/user';
 import { getBreadcrumbData } from '../../../core/store/viewconf';
 import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
@@ -21,5 +22,6 @@ export class AccountPageContainerComponent implements OnInit {
   ngOnInit() {
     this.user$ = this.store.pipe(select(getLoggedInUser));
     this.breadcrumbData$ = this.store.pipe(select(getBreadcrumbData));
+    this.store.dispatch(new LoadOrders());
   }
 }

@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { instance, mock } from 'ts-mockito';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { OrderHistoryPageContainerComponent } from './order-history-page.container';
@@ -15,10 +16,11 @@ describe('Order History Page Container', () => {
       declarations: [
         OrderHistoryPageContainerComponent,
         MockComponent({
-          selector: 'ish-order-history-page',
-          template: 'Order History Page Component',
+          selector: 'ish-order-list',
+          template: 'Order List Component',
         }),
       ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
