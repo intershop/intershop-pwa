@@ -23,7 +23,7 @@
   &.form-horizontal-inline {
     @media (max-width: $screen-xs-max) {
       label {
-        padding-top: $space-default/2;
+        padding-top: $space-default / 2;
       }
     }
   }
@@ -64,8 +64,14 @@ input[type='file'] {
 .has-error {
   .col-form-label,
   .form-text,
-  .ng-fa-icon {
+  .ng-fa-icon,
+  .form-check {
     color: $error-color;
+  }
+
+  .form-check a {
+    color: $error-color;
+    text-decoration: underline;
   }
 
   input,
