@@ -23,7 +23,7 @@
     <h3>{{'account.profile.email.heading' | translate}}</h3>
     <div class="row">
       <div class="col-md-12">
-        <dl class="row">
+        <dl class="row dl-horizontal">
           <dt class="col-md-4">{{'account.profile.email.label' | translate}}</dt>
           <dd class="col-md-8" data-testing-id="email-field">
             {{user.email}}
@@ -58,7 +58,7 @@
     <h3>{{'account.profile.password.heading' | translate}}</h3>
     <div class="row">
       <div class="col-md-12">
-        <dl class="row">
+        <dl class="row dl-horizontal">
           <dt class="col-md-4">{{'account.profile.password.label' | translate}}</dt>
           <dd class="col-md-8">
             ******
@@ -83,7 +83,7 @@
     <h3>{{'account.profile.detail.heading' | translate}}</h3>
     <div class="row">
       <div class="col-md-12">
-        <dl class="row">
+        <dl class="row dl-horizontal">
           <dt class="col-md-4">{{'account.profile.name.label' | translate}}</dt>
           <dd class="col-md-8">
             {{(user.title) ? (user.title + ' ') : ''}}{{user.firstName + ' ' + user.lastName}}
