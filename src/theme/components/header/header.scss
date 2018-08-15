@@ -151,7 +151,7 @@ header {
           @media (max-width: $screen-xs-max) {
             left: 14px;
             line-height: 18px;
-            top: -8.5px;
+            top: -10.5px;
             width: 19px;
             height: 19px;
           }
@@ -171,7 +171,7 @@ header {
           line-height: 12px;
           position: absolute;
           text-align: center;
-          top: -7.5px;
+          top: -0.5px;
           width: 13px;
           height: 13px;
           color: $text-color-inverse;
@@ -179,7 +179,7 @@ header {
           @media (max-width: $screen-xs-max) {
             left: 14px;
             line-height: 18px;
-            top: -8.5px;
+            top: -10.5px;
             width: 19px;
             height: 19px;
           }
@@ -247,6 +247,8 @@ header {
   }
 
   .global-nav {
+    border-top: 1px solid transparent;
+
     ul {
       &.quick-links {
         padding: 0;
