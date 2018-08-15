@@ -66,6 +66,17 @@
       }
     }
   }
+
+  // legacy col- styles that where used in tables
+  .legacy-col-6 {
+    width: 50%;
+  }
+
+  @media (min-width: $screen-md) {
+    .legacy-col-md-3 {
+      width: 25%;
+    }
+  }
 }
 
 // RESPONSIVE LIST

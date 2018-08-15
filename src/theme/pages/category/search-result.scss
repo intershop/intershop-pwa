@@ -77,19 +77,12 @@
 
   button {
     &.btn-search {
-      position: absolute;
-      line-height: 33px;
-      height: 38px;
-      right: 0;
-      border: 0;
       background: 0;
-
-      span {
-        &:before {
-          font-size: 18px;
-          color: $text-color-primary;
-        }
-      }
+      border: 0;
+      color: $text-color-primary;
+      font-size: $font-size-lg;
+      position: absolute;
+      right: 0;
     }
   }
 }

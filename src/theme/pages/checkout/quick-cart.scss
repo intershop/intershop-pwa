@@ -31,13 +31,14 @@ ul {
 
   a {
     font-family: $font-family-bold;
-    color: $text-color-quarternary;
     font-size: $font-size-base;
     text-transform: uppercase;
     text-decoration: none !important;
     cursor: pointer;
 
     span {
+      color: $text-color-quarternary;
+
       &.mini-cart-price {
         color: $text-color-corporate;
         font-size: $font-size-base;
@@ -47,6 +48,7 @@ ul {
         display: none;
       }
     }
+
     .ng-fa-icon {
       font-size: $font-size-lg;
       margin-right: ($space-default / 2);
@@ -61,20 +63,24 @@ ul {
   &.mini-cart-active {
     background: $color-corporate;
 
-    a {
-      color: $text-color-inverse;
-
+    > a {
       span {
+        color: $text-color-inverse;
+
         &.mini-cart-price {
           color: $text-color-secondary;
         }
+      }
+
+      > .ng-fa-icon {
+        color: $text-color-inverse;
       }
     }
   }
 
   .mini-cart {
     position: absolute;
-    top: 40px;
+    top: 43px;
     background: $color-inverse;
     right: -1px;
     z-index: 9999;
@@ -94,13 +100,13 @@ ul {
     }
 
     .btn-scroll-up {
-      cursor: pointer;
-      height: 22px;
       color: $text-color-corporate;
-      width: 100%;
+      cursor: pointer;
+      font-size: $font-size-lg;
       margin: $space-default 0 0;
       padding: 2px 0 0 0;
       text-align: center;
+      width: 100%;
 
       &.disabled {
         color: $text-color-quinary;
@@ -108,13 +114,13 @@ ul {
     }
 
     .btn-scroll-down {
-      cursor: pointer;
-      height: 22px;
       color: $text-color-corporate;
-      width: 100%;
+      cursor: pointer;
+      font-size: $font-size-lg;
       margin: 0 0 $space-default;
       padding: 2px 0 0 0;
       text-align: center;
+      width: 100%;
 
       &.disabled {
         color: $text-color-quinary;
