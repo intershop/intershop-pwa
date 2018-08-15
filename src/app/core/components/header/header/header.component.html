@@ -1,18 +1,10 @@
 <div class="top-header">
   <nav class="container">
-    <div class="row justify-content-between">
+    <div class="row justify-content-between align-items-center">
       <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
         <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
       </a>
-      <div class="d-md-none">
-        <button class="navbar-toggle" type="button" (click)="navbarCollapsed = !navbarCollapsed">
-          <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div class="col-lg-12">
+      <div class="col col-lg-12">
         <ul class="user-links">
           <li>
             <ish-login-status-container></ish-login-status-container>
@@ -34,6 +26,12 @@
           </ul>
           <ish-language-switch-container></ish-language-switch-container>
         </div>
+      </div>
+      <div class="d-md-none">
+        <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
+          <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
+          <fa-icon [icon]="['fas', 'bars']"></fa-icon>
+        </button>
       </div>
     </div>
   </nav>

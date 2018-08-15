@@ -132,8 +132,6 @@
     .add-to-cart,
     .add-to-wishlist,
     .add-to-compare {
-      float: right;
-
       &.is-selected {
         color: $text-muted;
       }

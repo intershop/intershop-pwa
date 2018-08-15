@@ -9,9 +9,10 @@
 
   ul {
     &.main-navigation-list {
-      padding: 0;
+      flex-wrap: wrap;
       list-style: none;
       margin: 0;
+      padding: 0;
       position: relative;
 
       li {
@@ -77,11 +78,12 @@
           > a {
             background: map-get($theme-colors, 'primary');
             border-bottom: $border-width-default solid $border-color-default;
-            width: 85%;
-            float: left;
-            padding: ($grid-gutter-width / 2);
-            font-size: 16px;
             color: $text-color-inverse;
+            float: left;
+            font-size: 16px;
+            line-height: $font-size-base * 1.5;
+            padding: ($grid-gutter-width / 2);
+            width: 85%;
 
             &.dropdown-toggle {
               float: right;
@@ -89,6 +91,10 @@
               width: 15%;
               text-align: center;
               font-size: 14px;
+
+              &:after {
+                content: none;
+              }
             }
           }
         }

@@ -70,7 +70,7 @@ describe('Product Detail Actions Component', () => {
       translate.set('product.compare.link', 'Compare');
       fixture.detectChanges();
       expect(
-        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,check"]').nextElementSibling.textContent
+        element.querySelector('fa-icon[ng-reflect-icon-prop="fas,columns"]').nextElementSibling.textContent
       ).toContain('Compare');
     });
 

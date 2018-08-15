@@ -37,6 +37,11 @@ h4,
   margin-bottom: $space-default;
 }
 
+a,
+a:not([href]):not([tabindex]) {
+  color: $CORPORATE-PRIMARY;
+}
+
 a {
   cursor: pointer;
   &:hover,
