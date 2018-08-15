@@ -7,25 +7,19 @@ export enum ErrorActionTypes {
   ServerError = '[Error] Server Error (5xx)',
 }
 
-export enum ErrorGroupTypes {
-  Http5XXError = '5xx Server error',
-}
-export abstract class Http5XXAction implements Action {
-  errorGroup = ErrorGroupTypes.Http5XXError;
-  type = '';
+export class GeneralError implements Action {
+  readonly type = ErrorActionTypes.GeneralError;
   constructor(public error: HttpError) {}
 }
 
-export class GeneralError extends Http5XXAction {
-  readonly type = ErrorActionTypes.GeneralError;
-}
-
-export class CommunicationTimeoutError extends Http5XXAction {
+export class CommunicationTimeoutError implements Action {
   readonly type = ErrorActionTypes.TimeoutError;
+  constructor(public error: HttpError) {}
 }
 // 500
-export class ServerError extends Http5XXAction {
+export class ServerError implements Action {
   readonly type = ErrorActionTypes.ServerError;
+  constructor(public error: HttpError) {}
 }
 
-export type Http5XXError = GeneralError | CommunicationTimeoutError | ServerError;
+export type HttpErrorAction = GeneralError | CommunicationTimeoutError | ServerError;
