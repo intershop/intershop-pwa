@@ -62,7 +62,7 @@
           controlName="termsAndConditions"
           [errorMessages]="{pattern: 'checkout.tac.error.tip'}"
         >
-          {{ 'checkout.tac' | translate }}
+          <span>{{ 'checkout.tac' | translate }}&nbsp;</span>
           <a (click)="modalDialog.show()" rel="nofollow">{{ 'checkout.tac.link' | translate }}</a>
         </ish-checkbox>
       </form>

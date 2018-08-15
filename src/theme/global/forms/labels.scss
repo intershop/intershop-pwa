@@ -16,6 +16,10 @@ label {
   &.disabled {
     opacity: 0.5;
   }
+
+  > * {
+    vertical-align: middle;
+  }
 }
 
 .input-help {

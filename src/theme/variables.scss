@@ -82,5 +82,6 @@ $datepicker-today-hover: #e65100;
 $datepicker-active-bg: $CORPORATE-PRIMARY;
 $datepicker-active-hover: $CORPORATE-SECONDARY;
 
-// alert
-$alert-danger-text: #a94442; // TODO: replace?
+// input indicator color
+$error-color: #a94442; // TODO: merge with existing theme color?
+$success-color: #3c763d; // TODO: merge with existing theme color?
