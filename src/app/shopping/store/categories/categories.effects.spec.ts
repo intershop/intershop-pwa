@@ -302,15 +302,6 @@ describe('Categories Effects', () => {
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
       });
 
-      it('should do nothing when category already has an SKU list', () => {
-        store$.dispatch(
-          new fromActions.SetProductSkusForCategory({ categoryUniqueId: category.uniqueId, skus: ['P222', 'P333'] })
-        );
-        store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
-        store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
-      });
-
       it('should do nothing when no category is selected', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
@@ -326,7 +317,7 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
 
-        actions$ = hot('(ab)', {
+        actions$ = hot('--a--b)', {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId',
             params: { categoryUniqueId: category.uniqueId },
@@ -336,7 +327,7 @@ describe('Categories Effects', () => {
         });
 
         const action = new LoadProductsForCategory(category.uniqueId);
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-----a', { a: action }));
       });
 
       it('should not trigger action when we are on a product page', () => {

@@ -4,9 +4,7 @@ import { combineReducers, StoreModule } from '@ngrx/store';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product } from '../../../models/product/product.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
-import { LoadProductSuccess } from '../products';
 import { shoppingReducers } from '../shopping.system';
 import {
   ApplyFilter,
@@ -15,9 +13,8 @@ import {
   LoadFilterForCategory,
   LoadFilterForCategoryFail,
   LoadFilterForCategorySuccess,
-  SetFilteredProducts,
 } from './filter.actions';
-import { getAvailableFilter, getFilteredProducts, getLoadingStatus } from './filter.selectors';
+import { getAvailableFilter, getFilterLoading } from './filter.selectors';
 
 describe('Filter Selectors', () => {
   let store$: LogEffects;
@@ -39,10 +36,6 @@ describe('Filter Selectors', () => {
     it('should not select any filters when used', () => {
       expect(getAvailableFilter(store$.state)).toBeUndefined();
     });
-
-    it('should not select any filteredProducts product when used', () => {
-      expect(getFilteredProducts(store$.state)).toBeUndefined();
-    });
   });
 
   describe('with LoadFilterForCategory state', () => {
@@ -51,7 +44,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loading', () => {
-      expect(getLoadingStatus(store$.state)).toBeTrue();
+      expect(getFilterLoading(store$.state)).toBeTrue();
     });
   });
 
@@ -61,7 +54,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
 
     it('should add the filter to the state', () => {
@@ -75,7 +68,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
 
     it('should set undefined to the filter in the state', () => {
@@ -89,7 +82,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeTrue();
+      expect(getFilterLoading(store$.state)).toBeTrue();
     });
   });
 
@@ -105,7 +98,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
   });
 
@@ -115,19 +108,7 @@ describe('Filter Selectors', () => {
     });
 
     it('should set the state to loaded', () => {
-      expect(getLoadingStatus(store$.state)).toBeFalse();
-    });
-  });
-
-  describe('with SetFilteredProducts state', () => {
-    beforeEach(() => {
-      store$.dispatch(new LoadProductSuccess({ sku: '123' } as Product));
-      store$.dispatch(new LoadProductSuccess({ sku: '234' } as Product));
-      store$.dispatch(new SetFilteredProducts(['123', '234']));
-    });
-
-    it('should set the product state to the skus', () => {
-      expect(getFilteredProducts(store$.state)).toEqual([{ sku: '123' }, { sku: '234' }]);
+      expect(getFilterLoading(store$.state)).toBeFalse();
     });
   });
 });

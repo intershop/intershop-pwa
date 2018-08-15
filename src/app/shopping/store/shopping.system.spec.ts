@@ -37,7 +37,14 @@ import {
   SelectedCategoryAvailable,
 } from './categories';
 import { FilterActionTypes } from './filter';
-import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
+import {
+  getProductIds,
+  getSelectedProduct,
+  LoadProduct,
+  LoadProductsForCategory,
+  ProductsActionTypes,
+  SelectProduct,
+} from './products';
 import { getRecentlyProducts, RecentlyActionTypes } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
@@ -102,12 +109,12 @@ describe('Shopping System', () => {
         return throwError({ message: `error loading product ${sku}` });
       }
     });
-    when(productsServiceMock.getCategoryProducts('A.123.456', anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anyNumber(), anyString())).thenReturn(
       of({
-        skus: ['P1', 'P2'],
         categoryUniqueId: 'A.123.456',
         sortKeys: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
+        total: 2,
       })
     );
     when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
@@ -298,7 +305,6 @@ describe('Shopping System', () => {
         fakeAsync(() => {
           const i = store.actionsIterator([/Shopping/]);
 
-          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
           expect(i.next()).toEqual(new SearchProducts('something'));
           expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
@@ -463,7 +469,7 @@ describe('Shopping System', () => {
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
+        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
@@ -516,10 +522,13 @@ describe('Shopping System', () => {
         );
 
         it(
-          'should have all required data when previously visited',
+          'should reload products for category even if previously visited',
           fakeAsync(() => {
             const i = store.actionsIterator(['[Shopping]']);
+            expect(i.next()).toEqual(new LoadProductsForCategory('A.123.456'));
             expect(i.next()).toEqual(new SelectProduct(undefined));
+            expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
+            expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
             expect(i.next()).toBeUndefined();
           })
         );
@@ -691,7 +700,7 @@ describe('Shopping System', () => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
           expect(i.next()).toEqual(new SelectProduct(undefined));
-          expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
@@ -971,17 +980,16 @@ describe('Shopping System', () => {
     it(
       'should trigger required actions when searching',
       fakeAsync(() => {
-        const i = store.actionsIterator([/Shopping/]);
+        const i = store.actionsIterator(['[Shopping]']);
 
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
         expect(i.next()).toEqual(new SearchProducts('something'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
         expect(i.next()).toBeUndefined();
       })

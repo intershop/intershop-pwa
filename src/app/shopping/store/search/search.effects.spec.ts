@@ -2,7 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, StoreModule } from '@ngrx/store';
+import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
@@ -15,8 +15,14 @@ import { LogEffects } from '../../../utils/dev/log.effects';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { shoppingReducers } from '../shopping.system';
-import { ResetPagingInfo } from '../viewconf';
-import { SearchMoreProducts, SearchProducts, SearchProductsFail, SuggestSearch } from './search.actions';
+import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading, ViewconfActionTypes } from '../viewconf';
+import {
+  SearchActionTypes,
+  SearchMoreProducts,
+  SearchProducts,
+  SearchProductsFail,
+  SuggestSearch,
+} from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
@@ -70,6 +76,9 @@ describe('Search Effects', () => {
       });
 
       effects = TestBed.get(SearchEffects);
+
+      const store = TestBed.get(Store);
+      store.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
     });
 
     describe('triggerSearch$', () => {
@@ -81,9 +90,7 @@ describe('Search Effects', () => {
         });
         actions$ = hot('a', { a: action });
 
-        expect(effects.triggerSearch$).toBeObservable(
-          cold('(ab)', { a: new ResetPagingInfo(), b: new SearchProducts('dummy') })
-        );
+        expect(effects.triggerSearch$).toBeObservable(cold('a', { a: new SearchProducts('dummy') }));
       });
     });
 
@@ -94,20 +101,29 @@ describe('Search Effects', () => {
         actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
+          verify(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).once();
+          const [term, page, itemsPerPage] = capture(productsServiceMock.searchProducts).last();
+          expect(term).toEqual('123');
+          expect(page).toEqual(0);
+          expect(itemsPerPage).toEqual(3);
           done();
         });
       });
+    });
 
-      it('should perform a continued search with given search term when search is requested', done => {
+    describe('searchMoreProducts$', () => {
+      it('should perform a continued search with given search term when search is requested', () => {
         const searchTerm = '123';
         const action = new SearchMoreProducts(searchTerm);
-        actions$ = of(action);
+        actions$ = hot('a', { a: action });
 
-        effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
-          done();
-        });
+        expect(effects.searchMoreProducts$).toBeObservable(
+          cold('(abc)', {
+            a: new SetPagingLoading(),
+            b: new SetPage(1),
+            c: new SearchProducts('123'),
+          })
+        );
       });
     });
   });
@@ -135,6 +151,8 @@ describe('Search Effects', () => {
 
       effects = TestBed.get(SearchEffects);
       store$ = TestBed.get(LogEffects);
+
+      store$.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
     });
 
     describe('suggestSearch$', () => {
@@ -215,7 +233,8 @@ describe('Search Effects', () => {
           effects.suggestSearch$.subscribe(fail, fail, fail);
 
           const iter = store$.actionsIterator([/.*/]);
-          iter.next();
+          expect(iter.next().type).toEqual(ViewconfActionTypes.SetEndlessScrollingPageSize);
+          expect(iter.next().type).toEqual(SearchActionTypes.SuggestSearch);
           expect(iter.next()).toBeUndefined();
 
           verify(suggestServiceMock.search(anyString())).once();

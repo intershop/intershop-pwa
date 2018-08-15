@@ -1,7 +1,7 @@
 <div class="filters-row row">
   <div class="col-12 col-md-9 col-lg-7 switch-layout">
     <div class="col-4 col-md-3">
-      <div class="pagination-total text-nowrap">{{ itemCount | i18nPlural: ( 'product.items.label' | translate ) || {"other": "#"} }}</div>
+      <div *ngIf="itemCount >= 0" class="pagination-total text-nowrap">{{ itemCount | i18nPlural: ( 'product.items.label' | translate ) || {"other": "#"} }}</div>
     </div>
   </div>
   <div class="col-4 col-md-3 col-lg-2 switch-layout">

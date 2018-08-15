@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -7,28 +7,36 @@ import { EMPTY } from 'rxjs';
 import {
   catchError,
   concatMap,
+  debounce,
   debounceTime,
   distinctUntilChanged,
   distinctUntilKeyChanged,
   filter,
   map,
-  mapTo,
   mergeMap,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
-import { mapErrorToAction, partitionBy } from '../../../utils/operators';
+import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
-import { canRequestMore, getPagingPage, ResetPagingInfo, SetPagingInfo, SetSortKeys } from '../viewconf';
+import {
+  canRequestMore,
+  getItemsPerPage,
+  getPagingPage,
+  isEndlessScrollingEnabled,
+  SetPage,
+  SetPagingInfo,
+  SetPagingLoading,
+  SetSortKeys,
+} from '../viewconf';
 import {
   SearchActionTypes,
+  SearchMoreProducts,
   SearchProducts,
-  SearchProductsAbort,
   SearchProductsFail,
   SearchProductsSuccess,
   SuggestSearch,
@@ -42,8 +50,7 @@ export class SearchEffects {
     private store: Store<ShoppingState>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
-    private router: Router,
-    @Inject(ENDLESS_SCROLLING_ITEMS_PER_PAGE) private itemsPerPage: number
+    private router: Router
   ) {}
 
   /**
@@ -52,46 +59,43 @@ export class SearchEffects {
   @Effect()
   triggerSearch$ = this.actions$.pipe(
     ofRoute('search/:searchTerm'),
+    // wait until config parameter is set
+    debounce(() => this.store.pipe(select(getItemsPerPage), filter(x => x > 0))),
     map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
     distinctUntilChanged(),
-    concatMap(searchTerm => [new ResetPagingInfo(), new SearchProducts(searchTerm)])
+    map(searchTerm => new SearchProducts(searchTerm))
   );
 
-  /**
-   * partition that listens for product search requests
-   */
-  private canSearchMoreProducts$ = this.actions$.pipe(
-    ofType<{ type: string; payload: string }>(SearchActionTypes.SearchProducts, SearchActionTypes.SearchMoreProducts),
-    withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(canRequestMore(this.itemsPerPage)))),
-    partitionBy(([, , canSearchMore]) => canSearchMore)
-  );
-
-  /**
-   * abort the current request if maximum of products was retrieved already
-   */
   @Effect()
-  abortSearchProducts$ = this.canSearchMoreProducts$.pipe(
-    switchMap(canSearchMore => canSearchMore.isFalse),
-    mapTo(new SearchProductsAbort())
+  searchMoreProducts$ = this.actions$.pipe(
+    ofType<SearchMoreProducts>(SearchActionTypes.SearchMoreProducts),
+    withLatestFrom(
+      this.store.pipe(select(isEndlessScrollingEnabled)),
+      this.store.pipe(select(canRequestMore)),
+      this.store.pipe(select(getPagingPage), map(n => n + 1))
+    ),
+    filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
+    mergeMap(([action, , , page]) => [new SetPagingLoading(), new SetPage(page), new SearchProducts(action.payload)])
   );
 
   /**
    * execute a product search respecting pagination
    */
   @Effect()
-  searchProducts$ = this.canSearchMoreProducts$.pipe(
-    switchMap(canSearchMore => canSearchMore.isTrue),
-    map(([action, currentPage]) => ({ searchTerm: action.payload, nextPage: currentPage + 1 })),
+  searchProducts$ = this.actions$.pipe(
+    ofType<SearchProducts>(SearchActionTypes.SearchProducts),
+    map(action => action.payload),
+    withLatestFrom(this.store.pipe(select(getPagingPage)), this.store.pipe(select(getItemsPerPage))),
     distinctUntilChanged(),
-    concatMap(({ searchTerm, nextPage }) =>
+    concatMap(([searchTerm, page, itemsPerPage]) =>
       // get products
-      this.productsService.searchProducts(searchTerm, nextPage, this.itemsPerPage).pipe(
+      this.productsService.searchProducts(searchTerm, page, itemsPerPage).pipe(
         mergeMap(res => [
           // dispatch action with search result
-          new SearchProductsSuccess({ searchTerm: searchTerm, products: res.products.map(p => p.sku) }),
+          new SearchProductsSuccess(searchTerm),
           // dispatch viewconf action
-          new SetPagingInfo({ currentPage: nextPage, totalItems: res.total }),
+          new SetPagingInfo({ currentPage: page, totalItems: res.total, newProducts: res.products.map(p => p.sku) }),
           // dispatch actions to load the product information of the found products
           ...res.products.map(product => new LoadProductSuccess(product)),
           // dispatch action to store the returned sorting options

@@ -26,6 +26,8 @@ export class ProductListComponent {
   category?: Category;
   @Input()
   viewType?: ViewType = 'grid';
+  @Input()
+  loadingMore: boolean;
 
   @Output()
   loadMore = new EventEmitter<void>();

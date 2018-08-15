@@ -221,7 +221,9 @@
       { "from": "@angular/common/http", "message": "http classes are not serializable and should therefor not be stored in ngrx related files", "filePattern": "(?!.*.spec.ts$).*\/store\/.*" },
       { "from": "@angular/common/http", "message": "http classes should not propagate to components and containers", "filePattern": ".*\\.(container|component)\\..*ts" },
       { "starImport": true, "from": "\\.(?!.*(actions|selectors|keys)$).*", "filePattern": ".*src/app.*", "message": "use star imports only for specific selectors, actions and injection-keys" },
-      { "starImport": true, "from": "\\.\\..*", "filePattern": ".*src/app.*", "message": "use star imports only for local files" }
+      { "starImport": true, "from": "\\.\\..*", "filePattern": ".*src/app.*", "message": "use star imports only for local files" },
+      { "starImport": true, "from": "lodash" },
+      { "import": "^(?!range$).*", "from": "lodash" }
     ],
     "ban-types": [
       true,

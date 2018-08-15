@@ -5,20 +5,35 @@ export interface ViewconfState {
   viewType: ViewType;
   sortBy: string;
   sortKeys: string[];
+  loading: boolean;
+  products: string[];
   page: number;
   total: number;
+  itemsPerPage: number;
+  endlessScrollingEnabled: boolean;
 }
 
 export const initialState: ViewconfState = {
   viewType: 'grid',
   sortBy: '',
   sortKeys: [],
-  page: -1,
+  loading: false,
+  products: [],
+  page: 0,
   total: -1,
+  itemsPerPage: -1,
+  endlessScrollingEnabled: true,
 };
 
 export function viewconfReducer(state = initialState, action: fromViewconf.ViewconfAction): ViewconfState {
   switch (action.type) {
+    case fromViewconf.ViewconfActionTypes.SetEndlessScrollingPageSize: {
+      return {
+        ...state,
+        itemsPerPage: action.payload,
+      };
+    }
+
     case fromViewconf.ViewconfActionTypes.ChangeViewType: {
       const viewType = action.payload;
       return { ...state, viewType };
@@ -37,21 +52,36 @@ export function viewconfReducer(state = initialState, action: fromViewconf.Viewc
       };
     }
 
-    case fromViewconf.ViewconfActionTypes.SetPagingInfo: {
-      const page = action.payload.currentPage;
-      const total = action.payload.totalItems;
+    case fromViewconf.ViewconfActionTypes.SetPagingLoading: {
       return {
         ...state,
-        page,
-        total,
+        loading: true,
       };
     }
 
-    case fromViewconf.ViewconfActionTypes.ResetPagingInfo: {
+    case fromViewconf.ViewconfActionTypes.SetPagingInfo: {
+      const { totalItems: total, currentPage: page, newProducts } = action.payload;
+      const products = page === 0 ? newProducts : [...state.products, ...newProducts];
       return {
         ...state,
-        page: initialState.page,
-        total: initialState.total,
+        total,
+        page,
+        products,
+        loading: false,
+      };
+    }
+
+    case fromViewconf.ViewconfActionTypes.SetPage: {
+      return {
+        ...state,
+        page: action.payload,
+      };
+    }
+
+    case fromViewconf.ViewconfActionTypes.DisableEndlessScrolling: {
+      return {
+        ...state,
+        endlessScrollingEnabled: false,
       };
     }
   }

@@ -22,13 +22,11 @@ describe('Search Reducer', () => {
   });
 
   describe('SearchProductsSuccess action', () => {
-    it('should set skus and search loading to false', () => {
-      const skus = ['9780321934161', '0818279012576'];
-      const action = new SearchProductsSuccess({ searchTerm: 'search', products: skus });
+    it('should set loading to false', () => {
+      const action = new SearchProductsSuccess('search');
       const state = searchReducer(initialState, action);
 
       expect(state.loading).toBeFalse();
-      expect(state.products).toEqual(skus);
     });
   });
 });
