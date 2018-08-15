@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
 
 @Component({
@@ -8,14 +9,16 @@ import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys'
 })
 export class HeaderComponent implements OnInit {
   navbarCollapsed = false;
-  mediumBreakpointWidth: number;
 
-  constructor(@Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: number) {
-    this.mediumBreakpointWidth = mediumBreakpointWidth;
-  }
+  constructor(
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
+    @Inject(PLATFORM_ID) private platformId: string
+  ) {}
 
   ngOnInit() {
-    this.navbarCollapsed = window.innerWidth < this.mediumBreakpointWidth;
+    if (isPlatformBrowser(this.platformId)) {
+      this.navbarCollapsed = window.innerWidth < this.mediumBreakpointWidth;
+    }
   }
 
   @HostListener('window:resize', ['$event'])

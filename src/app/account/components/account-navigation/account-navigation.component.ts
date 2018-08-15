@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { LARGE_BREAKPOINT_WIDTH } from '../../../core/configurations/injection-keys';
 
@@ -10,7 +11,6 @@ import { LARGE_BREAKPOINT_WIDTH } from '../../../core/configurations/injection-k
 export class AccountNavigationComponent implements OnInit {
   isMobileView = false;
   currentPath: string;
-  largeBreakpointWidth: number;
 
   /**
    * Manages the Account Navigation items.
@@ -23,12 +23,16 @@ export class AccountNavigationComponent implements OnInit {
     { link: '/logout', localizationKey: 'account.navigation.logout.link' },
   ];
 
-  constructor(private router: Router, @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: number) {
-    this.largeBreakpointWidth = largeBreakpointWidth;
-  }
+  constructor(
+    private router: Router,
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
+    @Inject(PLATFORM_ID) private platformId: string
+  ) {}
 
   ngOnInit() {
-    this.isMobileView = window.innerWidth < this.largeBreakpointWidth;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobileView = window.innerWidth < this.largeBreakpointWidth;
+    }
     this.currentPath = location.pathname;
   }
 
