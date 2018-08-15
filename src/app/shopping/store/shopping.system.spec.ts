@@ -10,7 +10,7 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import { OrderService } from '../../checkout/services/order/order.service';
+import { OrderService } from '../../account/services/order/order.service';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { concatMap, map, mapTo } from 'rxjs/operators';
-import { OrderService } from '../../../checkout/services/order/order.service';
+import { OrderService } from '../../../account/services/order/order.service';
 import { mapErrorToAction } from '../../../utils/operators';
 import { UserActionTypes } from '../user';
 import * as ordersActions from './orders.actions';

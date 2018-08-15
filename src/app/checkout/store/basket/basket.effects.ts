@@ -16,13 +16,13 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { OrderService } from '../../../account/services/order/order.service';
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
 import { Basket } from '../../../models/basket/basket.model';
 import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';
 import { BasketService } from '../../services/basket/basket.service';
-import { OrderService } from '../../services/order/order.service';
 import { CheckoutState } from '../checkout.state';
 
 import * as basketActions from './basket.actions';

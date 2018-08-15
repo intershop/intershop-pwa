@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
+import { OrderService } from '../../account/services/order/order.service';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
@@ -35,8 +36,6 @@ import { LogEffects } from '../../utils/dev/log.effects';
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { AddressService } from '../services/address/address.service';
 import { BasketService } from '../services/basket/basket.service';
-import { OrderService } from '../services/order/order.service';
-
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
 
