@@ -1,4 +1,5 @@
 import { Attribute } from '../attribute/attribute.model';
+
 import { VariationProduct } from './product-variation.model';
 import { ProductData, ProductDataStub } from './product.interface';
 import { ProductMapper } from './product.mapper';

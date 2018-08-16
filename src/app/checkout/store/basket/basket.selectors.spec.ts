@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
@@ -11,6 +12,7 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { checkoutReducers } from '../checkout.system';
+
 import {
   LoadBasket,
   LoadBasketEligiblePaymentMethods,

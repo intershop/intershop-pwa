@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 import { IconModule } from '../../../../core/icon.module';
 import { Product } from '../../../../models/product/product.model';
+
 import { ProductAddToBasketComponent } from './product-add-to-basket.component';
 
 describe('Product Add To Basket Component', () => {

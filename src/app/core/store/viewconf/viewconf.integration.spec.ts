@@ -2,8 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { Action, StoreModule } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { coreReducers } from '../core.system';
+
 import { ViewconfEffects } from './viewconf.effects';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 

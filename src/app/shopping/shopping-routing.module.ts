@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { FeatureToggleGuard } from '../shared/feature-toggle/guards/feature-toggle.guard';
 
 const routes: Routes = [

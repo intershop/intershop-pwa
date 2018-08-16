@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+
 import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
@@ -19,6 +20,7 @@ import { QuoteService } from '../../services/quote/quote.service';
 import { SubmitQuoteRequestSuccess } from '../quote-request';
 import { QuotingState } from '../quoting.state';
 import { quotingReducers } from '../quoting.system';
+
 import * as quoteActions from './quote.actions';
 import { QuoteEffects } from './quote.effects';
 

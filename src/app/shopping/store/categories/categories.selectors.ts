@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
+
 import { createCategoryView } from '../../../models/category-view/category-view.model';
-import { getShoppingState, ShoppingState } from '../shopping.state';
+import { ShoppingState, getShoppingState } from '../shopping.state';
 
 const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
 

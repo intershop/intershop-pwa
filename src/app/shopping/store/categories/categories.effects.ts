@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { ofRoute, RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { Store, select } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -15,6 +15,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
@@ -23,6 +24,7 @@ import { distinctCompareWith, mapErrorToAction } from '../../../utils/operators'
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
+
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
 

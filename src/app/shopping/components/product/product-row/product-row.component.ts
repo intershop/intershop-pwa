@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { Category } from '../../../../models/category/category.model';
 import { Product, ProductHelper } from '../../../../models/product/product.model';
 

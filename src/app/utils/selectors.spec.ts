@@ -1,7 +1,8 @@
 // tslint:disable:no-any
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { Action, createSelector, Selector, StoreModule } from '@ngrx/store';
+import { Action, Selector, StoreModule, createSelector } from '@ngrx/store';
+
 import { LogEffects } from './dev/log.effects';
 import { firstTruthy } from './selectors';
 

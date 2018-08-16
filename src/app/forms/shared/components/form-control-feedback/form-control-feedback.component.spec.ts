@@ -2,7 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, Validators } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 import { IconModule } from '../../../../core/icon.module';
+
 import { FormControlFeedbackComponent } from './form-control-feedback.component';
 
 describe('Form Control Feedback Component', () => {

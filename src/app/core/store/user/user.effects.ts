@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+
 import { Customer } from '../../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { mapErrorToAction } from '../../../utils/operators';
 import { CoreState } from '../core.state';
 import { GeneralError } from '../error';
+
 import * as userActions from './user.actions';
 import { getUserError } from './user.selectors';
 

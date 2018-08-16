@@ -1,4 +1,5 @@
 import { createFeatureSelector } from '@ngrx/store';
+
 import { CategoriesState } from './categories/categories.reducer';
 import { CompareState } from './compare/compare.reducer';
 import { FilterState } from './filter/filter.reducer';

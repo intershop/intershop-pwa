@@ -1,9 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
+
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { checkoutReducers } from '../../store/checkout.system';
+
 import { CheckoutReviewPageContainerComponent } from './checkout-review-page.container';
 
 describe('Checkout Review Page Container', () => {

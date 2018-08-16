@@ -1,6 +1,7 @@
 import { Customer } from '../../../models/customer/customer.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { User } from '../../../models/user/user.model';
+
 import * as fromActions from './user.actions';
 
 describe('User Actions', () => {

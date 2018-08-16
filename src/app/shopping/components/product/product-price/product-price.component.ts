@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+
 import { Price, PriceHelper } from '../../../../models/price/price.model';
 import { Product } from '../../../../models/product/product.model';
 

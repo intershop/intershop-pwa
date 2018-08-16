@@ -1,13 +1,15 @@
 import { Location } from '@angular/common';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuotes } from '../../store/quote';
 import { QuotingState } from '../../store/quoting.state';
 import { quotingReducers } from '../../store/quoting.system';
+
 import { QuoteEditPageContainerComponent } from './quote-edit-page.container';
 
 describe('Quote Edit Page Container', () => {

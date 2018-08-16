@@ -1,8 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { LARGE_BREAKPOINT_WIDTH } from '../../../core/configurations/injection-keys';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
+
 import { AccountNavigationComponent } from './account-navigation.component';
 
 describe('Account Navigation Component', () => {

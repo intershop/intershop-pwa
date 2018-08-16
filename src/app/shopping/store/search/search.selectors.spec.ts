@@ -1,4 +1,4 @@
-import { initialState, SearchState } from './search.reducer';
+import { SearchState, initialState } from './search.reducer';
 import { getSearchLoading, getSearchTerm } from './search.selectors';
 
 describe('Search Selectors', () => {

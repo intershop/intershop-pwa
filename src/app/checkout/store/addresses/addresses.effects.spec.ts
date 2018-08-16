@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, StoreModule } from '@ngrx/store';
+import { Action, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
+
 import { LogoutUser } from '../../../core/store/user/user.actions';
 import { Address } from '../../../models/address/address.model';
 import { AddressService } from '../../services/address/address.service';
 import { checkoutReducers } from '../checkout.system';
+
 import * as addressesActions from './addresses.actions';
 import { AddressesEffects } from './addresses.effects';
 

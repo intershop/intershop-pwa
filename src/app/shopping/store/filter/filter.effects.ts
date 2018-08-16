@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { distinctUntilKeyChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+
 import { CoreState } from '../../../core/store/core.state';
 import { mapErrorToAction } from '../../../utils/operators';
 import { FilterService } from '../../services/filter/filter.service';
@@ -10,6 +11,7 @@ import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
 import { SetPagingInfo } from '../viewconf';
+
 import * as filterActions from './filter.actions';
 
 @Injectable()

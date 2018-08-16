@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+
 import { QuotingRoutingModule } from './quoting-routing.module';
 import { QuoteRequestService } from './services/quote-request/quote-request.service';
 import { QuoteService } from './services/quote/quote.service';

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+
 import { BasketItemView } from '../../../models/basket-item/basket-item.model';
 import { Price } from '../../../models/price/price.model';
 import { QuoteRequestItemView } from '../../../models/quote-request-item/quote-request-item.model';

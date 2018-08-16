@@ -1,8 +1,10 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 import { Locale } from '../../../../models/locale/locale.model';
 import { IconModule } from '../../../icon.module';
+
 import { LanguageSwitchComponent } from './language-switch.component';
 
 describe('Language Switch Component', () => {

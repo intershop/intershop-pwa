@@ -1,4 +1,5 @@
 import * as using from 'jasmine-data-provider';
+
 import { ProductMapper } from './product.mapper';
 import { Product, ProductHelper } from './product.model';
 

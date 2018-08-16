@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { filter, take } from 'rxjs/operators';
+
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CoreState } from '../../../core/store/core.state';

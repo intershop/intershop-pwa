@@ -13,7 +13,9 @@ import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { TranslateService } from '@ngx-translate/core';
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
+
 import { environment } from '../environments/environment';
+
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,14 +26,14 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { MockInterceptor } from './core/interceptors/mock.interceptor';
 import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
 import {
-  getICMApplication,
-  getICMBaseURL,
-  getICMServerURL,
-  getRestEndPoint,
   ICM_APPLICATION,
   ICM_BASE_URL,
   ICM_SERVER_URL,
   REST_ENDPOINT,
+  getICMApplication,
+  getICMBaseURL,
+  getICMServerURL,
+  getRestEndPoint,
 } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers } from './core/store/core.system';

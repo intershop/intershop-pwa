@@ -1,5 +1,6 @@
 import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
-import { ViewconfActions, ViewconfActionTypes } from './viewconf.actions';
+
+import { ViewconfActionTypes, ViewconfActions } from './viewconf.actions';
 
 export interface ViewconfState {
   wrapperClass: string;

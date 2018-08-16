@@ -1,4 +1,4 @@
-import { createSelector, MemoizedSelector, Selector } from '@ngrx/store';
+import { MemoizedSelector, Selector, createSelector } from '@ngrx/store';
 
 export const firstTruthy = <State, S1, S2>(
   s1: Selector<State, S1>,

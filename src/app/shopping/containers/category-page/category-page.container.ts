@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { filter, map, takeUntil, withLatestFrom } from 'rxjs/operators';
+
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { getCategoryLoading, getSelectedCategory, getSelectedCategoryId } from '../../store/categories';
 import { getFilterLoading } from '../../store/filter';

@@ -11,8 +11,10 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
+
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
+
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
 import { IconModule } from './icon.module';

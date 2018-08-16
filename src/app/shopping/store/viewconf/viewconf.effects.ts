@@ -1,13 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivationEnd, Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { distinctUntilChanged, filter, map, mapTo, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { getSelectedCategory } from '../categories';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
+
 import * as viewconfActions from './viewconf.actions';
 
 @Injectable()

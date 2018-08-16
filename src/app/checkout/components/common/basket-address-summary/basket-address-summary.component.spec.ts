@@ -1,11 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { IconModule } from '../../../../core/icon.module';
 import { Address } from '../../../../models/address/address.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { BasketAddressSummaryComponent } from './basket-address-summary.component';
 
 describe('Basket Address Summary Component', () => {

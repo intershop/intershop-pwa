@@ -1,9 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { IconModule } from '../../../../core/icon.module';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
+
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 
 describe('Basket Items Summary Component', () => {

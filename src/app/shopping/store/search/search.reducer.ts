@@ -1,4 +1,5 @@
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
+
 import { SearchAction, SearchActionTypes } from './search.actions';
 
 export interface SearchState {

@@ -1,6 +1,7 @@
 import * as Lint from 'tslint';
 import { getNextToken } from 'tsutils';
 import { ClassDeclaration, SourceFile, SyntaxKind } from 'typescript';
+
 import { RuleHelpers } from './ruleHelpers';
 
 class PreferMocksInsteadOfStubsInTestsWalker extends Lint.RuleWalker {

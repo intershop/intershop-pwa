@@ -1,6 +1,7 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Category } from '../category/category.model';
 import { Image } from '../image/image.model';
+
 import { Product } from './product.model';
 import { ProductType } from './product.types';
 

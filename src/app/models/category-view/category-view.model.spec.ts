@@ -1,5 +1,6 @@
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { Category } from '../category/category.model';
+
 import { createCategoryView } from './category-view.model';
 
 describe('Category View Model', () => {

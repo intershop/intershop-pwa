@@ -1,7 +1,9 @@
 import * as using from 'jasmine-data-provider';
+
 import { CategoryData } from '../category/category.interface';
 import { CategoryMapper } from '../category/category.mapper';
 import { Category } from '../category/category.model';
+
 import { CategoryTreeHelper } from './category-tree.helper';
 import { CategoryTree } from './category-tree.model';
 

@@ -1,14 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
+
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { HttpError } from '../../../../models/http-error/http-error.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { ShoppingBasketComponent } from './shopping-basket.component';
 
 describe('Shopping Basket Component', () => {

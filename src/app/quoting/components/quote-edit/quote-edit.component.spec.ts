@@ -1,14 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormArray, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
+
 import { BasketPageContainerComponent } from '../../../checkout/containers/basket-page/basket-page.container';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
+
 import { QuoteEditComponent } from './quote-edit.component';
 
 describe('Quote Edit Component', () => {

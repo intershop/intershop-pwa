@@ -1,10 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
+
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { SearchProductsSuccess } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { shoppingReducers } from '../../store/shopping.system';
 import { SetPagingInfo } from '../../store/viewconf';
+
 import { SearchPageContainerComponent } from './search-page.container';
 
 describe('Search Page Container', () => {
