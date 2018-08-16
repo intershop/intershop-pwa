@@ -1,5 +1,6 @@
-import { animate, AnimationBuilder, style } from '@angular/animations';
+import { AnimationBuilder, animate, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+
 import { BasketHelper, BasketView } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 

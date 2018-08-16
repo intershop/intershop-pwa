@@ -2,6 +2,7 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
+
 import * as fromActions from './quote-request.actions';
 import { initialState, quoteRequestReducer } from './quote-request.reducer';
 

@@ -1,5 +1,6 @@
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
-import { FilterActions, FilterActionTypes } from './filter.actions';
+
+import { FilterActionTypes, FilterActions } from './filter.actions';
 
 export interface FilterState {
   loading: boolean;

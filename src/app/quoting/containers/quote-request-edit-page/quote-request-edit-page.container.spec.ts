@@ -1,11 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuoteRequests } from '../../store/quote-request';
 import { QuotingState } from '../../store/quoting.state';
 import { quotingReducers } from '../../store/quoting.system';
+
 import { QuoteRequestEditPageContainerComponent } from './quote-request-edit-page.container';
 
 describe('Quote Request Edit Page Container', () => {

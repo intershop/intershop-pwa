@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
 import { Region } from '../../../../models/region/region.model';
 
 @Component({

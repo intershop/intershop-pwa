@@ -1,4 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
+
 import { arrayDiff, arrayIntersect, markAsDirtyRecursive, markFormControlsAsInvalid } from './form-utils';
 
 describe('Form Utils', () => {

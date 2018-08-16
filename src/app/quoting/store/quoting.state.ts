@@ -1,4 +1,5 @@
 import { createFeatureSelector } from '@ngrx/store';
+
 import { QuoteRequestState } from './quote-request/quote-request.reducer';
 import { QuoteState } from './quote/quote.reducer';
 

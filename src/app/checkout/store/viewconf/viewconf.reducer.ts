@@ -1,4 +1,4 @@
-import { ViewconfActions, ViewconfActionTypes } from './viewconf.actions';
+import { ViewconfActionTypes, ViewconfActions } from './viewconf.actions';
 
 export interface ViewconfState {
   checkoutStep: number;

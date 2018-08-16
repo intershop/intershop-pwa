@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../../models/quote/quote.interface';

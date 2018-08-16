@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+
 import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.actions';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
@@ -22,6 +23,7 @@ import { BasketService } from '../../services/basket/basket.service';
 import { OrderService } from '../../services/order/order.service';
 import { CheckoutState } from '../checkout.state';
 import { checkoutReducers } from '../checkout.system';
+
 import * as basketActions from './basket.actions';
 import { BasketEffects } from './basket.effects';
 

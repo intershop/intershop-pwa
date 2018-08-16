@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { Actions, Effect, ROOT_EFFECTS_INIT, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs/operators';
+
 import { mapErrorToAction } from '../../../utils/operators';
 import { CountryService } from '../../services/countries/country.service';
+
 import * as countryActions from './countries.actions';
 
 @Injectable()

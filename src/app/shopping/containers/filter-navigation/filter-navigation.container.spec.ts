@@ -1,5 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
+
 import { CoreState } from '../../../core/store/core.state';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { Filter } from '../../../models/filter/filter.model';
@@ -7,6 +8,7 @@ import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadFilterForCategorySuccess } from '../../store/filter/filter.actions';
 import { shoppingReducers } from '../../store/shopping.system';
+
 import { FilterNavigationContainerComponent } from './filter-navigation.container';
 
 describe('Filter Navigation Container', () => {

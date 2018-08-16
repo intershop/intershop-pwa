@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
+
 import { ShoppingState } from '../shopping.state';
+
 import * as compareActions from './compare.actions';
 import { getCompareProductsSKUs } from './compare.selectors';
 

@@ -1,13 +1,15 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { anything, spy, verify } from 'ts-mockito';
+
 import { Customer } from '../../models/customer/customer.model';
 import { MockComponent } from '../../utils/dev/mock.component';
 import { CoreState } from '../store/core.state';
 import { coreReducers } from '../store/core.system';
 import { LoginUserSuccess } from '../store/user';
+
 import { AuthGuard } from './auth.guard';
 
 describe('Auth Guard', () => {

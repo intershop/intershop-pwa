@@ -1,8 +1,10 @@
 import { formatDate, formatNumber } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+
 import { Attribute } from '../../models/attribute/attribute.model';
 import { Price } from '../../models/price/price.model';
+
 import { formatPrice } from './price.pipe';
 
 @Pipe({ name: 'ishAttribute', pure: false })

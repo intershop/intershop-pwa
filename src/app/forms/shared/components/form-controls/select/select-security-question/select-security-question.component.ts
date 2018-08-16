@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+
 import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';
 

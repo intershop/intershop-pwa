@@ -3,6 +3,7 @@ import { Customer } from '../../../models/customer/customer.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Order } from '../../../models/order/order.model';
 import { User } from '../../../models/user/user.model';
+
 import { UserAction, UserActionTypes } from './user.actions';
 
 export interface UserState {

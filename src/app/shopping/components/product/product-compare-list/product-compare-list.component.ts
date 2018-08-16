@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+
 import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 /**

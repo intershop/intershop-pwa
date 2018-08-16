@@ -1,6 +1,8 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
+
 import { Address } from '../../../models/address/address.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
+
 import { AddressAction, AddressActionTypes } from './addresses.actions';
 
 export const addressAdapter = createEntityAdapter<Address>({});

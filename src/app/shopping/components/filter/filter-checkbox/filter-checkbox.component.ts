@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { Facet } from '../../../../models/facet/facet.model';
 import { Filter } from '../../../../models/filter/filter.model';
 

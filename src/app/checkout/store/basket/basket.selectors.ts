@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+
 import { BasketView } from '../../../models/basket/basket.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { getCheckoutState } from '../checkout.state';

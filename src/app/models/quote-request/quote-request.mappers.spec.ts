@@ -1,5 +1,6 @@
 import { Link } from '../link/link.model';
 import { Price } from '../price/price.model';
+
 import { QuoteRequestData } from './quote-request.interface';
 import { QuoteRequestMapper } from './quote-request.mapper';
 

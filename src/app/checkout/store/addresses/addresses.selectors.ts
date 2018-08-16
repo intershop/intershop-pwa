@@ -1,5 +1,7 @@
 import { createSelector } from '@ngrx/store';
+
 import { getCheckoutState } from '../checkout.state';
+
 import { addressAdapter } from './addresses.reducer';
 
 const getAddressesState = createSelector(getCheckoutState, state => state.addresses);

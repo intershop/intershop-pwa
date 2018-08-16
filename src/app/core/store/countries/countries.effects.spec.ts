@@ -5,10 +5,12 @@ import { Action, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
+
 import { Country } from '../../../models/country/country.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { CountryService } from '../../services/countries/country.service';
 import { coreReducers } from '../core.system';
+
 import { LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { CountriesEffects } from './countries.effects';
 

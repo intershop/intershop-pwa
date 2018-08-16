@@ -1,4 +1,5 @@
 import { ActionReducerMap } from '@ngrx/store';
+
 import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
 import { CompareEffects } from './compare/compare.effects';

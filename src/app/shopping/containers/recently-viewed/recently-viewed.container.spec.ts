@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { shoppingReducers } from '../../store/shopping.system';
+
 import { RecentlyViewedContainerComponent } from './recently-viewed.container';
 
 describe('Recently Viewed Container', () => {

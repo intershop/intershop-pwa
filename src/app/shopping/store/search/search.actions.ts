@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 

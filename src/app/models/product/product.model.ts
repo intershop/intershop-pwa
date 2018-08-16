@@ -1,6 +1,7 @@
 import { Attribute } from '../attribute/attribute.model';
 import { Image } from '../image/image.model';
 import { Price } from '../price/price.model';
+
 import { ProductType } from './product.types';
 
 export interface Product {

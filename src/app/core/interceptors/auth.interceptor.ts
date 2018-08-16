@@ -1,11 +1,12 @@
 // tslint:disable:no-any
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { concatMap, map, take, tap } from 'rxjs/operators';
+
 import { CoreState } from '../store/core.state';
-import { getAPIToken, SetAPIToken } from '../store/user';
+import { SetAPIToken, getAPIToken } from '../store/user';
 
 const tokenHeaderKeyName = 'authentication-token';
 const authorizationHeaderKey = 'Authorization';

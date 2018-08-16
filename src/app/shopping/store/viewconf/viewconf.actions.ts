@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { ViewType } from '../../../models/viewtype/viewtype.types';
 
 export enum ViewconfActionTypes {

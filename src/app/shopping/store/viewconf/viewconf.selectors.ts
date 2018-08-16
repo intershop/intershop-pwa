@@ -1,7 +1,8 @@
 import { createSelector } from '@ngrx/store';
 import { range } from 'lodash';
+
 import { getProductEntities } from '../products';
-import { getShoppingState, ShoppingState } from '../shopping.state';
+import { ShoppingState, getShoppingState } from '../shopping.state';
 
 export const getViewconfState = createSelector(getShoppingState, (state: ShoppingState) => state.viewconf);
 

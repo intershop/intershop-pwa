@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { ApiService, unpackEnvelope } from '../../../core/services/api/api.service';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigationData } from '../../../models/filter-navigation/filter-navigation.interface';

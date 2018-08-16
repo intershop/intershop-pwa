@@ -1,14 +1,15 @@
 // tslint:disable use-component-change-detection prefer-mocks-instead-of-stubs-in-tests
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
+
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
@@ -28,24 +29,25 @@ import { CategoriesService } from '../services/categories/categories.service';
 import { FilterService } from '../services/filter/filter.service';
 import { ProductsService } from '../services/products/products.service';
 import { SuggestService } from '../services/suggest/suggest.service';
+
 import {
   CategoriesActionTypes,
-  getCategoryIds,
-  getSelectedCategory,
   LoadCategory,
   SelectCategory,
   SelectedCategoryAvailable,
+  getCategoryIds,
+  getSelectedCategory,
 } from './categories';
 import { FilterActionTypes } from './filter';
 import {
-  getProductIds,
-  getSelectedProduct,
   LoadProduct,
   LoadProductsForCategory,
   ProductsActionTypes,
   SelectProduct,
+  getProductIds,
+  getSelectedProduct,
 } from './products';
-import { getRecentlyProducts, RecentlyActionTypes } from './recently';
+import { RecentlyActionTypes, getRecentlyProducts } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';

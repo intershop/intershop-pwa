@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
+
 import { IconModule } from '../../../core/icon.module';
+
 import { ProductAddToQuoteComponent } from './product-add-to-quote.component';
 
 describe('Product Add To Quote Component', () => {

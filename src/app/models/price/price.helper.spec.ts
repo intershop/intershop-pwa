@@ -1,4 +1,5 @@
 import * as using from 'jasmine-data-provider';
+
 import { Price, PriceHelper } from './price.model';
 
 describe('Price Helper', () => {

@@ -1,9 +1,11 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 import { IconModule } from '../../../../core/icon.module';
 import { Filter } from '../../../../models/filter/filter.model';
+
 import { FilterDropdownComponent } from './filter-dropdown.component';
 
 describe('Filter Dropdown Component', () => {

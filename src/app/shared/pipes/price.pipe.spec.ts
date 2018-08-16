@@ -3,6 +3,7 @@ import localeDe from '@angular/common/locales/de';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
+
 import { PricePipe } from './price.pipe';
 
 describe('Price Pipe', () => {

@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+
 import { Locale } from '../../models/locale/locale.model';
 
 /**

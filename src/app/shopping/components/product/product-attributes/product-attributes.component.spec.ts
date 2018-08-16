@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 import { Product } from '../../../../models/product/product.model';
 import { PipesModule } from '../../../../shared/pipes.module';
+
 import { ProductAttributesComponent } from './product-attributes.component';
 
 describe('Product Attributes Component', () => {

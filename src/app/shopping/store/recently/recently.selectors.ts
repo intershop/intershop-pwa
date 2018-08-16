@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+
 import { getProductEntities, getSelectedProductId } from '../products';
 import { getShoppingState } from '../shopping.state';
 
