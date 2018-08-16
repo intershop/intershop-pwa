@@ -1,6 +1,16 @@
 {
   "name": "intershop-pwa",
-  "version": "0.4.0",
+  "description": "Intershop Progressive Web App",
+  "version": "0.5.0",
+  "license": "Intershop Standard Software End User License Agreement Intershop 7",
+  "keywords": [
+    "intershop"
+  ],
+  "engines": {
+    "node": ">=8.11.0 <9",
+    "npm": "~5.6.0"
+  },
+  "private": true,
   "scripts": {
     "precommit": "lint-staged",
     "ng": "ng",
@@ -33,7 +43,6 @@
     "start:dynamic": "npm run build:dynamic && npm run serve:dynamic",
     "start:dynamic:prod": "npm run build:dynamic:prod && npm run serve:dynamic"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
