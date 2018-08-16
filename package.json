@@ -92,7 +92,7 @@
     "jasmine-data-provider": "^2.2.0",
     "jasmine-spec-reporter": "~4.2.1",
     "jasmine-xml-reporter": "^1.1.0",
-    "jest": "^22.4.3",
+    "jest": "^23.5.0",
     "jest-extended": "^0.7.2",
     "jest-html-reporter": "^2.4.1",
     "jest-junit": "^5.1.0",
