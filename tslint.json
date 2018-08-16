@@ -198,7 +198,14 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
-    "ordered-imports": true,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "lowercase-last",
+        "named-imports-order": "lowercase-last",
+        "grouped-imports": true
+      }
+    ],
     "no-duplicate-imports": true,
     "ban": [
       true,
