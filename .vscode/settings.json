@@ -3,7 +3,6 @@
   "editor.renderWhitespace": "all",
   "editor.formatOnSave": true,
   "tslint.autoFixOnSave": true,
-  "jest.restartJestOnSnapshotUpdate": true,
 
   // file type specific exclusions
   "[html]": {
