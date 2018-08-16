@@ -3,7 +3,8 @@ import { createSelector } from '@ngrx/store';
 import { OrderView } from '../../../models/order/order.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { CoreState } from '../core.state';
-import { getAuthorized, getAuthToken, getCustomer, getError, getUser } from './user.reducer';
+
+import { getAuthToken, getAuthorized, getCustomer, getError, getUser } from './user.reducer';
 
 const getUserState = (state: CoreState) => state.user;
 

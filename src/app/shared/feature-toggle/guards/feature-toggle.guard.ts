@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+
 import { FeatureToggleService } from '../services/feature-toggle.service';
 
 @Injectable()

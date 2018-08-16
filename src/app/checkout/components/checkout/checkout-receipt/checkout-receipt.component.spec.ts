@@ -1,8 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { User } from '../../../../models/user/user.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { CheckoutReceiptComponent } from './checkout-receipt.component';
 
 describe('Checkout Receipt Component', () => {

@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { Address } from '../../../models/address/address.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { getAddressesLoading, getAllAddresses } from '../../store/addresses';
 import { LoadAddresses } from '../../store/addresses/addresses.actions';
 import {
+  UpdateBasketInvoiceAddress,
+  UpdateBasketShippingAddress,
   getBasketError,
   getBasketLoading,
   getCurrentBasket,
-  UpdateBasketInvoiceAddress,
-  UpdateBasketShippingAddress,
 } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 

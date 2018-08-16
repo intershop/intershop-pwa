@@ -1,5 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { OrderHistoryPageComponent } from './order-history-page.component';
 
 describe('Order History Page Component', () => {

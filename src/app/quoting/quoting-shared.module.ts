@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap/modal';
+
 import { FormsSharedModule } from '../forms/forms-shared.module';
 import { SharedLineItemListModule } from '../shared/shared-line-item-list.module';
 import { SharedModule } from '../shared/shared.module';
+
 import { BasketAddToQuoteComponent } from './components/basket-add-to-quote/basket-add-to-quote.component';
 import { ProductAddToQuoteDialogComponent } from './components/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
 import { ProductAddToQuoteComponent } from './components/product-add-to-quote/product-add-to-quote.component';

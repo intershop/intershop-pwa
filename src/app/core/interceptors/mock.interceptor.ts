@@ -12,6 +12,7 @@ import {
 import { Inject, Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
+
 import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
 import { REST_ENDPOINT } from '../services/state-transfer/factories';
 

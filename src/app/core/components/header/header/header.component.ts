@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+
 import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
 
 @Component({

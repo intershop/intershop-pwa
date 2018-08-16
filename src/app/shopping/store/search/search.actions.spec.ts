@@ -1,4 +1,5 @@
 import { HttpError } from '../../../models/http-error/http-error.model';
+
 import { SearchActionTypes, SearchProducts, SearchProductsFail, SearchProductsSuccess } from './search.actions';
 
 describe('Search Actions', () => {

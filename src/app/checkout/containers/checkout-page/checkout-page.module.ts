@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { AuthGuard } from '../../../core/guards/auth.guard';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { SharedLineItemListModule } from '../../../shared/shared-line-item-list.module';
@@ -17,6 +18,7 @@ import { CheckoutPaymentPageContainerComponent } from '../checkout-payment-page/
 import { CheckoutReceiptPageContainerComponent } from '../checkout-receipt-page/checkout-receipt-page.container';
 import { CheckoutReviewPageContainerComponent } from '../checkout-review-page/checkout-review-page.container';
 import { CheckoutShippingPageContainerComponent } from '../checkout-shipping-page/checkout-shipping-page.container';
+
 import { CheckoutPageContainerComponent } from './checkout-page.container';
 import { checkoutPageRoutes } from './checkout-page.routes';
 

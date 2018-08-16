@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { HeaderCheckoutComponent } from './header-checkout.component';
 
 describe('Header Checkout Component', () => {

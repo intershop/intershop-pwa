@@ -8,7 +8,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 import { IconModule } from '../core/icon.module';
+
 import { AccordionItemComponent } from './components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';

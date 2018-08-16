@@ -1,17 +1,18 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
+
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import {
   DeleteItemFromQuoteRequest,
-  getActiveQuoteRequest,
-  getQuoteRequestLoading,
   SelectQuoteRequest,
   SubmitQuoteRequest,
   UpdateQuoteRequest,
   UpdateQuoteRequestItems,
+  getActiveQuoteRequest,
+  getQuoteRequestLoading,
 } from '../../store/quote-request';
 import { QuotingState } from '../../store/quoting.state';
 

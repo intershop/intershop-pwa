@@ -1,11 +1,13 @@
 import { CommonModule, Location } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { instance, mock, spy, verify } from 'ts-mockito';
+
 import { IconModule } from '../../../../core/icon.module';
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product, ProductType } from '../../../../models/product/product.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
+
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
 describe('Product Detail Actions Component', () => {

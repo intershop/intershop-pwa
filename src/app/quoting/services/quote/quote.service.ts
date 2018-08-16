@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable, of, throwError } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, take } from 'rxjs/operators';
+
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';

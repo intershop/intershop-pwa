@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 import { ModalModule } from 'ngx-bootstrap/modal';
+
 import { MockComponent } from '../../../utils/dev/mock.component';
+
 import { ProductRowContainerComponent } from './product-row.container';
 
 describe('Product Row Container', () => {

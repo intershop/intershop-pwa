@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
+
 import { getCompareProductsSKUs } from '../../../../shopping/store/compare';
 import { ShoppingState } from '../../../../shopping/store/shopping.state';
 

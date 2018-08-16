@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { Locale } from '../../../../models/locale/locale.model';
 
 @Component({

@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import {
+  LoadBasketEligiblePaymentMethods,
+  SetBasketPayment,
   getBasketEligiblePaymentMethods,
   getBasketError,
   getBasketLoading,
   getCurrentBasket,
-  LoadBasketEligiblePaymentMethods,
-  SetBasketPayment,
 } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 

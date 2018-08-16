@@ -1,8 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+
 import { createCategoryView } from '../../../../models/category-view/category-view.model';
 import { Category } from '../../../../models/category/category.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { categoryTree } from '../../../../utils/dev/test-data-utils';
+
 import { CategoryPageComponent } from './category-page.component';
 
 describe('Category Page Component', () => {

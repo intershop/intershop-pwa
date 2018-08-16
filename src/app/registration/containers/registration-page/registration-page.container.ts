@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+
 import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';

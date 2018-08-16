@@ -1,6 +1,7 @@
 // tslint:disable:no-console
 import { cold, hot } from 'jest-marbles';
-import { noop, Subject } from 'rxjs';
+import { Subject, noop } from 'rxjs';
+
 import { log } from './operators';
 
 describe('Operators', () => {

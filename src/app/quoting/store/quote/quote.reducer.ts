@@ -1,5 +1,6 @@
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteData } from '../../../models/quote/quote.interface';
+
 import { QuoteAction, QuoteActionTypes } from './quote.actions';
 
 export interface QuoteState {

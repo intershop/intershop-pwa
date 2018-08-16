@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
 import { BasketTotal } from '../../../../models/basket-total/basket-total.model';
 import { PriceHelper } from '../../../../models/price/price.model';
 

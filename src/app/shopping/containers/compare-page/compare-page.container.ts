@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Product } from '../../../models/product/product.model';
-import { getCompareProducts, getCompareProductsCount, RemoveFromCompare } from '../../store/compare';
+import { RemoveFromCompare, getCompareProducts, getCompareProductsCount } from '../../store/compare';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({

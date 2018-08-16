@@ -1,6 +1,8 @@
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
+
 import { ApiService } from '../../../core/services/api/api.service';
+
 import { AddressService } from './address.service';
 
 describe('Address Service', () => {

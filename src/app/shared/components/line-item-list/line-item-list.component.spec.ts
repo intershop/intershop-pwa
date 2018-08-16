@@ -1,13 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { IconModule } from '../../../core/icon.module';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { BasketItemView } from '../../../models/basket-item/basket-item.model';
 import { Price } from '../../../models/price/price.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { PipesModule } from '../../pipes.module';
+
 import { LineItemListComponent } from './line-item-list.component';
 
 describe('Line Item List Component', () => {

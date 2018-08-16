@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { ofRoute, RouteNavigation } from 'ngrx-router';
+import { RouteNavigation, ofRoute } from 'ngrx-router';
 import { map } from 'rxjs/operators';
+
 import { CheckoutState } from '../checkout.state';
+
 import { SetCheckoutStep } from './viewconf.actions';
 
 @Injectable()

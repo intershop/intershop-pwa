@@ -11,8 +11,10 @@ import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
+
 import { MUST_MOCK_PATHS, NEED_MOCK } from '../configurations/injection-keys';
 import { REST_ENDPOINT } from '../services/state-transfer/factories';
+
 import { MockInterceptor } from './mock.interceptor';
 
 describe('Mock Interceptor', () => {

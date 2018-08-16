@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
@@ -18,6 +19,7 @@ import { CategoriesService } from '../../services/categories/categories.service'
 import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
+
 import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
 

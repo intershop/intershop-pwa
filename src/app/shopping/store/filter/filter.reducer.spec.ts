@@ -1,6 +1,7 @@
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
+
 import * as fromActions from './filter.actions';
 import { filterReducer, initialState } from './filter.reducer';
 

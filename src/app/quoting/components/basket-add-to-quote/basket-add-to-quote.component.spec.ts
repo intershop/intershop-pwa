@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
+
 import { BasketAddToQuoteComponent } from './basket-add-to-quote.component';
 
 describe('Basket Add To Quote Component', () => {

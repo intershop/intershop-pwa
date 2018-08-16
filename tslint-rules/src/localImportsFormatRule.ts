@@ -1,5 +1,6 @@
 import * as Lint from 'tslint';
 import { ImportDeclaration, SourceFile, SyntaxKind } from 'typescript';
+
 import { RuleHelpers } from './ruleHelpers';
 
 class LocalImportsFormatPluginWalker extends Lint.RuleWalker {

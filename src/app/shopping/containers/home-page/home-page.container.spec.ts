@@ -1,5 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+
 import { MockComponent } from '../../../utils/dev/mock.component';
+
 import { HomePageContainerComponent } from './home-page.container';
 
 describe('Home Page Container', () => {

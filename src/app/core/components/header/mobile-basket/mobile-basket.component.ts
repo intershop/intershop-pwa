@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+
 import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
 
 /**

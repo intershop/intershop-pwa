@@ -1,11 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
 import { IconModule } from '../../../icon.module';
+
 import { HeaderComponent } from './header.component';
 
 describe('Header Component', () => {

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
-import { Observable, of, OperatorFunction } from 'rxjs';
+import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
+
 import { HttpErrorMapper } from '../models/http-error/http-error.mapper';
 import { HttpError } from '../models/http-error/http-error.model';
 

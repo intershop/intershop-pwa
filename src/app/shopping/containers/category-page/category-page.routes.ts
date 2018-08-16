@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+
 import { CategoryPageContainerComponent } from './category-page.container';
 
 export const categoryPageRoutes: Routes = [

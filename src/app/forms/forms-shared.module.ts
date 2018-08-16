@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
+
 import { SharedModule } from '../shared/shared.module';
+
 import { FormControlFeedbackComponent } from './shared/components/form-control-feedback/form-control-feedback.component';
 import { CaptchaComponent } from './shared/components/form-controls/captcha/captcha.component';
 import { CheckboxComponent } from './shared/components/form-controls/checkbox/checkbox.component';

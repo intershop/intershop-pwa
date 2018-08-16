@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 import { Product } from '../../../../models/product/product.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { ProductListComponent } from './product-list.component';
 
 describe('Product List Component', () => {

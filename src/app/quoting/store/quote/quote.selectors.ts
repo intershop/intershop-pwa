@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteHelper } from '../../../models/quote/quote.helper';
 import { Quote } from '../../../models/quote/quote.model';

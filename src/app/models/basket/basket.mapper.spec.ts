@@ -1,4 +1,5 @@
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
+
 import { BasketData } from './basket.interface';
 import { BasketMapper } from './basket.mapper';
 import { Basket } from './basket.model';

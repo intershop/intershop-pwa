@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
+
 import { FormsSharedModule } from '../forms/forms-shared.module';
 import { QuotingSharedModule } from '../quoting/quoting-shared.module';
 import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
+
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { CategoryNavigationComponent } from './components/category/category-navigation/category-navigation.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';

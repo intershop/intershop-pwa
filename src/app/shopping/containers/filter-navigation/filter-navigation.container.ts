@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { ApplyFilter, getAvailableFilter } from '../../store/filter';
 import { ShoppingState } from '../../store/shopping.state';

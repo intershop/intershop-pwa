@@ -3,9 +3,11 @@ import { HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/comm
 import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+
 import { CoreState } from '../store/core.state';
 import { coreReducers } from '../store/core.system';
 import { SetAPIToken } from '../store/user';
+
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('Auth Interceptor', () => {
