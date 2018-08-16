@@ -1,5 +1,6 @@
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+
 import { RuleHelpers } from './ruleHelpers';
 
 class NoSuspiciousVariableInitInTestsWalker extends Lint.RuleWalker {

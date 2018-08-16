@@ -5,6 +5,7 @@ import { Link } from '../../../models/link/link.model';
 import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
+
 import * as fromActions from './basket.actions';
 
 describe('Basket Actions', () => {

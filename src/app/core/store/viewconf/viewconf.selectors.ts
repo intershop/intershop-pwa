@@ -1,4 +1,5 @@
 import { createSelector } from '@ngrx/store';
+
 import { CoreState } from '../core.state';
 
 const getViewconfState = (state: CoreState) => state.viewconf;

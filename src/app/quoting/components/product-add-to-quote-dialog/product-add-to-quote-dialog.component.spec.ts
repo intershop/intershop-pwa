@@ -1,13 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormArray, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { noop } from 'rxjs';
 import { spy, verify } from 'ts-mockito';
+
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
+
 import { ProductAddToQuoteDialogComponent } from './product-add-to-quote-dialog.component';
 
 describe('Product Add To Quote Dialog Component', () => {

@@ -1,4 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
+
 import { FeatureToggleDirective } from './feature-toggle/directives/feature-toggle.directive';
 import { FeatureToggleGuard } from './feature-toggle/guards/feature-toggle.guard';
 import { FeatureToggleService } from './feature-toggle/services/feature-toggle.service';

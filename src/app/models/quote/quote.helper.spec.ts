@@ -1,5 +1,6 @@
 import { Price } from '../price/price.model';
 import { QuoteRequestItem } from '../quote-request-item/quote-request-item.model';
+
 import { QuoteHelper } from './quote.helper';
 import { QuoteData } from './quote.interface';
 

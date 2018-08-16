@@ -6,10 +6,12 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
 import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedSearchModule } from '../shared/shared-search.module';
+
 import { HeaderCheckoutComponent } from './components/header/header-checkout/header-checkout.component';
 import { HeaderNavigationComponent } from './components/header/header-navigation/header-navigation.component';
 import { SubCategoryNavigationComponent } from './components/header/header-navigation/sub-category-navigation/sub-category-navigation.component';

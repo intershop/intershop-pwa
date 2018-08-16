@@ -1,8 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
+
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { coreReducers } from '../../../store/core.system';
+
 import { HeaderContainerComponent } from './header.container';
 
 describe('Header Container', () => {

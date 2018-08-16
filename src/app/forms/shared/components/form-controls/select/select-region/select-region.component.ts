@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
 import { Region } from '../../../../../../models/region/region.model';
 import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';

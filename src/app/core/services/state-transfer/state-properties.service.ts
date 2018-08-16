@@ -1,6 +1,6 @@
 import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
+import { StateKey, TransferState, makeStateKey } from '@angular/platform-browser';
 
 // tslint:disable-next-line: do-not-import-environment
 import { environment } from '../../../../environments/environment';

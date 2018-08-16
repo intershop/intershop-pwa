@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 import { IconModule } from '../../../core/icon.module';
+
 import { AccordionItemComponent } from './accordion-item.component';
 
 describe('Accordion Item Component', () => {

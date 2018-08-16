@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { Store, select } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
+
 import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
-import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
+import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 import { QuotingState } from '../quoting.state';
+
 import * as quoteActions from './quote.actions';
 import { getSelectedQuote, getSelectedQuoteId } from './quote.selectors';
 

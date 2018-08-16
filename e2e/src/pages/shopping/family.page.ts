@@ -1,5 +1,7 @@
 import { browser } from 'protractor';
+
 import { HeaderModule } from '../header.module';
+
 import { ProductListModule } from './product-list.module';
 
 export class FamilyPage {

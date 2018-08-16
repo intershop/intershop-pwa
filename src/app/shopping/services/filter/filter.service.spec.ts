@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
+
 import { ApiService } from '../../../core/services/api/api.service';
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigationData } from '../../../models/filter-navigation/filter-navigation.interface';
+
 import { FilterService } from './filter.service';
 
 describe('Filter Service', () => {

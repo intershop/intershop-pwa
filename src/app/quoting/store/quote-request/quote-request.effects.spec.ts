@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { Params, Router, RouterState } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+
 import { LoadBasketItemsSuccess, LoadBasketSuccess } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { checkoutReducers } from '../../../checkout/store/checkout.system';
@@ -28,6 +29,7 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuotingState } from '../quoting.state';
 import { quotingReducers } from '../quoting.system';
+
 import * as quoteRequestActions from './quote-request.actions';
 import { QuoteRequestEffects } from './quote-request.effects';
 

@@ -1,9 +1,11 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Action, Store } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
+
 import { CoreState } from '../store/core.state';
 import { UserActionTypes } from '../store/user';
+
 import { LogoutGuard } from './logout.guard';
 
 describe('Logout Guard', () => {

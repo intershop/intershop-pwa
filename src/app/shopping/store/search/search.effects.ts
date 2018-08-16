@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { ofRoute, RouteNavigation } from 'ngrx-router';
+import { Store, select } from '@ngrx/store';
+import { RouteNavigation, ofRoute } from 'ngrx-router';
 import { EMPTY } from 'rxjs';
 import {
   catchError,
@@ -18,21 +18,23 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+
 import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
 import { ShoppingState } from '../shopping.state';
 import {
-  canRequestMore,
-  getItemsPerPage,
-  getPagingPage,
-  isEndlessScrollingEnabled,
   SetPage,
   SetPagingInfo,
   SetPagingLoading,
   SetSortKeys,
+  canRequestMore,
+  getItemsPerPage,
+  getPagingPage,
+  isEndlessScrollingEnabled,
 } from '../viewconf';
+
 import {
   SearchActionTypes,
   SearchMoreProducts,

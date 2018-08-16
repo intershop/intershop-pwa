@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { HttpError } from './http-error.model';
 
 export class HttpErrorMapper {

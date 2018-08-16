@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+
 import { getFilterLoading } from '../../store/filter';
-import { getSearchLoading, getSearchTerm, SearchMoreProducts } from '../../store/search';
+import { SearchMoreProducts, getSearchLoading, getSearchTerm } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { getPagingLoading, getTotalItems, isProductsAvailable } from '../../store/viewconf';
 

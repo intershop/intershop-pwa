@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+
 import { StatePropertiesService } from './state-properties.service';
 
 /**

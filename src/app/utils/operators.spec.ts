@@ -1,10 +1,12 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { merge, Observable, of } from 'rxjs';
+import { Observable, merge, of } from 'rxjs';
 import { concatMap, filter, last, mapTo } from 'rxjs/operators';
+
 import { HttpError } from '../models/http-error/http-error.model';
-import { distinctCompareWith, mapErrorToAction, Partition, partitionBy } from './operators';
+
+import { Partition, distinctCompareWith, mapErrorToAction, partitionBy } from './operators';
 
 describe('Operators', () => {
   describe('distinctCompareWith', () => {

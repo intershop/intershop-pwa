@@ -1,10 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
+
 import { SuggestService } from '../../../../shopping/services/suggest/suggest.service';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { SearchBoxContainerComponent } from './search-box.container';
 
 describe('Search Box Container', () => {

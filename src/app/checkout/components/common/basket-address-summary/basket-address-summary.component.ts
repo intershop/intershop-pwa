@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
 import { Basket } from '../../../../models/basket/basket.model';
 
 @Component({

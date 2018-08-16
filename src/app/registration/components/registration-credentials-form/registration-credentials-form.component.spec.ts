@@ -1,9 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { InputComponent } from '../../../forms/shared/components/form-controls/input/input.component';
 import { SelectSecurityQuestionComponent } from '../../../forms/shared/components/form-controls/select/select-security-question/select-security-question.component';
+
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form.component';
 
 describe('Registration Credentials Form Component', () => {

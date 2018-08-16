@@ -2,21 +2,22 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
+
 import { checkoutReducers } from '../../checkout/store/checkout.system';
 import { AVAILABLE_LOCALES } from '../../core/configurations/injection-keys';
 import { ApiService } from '../../core/services/api/api.service';
 import { coreEffects, coreReducers } from '../../core/store/core.system';
 import {
-  getLoggedInCustomer,
-  getLoggedInUser,
   LoadCompanyUserSuccess,
   LoginUserSuccess,
   LogoutUser,
+  getLoggedInCustomer,
+  getLoggedInUser,
 } from '../../core/store/user';
 import { Customer } from '../../models/customer/customer.model';
 import { Locale } from '../../models/locale/locale.model';
@@ -24,15 +25,16 @@ import { QuoteRequestData } from '../../models/quote-request/quote-request.inter
 import { User } from '../../models/user/user.model';
 import { FeatureToggleModule } from '../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../shopping/store/shopping.system';
-import { containsActionWithType, containsActionWithTypeAndPayload, LogEffects } from '../../utils/dev/log.effects';
+import { LogEffects, containsActionWithType, containsActionWithTypeAndPayload } from '../../utils/dev/log.effects';
 import { QuoteRequestService } from '../services/quote-request/quote-request.service';
 import { QuoteService } from '../services/quote/quote.service';
-import { getCurrentQuotes, QuoteActionTypes } from './quote';
+
+import { QuoteActionTypes, getCurrentQuotes } from './quote';
 import {
   AddProductToQuoteRequest,
+  QuoteRequestActionTypes,
   getActiveQuoteRequest,
   getCurrentQuoteRequests,
-  QuoteRequestActionTypes,
 } from './quote-request';
 import { quotingEffects, quotingReducers } from './quoting.system';
 

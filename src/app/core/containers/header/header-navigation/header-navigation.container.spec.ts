@@ -1,9 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
+
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { CoreState } from '../../../store/core.state';
+
 import { HeaderNavigationContainerComponent } from './header-navigation.container';
 
 describe('Header Navigation Container', () => {

@@ -3,10 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+
 import { Link } from '../../../models/link/link.model';
 import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes, ServerError } from '../../store/error';
 import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
+
 import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from './api.service';
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 

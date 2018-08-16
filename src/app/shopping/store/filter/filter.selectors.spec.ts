@@ -1,11 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { shoppingReducers } from '../shopping.system';
+
 import {
   ApplyFilter,
   ApplyFilterFail,

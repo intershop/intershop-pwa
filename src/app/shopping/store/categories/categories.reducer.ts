@@ -1,5 +1,6 @@
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
 import { ProductsAction } from '../products';
+
 import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
 
 export interface CategoriesState {

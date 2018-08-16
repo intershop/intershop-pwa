@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
 import { RouteNavigation } from 'ngrx-router';
+
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { checkoutReducers } from '../checkout.system';
+
 import { ViewconfEffects } from './viewconf.effects';
 import { getCheckoutStep } from './viewconf.selectors';
 

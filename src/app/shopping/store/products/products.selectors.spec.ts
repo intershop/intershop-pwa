@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { shoppingReducers } from '../shopping.system';
+
 import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
 import {
   getProductEntities,

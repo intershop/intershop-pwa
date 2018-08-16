@@ -1,4 +1,5 @@
 import { Category } from '../category/category.model';
+
 import { CategoryTree } from './category-tree.model';
 
 export class CategoryTreeHelper {

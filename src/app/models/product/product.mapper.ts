@@ -1,5 +1,6 @@
 import { mergeObjectsMutably } from '../../utils/merge-objects';
 import { Price } from '../price/price.model';
+
 import { VariationProductMaster } from './product-variation-master.model';
 import { VariationProduct } from './product-variation.model';
 import { ProductData, ProductDataStub } from './product.interface';

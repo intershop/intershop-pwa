@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { LARGE_BREAKPOINT_WIDTH } from '../../../core/configurations/injection-keys';
 
 @Component({

@@ -1,5 +1,6 @@
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
+
 import * as fromActions from './products.actions';
 
 describe('Products Actions', () => {

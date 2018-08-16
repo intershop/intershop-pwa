@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CoreState } from '../../../core/store/core.state';
@@ -12,7 +13,7 @@ import { Product } from '../../../models/product/product.model';
 import { ProductAddToQuoteDialogContainerComponent } from '../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
 import { QuotingState } from '../../../quoting/store/quoting.state';
-import { isInCompareProducts, ToggleCompare } from '../../store/compare';
+import { ToggleCompare, isInCompareProducts } from '../../store/compare';
 import { ShoppingState } from '../../store/shopping.state';
 
 @Component({

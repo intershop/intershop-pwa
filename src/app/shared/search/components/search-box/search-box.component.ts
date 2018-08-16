@@ -13,6 +13,7 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 

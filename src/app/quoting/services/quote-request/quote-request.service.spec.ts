@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
+
 import { ApiService } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from '../../../core/store/user';
@@ -16,6 +17,7 @@ import { User } from '../../../models/user/user.model';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { LoadQuoteRequestsSuccess } from '../../store/quote-request';
 import { quotingReducers } from '../../store/quoting.system';
+
 import { QuoteRequestService } from './quote-request.service';
 
 describe('Quote Request Service', () => {

@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
+
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
 import { ShoppingState } from '../../store/shopping.state';
 import {
-  canRequestMore,
   ChangeSortBy,
   ChangeViewType,
+  canRequestMore,
   getPageIndices,
   getPagingLoading,
   getPagingPage,

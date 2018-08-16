@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+
 import { Product } from '../../../../models/product/product.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { ProductImagesComponent } from './product-images.component';
 
 describe('Product Images Component', () => {

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
@@ -9,6 +10,7 @@ import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { quotingReducers } from '../quoting.system';
+
 import {
   LoadQuoteRequestItems,
   LoadQuoteRequestItemsFail,

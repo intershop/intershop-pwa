@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
 
 export enum ViewconfActionTypes {

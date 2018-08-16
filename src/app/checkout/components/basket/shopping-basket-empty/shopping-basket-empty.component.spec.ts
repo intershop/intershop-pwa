@@ -1,5 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { ShoppingBasketEmptyComponent } from './shopping-basket-empty.component';
 
 describe('Shopping Basket Empty Component', () => {

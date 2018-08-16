@@ -1,4 +1,5 @@
 import { $ } from 'protractor';
+
 import { HeaderModule } from '../header.module';
 
 export class ProductDetailPage {

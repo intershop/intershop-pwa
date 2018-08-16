@@ -12,6 +12,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select/select-option.interface';
 import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
