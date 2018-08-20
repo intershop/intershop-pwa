@@ -81,18 +81,6 @@ footer {
       list-style: none;
       margin: 0;
     }
-
-    &.collapse {
-      display: none;
-    }
-
-    &.mobile-collapse {
-      display: none;
-    }
-
-    &.collapse.in {
-      display: block;
-    }
   }
 
   .link-group-title {

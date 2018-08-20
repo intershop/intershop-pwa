@@ -9,7 +9,7 @@
     </ng-template>
   </h3>
 
-  <ul class="filter-list clearfix" id="collapseFilter" [collapse]="isCollapsed">
+  <ul class="filter-list clearfix" id="collapseFilter" [ngbCollapse]="isCollapsed">
     <ng-container *ngFor="let facet of filterElement.facets">
       <li class="filter-item filter-colour" [ngClass]="{'filter-selected' : facet.selected}">
         <a class="filter-swatch" title="facet.name" [title]=facet.name (click)="filter(facet)">
