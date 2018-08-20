@@ -49,6 +49,7 @@
     "@fortawesome/angular-fontawesome": "0.1.1",
     "@fortawesome/fontawesome-svg-core": "1.2.2",
     "@fortawesome/free-solid-svg-icons": "5.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^3.0.0",
     "@ngrx/effects": "6.0.1",
     "@ngrx/entity": "6.0.1",
     "@ngrx/store": "6.0.1",
@@ -67,7 +68,6 @@
     "ng2-validation": "^4.2.0",
     "ngrx-router": "^2.0.1",
     "ngrx-store-localstorage": "^5.0.0",
-    "ngx-bootstrap": "^3.0.1",
     "ngx-infinite-scroll": "^6.0.1",
     "rxjs": "^6.2.2",
     "zone.js": "^0.8.26"

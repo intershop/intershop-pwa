@@ -3,9 +3,8 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
@@ -38,8 +37,8 @@ import { IconModule } from './icon.module';
     CommonModule,
     RouterModule,
     TranslateModule,
-    BsDropdownModule,
-    CollapseModule,
+    NgbDropdownModule,
+    NgbCollapseModule,
     ReactiveFormsModule,
     PipesModule,
     SharedProductModule,

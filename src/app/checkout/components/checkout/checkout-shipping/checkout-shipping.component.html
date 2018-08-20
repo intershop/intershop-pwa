@@ -38,7 +38,7 @@
               <span [innerHTML]="shippingMethod.description"></span>
             </ng-template>
             <a class="details-tooltip"
-              [popover]="ShippingMethodDescription"
+              [ngbPopover]="ShippingMethodDescription"
               placement="top"
             >
               {{'checkout.detail.text' | translate }}

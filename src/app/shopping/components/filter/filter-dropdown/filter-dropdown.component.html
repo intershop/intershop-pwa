@@ -23,7 +23,7 @@
     </ng-container>
   </ul>
 
-  <div id="collapseFilter" [collapse]="isCollapsed" [attr.data-testing-id]="'collapseFilter' + filterElement.name">
+  <div id="collapseFilter" [ngbCollapse]="isCollapsed" [attr.data-testing-id]="'collapseFilter' + filterElement.name">
     <form role="filter" name="Filter" [formGroup]="filterForm">
       <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
         <option value="">{{ 'search.filter.select_option.text' | translate }}</option>

@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {
+  NgbCarouselModule,
+  NgbCollapseModule,
+  NgbDropdownModule,
+  NgbModalModule,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { IconModule } from '../core/icon.module';
@@ -24,11 +26,11 @@ import { PipesModule } from './pipes.module';
     RouterModule,
     TranslateModule,
     CommonModule,
-    BsDropdownModule,
-    CarouselModule,
-    CollapseModule,
-    ModalModule,
-    PopoverModule,
+    NgbDropdownModule,
+    NgbCarouselModule,
+    NgbCollapseModule,
+    NgbModalModule,
+    NgbPopoverModule,
     PipesModule,
     FeatureToggleModule,
     InfiniteScrollModule,
@@ -45,11 +47,11 @@ import { PipesModule } from './pipes.module';
     RouterModule,
     TranslateModule,
     CommonModule,
-    BsDropdownModule,
-    CarouselModule,
-    CollapseModule,
-    ModalModule,
-    PopoverModule,
+    NgbDropdownModule,
+    NgbCarouselModule,
+    NgbCollapseModule,
+    NgbModalModule,
+    NgbPopoverModule,
     BreadcrumbComponent,
     LoadingComponent,
     ModalDialogComponent,

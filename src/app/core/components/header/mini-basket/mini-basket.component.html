@@ -11,7 +11,7 @@
     </ng-container>
   </a>
 
-  <div [collapse]="isCollapsed" class="mini-cart">
+  <div [ngbCollapse]="isCollapsed" class="mini-cart">
 
     <ng-container *ngIf="basket && basket.lineItems.length > 0; else emptyBlock">
 

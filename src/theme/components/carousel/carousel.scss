@@ -15,6 +15,11 @@
 //   }
 // }
 
+.carousel,
+.carousel-inner {
+  outline: none;
+}
+
 .carousel-indicators {
   li {
     width: 11px;
