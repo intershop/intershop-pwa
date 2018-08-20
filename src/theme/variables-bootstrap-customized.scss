@@ -104,7 +104,6 @@ $grid-gutter-width: 30px;
 
 // Define the maximum width of `.container` for different screen sizes.
 $container-max-widths: (
-  sm: 100%,
   md: 750px,
   lg: map-get($grid-breakpoints, lg) - $grid-gutter-width,
   xl: map-get($grid-breakpoints, xl) - $grid-gutter-width,
