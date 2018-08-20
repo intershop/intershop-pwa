@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { distinctUntilKeyChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { CoreState } from '../../../core/store/core.state';
 import { mapErrorToAction } from '../../../utils/operators';
 import { FilterService } from '../../services/filter/filter.service';
-import { getSelectedCategory } from '../categories';
+import { CategoriesActionTypes, getSelectedCategory } from '../categories';
 import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
@@ -45,11 +45,10 @@ export class FilterEffects {
   );
 
   @Effect()
-  loadFilterIfCategoryWasSelected$ = this.store$.pipe(
-    select(getSelectedCategory),
-    filter(category => !!category),
-    distinctUntilKeyChanged('uniqueId'),
-    map(category => new filterActions.LoadFilterForCategory(category))
+  loadFilterIfCategoryWasSelected$ = this.actions$.pipe(
+    ofType(CategoriesActionTypes.SelectedCategoryAvailable),
+    withLatestFrom(this.store$.pipe(select(getSelectedCategory))),
+    map(([, category]) => new filterActions.LoadFilterForCategory(category))
   );
 
   @Effect()

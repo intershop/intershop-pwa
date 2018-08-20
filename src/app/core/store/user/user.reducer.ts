@@ -11,14 +11,14 @@ export interface UserState {
   user: User;
   recentOrder: Order;
   authorized: boolean;
-  authToken: string;
+  _authToken: string;
   error: HttpError;
 }
 
 export const getCustomer = (state: UserState) => state.customer;
 export const getUser = (state: UserState) => state.user;
 export const getAuthorized = (state: UserState) => state.authorized;
-export const getAuthToken = (state: UserState) => state.authToken;
+export const getAuthToken = (state: UserState) => state._authToken;
 export const getError = (state: UserState) => state.error;
 
 export const initialState: UserState = {
@@ -26,7 +26,7 @@ export const initialState: UserState = {
   user: undefined,
   recentOrder: undefined,
   authorized: false,
-  authToken: undefined,
+  _authToken: undefined,
   error: undefined,
 };
 
@@ -48,7 +48,7 @@ export function userReducer(state = initialState, action: UserAction | BasketAct
     case UserActionTypes.SetAPIToken: {
       return {
         ...state,
-        authToken: action.payload,
+        _authToken: action.payload,
       };
     }
 

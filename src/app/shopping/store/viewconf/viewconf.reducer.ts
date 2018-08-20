@@ -1,4 +1,6 @@
 import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { CategoriesAction, CategoriesActionTypes } from '../categories';
+import { SearchAction, SearchActionTypes } from '../search';
 
 import * as fromViewconf from './viewconf.actions';
 
@@ -26,7 +28,10 @@ export const initialState: ViewconfState = {
   endlessScrollingEnabled: true,
 };
 
-export function viewconfReducer(state = initialState, action: fromViewconf.ViewconfAction): ViewconfState {
+export function viewconfReducer(
+  state = initialState,
+  action: fromViewconf.ViewconfAction | CategoriesAction | SearchAction
+): ViewconfState {
   switch (action.type) {
     case fromViewconf.ViewconfActionTypes.SetEndlessScrollingPageSize: {
       return {
@@ -83,6 +88,18 @@ export function viewconfReducer(state = initialState, action: fromViewconf.Viewc
       return {
         ...state,
         endlessScrollingEnabled: false,
+      };
+    }
+
+    case CategoriesActionTypes.SelectCategory:
+    case SearchActionTypes.PrepareNewSearch: {
+      const { products, total } = initialState;
+
+      return {
+        ...state,
+        total,
+        products,
+        loading: true,
       };
     }
   }

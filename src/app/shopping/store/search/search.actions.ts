@@ -4,12 +4,17 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 export enum SearchActionTypes {
+  PrepareNewSearch = '[Shopping] Prepare Search For Products',
   SearchProducts = '[Shopping] Search Products',
   SearchProductsSuccess = '[Shopping] Search Products Success',
   SearchProductsFail = '[Shopping] Search Products Fail',
   SuggestSearch = '[Shopping] Suggest Search',
   SuggestSearchSuccess = '[Shopping] Suggest Search Success',
   SearchMoreProducts = '[Shopping] Search More Products',
+}
+
+export class PrepareNewSearch implements Action {
+  readonly type = SearchActionTypes.PrepareNewSearch;
 }
 
 export class SearchProducts implements Action {
@@ -43,6 +48,7 @@ export class SearchMoreProducts implements Action {
 }
 
 export type SearchAction =
+  | PrepareNewSearch
   | SearchProducts
   | SearchProductsSuccess
   | SearchProductsFail

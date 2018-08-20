@@ -36,6 +36,7 @@ import {
 } from '../viewconf';
 
 import {
+  PrepareNewSearch,
   SearchActionTypes,
   SearchMoreProducts,
   SearchProducts,
@@ -66,7 +67,7 @@ export class SearchEffects {
     map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
     distinctUntilChanged(),
-    map(searchTerm => new SearchProducts(searchTerm))
+    mergeMap(searchTerm => [new PrepareNewSearch(), new SearchProducts(searchTerm)])
   );
 
   @Effect()

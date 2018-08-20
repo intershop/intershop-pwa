@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -227,7 +227,7 @@ describe('Categories Effects', () => {
     });
   });
 
-  describe('loadTopLevelCategoriesOnLanguageChange$', () => {
+  describe('loadTopLevelWhenUnavailable$', () => {
     const EN_US = { lang: 'en' } as Locale;
     let depth: number;
 
@@ -236,13 +236,16 @@ describe('Categories Effects', () => {
       store$.dispatch(new SetAvailableLocales([EN_US]));
     });
 
-    it('should trigger when language is changed', () => {
+    it('should trigger when language is changed after first routing action', () => {
       const action = new SelectLocale(EN_US);
       const completion = new fromActions.LoadTopLevelCategories(depth);
-      actions$ = hot('a', { a: action });
-      const expected$ = cold('c', { c: completion });
+      store$.dispatch(action);
 
-      expect(effects.loadTopLevelCategoriesOnLanguageChange$).toBeObservable(expected$);
+      actions$ = hot('----a---a--a', { a: { type: ROUTER_NAVIGATION_TYPE } });
+
+      const expected$ = cold('----a-------', { a: completion });
+
+      expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
     });
   });
 
@@ -319,17 +322,16 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
 
-        actions$ = hot('--a--b)', {
+        actions$ = hot('--a)', {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId',
             params: { categoryUniqueId: category.uniqueId },
             queryParams: {},
           }),
-          b: new fromActions.SelectedCategoryAvailable(category.uniqueId),
         });
 
         const action = new LoadProductsForCategory(category.uniqueId);
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-----a', { a: action }));
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('--a', { a: action }));
       });
 
       it('should not trigger action when we are on a product page', () => {

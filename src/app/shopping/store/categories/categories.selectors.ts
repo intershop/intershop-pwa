@@ -33,3 +33,5 @@ export const getCategoryLoading = createSelector(getCategoryState, categories =>
 export const getTopLevelCategories = createSelector(getCategoryTree, tree =>
   tree.rootIds.map(id => createCategoryView(tree, id))
 );
+
+export const isTopLevelCategoriesLoaded = createSelector(getCategoryState, state => state.topLevelLoaded);
