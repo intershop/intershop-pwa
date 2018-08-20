@@ -1,5 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
 
@@ -27,13 +29,22 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private router: Router
   ) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.navbarCollapsed = window.innerWidth < this.mediumBreakpointWidth;
     }
+
+    // collapse mobile menu on router navigation start event
+    // TODO: check testing and router subscription vs. ngrx state handling
+    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe(() => {
+      if (isPlatformBrowser(this.platformId) && window.innerWidth < this.mediumBreakpointWidth) {
+        this.navbarCollapsed = true;
+      }
+    });
   }
 
   @HostListener('window:resize', ['$event'])
