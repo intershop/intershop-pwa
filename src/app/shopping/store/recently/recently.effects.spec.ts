@@ -40,9 +40,13 @@ describe('Recently Effects', () => {
 
     it('should fire when product is in store and selected', () => {
       store$.dispatch(new LoadProductSuccess({ sku: 'A' } as Product));
-      store$.dispatch(new SelectProduct('A'));
 
-      expect(effects.viewedProduct$).toBeObservable(cold('a', { a: new AddToRecently('A') }));
+      const action = new SelectProduct('A');
+      store$.dispatch(action);
+
+      actions$ = hot('---a', { a: action });
+
+      expect(effects.viewedProduct$).toBeObservable(cold('---a', { a: new AddToRecently('A') }));
     });
 
     it('should not fire when product is deselected', () => {

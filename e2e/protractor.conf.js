@@ -6,6 +6,10 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 30000,
   specs: ['./src/**/*.e2e-spec.ts'],
+  suites: {
+    local: './src/**/*.local.e2e-spec.ts',
+    remote: './src/**/*.remote.e2e-spec.ts',
+  },
   capabilities: {
     browserName: 'chrome',
     chromeOptions: {
@@ -30,9 +34,11 @@ exports.config = {
           displayStacktrace: false,
           displayDuration: true,
           displayErrorMessages: true,
+          displayPending: true,
         },
         summary: {
           displayStacktrace: true,
+          displayPending: false,
         },
         // stacktrace: {
         //   filter: (inp) => {

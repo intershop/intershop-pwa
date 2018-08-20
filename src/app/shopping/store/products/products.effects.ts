@@ -9,8 +9,8 @@ import {
   filter,
   map,
   mergeMap,
-  skip,
   switchMap,
+  switchMapTo,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -125,13 +125,18 @@ export class ProductsEffects {
    * reload the current (if available) product when language is changed
    */
   @Effect()
-  languageChange$ = this.actions$.pipe(
-    ofType(LocaleActionTypes.SelectLocale),
-    distinctUntilChanged(),
-    skip(1), // ignore app init language selection
-    withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-    filter(([, sku]) => !!sku),
-    map(([, sku]) => new productsActions.LoadProduct(sku))
+  languageChange$ = this.store.pipe(
+    select(productsSelectors.getSelectedProduct),
+    filter(x => !!x),
+    switchMapTo(
+      this.actions$.pipe(
+        ofType(LocaleActionTypes.SelectLocale),
+        distinctUntilChanged(),
+        withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
+        filter(([, sku]) => !!sku),
+        map(([, sku]) => new productsActions.LoadProduct(sku))
+      )
+    )
   );
 
   @Effect({ dispatch: false })
