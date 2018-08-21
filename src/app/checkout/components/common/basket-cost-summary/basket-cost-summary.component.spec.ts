@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 
 import { IconModule } from '../../../../core/icon.module';
 import { PipesModule } from '../../../../shared/pipes.module';
@@ -15,7 +15,7 @@ describe('Basket Cost Summary Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), PipesModule, IconModule],
+      imports: [TranslateModule.forRoot(), NgbPopoverModule, PipesModule, IconModule],
       declarations: [BasketCostSummaryComponent],
     }).compileComponents();
   }));

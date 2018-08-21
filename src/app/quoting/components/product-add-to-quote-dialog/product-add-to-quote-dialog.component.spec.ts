@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormArray, FormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { noop } from 'rxjs';
 import { spy, verify } from 'ts-mockito';
 
@@ -36,7 +36,7 @@ describe('Product Add To Quote Dialog Component', () => {
           template: 'Loading Component',
         }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, ModalModule.forRoot()],
+      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, NgbModalModule],
     }).compileComponents();
   }));
 
@@ -47,7 +47,7 @@ describe('Product Add To Quote Dialog Component', () => {
     component.quote = {
       items: [],
     } as QuoteRequest;
-    component.bsModalRef = { hide: () => noop };
+    component.ngbActiveModal = { close: () => noop, dismiss: () => noop };
   });
 
   it('should be created', () => {
