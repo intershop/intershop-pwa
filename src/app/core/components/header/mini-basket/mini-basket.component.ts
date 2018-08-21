@@ -1,7 +1,7 @@
 import { AnimationBuilder, animate, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 
-import { BasketHelper, BasketView } from '../../../../models/basket/basket.model';
+import { BasketView } from '../../../../models/basket/basket.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
 /**
@@ -38,9 +38,11 @@ export class MiniBasketComponent implements OnChanges {
   constructor(private animationBuilder: AnimationBuilder) {}
 
   ngOnChanges() {
-    this.itemCount = BasketHelper.getBasketItemsCount(this.basket);
-    if (!this.basket) {
+    if (this.basket) {
+      this.itemCount = this.basket.itemsCount;
+    } else {
       this.resetScroller();
+      this.itemCount = 0;
     }
   }
 

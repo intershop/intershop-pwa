@@ -54,6 +54,7 @@ describe('Mini Basket Component', () => {
       lineItems: [lineItem, lineItem, lineItem],
       purchaseCurrency: 'USD',
       totals: BasketMockData.getTotals(),
+      itemsCount: 30,
     };
 
     component.basket = basket;
