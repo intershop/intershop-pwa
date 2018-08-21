@@ -1,5 +1,7 @@
 import { createSelector } from '@ngrx/store';
+
 import { CoreState } from '../core.state';
+
 import { orderAdapter } from './orders.reducer';
 
 const getOrdersState = (state: CoreState) => state.orders;
