@@ -83,13 +83,10 @@ exports[`Filter Dropdown Component should be created 1`] = `
       
     </ul>
     <div
-      aria-expanded="true"
-      aria-hidden="false"
-      class="collapse in show"
+      class="collapse show"
       data-testing-id="collapseFilterBrands"
       id="collapseFilter"
-      ng-reflect-collapse="false"
-      style="overflow: visible; height: auto; display: block;"
+      ng-reflect-collapsed="false"
     >
       <form
         class="ng-untouched ng-pristine ng-valid"
