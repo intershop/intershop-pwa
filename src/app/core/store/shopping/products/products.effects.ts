@@ -15,6 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
@@ -106,6 +107,19 @@ export class ProductsEffects {
         mapErrorToAction(productsActions.LoadProductsForCategoryFail, { categoryId })
       )
     )
+  );
+
+  /**
+   * Trigger load product action if productMasterSKU is set in product success action payload.
+   * Ignores products that are already present.
+   */
+  @Effect()
+  loastMasterProductForProduct$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    map(action => action.payload.product as VariationProduct),
+    withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
+    filter(([product, entities]) => product.productMasterSKU && !entities[product.productMasterSKU]),
+    map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
   );
 
   @Effect()

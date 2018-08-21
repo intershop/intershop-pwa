@@ -12,6 +12,7 @@ import { anyNumber, anyString, anything, instance, mock, resetCalls, spy, verify
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/injection-keys';
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { VariationProduct } from '../../../models/product/product-variation.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { localeReducer } from '../../locale/locale.reducer';
@@ -151,6 +152,35 @@ describe('Products Effects', () => {
           }),
         })
       );
+    });
+  });
+
+  describe('loastMasterProductForProduct$', () => {
+    it('should trigger LoadProduct action if LoadProductSuccess contains productMasterSKU', () => {
+      const action = new fromActions.LoadProductSuccess({
+        product: {
+          productMasterSKU: 'MSKU',
+        } as VariationProduct,
+      });
+      const completion = new fromActions.LoadProduct({ sku: 'MSKU' });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.loastMasterProductForProduct$).toBeObservable(expected$);
+    });
+
+    it('should not trigger LoadProduct action if LoadProductSuccess contains productMasterSKU of loaded product', () => {
+      store$.dispatch(new fromActions.LoadProductSuccess({ product: { sku: 'MSKU' } as Product }));
+
+      const action = new fromActions.LoadProductSuccess({
+        product: {
+          productMasterSKU: 'MSKU',
+        } as VariationProduct,
+      });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-');
+
+      expect(effects.loastMasterProductForProduct$).toBeObservable(expected$);
     });
   });
 
