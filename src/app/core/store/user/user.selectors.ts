@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { BasketHelper } from '../../../models/basket/basket.model';
 import { OrderView } from '../../../models/order/order.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { CoreState } from '../core.state';
@@ -26,5 +27,6 @@ export const getUserRecentOrder = createSelector(
             ...li,
             product: products[li.productSKU],
           })),
+          itemsCount: BasketHelper.getBasketItemsCount(user.recentOrder.lineItems),
         }
 );
