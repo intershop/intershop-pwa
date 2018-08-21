@@ -1,7 +1,6 @@
 <div class="panel-heading" [attr.data-testing-id]="dataTestingId" role="tab" (click)="toggleCollapse()">
   <a class="accordion-toggle" [attr.aria-expanded]="isCollapsed">
     {{heading}}
-    <!-- <span class="glyphicon float-right" [ngClass]="{'glyphicon-plus' : !isCollapsed, 'glyphicon-minus' : isCollapsed}"></span> -->
     <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'plus']"></fa-icon>
     <ng-template #collapsed>
       <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>

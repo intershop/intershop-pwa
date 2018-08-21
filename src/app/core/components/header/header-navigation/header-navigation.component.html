@@ -1,7 +1,6 @@
 <ul class="navbar-nav main-navigation-list">
   <li class="home d-none d-md-block">
     <a routerLink="/home" title="home">
-      <!-- <span class="glyphicon glyphicon-home"></span> -->
       <fa-icon [icon]="['fas', 'home']"></fa-icon>
     </a>
   </li>
@@ -26,7 +25,6 @@
       class="dropdown-toggle d-md-none"
       (click)="toggleOpen(category)"
     >
-      <!-- <span class="glyphicon" [ngClass]="isOpened(category) ? 'glyphicon-minus' : 'glyphicon-plus'"></span> -->
       <fa-icon *ngIf="isOpened(category); else closed" [icon]="['fas', 'minus']"></fa-icon>
       <ng-template #closed>
         <fa-icon [icon]="['fas', 'plus']"></fa-icon>
