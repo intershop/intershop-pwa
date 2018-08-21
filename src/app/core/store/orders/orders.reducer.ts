@@ -1,7 +1,8 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Order } from '../../../models/order/order.model';
+
 import { OrdersAction, OrdersActionTypes } from './orders.actions';
 
 export const orderAdapter = createEntityAdapter<Order>({
