@@ -1,3 +1,60 @@
-<h1>{{'account.order_history.heading' | translate }}</h1>
+<ng-container *ngIf="orders && orders.length > 0; else emptyList">
+  <div class="list-header d-md-flex">
+    <div class="list-header-item col-sm-2 list-header-item-descr">{{ 'account.orderlist.table.date_of_order' | translate }}</div>
+    <div class="list-header-item col-sm-2 list-header-item-descr">{{ 'account.orderlist.table.order_number' | translate }}</div>
+    <div class="list-header-item col-sm-1 list-header-item-descr">{{ 'account.orderlist.table.items' | translate }}</div>
+    <div class="list-header-item col-sm-2 list-header-item-descr">{{ 'account.orderlist.table.order_status' | translate }}</div>
+    <div *ngIf="!compact" class="list-header-item col-sm-2 list-header-item-descr">{{ 'account.orderlist.table.destination' | translate }}</div>
+    <div class="list-header-item col-sm-2 list-header-item-descr text-right">{{ 'account.orderlist.table.order_total' | translate }}</div>
+    <div class="list-header-item col-sm-1">&nbsp;</div>
+  </div>
+  <div class="list-body">
+    <ng-container *ngFor="let order of orders; let i = index">
+      <div *ngIf="!maxListItems || i < maxListItems" class="list-item-row-big list-item-row d-flex flex-row flex-wrap">
 
-<!--- TODO: Order History Page -->
+        <!-- Creation Date -->
+        <div class="col-7 col-md-2 order-md-1 list-item">{{ order.creationDate | date}}</div>
+
+        <!-- Order Total -->
+        <div class="col-3 col-md-2 order-md-10 list-item text-md-right">
+          {{ order.totals.total | ishPrice }}
+        </div>
+
+        <!-- Details: ToDo: link to the details page -->
+        <div class="col-2 col-md-1 order-md-12 list-item text-right">
+          Details
+        </div>
+
+        <!-- Order NO, ToDo: ToDo add routerLink to detail page -->
+        <div class="col-12 col-md-2 order-md-4 list-item">
+          <label class="d-xl-none d-lg-none d-md-none control-label">
+            {{ 'account.orderlist.orderDetails.orderNo.label' | translate }}</label>
+          {{ order.documentNo }}
+        </div>
+
+        <!-- Order items count -->
+        <div class="col-12 col-md-1 order-md-5 list-item">
+          <label class="d-xl-none d-lg-none d-md-none control-label">
+            {{ 'account.orderlist.orderDetails.items.label' | translate }}</label>
+          {{ order.itemsCount }}
+        </div>
+
+        <!-- Order status -->
+        <div class="col-12 col-md-2 order-md-6 list-item">
+          <label class="d-xl-none d-lg-none d-md-none control-label">
+            {{ 'account.orderlist.orderDetails.status.label' | translate }}</label>
+          <span class="badge badge-info">{{ order.status }}</span>
+        </div>
+
+        <!-- Destination -->
+        <div  *ngIf="!compact" class="col-12 col-md-2 order-md-7 list-item">
+          <ish-address [address]="order.commonShipToAddress"></ish-address>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #emptyList>
+  <p data-testing-id="emptyList">{{ 'account.orderlist.no_orders_message' | translate}}</p>
+</ng-template>

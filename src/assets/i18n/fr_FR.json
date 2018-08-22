@@ -442,7 +442,7 @@
   "account.orderdetails.special_instructions.heading": "Instructions spéciales :",
   "account.orderdetails.special_instructions.text": "Lorem ipsum dolor sit amet, consetetur",
   "account.orderdetails.unavailable_address": "Non disponible pour cette commande.",
-  "account.orderlist.no_orders_message": "Vous n''avez pas passé une commande avec {{0}}.",
+  "account.orderlist.no_orders_message": "Vous n''avez pas encore passé une commande.",
   "account.orderlist.orderDetails.items.label": "Articles :",
   "account.orderlist.orderDetails.orderNo.label": "Numéro de commande :",
   "account.orderlist.orderDetails.orderReferenceID.heading": "ID référence commande :",

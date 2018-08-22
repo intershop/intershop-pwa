@@ -19,6 +19,11 @@ describe('Order History Page Container', () => {
         MockComponent({
           selector: 'ish-order-list',
           template: 'Order List Component',
+          inputs: ['orders'],
+        }),
+        MockComponent({
+          selector: 'ish-loading',
+          template: 'Loading Component',
         }),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
@@ -36,5 +41,10 @@ describe('Order History Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render order list component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-order-list')).toBeTruthy();
   });
 });

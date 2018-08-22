@@ -20,4 +20,17 @@
   </div>
 </div>
 
-<p class="form-text">{{'account.overview.note.heading' | translate}}: <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span></p>
+<!-- Latest orders list -->
+<h2>{{ 'account.order.most_recent.heading' | translate }}</h2>
+<div class="section">
+  <ish-order-list
+    [orders]="orders"
+    maxListItems="5"
+    [compact]="true"
+  ></ish-order-list>
+
+  <a routerLink="/account/orders">{{ 'account.order.view_all_order.link' | translate }}</a>
+</div>
+<p class="form-text">{{'account.overview.note.heading' | translate}}:
+  <span [innerHTML]="'account.overview.note.text' | translate:{'0' : '/privacy'}"></span>
+</p>
