@@ -50,3 +50,8 @@ export const getProduct = createSelector(
         createProductView({ sku: props.sku } as Product, tree)
       : createProductView(products[props.sku], tree)
 );
+
+export const getProductVariations = createSelector(
+  getProductsState,
+  products => products.variations
+);

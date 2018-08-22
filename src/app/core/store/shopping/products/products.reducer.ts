@@ -12,12 +12,14 @@ export interface ProductsState extends EntityState<Product> {
   loading: boolean;
   selected: string;
   failed: string[];
+  variations: {};
 }
 
 export const initialState: ProductsState = productAdapter.getInitialState({
   loading: false,
   selected: undefined,
   failed: [],
+  variations: {},
 });
 
 function addFailed(failed: string[], sku: string): string[] {
@@ -37,14 +39,16 @@ export function productsReducer(state = initialState, action: ProductsAction): P
       };
     }
 
-    case ProductsActionTypes.LoadProduct: {
+    case ProductsActionTypes.LoadProduct:
+    case ProductsActionTypes.LoadProductVariations: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case ProductsActionTypes.LoadProductFail: {
+    case ProductsActionTypes.LoadProductFail:
+    case ProductsActionTypes.LoadProductVariationsFail: {
       return {
         ...state,
         loading: false,
@@ -59,6 +63,18 @@ export function productsReducer(state = initialState, action: ProductsAction): P
         loading: false,
         failed: removeFailed(state.failed, product.sku),
       });
+    }
+
+    case ProductsActionTypes.LoadProductVariationsSuccess: {
+      const loadedVariations = action.payload.variations;
+      const sku = action.payload.sku;
+
+      const variationEntries = {
+        ...state.variations,
+        [sku]: loadedVariations,
+      };
+
+      return { ...state, variations: variationEntries, loading: false };
     }
   }
 

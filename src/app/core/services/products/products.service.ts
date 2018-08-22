@@ -8,7 +8,8 @@ import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ProductData, ProductDataStub } from 'ish-core/models/product/product.interface';
 import { ProductMapper } from 'ish-core/models/product/product.mapper';
 import { Product } from 'ish-core/models/product/product.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
+import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.
@@ -111,5 +112,19 @@ export class ProductsService {
           total: response.total ? response.total : response.elements.length,
         }))
       );
+  }
+
+  /**
+   * Get product variations for the given master product sku.
+   */
+  getProductVariations(sku: string): Observable<{ sku: string; variations: VariationLink[] }> {
+    if (!sku) {
+      return throwError('getProductVariations() called without a sku');
+    }
+
+    return this.apiService.get(`products/${sku}/variations`).pipe(
+      unpackEnvelope<VariationLink>(),
+      map(variations => ({ sku, variations }))
+    );
   }
 }

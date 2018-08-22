@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
+import { VariationLink } from '../../../models/variation-link/variation-link.model';
 
 export enum ProductsActionTypes {
   SelectProduct = '[Shopping] Select Product',
@@ -11,6 +12,9 @@ export enum ProductsActionTypes {
   LoadProductsForCategory = '[Shopping] Load Products for Category',
   LoadProductsForCategoryFail = '[Shopping] Load Products for Category Fail',
   LoadMoreProductsForCategory = '[Shopping] Load More Products',
+  LoadProductVariations = '[Shopping] Load Product Variations',
+  LoadProductVariationsFail = '[Shopping] Load Product Variations Fail',
+  LoadProductVariationsSuccess = '[Shopping] Load Product Variations Success',
 }
 
 export class SelectProduct implements Action {
@@ -47,10 +51,28 @@ export class LoadMoreProductsForCategory implements Action {
   constructor(public payload: { categoryId: string }) {}
 }
 
+export class LoadProductVariations implements Action {
+  readonly type = ProductsActionTypes.LoadProductVariations;
+  constructor(public payload: { sku: string }) {}
+}
+
+export class LoadProductVariationsFail implements Action {
+  readonly type = ProductsActionTypes.LoadProductVariationsFail;
+  constructor(public payload: { error: HttpError }) {}
+}
+
+export class LoadProductVariationsSuccess implements Action {
+  readonly type = ProductsActionTypes.LoadProductVariationsSuccess;
+  constructor(public payload: { sku: string; variations: VariationLink[] }) {}
+}
+
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
   | LoadProductFail
   | LoadProductSuccess
   | LoadProductsForCategory
-  | LoadMoreProductsForCategory;
+  | LoadMoreProductsForCategory
+  | LoadProductVariations
+  | LoadProductVariationsFail
+  | LoadProductVariationsSuccess;
