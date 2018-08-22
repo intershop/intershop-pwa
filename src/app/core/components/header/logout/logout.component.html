@@ -1,6 +1,5 @@
 <ng-container *ngIf="user; else notLoggedIn">
   <a routerLink="/logout" data-testing-id="link-logout">
-    <!-- <span class="glyphicon-user glyphicon glyphicon-header-icon"></span> -->
     <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
 
     {{'account.logout.link' | translate}}

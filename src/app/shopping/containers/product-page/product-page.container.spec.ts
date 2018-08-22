@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
-import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { CoreState } from '../../../core/store/core.state';
 import { coreReducers } from '../../../core/store/core.system';
@@ -30,7 +30,7 @@ describe('Product Page Container', () => {
           quoting: combineReducers(quotingReducers),
         }),
         FeatureToggleModule.testingFeatures({ recently: true }),
-        ModalModule.forRoot(),
+        NgbModalModule,
       ],
       declarations: [
         ProductPageContainerComponent,

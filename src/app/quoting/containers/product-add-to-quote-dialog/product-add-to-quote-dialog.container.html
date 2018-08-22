@@ -1,5 +1,5 @@
 <ish-product-add-to-quote-dialog
-  [bsModalRef]="bsModalRef"
+  [ngbActiveModal]="ngbActiveModal"
   [quote]="activeQuoteRequest$ | async"
   [quoteLoading]="quoteRequestLoading$ | async"
   (deleteItem)="deleteQuoteRequestItem($event)"

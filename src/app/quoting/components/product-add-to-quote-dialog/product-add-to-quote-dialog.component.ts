@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 
@@ -13,7 +13,7 @@ import { QuoteRequest } from '../../../models/quote-request/quote-request.model'
  *
  * @example
  * <ish-product-add-to-quote-dialog
- *   [bsModalRef]="bsModalRef"
+ *   [ngbActiveModal]="ngbActiveModal"
  *   [quote]="quoteRequest"
  *   [quoteLoading]="false"
  *   (deleteItem)="deleteQuoteRequestItem($event)"
@@ -30,7 +30,7 @@ import { QuoteRequest } from '../../../models/quote-request/quote-request.model'
 })
 export class ProductAddToQuoteDialogComponent implements OnChanges {
   @Input()
-  bsModalRef: BsModalRef;
+  ngbActiveModal: NgbActiveModal;
   @Input()
   quote: QuoteRequest;
   @Input()
@@ -119,6 +119,6 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
    * Hides modal dialog.
    */
   hide() {
-    this.bsModalRef.hide();
+    this.ngbActiveModal.close();
   }
 }

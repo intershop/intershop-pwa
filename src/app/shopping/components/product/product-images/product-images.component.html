@@ -12,14 +12,14 @@
   </div>
   <div class="col-12 col-lg-10 product-detail-img clearfix">
     <div class="product-image-container">
-      <carousel [(activeSlide)]="activeSlide" [showIndicators]="false" [interval]="false">
-        <slide>
+      <ngb-carousel [activeId]="activeSlide" (slide)="setActiveSlide($event.current)" [showNavigationIndicators]="false" [interval]="false">
+        <ng-template ngbSlide [id]="0">
           <ish-product-image [product]="product" imageType="L"></ish-product-image>
-        </slide>
-        <slide *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'L')">
+        </ng-template>
+        <ng-template ngbSlide *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'L'); index as i;" [id]="i + 1">
           <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
-        </slide>
-      </carousel>
+        </ng-template>
+      </ngb-carousel>
     </div>
   </div>
 </div>

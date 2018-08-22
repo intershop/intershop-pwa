@@ -2,15 +2,18 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {
+  NgbCarouselModule,
+  NgbCollapseModule,
+  NgbDropdownModule,
+  NgbModalModule,
+  NgbPopoverConfig,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
 import { CustomFormsModule } from 'ng2-validation';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
 
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
@@ -36,11 +39,11 @@ export function translateFactory(http: HttpClient) {
     }),
     CustomFormsModule,
     RecaptchaModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    CarouselModule.forRoot(),
-    CollapseModule.forRoot(),
-    ModalModule.forRoot(),
-    PopoverModule.forRoot(),
+    NgbDropdownModule,
+    NgbCarouselModule,
+    NgbCollapseModule,
+    NgbModalModule,
+    NgbPopoverModule,
     HeaderModule,
     IconModule,
     FooterModule,
@@ -54,7 +57,7 @@ export class CoreModule {
     @Optional()
     @SkipSelf()
     parentModule: CoreModule,
-    popoverConfig: PopoverConfig,
+    popoverConfig: NgbPopoverConfig,
     crosstabService: CrosstabService
   ) {
     if (parentModule) {

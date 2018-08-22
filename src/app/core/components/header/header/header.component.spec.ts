@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
@@ -18,7 +18,7 @@ describe('Header Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        CollapseModule,
+        NgbCollapseModule,
         TranslateModule.forRoot(),
         RouterTestingModule,
         FeatureToggleModule.testingFeatures({ compare: true }),

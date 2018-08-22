@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 
 import { IconModule } from '../core/icon.module';
 import { FormsSharedModule } from '../forms/forms-shared.module';
@@ -18,7 +18,7 @@ import { SharedProductModule } from './shared-product.module';
     CommonModule,
     FormsSharedModule,
     PipesModule,
-    PopoverModule,
+    NgbPopoverModule,
     ReactiveFormsModule,
     RouterModule,
     SharedProductModule,

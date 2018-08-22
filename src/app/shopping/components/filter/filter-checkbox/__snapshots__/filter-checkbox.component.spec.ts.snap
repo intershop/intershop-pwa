@@ -78,12 +78,9 @@ exports[`Filter Checkbox Component should be created 1`] = `
       
     </ul>
     <ul
-      aria-expanded="true"
-      aria-hidden="false"
-      class="filter-list collapse in show"
+      class="filter-list collapse show"
       id="collapseFilter"
-      ng-reflect-collapse="false"
-      style="overflow: visible; height: auto; display: block;"
+      ng-reflect-collapsed="false"
     >
       
       

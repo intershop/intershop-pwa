@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { IconModule } from '../../../core/icon.module';
 
@@ -12,7 +12,7 @@ describe('Accordion Item Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule, IconModule],
+      imports: [NgbCollapseModule, IconModule],
       declarations: [AccordionItemComponent],
     }).compileComponents();
   }));

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { Locale } from '../../../../models/locale/locale.model';
 import { IconModule } from '../../../icon.module';
@@ -19,7 +19,7 @@ describe('Language Switch Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [BsDropdownModule.forRoot(), TranslateModule.forRoot(), IconModule],
+      imports: [NgbDropdownModule, TranslateModule.forRoot(), IconModule],
       declarations: [LanguageSwitchComponent],
     })
       .compileComponents()
@@ -47,7 +47,7 @@ describe('Language Switch Component', () => {
     'should show the available language options when language dropdown is clicked',
     fakeAsync(() => {
       fixture.detectChanges();
-      const anchorTag = fixture.nativeElement.querySelectorAll('[dropdownToggle]')[0];
+      const anchorTag = fixture.nativeElement.querySelectorAll('[ngbDropdownToggle]')[0];
       anchorTag.click();
       tick(500);
       fixture.detectChanges();

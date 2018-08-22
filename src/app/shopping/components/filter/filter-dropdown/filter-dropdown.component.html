@@ -2,7 +2,6 @@
 
   <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
     {{filterElement.name}}
-    <!-- <span class="glyphicon float-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span> -->
     <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'angle-down']"></fa-icon>
     <ng-template #collapsed>
       <fa-icon class="float-right" [icon]="['fas', 'angle-right']"></fa-icon>
@@ -16,14 +15,13 @@
         <span class="filter-count">({{facet.count}})</span>
         <!--- TODO: implement delete filter -->
         <a class="filter-clear">
-          <!-- <span class="glyphicon glyphicon-minus float-right"></span> -->
           <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
         </a>
       </li>
     </ng-container>
   </ul>
 
-  <div id="collapseFilter" [collapse]="isCollapsed" [attr.data-testing-id]="'collapseFilter' + filterElement.name">
+  <div id="collapseFilter" [ngbCollapse]="isCollapsed" [attr.data-testing-id]="'collapseFilter' + filterElement.name">
     <form role="filter" name="Filter" [formGroup]="filterForm">
       <select formControlName="filterDropdown" name="SearchParameter" class="ws-submit-search-param form-control">
         <option value="">{{ 'search.filter.select_option.text' | translate }}</option>
