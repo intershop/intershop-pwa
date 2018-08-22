@@ -1,5 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../../models/quote/quote.interface';
 
@@ -30,7 +31,7 @@ export class LoadQuotes implements Action {
 
 export class LoadQuotesFail implements Action {
   readonly type = QuoteActionTypes.LoadQuotesFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadQuotesSuccess implements Action {
@@ -45,7 +46,7 @@ export class DeleteQuote implements Action {
 
 export class DeleteQuoteFail implements Action {
   readonly type = QuoteActionTypes.DeleteQuoteFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class DeleteQuoteSuccess implements Action {
@@ -59,7 +60,7 @@ export class RejectQuote implements Action {
 
 export class RejectQuoteFail implements Action {
   readonly type = QuoteActionTypes.RejectQuoteFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class RejectQuoteSuccess implements Action {
@@ -73,7 +74,7 @@ export class CreateQuoteRequestFromQuote implements Action {
 
 export class CreateQuoteRequestFromQuoteFail implements Action {
   readonly type = QuoteActionTypes.CreateQuoteRequestFromQuoteFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class CreateQuoteRequestFromQuoteSuccess implements Action {

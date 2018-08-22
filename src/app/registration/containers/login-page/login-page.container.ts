@@ -1,11 +1,12 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
-import { getUserAuthorized, getUserError, LoginUser } from '../../../core/store/user';
+import { LoginUser, getUserAuthorized, getUserError } from '../../../core/store/user';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 @Component({
   templateUrl: './login-page.container.html',
@@ -13,7 +14,7 @@ import { LoginCredentials } from '../../../models/credentials/credentials.model'
 })
 export class LoginPageContainerComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
-  loginError$: Observable<HttpErrorResponse>;
+  loginError$: Observable<HttpError>;
 
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { FooterComponent } from './components/footer/footer.component';
+import { IconModule } from './icon.module';
 
 @NgModule({
-  imports: [RouterModule, CollapseModule, ModalModule, PopoverModule],
+  imports: [RouterModule, NgbCollapseModule, IconModule],
   declarations: [FooterComponent],
-  exports: [FooterComponent],
+  exports: [FooterComponent, IconModule],
 })
 export class FooterModule {}

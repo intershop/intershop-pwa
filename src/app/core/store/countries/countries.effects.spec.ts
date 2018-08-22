@@ -1,14 +1,16 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
+import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
+
 import { Country } from '../../../models/country/country.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { CountryService } from '../../services/countries/country.service';
 import { coreReducers } from '../core.system';
+
 import { LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { CountriesEffects } from './countries.effects';
 
@@ -37,19 +39,19 @@ describe('Countries Effects', () => {
 
   describe('loadCountries$', () => {
     it('should load all countries on effects init and dispatch a LoadCountriesSuccess action', () => {
-      const action = { type: ROOT_EFFECTS_INIT } as Action;
+      const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
       const expected = new LoadCountriesSuccess(countries);
 
-      actions$ = hot('-a', { a: action });
+      actions$ = hot('-a-------', { a: action });
 
-      expect(effects.loadCountries$).toBeObservable(cold('-b', { b: expected }));
+      expect(effects.loadCountries$).toBeObservable(cold('-b-------', { b: expected }));
     });
 
     it('should dispatch a LoadCountriesFail action if a load error occurs', () => {
-      when(countryServiceMock.getCountries()).thenReturn(throwError({ message: 'error' } as HttpErrorResponse));
+      when(countryServiceMock.getCountries()).thenReturn(throwError({ message: 'error' }));
 
-      const action = { type: ROOT_EFFECTS_INIT } as Action;
-      const expected = new LoadCountriesFail({ message: 'error' } as HttpErrorResponse);
+      const action = { type: ROUTER_NAVIGATION_TYPE } as Action;
+      const expected = new LoadCountriesFail({ message: 'error' } as HttpError);
 
       actions$ = hot('-a', { a: action });
 

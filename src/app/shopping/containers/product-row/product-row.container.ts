@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
+
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CoreState } from '../../../core/store/core.state';
@@ -23,7 +24,7 @@ export class ProductRowContainerComponent {
   @Input()
   category?: Category;
 
-  constructor(private bsModalService: BsModalService, private store: Store<CoreState | CheckoutState | QuotingState>) {}
+  constructor(private ngbModal: NgbModal, private store: Store<CoreState | CheckoutState | QuotingState>) {}
 
   addToBasket() {
     this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
@@ -34,7 +35,7 @@ export class ProductRowContainerComponent {
       new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
     );
     this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
-      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
+      this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
     });
   }
 }

@@ -1,5 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Address } from '../../../models/address/address.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
+
 import * as fromActions from './addresses.actions';
 import { addressesReducer, initialState } from './addresses.reducer';
 
@@ -16,7 +17,7 @@ describe('Addresses Reducer', () => {
 
     describe('LoadAddressesFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpErrorResponse;
+        const error = { message: 'invalid' } as HttpError;
         const action = new fromActions.LoadAddressesFail(error);
         const state = addressesReducer(initialState, action);
 

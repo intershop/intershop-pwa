@@ -1,6 +1,7 @@
 import { BasketItemData } from '../basket-item/basket-item.interface';
 import { BasketItemMapper } from '../basket-item/basket-item.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
+
 import { OrderData } from './order.interface';
 import { Order } from './order.model';
 

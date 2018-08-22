@@ -1,5 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
@@ -52,7 +53,7 @@ export class LoadQuoteRequests implements Action {
 
 export class LoadQuoteRequestsFail implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadQuoteRequestsSuccess implements Action {
@@ -66,7 +67,7 @@ export class AddQuoteRequest implements Action {
 
 export class AddQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.AddQuoteRequestFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class AddQuoteRequestSuccess implements Action {
@@ -81,7 +82,7 @@ export class UpdateQuoteRequest implements Action {
 
 export class UpdateQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class UpdateQuoteRequestSuccess implements Action {
@@ -96,7 +97,7 @@ export class DeleteQuoteRequest implements Action {
 
 export class DeleteQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.DeleteQuoteRequestFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class DeleteQuoteRequestSuccess implements Action {
@@ -110,7 +111,7 @@ export class SubmitQuoteRequest implements Action {
 
 export class SubmitQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.SubmitQuoteRequestFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class SubmitQuoteRequestSuccess implements Action {
@@ -124,7 +125,7 @@ export class CreateQuoteRequestFromQuote implements Action {
 
 export class CreateQuoteRequestFromQuoteFail implements Action {
   readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class CreateQuoteRequestFromQuoteSuccess implements Action {
@@ -139,7 +140,7 @@ export class LoadQuoteRequestItems implements Action {
 
 export class LoadQuoteRequestItemsFail implements Action {
   readonly type = QuoteRequestActionTypes.LoadQuoteRequestItemsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadQuoteRequestItemsSuccess implements Action {
@@ -154,7 +155,7 @@ export class AddProductToQuoteRequest implements Action {
 
 export class AddProductToQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.AddProductToQuoteRequestFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class AddProductToQuoteRequestSuccess implements Action {
@@ -168,7 +169,7 @@ export class AddBasketToQuoteRequest implements Action {
 
 export class AddBasketToQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.AddBasketToQuoteRequestFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class AddBasketToQuoteRequestSuccess implements Action {
@@ -183,7 +184,7 @@ export class UpdateQuoteRequestItems implements Action {
 
 export class UpdateQuoteRequestItemsFail implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestItemsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class UpdateQuoteRequestItemsSuccess implements Action {
@@ -198,7 +199,7 @@ export class DeleteItemFromQuoteRequest implements Action {
 
 export class DeleteItemFromQuoteRequestFail implements Action {
   readonly type = QuoteRequestActionTypes.DeleteItemFromQuoteRequestFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class DeleteItemFromQuoteRequestSuccess implements Action {

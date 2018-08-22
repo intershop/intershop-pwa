@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-sm-12 col-md-8">
+  <div class="col-md-12 col-lg-8">
     <!-- Messages -->
     <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
-      {{ error.status }}: {{ error.message }}
+      {{ error.status }}: {{ error.error }}
     </div>
     <div *ngIf="!basket.commonShippingMethod && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping_method.no_Selection.error' | translate }}
@@ -10,7 +10,7 @@
     <!-- shipping method selection -->
     <form [formGroup]="shippingForm" class="form-horizontal" >
       <div *ngIf="shippingMethods && shippingMethods.length > 0" class="shipping-methods">
-        {{ 'checkout.shipping_method.selection.heading' | translate }}
+        <p>{{ 'checkout.shipping_method.selection.heading' | translate }}</p>
 
         <div *ngFor="let shippingMethod of shippingMethods" class="radio">
           <label [for]="'ShippingMethod_'+ shippingMethod.id">
@@ -18,11 +18,11 @@
               formControlName="id"
               [id]="'ShippingMethod_'+ shippingMethod"
               [value]="shippingMethod.id"
-               type="radio"
+              type="radio"
             />
-            <span>{{ shippingMethod.name }}:</span>&nbsp;
-            <!-- ToDo: #IS-24215: add product delivery times to the shipping method delivery times -->
-            <span *ngIf="shippingMethod.shippingTimeMin !== undefined && shippingMethod.shippingTimeMax" class="help-block help-block-inline">
+
+            <span>{{ basket.commonShippingMethod.name }}:</span>&nbsp;
+            <span *ngIf="basket.commonShippingMethod.shippingTimeMin && basket.commonShippingMethod.shippingTimeMax" class="form-text form-text-inline">
               {{ 'checkout.shipping.delivery_time.description' | translate }}
               <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
                   {{ 'checkout.shipping.delivery_time.within24' | translate}}
@@ -38,11 +38,11 @@
               <span [innerHTML]="shippingMethod.description"></span>
             </ng-template>
             <a class="details-tooltip"
-              [popover]="ShippingMethodDescription"
+              [ngbPopover]="ShippingMethodDescription"
               placement="top"
             >
               {{'checkout.detail.text' | translate }}
-              <span class="glyphicon glyphicon-info-sign"></span>
+              <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
            </a>
           </label>
         </div>
@@ -51,7 +51,7 @@
   </div>
 
   <!-- basket summary -->
-  <div class="col-sm-12 col-md-4 order-summary">
+  <div class="col-md-12 col-lg-4 order-summary">
     <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
     <ish-basket-address-summary [basket]="basket"></ish-basket-address-summary>
     <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>

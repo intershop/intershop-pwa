@@ -1,0 +1,38 @@
+//
+// DL - List
+.dl-horizontal {
+  margin-bottom: ($space-default / 2);
+  dt {
+    font-weight: normal;
+  }
+  dt + dd {
+    margin-bottom: ($space-default / 4);
+  }
+
+  // displays a separator (e.g. colon) after the definition type field
+  & > dt:after {
+    content: ':';
+  }
+}
+
+//
+// General class for status 'deactivated' in general lists
+.inactive {
+  *:not(a) {
+    color: $text-color-quarternary;
+  }
+
+  a {
+    $disabled-link-color: darken($CORPORATE-PRIMARY, $default-color-adjust);
+
+    color: $disabled-link-color;
+
+    .ng-fa-icon {
+      color: $disabled-link-color;
+    }
+
+    &:hover &:hover > .ng-fa-icon {
+      color: darken($disabled-link-color, $default-color-adjust);
+    }
+  }
+}

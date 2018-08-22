@@ -1,9 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
+import { IconModule } from '../../../icon.module';
+
 import { HeaderComponent } from './header.component';
 
 describe('Header Component', () => {
@@ -14,10 +18,11 @@ describe('Header Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        CollapseModule,
+        NgbCollapseModule,
         TranslateModule.forRoot(),
         RouterTestingModule,
         FeatureToggleModule.testingFeatures({ compare: true }),
+        IconModule,
       ],
       declarations: [
         HeaderComponent,
@@ -36,6 +41,7 @@ describe('Header Component', () => {
         MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
         MockComponent({ selector: 'ish-mobile-basket-container', template: 'Mobile Basket Container' }),
       ],
+      providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })
       .compileComponents()
       .then(() => {

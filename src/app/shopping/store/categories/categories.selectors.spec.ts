@@ -1,29 +1,29 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { Category } from '../../../models/category/category.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadProductSuccess } from '../products';
 import { shoppingReducers } from '../shopping.system';
+
 import {
   LoadCategory,
   LoadCategoryFail,
   LoadCategorySuccess,
   LoadTopLevelCategoriesSuccess,
   SelectCategory,
-  SetProductSkusForCategory,
 } from './categories.actions';
 import {
   getCategoryEntities,
   getCategoryLoading,
-  getProductCountForSelectedCategory,
-  getProductsForSelectedCategory,
   getSelectedCategory,
   getSelectedCategoryId,
   getTopLevelCategories,
+  isTopLevelCategoriesLoaded,
 } from './categories.selectors';
 
 describe('Categories Selectors', () => {
@@ -58,12 +58,11 @@ describe('Categories Selectors', () => {
     it('should not select any selected category when used', () => {
       expect(getSelectedCategory(store$.state)).toBeUndefined();
       expect(getSelectedCategoryId(store$.state)).toBeUndefined();
-      expect(getProductCountForSelectedCategory(store$.state)).toEqual(0);
-      expect(getProductsForSelectedCategory(store$.state)).toBeEmpty();
     });
 
     it('should not select any top level categories when used', () => {
       expect(getTopLevelCategories(store$.state)).toBeEmpty();
+      expect(isTopLevelCategoriesLoaded(store$.state)).toBeFalse();
     });
   });
 
@@ -89,7 +88,7 @@ describe('Categories Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCategoryFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadCategoryFail({ message: 'error' } as HttpError));
       });
 
       it('should not have loaded category on error', () => {
@@ -114,14 +113,11 @@ describe('Categories Selectors', () => {
       it('should not select the irrelevant category when used', () => {
         expect(getSelectedCategory(store$.state)).toBeUndefined();
         expect(getSelectedCategoryId(store$.state)).toBeUndefined();
-        expect(getProductCountForSelectedCategory(store$.state)).toEqual(0);
-        expect(getProductsForSelectedCategory(store$.state)).toBeEmpty();
       });
     });
 
     describe('with category route', () => {
       beforeEach(() => {
-        store$.dispatch(new SetProductSkusForCategory({ categoryUniqueId: cat.uniqueId, skus: [prod.sku] }));
         store$.dispatch(new SelectCategory(cat.uniqueId));
       });
 
@@ -133,8 +129,6 @@ describe('Categories Selectors', () => {
       it('should select the selected category when used', () => {
         expect(getSelectedCategory(store$.state).uniqueId).toEqual(cat.uniqueId);
         expect(getSelectedCategoryId(store$.state)).toEqual(cat.uniqueId);
-        expect(getProductCountForSelectedCategory(store$.state)).toEqual(1);
-        expect(getProductsForSelectedCategory(store$.state)).toEqual([prod]);
       });
     });
   });
@@ -151,6 +145,10 @@ describe('Categories Selectors', () => {
 
     it('should select root categories when used', () => {
       expect(getTopLevelCategories(store$.state).map(x => x.uniqueId)).toEqual(['A', 'B']);
+    });
+
+    it('should remember if top level categories are loaded', () => {
+      expect(isTopLevelCategoriesLoaded(store$.state)).toBeTrue();
     });
   });
 });

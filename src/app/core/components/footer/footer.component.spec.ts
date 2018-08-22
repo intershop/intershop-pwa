@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { MEDIUM_BREAKPOINT_WIDTH } from '../../configurations/injection-keys';
+import { IconModule } from '../../icon.module';
+
 import { FooterComponent } from './footer.component';
 
 describe('Footer Component', () => {
@@ -11,8 +13,9 @@ describe('Footer Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot()],
+      imports: [NgbCollapseModule, IconModule],
       declarations: [FooterComponent],
+      providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })
       .compileComponents()
       .then(() => {

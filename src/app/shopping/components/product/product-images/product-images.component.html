@@ -1,23 +1,25 @@
-<div class="col-md-2 hidden-xs hidden-sm">
-  <div class="product-img-thumbs" data-type="S">
-    <div class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(0) }" (click)="setActiveSlide(0)">
-      <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
-    </div>
-    <div *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'S'); index as i;"
-      class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(i + 1) }" (click)="setActiveSlide(i + 1)">
-      <ish-product-image [product]="product" imageType="S" [imageView]="imageView" class="product-image"></ish-product-image>
+<div class="row">
+  <div class="col-lg-2 d-none d-lg-block">
+    <div class="product-img-thumbs" data-type="S">
+      <div class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(0) }" (click)="setActiveSlide(0)">
+        <ish-product-image [product]="product" imageType="S" class="product-image"></ish-product-image>
+      </div>
+      <div *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'S'); index as i;"
+        class="product-thumb-set" [ngClass]="{ 'active': isActiveSlide(i + 1) }" (click)="setActiveSlide(i + 1)">
+        <ish-product-image [product]="product" imageType="S" [imageView]="imageView" class="product-image"></ish-product-image>
+      </div>
     </div>
   </div>
-</div>
-<div class="col-sm-6 col-xs-12 product-detail-img clearfix">
-  <div class="product-image-container">
-    <carousel [(activeSlide)]="activeSlide" [showIndicators]="false" [interval]="false">
-      <slide>
-        <ish-product-image [product]="product" imageType="L"></ish-product-image>
-      </slide>
-      <slide *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'L')">
-        <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
-      </slide>
-    </carousel>
+  <div class="col-12 col-lg-10 product-detail-img clearfix">
+    <div class="product-image-container">
+      <ngb-carousel [activeId]="activeSlide" (slide)="setActiveSlide($event.current)" [showNavigationIndicators]="false" [interval]="false">
+        <ng-template ngbSlide [id]="0">
+          <ish-product-image [product]="product" imageType="L"></ish-product-image>
+        </ng-template>
+        <ng-template ngbSlide *ngFor="let imageView of getImageViewIDsExcludePrimary(product,'L'); index as i;" [id]="i + 1">
+          <ish-product-image [product]="product" imageType="L" [imageView]="imageView"></ish-product-image>
+        </ng-template>
+      </ngb-carousel>
+    </div>
   </div>
 </div>

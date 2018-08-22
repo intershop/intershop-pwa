@@ -1,0 +1,53 @@
+/*********** CAROUSEL *************/
+
+// TODO: needed?
+// .carousel-control {
+//   color: $carousel-control-color;
+//   text-shadow: none;
+// }
+
+// TODO: needed?
+// .carousel-indent {
+//   .carousel-inner {
+//     padding-left: ($space-default * 3);
+//     padding-right: ($space-default * 3);
+//     text-align: center;
+//   }
+// }
+
+.carousel,
+.carousel-inner {
+  outline: none;
+}
+
+.carousel-indicators {
+  li {
+    width: 11px;
+    height: 11px;
+    margin: 0px 5px;
+    background-color: $color-inverse;
+  }
+  .active {
+    width: 11px;
+    height: 11px;
+    margin: 0px 5px;
+    border: 1px solid $carousel-indicator-active-bg;
+  }
+}
+
+//Recently Viewed
+.recently-viewed-links-container {
+  .recently-viewed-links {
+    list-style: none;
+    margin-top: 17px;
+
+    @media (max-width: $screen-sm-max) {
+      margin-top: 0px;
+    }
+
+    li {
+      display: inline-block;
+      padding-left: $space-default;
+    }
+  }
+}

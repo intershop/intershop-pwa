@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
-const MOBILE_VIEW_WIDTH = 992;
+import { LARGE_BREAKPOINT_WIDTH } from '../../../core/configurations/injection-keys';
 
 @Component({
   selector: 'ish-account-navigation',
@@ -23,16 +24,22 @@ export class AccountNavigationComponent implements OnInit {
     { link: '/logout', localizationKey: 'account.navigation.logout.link' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: number,
+    @Inject(PLATFORM_ID) private platformId: string
+  ) {}
 
   ngOnInit() {
-    this.isMobileView = window.innerWidth < MOBILE_VIEW_WIDTH;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobileView = window.innerWidth < this.largeBreakpointWidth;
+    }
     this.currentPath = location.pathname;
   }
 
   @HostListener('window:resize', ['$event'])
   mobileViewHandler(event) {
-    this.isMobileView = event.target.innerWidth < MOBILE_VIEW_WIDTH;
+    this.isMobileView = event.target.innerWidth < this.largeBreakpointWidth;
   }
 
   navigateTo(link) {

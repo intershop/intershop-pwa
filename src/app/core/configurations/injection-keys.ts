@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+
 import { Locale } from '../../models/locale/locale.model';
 
 /**
@@ -27,3 +28,10 @@ export const MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH = new InjectionToken<numbe
  * global definition of the endless scrolling page size
  */
 export const ENDLESS_SCROLLING_ITEMS_PER_PAGE = new InjectionToken<number>('endlessScrollingItemsPerPage');
+/**
+ * global definition of the Bootstrap grid system breakpoint widths
+ */
+export const SMALL_BREAKPOINT_WIDTH = new InjectionToken<number>('smallBreakpointWidth');
+export const MEDIUM_BREAKPOINT_WIDTH = new InjectionToken<number>('mediumBreakpointWidth');
+export const LARGE_BREAKPOINT_WIDTH = new InjectionToken<number>('largeBreakpointWidth');
+export const EXTRALARGE_BREAKPOINT_WIDTH = new InjectionToken<number>('extralargeBreakpointWidth');

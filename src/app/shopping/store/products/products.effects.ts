@@ -1,27 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { of } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import {
-  catchError,
   concatMap,
   distinctUntilChanged,
   filter,
   map,
   mergeMap,
-  skip,
   switchMap,
+  switchMapTo,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+
 import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes } from '../../../core/store/locale';
+import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
-import * as categoriesActions from '../categories/categories.actions';
 import { ShoppingState } from '../shopping.state';
-import * as fromViewconf from '../viewconf';
+import {
+  SetPage,
+  SetPagingInfo,
+  SetPagingLoading,
+  SetSortKeys,
+  canRequestMore,
+  getItemsPerPage,
+  getPagingPage,
+  getSortBy,
+  isEndlessScrollingEnabled,
+} from '../viewconf';
+
 import * as productsActions from './products.actions';
 import * as productsSelectors from './products.selectors';
 
@@ -41,25 +51,55 @@ export class ProductsEffects {
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
         map(product => new productsActions.LoadProductSuccess(product)),
-        catchError(error => of(new productsActions.LoadProductFail(error)))
+        mapErrorToAction(productsActions.LoadProductFail)
       )
     )
   );
 
   @Effect()
+  loadMoreProductsForCategory$ = this.actions$.pipe(
+    ofType<productsActions.LoadMoreProductsForCategory>(
+      productsActions.ProductsActionTypes.LoadMoreProductsForCategory
+    ),
+    withLatestFrom(
+      this.store.pipe(select(isEndlessScrollingEnabled)),
+      this.store.pipe(select(canRequestMore)),
+      this.store.pipe(select(getPagingPage), map(n => n + 1))
+    ),
+    filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
+    mergeMap(([action, , , page]) => [
+      new SetPagingLoading(),
+      new SetPage(page),
+      new productsActions.LoadProductsForCategory(action.payload),
+    ])
+  );
+
+  /**
+   * retrieve products for category incremental respecting paging
+   */
+  @Effect()
   loadProductsForCategory$ = this.actions$.pipe(
-    ofType(productsActions.ProductsActionTypes.LoadProductsForCategory),
-    map((action: productsActions.LoadProductsForCategory) => action.payload),
-    withLatestFrom(this.store.pipe(select(fromViewconf.getSortBy))),
-    concatMap(([categoryUniqueId, sortBy]) =>
-      this.productsService.getCategoryProducts(categoryUniqueId, sortBy).pipe(
+    ofType<productsActions.LoadProductsForCategory>(productsActions.ProductsActionTypes.LoadProductsForCategory),
+    map(action => action.payload),
+    withLatestFrom(
+      this.store.pipe(select(getPagingPage)),
+      this.store.pipe(select(getSortBy)),
+      this.store.pipe(select(getItemsPerPage))
+    ),
+    distinctUntilChanged(),
+    concatMap(([categoryUniqueId, page, sortBy, itemsPerPage]) =>
+      this.productsService.getCategoryProducts(categoryUniqueId, page, itemsPerPage, sortBy).pipe(
         withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
         switchMap(([res, entities]) => [
-          new categoriesActions.SetProductSkusForCategory({ categoryUniqueId: res.categoryUniqueId, skus: res.skus }),
-          new fromViewconf.SetSortKeys(res.sortKeys),
+          new SetPagingInfo({
+            currentPage: page,
+            totalItems: res.total,
+            newProducts: res.products.map(p => p.sku),
+          }),
+          new SetSortKeys(res.sortKeys),
           ...res.products.filter(stub => !entities[stub.sku]).map(stub => new productsActions.LoadProductSuccess(stub)),
         ]),
-        catchError(error => of(new productsActions.LoadProductFail(error)))
+        mapErrorToAction(productsActions.LoadProductFail)
       )
     )
   );
@@ -85,13 +125,18 @@ export class ProductsEffects {
    * reload the current (if available) product when language is changed
    */
   @Effect()
-  languageChange$ = this.actions$.pipe(
-    ofType(LocaleActionTypes.SelectLocale),
-    distinctUntilChanged(),
-    skip(1), // ignore app init language selection
-    withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
-    filter(([, sku]) => !!sku),
-    map(([, sku]) => new productsActions.LoadProduct(sku))
+  languageChange$ = this.store.pipe(
+    select(productsSelectors.getSelectedProduct),
+    filter(x => !!x),
+    switchMapTo(
+      this.actions$.pipe(
+        ofType(LocaleActionTypes.SelectLocale),
+        distinctUntilChanged(),
+        withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
+        filter(([, sku]) => !!sku),
+        map(([, sku]) => new productsActions.LoadProduct(sku))
+      )
+    )
   );
 
   @Effect({ dispatch: false })

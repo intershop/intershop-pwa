@@ -1,6 +1,6 @@
 export interface SearchBoxConfiguration {
   /**
-   * text for search button on search box, glyphicon is used if no text is provided
+   * text for search button on search box, icon is used if no text is provided
    */
   buttonText?: string;
   /**

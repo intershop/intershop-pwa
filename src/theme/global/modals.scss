@@ -1,0 +1,27 @@
+//
+// Modals
+// --------------------------------------------------
+
+.modal-dialog {
+  .close {
+    opacity: 1;
+  }
+
+  .modal-header {
+    align-items: center;
+    min-height: 50px;
+
+    h2 {
+      font-family: $font-family-condensedregular;
+      margin: 0;
+    }
+  }
+
+  .modal-footer {
+    .btn {
+      width: auto;
+      display: inline-block;
+      margin-bottom: 0;
+    }
+  }
+}

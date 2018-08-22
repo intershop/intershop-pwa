@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { User } from '../../../../models/user/user.model';
+import { IconModule } from '../../../icon.module';
+
 import { LoginStatusComponent } from './login-status.component';
 
 describe('Login Status Component', () => {
@@ -16,7 +19,7 @@ describe('Login Status Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), IconModule],
       declarations: [LoginStatusComponent],
       providers: [],
     })

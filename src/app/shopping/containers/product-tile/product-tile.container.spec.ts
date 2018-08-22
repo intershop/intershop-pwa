@@ -1,9 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, StoreModule } from '@ngrx/store';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { Product } from '../../../models/product/product.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { shoppingReducers } from '../../store/shopping.system';
+
 import { ProductTileContainerComponent } from './product-tile.container';
 
 describe('Product Tile Container', () => {
@@ -17,7 +19,7 @@ describe('Product Tile Container', () => {
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
-        ModalModule.forRoot(),
+        NgbModalModule,
       ],
       declarations: [
         ProductTileContainerComponent,

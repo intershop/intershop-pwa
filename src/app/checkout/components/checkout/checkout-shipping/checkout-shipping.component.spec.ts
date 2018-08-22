@@ -1,12 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HttpErrorResponse } from '@angular/common/http';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { PopoverModule } from 'ngx-bootstrap/popover';
+
+import { IconModule } from '../../../../core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { HttpError } from '../../../../models/http-error/http-error.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { CheckoutShippingComponent } from './checkout-shipping.component';
 
 describe('Checkout Shipping Component', () => {
@@ -34,7 +36,7 @@ describe('Checkout Shipping Component', () => {
           inputs: ['basket'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), RouterTestingModule, FormsSharedModule],
+      imports: [TranslateModule.forRoot(), NgbPopoverModule, RouterTestingModule, FormsSharedModule, IconModule],
     }).compileComponents();
   }));
 
@@ -63,14 +65,14 @@ describe('Checkout Shipping Component', () => {
   });
 
   it('should render an error if an error occurs', () => {
-    component.error = { status: 404 } as HttpErrorResponse;
+    component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 
   it('should render an error if the user has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
-    fixture.detectChanges();
+    expect(() => fixture.detectChanges()).toThrow();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 

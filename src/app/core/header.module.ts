@@ -3,13 +3,14 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
 import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedSearchModule } from '../shared/shared-search.module';
+
 import { HeaderCheckoutComponent } from './components/header/header-checkout/header-checkout.component';
 import { HeaderNavigationComponent } from './components/header/header-navigation/header-navigation.component';
 import { SubCategoryNavigationComponent } from './components/header/header-navigation/sub-category-navigation/sub-category-navigation.component';
@@ -29,20 +30,22 @@ import { MiniBasketContainerComponent } from './containers/header/mini-basket/mi
 import { MobileBasketContainerComponent } from './containers/header/mobile-basket/mobile-basket.container';
 import { ProductCompareStatusContainerComponent } from './containers/header/product-compare-status/product-compare-status.container';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
+import { IconModule } from './icon.module';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     TranslateModule,
-    BsDropdownModule,
-    CollapseModule,
+    NgbDropdownModule,
+    NgbCollapseModule,
     ReactiveFormsModule,
     PipesModule,
     SharedProductModule,
     SharedSearchModule,
     BrowserAnimationsModule,
     FeatureToggleModule,
+    IconModule,
   ],
   declarations: [
     HeaderSimpleComponent,
@@ -65,6 +68,6 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
     LogoutComponent,
     ClickOutsideDirective,
   ],
-  exports: [HeaderComponent, HeaderCheckoutComponent, HeaderContainerComponent],
+  exports: [HeaderComponent, HeaderCheckoutComponent, HeaderContainerComponent, IconModule],
 })
 export class HeaderModule {}

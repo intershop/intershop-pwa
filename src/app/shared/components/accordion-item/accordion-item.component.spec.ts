@@ -1,5 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { IconModule } from '../../../core/icon.module';
+
 import { AccordionItemComponent } from './accordion-item.component';
 
 describe('Accordion Item Component', () => {
@@ -9,7 +12,7 @@ describe('Accordion Item Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule],
+      imports: [NgbCollapseModule, IconModule],
       declarations: [AccordionItemComponent],
     }).compileComponents();
   }));
@@ -30,7 +33,7 @@ describe('Accordion Item Component', () => {
     const headingLinks = element.querySelectorAll('.panel-heading');
     (headingLinks[0] as HTMLElement).click();
     fixture.detectChanges();
-    expect(element.querySelector('.glyphicon-minus')).toBeTruthy();
+    expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,minus"]')).toBeTruthy();
     expect(component.isCollapsed).toBeTruthy();
   });
 
@@ -39,7 +42,7 @@ describe('Accordion Item Component', () => {
     (headingLinks[0] as HTMLElement).click();
     (headingLinks[0] as HTMLElement).click();
     fixture.detectChanges();
-    expect(element.querySelector('.glyphicon-plus')).toBeTruthy();
+    expect(element.querySelector('fa-icon[ng-reflect-icon-prop="fas,plus"]')).toBeTruthy();
     expect(component.isCollapsed).toBeFalsy();
   });
 });

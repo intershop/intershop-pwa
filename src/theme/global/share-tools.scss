@@ -1,0 +1,78 @@
+//
+// SHARE TOOLS
+
+.share-tools {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    font-size: 18px;
+    /*border-right: $border-width-default solid $border-color-light;*/
+    padding: 0 $space-default;
+    margin: 0;
+    height: 27px;
+    overflow: hidden;
+    max-width: 50px;
+    @include transition(max-width 0.5s ease-in-out);
+
+    button {
+      background-color: transparent;
+      border: 0;
+      padding: 0;
+      white-space: normal;
+    }
+  }
+
+  .ng-fa-icon {
+    color: $text-color-corporate;
+    font-size: 22px;
+    vertical-align: middle;
+  }
+
+  li {
+    &:hover {
+      .ng-fa-icon {
+        color: $text-color-corporate;
+      }
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+    li {
+      @include transition(max-width 0.5s ease-in-out);
+
+      &:hover {
+        color: $text-color-corporate;
+        cursor: pointer;
+        max-width: 300px;
+        overflow: hidden;
+
+        .share-label {
+          color: $text-color-corporate;
+        }
+      }
+
+      .share-label {
+        color: $text-color-quarternary;
+        font-size: $font-size-base;
+        line-height: 26px;
+        padding-left: ($space-default / 2);
+
+        @media (max-width: $screen-xs-max) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+//
+// MY ACCOUNT - TOOLBAR
+.account-wrapper {
+  .share-tools {
+    margin-bottom: $space-default;
+  }
+}

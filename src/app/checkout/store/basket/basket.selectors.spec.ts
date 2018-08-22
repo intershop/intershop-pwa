@@ -1,9 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
@@ -11,6 +12,7 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { checkoutReducers } from '../checkout.system';
+
 import {
   LoadBasket,
   LoadBasketEligiblePaymentMethods,
@@ -99,7 +101,7 @@ describe('Basket Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadBasketFail({ message: 'invalid' } as HttpErrorResponse));
+      store$.dispatch(new LoadBasketFail({ message: 'invalid' } as HttpError));
       expect(getBasketLoading(store$.state)).toBeFalse();
       expect(getCurrentBasket(store$.state)).toBeUndefined();
       expect(getBasketError(store$.state)).toEqual({ message: 'invalid' });
@@ -128,7 +130,7 @@ describe('Basket Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadBasketEligibleShippingMethodsFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadBasketEligibleShippingMethodsFail({ message: 'error' } as HttpError));
       });
 
       it('should not have loaded shipping methods on error', () => {
@@ -161,7 +163,7 @@ describe('Basket Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadBasketEligiblePaymentMethodsFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadBasketEligiblePaymentMethodsFail({ message: 'error' } as HttpError));
       });
 
       it('should not have loaded payment methods on error', () => {

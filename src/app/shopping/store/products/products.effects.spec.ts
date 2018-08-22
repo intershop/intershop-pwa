@@ -1,21 +1,23 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+
+import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
-import * as fromCategories from '../categories';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
-import * as fromViewconf from '../viewconf';
+import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
+
 import * as fromActions from './products.actions';
 import { ProductsEffects } from './products.effects';
 
@@ -33,18 +35,18 @@ describe('Products Effects', () => {
     productsServiceMock = mock(ProductsService);
     when(productsServiceMock.getProduct(anyString())).thenCall((sku: string) => {
       if (sku === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of({ sku } as Product);
       }
     });
 
-    when(productsServiceMock.getCategoryProducts('123', 'name-asc')).thenReturn(
+    when(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).thenReturn(
       of({
-        skus: ['P222', 'P333'],
         categoryUniqueId: '123',
         sortKeys: ['name-asc', 'name-desc'],
         products: [{ sku: 'P222' }, { sku: 'P333' }] as Product[],
+        total: 2,
       })
     );
 
@@ -60,6 +62,7 @@ describe('Products Effects', () => {
         provideMockActions(() => actions$),
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
         { provide: Router, useFactory: () => instance(router) },
+        { provide: ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: 3 },
       ],
     });
 
@@ -94,7 +97,7 @@ describe('Products Effects', () => {
     it('should map invalid request to action of type LoadProductFail', () => {
       const sku = 'invalid';
       const action = new fromActions.LoadProduct(sku);
-      const completion = new fromActions.LoadProductFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.LoadProductFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -104,14 +107,14 @@ describe('Products Effects', () => {
 
   describe('loadProductsForCategory$', () => {
     beforeEach(() => {
-      store$.dispatch(new fromViewconf.ChangeSortBy('name-asc'));
+      store$.dispatch(new ChangeSortBy('name-asc'));
     });
 
     it('should call service for SKU list', done => {
       actions$ = of(new fromActions.LoadProductsForCategory('123'));
 
       effects.loadProductsForCategory$.subscribe(() => {
-        verify(productsServiceMock.getCategoryProducts('123', 'name-asc')).once();
+        verify(productsServiceMock.getCategoryProducts('123', anyNumber(), anyNumber(), 'name-asc')).once();
         done();
       });
     });
@@ -121,23 +124,38 @@ describe('Products Effects', () => {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       const expectedValues = {
-        a: new fromCategories.SetProductSkusForCategory({ categoryUniqueId: '123', skus: ['P222', 'P333'] }),
-        b: new fromViewconf.SetSortKeys(['name-asc', 'name-desc']),
-        c: new fromActions.LoadProductSuccess({ sku: 'P222' } as Product),
-        d: new fromActions.LoadProductSuccess({ sku: 'P333' } as Product),
+        b: new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['P222', 'P333'] }),
+        c: new SetSortKeys(['name-asc', 'name-desc']),
+        d: new fromActions.LoadProductSuccess({ sku: 'P222' } as Product),
+        e: new fromActions.LoadProductSuccess({ sku: 'P333' } as Product),
       };
-      expect(effects.loadProductsForCategory$).toBeObservable(cold('(abcd)', expectedValues));
+      expect(effects.loadProductsForCategory$).toBeObservable(cold('(bcde)', expectedValues));
     });
 
     it('should not die if repeating errors are encountered', () => {
-      const error = { status: 500 } as HttpErrorResponse;
-      when(productsServiceMock.getCategoryProducts(anything(), anything())).thenReturn(throwError(error));
+      when(productsServiceMock.getCategoryProducts(anything(), anyNumber(), anyNumber(), anyString())).thenReturn(
+        throwError({ message: 'ERROR' })
+      );
       actions$ = hot('-a-a-a', {
         a: new fromActions.LoadProductsForCategory('123'),
       });
       expect(effects.loadProductsForCategory$).toBeObservable(
-        cold('-a-a-a', { a: new fromActions.LoadProductFail(error) })
+        cold('-a-a-a', { a: new fromActions.LoadProductFail({ message: 'ERROR' } as HttpError) })
       );
+    });
+  });
+
+  describe('loadMoreProductsForCategory$', () => {
+    it('should trigger if more products are available', () => {
+      actions$ = hot('a', {
+        a: new fromActions.LoadMoreProductsForCategory('123'),
+      });
+      const expectedValues = {
+        a: new SetPagingLoading(),
+        b: new SetPage(1),
+        c: new fromActions.LoadProductsForCategory('123'),
+      };
+      expect(effects.loadMoreProductsForCategory$).toBeObservable(cold('(abc)', expectedValues));
     });
   });
 
@@ -188,19 +206,20 @@ describe('Products Effects', () => {
   });
 
   describe('languageChange$', () => {
-    it('should refetch product when language is changed distinctly ignoring the first time', () => {
+    it('should refetch product when language is changed distinctly', () => {
       const sku = 'P123';
 
+      store$.dispatch(new fromActions.LoadProductSuccess({ sku } as Product));
       store$.dispatch(new fromActions.SelectProduct(sku));
-      actions$ = hot('-a--b--b--a', { a: new SelectLocale(DE_DE), b: new SelectLocale(EN_US) });
+      actions$ = hot('-a--a--b--b--a', { a: new SelectLocale(DE_DE), b: new SelectLocale(EN_US) });
 
-      expect(effects.languageChange$).toBeObservable(cold('----a-----a', { a: new fromActions.LoadProduct(sku) }));
+      expect(effects.languageChange$).toBeObservable(cold('-a-----a-----a', { a: new fromActions.LoadProduct(sku) }));
     });
   });
 
   describe('redirectIfErrorInProducts$', () => {
     it('should redirect if triggered', done => {
-      const action = new fromActions.LoadProductFail({ status: 404 } as HttpErrorResponse);
+      const action = new fromActions.LoadProductFail({ status: 404 } as HttpError);
 
       actions$ = of(action);
 

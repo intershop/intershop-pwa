@@ -1,20 +1,23 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { FilterService } from '../../services/filter/filter.service';
-import { LoadCategorySuccess, SelectCategory } from '../categories';
+import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';
 import { LoadProduct } from '../products';
 import { SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
+import { SetPagingInfo } from '../viewconf';
+
 import * as fromActions from './filter.actions';
 import { FilterEffects } from './filter.effects';
 
@@ -32,14 +35,14 @@ describe('Filter Effects', () => {
     filterServiceMock = mock(FilterService);
     when(filterServiceMock.getFilterForSearch(anything())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
       }
     });
     when(filterServiceMock.getFilterForCategory(anything())).thenCall(a => {
       if (a.name === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
       }
@@ -47,7 +50,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.getProductSkusForFilter(anything(), anything())).thenCall(a => {
       if (a.name === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(['123', '234']);
       }
@@ -55,7 +58,7 @@ describe('Filter Effects', () => {
 
     when(filterServiceMock.applyFilter(anyString(), anyString())).thenCall(a => {
       if (a === 'invalid') {
-        return throwError({ message: 'invalid' } as HttpErrorResponse);
+        return throwError({ message: 'invalid' });
       } else {
         return of(filterNav);
       }
@@ -100,7 +103,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type LoadFilterForCategoriesFail', () => {
       const action = new fromActions.LoadFilterForCategory({ name: 'invalid' } as Category);
-      const completion = new fromActions.LoadFilterForCategoryFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.LoadFilterForCategoryFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -121,14 +124,16 @@ describe('Filter Effects', () => {
         } as Category,
       ]);
 
+      store$.dispatch(new LoadCategorySuccess(tree));
+      store$.dispatch(new SelectCategory('Cameras.Camcorder'));
+
+      actions$ = of(new SelectedCategoryAvailable('Cameras.Camcorder'));
+
       effects.loadFilterIfCategoryWasSelected$.subscribe(action => {
         expect(action.type).toEqual(fromActions.FilterActionTypes.LoadFilterForCategory);
         expect(action.payload.uniqueId).toEqual('Cameras.Camcorder');
         done();
       });
-
-      store$.dispatch(new LoadCategorySuccess(tree));
-      store$.dispatch(new SelectCategory('Cameras.Camcorder'));
     });
   });
 
@@ -158,7 +163,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type ApplyFilterFail', () => {
       const action = new fromActions.ApplyFilter({ filterId: 'invalid', searchParameter: 'b' });
-      const completion = new fromActions.ApplyFilterFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.ApplyFilterFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -174,7 +179,7 @@ describe('Filter Effects', () => {
         searchParameter: 'b',
       });
       store$.dispatch(action);
-      const completion = new fromActions.SetFilteredProducts(['123', '234']);
+      const completion = new SetPagingInfo({ currentPage: 0, totalItems: 2, newProducts: ['123', '234'] });
       const loadProducts1 = new LoadProduct('123');
       const loadProducts2 = new LoadProduct('234');
       actions$ = hot('-a', { a: action });
@@ -205,7 +210,7 @@ describe('Filter Effects', () => {
 
     it('should map invalid request to action of type LoadFilterForSearchFail', () => {
       const action = new fromActions.LoadFilterForSearch('invalid');
-      const completion = new fromActions.LoadFilterForSearchFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new fromActions.LoadFilterForSearchFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -215,7 +220,7 @@ describe('Filter Effects', () => {
 
   describe('loadFilterForSearchIfSearchSuccess$', () => {
     it('should trigger LoadFilterForSearch for SearchProductsSuccess action', () => {
-      const action = new SearchProductsSuccess({ searchTerm: 'a', products: undefined });
+      const action = new SearchProductsSuccess('a');
 
       const completion = new fromActions.LoadFilterForSearch('a');
       actions$ = hot('a', { a: action });

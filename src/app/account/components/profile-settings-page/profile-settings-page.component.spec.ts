@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { IconModule } from '../../../core/icon.module';
 import { User } from '../../../models/user/user.model';
+
 import { ProfileSettingsPageComponent } from './profile-settings-page.component';
 
 describe('Profile Settings Page Component', () => {
@@ -12,7 +15,7 @@ describe('Profile Settings Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ProfileSettingsPageComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), IconModule],
     }).compileComponents();
   }));
 

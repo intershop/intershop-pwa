@@ -1,6 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Category } from '../../../models/category/category.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
+
 import * as fromActions from './categories.actions';
 
 describe('Categories Actions', () => {
@@ -16,7 +17,7 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadTopLevelCategoriesFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadTopLevelCategoriesFail(payload);
 
       expect({ ...action }).toEqual({
@@ -48,7 +49,7 @@ describe('Categories Actions', () => {
     });
 
     it('should create new action for LoadCategoryFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadCategoryFail(payload);
 
       expect({ ...action }).toEqual({
@@ -65,21 +66,6 @@ describe('Categories Actions', () => {
         type: fromActions.CategoriesActionTypes.LoadCategorySuccess,
         payload,
       });
-    });
-  });
-
-  it('should create new action for SetProductSkusForCategory', () => {
-    const skus = ['123', '456'];
-    const categoryUniqueId = '789';
-
-    const action = new fromActions.SetProductSkusForCategory({ categoryUniqueId, skus });
-
-    expect({ ...action }).toEqual({
-      type: fromActions.CategoriesActionTypes.SetProductSkusForCategory,
-      payload: {
-        skus,
-        categoryUniqueId,
-      },
     });
   });
 });

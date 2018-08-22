@@ -1,31 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { combineLatest, forkJoin, of } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  defaultIfEmpty,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
+import { combineLatest, forkJoin } from 'rxjs';
+import { concatMap, defaultIfEmpty, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+
 import { getCurrentBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CoreState } from '../../../core/store/core.state';
-import { getUserAuthorized, UserActionTypes } from '../../../core/store/user';
+import { UserActionTypes, getUserAuthorized } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
-import { getProductEntities, LoadProduct } from '../../../shopping/store/products';
+import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
+import { mapErrorToAction } from '../../../utils/operators';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';
 import { QuotingState } from '../quoting.state';
+
 import * as quoteRequestActions from './quote-request.actions';
 import { getCurrentQuoteRequests, getSelectedQuoteRequest, getSelectedQuoteRequestId } from './quote-request.selectors';
 
@@ -48,7 +41,7 @@ export class QuoteRequestEffects {
     concatMap(() =>
       this.quoteRequestService.getQuoteRequests().pipe(
         map(quoteRequests => new quoteRequestActions.LoadQuoteRequestsSuccess(quoteRequests)),
-        catchError(error => of(new quoteRequestActions.LoadQuoteRequestsFail(error)))
+        mapErrorToAction(quoteRequestActions.LoadQuoteRequestsFail)
       )
     )
   );
@@ -62,7 +55,7 @@ export class QuoteRequestEffects {
     concatMap(() =>
       this.quoteRequestService.addQuoteRequest().pipe(
         map(id => new quoteRequestActions.AddQuoteRequestSuccess(id)),
-        catchError(error => of(new quoteRequestActions.AddQuoteRequestFail(error)))
+        mapErrorToAction(quoteRequestActions.AddQuoteRequestFail)
       )
     )
   );
@@ -78,7 +71,7 @@ export class QuoteRequestEffects {
     concatMap(([payload, quoteRequestId]) =>
       this.quoteRequestService.updateQuoteRequest(quoteRequestId, payload).pipe(
         map(quoteRequest => new quoteRequestActions.UpdateQuoteRequestSuccess(quoteRequest)),
-        catchError(error => of(new quoteRequestActions.UpdateQuoteRequestFail(error)))
+        mapErrorToAction(quoteRequestActions.UpdateQuoteRequestFail)
       )
     )
   );
@@ -93,7 +86,7 @@ export class QuoteRequestEffects {
     concatMap(quoteRequestId =>
       this.quoteRequestService.deleteQuoteRequest(quoteRequestId).pipe(
         map(id => new quoteRequestActions.DeleteQuoteRequestSuccess(id)),
-        catchError(error => of(new quoteRequestActions.DeleteQuoteRequestFail(error)))
+        mapErrorToAction(quoteRequestActions.DeleteQuoteRequestFail)
       )
     )
   );
@@ -108,7 +101,7 @@ export class QuoteRequestEffects {
     concatMap(([, quoteRequestId]) =>
       this.quoteRequestService.submitQuoteRequest(quoteRequestId).pipe(
         map(id => new quoteRequestActions.SubmitQuoteRequestSuccess(id)),
-        catchError(error => of(new quoteRequestActions.SubmitQuoteRequestFail(error)))
+        mapErrorToAction(quoteRequestActions.SubmitQuoteRequestFail)
       )
     )
   );
@@ -123,7 +116,7 @@ export class QuoteRequestEffects {
     concatMap(([, currentQuoteRequest]) =>
       this.quoteRequestService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
         map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess(res)),
-        catchError(error => of(new quoteRequestActions.CreateQuoteRequestFromQuoteFail(error)))
+        mapErrorToAction(quoteRequestActions.CreateQuoteRequestFromQuoteFail)
       )
     )
   );
@@ -145,7 +138,7 @@ export class QuoteRequestEffects {
       ).pipe(
         defaultIfEmpty([]),
         map(items => new quoteRequestActions.LoadQuoteRequestItemsSuccess(items)),
-        catchError(error => of(new quoteRequestActions.LoadQuoteRequestItemsFail(error)))
+        mapErrorToAction(quoteRequestActions.LoadQuoteRequestItemsFail)
       )
     )
   );
@@ -178,7 +171,7 @@ export class QuoteRequestEffects {
     concatMap(([item]) =>
       this.quoteRequestService.addProductToQuoteRequest(item.sku, item.quantity).pipe(
         map(id => new quoteRequestActions.AddProductToQuoteRequestSuccess(id)),
-        catchError(error => of(new quoteRequestActions.AddProductToQuoteRequestFail(error)))
+        mapErrorToAction(quoteRequestActions.AddProductToQuoteRequestFail)
       )
     )
   );
@@ -197,7 +190,7 @@ export class QuoteRequestEffects {
         )
       ).pipe(
         map(ids => new quoteRequestActions.AddBasketToQuoteRequestSuccess(ids[0])),
-        catchError(error => of(new quoteRequestActions.AddBasketToQuoteRequestFail(error)))
+        mapErrorToAction(quoteRequestActions.AddBasketToQuoteRequestFail)
       )
     )
   );
@@ -227,7 +220,7 @@ export class QuoteRequestEffects {
       ).pipe(
         defaultIfEmpty(undefined),
         map(ids => new quoteRequestActions.UpdateQuoteRequestItemsSuccess(ids)),
-        catchError(error => of(new quoteRequestActions.UpdateQuoteRequestItemsFail(error)))
+        mapErrorToAction(quoteRequestActions.UpdateQuoteRequestItemsFail)
       )
     )
   );
@@ -243,7 +236,7 @@ export class QuoteRequestEffects {
     concatMap(([payload, quoteRequestId]) =>
       this.quoteRequestService.removeItemFromQuoteRequest(quoteRequestId, payload.itemId).pipe(
         map(id => new quoteRequestActions.DeleteItemFromQuoteRequestSuccess(id)),
-        catchError(error => of(new quoteRequestActions.DeleteItemFromQuoteRequestFail(error)))
+        mapErrorToAction(quoteRequestActions.DeleteItemFromQuoteRequestFail)
       )
     )
   );

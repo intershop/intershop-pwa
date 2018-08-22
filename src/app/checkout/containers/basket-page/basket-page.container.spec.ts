@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { AddBasketToQuoteRequest } from '../../../quoting/store/quote-request';
@@ -10,6 +11,7 @@ import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from '../../store/basket/basket.actions';
 import { CheckoutState } from '../../store/checkout.state';
 import { checkoutReducers } from '../../store/checkout.system';
+
 import { BasketPageContainerComponent } from './basket-page.container';
 
 describe('Basket Page Container', () => {
@@ -22,7 +24,11 @@ describe('Basket Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         BasketPageContainerComponent,
-        MockComponent({ selector: 'ish-shopping-basket', template: 'Shopping Basket Component', inputs: ['basket'] }),
+        MockComponent({
+          selector: 'ish-shopping-basket',
+          template: 'Shopping Basket Component',
+          inputs: ['basket', 'error'],
+        }),
         MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
         MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),

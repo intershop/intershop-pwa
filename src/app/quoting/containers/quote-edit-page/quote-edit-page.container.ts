@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { AddQuoteToBasket } from '../../../checkout/store/basket';
 import { Basket } from '../../../models/basket/basket.model';
 import { Quote } from '../../../models/quote/quote.model';
-import { CreateQuoteRequestFromQuote, getQuoteLoading, getSelectedQuote, RejectQuote } from '../../store/quote';
+import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
 import { QuotingState } from '../../store/quoting.state';
 
 @Component({

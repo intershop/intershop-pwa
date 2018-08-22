@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { CoreState } from '../../../core/store/core.state';
@@ -28,7 +29,7 @@ export class ProductPageContainerComponent implements OnInit {
   category$: Observable<CategoryView>;
 
   constructor(
-    private bsModalService: BsModalService,
+    private ngbModal: NgbModal,
     private store: Store<CoreState | ShoppingState | CheckoutState | QuotingState>
   ) {}
 
@@ -49,7 +50,7 @@ export class ProductPageContainerComponent implements OnInit {
   addToQuote({ sku, quantity }) {
     this.store.dispatch(new AddProductToQuoteRequest({ sku: sku, quantity: quantity }));
     this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
-      this.bsModalService.show(ProductAddToQuoteDialogContainerComponent);
+      this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
     });
   }
 }

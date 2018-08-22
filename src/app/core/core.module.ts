@@ -2,25 +2,30 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {
+  NgbCarouselModule,
+  NgbCollapseModule,
+  NgbDropdownModule,
+  NgbModalModule,
+  NgbPopoverConfig,
+  NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
 import { CustomFormsModule } from 'ng2-validation';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverConfig, PopoverModule } from 'ngx-bootstrap/popover';
+
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
+
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
+import { IconModule } from './icon.module';
 import { CrosstabService } from './services/crosstab/crosstab.service';
 
 export function translateFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
-
 @NgModule({
   imports: [
     CommonModule,
@@ -34,24 +39,25 @@ export function translateFactory(http: HttpClient) {
     }),
     CustomFormsModule,
     RecaptchaModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    CarouselModule.forRoot(),
-    CollapseModule.forRoot(),
-    ModalModule.forRoot(),
-    PopoverModule.forRoot(),
+    NgbDropdownModule,
+    NgbCarouselModule,
+    NgbCollapseModule,
+    NgbModalModule,
+    NgbPopoverModule,
     HeaderModule,
+    IconModule,
     FooterModule,
     PipesModule,
     FeatureToggleModule.forRoot(),
   ],
-  exports: [HeaderModule, FooterModule],
+  exports: [IconModule, HeaderModule, FooterModule],
 })
 export class CoreModule {
   constructor(
     @Optional()
     @SkipSelf()
     parentModule: CoreModule,
-    popoverConfig: PopoverConfig,
+    popoverConfig: NgbPopoverConfig,
     crosstabService: CrosstabService
   ) {
     if (parentModule) {

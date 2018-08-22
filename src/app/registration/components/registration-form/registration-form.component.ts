@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +14,7 @@ import { UUID } from 'angular2-uuid';
 import { CustomValidators } from 'ng2-validation';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { AddressFormFactoryProvider } from '../../../forms/address/configurations/address-form-factory.provider';
 import {
   markAsDirtyRecursive,
@@ -24,6 +24,7 @@ import {
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
 import { Country } from '../../../models/country/country.model';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Region } from '../../../models/region/region.model';
 
@@ -42,7 +43,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   titles: string[];
   @Input()
-  error: HttpErrorResponse;
+  error: HttpError;
 
   @Output()
   create = new EventEmitter<Customer>();

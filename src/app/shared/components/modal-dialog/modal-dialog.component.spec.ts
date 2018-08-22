@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { ModalModule } from 'ngx-bootstrap/modal';
+
 import { ModalDialogComponent } from './modal-dialog.component';
 
 describe('Modal Dialog Component', () => {
@@ -10,7 +11,7 @@ describe('Modal Dialog Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ModalModule.forRoot(), TranslateModule.forRoot()],
+      imports: [NgbModalModule, TranslateModule.forRoot()],
       declarations: [ModalDialogComponent],
     }).compileComponents();
   }));
@@ -33,12 +34,12 @@ describe('Modal Dialog Component', () => {
   it('should display modal dialog when show function is called', () => {
     fixture.detectChanges();
     component.show();
-    expect(component.bsModalDialog).toBeTruthy();
+    expect(component.ngbModalRef).toBeTruthy();
   });
 
   it('should not display modal dialog when show function is not called', () => {
     fixture.detectChanges();
-    expect(component.bsModalDialog).toBeFalsy();
+    expect(component.ngbModalRef).toBeFalsy();
   });
 
   it('should output input data on confirm', done => {

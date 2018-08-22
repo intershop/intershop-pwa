@@ -1,7 +1,7 @@
 <h1>{{'account.login.heading' | translate}}</h1>
 
 <div class="row" data-testing-id="account-login-page">
-  <div class="col-md-6">
+  <div class="col-lg-6">
     <div class="section">
       <div *ngIf="!isLoggedIn">
         <h2>{{'account.login.returning_user.heading' | translate}}</h2>
@@ -29,8 +29,8 @@
               controlName="login"
               type="email"
               label="account.login.email.label"
-              labelClass="col-sm-3"
-              inputClass="col-sm-6"
+              labelClass="col-md-3"
+              inputClass="col-md-6"
               markRequiredLabel="off"
               [errorMessages]="{'required':'account.login.email.error.required' ,'email':'account.login.email.error.invalid'}"
             ></ish-input>
@@ -41,8 +41,8 @@
               [form]="form"
               controlName="login"
               label="account.login.username.label"
-              labelClass="col-sm-3"
-              inputClass="col-sm-6"
+              labelClass="col-md-3"
+              inputClass="col-md-6"
               markRequiredLabel="off"
               [errorMessages]="{'required':'account.login.username.error.required'}"
             ></ish-input>
@@ -53,14 +53,14 @@
             controlName="password"
             type="password"
             label="account.login.password.label"
-            labelClass="col-sm-3"
-            inputClass="col-sm-6"
+            labelClass="col-md-3"
+            inputClass="col-md-6"
             markRequiredLabel="off"
             [errorMessages]="{'required':'account.login.password.error.required' ,'pattern':'account.update_password.new_password.error.regexp','minlength':'account.password.error.regexp'}"
           ></ish-input>
 
-          <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+          <div class="row form-group">
+            <div class="offset-md-3 col-md-9">
               <button type="submit" value="Login" name="login" class="btn btn-primary" [disabled]="buttonDisabled">{{'account.signin.button.label' | translate}}</button>
               <a class="btn btn-link">{{'account.send_password.heading' | translate}}</a>
             </div>
@@ -70,7 +70,7 @@
     </div>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-lg-6">
     <h2>{{'account.new_user.heading' | translate}}</h2>
     <p>{{'account.create.benefit.text' | translate}}</p>
     <ul>

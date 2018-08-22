@@ -4,6 +4,7 @@
   <ish-checkout-address
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
+    [error]="basketError$ | async"
     (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
     (updateShippingAddress)="updateBasketShippingAddress($event)"
   ></ish-checkout-address>

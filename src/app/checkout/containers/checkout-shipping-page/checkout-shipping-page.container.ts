@@ -1,16 +1,17 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { Basket } from '../../../models/basket/basket.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import {
+  LoadBasketEligibleShippingMethods,
+  UpdateBasketShippingMethod,
   getBasketEligibleShippingMethods,
   getBasketError,
   getBasketLoading,
   getCurrentBasket,
-  LoadBasketEligibleShippingMethods,
-  UpdateBasketShippingMethod,
 } from '../../store/basket';
 import { CheckoutState } from '../../store/checkout.state';
 
@@ -23,13 +24,14 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
   basket$: Observable<Basket>;
   loading$: Observable<boolean>;
   shippingMethods$: Observable<ShippingMethod[]>;
-  basketError$: Observable<HttpErrorResponse>;
+  basketError$: Observable<HttpError>;
 
   constructor(private store: Store<CheckoutState>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.loading$ = this.store.pipe(select(getBasketLoading));
+    this.basketError$ = this.store.pipe(select(getBasketError));
 
     this.store.dispatch(new LoadBasketEligibleShippingMethods());
     this.shippingMethods$ = this.store.pipe(select(getBasketEligibleShippingMethods));
@@ -37,6 +39,5 @@ export class CheckoutShippingPageContainerComponent implements OnInit {
 
   updateBasketShippingMethod(shippingId: string) {
     this.store.dispatch(new UpdateBasketShippingMethod(shippingId));
-    this.basketError$ = this.store.pipe(select(getBasketError));
   }
 }

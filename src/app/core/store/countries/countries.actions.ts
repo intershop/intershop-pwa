@@ -1,6 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
 import { Country } from '../../../models/country/country.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum CountryActionTypes {
   LoadCountries = '[Core] Load Countries',
@@ -14,7 +15,7 @@ export class LoadCountries implements Action {
 
 export class LoadCountriesFail implements Action {
   readonly type = CountryActionTypes.LoadCountriesFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadCountriesSuccess implements Action {

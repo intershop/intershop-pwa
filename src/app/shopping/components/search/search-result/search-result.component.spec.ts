@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { SearchResultComponent } from './search-result.component';
 
 describe('Search Result Component', () => {
@@ -15,14 +17,9 @@ describe('Search Result Component', () => {
       declarations: [
         SearchResultComponent,
         MockComponent({
-          selector: 'ish-product-list-toolbar',
+          selector: 'ish-product-list-container',
           template: 'Products List Toolbar Component',
-          inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
-        }),
-        MockComponent({
-          selector: 'ish-product-list',
-          template: 'Products List Component',
-          inputs: ['products', 'viewType'],
+          inputs: ['pageUrl'],
         }),
         MockComponent({
           selector: 'ish-filter-navigation',

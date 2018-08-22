@@ -1,5 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 
 export enum ProductsActionTypes {
@@ -8,6 +9,7 @@ export enum ProductsActionTypes {
   LoadProductFail = '[Shopping] Load Product Fail',
   LoadProductSuccess = '[Shopping] Load Product Success',
   LoadProductsForCategory = '[Shopping] Load Products for Category',
+  LoadMoreProductsForCategory = '[Shopping] Load More Products',
 }
 
 export class SelectProduct implements Action {
@@ -21,7 +23,7 @@ export class LoadProduct implements Action {
 
 export class LoadProductFail implements Action {
   readonly type = ProductsActionTypes.LoadProductFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadProductSuccess implements Action {
@@ -34,9 +36,15 @@ export class LoadProductsForCategory implements Action {
   constructor(public payload: string) {}
 }
 
+export class LoadMoreProductsForCategory implements Action {
+  readonly type = ProductsActionTypes.LoadMoreProductsForCategory;
+  constructor(public payload: string) {}
+}
+
 export type ProductsAction =
   | SelectProduct
   | LoadProduct
   | LoadProductFail
   | LoadProductSuccess
-  | LoadProductsForCategory;
+  | LoadProductsForCategory
+  | LoadMoreProductsForCategory;

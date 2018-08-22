@@ -1,0 +1,12 @@
+<ng-container *ngIf="currentPage">
+  <div class="product-list-paging">
+    <a *ngIf="currentPage > 1"
+      [href]="generatePagingUrl(currentPage - 1)">&laquo;</a>
+    <ng-container *ngFor="let p of pageIndices">
+      <a [ngClass]="{'active': p === currentPage}"
+        [href]="generatePagingUrl(p)">{{ p }}</a>
+    </ng-container>
+    <a *ngIf="pageIndices[pageIndices.length - 1] !== currentPage"
+      [href]="generatePagingUrl(currentPage + 1)">&raquo;</a>
+  </div>
+</ng-container>

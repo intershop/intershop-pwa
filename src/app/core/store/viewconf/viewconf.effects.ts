@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { Store, select } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { map } from 'rxjs/operators';
+
 import { distinctCompareWith } from '../../../utils/operators';
 import { CoreState } from '../core.state';
+
 import { SetBreadcrumbData, SetHeaderType, SetWrapperClass } from './viewconf.actions';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 

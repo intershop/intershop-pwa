@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { Category } from '../../../../models/category/category.model';
 import { Product } from '../../../../models/product/product.model';
 import { ViewType } from '../../../../models/viewtype/viewtype.types';
@@ -26,6 +27,8 @@ export class ProductListComponent {
   category?: Category;
   @Input()
   viewType?: ViewType = 'grid';
+  @Input()
+  loadingMore: boolean;
 
   @Output()
   loadMore = new EventEmitter<void>();

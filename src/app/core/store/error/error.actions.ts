@@ -1,5 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum ErrorActionTypes {
   GeneralError = '[Error] Communication Error',
@@ -7,27 +8,19 @@ export enum ErrorActionTypes {
   ServerError = '[Error] Server Error (5xx)',
 }
 
-export enum ErrorGroupTypes {
-  Http5XXError = '5xx Server error',
-}
-export abstract class Http5XXAction implements Action {
-  errorGroup = ErrorGroupTypes.Http5XXError;
-  type = '';
-  constructor(public error: HttpErrorResponse) {}
-}
-
-export class GeneralError extends Http5XXAction {
+export class GeneralError implements Action {
   readonly type = ErrorActionTypes.GeneralError;
+  constructor(public error: HttpError) {}
 }
 
-export class CommunicationTimeoutError extends Http5XXAction {
+export class CommunicationTimeoutError implements Action {
   readonly type = ErrorActionTypes.TimeoutError;
+  constructor(public error: HttpError) {}
 }
 // 500
-export class ServerError extends Http5XXAction {
+export class ServerError implements Action {
   readonly type = ErrorActionTypes.ServerError;
+  constructor(public error: HttpError) {}
 }
 
-export type Http5XXError = GeneralError | CommunicationTimeoutError | ServerError;
-
-export type HttpError = Http5XXError;
+export type HttpErrorAction = GeneralError | CommunicationTimeoutError | ServerError;

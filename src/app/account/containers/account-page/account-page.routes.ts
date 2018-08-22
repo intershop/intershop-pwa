@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
+
 import { AccountOverviewPageContainerComponent } from '../account-overview-page/account-overview-page.container';
+
 import { AccountPageContainerComponent } from './account-page.container';
 
 export const accountPageRoutes: Routes = [

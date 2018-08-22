@@ -1,5 +1,6 @@
 import { Facet } from '../facet/facet.model';
 import { Filter } from '../filter/filter.model';
+
 import { FilterNavigationData } from './filter-navigation.interface';
 import { FilterNavigation } from './filter-navigation.model';
 

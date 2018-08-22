@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { Product } from '../../../models/product/product.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { LoadProductSuccess, SelectProduct } from '../products';
 import { shoppingReducers } from '../shopping.system';
+
 import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyProducts, getRecentlyViewedProducts } from './recently.selectors';
 

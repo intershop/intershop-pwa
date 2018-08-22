@@ -1,10 +1,11 @@
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { CreateOrderSuccess } from '../../../checkout/store/basket';
 import { checkoutReducers } from '../../../checkout/store/checkout.system';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { User } from '../../../models/user/user.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
@@ -12,6 +13,7 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { coreReducers } from '../core.system';
+
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
 import {
   getLoggedInCustomer,
@@ -91,7 +93,7 @@ describe('User Selectors', () => {
   });
 
   it('should select no customer and an error when an error event was sent', () => {
-    const error = { status: 401, headers: new HttpHeaders().set('error-key', 'dummy') } as HttpErrorResponse;
+    const error = { status: 401, headers: { 'error-key': 'dummy' } as HttpHeader } as HttpError;
     store$.dispatch(new LoginUserFail(error));
 
     expect(getLoggedInCustomer(store$.state)).toBeUndefined();

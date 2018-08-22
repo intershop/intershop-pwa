@@ -1,8 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+
 import { createCategoryView } from '../../../../models/category-view/category-view.model';
 import { Category } from '../../../../models/category/category.model';
+import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { categoryTree } from '../../../../utils/dev/test-data-utils';
+
 import { FamilyPageComponent } from './family-page.component';
 
 describe('Family Page Component', () => {
@@ -15,19 +18,9 @@ describe('Family Page Component', () => {
       declarations: [
         FamilyPageComponent,
         MockComponent({
-          selector: 'ish-category-navigation',
-          template: 'Category Navigation Component',
-          inputs: ['category', 'categoryPath', 'categoryNavigationLevel'],
-        }),
-        MockComponent({
-          selector: 'ish-product-list-toolbar',
+          selector: 'ish-product-list-container',
           template: 'Products List Toolbar Component',
-          inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
-        }),
-        MockComponent({
-          selector: 'ish-product-list',
-          template: 'Products List Component',
-          inputs: ['products', 'category', 'viewType'],
+          inputs: ['pageUrl', 'category'],
         }),
         MockComponent({
           selector: 'ish-filter-navigation',
@@ -49,5 +42,9 @@ describe('Family Page Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should display all components on the page', () => {
+    expect(findAllIshElements(element)).toIncludeAllMembers(['ish-product-list-container', 'ish-filter-navigation']);
   });
 });

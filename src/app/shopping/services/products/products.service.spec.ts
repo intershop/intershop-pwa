@@ -1,7 +1,9 @@
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
+
 import { ApiService } from '../../../core/services/api/api.service';
 import { Product } from '../../../models/product/product.model';
+
 import { ProductsService } from './products.service';
 
 describe('Products Service', () => {
@@ -45,8 +47,8 @@ describe('Products Service', () => {
 
   it("should get a list of products SKUs for a given Category when 'getCategoryProducts' is called", done => {
     when(apiService.get(`categories/${categoryId}/products`, anything())).thenReturn(of(productsMockData));
-    productsService.getCategoryProducts(categoryId).subscribe(data => {
-      expect(data.skus).toEqual(['ProductA', 'ProductB']);
+    productsService.getCategoryProducts(categoryId, 0, 3).subscribe(data => {
+      expect(data.products.map(p => p.sku)).toEqual(['ProductA', 'ProductB']);
       expect(data.categoryUniqueId).toEqual(categoryId);
       expect(data.sortKeys).toEqual(['name-desc', 'name-asc']);
       verify(apiService.get(`categories/${categoryId}/products`, anything())).once();

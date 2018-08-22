@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
+
 import { FormsSharedModule } from '../forms/forms-shared.module';
 import { QuotingSharedModule } from '../quoting/quoting-shared.module';
 import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
+
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { CategoryNavigationComponent } from './components/category/category-navigation/category-navigation.component';
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
@@ -13,6 +15,7 @@ import { ProductAttributesComponent } from './components/product/product-attribu
 import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
+import { ProductListPagingComponent } from './components/product/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ProductPriceComponent } from './components/product/product-price/product-price.component';
@@ -21,6 +24,7 @@ import { ProductRowComponent } from './components/product/product-row/product-ro
 import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { FilterNavigationContainerComponent } from './containers/filter-navigation/filter-navigation.container';
+import { ProductListContainerComponent } from './containers/product-list/product-list.container';
 import { ProductRowContainerComponent } from './containers/product-row/product-row.container';
 import { ProductTileContainerComponent } from './containers/product-tile/product-tile.container';
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
@@ -32,15 +36,17 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     CategoryNavigationComponent,
     ProductAttributesComponent,
     ProductImagesComponent,
-    ProductListComponent,
     ProductPriceComponent,
+    ProductRowContainerComponent,
     ProductRowComponent,
+    ProductTileContainerComponent,
     ProductTileComponent,
     ProductPriceComponent,
     ProductInventoryComponent,
+    ProductListContainerComponent,
+    ProductListComponent,
+    ProductListPagingComponent,
     ProductListToolbarComponent,
-    ProductTileContainerComponent,
-    ProductRowContainerComponent,
     ProductQuantityComponent,
     ProductAddToBasketComponent,
     ProductDetailActionsComponent,
@@ -57,14 +63,16 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     CategoryNavigationComponent,
     ProductAttributesComponent,
     ProductImagesComponent,
-    ProductListComponent,
+    ProductRowContainerComponent,
     ProductRowComponent,
+    ProductTileContainerComponent,
     ProductTileComponent,
     ProductPriceComponent,
     ProductInventoryComponent,
+    ProductListContainerComponent,
+    ProductListComponent,
+    ProductListPagingComponent,
     ProductListToolbarComponent,
-    ProductTileContainerComponent,
-    ProductRowContainerComponent,
     ProductQuantityComponent,
     ProductAddToBasketComponent,
     ProductDetailActionsComponent,

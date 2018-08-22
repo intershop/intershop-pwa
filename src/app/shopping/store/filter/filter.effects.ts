@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { catchError, distinctUntilKeyChanged, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+
 import { CoreState } from '../../../core/store/core.state';
+import { mapErrorToAction } from '../../../utils/operators';
 import { FilterService } from '../../services/filter/filter.service';
-import * as fromStore from '../categories';
+import { CategoriesActionTypes, getSelectedCategory } from '../categories';
 import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
 import { ShoppingState } from '../shopping.state';
+import { SetPagingInfo } from '../viewconf';
+
 import * as filterActions from './filter.actions';
 
 @Injectable()
@@ -25,7 +28,7 @@ export class FilterEffects {
     mergeMap((action: filterActions.LoadFilterForCategory) =>
       this.filterService.getFilterForCategory(action.payload).pipe(
         map(filterNavigation => new filterActions.LoadFilterForCategorySuccess(filterNavigation)),
-        catchError(error => of(new filterActions.LoadFilterForCategoryFail(error)))
+        mapErrorToAction(filterActions.LoadFilterForCategoryFail)
       )
     )
   );
@@ -36,23 +39,22 @@ export class FilterEffects {
     mergeMap((action: filterActions.LoadFilterForSearch) =>
       this.filterService.getFilterForSearch(action.payload).pipe(
         map(filterNavigation => new filterActions.LoadFilterForSearchSuccess(filterNavigation)),
-        catchError(error => of(new filterActions.LoadFilterForSearchFail(error)))
+        mapErrorToAction(filterActions.LoadFilterForSearchFail)
       )
     )
   );
 
   @Effect()
-  loadFilterIfCategoryWasSelected$ = this.store$.pipe(
-    select(fromStore.getSelectedCategory),
-    filter(category => !!category),
-    distinctUntilKeyChanged('uniqueId'),
-    map(category => new filterActions.LoadFilterForCategory(category))
+  loadFilterIfCategoryWasSelected$ = this.actions$.pipe(
+    ofType(CategoriesActionTypes.SelectedCategoryAvailable),
+    withLatestFrom(this.store$.pipe(select(getSelectedCategory))),
+    map(([, category]) => new filterActions.LoadFilterForCategory(category))
   );
 
   @Effect()
   loadFilterForSearchIfSearchSuccess$ = this.actions$.pipe(
-    ofType(SearchActionTypes.SearchProductsSuccess),
-    map((action: SearchProductsSuccess) => new filterActions.LoadFilterForSearch(action.payload.searchTerm))
+    ofType<SearchProductsSuccess>(SearchActionTypes.SearchProductsSuccess),
+    map(action => new filterActions.LoadFilterForSearch(action.payload))
   );
 
   @Effect()
@@ -62,7 +64,7 @@ export class FilterEffects {
     mergeMap(({ filterId: filterName, searchParameter }) =>
       this.filterService.applyFilter(filterName, searchParameter).pipe(
         map(availableFilter => new filterActions.ApplyFilterSuccess({ availableFilter, filterName, searchParameter })),
-        catchError(error => of(new filterActions.ApplyFilterFail(error)))
+        mapErrorToAction(filterActions.ApplyFilterFail)
       )
     )
   );
@@ -75,9 +77,9 @@ export class FilterEffects {
       this.filterService
         .getProductSkusForFilter(filterName, searchParameter)
         .pipe(
-          mergeMap((skus: string[]) => [
-            ...skus.map(sku => new LoadProduct(sku)),
-            new filterActions.SetFilteredProducts(skus),
+          mergeMap((newProducts: string[]) => [
+            ...newProducts.map(sku => new LoadProduct(sku)),
+            new SetPagingInfo({ currentPage: 0, totalItems: newProducts.length, newProducts }),
           ])
         )
     )

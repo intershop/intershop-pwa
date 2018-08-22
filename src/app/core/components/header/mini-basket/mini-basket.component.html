@@ -1,7 +1,7 @@
-<div class="quick-cart-link hidden-xs" [class.mini-cart-active]="!isCollapsed" ishClickOutside (isClickedOutside)="collapse()">
+<div class="quick-cart-link d-none d-md-block" [class.mini-cart-active]="!isCollapsed" ishClickOutside (isClickedOutside)="collapse()">
 
   <a (click)="toggleCollapse()">
-    <span class="glyphicon glyphicon-shopping-cart"></span>
+    <fa-icon [icon]="['fas', 'shopping-cart']"  class="header-icon"></fa-icon>
     <!-- TODO: check for a better solution for the plural and translate pipe combination for cases where the en_US.json is not yet loaded, current solution: || {"other": "#"} -->
     <span>{{ itemCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
     <ng-container *ngIf="basket && basket.totals.total">
@@ -10,7 +10,7 @@
     </ng-container>
   </a>
 
-  <div [collapse]="isCollapsed" class="mini-cart">
+  <div [ngbCollapse]="isCollapsed" class="mini-cart">
 
     <ng-container *ngIf="basket && basket.lineItems.length > 0; else emptyBlock">
 
@@ -20,7 +20,7 @@
         [class.disabled]="currentProduct === 0"
         (click)="scrollUp()"
       >
-        <span class="glyphicon glyphicon-chevron-up"></span>
+        <fa-icon [icon]="['fas', 'angle-up']"></fa-icon>
       </div>
 
       <div class="product-rows-block">
@@ -50,7 +50,7 @@
         [class.disabled]="currentProduct === basket.lineItems.length - 2"
         (click)="scrollDown()"
       >
-        <span class="glyphicon glyphicon-chevron-down"></span>
+        <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
       </div>
 
       <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket" (click)="collapse()">{{ 'shopping_cart.ministatus.view_cart.link' | translate }}</a>

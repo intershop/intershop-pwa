@@ -1,6 +1,9 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { IconModule } from '../../../../core/icon.module';
 import { Filter } from '../../../../models/filter/filter.model';
+
 import { FilterCheckboxComponent } from './filter-checkbox.component';
 
 describe('Filter Checkbox Component', () => {
@@ -10,7 +13,7 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule.forRoot()],
+      imports: [NgbCollapseModule.forRoot(), IconModule],
       declarations: [FilterCheckboxComponent],
     }).compileComponents();
   }));
@@ -49,7 +52,7 @@ describe('Filter Checkbox Component', () => {
       expect(selectedFilterFacet.textContent).toContain('Logitech');
 
       const hiddenFilterFacet = element.querySelector('a[data-testing-id=filter-link-AsusName]');
-      expect(hiddenFilterFacet.parentNode.parentElement.getAttribute('style')).toContain('display: none;');
+      expect(hiddenFilterFacet.parentNode.parentElement.className).not.toContain('show');
     })
   );
 });

@@ -1,0 +1,20 @@
+.loading {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 50px;
+  min-width: 50px;
+  opacity: 0.5;
+  background: #ffffff url(/assets/img/icons/loading.gif) center center no-repeat;
+}
+
+.loading-wrapper {
+  position: relative;
+  min-height: 50px;
+  min-width: 50px;
+  .loading {
+    opacity: 1;
+  }
+}

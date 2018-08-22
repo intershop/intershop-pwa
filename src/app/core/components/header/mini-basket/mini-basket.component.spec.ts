@@ -1,14 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
 import { BasketView } from '../../../../models/basket/basket.model';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+import { IconModule } from '../../../icon.module';
+
 import { MiniBasketComponent } from './mini-basket.component';
 
 describe('Mini Basket Component', () => {
@@ -23,11 +26,12 @@ describe('Mini Basket Component', () => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
-        CollapseModule.forRoot(),
+        NgbCollapseModule,
         CommonModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         PipesModule,
+        IconModule,
       ],
       declarations: [
         MiniBasketComponent,

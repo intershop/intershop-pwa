@@ -1,7 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
+
 import * as fromActions from './quote-request.actions';
 
 describe('Quote Request Actions', () => {
@@ -27,7 +28,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for LoadQuoteRequestsFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadQuoteRequestsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -57,7 +58,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for AddQuoteRequestFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.AddQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({
@@ -89,7 +90,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for UpdateQuoteRequestFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.UpdateQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({
@@ -121,7 +122,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for DeleteQuoteRequestFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.DeleteQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({
@@ -151,7 +152,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for SubmitQuoteRequestFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.SubmitQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({
@@ -181,7 +182,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for CreateQuoteRequestFromQuoteFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.CreateQuoteRequestFromQuoteFail(payload);
 
       expect({ ...action }).toEqual({
@@ -213,7 +214,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for LoadQuoteRequestItemsFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadQuoteRequestItemsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -248,7 +249,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for AddProductToQuoteRequestFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.AddProductToQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({
@@ -278,7 +279,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for AddBasketToQuoteRequestFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.AddBasketToQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({
@@ -315,7 +316,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for UpdateQuoteRequestItemsFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.UpdateQuoteRequestItemsFail(payload);
 
       expect({ ...action }).toEqual({
@@ -349,7 +350,7 @@ describe('Quote Request Actions', () => {
     });
 
     it('should create new action for DeleteItemFromQuoteRequestFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.DeleteItemFromQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({

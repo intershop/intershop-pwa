@@ -1,6 +1,9 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { IconModule } from '../../../../core/icon.module';
 import { Filter } from '../../../../models/filter/filter.model';
+
 import { FilterSwatchImagesComponent } from './filter-swatch-images.component';
 
 describe('Filter Swatch Images Component', () => {
@@ -10,7 +13,7 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CollapseModule.forRoot()],
+      imports: [NgbCollapseModule, IconModule],
       declarations: [FilterSwatchImagesComponent],
     }).compileComponents();
   }));
@@ -47,7 +50,7 @@ describe('Filter Swatch Images Component', () => {
       fixture.detectChanges();
 
       const hiddenFilterFacet = element.getElementsByTagName('ul')[0];
-      expect(hiddenFilterFacet.getAttribute('style')).toContain('display: none;');
+      expect(hiddenFilterFacet.className).not.toContain('show');
     })
   );
 });

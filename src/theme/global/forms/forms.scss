@@ -1,0 +1,94 @@
+.server-error {
+  // TODO: (Bootstrap 4) form-control-validation no longer an existing mixin
+  // @include form-control-validation($state-danger-text, $state-danger-text, $state-danger-bg);
+}
+
+.has-feedback {
+  .form-control[type='number'] {
+    padding: $grid-gutter-width / 5 $grid-gutter-width / 2.5;
+  }
+
+  .form-control[type='number'] + * .form-control-feedback {
+    display: none !important;
+  }
+
+  .form-control {
+    + a.form-control-feedback {
+      pointer-events: all;
+    }
+  }
+}
+
+.form-horizontal {
+  &.form-horizontal-inline {
+    @media (max-width: $screen-xs-max) {
+      label {
+        padding-top: $space-default / 2;
+      }
+    }
+  }
+}
+
+input[type='file'] {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.form-control-checkbox {
+  font-size: $font-size-base;
+  border: none;
+  margin-bottom: 0;
+
+  &:invalid {
+    .form-control {
+      a {
+        color: inherit;
+        text-decoration: underline;
+      }
+    }
+  }
+  .form-control {
+    background-color: inherit;
+    border: none;
+    @include box-shadow(none);
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .form-control-feedback {
+    display: none !important;
+  }
+}
+
+.has-error {
+  .col-form-label,
+  .form-text,
+  .ng-fa-icon,
+  .form-check {
+    color: $error-color;
+  }
+
+  .form-check a {
+    color: $error-color;
+    text-decoration: underline;
+  }
+
+  input,
+  textarea {
+    border-color: $error-color;
+  }
+}
+
+.has-success {
+  .col-form-label,
+  .form-text,
+  .ng-fa-icon {
+    color: $success-color;
+  }
+
+  input,
+  textarea {
+    border-color: $success-color;
+  }
+}

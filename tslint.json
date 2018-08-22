@@ -198,7 +198,14 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
-    "ordered-imports": true,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "lowercase-last",
+        "named-imports-order": "lowercase-last",
+        "grouped-imports": true
+      }
+    ],
     "no-duplicate-imports": true,
     "ban": [
       true,
@@ -206,24 +213,32 @@
       {"name": ["*", "unsubscribe"], "message": "Do it another way: https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87"},
       {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"},
       {"name": ["spyOn"], "message": "Use ts-mockito instead!"},
-      {"name": ["*", "select"], "message": "Use store.pipe(select()) instead!"}
+      {"name": ["*", "select"], "message": "Use store.pipe(select()) instead!"},
+      {"name": ["catchError"], "message": "If you are trying to handle an http error, use mapErrorToAction instead."}
     ],
     "ban-specific-imports": [
       true,
       { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." },
-      { "from": ".*node_modules.*", "message": "import with 'node_modules' seems to be wrong" },
+      { "from": ".*node_modules\/(.*)", "message": "import with 'node_modules' seems to be wrong", "fix": "$1" },
       { "from": ".*\/src\/.*", "message": "import with 'src' seems to be wrong" },
-      { "from": ".*\/$", "message": "trailing '/' seems to be wrong" },
-      { "from": ".*\/index$", "message": "trailing '/index' seems to be wrong" },
+      { "from": "(.*)\/$", "message": "trailing '/' seems to be wrong", "fix": "$1" },
+      { "from": "(.*)\/index$", "message": "trailing '/index' seems to be wrong", "fix": "$1" },
       { "from": "rxjs(?!($|\/operators$))", "message": "deep import from rxjs seems to be wrong, use 'rxjs' or 'rxjs/operators'" },
-      { "from": "ts-mockito\/lib\/ts-mockito", "message": "use import from 'ts-mockito'" }
+      { "from": "ts-mockito\/lib\/ts-mockito", "message": "use import from 'ts-mockito'", "fix": "ts-mockito" },
+      { "from": "@angular/common/http", "message": "http classes are not serializable and should therefor not be stored in ngrx related files", "filePattern": "(?!.*.spec.ts$).*\/store\/.*" },
+      { "from": "@angular/common/http", "message": "http classes should not propagate to components and containers", "filePattern": ".*\\.(container|component)\\..*ts" },
+      { "starImport": true, "from": "\\.(?!.*(actions|selectors|keys)$).*", "filePattern": ".*src/app.*", "message": "use star imports only for specific selectors, actions and injection-keys" },
+      { "starImport": true, "from": "\\.\\..*", "filePattern": ".*src/app.*", "message": "use star imports only for local files" },
+      { "starImport": true, "from": "lodash" },
+      { "import": "^(?!range$).*", "from": "lodash" }
     ],
     "ban-types": [
       true,
       ["Object", "Use {} instead."],
       ["String", "Use 'string'"],
       ["Boolean", "Use 'boolean'"],
-      ["Number", "Use 'number'"]
+      ["Number", "Use 'number'"],
+      ["HttpErrorResponse", "HttpErrorResponse should not be used directly."]
     ],
     "no-suspicious-variable-init-in-tests": {
       "severity": "error",

@@ -1,7 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
@@ -9,6 +10,7 @@ import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { quotingReducers } from '../quoting.system';
+
 import {
   LoadQuoteRequestItems,
   LoadQuoteRequestItemsFail,
@@ -102,7 +104,7 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadQuoteRequestsFail({ message: 'invalid' } as HttpErrorResponse));
+      store$.dispatch(new LoadQuoteRequestsFail({ message: 'invalid' } as HttpError));
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
       expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });
     });
@@ -127,7 +129,7 @@ describe('Quote Request Selectors', () => {
     });
 
     it('should set loading to false and set error state', () => {
-      store$.dispatch(new LoadQuoteRequestItemsFail({ message: 'invalid' } as HttpErrorResponse));
+      store$.dispatch(new LoadQuoteRequestItemsFail({ message: 'invalid' } as HttpError));
       expect(getQuoteRequestLoading(store$.state)).toBeFalse();
       expect(getQuoteRequstItems(store$.state)).toBeEmpty();
       expect(getQuoteRequestError(store$.state)).toEqual({ message: 'invalid' });

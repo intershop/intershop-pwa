@@ -1,9 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { IconModule } from '../../../../core/icon.module';
 import { Product } from '../../../../models/product/product.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { ProductTileComponent } from './product-tile.component';
 
 describe('Product Tile Component', () => {
@@ -17,6 +20,7 @@ describe('Product Tile Component', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
         FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
+        IconModule,
       ],
       declarations: [
         ProductTileComponent,

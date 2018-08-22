@@ -1,22 +1,43 @@
+import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
-import { CategoriesAction, CategoriesActionTypes } from './categories.actions';
+
+import {
+  CategoriesAction,
+  CategoriesActionTypes,
+  LoadCategorySuccess,
+  LoadTopLevelCategoriesSuccess,
+} from './categories.actions';
 
 export interface CategoriesState {
   categories: CategoryTree;
   loading: boolean;
-  categoriesProductSKUs: { [uniqueId: string]: string[] };
   selected: string;
+  topLevelLoaded: boolean;
 }
 
 export const initialState: CategoriesState = {
   loading: false,
   categories: CategoryTreeHelper.empty(),
-  categoriesProductSKUs: {},
   selected: undefined,
+  topLevelLoaded: false,
 };
 
-export function categoriesReducer(state = initialState, action: CategoriesAction): CategoriesState {
+function mergeCategories(state: CategoriesState, action: LoadTopLevelCategoriesSuccess | LoadCategorySuccess) {
+  const loadedTree = action.payload;
+  const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
+  return {
+    ...state,
+    categories,
+    loading: false,
+  };
+}
+
+export function categoriesReducer(state = initialState, action: CategoriesAction | SelectLocale): CategoriesState {
   switch (action.type) {
+    case LocaleActionTypes.SelectLocale: {
+      return { ...state, topLevelLoaded: false };
+    }
+
     case CategoriesActionTypes.DeselectCategory:
     case CategoriesActionTypes.SelectCategory: {
       return {
@@ -39,26 +60,12 @@ export function categoriesReducer(state = initialState, action: CategoriesAction
       };
     }
 
-    case CategoriesActionTypes.LoadTopLevelCategoriesSuccess:
-    case CategoriesActionTypes.LoadCategorySuccess: {
-      const loadedTree = action.payload;
-      const categories = CategoryTreeHelper.merge(state.categories, loadedTree);
-      return {
-        ...state,
-        categories,
-        loading: false,
-      };
+    case CategoriesActionTypes.LoadTopLevelCategoriesSuccess: {
+      return { ...mergeCategories(state, action), topLevelLoaded: true };
     }
 
-    case CategoriesActionTypes.SetProductSkusForCategory: {
-      const { skus, categoryUniqueId } = action.payload;
-
-      const categoriesProductSKUs = {
-        ...state.categoriesProductSKUs,
-        [categoryUniqueId]: skus,
-      };
-
-      return { ...state, categoriesProductSKUs };
+    case CategoriesActionTypes.LoadCategorySuccess: {
+      return mergeCategories(state, action);
     }
   }
 

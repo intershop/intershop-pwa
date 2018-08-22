@@ -1,10 +1,12 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Store, StoreModule } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
+
 import { CommunicationTimeoutError } from './error.actions';
 import { ErrorEffects } from './error.effects';
 
@@ -28,7 +30,7 @@ describe('Error Effects', () => {
 
   describe('gotoErrorPageInCaseOfError$', () => {
     it('should call Router Navigation when Error is handled', done => {
-      store$.dispatch(new CommunicationTimeoutError({} as HttpErrorResponse));
+      store$.dispatch(new CommunicationTimeoutError({} as HttpError));
 
       effects.gotoErrorPageInCaseOfError$.subscribe(() => {
         verify(routerMock.navigate(anything())).once();

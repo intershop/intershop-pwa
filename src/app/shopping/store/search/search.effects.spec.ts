@@ -1,22 +1,31 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
 import { ApiService } from '../../../core/services/api/api.service';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { shoppingReducers } from '../shopping.system';
-import { ResetPagingInfo } from '../viewconf';
-import { SearchMoreProducts, SearchProducts, SearchProductsFail, SuggestSearch } from './search.actions';
+import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading, ViewconfActionTypes } from '../viewconf';
+
+import {
+  PrepareNewSearch,
+  SearchActionTypes,
+  SearchMoreProducts,
+  SearchProducts,
+  SearchProductsFail,
+  SuggestSearch,
+} from './search.actions';
 import { SearchEffects } from './search.effects';
 
 describe('Search Effects', () => {
@@ -34,7 +43,7 @@ describe('Search Effects', () => {
     when(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).thenCall(
       (searchTerm: string, page: number, itemsPerPage: number) => {
         if (!searchTerm) {
-          return throwError('');
+          return throwError({ message: 'ERROR' });
         } else {
           const currentSlice = skus.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
           return of({
@@ -70,6 +79,9 @@ describe('Search Effects', () => {
       });
 
       effects = TestBed.get(SearchEffects);
+
+      const store = TestBed.get(Store);
+      store.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
     });
 
     describe('triggerSearch$', () => {
@@ -82,7 +94,7 @@ describe('Search Effects', () => {
         actions$ = hot('a', { a: action });
 
         expect(effects.triggerSearch$).toBeObservable(
-          cold('(ab)', { a: new ResetPagingInfo(), b: new SearchProducts('dummy') })
+          cold('(ab)', { a: new PrepareNewSearch(), b: new SearchProducts('dummy') })
         );
       });
     });
@@ -94,20 +106,29 @@ describe('Search Effects', () => {
         actions$ = of(action);
 
         effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
+          verify(productsServiceMock.searchProducts(anyString(), anyNumber(), anyNumber())).once();
+          const [term, page, itemsPerPage] = capture(productsServiceMock.searchProducts).last();
+          expect(term).toEqual('123');
+          expect(page).toEqual(0);
+          expect(itemsPerPage).toEqual(3);
           done();
         });
       });
+    });
 
-      it('should perform a continued search with given search term when search is requested', done => {
+    describe('searchMoreProducts$', () => {
+      it('should perform a continued search with given search term when search is requested', () => {
         const searchTerm = '123';
         const action = new SearchMoreProducts(searchTerm);
-        actions$ = of(action);
+        actions$ = hot('a', { a: action });
 
-        effects.searchProducts$.subscribe(() => {
-          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
-          done();
-        });
+        expect(effects.searchMoreProducts$).toBeObservable(
+          cold('(abc)', {
+            a: new SetPagingLoading(),
+            b: new SetPage(1),
+            c: new SearchProducts('123'),
+          })
+        );
       });
     });
   });
@@ -135,6 +156,8 @@ describe('Search Effects', () => {
 
       effects = TestBed.get(SearchEffects);
       store$ = TestBed.get(LogEffects);
+
+      store$.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
     });
 
     describe('suggestSearch$', () => {
@@ -207,7 +230,7 @@ describe('Search Effects', () => {
       it(
         'should not fire action when error is encountered at service level',
         fakeAsync(() => {
-          when(suggestServiceMock.search(anyString())).thenReturn(throwError(new HttpErrorResponse({ status: 500 })));
+          when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
           store$.dispatch(new SuggestSearch('good'));
           tick(4000);
@@ -215,7 +238,8 @@ describe('Search Effects', () => {
           effects.suggestSearch$.subscribe(fail, fail, fail);
 
           const iter = store$.actionsIterator([/.*/]);
-          iter.next();
+          expect(iter.next().type).toEqual(ViewconfActionTypes.SetEndlessScrollingPageSize);
+          expect(iter.next().type).toEqual(SearchActionTypes.SuggestSearch);
           expect(iter.next()).toBeUndefined();
 
           verify(suggestServiceMock.search(anyString())).once();
@@ -227,7 +251,7 @@ describe('Search Effects', () => {
       it(
         'should redirect if triggered',
         fakeAsync(() => {
-          const action = new SearchProductsFail({ status: 404 } as HttpErrorResponse);
+          const action = new SearchProductsFail({ status: 404 } as HttpError);
 
           store$.dispatch(action);
 

@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
+import { IconModule } from '../../../core/icon.module';
 import { User } from '../../../models/user/user.model';
+
 import { AccountOverviewPageComponent } from './account-overview-page.component';
 
 describe('Account Overview Page Component', () => {
@@ -13,7 +16,7 @@ describe('Account Overview Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccountOverviewPageComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), IconModule],
     }).compileComponents();
   }));
 

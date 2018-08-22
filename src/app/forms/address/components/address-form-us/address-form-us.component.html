@@ -43,11 +43,11 @@
           <span  [innerHTML]="'account.address.apo_fpo.tooltip' | translate"></span>
         </ng-template>
         <a
-          [popover]="AddressApoFpo"
+          [ngbPopover]="AddressApoFpo"
           [popoverTitle]="'account.address.apo_fpo.tooltip.headline' | translate"
           placement="top"
         >{{'account.address.apo_fpo.link' | translate }}
-          <span class="glyphicon glyphicon-info-sign"></span>
+          <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
         </a>
       </ish-input>
 

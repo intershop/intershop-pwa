@@ -1,7 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum FilterActionTypes {
   LoadFilterForCategory = '[Shopping] Load Filter For Category',
@@ -10,7 +11,6 @@ export enum FilterActionTypes {
   ApplyFilter = '[Shopping] Apply Filter',
   ApplyFilterSuccess = '[Shopping] Apply Filter Success',
   ApplyFilterFail = '[Shopping] Apply Filter Fail',
-  SetFilteredProducts = '[Shopping] Set Filtered Products',
   LoadFilterForSearch = '[Shopping] Load Filter for Search',
   LoadFilterForSearchSuccess = '[Shopping] Load Filter for Search Success',
   LoadFilterForSearchFail = '[Shopping] Load Filter for Search Fail',
@@ -28,7 +28,7 @@ export class LoadFilterForCategorySuccess implements Action {
 
 export class LoadFilterForCategoryFail implements Action {
   readonly type = FilterActionTypes.LoadFilterForCategoryFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadFilterForSearch implements Action {
@@ -43,7 +43,7 @@ export class LoadFilterForSearchSuccess implements Action {
 
 export class LoadFilterForSearchFail implements Action {
   readonly type = FilterActionTypes.LoadFilterForSearchFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class ApplyFilter implements Action {
@@ -58,13 +58,9 @@ export class ApplyFilterSuccess implements Action {
 
 export class ApplyFilterFail implements Action {
   readonly type = FilterActionTypes.ApplyFilterFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
-export class SetFilteredProducts implements Action {
-  readonly type = FilterActionTypes.SetFilteredProducts;
-  constructor(public payload: string[]) {}
-}
 export type FilterActions =
   | LoadFilterForCategory
   | LoadFilterForCategorySuccess
@@ -72,7 +68,6 @@ export type FilterActions =
   | ApplyFilter
   | ApplyFilterSuccess
   | ApplyFilterFail
-  | SetFilteredProducts
   | LoadFilterForSearch
   | LoadFilterForSearchSuccess
   | LoadFilterForSearchFail;

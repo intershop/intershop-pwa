@@ -1,14 +1,15 @@
 // tslint:disable use-component-change-detection prefer-mocks-instead-of-stubs-in-tests
 import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
+
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
@@ -28,17 +29,18 @@ import { CategoriesService } from '../services/categories/categories.service';
 import { FilterService } from '../services/filter/filter.service';
 import { ProductsService } from '../services/products/products.service';
 import { SuggestService } from '../services/suggest/suggest.service';
+
 import {
   CategoriesActionTypes,
-  getCategoryIds,
-  getSelectedCategory,
   LoadCategory,
   SelectCategory,
   SelectedCategoryAvailable,
+  getCategoryIds,
+  getSelectedCategory,
 } from './categories';
 import { FilterActionTypes } from './filter';
-import { getProductIds, getSelectedProduct, LoadProduct, ProductsActionTypes, SelectProduct } from './products';
-import { getRecentlyProducts, RecentlyActionTypes } from './recently';
+import { LoadProduct, ProductsActionTypes, SelectProduct, getProductIds, getSelectedProduct } from './products';
+import { RecentlyActionTypes, getRecentlyProducts } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
 import { shoppingEffects, shoppingReducers } from './shopping.system';
 import { ViewconfActionTypes } from './viewconf';
@@ -87,7 +89,7 @@ describe('Shopping System', () => {
         case 'A.123.456':
           return of(categoryTree([{ ...catA123456, completenessLevel: 2 }]));
         default:
-          return throwError(`error loading category ${uniqueId}`);
+          return throwError({ message: `error loading category ${uniqueId}` });
       }
     });
 
@@ -99,15 +101,15 @@ describe('Shopping System', () => {
       if (['P1', 'P2'].find(x => x === sku)) {
         return of({ sku });
       } else {
-        return throwError(`error loading product ${sku}`);
+        return throwError({ message: `error loading product ${sku}` });
       }
     });
-    when(productsServiceMock.getCategoryProducts('A.123.456', anything())).thenReturn(
+    when(productsServiceMock.getCategoryProducts('A.123.456', anyNumber(), anyNumber(), anyString())).thenReturn(
       of({
-        skus: ['P1', 'P2'],
         categoryUniqueId: 'A.123.456',
         sortKeys: [],
         products: [{ sku: 'P1' }, { sku: 'P2' }] as Product[],
+        total: 2,
       })
     );
     when(productsServiceMock.searchProducts('something', anyNumber(), anyNumber())).thenReturn(
@@ -248,13 +250,13 @@ describe('Shopping System', () => {
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectCategory('A.123'));
-          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
           expect(i.next()).toEqual(new LoadCategory('A.123'));
-          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
           expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
           expect(i.next()).toEqual(new LoadCategory('A'));
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+          expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
           expect(i.next()).toBeUndefined();
         })
       );
@@ -298,7 +300,7 @@ describe('Shopping System', () => {
         fakeAsync(() => {
           const i = store.actionsIterator([/Shopping/]);
 
-          expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
+          expect(i.next().type).toEqual(SearchActionTypes.PrepareNewSearch);
           expect(i.next()).toEqual(new SearchProducts('something'));
           expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
@@ -325,8 +327,8 @@ describe('Shopping System', () => {
             const i = store.actionsIterator([/Shopping/]);
 
             expect(i.next()).toEqual(new SelectProduct('P2'));
-            expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
             expect(i.next()).toEqual(new LoadProduct('P2'));
+            expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
             expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
             expect(i.next()).toBeUndefined();
           })
@@ -358,15 +360,15 @@ describe('Shopping System', () => {
         const i = store.actionsIterator(['[Shopping]', '[Router]']);
         expect(i.next().type).toEqual(ROUTER_NAVIGATION_TYPE);
         expect(i.next()).toEqual(new SelectCategory('A.123'));
-        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next()).toEqual(new LoadCategory('A.123'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
-        expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
-        expect(i.next()).toEqual(new LoadCategory('A'));
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123'));
+        expect(i.next()).toEqual(new LoadCategory('A'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
 
         expect(i.next()).toBeUndefined();
       })
@@ -451,22 +453,22 @@ describe('Shopping System', () => {
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
-        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next()).toEqual(new LoadCategory('A.123.456'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+        expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -492,8 +494,8 @@ describe('Shopping System', () => {
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next()).toEqual(new SelectProduct('P1'));
-          expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
           expect(i.next()).toEqual(new LoadProduct('P1'));
+          expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
         })
@@ -516,7 +518,7 @@ describe('Shopping System', () => {
         );
 
         it(
-          'should have all required data when previously visited',
+          'should deselect product when navigating back',
           fakeAsync(() => {
             const i = store.actionsIterator(['[Shopping]']);
             expect(i.next()).toEqual(new SelectProduct(undefined));
@@ -536,7 +538,7 @@ describe('Shopping System', () => {
       );
 
       it(
-        'should just reload top level categories when language is changed',
+        'should reload top level categories when language is changed',
         fakeAsync(() => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
@@ -612,21 +614,21 @@ describe('Shopping System', () => {
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next()).toEqual(new SelectProduct('P1'));
         expect(i.next()).toEqual(new LoadCategory('A.123.456'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new LoadProduct('P1'));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next()).toBeUndefined();
       })
     );
@@ -691,7 +693,7 @@ describe('Shopping System', () => {
           const i = store.actionsIterator(['[Shopping]']);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductsForCategory);
           expect(i.next()).toEqual(new SelectProduct(undefined));
-          expect(i.next().type).toEqual(CategoriesActionTypes.SetProductSkusForCategory);
+          expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
           expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
           expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
           expect(i.next()).toBeUndefined();
@@ -765,11 +767,11 @@ describe('Shopping System', () => {
       'should trigger required load actions when going to a product page',
       fakeAsync(() => {
         const i = store.actionsIterator(['[Shopping]']);
-        expect(i.next()).toEqual(new SelectProduct('P1'));
-        expect(i.next()).toEqual(new LoadProduct('P1'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
+        expect(i.next()).toEqual(new SelectProduct('P1'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next()).toEqual(new LoadProduct('P1'));
+        expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(RecentlyActionTypes.AddToRecently);
         expect(i.next()).toBeUndefined();
       })
@@ -862,20 +864,20 @@ describe('Shopping System', () => {
         expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.456');
 
         expect(i.next()).toEqual(new SelectCategory('A.123.456'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next()).toEqual(new SelectProduct('P3'));
         expect(i.next()).toEqual(new LoadCategory('A.123.456'));
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new LoadProduct('P3'));
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductFail);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next()).toEqual(new SelectedCategoryAvailable('A.123.456'));
-        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
         expect(i.next()).toEqual(new LoadCategory('A'));
         expect(i.next()).toEqual(new LoadCategory('A.123'));
+        expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategory);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategorySuccess);
 
         const errorPageRouting = i.next() as RouteNavigation;
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
@@ -930,10 +932,10 @@ describe('Shopping System', () => {
         expect(productPageRouting.payload.params.categoryUniqueId).toEqual('A.123.XXX');
 
         expect(i.next()).toEqual(new SelectCategory('A.123.XXX'));
-        expect(i.next()).toEqual(new LoadCategory('A.123.XXX'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategoryFail);
+        expect(i.next()).toEqual(new LoadCategory('A.123.XXX'));
         expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadCategoryFail);
 
         const errorPageRouting = i.next() as RouteNavigation;
         expect(errorPageRouting.type).toEqual(ROUTER_NAVIGATION_TYPE);
@@ -971,17 +973,17 @@ describe('Shopping System', () => {
     it(
       'should trigger required actions when searching',
       fakeAsync(() => {
-        const i = store.actionsIterator([/Shopping/]);
+        const i = store.actionsIterator(['[Shopping]']);
 
-        expect(i.next().type).toEqual(ViewconfActionTypes.ResetPagingInfo);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
+        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
+        expect(i.next().type).toEqual(SearchActionTypes.PrepareNewSearch);
         expect(i.next()).toEqual(new SearchProducts('something'));
         expect(i.next().type).toEqual(SearchActionTypes.SearchProductsSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetPagingInfo);
         expect(i.next().type).toEqual(ProductsActionTypes.LoadProductSuccess);
         expect(i.next().type).toEqual(ViewconfActionTypes.SetSortKeys);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategories);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearch);
-        expect(i.next().type).toEqual(CategoriesActionTypes.LoadTopLevelCategoriesSuccess);
         expect(i.next().type).toEqual(FilterActionTypes.LoadFilterForSearchSuccess);
         expect(i.next()).toBeUndefined();
       })

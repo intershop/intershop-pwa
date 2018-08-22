@@ -1,5 +1,6 @@
 import { CategoryTreeHelper } from '../category-tree/category-tree.helper';
 import { CategoryTree } from '../category-tree/category-tree.model';
+
 import { CategoryData, CategoryPathElement } from './category.interface';
 import { Category, CategoryHelper } from './category.model';
 

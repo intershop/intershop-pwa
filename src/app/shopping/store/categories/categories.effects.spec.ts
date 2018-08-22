@@ -1,23 +1,25 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
-import { RouteNavigation } from 'ngrx-router';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
 import { localeReducer } from '../../../core/store/locale/locale.reducer';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { CategoriesService } from '../../services/categories/categories.service';
-import * as productsActions from '../products/products.actions';
+import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
 import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
+
 import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';
 
@@ -40,13 +42,9 @@ describe('Categories Effects', () => {
     when(categoriesServiceMock.getCategory('123')).thenReturn(
       of(categoryTree([{ uniqueId: '123', categoryPath: ['123'] } as Category]))
     );
-    when(categoriesServiceMock.getCategory('invalid')).thenReturn(
-      throwError({ message: 'invalid category' } as HttpErrorResponse)
-    );
+    when(categoriesServiceMock.getCategory('invalid')).thenReturn(throwError({ message: 'invalid category' }));
     when(categoriesServiceMock.getTopLevelCategories(2)).thenReturn(of(TOP_LEVEL_CATEGORIES));
-    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(
-      throwError({ message: 'invalid number' } as HttpErrorResponse)
-    );
+    when(categoriesServiceMock.getTopLevelCategories(-1)).thenReturn(throwError({ message: 'invalid number' }));
     router = mock(Router);
     TestBed.configureTestingModule({
       imports: [
@@ -221,7 +219,7 @@ describe('Categories Effects', () => {
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const categoryId = 'invalid';
       const action = new fromActions.LoadCategory(categoryId);
-      const completion = new fromActions.LoadCategoryFail({ message: 'invalid category' } as HttpErrorResponse);
+      const completion = new fromActions.LoadCategoryFail({ message: 'invalid category' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -229,7 +227,7 @@ describe('Categories Effects', () => {
     });
   });
 
-  describe('loadTopLevelCategoriesOnLanguageChange$', () => {
+  describe('loadTopLevelWhenUnavailable$', () => {
     const EN_US = { lang: 'en' } as Locale;
     let depth: number;
 
@@ -238,13 +236,16 @@ describe('Categories Effects', () => {
       store$.dispatch(new SetAvailableLocales([EN_US]));
     });
 
-    it('should trigger when language is changed', () => {
+    it('should trigger when language is changed after first routing action', () => {
       const action = new SelectLocale(EN_US);
       const completion = new fromActions.LoadTopLevelCategories(depth);
-      actions$ = hot('a', { a: action });
-      const expected$ = cold('c', { c: completion });
+      store$.dispatch(action);
 
-      expect(effects.loadTopLevelCategoriesOnLanguageChange$).toBeObservable(expected$);
+      actions$ = hot('----a---a--a', { a: { type: ROUTER_NAVIGATION_TYPE } });
+
+      const expected$ = cold('----a-------', { a: completion });
+
+      expect(effects.loadTopLevelWhenUnavailable$).toBeObservable(expected$);
     });
   });
 
@@ -273,7 +274,7 @@ describe('Categories Effects', () => {
     it('should map invalid request to action of type LoadCategoryFail', () => {
       const limit = -1;
       const action = new fromActions.LoadTopLevelCategories(limit);
-      const completion = new fromActions.LoadTopLevelCategoriesFail({ message: 'invalid number' } as HttpErrorResponse);
+      const completion = new fromActions.LoadTopLevelCategoriesFail({ message: 'invalid number' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -293,7 +294,7 @@ describe('Categories Effects', () => {
 
     it('should do nothing when product is selected', () => {
       store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
-      store$.dispatch(new productsActions.SelectProduct('P222'));
+      store$.dispatch(new SelectProduct('P222'));
 
       expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
     });
@@ -301,15 +302,6 @@ describe('Categories Effects', () => {
     describe('when product is not selected', () => {
       it('should do nothing when category doesnt have online products', () => {
         category.hasOnlineProducts = false;
-        store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
-        store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
-      });
-
-      it('should do nothing when category already has an SKU list', () => {
-        store$.dispatch(
-          new fromActions.SetProductSkusForCategory({ categoryUniqueId: category.uniqueId, skus: ['P222', 'P333'] })
-        );
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
         expect(effects.productOrCategoryChanged$).toBeObservable(cold('-'));
@@ -330,17 +322,16 @@ describe('Categories Effects', () => {
         store$.dispatch(new fromActions.LoadCategorySuccess(categoryTree([category])));
         store$.dispatch(new fromActions.SelectCategory(category.uniqueId));
 
-        actions$ = hot('(ab)', {
+        actions$ = hot('--a)', {
           a: new RouteNavigation({
             path: 'category/:categoryUniqueId',
             params: { categoryUniqueId: category.uniqueId },
             queryParams: {},
           }),
-          b: new fromActions.SelectedCategoryAvailable(category.uniqueId),
         });
 
-        const action = new productsActions.LoadProductsForCategory(category.uniqueId);
-        expect(effects.productOrCategoryChanged$).toBeObservable(cold('a', { a: action }));
+        const action = new LoadProductsForCategory(category.uniqueId);
+        expect(effects.productOrCategoryChanged$).toBeObservable(cold('--a', { a: action }));
       });
 
       it('should not trigger action when we are on a product page', () => {
@@ -364,7 +355,7 @@ describe('Categories Effects', () => {
 
   describe('redirectIfErrorInCategories$', () => {
     it('should redirect if triggered', done => {
-      const action = new fromActions.LoadCategoryFail({ status: 404 } as HttpErrorResponse);
+      const action = new fromActions.LoadCategoryFail({ status: 404 } as HttpError);
 
       actions$ = of(action);
 

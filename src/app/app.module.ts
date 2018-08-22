@@ -13,25 +13,27 @@ import { MetaReducer, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // not used in production
 import { TranslateService } from '@ngx-translate/core';
 import { storeFreeze } from 'ngrx-store-freeze'; // not used in production
+
 import { environment } from '../environments/environment';
+
 import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CheckoutModule } from './checkout/checkout.module';
 import * as injectionKeys from './core/configurations/injection-keys';
+import { NgrxStateTransfer, ngrxStateTransferMeta } from './core/configurations/ngrx-state-transfer';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { MockInterceptor } from './core/interceptors/mock.interceptor';
-import { RestStateAggregatorInterceptor } from './core/interceptors/rest-state-aggregator.interceptor';
 import {
-  getICMApplication,
-  getICMBaseURL,
-  getICMServerURL,
-  getRestEndPoint,
   ICM_APPLICATION,
   ICM_BASE_URL,
   ICM_SERVER_URL,
   REST_ENDPOINT,
+  getICMApplication,
+  getICMBaseURL,
+  getICMServerURL,
+  getRestEndPoint,
 } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers } from './core/store/core.system';
@@ -45,6 +47,7 @@ import { ShoppingModule } from './shopping/shopping.module';
 export const metaReducers: MetaReducer<any>[] = [
   ...(!environment.production ? [storeFreeze] : []),
   ...(environment.syncLocalStorage ? [localStorageSyncReducer] : []),
+  ngrxStateTransferMeta,
 ];
 
 @NgModule({
@@ -53,7 +56,7 @@ export const metaReducers: MetaReducer<any>[] = [
     BrowserModule.withServerTransition({
       appId: 'intershop-pwa',
     }),
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.serviceWorker }),
     HttpClientModule,
     BrowserTransferStateModule,
     CoreModule,
@@ -84,20 +87,26 @@ export const metaReducers: MetaReducer<any>[] = [
     { provide: injectionKeys.ENDLESS_SCROLLING_ITEMS_PER_PAGE, useValue: environment.endlessScrollingItemsPerPage },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: RestStateAggregatorInterceptor, multi: true },
     // TODO: get from REST call
     { provide: injectionKeys.AVAILABLE_LOCALES, useValue: environment.locales },
     { provide: injectionKeys.USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },
     // tslint:disable-next-line:no-string-literal
     { provide: FEATURE_TOGGLES, useValue: environment['features'] },
+    { provide: injectionKeys.SMALL_BREAKPOINT_WIDTH, useValue: environment.smallBreakpointWidth },
+    { provide: injectionKeys.MEDIUM_BREAKPOINT_WIDTH, useValue: environment.mediumBreakpointWidth },
+    { provide: injectionKeys.LARGE_BREAKPOINT_WIDTH, useValue: environment.largeBreakpointWidth },
+    { provide: injectionKeys.EXTRALARGE_BREAKPOINT_WIDTH, useValue: environment.extralargeBreakpointWidth },
+    NgrxStateTransfer,
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService) {
+  constructor(@Inject(LOCALE_ID) lang: string, translateService: TranslateService, stateTransfer: NgrxStateTransfer) {
     registerLocaleData(localeDe);
     registerLocaleData(localeFr);
 
     translateService.setDefaultLang(lang.replace(/\-/, '_'));
+
+    stateTransfer.do();
   }
 }

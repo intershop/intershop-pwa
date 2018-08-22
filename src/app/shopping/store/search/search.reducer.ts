@@ -1,16 +1,15 @@
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
+
 import { SearchAction, SearchActionTypes } from './search.actions';
 
 export interface SearchState {
   searchTerm: string;
-  products: string[];
   loading: boolean;
   suggestSearchResults: SuggestTerm[];
 }
 
 export const initialState: SearchState = {
   searchTerm: undefined,
-  products: [],
   loading: false,
   suggestSearchResults: [],
 };
@@ -21,42 +20,21 @@ export function searchReducer(state = initialState, action: SearchAction): Searc
       return {
         ...state,
         loading: true,
-        products: [],
-      };
-    }
-
-    case SearchActionTypes.SearchMoreProducts: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
-    case SearchActionTypes.SearchProductsAbort: {
-      return {
-        ...state,
-        loading: false,
       };
     }
 
     case SearchActionTypes.SearchProductsSuccess: {
-      const searchResult = action.payload;
-      const products = [...state.products, ...searchResult.products];
-      const searchTerm = searchResult.searchTerm;
-      const loading = false;
       return {
         ...state,
-        products,
-        searchTerm,
-        loading,
+        searchTerm: action.payload,
+        loading: false,
       };
     }
 
     case SearchActionTypes.SuggestSearchSuccess: {
-      const suggestSearchResults = action.payload;
       return {
         ...state,
-        suggestSearchResults,
+        suggestSearchResults: action.payload,
       };
     }
   }

@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+
 import { Locale } from '../../../models/locale/locale.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { coreReducers } from '../core.system';
+
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
 

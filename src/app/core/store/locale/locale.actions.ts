@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { Locale } from '../../../models/locale/locale.model';
 
 export enum LocaleActionTypes {

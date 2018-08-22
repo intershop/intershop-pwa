@@ -1,5 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Address } from '../../../models/address/address.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
+
 import * as fromActions from './addresses.actions';
 
 describe('Addresses Actions', () => {
@@ -13,7 +14,7 @@ describe('Addresses Actions', () => {
     });
 
     it('should create new action for LoadAddressesFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadAddressesFail(payload);
 
       expect({ ...action }).toEqual({

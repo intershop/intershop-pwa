@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
 import { Product } from '../../../../models/product/product.model';
+
 import { ProductImageComponent } from './product-image.component';
 
 describe('Product Image Component', () => {

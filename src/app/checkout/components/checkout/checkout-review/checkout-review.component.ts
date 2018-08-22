@@ -1,9 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 import { Basket } from '../../../../models/basket/basket.model';
+import { HttpError } from '../../../../models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-checkout-review',
@@ -14,7 +15,7 @@ export class CheckoutReviewComponent implements OnInit {
   @Input()
   basket: Basket;
   @Input()
-  error: HttpErrorResponse;
+  error: HttpError;
   @Output()
   createOrder = new EventEmitter<Basket>();
 

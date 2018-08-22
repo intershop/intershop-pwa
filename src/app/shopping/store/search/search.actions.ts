@@ -1,15 +1,20 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 export enum SearchActionTypes {
+  PrepareNewSearch = '[Shopping] Prepare Search For Products',
   SearchProducts = '[Shopping] Search Products',
   SearchProductsSuccess = '[Shopping] Search Products Success',
   SearchProductsFail = '[Shopping] Search Products Fail',
   SuggestSearch = '[Shopping] Suggest Search',
   SuggestSearchSuccess = '[Shopping] Suggest Search Success',
   SearchMoreProducts = '[Shopping] Search More Products',
-  SearchProductsAbort = '[Shopping] Cancel Search Products',
+}
+
+export class PrepareNewSearch implements Action {
+  readonly type = SearchActionTypes.PrepareNewSearch;
 }
 
 export class SearchProducts implements Action {
@@ -19,12 +24,12 @@ export class SearchProducts implements Action {
 
 export class SearchProductsSuccess implements Action {
   readonly type = SearchActionTypes.SearchProductsSuccess;
-  constructor(public payload: { searchTerm: string; products: string[] }) {}
+  constructor(public payload: string) {}
 }
 
 export class SearchProductsFail implements Action {
   readonly type = SearchActionTypes.SearchProductsFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class SuggestSearch implements Action {
@@ -42,15 +47,11 @@ export class SearchMoreProducts implements Action {
   constructor(public payload: string) {}
 }
 
-export class SearchProductsAbort implements Action {
-  readonly type = SearchActionTypes.SearchProductsAbort;
-}
-
 export type SearchAction =
+  | PrepareNewSearch
   | SearchProducts
   | SearchProductsSuccess
   | SearchProductsFail
   | SuggestSearch
   | SuggestSearchSuccess
-  | SearchMoreProducts
-  | SearchProductsAbort;
+  | SearchMoreProducts;

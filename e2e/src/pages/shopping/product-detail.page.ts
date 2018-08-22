@@ -1,10 +1,17 @@
-import { $ } from 'protractor';
+import { $, browser } from 'protractor';
+
+import { BreadcrumbModule } from '../breadcrumb.module';
 import { HeaderModule } from '../header.module';
 
 export class ProductDetailPage {
   readonly tag = 'ish-product-page-container';
 
   readonly header = new HeaderModule();
+  readonly breadcrumb = new BreadcrumbModule();
+
+  static navigateTo(categoryUniqueId: string, sku: string) {
+    browser.get(`/category/${categoryUniqueId}/product/${sku}`);
+  }
 
   private addToCardButton = () => $('[data-testing-id="addToCartButton"]');
   private addToCompareButton = () => $('[data-testing-id*="compare"]');

@@ -2,10 +2,10 @@
 
   <!-- Invoice Address -->
   <div class="clearfix">
-    <a class="pull-right btn-tool" routerLink="/checkout/address">
-      <span class="glyphicon glyphicon-pencil"></span>
+    <a class="float-right btn-tool" routerLink="/checkout/address">
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
-    <h5 class="pull-left">{{'checkout.address.billing.label' | translate}}</h5>
+    <h5 class="float-left">{{'checkout.address.billing.label' | translate}}</h5>
   </div>
   <div data-testing-id="address-summary-invoice-to-address">
     <ish-address [address]="basket.invoiceToAddress"></ish-address>
@@ -13,8 +13,8 @@
 
   <!-- Shipping Address -->
   <div class="clearfix">
-    <a class="pull-right btn-tool" routerLink="/checkout/address" title="{{'checkout.address.update.label' | translate}} />">
-      <span class="glyphicon glyphicon-pencil"></span>
+    <a class="float-right btn-tool" routerLink="/checkout/address" title="{{'checkout.address.update.label' | translate}} />">
+      <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>
     </a>
     <h5>{{'checkout.address.shipping.label' | translate}}</h5>
   </div>

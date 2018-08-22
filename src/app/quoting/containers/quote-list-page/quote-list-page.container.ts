@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
-import { DeleteQuote, getCurrentQuotes, getQuoteLoading, LoadQuotes } from '../../store/quote';
+import { DeleteQuote, LoadQuotes, getCurrentQuotes, getQuoteLoading } from '../../store/quote';
 import {
   DeleteQuoteRequest,
+  LoadQuoteRequests,
   getCurrentQuoteRequests,
   getQuoteRequestLoading,
-  LoadQuoteRequests,
 } from '../../store/quote-request';
 import { QuotingState } from '../../store/quoting.state';
 

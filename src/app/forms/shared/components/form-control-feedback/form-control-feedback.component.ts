@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/cor
 import { AbstractControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+
 import { FormErrorMessages } from './form-error-messages.interface';
 
 @Component({
@@ -23,13 +24,6 @@ export class FormControlFeedbackComponent implements DoCheck {
     if (this.control.dirty) {
       this.errors = this.getErrorList();
     }
-  }
-
-  get iconClasses(): { [key: string]: boolean } {
-    return {
-      'glyphicon-remove': this.control.validator && this.control.invalid,
-      'glyphicon-ok': this.control.validator && this.control.valid,
-    };
   }
 
   getErrorList(): Observable<string>[] {

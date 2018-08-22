@@ -1,4 +1,5 @@
 import { Locale } from '../../../models/locale/locale.model';
+
 import { LocaleAction, SelectLocale, SetAvailableLocales } from './locale.actions';
 import { initialState, localeReducer } from './locale.reducer';
 

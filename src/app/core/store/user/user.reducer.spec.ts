@@ -1,6 +1,7 @@
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Customer, CustomerType } from '../../../models/customer/customer.model';
+import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
 import { User } from '../../../models/user/user.model';
+
 import {
   LoadCompanyUserFail,
   LoadCompanyUserSuccess,
@@ -67,7 +68,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when LoginUserFail action is reduced and error is resetted after reset action', () => {
-      const error = { status: 500, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
       let newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });
@@ -77,7 +78,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when CreateUserFail action is reduced', () => {
-      const error = { status: 500, headers: new HttpHeaders().set('error-key', 'error') } as HttpErrorResponse;
+      const error = { status: 500, headers: { 'error-key': 'error' } as HttpHeader } as HttpError;
       const newState = userReducer(initialState, new LoginUserFail(error));
 
       expect(newState).toEqual({ ...initialState, error });
@@ -103,7 +104,7 @@ describe('User Reducer', () => {
     });
 
     it('should set error when LoadCompanyUserFail action is reduced', () => {
-      const error = { message: 'invalid' } as HttpErrorResponse;
+      const error = { message: 'invalid' } as HttpError;
       const action = new LoadCompanyUserFail(error);
       const state = userReducer(initialState, action);
 

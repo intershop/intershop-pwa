@@ -1,8 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
+
 import { BasketAction, BasketActionTypes } from './basket.actions';
 
 export interface BasketState {
@@ -12,7 +13,7 @@ export interface BasketState {
   eligiblePaymentMethods: PaymentMethod[];
   payments: PaymentMethod[];
   loading: boolean;
-  error: HttpErrorResponse;
+  error: HttpError; // add, update and delete errors
 }
 
 export const initialState: BasketState = {
@@ -50,17 +51,17 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
     }
 
     case BasketActionTypes.LoadBasketFail:
-    case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.LoadBasketItemsFail:
+    case BasketActionTypes.LoadBasketPaymentsFail:
+    case BasketActionTypes.CreateOrderFail:
+    case BasketActionTypes.UpdateBasketFail:
     case BasketActionTypes.AddItemsToBasketFail:
     case BasketActionTypes.AddQuoteToBasketFail:
     case BasketActionTypes.UpdateBasketItemsFail:
     case BasketActionTypes.DeleteBasketItemFail:
     case BasketActionTypes.LoadBasketEligibleShippingMethodsFail:
     case BasketActionTypes.LoadBasketEligiblePaymentMethodsFail:
-    case BasketActionTypes.LoadBasketPaymentsFail:
-    case BasketActionTypes.SetBasketPaymentFail:
-    case BasketActionTypes.CreateOrderFail: {
+    case BasketActionTypes.SetBasketPaymentFail: {
       const error = action.payload;
 
       return {
@@ -79,6 +80,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
       return {
         ...state,
         loading: false,
+        error: undefined,
       };
     }
 
@@ -92,6 +94,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         ...state,
         basket,
         loading: false,
+        error: undefined,
       };
     }
 
@@ -110,6 +113,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         ...state,
         eligibleShippingMethods,
         loading: false,
+        error: undefined,
       };
     }
 
@@ -119,6 +123,7 @@ export function basketReducer(state = initialState, action: BasketAction): Baske
         ...state,
         eligiblePaymentMethods,
         loading: false,
+        error: undefined,
       };
     }
 

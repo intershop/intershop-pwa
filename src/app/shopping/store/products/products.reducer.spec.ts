@@ -1,5 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
+
 import * as fromActions from './products.actions';
 import { initialState, productsReducer } from './products.reducer';
 
@@ -35,7 +36,7 @@ describe('Products Reducer', () => {
 
     describe('LoadCategoryFail action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.LoadProductFail({} as HttpErrorResponse);
+        const action = new fromActions.LoadProductFail({} as HttpError);
         const state = productsReducer(initialState, action);
 
         expect(state.loading).toBeFalse();

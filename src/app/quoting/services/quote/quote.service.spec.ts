@@ -3,6 +3,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
+
 import { ApiService } from '../../../core/services/api/api.service';
 import { CoreState } from '../../../core/store/core.state';
 import { coreReducers } from '../../../core/store/core.system';
@@ -13,6 +14,7 @@ import { QuoteRequestItem } from '../../../models/quote-request-item/quote-reque
 import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
 import { QuoteRequestService } from '../quote-request/quote-request.service';
+
 import { QuoteService } from './quote.service';
 
 describe('Quote Service', () => {

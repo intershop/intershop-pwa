@@ -1,10 +1,12 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+
 import { Country } from '../../../models/country/country.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { coreReducers } from '../core.system';
+
 import { LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { getAllCountries, getCountriesLoading } from './countries.selectors';
 
@@ -50,7 +52,7 @@ describe('Countries Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadCountriesFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadCountriesFail({ message: 'error' } as HttpError));
       });
 
       it('should not have loaded category on error', () => {

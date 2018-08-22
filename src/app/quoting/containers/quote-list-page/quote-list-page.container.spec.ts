@@ -1,12 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+
 import { QuoteData } from '../../../models/quote/quote.interface';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuotes, LoadQuotesSuccess } from '../../store/quote';
 import { LoadQuoteRequests } from '../../store/quote-request';
 import { QuotingState } from '../../store/quoting.state';
 import { quotingReducers } from '../../store/quoting.system';
+
 import { QuoteListPageContainerComponent } from './quote-list-page.container';
 
 describe('Quote List Page Container', () => {

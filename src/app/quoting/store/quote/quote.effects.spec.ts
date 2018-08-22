@@ -1,14 +1,15 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
+
 import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteData } from '../../../models/quote/quote.interface';
@@ -19,6 +20,7 @@ import { QuoteService } from '../../services/quote/quote.service';
 import { SubmitQuoteRequestSuccess } from '../quote-request';
 import { QuotingState } from '../quoting.state';
 import { quotingReducers } from '../quoting.system';
+
 import * as quoteActions from './quote.actions';
 import { QuoteEffects } from './quote.effects';
 
@@ -79,10 +81,10 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type LoadQuotesFail', () => {
-      when(quoteServiceMock.getQuotes()).thenReturn(throwError({ message: 'invalid' } as HttpErrorResponse));
+      when(quoteServiceMock.getQuotes()).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteActions.LoadQuotes();
-      const completion = new quoteActions.LoadQuotesFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteActions.LoadQuotesFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -117,12 +119,10 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type DeleteQuoteFail', () => {
-      when(quoteServiceMock.deleteQuote(anyString())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(quoteServiceMock.deleteQuote(anyString())).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteActions.DeleteQuote('QID');
-      const completion = new quoteActions.DeleteQuoteFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteActions.DeleteQuoteFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -165,12 +165,10 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type RejectQuoteFail', () => {
-      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() =>
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(quoteServiceMock.rejectQuote(anyString())).thenCall(() => throwError({ message: 'invalid' }));
 
       const action = new quoteActions.RejectQuote();
-      const completion = new quoteActions.RejectQuoteFail({ message: 'invalid' } as HttpErrorResponse);
+      const completion = new quoteActions.RejectQuoteFail({ message: 'invalid' } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -219,14 +217,12 @@ describe('Quote Effects', () => {
     });
 
     it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
-      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
-        throwError({ message: 'invalid' } as HttpErrorResponse)
-      );
+      when(quoteServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(throwError({ message: 'invalid' }));
 
       const action = new quoteActions.CreateQuoteRequestFromQuote();
       const completion = new quoteActions.CreateQuoteRequestFromQuoteFail({
         message: 'invalid',
-      } as HttpErrorResponse);
+      } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 

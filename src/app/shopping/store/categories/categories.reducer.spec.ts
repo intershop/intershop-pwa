@@ -1,7 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { CategoryTree } from '../../../models/category-tree/category-tree.model';
 import { Category } from '../../../models/category/category.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
+
 import * as fromActions from './categories.actions';
 import { categoriesReducer, initialState } from './categories.reducer';
 
@@ -37,7 +38,7 @@ describe('Categories Reducer', () => {
 
     describe('LoadCategoryFail action', () => {
       it('should set loading to false', () => {
-        const action = new fromActions.LoadCategoryFail({} as HttpErrorResponse);
+        const action = new fromActions.LoadCategoryFail({} as HttpError);
         const state = categoriesReducer(initialState, action);
 
         expect(state.loading).toBeFalse();
@@ -137,6 +138,13 @@ describe('Categories Reducer', () => {
       const topLevelIds = ['1', '2'];
 
       expect(state.categories.rootIds).toEqual(topLevelIds);
+    });
+
+    it('should remember if top level categories were loaded', () => {
+      const action = new fromActions.LoadTopLevelCategoriesSuccess(categories);
+      const state = categoriesReducer(initialState, action);
+
+      expect(state.topLevelLoaded).toBeTrue();
     });
   });
 });

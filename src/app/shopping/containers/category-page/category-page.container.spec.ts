@@ -1,5 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
+
 import { CoreState } from '../../../core/store/core.state';
 import { Category } from '../../../models/category/category.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
@@ -7,6 +8,7 @@ import { MockComponent } from '../../../utils/dev/mock.component';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadCategory, LoadCategorySuccess, SelectCategory } from '../../store/categories';
 import { shoppingReducers } from '../../store/shopping.system';
+
 import { CategoryPageContainerComponent } from './category-page.container';
 
 describe('Category Page Container', () => {
@@ -37,7 +39,7 @@ describe('Category Page Container', () => {
         MockComponent({
           selector: 'ish-family-page',
           template: 'Family Page Component',
-          inputs: ['category', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
+          inputs: ['category'],
         }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],

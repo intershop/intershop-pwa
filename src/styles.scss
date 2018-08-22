@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+
+// set theme specific variables
+@import 'theme/variables';
+
+// theme specific customization of Bootstrap variables
+@import 'theme/variables-bootstrap-customized';
+
+// import Bootstrap styles
+@import '~bootstrap/scss/bootstrap';
+
+// import breakpoint wrapper to match older bootstrap 3 implementation
+@import 'theme/breakpoints';
+
+// import theme customizations
+@import 'theme/main';

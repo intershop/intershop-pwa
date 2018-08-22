@@ -1,0 +1,13 @@
+.promotion-list {
+  list-style: none;
+  font-family: $font-family-regular;
+  padding-left: 0px;
+}
+
+.modal-body {
+  .product-info {
+    .promotion-list {
+      margin-bottom: 0;
+    }
+  }
+}

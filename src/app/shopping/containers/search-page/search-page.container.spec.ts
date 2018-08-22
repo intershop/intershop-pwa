@@ -1,9 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
+
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { SearchProductsSuccess } from '../../store/search/search.actions';
+import { SearchProductsSuccess } from '../../store/search';
 import { ShoppingState } from '../../store/shopping.state';
 import { shoppingReducers } from '../../store/shopping.system';
+import { SetPagingInfo } from '../../store/viewconf';
+
 import { SearchPageContainerComponent } from './search-page.container';
 
 describe('Search Page Container', () => {
@@ -25,14 +28,19 @@ describe('Search Page Container', () => {
         MockComponent({
           selector: 'ish-search-result',
           template: 'Search Result Component',
-          inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys'],
+          inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys', 'loadingMore'],
+        }),
+        MockComponent({
+          selector: 'ish-product-list-paging',
+          template: 'Product List Paging Component',
+          inputs: ['currentPage', 'canRequestMore', 'pageIndices', 'pageUrl'],
         }),
         MockComponent({
           selector: 'ish-search-no-result',
           template: 'Search No Result Component',
           inputs: ['searchTerm'],
         }),
-        MockComponent({ selector: 'ish-loading-spinner', template: 'ish-loading-spinner' }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
     }).compileComponents();
   }));
@@ -52,16 +60,18 @@ describe('Search Page Container', () => {
   });
 
   it('should render search no result component if search has no results', () => {
-    const products = [];
-    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search', products }));
+    const newProducts = [];
+    store$.dispatch(new SearchProductsSuccess('search'));
+    store$.dispatch(new SetPagingInfo({ newProducts, currentPage: 0, totalItems: newProducts.length }));
     fixture.detectChanges();
     expect(element.querySelector('ish-search-no-result')).toBeTruthy();
     expect(element.querySelector('ish-search-result')).toBeFalsy();
   });
 
   it('should render search result component if search has results', () => {
-    const products = ['testSKU1', 'testSKU2'];
-    store$.dispatch(new SearchProductsSuccess({ searchTerm: 'search', products }));
+    const newProducts = ['testSKU1', 'testSKU2'];
+    store$.dispatch(new SearchProductsSuccess('search'));
+    store$.dispatch(new SetPagingInfo({ newProducts, currentPage: 0, totalItems: newProducts.length }));
     fixture.detectChanges();
     expect(element.querySelector('ish-search-result')).toBeTruthy();
     expect(element.querySelector('ish-search-no-result')).toBeFalsy();

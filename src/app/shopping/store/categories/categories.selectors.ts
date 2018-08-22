@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
+
 import { createCategoryView } from '../../../models/category-view/category-view.model';
-import { getProductEntities } from '../products';
-import { getShoppingState, ShoppingState } from '../shopping.state';
+import { ShoppingState, getShoppingState } from '../shopping.state';
 
 const getCategoryState = createSelector(getShoppingState, (state: ShoppingState) => state.categories);
 
@@ -28,34 +28,10 @@ export const getCategoryIds = createSelector(getCategoryTree, tree => Object.key
  */
 export const getSelectedCategory = createSelector(getCategoryTree, getSelectedCategoryId, createCategoryView);
 
-export const getCategoriesProductSKUs = createSelector(getCategoryState, state => state.categoriesProductSKUs);
-
-export const getProductSKUsForSelectedCategory = createSelector(
-  getCategoriesProductSKUs,
-  getSelectedCategory,
-  (categoriesProductSKUs, category) => (!!category ? categoriesProductSKUs[category.uniqueId] || [] : [])
-);
-
-export const getProductsForSelectedCategory = createSelector(
-  getSelectedCategory,
-  getProductSKUsForSelectedCategory,
-  getProductEntities,
-  (category, skus, products) => (category && skus && skus.map(sku => products[sku])) || []
-);
-
-export const getProductCountForSelectedCategory = createSelector(
-  getProductSKUsForSelectedCategory,
-  skus => (skus && skus.length) || 0
-);
-
-export const productsForSelectedCategoryAreNotLoaded = createSelector(
-  getSelectedCategory,
-  getProductSKUsForSelectedCategory,
-  (c, skus) => c && c.hasOnlineProducts && !skus.length
-);
-
 export const getCategoryLoading = createSelector(getCategoryState, categories => categories.loading);
 
 export const getTopLevelCategories = createSelector(getCategoryTree, tree =>
   tree.rootIds.map(id => createCategoryView(tree, id))
 );
+
+export const isTopLevelCategoriesLoaded = createSelector(getCategoryState, state => state.topLevelLoaded);

@@ -1,9 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
+
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { checkoutReducers } from '../../store/checkout.system';
+
 import { CheckoutAddressPageContainerComponent } from './checkout-address-page.container';
 
 describe('Checkout Address Page Container', () => {
@@ -19,7 +21,7 @@ describe('Checkout Address Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-address',
           template: 'Checkout Address Component',
-          inputs: ['basket', 'addresses'],
+          inputs: ['basket', 'addresses', 'error'],
         }),
       ],
 

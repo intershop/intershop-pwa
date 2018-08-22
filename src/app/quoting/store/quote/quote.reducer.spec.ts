@@ -1,6 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteData } from '../../../models/quote/quote.interface';
+
 import * as fromActions from './quote.actions';
 import { initialState, quoteReducer } from './quote.reducer';
 
@@ -26,7 +27,7 @@ describe('Quote Reducer', () => {
 
     describe('LoadQuotesFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpErrorResponse;
+        const error = { message: 'invalid' } as HttpError;
         const action = new fromActions.LoadQuotesFail(error);
         const state = quoteReducer(initialState, action);
 
@@ -65,7 +66,7 @@ describe('Quote Reducer', () => {
 
     describe('DeleteQuoteFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpErrorResponse;
+        const error = { message: 'invalid' } as HttpError;
         const action = new fromActions.DeleteQuoteFail(error);
         const state = quoteReducer(initialState, action);
 
@@ -97,7 +98,7 @@ describe('Quote Reducer', () => {
 
     describe('RejectQuoteFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpErrorResponse;
+        const error = { message: 'invalid' } as HttpError;
         const action = new fromActions.RejectQuoteFail(error);
         const state = quoteReducer(initialState, action);
 
@@ -129,7 +130,7 @@ describe('Quote Reducer', () => {
 
     describe('CreateQuoteRequestFromQuoteFail action', () => {
       it('should set loading to false', () => {
-        const error = { message: 'invalid' } as HttpErrorResponse;
+        const error = { message: 'invalid' } as HttpError;
         const action = new fromActions.CreateQuoteRequestFromQuoteFail(error);
         const state = quoteReducer(initialState, action);
 

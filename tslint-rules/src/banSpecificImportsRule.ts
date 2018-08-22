@@ -1,12 +1,15 @@
 import * as Lint from 'tslint';
 import { ImportDeclaration, SourceFile, SyntaxKind } from 'typescript';
+
 import { RuleHelpers } from './ruleHelpers';
 
 interface ImportPattern {
   import: string;
+  starImport: boolean;
   from: string;
   message: string;
   filePattern: string;
+  fix: string;
 }
 
 class BanSpecificImportsWalker extends Lint.RuleWalker {
@@ -27,24 +30,48 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
         new RegExp(pattern.filePattern).test(importStatement.getSourceFile().fileName) &&
         new RegExp(pattern.from).test(fromStringText)
       ) {
-        const importList = importStatement
-          .getChildAt(1)
-          .getChildAt(0)
-          .getChildAt(1);
+        try {
+          const importList = importStatement
+            .getChildAt(1)
+            .getChildAt(0)
+            .getChildAt(1);
 
-        if (pattern.import) {
-          importList
-            .getChildren()
-            .filter(token => token.kind === SyntaxKind.ImportSpecifier)
-            .filter(token => new RegExp(pattern.import).test(token.getText()))
-            .forEach(token =>
+          if (pattern.starImport) {
+            if (importList.kind === SyntaxKind.AsKeyword) {
               this.addFailureAtNode(
-                token,
-                pattern.message || `Using '${token.getText()}' from '${fromStringText}' is banned.`
-              )
+                importStatement,
+                pattern.message || `Star imports from '${fromStringText}' are banned.`
+              );
+            }
+          } else if (pattern.import) {
+            importList
+              .getChildren()
+              .filter(token => token.kind === SyntaxKind.ImportSpecifier)
+              .filter(token => new RegExp(pattern.import).test(token.getText()))
+              .forEach(token =>
+                this.addFailureAtNode(
+                  token,
+                  pattern.message || `Using '${token.getText()}' from '${fromStringText}' is banned.`
+                )
+              );
+          } else {
+            let fix;
+            if (pattern.fix) {
+              RuleHelpers.dumpNode(fromStringToken);
+              fix = new Lint.Replacement(
+                fromStringToken.getStart(),
+                fromStringToken.getWidth(),
+                `'${fromStringText.replace(new RegExp(pattern.from), pattern.fix)}'`
+              );
+            }
+            this.addFailureAtNode(
+              fromStringToken,
+              pattern.message || `Importing from '${fromStringText} is banned.`,
+              fix
             );
-        } else {
-          this.addFailureAtNode(fromStringToken, pattern.message || `Importing from '${fromStringText} is banned.`);
+          }
+        } catch (err) {
+          // ignore
         }
       }
     });

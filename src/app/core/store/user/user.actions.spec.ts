@@ -1,6 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { User } from '../../../models/user/user.model';
+
 import * as fromActions from './user.actions';
 
 describe('User Actions', () => {
@@ -19,7 +20,7 @@ describe('User Actions', () => {
     });
 
     it('should create new action for LoginUserFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoginUserFail(payload);
 
       expect({ ...action }).toEqual({
@@ -49,7 +50,7 @@ describe('User Actions', () => {
     });
 
     it('should create new action for LoadCompanyUserFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.LoadCompanyUserFail(payload);
 
       expect({ ...action }).toEqual({
@@ -93,7 +94,7 @@ describe('User Actions', () => {
     });
 
     it('should create new action for CreateUserFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new fromActions.CreateUserFail(payload);
 
       expect({ ...action }).toEqual({

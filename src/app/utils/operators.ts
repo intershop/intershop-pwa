@@ -1,5 +1,9 @@
-import { Observable, of, OperatorFunction } from 'rxjs';
-import { distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
+import { Action } from '@ngrx/store';
+import { Observable, OperatorFunction, of } from 'rxjs';
+import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
+
+import { HttpErrorMapper } from '../models/http-error/http-error.mapper';
+import { HttpError } from '../models/http-error/http-error.model';
 
 export interface Partition<T> {
   isTrue: Observable<T>;
@@ -28,4 +32,10 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
       map(([newVal]) => newVal),
       distinctUntilChanged()
     );
+}
+
+export function mapErrorToAction<T extends Action>(actionType: { new (error: HttpError): T }) {
+  return (source$: Observable<T>) =>
+    // tslint:disable-next-line:ban
+    source$.pipe(catchError(err => of(new actionType(HttpErrorMapper.fromError(err)))));
 }

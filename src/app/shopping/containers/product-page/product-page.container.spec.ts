@@ -1,7 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { combineReducers, Store, StoreModule } from '@ngrx/store';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
-import { ModalModule } from 'ngx-bootstrap/modal';
+
 import { CoreState } from '../../../core/store/core.state';
 import { coreReducers } from '../../../core/store/core.system';
 import { Product } from '../../../models/product/product.model';
@@ -11,6 +12,7 @@ import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadProduct, LoadProductSuccess, SelectProduct } from '../../store/products';
 import { shoppingReducers } from '../../store/shopping.system';
+
 import { ProductPageContainerComponent } from './product-page.container';
 
 describe('Product Page Container', () => {
@@ -28,7 +30,7 @@ describe('Product Page Container', () => {
           quoting: combineReducers(quotingReducers),
         }),
         FeatureToggleModule.testingFeatures({ recently: true }),
-        ModalModule.forRoot(),
+        NgbModalModule,
       ],
       declarations: [
         ProductPageContainerComponent,

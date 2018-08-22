@@ -1,7 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { Product } from '../../../../models/product/product.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+
 import { ProductImagesComponent } from './product-images.component';
 
 describe('Product Images Component', () => {
@@ -55,7 +57,7 @@ describe('Product Images Component', () => {
       },
     ];
     TestBed.configureTestingModule({
-      imports: [CarouselModule.forRoot()],
+      imports: [NgbCarouselModule],
       declarations: [
         ProductImagesComponent,
         MockComponent({
@@ -83,7 +85,7 @@ describe('Product Images Component', () => {
 
   it('should render carousel on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('slide')).toHaveLength(2);
+    expect(element.getElementsByClassName('carousel-item')).toHaveLength(2);
   });
 
   it('should render thumbnails on component', () => {

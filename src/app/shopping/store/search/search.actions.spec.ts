@@ -1,4 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpError } from '../../../models/http-error/http-error.model';
+
 import { SearchActionTypes, SearchProducts, SearchProductsFail, SearchProductsSuccess } from './search.actions';
 
 describe('Search Actions', () => {
@@ -14,7 +15,7 @@ describe('Search Actions', () => {
     });
 
     it('should create new action for SearchProductsSuccess', () => {
-      const payload = { searchTerm: 'search', products: ['a', 'b'] };
+      const payload = 'search';
       const action = new SearchProductsSuccess(payload);
 
       expect({ ...action }).toEqual({
@@ -24,7 +25,7 @@ describe('Search Actions', () => {
     });
 
     it('should create new action for SearchProductsFail', () => {
-      const payload = { message: 'error' } as HttpErrorResponse;
+      const payload = { message: 'error' } as HttpError;
       const action = new SearchProductsFail(payload);
 
       expect({ ...action }).toEqual({

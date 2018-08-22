@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { AttributeToStringPipe } from './pipes/attribute.pipe';
 import { PricePipe } from './pipes/price.pipe';
 

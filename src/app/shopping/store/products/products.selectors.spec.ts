@@ -1,10 +1,12 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
-import { combineReducers, StoreModule } from '@ngrx/store';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { shoppingReducers } from '../shopping.system';
+
 import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
 import {
   getProductEntities,
@@ -70,7 +72,7 @@ describe('Products Selectors', () => {
 
     describe('and reporting failure', () => {
       beforeEach(() => {
-        store$.dispatch(new LoadProductFail({ message: 'error' } as HttpErrorResponse));
+        store$.dispatch(new LoadProductFail({ message: 'error' } as HttpError));
       });
 
       it('should not have loaded product on error', () => {

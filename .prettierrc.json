@@ -22,6 +22,12 @@
       "options": {
         "parser": "markdown"
       }
+    },
+    {
+      "files": "*.scss",
+      "options": {
+        "parser": "scss"
+      }
     }
   ]
 }

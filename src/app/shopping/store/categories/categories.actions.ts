@@ -1,6 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
+
 import { CategoryTree } from '../../../models/category-tree/category-tree.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum CategoriesActionTypes {
   SelectCategory = '[Shopping] Select Category',
@@ -12,7 +13,6 @@ export enum CategoriesActionTypes {
   LoadCategory = '[Shopping] Load Category',
   LoadCategoryFail = '[Shopping] Load Category Fail',
   LoadCategorySuccess = '[Shopping] Load Category Success',
-  SetProductSkusForCategory = '[Shopping] Set Product SKUs For Category',
 }
 
 export class SelectCategory implements Action {
@@ -37,7 +37,7 @@ export class LoadTopLevelCategories implements Action {
 
 export class LoadTopLevelCategoriesFail implements Action {
   readonly type = CategoriesActionTypes.LoadTopLevelCategoriesFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadTopLevelCategoriesSuccess implements Action {
@@ -52,17 +52,12 @@ export class LoadCategory implements Action {
 
 export class LoadCategoryFail implements Action {
   readonly type = CategoriesActionTypes.LoadCategoryFail;
-  constructor(public payload: HttpErrorResponse) {}
+  constructor(public payload: HttpError) {}
 }
 
 export class LoadCategorySuccess implements Action {
   readonly type = CategoriesActionTypes.LoadCategorySuccess;
   constructor(public payload: CategoryTree) {}
-}
-
-export class SetProductSkusForCategory implements Action {
-  readonly type = CategoriesActionTypes.SetProductSkusForCategory;
-  constructor(public payload: { categoryUniqueId: string; skus: string[] }) {}
 }
 
 export type CategoriesAction =
@@ -73,5 +68,4 @@ export type CategoriesAction =
   | LoadTopLevelCategoriesSuccess
   | LoadCategory
   | LoadCategoryFail
-  | LoadCategorySuccess
-  | SetProductSkusForCategory;
+  | LoadCategorySuccess;

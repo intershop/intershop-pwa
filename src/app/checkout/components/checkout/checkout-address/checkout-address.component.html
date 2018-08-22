@@ -1,14 +1,20 @@
 <div class="row checkout-address-book">
 
     <!-- error messages -->
-    <div *ngIf="!basket.invoiceToAddress || !basket.commonShipToAddress" class="col-sm-12">
+    <div *ngIf="error && error.status" class="col-md-12">
+      <div  role="alert" class="alert alert-danger">
+        {{ error.status }}: {{ error.error }}
+      </div>
+    </div>
+
+    <div *ngIf="(!basket.invoiceToAddress || !basket.commonShipToAddress) && !error" class="col-md-12">
       <div class="alert alert-danger">
         <p>{{ 'checkout.addresses.no_Selection.error' | translate }}</p>
       </div>
     </div>
 
     <!-- invoice address -->
-    <div class="col-sm-6 col-md-4" data-testing-id="invoiceToAddress">
+    <div class="col-md-6 col-lg-4" data-testing-id="invoiceToAddress">
       <h2> {{ 'checkout.address.billing.label' | translate }}</h2>
       <div *ngIf="basket.invoiceToAddress"  class="address-box">
         <ish-address [address]="basket.invoiceToAddress"></ish-address>
@@ -31,7 +37,7 @@
     </div>
 
     <!-- shipping address -->
-    <div class="col-sm-6 col-md-4" data-testing-id="shipToAddress">
+    <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
       <h2> {{ 'checkout.address.shipping.label' | translate }}</h2>
       <div *ngIf="basket.commonShipToAddress"  class="address-box">
         <ish-address *ngIf="basket.commonShipToAddress.urn !== basket.invoiceToAddress.urn" [address]="basket.commonShipToAddress"></ish-address>
@@ -57,7 +63,7 @@
     </div>
 
     <!-- Cart Summary -->
-    <div class="col-sm-12 col-md-4">
+    <div class="col-md-12 col-lg-4">
       <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
 
       <ish-basket-items-summary [basket]="basket"></ish-basket-items-summary>

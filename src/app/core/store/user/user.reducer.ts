@@ -1,8 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { BasketAction, BasketActionTypes } from '../../../checkout/store/basket';
 import { Customer } from '../../../models/customer/customer.model';
+import { HttpError } from '../../../models/http-error/http-error.model';
 import { Order } from '../../../models/order/order.model';
 import { User } from '../../../models/user/user.model';
+
 import { UserAction, UserActionTypes } from './user.actions';
 
 export interface UserState {
@@ -10,14 +11,14 @@ export interface UserState {
   user: User;
   recentOrder: Order;
   authorized: boolean;
-  authToken: string;
-  error: HttpErrorResponse;
+  _authToken: string;
+  error: HttpError;
 }
 
 export const getCustomer = (state: UserState) => state.customer;
 export const getUser = (state: UserState) => state.user;
 export const getAuthorized = (state: UserState) => state.authorized;
-export const getAuthToken = (state: UserState) => state.authToken;
+export const getAuthToken = (state: UserState) => state._authToken;
 export const getError = (state: UserState) => state.error;
 
 export const initialState: UserState = {
@@ -25,7 +26,7 @@ export const initialState: UserState = {
   user: undefined,
   recentOrder: undefined,
   authorized: false,
-  authToken: undefined,
+  _authToken: undefined,
   error: undefined,
 };
 
@@ -47,7 +48,7 @@ export function userReducer(state = initialState, action: UserAction | BasketAct
     case UserActionTypes.SetAPIToken: {
       return {
         ...state,
-        authToken: action.payload,
+        _authToken: action.payload,
       };
     }
 

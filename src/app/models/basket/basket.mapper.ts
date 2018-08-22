@@ -1,6 +1,7 @@
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { BasketData } from '../basket/basket.interface';
 import { ShippingBucket } from '../shipping-bucket/shipping-bucket.model';
+
 import { Basket } from './basket.model';
 
 export class BasketMapper {

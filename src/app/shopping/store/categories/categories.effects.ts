@@ -1,28 +1,31 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
-import { ofRoute, RouteNavigation, ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
-import { combineLatest, of } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { ROUTER_NAVIGATION_TYPE, RouteNavigation, ofRoute } from 'ngrx-router';
+import { combineLatest } from 'rxjs';
 import {
-  catchError,
   distinctUntilChanged,
+  distinctUntilKeyChanged,
   filter,
   map,
   mapTo,
   mergeMap,
-  switchMap,
+  switchMapTo,
+  take,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
 import { CoreState } from '../../../core/store/core.state';
-import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
 import { CategoryHelper } from '../../../models/category/category.model';
-import { distinctCompareWith } from '../../../utils/operators';
+import { distinctCompareWith, mapErrorToAction } from '../../../utils/operators';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
 import { ShoppingState } from '../shopping.state';
+import { getVisibleProducts } from '../viewconf';
+
 import * as actions from './categories.actions';
 import * as selectors from './categories.selectors';
 
@@ -103,28 +106,27 @@ export class CategoriesEffects {
     mergeMap(categoryUniqueId =>
       this.categoryService.getCategory(categoryUniqueId).pipe(
         map(category => new actions.LoadCategorySuccess(category)),
-        catchError(error => of(new actions.LoadCategoryFail(error)))
+        mapErrorToAction(actions.LoadCategoryFail)
       )
     )
   );
 
   @Effect()
-  loadTopLevelCategoriesOnLanguageChange$ = this.actions$.pipe(
-    ofType(LocaleActionTypes.SelectLocale),
-    map((action: SelectLocale) => action.payload),
-    filter(locale => !!locale && !!locale.lang),
-    distinctUntilChanged(),
+  loadTopLevelWhenUnavailable$ = this.actions$.pipe(
+    ofType(ROUTER_NAVIGATION_TYPE),
+    take(1),
+    switchMapTo(this.store.pipe(select(selectors.isTopLevelCategoriesLoaded), filter(loaded => !loaded))),
     mapTo(new actions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
   );
 
   @Effect()
   loadTopLevelCategories$ = this.actions$.pipe(
-    ofType(actions.CategoriesActionTypes.LoadTopLevelCategories),
-    map((action: actions.LoadTopLevelCategories) => action.payload),
+    ofType<actions.LoadTopLevelCategories>(actions.CategoriesActionTypes.LoadTopLevelCategories),
+    map(action => action.payload),
     mergeMap(limit =>
       this.categoryService.getTopLevelCategories(limit).pipe(
         map(category => new actions.LoadTopLevelCategoriesSuccess(category)),
-        catchError(error => of(new actions.LoadTopLevelCategoriesFail(error)))
+        mapErrorToAction(actions.LoadTopLevelCategoriesFail)
       )
     )
   );
@@ -135,14 +137,13 @@ export class CategoriesEffects {
    */
   @Effect()
   productOrCategoryChanged$ = combineLatest(
-    this.actions$.pipe(ofType(actions.CategoriesActionTypes.SelectedCategoryAvailable)),
-    this.actions$.pipe(ofRoute('category/:categoryUniqueId'))
+    this.store.pipe(select(selectors.getSelectedCategory), filter(x => !!x), distinctUntilKeyChanged('uniqueId')),
+    this.actions$.pipe<RouteNavigation>(ofRoute('category/:categoryUniqueId'))
   ).pipe(
-    switchMap(() =>
-      this.store.pipe(select(selectors.productsForSelectedCategoryAreNotLoaded), filter(needed => needed))
-    ),
-    switchMap(() => this.store.pipe(select(selectors.getSelectedCategoryId), filter(uniqueId => !!uniqueId))),
-    map(uniqueId => new LoadProductsForCategory(uniqueId))
+    filter(([category, action]) => category.uniqueId === action.payload.params.categoryUniqueId),
+    withLatestFrom(this.store.pipe(select(getVisibleProducts))),
+    filter(([[category], skus]) => category && category.hasOnlineProducts && !skus.length),
+    map(([[category]]) => new LoadProductsForCategory(category.uniqueId))
   );
 
   @Effect({ dispatch: false })

@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as Lint from 'tslint';
 import * as ts from 'typescript';
+
 import { RuleHelpers } from './ruleHelpers';
 
 const SHOULD_BE_CREATED_NAME = 'should be created';

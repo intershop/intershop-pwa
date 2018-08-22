@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Navigation Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.1.0"
+>
+  <ul
+    class="navbar-nav main-navigation-list"
+  >
+    <li
+      class="home d-none d-md-block"
+    >
+      <a
+        routerlink="/home"
+        title="home"
+      >
+        <fa-icon />
+      </a>
+    </li>
+    
+    <li
+      class="dropdown"
+      ng-reflect-klass="dropdown"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        data-testing-id="A-link"
+        ng-reflect-ng-style="[object Object]"
+        style="width: 100%;"
+      >
+         CAT_A 
+      </a>
+      
+      <ish-sub-category-navigation />
+    </li>
+    <li
+      class="dropdown"
+      ng-reflect-klass="dropdown"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        data-testing-id="B-link"
+        ng-reflect-ng-style="[object Object]"
+        style="width: 100%;"
+      >
+         CAT_B 
+      </a>
+      
+      <ish-sub-category-navigation />
+    </li>
+    <li
+      class="dropdown"
+      ng-reflect-klass="dropdown"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        data-testing-id="C-link"
+        ng-reflect-ng-style="[object Object]"
+        style="width: 100%;"
+      >
+         CAT_C 
+      </a>
+      
+      <ish-sub-category-navigation />
+    </li>
+  </ul>
+</div>
+`;

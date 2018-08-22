@@ -1,14 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
+
 import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { RegionService } from '../../../core/services/countries/region.service';
 import { CoreState } from '../../../core/store/core.state';
 import { Locale } from '../../../models/locale/locale.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
+
 import { RegistrationPageContainerComponent } from './registration-page.container';
 
 describe('Registration Page Container', () => {
