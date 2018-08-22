@@ -19,7 +19,11 @@ describe('Account Overview Page Container', () => {
         MockComponent({
           selector: 'ish-account-overview-page',
           template: 'Account Overview Page Component',
-          inputs: ['user'],
+          inputs: ['user', 'orders'],
+        }),
+        MockComponent({
+          selector: 'ish-loading',
+          template: 'Loading Component',
         }),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
@@ -37,5 +41,10 @@ describe('Account Overview Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render account overview component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-account-overview-page')).toBeTruthy();
   });
 });

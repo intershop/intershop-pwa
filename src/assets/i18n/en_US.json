@@ -444,7 +444,7 @@
   "account.orderdetails.special_instructions.heading": "Special instructions:",
   "account.orderdetails.special_instructions.text": "Lorem ipsum dolor sit amet, consetetur",
   "account.orderdetails.unavailable_address": "Not available for this order.",
-  "account.orderlist.no_orders_message": "You have not placed an order with {{0}}.",
+  "account.orderlist.no_orders_message": "You have not placed an order yet.",
   "account.orderlist.orderDetails.items.label": "Items:",
   "account.orderlist.orderDetails.orderNo.label": "Order Number:",
   "account.orderlist.orderDetails.orderReferenceID.heading": "Order Reference ID:",

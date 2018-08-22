@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { OrderView } from '../../../models/order/order.model';
 import { User } from '../../../models/user/user.model';
 
 @Component({
@@ -10,4 +11,7 @@ import { User } from '../../../models/user/user.model';
 export class AccountOverviewPageComponent {
   @Input()
   user: User;
+
+  @Input()
+  orders: OrderView[];
 }

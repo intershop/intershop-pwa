@@ -1,1 +1,6 @@
-<ish-account-overview-page [user]="user$ | async"></ish-account-overview-page>
+<ish-account-overview-page
+  [user]="user$ | async"
+  [orders]="orders$ | async"
+></ish-account-overview-page>
+
+<ish-loading *ngIf="loading$ | async"></ish-loading>
