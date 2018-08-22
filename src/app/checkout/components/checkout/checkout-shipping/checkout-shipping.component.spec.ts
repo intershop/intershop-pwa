@@ -72,7 +72,7 @@ describe('Checkout Shipping Component', () => {
 
   it('should render an error if the user has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
-    expect(() => fixture.detectChanges()).toThrow();
+    fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 
