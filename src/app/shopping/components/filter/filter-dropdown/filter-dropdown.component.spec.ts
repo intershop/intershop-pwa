@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 import { IconModule } from '../../../../core/icon.module';
 import { Filter } from '../../../../models/filter/filter.model';
@@ -15,7 +15,7 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule, CollapseModule.forRoot(), IconModule],
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule, NgbCollapseModule, IconModule],
       declarations: [FilterDropdownComponent],
     }).compileComponents();
   }));
@@ -55,7 +55,7 @@ describe('Filter Dropdown Component', () => {
       expect(selectedFilterFacet.textContent).toContain('Logitech');
 
       const hiddenFilters = element.querySelector('div [data-testing-id=collapseFilterBrands]');
-      expect(hiddenFilters.getAttribute('style')).toContain('display: none;');
+      expect(hiddenFilters.className).not.toContain('show');
     })
   );
 });

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 
@@ -27,7 +27,7 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
 
   destroy$ = new Subject();
 
-  constructor(public bsModalRef: BsModalRef, private store: Store<QuotingState>) {}
+  constructor(public ngbActiveModal: NgbActiveModal, private store: Store<QuotingState>) {}
 
   ngOnInit() {
     this.activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));

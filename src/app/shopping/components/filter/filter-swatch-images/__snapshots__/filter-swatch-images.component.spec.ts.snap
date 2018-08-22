@@ -36,12 +36,9 @@ exports[`Filter Swatch Images Component should be created 1`] = `
       
     </h3>
     <ul
-      aria-expanded="true"
-      aria-hidden="false"
-      class="filter-list clearfix collapse in show"
+      class="filter-list clearfix collapse show"
       id="collapseFilter"
-      ng-reflect-collapse="false"
-      style="overflow: visible; height: auto; display: block;"
+      ng-reflect-collapsed="false"
     >
       
       

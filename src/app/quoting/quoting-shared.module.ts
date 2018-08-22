@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FormsSharedModule } from '../forms/forms-shared.module';
 import { SharedLineItemListModule } from '../shared/shared-line-item-list.module';
@@ -14,7 +14,7 @@ import { QuoteStateComponent } from './components/quote-state/quote-state.compon
 import { ProductAddToQuoteDialogContainerComponent } from './containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 
 @NgModule({
-  imports: [CommonModule, FormsSharedModule, SharedModule, SharedLineItemListModule, ModalModule.forRoot()],
+  imports: [CommonModule, FormsSharedModule, SharedModule, SharedLineItemListModule, NgbModalModule],
   declarations: [
     BasketAddToQuoteComponent,
     ProductAddToQuoteComponent,

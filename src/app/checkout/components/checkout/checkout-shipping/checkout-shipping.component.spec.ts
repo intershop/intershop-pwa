@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 
 import { IconModule } from '../../../../core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
@@ -36,7 +36,7 @@ describe('Checkout Shipping Component', () => {
           inputs: ['basket'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), PopoverModule.forRoot(), RouterTestingModule, FormsSharedModule, IconModule],
+      imports: [TranslateModule.forRoot(), NgbPopoverModule, RouterTestingModule, FormsSharedModule, IconModule],
     }).compileComponents();
   }));
 

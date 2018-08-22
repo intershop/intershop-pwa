@@ -38,11 +38,10 @@
               <span [innerHTML]="shippingMethod.description"></span>
             </ng-template>
             <a class="details-tooltip"
-              [popover]="ShippingMethodDescription"
+              [ngbPopover]="ShippingMethodDescription"
               placement="top"
             >
               {{'checkout.detail.text' | translate }}
-              <!-- <span class="glyphicon glyphicon-info-sign"></span> -->
               <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
            </a>
           </label>

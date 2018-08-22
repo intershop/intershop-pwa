@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 export interface ModalOptions {
   /**
@@ -7,11 +7,10 @@ export interface ModalOptions {
    */
   titleText: string;
   /**
-   * Additional CSS classes for styling purposes,
-   * e.g. for sizing:
-   *   'modal-lg': large, 'modal-sm': small, 'modal-md': medium (default)
+   * size attribute
+   *   'lg': large, 'sm': small, 'md': medium (default)
    */
-  modalClass?: string;
+  size?: 'sm' | 'lg';
   /**
    * Optional modal confirm button text.
    */
@@ -50,12 +49,12 @@ export class ModalDialogComponent {
   // tslint:disable-next-line:no-any
   modalDialogTemplate: TemplateRef<any>;
 
-  bsModalDialog: BsModalRef;
+  ngbModalRef: NgbModalRef;
 
   // tslint:disable-next-line:no-any
   data: any;
 
-  constructor(private bsModalService: BsModalService) {}
+  constructor(private ngbModal: NgbModal) {}
 
   /**
    * Configure and show modal dialog.
@@ -66,16 +65,16 @@ export class ModalDialogComponent {
       this.data = data;
     }
 
-    const modalClass = this.options && this.options.modalClass ? this.options.modalClass : '';
+    const size = this.options && this.options.size ? this.options.size : undefined;
 
-    this.bsModalDialog = this.bsModalService.show(this.modalDialogTemplate, { class: modalClass });
+    this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, { size });
   }
 
   /**
    * Hides modal dialog.
    */
   hide() {
-    this.bsModalDialog.hide();
+    this.ngbModalRef.close();
   }
 
   /**

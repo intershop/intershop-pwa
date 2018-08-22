@@ -1,14 +1,14 @@
 <!-- NEEDS_WORK: DUMMY COMPONENT -->
 <div class="homepage">
-  <carousel [showIndicators]="false">
-    <slide>
+  <ngb-carousel [showNavigationIndicators]="false">
+     <ng-template ngbSlide>
       <img src="assets/teaser_img/home_teaser_1.jpg" alt="First slide">
-    </slide>
-    <slide>
+    </ng-template>
+     <ng-template ngbSlide>
       <img src="assets/teaser_img/home_teaser_2.jpg" alt="Second slide">
-    </slide>
-    <slide>
+    </ng-template>
+     <ng-template ngbSlide>
       <img src="assets/teaser_img/home_teaser_3.jpg" alt="Third slide">
-    </slide>
-  </carousel>
+    </ng-template>
+  </ngb-carousel>
 </div>

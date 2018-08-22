@@ -2,7 +2,6 @@
 
   <h3 (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseFilter">
     {{filterElement.name}}
-    <!-- <span class="glyphicon float-right" [ngClass]="{'glyphicon-chevron-down' : !isCollapsed, 'glyphicon-chevron-right' : isCollapsed}"></span> -->
     <fa-icon *ngIf="!isCollapsed; else collapsed" class="float-right" [icon]="['fas', 'angle-down']"></fa-icon>
     <ng-template #collapsed>
       <fa-icon class="float-right" [icon]="['fas', 'angle-right']"></fa-icon>
@@ -17,14 +16,13 @@
         <span class="icon-selected"></span>{{facet.link.title}}
         <!--- TODO: implement delete filter -->
         <a class="filter-clear">
-          <!-- <span class="glyphicon glyphicon-minus float-right"></span> -->
           <fa-icon class="float-right" [icon]="['fas', 'minus']"></fa-icon>
         </a>
       </li>
     </ng-container>
   </ul>
 
-  <ul class="filter-list" id="collapseFilter" [collapse]="isCollapsed">
+  <ul class="filter-list" id="collapseFilter" [ngbCollapse]="isCollapsed">
     <ng-container *ngFor="let facet of filterElement.facets">
       <li *ngIf="!facet.selected && facet.name !== 'Show all'" class="filter-item">
         <!--- TODO: add filter count -->

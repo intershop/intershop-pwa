@@ -20,7 +20,6 @@
           <ul class="customer-info d-none d-md-block">
             <li>
               <fa-icon [icon]="['fas', 'phone']" class="header-icon"></fa-icon>
-              <!-- <span class="glyphicon-phone-alt glyphicon glyphicon-header-icon"></span> -->
               {{'common.header.contact_no.text' | translate}}
             </li>
           </ul>
@@ -60,7 +59,7 @@
 </div>
 
 <div class="bottom-header">
-  <nav class="global-nav navbar-expand-md" [collapse]="navbarCollapsed">
+  <nav class="global-nav navbar-expand-md" [ngbCollapse]="navbarCollapsed">
     <div class="container">
       <div class="row">
         <div class="main-navigation col-md-8 col-lg-9" role="navigation">
