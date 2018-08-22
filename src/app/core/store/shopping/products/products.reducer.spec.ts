@@ -105,4 +105,41 @@ describe('Products Reducer', () => {
       });
     });
   });
+
+  describe('LoadProductVariations actions', () => {
+    describe('LoadProductVariations action', () => {
+      it('should set loading to true', () => {
+        const action = new fromActions.LoadProductVariations({ sku: '123' });
+        const state = productsReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+        expect(state.variations).toBeEmpty();
+      });
+    });
+
+    describe('LoadProductVariationsSuccess action', () => {
+      it('should set product variation data and set loading to false', () => {
+        const payload = {
+          sku: 'SKU',
+          variations: [],
+        };
+
+        const action = new fromActions.LoadProductVariationsSuccess(payload);
+        const state = productsReducer(initialState, action);
+
+        expect(state.variations[payload.sku]).toEqual(payload.variations);
+        expect(state.loading).toBeFalse();
+      });
+    });
+
+    describe('LoadProductVariationsFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.LoadProductVariationsFail({ error });
+        const state = productsReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
 });

@@ -15,7 +15,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { ProductType } from 'ish-core/models/product/product.types';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { ProductsService } from '../../../services/products/products.service';
@@ -110,6 +112,21 @@ export class ProductsEffects {
   );
 
   /**
+   * The load product variations effect.
+   */
+  @Effect()
+  loadProductVariations$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductVariations>(productsActions.ProductsActionTypes.LoadProductVariations),
+    mapToPayloadProperty('sku'),
+    mergeMap(sku =>
+      this.productsService.getProductVariations(sku).pipe(
+        map(payload => new productsActions.LoadProductVariationsSuccess(payload)),
+        mapErrorToAction(productsActions.LoadProductVariationsFail)
+      )
+    )
+  );
+
+  /**
    * Trigger load product action if productMasterSKU is set in product success action payload.
    * Ignores products that are already present.
    */
@@ -120,6 +137,20 @@ export class ProductsEffects {
     withLatestFrom(this.store.pipe(select(productsSelectors.getProductEntities))),
     filter(([product, entities]) => product.productMasterSKU && !entities[product.productMasterSKU]),
     map(([product]) => new productsActions.LoadProduct({ sku: product.productMasterSKU }))
+  );
+
+  /**
+   * Trigger load product variations action on product success action for master products.
+   * Ignores product variation entries for products that are already present.
+   */
+  @Effect()
+  loadProductVariationsForMasterProduct$ = this.actions$.pipe(
+    ofType<productsActions.LoadProductSuccess>(productsActions.ProductsActionTypes.LoadProductSuccess),
+    map(action => action.payload.product as VariationProductMaster),
+    withLatestFrom(this.store.pipe(select(productsSelectors.getProductVariations))),
+    filter(([product]) => product.type === ProductType.VariationProductMaster),
+    filter(([product, variations]) => !variations[product.sku]),
+    map(([product]) => new productsActions.LoadProductVariations({ sku: product.sku }))
   );
 
   @Effect()
