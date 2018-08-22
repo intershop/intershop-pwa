@@ -1,9 +1,16 @@
-# [0.4.0](https://repository.intershop.de//releases/com/intershop/public/source/intershop-pwa/0.4.0/) (2018-XX-XX)
+# 0.4.0 (2018-08-22)
 
 ### Features
 
 * migration to Bootstrap 4
 * migration from Less to Sass
+* replace ngx-bootstrap with ng-bootstrap
+* add Endless Scrolling for Family Pages including SEO adaptions
+
+### Bug Fixes
+
+* repair state transfer to work with ngrx state management
+* improve mobile menu handling
 
 
 # [0.3.0](https://repository.intershop.de//releases/com/intershop/public/source/intershop-pwa/0.3.0/) (2018-08-08)
