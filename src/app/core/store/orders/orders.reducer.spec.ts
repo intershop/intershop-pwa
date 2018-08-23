@@ -1,3 +1,4 @@
+import { CreateOrderSuccess } from '../../../checkout/store/basket/basket.actions';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Order } from '../../../models/order/order.model';
 
@@ -52,6 +53,27 @@ describe('Orders Reducer', () => {
         expect(state.ids).toHaveLength(1);
         expect(state.entities[order.id]).toEqual(order);
       });
+    });
+  });
+
+  describe('CreateOrdersSuccess action', () => {
+    it('should add new order to initial state and select it', () => {
+      const order = { id: 'orderid' } as Order;
+      const action = new CreateOrderSuccess(order);
+      const state = ordersReducer(initialState, action);
+
+      expect(state.entities[order.id]).toEqual(order);
+      expect(state.selected).toEqual(order.id);
+    });
+  });
+
+  describe('SelectOrder action', () => {
+    it('should write the selected order to the state', () => {
+      const order = { id: 'orderid' } as Order;
+      const action = new fromActions.SelectOrder(order.id);
+      const state = ordersReducer(initialState, action);
+
+      expect(state.selected).toEqual(order.id);
     });
   });
 

@@ -11,8 +11,8 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { LogEffects } from '../../../utils/dev/log.effects';
 import { coreReducers } from '../core.system';
 
-import { LoadOrders, LoadOrdersFail, LoadOrdersSuccess } from './orders.actions';
-import { getOrders, getOrdersLoading } from './orders.selectors';
+import { LoadOrders, LoadOrdersFail, LoadOrdersSuccess, SelectOrder } from './orders.actions';
+import { getOrders, getOrdersLoading, getSelectedOrder, getSelectedOrderId } from './orders.selectors';
 
 describe('Orders Selectors', () => {
   let store$: LogEffects;
@@ -48,6 +48,11 @@ describe('Orders Selectors', () => {
     it('should not select any orders if no data are loaded', () => {
       expect(getOrders(store$.state)).toBeEmpty();
       expect(getOrdersLoading(store$.state)).toBeFalse();
+    });
+
+    it('should not select a current order if no data are loaded', () => {
+      expect(getSelectedOrder(store$.state)).toBeUndefined();
+      expect(getSelectedOrderId(store$.state)).toBeUndefined();
     });
   });
 
@@ -87,6 +92,20 @@ describe('Orders Selectors', () => {
         expect(getOrdersLoading(store$.state)).toBeFalse();
         expect(getOrders(store$.state)).toBeEmpty();
       });
+    });
+  });
+  describe('select order', () => {
+    beforeEach(() => {
+      store$.dispatch(new LoadOrdersSuccess(orders));
+      store$.dispatch(new SelectOrder(orders[1].id));
+    });
+    it('should get a certain order if they are loaded orders', () => {
+      expect(getSelectedOrder(store$.state).id).toEqual(orders[1].id);
+    });
+
+    it('should not get any order if the previously selected order was not found', () => {
+      store$.dispatch(new SelectOrder('invalid'));
+      expect(getSelectedOrder(store$.state)).toBeUndefined();
     });
   });
 });
