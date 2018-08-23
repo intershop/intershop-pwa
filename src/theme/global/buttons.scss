@@ -37,14 +37,23 @@
   }
 
   &.btn-primary {
-    background-color: $button-primary-bg;
     border-color: $button-primary-border;
+
+    &:hover {
+      border-color: darken($button-primary-border, 10%);
+    }
   }
 
   &.btn-secondary {
     color: $button-default-color;
     background-color: $button-default-bg;
     border-color: $button-default-border;
+
+    &:hover {
+      //color: $button-default-color;
+      background-color: darken($button-default-bg, 10%);
+      border-color: darken($button-default-border, 10%);
+    }
   }
 }
 

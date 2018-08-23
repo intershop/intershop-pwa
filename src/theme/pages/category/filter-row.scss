@@ -7,15 +7,27 @@
   z-index: 99999;
 
   a {
-    color: $text-color-quarternary;
     float: right;
+
+    &.grid-view-link,
+    &.grid-view-link:hover,
+    &.grid-view-link:focus,
+    &.list-view-link,
+    &.list-view-link:hover,
+    &.list-view-link:focus {
+      color: $text-color-quarternary;
+    }
 
     &.grid-view-link {
       margin-right: $space-default;
     }
 
     &.grid-active,
-    &.list-active {
+    &.grid-active:hover,
+    &.grid-active:focus,
+    &.list-active,
+    &.list-active:hover,
+    &.list-active:focus {
       color: $text-color-corporate;
     }
 

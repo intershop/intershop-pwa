@@ -18,9 +18,8 @@
   }
 
   h3 {
-    span {
+    .ng-fa-icon {
       color: $text-color-corporate;
-      font-size: 12px;
     }
   }
 
@@ -222,7 +221,7 @@ label {
 }
 
 .filter-clear .ng-fa-icon {
-  font-size: 10px;
+  font-size: $font-size-base * 0.85;
   line-height: 14px;
 }
 
