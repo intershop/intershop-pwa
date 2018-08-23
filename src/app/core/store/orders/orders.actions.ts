@@ -4,10 +4,16 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Order } from '../../../models/order/order.model';
 
 export enum OrdersActionTypes {
+  SelectOrder = '[Account] Select Order',
   LoadOrders = '[Account] Load Orders',
   LoadOrdersFail = '[Account API] Load Orders Fail',
   LoadOrdersSuccess = '[Account API] Load Orders Success',
   ResetOrders = '[Account API] Reset Orders',
+}
+
+export class SelectOrder implements Action {
+  readonly type = OrdersActionTypes.SelectOrder;
+  constructor(public payload: string) {}
 }
 
 export class LoadOrders implements Action {
@@ -28,4 +34,4 @@ export class ResetOrders implements Action {
   readonly type = OrdersActionTypes.ResetOrders;
 }
 
-export type OrdersAction = LoadOrders | LoadOrdersFail | LoadOrdersSuccess | ResetOrders;
+export type OrdersAction = SelectOrder | LoadOrders | LoadOrdersFail | LoadOrdersSuccess | ResetOrders;

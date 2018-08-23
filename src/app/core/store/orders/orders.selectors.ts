@@ -9,7 +9,26 @@ import { orderAdapter } from './orders.reducer';
 
 const getOrdersState = (state: CoreState) => state.orders;
 
-const { selectAll: getOrdersInternal } = orderAdapter.getSelectors(getOrdersState);
+const { selectEntities: getOrderEntities, selectAll: getOrdersInternal } = orderAdapter.getSelectors(getOrdersState);
+
+export const getSelectedOrderId = createSelector(getOrdersState, state => state.selected);
+
+export const getSelectedOrder = createSelector(
+  getOrderEntities,
+  getSelectedOrderId,
+  getProductEntities,
+  (entities, id, products): OrderView =>
+    !id || !entities[id]
+      ? undefined
+      : {
+          ...entities[id],
+          itemsCount: BasketHelper.getBasketItemsCount(entities[id].lineItems),
+          lineItems: entities[id].lineItems.map(li => ({
+            ...li,
+            product: products[li.productSKU],
+          })),
+        }
+);
 
 export const getOrdersLoading = createSelector(getOrdersState, orders => orders.loading);
 

@@ -4,6 +4,18 @@ import { Order } from '../../../models/order/order.model';
 import * as fromActions from './orders.actions';
 
 describe('Orders Actions', () => {
+  describe('Select Order Action', () => {
+    it('should create new action for Select Order', () => {
+      const payload = 'orderid';
+      const action = new fromActions.SelectOrder(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.OrdersActionTypes.SelectOrder,
+        payload,
+      });
+    });
+  });
+
   describe('LoadProduct Actions', () => {
     it('should create new action for LoadOrders', () => {
       const action = new fromActions.LoadOrders();
