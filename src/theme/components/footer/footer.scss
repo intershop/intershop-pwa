@@ -47,7 +47,8 @@ footer {
   }
 
   li {
-    a {
+    a,
+    a:not([href]):not([tabindex]) {
       color: $text-color-quarternary;
       text-decoration: none;
       font-family: $font-family-condensedregular;
@@ -68,6 +69,7 @@ footer {
 .copyright {
   padding: ($space-default * 3) ($space-default) 0;
   font-size: 12px;
+  width: 100%;
 }
 
 @media (max-width: $screen-xs-max) {
@@ -91,7 +93,6 @@ footer {
   }
 
   .link-group-icon {
-    font-size: 14px;
     color: $text-color-corporate;
     float: right;
     cursor: pointer;

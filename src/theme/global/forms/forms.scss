@@ -1,3 +1,7 @@
+.form-check {
+  padding-left: 0;
+}
+
 .server-error {
   // TODO: (Bootstrap 4) form-control-validation no longer an existing mixin
   // @include form-control-validation($state-danger-text, $state-danger-text, $state-danger-bg);
