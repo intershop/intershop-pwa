@@ -1,0 +1,19 @@
+<div *ngIf="getConfigurationParameterValue(pagelet, 'Products') && getConfigurationParameterValue(pagelet, 'Products').length > 0" class="product-list-container" [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')">
+  <h2 *ngIf="getConfigurationParameterValue(pagelet, 'Title')">{{ getConfigurationParameterValue(pagelet, 'Title') }}</h2>
+  <div class="product-list row">
+    <div *ngFor="let product of getConfigurationParameterValue(pagelet, 'Products')"
+      class="product-list-item"
+      [ngClass]="getConfigurationParameterValue(pagelet, 'ListItemCSSClass')"
+    >
+      <ish-product-tile-container
+        [productSku]="product.split('@')[0]"
+      ></ish-product-tile-container>
+    </div>
+  </div>
+</div>
+
+<!-- TODO: (CMS Component Configuration)
+  ProductView
+  ListStyle
+  SlideItems
+-->
