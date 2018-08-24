@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { Store, combineReducers } from '@ngrx/store';
+import { cold } from 'jest-marbles';
+import { deepEqual, spy, verify } from 'ts-mockito';
 
 import { ContentInclude } from '../../../models/content-include/content-include.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { ContentIncludesService } from '../../services/content-includes/content-includes.service';
+import { ngrxTesting } from '../../../utils/dev/ngrx-testing';
+import { contentReducers } from '../../store/content.system';
+import { LoadContentInclude, LoadContentIncludeSuccess } from '../../store/includes';
 
 import { ContentIncludeContainerComponent } from './content-include.container';
 
@@ -12,34 +15,34 @@ describe('Content Include Container', () => {
   let component: ContentIncludeContainerComponent;
   let fixture: ComponentFixture<ContentIncludeContainerComponent>;
   let element: HTMLElement;
-  let includeId: string;
-  let contentIncludesServiceMock: ContentIncludesService;
+  let include: ContentInclude;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
-    contentIncludesServiceMock = mock(ContentIncludesService);
-    when(contentIncludesServiceMock.getContentInclude(anyString())).thenReturn(
-      of({
-        displayName: 'test.include',
-        definitionQualifiedName: 'test.include-Include',
-        pagelets: [],
-      } as ContentInclude)
-    );
+    include = {
+      id: 'test.include',
+      displayName: 'test.include',
+      definitionQualifiedName: 'test.include-Include',
+      pagelets: [],
+    } as ContentInclude;
 
     TestBed.configureTestingModule({
       declarations: [
         ContentIncludeContainerComponent,
         MockComponent({ selector: 'ish-content-pagelet', template: 'Content Pagelet', inputs: ['pagelet'] }),
       ],
-      imports: [],
-      providers: [{ provide: ContentIncludesService, useFactory: () => instance(contentIncludesServiceMock) }],
+      imports: ngrxTesting({
+        content: combineReducers(contentReducers),
+      }),
     }).compileComponents();
+
+    store$ = TestBed.get(Store);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentIncludeContainerComponent);
     component = fixture.componentInstance;
-    includeId = 'test.include';
-    component.includeId = includeId;
+    component.includeId = include.displayName;
     element = fixture.nativeElement;
   });
 
@@ -47,5 +50,24 @@ describe('Content Include Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should dispatch a content loading action on ngOnInit', () => {
+    const storeSpy$ = spy(store$);
+
+    fixture.detectChanges();
+
+    verify(storeSpy$.dispatch(deepEqual(new LoadContentInclude('test.include')))).once();
+  });
+
+  describe('with content', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+      store$.dispatch(new LoadContentIncludeSuccess(include));
+    });
+
+    it('should have the matching include available for rendering', () => {
+      expect(component.contentInclude$).toBeObservable(cold('a', { a: include }));
+    });
   });
 });
