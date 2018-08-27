@@ -1,8 +1,8 @@
-import { Attribute } from '../attribute/attribute.model';
+import { VariationAttribute } from '../variation-attribute/variation-attribute.model';
 
 import { Product } from './product.model';
 
 export interface VariationProduct extends Product {
-  variationAttributes?: Attribute[];
+  variableVariationAttributes?: VariationAttribute[];
   productMasterSKU: string;
 }

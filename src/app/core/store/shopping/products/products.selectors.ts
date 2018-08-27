@@ -1,7 +1,9 @@
 import { createSelector } from '@ngrx/store';
 
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
-import { Product } from '../../../models/product/product.model';
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { Product, ProductType } from '../../../models/product/product.model';
 import { getCategoryTree } from '../categories';
 import { ShoppingState, getShoppingState } from '../shopping-store';
 
@@ -35,11 +37,6 @@ export const getSelectedProduct = createSelector(
   (tree, entities, id) => createProductView(entities[id], tree)
 );
 
-export const getProductLoading = createSelector(
-  getProductsState,
-  products => products.loading
-);
-
 export const getProduct = createSelector(
   getCategoryTree,
   getProductEntities,
@@ -54,4 +51,41 @@ export const getProduct = createSelector(
 export const getProductVariations = createSelector(
   getProductsState,
   products => products.variations
+);
+
+export const getSelectedProductVariations = createSelector(
+  getSelectedProduct,
+  getProductVariations,
+  (product, variations) => {
+    if (product && product.type === ProductType.VariationProductMaster && variations[product.sku]) {
+      return variations[product.sku];
+    }
+    if (
+      product &&
+      product.type === ProductType.VariationProduct &&
+      variations[(product as VariationProduct).productMasterSKU]
+    ) {
+      return variations[(product as VariationProduct).productMasterSKU];
+    }
+
+    return [];
+  }
+);
+
+export const getSelectedMasterProduct = createSelector(
+  getProductEntities,
+  getSelectedProduct,
+  (entities, product): VariationProductMaster => {
+    if (product && product.type === ProductType.VariationProductMaster) {
+      return product as VariationProductMaster;
+    }
+    if (product && product.type === ProductType.VariationProduct) {
+      return entities[(product as VariationProduct).productMasterSKU] as VariationProductMaster;
+    }
+  }
+);
+
+export const getProductLoading = createSelector(
+  getProductsState,
+  products => products.loading
 );

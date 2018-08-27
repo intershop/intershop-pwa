@@ -117,13 +117,14 @@ export class ProductMapper {
     if (data.productMaster) {
       return {
         ...product,
-        variationProducts: [],
+        variationAttributeValues: data.variationAttributeValues,
         type: ProductType.VariationProductMaster,
       };
     } else if (data.mastered) {
       return {
         ...product,
         productMasterSKU: data.productMasterSKU,
+        variableVariationAttributes: data.variableVariationAttributes,
         type: ProductType.VariationProduct,
       };
     } else {
