@@ -1,9 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
+import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
+import { VariationProduct } from 'ish-core/models/product/product-variation.model';
+import { VariationLink } from 'ish-core/models/variation-link/variation-link.model';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product } from '../../../models/product/product.model';
+import { Product, ProductType } from '../../../models/product/product.model';
 import { shoppingReducers } from '../shopping-store.module';
 
 import {
@@ -21,8 +24,10 @@ import {
   getProductLoading,
   getProductVariations,
   getProducts,
+  getSelectedMasterProduct,
   getSelectedProduct,
   getSelectedProductId,
+  getSelectedProductVariations,
 } from './products.selectors';
 
 describe('Products Selectors', () => {
@@ -158,6 +163,99 @@ describe('Products Selectors', () => {
         expect(getProductLoading(store$.state)).toBeFalse();
         expect(getProductVariations(store$.state)).toBeEmpty();
       });
+    });
+  });
+
+  describe('select product variations', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new LoadProductSuccess({
+          product: {
+            sku: 'MSKU',
+            type: ProductType.VariationProductMaster,
+          } as VariationProductMaster,
+        })
+      );
+
+      store$.dispatch(
+        new LoadProductSuccess({
+          product: {
+            sku: 'SKU',
+            productMasterSKU: 'MSKU',
+            type: ProductType.VariationProduct,
+          } as VariationProduct,
+        })
+      );
+
+      store$.dispatch(
+        new LoadProductVariationsSuccess({
+          sku: 'MSKU',
+          variations: [
+            {
+              title: 'VL',
+            } as VariationLink,
+          ],
+        })
+      );
+    });
+
+    it('should set selected variations of master product if master product is selected', () => {
+      store$.dispatch(new SelectProduct({ sku: 'MSKU' }));
+
+      expect(getSelectedProductVariations(store$.state)[0].title).toEqual('VL');
+    });
+
+    it('should set selected variations of master product if variation product is selected', () => {
+      store$.dispatch(new SelectProduct({ sku: 'SKU' }));
+
+      expect(getSelectedProductVariations(store$.state)[0].title).toEqual('VL');
+    });
+
+    it('should not selected variations for unknown product', () => {
+      store$.dispatch(new SelectProduct({ sku: 'USKU' }));
+
+      expect(getSelectedProductVariations(store$.state)).toBeEmpty();
+    });
+  });
+
+  describe('select master product', () => {
+    beforeEach(() => {
+      store$.dispatch(
+        new LoadProductSuccess({
+          product: {
+            sku: 'MSKU',
+            type: ProductType.VariationProductMaster,
+          } as VariationProductMaster,
+        })
+      );
+
+      store$.dispatch(
+        new LoadProductSuccess({
+          product: {
+            sku: 'SKU',
+            productMasterSKU: 'MSKU',
+            type: ProductType.VariationProduct,
+          } as VariationProduct,
+        })
+      );
+    });
+
+    it('should set selected master product if variation product is selected', () => {
+      store$.dispatch(new SelectProduct({ sku: 'SKU' }));
+
+      expect(getSelectedMasterProduct(store$.state).sku).toEqual('MSKU');
+    });
+
+    it('should set selected master product if master product is selected', () => {
+      store$.dispatch(new SelectProduct({ sku: 'MSKU' }));
+
+      expect(getSelectedMasterProduct(store$.state).sku).toEqual('MSKU');
+    });
+
+    it('should not selected variations for unknown product', () => {
+      store$.dispatch(new SelectProduct({ sku: 'USKU' }));
+
+      expect(getSelectedMasterProduct(store$.state)).toBeUndefined();
     });
   });
 });

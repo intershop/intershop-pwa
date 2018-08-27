@@ -1,0 +1,16 @@
+<form [formGroup]="form" class="product-variation-container">
+  <div *ngFor="let item of controlMetaItems" class="product-variation">
+    <div class="form-group">
+      <label [for]="item.id"  class="col-form-label" >{{ item.label }}</label>
+      <select class="form-control"
+        [id]="item.id"
+        [formControlName]="item.id"
+        [attr.data-testing-id]="item.id"
+      >
+        <option *ngFor="let option of selectOptions[item.id]" [value]="option.value">
+          {{ option.label }} <span *ngIf="option.alternativeCombination === true"> - {{ 'product.available_in_different_configuration' | translate }}</span>
+        </option>
+      </select>
+    </div>
+  </div>
+</form>

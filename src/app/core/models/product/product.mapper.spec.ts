@@ -6,7 +6,7 @@ import { configurationReducer } from 'ish-core/store/configuration/configuration
 import { Attribute } from '../attribute/attribute.model';
 import { ImageMapper } from '../image/image.mapper';
 
-import { VariationProduct } from './product-variation.model';
+import { VariationProductMaster } from './product-variation-master.model';
 import { ProductData, ProductDataStub } from './product.interface';
 import { ProductMapper } from './product.mapper';
 import { Product, ProductHelper, ProductType } from './product.model';
@@ -64,15 +64,15 @@ describe('Product Mapper', () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         productMaster: true,
-        variableVariationAttributes: [],
+        variationAttributeValues: [],
       } as ProductData);
       expect(product).toBeTruthy();
       expect(product.type === ProductType.VariationProductMaster).toBeTruthy();
       expect(ProductHelper.isMasterProduct(product)).toBeTruthy();
-      expect((product as VariationProduct).variationAttributes).toBeFalsy();
+      expect((product as VariationProductMaster).variationAttributeValues).toBeEmpty();
     });
 
-    it(`should return Product without variationAttributes when getting a ProductData with productMaster = false`, () => {
+    it(`should return Product with variationAttributes when getting a ProductData with productMaster = false`, () => {
       const product: Product = productMapper.fromData({
         sku: '1',
         productMaster: false,
@@ -82,7 +82,7 @@ describe('Product Mapper', () => {
       expect(product.type === ProductType.Product).toBeTruthy();
       expect(product.type === ProductType.VariationProduct).toBeFalsy();
       expect(ProductHelper.isMasterProduct(product)).toBeFalsy();
-      expect((product as VariationProduct).variationAttributes).toBeFalsy();
+      expect((product as VariationProductMaster).variationAttributeValues).toBeFalsy();
     });
   });
 
