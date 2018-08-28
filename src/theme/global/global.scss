@@ -12,6 +12,12 @@
   padding-right: ($grid-gutter-width / 2);
 }
 
+.loading-container {
+  position: relative;
+  min-height: 50px;
+  min-width: 50px;
+}
+
 body {
   font-family: $font-family-base;
 }
@@ -130,7 +136,7 @@ img.marketing {
 }
 
 //
-// Text alignments
+// Text alignments: ToDo - should be deleted and replaced by bootstrap standard classes, e.g. .text-lg-right
 .text-right-lg {
   @media (min-width: $screen-lg-min) {
     text-align: right;
@@ -178,6 +184,8 @@ img.marketing {
     text-align: left;
   }
 }
+
+// end should be deleted
 
 // Detail links and tooltips
 [data-toggle='popover'] {

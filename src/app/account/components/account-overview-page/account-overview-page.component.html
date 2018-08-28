@@ -23,11 +23,10 @@
 <!-- Latest orders list -->
 <h2>{{ 'account.order.most_recent.heading' | translate }}</h2>
 <div class="section">
-  <ish-order-list
-    [orders]="orders"
+  <ish-order-list-container
     maxListItems="5"
     [compact]="true"
-  ></ish-order-list>
+  ></ish-order-list-container>
 
   <a routerLink="/account/orders">{{ 'account.order.view_all_order.link' | translate }}</a>
 </div>

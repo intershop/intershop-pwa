@@ -5,8 +5,9 @@ import { SharedAddressModule } from '../shared/shared-address.module';
 import { SharedModule } from '../shared/shared.module';
 
 import { OrderListComponent } from './components/order-list/order-list.component';
+import { OrderListContainerComponent } from './containers/order-list/order-list.container';
 
-const sharedComponents = [OrderListComponent];
+const sharedComponents = [OrderListContainerComponent, OrderListComponent];
 @NgModule({
   imports: [CommonModule, SharedModule, SharedAddressModule],
   declarations: [...sharedComponents],
