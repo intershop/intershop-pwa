@@ -26,21 +26,24 @@
           (deleteItem)="onDeleteItem($event)"
         ></ish-line-item-list>
 
-        <div class="d-md-flex justify-content-between">
-          <ish-basket-add-to-quote
-            *ishFeature="'quoting'"
-            (basketToQuote)="onAddToQuote()"
-          ></ish-basket-add-to-quote>
-
+        <div class="clearfix">
+          <div class="float-md-left">
+            <ish-basket-add-to-quote
+              *ishFeature="'quoting'"
+              (basketToQuote)="onAddToQuote()"
+            ></ish-basket-add-to-quote>
+          </div>
           <button
             type="submit"
             data-testing-id="button-update-cart"
             [disabled]="form.invalid"
-            class="btn btn-secondary"
-           >
+            class="btn btn-secondary float-md-right"
+            >
             {{'shopping_cart.update.quantity.button.label' | translate }}
           </button>
         </div>
+
+        <a routerLink="/home" class="text-nowrap btn btn-link ">{{ 'shopping_cart.detailed.continue_shopping.link' | translate }}</a>
       </div>
 
       <div class="col-md-12 col-lg-4 order-summary">

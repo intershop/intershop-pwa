@@ -42,6 +42,12 @@ a:not([href]):not([tabindex]) {
   color: $CORPORATE-PRIMARY;
 }
 
+a:not([href]):not([tabindex]) {
+  &:hover {
+    color: $CORPORATE-SECONDARY;
+  }
+}
+
 a {
   cursor: pointer;
   &:hover,
@@ -179,6 +185,10 @@ img.marketing {
     padding-left: $space-default/4;
     font-size: 120%;
   }
+}
+
+.popover-header {
+  margin-top: 0;
 }
 
 .details-link,
