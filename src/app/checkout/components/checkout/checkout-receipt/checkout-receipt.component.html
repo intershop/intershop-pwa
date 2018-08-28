@@ -6,7 +6,7 @@
     <div class="section">
       <p>
         <span>{{ 'checkout.order.number.label' | translate }}</span>
-        <strong data-testing-id="order-document-number">{{ order.documentNo }}</strong>
+        <strong data-testing-id="order-document-number"> {{ order.documentNo }}</strong>
       </p>
       <p [innerHTML]="'checkout.receipt.notification.mail.text' | translate:{'0': user.email }"></p>
     </div>
