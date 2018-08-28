@@ -15,9 +15,8 @@ describe('Order History Page Component', () => {
       declarations: [
         OrderHistoryPageComponent,
         MockComponent({
-          selector: 'ish-order-list',
-          template: 'Order List Component',
-          inputs: ['orders'],
+          selector: 'ish-order-list-container',
+          template: 'Order List Container Component',
         }),
       ],
       imports: [TranslateModule.forRoot()],
@@ -38,6 +37,6 @@ describe('Order History Page Component', () => {
 
   it('should render order list component on component', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-order-list')).toBeTruthy();
+    expect(element.querySelector('ish-order-list-container')).toBeTruthy();
   });
 });

@@ -19,9 +19,9 @@ describe('Account Overview Page Component', () => {
       declarations: [
         AccountOverviewPageComponent,
         MockComponent({
-          selector: 'ish-order-list',
-          template: 'Order List Component',
-          inputs: ['orders', 'maxListItems', 'compact'],
+          selector: 'ish-order-list-container',
+          template: 'Order List Container Component',
+          inputs: ['maxListItems', 'compact'],
         }),
       ],
       imports: [TranslateModule.forRoot(), IconModule],
@@ -50,8 +50,8 @@ describe('Account Overview Page Component', () => {
     expect(element.querySelector('h1').textContent).toContain(user.firstName);
   });
 
-  it('should render order list component on page', () => {
+  it('should render order list container component on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-order-list')).toBeTruthy();
+    expect(element.querySelector('ish-order-list-container')).toBeTruthy();
   });
 });

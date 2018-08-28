@@ -13,6 +13,10 @@ const { selectEntities: getOrderEntities, selectAll: getOrdersInternal } = order
 
 export const getSelectedOrderId = createSelector(getOrdersState, state => state.selected);
 
+/*
+  ToDo: create a helper method for the duplicated code
+  problem: type for input parameter 'products' would be 'Dictionary' which is not part of the public ngrx interface
+*/
 export const getSelectedOrder = createSelector(
   getOrderEntities,
   getSelectedOrderId,
