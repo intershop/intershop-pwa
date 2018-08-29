@@ -1,9 +1,4 @@
 
-<!-- <isset name="ValidQuote" value="#NOT isDefined(ERRORCODE_QUOTEVALIDATION)#" scope="request"/> -->
-
-<!--- IS CONTRACT -->
-<!-- <isset scope="request" name="isContract" value="false"> -->
-
 <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
 
   <!--- Error messages -->
@@ -131,7 +126,6 @@
             [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
           >
           </textarea>
-          <!-- ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea> -->
         </ng-container>
         <ng-template #staticDescription>
           <p class="form-control-plaintext">{{ quote.description }}</p>
@@ -201,14 +195,13 @@
 
       <!-- ELSE ( if type === Quote )-->
       <ng-container *ngIf="quote.type === 'Quote'">
-        <ng-container *ngIf="quote.state === 'Responded'">
-          <!-- <isif condition="#ValidQuote#"> -->
+        <ng-container *ngIf="quote.state === 'Responded' && (currentDateTime$ | async) < validToDate">
           <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
         </ng-container>
 
         <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
 
-        <button *ngIf="quote.state === 'Responded'" type="submit" id="button-reject" class="btn btn-secondary" name="refuse" (click)="reject()">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
+        <button *ngIf="quote.state === 'Responded' && (currentDateTime$ | async) < validToDate" type="submit" id="button-reject" class="btn btn-secondary" name="refuse" (click)="reject()">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
       </ng-container>
     </ng-container>
   </div>
