@@ -18,6 +18,8 @@ interface AbstractBasket<T> {
 
 export interface Basket extends AbstractBasket<BasketItem> {}
 
-export interface BasketView extends AbstractBasket<BasketItemView> {}
+export interface BasketView extends AbstractBasket<BasketItemView> {
+  itemsCount?: number;
+}
 
 export * from './basket.helper';

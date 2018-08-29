@@ -10,6 +10,6 @@ import { orderHistoryPageRoutes } from './order-history-page.routes';
 
 @NgModule({
   imports: [RouterModule.forChild(orderHistoryPageRoutes), SharedModule, AccountSharedModule],
-  declarations: [OrderHistoryPageComponent, OrderHistoryPageContainerComponent],
+  declarations: [OrderHistoryPageContainerComponent, OrderHistoryPageComponent],
 })
 export class OrderHistoryPageModule {}

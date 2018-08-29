@@ -3,7 +3,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule, combineReducers } from '@ngrx/store';
 
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { Basket } from '../../../models/basket/basket.model';
+import { Basket, BasketView } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
@@ -74,8 +74,10 @@ describe('Basket Selectors', () => {
     });
 
     it('should set loading to false and set basket state', () => {
-      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as Basket));
-      store$.dispatch(new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku' } as BasketItem]));
+      store$.dispatch(new LoadBasketSuccess({ id: 'test' } as BasketView));
+      store$.dispatch(
+        new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as BasketItem])
+      );
       store$.dispatch(new LoadBasketPaymentsSuccess([{ id: 'p_test' } as PaymentMethod]));
       expect(getBasketLoading(store$.state)).toBeFalse();
 
@@ -84,6 +86,7 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems).toHaveLength(1);
       expect(currentBasket.lineItems[0].id).toEqual('test');
       expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
+      expect(currentBasket.itemsCount).toEqual(5);
       expect(currentBasket.paymentMethod.id).toEqual('p_test');
     });
 

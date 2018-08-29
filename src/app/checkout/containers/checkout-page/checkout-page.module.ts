@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../../../core/guards/auth.guard';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { SharedAddressModule } from '../../../shared/shared-address.module';
 import { SharedLineItemListModule } from '../../../shared/shared-line-item-list.module';
 import { SharedProductModule } from '../../../shared/shared-product.module';
 import { SharedModule } from '../../../shared/shared.module';
@@ -31,6 +32,7 @@ import { checkoutPageRoutes } from './checkout-page.routes';
     ShoppingSharedModule,
     FormsSharedModule,
     SharedProductModule,
+    SharedAddressModule,
   ],
   declarations: [
     CheckoutPageContainerComponent,
