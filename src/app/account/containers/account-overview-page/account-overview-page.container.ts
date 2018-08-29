@@ -6,6 +6,10 @@ import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
 import { User } from '../../../models/user/user.model';
 
+/**
+ * The Account Overview Page Container Component renders the account overview page of a logged in user using the {@link AccountOverviewPageComponent}
+ *
+ */
 @Component({
   templateUrl: './account-overview-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

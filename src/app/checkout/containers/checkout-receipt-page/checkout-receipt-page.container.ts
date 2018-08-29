@@ -3,7 +3,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { CoreState } from '../../../core/store/core.state';
-import { getLoggedInUser, getUserRecentOrder } from '../../../core/store/user';
+import { getSelectedOrder } from '../../../core/store/orders';
+import { getLoggedInUser } from '../../../core/store/user';
 import { Order } from '../../../models/order/order.model';
 import { User } from '../../../models/user/user.model';
 import { getBasketLoading } from '../../store/basket';
@@ -22,7 +23,7 @@ export class CheckoutReceiptPageContainerComponent implements OnInit {
   constructor(private store: Store<CheckoutState | CoreState>) {}
 
   ngOnInit() {
-    this.order$ = this.store.pipe(select(getUserRecentOrder));
+    this.order$ = this.store.pipe(select(getSelectedOrder));
     this.user$ = this.store.pipe(select(getLoggedInUser));
     this.loading$ = this.store.pipe(select(getBasketLoading));
   }

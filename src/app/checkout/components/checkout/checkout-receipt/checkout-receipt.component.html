@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="order" class="row">
   <div class="col-md-12 col-lg-8">
     <p *ngIf="order.status === 'PENDING'" class="alert alert-info">{{ 'checkout.receipt.order_pending.message' | translate }}</p>
 
@@ -36,7 +36,7 @@
         <!-- Payment Method -->
         <div class="col-md-6">
           <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper">
-            <p>{{ order.paymentMethod.name }}</p>
+            <p>{{ order.paymentMethod.displayName }}</p>
           </ish-info-box>
         </div>
       </div>

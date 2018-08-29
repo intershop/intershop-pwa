@@ -10,6 +10,7 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
+import { OrderService } from '../../account/services/order/order.service';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
@@ -166,6 +167,7 @@ describe('Shopping System', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CountryService, useFactory: () => instance(countryServiceMock) },
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
+        { provide: OrderService, useFactory: () => instance(mock(OrderService)) },
         { provide: RegistrationService, useFactory: () => instance(mock(RegistrationService)) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },

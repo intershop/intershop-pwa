@@ -19,8 +19,6 @@ describe('Mobile Basket Component', () => {
         fixture = TestBed.createComponent(MobileBasketComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
-
-        component.itemCount = 0;
       });
   }));
 
