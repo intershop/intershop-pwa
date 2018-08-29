@@ -110,13 +110,13 @@ export class QuoteRequestEffects {
    * Create quote request based on selected, submited quote request from a specific user of a specific customer.
    */
   @Effect()
-  createQuoteRequestFromQuote$ = this.actions$.pipe(
-    ofType(quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuote),
+  createQuoteRequestFromQuoteRequest$ = this.actions$.pipe(
+    ofType(quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteRequest))),
     concatMap(([, currentQuoteRequest]) =>
-      this.quoteRequestService.createQuoteRequestFromQuote(currentQuoteRequest).pipe(
-        map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess(res)),
-        mapErrorToAction(quoteRequestActions.CreateQuoteRequestFromQuoteFail)
+      this.quoteRequestService.createQuoteRequestFromQuoteRequest(currentQuoteRequest).pipe(
+        map(res => new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess(res)),
+        mapErrorToAction(quoteRequestActions.CreateQuoteRequestFromQuoteRequestFail)
       )
     )
   );
@@ -195,6 +195,7 @@ export class QuoteRequestEffects {
     )
   );
 
+  // TODO: currently updating more than one item at a time is not needed. We could simplify this effect.
   /**
    * Update quote request items effect.
    * Triggers update item request if item quantity has changed and is greater zero
@@ -274,7 +275,7 @@ export class QuoteRequestEffects {
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.DeleteQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.SubmitQuoteRequestSuccess,
-      quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess,
+      quoteRequestActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.AddProductToQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess,
       quoteRequestActions.QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess,

@@ -173,30 +173,30 @@ describe('Quote Request Actions', () => {
   });
 
   describe('Create Quote Request from Quote Actions', () => {
-    it('should create new action for CreateQuoteRequestFromQuote', () => {
-      const action = new fromActions.CreateQuoteRequestFromQuote();
+    it('should create new action for CreateQuoteRequestFromQuoteRequest', () => {
+      const action = new fromActions.CreateQuoteRequestFromQuoteRequest();
 
       expect({ ...action }).toEqual({
-        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuote,
+        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest,
       });
     });
 
     it('should create new action for CreateQuoteRequestFromQuoteFail', () => {
       const payload = { message: 'error' } as HttpError;
-      const action = new fromActions.CreateQuoteRequestFromQuoteFail(payload);
+      const action = new fromActions.CreateQuoteRequestFromQuoteRequestFail(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteFail,
+        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestFail,
         payload,
       });
     });
 
     it('should create new action for CreateQuoteRequestFromQuoteSuccess', () => {
       const payload = {} as QuoteLineItemResultModel;
-      const action = new fromActions.CreateQuoteRequestFromQuoteSuccess(payload);
+      const action = new fromActions.CreateQuoteRequestFromQuoteRequestSuccess(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess,
+        type: fromActions.QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess,
         payload,
       });
     });
