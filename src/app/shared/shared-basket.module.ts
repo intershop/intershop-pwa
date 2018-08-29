@@ -8,8 +8,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IconModule } from '../core/icon.module';
 import { FormsSharedModule } from '../forms/forms-shared.module';
 
-import { LineItemDescriptionComponent } from './components/line-item-description/line-item-description.component';
-import { LineItemListComponent } from './components/line-item-list/line-item-list.component';
+import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
+import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
 import { PipesModule } from './pipes.module';
 import { SharedProductModule } from './shared-product.module';
 
@@ -28,4 +28,4 @@ import { SharedProductModule } from './shared-product.module';
   declarations: [LineItemListComponent, LineItemDescriptionComponent],
   exports: [LineItemListComponent, LineItemDescriptionComponent],
 })
-export class SharedLineItemListModule {}
+export class SharedBasketModule {}
