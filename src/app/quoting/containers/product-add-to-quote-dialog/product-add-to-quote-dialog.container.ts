@@ -42,8 +42,8 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
     this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
   }
 
-  updateQuoteRequestItems(payload: { itemId: string; quantity: number }[]) {
-    this.store.dispatch(new UpdateQuoteRequestItems(payload));
+  updateQuoteRequestItem(payload: { itemId: string; quantity: number }) {
+    this.store.dispatch(new UpdateQuoteRequestItems([payload]));
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {

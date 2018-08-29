@@ -39,8 +39,8 @@ export class BasketPageContainerComponent implements OnInit {
     this.store.dispatch(new DeleteBasketItem(itemId));
   }
 
-  updateBasketItems(formValue: { itemId: string; quantity: number }[]) {
-    this.store.dispatch(new UpdateBasketItems(formValue));
+  updateBasketItem(formValue: { itemId: string; quantity: number }) {
+    this.store.dispatch(new UpdateBasketItems([formValue]));
   }
 
   addBasketToQuote() {

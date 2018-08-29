@@ -36,12 +36,12 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
     this.user$ = this.store.pipe(select(getLoggedInUser));
   }
 
-  deleteQuoteRequestItem(payload: string) {
-    this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
+  updateQuoteRequestItem(payload: { itemId: string; quantity: number }) {
+    this.store.dispatch(new UpdateQuoteRequestItems([payload]));
   }
 
-  updateQuoteRequestItems(payload: { itemId: string; quantity: number }[]) {
-    this.store.dispatch(new UpdateQuoteRequestItems(payload));
+  deleteQuoteRequestItem(payload: string) {
+    this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {
