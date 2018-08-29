@@ -39,7 +39,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     case QuoteRequestActionTypes.UpdateQuoteRequest:
     case QuoteRequestActionTypes.DeleteQuoteRequest:
     case QuoteRequestActionTypes.SubmitQuoteRequest:
-    case QuoteRequestActionTypes.CreateQuoteRequestFromQuote:
+    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest:
     case QuoteRequestActionTypes.LoadQuoteRequestItems:
     case QuoteRequestActionTypes.AddProductToQuoteRequest:
     case QuoteRequestActionTypes.AddBasketToQuoteRequest:
@@ -56,7 +56,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     case QuoteRequestActionTypes.UpdateQuoteRequestFail:
     case QuoteRequestActionTypes.DeleteQuoteRequestFail:
     case QuoteRequestActionTypes.SubmitQuoteRequestFail:
-    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteFail:
+    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestFail:
     case QuoteRequestActionTypes.LoadQuoteRequestItemsFail:
     case QuoteRequestActionTypes.AddProductToQuoteRequestFail:
     case QuoteRequestActionTypes.AddBasketToQuoteRequestFail:
@@ -95,7 +95,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
     case QuoteRequestActionTypes.UpdateQuoteRequestSuccess:
     case QuoteRequestActionTypes.DeleteQuoteRequestSuccess:
     case QuoteRequestActionTypes.SubmitQuoteRequestSuccess:
-    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess:
+    case QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess:
     case QuoteRequestActionTypes.AddProductToQuoteRequestSuccess:
     case QuoteRequestActionTypes.AddBasketToQuoteRequestSuccess:
     case QuoteRequestActionTypes.UpdateQuoteRequestItemsSuccess:

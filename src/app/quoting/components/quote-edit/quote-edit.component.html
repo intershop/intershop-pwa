@@ -104,18 +104,6 @@
       </div>
     </ng-template>
 
-    <!--- CONTRACT - TIME FRAME -->
-    <!--
-    <isif condition="#isDefined(Quote:Timeframe)#">
-      <div class="row">
-        <label for="" class="col-4 col-md-3 col-xl-2 col-form-label"><istext key="quote.edit.unsubmitted.timeframe.label" /></label>
-        <div class="col-8 col-md-9 col-xl-10">
-          <isprint value="#Quote:Timeframe#">
-        </div>
-      </div>
-    </isif>
-    -->
-
     <div *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)" class="row form-group">
       <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
       <div class="col-8 col-md-9 col-xl-10">
