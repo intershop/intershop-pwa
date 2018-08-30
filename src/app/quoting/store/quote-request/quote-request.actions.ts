@@ -22,9 +22,9 @@ export enum QuoteRequestActionTypes {
   SubmitQuoteRequest = '[Quote] Submit Quote Request',
   SubmitQuoteRequestFail = '[Quote API] Submit Quote Request Fail',
   SubmitQuoteRequestSuccess = '[Quote API] Submit Quote Request Success',
-  CreateQuoteRequestFromQuote = '[Quote] Create Quote Request from Quote Request',
-  CreateQuoteRequestFromQuoteFail = '[Quote API] Create Quote Request from Quote Request Fail',
-  CreateQuoteRequestFromQuoteSuccess = '[Quote API] Create Quote Request from Quote Request Success',
+  CreateQuoteRequestFromQuoteRequest = '[Quote] Create Quote Request from Quote Request',
+  CreateQuoteRequestFromQuoteRequestFail = '[Quote API] Create Quote Request from Quote Request Fail',
+  CreateQuoteRequestFromQuoteRequestSuccess = '[Quote API] Create Quote Request from Quote Request Success',
   LoadQuoteRequestItems = '[Quote] Load QuoteRequestItems',
   LoadQuoteRequestItemsFail = '[Quote API] Load QuoteRequestItems Fail',
   LoadQuoteRequestItemsSuccess = '[Quote API] Load QuoteRequestItems Success',
@@ -119,17 +119,17 @@ export class SubmitQuoteRequestSuccess implements Action {
   constructor(public payload: string) {}
 }
 
-export class CreateQuoteRequestFromQuote implements Action {
-  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuote;
+export class CreateQuoteRequestFromQuoteRequest implements Action {
+  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequest;
 }
 
-export class CreateQuoteRequestFromQuoteFail implements Action {
-  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteFail;
+export class CreateQuoteRequestFromQuoteRequestFail implements Action {
+  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestFail;
   constructor(public payload: HttpError) {}
 }
 
-export class CreateQuoteRequestFromQuoteSuccess implements Action {
-  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteSuccess;
+export class CreateQuoteRequestFromQuoteRequestSuccess implements Action {
+  readonly type = QuoteRequestActionTypes.CreateQuoteRequestFromQuoteRequestSuccess;
   constructor(public payload: QuoteLineItemResultModel) {}
 }
 
@@ -224,9 +224,9 @@ export type QuoteAction =
   | SubmitQuoteRequest
   | SubmitQuoteRequestFail
   | SubmitQuoteRequestSuccess
-  | CreateQuoteRequestFromQuote
-  | CreateQuoteRequestFromQuoteFail
-  | CreateQuoteRequestFromQuoteSuccess
+  | CreateQuoteRequestFromQuoteRequest
+  | CreateQuoteRequestFromQuoteRequestFail
+  | CreateQuoteRequestFromQuoteRequestSuccess
   | LoadQuoteRequestItems
   | LoadQuoteRequestItemsFail
   | LoadQuoteRequestItemsSuccess

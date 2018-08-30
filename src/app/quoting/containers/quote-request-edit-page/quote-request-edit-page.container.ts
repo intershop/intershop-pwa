@@ -7,7 +7,7 @@ import { getLoggedInUser } from '../../../core/store/user';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { User } from '../../../models/user/user.model';
 import {
-  CreateQuoteRequestFromQuote,
+  CreateQuoteRequestFromQuoteRequest,
   DeleteItemFromQuoteRequest,
   SubmitQuoteRequest,
   UpdateQuoteRequest,
@@ -53,6 +53,6 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
   }
 
   copyQuote() {
-    this.store.dispatch(new CreateQuoteRequestFromQuote());
+    this.store.dispatch(new CreateQuoteRequestFromQuoteRequest());
   }
 }

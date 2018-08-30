@@ -56,7 +56,7 @@ describe('Quote Request Service', () => {
 
     it('should throw error for createQuoteRequestFromQuote', () => {
       expect(
-        quoteRequestService.createQuoteRequestFromQuote({ submitted: true, items: [] } as QuoteRequest)
+        quoteRequestService.createQuoteRequestFromQuoteRequest({ submitted: true, items: [] } as QuoteRequest)
       ).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
@@ -276,16 +276,18 @@ describe('Quote Request Service', () => {
       when(apiService.post(`customers/CID/users/UID/quoterequests`)).thenReturn(of({ title: 'QRID' } as Link));
       when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(undefined));
 
-      quoteRequestService.createQuoteRequestFromQuote({ submitted: true, items: [] } as QuoteRequest).subscribe(() => {
-        verify(apiService.post(`customers/CID/users/UID/quoterequests`)).once();
-        verify(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).once();
-        done();
-      });
+      quoteRequestService
+        .createQuoteRequestFromQuoteRequest({ submitted: true, items: [] } as QuoteRequest)
+        .subscribe(() => {
+          verify(apiService.post(`customers/CID/users/UID/quoterequests`)).once();
+          verify(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).once();
+          done();
+        });
     });
 
     it("should throw error if 'setQuoteRequestItems' is called with unsubmitted quote request", () => {
       expect(
-        quoteRequestService.createQuoteRequestFromQuote({ submitted: false, items: [] } as QuoteRequest)
+        quoteRequestService.createQuoteRequestFromQuoteRequest({ submitted: false, items: [] } as QuoteRequest)
       ).toBeObservable(
         cold('#', undefined, { message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' })
       );
