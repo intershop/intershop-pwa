@@ -22,7 +22,7 @@ export const getCurrentBasket = createSelector(
             product: products[li.productSKU],
           })),
           itemsCount: BasketHelper.getBasketItemsCount(basket.lineItems),
-          paymentMethod: basket.payments[0],
+          payment: basket.payments[0],
         }
 );
 
