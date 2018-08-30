@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { interval } from 'rxjs';
+import { mapTo, startWith } from 'rxjs/operators';
 
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
@@ -59,6 +61,11 @@ export class QuoteEditComponent implements OnChanges {
   validFromDate: number;
   validToDate: number;
   submitted = false;
+
+  currentDateTime$ = interval(1000).pipe(
+    startWith(0),
+    mapTo(Date.now())
+  );
 
   constructor() {
     this.form = new FormGroup({

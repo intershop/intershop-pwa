@@ -175,9 +175,9 @@ export class QuoteRequestService {
    * @param quoteRequest  A quote request containing quote line items
    * @returns             Information about successful and unsuccessful line item adds
    */
-  createQuoteRequestFromQuote(quoteRequest: QuoteRequest): Observable<QuoteLineItemResultModel> {
+  createQuoteRequestFromQuoteRequest(quoteRequest: QuoteRequest): Observable<QuoteLineItemResultModel> {
     if (!quoteRequest.submitted) {
-      return throwError({ message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' });
+      return throwError({ message: 'createQuoteRequestFromQuoteRequest() called with unsubmitted quote request' });
     }
 
     const body = {
