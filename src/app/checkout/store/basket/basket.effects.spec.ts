@@ -778,7 +778,7 @@ describe('Basket Effects', () => {
         new basketActions.LoadBasketSuccess({
           id: 'BID',
           lineItems: [],
-          paymentMethod: undefined,
+          payment: undefined,
         } as Basket)
       );
     });
@@ -834,7 +834,7 @@ describe('Basket Effects', () => {
         new basketActions.LoadBasketSuccess({
           id: 'BID',
           lineItems: [],
-          paymentMethod: undefined,
+          payment: undefined,
         } as Basket)
       );
     });
@@ -880,7 +880,7 @@ describe('Basket Effects', () => {
         new basketActions.LoadBasketSuccess({
           id: 'BID',
           lineItems: [],
-          paymentMethod: {
+          payment: {
             id: 'paymentId',
             name: 'paymentName',
           },

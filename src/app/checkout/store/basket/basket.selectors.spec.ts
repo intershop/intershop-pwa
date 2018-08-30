@@ -5,7 +5,7 @@ import { StoreModule, combineReducers } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket, BasketView } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { Payment } from '../../../models/payment/payment.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
@@ -78,7 +78,7 @@ describe('Basket Selectors', () => {
       store$.dispatch(
         new LoadBasketItemsSuccess([{ id: 'test', productSKU: 'sku', quantity: { value: 5 } } as BasketItem])
       );
-      store$.dispatch(new LoadBasketPaymentsSuccess([{ id: 'p_test' } as PaymentMethod]));
+      store$.dispatch(new LoadBasketPaymentsSuccess([{ name: 'p_test' } as Payment]));
       expect(getBasketLoading(store$.state)).toBeFalse();
 
       const currentBasket = getCurrentBasket(store$.state);
@@ -87,7 +87,7 @@ describe('Basket Selectors', () => {
       expect(currentBasket.lineItems[0].id).toEqual('test');
       expect(currentBasket.lineItems[0].product).toEqual({ sku: 'sku' });
       expect(currentBasket.itemsCount).toEqual(5);
-      expect(currentBasket.paymentMethod.id).toEqual('p_test');
+      expect(currentBasket.payment.name).toEqual('p_test');
     });
 
     it('should change the product of the basket line item if the product is changing', () => {
