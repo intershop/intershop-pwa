@@ -44,11 +44,11 @@
           <h4 class="d-none d-md-block"><span style="text-transform: none;">in</span>SPIRED</h4>
           <div class="link-group" [ngbCollapse]="collapsed[0]">
             <ul>
-              <li><a href="">About Us</a></li>
-              <li><a href="">Terms &amp; Conditions</a></li>
-              <li><a href="">Privacy Policy</a></li>
+              <li><a [routerLink]="'/page/aboutUs'">About Us</a></li>
+              <li><a [routerLink]="'/page/termsAndConditions'">Terms &amp; Conditions</a></li>
+              <li><a [routerLink]="'/page/privacyPolicy'">Privacy Policy</a></li>
               <li><a href="">Sitemap</a></li>
-              <li><a href="">Help</a></li>
+              <li><a [routerLink]="'/page/help'">Help</a></li>
             </ul>
           </div>
         </div>

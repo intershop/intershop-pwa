@@ -20,6 +20,7 @@ import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CheckoutModule } from './checkout/checkout.module';
+import { ContentModule } from './content/content.module';
 import * as injectionKeys from './core/configurations/injection-keys';
 import { NgrxStateTransfer, ngrxStateTransferMeta } from './core/configurations/ngrx-state-transfer';
 import { CoreModule } from './core/core.module';
@@ -62,6 +63,7 @@ export const metaReducers: MetaReducer<any>[] = [
     CoreModule,
     // import the feature modules that provide the application functionalities
     ShoppingModule,
+    ContentModule,
     CheckoutModule,
     RegistrationModule,
     AccountModule,
