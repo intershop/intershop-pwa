@@ -67,6 +67,7 @@ export class BasketMockData {
       country: 'Germany',
       countryCode: 'DE',
       city: 'Berlin',
+      email: 'patricia@test.intershop.de',
       usage: [true, true],
       shipToAddress: true,
       invoiceToAddress: true,
