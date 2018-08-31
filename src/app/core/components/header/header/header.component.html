@@ -1,10 +1,8 @@
 <div class="top-header">
-  <nav class="container">
+  <!--- Tablet/Pc Top Header-->
+  <nav class="container d-none d-md-block">
     <div class="row justify-content-between align-items-center">
-      <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
-        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
-      </a>
-      <div class="col col-lg-12">
+      <div class="col">
         <ul class="user-links">
           <li>
             <ish-login-status-container></ish-login-status-container>
@@ -12,26 +10,32 @@
           <li *ishFeature="'compare'">
             <ish-product-compare-status-container></ish-product-compare-status-container>
           </li>
-          <li class="d-md-none">
-            <ish-mobile-basket-container></ish-mobile-basket-container>
-          </li>
         </ul>
         <div class="header-utility">
-          <ul class="customer-info d-none d-md-block">
-            <li>
-              <fa-icon [icon]="['fas', 'phone']" class="header-icon"></fa-icon>
-              {{'common.header.contact_no.text' | translate}}
-            </li>
-          </ul>
           <ish-language-switch-container></ish-language-switch-container>
+          <ish-mini-basket-container></ish-mini-basket-container>
         </div>
       </div>
-      <div class="d-md-none">
-        <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
-          <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-          <fa-icon [icon]="['fas', 'bars']"></fa-icon>
-        </button>
+    </div>
+  </nav>
+  <!--- Mobile Top Header-->
+  <nav class="container d-md-none">
+    <div class="row justify-content-between">
+      <a rel="home" routerLink="/home" class="d-md-none mobile-logo">
+        <img src="assets/img/logo_mobile.png" alt="Logo" width="41" height="41">
+      </a>
+      <div class="header-utility">
+        <ish-login-status-container view="small"></ish-login-status-container>
+        <ish-mini-basket-container view="small"></ish-mini-basket-container>
       </div>
+      <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
+          <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
+          <div class="hamburger-menu" [class.open]="!navbarCollapsed">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
     </div>
   </nav>
 </div>
@@ -46,13 +50,11 @@
       </div>
       <div class="col-md-5 header-info-wrapper d-none d-md-block"></div>
       <div class="col-md-4 search-container header-search-container">
-        <ish-search-box-container
-          [configuration]="{
+        <ish-search-box-container [configuration]="{
             placeholderText: 'search.searchbox.instructional_text' | translate,
             autoSuggest: true,
             maxAutoSuggests: 10
-          }"
-        ></ish-search-box-container>
+          }"></ish-search-box-container>
       </div>
     </div>
   </div>
@@ -62,11 +64,9 @@
   <nav class="global-nav navbar-expand-md" [ngbCollapse]="navbarCollapsed">
     <div class="container">
       <div class="row">
-        <div class="main-navigation col-md-8 col-lg-9" role="navigation">
+        <div class="main-navigation col-12" role="navigation">
           <ish-header-navigation-container></ish-header-navigation-container>
-        </div>
-        <div class="col-md-4 col-lg-3 main-navigation-right">
-          <ish-mini-basket-container></ish-mini-basket-container>
+          <ish-user-information-mobile class="d-md-none"></ish-user-information-mobile>
         </div>
       </div>
     </div>

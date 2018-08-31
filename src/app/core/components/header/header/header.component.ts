@@ -26,12 +26,15 @@ import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys'
 })
 export class HeaderComponent implements OnInit {
   navbarCollapsed = false;
+  mediumBreakpointWidth: number;
 
   constructor(
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: number,
     @Inject(PLATFORM_ID) private platformId: string,
     private router: Router
-  ) {}
+  ) {
+    this.mediumBreakpointWidth = mediumBreakpointWidth;
+  }
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
