@@ -1,4 +1,4 @@
-<ish-product-tile
+<ish-product-tile *ngIf="(product$ | async) as product; else loading"
   [product]="product"
   [category]="category"
   [isInCompareList]="isInCompareList$ | async"
@@ -6,3 +6,7 @@
   (productToBasket)="addToBasket()"
   (productToQuote)="addToQuote()"
 ></ish-product-tile>
+
+<ng-template #loading>
+  <ish-loading></ish-loading>
+</ng-template>
