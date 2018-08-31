@@ -15,4 +15,8 @@ export interface SearchBoxConfiguration {
    * configures the number of suggestions if auto suggestion is provided
    */
   maxAutoSuggests?: number;
+  /**
+   * configure search box icon
+   */
+  icon?: string;
 }
