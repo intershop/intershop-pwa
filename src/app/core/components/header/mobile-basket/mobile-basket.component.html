@@ -1,7 +1,0 @@
-<a routerLink="/basket">
-  <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon"></fa-icon>
-</a>
-<div *ngIf="basket; else noBasket" class="mobile-cart-counter">{{ basket.itemsCount }}</div>
-<ng-template #noBasket>
-  <div class="mobile-cart-counter">0</div>
-</ng-template>
