@@ -17,7 +17,7 @@ describe('Language Switch Container', () => {
         MockComponent({
           selector: 'ish-language-switch',
           template: 'Language Switch',
-          inputs: ['locale', 'availableLocales'],
+          inputs: ['locale', 'availableLocales', 'view'],
         }),
         LanguageSwitchContainerComponent,
       ],

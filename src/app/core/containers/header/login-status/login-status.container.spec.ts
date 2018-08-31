@@ -17,12 +17,12 @@ describe('Login Status Container', () => {
         MockComponent({
           selector: 'ish-login-status',
           template: 'Login Status',
-          inputs: ['user'],
+          inputs: ['user', 'view'],
         }),
         MockComponent({
           selector: 'ish-logout',
           template: 'Logout',
-          inputs: ['user'],
+          inputs: ['user', 'view'],
         }),
         LoginStatusContainerComponent,
       ],
