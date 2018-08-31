@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
@@ -11,6 +11,9 @@ import { getCompareProductsSKUs } from '../../../../shopping/store/compare';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCompareStatusContainerComponent implements OnInit {
+  @Input()
+  view: 'auto' | 'small' | 'full' = 'auto';
+
   productCompareCount$: Observable<number>;
 
   constructor(private store: Store<{}>) {}

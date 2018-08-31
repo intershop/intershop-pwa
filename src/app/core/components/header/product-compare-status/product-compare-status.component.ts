@@ -8,4 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class ProductCompareStatusComponent {
   @Input()
   productCompareCount: number;
+
+  @Input()
+  view: 'auto' | 'small' | 'full' = 'auto';
 }

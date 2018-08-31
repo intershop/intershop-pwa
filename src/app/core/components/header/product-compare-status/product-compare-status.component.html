@@ -1,7 +1,8 @@
-<a class="compare-status" routerLink="/compare" rel="nofollow">
+<a class="compare-status item-count-container" routerLink="/compare" rel="nofollow">
   <fa-icon class="header-icon" [icon]="['fas', 'columns']"></fa-icon>
-  <span class="compare-count-text">
-    <div id="compare-count">{{ productCompareCount }}</div>
-    <span class="d-none d-md-inline">{{ 'product.compare.link' | translate }}</span>
-  </span>
+  <span class="badge badge-pill">{{ productCompareCount }}</span>
+  <span
+    [class.d-none]="view==='auto' || view==='small'"
+    [class.d-md-inline]="view==='auto'"
+    >{{ 'product.compare.link' | translate }}</span>
 </a>
