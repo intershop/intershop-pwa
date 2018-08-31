@@ -6,18 +6,9 @@ exports[`Header Navigation Component should be created 1`] = `
   ng-version="6.1.6"
 >
   <ul
-    class="navbar-nav main-navigation-list"
+    class="navbar-nav main-navigation-list accordion d-md-none"
   >
-    <li
-      class="home d-none d-md-block"
-    >
-      <a
-        routerlink="/home"
-        title="home"
-      >
-        <fa-icon />
-      </a>
-    </li>
+    
     
     <li
       class="dropdown"
@@ -64,6 +55,60 @@ exports[`Header Navigation Component should be created 1`] = `
       
       <ish-sub-category-navigation />
     </li>
+    
   </ul>
+  <ul
+    class="navbar-nav main-navigation-list d-none d-md-block"
+  >
+    
+    
+    <li
+      class="dropdown"
+      ng-reflect-klass="dropdown"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        data-testing-id="A-link"
+        ng-reflect-ng-style="[object Object]"
+        style="width: 100%;"
+      >
+         CAT_A 
+      </a>
+      
+      <ish-sub-category-navigation />
+    </li>
+    <li
+      class="dropdown"
+      ng-reflect-klass="dropdown"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        data-testing-id="B-link"
+        ng-reflect-ng-style="[object Object]"
+        style="width: 100%;"
+      >
+         CAT_B 
+      </a>
+      
+      <ish-sub-category-navigation />
+    </li>
+    <li
+      class="dropdown"
+      ng-reflect-klass="dropdown"
+      ng-reflect-ng-class="[object Object]"
+    >
+      <a
+        data-testing-id="C-link"
+        ng-reflect-ng-style="[object Object]"
+        style="width: 100%;"
+      >
+         CAT_C 
+      </a>
+      
+      <ish-sub-category-navigation />
+    </li>
+    
+  </ul>
+  
 </div>
 `;

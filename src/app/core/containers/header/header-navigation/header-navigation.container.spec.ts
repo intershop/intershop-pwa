@@ -22,7 +22,7 @@ describe('Header Navigation Container', () => {
         MockComponent({
           selector: 'ish-header-navigation',
           template: 'Header Navigation',
-          inputs: ['categories'],
+          inputs: ['categories', 'view'],
         }),
         HeaderNavigationContainerComponent,
       ],
