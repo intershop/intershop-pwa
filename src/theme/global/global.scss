@@ -20,6 +20,7 @@
 
 body {
   font-family: $font-family-base;
+  line-height: 1;
 }
 
 // Global Styles
@@ -77,7 +78,7 @@ a {
 
 .top-header {
   .ng-fa-icon {
-    top: 3px;
+    top: 1px;
   }
 }
 
@@ -207,4 +208,23 @@ img.marketing {
   text-transform: none;
   white-space: nowrap;
   display: inline-block;
+}
+
+.item-count-container {
+  position: relative;
+
+  .badge {
+    background: $CORPORATE-PRIMARY;
+    color: $text-color-inverse;
+    font-weight: inherit;
+    line-height: 1.4;
+    left: 26px;
+    top: -8px;
+    position: absolute;
+
+    &:hover {
+      color: $text-color-inverse;
+      background: lighten($CORPORATE-PRIMARY, 5%);
+    }
+  }
 }

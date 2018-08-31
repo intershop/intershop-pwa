@@ -99,6 +99,30 @@ footer {
   }
 }
 
+.contact {
+  @media (max-width: $screen-sm-max) {
+    float: none;
+    width: 100%;
+  }
+
+  .ng-fa-icon {
+    color: $text-color-inverse;
+    font-size: 40px;
+    display: block;
+    float: left;
+    padding: 20px $space-default 20px 0px;
+  }
+
+  h4 {
+    font-size: 18px;
+    margin: 25px 0px 0px;
+  }
+
+  span {
+    color: $text-color-inverse;
+  }
+}
+
 .storefinder {
   @media (max-width: $screen-sm-max) {
     float: none;
