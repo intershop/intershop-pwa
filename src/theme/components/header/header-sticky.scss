@@ -29,9 +29,11 @@
       color: $text-color-quarternary;
     }
   }
-
+  .searchTerm:focus + .btn-search .ng-fa-icon {
+    color: $text-color-primary;
+  }
   .search-toggler.active-search {
-    background-color: #222;
+    background-color: $color-primary;
 
     .ng-fa-icon {
       color: $white;
@@ -101,4 +103,8 @@
       }
     }
   }
+}
+
+.header-sticky .search-container .btn-search {
+  padding: 0;
 }
