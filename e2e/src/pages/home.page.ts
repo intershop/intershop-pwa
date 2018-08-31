@@ -12,7 +12,10 @@ export class HomePage {
   }
 
   gotoCategoryPage(categoryUniqueId) {
-    $(`[data-testing-id="${categoryUniqueId}-link"]`).click();
+    $$(`.header [data-testing-id="${categoryUniqueId}-link"]`)
+      .filter(e => e.isDisplayed())
+      .first()
+      .click();
   }
 
   getContent() {
