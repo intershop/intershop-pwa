@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, StoreModule } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
+import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -66,6 +67,40 @@ describe('Orders Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadOrders$).toBeObservable(expected$);
+    });
+  });
+
+  describe('routeListenerForSelectingOrder$', () => {
+    it('should fire SelectOrder when route account/order/XXX is navigated', () => {
+      const orderId = '123';
+      const action = new RouteNavigation({
+        path: 'order/:orderId',
+        params: { orderId: orderId },
+        queryParams: {},
+      });
+      const expected = new orderActions.SelectOrder(orderId);
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForSelectingOrder$).toBeObservable(cold('a', { a: expected }));
+    });
+
+    it('should not fire SelectOrder when route /something is navigated', () => {
+      const action = new RouteNavigation({ path: 'something', params: {}, queryParams: {} });
+
+      actions$ = hot('a', { a: action });
+      expect(effects.routeListenerForSelectingOrder$).toBeObservable(cold('-'));
+    });
+  });
+
+  describe('loadOrdersForSelectedOrder$', () => {
+    it('should fire LoadOrders if an order is selected that is not yet loaded', () => {
+      const orderId = '123';
+      const action = new orderActions.SelectOrder(orderId);
+      const completion = new orderActions.LoadOrders();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadOrdersForSelectedOrder$).toBeObservable(expected$);
     });
   });
 

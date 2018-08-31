@@ -6,7 +6,7 @@ import { OrderView } from '../../../models/order/order.model';
  * The Order List Component displays all (or only a limited amount of) orders. See also {@link OrderListContainerComponent}
  *
  * @example
- * <ish-order-list [order]="order"></ish-order-list>
+ * <ish-order-list [orders]="orders"></ish-order-list>
  */
 @Component({
   selector: 'ish-order-list',

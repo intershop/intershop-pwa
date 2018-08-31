@@ -397,7 +397,7 @@
   "account.order_history.link": "Order History",
   "account.order_history.myOrders.heading": "My Order History",
   "account.orderdetails.billing_address.heading": "Invoice Address",
-  "account.orderdetails.breadcrumb": "Order {{0}}",
+  "account.orderdetails.breadcrumb": "Order Details",
   "account.orderdetails.bucket.details.link": "Details",
   "account.orderdetails.bucket.details.packslip_message.label": "Packing Slip Message",
   "account.orderdetails.bucket.details.packslip_message_from.label": "From:",
