@@ -10,4 +10,6 @@ import { User } from '../../../../models/user/user.model';
 export class LogoutComponent {
   @Input()
   user: User;
+  @Input()
+  view: 'auto' | 'small' | 'full' = 'auto';
 }
