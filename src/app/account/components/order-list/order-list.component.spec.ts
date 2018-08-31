@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { OrderView } from '../../../models/order/order.model';
@@ -22,7 +23,7 @@ describe('Order List Component', () => {
           inputs: ['address'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), PipesModule],
+      imports: [TranslateModule.forRoot(), PipesModule, RouterTestingModule],
     }).compileComponents();
   }));
 

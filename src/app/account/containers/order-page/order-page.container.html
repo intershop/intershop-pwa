@@ -1,0 +1,9 @@
+<div class="clearfix" data-testing-id="order-detail-page">
+
+  <ng-container *ngIf="(order$ | async) as order">
+    <ish-order-page
+      [order]="order$ | async"
+    ></ish-order-page>
+  </ng-container>
+
+</div>
