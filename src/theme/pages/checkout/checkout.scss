@@ -77,10 +77,11 @@
 
 .infobox-wrapper {
   width: 100%;
+  display: flex;
 
   .infobox {
-    padding: $space-default;
-    margin-bottom: $space-default;
+    padding: $space-default $space-default 0;
+    margin-bottom: $space-default * 2;
     background-color: $color-tertiary;
     width: 100%;
     h3 {

@@ -23,35 +23,27 @@
 </div>
 
 <ng-container *ngIf="order">
-  <div class="row equal">
+  <div class="row d-flex">
     <!-- Invoice Address -->
-    <div class="col-md-6">
-      <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper">
-        <ish-address [address]="order.invoiceToAddress" [displayEmail]="true"></ish-address>
-      </ish-info-box>
-    </div>
+    <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+      <ish-address [address]="order.invoiceToAddress" [displayEmail]="true"></ish-address>
+    </ish-info-box>
     <!-- Shipping Address -->
-    <div class="col-md-6">
-      <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper">
+      <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
         <ish-address [address]="order.commonShipToAddress"></ish-address>
       </ish-info-box>
-    </div>
   </div>
 
-  <div class="row equal">
+  <div class="row d-flex">
     <!-- Shipping Method -->
-    <div class="col-md-6">
-      <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper">
-        <p>{{ order.commonShippingMethod.name }}</p>
-      </ish-info-box>
-    </div>
+    <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
+      <p>{{ order.commonShippingMethod.name }}</p>
+    </ish-info-box>
     <!-- Payment -->
-    <div class="col-md-6">
-      <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper">
-        <p>{{ order.payment.displayName }}</p>
-        <p class="badge badge-info">{{ order.payment.status }}</p>
-      </ish-info-box>
-    </div>
+    <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
+      <p>{{ order.payment.displayName }}</p>
+      <p class="badge badge-info">{{ order.payment.status }}</p>
+    </ish-info-box>
   </div>
 
   <!-- Line Items -->
