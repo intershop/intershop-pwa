@@ -1,7 +1,7 @@
 // tslint:disable:no-console no-any
-import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { Injectable, Type } from '@angular/core';
+import { Actions, Effect, EffectsModule } from '@ngrx/effects';
+import { Action, ActionReducerMap, Store, StoreModule } from '@ngrx/store';
 import { filter, tap } from 'rxjs/operators';
 
 export const containsActionWithType = (type: string) =>
@@ -19,7 +19,7 @@ function includeAction(action: Action, include: (string | RegExp)[]) {
 }
 
 @Injectable()
-export class LogEffects {
+export class TestStore {
   private actions: Action[] = [];
   state: any;
 
@@ -70,4 +70,8 @@ export class LogEffects {
       },
     };
   }
+}
+
+export function ngrxTesting(reducers: ActionReducerMap<{}, Action>, effects: Type<any>[] = []) {
+  return [StoreModule.forRoot(reducers), EffectsModule.forRoot([TestStore, ...effects])];
 }

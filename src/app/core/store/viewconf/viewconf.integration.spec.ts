@@ -1,23 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { Action, StoreModule } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { coreReducers } from '../core.system';
 
 import { ViewconfEffects } from './viewconf.effects';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 
 describe('Viewconf Integration', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers), EffectsModule.forRoot([ViewconfEffects, LogEffects])],
+      imports: ngrxTesting(coreReducers, [ViewconfEffects]),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   it('should extract wrapperClass from routing to state', () => {

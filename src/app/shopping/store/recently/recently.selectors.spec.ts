@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 
 import { Product } from '../../../models/product/product.model';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { LoadProductSuccess, SelectProduct } from '../products';
 import { shoppingReducers } from '../shopping.system';
 
@@ -11,19 +10,19 @@ import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyProducts, getRecentlyViewedProducts } from './recently.selectors';
 
 describe('Recently Selectors', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
+      imports: ngrxTesting(
+        {
           shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([RecentlyEffects, LogEffects]),
-      ],
+        },
+        [RecentlyEffects]
+      ),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   it('should select nothing for an empty state', () => {
