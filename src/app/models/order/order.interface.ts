@@ -1,7 +1,7 @@
 import { Address } from '../address/address.model';
 import { BasketRebate } from '../basket-rebate/basket-rebate.model';
 import { OrderTotalData } from '../order-total/order-total.interface';
-import { PaymentMethod } from '../payment-method/payment-method.model';
+import { Payment } from '../payment/payment.model';
 import { Price } from '../price/price.model';
 import { ShippingBucketData } from '../shipping-bucket/shipping-bucket.interface';
 
@@ -9,7 +9,7 @@ export interface OrderData {
   documentNo: string;
   creationDate: Date;
   status: string;
-  payments: PaymentMethod[];
+  payments: Payment[];
 
   id: string;
   purchaseCurrency: string;

@@ -397,7 +397,7 @@
   "account.order_history.link": "Bestellhistorie",
   "account.order_history.myOrders.heading": "Meine Bestellhistorie",
   "account.orderdetails.billing_address.heading": "Rechnungsadresse",
-  "account.orderdetails.breadcrumb": "Bestellung {{0}}",
+  "account.orderdetails.breadcrumb": "Bestelldetails",
   "account.orderdetails.bucket.details.link": "Details",
   "account.orderdetails.bucket.details.packslip_message.label": "Packzettel-Nachricht",
   "account.orderdetails.bucket.details.packslip_message_from.label": "Von:",

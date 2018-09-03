@@ -5,6 +5,7 @@ import { BasketTotal } from '../../models/basket-total/basket-total.model';
 import { BasketView } from '../../models/basket/basket.model';
 import { OrderView } from '../../models/order/order.model';
 import { PaymentMethod } from '../../models/payment-method/payment-method.model';
+import { Payment } from '../../models/payment/payment.model';
 import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
 
 export class BasketMockData {
@@ -15,7 +16,7 @@ export class BasketMockData {
       invoiceToAddress: BasketMockData.getAddress(),
       commonShipToAddress: BasketMockData.getAddress(),
       commonShippingMethod: BasketMockData.getShippingMethod(),
-      paymentMethod: BasketMockData.getPaymentMethod(),
+      payment: BasketMockData.getPayment(),
       totals: BasketMockData.getTotals(),
     } as BasketView;
   }
@@ -48,7 +49,7 @@ export class BasketMockData {
       invoiceToAddress: BasketMockData.getAddress(),
       commonShipToAddress: BasketMockData.getAddress(),
       commonShippingMethod: BasketMockData.getShippingMethod(),
-      paymentMethod: BasketMockData.getPaymentMethod(),
+      payment: BasketMockData.getPayment(),
       totals: BasketMockData.getTotals(),
     } as OrderView;
   }
@@ -67,6 +68,7 @@ export class BasketMockData {
       country: 'Germany',
       countryCode: 'DE',
       city: 'Berlin',
+      email: 'patricia@test.intershop.de',
       usage: [true, true],
       shipToAddress: true,
       invoiceToAddress: true,
@@ -88,6 +90,16 @@ export class BasketMockData {
       type: 'Payment',
       id: '4711',
     } as PaymentMethod;
+  }
+
+  static getPayment(): Payment {
+    return {
+      name: 'INVOiCE',
+      displayName: 'Invoice',
+      type: 'Payment',
+      id: '4711',
+      status: 'Unprocessed',
+    } as Payment;
   }
 
   static getTotals(): BasketTotal {

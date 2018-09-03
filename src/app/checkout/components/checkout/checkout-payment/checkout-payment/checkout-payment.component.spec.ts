@@ -69,7 +69,7 @@ describe('Checkout Payment Component', () => {
   });
 
   it('should render an error if the user has currently no payment method selected', () => {
-    component.basket.paymentMethod = undefined;
+    component.basket.payment = undefined;
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });

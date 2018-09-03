@@ -25,6 +25,16 @@ export const accountPageRoutes: Routes = [
         loadChildren: '../order-history-page/order-history-page.module#OrderHistoryPageModule',
       },
       {
+        path: 'orders/:orderId',
+        data: {
+          breadcrumbData: [
+            { key: 'account.order_history.link', link: '/account/orders' },
+            { key: 'account.orderdetails.breadcrumb' },
+          ],
+        },
+        loadChildren: '../order-page/order-page.module#OrderPageModule',
+      },
+      {
         path: 'quote-list',
         data: { breadcrumbData: [{ key: 'quote.quotes.link' }] },
         loadChildren: '../../../quoting/containers/quote-list-page/quote-list-page.module#QuoteListPageModule',

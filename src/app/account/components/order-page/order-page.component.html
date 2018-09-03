@@ -1,0 +1,63 @@
+<div class="float-right">
+  <ul class="share-tools">
+    <li class="d-none d-md-block">
+      <a href="javascript:window.print();" class="link-print pull-right" rel="nofollow">
+        <fa-icon [icon]="['fas', 'print']"></fa-icon>
+        <span class="share-label">{{ 'account.orderdetails.print_link.text' | translate }}</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<h1>{{ 'account.orderdetails.heading.default' | translate }}</h1>
+<p>{{ 'account.orderdetails.headerDetails.default' | translate }}</p>
+
+<div *ngIf="order" class="section" data-testing-id="order-summary-info">
+  <dl class="row dl-horizontal dl-separator">
+    <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_number.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-number">{{ order.documentNo }}</dd>
+    <dt class="col-6 col-sm-4 col-md-2">{{'account.orderdetails.date_of_order.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-date">{{ order.creationDate | date }}</dd>
+    <dt class="col-6 col-sm-4 col-md-2">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
+    <dd class="col-6 col-sm-8 col-md-10" data-testing-id="order-status">{{ order.status }}</dd><!-- ToDo: should actually be the status display name -->
+  </dl>
+</div>
+
+<ng-container *ngIf="order">
+  <div class="row d-flex">
+    <!-- Invoice Address -->
+    <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
+      <ish-address [address]="order.invoiceToAddress" [displayEmail]="true"></ish-address>
+    </ish-info-box>
+    <!-- Shipping Address -->
+      <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
+        <ish-address [address]="order.commonShipToAddress"></ish-address>
+      </ish-info-box>
+  </div>
+
+  <div class="row d-flex">
+    <!-- Shipping Method -->
+    <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
+      <p>{{ order.commonShippingMethod.name }}</p>
+    </ish-info-box>
+    <!-- Payment -->
+    <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
+      <p>{{ order.payment.displayName }}</p>
+      <p class="badge badge-info">{{ order.payment.status }}</p>
+    </ish-info-box>
+  </div>
+
+  <!-- Line Items -->
+  <ish-line-item-list *ngIf="order.lineItems?.length > 0" [lineItems]="order.lineItems" [editable]="false"></ish-line-item-list>
+
+  <!-- Cost Summary -->
+  <div class="section cost-summary float-right">
+    <h3>{{ 'checkout.order_summary.heading' | translate}}</h3>
+    <ish-basket-cost-summary [totals]="order.totals"></ish-basket-cost-summary>
+  </div>
+</ng-container>
+
+<!-- Links -->
+<div class="section d-flex justify-content-between">
+  <a routerLink="/account/orders" data-testing-id="orders-link">{{ 'account.orderdetails.links.return_to_orders' | translate }}</a>
+  <a routerLink="/home" data-testing-id="home-link">{{ 'account.orderdetails.links.continue_shopping' | translate}}</a>
+</div>

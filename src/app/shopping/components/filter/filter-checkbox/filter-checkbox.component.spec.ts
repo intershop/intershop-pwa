@@ -13,7 +13,7 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule.forRoot(), IconModule],
+      imports: [NgbCollapseModule, IconModule],
       declarations: [FilterCheckboxComponent],
     }).compileComponents();
   }));
