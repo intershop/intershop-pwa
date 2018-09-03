@@ -40,8 +40,8 @@ export class UserEffects {
 
   @Effect()
   loginUser$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoginUser),
-    map((action: userActions.LoginUser) => action.payload),
+    ofType<userActions.LoginUser>(userActions.UserActionTypes.LoginUser),
+    map(action => action.payload),
     mergeMap(credentials =>
       this.registrationService.signinUser(credentials).pipe(
         map(customer => new userActions.LoginUserSuccess(customer)),
@@ -84,8 +84,8 @@ export class UserEffects {
 
   @Effect()
   createUser$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.CreateUser),
-    map((action: userActions.CreateUser) => action.payload),
+    ofType<userActions.CreateUser>(userActions.UserActionTypes.CreateUser),
+    map(action => action.payload),
     mergeMap((customerData: Customer) =>
       this.registrationService.createUser(customerData).pipe(
         map(customer => new userActions.CreateUserSuccess(customer)),
@@ -104,14 +104,14 @@ export class UserEffects {
 
   @Effect()
   publishLoginEventAfterCreate$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.CreateUserSuccess),
-    map((action: userActions.CreateUserSuccess) => new userActions.LoginUserSuccess(action.payload))
+    ofType<userActions.CreateUserSuccess>(userActions.UserActionTypes.CreateUserSuccess),
+    map(action => new userActions.LoginUserSuccess(action.payload))
   );
 
   @Effect()
   loadCompanyUserAfterLogin$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoginUserSuccess),
-    map((action: userActions.LoginUserSuccess) => action.payload),
+    ofType<userActions.LoginUserSuccess>(userActions.UserActionTypes.LoginUserSuccess),
+    map(action => action.payload),
     filter(customer => customer.type === 'SMBCustomer'),
     mapTo(new userActions.LoadCompanyUser())
   );
