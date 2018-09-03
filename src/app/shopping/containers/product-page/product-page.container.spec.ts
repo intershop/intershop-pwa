@@ -3,7 +3,6 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 
-import { CoreState } from '../../../core/store/core.state';
 import { coreReducers } from '../../../core/store/core.system';
 import { Product } from '../../../models/product/product.model';
 import { quotingReducers } from '../../../quoting/store/quoting.system';
@@ -19,7 +18,7 @@ describe('Product Page Container', () => {
   let component: ProductPageContainerComponent;
   let fixture: ComponentFixture<ProductPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

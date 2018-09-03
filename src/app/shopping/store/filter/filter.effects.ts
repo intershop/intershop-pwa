@@ -3,24 +3,18 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { CoreState } from '../../../core/store/core.state';
 import { mapErrorToAction } from '../../../utils/operators';
 import { FilterService } from '../../services/filter/filter.service';
 import { CategoriesActionTypes, getSelectedCategory } from '../categories';
 import { LoadProduct } from '../products/products.actions';
 import { SearchActionTypes, SearchProductsSuccess } from '../search';
-import { ShoppingState } from '../shopping.state';
 import { SetPagingInfo } from '../viewconf';
 
 import * as filterActions from './filter.actions';
 
 @Injectable()
 export class FilterEffects {
-  constructor(
-    private actions$: Actions,
-    private store$: Store<ShoppingState | CoreState>,
-    private filterService: FilterService
-  ) {}
+  constructor(private actions$: Actions, private store$: Store<{}>, private filterService: FilterService) {}
 
   @Effect()
   loadAvailableFilterForCategories$ = this.actions$.pipe(

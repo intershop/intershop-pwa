@@ -5,18 +5,14 @@ import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { AddProductToBasket } from '../../../checkout/store/basket';
-import { CheckoutState } from '../../../checkout/store/checkout.state';
-import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized } from '../../../core/store/user';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductAddToQuoteDialogContainerComponent } from '../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
-import { QuotingState } from '../../../quoting/store/quoting.state';
 import { getSelectedCategory } from '../../store/categories';
 import { AddToCompare } from '../../store/compare';
 import { getProductLoading, getSelectedProduct } from '../../store/products';
-import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-product-page-container',
@@ -28,10 +24,7 @@ export class ProductPageContainerComponent implements OnInit {
   productLoading$: Observable<boolean>;
   category$: Observable<CategoryView>;
 
-  constructor(
-    private ngbModal: NgbModal,
-    private store: Store<CoreState | ShoppingState | CheckoutState | QuotingState>
-  ) {}
+  constructor(private ngbModal: NgbModal, private store: Store<{}>) {}
 
   ngOnInit() {
     this.product$ = this.store.pipe(select(getSelectedProduct), filter(product => !!product));

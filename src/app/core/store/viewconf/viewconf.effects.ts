@@ -5,14 +5,13 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { map } from 'rxjs/operators';
 
 import { distinctCompareWith } from '../../../utils/operators';
-import { CoreState } from '../core.state';
 
 import { SetBreadcrumbData, SetHeaderType, SetWrapperClass } from './viewconf.actions';
 import { getBreadcrumbData, getHeaderType, getWrapperClass } from './viewconf.selectors';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private actions$: Actions, private store: Store<CoreState>) {}
+  constructor(private actions$: Actions, private store: Store<{}>) {}
 
   @Effect()
   retrieveWrapperClassFromRouting$ = this.actions$.pipe(

@@ -6,13 +6,12 @@ import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { ProductsActionTypes, SelectProduct } from '../products';
 import { getSelectedProduct } from '../products/products.selectors';
-import { ShoppingState } from '../shopping.state';
 
 import * as recentlyActions from './recently.actions';
 
 @Injectable()
 export class RecentlyEffects {
-  constructor(private actions: Actions, private store: Store<ShoppingState>) {}
+  constructor(private actions: Actions, private store: Store<{}>) {}
 
   @Effect()
   viewedProduct$ = combineLatest(

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { CategoryView } from '../../../../models/category-view/category-view.model';
 import { getTopLevelCategories } from '../../../../shopping/store/categories';
-import { CoreState } from '../../../store/core.state';
 
 @Component({
   selector: 'ish-header-navigation-container',
@@ -14,7 +13,7 @@ import { CoreState } from '../../../store/core.state';
 export class HeaderNavigationContainerComponent implements OnInit {
   categories$: Observable<CategoryView[]>;
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.categories$ = this.store.pipe(select(getTopLevelCategories));

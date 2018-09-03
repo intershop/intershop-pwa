@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
-import { CoreState } from '../../../core/store/core.state';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { LoginPageContainerComponent } from './login-page.container';
@@ -12,7 +11,7 @@ describe('Login Page Container', () => {
   let fixture: ComponentFixture<LoginPageContainerComponent>;
   let component: LoginPageContainerComponent;
   let element: HTMLElement;
-  let storeMock$: Store<CoreState>;
+  let storeMock$: Store<{}>;
 
   beforeEach(async(() => {
     storeMock$ = mock(Store);

@@ -7,7 +7,6 @@ import { AddQuoteToBasket } from '../../../checkout/store/basket';
 import { Basket } from '../../../models/basket/basket.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
-import { QuotingState } from '../../store/quoting.state';
 
 @Component({
   selector: 'ish-quote-edit-page-container',
@@ -18,7 +17,7 @@ export class QuoteEditPageContainerComponent implements OnInit {
   quote$: Observable<Quote | Basket>;
   quoteLoading$: Observable<boolean>;
 
-  constructor(private store: Store<QuotingState>, private router: Router) {}
+  constructor(private store: Store<{}>, private router: Router) {}
 
   ngOnInit() {
     this.quote$ = this.store.pipe(select(getSelectedQuote));

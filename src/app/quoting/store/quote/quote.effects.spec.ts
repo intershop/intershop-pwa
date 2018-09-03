@@ -5,7 +5,6 @@ import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
@@ -18,7 +17,6 @@ import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteService } from '../../services/quote/quote.service';
 import { SubmitQuoteRequestSuccess } from '../quote-request';
-import { QuotingState } from '../quoting.state';
 import { quotingReducers } from '../quoting.system';
 
 import * as quoteActions from './quote.actions';
@@ -28,7 +26,7 @@ describe('Quote Effects', () => {
   let actions$;
   let quoteServiceMock: QuoteService;
   let effects: QuoteEffects;
-  let store$: Store<QuotingState | CoreState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     quoteServiceMock = mock(QuoteService);

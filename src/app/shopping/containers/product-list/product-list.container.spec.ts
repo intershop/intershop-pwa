@@ -4,7 +4,6 @@ import { spy, verify } from 'ts-mockito';
 
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { ShoppingState } from '../../store/shopping.state';
 import { shoppingReducers } from '../../store/shopping.system';
 import { SetEndlessScrollingPageSize, SetPagingInfo } from '../../store/viewconf';
 
@@ -14,7 +13,7 @@ describe('Product List Container', () => {
   let component: ProductListContainerComponent;
   let fixture: ComponentFixture<ProductListContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

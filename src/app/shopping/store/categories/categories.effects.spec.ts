@@ -17,7 +17,6 @@ import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 
 import * as fromActions from './categories.actions';
@@ -26,7 +25,7 @@ import { CategoriesEffects } from './categories.effects';
 describe('Categories Effects', () => {
   let actions$: Observable<Action>;
   let effects: CategoriesEffects;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
 
   let categoriesServiceMock: CategoriesService;
 

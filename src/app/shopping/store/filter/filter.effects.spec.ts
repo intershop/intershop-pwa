@@ -14,7 +14,6 @@ import { FilterService } from '../../services/filter/filter.service';
 import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';
 import { LoadProduct } from '../products';
 import { SearchProductsSuccess } from '../search';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import { SetPagingInfo } from '../viewconf';
 
@@ -24,7 +23,7 @@ import { FilterEffects } from './filter.effects';
 describe('Filter Effects', () => {
   let actions$: Observable<Action>;
   let effects: FilterEffects;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
   let filterServiceMock: FilterService;
 
   const router = mock(Router);

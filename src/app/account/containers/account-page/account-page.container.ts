@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
 import { getBreadcrumbData } from '../../../core/store/viewconf';
 import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
@@ -16,7 +15,7 @@ export class AccountPageContainerComponent implements OnInit {
   user$: Observable<User>;
   breadcrumbData$: Observable<BreadcrumbItem[]>;
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.user$ = this.store.pipe(select(getLoggedInUser));

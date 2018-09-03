@@ -10,7 +10,6 @@ import { Customer } from '../../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { mapErrorToAction } from '../../../utils/operators';
-import { CoreState } from '../core.state';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
@@ -34,7 +33,7 @@ function mapUserErrorToActionIfPossible<T>(specific) {
 export class UserEffects {
   constructor(
     private actions$: Actions,
-    private store$: Store<CoreState>,
+    private store$: Store<{}>,
     private registrationService: RegistrationService,
     private router: Router
   ) {}

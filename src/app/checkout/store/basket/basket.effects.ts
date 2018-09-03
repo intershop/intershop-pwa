@@ -17,13 +17,11 @@ import {
 } from 'rxjs/operators';
 
 import { OrderService } from '../../../account/services/order/order.service';
-import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user/user.actions';
 import { Basket } from '../../../models/basket/basket.model';
 import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';
 import { BasketService } from '../../services/basket/basket.service';
-import { CheckoutState } from '../checkout.state';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket } from './basket.selectors';
@@ -32,7 +30,7 @@ import { getCurrentBasket } from './basket.selectors';
 export class BasketEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<CheckoutState | CoreState>,
+    private store: Store<{}>,
     private basketService: BasketService,
     private orderService: OrderService,
     private router: Router

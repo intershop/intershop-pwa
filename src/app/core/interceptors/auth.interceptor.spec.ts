@@ -4,7 +4,6 @@ import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
-import { CoreState } from '../store/core.state';
 import { coreReducers } from '../store/core.system';
 import { SetAPIToken } from '../store/user';
 
@@ -16,7 +15,7 @@ describe('Auth Interceptor', () => {
   let mockRequest: HttpRequest<any>;
   let authInterceptor: AuthInterceptor;
   let mockInterceptor: any;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     getRequest = new HttpRequest<any>('GET', ' ');

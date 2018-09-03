@@ -26,7 +26,7 @@ export class LogEffects {
   logActions = false;
   logState = false;
 
-  constructor(private actions$: Actions, private store$: Store<any>) {}
+  constructor(private actions$: Actions, private store$: Store<{}>) {}
 
   @Effect({ dispatch: false })
   logActions$ = this.actions$.pipe(

@@ -13,7 +13,6 @@ import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { User } from '../../../models/user/user.model';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
-import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 
 import * as ua from './user.actions';
@@ -22,7 +21,7 @@ import { UserEffects } from './user.effects';
 describe('User Effects', () => {
   let actions$: Observable<Action>;
   let effects: UserEffects;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
   let registrationServiceMock: RegistrationService;
   let routerMock: Router;
 
