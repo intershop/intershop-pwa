@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { CoreState } from '../../../store/core.state';
 
 import { HeaderNavigationContainerComponent } from './header-navigation.container';
 
@@ -12,7 +11,7 @@ describe('Header Navigation Container', () => {
   let component: HeaderNavigationContainerComponent;
   let fixture: ComponentFixture<HeaderNavigationContainerComponent>;
   let element: HTMLElement;
-  let storeMock$: Store<CoreState>;
+  let storeMock$: Store<{}>;
 
   beforeEach(async(() => {
     storeMock$ = mock(Store);

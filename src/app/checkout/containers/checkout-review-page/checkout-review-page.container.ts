@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { CreateOrder, getBasketError, getBasketLoading, getCurrentBasket } from '../../store/basket';
-import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
   selector: 'ish-checkout-review-page-container',
@@ -17,7 +16,7 @@ export class CheckoutReviewPageContainerComponent implements OnInit {
   basketError$: Observable<HttpError>;
   loading$: Observable<boolean>;
 
-  constructor(private store: Store<CheckoutState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));

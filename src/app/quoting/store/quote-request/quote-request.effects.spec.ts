@@ -8,9 +8,7 @@ import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoadBasketItemsSuccess, LoadBasketSuccess } from '../../../checkout/store/basket';
-import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { checkoutReducers } from '../../../checkout/store/checkout.system';
-import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
@@ -27,7 +25,6 @@ import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { LoadProduct } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
-import { QuotingState } from '../quoting.state';
 import { quotingReducers } from '../quoting.system';
 
 import * as quoteRequestActions from './quote-request.actions';
@@ -38,7 +35,7 @@ describe('Quote Request Effects', () => {
   let quoteRequestServiceMock: QuoteRequestService;
   let routerMock: Router;
   let effects: QuoteRequestEffects;
-  let store$: Store<QuotingState | CheckoutState | CoreState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     quoteRequestServiceMock = mock(QuoteRequestService);

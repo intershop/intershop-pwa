@@ -7,7 +7,6 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { RegionService } from '../../../core/services/countries/region.service';
-import { CoreState } from '../../../core/store/core.state';
 import { Locale } from '../../../models/locale/locale.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
@@ -18,7 +17,7 @@ describe('Registration Page Container', () => {
   let component: RegistrationPageContainerComponent;
   let element: HTMLElement;
   let routerMock: Router;
-  let storeMock$: Store<CoreState>;
+  let storeMock$: Store<{}>;
   const defaultLocales = [
     { lang: 'de_DE', value: 'de', displayName: 'Deutsch' },
     { lang: 'fr_FR', value: 'fr', displayName: 'Fran¢aise' },

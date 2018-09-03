@@ -9,7 +9,6 @@ import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
-import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 
 import { SelectLocale, SetAvailableLocales } from './locale.actions';
@@ -18,7 +17,7 @@ import { LocaleEffects } from './locale.effects';
 describe('Locale Effects', () => {
   let actions$: Observable<Action>;
   let effects: LocaleEffects;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
   let translateServiceMock: TranslateService;
   const defaultLocales = [
     { lang: 'en_US', value: 'en', displayName: 'English' },

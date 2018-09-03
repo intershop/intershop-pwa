@@ -12,7 +12,6 @@ import {
   getCurrentQuoteRequests,
   getQuoteRequestLoading,
 } from '../../store/quote-request';
-import { QuotingState } from '../../store/quoting.state';
 
 @Component({
   selector: 'ish-quote-list-page-container',
@@ -24,7 +23,7 @@ export class QuoteListPageContainerComponent implements OnInit {
   quoteLoading$: Observable<boolean>;
   quoteRequestLoading$: Observable<boolean>;
 
-  constructor(private store: Store<QuotingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     // TODO: move to selector?

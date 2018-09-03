@@ -3,12 +3,11 @@ import { Store } from '@ngrx/store';
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CoreState } from '../../store/core.state';
 import { Storage } from '../../store/local-storage-sync/local-storage-sync.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class CrosstabService {
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   listen() {
     if (typeof window !== 'undefined') {

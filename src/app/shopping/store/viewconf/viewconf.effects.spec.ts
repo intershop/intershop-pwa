@@ -10,7 +10,6 @@ import { Category } from '../../../models/category/category.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadCategorySuccess, SelectCategory } from '../categories';
 import { LoadProductsForCategory } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 
 import { ChangeSortBy } from './viewconf.actions';
@@ -19,7 +18,7 @@ import { ViewconfEffects } from './viewconf.effects';
 describe('Viewconf Effects', () => {
   let actions$: Observable<Action>;
   let effects: ViewconfEffects;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

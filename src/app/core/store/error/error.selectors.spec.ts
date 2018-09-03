@@ -3,7 +3,6 @@ import { Store, StoreModule, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { CoreState } from '../core.state';
 import { coreReducers } from '../core.system';
 
 import { CommunicationTimeoutError, ErrorActionTypes } from './error.actions';
@@ -11,7 +10,7 @@ import { ErrorState } from './error.reducer';
 import { getErrorState } from './error.selectors';
 
 describe('Error Selectors', () => {
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
   let getErrorState$: Observable<ErrorState>;
 
   beforeEach(() => {

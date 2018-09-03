@@ -6,7 +6,6 @@ import { filter, map, take } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
-import { ShoppingState } from '../../store/shopping.state';
 import {
   ChangeSortBy,
   ChangeViewType,
@@ -48,7 +47,7 @@ export class ProductListContainerComponent implements OnInit {
   pageIndices$: Observable<number[]>;
   displayPaging$: Observable<boolean>;
 
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.products$ = this.store.pipe(select(getVisibleProducts));

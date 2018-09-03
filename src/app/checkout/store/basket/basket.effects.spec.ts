@@ -17,11 +17,9 @@ import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProduct, LoadProductSuccess } from '../../../shopping/store/products';
-import { ShoppingState } from '../../../shopping/store/shopping.state';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { BasketService } from '../../services/basket/basket.service';
-import { CheckoutState } from '../checkout.state';
 import { checkoutReducers } from '../checkout.system';
 
 import * as basketActions from './basket.actions';
@@ -33,7 +31,7 @@ describe('Basket Effects', () => {
   let orderServiceMock: OrderService;
   let effects: BasketEffects;
   let routerMock: Router;
-  let store$: Store<CheckoutState | ShoppingState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     routerMock = mock(Router);

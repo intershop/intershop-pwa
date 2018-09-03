@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CoreState } from '../../../core/store/core.state';
 import { LoadOrders, getOrders, getOrdersLoading } from '../../../core/store/orders';
 import { OrderView } from '../../../models/order/order.model';
 
@@ -37,7 +36,7 @@ export class OrderListContainerComponent implements OnInit {
   orders$: Observable<OrderView[]>;
   loading$: Observable<boolean>;
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadOrders());

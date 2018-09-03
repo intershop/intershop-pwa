@@ -3,14 +3,12 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { map, withLatestFrom } from 'rxjs/operators';
 
-import { ShoppingState } from '../shopping.state';
-
 import * as compareActions from './compare.actions';
 import { getCompareProductsSKUs } from './compare.selectors';
 
 @Injectable()
 export class CompareEffects {
-  constructor(private actions$: Actions, private store: Store<ShoppingState>) {}
+  constructor(private actions$: Actions, private store: Store<{}>) {}
 
   @Effect()
   toggleCompare$ = this.actions$.pipe(

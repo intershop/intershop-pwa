@@ -4,12 +4,11 @@ import { Store } from '@ngrx/store';
 import { EMPTY, Observable, throwError } from 'rxjs';
 
 import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
-import { CoreState } from '../../store/core.state';
 import { CommunicationTimeoutError, ServerError } from '../../store/error/error.actions';
 
 @Injectable({ providedIn: 'root' })
 export class ApiServiceErrorHandler {
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   // tslint:disable-next-line:ban-types
   dispatchCommunicationErrors<T>(error: HttpErrorResponse): Observable<T> {
