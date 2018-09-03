@@ -1,3 +1,22 @@
+# 0.5.0 (2018-09-05)
+
+### Features
+
+* add Order Details functionality (ISREST-430)
+* add Order List functionality (ISREST-426)
+* instant quantity changes for line item list (basket/quote request) (ISREST-314)
+* preparation for content page handling/routing (ISREST-460)
+* rebranding - color scheme, logo, effects (ISREST-481)
+
+### Bug Fixes
+
+* remove btoa and atob as they are not available in universal mode (ISREST-445)
+
+### Documentation
+
+* add license information and 3rd-party-licenses overview
+
+
 # 0.4.0 (2018-08-22)
 
 ### Features
