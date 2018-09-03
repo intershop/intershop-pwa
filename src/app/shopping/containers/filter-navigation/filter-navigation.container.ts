@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { ApplyFilter, getAvailableFilter } from '../../store/filter';
-import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-filter-navigation',
@@ -13,7 +12,7 @@ import { ShoppingState } from '../../store/shopping.state';
 })
 export class FilterNavigationContainerComponent implements OnInit {
   filter$: Observable<FilterNavigation>;
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.filter$ = this.store.pipe(select(getAvailableFilter));

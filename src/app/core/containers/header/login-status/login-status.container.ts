@@ -3,7 +3,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { User } from '../../../../models/user/user.model';
-import { CoreState } from '../../../store/core.state';
 import { getLoggedInUser } from '../../../store/user';
 
 @Component({
@@ -17,7 +16,7 @@ export class LoginStatusContainerComponent implements OnInit {
 
   user$: Observable<User>;
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.user$ = this.store.pipe(select(getLoggedInUser));

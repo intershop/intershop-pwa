@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 
 import { getCompareProductsSKUs } from '../../../../shopping/store/compare';
-import { ShoppingState } from '../../../../shopping/store/shopping.state';
 
 @Component({
   selector: 'ish-product-compare-status-container',
@@ -14,7 +13,7 @@ import { ShoppingState } from '../../../../shopping/store/shopping.state';
 export class ProductCompareStatusContainerComponent implements OnInit {
   productCompareCount$: Observable<number>;
 
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.productCompareCount$ = this.store.pipe(select(getCompareProductsSKUs), pluck('length'));

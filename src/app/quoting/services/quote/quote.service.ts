@@ -4,7 +4,6 @@ import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, take } from 'rxjs/operators';
 
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
-import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
@@ -25,11 +24,7 @@ export class QuoteService {
    */
   private ids$: Observable<{ userId: string; customerId: string }>;
 
-  constructor(
-    private apiService: ApiService,
-    private quoteRequestServie: QuoteRequestService,
-    store: Store<CoreState>
-  ) {
+  constructor(private apiService: ApiService, private quoteRequestServie: QuoteRequestService, store: Store<{}>) {
     this.ids$ = combineLatest(store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))).pipe(
       take(1),
       concatMap(

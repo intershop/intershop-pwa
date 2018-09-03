@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 
 import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
 import { RegionService } from '../../../core/services/countries/region.service';
-import { CoreState } from '../../../core/store/core.state';
 import { getAllCountries } from '../../../core/store/countries/countries.selectors';
 import { CreateUser, getUserError } from '../../../core/store/user';
 import { Country } from '../../../models/country/country.model';
@@ -26,7 +25,7 @@ export class RegistrationPageContainerComponent implements OnInit {
   userCreateError$: Observable<HttpError>;
 
   constructor(
-    private store: Store<CoreState>,
+    private store: Store<{}>,
     private rs: RegionService,
     private router: Router,
     @Inject(AVAILABLE_LOCALES) locales: Locale[]

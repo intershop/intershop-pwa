@@ -4,13 +4,11 @@ import { Store } from '@ngrx/store';
 import { RouteNavigation, ofRoute } from 'ngrx-router';
 import { map } from 'rxjs/operators';
 
-import { CheckoutState } from '../checkout.state';
-
 import { SetCheckoutStep } from './viewconf.actions';
 
 @Injectable()
 export class ViewconfEffects {
-  constructor(private actions$: Actions, private store: Store<CheckoutState>) {}
+  constructor(private actions$: Actions, private store: Store<{}>) {}
 
   @Effect()
   retrieveCheckoutStepFromRouting$ = this.actions$.pipe(

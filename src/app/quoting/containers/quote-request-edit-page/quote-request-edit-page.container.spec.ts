@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuoteRequests } from '../../store/quote-request';
-import { QuotingState } from '../../store/quoting.state';
 import { quotingReducers } from '../../store/quoting.system';
 
 import { QuoteRequestEditPageContainerComponent } from './quote-request-edit-page.container';
@@ -14,7 +13,7 @@ describe('Quote Request Edit Page Container', () => {
   let component: QuoteRequestEditPageContainerComponent;
   let fixture: ComponentFixture<QuoteRequestEditPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<QuotingState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

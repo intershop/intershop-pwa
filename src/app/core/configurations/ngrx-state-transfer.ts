@@ -4,8 +4,6 @@ import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { ActionReducer, Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 
-import { CoreState } from '../store/core.state';
-
 const NGRX_STATE_SK = makeStateKey('ngrxState');
 const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
@@ -38,7 +36,7 @@ export function filterState(store) {
  */
 @Injectable()
 export class NgrxStateTransfer {
-  constructor(private transferState: TransferState, private store: Store<CoreState>) {}
+  constructor(private transferState: TransferState, private store: Store<{}>) {}
 
   do() {
     const isBrowser = this.transferState.hasKey<any>(NGRX_STATE_SK);

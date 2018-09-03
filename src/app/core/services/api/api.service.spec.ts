@@ -5,7 +5,6 @@ import { EMPTY } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { Link } from '../../../models/link/link.model';
-import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes, ServerError } from '../../store/error';
 import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
 
@@ -16,7 +15,7 @@ describe('Api Service', () => {
   describe('API Service Methods', () => {
     const BASE_URL = 'http://www.example.org';
     let apiService: ApiService;
-    let storeMock$: Store<CoreState>;
+    let storeMock$: Store<{}>;
     let httpTestingController: HttpTestingController;
 
     beforeEach(() => {
@@ -133,7 +132,7 @@ describe('Api Service', () => {
   describe('API Service Pipable Operators', () => {
     let httpTestingController: HttpTestingController;
     let apiService: ApiService;
-    let storeMock$: Store<CoreState>;
+    let storeMock$: Store<{}>;
 
     const BASE_URL = 'http://www.example.org/WFS';
     const categoriesPath = `${BASE_URL}/site/categories`;

@@ -7,8 +7,6 @@ import { combineLatest, forkJoin } from 'rxjs';
 import { concatMap, defaultIfEmpty, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { getCurrentBasket } from '../../../checkout/store/basket';
-import { CheckoutState } from '../../../checkout/store/checkout.state';
-import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes, getUserAuthorized } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
@@ -17,7 +15,6 @@ import { LoadProduct, getProductEntities } from '../../../shopping/store/product
 import { mapErrorToAction } from '../../../utils/operators';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';
-import { QuotingState } from '../quoting.state';
 
 import * as quoteRequestActions from './quote-request.actions';
 import { getCurrentQuoteRequests, getSelectedQuoteRequest, getSelectedQuoteRequestId } from './quote-request.selectors';
@@ -29,7 +26,7 @@ export class QuoteRequestEffects {
     private featureToggleService: FeatureToggleService,
     private quoteRequestService: QuoteRequestService,
     private router: Router,
-    private store: Store<QuotingState | CheckoutState | CoreState>
+    private store: Store<{}>
   ) {}
 
   /**

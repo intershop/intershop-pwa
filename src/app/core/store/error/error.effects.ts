@@ -4,13 +4,11 @@ import { Effect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { filter, tap } from 'rxjs/operators';
 
-import { CoreState } from '../core.state';
-
 import { getErrorState } from './error.selectors';
 
 @Injectable()
 export class ErrorEffects {
-  constructor(private router: Router, private store: Store<CoreState>) {}
+  constructor(private router: Router, private store: Store<{}>) {}
 
   @Effect({ dispatch: false })
   gotoErrorPageInCaseOfError$ = this.store.pipe(

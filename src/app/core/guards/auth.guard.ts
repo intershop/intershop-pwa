@@ -4,7 +4,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
-import { CoreState } from '../store/core.state';
 import { getUserAuthorized } from '../store/user';
 
 /**
@@ -12,7 +11,7 @@ import { getUserAuthorized } from '../store/user';
  */
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private store: Store<CoreState>, private router: Router) {}
+  constructor(private store: Store<{}>, private router: Router) {}
 
   canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.store.pipe(

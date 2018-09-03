@@ -7,7 +7,6 @@ import { filter, map, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
 
 import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
-import { CoreState } from '../core.state';
 
 import * as fromActions from './locale.actions';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
@@ -16,7 +15,7 @@ import { getAvailableLocales, getCurrentLocale } from './locale.selectors';
 export class LocaleEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<CoreState>,
+    private store: Store<{}>,
     private translateService: TranslateService,
     @Inject(AVAILABLE_LOCALES) private availableLocales: Locale[]
   ) {}
