@@ -110,10 +110,10 @@ export class SearchEffects {
 
   @Effect()
   suggestSearch$ = this.actions$.pipe(
-    ofType(SearchActionTypes.SuggestSearch),
+    ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
     debounceTime(400),
     distinctUntilKeyChanged('payload'),
-    map((action: SuggestSearch) => action.payload),
+    map(action => action.payload),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(

@@ -33,8 +33,8 @@ export class ViewconfEffects {
 
   @Effect()
   changeSortBy$ = this.actions$.pipe(
-    ofType(viewconfActions.ViewconfActionTypes.ChangeSortBy),
-    map((action: viewconfActions.ChangeSortBy) => action.payload),
+    ofType<viewconfActions.ChangeSortBy>(viewconfActions.ViewconfActionTypes.ChangeSortBy),
+    map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedCategory))),
     filter(([, category]) => !!category && !!category.uniqueId),
     map(([, category]) => new LoadProductsForCategory(category.uniqueId))
