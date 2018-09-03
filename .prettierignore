@@ -18,6 +18,7 @@
 *.properties
 *.jar
 *.snap
+*.hbs
 *config*.json
 .gitignore
 /*.*
