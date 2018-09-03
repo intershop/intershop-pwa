@@ -1,28 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { RouteNavigation } from 'ngrx-router';
 
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { checkoutReducers } from '../checkout.system';
 
 import { ViewconfEffects } from './viewconf.effects';
 import { getCheckoutStep } from './viewconf.selectors';
 
 describe('Viewconf Integration', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-        }),
-        EffectsModule.forRoot([ViewconfEffects, LogEffects]),
-      ],
+      imports: ngrxTesting({ checkout: combineReducers(checkoutReducers) }, [ViewconfEffects]),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   it('should extract checkoutStep from routing data to store', () => {

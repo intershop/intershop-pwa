@@ -1,8 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
@@ -12,7 +11,7 @@ import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/i
 import { ApiService } from '../../../core/services/api/api.service';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { shoppingReducers } from '../shopping.system';
@@ -62,11 +61,9 @@ describe('Search Effects', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          StoreModule.forRoot({
-            shopping: combineReducers(shoppingReducers),
-          }),
-        ],
+        imports: ngrxTesting({
+          shopping: combineReducers(shoppingReducers),
+        }),
         providers: [
           SearchEffects,
           provideMockActions(() => actions$),
@@ -134,17 +131,17 @@ describe('Search Effects', () => {
   });
 
   describe('with fakeAsync', () => {
-    let store$: LogEffects;
+    let store$: TestStore;
     let effects: SearchEffects;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          StoreModule.forRoot({
+        imports: ngrxTesting(
+          {
             shopping: combineReducers(shoppingReducers),
-          }),
-          EffectsModule.forRoot([SearchEffects, LogEffects]),
-        ],
+          },
+          [SearchEffects]
+        ),
         providers: [
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
@@ -155,7 +152,7 @@ describe('Search Effects', () => {
       });
 
       effects = TestBed.get(SearchEffects);
-      store$ = TestBed.get(LogEffects);
+      store$ = TestBed.get(TestStore);
 
       store$.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
     });

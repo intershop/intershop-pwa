@@ -1,13 +1,12 @@
 // tslint:disable:no-any
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { Action, Selector, StoreModule, createSelector } from '@ngrx/store';
+import { Action, Selector, createSelector } from '@ngrx/store';
 
-import { LogEffects } from './dev/log.effects';
+import { TestStore, ngrxTesting } from './dev/ngrx-testing';
 import { firstTruthy } from './selectors';
 
 describe('Selectors', () => {
-  let store: LogEffects;
+  let store: TestStore;
   const getState = (state: any) => state.state;
 
   beforeEach(() => {
@@ -15,10 +14,10 @@ describe('Selectors', () => {
       return { ...state, ...action.payload };
     }
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({ state: reducer }), EffectsModule.forRoot([LogEffects])],
+      imports: ngrxTesting({ state: reducer }),
     });
 
-    store = TestBed.get(LogEffects);
+    store = TestBed.get(TestStore);
   });
 
   describe('self-test', () => {
