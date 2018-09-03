@@ -3,7 +3,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { getCurrentBasket } from '../../../../checkout/store/basket';
-import { CheckoutState } from '../../../../checkout/store/checkout.state';
 import { BasketView } from '../../../../models/basket/basket.model';
 
 @Component({
@@ -14,7 +13,7 @@ import { BasketView } from '../../../../models/basket/basket.model';
 export class MiniBasketContainerComponent implements OnInit {
   basket$: Observable<BasketView>;
 
-  constructor(private store: Store<CheckoutState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));

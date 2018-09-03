@@ -6,7 +6,6 @@ import { anything, spy, verify } from 'ts-mockito';
 
 import { Customer } from '../../models/customer/customer.model';
 import { MockComponent } from '../../utils/dev/mock.component';
-import { CoreState } from '../store/core.state';
 import { coreReducers } from '../store/core.system';
 import { LoginUserSuccess } from '../store/user';
 
@@ -15,7 +14,7 @@ import { AuthGuard } from './auth.guard';
 describe('Auth Guard', () => {
   describe('canActivate()', () => {
     let authGuard: AuthGuard;
-    let store$: Store<CoreState>;
+    let store$: Store<{}>;
     let router: Router;
 
     beforeEach(async(() => {

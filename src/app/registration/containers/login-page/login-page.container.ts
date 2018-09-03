@@ -3,7 +3,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
-import { CoreState } from '../../../core/store/core.state';
 import { LoginUser, getUserAuthorized, getUserError } from '../../../core/store/user';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
@@ -18,7 +17,7 @@ export class LoginPageContainerComponent implements OnInit {
 
   constructor(
     @Inject(USER_REGISTRATION_LOGIN_TYPE) public userRegistrationLoginType: string,
-    private store: Store<CoreState>
+    private store: Store<{}>
   ) {}
 
   ngOnInit() {

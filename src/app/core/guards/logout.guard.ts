@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { CoreState } from '../store/core.state';
 import { LogoutUser } from '../store/user';
 
 /**
@@ -10,7 +9,7 @@ import { LogoutUser } from '../store/user';
  */
 @Injectable()
 export class LogoutGuard implements CanActivate {
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   canActivate() {
     this.store.dispatch(new LogoutUser());

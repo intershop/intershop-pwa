@@ -14,7 +14,6 @@ import {
   getActiveQuoteRequest,
   getQuoteRequestLoading,
 } from '../../store/quote-request';
-import { QuotingState } from '../../store/quoting.state';
 
 @Component({
   selector: 'ish-product-add-to-quote-dialog-container',
@@ -27,7 +26,7 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
 
   destroy$ = new Subject();
 
-  constructor(public ngbActiveModal: NgbActiveModal, private store: Store<QuotingState>) {}
+  constructor(public ngbActiveModal: NgbActiveModal, private store: Store<{}>) {}
 
   ngOnInit() {
     this.activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));

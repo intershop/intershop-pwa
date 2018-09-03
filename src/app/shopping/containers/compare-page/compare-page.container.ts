@@ -3,10 +3,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { AddProductToBasket } from '../../../checkout/store/basket';
-import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { Product } from '../../../models/product/product.model';
 import { RemoveFromCompare, getCompareProducts, getCompareProductsCount } from '../../store/compare';
-import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-compare-page-container',
@@ -17,7 +15,7 @@ export class ComparePageContainerComponent implements OnInit {
   compareProducts$: Observable<Product[]>;
   compareProductsCount$: Observable<number>;
 
-  constructor(private store: Store<ShoppingState | CheckoutState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.compareProducts$ = this.store.pipe(select(getCompareProducts));

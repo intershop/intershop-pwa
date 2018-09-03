@@ -18,12 +18,10 @@ import {
 } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
-import { CoreState } from '../../../core/store/core.state';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { distinctCompareWith, mapErrorToAction } from '../../../utils/operators';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { getVisibleProducts } from '../viewconf';
 
 import * as actions from './categories.actions';
@@ -33,7 +31,7 @@ import * as selectors from './categories.selectors';
 export class CategoriesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState | CoreState>,
+    private store: Store<{}>,
     private categoryService: CategoriesService,
     private router: Router,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number

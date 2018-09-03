@@ -4,7 +4,6 @@ import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, filter, map, mapTo, shareReplay, take } from 'rxjs/operators';
 
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
-import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
 import { Link } from '../../../models/link/link.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
@@ -14,7 +13,6 @@ import { QuoteRequestItem } from '../../../models/quote-request-item/quote-reque
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { getActiveQuoteRequest } from '../../store/quote-request';
-import { QuotingState } from '../../store/quoting.state';
 
 /**
  * The Quote Request Service handles the interaction with the 'quoteRequest' related REST API.
@@ -33,7 +31,7 @@ export class QuoteRequestService {
    */
   private quoteRequest$: Observable<string>;
 
-  constructor(private apiService: ApiService, private store: Store<CoreState | QuotingState>) {
+  constructor(private apiService: ApiService, private store: Store<{}>) {
     this.ids$ = combineLatest(store.pipe(select(getLoggedInUser)), store.pipe(select(getLoggedInCustomer))).pipe(
       take(1),
       concatMap(

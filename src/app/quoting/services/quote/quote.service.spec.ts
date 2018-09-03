@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from '../../../core/services/api/api.service';
-import { CoreState } from '../../../core/store/core.state';
 import { coreReducers } from '../../../core/store/core.system';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
@@ -21,7 +20,7 @@ describe('Quote Service', () => {
   let quoteService: QuoteService;
   let apiService: ApiService;
   let quoteRequestService: QuoteRequestService;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
   const user = { email: 'UID' } as User;

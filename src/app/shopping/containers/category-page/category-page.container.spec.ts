@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
-import { CoreState } from '../../../core/store/core.state';
 import { Category } from '../../../models/category/category.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
@@ -15,7 +14,7 @@ describe('Category Page Container', () => {
   let component: CategoryPageContainerComponent;
   let fixture: ComponentFixture<CategoryPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

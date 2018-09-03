@@ -5,7 +5,6 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
@@ -13,7 +12,6 @@ import { LoadProduct, getProductEntities } from '../../../shopping/store/product
 import { mapErrorToAction } from '../../../utils/operators';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
-import { QuotingState } from '../quoting.state';
 
 import * as quoteActions from './quote.actions';
 import { getSelectedQuote, getSelectedQuoteId } from './quote.selectors';
@@ -24,7 +22,7 @@ export class QuoteEffects {
     private actions$: Actions,
     private featureToggleService: FeatureToggleService,
     private quoteService: QuoteService,
-    private store: Store<QuotingState | CoreState>
+    private store: Store<{}>
   ) {}
 
   /**

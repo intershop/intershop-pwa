@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CoreState } from './core/store/core.state';
 import { getWrapperClass } from './core/store/viewconf';
 
 @Component({
@@ -13,7 +12,7 @@ import { getWrapperClass } from './core/store/viewconf';
 export class AppComponent implements OnInit {
   wrapperClass$: Observable<string>;
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.wrapperClass$ = this.store.pipe(select(getWrapperClass));

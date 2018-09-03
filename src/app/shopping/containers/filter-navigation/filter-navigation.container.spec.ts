@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
-import { CoreState } from '../../../core/store/core.state';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { Filter } from '../../../models/filter/filter.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
@@ -15,7 +14,7 @@ describe('Filter Navigation Container', () => {
   let component: FilterNavigationContainerComponent;
   let fixture: ComponentFixture<FilterNavigationContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

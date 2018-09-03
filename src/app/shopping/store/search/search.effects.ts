@@ -23,7 +23,6 @@ import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
-import { ShoppingState } from '../shopping.state';
 import {
   SetPage,
   SetPagingInfo,
@@ -50,7 +49,7 @@ import {
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState>,
+    private store: Store<{}>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
     private router: Router

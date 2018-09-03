@@ -15,11 +15,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { CoreState } from '../../../core/store/core.state';
 import { LocaleActionTypes } from '../../../core/store/locale';
 import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
-import { ShoppingState } from '../shopping.state';
 import {
   SetPage,
   SetPagingInfo,
@@ -39,7 +37,7 @@ import * as productsSelectors from './products.selectors';
 export class ProductsEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState | CoreState>,
+    private store: Store<{}>,
     private productsService: ProductsService,
     private router: Router
   ) {}

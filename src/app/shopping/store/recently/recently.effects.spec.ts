@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess, SelectProduct } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 
 import { AddToRecently } from './recently.actions';
@@ -15,7 +14,7 @@ import { RecentlyEffects } from './recently.effects';
 describe('Recently Effects', () => {
   let actions$: Observable<Action>;
   let effects: RecentlyEffects;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
