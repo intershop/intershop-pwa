@@ -18,8 +18,8 @@ export class FilterEffects {
 
   @Effect()
   loadAvailableFilterForCategories$ = this.actions$.pipe(
-    ofType(filterActions.FilterActionTypes.LoadFilterForCategory),
-    mergeMap((action: filterActions.LoadFilterForCategory) =>
+    ofType<filterActions.LoadFilterForCategory>(filterActions.FilterActionTypes.LoadFilterForCategory),
+    mergeMap(action =>
       this.filterService.getFilterForCategory(action.payload).pipe(
         map(filterNavigation => new filterActions.LoadFilterForCategorySuccess(filterNavigation)),
         mapErrorToAction(filterActions.LoadFilterForCategoryFail)
@@ -29,8 +29,8 @@ export class FilterEffects {
 
   @Effect()
   loadFilterForSearch$ = this.actions$.pipe(
-    ofType(filterActions.FilterActionTypes.LoadFilterForSearch),
-    mergeMap((action: filterActions.LoadFilterForSearch) =>
+    ofType<filterActions.LoadFilterForSearch>(filterActions.FilterActionTypes.LoadFilterForSearch),
+    mergeMap(action =>
       this.filterService.getFilterForSearch(action.payload).pipe(
         map(filterNavigation => new filterActions.LoadFilterForSearchSuccess(filterNavigation)),
         mapErrorToAction(filterActions.LoadFilterForSearchFail)
@@ -53,8 +53,8 @@ export class FilterEffects {
 
   @Effect()
   applyFilter$ = this.actions$.pipe(
-    ofType(filterActions.FilterActionTypes.ApplyFilter),
-    map((action: filterActions.ApplyFilter) => action.payload),
+    ofType<filterActions.ApplyFilter>(filterActions.FilterActionTypes.ApplyFilter),
+    map(action => action.payload),
     mergeMap(({ filterId: filterName, searchParameter }) =>
       this.filterService.applyFilter(filterName, searchParameter).pipe(
         map(availableFilter => new filterActions.ApplyFilterSuccess({ availableFilter, filterName, searchParameter })),
@@ -65,8 +65,8 @@ export class FilterEffects {
 
   @Effect()
   loadFilteredProducts$ = this.actions$.pipe(
-    ofType(filterActions.FilterActionTypes.ApplyFilterSuccess),
-    map((action: filterActions.ApplyFilterSuccess) => action.payload),
+    ofType<filterActions.ApplyFilterSuccess>(filterActions.FilterActionTypes.ApplyFilterSuccess),
+    map(action => action.payload),
     switchMap(({ filterName, searchParameter }) =>
       this.filterService
         .getProductSkusForFilter(filterName, searchParameter)

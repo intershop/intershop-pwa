@@ -12,8 +12,8 @@ export class CompareEffects {
 
   @Effect()
   toggleCompare$ = this.actions$.pipe(
-    ofType(compareActions.CompareActionTypes.ToggleCompare),
-    map((action: compareActions.ToggleCompare) => action.payload),
+    ofType<compareActions.ToggleCompare>(compareActions.CompareActionTypes.ToggleCompare),
+    map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getCompareProductsSKUs))),
     map(([sku, skuList]) => ({ sku, isInList: skuList.includes(sku) })),
     map(

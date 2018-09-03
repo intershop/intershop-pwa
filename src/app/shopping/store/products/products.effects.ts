@@ -44,8 +44,8 @@ export class ProductsEffects {
 
   @Effect()
   loadProduct$ = this.actions$.pipe(
-    ofType(productsActions.ProductsActionTypes.LoadProduct),
-    map((action: productsActions.LoadProduct) => action.payload),
+    ofType<productsActions.LoadProduct>(productsActions.ProductsActionTypes.LoadProduct),
+    map(action => action.payload),
     mergeMap(sku =>
       this.productsService.getProduct(sku).pipe(
         map(product => new productsActions.LoadProductSuccess(product)),
@@ -104,8 +104,8 @@ export class ProductsEffects {
 
   @Effect()
   routeListenerForSelectingProducts$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
-    map((action: RouteNavigation) => action.payload.params.sku),
+    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
+    map(action => action.payload.params.sku),
     withLatestFrom(this.store.pipe(select(productsSelectors.getSelectedProductId))),
     filter(([fromAction, fromStore]) => fromAction !== fromStore),
     map(([sku]) => new productsActions.SelectProduct(sku))
@@ -113,8 +113,8 @@ export class ProductsEffects {
 
   @Effect()
   selectedProduct$ = this.actions$.pipe(
-    ofType(productsActions.ProductsActionTypes.SelectProduct),
-    map((action: productsActions.SelectProduct) => action.payload),
+    ofType<productsActions.SelectProduct>(productsActions.ProductsActionTypes.SelectProduct),
+    map(action => action.payload),
     filter(sku => !!sku),
     map(sku => new productsActions.LoadProduct(sku))
   );
