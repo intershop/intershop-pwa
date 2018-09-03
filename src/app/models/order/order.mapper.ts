@@ -43,7 +43,7 @@ export class OrderMapper {
     }
 
     if (data.payments && data.payments.length > 0) {
-      order.paymentMethod = data.payments[0];
+      order.payment = data.payments[0];
     }
 
     return order;

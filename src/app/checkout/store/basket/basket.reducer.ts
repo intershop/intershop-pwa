@@ -2,6 +2,7 @@ import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { Payment } from '../../../models/payment/payment.model';
 import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 
 import { BasketAction, BasketActionTypes } from './basket.actions';
@@ -11,7 +12,7 @@ export interface BasketState {
   lineItems: BasketItem[];
   eligibleShippingMethods: ShippingMethod[];
   eligiblePaymentMethods: PaymentMethod[];
-  payments: PaymentMethod[];
+  payments: Payment[];
   loading: boolean;
   error: HttpError; // add, update and delete errors
 }

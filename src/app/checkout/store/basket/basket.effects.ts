@@ -340,8 +340,8 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     concatMap(([paymentName, basket]) => {
       const addPayment$ = this.basketService.addBasketPayment(basket.id, paymentName);
-      return (basket.paymentMethod
-        ? this.basketService.deleteBasketPayment(basket.id, basket.paymentMethod.id).pipe(concatMap(() => addPayment$))
+      return (basket.payment
+        ? this.basketService.deleteBasketPayment(basket.id, basket.payment.id).pipe(concatMap(() => addPayment$))
         : addPayment$
       ).pipe(
         mapTo(new basketActions.SetBasketPaymentSuccess()),

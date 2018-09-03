@@ -6,6 +6,7 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Link } from '../../../models/link/link.model';
 import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { Payment } from '../../../models/payment/payment.model';
 import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from '../../services/basket/basket.service';
 
@@ -217,7 +218,7 @@ export class LoadBasketPaymentsFail implements Action {
 
 export class LoadBasketPaymentsSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketPaymentsSuccess;
-  constructor(public payload: PaymentMethod[]) {}
+  constructor(public payload: Payment[]) {}
 }
 
 /* payload: PaymentName */

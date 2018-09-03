@@ -3,10 +3,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
-import { BasketItemView } from '../../../models/basket-item/basket-item.model';
-import { Price } from '../../../models/price/price.model';
-import { ProductHelper } from '../../../models/product/product.model';
+import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
+import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
+import { Price } from '../../../../models/price/price.model';
+import { ProductHelper } from '../../../../models/product/product.model';
 
 /**
  * The Line Item List Component displays a line items.

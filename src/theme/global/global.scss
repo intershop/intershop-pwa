@@ -208,21 +208,3 @@ img.marketing {
   white-space: nowrap;
   display: inline-block;
 }
-
-//
-// SETS BOXES TO THE SAME HEIGHT
-@media (min-width: $screen-sm-min) {
-  .equal,
-  .equal > div[class*='col-'] {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex: 1 0 auto;
-  } // do not use flexbox if there is only one box
-  .equal > div[class*='col-']:only-child {
-    display: inherit;
-    flex: 0 0 auto;
-  }
-}

@@ -36,4 +36,5 @@
   <ng-container *ngIf="!address.country && address.countryCode">{{ address.countryCode }}<br/></ng-container>
 
   <ng-container *ngIf="address.phoneHome">{{ address.phoneHome }}<br/></ng-container>
+  <ng-container *ngIf="displayEmail && address.email">{{ address.email }}<br/></ng-container>
 </address>

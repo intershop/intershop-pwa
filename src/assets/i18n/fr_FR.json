@@ -396,7 +396,7 @@
   "account.order_history.link": "Historique des commandes",
   "account.order_history.myOrders.heading": "Mon historique des commandes",
   "account.orderdetails.billing_address.heading": "Adresse de facturation",
-  "account.orderdetails.breadcrumb": "Commande {{0}}",
+  "account.orderdetails.breadcrumb": "Détails de la commande",
   "account.orderdetails.bucket.details.link": "Détails",
   "account.orderdetails.bucket.details.packslip_message.label": "Message de bordereau d''envoi",
   "account.orderdetails.bucket.details.packslip_message_from.label": "De :",

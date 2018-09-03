@@ -58,4 +58,15 @@ describe('Address Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('address').innerHTML).toContain('Berlin&nbsp;');
   });
+
+  it('should not render an email if displayEmail is not set', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('address').innerHTML).not.toContain('patricia@test.intershop.de');
+  });
+
+  it('should render an email if displayEmail is set', () => {
+    component.displayEmail = true;
+    fixture.detectChanges();
+    expect(element.querySelector('address').innerHTML).toContain('patricia@test.intershop.de');
+  });
 });
