@@ -146,6 +146,7 @@
     "rxjs-no-unsafe-scope": { "severity": "off" },
     "rxjs-no-unsafe-takeuntil": true,
     "ngrx-use-empty-store-type": true,
+    "ngrx-use-oftype-with-type": true,
     "semicolon": [
       true,
       "always"
