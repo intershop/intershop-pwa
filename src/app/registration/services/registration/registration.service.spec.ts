@@ -1,5 +1,6 @@
+import { HttpHeaders } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from '../../../core/services/api/api.service';
 import { Customer } from '../../../models/customer/customer.model';
@@ -20,6 +21,11 @@ describe('Registration Service', () => {
     when(apiServiceMock.get(anything(), anything())).thenReturn(of({ firstName: 'PC' } as Customer));
 
     registrationService.signinUser(loginDetail).subscribe(data => {
+      const [, options] = capture<{}, { headers: HttpHeaders }>(apiServiceMock.get).last();
+      const headers = options.headers;
+      expect(headers).toBeTruthy();
+      expect(headers.get('Authorization')).toEqual('BASIC cGF0cmljaWFAdGVzdC5pbnRlcnNob3AuZGU6IUludGVyU2hvcDAwIQ==');
+
       expect(data).toHaveProperty('firstName', 'PC');
       done();
     });
