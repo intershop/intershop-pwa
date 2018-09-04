@@ -29,6 +29,10 @@
 
     &.active-search {
       background-color: $color-primary;
+
+      .ng-fa-icon {
+        color: $text-color-inverse;
+      }
     }
   }
 
