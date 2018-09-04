@@ -2,7 +2,8 @@
 <ng-container *ngIf="user; else notLoggedIn">
   <a routerLink="/account" class="my-account-link" attr.data-testing-id="link-myaccount">
     <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
-    <span *ngIf="user.lastName" class="login-name" [ngClass]="getViewClasses()">{{user.firstName + ' ' + user.lastName}}</span>
+    <span *ngIf="user.lastName; else nameNotDisplayed" class="login-name" [ngClass]="getViewClasses()">{{user.firstName + ' ' + user.lastName}}</span>
+    <ng-template #nameNotDisplayed><span class="login-name" [ngClass]="getViewClasses()">{{'account.login_status.myaccount.link' | translate}}</span></ng-template>
   </a>
   <span class="seperator" [ngClass]="getViewClasses()">&#124;</span>
   <a routerLink="/logout" class="my-account-link my-account-logout" attr.data-testing-id="link-logout">
