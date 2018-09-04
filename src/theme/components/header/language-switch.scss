@@ -55,11 +55,11 @@
 
         li {
           font-family: $font-family-regular;
-          font-size: $font-size-base;
+          font-size: $font-size-corporate;
           line-height: ($line-height-base * 1.5);
 
           a:hover {
-            color: darken($CORPORATE-PRIMARY, 10%);
+            color: $CORPORATE-SECONDARY;
           }
         }
       }

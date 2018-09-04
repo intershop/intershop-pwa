@@ -4,6 +4,7 @@
   z-index: 1;
   transition: height 500ms ease-in-out;
   align-self: center;
+  height: $top-header-height;
 
   @media (max-width: $screen-xs-max) {
     padding: 0;

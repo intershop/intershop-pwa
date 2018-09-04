@@ -11,7 +11,7 @@
   }
 
   .cart-header-note {
-    font-size: $font-size-base;
+    font-size: $font-size-corporate;
     font-family: $font-family-regular;
     color: $text-color-quarternary;
     text-transform: none;
@@ -126,7 +126,7 @@
       text-align: right;
     }
     .total-price {
-      font-size: $font-size-base;
+      font-size: $font-size-corporate;
       font-family: $font-family-bold;
     }
   }
