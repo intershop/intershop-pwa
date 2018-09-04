@@ -5,11 +5,11 @@ import { Action, ActionReducerMap, Store, StoreModule } from '@ngrx/store';
 import { filter, tap } from 'rxjs/operators';
 
 export const containsActionWithType = (type: string) =>
-  ((actions: Action[]) => !!actions.filter(a => a.type === type).length) as (() => boolean);
+  ((actions: Action[]) => !!actions.filter(a => a.type === type).length) as ((arg?: any) => boolean);
 
 export const containsActionWithTypeAndPayload = (type: string, predicate: (payload: any) => boolean) =>
   ((actions: { type: string; payload: any }[]) =>
-    !!actions.filter(a => a.type === type && predicate(a.payload)).length) as (() => boolean);
+    !!actions.filter(a => a.type === type && predicate(a.payload)).length) as ((arg?: any) => boolean);
 
 function includeAction(action: Action, include: (string | RegExp)[]) {
   const type = action.type;
