@@ -60,6 +60,7 @@
     "@ngx-translate/http-loader": "^3.0.1",
     "@types/lodash": "^4.14.116",
     "angular2-uuid": "^1.1.1",
+    "b64u": "^2.0.0",
     "bootstrap": "^4.1.3",
     "core-js": "^2.5.7",
     "express": "^4.16.3",
