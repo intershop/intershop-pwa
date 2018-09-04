@@ -19,32 +19,24 @@
   }
 
   :not(.navbar-toggler) {
-    > .ng-fa-icon {
-      margin-left: 0px;
-      color: $text-color-primary;
-      line-height: 40px;
-    }
-
     .quick-cart-link .ng-fa-icon {
       color: $text-color-quarternary;
     }
   }
-  .searchTerm:focus + .btn-search .ng-fa-icon {
-    color: $text-color-primary;
-  }
-  .search-toggler.active-search {
-    background-color: $color-primary;
 
-    .ng-fa-icon {
-      color: $white;
+  .search-toggler {
+    position: relative;
+
+    &.active-search {
+      background-color: #222;
     }
   }
 
   .search-container {
     position: absolute;
     z-index: 999999;
-    top: 42px;
-    right: 185px;
+    top: 40px;
+    right: 0;
     width: 400px;
     background: $white;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
@@ -103,8 +95,4 @@
       }
     }
   }
-}
-
-.header-sticky .search-container .btn-search {
-  padding: 0;
 }
