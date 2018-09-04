@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 
 import { Category } from '../../../models/category/category.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { LoadProductSuccess } from '../products';
 import { shoppingReducers } from '../shopping.system';
@@ -27,7 +26,7 @@ import {
 } from './categories.selectors';
 
 describe('Categories Selectors', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   let cat: Category;
   let prod: Product;
@@ -38,15 +37,12 @@ describe('Categories Selectors', () => {
     cat.hasOnlineProducts = true;
 
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([LogEffects]),
-      ],
+      imports: ngrxTesting({
+        shopping: combineReducers(shoppingReducers),
+      }),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   describe('with empty state', () => {

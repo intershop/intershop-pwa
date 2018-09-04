@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 
 import { Category } from '../../../models/category/category.model';
 import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { shoppingReducers } from '../shopping.system';
 
 import {
@@ -19,19 +18,16 @@ import {
 import { getAvailableFilter, getFilterLoading } from './filter.selectors';
 
 describe('Filter Selectors', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([LogEffects]),
-      ],
+      imports: ngrxTesting({
+        shopping: combineReducers(shoppingReducers),
+      }),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   describe('with empty state', () => {

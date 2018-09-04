@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket, BasketView } from '../../../models/basket/basket.model';
@@ -10,7 +9,7 @@ import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { checkoutReducers } from '../checkout.system';
 
 import {
@@ -35,20 +34,17 @@ import {
 } from './basket.selectors';
 
 describe('Basket Selectors', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([LogEffects]),
-      ],
+      imports: ngrxTesting({
+        checkout: combineReducers(checkoutReducers),
+        shopping: combineReducers(shoppingReducers),
+      }),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   describe('with empty state', () => {
