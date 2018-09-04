@@ -134,6 +134,10 @@
 
       + button.btn-search {
         color: $text-color-primary;
+
+        .ng-fa-icon {
+          color: $text-color-primary;
+        }
       }
     }
 
