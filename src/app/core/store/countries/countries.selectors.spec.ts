@@ -1,26 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 
 import { Country } from '../../../models/country/country.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { coreReducers } from '../core.system';
 
 import { LoadCountries, LoadCountriesFail, LoadCountriesSuccess } from './countries.actions';
 import { getAllCountries, getCountriesLoading } from './countries.selectors';
 
 describe('Countries Selectors', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   const countries = [{ countryCode: 'BG', name: 'Bulgaria' }, { countryCode: 'DE', name: 'Germany' }] as Country[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers), EffectsModule.forRoot([LogEffects])],
+      imports: ngrxTesting(coreReducers),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   describe('with empty state', () => {

@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
@@ -24,7 +23,7 @@ import { FilterNavigation } from '../../models/filter-navigation/filter-navigati
 import { Locale } from '../../models/locale/locale.model';
 import { Product } from '../../models/product/product.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
-import { LogEffects } from '../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../utils/dev/ngrx-testing';
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { CategoriesService } from '../services/categories/categories.service';
 import { FilterService } from '../services/filter/filter.service';
@@ -48,7 +47,7 @@ import { ViewconfActionTypes } from './viewconf';
 
 describe('Shopping System', () => {
   const DEBUG = false;
-  let store: LogEffects;
+  let store: TestStore;
   let router: Router;
   let categoriesServiceMock: CategoriesService;
   let productsServiceMock: ProductsService;
@@ -126,11 +125,13 @@ describe('Shopping System', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-          shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([...coreEffects, ...shoppingEffects, LogEffects]),
+        ...ngrxTesting(
+          {
+            ...coreReducers,
+            shopping: combineReducers(shoppingReducers),
+          },
+          [...coreEffects, ...shoppingEffects]
+        ),
         RouterTestingModule.withRoutes([
           {
             path: 'home',
@@ -177,7 +178,7 @@ describe('Shopping System', () => {
       ],
     });
 
-    store = TestBed.get(LogEffects);
+    store = TestBed.get(TestStore);
     store.logActions = DEBUG;
     store.logState = DEBUG;
     router = TestBed.get(Router);

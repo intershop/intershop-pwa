@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
@@ -8,7 +7,7 @@ import { QuoteData } from '../../../models/quote/quote.interface';
 import { Quote } from '../../../models/quote/quote.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { quotingReducers } from '../quoting.system';
 
 import { LoadQuotes, LoadQuotesFail, LoadQuotesSuccess, SelectQuote } from './quote.actions';
@@ -21,20 +20,17 @@ import {
 } from './quote.selectors';
 
 describe('Quote Selectors', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([LogEffects]),
-      ],
+      imports: ngrxTesting({
+        quoting: combineReducers(quotingReducers),
+        shopping: combineReducers(shoppingReducers),
+      }),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   describe('with empty state', () => {
