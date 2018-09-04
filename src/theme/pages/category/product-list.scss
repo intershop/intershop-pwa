@@ -311,3 +311,22 @@
     }
   }
 }
+
+/* product tile effects */
+.product-tile {
+  .product-image {
+    transition: transform 0.2s ease-in-out;
+  }
+  .product-tile-actions {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+  }
+  &:hover {
+    .product-tile-actions {
+      opacity: 1;
+    }
+    .product-image {
+      transform: scale(1.1);
+    }
+  }
+}
