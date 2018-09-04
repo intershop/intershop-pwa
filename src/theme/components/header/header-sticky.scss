@@ -3,7 +3,7 @@
   .main-navigation-list li {
     @media (max-width: $screen-md-max) {
       a {
-        font-size: 14px;
+        font-size: $font-size-corporate;
       }
     }
   }
@@ -28,7 +28,7 @@
     position: relative;
 
     &.active-search {
-      background-color: #222;
+      background-color: $color-primary;
     }
   }
 
@@ -38,7 +38,7 @@
     top: 40px;
     right: 0;
     width: 400px;
-    background: $white;
+    background: $color-inverse;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
   }
 
@@ -73,7 +73,7 @@
 .showed-on-scroll {
   display: block;
   transition: opacity 500ms ease-in-out;
-  background-color: $white;
+  background-color: $color-inverse;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
 
   &.hidden {

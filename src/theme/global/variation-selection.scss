@@ -17,7 +17,7 @@
         border: 1px solid transparent;
 
         &.selected {
-          background: #fff;
+          background: $color-inverse;
           display: block;
           border: 1px solid $border-color-light;
         }
