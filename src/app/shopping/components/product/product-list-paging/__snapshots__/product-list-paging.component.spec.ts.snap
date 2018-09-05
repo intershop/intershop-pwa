@@ -3,7 +3,7 @@
 exports[`Product List Paging Component should render adequately for last page 1`] = `
 <div
   id="root3"
-  ng-version="6.1.0"
+  ng-version="6.1.6"
 >
   
   
@@ -47,7 +47,7 @@ exports[`Product List Paging Component should render adequately for last page 1`
 exports[`Product List Paging Component should render adequately for middle page 1`] = `
 <div
   id="root2"
-  ng-version="6.1.0"
+  ng-version="6.1.6"
 >
   
   
@@ -96,7 +96,7 @@ exports[`Product List Paging Component should render adequately for middle page 
 exports[`Product List Paging Component should render adequately for starting page 1`] = `
 <div
   id="root1"
-  ng-version="6.1.0"
+  ng-version="6.1.6"
 >
   
   

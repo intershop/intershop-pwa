@@ -136,7 +136,7 @@ export class CategoriesEffects {
   @Effect()
   productOrCategoryChanged$ = combineLatest(
     this.store.pipe(select(selectors.getSelectedCategory), filter(x => !!x), distinctUntilKeyChanged('uniqueId')),
-    this.actions$.pipe<RouteNavigation>(ofRoute('category/:categoryUniqueId'))
+    this.actions$.pipe(ofRoute('category/:categoryUniqueId'), distinctUntilChanged<RouteNavigation>())
   ).pipe(
     filter(([category, action]) => category.uniqueId === action.payload.params.categoryUniqueId),
     withLatestFrom(this.store.pipe(select(getVisibleProducts))),
