@@ -35,7 +35,12 @@ export class LocaleEffects {
   loadAllLocales$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
     take(1),
-    mergeMapTo(this.store.pipe(select(getAvailableLocales), filter(locales => !locales.length))),
+    mergeMapTo(
+      this.store.pipe(
+        select(getAvailableLocales),
+        filter(locales => !locales.length)
+      )
+    ),
     mapTo(new fromActions.SetAvailableLocales(this.availableLocales))
   );
 

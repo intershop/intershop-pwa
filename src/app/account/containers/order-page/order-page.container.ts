@@ -21,6 +21,9 @@ export class OrderPageContainerComponent implements OnInit {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.order$ = this.store.pipe(select(getSelectedOrder), filter(order => !!order));
+    this.order$ = this.store.pipe(
+      select(getSelectedOrder),
+      filter(order => !!order)
+    );
   }
 }

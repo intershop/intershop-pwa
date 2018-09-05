@@ -51,10 +51,15 @@ export class NgrxStateTransfer {
   private onServer() {
     this.transferState.onSerialize(NGRX_STATE_SK, () => {
       let state;
-      this.store.pipe(take(1), map(filterState)).subscribe((saveState: any) => {
-        /* console.debug('Set for browser', JSON.stringify(saveState));*/
-        state = saveState;
-      });
+      this.store
+        .pipe(
+          take(1),
+          map(filterState)
+        )
+        .subscribe((saveState: any) => {
+          /* console.debug('Set for browser', JSON.stringify(saveState));*/
+          state = saveState;
+        });
 
       return state;
     });

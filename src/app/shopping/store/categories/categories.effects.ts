@@ -74,7 +74,10 @@ export class CategoriesEffects {
       ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
       map(action => action.payload)
     ),
-    this.store.pipe(select(selectors.getSelectedCategory), filter(CategoryHelper.isCategoryCompletelyLoaded))
+    this.store.pipe(
+      select(selectors.getSelectedCategory),
+      filter(CategoryHelper.isCategoryCompletelyLoaded)
+    )
   ).pipe(
     filter(([selectId, category]) => selectId === category.uniqueId),
     distinctUntilChanged((x, y) => x[0] === y[0]),
@@ -113,7 +116,12 @@ export class CategoriesEffects {
   loadTopLevelWhenUnavailable$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
     take(1),
-    switchMapTo(this.store.pipe(select(selectors.isTopLevelCategoriesLoaded), filter(loaded => !loaded))),
+    switchMapTo(
+      this.store.pipe(
+        select(selectors.isTopLevelCategoriesLoaded),
+        filter(loaded => !loaded)
+      )
+    ),
     mapTo(new actions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
   );
 
@@ -135,8 +143,15 @@ export class CategoriesEffects {
    */
   @Effect()
   productOrCategoryChanged$ = combineLatest(
-    this.store.pipe(select(selectors.getSelectedCategory), filter(x => !!x), distinctUntilKeyChanged('uniqueId')),
-    this.actions$.pipe(ofRoute('category/:categoryUniqueId'), distinctUntilChanged<RouteNavigation>())
+    this.store.pipe(
+      select(selectors.getSelectedCategory),
+      filter(x => !!x),
+      distinctUntilKeyChanged('uniqueId')
+    ),
+    this.actions$.pipe(
+      ofRoute('category/:categoryUniqueId'),
+      distinctUntilChanged<RouteNavigation>()
+    )
   ).pipe(
     filter(([category, action]) => category.uniqueId === action.payload.params.categoryUniqueId),
     withLatestFrom(this.store.pipe(select(getVisibleProducts))),
