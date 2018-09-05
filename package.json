@@ -113,7 +113,7 @@
     "license-checker": "^20.2.0",
     "lint-staged": "^7.2.0",
     "ngrx-store-freeze": "^0.2.4",
-    "prettier": "^1.14.0",
+    "prettier": "^1.14.2",
     "protractor": "~5.4.0",
     "protractor-jasmine2-html-reporter": "0.0.7",
     "reflect-metadata": "^0.1.12",

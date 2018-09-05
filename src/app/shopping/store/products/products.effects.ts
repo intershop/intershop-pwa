@@ -62,7 +62,10 @@ export class ProductsEffects {
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
-      this.store.pipe(select(getPagingPage), map(n => n + 1))
+      this.store.pipe(
+        select(getPagingPage),
+        map(n => n + 1)
+      )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
     mergeMap(([action, , , page]) => [

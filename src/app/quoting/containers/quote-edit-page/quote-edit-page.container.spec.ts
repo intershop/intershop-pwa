@@ -57,12 +57,9 @@ describe('Quote Edit Page Container', () => {
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
-  it(
-    'should navigate to basket when addToBasket is clicked',
-    fakeAsync(() => {
-      component.addQuoteToBasket(undefined);
-      tick(50);
-      expect(location.path()).toBe('/basket');
-    })
-  );
+  it('should navigate to basket when addToBasket is clicked', fakeAsync(() => {
+    component.addQuoteToBasket(undefined);
+    tick(50);
+    expect(location.path()).toBe('/basket');
+  }));
 });

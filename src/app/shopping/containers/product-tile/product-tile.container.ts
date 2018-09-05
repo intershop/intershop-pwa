@@ -43,8 +43,14 @@ export class ProductTileContainerComponent implements OnInit {
     this.store.dispatch(
       new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
     );
-    this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
-      this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
-    });
+    this.store
+      .pipe(
+        select(getUserAuthorized),
+        take(1),
+        filter(b => b)
+      )
+      .subscribe(() => {
+        this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
+      });
   }
 }
