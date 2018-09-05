@@ -3,7 +3,7 @@
 exports[`Category List Component should be created 1`] = `
 <div
   id="root0"
-  ng-version="6.1.0"
+  ng-version="6.1.6"
 >
   <ul
     class="category-list row"
