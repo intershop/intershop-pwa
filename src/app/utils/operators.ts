@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
 
@@ -34,8 +33,8 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
     );
 }
 
-export function mapErrorToAction<T extends Action>(actionType: { new (error: HttpError): T }) {
-  return (source$: Observable<T>) =>
+export function mapErrorToAction<S, T>(actionType: { new (error: HttpError): T }) {
+  return (source$: Observable<S | T>) =>
     // tslint:disable-next-line:ban
     source$.pipe(catchError(err => of(new actionType(HttpErrorMapper.fromError(err)))));
 }

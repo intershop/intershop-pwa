@@ -35,7 +35,10 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
     this.productsAvailable$ = this.store.pipe(select(isProductsAvailable));
 
     this.loadMore
-      .pipe(withLatestFrom(this.searchTerm$), takeUntil(this.destroy$))
+      .pipe(
+        withLatestFrom(this.searchTerm$),
+        takeUntil(this.destroy$)
+      )
       .subscribe(([, searchTerm]) => this.store.dispatch(new SearchMoreProducts(searchTerm)));
   }
 

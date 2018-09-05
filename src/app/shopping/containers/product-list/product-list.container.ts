@@ -56,9 +56,15 @@ export class ProductListContainerComponent implements OnInit {
     this.sortBy$ = this.store.pipe(select(getSortBy));
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
     this.loadingMore$ = this.store.pipe(select(getPagingLoading));
-    this.currentPage$ = this.store.pipe(select(getPagingPage), map(x => x + 1));
+    this.currentPage$ = this.store.pipe(
+      select(getPagingPage),
+      map(x => x + 1)
+    );
     this.pageIndices$ = this.store.pipe(select(getPageIndices));
-    this.displayPaging$ = this.store.pipe(select(isEveryProductDisplayed), map(b => !b));
+    this.displayPaging$ = this.store.pipe(
+      select(isEveryProductDisplayed),
+      map(b => !b)
+    );
   }
 
   /**

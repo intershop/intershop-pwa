@@ -50,33 +50,24 @@ describe('Feature Toggle Guard', () => {
     router = TestBed.get(Router);
   });
 
-  it(
-    'should navigate to activated features successfully',
-    fakeAsync(() => {
-      router.navigate(['/feature1']);
-      tick(2000);
+  it('should navigate to activated features successfully', fakeAsync(() => {
+    router.navigate(['/feature1']);
+    tick(2000);
 
-      expect(router.url).toEndWith('feature1');
-    })
-  );
+    expect(router.url).toEndWith('feature1');
+  }));
 
-  it(
-    'should not navigate to deactivated features',
-    fakeAsync(() => {
-      router.navigate(['/feature2']);
-      tick(2000);
+  it('should not navigate to deactivated features', fakeAsync(() => {
+    router.navigate(['/feature2']);
+    tick(2000);
 
-      expect(router.url).toEndWith('error');
-    })
-  );
+    expect(router.url).toEndWith('error');
+  }));
 
-  it(
-    'should navigate to unhandled features successfully',
-    fakeAsync(() => {
-      router.navigate(['/feature3']);
-      tick(2000);
+  it('should navigate to unhandled features successfully', fakeAsync(() => {
+    router.navigate(['/feature3']);
+    tick(2000);
 
-      expect(router.url).toEndWith('feature3');
-    })
-  );
+    expect(router.url).toEndWith('feature3');
+  }));
 });

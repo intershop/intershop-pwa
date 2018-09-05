@@ -62,7 +62,12 @@ export class SearchEffects {
   triggerSearch$ = this.actions$.pipe(
     ofRoute('search/:searchTerm'),
     // wait until config parameter is set
-    debounce(() => this.store.pipe(select(getItemsPerPage), filter(x => x > 0))),
+    debounce(() =>
+      this.store.pipe(
+        select(getItemsPerPage),
+        filter(x => x > 0)
+      )
+    ),
     map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
     distinctUntilChanged(),
@@ -75,7 +80,10 @@ export class SearchEffects {
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
-      this.store.pipe(select(getPagingPage), map(n => n + 1))
+      this.store.pipe(
+        select(getPagingPage),
+        map(n => n + 1)
+      )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
     mergeMap(([action, , , page]) => [new SetPagingLoading(), new SetPage(page), new SearchProducts(action.payload)])

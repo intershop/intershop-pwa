@@ -24,7 +24,10 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.category$ = this.store.pipe(select(getSelectedCategory), filter(e => !!e));
+    this.category$ = this.store.pipe(
+      select(getSelectedCategory),
+      filter(e => !!e)
+    );
 
     this.categoryLoading$ = combineLatest(
       this.store.pipe(select(getCategoryLoading)),
@@ -32,7 +35,10 @@ export class CategoryPageContainerComponent implements OnInit, OnDestroy {
     ).pipe(map(([a, b]) => a && !b));
 
     this.loadMore
-      .pipe(withLatestFrom(this.store.pipe(select(getSelectedCategoryId))), takeUntil(this.destroy$))
+      .pipe(
+        withLatestFrom(this.store.pipe(select(getSelectedCategoryId))),
+        takeUntil(this.destroy$)
+      )
       .subscribe(([, categoryUniqueId]) => this.store.dispatch(new LoadMoreProductsForCategory(categoryUniqueId)));
   }
 

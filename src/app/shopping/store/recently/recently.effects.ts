@@ -15,8 +15,14 @@ export class RecentlyEffects {
 
   @Effect()
   viewedProduct$ = combineLatest(
-    this.actions.pipe(ofType<SelectProduct>(ProductsActionTypes.SelectProduct), filter(action => !!action.payload)),
-    this.store.pipe(select(getSelectedProduct), filter(product => !!product))
+    this.actions.pipe(
+      ofType<SelectProduct>(ProductsActionTypes.SelectProduct),
+      filter(action => !!action.payload)
+    ),
+    this.store.pipe(
+      select(getSelectedProduct),
+      filter(product => !!product)
+    )
   ).pipe(
     filter(([action, product]) => action.payload === product.sku),
     map(([, product]) => product.sku),
