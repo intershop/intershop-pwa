@@ -1,5 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import b64u from 'b64u';
 import { Observable } from 'rxjs';
 import { switchMapTo } from 'rxjs/operators';
 
@@ -7,7 +8,6 @@ import { ApiService } from '../../../core/services/api/api.service';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { Customer } from '../../../models/customer/customer.model';
 import { User } from '../../../models/user/user.model';
-
 /**
  * The Registration Service handles the registration related interaction with the 'customers' REST API.
  */
@@ -23,7 +23,7 @@ export class RegistrationService {
   signinUser(loginCredentials: LoginCredentials): Observable<Customer> {
     const headers = new HttpHeaders().set(
       'Authorization',
-      'BASIC ' + btoa(`${loginCredentials.login}:${loginCredentials.password}`)
+      'BASIC ' + b64u.toBase64(b64u.encode(`${loginCredentials.login}:${loginCredentials.password}`))
     );
     return this.apiService.get<Customer>('customers/-', { headers });
   }
