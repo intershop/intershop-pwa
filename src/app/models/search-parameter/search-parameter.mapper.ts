@@ -1,3 +1,5 @@
+import b64u from 'b64u';
+
 import { SearchParameter } from './search-parameter.model';
 
 export class SearchParameterMapper {
@@ -6,7 +8,7 @@ export class SearchParameterMapper {
   */
   static fromData(data: string): SearchParameter {
     const searchParameter = new SearchParameter();
-    const decodedData = atob(data);
+    const decodedData = b64u.decode(b64u.fromBase64(data));
 
     const terms = decodedData.split('&');
     terms.forEach(term => {
@@ -65,6 +67,6 @@ export class SearchParameterMapper {
         }
       });
     }
-    return btoa(data);
+    return b64u.toBase64(b64u.encode(data));
   }
 }
