@@ -16,6 +16,9 @@ export class ProductCompareStatusContainerComponent implements OnInit {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.productCompareCount$ = this.store.pipe(select(getCompareProductsSKUs), pluck('length'));
+    this.productCompareCount$ = this.store.pipe(
+      select(getCompareProductsSKUs),
+      pluck('length')
+    );
   }
 }

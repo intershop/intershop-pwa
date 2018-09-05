@@ -24,12 +24,12 @@ export class OrderService {
    */
   createOrder(basket: Basket, acceptTermsAndConditions: boolean = false): Observable<Order> {
     return this.apiService
-      .post<Order>('orders', {
+      .post<Link>('orders', {
         basketID: basket.id,
         acceptTermsAndConditions: acceptTermsAndConditions,
       })
       .pipe(
-        resolveLink<Order>(this.apiService),
+        resolveLink<OrderData>(this.apiService),
         map(OrderMapper.fromData)
       );
   }
@@ -40,7 +40,7 @@ export class OrderService {
    * @returns      A list of the user's orders
    */
   getOrders(amount: number = 30): Observable<Order[]> {
-    return this.apiService.get<Order>(`orders?amount=${amount}`).pipe(
+    return this.apiService.get(`orders?amount=${amount}`).pipe(
       unpackEnvelope<Link>(),
       resolveLinks<OrderData>(this.apiService),
       map(orders => orders.map(order => OrderMapper.fromData(order)))

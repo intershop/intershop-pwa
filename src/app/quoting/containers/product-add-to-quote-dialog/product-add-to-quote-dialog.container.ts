@@ -33,7 +33,11 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
     this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
 
     this.activeQuoteRequest$
-      .pipe(filter(quoteRequest => !!quoteRequest), distinctUntilKeyChanged('id'), takeUntil(this.destroy$))
+      .pipe(
+        filter(quoteRequest => !!quoteRequest),
+        distinctUntilKeyChanged('id'),
+        takeUntil(this.destroy$)
+      )
       .subscribe(quoteRequest => this.store.dispatch(new SelectQuoteRequest(quoteRequest.id)));
   }
 

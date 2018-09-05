@@ -18,7 +18,12 @@ export class CountriesEffects {
   loadCountries$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
     take(1),
-    concatMapTo(this.store.pipe(select(getAllCountries), filter(countries => !countries.length))),
+    concatMapTo(
+      this.store.pipe(
+        select(getAllCountries),
+        filter(countries => !countries.length)
+      )
+    ),
     concatMap(() =>
       this.countryService.getCountries().pipe(
         map(countries => new countryActions.LoadCountriesSuccess(countries)),
