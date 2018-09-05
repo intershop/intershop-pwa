@@ -1,6 +1,16 @@
 {
   "name": "intershop-pwa",
-  "version": "0.4.0",
+  "description": "Intershop Progressive Web App",
+  "version": "0.5.0",
+  "license": "Intershop Standard Software End User License Agreement Intershop 7",
+  "keywords": [
+    "intershop"
+  ],
+  "engines": {
+    "node": ">=8.11.0 <9",
+    "npm": "~5.6.0"
+  },
+  "private": true,
   "scripts": {
     "precommit": "lint-staged",
     "ng": "ng",
@@ -14,6 +24,8 @@
     "stylelint": "stylelint \"src/theme/**/*.scss\" --fix",
     "format": "node node_modules/prettier/bin-prettier.js --loglevel warn --write \"**/*.*\"",
     "check": "ng build --aot && npx tsc --project src/tsconfig.spec.json && npm run lint -- --fix --format stylish && npm run format && npm run stylelint && npm run test && npm run e2e -- --suite local",
+    "3rd-party-licenses": "license-checker --csv --out 3rd-party-licenses.txt --customPath 3rd-party-licenses_format.json",
+    "3rd-party-licenses:summary": "license-checker --summary",
     "docs": "./node_modules/.bin/compodoc -p src/tsconfig.app.json -d docs/compodoc -y docs/theme --hideGenerator",
     "docs:serve": "npm run docs -- -s",
     "docs:watch": "npm run docs -- -s -w",
@@ -33,7 +45,6 @@
     "start:dynamic": "npm run build:dynamic && npm run serve:dynamic",
     "start:dynamic:prod": "npm run build:dynamic:prod && npm run serve:dynamic"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
@@ -99,6 +110,7 @@
     "jest-junit": "^5.1.0",
     "jest-marbles": "^2.0.0",
     "jest-preset-angular": "^5.2.3",
+    "license-checker": "^20.2.0",
     "lint-staged": "^7.2.0",
     "ngrx-store-freeze": "^0.2.4",
     "prettier": "^1.14.0",

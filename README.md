@@ -3,6 +3,7 @@
 An Angular based storefront clone of the Responsive Starter Store that communicates with the Intershop Commerce Management server via REST API only.
 
 ---
+Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager. Currently Node.js 8.x with npm 5.6.0 is required.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and follows the Angular CLI style guide and naming coventions.
 
@@ -20,6 +21,15 @@ ng serve --open
 The `ng ...` commands require Angular CLI to be installed globally. Run `npm install -g @angular/cli` once to globally install Angular CLI on your development mashine.
 
 The project can alternatively be run with `npm start`.
+
+## Project update
+
+An update of the project to a new release version might include added or updated dependencies. So in case of an update the following command will be necessary too before serving or building the application.
+
+```
+npm install
+```
+
 
 ## Development server
 
