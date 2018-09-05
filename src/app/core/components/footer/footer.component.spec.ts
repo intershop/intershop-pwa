@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from '../../configurations/injection-keys';
@@ -13,7 +14,7 @@ describe('Footer Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, IconModule],
+      imports: [RouterTestingModule, NgbCollapseModule, IconModule],
       declarations: [FooterComponent],
       providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })
