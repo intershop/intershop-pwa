@@ -31,10 +31,12 @@ import {
   ICM_BASE_URL,
   ICM_SERVER_URL,
   REST_ENDPOINT,
+  STATIC_URL,
   getICMApplication,
   getICMBaseURL,
   getICMServerURL,
   getRestEndPoint,
+  getStaticURL,
 } from './core/services/state-transfer/factories';
 import { StatePropertiesService } from './core/services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers } from './core/store/core.system';
@@ -76,6 +78,7 @@ export const metaReducers: MetaReducer<any>[] = [
   ],
   providers: [
     { provide: REST_ENDPOINT, useFactory: getRestEndPoint(), deps: [StatePropertiesService] },
+    { provide: STATIC_URL, useFactory: getStaticURL(), deps: [StatePropertiesService] },
     { provide: ICM_BASE_URL, useFactory: getICMBaseURL(), deps: [StatePropertiesService] },
     { provide: ICM_APPLICATION, useFactory: getICMApplication(), deps: [StatePropertiesService] },
     { provide: ICM_SERVER_URL, useFactory: getICMServerURL(), deps: [StatePropertiesService] },
