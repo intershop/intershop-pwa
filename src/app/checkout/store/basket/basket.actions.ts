@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 
+import { Address } from '../../../models/address/address.model';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
@@ -15,7 +16,11 @@ export enum BasketActionTypes {
   LoadBasket = '[Basket Internal] Load Basket',
   LoadBasketFail = '[Basket API] Load Basket Fail',
   LoadBasketSuccess = '[Basket API] Load Basket Success',
+  CreateBasketInvoiceAddress = '[Basket] Create Basket Invoice Address',
+  CreateBasketInvoiceAddressSuccess = '[Basket API] Create Basket Invoice Address Success',
   UpdateBasketInvoiceAddress = '[Basket] Update Baskets Invoive Address',
+  CreateBasketShippingAddress = '[Basket] Create Basket Shipping Address',
+  CreateBasketShippingAddressSuccess = '[Basket] Create Basket Shipping Address Success',
   UpdateBasketShippingAddress = '[Basket] Update Baskets Shipping Address',
   UpdateBasketShippingMethod = '[Basket] Update Baskets Shipping Method',
   UpdateBasket = '[Basket Internal] Update Basket',
@@ -69,6 +74,25 @@ export class LoadBasketFail implements Action {
 export class LoadBasketSuccess implements Action {
   readonly type = BasketActionTypes.LoadBasketSuccess;
   constructor(public payload: Basket) {}
+}
+
+export class CreateBasketInvoiceAddress implements Action {
+  readonly type = BasketActionTypes.CreateBasketInvoiceAddress;
+  constructor(public payload: Address) {}
+}
+
+export class CreateBasketInvoiceAddressSuccess implements Action {
+  readonly type = BasketActionTypes.CreateBasketInvoiceAddressSuccess;
+  constructor(public payload: Address) {}
+}
+export class CreateBasketShippingAddress implements Action {
+  readonly type = BasketActionTypes.CreateBasketShippingAddress;
+  constructor(public payload: Address) {}
+}
+
+export class CreateBasketShippingAddressSuccess implements Action {
+  readonly type = BasketActionTypes.CreateBasketShippingAddressSuccess;
+  constructor(public payload: Address) {}
 }
 
 export class UpdateBasketInvoiceAddress implements Action {
@@ -260,6 +284,10 @@ export type BasketAction =
   | LoadBasket
   | LoadBasketFail
   | LoadBasketSuccess
+  | CreateBasketInvoiceAddress
+  | CreateBasketInvoiceAddressSuccess
+  | CreateBasketShippingAddress
+  | CreateBasketShippingAddressSuccess
   | UpdateBasketInvoiceAddress
   | UpdateBasketShippingAddress
   | UpdateBasketShippingMethod

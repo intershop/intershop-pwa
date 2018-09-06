@@ -1,7 +1,8 @@
 import { of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from '../../../core/services/api/api.service';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 
 import { AddressService } from './address.service';
 
@@ -11,6 +12,7 @@ describe('Address Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    when(apiService.icmServerURL).thenReturn('http://server');
     addressService = new AddressService(instance(apiService));
   });
 
@@ -19,6 +21,20 @@ describe('Address Service', () => {
 
     addressService.getCustomerAddresses().subscribe(() => {
       verify(apiService.get(`customers/-/addresses`)).once();
+      done();
+    });
+  });
+
+  it("should create an address when 'createCustomerAddress' is called", done => {
+    when(apiService.post(`customers/-/addresses`, anything())).thenReturn(
+      of({ type: 'Link', uri: 'site/-/customers/-/addresses/addressid' })
+    );
+    when(apiService.get(anything())).thenReturn(of(BasketMockData.getAddress()));
+
+    addressService.createCustomerAddress('-', BasketMockData.getAddress()).subscribe(data => {
+      verify(apiService.post(`customers/-/addresses`, anything())).once();
+      verify(apiService.get('http://server/site/-/customers/-/addresses/addressid')).once();
+      expect(data).toHaveProperty('firstName', 'Patricia');
       done();
     });
   });
