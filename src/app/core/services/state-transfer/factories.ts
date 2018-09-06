@@ -13,6 +13,16 @@ export function getRestEndPoint() {
 }
 
 /**
+ * The injected property contains the URL to the static content (e.g. images) of the ICM Application.
+ * It is set by {@link StatePropertiesService#getStaticURL}
+ */
+export const STATIC_URL = new InjectionToken<string>('staticURL');
+
+export function getStaticURL() {
+  return (service: StatePropertiesService): string => service.getStaticURL();
+}
+
+/**
  * The injected property contains the base URL to the ICM Application to be used for constructing paths to static data.
  * It is set by {@link StatePropertiesService#getICMBaseURL}
  */
