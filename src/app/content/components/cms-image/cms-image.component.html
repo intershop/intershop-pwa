@@ -1,0 +1,19 @@
+<ng-container *ngIf="getConfigurationParameterValue(pagelet, 'Link'); else image">
+  <a [routerLink]="getRouterLink(getConfigurationParameterValue(pagelet, 'Link'))"
+    [attr.title]="getConfigurationParameterValue(pagelet, 'LinkTitle')"
+    class="teaser-link"
+  >
+    <ng-container *ngTemplateOutlet="image"></ng-container>
+  </a>
+</ng-container>
+
+<ng-template #image>
+  <img [src]="getImagePath(getConfigurationParameterValue(pagelet, 'Image'))"
+    [attr.alt]="getConfigurationParameterValue(pagelet, 'AlternateText')"
+    [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')"
+  >
+</ng-template>
+
+<!-- TODO: (CMS Component Configuration)
+  Picture
+-->

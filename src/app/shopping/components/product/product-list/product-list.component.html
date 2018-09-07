@@ -4,7 +4,7 @@
   <ng-container *ngIf="viewType === 'grid'">
     <div *ngFor="let product of products" class="col-6 col-lg-4 product-list-item grid-view">
       <ish-product-tile-container *ngIf="product else loading"
-        [product]="product"
+        [productSku]="product.sku"
         [category]="category"
       ></ish-product-tile-container>
       <ng-template #loading>

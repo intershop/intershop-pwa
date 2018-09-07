@@ -22,3 +22,5 @@ export const getSelectedProduct = createSelector(
 );
 
 export const getProductLoading = createSelector(getProductsState, products => products.loading);
+
+export const getProduct = createSelector(getProductEntities, (products, props) => products[props.sku]);

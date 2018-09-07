@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule, combineReducers } from '@ngrx/store';
 
-import { Product } from '../../../models/product/product.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { shoppingReducers } from '../../store/shopping.system';
 
@@ -28,6 +27,10 @@ describe('Product Tile Container', () => {
           template: 'Product Tile Component',
           inputs: ['product', 'category', 'isInCompareList'],
         }),
+        MockComponent({
+          selector: 'ish-loading',
+          template: 'Loading Component',
+        }),
       ],
     }).compileComponents();
   }));
@@ -36,7 +39,7 @@ describe('Product Tile Container', () => {
     fixture = TestBed.createComponent(ProductTileContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.product = { sku: 'sku' } as Product;
+    component.productSku = 'sku';
   });
 
   it('should be created', () => {

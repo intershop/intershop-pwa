@@ -1,0 +1,295 @@
+{
+  "attachments": [
+    {
+      "key": "AC_Manual_1_",
+      "name": "User manual",
+      "type": "Manual",
+      "uri": false,
+      "value": "inSPIRED:/manuals/8806086011815_manual.pdf"
+    },
+    {
+      "key": "AC_Other_1_",
+      "name": "EU Energy Label",
+      "type": "Other",
+      "uri": false,
+      "value": "inSPIRED:/8806086011815_EU-Energy-Label.pdf"
+    }
+  ],
+  "attributes": [
+    {
+      "name": "Ethernet LAN (RJ-45) ports quantity",
+      "type": "Integer",
+      "value": 1
+    },
+    {
+      "name": "Height (with stand)",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "cm",
+        "value": 89.37
+      }
+    },
+    {
+      "name": "Display diagonal",
+      "type": "String",
+      "value": "165.1 cm (65\")"
+    },
+    {
+      "name": "Built-in speakers",
+      "type": "String",
+      "value": "Yes"
+    },
+    {
+      "name": "HD-Ready",
+      "type": "String",
+      "value": "Full HD"
+    },
+    {
+      "name": "HDMI ports quantity",
+      "type": "Integer",
+      "value": 4
+    },
+    {
+      "name": "Common interface Plus (CI+)",
+      "type": "String",
+      "value": "Yes"
+    },
+    {
+      "name": "Power consumption",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "W",
+        "value": 60
+      }
+    },
+    {
+      "name": "Wireless LAN (WLAN) connection",
+      "type": "String",
+      "value": "Yes"
+    },
+    {
+      "name": "USB 2.0 ports quantity",
+      "type": "Integer",
+      "value": 3
+    },
+    {
+      "name": "Common interface (CI)",
+      "type": "String",
+      "value": "No"
+    },
+    {
+      "name": "Weight (with stand)",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "kg",
+        "value": 27.2
+      }
+    },
+    {
+      "name": "DVI port",
+      "type": "String",
+      "value": "No"
+    },
+    {
+      "name": "PC in (D-Sub)",
+      "type": "String",
+      "value": "No"
+    },
+    {
+      "name": "Display resolution",
+      "type": "String",
+      "value": "1920 x 1080 pixels"
+    },
+    {
+      "name": "Number of loudspeakers",
+      "type": "Integer",
+      "value": 3
+    },
+    {
+      "name": "Width (with stand)",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "m",
+        "value": 1.5
+      }
+    },
+    {
+      "name": "Depth (with stand)",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "cm",
+        "value": 30.78
+      }
+    },
+    {
+      "name": "Digital signal format system",
+      "type": "String",
+      "value": "DVB-C|DVB-S2|DVB-T2"
+    },
+    {
+      "name": "Headphone connectivity",
+      "type": "String",
+      "value": "Yes"
+    },
+    {
+      "name": "3D compatibility",
+      "type": "String",
+      "value": "Yes"
+    }
+  ],
+  "availability": true,
+  "images": [
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "back L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "back M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "back S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "front L",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "front S",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "side L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "side M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "side S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "side"
+    }
+  ],
+  "inStock": true,
+  "listPrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 4014.1
+  },
+  "longDescription": "Samsung UE65H8000SZ. Display diagonal: 165.1 cm (65\"), HD type: Full HD, Display resolution: 1920 x 1080 pixels. Tuner type: Analogue & Digital, Digital signal format system: DVB-C, DVB-S2, DVB-T2. RMS rated power: 40W, Subwoofer RMS power: 20W, Audio system: Premium Sound DTS 5.1. Consumer Electronics Control (CEC): Anynet+. Smart modes: Game, Sports",
+  "manufacturer": "Samsung",
+  "mastered": false,
+  "minOrderQuantity": 1,
+  "name": "Samsung UE65H8000SZ Full HD 3D Smart TV",
+  "productBundle": false,
+  "productMaster": false,
+  "productName": "Samsung UE65H8000SZ Full HD 3D Smart TV",
+  "readyForShipmentMax": 7,
+  "readyForShipmentMin": 3,
+  "retailSet": false,
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/8806086011815/reviews",
+  "roundedAverageRating": "5.0",
+  "salePrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 4014.1
+  },
+  "shippingMethods": [
+    {
+      "id": "STD_2DAY",
+      "name": "2-Business Day",
+      "shippingTimeMax": 2,
+      "shippingTimeMin": 1,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_5DAY",
+      "name": "5-Business Day",
+      "shippingTimeMax": 5,
+      "shippingTimeMin": 2,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "SATURDAY",
+      "name": "Saturday Delivery",
+      "shippingTimeMax": 6,
+      "shippingTimeMin": 0,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_GROUND",
+      "name": "Standard Ground",
+      "shippingTimeMax": 7,
+      "shippingTimeMin": 3,
+      "type": "ShippingMethod"
+    }
+  ],
+  "shortDescription": "Samsung UE65H8000SZ, 165.1 cm (65\"), 1920 x 1080 pixels, 3D compatibility, Wi-Fi",
+  "sku": "8806086011815",
+  "type": "Product"
+}

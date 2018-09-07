@@ -1,0 +1,19 @@
+<div [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')">
+  <div [ngClass]="getConfigurationParameterValue(pagelet, 'CarouselCSSClass')">
+    <ngb-carousel
+      [interval]="intervalValue"
+      [showNavigationArrows]="pageletSlides.length > 1"
+      [showNavigationIndicators]="getConfigurationParameterValue(pagelet, 'ShowIndicators', 'boolean')"
+    >
+      <ng-template ngbSlide *ngFor="let slidePagelets of pageletSlides">
+        <div class="row">
+          <ng-container *ngFor="let pagelet of slidePagelets">
+            <div [ngClass]="'col-sm-' + itemGridSize">
+              <ish-content-pagelet [pagelet]="pagelet"></ish-content-pagelet>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+  </div>
+</div>

@@ -19,7 +19,7 @@ describe('Product List Component', () => {
         MockComponent({
           selector: 'ish-product-tile-container',
           template: 'Product Tile Container',
-          inputs: ['product', 'category'],
+          inputs: ['productSku', 'category'],
         }),
         MockComponent({
           selector: 'ish-product-row-container',

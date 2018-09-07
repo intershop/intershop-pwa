@@ -6,14 +6,14 @@
       "value": "Y"
     },
     {
-      "name": "Mac compatibility",
-      "type": "String",
-      "value": "Y"
-    },
-    {
       "name": "Still image resolutions",
       "type": "String",
       "value": "-"
+    },
+    {
+      "name": "Mac compatibility",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "Sensor type",
@@ -56,12 +56,12 @@
       "value": "-"
     },
     {
-      "name": "Maximum video resolution",
+      "name": "Camera shutter speed",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Camera shutter speed",
+      "name": "Maximum video resolution",
       "type": "String",
       "value": "-"
     },
@@ -86,14 +86,14 @@
       "value": "Y"
     },
     {
-      "name": "Battery technology",
-      "type": "String",
-      "value": "Lithium-Ion"
-    },
-    {
       "name": "Minimum processor",
       "type": "String",
       "value": "Pentium 4, 2.8 GHz"
+    },
+    {
+      "name": "Battery technology",
+      "type": "String",
+      "value": "Lithium-Ion"
     },
     {
       "name": "Internal memory",
@@ -176,12 +176,12 @@
       "value": "Y"
     },
     {
-      "name": "Display resolution (numeric)",
+      "name": "Maximum image resolution",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Maximum image resolution",
+      "name": "Display resolution (numeric)",
       "type": "String",
       "value": "-"
     },
@@ -206,16 +206,6 @@
       "value": "USB"
     },
     {
-      "name": "Compatible operating systems",
-      "type": "String",
-      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
-    },
-    {
-      "name": "Display",
-      "type": "String",
-      "value": "LCD"
-    },
-    {
       "name": "Image stabilizer",
       "type": "String",
       "value": "-"
@@ -224,6 +214,16 @@
       "name": "Colour_of_product",
       "type": "String",
       "value": "Black"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
+    },
+    {
+      "name": "Compatible operating systems",
+      "type": "String",
+      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
     }
   ],
   "availability": true,

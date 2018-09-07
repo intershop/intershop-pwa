@@ -6,6 +6,7 @@ export const environment = {
   // Intershop Commerce Management REST server configuration
   icmBaseURL: 'http://192.168.99.100:8081',
   icmServer: 'INTERSHOP/rest/WFS',
+  icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'inSPIRED-inTRONICS-Site',
 
   // configuration of the available locales - hard coded for now
