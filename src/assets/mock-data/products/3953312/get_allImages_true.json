@@ -46,14 +46,14 @@
       "value": "FXP, XP+, SP, LP"
     },
     {
-      "name": "Maximum video resolution",
-      "type": "String",
-      "value": "1920 x 1080 pixels"
-    },
-    {
       "name": "Camera shutter speed",
       "type": "String",
       "value": "1/2 - 1/20000 s"
+    },
+    {
+      "name": "Maximum video resolution",
+      "type": "String",
+      "value": "1920 x 1080 pixels"
     },
     {
       "name": "Depth",
@@ -109,6 +109,11 @@
       "value": "400 x"
     },
     {
+      "name": "Effective megapixels (movie)",
+      "type": "String",
+      "value": "1.56 MP"
+    },
+    {
       "name": "Width",
       "type": "ResourceAttribute",
       "value": {
@@ -121,11 +126,6 @@
       "name": "Battery life (max)",
       "type": "String",
       "value": "3 h"
-    },
-    {
-      "name": "Effective megapixels (movie)",
-      "type": "String",
-      "value": "1.56 MP"
     },
     {
       "name": "Sports",
@@ -158,6 +158,11 @@
       "value": "68.6 mm (2.7 \")"
     },
     {
+      "name": "Built-in flash",
+      "type": "String",
+      "value": "N"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -167,17 +172,12 @@
       }
     },
     {
-      "name": "Built-in flash",
-      "type": "String",
-      "value": "N"
-    },
-    {
       "name": "DV port",
       "type": "String",
       "value": "N"
     },
     {
-      "name": "HDMI ports quantity",
+      "name": "Component video (YPbPr/YCbCr) out",
       "type": "String",
       "value": "1"
     },
@@ -187,7 +187,7 @@
       "value": "Y"
     },
     {
-      "name": "Component video (YPbPr/YCbCr) out",
+      "name": "HDMI ports quantity",
       "type": "String",
       "value": "1"
     },
@@ -212,14 +212,19 @@
       "value": "8 GB"
     },
     {
+      "name": "Focus",
+      "type": "String",
+      "value": "TTL"
+    },
+    {
       "name": "Audio output",
       "type": "String",
       "value": "1"
     },
     {
-      "name": "Focus",
+      "name": "Interface",
       "type": "String",
-      "value": "TTL"
+      "value": "USB 2.0"
     },
     {
       "name": "Total megapixels",
@@ -227,9 +232,14 @@
       "value": "2.39 MP"
     },
     {
-      "name": "Interface",
+      "name": "Image stabilizer",
       "type": "String",
-      "value": "USB 2.0"
+      "value": "Y"
+    },
+    {
+      "name": "Camcorder tape type",
+      "type": "String",
+      "value": "Flash memory"
     },
     {
       "name": "Colour_of_product",
@@ -240,16 +250,6 @@
       "name": "Display",
       "type": "String",
       "value": "LCD"
-    },
-    {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
-    },
-    {
-      "name": "Image stabilizer",
-      "type": "String",
-      "value": "Y"
     }
   ],
   "availability": true,

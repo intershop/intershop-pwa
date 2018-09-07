@@ -400,6 +400,36 @@
                   "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897"
                 },
                 {
+                  "id": "897_Microsoft",
+                  "name": "Microsoft",
+                  "type": "CategoryPath",
+                  "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft"
+                }
+              ],
+              "description": "Microsoft",
+              "hasOnlineProducts": true,
+              "hasOnlineSubCategories": false,
+              "id": "897_Microsoft",
+              "name": "Microsoft",
+              "online": "1",
+              "type": "Category",
+              "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Microsoft"
+            },
+            {
+              "categoryPath": [
+                {
+                  "id": "Computers",
+                  "name": "Computers",
+                  "type": "CategoryPath",
+                  "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers"
+                },
+                {
+                  "id": "897",
+                  "name": "Tablets",
+                  "type": "CategoryPath",
+                  "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897"
+                },
+                {
                   "id": "897_Samsung",
                   "name": "Samsung",
                   "type": "CategoryPath",
@@ -416,7 +446,7 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897/897_Samsung"
             }
           ],
-          "subCategoriesCount": 7,
+          "subCategoriesCount": 8,
           "type": "Category",
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Computers/897"
         },
@@ -2106,6 +2136,30 @@
               "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
             },
             {
+              "id": "SmartHome",
+              "name": "Smart Home",
+              "type": "CategoryPath",
+              "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
+            }
+          ],
+          "description": "Smart home solutions for light, doors and windows or heating",
+          "hasOnlineProducts": true,
+          "hasOnlineSubCategories": false,
+          "id": "SmartHome",
+          "name": "Smart Home",
+          "online": "1",
+          "type": "Category",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
+        },
+        {
+          "categoryPath": [
+            {
+              "id": "Home-Entertainment",
+              "name": "Home Entertainment",
+              "type": "CategoryPath",
+              "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
+            },
+            {
               "id": "220",
               "name": "TVs & Projectors",
               "type": "CategoryPath",
@@ -2215,7 +2269,7 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220"
         }
       ],
-      "subCategoriesCount": 3,
+      "subCategoriesCount": 4,
       "type": "Category",
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
     },

@@ -1,0 +1,91 @@
+{
+  "availability": true,
+  "images": [
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "front L",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "front S",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "front"
+    }
+  ],
+  "inStock": true,
+  "listPrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 50
+  },
+  "longDescription": "A physical gift card with an amount of $50 as give away for your friends. They can redeem this gift card at their next offline or online shopping trip.\nShipping is needed. You can send it to your friends directly or to your address.",
+  "manufacturer": "",
+  "mastered": false,
+  "minOrderQuantity": 1,
+  "name": "Gift Card $50",
+  "productBundle": false,
+  "productMaster": false,
+  "productName": "Gift Card $50",
+  "readyForShipmentMax": 7,
+  "readyForShipmentMin": 3,
+  "retailSet": false,
+  "roundedAverageRating": "0.0",
+  "salePrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 50
+  },
+  "shippingMethods": [
+    {
+      "id": "STD_2DAY",
+      "name": "2-Business Day",
+      "shippingTimeMax": 2,
+      "shippingTimeMin": 1,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_5DAY",
+      "name": "5-Business Day",
+      "shippingTimeMax": 5,
+      "shippingTimeMin": 2,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "SATURDAY",
+      "name": "Saturday Delivery",
+      "shippingTimeMax": 6,
+      "shippingTimeMin": 0,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_GROUND",
+      "name": "Standard Ground",
+      "shippingTimeMax": 7,
+      "shippingTimeMin": 3,
+      "type": "ShippingMethod"
+    }
+  ],
+  "shortDescription": "A physical gift card for $50",
+  "sku": "GiftCardBlank50",
+  "type": "Product"
+}
