@@ -6,35 +6,35 @@
     margin-bottom: 0px;
   }
   .wrapper {
-    background: url('/assets/img/background/error_bg.jpg') no-repeat;
     padding: 0;
+    background: url('/assets/img/background/error_bg.jpg') no-repeat;
     .main-container {
       background: none;
     }
   }
 
   .errorpage-content {
-    color: $text-color-primary;
     padding: ($space-default * 5) 0px ($space-default * 8);
+    color: $text-color-primary;
     h1 {
       font-size: 70px;
       opacity: 0.85;
     }
     .error-text {
-      background: rgba(238, 238, 238, 0.8);
       padding: $space-default;
+      background: rgba(238, 238, 238, 0.8);
     }
     input {
       &.form-control {
-        border: $border-width-default solid $border-color-default;
-        background: $color-primary;
-        color: $white;
         height: 38px;
+        color: $white;
+        background: $color-primary;
+        border: $border-width-default solid $border-color-default;
 
         &:focus {
-          border: $border-width-default solid $border-color-light;
-          background: $color-inverse;
           color: $text-color-primary;
+          background: $color-inverse;
+          border: $border-width-default solid $border-color-light;
           box-shadow: none;
 
           + button {
@@ -48,11 +48,11 @@
       }
     }
     .btn-primary {
-      color: $text-color-corporate;
-      font-weight: normal;
-      bottom: 1px;
       right: 0px;
+      bottom: 1px;
       margin-bottom: 0px;
+      font-weight: normal;
+      color: $text-color-corporate;
     }
   }
 }

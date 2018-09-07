@@ -20,8 +20,8 @@
 
   .system-notification-close {
     float: right;
-    color: $text-color-primary;
     font-size: 200%;
+    color: $text-color-primary;
   }
 }
 
@@ -31,8 +31,8 @@
   border: 3px solid error-color;
 
   .alert-box-header {
-    color: error-color;
     padding-bottom: $space-default;
+    color: error-color;
   }
 
   .list-body {
@@ -41,9 +41,9 @@
 
   .list-item-row {
     &:last-child {
-      border-bottom: none;
       padding-bottom: 0;
       margin-bottom: 0;
+      border-bottom: none;
     }
   }
 

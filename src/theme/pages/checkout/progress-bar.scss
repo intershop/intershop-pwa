@@ -2,32 +2,32 @@
 // CHECKOUT - PROGRESS BAR
 
 .progress-bar-panel {
-  background: $color-tertiary;
   overflow: auto;
+  background: $color-tertiary;
 }
 
 .progress-steps {
-  list-style: none;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  list-style: none;
 
   li {
-    color: $text-color-quarternary;
-    border-bottom: 4px solid $border-color-light;
-    line-height: 50px;
     float: left;
     width: 20%;
     padding-left: $space-default;
+    line-height: 50px;
+    color: $text-color-quarternary;
+    border-bottom: 4px solid $border-color-light;
 
     @media (max-width: $screen-xs-max) {
-      line-height: 25px;
-      text-align: center;
       padding-top: $space-default;
       padding-left: $space-default/4;
+      line-height: 25px;
+      text-align: center;
 
       .progress-label {
-        font-size: 85%;
         display: block;
+        font-size: 85%;
       }
     }
   }
@@ -37,8 +37,8 @@
     border-bottom: 4px solid $border-color-corporate;
 
     .progress-number {
-      background: $color-corporate;
       color: $color-inverse;
+      background: $color-corporate;
     }
   }
 
@@ -52,19 +52,19 @@
   display: inline-block;
   width: 30px;
   height: 30px;
-  border-radius: (($space-default * 3) / 2);
-  text-align: center;
-  line-height: 30px;
   font-weight: $font-family-bold;
-  background: $border-color-light;
+  line-height: 30px;
   color: $text-color-inverse;
+  text-align: center;
+  background: $border-color-light;
+  border-radius: (($space-default * 3) / 2);
 }
 
 .progress-complete {
   .progress-number {
-    background: $color-inverse;
-    color: $text-color-corporate;
-    border: 2px solid $border-color-corporate;
     line-height: 26px;
+    color: $text-color-corporate;
+    background: $color-inverse;
+    border: 2px solid $border-color-corporate;
   }
 }

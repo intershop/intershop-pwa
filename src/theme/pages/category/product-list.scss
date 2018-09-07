@@ -19,8 +19,8 @@
 
       .product-variation {
         display: inline-block;
-        text-align: left;
         width: 60%;
+        text-align: left;
         .form-group {
           margin-bottom: $space-default / 3;
         }
@@ -34,19 +34,19 @@
 
       .product-variation {
         display: inline-block;
-        text-align: right;
         width: 73%;
+        text-align: right;
 
         label {
-          text-align: left;
-          padding-top: 0px;
           width: 100%;
+          padding-top: 0px;
+          text-align: left;
         }
 
         .form-group {
+          margin-right: 0px;
           margin-bottom: $space-default / 2;
           margin-left: 0px;
-          margin-right: 0px;
         }
       }
     }
@@ -61,10 +61,10 @@
   .product-list-item {
     position: relative;
     min-height: 100px;
-
-    padding-left: $space-default;
     padding-right: $space-default;
     padding-bottom: ($space-default * 2);
+
+    padding-left: $space-default;
     list-style-type: none;
     outline: none;
 
@@ -87,8 +87,8 @@
       width: 100%;
       a {
         &.product-title {
-          text-align: left;
           padding-top: 0;
+          text-align: left;
         }
       }
       .add-to-wishlist {
@@ -97,8 +97,8 @@
       .add-to-compare {
         padding-right: 0;
         @media (min-width: $screen-sm-min) {
-          text-align: right;
           display: block;
+          text-align: right;
         }
       }
       .add-to-quote {
@@ -109,13 +109,13 @@
 
   a {
     &.product-title {
-      color: $text-color-primary;
-      text-decoration: none !important;
+      display: inline-block;
+      padding-top: $space-default;
       font-family: $font-family-condensedregular;
       font-size: $font-size-lg;
-      display: inline-block;
+      color: $text-color-primary;
       text-align: center;
-      padding-top: $space-default;
+      text-decoration: none !important;
     }
   }
 
@@ -143,8 +143,8 @@
   }
 
   .color-variations {
-    margin: 0 auto;
     width: auto;
+    margin: 0 auto;
 
     li {
       width: 16px;
@@ -223,28 +223,28 @@
 }
 
 .express-shop-trigger {
-  display: none;
-  margin: auto;
   position: absolute;
   top: 0;
-  left: 0;
-  bottom: 0;
   right: 0;
-  cursor: pointer;
-  background-color: $CORPORATE-PRIMARY;
-  opacity: 0.93;
+  bottom: 0;
+  left: 0;
+  display: none;
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  margin: auto;
   color: $text-color-inverse;
   text-align: center;
+  cursor: pointer;
+  background-color: $CORPORATE-PRIMARY;
+  border-radius: 50%;
+  opacity: 0.93;
 
   &:hover {
     background-color: $CORPORATE-SECONDARY;
   }
   .ng-fa-icon {
-    font-size: 30px;
     padding: 25px 0px;
+    font-size: 30px;
   }
 }
 
@@ -252,8 +252,8 @@
   position: absolute;
   top: 90px;
   left: -6px;
-  height: 36px;
   width: 82px;
+  height: 36px;
   &.product-label-new {
     background: url('/assets/img/icons/product_sprite.png') no-repeat -164px -73px;
   }
@@ -304,8 +304,8 @@
   text-align: center;
   a {
     display: inline-block;
-    padding: 0px 5px;
     min-width: 26px;
+    padding: 0px 5px;
     &.active {
       text-decoration: underline;
     }
@@ -318,8 +318,8 @@
     transition: transform 0.2s ease-in-out;
   }
   .product-tile-actions {
-    transition: opacity 0.5s ease-in-out;
     opacity: 0;
+    transition: opacity 0.5s ease-in-out;
   }
   &:hover {
     .product-tile-actions {

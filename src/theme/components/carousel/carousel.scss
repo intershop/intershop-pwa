@@ -2,8 +2,8 @@
 
 .carousel-indent {
   .carousel-inner {
-    padding-left: ($space-default * 3);
     padding-right: ($space-default * 3);
+    padding-left: ($space-default * 3);
     text-align: center;
   }
 }
@@ -31,8 +31,8 @@
 //Recently Viewed
 .recently-viewed-links-container {
   .recently-viewed-links {
-    list-style: none;
     margin-top: 17px;
+    list-style: none;
 
     @media (max-width: $screen-sm-max) {
       margin-top: 0px;

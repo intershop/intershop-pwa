@@ -4,8 +4,8 @@
 .product-detail-img {
   .carousel {
     float: left;
-    max-width: 500px;
     width: 100%;
+    max-width: 500px;
 
     @media (max-width: $screen-xs-max) {
       width: 100%;
@@ -14,12 +14,12 @@
 }
 
 .product-img-main {
-  width: 95%;
   float: left;
+  width: 95%;
 
   @media (max-width: $screen-xs-max) {
-    margin-bottom: ($space-default * 2);
     width: 100%;
+    margin-bottom: ($space-default * 2);
   }
 
   @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
@@ -64,12 +64,12 @@
 }
 
 .product-thumb-set {
-  opacity: 0.3;
+  float: left;
+  padding: $space-default / 3;
+  margin-bottom: $space-default;
   cursor: pointer;
   border: 1px solid $border-color-lighter;
-  margin-bottom: $space-default;
-  padding: $space-default / 3;
-  float: left;
+  opacity: 0.3;
 
   img {
     width: 100%;

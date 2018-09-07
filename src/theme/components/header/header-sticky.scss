@@ -32,9 +32,9 @@
 
   .search-container {
     position: absolute;
-    z-index: 999999;
     top: 40px;
     right: 0;
+    z-index: 999999;
     width: 400px;
     background: $color-inverse;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);

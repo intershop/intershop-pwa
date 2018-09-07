@@ -12,15 +12,15 @@
     min-height: 50px;
 
     h2 {
-      font-family: $font-family-condensedregular;
       margin: 0;
+      font-family: $font-family-condensedregular;
     }
   }
 
   .modal-footer {
     .btn {
-      width: auto;
       display: inline-block;
+      width: auto;
       margin-bottom: 0;
     }
   }
