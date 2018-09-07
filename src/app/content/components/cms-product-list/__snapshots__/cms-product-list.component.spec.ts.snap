@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cms Product List Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.1.6"
+>
+  
+</div>
+`;
+
+exports[`Cms Product List Component should render product list pagelet if available 1`] = `
+<div
+  id="root1"
+  ng-version="6.1.6"
+>
+  
+  <div
+    class="product-list-container css-class"
+    ng-reflect-klass="product-list-container"
+    ng-reflect-ng-class="css-class"
+  >
+    
+    <h2>
+      PageletTitle
+    </h2>
+    <div
+      class="product-list row"
+    >
+      
+      <div
+        class="product-list-item li-css-class"
+        ng-reflect-klass="product-list-item"
+        ng-reflect-ng-class="li-css-class"
+      >
+        <ish-product-tile-container
+          ng-reflect-product-sku="1"
+        >
+          Product Tile
+        </ish-product-tile-container>
+      </div>
+      <div
+        class="product-list-item li-css-class"
+        ng-reflect-klass="product-list-item"
+        ng-reflect-ng-class="li-css-class"
+      >
+        <ish-product-tile-container
+          ng-reflect-product-sku="2"
+        >
+          Product Tile
+        </ish-product-tile-container>
+      </div>
+    </div>
+  </div>
+</div>
+`;

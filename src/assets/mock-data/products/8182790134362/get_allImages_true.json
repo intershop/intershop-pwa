@@ -51,6 +51,11 @@
       "value": "GoPro App|GoPro Studio"
     },
     {
+      "name": "Video formats supported",
+      "type": "String",
+      "value": "H.264|MP4"
+    },
+    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -58,11 +63,6 @@
         "unit": "g",
         "value": 83
       }
-    },
-    {
-      "name": "Video formats supported",
-      "type": "String",
-      "value": "H.264|MP4"
     },
     {
       "name": "Supported video modes",
@@ -100,21 +100,21 @@
       "value": "MicroSD (TransFlash)"
     },
     {
-      "name": "Battery life (max)",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "h",
-        "value": 2
-      }
-    },
-    {
       "name": "Maximum frame rate",
       "type": "ResourceAttribute",
       "value": {
         "type": "Quantity",
         "unit": "fps",
         "value": 240
+      }
+    },
+    {
+      "name": "Battery life (max)",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "h",
+        "value": 2
       }
     },
     {

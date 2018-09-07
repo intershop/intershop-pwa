@@ -1,0 +1,362 @@
+{
+  "attributes": [
+    {
+      "name": "Component video (YPbPr/YCbCr) in",
+      "type": "String",
+      "value": "1"
+    },
+    {
+      "name": "Projector brightness",
+      "type": "String",
+      "value": "20 ANSI lumens"
+    },
+    {
+      "name": "Projection technology",
+      "type": "String",
+      "value": "DLP"
+    },
+    {
+      "name": "Focal length",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "Number of colours",
+      "type": "String",
+      "value": "16.7 M"
+    },
+    {
+      "name": "Service life of lamp",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "Built-in speakers",
+      "type": "String",
+      "value": "Y"
+    },
+    {
+      "name": "Ethernet LAN connection",
+      "type": "String",
+      "value": "N"
+    },
+    {
+      "name": "Aspect ratio",
+      "type": "String",
+      "value": "16:9"
+    },
+    {
+      "name": "Projection distance",
+      "type": "String",
+      "value": "0.25 - 3.2 m"
+    },
+    {
+      "name": "Audio (L,R) in",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "Noise level",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "Number of built-in speakers",
+      "type": "String",
+      "value": "1"
+    },
+    {
+      "name": "Contrast ratio (typical)",
+      "type": "String",
+      "value": "2000:1"
+    },
+    {
+      "name": "Handheld remote control",
+      "type": "String",
+      "value": "N"
+    },
+    {
+      "name": "Lamp power",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "S-Video in",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "USB 2.0 ports quantity",
+      "type": "String",
+      "value": "1"
+    },
+    {
+      "name": "Compatible memory cards",
+      "type": "String",
+      "value": "SDHC"
+    },
+    {
+      "name": "RS-232 ports",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "Composite video in",
+      "type": "String",
+      "value": "Y"
+    },
+    {
+      "name": "Vertical scan range",
+      "type": "String",
+      "value": "50 - 60 Hz"
+    },
+    {
+      "name": "Throw ratio",
+      "type": "String",
+      "value": "41\"@2m"
+    },
+    {
+      "name": "Lamp type",
+      "type": "String",
+      "value": "LED"
+    },
+    {
+      "name": "Ethernet LAN (RJ-45) ports quantity",
+      "type": "String",
+      "value": "N"
+    },
+    {
+      "name": "Power consumption (standby)",
+      "type": "String",
+      "value": "1 W"
+    },
+    {
+      "name": "Horizontal scan range",
+      "type": "String",
+      "value": "30 - 50 kHz"
+    },
+    {
+      "name": "Native resolution",
+      "type": "String",
+      "value": "WVGA (854x480)"
+    },
+    {
+      "name": "Zoom ratio",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "Card reader integrated",
+      "type": "String",
+      "value": "Y"
+    },
+    {
+      "name": "Service life of lamp (economic mode)",
+      "type": "String",
+      "value": "20000 h"
+    },
+    {
+      "name": "Source data-sheet",
+      "type": "String",
+      "value": "Icecat.biz"
+    },
+    {
+      "name": "Weight",
+      "type": "ResourceAttribute",
+      "value": {
+        "type": "Quantity",
+        "unit": "g",
+        "value": 166
+      }
+    },
+    {
+      "name": "Dimensions (WxDxH)",
+      "type": "String",
+      "value": "118 x 60.8 x 18.6 mm"
+    },
+    {
+      "name": "HDMI ports quantity",
+      "type": "String",
+      "value": "1"
+    },
+    {
+      "name": "Analog signal format system",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "Power consumption",
+      "type": "String",
+      "value": "7.9 W"
+    },
+    {
+      "name": "Wireless LAN (WLAN) connection",
+      "type": "String",
+      "value": "N"
+    },
+    {
+      "name": "VGA (D-Sub) ports quantity",
+      "type": "String",
+      "value": "-"
+    },
+    {
+      "name": "DVI port",
+      "type": "String",
+      "value": "N"
+    },
+    {
+      "name": "Screen size compatibility",
+      "type": "String",
+      "value": "-"
+    }
+  ],
+  "availability": true,
+  "images": [
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "back L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "back M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "back S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "back"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "front L",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "front S",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "side L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "side M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "side S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "side"
+    }
+  ],
+  "inStock": true,
+  "listPrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 229.23
+  },
+  "longDescription": "With the increasing success of smartphones or advanced features phones, taking pictures or recording videos has become extremely easy. When it comes to showing your friends your funniest photos or the video you recorded during your holiday, is an entirely different story. It means sharing the screen of your phone or relying on notebooks and bulky projectors. Now, with the new Acer C20, a PICO projector so small it fits in your pocket, you can comfortably enjoy your videos, photos or presentation with your friends anywhere.<br/><br/>Available in three cool colours – Candy Pink, Metallic Blue and Silver – the C20 pico-projector is just about the size of a smartphone and weighs a handful of grams, yet delivers impressive performance, freeing you from the small screen and giving a whole new meaning to travelling light.<br/><br/>Easily connect the C20 to your laptop, mobile phone or camcorder via the built-in USB and HDMI, relax and enjoy your videos, pictures and presentations on any surface with a display size varying from 13cm (5\") to 168cm (66\"). It’s just like having a portable cinema in your pocket. What’s more, with the internal speaker you don’t even need to carry around a separate amplifier if you fancy watching a video.<br/><br/>The 2000:1 contrast ratio is well beyond the sort of level you can expect from such tiny device and ensure crystal clear, vibrant projections. Thanks to the amazing WVGA resolution and native 16:9 format picture quality looks quite impressive.<br/><br/>Not only the C20 pico-projector is incredible compact, but it sets you free from your notebook. The integrated SDHC card reader gives you full access to multimedia contents, including audios, videos and pictures, in a normal or high capacity Micro SD card. You can also show presentations, videos and pictures directly from an USB flash disc, thanks to the USB Slide Show and USB multimedia functions. All these features take on-the-fly projection to an entire new level.<br/><br/>The new C20 pico-projector combines DLP technology with RGB LED lamp technology, dramatically enhancing picture quality. LED technology offers several benefits over traditional lamps. First of all, it makes lamp replacement virtually unnecessary as LED lifetime lasts up to 20,000 hours; plus, the lack of breakable filaments or tubes increases durability. Combined with DLP, LED lamp technology delivers better color saturation and contrast performance.<br/>When the ambient light do not necessitate full illumination you can also enable the EcoMode to extend the lifespan of LED and reduce power consumption.<br/><br/>Over time, projectors can be affected by colour decay that adds a yellowish or greenish shade to the images on screen. Now Acer’s projectors take advantage of ColorSafe II, DLP® technology and Acer unique colour compensation technology on the optical components to ensure picture integrity even after prolonged use, making them virtually immune to colour decay.",
+  "manufacturer": "Acer",
+  "mastered": false,
+  "minOrderQuantity": 1,
+  "name": "Acer C20 silver edition",
+  "productBundle": false,
+  "productMaster": false,
+  "productName": "Acer C20 silver edition",
+  "readyForShipmentMax": 7,
+  "readyForShipmentMin": 3,
+  "retailSet": false,
+  "roundedAverageRating": "0.0",
+  "salePrice": {
+    "currencyMnemonic": "USD",
+    "type": "ProductPrice",
+    "value": 229.23
+  },
+  "shippingMethods": [
+    {
+      "id": "STD_2DAY",
+      "name": "2-Business Day",
+      "shippingTimeMax": 2,
+      "shippingTimeMin": 1,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_5DAY",
+      "name": "5-Business Day",
+      "shippingTimeMax": 5,
+      "shippingTimeMin": 2,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "SATURDAY",
+      "name": "Saturday Delivery",
+      "shippingTimeMax": 6,
+      "shippingTimeMin": 0,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_GROUND",
+      "name": "Standard Ground",
+      "shippingTimeMax": 7,
+      "shippingTimeMin": 3,
+      "type": "ShippingMethod"
+    }
+  ],
+  "shortDescription": "20 ANSI Lumen, 2000:1, 854 x 480, LED",
+  "sku": "5920217",
+  "type": "Product"
+}

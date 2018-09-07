@@ -105,6 +105,18 @@
       "hasOnlineProducts": true,
       "hasOnlineSubCategories": false,
       "id": "NewProducts",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
       "name": "New Products",
       "online": "1",
       "type": "Category",

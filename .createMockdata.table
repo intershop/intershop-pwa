@@ -32,6 +32,10 @@ products/7912057 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_
 products/7912061 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/8182790134362 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/5920217 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/8806086011815 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/GiftCardBlank50 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
+products/8182790134363 ?allImages=true .images|=sort_by(.name)|.shippingMethods|=sort_by(.name)
 suggest ?SearchTerm=k
 suggest ?SearchTerm=kodak
 products ?amount=9&attrs=sku,salePrice,listPrice,availability,manufacturer,image&offset=0&returnSortKeys=true&searchTerm=kodak {elements:[.elements[]|select(.uri|test(".*/7912057"))],name,type,sortKeys,total:1,offset,amount}

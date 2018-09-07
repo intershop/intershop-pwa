@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cms Carousel Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.1.6"
+>
+  <div
+    class="foo-class"
+    ng-reflect-ng-class="foo-class"
+  >
+    <div>
+      <ngb-carousel
+        class="carousel slide"
+        ng-reflect-interval="0"
+        ng-reflect-show-navigation-arrows="false"
+        style="display: block;"
+        tabindex="0"
+      >
+        
+        <div
+          class="carousel-inner"
+        >
+          
+        </div>
+        
+        
+      </ngb-carousel>
+    </div>
+  </div>
+</div>
+`;
