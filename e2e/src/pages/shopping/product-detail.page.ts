@@ -31,4 +31,15 @@ export class ProductDetailPage {
   addProductToCompare() {
     this.addToCompareButton().click();
   }
+
+  // tslint:disable-next-line:no-any
+  getRecentlyViewedItems(sku?: string): any {
+    return !sku
+      ? $('ish-recently-viewed')
+          .$$('div.product-tile')
+          .getAttribute('data-testing-sku')
+      : $('ish-recently-viewed')
+          .$$(`div.product-tile[data-testing-sku="${sku}"]`)
+          .first();
+  }
 }

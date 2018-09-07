@@ -1,3 +1,5 @@
+import { browser } from 'protractor';
+
 import { at } from '../framework';
 import { HomePage } from '../pages/home.page';
 import { CategoryPage } from '../pages/shopping/category.page';
@@ -57,6 +59,55 @@ describe('Browsing User', () => {
 
       at(FamilyPage, page => {
         expect(page.productList.getVisibleProductsCount()).toBeGreaterThanOrEqual(2);
+      });
+    });
+  });
+
+  describe('starting at family page', () => {
+    beforeAll(() => {
+      FamilyPage.navigateTo('Cameras-Camcorders.584');
+    });
+
+    it(`should select one product to view details`, () => {
+      at(FamilyPage, page => {
+        page.productList.gotoProductDetailPageBySku('3953312');
+      });
+      at(ProductDetailPage, page => {
+        expect(page.getSku()).toBe('3953312');
+      });
+    });
+
+    it('should tap browser back button and be at family page again', () => {
+      browser.navigate().back();
+      at(FamilyPage);
+    });
+
+    it(`should select second product to view details`, () => {
+      at(FamilyPage, page => {
+        page.productList.gotoProductDetailPageBySku('7912061');
+      });
+      at(ProductDetailPage, page => {
+        expect(page.getSku()).toBe('7912061');
+      });
+    });
+
+    it('should see first product in recent items and follow link to second product', () => {
+      at(ProductDetailPage, page => {
+        expect(page.getRecentlyViewedItems()).toEqual(['3953312']);
+        page.getRecentlyViewedItems('3953312').click();
+      });
+      at(ProductDetailPage, page => {
+        expect(page.getSku()).toBe('3953312');
+      });
+    });
+
+    it('should see second product in recent items and follow link to first product again', () => {
+      at(ProductDetailPage, page => {
+        expect(page.getRecentlyViewedItems()).toEqual(['7912061']);
+        page.getRecentlyViewedItems('7912061').click();
+      });
+      at(ProductDetailPage, page => {
+        expect(page.getSku()).toBe('7912061');
       });
     });
   });
