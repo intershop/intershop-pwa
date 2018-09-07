@@ -11,8 +11,8 @@
 
   .filter-panel {
     h1 {
-      font-size: 24px;
       margin: 0 0 $space-default 0;
+      font-size: 24px;
     }
   }
 }
@@ -20,15 +20,15 @@
 ul {
   &.category-list {
     padding: 0;
-    list-style: none;
     clear: both;
+    list-style: none;
 
     @media (max-width: $screen-xs-max) {
       margin-bottom: 1px;
 
       > li {
-        margin: 0;
         padding: 0 1px 0 0;
+        margin: 0;
       }
     }
 
@@ -41,6 +41,7 @@ ul {
         &:nth-child(2n + 1) {
           clear: none;
         }
+
         &:nth-child(3n + 1) {
           clear: both;
         }

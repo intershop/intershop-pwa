@@ -2,28 +2,36 @@
 .icon-svg {
   background: url('/assets/img/icons/sprite-icons.svg') no-repeat;
 }
+
 /* Fallback to PNG Icon for browsers that do not support SVG */
 .no-svg .icon-svg {
   background: url('/assets/img/icons/sprite-icons.png') no-repeat;
 }
+
 .icon-facebook {
   background-position: 0 0;
 }
+
 .icon-twitter {
   background-position: 0 -30px;
 }
+
 .icon-youtube {
   background-position: 0 -60px;
 }
+
 .icon-vimeo {
   background-position: 0 -90px;
 }
+
 .icon-pinterest {
   background-position: 0 -120px;
 }
+
 .icon-googleplus {
   background-position: 0 -150px;
 }
+
 .icon-instagram {
   background-position: 0 -180px;
 }

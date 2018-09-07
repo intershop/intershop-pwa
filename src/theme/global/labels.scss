@@ -2,8 +2,8 @@
 // LABELS
 
 .label {
-  border-radius: 22px;
   font-size: 100%;
+  border-radius: 22px;
 
   &.label-info {
     background-color: lighten(map-get($theme-colors, 'info'), 10%);

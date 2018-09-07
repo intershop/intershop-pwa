@@ -4,8 +4,8 @@
 .account-wrapper {
   .grey-panel {
     h2 {
-      font-weight: bold;
       margin: 0;
+      font-weight: bold;
     }
   }
 
@@ -104,8 +104,10 @@
         width: auto;
       }
     }
+
     @media (max-width: $screen-xs-max) {
       width: 100%;
+
       button {
         font-family: $font-family-condensedbold;
       }

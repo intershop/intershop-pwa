@@ -30,13 +30,13 @@ $CORPORATE-SECONDARY: darken($CORPORATE-PRIMARY, 10%);
 
 $text-color-corporate: $CORPORATE-PRIMARY;
 
-$text-color-primary: #222222;
-$text-color-secondary: #555555;
+$text-color-primary: #222;
+$text-color-secondary: #555;
 $text-color-tertiary: #8b8b8b;
-$text-color-quarternary: #999999;
-$text-color-quinary: #eeeeee;
+$text-color-quarternary: #999;
+$text-color-quinary: #eee;
 
-$text-color-inverse: #ffffff;
+$text-color-inverse: #fff;
 $text-color-special: #ea1919; //RED
 
 //
@@ -44,12 +44,12 @@ $text-color-special: #ea1919; //RED
 
 $color-corporate: $CORPORATE-PRIMARY;
 
-$color-primary: #222222;
+$color-primary: #222;
 $color-secondary: #2c2d2e;
-$color-tertiary: #eeeeee;
+$color-tertiary: #eee;
 
-$color-dark: #000000;
-$color-inverse: #ffffff;
+$color-dark: #000;
+$color-inverse: #fff;
 $color-special-primary: #e74c3c; //RED
 $color-special-secondary: #f39c12; //ORANGE
 $color-special-tertiary: #00abea; //BLUE
@@ -59,9 +59,9 @@ $color-special-tertiary: #00abea; //BLUE
 
 $border-color-corporate: $CORPORATE-PRIMARY;
 
-$border-color-default: #222222;
-$border-color-light: #cccccc;
-$border-color-lighter: #dddddd;
+$border-color-default: #222;
+$border-color-light: #ccc;
+$border-color-lighter: #ddd;
 
 $border-width-default: 1px;
 

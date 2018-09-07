@@ -8,6 +8,7 @@ header {
 
   @media (max-width: $screen-xs-max) {
     margin-bottom: 0;
+
     .mid-header-checkout {
       padding: $space-default 0;
     }
@@ -33,14 +34,14 @@ header {
   background: $color-inverse;
 
   @media (max-width: $screen-xs-max) {
-    margin: 0;
     padding: 0;
+    margin: 0;
   }
 
   .ng-fa-icon.header-icon {
     margin-right: 4px;
-    color: $text-color-secondary;
     font-size: 20px;
+    color: $text-color-secondary;
   }
 }
 
@@ -52,15 +53,17 @@ header {
   margin-right: $space-default;
   font-size: 13px;
 }
+
 .header-sticky-mobile {
   .header-utility {
     line-height: 51px;
   }
 }
+
 .header-utility {
   display: flex;
-  align-self: center;
   flex-grow: 2;
+  align-self: center;
   justify-content: flex-end;
   line-height: $top-header-height;
 
@@ -70,19 +73,18 @@ header {
 }
 
 .user-links {
-  margin: 0;
   padding: 0;
-
+  margin: 0;
   line-height: $top-header-height;
 
   li {
-    margin-right: ($space-default * 2);
     float: left;
-    color: $text-color-quarternary;
+    margin-right: ($space-default * 2);
     font-family: $font-family-bold;
     font-size: 12px;
-    list-style: none;
+    color: $text-color-quarternary;
     text-transform: uppercase;
+    list-style: none;
 
     a {
       color: $text-color-quinary;
@@ -111,18 +113,17 @@ header {
 .ng-fa-icon.header-icon {
   position: relative;
   padding: 0 $space-default;
+  font-size: 17px;
   color: $text-color-quarternary;
 
   @media (max-width: $screen-xs-max) {
     color: $text-color-primary;
   }
-
-  font-size: 17px;
 }
 
 .bottom-header {
   background-color: $white;
-  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .mobile-logo {

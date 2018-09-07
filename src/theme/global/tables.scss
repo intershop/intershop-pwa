@@ -1,19 +1,20 @@
 // SPECIFIC TABLE MIXINS
 @mixin list-header-mixin() {
-  border-bottom: 1px solid $border-color-default;
   border-top: 0;
+  border-bottom: 1px solid $border-color-default;
 
   &.no-separator {
     border-bottom: 0;
   }
 }
+
 @mixin list-header-item() {
+  padding: $table-cell-padding $table-cell-padding $table-cell-padding 0;
+  overflow: hidden;
   font-family: $font-family-condensedregular;
   font-size: 18px;
-  text-transform: uppercase;
   font-weight: normal;
-  overflow: hidden;
-  padding: $table-cell-padding $table-cell-padding $table-cell-padding 0;
+  text-transform: uppercase;
   // border-right: 4px solid #fff; // TODO: needed?
 }
 
@@ -51,8 +52,8 @@
   > tbody {
     > tr {
       > td {
-        border: none;
         padding: $table-cell-padding $table-cell-padding $table-cell-padding 0;
+        border: none;
 
         &:last-child {
           padding-right: 0;
@@ -96,8 +97,8 @@
     }
 
     &.column-price {
-      white-space: nowrap;
       padding-right: 0;
+      white-space: nowrap;
     }
   }
 }
@@ -107,13 +108,13 @@
 
   .list-item-row {
     @media (max-width: $screen-xs-max) {
-      border-bottom: 1px solid $border-color-lighter;
       margin-bottom: ($space-default);
+      border-bottom: 1px solid $border-color-lighter;
     }
 
     &.list-item-row-big {
-      margin-top: ($space-default / 2);
       padding-bottom: ($space-default / 2);
+      margin-top: ($space-default / 2);
       border-bottom: 1px solid $border-color-lighter;
 
       &:first-child {
@@ -133,6 +134,7 @@
       .list-item {
         padding: 0;
       }
+
       .list-item-promo {
         font-family: $font-family-condensedbold;
         text-transform: uppercase;
@@ -145,8 +147,8 @@
       }
 
       &.column-price {
-        white-space: nowrap;
         padding-right: 0;
+        white-space: nowrap;
       }
 
       &.form-check {
@@ -198,8 +200,8 @@
 
 .product-title {
   font-family: $font-family-condensedbold;
-  color: $text-color-primary;
   font-size: 16px;
+  color: $text-color-primary;
 }
 
 a.product-title {
@@ -240,17 +242,17 @@ a.product-title {
     > tbody {
       > tr {
         > td {
+          padding: $space-default;
           border: none;
           border-bottom: 1px solid $border-color-lighter;
-          padding: $space-default;
 
           .product-image {
             position: relative;
 
             .btn-tool {
               position: absolute;
-              right: 0;
               top: 0;
+              right: 0;
             }
           }
         }

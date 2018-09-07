@@ -32,9 +32,9 @@
 
   .search-container {
     position: absolute;
-    z-index: 999999;
     top: 40px;
     right: 0;
+    z-index: 999999;
     width: 400px;
     background: $color-inverse;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
@@ -64,14 +64,14 @@
 
   &:not(.show) {
     display: block; //required for animation
-    height: 0px;
+    height: 0;
   }
 }
 
 .showed-on-scroll {
   display: block;
   background-color: $color-inverse;
-  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 
   &.hidden {
     z-index: -99;
@@ -89,7 +89,7 @@
       overflow: scroll;
 
       .navbar-nav {
-        margin-top: 0px;
+        margin-top: 0;
       }
     }
   }
