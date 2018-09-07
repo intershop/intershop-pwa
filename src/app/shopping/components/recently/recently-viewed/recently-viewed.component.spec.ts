@@ -18,7 +18,7 @@ describe('Recently Viewed Component', () => {
         MockComponent({
           selector: 'ish-product-tile-container',
           template: 'Product Tile Container',
-          inputs: ['product'],
+          inputs: ['productSku'],
         }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],

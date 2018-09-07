@@ -1,17 +1,16 @@
 //
 // NAVBAR ( Bootstrap )
 
-@media (max-width: $screen-xs-max) {
-  .navbar-toggler {
-    background-color: $color-primary;
-    border: $border-width-default solid transparent;
-    color: $text-color-inverse;
-    font-size: 1.4rem;
-    padding: $space-default $space-default * 1.4;
+.navbar-toggler {
+  padding: $space-default $space-default * 1.4;
+  margin-left: $space-default;
+  font-size: 1.4rem;
+  color: $text-color-inverse;
+  background-color: $text-color-corporate;
+  border: $border-width-default solid transparent;
 
-    &:focus {
-      outline: none;
-    }
+  &:focus {
+    outline: none;
   }
 }
 

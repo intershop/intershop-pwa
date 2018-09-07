@@ -3,60 +3,60 @@
 
 .imageVariationList {
   &.swatchImage {
-    margin: 10px 0;
     padding: 0;
+    margin: 10px 0;
 
     .imageVariationListItem {
       display: inline-block;
-      list-style: outside none none;
       margin-right: 5px;
+      list-style: outside none none;
 
       a {
         padding: 1px;
-        border-radius: 50%;
         border: 1px solid transparent;
+        border-radius: 50%;
 
         &.selected {
-          background: #fff;
           display: block;
+          background: $color-inverse;
           border: 1px solid $border-color-light;
         }
 
         img {
-          border-radius: 50%;
           width: 32px;
+          border-radius: 50%;
         }
       }
     }
   }
 
   &.colorCode {
-    margin: 10px 0;
     padding: 0;
+    margin: 10px 0;
 
     .imageVariationListItem {
       display: inline-block;
-      list-style: outside none none;
       margin-right: 5px;
+      list-style: outside none none;
 
       a {
-        padding: 1px;
-        border-radius: 50%;
         display: block;
+        padding: 1px;
         border: 1px solid transparent;
+        border-radius: 50%;
 
         &.selected {
           border: 1px solid $border-color-light;
         }
 
         span {
-          color: #333;
-          font-weight: normal;
-          border-radius: 50%;
           display: block;
           width: 32px;
           height: 32px;
+          font-weight: normal;
+          color: #333;
           border: 1px solid transparent;
+          border-radius: 50%;
         }
       }
     }

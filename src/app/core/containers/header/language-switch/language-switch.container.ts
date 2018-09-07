@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,8 @@ import { SelectLocale, getAvailableLocales, getCurrentLocale } from '../../../st
 export class LanguageSwitchContainerComponent implements OnInit {
   locale$: Observable<Locale>;
   availableLocales$: Observable<Locale[]>;
-
+  @Input()
+  view: '' | 'accordion' = '';
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {

@@ -1,12 +1,12 @@
 .ratings-box {
-  font-size: 0;
   overflow: hidden;
+  font-size: 0;
 }
 
 .rating-total,
 .rating-rated {
-  color: $text-color-quarternary;
   line-height: 24px;
+  color: $text-color-quarternary;
 }
 
 .rating-total {
@@ -15,8 +15,8 @@
 
 .rating-overview {
   float: right;
-  border-right: $border-width-default solid $border-color-light;
   padding-right: ($space-default * 2);
+  border-right: $border-width-default solid $border-color-light;
 
   .rating-display {
     font-size: ($space-default * 2);
@@ -24,10 +24,10 @@
 }
 
 .rating-input {
-  margin: 0;
-  padding: 0;
-  list-style: none;
   display: block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 
   li {
     float: left;
@@ -57,21 +57,21 @@
 }
 
 .rating-display {
-  margin: 0px ($space-default / 2) 0px 0px;
-  padding: 0;
-  list-style: none;
   display: block;
   float: left;
+  padding: 0;
+  margin: 0 ($space-default / 2) 0 0;
   clear: both;
+  list-style: none;
 
   li {
     float: left;
     margin-right: 2px;
-    color: lighten($text-color-quarternary, 17%);
     font-size: $font-size-lg;
+    color: lighten($text-color-quarternary, 17%);
 
     &.rating-total {
-      font-size: $font-size-base;
+      font-size: $font-size-corporate;
       color: $text-color-quarternary;
     }
 
@@ -108,8 +108,8 @@
 }
 
 div.rating-description {
-  overflow: hidden;
   margin-bottom: $space-default;
+  overflow: hidden;
 }
 
 //
@@ -140,6 +140,7 @@ div.rating-description {
 .product-tile .rating-total {
   font-size: 14px;
 }
+
 .product-tile-list .rating-total {
   font-size: 14px;
 }

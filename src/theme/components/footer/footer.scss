@@ -10,55 +10,42 @@ footer {
   padding: 40px 0 60px;
   background: $color-primary;
 
-  @media (max-width: $screen-xs-max) {
-    padding: 0;
-  }
-
-  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-    padding: 0;
-
-    .container {
-      margin: 0;
-      width: 100%;
-    }
-  }
-
   h4 {
-    color: $text-color-inverse;
     font-size: 14px;
+    color: $text-color-inverse;
     text-transform: uppercase;
   }
 }
 
 .footer {
   padding: ($space-default * 2) 0 ($space-default);
-  background: $color-dark;
   margin-top: 0;
+  background: $color-dark;
 
   @media (max-width: $screen-xs-max) {
     padding: ($space-default * 2) 0 ($space-default);
   }
 
   h4 {
-    color: $text-color-inverse;
-    font-size: 18px;
     font-family: $font-family-condensedbold;
+    font-size: 18px;
+    color: $text-color-inverse;
     text-transform: uppercase;
   }
 
   li {
     a,
     a:not([href]):not([tabindex]) {
+      font-family: $font-family-condensedregular;
       color: $text-color-quarternary;
       text-decoration: none;
-      font-family: $font-family-condensedregular;
     }
   }
 
   ul {
-    list-style: none;
     padding: 0;
     margin: 0;
+    list-style: none;
   }
 }
 
@@ -67,35 +54,59 @@ footer {
 }
 
 .copyright {
+  width: 100%;
   padding: ($space-default * 3) ($space-default) 0;
   font-size: 12px;
-  width: 100%;
 }
 
 @media (max-width: $screen-xs-max) {
   .link-group {
-    border-bottom: $border-width-default solid $border-color-default;
-    margin-left: -($space-default);
     margin-right: -($space-default);
+    margin-left: -($space-default);
+    border-bottom: $border-width-default solid $border-color-default;
 
     ul {
       padding: $space-default ($space-default + ($space-default/2)) ($space-default * 2);
-      list-style: none;
       margin: 0;
+      list-style: none;
     }
   }
 
   .link-group-title {
-    border-bottom: $border-width-default solid $border-color-default;
-    margin: 0px (-$space-default);
     padding: $space-default ($space-default + ($space-default/2));
+    margin: 0 (-$space-default);
     cursor: pointer;
+    border-bottom: $border-width-default solid $border-color-default;
   }
 
   .link-group-icon {
-    color: $text-color-corporate;
     float: right;
+    color: $text-color-corporate;
     cursor: pointer;
+  }
+}
+
+.contact {
+  @media (max-width: $screen-sm-max) {
+    float: none;
+    width: 100%;
+  }
+
+  .ng-fa-icon {
+    display: block;
+    float: left;
+    padding: 25px $space-default 0 0;
+    font-size: 30px;
+    color: $text-color-inverse;
+  }
+
+  h4 {
+    margin: 25px 0 0;
+    font-size: 18px;
+  }
+
+  span {
+    color: $text-color-inverse;
   }
 }
 
@@ -106,29 +117,29 @@ footer {
   }
 
   .ng-fa-icon {
-    color: $text-color-inverse;
-    font-size: 40px;
     display: block;
     float: left;
-    padding: 20px $space-default 20px 0px;
+    padding: 20px $space-default 20px 0;
+    font-size: 40px;
+    color: $text-color-inverse;
   }
 
   h4 {
+    margin: 25px 0 0;
     font-size: 18px;
-    margin: 25px 0px 0px;
   }
 
   a {
-    text-transform: uppercase;
     text-decoration: none;
+    text-transform: uppercase;
   }
 }
 
 .newsletter {
   @media (max-width: $screen-sm-max) {
     float: none;
-    padding: ($space-default + ($space-default / 2));
     width: 100%;
+    padding: ($space-default + ($space-default / 2));
   }
 
   .newsletter-form {
@@ -138,10 +149,10 @@ footer {
     input {
       &.newsletter-email-field {
         width: 100%;
-        border: 0;
-        background: $color-inverse;
         height: 38px;
         padding-left: ($space-default);
+        background: $color-inverse;
+        border: 0;
       }
 
       & ::-webkit-input-placeholder {
@@ -166,13 +177,13 @@ footer {
     }
 
     button {
-      color: $text-color-corporate;
       position: absolute;
-      font-size: 12px;
-      right: $space-default;
       top: 12px;
-      border: 0;
+      right: $space-default;
+      font-size: 12px;
+      color: $text-color-corporate;
       background: none;
+      border: 0;
     }
   }
 }
@@ -181,27 +192,21 @@ footer {
   float: right;
   padding: 0 ($space-default);
 
-  @media (max-width: $screen-sm-max) {
-    float: none;
-    padding: ($space-default + ($space-default / 2));
-    width: 100%;
-  }
-
   ul {
-    margin: 0;
     padding: 0;
+    margin: 0;
   }
 
   li {
-    list-style: none;
     float: left;
     margin-top: 3px;
     margin-right: 9px;
+    list-style: none;
 
     a {
+      display: block;
       width: 30px;
       height: 30px;
-      display: block;
 
       &:hover {
         opacity: 0.7;

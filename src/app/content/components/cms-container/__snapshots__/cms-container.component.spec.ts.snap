@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cms Container Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.1.6"
+>
+  <div
+    class="content-container col-12 col-md-6 col-lg-4 float-left foo-class"
+    ng-reflect-klass="content-container"
+    ng-reflect-ng-class="col-12 col-md-6 col-lg-4 float"
+  >
+    
+    <ish-content-pagelet
+      ng-reflect-pagelet="[object Object]"
+    >
+      Content Pagelet
+    </ish-content-pagelet>
+    <ish-content-pagelet
+      ng-reflect-pagelet="[object Object]"
+    >
+      Content Pagelet
+    </ish-content-pagelet>
+  </div>
+</div>
+`;

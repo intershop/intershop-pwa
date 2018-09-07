@@ -1,0 +1,32 @@
+.enhanced-image-container {
+  position: relative;
+}
+
+.enhanced-image-text {
+  position: absolute;
+  top: 30%;
+  width: 100%;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+
+  h1 {
+    font-size: 60px;
+    color: #fff;
+  }
+
+  h2 {
+    color: #fff;
+  }
+
+  @media (max-width: $screen-xs-max) {
+    .btn {
+      display: inline;
+      width: auto;
+    }
+
+    h1 {
+      font-size: 30px;
+    }
+  }
+}

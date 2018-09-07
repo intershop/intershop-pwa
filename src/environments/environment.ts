@@ -6,10 +6,12 @@
 export const environment = {
   production: false,
   needMock: true,
+  // mustMockPaths: ['cms/.*'],
 
   // Intershop Commerce Management REST server configuration
   icmBaseURL: 'http://localhost:4200',
   icmServer: 'INTERSHOP/rest/WFS',
+  icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'inSPIRED-inTRONICS-Site',
 
   // configuration of the available locales - hard coded for now

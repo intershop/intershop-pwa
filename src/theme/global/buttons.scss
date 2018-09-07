@@ -14,6 +14,7 @@
 
   & ~ .btn {
     margin-left: $space-default/3;
+
     @media (max-width: $screen-xs-max) {
       margin-left: 0;
     }
@@ -24,24 +25,16 @@
   }
 
   &.btn-link {
-    text-transform: unset;
     font-family: $font-family-regular;
     text-decoration: none;
+    text-transform: unset;
   }
 
   &.btn-link-inline {
+    display: inline;
     padding: 0;
     line-height: inherit;
     vertical-align: baseline;
-    display: inline;
-  }
-
-  &.btn-primary {
-    border-color: $button-primary-border;
-
-    &:hover {
-      border-color: darken($button-primary-border, 10%);
-    }
   }
 
   &.btn-secondary {
@@ -61,8 +54,8 @@
   font-family: $font-family-condensedbold;
 
   &.btn-block {
-    padding-left: 0;
     padding-right: 0;
+    padding-left: 0;
   }
 }
 
@@ -77,28 +70,29 @@
 
 .btn-circle {
   @include round-corner(50%);
-  border: 1px solid $border-color-light;
-  color: #ccc;
+
   display: inline-block;
-  font-size: 12px;
-  height: 30px;
-  line-height: 14px;
-  margin-bottom: 5px;
-  padding: 7px 8px;
   width: 30px;
+  height: 30px;
+  padding: 7px 8px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  line-height: 14px;
+  color: #ccc;
+  border: 1px solid $border-color-light;
 }
 
 .btn.processing-state {
-  background: $CORPORATE-SECONDARY url('/assets/img/icons/processing.gif') 50% no-repeat;
   color: rgba(255, 255, 255, 0);
+  background: $CORPORATE-SECONDARY url('/assets/img/icons/processing.gif') 50% no-repeat;
 }
 
 // Button Groups
 
 .btn-group {
   .btn {
-    width: auto;
     display: inline-block;
+    width: auto;
     margin-bottom: 0;
     clear: none;
   }

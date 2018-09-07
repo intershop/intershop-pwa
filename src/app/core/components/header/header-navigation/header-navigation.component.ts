@@ -21,6 +21,9 @@ import { Category } from '../../../../models/category/category.model';
 })
 export class HeaderNavigationComponent {
   @Input()
+  view = 'auto';
+
+  @Input()
   categories: CategoryView[];
 
   openedCategories = [];

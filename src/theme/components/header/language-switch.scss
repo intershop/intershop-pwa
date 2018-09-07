@@ -1,0 +1,99 @@
+.language-switch {
+  margin-left: ($space-default * 2);
+  font-family: $font-family-bold;
+  font-size: $font-size-sm;
+
+  .dropdown-menu {
+    position: absolute;
+    min-width: 50px;
+    margin-top: 0;
+  }
+
+  .language-switch-link {
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  //language selector not as accordion
+  &:not(.accordion) {
+    .language-switch-link {
+      display: block;
+      padding-right: $space-default;
+      padding-left: $space-default / 2;
+      color: $text-color-quinary !important;
+
+      //language selector when dropdown is shown
+      &.show .language-switch-link {
+        span:hover {
+          color: darken($text-color-quinary, 10%);
+        }
+      }
+
+      //language selector when dropdown is hidden
+      &:not(.show) .language-switch-link {
+        span:hover {
+          color: darken($text-color-quinary, 10%);
+        }
+      }
+    }
+
+    .language-switch-menu-container {
+      padding: 15px;
+      margin: -15px;
+    }
+
+    .language-switch-container {
+      z-index: 9999;
+      padding: ($space-default * 2/3) $space-default;
+      background: $color-inverse;
+      box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2);
+
+      ul {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+
+        li {
+          font-family: $font-family-regular;
+          font-size: $font-size-corporate;
+          line-height: ($line-height-base * 1.5);
+
+          a:hover {
+            color: $CORPORATE-SECONDARY;
+          }
+        }
+      }
+    }
+  }
+
+  //language selector as accordion
+  &.accordion {
+    margin-left: 0;
+
+    .language-switch-link {
+      padding-left: 0;
+      color: $CORPORATE-PRIMARY !important;
+    }
+
+    .language-switch-container {
+      position: relative;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100%;
+      padding-top: 0;
+      margin-top: 0;
+
+      ul {
+        list-style: none;
+      }
+
+      li {
+        line-height: 25px;
+      }
+
+      a {
+        font-size: 12px;
+      }
+    }
+  }
+}

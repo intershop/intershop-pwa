@@ -95,6 +95,42 @@
           "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
         },
         {
+          "id": "SmartHome",
+          "name": "Smart Home",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
+        }
+      ],
+      "description": "Smart home solutions for light, doors and windows or heating",
+      "hasOnlineProducts": true,
+      "hasOnlineSubCategories": false,
+      "id": "SmartHome",
+      "images": [
+        {
+          "effectiveUrl": "/assets/product_img/a.jpg",
+          "imageActualHeight": 270,
+          "imageActualWidth": 270,
+          "name": "front M",
+          "primaryImage": true,
+          "type": "Image",
+          "typeID": "M",
+          "viewID": "front"
+        }
+      ],
+      "name": "Smart Home",
+      "online": "1",
+      "type": "Category",
+      "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/SmartHome"
+    },
+    {
+      "categoryPath": [
+        {
+          "id": "Home-Entertainment",
+          "name": "Home Entertainment",
+          "type": "CategoryPath",
+          "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment"
+        },
+        {
           "id": "220",
           "name": "TVs & Projectors",
           "type": "CategoryPath",
@@ -123,6 +159,6 @@
       "uri": "inSPIRED-inTRONICS-Site/-/categories/Home-Entertainment/220"
     }
   ],
-  "subCategoriesCount": 3,
+  "subCategoriesCount": 4,
   "type": "Category"
 }

@@ -10,7 +10,7 @@
   padding-right: ($space-default * 2);
 
   @media (max-width: $screen-sm-max) {
-    padding-right: 0px;
+    padding-right: 0;
   }
 
   @media (max-width: $screen-xs-max) {
@@ -34,11 +34,11 @@
 }
 
 .filter-group {
-  border-bottom: $border-width-default solid $border-color-light;
+  position: relative;
   padding-bottom: $space-default;
   margin-bottom: $space-default;
-  position: relative;
   font-size: 14px;
+  border-bottom: $border-width-default solid $border-color-light;
 
   .filter-list {
     padding: 0;
@@ -79,15 +79,17 @@
           }
         }
       }
+
       span {
         &.icon-notselected {
-          background-color: $color-tertiary;
-          border: 1px solid $border-color-light;
           display: inline-block;
+          width: 15px;
           height: 15px;
           margin-right: ($space-default / 3);
-          width: 15px;
+          background-color: $color-tertiary;
+          border: 1px solid $border-color-light;
         }
+
         &.filter-count {
           margin-left: ($space-default / 3);
         }
@@ -106,20 +108,22 @@
           float: right;
           width: 16px;
           height: 16px;
-          text-align: center;
           line-height: 14px;
+          text-align: center;
         }
       }
+
       span {
         &.icon-selected {
-          background-color: $color-corporate;
-          border: 1px solid $border-color-default;
           display: inline-block;
+          width: 15px;
           height: 15px;
           margin-right: ($space-default / 3);
-          width: 15px;
+          background-color: $color-corporate;
+          border: 1px solid $border-color-default;
         }
       }
+
       &.filter-colour {
         span {
           border: 2px solid $color-corporate;
@@ -130,27 +134,35 @@
     &.filter-layer1 {
       @include filter-list-item-layer(1);
     }
+
     &.filter-layer2 {
       @include filter-list-item-layer(2);
     }
+
     &.filter-layer3 {
       @include filter-list-item-layer(3);
     }
+
     &.filter-layer4 {
       @include filter-list-item-layer(4);
     }
+
     &.filter-layer5 {
       @include filter-list-item-layer(5);
     }
+
     &.filter-layer6 {
       @include filter-list-item-layer(6);
     }
+
     &.filter-layer7 {
       @include filter-list-item-layer(7);
     }
+
     &.filter-layer8 {
       @include filter-list-item-layer(8);
     }
+
     &.filter-layer9 {
       @include filter-list-item-layer(9);
     }
@@ -176,8 +188,8 @@
 
         &.filter-list {
           max-height: none;
-          overflow-y: visible;
           padding-top: 5px;
+          overflow-y: visible;
         }
       }
 
@@ -204,13 +216,13 @@ input {
 
 label {
   &.filter-checkbox-label {
-    font-size: 0;
-    text-indent: 999em;
+    float: left;
     width: 12px;
     height: 12px;
-    background: $color-tertiary;
-    float: left;
     margin: 3px 5px 0 0;
+    font-size: 0;
+    text-indent: 999em;
+    background: $color-tertiary;
     border: $border-width-default solid $border-color-light;
 
     &.selected {
@@ -232,10 +244,10 @@ label {
 
 .filter-swatch {
   span {
+    display: inline-block;
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    display: inline-block;
 
     &.filter-colour-bright {
       border: 1px solid $border-color-light;
@@ -247,16 +259,16 @@ label {
   .mobile-filter-toggle {
     display: block;
     padding: $space-default 0;
+    margin-bottom: $space-default;
+    font-family: $font-family-condensedregular;
+    font-size: 15px;
+    font-weight: 700;
     text-align: center;
     text-transform: uppercase;
-    font-size: 15px;
-    font-family: $font-family-condensedregular;
-    font-weight: 700;
-    margin-bottom: $space-default;
 
     &.collapsed {
       .fa-angle-up {
-        &:before {
+        &::before {
           content: '\e114';
         }
       }

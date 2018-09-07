@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cms Text Component should be created 1`] = `
+<div
+  id="root0"
+  ng-version="6.1.6"
+>
+  
+</div>
+`;
+
+exports[`Cms Text Component should render html text pagelet if set 1`] = `
+<div
+  id="root1"
+  ng-version="6.1.6"
+>
+  
+  <span>
+    foo
+  </span>
+</div>
+`;

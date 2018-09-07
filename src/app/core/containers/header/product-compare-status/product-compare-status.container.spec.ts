@@ -17,7 +17,7 @@ describe('Product Compare Status Container', () => {
         MockComponent({
           selector: 'ish-product-compare-status',
           template: 'Compare Status',
-          inputs: ['productCompareCount'],
+          inputs: ['productCompareCount', 'view'],
         }),
         ProductCompareStatusContainerComponent,
       ],

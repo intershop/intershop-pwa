@@ -2,7 +2,7 @@
 // CUSTOMIZED PRINT STYLES
 
 @media print {
-  a[href]:after {
+  a[href]::after {
     content: none !important;
   }
 }

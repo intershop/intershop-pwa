@@ -2,27 +2,27 @@
 // CATEGORY
 
 .current-price {
-  color: $text-color-primary;
   font-family: $font-family-condensedbold;
   font-size: $font-size-lg;
+  color: $text-color-primary;
 }
 
 .sale-price {
-  color: $text-color-special;
   font-family: $font-family-condensedbold;
   font-size: $font-size-lg;
+  color: $text-color-special;
 }
 
 .old-price {
+  margin: -5px 0;
+  font-family: $font-family-condensedregular;
   color: $text-color-tertiary;
   text-decoration: line-through;
-  font-family: $font-family-condensedregular;
-  margin: -5px 0;
 }
 
 .price-savings {
-  color: $text-color-tertiary;
   font-family: $font-family-condensedregular;
+  color: $text-color-tertiary;
 }
 
 .secondary-actions {

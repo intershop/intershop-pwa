@@ -13,6 +13,8 @@ import { getLoggedInUser } from '../../../store/user';
 export class LoginStatusContainerComponent implements OnInit {
   @Input()
   logoutOnly = false;
+  @Input()
+  view: 'auto' | 'small' | 'full' = 'auto';
 
   user$: Observable<User>;
 

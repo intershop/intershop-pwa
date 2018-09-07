@@ -12,6 +12,8 @@ export class LanguageSwitchComponent {
   locale: Locale;
   @Input()
   availableLocales: Locale[];
+  @Input()
+  view: '' | 'accordion' = '';
   @Output()
   localeChange = new EventEmitter<Locale>();
 

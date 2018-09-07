@@ -6,20 +6,16 @@
 }
 
 .container {
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: ($grid-gutter-width / 2);
   padding-right: ($grid-gutter-width / 2);
+  padding-left: ($grid-gutter-width / 2);
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .loading-container {
   position: relative;
-  min-height: 50px;
   min-width: 50px;
-}
-
-body {
-  font-family: $font-family-base;
+  min-height: 50px;
 }
 
 // Global Styles
@@ -29,18 +25,18 @@ h2,
 .h2,
 h3,
 .h3 {
-  text-transform: uppercase;
   margin-top: $space-default;
   margin-bottom: $space-default;
+  text-transform: uppercase;
 }
 
 h4,
 .h4 h5,
 .h5 h6,
 .h6 {
-  font-family: $font-family-regular;
   margin-top: ($space-default * 2/3);
   margin-bottom: $space-default;
+  font-family: $font-family-regular;
 }
 
 a,
@@ -56,35 +52,38 @@ a:not([href]):not([tabindex]) {
 
 a {
   cursor: pointer;
+
   &:hover,
   &:focus {
     text-decoration: none;
   }
+
   h3:hover {
     color: $text-color-quarternary;
   }
+
   &.teaser-link {
     display: block;
   }
 }
 
 .ng-fa-icon {
-  &.footer-icon:before {
-    color: $text-color-inverse;
+  &.footer-icon::before {
     font-size: 50px;
+    color: $text-color-inverse;
   }
 }
 
 .top-header {
   .ng-fa-icon {
-    top: 3px;
+    top: 1px;
   }
 }
 
 //
 // Main working area
 .wrapper {
-  padding: 0px 0px 50px 0px;
+  padding: 0 0 50px 0;
 }
 
 img {
@@ -105,14 +104,14 @@ img {
 //
 // Global Panels
 .grey-panel {
-  background: $color-tertiary;
   padding: ($space-default + ($space-default / 2)) 0;
+  background: $color-tertiary;
 }
 
 // Help Text
 .form-text {
-  color: $text-color-quarternary;
   margin: $space-default / 3 0 $space-default / 2;
+  color: $text-color-quarternary;
 }
 
 h4.form-text {
@@ -201,10 +200,35 @@ img.marketing {
 
 .details-link,
 .details-tooltip {
+  display: inline-block;
   padding-left: $space-default/2;
-  font-size: 90%;
   font-family: $font-family-regular;
+  font-size: 90%;
   text-transform: none;
   white-space: nowrap;
-  display: inline-block;
+}
+
+.item-count-container {
+  position: relative;
+
+  .badge {
+    position: absolute;
+    top: -8px;
+    left: 26px;
+    font-size: 75%;
+    font-weight: inherit;
+    line-height: 1.4;
+    color: $text-color-inverse;
+    background: $CORPORATE-PRIMARY;
+
+    &:hover {
+      color: $text-color-inverse;
+      background: lighten($CORPORATE-PRIMARY, 5%);
+    }
+  }
+}
+
+.badge {
+  font-size: 85%;
+  font-weight: normal;
 }

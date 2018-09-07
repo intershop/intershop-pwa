@@ -1,5 +1,6 @@
 <ish-language-switch
   [locale]="locale$ | async"
   [availableLocales]="availableLocales$ | async"
+  [view]="view"
   (localeChange)="switch($event)"
 ></ish-language-switch>

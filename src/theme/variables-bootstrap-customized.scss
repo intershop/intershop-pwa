@@ -1,3 +1,4 @@
+@import './variables.scss';
 //
 // CUSTOMIZED BOOTSTRAP DEFAULT VARIABLES
 
@@ -54,7 +55,7 @@ $font-family-monospace: Menlo, Monaco, Consolas, 'Courier New', monospace;
 $font-family-base: $font-family-regular;
 
 // TODO: round font size values
-$font-size-base: 0.875rem; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
+$font-size-base: $font-size-corporate; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
 $font-size-sm: $font-size-base * 0.85; // ~12px
 
 $h1-font-size: $font-size-base * 2.15; // ~30px

@@ -7,35 +7,35 @@
   clear: both;
 
   &.section-separator {
-    border-bottom: 1px solid $border-color-light;
     padding-bottom: ($space-default * 2);
+    border-bottom: 1px solid $border-color-light;
   }
 
   &.section-separator-lg {
     @media (min-width: $screen-lg-min) {
-      border-bottom: 1px solid $border-color-light;
       padding-bottom: ($space-default * 2);
+      border-bottom: 1px solid $border-color-light;
     }
   }
 
   &.section-separator-md {
     @media (min-width: $screen-md-min) {
-      border-bottom: 1px solid $border-color-light;
       padding-bottom: ($space-default * 2);
+      border-bottom: 1px solid $border-color-light;
     }
   }
 
   &.section-separator-sm {
     @media (min-width: $screen-sm-min) {
-      border-bottom: 1px solid $border-color-light;
       padding-bottom: ($space-default * 2);
+      border-bottom: 1px solid $border-color-light;
     }
   }
 
   &.section-separator-xs {
     @media (max-width: $screen-xs-max) {
-      border-bottom: 1px solid $border-color-light;
       padding-bottom: ($space-default * 2);
+      border-bottom: 1px solid $border-color-light;
     }
   }
 }

@@ -27,6 +27,8 @@ exports[`Sub Category Navigation Component should be created 1`] = `
       
       <a
         class="dropdown-toggle d-md-none"
+        ng-reflect-klass="dropdown-toggle"
+        ng-reflect-ng-class="[object Object]"
       >
         
         <fa-icon
@@ -77,6 +79,8 @@ exports[`Sub Category Navigation Component should be created 1`] = `
             
             <a
               class="dropdown-toggle d-md-none"
+              ng-reflect-klass="dropdown-toggle"
+              ng-reflect-ng-class="[object Object]"
             >
               
               <fa-icon

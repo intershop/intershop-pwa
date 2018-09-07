@@ -2,15 +2,15 @@
 // ACCOUNT DASHBOARD
 
 .account-dashboard {
-  margin-top: ($space-default * 2);
   display: flex;
   flex-wrap: wrap;
+  margin-top: ($space-default * 2);
 
   .dashboard-item {
-    text-align: center;
-    color: $text-color-secondary;
-    text-transform: uppercase;
     margin-bottom: ($space-default * 2);
+    color: $text-color-secondary;
+    text-align: center;
+    text-transform: uppercase;
 
     a {
       font-size: 13px;
@@ -23,30 +23,30 @@
   }
 
   .circle-icon {
-    background: $color-secondary;
     width: 86px;
     height: 86px;
-    border-radius: 50%;
-    text-align: center;
     margin: 0 auto $space-default auto;
+    text-align: center;
     cursor: pointer;
+    background: $color-secondary;
+    border-radius: 50%;
 
     &:hover {
       background: map-get($theme-colors, 'primary');
-      -webkit-transition-property: background;
-      -moz-transition-property: background;
-      -o-transition-property: background;
-      transition-property: background;
       -webkit-transition-duration: 0.3s;
       -moz-transition-duration: 0.3s;
       -o-transition-duration: 0.3s;
       transition-duration: 0.3s;
+      -webkit-transition-property: background;
+      -moz-transition-property: background;
+      -o-transition-property: background;
+      transition-property: background;
     }
 
     * {
-      color: $text-color-quinary;
       font-size: 32px;
       line-height: 86px;
+      color: $text-color-quinary;
     }
   }
 

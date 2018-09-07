@@ -10,9 +10,8 @@
 @import 'mixins';
 
 // INCLUDE THEME SPECIFIC COMPONENTS
-
 @import 'global/fonts/roboto';
-
+@import 'global/animations';
 @import 'global/icons';
 @import 'global/global';
 @import 'global/buttons';
@@ -32,20 +31,19 @@
 @import 'global/propertygroups';
 @import 'global/promotions';
 @import 'global/variation-selection';
-
 @import 'components/header/header';
-@import 'components/header/country-switch';
+@import 'components/header/language-switch';
 @import 'components/header/search-container';
 @import 'components/header/main-navigation';
 @import 'components/header/navbar';
-
+@import 'components/header/header-sticky';
+@import 'components/header/user-information-mobile';
 @import 'components/footer/footer';
-
+@import 'components/common/enhanced-image';
+@import 'components/common/video';
 @import 'components/carousel/carousel';
-
 @import 'pages/homepage/homepage';
 @import 'pages/errorpage/errorpage';
-
 @import 'pages/category/product-list';
 @import 'pages/category/category';
 @import 'pages/category/search-result';
@@ -53,22 +51,17 @@
 @import 'pages/category/filter-row';
 @import 'pages/category/filter-panel';
 @import 'pages/category/quick-view';
-
 @import 'pages/account/account';
 @import 'pages/account/account-dashboard';
 @import 'pages/account/account-navigation';
-
 @import 'pages/checkout/checkout';
 @import 'pages/checkout/progress-bar';
 @import 'pages/checkout/shopping-cart';
 @import 'pages/checkout/quick-cart';
-
 @import 'pages/payment/payment';
-
 @import 'pages/content-pages/page-navigation';
 @import 'pages/content-pages/page-content';
 @import 'pages/content-pages/brands';
-
 @import 'pages/productdetail/productdetail';
 @import 'pages/productdetail/rating';
 @import 'pages/productdetail/product-images';
