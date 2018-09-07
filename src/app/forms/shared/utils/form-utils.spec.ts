@@ -1,6 +1,12 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { arrayDiff, arrayIntersect, markAsDirtyRecursive, markFormControlsAsInvalid } from './form-utils';
+import {
+  arrayDiff,
+  arrayIntersect,
+  determineSalutations,
+  markAsDirtyRecursive,
+  markFormControlsAsInvalid,
+} from './form-utils';
 
 describe('Form Utils', () => {
   describe('array utils', () => {
@@ -100,6 +106,43 @@ describe('Form Utils', () => {
       expect(form.get('a').get('a2').valid).toBeTrue();
       expect(form.get('b').valid).toBeTrue();
       expect(form.get('c').valid).toBeTrue();
+    });
+  });
+
+  describe('determineSalutations', () => {
+    it('should return an empty array if countryCode is empty', done => {
+      determineSalutations('').subscribe(salutations => {
+        expect(salutations).toBeEmpty();
+        done();
+      });
+    });
+
+    it('should return an empty array if countryCode is not known', done => {
+      determineSalutations('BG').subscribe(salutations => {
+        expect(salutations).toBeEmpty();
+        done();
+      });
+    });
+
+    it('should return salutations if countryCode is GB', done => {
+      determineSalutations('GB').subscribe(salutations => {
+        expect(salutations).toHaveLength(5);
+        done();
+      });
+    });
+
+    it('should return salutations if countryCode is DE', done => {
+      determineSalutations('DE').subscribe(salutations => {
+        expect(salutations).toHaveLength(3);
+        done();
+      });
+    });
+
+    it('should return salutations if countryCode is FR', done => {
+      determineSalutations('FR').subscribe(salutations => {
+        expect(salutations).toHaveLength(3);
+        done();
+      });
     });
   });
 });
