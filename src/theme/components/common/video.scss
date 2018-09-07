@@ -8,14 +8,14 @@
 
 .video-text {
   position: absolute;
-  text-align: center;
   top: 50%;
-  transform: translate(0, -50%);
   width: 100%;
+  text-align: center;
+  transform: translate(0, -50%);
 
   h1 {
-    color: #fff;
     font-size: 60px;
+    color: #fff;
   }
 }
 
@@ -26,8 +26,8 @@
   opacity: 0.7;
 
   &:hover {
-    opacity: 1;
     cursor: pointer;
+    opacity: 1;
   }
 
   @media (min-width: $screen-md) {
@@ -37,9 +37,9 @@
 
 .video-wrapper {
   position: relative;
-  padding-bottom: 55%; /* 16:9 - original: 56.25%; */
-  padding-top: 25px;
   height: 0;
+  padding-top: 25px;
+  padding-bottom: 55%; /* 16:9 - original: 56.25%; */
 }
 .video-wrapper iframe {
   position: absolute;

@@ -3,11 +3,11 @@
 
 .navbar-toggler {
   padding: $space-default $space-default * 1.4;
-  border: $border-width-default solid transparent;
-  background-color: $text-color-corporate;
-  color: $text-color-inverse;
-  font-size: 1.4rem;
   margin-left: $space-default;
+  font-size: 1.4rem;
+  color: $text-color-inverse;
+  background-color: $text-color-corporate;
+  border: $border-width-default solid transparent;
 
   &:focus {
     outline: none;

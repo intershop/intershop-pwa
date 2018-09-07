@@ -2,13 +2,13 @@
 
 .main-navigation {
   z-index: 1;
-  transition: height 500ms ease-in-out;
   align-self: center;
   height: $top-header-height;
+  transition: height 500ms ease-in-out;
 
   @media (max-width: $screen-xs-max) {
-    padding: 0;
     height: auto;
+    padding: 0;
   }
 
   @media (max-width: $screen-md-max) {
@@ -34,8 +34,8 @@
 }
 
 .dropdown-menu {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   left: ($grid-gutter-width / 2);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
 .main-navigation-list {
@@ -46,8 +46,8 @@
 
     .dropdown-toggle {
       width: $toggler-width;
-      border-left: $border-width-default solid $border-color-default;
       text-align: center;
+      border-left: $border-width-default solid $border-color-default;
 
       &:after {
         content: none;
@@ -66,9 +66,9 @@
       }
 
       > a {
+        float: left;
         width: calc(100% - #{$toggler-width});
         padding: $space-default ($grid-gutter-width / 2) !important;
-        float: left;
         font-size: $font-size-menu-item-mobile;
         line-height: 1.3125rem;
       }
@@ -76,11 +76,11 @@
 
     // Navbar Item
     > li > a {
-      border-bottom: $border-width-default solid $border-color-default;
-      background: $CORPORATE-PRIMARY;
-      color: $text-color-inverse;
       font-size: $font-size-navbar-item-mobile;
+      color: $text-color-inverse;
       text-transform: uppercase;
+      background: $CORPORATE-PRIMARY;
+      border-bottom: $border-width-default solid $border-color-default;
     }
     li.open {
       .category-level1,
@@ -96,11 +96,11 @@
     .category-level3,
     .category-level4 {
       > li > a {
-        border-bottom: $border-width-default solid $border-color-light;
-        color: $text-color-primary;
         font-family: $font-family-regular;
         font-size: $font-size-sub-menu-item-mobile;
+        color: $text-color-primary;
         text-transform: capitalize;
+        border-bottom: $border-width-default solid $border-color-light;
       }
 
       .dropdown-toggle {
@@ -119,8 +119,8 @@
 
   &:not(.accordion) {
     a {
-      color: $text-color-primary;
       font-size: $font-size-navbar-item;
+      color: $text-color-primary;
     }
 
     > li {
@@ -129,8 +129,8 @@
 
       &.dropdown {
         position: static;
-        margin: 0;
         padding: 0 10px;
+        margin: 0;
         background: url('/assets/img/header/active_catalog.png') -2000px bottom no-repeat;
 
         &:first-child {
@@ -138,8 +138,8 @@
         }
 
         &.hover {
-          transition-delay: 0.5s;
           background-position: center bottom;
+          transition-delay: 0.5s;
           ul {
             visibility: visible;
             transition-delay: 0.5s;
@@ -154,9 +154,9 @@
 
       ul {
         > li {
-          margin-bottom: $space-default;
-          padding-right: 3%;
           float: left;
+          padding-right: 3%;
+          margin-bottom: $space-default;
           line-height: 28px;
 
           &:nth-child(4n + 1) {
@@ -165,25 +165,25 @@
 
           a {
             padding: 0;
-            background: none;
             font-family: $font-family-regular;
             font-size: $font-size-menu-item;
             text-transform: uppercase;
+            background: none;
           }
 
           li {
-            margin: 0;
             float: none;
+            margin: 0;
             line-height: 24px;
 
             ul {
-              margin: 0;
               padding: 0;
+              margin: 0;
             }
 
             a {
-              color: lighten($text-color-primary, 35%);
               font-size: $font-size-sub-menu-item;
+              color: lighten($text-color-primary, 35%);
               text-transform: none;
             }
           }
@@ -201,10 +201,14 @@
     }
 
     .category-level1 {
-      display: block;
-      visibility: hidden;
       z-index: 9999;
+      display: block;
       width: 720px;
+      padding: 25px 25px ($grid-gutter-width / 2) 25px;
+
+      margin: 0px;
+      visibility: hidden;
+      border-top: ($space-default / 2) solid $border-color-default;
       @media (min-width: $screen-md) {
         /* ~992px (Bootstrap) */
         width: ($screen-md - $grid-gutter-width * 2);
@@ -214,10 +218,6 @@
         /* ~1200px (Bootstrap) */
         width: ($screen-lg - $grid-gutter-width * 2);
       }
-
-      margin: 0px;
-      padding: 25px 25px ($grid-gutter-width / 2) 25px;
-      border-top: ($space-default / 2) solid $border-color-default;
 
       > li {
         margin: 0 20px 15px 0;

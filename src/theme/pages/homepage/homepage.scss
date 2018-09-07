@@ -7,8 +7,8 @@
   }
 
   .wrapper {
-    background: none;
     padding: 0;
+    background: none;
 
     .main-container {
       max-width: 100%;
@@ -40,17 +40,17 @@
 }
 
 .brands-carousel {
-  background-color: $color-tertiary;
   padding: 40px 0;
+  background-color: $color-tertiary;
 }
 
 .welcome-message {
   margin-top: $space-default;
 
   p {
+    margin-bottom: $space-default / 3;
     font-family: $font-family-condensedbold;
     font-size: $font-size-lg;
-    margin-bottom: $space-default / 3;
     text-transform: uppercase;
   }
 

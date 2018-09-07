@@ -33,13 +33,13 @@
   }
   .creditcards {
     li {
-      background-image: url('/assets/img/checkout/checkout-sprite.png');
-      background-repeat: no-repeat;
       width: 55px;
       height: 35px;
       margin: $space-default/3;
 
       text-indent: -9999px;
+      background-image: url('/assets/img/checkout/checkout-sprite.png');
+      background-repeat: no-repeat;
 
       &.creditcards-vsa {
         background-position: 0 -70px;

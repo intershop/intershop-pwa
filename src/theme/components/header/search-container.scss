@@ -4,8 +4,8 @@
   position: relative;
 
   .btn-search:active {
-    border-color: transparent !important;
     background-color: transparent !important;
+    border-color: transparent !important;
   }
 
   button {
@@ -18,39 +18,39 @@
       position: absolute;
       right: $space-default;
       width: auto;
-      border: 0;
-      background: 0;
       font-size: $font-size-lg;
+      background: 0;
+      border: 0;
 
       span:before {
-        color: $text-color-inverse;
         font-size: $font-size-lg;
+        color: $text-color-inverse;
       }
     }
   }
 
   ul.search-suggest-results {
     position: absolute;
-    z-index: 9999;
     top: 37px;
-    margin: 0;
+    z-index: 9999;
     padding: 0;
-    border: $border-width-default solid $border-color-light;
-    background: $color-inverse;
+    margin: 0;
     list-style: none;
+    background: $color-inverse;
+    border: $border-width-default solid $border-color-light;
 
     li {
       width: 100%;
       padding: 0 $space-default;
 
       &:hover {
-        border-bottom: $border-width-default solid $border-color-default;
-        background: $border-color-corporate;
         color: $text-color-inverse;
+        background: $border-color-corporate;
+        border-bottom: $border-width-default solid $border-color-default;
 
         button {
-          border-top: $border-width-default solid transparent;
           color: $text-color-inverse;
+          border-top: $border-width-default solid transparent;
         }
 
         + li button {
@@ -59,13 +59,13 @@
       }
 
       &.active-suggestion {
-        border-bottom: $border-width-default solid $border-color-corporate;
-        background: $color-corporate;
         color: $text-color-inverse;
+        background: $color-corporate;
+        border-bottom: $border-width-default solid $border-color-corporate;
 
         button {
-          border-top: $border-width-default solid transparent;
           color: $text-color-inverse;
+          border-top: $border-width-default solid transparent;
         }
 
         + li button {
@@ -80,14 +80,14 @@
       button {
         width: 100%;
         padding: $space-default 0 $space-default 4px;
-        border: 0;
-        border-top: $border-width-default solid $border-color-light;
-        background: none;
-        color: $text-color-quarternary;
         font-family: $font-family-regular;
         font-size: 13px;
+        color: $text-color-quarternary;
         text-align: left;
         text-transform: capitalize;
+        background: none;
+        border: 0;
+        border-top: $border-width-default solid $border-color-light;
 
         span {
           font-weight: bold;
@@ -104,13 +104,13 @@
 
   input {
     &.form-control {
+      float: right;
       height: 38px;
       padding-left: (38 / 2);
-      float: right;
-      border: $border-width-default solid $border-color-default;
-      background: $color-primary;
-      color: $white;
       font-size: 14px;
+      color: $white;
+      background: $color-primary;
+      border: $border-width-default solid $border-color-default;
 
       &::-ms-clear {
         display: none;
@@ -126,11 +126,11 @@
     }
 
     &:focus {
-      border: $border-width-default solid $border-color-light;
-      background: $color-inverse;
-      box-shadow: none;
-      color: $text-color-primary;
       font-size: 14px;
+      color: $text-color-primary;
+      background: $color-inverse;
+      border: $border-width-default solid $border-color-light;
+      box-shadow: none;
 
       + button.btn-search {
         color: $text-color-primary;

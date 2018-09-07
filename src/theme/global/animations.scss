@@ -30,25 +30,25 @@
   width: 19.5px;
   height: 23px;
   span {
-    display: block;
     position: absolute;
     left: 0;
+    display: block;
 
     width: 100%;
     height: 4px;
+    background-color: $white;
 
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+    border-radius: 2px;
+    opacity: 1;
     -webkit-transition: 0.25s ease-in-out;
     -moz-transition: 0.25s ease-in-out;
     -o-transition: 0.25s ease-in-out;
     transition: 0.25s ease-in-out;
 
-    border-radius: 2px;
-    opacity: 1;
-    background-color: $white;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   span:nth-child(1) {
     top: 0px;
