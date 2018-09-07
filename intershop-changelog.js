@@ -45,8 +45,6 @@ var writerOpts = {
       commit.type = 'Bug Fixes';
     } else if (commit.type === 'perf') {
       commit.type = 'Performance Improvements';
-    } else if (commit.type === 'revert') {
-      commit.type = 'Reverts';
     } else if (commit.type === 'docs') {
       commit.type = 'Documentation';
     } else if (discard) {
@@ -55,6 +53,8 @@ var writerOpts = {
       commit.type = 'Styles';
     } else if (commit.type === 'refactor') {
       commit.type = 'Code Refactoring';
+    } else if (commit.type === 'revert') {
+      commit.type = 'Reverts';
     } else if (commit.type === 'test') {
       commit.type = 'Tests';
     } else if (commit.type === 'chore') {
@@ -81,8 +81,17 @@ var writerOpts = {
     return commit;
   },
   groupBy: 'type',
-  commitGroupsSort: function (arg1, arg2) {return (arg1.title === 'Features') ? -1 : 1},
-  commitsSort: ['scope', 'subject'],
+  commitGroupsSort: function (arg1, arg2) {
+    var order = ['Features', 'Bug Fixes', 'Performance Improvements', 'Documentation'];
+    if (order.indexOf(arg1.title) < order.indexOf(arg2.title)) {
+      return -1;
+    }
+    if (order.indexOf(arg1.title) > order.indexOf(arg2.title)) {
+      return 1;
+    }
+    return 0;
+  },
+  commitsSort: ['scope'],
   noteGroupsSort: 'title',
   notesSort: compareFunc
 };

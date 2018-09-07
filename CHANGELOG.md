@@ -1,19 +1,22 @@
-# 0.5.0 (2018-09-05)
+# 0.5.0 (2018-09-07)
 
 ### Features
 
-* add Order Details functionality (ISREST-430)
-* add Order List functionality (ISREST-426)
-* instant quantity changes for line item list (basket/quote request) (ISREST-314)
-* preparation for content page handling/routing (ISREST-460)
+* preparation for content page handling (ISREST-460)
 * rebranding - color scheme, logo, effects (ISREST-481)
+* add Order Details functionality (ISREST-430)
+* instant quantity changes for line item list (basket/quote request) (ISREST-314)
+* add Order List functionality (ISREST-426)
 
 ### Bug Fixes
 
+* add home screen icons for Apple iOS devices
+* repaired route definition for product routes (ISREST-459)
 * remove btoa and atob as they are not available in universal mode (ISREST-445)
 
 ### Documentation
 
+* add changelog generation with conventional-changelog
 * add license information and 3rd-party-licenses overview
 
 
