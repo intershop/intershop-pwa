@@ -13,6 +13,7 @@
 
 @import 'global/fonts/roboto';
 
+@import 'global/animations';
 @import 'global/icons';
 @import 'global/global';
 @import 'global/buttons';
@@ -34,10 +35,12 @@
 @import 'global/variation-selection';
 
 @import 'components/header/header';
-@import 'components/header/country-switch';
+@import 'components/header/language-switch';
 @import 'components/header/search-container';
 @import 'components/header/main-navigation';
 @import 'components/header/navbar';
+@import 'components/header/header-sticky';
+@import 'components/header/user-information-mobile';
 
 @import 'components/footer/footer';
 

@@ -1,4 +1,4 @@
-import { $, browser } from 'protractor';
+import { $, $$, browser } from 'protractor';
 
 import { HeaderModule } from './header.module';
 
@@ -12,7 +12,10 @@ export class HomePage {
   }
 
   gotoCategoryPage(categoryUniqueId) {
-    $(`[data-testing-id="${categoryUniqueId}-link"]`).click();
+    $$(`ish-header [data-testing-id="${categoryUniqueId}-link"]`)
+      .filter(e => e.isDisplayed())
+      .first()
+      .click();
   }
 
   getContent() {

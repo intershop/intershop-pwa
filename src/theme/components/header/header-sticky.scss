@@ -1,0 +1,96 @@
+.header-sticky,
+.header-sticky-mobile {
+  .main-navigation-list li {
+    @media (max-width: $screen-md-max) {
+      a {
+        font-size: $font-size-corporate;
+      }
+    }
+  }
+
+  .logo-wrapper {
+    display: flex;
+    align-self: center;
+
+    .logo {
+      height: 25px;
+      padding-right: $space-default * 2;
+    }
+  }
+
+  .search-toggler {
+    position: relative;
+
+    &.active-search {
+      background-color: $color-primary;
+
+      .ng-fa-icon {
+        color: $text-color-inverse;
+      }
+    }
+  }
+
+  .search-container {
+    position: absolute;
+    z-index: 999999;
+    top: 40px;
+    right: 0;
+    width: 400px;
+    background: $color-inverse;
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
+  }
+
+  .navbar-toggler {
+    padding: 13px 21px;
+  }
+
+  .main-navigation-right {
+    float: right;
+  }
+}
+
+.header-sticky-mobile.container {
+  max-width: none;
+}
+
+.sticky-header-search-container {
+  display: block;
+  overflow: hidden;
+  transition: height 500ms ease-in-out;
+
+  &.show {
+    height: 38px;
+  }
+
+  &:not(.show) {
+    display: block; //required for animation
+    height: 0px;
+  }
+}
+
+.showed-on-scroll {
+  display: block;
+  background-color: $color-inverse;
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+
+  &.hidden {
+    z-index: -99;
+    margin-top: -50px;
+    opacity: 0;
+  }
+
+  &:not(.hidden) {
+    z-index: 999;
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+
+    > .main-navigation {
+      display: block;
+      overflow: scroll;
+
+      .navbar-nav {
+        margin-top: 0px;
+      }
+    }
+  }
+}

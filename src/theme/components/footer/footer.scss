@@ -10,19 +10,6 @@ footer {
   padding: 40px 0 60px;
   background: $color-primary;
 
-  @media (max-width: $screen-xs-max) {
-    padding: 0;
-  }
-
-  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-    padding: 0;
-
-    .container {
-      margin: 0;
-      width: 100%;
-    }
-  }
-
   h4 {
     color: $text-color-inverse;
     font-size: 14px;
@@ -96,6 +83,30 @@ footer {
     color: $text-color-corporate;
     float: right;
     cursor: pointer;
+  }
+}
+
+.contact {
+  @media (max-width: $screen-sm-max) {
+    float: none;
+    width: 100%;
+  }
+
+  .ng-fa-icon {
+    color: $text-color-inverse;
+    font-size: 30px;
+    display: block;
+    float: left;
+    padding: 25px $space-default 0px 0px;
+  }
+
+  h4 {
+    font-size: 18px;
+    margin: 25px 0px 0px;
+  }
+
+  span {
+    color: $text-color-inverse;
   }
 }
 
@@ -180,12 +191,6 @@ footer {
 .social-links {
   float: right;
   padding: 0 ($space-default);
-
-  @media (max-width: $screen-sm-max) {
-    float: none;
-    padding: ($space-default + ($space-default / 2));
-    width: 100%;
-  }
 
   ul {
     margin: 0;

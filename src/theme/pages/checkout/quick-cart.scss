@@ -24,9 +24,9 @@ ul {
 }
 
 .quick-cart-link {
-  float: right;
   background: $color-tertiary;
-  padding: 9px $space-default 8px;
+  padding: 0 $space-default;
+  margin-left: $space-default;
   position: relative;
 
   a {
@@ -50,8 +50,9 @@ ul {
     }
 
     .ng-fa-icon {
-      font-size: $font-size-lg;
+      font-size: 17px;
       margin-right: ($space-default / 2);
+      padding: 0;
     }
   }
 
@@ -80,7 +81,6 @@ ul {
 
   .mini-cart {
     position: absolute;
-    top: 43px;
     background: $color-inverse;
     right: -1px;
     z-index: 9999;

@@ -50,6 +50,7 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
   searchForm: FormGroup;
   isHidden = true;
   activeIndex = -1;
+  icon: string;
 
   ngOnInit() {
     this.searchForm = new FormGroup({
@@ -62,6 +63,8 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
         .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe(this.searchTermChange);
     }
+
+    this.icon = this.configuration && this.configuration.icon ? this.configuration.icon : 'search';
   }
 
   ngOnChanges(c: SimpleChanges) {

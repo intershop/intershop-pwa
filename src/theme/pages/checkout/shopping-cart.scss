@@ -11,7 +11,7 @@
   }
 
   .cart-header-note {
-    font-size: $font-size-base;
+    font-size: $font-size-corporate;
     font-family: $font-family-regular;
     color: $text-color-quarternary;
     text-transform: none;
@@ -126,7 +126,7 @@
       text-align: right;
     }
     .total-price {
-      font-size: $font-size-base;
+      font-size: $font-size-corporate;
       font-family: $font-family-bold;
     }
   }
@@ -238,21 +238,6 @@
       width: auto;
     }
   }
-
-  .mobile-cart-counter {
-    position: absolute;
-    top: ($space-default / 2);
-    right: 16.5px;
-    background: $color-corporate;
-    color: $text-color-inverse;
-    text-align: center;
-    font-weight: normal;
-    width: 19px;
-    height: 19px;
-    line-height: 18px;
-    font-size: 10px;
-    @include round-corner(50%);
-  }
 }
 
 .empty-cart {
@@ -264,6 +249,7 @@
   .empty-cart-icon {
     padding: ($space-default * 7) 0 ($space-default * 2);
   }
+
   h2 {
     font-family: $font-family-condensedregular;
     margin-bottom: ($space-default * 2);

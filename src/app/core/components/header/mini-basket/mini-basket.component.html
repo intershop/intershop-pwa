@@ -1,7 +1,10 @@
-<div class="quick-cart-link d-none d-md-block" [class.mini-cart-active]="!isCollapsed" ishClickOutside (isClickedOutside)="collapse()">
-
+<div class="quick-cart-link"
+  [ngClass]="{'d-none': view !== 'full', 'd-md-block': view !== 'small', 'mini-cart-active': !isCollapsed}"
+  ishClickOutside
+  (isClickedOutside)="collapse()"
+>
   <a (click)="toggleCollapse()">
-    <fa-icon [icon]="['fas', 'shopping-cart']"  class="header-icon"></fa-icon>
+    <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon"></fa-icon>
     <!-- TODO: check for a better solution for the plural and translate pipe combination for cases where the en_US.json is not yet loaded, current solution: || {"other": "#"} -->
     <span>{{ itemCount | i18nPlural: ( 'shopping_cart.ministatus.items.text' | translate ) || {"other": "#"} }}</span>
     <ng-container *ngIf="basket && basket.totals.total">
@@ -14,10 +17,9 @@
 
     <ng-container *ngIf="basket && basket.lineItems.length > 0; else emptyBlock">
 
-      <div
-        *ngIf="basket.lineItems.length > 2"
+      <div *ngIf="basket.lineItems.length > 2"
         class="btn-scroll-up"
-        [class.disabled]="currentProduct === 0"
+        [ngClass]="{'disabled': currentProduct === 0}"
         (click)="scrollUp()"
       >
         <fa-icon [icon]="['fas', 'angle-up']"></fa-icon>
@@ -25,7 +27,6 @@
 
       <div class="product-rows-block">
         <div class="slider" #slider>
-
           <div *ngFor="let lineItem of basket.lineItems" class="product-row">
             <div class="mini-product-img">
               <a [routerLink]="generateProductRoute(lineItem.product)" (click)="collapse()">
@@ -40,20 +41,20 @@
               <div class="cart-pli-data"><span>{{ 'shopping_cart.pli.qty.label' | translate }}</span> {{ lineItem.quantity.value }}</div>
             </div>
           </div>
-
         </div>
       </div>
 
-      <div
-        *ngIf="basket.lineItems.length > 2"
+      <div *ngIf="basket.lineItems.length > 2"
         class="btn-scroll-down"
-        [class.disabled]="currentProduct === basket.lineItems.length - 2"
+        [ngClass]="{'disabled': currentProduct === basket.lineItems.length - 2}"
         (click)="scrollDown()"
       >
         <fa-icon [icon]="['fas', 'angle-down']"></fa-icon>
       </div>
 
-      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket" (click)="collapse()">{{ 'shopping_cart.ministatus.view_cart.link' | translate }}</a>
+      <a class="view-cart btn btn-primary btn-lg btn-block" routerLink="/basket" (click)="collapse()">
+        {{ 'shopping_cart.ministatus.view_cart.link' | translate }}
+      </a>
 
     </ng-container>
 
@@ -63,3 +64,8 @@
 
   </div>
 </div>
+
+<a routerLink="/basket" *ngIf="view==='small'" style="position:relative;" class="item-count-container">
+  <fa-icon [icon]="['fas', 'shopping-cart']" class="header-icon"></fa-icon>
+  <span class="badge badge-pill" [ngClass]="basketAnimation">{{ itemCount }}</span>
+</a>

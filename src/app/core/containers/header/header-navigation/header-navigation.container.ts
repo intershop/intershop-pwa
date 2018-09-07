@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -11,6 +11,9 @@ import { getTopLevelCategories } from '../../../../shopping/store/categories';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderNavigationContainerComponent implements OnInit {
+  @Input()
+  view: 'auto' | 'small' | 'full' = 'auto';
+
   categories$: Observable<CategoryView[]>;
 
   constructor(private store: Store<{}>) {}
