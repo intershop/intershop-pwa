@@ -34,15 +34,15 @@
 }
 
 input[type='file'] {
+  padding: 0;
   border: none;
   box-shadow: none;
-  padding: 0;
 }
 
 .form-control-checkbox {
+  margin-bottom: 0;
   font-size: $font-size-base;
   border: none;
-  margin-bottom: 0;
 
   &:invalid {
     .form-control {
@@ -52,12 +52,14 @@ input[type='file'] {
       }
     }
   }
+
   .form-control {
+    padding-right: 0;
+    padding-left: 0;
     background-color: inherit;
     border: none;
+
     @include box-shadow(none);
-    padding-left: 0;
-    padding-right: 0;
   }
 
   .form-control-feedback {

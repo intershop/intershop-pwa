@@ -2,25 +2,25 @@
 
 ul {
   &.collection {
-    list-style: none outside none;
     padding-left: 0;
+    list-style: none outside none;
   }
 }
 
 ol {
   &.collection {
-    list-style: outside none decimal;
     padding-left: 24px;
+    list-style: outside none decimal;
   }
 }
 
 // HELPDESK
 
 .helpdesk-info-box {
+  width: 100%;
+  padding: $space-default/2;
   color: $text-color-inverse;
   background: $color-corporate;
-  padding: $space-default/2;
-  width: 100%;
 
   a {
     color: $text-color-inverse;
@@ -28,8 +28,8 @@ ol {
   }
 
   h2 {
-    color: $text-color-inverse;
     margin-top: 0;
+    color: $text-color-inverse;
   }
 }
 
@@ -42,8 +42,8 @@ ol {
 }
 
 .sitemap-category-list {
+  padding-left: 0;
   list-style: none;
-  padding-left: 0px;
 
   li {
     padding-bottom: $space-default;
@@ -51,8 +51,8 @@ ol {
     font-size: $font-size-lg;
 
     a {
-      color: $text-color-primary;
       font-size: $font-size-lg;
+      color: $text-color-primary;
       text-transform: uppercase;
     }
   }
@@ -61,11 +61,11 @@ ol {
     padding-left: $space-default;
 
     li {
-      text-decoration: none;
+      padding-top: 0;
+      padding-bottom: $space-default / 3;
       font-family: $font-family-regular;
       font-size: $font-size-lg;
-      padding-top: 0px;
-      padding-bottom: $space-default / 3;
+      text-decoration: none;
 
       a {
         font-size: ($grid-gutter-width / 2);
@@ -75,14 +75,14 @@ ol {
 }
 
 .sitemap-product-list {
+  padding-left: 0;
   list-style: none;
-  padding-left: 0px;
 
   li {
     a {
-      text-decoration: none;
       font-family: $font-family-condensedregular;
       font-size: $font-size-lg;
+      text-decoration: none;
     }
   }
 }

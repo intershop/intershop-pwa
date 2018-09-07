@@ -4,9 +4,9 @@
 ul {
   &.quick-links {
     float: left;
-    list-style: none outside none;
-    margin: 0;
     padding: $space-default ($space-default * 2) 0 0;
+    margin: 0;
+    list-style: none outside none;
 
     li {
       float: left;
@@ -14,45 +14,46 @@ ul {
     }
 
     a {
-      color: $text-color-secondary;
+      font-family: $font-family-condensedregular;
       font-size: $font-size-base;
+      color: $text-color-secondary;
       text-decoration: none !important;
       text-transform: uppercase;
-      font-family: $font-family-condensedregular;
     }
   }
 }
 
 .quick-cart-link {
-  background: $color-tertiary;
+  position: relative;
   padding: 0 $space-default;
   margin-left: $space-default;
-  position: relative;
+  background: $color-tertiary;
 
   a {
     font-family: $font-family-bold;
     font-size: $font-size-base;
-    text-transform: uppercase;
     text-decoration: none !important;
+    text-transform: uppercase;
     cursor: pointer;
 
     span {
       color: $text-color-quarternary;
 
       &.mini-cart-price {
-        color: $text-color-corporate;
         font-size: $font-size-base;
+        color: $text-color-corporate;
         white-space: nowrap;
       }
+
       &.js-cart-count {
         display: none;
       }
     }
 
     .ng-fa-icon {
-      font-size: 17px;
-      margin-right: ($space-default / 2);
       padding: 0;
+      margin-right: ($space-default / 2);
+      font-size: 17px;
     }
   }
 
@@ -81,32 +82,32 @@ ul {
 
   .mini-cart {
     position: absolute;
-    background: $color-inverse;
     right: -1px;
     z-index: 9999;
     width: 310px;
     padding: $space-default;
+    background: $color-inverse;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.23);
 
     .product-rows-block {
-      max-height: 228px;
       position: relative;
+      max-height: 228px;
       overflow: hidden;
 
       .slider {
-        max-height: 208px;
         position: relative;
+        max-height: 208px;
       }
     }
 
     .btn-scroll-up {
-      color: $text-color-corporate;
-      cursor: pointer;
-      font-size: $font-size-lg;
-      margin: $space-default 0 0;
-      padding: 2px 0 0 0;
-      text-align: center;
       width: 100%;
+      padding: 2px 0 0 0;
+      margin: $space-default 0 0;
+      font-size: $font-size-lg;
+      color: $text-color-corporate;
+      text-align: center;
+      cursor: pointer;
 
       &.disabled {
         color: $text-color-quinary;
@@ -114,13 +115,13 @@ ul {
     }
 
     .btn-scroll-down {
-      color: $text-color-corporate;
-      cursor: pointer;
-      font-size: $font-size-lg;
-      margin: 0 0 $space-default;
-      padding: 2px 0 0 0;
-      text-align: center;
       width: 100%;
+      padding: 2px 0 0 0;
+      margin: 0 0 $space-default;
+      font-size: $font-size-lg;
+      color: $text-color-corporate;
+      text-align: center;
+      cursor: pointer;
 
       &.disabled {
         color: $text-color-quinary;
@@ -128,16 +129,18 @@ ul {
     }
 
     .view-cart {
+      margin-top: ($space-default * 2);
       font-family: $font-family-condensedbold;
       font-size: $font-size-lg;
-      margin-top: ($space-default * 2);
     }
   }
 }
 
 .product-row {
   display: block;
+
   @include clearfix();
+
   padding: $space-default 0;
 
   & ~ .product-row {
@@ -145,43 +148,43 @@ ul {
   }
 
   .mini-product-img {
+    float: left;
     width: 30%;
     text-align: center;
-    float: left;
   }
 
   .mini-product-info {
     float: right;
-    text-align: left;
     width: 70%;
     padding-left: $space-default;
+    text-align: left;
 
     a {
+      display: block;
+      padding-top: ($space-default / 2);
+      padding-bottom: ($space-default / 4);
+      margin: 0;
+      overflow: hidden;
       font-family: $font-family-condensedregular;
-      color: $text-color-quarternary;
       font-size: $font-size-base;
       font-weight: normal;
-      text-transform: none;
+      color: $text-color-quarternary;
       text-overflow: ellipsis;
-      margin: 0;
-      display: block;
-      overflow: hidden;
+      text-transform: none;
       white-space: nowrap;
-      padding-bottom: ($space-default / 4);
-      padding-top: ($space-default / 2);
     }
 
     .product-price {
-      font-family: $font-family-condensedbold;
-      color: $text-color-primary;
-      font-size: $font-size-lg;
       padding-bottom: ($space-default / 4);
+      font-family: $font-family-condensedbold;
+      font-size: $font-size-lg;
+      color: $text-color-primary;
     }
 
     .product-size {
       font-family: $font-family-condensedregular;
-      color: $text-color-secondary;
       font-size: $font-size-base;
+      color: $text-color-secondary;
     }
 
     .cart-pli-data {
@@ -189,8 +192,8 @@ ul {
       color: $text-color-quarternary;
 
       span {
-        width: 80px;
         display: inline-block;
+        width: 80px;
       }
     }
 
@@ -199,8 +202,8 @@ ul {
       color: $text-color-quarternary;
 
       span {
-        width: 75px;
         display: inline-block;
+        width: 75px;
       }
     }
   }

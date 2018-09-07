@@ -1,6 +1,6 @@
 .product-info {
-  color: $text-color-quarternary;
   font-family: $font-family-condensedregular;
+  color: $text-color-quarternary;
 
   label {
     text-transform: uppercase;
@@ -20,7 +20,7 @@
 
   .product-number {
     label {
-      margin: 0px;
+      margin: 0;
     }
   }
 
@@ -29,8 +29,8 @@
     font-size: 30px;
 
     .price-note {
-      font-size: $font-size-corporate;
       margin-left: $space-default;
+      font-size: $font-size-corporate;
     }
   }
 
@@ -39,12 +39,12 @@
   }
 
   .old-price {
-    margin: 0px;
+    margin: 0;
   }
 
   .was-price {
-    color: $text-color-quarternary;
     font-size: 18px;
+    color: $text-color-quarternary;
     text-decoration: line-through;
   }
 
@@ -65,8 +65,8 @@
     }
 
     .form-group {
-      margin-left: 0px;
-      margin-right: 0px;
+      margin-right: 0;
+      margin-left: 0;
     }
   }
 
@@ -77,7 +77,7 @@
       margin-bottom: $space-default / 3;
 
       label {
-        padding-top: 0px;
+        padding-top: 0;
       }
     }
   }
@@ -91,7 +91,7 @@
   }
 
   .add-to-wishlist {
-    padding-left: 0px;
+    padding-left: 0;
   }
 
   .secondary-actions {
@@ -111,14 +111,17 @@
   }
 
   .promotion-list {
-    padding-bottom: $space-default;
     padding-top: $space-default;
+    padding-bottom: $space-default;
+
     .promotion-icon {
       display: none;
     }
+
     .promotion-long-title {
       display: none;
     }
+
     .promotion-details-link {
       display: inline;
     }
@@ -129,13 +132,13 @@ ul {
   &.color-variations {
     li {
       float: left;
-      margin-right: 6px;
-      border-radius: 12px;
       width: 24px;
-      padding: 6px 0 0 6px;
       height: 24px;
+      padding: 6px 0 0 6px;
+      margin-right: 6px;
       text-align: center;
       border: solid 1px transparent;
+      border-radius: 12px;
 
       &.pink-color-variation {
         background-color: pink;
@@ -168,12 +171,13 @@ ul {
 
       a {
         display: block;
-        font-size: 0;
-        text-indent: -999em;
         width: $space-default;
         height: $space-default;
+        font-size: 0;
+        text-indent: -999em;
         background-color: $color-tertiary;
         border: $border-width-default solid $border-color-light;
+
         @include round-corner(50%);
       }
 
@@ -188,18 +192,18 @@ ul {
   &.size-variations {
     li {
       float: left;
-      margin-right: ($space-default / 2);
       width: ($space-default * 4);
       height: ($space-default * 4);
+      margin-right: ($space-default / 2);
       line-height: ($space-default * 4);
-      background-color: $color-tertiary;
       text-align: center;
+      background-color: $color-tertiary;
 
       a {
         display: block;
         font-size: 14px;
-        text-align: center;
         color: $text-color-primary;
+        text-align: center;
       }
 
       &.selected {
@@ -215,58 +219,60 @@ ul {
 
 .cross-sell-product {
   padding-top: ($space-default * 4);
-  text-align: center;
   clear: both;
+  text-align: center;
 
   a {
     &.product-title {
-      color: $text-color-secondary;
-      text-decoration: none !important;
+      display: block;
+      padding-top: ($space-default / 2);
       font-family: $font-family-condensedregular;
       font-size: 14px;
-      display: block;
+      color: $text-color-secondary;
       text-align: center;
-      padding-top: ($space-default / 2);
+      text-decoration: none !important;
     }
   }
 }
 
 .bundle-product {
-  margin-top: ($space-default * 6);
-  padding-top: ($space-default * 4);
-  text-align: center;
-  clear: both;
   position: relative;
+  padding-top: ($space-default * 4);
+  margin-top: ($space-default * 6);
+  clear: both;
+  text-align: center;
   border-top: $border-width-default solid $border-color-light;
 
   h3 {
-    background-color: $color-inverse;
-    left: 38%;
     position: absolute;
     top: -35px;
+    left: 38%;
     width: 28%;
     font-weight: bold;
     text-transform: uppercase;
+    background-color: $color-inverse;
   }
 
   a {
     &.product-title {
-      color: $text-color-secondary;
-      text-decoration: none !important;
+      display: block;
+      padding-top: ($space-default / 2);
       font-family: $font-family-condensedregular;
       font-size: 14px;
-      display: block;
+      color: $text-color-secondary;
       text-align: center;
-      padding-top: ($space-default / 2);
+      text-decoration: none !important;
     }
   }
 }
+
 .product-end-of-live-status {
   padding-bottom: ($space-default / 3);
 }
+
 .product-lifecycle-status {
-  color: $text-color-special;
   padding-bottom: ($space-default / 3);
+  color: $text-color-special;
 
   span {
     display: block;

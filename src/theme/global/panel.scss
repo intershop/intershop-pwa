@@ -19,6 +19,7 @@
         &:first-child {
           border-top: 0;
         }
+
         &:last-child {
           border-bottom: 0;
         }
@@ -170,10 +171,12 @@
       a {
         display: block;
         color: $gray-600;
+
         &:hover {
           color: $gray-800;
         }
       }
+
       + .panel-collapse {
         .panel-body {
           padding: $grid-gutter-width / 2;
