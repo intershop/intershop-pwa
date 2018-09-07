@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CoreState } from '../../../core/store/core.state';
 import { getLoggedInUser } from '../../../core/store/user';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { User } from '../../../models/user/user.model';
 import {
-  CreateQuoteRequestFromQuote,
+  CreateQuoteRequestFromQuoteRequest,
   DeleteItemFromQuoteRequest,
   SubmitQuoteRequest,
   UpdateQuoteRequest,
@@ -15,7 +14,6 @@ import {
   getQuoteRequestLoading,
   getSelectedQuoteRequest,
 } from '../../store/quote-request';
-import { QuotingState } from '../../store/quoting.state';
 
 @Component({
   selector: 'ish-quote-request-edit-page-container',
@@ -28,7 +26,7 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
   quoteRequestLoading$: Observable<boolean>;
   user$: Observable<User>;
 
-  constructor(private store: Store<CoreState | QuotingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.quote$ = this.store.pipe(select(getSelectedQuoteRequest));
@@ -36,12 +34,12 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
     this.user$ = this.store.pipe(select(getLoggedInUser));
   }
 
-  deleteQuoteRequestItem(payload: string) {
-    this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
+  updateQuoteRequestItem(payload: { itemId: string; quantity: number }) {
+    this.store.dispatch(new UpdateQuoteRequestItems([payload]));
   }
 
-  updateQuoteRequestItems(payload: { itemId: string; quantity: number }[]) {
-    this.store.dispatch(new UpdateQuoteRequestItems(payload));
+  deleteQuoteRequestItem(payload: string) {
+    this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {
@@ -53,6 +51,6 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
   }
 
   copyQuote() {
-    this.store.dispatch(new CreateQuoteRequestFromQuote());
+    this.store.dispatch(new CreateQuoteRequestFromQuoteRequest());
   }
 }

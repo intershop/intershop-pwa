@@ -44,7 +44,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    */
   ngOnInit() {
     this.paymentForm = new FormGroup({
-      name: new FormControl(this.basket.paymentMethod ? this.basket.paymentMethod.name : ''),
+      name: new FormControl(this.basket.payment ? this.basket.payment.name : ''),
     });
 
     // trigger update payment method if payment selection changes
@@ -59,9 +59,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    */
   ngOnChanges(c: SimpleChanges) {
     if (c.basket && this.paymentForm) {
-      this.paymentForm
-        .get('name')
-        .setValue(this.basket.paymentMethod ? this.basket.paymentMethod.name : '', { emitEvent: false });
+      this.paymentForm.get('name').setValue(this.basket.payment ? this.basket.payment.name : '', { emitEvent: false });
     }
   }
 

@@ -42,20 +42,17 @@ describe('Filter Dropdown Component', () => {
     expect(element).toMatchSnapshot();
   });
 
-  it(
-    'should toggle unselected filter facets when filter group header is clicked',
-    fakeAsync(() => {
-      fixture.detectChanges();
-      const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-      filterGroupHead.click();
-      tick(500);
-      fixture.detectChanges();
+  it('should toggle unselected filter facets when filter group header is clicked', fakeAsync(() => {
+    fixture.detectChanges();
+    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
+    filterGroupHead.click();
+    tick(500);
+    fixture.detectChanges();
 
-      const selectedFilterFacet = element.getElementsByClassName('filter-selected')[0];
-      expect(selectedFilterFacet.textContent).toContain('Logitech');
+    const selectedFilterFacet = element.getElementsByClassName('filter-selected')[0];
+    expect(selectedFilterFacet.textContent).toContain('Logitech');
 
-      const hiddenFilters = element.querySelector('div [data-testing-id=collapseFilterBrands]');
-      expect(hiddenFilters.className).not.toContain('show');
-    })
-  );
+    const hiddenFilters = element.querySelector('div [data-testing-id=collapseFilterBrands]');
+    expect(hiddenFilters.className).not.toContain('show');
+  }));
 });

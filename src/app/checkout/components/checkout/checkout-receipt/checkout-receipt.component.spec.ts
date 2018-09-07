@@ -57,7 +57,9 @@ describe('Checkout Receipt Component', () => {
 
   it('should display the document number after creation', () => {
     fixture.detectChanges();
-    expect(element.querySelector('strong[data-testing-id="order-document-number"]').innerHTML).toEqual('12345678');
+    expect(element.querySelector('strong[data-testing-id="order-document-number"]').innerHTML.trim()).toEqual(
+      '12345678'
+    );
   });
 
   it('should display the home link after creation', () => {

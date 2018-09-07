@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CoreState } from '../../../core/store/core.state';
 import { getCheckoutStep } from '../../store/viewconf';
 
 @Component({
@@ -12,7 +11,7 @@ import { getCheckoutStep } from '../../store/viewconf';
 export class CheckoutPageContainerComponent implements OnInit {
   checkoutStep$: Observable<number>;
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.checkoutStep$ = this.store.pipe(select(getCheckoutStep));

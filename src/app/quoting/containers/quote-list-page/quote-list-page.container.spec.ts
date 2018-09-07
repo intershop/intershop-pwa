@@ -6,7 +6,6 @@ import { QuoteData } from '../../../models/quote/quote.interface';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuotes, LoadQuotesSuccess } from '../../store/quote';
 import { LoadQuoteRequests } from '../../store/quote-request';
-import { QuotingState } from '../../store/quoting.state';
 import { quotingReducers } from '../../store/quoting.system';
 
 import { QuoteListPageContainerComponent } from './quote-list-page.container';
@@ -15,7 +14,7 @@ describe('Quote List Page Container', () => {
   let component: QuoteListPageContainerComponent;
   let fixture: ComponentFixture<QuoteListPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<QuotingState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

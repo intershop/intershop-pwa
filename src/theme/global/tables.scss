@@ -128,7 +128,7 @@
     }
 
     .list-item {
-      padding: $table-cell-padding $table-cell-padding $table-cell-padding 0;
+      padding: $table-cell-padding * 0.7 $table-cell-padding * 0.7 $table-cell-padding * 0.7 0;
 
       .list-item {
         padding: 0;

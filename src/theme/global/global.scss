@@ -12,6 +12,12 @@
   padding-right: ($grid-gutter-width / 2);
 }
 
+.loading-container {
+  position: relative;
+  min-height: 50px;
+  min-width: 50px;
+}
+
 body {
   font-family: $font-family-base;
 }
@@ -40,6 +46,12 @@ h4,
 a,
 a:not([href]):not([tabindex]) {
   color: $CORPORATE-PRIMARY;
+}
+
+a:not([href]):not([tabindex]) {
+  &:hover {
+    color: $CORPORATE-SECONDARY;
+  }
 }
 
 a {
@@ -124,7 +136,7 @@ img.marketing {
 }
 
 //
-// Text alignments
+// Text alignments: ToDo - should be deleted and replaced by bootstrap standard classes, e.g. .text-lg-right
 .text-right-lg {
   @media (min-width: $screen-lg-min) {
     text-align: right;
@@ -173,12 +185,18 @@ img.marketing {
   }
 }
 
+// end should be deleted
+
 // Detail links and tooltips
 [data-toggle='popover'] {
   .ng-fa-icon {
     padding-left: $space-default/4;
     font-size: 120%;
   }
+}
+
+.popover-header {
+  margin-top: 0;
 }
 
 .details-link,
@@ -189,22 +207,4 @@ img.marketing {
   text-transform: none;
   white-space: nowrap;
   display: inline-block;
-}
-
-//
-// SETS BOXES TO THE SAME HEIGHT
-@media (min-width: $screen-sm-min) {
-  .equal,
-  .equal > div[class*='col-'] {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex: 1 0 auto;
-  } // do not use flexbox if there is only one box
-  .equal > div[class*='col-']:only-child {
-    display: inherit;
-    flex: 0 0 auto;
-  }
 }

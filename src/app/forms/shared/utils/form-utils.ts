@@ -7,7 +7,7 @@ import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from
 export function markAsDirtyRecursive(formGroup: FormGroup) {
   Object.keys(formGroup.controls).forEach(key => {
     if (formGroup.controls[key] instanceof FormGroup) {
-      this.markAsDirtyRecursive(formGroup.controls[key] as FormGroup);
+      markAsDirtyRecursive(formGroup.controls[key] as FormGroup);
     } else {
       formGroup.controls[key].markAsDirty();
       formGroup.controls[key].updateValueAndValidity();

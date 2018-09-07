@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuotes } from '../../store/quote';
-import { QuotingState } from '../../store/quoting.state';
 import { quotingReducers } from '../../store/quoting.system';
 
 import { QuoteEditPageContainerComponent } from './quote-edit-page.container';
@@ -16,7 +15,7 @@ describe('Quote Edit Page Container', () => {
   let component: QuoteEditPageContainerComponent;
   let fixture: ComponentFixture<QuoteEditPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<QuotingState>;
+  let store$: Store<{}>;
   let location: Location;
 
   beforeEach(async(() => {
@@ -58,12 +57,9 @@ describe('Quote Edit Page Container', () => {
     expect(element.querySelector('ish-loading')).toBeTruthy();
   });
 
-  it(
-    'should navigate to basket when addToBasket is clicked',
-    fakeAsync(() => {
-      component.addQuoteToBasket(undefined);
-      tick(50);
-      expect(location.path()).toBe('/basket');
-    })
-  );
+  it('should navigate to basket when addToBasket is clicked', fakeAsync(() => {
+    component.addQuoteToBasket(undefined);
+    tick(50);
+    expect(location.path()).toBe('/basket');
+  }));
 });

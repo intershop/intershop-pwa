@@ -5,16 +5,12 @@ import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { AddProductToBasket } from '../../../checkout/store/basket';
-import { CheckoutState } from '../../../checkout/store/checkout.state';
-import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized } from '../../../core/store/user';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductAddToQuoteDialogContainerComponent } from '../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
-import { QuotingState } from '../../../quoting/store/quoting.state';
 import { ToggleCompare, isInCompareProducts } from '../../store/compare';
-import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-product-tile-container',
@@ -29,10 +25,7 @@ export class ProductTileContainerComponent implements OnInit {
 
   isInCompareList$: Observable<boolean>;
 
-  constructor(
-    private ngbModal: NgbModal,
-    private store: Store<CoreState | ShoppingState | CheckoutState | QuotingState>
-  ) {}
+  constructor(private ngbModal: NgbModal, private store: Store<{}>) {}
 
   ngOnInit() {
     this.isInCompareList$ = this.store.pipe(select(isInCompareProducts(this.product.sku)));
@@ -50,8 +43,14 @@ export class ProductTileContainerComponent implements OnInit {
     this.store.dispatch(
       new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
     );
-    this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
-      this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
-    });
+    this.store
+      .pipe(
+        select(getUserAuthorized),
+        take(1),
+        filter(b => b)
+      )
+      .subscribe(() => {
+        this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
+      });
   }
 }

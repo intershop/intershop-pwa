@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 
 import { Product } from '../../../models/product/product.model';
 import { ClearRecently, getRecentlyViewedProducts } from '../../store/recently';
-import { ShoppingState } from '../../store/shopping.state';
 
 @Component({
   selector: 'ish-recently-page-container',
@@ -14,7 +13,7 @@ import { ShoppingState } from '../../store/shopping.state';
 export class RecentlyPageContainerComponent implements OnInit {
   products$: Observable<Product[]> = of([]);
 
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.products$ = this.store.pipe(select(getRecentlyViewedProducts));

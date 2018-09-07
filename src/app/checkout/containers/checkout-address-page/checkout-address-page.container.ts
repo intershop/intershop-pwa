@@ -15,7 +15,6 @@ import {
   getBasketLoading,
   getCurrentBasket,
 } from '../../store/basket';
-import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
   selector: 'ish-checkout-address-page-container',
@@ -28,7 +27,7 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   loading$: Observable<boolean>;
   basketError$: Observable<HttpError>;
 
-  constructor(private store: Store<CheckoutState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));

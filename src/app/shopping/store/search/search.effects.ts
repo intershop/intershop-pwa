@@ -23,7 +23,6 @@ import { mapErrorToAction } from '../../../utils/operators';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { LoadProductSuccess } from '../products';
-import { ShoppingState } from '../shopping.state';
 import {
   SetPage,
   SetPagingInfo,
@@ -50,7 +49,7 @@ import {
 export class SearchEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState>,
+    private store: Store<{}>,
     private productsService: ProductsService,
     private suggestService: SuggestService,
     private router: Router
@@ -63,7 +62,12 @@ export class SearchEffects {
   triggerSearch$ = this.actions$.pipe(
     ofRoute('search/:searchTerm'),
     // wait until config parameter is set
-    debounce(() => this.store.pipe(select(getItemsPerPage), filter(x => x > 0))),
+    debounce(() =>
+      this.store.pipe(
+        select(getItemsPerPage),
+        filter(x => x > 0)
+      )
+    ),
     map((action: RouteNavigation) => action.payload.params.searchTerm),
     filter(x => !!x),
     distinctUntilChanged(),
@@ -76,7 +80,10 @@ export class SearchEffects {
     withLatestFrom(
       this.store.pipe(select(isEndlessScrollingEnabled)),
       this.store.pipe(select(canRequestMore)),
-      this.store.pipe(select(getPagingPage), map(n => n + 1))
+      this.store.pipe(
+        select(getPagingPage),
+        map(n => n + 1)
+      )
     ),
     filter(([, endlessScrolling, moreProductsAvailable]) => endlessScrolling && moreProductsAvailable),
     mergeMap(([action, , , page]) => [new SetPagingLoading(), new SetPage(page), new SearchProducts(action.payload)])
@@ -111,10 +118,10 @@ export class SearchEffects {
 
   @Effect()
   suggestSearch$ = this.actions$.pipe(
-    ofType(SearchActionTypes.SuggestSearch),
+    ofType<SuggestSearch>(SearchActionTypes.SuggestSearch),
     debounceTime(400),
     distinctUntilKeyChanged('payload'),
-    map((action: SuggestSearch) => action.payload),
+    map(action => action.payload),
     filter(searchTerm => !!searchTerm && searchTerm.length > 0),
     switchMap(searchTerm =>
       this.suggestService.search(searchTerm).pipe(

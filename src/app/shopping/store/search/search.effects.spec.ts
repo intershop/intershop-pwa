@@ -1,8 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
+import { Action, Store, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
@@ -12,7 +11,7 @@ import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/i
 import { ApiService } from '../../../core/services/api/api.service';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { shoppingReducers } from '../shopping.system';
@@ -62,11 +61,9 @@ describe('Search Effects', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          StoreModule.forRoot({
-            shopping: combineReducers(shoppingReducers),
-          }),
-        ],
+        imports: ngrxTesting({
+          shopping: combineReducers(shoppingReducers),
+        }),
         providers: [
           SearchEffects,
           provideMockActions(() => actions$),
@@ -134,17 +131,17 @@ describe('Search Effects', () => {
   });
 
   describe('with fakeAsync', () => {
-    let store$: LogEffects;
+    let store$: TestStore;
     let effects: SearchEffects;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          StoreModule.forRoot({
+        imports: ngrxTesting(
+          {
             shopping: combineReducers(shoppingReducers),
-          }),
-          EffectsModule.forRoot([SearchEffects, LogEffects]),
-        ],
+          },
+          [SearchEffects]
+        ),
         providers: [
           { provide: ApiService, useFactory: () => instance(mock(ApiService)) },
           { provide: ProductsService, useFactory: () => instance(productsServiceMock) },
@@ -155,134 +152,110 @@ describe('Search Effects', () => {
       });
 
       effects = TestBed.get(SearchEffects);
-      store$ = TestBed.get(LogEffects);
+      store$ = TestBed.get(TestStore);
 
       store$.dispatch(new SetEndlessScrollingPageSize(TestBed.get(ENDLESS_SCROLLING_ITEMS_PER_PAGE)));
     });
 
     describe('suggestSearch$', () => {
-      it(
-        'should not fire when search term is falsy',
-        fakeAsync(() => {
-          const action = new SuggestSearch(undefined);
-          store$.dispatch(action);
+      it('should not fire when search term is falsy', fakeAsync(() => {
+        const action = new SuggestSearch(undefined);
+        store$.dispatch(action);
 
-          tick(5000);
+        tick(5000);
 
-          verify(suggestServiceMock.search(anyString())).never();
-        })
-      );
+        verify(suggestServiceMock.search(anyString())).never();
+      }));
 
-      it(
-        'should not fire when search term is empty',
-        fakeAsync(() => {
-          const action = new SuggestSearch('');
-          store$.dispatch(action);
+      it('should not fire when search term is empty', fakeAsync(() => {
+        const action = new SuggestSearch('');
+        store$.dispatch(action);
 
-          tick(5000);
+        tick(5000);
 
-          verify(suggestServiceMock.search(anyString())).never();
-        })
-      );
+        verify(suggestServiceMock.search(anyString())).never();
+      }));
 
-      it(
-        'should return search terms when available',
-        fakeAsync(() => {
-          const action = new SuggestSearch('g');
-          store$.dispatch(action);
+      it('should return search terms when available', fakeAsync(() => {
+        const action = new SuggestSearch('g');
+        store$.dispatch(action);
 
-          tick(5000);
+        tick(5000);
 
-          verify(suggestServiceMock.search(anyString())).once();
-        })
-      );
+        verify(suggestServiceMock.search(anyString())).once();
+      }));
 
-      it(
-        'should debounce correctly when search term is entered stepwise',
-        fakeAsync(() => {
-          store$.dispatch(new SuggestSearch('g'));
-          tick(50);
-          store$.dispatch(new SuggestSearch('goo'));
-          tick(100);
-          store$.dispatch(new SuggestSearch('good'));
-          tick(200);
+      it('should debounce correctly when search term is entered stepwise', fakeAsync(() => {
+        store$.dispatch(new SuggestSearch('g'));
+        tick(50);
+        store$.dispatch(new SuggestSearch('goo'));
+        tick(100);
+        store$.dispatch(new SuggestSearch('good'));
+        tick(200);
 
-          verify(suggestServiceMock.search(anyString())).never();
+        verify(suggestServiceMock.search(anyString())).never();
 
-          tick(400);
-          verify(suggestServiceMock.search(anyString())).once();
-        })
-      );
+        tick(400);
+        verify(suggestServiceMock.search(anyString())).once();
+      }));
 
-      it(
-        'should send only once if search term is entered multiple times',
-        fakeAsync(() => {
-          store$.dispatch(new SuggestSearch('good'));
-          tick(2000);
-          verify(suggestServiceMock.search(anyString())).once();
-          store$.dispatch(new SuggestSearch('good'));
-          tick(2000);
+      it('should send only once if search term is entered multiple times', fakeAsync(() => {
+        store$.dispatch(new SuggestSearch('good'));
+        tick(2000);
+        verify(suggestServiceMock.search(anyString())).once();
+        store$.dispatch(new SuggestSearch('good'));
+        tick(2000);
 
-          verify(suggestServiceMock.search(anyString())).once();
-        })
-      );
+        verify(suggestServiceMock.search(anyString())).once();
+      }));
 
-      it(
-        'should not fire action when error is encountered at service level',
-        fakeAsync(() => {
-          when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
+      it('should not fire action when error is encountered at service level', fakeAsync(() => {
+        when(suggestServiceMock.search(anyString())).thenReturn(throwError({ message: 'ERROR' }));
 
-          store$.dispatch(new SuggestSearch('good'));
-          tick(4000);
+        store$.dispatch(new SuggestSearch('good'));
+        tick(4000);
 
-          effects.suggestSearch$.subscribe(fail, fail, fail);
+        effects.suggestSearch$.subscribe(fail, fail, fail);
 
-          const iter = store$.actionsIterator([/.*/]);
-          expect(iter.next().type).toEqual(ViewconfActionTypes.SetEndlessScrollingPageSize);
-          expect(iter.next().type).toEqual(SearchActionTypes.SuggestSearch);
-          expect(iter.next()).toBeUndefined();
+        const iter = store$.actionsIterator([/.*/]);
+        expect(iter.next().type).toEqual(ViewconfActionTypes.SetEndlessScrollingPageSize);
+        expect(iter.next().type).toEqual(SearchActionTypes.SuggestSearch);
+        expect(iter.next()).toBeUndefined();
 
-          verify(suggestServiceMock.search(anyString())).once();
-        })
-      );
+        verify(suggestServiceMock.search(anyString())).once();
+      }));
     });
 
     describe('redirectIfSearchProductFail$', () => {
-      it(
-        'should redirect if triggered',
-        fakeAsync(() => {
-          const action = new SearchProductsFail({ status: 404 } as HttpError);
+      it('should redirect if triggered', fakeAsync(() => {
+        const action = new SearchProductsFail({ status: 404 } as HttpError);
 
-          store$.dispatch(action);
+        store$.dispatch(action);
 
-          tick(4000);
+        tick(4000);
 
-          verify(routerMock.navigate(anything())).once();
-          const [param] = capture(routerMock.navigate).last();
-          expect(param).toEqual(['/error']);
-        })
-      );
+        verify(routerMock.navigate(anything())).once();
+        const [param] = capture(routerMock.navigate).last();
+        expect(param).toEqual(['/error']);
+      }));
     });
 
     describe('searchProducts$', () => {
-      it(
-        'should perform an additional search with given search term and trigger actions until maximum pages is reached',
-        fakeAsync(() => {
-          const searchTerm = '123';
+      it('should perform an additional search with given search term and trigger actions until maximum pages is reached', fakeAsync(() => {
+        const searchTerm = '123';
 
-          store$.dispatch(new SearchProducts(searchTerm));
-          verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
+        store$.dispatch(new SearchProducts(searchTerm));
+        verify(productsServiceMock.searchProducts(searchTerm, 0, 3)).once();
 
-          store$.dispatch(new SearchMoreProducts(searchTerm));
-          verify(productsServiceMock.searchProducts(searchTerm, 1, 3)).once();
+        store$.dispatch(new SearchMoreProducts(searchTerm));
+        verify(productsServiceMock.searchProducts(searchTerm, 1, 3)).once();
 
-          store$.dispatch(new SearchMoreProducts(searchTerm));
-          verify(productsServiceMock.searchProducts(searchTerm, 2, 3)).once();
+        store$.dispatch(new SearchMoreProducts(searchTerm));
+        verify(productsServiceMock.searchProducts(searchTerm, 2, 3)).once();
 
-          store$.dispatch(new SearchMoreProducts(searchTerm));
-          verify(productsServiceMock.searchProducts(searchTerm, 3, 3)).never();
-        })
-      );
+        store$.dispatch(new SearchMoreProducts(searchTerm));
+        verify(productsServiceMock.searchProducts(searchTerm, 3, 3)).never();
+      }));
     });
   });
 });

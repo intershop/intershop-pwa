@@ -6,7 +6,6 @@ import { filter, map, take } from 'rxjs/operators';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
-import { ShoppingState } from '../../store/shopping.state';
 import {
   ChangeSortBy,
   ChangeViewType,
@@ -48,7 +47,7 @@ export class ProductListContainerComponent implements OnInit {
   pageIndices$: Observable<number[]>;
   displayPaging$: Observable<boolean>;
 
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.products$ = this.store.pipe(select(getVisibleProducts));
@@ -57,9 +56,15 @@ export class ProductListContainerComponent implements OnInit {
     this.sortBy$ = this.store.pipe(select(getSortBy));
     this.sortKeys$ = this.store.pipe(select(getSortKeys));
     this.loadingMore$ = this.store.pipe(select(getPagingLoading));
-    this.currentPage$ = this.store.pipe(select(getPagingPage), map(x => x + 1));
+    this.currentPage$ = this.store.pipe(
+      select(getPagingPage),
+      map(x => x + 1)
+    );
     this.pageIndices$ = this.store.pipe(select(getPageIndices));
-    this.displayPaging$ = this.store.pipe(select(isEveryProductDisplayed), map(b => !b));
+    this.displayPaging$ = this.store.pipe(
+      select(isEveryProductDisplayed),
+      map(b => !b)
+    );
   }
 
   /**

@@ -18,12 +18,10 @@ import {
 } from 'rxjs/operators';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
-import { CoreState } from '../../../core/store/core.state';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { distinctCompareWith, mapErrorToAction } from '../../../utils/operators';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory } from '../products';
-import { ShoppingState } from '../shopping.state';
 import { getVisibleProducts } from '../viewconf';
 
 import * as actions from './categories.actions';
@@ -33,7 +31,7 @@ import * as selectors from './categories.selectors';
 export class CategoriesEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState | CoreState>,
+    private store: Store<{}>,
     private categoryService: CategoriesService,
     private router: Router,
     @Inject(MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH) private mainNavigationMaxSubCategoriesDepth: number
@@ -60,8 +58,8 @@ export class CategoriesEffects {
    */
   @Effect()
   selectedCategory$ = this.actions$.pipe(
-    ofType(actions.CategoriesActionTypes.SelectCategory),
-    map((action: actions.SelectCategory) => action.payload),
+    ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
+    map(action => action.payload),
     withLatestFrom(this.store.pipe(select(selectors.getCategoryEntities))),
     filter(([id, entities]) => !CategoryHelper.isCategoryCompletelyLoaded(entities[id])),
     map(([id]) => new actions.LoadCategory(id))
@@ -73,10 +71,13 @@ export class CategoriesEffects {
   @Effect()
   selectedCategoryAvailable$ = combineLatest(
     this.actions$.pipe(
-      ofType(actions.CategoriesActionTypes.SelectCategory),
-      map((action: actions.SelectCategory) => action.payload)
+      ofType<actions.SelectCategory>(actions.CategoriesActionTypes.SelectCategory),
+      map(action => action.payload)
     ),
-    this.store.pipe(select(selectors.getSelectedCategory), filter(CategoryHelper.isCategoryCompletelyLoaded))
+    this.store.pipe(
+      select(selectors.getSelectedCategory),
+      filter(CategoryHelper.isCategoryCompletelyLoaded)
+    )
   ).pipe(
     filter(([selectId, category]) => selectId === category.uniqueId),
     distinctUntilChanged((x, y) => x[0] === y[0]),
@@ -101,8 +102,8 @@ export class CategoriesEffects {
    */
   @Effect()
   loadCategory$ = this.actions$.pipe(
-    ofType(actions.CategoriesActionTypes.LoadCategory),
-    map((action: actions.LoadCategory) => action.payload),
+    ofType<actions.LoadCategory>(actions.CategoriesActionTypes.LoadCategory),
+    map(action => action.payload),
     mergeMap(categoryUniqueId =>
       this.categoryService.getCategory(categoryUniqueId).pipe(
         map(category => new actions.LoadCategorySuccess(category)),
@@ -115,7 +116,12 @@ export class CategoriesEffects {
   loadTopLevelWhenUnavailable$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION_TYPE),
     take(1),
-    switchMapTo(this.store.pipe(select(selectors.isTopLevelCategoriesLoaded), filter(loaded => !loaded))),
+    switchMapTo(
+      this.store.pipe(
+        select(selectors.isTopLevelCategoriesLoaded),
+        filter(loaded => !loaded)
+      )
+    ),
     mapTo(new actions.LoadTopLevelCategories(this.mainNavigationMaxSubCategoriesDepth))
   );
 
@@ -137,8 +143,15 @@ export class CategoriesEffects {
    */
   @Effect()
   productOrCategoryChanged$ = combineLatest(
-    this.store.pipe(select(selectors.getSelectedCategory), filter(x => !!x), distinctUntilKeyChanged('uniqueId')),
-    this.actions$.pipe<RouteNavigation>(ofRoute('category/:categoryUniqueId'))
+    this.store.pipe(
+      select(selectors.getSelectedCategory),
+      filter(x => !!x),
+      distinctUntilKeyChanged('uniqueId')
+    ),
+    this.actions$.pipe(
+      ofRoute('category/:categoryUniqueId'),
+      distinctUntilChanged<RouteNavigation>()
+    )
   ).pipe(
     filter(([category, action]) => category.uniqueId === action.payload.params.categoryUniqueId),
     withLatestFrom(this.store.pipe(select(getVisibleProducts))),

@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { BasketView } from '../../../models/basket/basket.model';
+import { BasketHelper, BasketView } from '../../../models/basket/basket.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { getCheckoutState } from '../checkout.state';
 
@@ -21,7 +21,8 @@ export const getCurrentBasket = createSelector(
             ...li,
             product: products[li.productSKU],
           })),
-          paymentMethod: basket.payments[0],
+          itemsCount: BasketHelper.getBasketItemsCount(basket.lineItems),
+          payment: basket.payments[0],
         }
 );
 

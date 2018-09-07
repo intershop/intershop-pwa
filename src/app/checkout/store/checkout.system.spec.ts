@@ -2,12 +2,12 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
+import { OrderService } from '../../account/services/order/order.service';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
@@ -31,11 +31,10 @@ import { ProductsService } from '../../shopping/services/products/products.servi
 import { SuggestService } from '../../shopping/services/suggest/suggest.service';
 import { LoadProduct } from '../../shopping/store/products';
 import { shoppingEffects, shoppingReducers } from '../../shopping/store/shopping.system';
-import { LogEffects } from '../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../utils/dev/ngrx-testing';
 import { categoryTree } from '../../utils/dev/test-data-utils';
 import { AddressService } from '../services/address/address.service';
 import { BasketService } from '../services/basket/basket.service';
-import { OrderService } from '../services/order/order.service';
 
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
 import { checkoutEffects, checkoutReducers } from './checkout.system';
@@ -44,7 +43,7 @@ let basketId: string;
 
 describe('Checkout System', () => {
   const DEBUG = false;
-  let store: LogEffects;
+  let store: TestStore;
   let locales: Locale[];
 
   const basket = {
@@ -158,12 +157,14 @@ describe('Checkout System', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([...coreEffects, ...checkoutEffects, ...shoppingEffects, LogEffects]),
+        ...ngrxTesting(
+          {
+            ...coreReducers,
+            checkout: combineReducers(checkoutReducers),
+            shopping: combineReducers(shoppingReducers),
+          },
+          [...coreEffects, ...checkoutEffects, ...shoppingEffects]
+        ),
         RouterTestingModule.withRoutes([
           {
             path: 'account',
@@ -188,7 +189,7 @@ describe('Checkout System', () => {
       ],
     });
 
-    store = TestBed.get(LogEffects);
+    store = TestBed.get(TestStore);
     store.logActions = DEBUG;
     store.logState = DEBUG;
   });

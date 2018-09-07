@@ -1,0 +1,9 @@
+<div class="loading-container">
+  <ish-order-list
+    [orders]="orders$ | async"
+    [maxListItems]=maxListItems
+    [compact]=compact
+  ></ish-order-list>
+
+  <ish-loading *ngIf="loading$ | async"></ish-loading>
+</div>

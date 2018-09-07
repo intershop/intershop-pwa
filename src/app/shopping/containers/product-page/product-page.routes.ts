@@ -5,7 +5,6 @@ import { ProductPageContainerComponent } from './product-page.container';
 export const productPageRoutes: Routes = [
   {
     path: ':sku',
-    component: ProductPageContainerComponent,
     children: [
       {
         path: '**',

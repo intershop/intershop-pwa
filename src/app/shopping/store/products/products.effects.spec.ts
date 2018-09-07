@@ -14,7 +14,6 @@ import { HttpError } from '../../../models/http-error/http-error.model';
 import { Locale } from '../../../models/locale/locale.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
 
@@ -24,7 +23,7 @@ import { ProductsEffects } from './products.effects';
 describe('Products Effects', () => {
   let actions$: Observable<Action>;
   let effects: ProductsEffects;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
   let productsServiceMock: ProductsService;
   const DE_DE = { lang: 'de' } as Locale;
   const EN_US = { lang: 'en' } as Locale;

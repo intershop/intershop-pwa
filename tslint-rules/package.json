@@ -7,8 +7,6 @@
     "tslint",
     "intershop"
   ],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@angular/compiler": "^6.0.3",
     "@angular/core": "^6.0.3",

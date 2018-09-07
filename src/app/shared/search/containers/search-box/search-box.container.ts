@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 
 import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 import { SuggestSearch, getSearchTerm, getSuggestSearchResults } from '../../../../shopping/store/search';
-import { ShoppingState } from '../../../../shopping/store/shopping.state';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
 /**
@@ -32,7 +31,7 @@ export class SearchBoxContainerComponent implements OnInit {
   searchResults$: Observable<SuggestTerm[]>;
   previousSearchTerm$: Observable<string>;
 
-  constructor(private store: Store<ShoppingState>, private router: Router) {}
+  constructor(private store: Store<{}>, private router: Router) {}
 
   ngOnInit() {
     this.searchResults$ = this.store.pipe(select(getSuggestSearchResults));

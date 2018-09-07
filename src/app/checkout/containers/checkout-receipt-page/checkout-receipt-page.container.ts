@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CoreState } from '../../../core/store/core.state';
-import { getLoggedInUser, getUserRecentOrder } from '../../../core/store/user';
+import { getSelectedOrder } from '../../../core/store/orders';
+import { getLoggedInUser } from '../../../core/store/user';
 import { Order } from '../../../models/order/order.model';
 import { User } from '../../../models/user/user.model';
 import { getBasketLoading } from '../../store/basket';
-import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
   selector: 'ish-checkout-receipt-page-container',
@@ -19,10 +18,10 @@ export class CheckoutReceiptPageContainerComponent implements OnInit {
   user$: Observable<User>; /* ToDo: User data should be available by the Order, see #IS-17616 */
   loading$: Observable<boolean>;
 
-  constructor(private store: Store<CheckoutState | CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.order$ = this.store.pipe(select(getUserRecentOrder));
+    this.order$ = this.store.pipe(select(getSelectedOrder));
     this.user$ = this.store.pipe(select(getLoggedInUser));
     this.loading$ = this.store.pipe(select(getBasketLoading));
   }

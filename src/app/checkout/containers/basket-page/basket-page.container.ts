@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { AddBasketToQuoteRequest, getQuoteRequestLoading } from '../../../quoting/store/quote-request';
-import { QuotingState } from '../../../quoting/store/quoting.state';
 import {
   DeleteBasketItem,
   UpdateBasketItems,
@@ -13,7 +12,6 @@ import {
   getBasketLoading,
   getCurrentBasket,
 } from '../../store/basket';
-import { CheckoutState } from '../../store/checkout.state';
 
 @Component({
   selector: 'ish-basket-page-container',
@@ -26,7 +24,7 @@ export class BasketPageContainerComponent implements OnInit {
   basketError$: Observable<HttpError>;
   quoteRequestLoading$: Observable<boolean>;
 
-  constructor(private store: Store<CheckoutState | QuotingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.basket$ = this.store.pipe(select(getCurrentBasket));
@@ -39,8 +37,8 @@ export class BasketPageContainerComponent implements OnInit {
     this.store.dispatch(new DeleteBasketItem(itemId));
   }
 
-  updateBasketItems(formValue: { itemId: string; quantity: number }[]) {
-    this.store.dispatch(new UpdateBasketItems(formValue));
+  updateBasketItem(formValue: { itemId: string; quantity: number }) {
+    this.store.dispatch(new UpdateBasketItems([formValue]));
   }
 
   addBasketToQuote() {

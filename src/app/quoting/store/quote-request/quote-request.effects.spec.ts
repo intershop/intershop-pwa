@@ -8,9 +8,7 @@ import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { LoadBasketItemsSuccess, LoadBasketSuccess } from '../../../checkout/store/basket';
-import { CheckoutState } from '../../../checkout/store/checkout.state';
 import { checkoutReducers } from '../../../checkout/store/checkout.system';
-import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
@@ -27,7 +25,6 @@ import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { LoadProduct } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
-import { QuotingState } from '../quoting.state';
 import { quotingReducers } from '../quoting.system';
 
 import * as quoteRequestActions from './quote-request.actions';
@@ -38,7 +35,7 @@ describe('Quote Request Effects', () => {
   let quoteRequestServiceMock: QuoteRequestService;
   let routerMock: Router;
   let effects: QuoteRequestEffects;
-  let store$: Store<QuotingState | CheckoutState | CoreState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     quoteRequestServiceMock = mock(QuoteRequestService);
@@ -300,45 +297,45 @@ describe('Quote Request Effects', () => {
       );
       store$.dispatch(new quoteRequestActions.SelectQuoteRequest('QRID'));
 
-      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
+      when(quoteRequestServiceMock.createQuoteRequestFromQuoteRequest(anything())).thenReturn(
         of({ type: 'test' } as QuoteLineItemResultModel)
       );
     });
 
-    it('should call the quoteService for createQuoteRequestFromQuote', done => {
-      const action = new quoteRequestActions.CreateQuoteRequestFromQuote();
+    it('should call the quoteService for createQuoteRequestFromQuoteRequest', done => {
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequest();
       actions$ = of(action);
 
-      effects.createQuoteRequestFromQuote$.subscribe(() => {
-        verify(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).once();
+      effects.createQuoteRequestFromQuoteRequest$.subscribe(() => {
+        verify(quoteRequestServiceMock.createQuoteRequestFromQuoteRequest(anything())).once();
         done();
       });
     });
 
-    it('should map to action of type CreateQuoteRequestFromQuoteSuccess', () => {
-      const action = new quoteRequestActions.CreateQuoteRequestFromQuote();
-      const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess({
+    it('should map to action of type CreateQuoteRequestFromQuoteRequestSuccess', () => {
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequest();
+      const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({
         type: 'test',
       } as QuoteLineItemResultModel);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.createQuoteRequestFromQuote$).toBeObservable(expected$);
+      expect(effects.createQuoteRequestFromQuoteRequest$).toBeObservable(expected$);
     });
 
-    it('should map invalid request to action of type CreateQuoteRequestFromQuoteFail', () => {
-      when(quoteRequestServiceMock.createQuoteRequestFromQuote(anything())).thenReturn(
+    it('should map invalid request to action of type CreateQuoteRequestFromQuoteRequestFail', () => {
+      when(quoteRequestServiceMock.createQuoteRequestFromQuoteRequest(anything())).thenReturn(
         throwError({ message: 'invalid' })
       );
 
-      const action = new quoteRequestActions.CreateQuoteRequestFromQuote();
-      const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteFail({
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequest();
+      const completion = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestFail({
         message: 'invalid',
       } as HttpError);
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.createQuoteRequestFromQuote$).toBeObservable(expected$);
+      expect(effects.createQuoteRequestFromQuoteRequest$).toBeObservable(expected$);
     });
   });
 
@@ -501,7 +498,7 @@ describe('Quote Request Effects', () => {
         new LoadBasketSuccess({
           id: 'BID',
           lineItems: [],
-          paymentMethod: undefined,
+          payment: undefined,
         } as Basket)
       );
       store$.dispatch(
@@ -806,7 +803,7 @@ describe('Quote Request Effects', () => {
     });
 
     it('should map to action of type LoadQuoteRequests if CreateQuoteRequestFromQuoteSuccess action triggered', () => {
-      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteSuccess({} as QuoteLineItemResultModel);
+      const action = new quoteRequestActions.CreateQuoteRequestFromQuoteRequestSuccess({} as QuoteLineItemResultModel);
       const completion = new quoteRequestActions.LoadQuoteRequests();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });

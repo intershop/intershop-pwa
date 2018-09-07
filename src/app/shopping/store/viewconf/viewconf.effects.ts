@@ -9,7 +9,6 @@ import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/i
 import { distinctCompareWith } from '../../../utils/operators';
 import { getSelectedCategory } from '../categories';
 import { LoadProductsForCategory } from '../products';
-import { ShoppingState } from '../shopping.state';
 
 import * as viewconfActions from './viewconf.actions';
 import { getItemsPerPage, getPagingPage } from './viewconf.selectors';
@@ -18,7 +17,7 @@ import { getItemsPerPage, getPagingPage } from './viewconf.selectors';
 export class ViewconfEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<ShoppingState>,
+    private store: Store<{}>,
     private router: Router,
     @Inject(ENDLESS_SCROLLING_ITEMS_PER_PAGE) private itemsPerPage: number
   ) {}
@@ -34,8 +33,8 @@ export class ViewconfEffects {
 
   @Effect()
   changeSortBy$ = this.actions$.pipe(
-    ofType(viewconfActions.ViewconfActionTypes.ChangeSortBy),
-    map((action: viewconfActions.ChangeSortBy) => action.payload),
+    ofType<viewconfActions.ChangeSortBy>(viewconfActions.ViewconfActionTypes.ChangeSortBy),
+    map(action => action.payload),
     withLatestFrom(this.store.pipe(select(getSelectedCategory))),
     filter(([, category]) => !!category && !!category.uniqueId),
     map(([, category]) => new LoadProductsForCategory(category.uniqueId))

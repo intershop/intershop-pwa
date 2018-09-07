@@ -145,6 +145,8 @@
     "rxjs-no-unsafe-catch": true,
     "rxjs-no-unsafe-scope": { "severity": "off" },
     "rxjs-no-unsafe-takeuntil": true,
+    "ngrx-use-empty-store-type": true,
+    "ngrx-use-oftype-with-type": true,
     "semicolon": [
       true,
       "always"
@@ -214,7 +216,9 @@
       {"name": ["*", "toBeDefined"], "message": "Most of the time this is the wrong assertion in tests!"},
       {"name": ["spyOn"], "message": "Use ts-mockito instead!"},
       {"name": ["*", "select"], "message": "Use store.pipe(select()) instead!"},
-      {"name": ["catchError"], "message": "If you are trying to handle an http error, use mapErrorToAction instead."}
+      {"name": ["catchError"], "message": "If you are trying to handle an http error, use mapErrorToAction instead."},
+      {"name": ["atob"], "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"},
+      {"name": ["btoa"], "message": "This is not available in universal mode. Use https://github.com/jacobwgillespie/b64u"}
     ],
     "ban-specific-imports": [
       true,
@@ -280,7 +284,7 @@
     "ccp-no-markup-in-containers": {
       "severity": "warning",
       "options": {
-        "patterns": [ "<img", "<ul", "<li", "<table", "<(?![^>]*(clearfix|-panel))[^>]*class" ]
+        "patterns": [ "<img", "<ul", "<li", "<table", "<(?![^>]*(clearfix|loading-container|-panel))[^>]*class" ]
       }
     },
     "project-structure": {

@@ -4,7 +4,6 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { ShoppingState } from '../shopping.state';
 import { shoppingReducers } from '../shopping.system';
 
 import * as fromActions from './compare.actions';
@@ -13,7 +12,7 @@ import { CompareEffects } from './compare.effects';
 describe('Compare Effects', () => {
   let actions$: Observable<Action>;
   let effects: CompareEffects;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

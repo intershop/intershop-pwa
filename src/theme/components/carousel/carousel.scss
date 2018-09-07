@@ -1,19 +1,12 @@
 /*********** CAROUSEL *************/
 
-// TODO: needed?
-// .carousel-control {
-//   color: $carousel-control-color;
-//   text-shadow: none;
-// }
-
-// TODO: needed?
-// .carousel-indent {
-//   .carousel-inner {
-//     padding-left: ($space-default * 3);
-//     padding-right: ($space-default * 3);
-//     text-align: center;
-//   }
-// }
+.carousel-indent {
+  .carousel-inner {
+    padding-left: ($space-default * 3);
+    padding-right: ($space-default * 3);
+    text-align: center;
+  }
+}
 
 .carousel,
 .carousel-inner {

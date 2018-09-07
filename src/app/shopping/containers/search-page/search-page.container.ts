@@ -4,7 +4,6 @@ import { Observable, Subject, combineLatest } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { SearchMoreProducts, getSearchLoading, getSearchTerm } from '../../store/search';
-import { ShoppingState } from '../../store/shopping.state';
 import { getPagingLoading, getTotalItems, isProductsAvailable } from '../../store/viewconf';
 
 @Component({
@@ -22,7 +21,7 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor(private store: Store<ShoppingState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.searchTerm$ = this.store.pipe(select(getSearchTerm));
@@ -36,7 +35,10 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
     this.productsAvailable$ = this.store.pipe(select(isProductsAvailable));
 
     this.loadMore
-      .pipe(withLatestFrom(this.searchTerm$), takeUntil(this.destroy$))
+      .pipe(
+        withLatestFrom(this.searchTerm$),
+        takeUntil(this.destroy$)
+      )
       .subscribe(([, searchTerm]) => this.store.dispatch(new SearchMoreProducts(searchTerm)));
   }
 

@@ -3,7 +3,6 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { SearchProductsSuccess } from '../../store/search';
-import { ShoppingState } from '../../store/shopping.state';
 import { shoppingReducers } from '../../store/shopping.system';
 import { SetPagingInfo } from '../../store/viewconf';
 
@@ -13,7 +12,7 @@ describe('Search Page Container', () => {
   let component: SearchPageContainerComponent;
   let fixture: ComponentFixture<SearchPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<ShoppingState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

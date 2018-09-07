@@ -21,8 +21,8 @@
               type="radio"
             />
 
-            <span>{{ basket.commonShippingMethod.name }}:</span>&nbsp;
-            <span *ngIf="basket.commonShippingMethod.shippingTimeMin && basket.commonShippingMethod.shippingTimeMax" class="form-text form-text-inline">
+            <span>{{ shippingMethod.name }}:</span>&nbsp;
+            <span *ngIf="shippingMethod.shippingTimeMin && shippingMethod.shippingTimeMax" class="form-text form-text-inline">
               {{ 'checkout.shipping.delivery_time.description' | translate }}
               <span *ngIf="shippingMethod.shippingTimeMin === 0 && shippingMethod.shippingTimeMax === 1">
                   {{ 'checkout.shipping.delivery_time.within24' | translate}}

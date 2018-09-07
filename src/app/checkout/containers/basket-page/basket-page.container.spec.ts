@@ -9,7 +9,6 @@ import { quotingReducers } from '../../../quoting/store/quoting.system';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from '../../store/basket/basket.actions';
-import { CheckoutState } from '../../store/checkout.state';
 import { checkoutReducers } from '../../store/checkout.system';
 
 import { BasketPageContainerComponent } from './basket-page.container';
@@ -18,7 +17,7 @@ describe('Basket Page Container', () => {
   let component: BasketPageContainerComponent;
   let fixture: ComponentFixture<BasketPageContainerComponent>;
   let element: HTMLElement;
-  let store$: Store<CheckoutState>;
+  let store$: Store<{}>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -40,17 +40,14 @@ describe('Filter Swatch Images Component', () => {
     expect(element).toMatchSnapshot();
   });
 
-  it(
-    'should toggle all swatch images when filter group header is clicked',
-    fakeAsync(() => {
-      fixture.detectChanges();
-      const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
-      filterGroupHead.click();
-      tick(500);
-      fixture.detectChanges();
+  it('should toggle all swatch images when filter group header is clicked', fakeAsync(() => {
+    fixture.detectChanges();
+    const filterGroupHead = fixture.nativeElement.querySelectorAll('h3')[0];
+    filterGroupHead.click();
+    tick(500);
+    fixture.detectChanges();
 
-      const hiddenFilterFacet = element.getElementsByTagName('ul')[0];
-      expect(hiddenFilterFacet.className).not.toContain('show');
-    })
-  );
+    const hiddenFilterFacet = element.getElementsByTagName('ul')[0];
+    expect(hiddenFilterFacet.className).not.toContain('show');
+  }));
 });

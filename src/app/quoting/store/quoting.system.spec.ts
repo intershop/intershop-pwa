@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -25,7 +24,12 @@ import { QuoteRequestData } from '../../models/quote-request/quote-request.inter
 import { User } from '../../models/user/user.model';
 import { FeatureToggleModule } from '../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../shopping/store/shopping.system';
-import { LogEffects, containsActionWithType, containsActionWithTypeAndPayload } from '../../utils/dev/log.effects';
+import {
+  TestStore,
+  containsActionWithType,
+  containsActionWithTypeAndPayload,
+  ngrxTesting,
+} from '../../utils/dev/ngrx-testing';
 import { QuoteRequestService } from '../services/quote-request/quote-request.service';
 import { QuoteService } from '../services/quote/quote.service';
 
@@ -39,7 +43,7 @@ import {
 import { quotingEffects, quotingReducers } from './quoting.system';
 
 describe('Quoting System', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
   let apiServiceMock: ApiService;
   let quoteServiceMock: QuoteService;
   let locales: Locale[];
@@ -67,13 +71,15 @@ describe('Quoting System', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-          quoting: combineReducers(quotingReducers),
-          shopping: combineReducers(shoppingReducers),
-          checkout: combineReducers(checkoutReducers),
-        }),
-        EffectsModule.forRoot([LogEffects, ...coreEffects, ...quotingEffects]),
+        ...ngrxTesting(
+          {
+            ...coreReducers,
+            quoting: combineReducers(quotingReducers),
+            shopping: combineReducers(shoppingReducers),
+            checkout: combineReducers(checkoutReducers),
+          },
+          [...coreEffects, ...quotingEffects]
+        ),
         RouterTestingModule.withRoutes([
           { path: 'account', component: DummyComponent },
           { path: 'home', component: DummyComponent },
@@ -89,7 +95,7 @@ describe('Quoting System', () => {
       ],
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
   });
 
   it('should be created', () => {

@@ -10,7 +10,6 @@ import { Customer } from '../../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { mapErrorToAction } from '../../../utils/operators';
-import { CoreState } from '../core.state';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';
@@ -34,15 +33,15 @@ function mapUserErrorToActionIfPossible<T>(specific) {
 export class UserEffects {
   constructor(
     private actions$: Actions,
-    private store$: Store<CoreState>,
+    private store$: Store<{}>,
     private registrationService: RegistrationService,
     private router: Router
   ) {}
 
   @Effect()
   loginUser$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoginUser),
-    map((action: userActions.LoginUser) => action.payload),
+    ofType<userActions.LoginUser>(userActions.UserActionTypes.LoginUser),
+    map(action => action.payload),
     mergeMap(credentials =>
       this.registrationService.signinUser(credentials).pipe(
         map(customer => new userActions.LoginUserSuccess(customer)),
@@ -85,8 +84,8 @@ export class UserEffects {
 
   @Effect()
   createUser$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.CreateUser),
-    map((action: userActions.CreateUser) => action.payload),
+    ofType<userActions.CreateUser>(userActions.UserActionTypes.CreateUser),
+    map(action => action.payload),
     mergeMap((customerData: Customer) =>
       this.registrationService.createUser(customerData).pipe(
         map(customer => new userActions.CreateUserSuccess(customer)),
@@ -105,14 +104,14 @@ export class UserEffects {
 
   @Effect()
   publishLoginEventAfterCreate$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.CreateUserSuccess),
-    map((action: userActions.CreateUserSuccess) => new userActions.LoginUserSuccess(action.payload))
+    ofType<userActions.CreateUserSuccess>(userActions.UserActionTypes.CreateUserSuccess),
+    map(action => new userActions.LoginUserSuccess(action.payload))
   );
 
   @Effect()
   loadCompanyUserAfterLogin$ = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.LoginUserSuccess),
-    map((action: userActions.LoginUserSuccess) => action.payload),
+    ofType<userActions.LoginUserSuccess>(userActions.UserActionTypes.LoginUserSuccess),
+    map(action => action.payload),
     filter(customer => customer.type === 'SMBCustomer'),
     mapTo(new userActions.LoadCompanyUser())
   );

@@ -4,14 +4,11 @@ import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
 import { AddProductToBasket } from '../../../checkout/store/basket';
-import { CheckoutState } from '../../../checkout/store/checkout.state';
-import { CoreState } from '../../../core/store/core.state';
 import { getUserAuthorized } from '../../../core/store/user';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductAddToQuoteDialogContainerComponent } from '../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
-import { QuotingState } from '../../../quoting/store/quoting.state';
 
 @Component({
   selector: 'ish-product-row-container',
@@ -24,7 +21,7 @@ export class ProductRowContainerComponent {
   @Input()
   category?: Category;
 
-  constructor(private ngbModal: NgbModal, private store: Store<CoreState | CheckoutState | QuotingState>) {}
+  constructor(private ngbModal: NgbModal, private store: Store<{}>) {}
 
   addToBasket() {
     this.store.dispatch(new AddProductToBasket({ sku: this.product.sku, quantity: this.product.minOrderQuantity }));
@@ -34,8 +31,14 @@ export class ProductRowContainerComponent {
     this.store.dispatch(
       new AddProductToQuoteRequest({ sku: this.product.sku, quantity: this.product.minOrderQuantity })
     );
-    this.store.pipe(select(getUserAuthorized), take(1), filter(b => b)).subscribe(() => {
-      this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
-    });
+    this.store
+      .pipe(
+        select(getUserAuthorized),
+        take(1),
+        filter(b => b)
+      )
+      .subscribe(() => {
+        this.ngbModal.open(ProductAddToQuoteDialogContainerComponent, { size: 'lg' });
+      });
   }
 }

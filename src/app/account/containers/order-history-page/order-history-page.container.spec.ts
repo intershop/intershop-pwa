@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
+import { instance, mock } from 'ts-mockito';
 
 import { MockComponent } from '../../../utils/dev/mock.component';
 
@@ -17,8 +19,14 @@ describe('Order History Page Container', () => {
         MockComponent({
           selector: 'ish-order-history-page',
           template: 'Order History Page Component',
+          inputs: ['orders'],
+        }),
+        MockComponent({
+          selector: 'ish-loading',
+          template: 'Loading Component',
         }),
       ],
+      providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
@@ -33,5 +41,10 @@ describe('Order History Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render order list component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-order-history-page')).toBeTruthy();
   });
 });

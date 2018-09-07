@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from '../../../core/services/api/api.service';
-import { CoreState } from '../../../core/store/core.state';
 import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from '../../../core/store/user';
 import { userReducer } from '../../../core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
@@ -23,7 +22,7 @@ import { QuoteRequestService } from './quote-request.service';
 describe('Quote Request Service', () => {
   let quoteRequestService: QuoteRequestService;
   let apiService: ApiService;
-  let store$: Store<CoreState>;
+  let store$: Store<{}>;
 
   const customer = { customerNo: 'CID', type: 'SMBCustomer' } as Customer;
   const user = { email: 'UID' } as User;
@@ -56,7 +55,7 @@ describe('Quote Request Service', () => {
 
     it('should throw error for createQuoteRequestFromQuote', () => {
       expect(
-        quoteRequestService.createQuoteRequestFromQuote({ submitted: true, items: [] } as QuoteRequest)
+        quoteRequestService.createQuoteRequestFromQuoteRequest({ submitted: true, items: [] } as QuoteRequest)
       ).toBeObservable(cold('#', undefined, { message: 'not logged in' }));
     });
 
@@ -276,16 +275,18 @@ describe('Quote Request Service', () => {
       when(apiService.post(`customers/CID/users/UID/quoterequests`)).thenReturn(of({ title: 'QRID' } as Link));
       when(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).thenReturn(of(undefined));
 
-      quoteRequestService.createQuoteRequestFromQuote({ submitted: true, items: [] } as QuoteRequest).subscribe(() => {
-        verify(apiService.post(`customers/CID/users/UID/quoterequests`)).once();
-        verify(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).once();
-        done();
-      });
+      quoteRequestService
+        .createQuoteRequestFromQuoteRequest({ submitted: true, items: [] } as QuoteRequest)
+        .subscribe(() => {
+          verify(apiService.post(`customers/CID/users/UID/quoterequests`)).once();
+          verify(apiService.put(`customers/CID/users/UID/quoterequests/QRID/items`, anything())).once();
+          done();
+        });
     });
 
     it("should throw error if 'setQuoteRequestItems' is called with unsubmitted quote request", () => {
       expect(
-        quoteRequestService.createQuoteRequestFromQuote({ submitted: false, items: [] } as QuoteRequest)
+        quoteRequestService.createQuoteRequestFromQuoteRequest({ submitted: false, items: [] } as QuoteRequest)
       ).toBeObservable(
         cold('#', undefined, { message: 'createQuoteRequestFromQuote() called with unsubmitted quote request' })
       );

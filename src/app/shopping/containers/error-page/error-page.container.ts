@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { CoreState } from '../../../core/store/core.state';
 import { getErrorState } from '../../../core/store/error';
 import { ErrorState } from '../../../core/store/error/error.reducer';
 
@@ -14,7 +13,7 @@ import { ErrorState } from '../../../core/store/error/error.reducer';
 export class ErrorPageContainerComponent implements OnInit {
   generalError$: Observable<ErrorState>;
 
-  constructor(private store: Store<CoreState>) {}
+  constructor(private store: Store<{}>) {}
 
   ngOnInit() {
     this.generalError$ = this.store.pipe(select(getErrorState));

@@ -13,7 +13,7 @@
  *
  * Learn more in https://angular.io/docs/ts/latest/guide/browser-support.html
  */
-// tslint:disable:ordered-imports no-commented-out-code
+// tslint:disable:ordered-imports no-commented-out-code no-any
 
 /***************************************************************************************************
  * BROWSER POLYFILLS
@@ -76,3 +76,7 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// MAGIC: https://stackoverflow.com/questions/50371593/angular-6-uncaught-referenceerror-buffer-is-not-defined
+(window as any).global = window;
+global.Buffer = global.Buffer || require('buffer').Buffer;

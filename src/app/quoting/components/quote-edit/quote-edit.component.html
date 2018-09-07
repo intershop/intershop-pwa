@@ -1,9 +1,4 @@
 
-<!-- <isset name="ValidQuote" value="#NOT isDefined(ERRORCODE_QUOTEVALIDATION)#" scope="request"/> -->
-
-<!--- IS CONTRACT -->
-<!-- <isset scope="request" name="isContract" value="false"> -->
-
 <form [formGroup]="form" class="form-horizontal form-horizontal-inline">
 
   <!--- Error messages -->
@@ -109,18 +104,6 @@
       </div>
     </ng-template>
 
-    <!--- CONTRACT - TIME FRAME -->
-    <!--
-    <isif condition="#isDefined(Quote:Timeframe)#">
-      <div class="row">
-        <label for="" class="col-4 col-md-3 col-xl-2 col-form-label"><istext key="quote.edit.unsubmitted.timeframe.label" /></label>
-        <div class="col-8 col-md-9 col-xl-10">
-          <isprint value="#Quote:Timeframe#">
-        </div>
-      </div>
-    </isif>
-    -->
-
     <div *ngIf="quote.state === 'New' || (quote.description && quote.description.length > 0)" class="row form-group">
       <label for="#SHOUD_EQUAL_TEXTAREA_ID#" class="col-4 col-md-3 col-xl-2 col-form-label">{{ 'quote.edit.unsubmitted.comment.label' | translate }}</label>
       <div class="col-8 col-md-9 col-xl-10">
@@ -131,7 +114,6 @@
             [placeholder]="'quote.edit.unsubmitted.provide_comment.text' | translate"
           >
           </textarea>
-          <!-- ><isif condition="#QuoteEditForm:Invalid#"><isprint value="#QuoteEditForm:Description:Value#"><iselse><isprint value="#Quote:Description#"></isif></textarea> -->
         </ng-container>
         <ng-template #staticDescription>
           <p class="form-control-plaintext">{{ quote.description }}</p>
@@ -164,7 +146,7 @@
       [lineItems]="quote.items"
       [editable]="quote.state === 'New'"
       [total]="quote.total"
-      (formChange)="onFormChange($event)"
+      (updateItem)="onUpdateItem($event)"
       (deleteItem)="onDeleteItem($event)"
     ></ish-line-item-list>
   </div>
@@ -201,14 +183,13 @@
 
       <!-- ELSE ( if type === Quote )-->
       <ng-container *ngIf="quote.type === 'Quote'">
-        <ng-container *ngIf="quote.state === 'Responded'">
-          <!-- <isif condition="#ValidQuote#"> -->
+        <ng-container *ngIf="quote.state === 'Responded' && (currentDateTime$ | async) < validToDate">
           <button type="submit" class="btn btn-primary float-right" name="add2cart" (click)="addToBasket()">{{ 'quote.edit.button.add_quote_to_cart.label' | translate }}</button>
         </ng-container>
 
         <button class="btn btn-secondary" name="copy" type="submit" (click)="copy()">{{ 'quote.edit.button.create_new_from_quote.label' | translate }}</button>
 
-        <button *ngIf="quote.state === 'Responded'" type="submit" id="button-reject" class="btn btn-secondary" name="refuse" (click)="reject()">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
+        <button *ngIf="quote.state === 'Responded' && (currentDateTime$ | async) < validToDate" type="submit" id="button-reject" class="btn btn-secondary" name="refuse" (click)="reject()">{{ 'quote.edit.reject.button.reject.label' | translate }}</button>
       </ng-container>
     </ng-container>
   </div>

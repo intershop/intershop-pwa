@@ -14,7 +14,6 @@ import {
   getActiveQuoteRequest,
   getQuoteRequestLoading,
 } from '../../store/quote-request';
-import { QuotingState } from '../../store/quoting.state';
 
 @Component({
   selector: 'ish-product-add-to-quote-dialog-container',
@@ -27,14 +26,18 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
 
   destroy$ = new Subject();
 
-  constructor(public ngbActiveModal: NgbActiveModal, private store: Store<QuotingState>) {}
+  constructor(public ngbActiveModal: NgbActiveModal, private store: Store<{}>) {}
 
   ngOnInit() {
     this.activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));
     this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
 
     this.activeQuoteRequest$
-      .pipe(filter(quoteRequest => !!quoteRequest), distinctUntilKeyChanged('id'), takeUntil(this.destroy$))
+      .pipe(
+        filter(quoteRequest => !!quoteRequest),
+        distinctUntilKeyChanged('id'),
+        takeUntil(this.destroy$)
+      )
       .subscribe(quoteRequest => this.store.dispatch(new SelectQuoteRequest(quoteRequest.id)));
   }
 
@@ -42,8 +45,8 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
     this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
   }
 
-  updateQuoteRequestItems(payload: { itemId: string; quantity: number }[]) {
-    this.store.dispatch(new UpdateQuoteRequestItems(payload));
+  updateQuoteRequestItem(payload: { itemId: string; quantity: number }) {
+    this.store.dispatch(new UpdateQuoteRequestItems([payload]));
   }
 
   updateQuoteRequest(payload: { displayName?: string; description?: string }) {

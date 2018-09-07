@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 import { BasketView } from '../../../../models/basket/basket.model';
 import { HttpError } from '../../../../models/http-error/http-error.model';
 
@@ -18,8 +17,8 @@ import { HttpError } from '../../../../models/http-error/http-error.model';
  * @example
  * <ish-shopping-basket
  *   [basket]="basket"
- *   (updateItems)="updateItems()"
- *   (deleteItem)="deleteItem()"
+ *   (updateItem)="updateItem($event)"
+ *   (deleteItem)="deleteItem($event)"
  *   (addBasketToQuote)="addBasketToQuote()"
  * ></ish-shopping-basket>
  */
@@ -35,7 +34,7 @@ export class ShoppingBasketComponent {
   error: HttpError;
 
   @Output()
-  updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
+  updateItem = new EventEmitter<{ itemId: string; quantity: number }>();
   @Output()
   deleteItem = new EventEmitter<string>();
   @Output()
@@ -49,30 +48,6 @@ export class ShoppingBasketComponent {
   }
 
   /**
-   * Submits quantities form and throws updateItems event when form is valid.
-   */
-  submitForm() {
-    if (!this.form || !this.form.value.inner) {
-      return;
-    }
-
-    // handle invalid form: should actually never happen because button is disabled in this case
-    if (this.form.invalid) {
-      this.submitted = true;
-      markAsDirtyRecursive(this.form);
-      return;
-    }
-
-    // convert quantity form values to number
-    const items = this.form.value.inner.items.map(item => ({
-      ...item,
-      quantity: parseInt(item.quantity, 10),
-    }));
-
-    this.updateItems.emit(items);
-  }
-
-  /**
    * Create new Form Group which contains line items from child component
    * @param lineItemForm The child components form group.
    */
@@ -80,6 +55,14 @@ export class ShoppingBasketComponent {
     this.form = new FormGroup({
       inner: lineItemForm,
     });
+  }
+
+  /**
+   * Throws updateItem event when onUpdateItem event trigggerd.
+   * @param item Item id and quantity pair that should be changed
+   */
+  onUpdateItem(item: { itemId: string; quantity: number }) {
+    this.updateItem.emit(item);
   }
 
   /**

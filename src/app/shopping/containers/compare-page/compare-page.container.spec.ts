@@ -6,7 +6,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
-import { ShoppingState } from '../../store/shopping.state';
 
 import { ComparePageContainerComponent } from './compare-page.container';
 
@@ -14,7 +13,7 @@ describe('Compare Page Container', () => {
   let fixture: ComponentFixture<ComparePageContainerComponent>;
   let element: HTMLElement;
   let component: ComparePageContainerComponent;
-  let storeMock$: Store<ShoppingState>;
+  let storeMock$: Store<{}>;
 
   beforeEach(async(() => {
     storeMock$ = mock(Store);

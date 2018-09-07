@@ -5,7 +5,6 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
-import { CoreState } from '../../../core/store/core.state';
 import { UserActionTypes } from '../../../core/store/user';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
@@ -13,7 +12,6 @@ import { LoadProduct, getProductEntities } from '../../../shopping/store/product
 import { mapErrorToAction } from '../../../utils/operators';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
-import { QuotingState } from '../quoting.state';
 
 import * as quoteActions from './quote.actions';
 import { getSelectedQuote, getSelectedQuoteId } from './quote.selectors';
@@ -24,7 +22,7 @@ export class QuoteEffects {
     private actions$: Actions,
     private featureToggleService: FeatureToggleService,
     private quoteService: QuoteService,
-    private store: Store<QuotingState | CoreState>
+    private store: Store<{}>
   ) {}
 
   /**
@@ -46,8 +44,8 @@ export class QuoteEffects {
    */
   @Effect()
   deleteQuote$ = this.actions$.pipe(
-    ofType(quoteActions.QuoteActionTypes.DeleteQuote),
-    map((action: quoteActions.DeleteQuote) => action.payload),
+    ofType<quoteActions.DeleteQuote>(quoteActions.QuoteActionTypes.DeleteQuote),
+    map(action => action.payload),
     concatMap(quoteId =>
       this.quoteService.deleteQuote(quoteId).pipe(
         map(id => new quoteActions.DeleteQuoteSuccess(id)),
@@ -106,8 +104,8 @@ export class QuoteEffects {
    */
   @Effect()
   routeListenerForSelectingQuote$ = this.actions$.pipe(
-    ofType(ROUTER_NAVIGATION_TYPE),
-    map((action: RouteNavigation) => action.payload.params.quoteId),
+    ofType<RouteNavigation>(ROUTER_NAVIGATION_TYPE),
+    map(action => action.payload.params.quoteId),
     withLatestFrom(this.store.pipe(select(getSelectedQuoteId))),
     filter(([fromAction, selectedQuoteId]) => fromAction !== selectedQuoteId),
     map(([itemId]) => new quoteActions.SelectQuote(itemId))
@@ -120,12 +118,12 @@ export class QuoteEffects {
   @Effect()
   loadProductsForSelectedQuote$ = combineLatest(
     this.actions$.pipe(
-      ofType(quoteActions.QuoteActionTypes.SelectQuote),
-      map((action: quoteActions.SelectQuote) => action.payload)
+      ofType<quoteActions.SelectQuote>(quoteActions.QuoteActionTypes.SelectQuote),
+      map(action => action.payload)
     ),
     this.actions$.pipe(
-      ofType(quoteActions.QuoteActionTypes.LoadQuotesSuccess),
-      map((action: quoteActions.LoadQuotesSuccess) => action.payload)
+      ofType<quoteActions.LoadQuotesSuccess>(quoteActions.QuoteActionTypes.LoadQuotesSuccess),
+      map(action => action.payload)
     )
   ).pipe(
     map(([quoteId, quotes]) => quotes.filter(quote => quote.id === quoteId).pop()),

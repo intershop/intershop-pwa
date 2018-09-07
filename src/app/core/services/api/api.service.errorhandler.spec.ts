@@ -6,7 +6,6 @@ import * as using from 'jasmine-data-provider';
 import { cold } from 'jest-marbles';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
-import { CoreState } from '../../store/core.state';
 import { ErrorActionTypes } from '../../store/error';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
@@ -14,7 +13,7 @@ import { ApiServiceErrorHandler } from './api.service.errorhandler';
 describe('Api Service Errorhandler', () => {
   let apiServiceErrorHandler: ApiServiceErrorHandler;
 
-  let storeMock$: Store<CoreState>;
+  let storeMock$: Store<{}>;
 
   beforeEach(async(() => {
     storeMock$ = mock(Store);

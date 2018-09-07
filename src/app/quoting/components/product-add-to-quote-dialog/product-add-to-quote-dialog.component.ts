@@ -17,7 +17,7 @@ import { QuoteRequest } from '../../../models/quote-request/quote-request.model'
  *   [quote]="quoteRequest"
  *   [quoteLoading]="false"
  *   (deleteItem)="deleteQuoteRequestItem($event)"
- *   (updateItems)="updateQuoteRequestItems($event)"
+ *   (updateItem)="updateQuoteRequestItem($event)"
  *   (updateQuoteRequest)="updateQuoteRequest($event)"
  *   (submitQuoteRequest)="submitQuoteRequest()"
  * >
@@ -41,7 +41,7 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
   @Output()
   submitQuoteRequest = new EventEmitter<void>();
   @Output()
-  updateItems = new EventEmitter<{ itemId: string; quantity: number }[]>();
+  updateItem = new EventEmitter<{ itemId: string; quantity: number }>();
   @Output()
   deleteItem = new EventEmitter<string>();
 
@@ -71,11 +71,11 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
   }
 
   /**
-   * Update Form Group with line items from child component
-   * @param lineItemForm The child components form group.
+   * Throws updateItem event when onUpdateItem event trigggerd.
+   * @param item Item id and quantity pair that should be changed
    */
-  onFormChange(lineItemForm: FormGroup) {
-    this.form.setControl('inner', lineItemForm);
+  onUpdateItem(item: { itemId: string; quantity: number }) {
+    this.updateItem.emit(item);
   }
 
   /**
@@ -97,17 +97,10 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
    * Throws updateQuoteRequest and updateItems event if update button was clicked.
    */
   update() {
-    if (!this.form || !this.form.value.inner) {
+    if (!this.form) {
       return;
     }
 
-    // convert quantity form values to number
-    const items = this.form.value.inner.items.map(item => ({
-      ...item,
-      quantity: parseInt(item.quantity, 10),
-    }));
-
-    this.updateItems.emit(items);
     this.updateQuoteRequest.emit({
       displayName: this.form.value.displayName,
       description: this.form.value.description,

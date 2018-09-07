@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
+import { BasketView } from '../../../../models/basket/basket.model';
 
 /**
  * The Mobile Basket Component displays a basket item count on small mobile devices.
@@ -13,18 +13,10 @@ import { Basket, BasketHelper } from '../../../../models/basket/basket.model';
   templateUrl: './mobile-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MobileBasketComponent implements OnChanges {
+export class MobileBasketComponent {
   /**
    * The basket whos information (the item count) should be displayed.
    */
   @Input()
-  basket: Basket;
-
-  itemCount = 0;
-
-  ngOnChanges() {
-    if (this.basket) {
-      this.itemCount = BasketHelper.getBasketItemsCount(this.basket);
-    }
-  }
+  basket: BasketView;
 }

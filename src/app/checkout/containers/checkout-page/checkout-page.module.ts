@@ -3,7 +3,8 @@ import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../../../core/guards/auth.guard';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
-import { SharedLineItemListModule } from '../../../shared/shared-line-item-list.module';
+import { SharedAddressModule } from '../../../shared/shared-address.module';
+import { SharedBasketModule } from '../../../shared/shared-basket.module';
 import { SharedProductModule } from '../../../shared/shared-product.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { ShoppingSharedModule } from '../../../shopping/shopping-shared.module';
@@ -26,11 +27,12 @@ import { checkoutPageRoutes } from './checkout-page.routes';
   imports: [
     RouterModule.forChild(checkoutPageRoutes),
     SharedModule,
-    SharedLineItemListModule,
+    SharedBasketModule,
     CheckoutSharedModule,
     ShoppingSharedModule,
     FormsSharedModule,
     SharedProductModule,
+    SharedAddressModule,
   ],
   declarations: [
     CheckoutPageContainerComponent,

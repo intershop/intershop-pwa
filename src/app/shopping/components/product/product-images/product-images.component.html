@@ -12,7 +12,13 @@
   </div>
   <div class="col-12 col-lg-10 product-detail-img clearfix">
     <div class="product-image-container">
-      <ngb-carousel [activeId]="activeSlide" (slide)="setActiveSlide($event.current)" [showNavigationIndicators]="false" [interval]="false">
+      <ngb-carousel
+        [activeId]="activeSlide"
+        (slide)="setActiveSlide($event.current)"
+        [showNavigationArrows]="getImageViewIDsExcludePrimary(product,'L').length > 0"
+        [showNavigationIndicators]="false"
+        [interval]="false"
+      >
         <ng-template ngbSlide [id]="0">
           <ish-product-image [product]="product" imageType="L"></ish-product-image>
         </ng-template>

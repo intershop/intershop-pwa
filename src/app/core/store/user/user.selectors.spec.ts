@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { combineReducers } from '@ngrx/store';
 
-import { CreateOrderSuccess } from '../../../checkout/store/basket';
 import { checkoutReducers } from '../../../checkout/store/checkout.system';
 import { Customer } from '../../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
@@ -10,35 +8,25 @@ import { Product } from '../../../models/product/product.model';
 import { User } from '../../../models/user/user.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
-import { BasketMockData } from '../../../utils/dev/basket-mock-data';
-import { LogEffects } from '../../../utils/dev/log.effects';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { coreReducers } from '../core.system';
 
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
-import {
-  getLoggedInCustomer,
-  getLoggedInUser,
-  getUserAuthorized,
-  getUserError,
-  getUserRecentOrder,
-} from './user.selectors';
+import { getLoggedInCustomer, getLoggedInUser, getUserAuthorized, getUserError } from './user.selectors';
 
 describe('User Selectors', () => {
-  let store$: LogEffects;
+  let store$: TestStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          ...coreReducers,
-          checkout: combineReducers(checkoutReducers),
-          shopping: combineReducers(shoppingReducers),
-        }),
-        EffectsModule.forRoot([LogEffects]),
-      ],
+      imports: ngrxTesting({
+        ...coreReducers,
+        checkout: combineReducers(checkoutReducers),
+        shopping: combineReducers(shoppingReducers),
+      }),
     });
 
-    store$ = TestBed.get(LogEffects);
+    store$ = TestBed.get(TestStore);
     store$.dispatch(new LoadProductSuccess({ sku: 'sku' } as Product));
   });
 
@@ -47,7 +35,6 @@ describe('User Selectors', () => {
     expect(getLoggedInUser(store$.state)).toBeUndefined();
     expect(getUserAuthorized(store$.state)).toBeFalse();
     expect(getUserError(store$.state)).toBeFalsy();
-    expect(getUserRecentOrder(store$.state)).toBeFalsy();
   });
 
   it('should select the customer when logging in successfully', () => {
@@ -103,10 +90,5 @@ describe('User Selectors', () => {
     const err = getUserError(store$.state);
     expect(err).toBeTruthy();
     expect(err.status).toEqual(401);
-  });
-
-  it('should select an order if a basket was submitted', () => {
-    store$.dispatch(new CreateOrderSuccess(BasketMockData.getOrder()));
-    expect(getUserRecentOrder(store$.state)).toHaveProperty('documentNo', '12345678');
   });
 });

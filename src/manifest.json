@@ -1,6 +1,6 @@
 {
   "name": "Intershop Progressive Web App",
-  "short_name": "Intershop Progressive Web App",
+  "short_name": "Intershop PWA",
   "icons": [
     {
       "src": "assets/img/logo_192x192.png",
@@ -23,7 +23,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#1db5b5",
+  "theme_color": "#ff6d00",
   "background_color": "#FFFFFF",
   "display": "standalone",
   "start_url": "/home?utm_source=homescreen"
