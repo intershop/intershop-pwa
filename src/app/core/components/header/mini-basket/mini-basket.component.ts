@@ -22,7 +22,10 @@ export class MiniBasketComponent implements OnChanges {
    */
   @Input()
   basket: BasketView;
-
+  @Input()
+  view: 'auto' | 'small' | 'full' = 'auto';
+  @Input()
+  basketAnimation = '';
   /**
    * The vertical product slider element reference.
    */

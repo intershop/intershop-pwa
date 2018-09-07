@@ -16,6 +16,10 @@ $font-family-condensedregular: 'roboto_condensedregular', 'Helvetica Neue', Helv
 $font-family-condensedbold: 'roboto_condensedbold', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 //
+// FONT SIZES
+$font-size-corporate: 0.875rem; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
+
+//
 //CORPORATE DESIGN COLORS
 
 $CORPORATE-PRIMARY: #ff6d00; // ORANGE
@@ -85,3 +89,18 @@ $datepicker-active-hover: $CORPORATE-SECONDARY;
 // input indicator color
 $error-color: #a94442; // TODO: merge with existing theme color?
 $success-color: #3c763d; // TODO: merge with existing theme color?
+
+// mobile toogler base width
+$toggler-width: 64px;
+
+// Header
+$top-header-height: 40px;
+
+// Navigation
+$font-size-navbar-item: $font-size-corporate * 1.25; // ~18px
+$font-size-menu-item: $font-size-corporate * 1.05; // ~15px
+$font-size-sub-menu-item: $font-size-corporate; // ~14px
+
+$font-size-navbar-item-mobile: $font-size-corporate * 1.14; // ~16px
+$font-size-menu-item-mobile: $font-size-corporate; // ~14px
+$font-size-sub-menu-item-mobile: $font-size-corporate; // ~14px

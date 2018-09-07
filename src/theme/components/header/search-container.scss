@@ -3,74 +3,78 @@
 .search-container {
   position: relative;
 
+  .btn-search:active {
+    border-color: transparent !important;
+    background-color: transparent !important;
+  }
+
   button {
+    &:focus,
+    &:active {
+      box-shadow: none !important;
+    }
+
     &.btn-search {
       position: absolute;
       right: $space-default;
+      width: auto;
       border: 0;
       background: 0;
       font-size: $font-size-lg;
-      width: auto;
 
       span:before {
-        font-size: $font-size-lg;
         color: $text-color-inverse;
+        font-size: $font-size-lg;
       }
     }
   }
 
   ul.search-suggest-results {
-    border: $border-width-default solid $border-color-light;
-    list-style: none;
-    padding: 0;
     position: absolute;
-    top: 37px;
     z-index: 9999;
-    background: $color-inverse;
+    top: 37px;
     margin: 0;
+    padding: 0;
+    border: $border-width-default solid $border-color-light;
+    background: $color-inverse;
+    list-style: none;
 
     li {
       width: 100%;
       padding: 0 $space-default;
 
       &:hover {
-        background: $border-color-corporate;
         border-bottom: $border-width-default solid $border-color-default;
+        background: $border-color-corporate;
         color: $text-color-inverse;
 
         button {
-          color: $text-color-inverse;
           border-top: $border-width-default solid transparent;
+          color: $text-color-inverse;
         }
 
-        + li {
-          button {
-            border: none;
-          }
+        + li button {
+          border: none;
         }
       }
 
       &.active-suggestion {
-        background: $color-corporate;
         border-bottom: $border-width-default solid $border-color-corporate;
+        background: $color-corporate;
         color: $text-color-inverse;
 
         button {
-          color: $text-color-inverse;
           border-top: $border-width-default solid transparent;
+          color: $text-color-inverse;
         }
 
-        + li {
-          button {
-            border: none;
-          }
+        + li button {
+          border: none;
         }
       }
 
-      &:first-child {
-        button {
-          border: 0;
-        }
+      &:first-child button {
+        border: 0;
       }
 
       button {
@@ -79,11 +83,11 @@
         border: 0;
         border-top: $border-width-default solid $border-color-light;
         background: none;
-        font-size: 13px;
         color: $text-color-quarternary;
+        font-family: $font-family-regular;
+        font-size: 13px;
         text-align: left;
         text-transform: capitalize;
-        font-family: $font-family-regular;
 
         span {
           font-weight: bold;
@@ -95,19 +99,18 @@
 
 .header-search-container {
   @media (max-width: $screen-xs-max) {
-    border-top: $border-width-default solid lighten($border-color-light, 100%);
     padding: 0;
   }
 
   input {
     &.form-control {
-      border: $border-width-default solid $border-color-default;
-      background: $color-primary;
       height: 38px;
       padding-left: (38 / 2);
       float: right;
-      font-size: 14px;
+      border: $border-width-default solid $border-color-default;
+      background: $color-primary;
       color: $white;
+      font-size: 14px;
 
       &::-ms-clear {
         display: none;
@@ -125,12 +128,14 @@
     &:focus {
       border: $border-width-default solid $border-color-light;
       background: $color-inverse;
-      font-size: 14px;
-      color: $text-color-primary;
       box-shadow: none;
+      color: $text-color-primary;
+      font-size: 14px;
 
-      + button {
-        &.btn-search {
+      + button.btn-search {
+        color: $text-color-primary;
+
+        .ng-fa-icon {
           color: $text-color-primary;
         }
       }
@@ -161,15 +166,11 @@
   }
 }
 
-.main-search-container {
-  ul.search-suggest-results {
-    width: 100%;
-  }
+.main-search-container ul.search-suggest-results {
+  width: 100%;
 }
 
-.error-search-container {
-  ul.search-suggest-results {
-    top: 33px;
-    width: 100%;
-  }
+.error-search-container ul.search-suggest-results {
+  top: 33px;
+  width: 100%;
 }

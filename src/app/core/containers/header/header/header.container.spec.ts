@@ -20,6 +20,8 @@ describe('Header Container', () => {
         MockComponent({ selector: 'ish-header', template: 'Header Component' }),
         MockComponent({ selector: 'ish-header-simple', template: 'Simple Header Component' }),
         MockComponent({ selector: 'ish-header-checkout', template: 'Checkout Header Component' }),
+        MockComponent({ selector: 'ish-header-sticky', template: 'Sticky Header' }),
+        MockComponent({ selector: 'ish-header-sticky-mobile', template: 'Sticky Header Mobile' }),
       ],
     }).compileComponents();
   }));

@@ -1,28 +1,25 @@
-<ul class="navbar-nav main-navigation-list">
-  <li class="home d-none d-md-block">
-    <a routerLink="/home" title="home">
-      <fa-icon [icon]="['fas', 'home']"></fa-icon>
-    </a>
-  </li>
-  <li
+<ul class="navbar-nav main-navigation-list d-md-none" [ngClass]="{'accordion': view !== 'full'}">
+  <ng-container *ngTemplateOutlet="categoryTemplate"></ng-container>
+</ul>
+<ul class="navbar-nav main-navigation-list d-none d-md-block" [ngClass]="{'accordion': view === 'small'}">
+  <ng-container *ngTemplateOutlet="categoryTemplate"></ng-container>
+</ul>
+<!--- Category Template -->
+<ng-template #categoryTemplate>
+  <li *ngFor="let category of categories"
     #submenu
-    *ngFor="let category of categories"
     class="dropdown"
     [ngClass]="{'open' : isOpened(category)}"
     (mouseover)="subMenuShow(submenu)"
     (mouseout)="subMenuHide(submenu)"
     (click)="subMenuHide(submenu)"
   >
-    <a
-      [routerLink]="['/category', category.uniqueId]"
-      [attr.data-testing-id]="category.uniqueId + '-link'"
-      [ngStyle]="{'width' : (!category.hasChildren()) ? '100%' : ''}"
-    >
+    <a [routerLink]="['/category', category.uniqueId]" [attr.data-testing-id]="category.uniqueId + '-link'" [ngStyle]="{'width' : (!category.hasChildren()) ? '100%' : ''}">
       {{category.name}}
     </a>
-    <a
-      *ngIf="category.hasChildren()"
-      class="dropdown-toggle d-md-none"
+    <a *ngIf="category.hasChildren()"
+      class="dropdown-toggle"
+      [ngClass]="{'d-none': view === 'full', 'd-md-none': view === 'auto'}"
       (click)="toggleOpen(category)"
     >
       <fa-icon *ngIf="isOpened(category); else closed" [icon]="['fas', 'minus']"></fa-icon>
@@ -30,6 +27,10 @@
         <fa-icon [icon]="['fas', 'plus']"></fa-icon>
       </ng-template>
     </a>
-    <ish-sub-category-navigation [category]="category" [subCategoriesDepth]="1"></ish-sub-category-navigation>
+    <ish-sub-category-navigation
+      [category]="category"
+      [subCategoriesDepth]="1"
+      [view]="view"
+    ></ish-sub-category-navigation>
   </li>
-</ul>
+</ng-template>

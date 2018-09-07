@@ -1,5 +1,9 @@
 <ng-container [ngSwitch]="headerType$ | async">
   <ish-header-simple *ngSwitchCase="'simple'"></ish-header-simple>
   <ish-header-checkout *ngSwitchCase="'checkout'"></ish-header-checkout>
-  <ish-header *ngSwitchDefault></ish-header>
+
+  <ng-container *ngSwitchDefault>
+    <ish-header-sticky></ish-header-sticky>
+    <ish-header></ish-header>
+  </ng-container>
 </ng-container>

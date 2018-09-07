@@ -21,6 +21,8 @@ import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../../configurat
 })
 export class SubCategoryNavigationComponent {
   @Input()
+  view = 'auto';
+  @Input()
   category: CategoryView;
   @Input()
   subCategoriesDepth: number;
