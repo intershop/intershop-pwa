@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
@@ -11,6 +12,7 @@ describe('User Information Mobile Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [
         UserInformationMobileComponent,
         MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),

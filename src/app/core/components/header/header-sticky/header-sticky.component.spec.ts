@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { MockComponent } from '../../../../utils/dev/mock.component';
-import { SMALL_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
+import { LARGE_BREAKPOINT_WIDTH, SMALL_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
 import { IconModule } from '../../../icon.module';
 
 import { HeaderStickyComponent } from './header-sticky.component';
@@ -15,7 +16,7 @@ describe('Header Sticky Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, IconModule, TranslateModule.forRoot()],
+      imports: [NgbCollapseModule, IconModule, TranslateModule.forRoot(), RouterTestingModule],
       declarations: [
         HeaderStickyComponent,
         MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
@@ -35,7 +36,10 @@ describe('Header Sticky Component', () => {
         MockComponent({ selector: 'ish-mobile-basket-container', template: 'Mobile Basket Container' }),
         MockComponent({ selector: 'ish-user-information-mobile', template: 'Mobile User Information' }),
       ],
-      providers: [{ provide: SMALL_BREAKPOINT_WIDTH, useValue: 576 }],
+      providers: [
+        { provide: SMALL_BREAKPOINT_WIDTH, useValue: 576 },
+        { provide: LARGE_BREAKPOINT_WIDTH, useValue: 992 },
+      ],
     })
       .compileComponents()
       .then(() => {

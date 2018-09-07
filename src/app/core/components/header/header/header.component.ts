@@ -1,7 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
 
@@ -24,17 +33,15 @@ import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys'
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   navbarCollapsed = false;
-  mediumBreakpointWidth: number;
+  destroy$ = new Subject();
 
   constructor(
-    @Inject(MEDIUM_BREAKPOINT_WIDTH) mediumBreakpointWidth: number,
+    @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: number,
     @Inject(PLATFORM_ID) private platformId: string,
     private router: Router
-  ) {
-    this.mediumBreakpointWidth = mediumBreakpointWidth;
-  }
+  ) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -43,11 +50,20 @@ export class HeaderComponent implements OnInit {
 
     // collapse mobile menu on router navigation start event
     // TODO: check testing and router subscription vs. ngrx state handling
-    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe(() => {
-      if (isPlatformBrowser(this.platformId) && window.innerWidth < this.mediumBreakpointWidth) {
-        this.navbarCollapsed = true;
-      }
-    });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationStart),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        if (isPlatformBrowser(this.platformId) && window.innerWidth < this.mediumBreakpointWidth) {
+          this.navbarCollapsed = true;
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 
   @HostListener('window:resize', ['$event'])

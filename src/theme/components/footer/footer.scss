@@ -10,19 +10,6 @@ footer {
   padding: 40px 0 60px;
   background: $color-primary;
 
-  @media (max-width: $screen-xs-max) {
-    padding: 0;
-  }
-
-  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-    padding: 0;
-
-    .container {
-      margin: 0;
-      width: 100%;
-    }
-  }
-
   h4 {
     color: $text-color-inverse;
     font-size: 14px;
@@ -107,10 +94,10 @@ footer {
 
   .ng-fa-icon {
     color: $text-color-inverse;
-    font-size: 40px;
+    font-size: 30px;
     display: block;
     float: left;
-    padding: 20px $space-default 20px 0px;
+    padding: 25px $space-default 0px 0px;
   }
 
   h4 {
@@ -204,12 +191,6 @@ footer {
 .social-links {
   float: right;
   padding: 0 ($space-default);
-
-  @media (max-width: $screen-sm-max) {
-    float: none;
-    padding: ($space-default + ($space-default / 2));
-    width: 100%;
-  }
 
   ul {
     margin: 0;
