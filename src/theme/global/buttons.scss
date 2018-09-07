@@ -36,14 +36,6 @@
     display: inline;
   }
 
-  &.btn-primary {
-    border-color: $button-primary-border;
-
-    &:hover {
-      border-color: darken($button-primary-border, 10%);
-    }
-  }
-
   &.btn-secondary {
     color: $button-default-color;
     background-color: $button-default-bg;

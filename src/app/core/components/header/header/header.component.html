@@ -29,13 +29,13 @@
         <ish-mini-basket-container view="small"></ish-mini-basket-container>
       </div>
       <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed">
-          <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-          <div class="hamburger-menu" [class.open]="!navbarCollapsed">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
+        <span class="sr-only">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
+        <div class="hamburger-menu" [ngClass]="{'open': !navbarCollapsed}">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
     </div>
   </nav>
 </div>
@@ -50,11 +50,13 @@
       </div>
       <div class="col-md-5 header-info-wrapper d-none d-md-block"></div>
       <div class="col-md-4 search-container header-search-container">
-        <ish-search-box-container [configuration]="{
+        <ish-search-box-container
+          [configuration]="{
             placeholderText: 'search.searchbox.instructional_text' | translate,
             autoSuggest: true,
             maxAutoSuggests: 10
-          }"></ish-search-box-container>
+          }"
+        ></ish-search-box-container>
       </div>
     </div>
   </div>

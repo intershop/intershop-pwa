@@ -2577,5 +2577,6 @@
   "error.page.title": "Page Not Found!",
   "error.page.text": "<h3>We are sorry ...</h3><p>The page you are looking for is currently not available. This could be caused by out-of-date links, a typing error, or moving, renaming or deleting a file. We've informed our webmaster of this problem.</p><h4>Please try one of the following:</h4><ul><li>Check the page address in the Address Bar for typing errors</li><li>Go back to the <a href=\"javascript:history.back()\">Previous Page</a></li><li>Go back to the <a href=\"/home\">Home Page</a></li><li>Or use our site search:</li></ul>",
   "servererror.page.title": "Something Went Wrong",
-  "servererror.page.text": "<h3>We are sorry ...</h3><h4>Please go back to the <a href=\"/home\">Home Page</a> and try again.</h4>"
+  "servererror.page.text": "<h3>We are sorry ...</h3><h4>Please go back to the <a href=\"/home\">Home Page</a> and try again.</h4>",
+  "header.welcome.text": "Welcome to inSPIRED"
 }

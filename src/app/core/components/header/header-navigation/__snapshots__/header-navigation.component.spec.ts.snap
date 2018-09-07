@@ -6,7 +6,9 @@ exports[`Header Navigation Component should be created 1`] = `
   ng-version="6.1.6"
 >
   <ul
-    class="navbar-nav main-navigation-list accordion d-md-none"
+    class="navbar-nav main-navigation-list d-md-none accordion"
+    ng-reflect-klass="navbar-nav main-navigation-lis"
+    ng-reflect-ng-class="[object Object]"
   >
     
     
@@ -59,6 +61,8 @@ exports[`Header Navigation Component should be created 1`] = `
   </ul>
   <ul
     class="navbar-nav main-navigation-list d-none d-md-block"
+    ng-reflect-klass="navbar-nav main-navigation-lis"
+    ng-reflect-ng-class="[object Object]"
   >
     
     

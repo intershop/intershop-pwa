@@ -88,13 +88,7 @@ header {
       color: $text-color-quinary;
     }
 
-    .seperator {
-      padding-right: ($space-default / 2);
-      padding-left: ($space-default / 2);
-    }
-
     .login-name {
-      padding-right: ($space-default / 3);
       color: $text-color-corporate;
     }
 
@@ -107,6 +101,11 @@ header {
       padding-left: 0;
     }
   }
+}
+
+.separator {
+  padding-right: ($space-default / 2);
+  padding-left: ($space-default / 2);
 }
 
 .ng-fa-icon.header-icon {

@@ -11,6 +11,10 @@
     height: auto;
   }
 
+  @media (max-width: $screen-md-max) {
+    height: auto;
+  }
+
   ul li ul {
     padding: 0;
   }
@@ -30,8 +34,8 @@
 }
 
 .dropdown-menu {
-  border: 0px;
-  border-radius: 0px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  left: ($grid-gutter-width / 2);
 }
 
 .main-navigation-list {
