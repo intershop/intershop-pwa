@@ -1,3 +1,11 @@
+# 0.6.0 (2018-09-08)
+
+### Features
+
+* CMS Integration - conditional rendering (ISREST-213) - EXPERIMENTAL
+* sticky header - header styling and behavior changes (ISREST-435) - EXPERIMENTAL
+
+
 # 0.5.0 (2018-09-07)
 
 ### Features
