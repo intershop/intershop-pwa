@@ -52,20 +52,23 @@ a:not([href]):not([tabindex]) {
 
 a {
   cursor: pointer;
+
   &:hover,
   &:focus {
     text-decoration: none;
   }
+
   h3:hover {
     color: $text-color-quarternary;
   }
+
   &.teaser-link {
     display: block;
   }
 }
 
 .ng-fa-icon {
-  &.footer-icon:before {
+  &.footer-icon::before {
     font-size: 50px;
     color: $text-color-inverse;
   }
@@ -80,7 +83,7 @@ a {
 //
 // Main working area
 .wrapper {
-  padding: 0px 0px 50px 0px;
+  padding: 0 0 50px 0;
 }
 
 img {

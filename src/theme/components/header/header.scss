@@ -8,6 +8,7 @@ header {
 
   @media (max-width: $screen-xs-max) {
     margin-bottom: 0;
+
     .mid-header-checkout {
       padding: $space-default 0;
     }
@@ -52,11 +53,13 @@ header {
   margin-right: $space-default;
   font-size: 13px;
 }
+
 .header-sticky-mobile {
   .header-utility {
     line-height: 51px;
   }
 }
+
 .header-utility {
   display: flex;
   flex-grow: 2;
@@ -72,7 +75,6 @@ header {
 .user-links {
   padding: 0;
   margin: 0;
-
   line-height: $top-header-height;
 
   li {
@@ -111,7 +113,6 @@ header {
 .ng-fa-icon.header-icon {
   position: relative;
   padding: 0 $space-default;
-
   font-size: 17px;
   color: $text-color-quarternary;
 
@@ -122,7 +123,7 @@ header {
 
 .bottom-header {
   background-color: $white;
-  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .mobile-logo {

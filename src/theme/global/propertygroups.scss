@@ -34,7 +34,7 @@ body {
         padding-top: 0;
         margin-bottom: 0;
 
-        &:after {
+        &::after {
           content: ':';
         }
       }

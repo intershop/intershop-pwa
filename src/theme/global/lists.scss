@@ -2,15 +2,17 @@
 // DL - List
 .dl-horizontal {
   margin-bottom: ($space-default / 2);
+
   dt {
     font-weight: normal;
   }
+
   dt + dd {
     margin-bottom: ($space-default / 4);
   }
 
   // displays a separator (e.g. colon) after the definition type field
-  &.dl-separator > dt:after {
+  &.dl-separator > dt::after {
     content: ':';
   }
 }

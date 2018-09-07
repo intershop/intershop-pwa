@@ -22,7 +22,7 @@
       background: 0;
       border: 0;
 
-      span:before {
+      span::before {
         font-size: $font-size-lg;
         color: $text-color-inverse;
       }
@@ -147,14 +147,17 @@
       /* WebKit browsers */
       color: $text-color-quarternary !important;
     }
+
     &:-moz-placeholder {
       /* Mozilla Firefox 4 to 18 */
       color: $text-color-quarternary !important;
     }
+
     &::-moz-placeholder {
       /* Mozilla Firefox 19+ */
       color: $text-color-quarternary !important;
     }
+
     &:-ms-input-placeholder {
       /* Internet Explorer 10+ */
       color: $text-color-quarternary !important;

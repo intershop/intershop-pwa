@@ -21,6 +21,7 @@
 
   li {
     list-style: none;
+
     a {
       font-family: $font-family-condensedbold;
       font-size: ($grid-gutter-width / 2);
@@ -49,7 +50,7 @@
       text-align: center;
       border-left: $border-width-default solid $border-color-default;
 
-      &:after {
+      &::after {
         content: none;
       }
     }
@@ -82,12 +83,13 @@
       background: $CORPORATE-PRIMARY;
       border-bottom: $border-width-default solid $border-color-default;
     }
+
     li.open {
       .category-level1,
       .category-level2,
       .category-level3,
       .category-level4 {
-        margin-top: 0px;
+        margin-top: 0;
       }
     }
     // Menu Items
@@ -140,6 +142,7 @@
         &.hover {
           background-position: center bottom;
           transition-delay: 0.5s;
+
           ul {
             visibility: visible;
             transition-delay: 0.5s;
@@ -149,7 +152,7 @@
 
       &.open .category-level1 {
         display: block;
-        margin-top: 0px;
+        margin-top: 0;
       }
 
       ul {
@@ -193,6 +196,7 @@
           &.dropdown {
             background: none;
           }
+
           &.open ul {
             display: block;
           }
@@ -205,10 +209,10 @@
       display: block;
       width: 720px;
       padding: 25px 25px ($grid-gutter-width / 2) 25px;
-
-      margin: 0px;
+      margin: 0;
       visibility: hidden;
       border-top: ($space-default / 2) solid $border-color-default;
+
       @media (min-width: $screen-md) {
         /* ~992px (Bootstrap) */
         width: ($screen-md - $grid-gutter-width * 2);

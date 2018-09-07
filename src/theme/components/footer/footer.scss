@@ -74,7 +74,7 @@ footer {
 
   .link-group-title {
     padding: $space-default ($space-default + ($space-default/2));
-    margin: 0px (-$space-default);
+    margin: 0 (-$space-default);
     cursor: pointer;
     border-bottom: $border-width-default solid $border-color-default;
   }
@@ -95,13 +95,13 @@ footer {
   .ng-fa-icon {
     display: block;
     float: left;
-    padding: 25px $space-default 0px 0px;
+    padding: 25px $space-default 0 0;
     font-size: 30px;
     color: $text-color-inverse;
   }
 
   h4 {
-    margin: 25px 0px 0px;
+    margin: 25px 0 0;
     font-size: 18px;
   }
 
@@ -119,13 +119,13 @@ footer {
   .ng-fa-icon {
     display: block;
     float: left;
-    padding: 20px $space-default 20px 0px;
+    padding: 20px $space-default 20px 0;
     font-size: 40px;
     color: $text-color-inverse;
   }
 
   h4 {
-    margin: 25px 0px 0px;
+    margin: 25px 0 0;
     font-size: 18px;
   }
 

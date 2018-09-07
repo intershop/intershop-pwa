@@ -42,7 +42,7 @@ ol {
 }
 
 .sitemap-category-list {
-  padding-left: 0px;
+  padding-left: 0;
   list-style: none;
 
   li {
@@ -61,7 +61,7 @@ ol {
     padding-left: $space-default;
 
     li {
-      padding-top: 0px;
+      padding-top: 0;
       padding-bottom: $space-default / 3;
       font-family: $font-family-regular;
       font-size: $font-size-lg;
@@ -75,7 +75,7 @@ ol {
 }
 
 .sitemap-product-list {
-  padding-left: 0px;
+  padding-left: 0;
   list-style: none;
 
   li {

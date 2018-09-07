@@ -20,7 +20,7 @@
 
   .product-number {
     label {
-      margin: 0px;
+      margin: 0;
     }
   }
 
@@ -39,7 +39,7 @@
   }
 
   .old-price {
-    margin: 0px;
+    margin: 0;
   }
 
   .was-price {
@@ -65,8 +65,8 @@
     }
 
     .form-group {
-      margin-right: 0px;
-      margin-left: 0px;
+      margin-right: 0;
+      margin-left: 0;
     }
   }
 
@@ -77,7 +77,7 @@
       margin-bottom: $space-default / 3;
 
       label {
-        padding-top: 0px;
+        padding-top: 0;
       }
     }
   }
@@ -91,7 +91,7 @@
   }
 
   .add-to-wishlist {
-    padding-left: 0px;
+    padding-left: 0;
   }
 
   .secondary-actions {
@@ -113,12 +113,15 @@
   .promotion-list {
     padding-top: $space-default;
     padding-bottom: $space-default;
+
     .promotion-icon {
       display: none;
     }
+
     .promotion-long-title {
       display: none;
     }
+
     .promotion-details-link {
       display: inline;
     }
@@ -174,6 +177,7 @@ ul {
         text-indent: -999em;
         background-color: $color-tertiary;
         border: $border-width-default solid $border-color-light;
+
         @include round-corner(50%);
       }
 
@@ -261,9 +265,11 @@ ul {
     }
   }
 }
+
 .product-end-of-live-status {
   padding-bottom: ($space-default / 3);
 }
+
 .product-lifecycle-status {
   padding-bottom: ($space-default / 3);
   color: $text-color-special;

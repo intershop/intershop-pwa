@@ -3,27 +3,32 @@
 
 .errorpage {
   header {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
+
   .wrapper {
     padding: 0;
     background: url('/assets/img/background/error_bg.jpg') no-repeat;
+
     .main-container {
       background: none;
     }
   }
 
   .errorpage-content {
-    padding: ($space-default * 5) 0px ($space-default * 8);
+    padding: ($space-default * 5) 0 ($space-default * 8);
     color: $text-color-primary;
+
     h1 {
       font-size: 70px;
       opacity: 0.85;
     }
+
     .error-text {
       padding: $space-default;
       background: rgba(238, 238, 238, 0.8);
     }
+
     input {
       &.form-control {
         height: 38px;
@@ -39,7 +44,7 @@
 
           + button {
             &.btn-search {
-              span:before {
+              span::before {
                 color: $text-color-primary;
               }
             }
@@ -47,10 +52,11 @@
         }
       }
     }
+
     .btn-primary {
-      right: 0px;
+      right: 0;
       bottom: 1px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
       font-weight: normal;
       color: $text-color-corporate;
     }

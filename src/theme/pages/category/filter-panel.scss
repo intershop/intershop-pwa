@@ -10,7 +10,7 @@
   padding-right: ($space-default * 2);
 
   @media (max-width: $screen-sm-max) {
-    padding-right: 0px;
+    padding-right: 0;
   }
 
   @media (max-width: $screen-xs-max) {
@@ -79,6 +79,7 @@
           }
         }
       }
+
       span {
         &.icon-notselected {
           display: inline-block;
@@ -88,6 +89,7 @@
           background-color: $color-tertiary;
           border: 1px solid $border-color-light;
         }
+
         &.filter-count {
           margin-left: ($space-default / 3);
         }
@@ -110,6 +112,7 @@
           text-align: center;
         }
       }
+
       span {
         &.icon-selected {
           display: inline-block;
@@ -120,6 +123,7 @@
           border: 1px solid $border-color-default;
         }
       }
+
       &.filter-colour {
         span {
           border: 2px solid $color-corporate;
@@ -130,27 +134,35 @@
     &.filter-layer1 {
       @include filter-list-item-layer(1);
     }
+
     &.filter-layer2 {
       @include filter-list-item-layer(2);
     }
+
     &.filter-layer3 {
       @include filter-list-item-layer(3);
     }
+
     &.filter-layer4 {
       @include filter-list-item-layer(4);
     }
+
     &.filter-layer5 {
       @include filter-list-item-layer(5);
     }
+
     &.filter-layer6 {
       @include filter-list-item-layer(6);
     }
+
     &.filter-layer7 {
       @include filter-list-item-layer(7);
     }
+
     &.filter-layer8 {
       @include filter-list-item-layer(8);
     }
+
     &.filter-layer9 {
       @include filter-list-item-layer(9);
     }
@@ -256,7 +268,7 @@ label {
 
     &.collapsed {
       .fa-angle-up {
-        &:before {
+        &::before {
           content: '\e114';
         }
       }
