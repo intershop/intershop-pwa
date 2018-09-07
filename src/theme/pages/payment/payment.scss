@@ -7,6 +7,7 @@
 
   .panel {
     margin-bottom: 0;
+
     @include box-shadow(none);
 
     .panel-collapse {
@@ -31,12 +32,12 @@
       }
     }
   }
+
   .creditcards {
     li {
       width: 55px;
       height: 35px;
       margin: $space-default/3;
-
       text-indent: -9999px;
       background-image: url('/assets/img/checkout/checkout-sprite.png');
       background-repeat: no-repeat;
@@ -44,15 +45,19 @@
       &.creditcards-vsa {
         background-position: 0 -70px;
       }
+
       &.creditcards-dcv {
         background-position: -55px -70px;
       }
+
       &.creditcards-amx {
         background-position: -110px -70px;
       }
+
       &.creditcards-mas {
         background-position: -165px -70px;
       }
+
       &.creditcards-jcb {
         background-position: -220px -70px;
       }

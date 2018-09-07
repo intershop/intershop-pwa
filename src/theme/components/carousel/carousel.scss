@@ -17,13 +17,14 @@
   li {
     width: 11px;
     height: 11px;
-    margin: 0px 5px;
+    margin: 0 5px;
     background-color: $color-inverse;
   }
+
   .active {
     width: 11px;
     height: 11px;
-    margin: 0px 5px;
+    margin: 0 5px;
     border: 1px solid $carousel-indicator-active-bg;
   }
 }
@@ -35,7 +36,7 @@
     list-style: none;
 
     @media (max-width: $screen-sm-max) {
-      margin-top: 0px;
+      margin-top: 0;
     }
 
     li {

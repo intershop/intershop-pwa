@@ -52,11 +52,13 @@ input[type='file'] {
       }
     }
   }
+
   .form-control {
     padding-right: 0;
     padding-left: 0;
     background-color: inherit;
     border: none;
+
     @include box-shadow(none);
   }
 

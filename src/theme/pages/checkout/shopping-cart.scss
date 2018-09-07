@@ -119,12 +119,15 @@
     .promo-applied {
       font-family: $font-family-bold;
     }
+
     dt {
       white-space: normal;
     }
+
     dd {
       text-align: right;
     }
+
     .total-price {
       font-family: $font-family-bold;
       font-size: $font-size-corporate;
@@ -277,6 +280,7 @@
       width: auto;
       padding-right: $space-default/6;
     }
+
     dd {
       margin-left: auto;
     }

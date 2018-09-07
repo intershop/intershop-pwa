@@ -104,8 +104,10 @@
         width: auto;
       }
     }
+
     @media (max-width: $screen-xs-max) {
       width: 100%;
+
       button {
         font-family: $font-family-condensedbold;
       }
