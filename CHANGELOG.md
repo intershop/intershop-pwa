@@ -1,3 +1,10 @@
+# [0.7.10](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.7.10/) (2018-09-08)
+
+First public release of the Intershop Progressive Web App
+
+Required Intershop Commerce Management version: 7.10.2.4
+
+
 # 0.6.0 (2018-09-08)
 
 ### Features
