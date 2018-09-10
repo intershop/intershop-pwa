@@ -1,4 +1,36 @@
 {
+  "attributes": [
+    {
+      "name": "Ports and connectors",
+      "type": "String",
+      "value": "DC power jack"
+    },
+    {
+      "name": "Colours",
+      "type": "String",
+      "value": "White, Slate fabric"
+    },
+    {
+      "name": "Supported operating systems",
+      "type": "String",
+      "value": "Anroid 4.4 and higher, iOS 9.1 and higher"
+    },
+    {
+      "name": "Dimensions",
+      "type": "String",
+      "value": "96mm*142mm"
+    },
+    {
+      "name": "Weight",
+      "type": "String",
+      "value": "477g"
+    },
+    {
+      "name": "Power",
+      "type": "String",
+      "value": "16.5V, 2A"
+    }
+  ],
   "availability": true,
   "images": [
     {
@@ -30,30 +62,53 @@
       "type": "Image",
       "typeID": "S",
       "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "side L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "side S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "side"
     }
   ],
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
-    "value": 50
+    "value": 185.5
   },
-  "longDescription": "A physical gift card with an amount of $50 as give away for your friends. They can redeem this gift card at their next offline or online shopping trip.\nShipping is needed. You can send it to your friends directly or to your address.",
-  "manufacturer": "",
+  "longDescription": "Get answers, play songs, tackle your day, enjoy your entertainment and control your smart home with just your voice.",
+  "manufacturer": "Google",
   "mastered": false,
   "minOrderQuantity": 1,
-  "name": "Gift Card $50",
+  "name": "Google Home",
   "productBundle": false,
   "productMaster": false,
-  "productName": "Gift Card $50",
+  "productName": "Google Home",
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "roundedAverageRating": "0.0",
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807171/reviews",
+  "roundedAverageRating": "3.0",
   "salePrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
-    "value": 50
+    "value": 185.5
   },
   "shippingMethods": [
     {
@@ -85,7 +140,7 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "A physical gift card for $50",
-  "sku": "GiftCardBlank50",
+  "shortDescription": "Hands-free help from the Google Assistant",
+  "sku": "201807171",
   "type": "Product"
 }

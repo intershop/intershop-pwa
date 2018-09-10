@@ -1,145 +1,44 @@
 {
   "attachments": [
     {
-      "key": "AC_Manual_1_",
-      "name": "User manual",
-      "type": "Manual",
+      "description": "Get to know Surface Book, the ultra-thin, high-performance laptop with exceptional power and versatility. Use this guide to get started with your Surface Book. For more details and how-to info, go online to Surface.com.",
+      "key": "AC_Information_1_",
+      "name": "Surface Book User Guide",
+      "type": "Information",
       "uri": false,
-      "value": "inSPIRED:/manuals/8806086011815_manual.pdf"
-    },
-    {
-      "key": "AC_Other_1_",
-      "name": "EU Energy Label",
-      "type": "Other",
-      "uri": false,
-      "value": "inSPIRED:/8806086011815_EU-Energy-Label.pdf"
+      "value": "inSPIRED:/manuals/surface-book-user-guide-EN.pdf"
     }
   ],
   "attributes": [
     {
-      "name": "Ethernet LAN (RJ-45) ports quantity",
-      "type": "Integer",
-      "value": 1
-    },
-    {
-      "name": "Height (with stand)",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "cm",
-        "value": 89.37
-      }
-    },
-    {
-      "name": "Display diagonal",
+      "name": "Processor",
       "type": "String",
-      "value": "165.1 cm (65\")"
+      "value": "8th Gen Intel Core i7-8650U quad-core processor, 4.2GHz Max Turbo"
     },
     {
-      "name": "Built-in speakers",
+      "name": "Warranty",
       "type": "String",
-      "value": "Yes"
+      "value": "1-year limited hardware warranty"
     },
     {
-      "name": "HD-Ready",
+      "name": "Battery Life",
       "type": "String",
-      "value": "Full HD"
+      "value": "Up to 17 hours of video playback"
     },
     {
-      "name": "HDMI ports quantity",
-      "type": "Integer",
-      "value": 4
-    },
-    {
-      "name": "Common interface Plus (CI+)",
+      "name": "Memory",
       "type": "String",
-      "value": "Yes"
+      "value": "16GB RAM"
     },
     {
-      "name": "Power consumption",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "W",
-        "value": 60
-      }
-    },
-    {
-      "name": "Wireless LAN (WLAN) connection",
+      "name": "Dimensions",
       "type": "String",
-      "value": "Yes"
+      "value": "343*251*15 mm - 23mm"
     },
     {
-      "name": "USB 2.0 ports quantity",
-      "type": "Integer",
-      "value": 3
-    },
-    {
-      "name": "Common interface (CI)",
+      "name": "Software",
       "type": "String",
-      "value": "No"
-    },
-    {
-      "name": "Weight (with stand)",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "kg",
-        "value": 27.2
-      }
-    },
-    {
-      "name": "DVI port",
-      "type": "String",
-      "value": "No"
-    },
-    {
-      "name": "PC in (D-Sub)",
-      "type": "String",
-      "value": "No"
-    },
-    {
-      "name": "Display resolution",
-      "type": "String",
-      "value": "1920 x 1080 pixels"
-    },
-    {
-      "name": "Number of loudspeakers",
-      "type": "Integer",
-      "value": 3
-    },
-    {
-      "name": "Width (with stand)",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "m",
-        "value": 1.5
-      }
-    },
-    {
-      "name": "Depth (with stand)",
-      "type": "ResourceAttribute",
-      "value": {
-        "type": "Quantity",
-        "unit": "cm",
-        "value": 30.78
-      }
-    },
-    {
-      "name": "Digital signal format system",
-      "type": "String",
-      "value": "DVB-C|DVB-S2|DVB-T2"
-    },
-    {
-      "name": "Headphone connectivity",
-      "type": "String",
-      "value": "Yes"
-    },
-    {
-      "name": "3D compatibility",
-      "type": "String",
-      "value": "Yes"
+      "value": "Windows 10 Pro Creators Update 64-bit"
     }
   ],
   "availability": true,
@@ -238,26 +137,28 @@
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
-    "value": 4014.1
+    "value": 3178.94
   },
-  "longDescription": "Samsung UE65H8000SZ. Display diagonal: 165.1 cm (65\"), HD type: Full HD, Display resolution: 1920 x 1080 pixels. Tuner type: Analogue & Digital, Digital signal format system: DVB-C, DVB-S2, DVB-T2. RMS rated power: 40W, Subwoofer RMS power: 20W, Audio system: Premium Sound DTS 5.1. Consumer Electronics Control (CEC): Anynet+. Smart modes: Game, Sports",
-  "manufacturer": "Samsung",
-  "mastered": false,
+  "longDescription": "Laptop Mode: A sleek, portable powerhouse with up to 17 hours of battery life. Work with professional-grade software on the full keyboard, trackpad, and touchscreen. Tablet Mode: Detach the stunning PixelSense Display to transform Surface Book 2 into a thin, powerful, and lightweight Intel Core i5/i7 tablet you can take anywhere. Studio Mode: Fold Surface Book 2 into Studio Mode to draw and sketch comfortably and naturally. Add Surface Dial and Pen for an immersive creative experience. View Mode: Detach the screen with the push of a button, turn it around, and reattach to share content and presentations. Perfect for watching your favorite shows.",
+  "manufacturer": "Microsoft",
+  "mastered": true,
   "minOrderQuantity": 1,
-  "name": "Samsung UE65H8000SZ Full HD 3D Smart TV",
+  "name": "Microsoft Surface Book 2",
   "productBundle": false,
   "productMaster": false,
-  "productName": "Samsung UE65H8000SZ Full HD 3D Smart TV",
+  "productMasterSKU": "201807231",
+  "productName": "Microsoft Surface Book 2",
   "readyForShipmentMax": 7,
   "readyForShipmentMin": 3,
   "retailSet": false,
-  "reviews": "inSPIRED-inTRONICS-Site/-/products/8806086011815/reviews",
-  "roundedAverageRating": "5.0",
+  "roundedAverageRating": "0.0",
   "salePrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
-    "value": 4014.1
+    "value": 3178.94
   },
   "shippingMethods": [
     {
@@ -289,7 +190,21 @@
       "type": "ShippingMethod"
     }
   ],
-  "shortDescription": "Samsung UE65H8000SZ, 165.1 cm (65\"), 1920 x 1080 pixels, 3D compatibility, Wi-Fi",
-  "sku": "8806086011815",
-  "type": "Product"
+  "shortDescription": "The most powerful Surface ever",
+  "sku": "201807231-03",
+  "type": "Product",
+  "variableVariationAttributes": [
+    {
+      "name": "Hard drive size",
+      "type": "VariationAttribute",
+      "value": "1TB",
+      "variationAttributeId": "Attr_harddrivesize"
+    },
+    {
+      "name": "Display Size",
+      "type": "VariationAttribute",
+      "value": "13.5\"",
+      "variationAttributeId": "attr_displaysize"
+    }
+  ]
 }
