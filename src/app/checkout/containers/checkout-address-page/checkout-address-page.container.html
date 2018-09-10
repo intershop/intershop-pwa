@@ -4,10 +4,16 @@
   <ish-checkout-address
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
-    [error]="basketError$ | async"
+    [error]="(basketError$ | async) || (addressesError$ | async)"
+    [countries]="countries$ | async"
+    [regions]="regionsForSelectedCountry$ | async"
+    [titles]="titlesForSelectedCountry$ | async"
     (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
     (updateShippingAddress)="updateBasketShippingAddress($event)"
+    (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
+    (createShippingAddress)="createCustomerShippingAddress($event)"
+    (countryChange)="updateDataAfterCountryChange($event)"
   ></ish-checkout-address>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)"></ish-loading>
 </div>

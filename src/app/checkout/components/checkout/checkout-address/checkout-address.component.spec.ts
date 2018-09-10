@@ -1,5 +1,7 @@
+import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
@@ -34,8 +36,13 @@ describe('Checkout Address Component', () => {
           template: 'Address Component',
           inputs: ['address'],
         }),
+        MockComponent({
+          selector: 'ish-checkout-address-form',
+          template: 'Address Component',
+          inputs: ['countries', 'regions', 'titles', 'resetForm'],
+        }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule],
+      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, NgbModule],
     }).compileComponents();
   }));
 
@@ -64,6 +71,22 @@ describe('Checkout Address Component', () => {
     expect(element.querySelector('div[data-testing-id=shipToAddress]')).toBeTruthy();
   });
 
+  it('should render create address links after creation', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('div[data-testing-id=create-invoice-address-link]')).toBeTruthy();
+    expect(element.querySelector('div[data-testing-id=create-shipping-address-link]')).toBeTruthy();
+  });
+
+  it('should not render address forms after creation', () => {
+    fixture.detectChanges();
+    expect(
+      element.querySelector('div.show[data-testing-id=create-invoice-address-form] ish-checkout-address-form')
+    ).toBeFalsy();
+    expect(
+      element.querySelector('div.show[data-testing-id=create-shipping-address-form] ish-checkout-address-form')
+    ).toBeFalsy();
+  });
+
   it('should render cart summary components after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-basket-items-summary')).toBeTruthy();
@@ -87,8 +110,11 @@ describe('Checkout Address Component', () => {
 
   /* addresses can be selected as invoice address if they are not set as invoiceAddress at the basket and if the address is a invoice address */
   it('should determine invoice addresses for the select box', () => {
+    const changes: SimpleChanges = {
+      addresses: new SimpleChange(undefined, component.addresses, false),
+    };
+    component.ngOnChanges(changes);
     fixture.detectChanges();
-    component.ngOnChanges();
     expect(component.invoiceAddresses).toHaveLength(2);
     expect(component.invoiceAddresses[0].id).toEqual('4712');
     expect(component.invoiceAddresses[1].id).toEqual('4714');
@@ -96,8 +122,11 @@ describe('Checkout Address Component', () => {
 
   /* addresses can be selected as shipping address if they are not set as shippingAddress at the basket and if the address is a shipping address */
   it('should determine shipping addresses for the select box', () => {
+    const changes: SimpleChanges = {
+      addresses: new SimpleChange(undefined, component.addresses, false),
+    };
+    component.ngOnChanges(changes);
     fixture.detectChanges();
-    component.ngOnChanges();
     expect(component.shippingAddresses).toHaveLength(2);
     expect(component.shippingAddresses[0].id).toEqual('4712');
     expect(component.shippingAddresses[1].id).toEqual('4713');
@@ -134,5 +163,73 @@ describe('Checkout Address Component', () => {
     component.error = { status: 404 } as HttpError;
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
+  });
+
+  it('should render invoice address form if showInvoiceAddressForm is called', () => {
+    component.showInvoiceAddressForm();
+    fixture.detectChanges();
+    expect(component.isInvoiceAddressFormCollapsed).toBeFalse();
+    expect(component.isShippingAddressFormCollapsed).toBeTrue();
+    expect(
+      element.querySelector('div.show[data-testing-id=create-invoice-address-form] ish-checkout-address-form')
+    ).toBeTruthy();
+    expect(
+      element.querySelector('div.show[data-testing-id=create-shipping-address-form] ish-checkout-address-form')
+    ).toBeFalsy();
+    expect(element.querySelector('div[data-testing-id=create-invoice-address-link]')).toBeFalsy();
+    expect(element.querySelector('div[data-testing-id=create-shipping-address-link]')).toBeTruthy();
+  });
+
+  it('should render shipping address form if showShippingAddressForm is called', () => {
+    component.showShippingAddressForm();
+    fixture.detectChanges();
+    expect(component.isInvoiceAddressFormCollapsed).toBeTrue();
+    expect(component.isShippingAddressFormCollapsed).toBeFalse();
+    expect(
+      element.querySelector('div.show[data-testing-id=create-shipping-address-form] ish-checkout-address-form')
+    ).toBeTruthy();
+    expect(
+      element.querySelector('div.show[data-testing-id=create-invoice-address-form] ish-checkout-address-form')
+    ).toBeFalsy();
+    expect(element.querySelector('div[data-testing-id=create-invoice-address-link]')).toBeTruthy();
+    expect(element.querySelector('div[data-testing-id=create-shipping-address-link]')).toBeFalsy();
+  });
+
+  it('should throw createInvoiceAddress event when createCustomerInvoiceAddress is triggered', done => {
+    component.createInvoiceAddress.subscribe(() => {
+      done();
+    });
+
+    component.createCustomerInvoiceAddress(BasketMockData.getAddress());
+  });
+
+  it('should throw createShippingAddress event when createCustomerShippingAddress is triggered', done => {
+    component.createShippingAddress.subscribe(() => {
+      done();
+    });
+
+    component.createCustomerShippingAddress(BasketMockData.getAddress());
+  });
+
+  it('should collape invoice address form when cancelCreateCustomerInvoiceAddress is triggered', () => {
+    component.isInvoiceAddressFormCollapsed = false;
+
+    component.cancelCreateCustomerInvoiceAddress();
+    expect(component.isInvoiceAddressFormCollapsed).toBeTrue();
+  });
+
+  it('should collape shipping address form when cancelCreateCustomerShippingAddress is triggered', () => {
+    component.isShippingAddressFormCollapsed = false;
+
+    component.cancelCreateCustomerShippingAddress();
+    expect(component.isShippingAddressFormCollapsed).toBeTrue();
+  });
+
+  it('should throw countryChange event when handleCountryChange is triggered', done => {
+    component.countryChange.subscribe(() => {
+      done();
+    });
+
+    component.handleCountryChange('DE');
   });
 });
