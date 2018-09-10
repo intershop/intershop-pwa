@@ -21,14 +21,14 @@
       "value": "-"
     },
     {
-      "name": "Video capability",
-      "type": "String",
-      "value": "Y"
-    },
-    {
       "name": "Focal length",
       "type": "String",
       "value": "-"
+    },
+    {
+      "name": "Video capability",
+      "type": "String",
+      "value": "Y"
     },
     {
       "name": "Minimum hard disk space",
@@ -41,14 +41,14 @@
       "value": "5 x"
     },
     {
-      "name": "Image formats supported",
-      "type": "String",
-      "value": "-"
-    },
-    {
       "name": "Focal length (35mm film equivalent)",
       "type": "String",
       "value": "28 - 140 mm"
+    },
+    {
+      "name": "Image formats supported",
+      "type": "String",
+      "value": "-"
     },
     {
       "name": "Self-timer",
@@ -56,12 +56,12 @@
       "value": "-"
     },
     {
-      "name": "Camera shutter speed",
+      "name": "Maximum video resolution",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Maximum video resolution",
+      "name": "Camera shutter speed",
       "type": "String",
       "value": "-"
     },
@@ -116,14 +116,14 @@
       "value": "14 MP"
     },
     {
-      "name": "Maximum memory card size",
-      "type": "String",
-      "value": "4 GB"
-    },
-    {
       "name": "Camera type",
       "type": "String",
       "value": "Compact"
+    },
+    {
+      "name": "Maximum memory card size",
+      "type": "String",
+      "value": "4 GB"
     },
     {
       "name": "Digital zoom",
@@ -131,14 +131,14 @@
       "value": "-"
     },
     {
-      "name": "Photo effects",
-      "type": "String",
-      "value": "Sepia,Black&White"
-    },
-    {
       "name": "Auto focusing (AF) modes",
       "type": "String",
       "value": "Unspecified,Face tracking"
+    },
+    {
+      "name": "Photo effects",
+      "type": "String",
+      "value": "Sepia,Black&White"
     },
     {
       "name": "ISO sensitivity",
@@ -176,12 +176,12 @@
       "value": "Y"
     },
     {
-      "name": "Maximum image resolution",
+      "name": "Display resolution (numeric)",
       "type": "String",
       "value": "-"
     },
     {
-      "name": "Display resolution (numeric)",
+      "name": "Maximum image resolution",
       "type": "String",
       "value": "-"
     },
@@ -206,14 +206,14 @@
       "value": "USB"
     },
     {
-      "name": "Image stabilizer",
-      "type": "String",
-      "value": "-"
-    },
-    {
       "name": "Colour_of_product",
       "type": "String",
       "value": "Black"
+    },
+    {
+      "name": "Compatible operating systems",
+      "type": "String",
+      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
     },
     {
       "name": "Display",
@@ -221,9 +221,9 @@
       "value": "LCD"
     },
     {
-      "name": "Compatible operating systems",
+      "name": "Image stabilizer",
       "type": "String",
-      "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
+      "value": "-"
     }
   ],
   "availability": true,
@@ -362,6 +362,7 @@
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 132.24
   },
@@ -379,6 +380,7 @@
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 132.24
   },

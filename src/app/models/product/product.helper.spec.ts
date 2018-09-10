@@ -90,7 +90,7 @@ describe('Product Helper', () => {
           imageActualHeight: 500,
           imageActualWidth: 500,
           viewID: 'side',
-          effectiveUrl: '/assets/product_img/b.jpg',
+          effectiveUrl: '/assets/product_img/a.jpg',
           typeID: 'L',
           primaryImage: false,
         },
