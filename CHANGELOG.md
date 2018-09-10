@@ -1,15 +1,15 @@
-# [0.7.10](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.7.10/) (2018-09-08)
+# [0.7.10](https://repository.intershop.de/releases/com/intershop/public/source/intershop-pwa/0.7.10/) (2018-09-10)
 
 First public release of the Intershop Progressive Web App
 
-Required Intershop Commerce Management version: 7.10.2.4
+**required Intershop Commerce Management version: 7.10.2.4**
 
 
 # 0.6.0 (2018-09-08)
 
 ### Features
 
-* CMS Integration - conditional rendering (ISREST-213) - EXPERIMENTAL
+* CMS integration - conditional rendering (ISREST-213) - EXPERIMENTAL
 * sticky header - header styling and behavior changes (ISREST-435) - EXPERIMENTAL
 
 
@@ -76,9 +76,9 @@ Required Intershop Commerce Management version: 7.10.2.4
 
 # [0.1.1](https://repository.intershop.de//releases/com/intershop/public/source/intershop-pwa/0.1.1/) (2018-06-05)
 
-Note: First public beta release of the Intershop Progressive Web App (intershop-pwa).
+First public beta release of the Intershop Progressive Web App (intershop-pwa).
 
 
 # 0.1.0 (2018-05-31)
 
-Note: Initial internal beta release of the Intershop Progressive Web App.
+Initial internal beta release of the Intershop Progressive Web App.
