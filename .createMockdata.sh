@@ -31,5 +31,5 @@ do
         paramsEncoded="$(echo "$params" | sed -e 's/[^a-zA-Z0-9-]/_/g')"
     fi
     echo "  to src/assets/mock-data/$path/get$paramsEncoded.json"
-    curl -sf -H "$header" "http://localhost:4322/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -S -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%/assets/product_img/a.jpg%' > src/assets/mock-data/$path/get$paramsEncoded.json
+    curl -sf -H "$header" "http://localhost:4322/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-/${path}${params}" | jq -S -M "${jqquery}" | sed -e 's%/INTERSHOP/static/.*.jpg%/assets/product_img/a.jpg%' | sed -e 's%inSPIRED-inTRONICS-b2c-responsive:%assets%' > src/assets/mock-data/$path/get$paramsEncoded.json
 done

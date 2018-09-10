@@ -51,7 +51,7 @@ describe('Product Images Component', () => {
         imageActualHeight: 500,
         imageActualWidth: 500,
         viewID: 'front',
-        effectiveUrl: '/assets/product_img/b.jpg',
+        effectiveUrl: '/assets/product_img/a.jpg',
         typeID: 'L',
         primaryImage: false,
       },
@@ -62,7 +62,7 @@ describe('Product Images Component', () => {
         ProductImagesComponent,
         MockComponent({
           selector: 'ish-product-image',
-          template: '<img src="/assets/product_img/b.jpg" />',
+          template: '<img src="/assets/product_img/a.jpg" />',
           inputs: ['product', 'imageType', 'class', 'imageView'],
         }),
       ],

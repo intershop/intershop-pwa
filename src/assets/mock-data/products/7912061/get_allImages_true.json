@@ -31,11 +31,6 @@
       "value": "-"
     },
     {
-      "name": "Image formats supported",
-      "type": "String",
-      "value": "JPG,EXIF"
-    },
-    {
       "name": "Built-in speakers",
       "type": "String",
       "value": "Y"
@@ -44,6 +39,11 @@
       "name": "Focal length (35mm film equivalent)",
       "type": "String",
       "value": "3.9 - 44 mm"
+    },
+    {
+      "name": "Image formats supported",
+      "type": "String",
+      "value": "JPG,EXIF"
     },
     {
       "name": "Video formats supported",
@@ -75,6 +75,11 @@
       "value": "128 MB"
     },
     {
+      "name": "USB 2.0 ports quantity",
+      "type": "String",
+      "value": "1"
+    },
+    {
       "name": "Capture modes",
       "type": "String",
       "value": "1920 x 1080, 30 fps<br/>1280 x 720, 60 fps<br/>1280 x 720, 30 fps<br/>848 x 480, 30 fps"
@@ -83,11 +88,6 @@
       "name": "Minimum system requirements",
       "type": "String",
       "value": "Internet Explorer 6.0+<br/>CD-ROM<br/>USB 1.1+"
-    },
-    {
-      "name": "USB 2.0 ports quantity",
-      "type": "String",
-      "value": "1"
     },
     {
       "name": "Compatible memory cards",
@@ -187,16 +187,6 @@
       "value": "5 MP"
     },
     {
-      "name": "Image stabilizer",
-      "type": "String",
-      "value": "Y"
-    },
-    {
-      "name": "Camcorder tape type",
-      "type": "String",
-      "value": "Flash memory"
-    },
-    {
       "name": "Colour_of_product",
       "type": "MultipleString",
       "value": [
@@ -205,14 +195,24 @@
       ]
     },
     {
-      "name": "Display",
+      "name": "Camcorder tape type",
       "type": "String",
-      "value": "LCD"
+      "value": "Flash memory"
     },
     {
       "name": "Compatible operating systems",
       "type": "String",
       "value": "WINDOWS XP SP2/Vista/7+<br/>Mac OS 10.4, 10.5, 10.6+<br/>Safari 1.1+"
+    },
+    {
+      "name": "Display",
+      "type": "String",
+      "value": "LCD"
+    },
+    {
+      "name": "Image stabilizer",
+      "type": "String",
+      "value": "Y"
     }
   ],
   "availability": true,
@@ -321,6 +321,7 @@
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 129.85
   },
@@ -338,6 +339,7 @@
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 129.85
   },

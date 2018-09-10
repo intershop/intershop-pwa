@@ -51,11 +51,6 @@
       "value": "GoPro App|GoPro Studio"
     },
     {
-      "name": "Video formats supported",
-      "type": "String",
-      "value": "H.264|MP4"
-    },
-    {
       "name": "Weight",
       "type": "ResourceAttribute",
       "value": {
@@ -65,19 +60,24 @@
       }
     },
     {
+      "name": "Video formats supported",
+      "type": "String",
+      "value": "H.264|MP4"
+    },
+    {
       "name": "Supported video modes",
       "type": "String",
       "value": "1080p|1440p|720p|960p"
     },
     {
-      "name": "White balance",
-      "type": "String",
-      "value": "Auto|Manual"
-    },
-    {
       "name": "Cables included",
       "type": "String",
       "value": "USB"
+    },
+    {
+      "name": "White balance",
+      "type": "String",
+      "value": "Auto|Manual"
     },
     {
       "name": "Full HD",
@@ -274,6 +274,7 @@
   "inStock": true,
   "listPrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 391.98
   },
@@ -291,6 +292,7 @@
   "roundedAverageRating": "0.0",
   "salePrice": {
     "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
     "type": "ProductPrice",
     "value": 391.98
   },
