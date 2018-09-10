@@ -33,7 +33,7 @@ export class SelectRegionComponent extends SelectComponent implements OnChanges 
       r =>
         ({
           label: r.name,
-          value: r.regionCode,
+          value: r.name,
         } as SelectOption)
     );
   }
