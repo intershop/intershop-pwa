@@ -20,7 +20,10 @@ export class CMSImageEnhancedComponent {
 
   getImagePath(configParam: string): string {
     // TODO: the local has to be considered too
-    return `${this.staticURL}/${configParam.split(':')[0]}/-${configParam.split(':')[1]}`;
+    if (configParam.indexOf(':') > 0) {
+      return `${this.staticURL}/${configParam.split(':')[0]}/-${configParam.split(':')[1]}`;
+    }
+    return configParam;
   }
 
   getRouterLink(configParam: string): string {
