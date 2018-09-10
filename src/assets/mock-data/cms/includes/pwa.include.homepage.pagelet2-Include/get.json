@@ -1,640 +1,648 @@
 {
   "definitionQualifiedName": "app_sf_responsive_cm:pwa.include.homepage.pagelet2-Include",
+  "displayName": "PWA Homepage Content",
   "link": {
+    "title": "pwa.include.homepage.pagelet2-Include",
     "type": "Link",
-    "uri": "inSPIRED-inTRONICS-Site/-/cms/includes/pwa.include.homepage.pagelet2-Include",
-    "title": "pwa.include.homepage.pagelet2-Include"
+    "uri": "inSPIRED-inTRONICS-Site/-/cms/includes/pwa.include.homepage.pagelet2-Include"
   },
   "pagelets": [
     {
-      "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
-      "link": {
-        "type": "Link",
-        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid",
-        "title": "pwa_homepage_grid"
+      "configurationParameters": {
+        "CSSClass": {
+          "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+          "value": "clearfix px-2"
+        },
+        "Grid": {
+          "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+          "value": "ExtraSmall:0,Small:0,Medium:0,Large:0"
+        }
       },
+      "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
       "displayName": "PWA Homepage Grid",
+      "id": "pwa_homepage_grid",
+      "link": {
+        "title": "pwa_homepage_grid",
+        "type": "Link",
+        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid"
+      },
       "slots": {
         "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
           "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
           "link": {
+            "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
             "type": "Link",
-            "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid/app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
-            "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+            "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
           },
           "pagelets": [
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_1",
-                "title": "pwa_homepage_grid_1"
+              "configurationParameters": {
+                "CSSClass": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+                  "value": "px-2 pb-2"
+                },
+                "Grid": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+                  "value": "ExtraSmall:12,Small:0,Medium:0,Large:0"
+                },
+                "UpperBound": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound",
+                  "value": "1"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
               "displayName": "PWA Homepage Grid - Full Width Single Slot",
+              "id": "pwa_homepage_grid_1",
+              "link": {
+                "title": "pwa_homepage_grid_1",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_1"
+              },
               "slots": {
                 "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
                   "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                   "link": {
+                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                     "type": "Link",
-                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_1/app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
-                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_1/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
                   },
                   "pagelets": [
                     {
-                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component",
-                      "link": {
-                        "type": "Link",
-                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_carousel",
-                        "title": "pwa_homepage_carousel"
+                      "configurationParameters": {
+                        "CSSClass": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CSSClass",
+                          "value": "homepage-carousel"
+                        },
+                        "ShowIndicators": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-ShowIndicators",
+                          "value": "false"
+                        },
+                        "SlideInterval": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-SlideInterval",
+                          "value": "10000"
+                        },
+                        "SlideItems": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-SlideItems",
+                          "value": "1"
+                        },
+                        "StartCycling": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-StartCycling",
+                          "value": "true"
+                        }
                       },
+                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component",
                       "displayName": "PWA Homepage Carousel",
+                      "id": "pwa_homepage_carousel",
+                      "link": {
+                        "title": "pwa_homepage_carousel",
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_carousel"
+                      },
                       "slots": {
                         "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot": {
                           "definitionQualifiedName": "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot",
                           "link": {
+                            "title": "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot",
                             "type": "Link",
-                            "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_carousel/app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot",
-                            "title": "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot"
+                            "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_carousel/app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot"
                           },
                           "pagelets": [
                             {
-                              "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component",
-                              "link": {
-                                "type": "Link",
-                                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_slider_teaser_1",
-                                "title": "pwa_slider_teaser_1"
-                              },
-                              "displayName": "PWA Slider Teaser 1",
-                              "id": "pwa_slider_teaser_1",
                               "configurationParameters": {
-                                "ImageXS": {
-                                  "value": "inSPIRED-inTRONICS-b2c-responsive:/pwa/pwa_home_teaser_1_767.jpg",
-                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-ImageXS"
-                                },
                                 "Image": {
-                                  "value": "inSPIRED-inTRONICS-b2c-responsive:/pwa/pwa_home_teaser_1.jpg",
-                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Image"
+                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Image",
+                                  "value": "assets/pwa/pwa_home_teaser_1.jpg"
+                                },
+                                "ImageXS": {
+                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-ImageXS",
+                                  "value": "assets/pwa/pwa_home_teaser_1_767.jpg"
                                 },
                                 "Link": {
-                                  "value": "product://201807195@inSPIRED-inTRONICS",
-                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Link"
+                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Link",
+                                  "value": "product://201807195@inSPIRED-inTRONICS"
                                 }
+                              },
+                              "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component",
+                              "displayName": "PWA Slider Teaser 1",
+                              "id": "pwa_slider_teaser_1",
+                              "link": {
+                                "title": "pwa_slider_teaser_1",
+                                "type": "Link",
+                                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_slider_teaser_1"
                               }
                             },
                             {
-                              "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component",
-                              "link": {
-                                "type": "Link",
-                                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_slider_teaser_2",
-                                "title": "pwa_slider_teaser_2"
-                              },
-                              "displayName": "PWA Slider Teaser 2",
-                              "id": "pwa_slider_teaser_2",
                               "configurationParameters": {
-                                "ImageXS": {
-                                  "value": "inSPIRED-inTRONICS-b2c-responsive:/pwa/pwa_home_teaser_2_767.jpg",
-                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-ImageXS"
-                                },
                                 "Image": {
-                                  "value": "inSPIRED-inTRONICS-b2c-responsive:/pwa/pwa_home_teaser_2.jpg",
-                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Image"
+                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Image",
+                                  "value": "assets/pwa/pwa_home_teaser_2.jpg"
+                                },
+                                "ImageXS": {
+                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-ImageXS",
+                                  "value": "assets/pwa/pwa_home_teaser_2_767.jpg"
                                 },
                                 "Link": {
-                                  "value": "product://201807204-11@inSPIRED-inTRONICS",
-                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Link"
+                                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component-Link",
+                                  "value": "product://201807204-11@inSPIRED-inTRONICS"
                                 }
+                              },
+                              "definitionQualifiedName": "app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component",
+                              "displayName": "PWA Slider Teaser 2",
+                              "id": "pwa_slider_teaser_2",
+                              "link": {
+                                "title": "pwa_slider_teaser_2",
+                                "type": "Link",
+                                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_slider_teaser_2"
                               }
                             }
                           ]
                         }
-                      },
-                      "id": "pwa_homepage_carousel",
-                      "configurationParameters": {
-                        "StartCycling": {
-                          "value": "true",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-StartCycling"
-                        },
-                        "SlideInterval": {
-                          "value": "10000",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-SlideInterval"
-                        },
-                        "SlideItems": {
-                          "value": "1",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-SlideItems"
-                        },
-                        "ShowIndicators": {
-                          "value": "false",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-ShowIndicators"
-                        },
-                        "CSSClass": {
-                          "value": "homepage-carousel",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CSSClass"
-                        }
                       }
                     }
                   ]
                 }
-              },
-              "id": "pwa_homepage_grid_1",
-              "configurationParameters": {
-                "UpperBound": {
-                  "value": "1",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound"
-                },
-                "Grid": {
-                  "value": "ExtraSmall:12,Small:0,Medium:0,Large:0",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid"
-                }
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_2",
-                "title": "pwa_homepage_grid_2"
+              "configurationParameters": {
+                "CSSClass": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+                  "value": "p-2"
+                },
+                "Grid": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+                  "value": "ExtraSmall:12,Small:6,Medium:4,Large:0"
+                },
+                "UpperBound": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound",
+                  "value": "1"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
               "displayName": "PWA Homepage Grid - Third Width Single Slot - left",
+              "id": "pwa_homepage_grid_2",
+              "link": {
+                "title": "pwa_homepage_grid_2",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_2"
+              },
               "slots": {
                 "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
                   "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                   "link": {
+                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                     "type": "Link",
-                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_2/app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
-                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_2/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
                   },
                   "pagelets": [
                     {
-                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-                      "link": {
-                        "type": "Link",
-                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_cat_teaser_1",
-                        "title": "pwa_cat_teaser_1"
+                      "configurationParameters": {
+                        "Image": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                          "value": "assets/pwa/pwa_home_cat_teaser_1.jpg"
+                        },
+                        "Link": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link",
+                          "value": "route://category/Home-Entertainment.SmartHome"
+                        }
                       },
+                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
                       "displayName": "PWA Cat Teaser 1",
                       "id": "pwa_cat_teaser_1",
-                      "configurationParameters": {
-                        "Image": {
-                          "value": "inSPIRED-inTRONICS-b2c-responsive:/pwa/pwa_home_cat_teaser_1.jpg",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                        },
-                        "Link": {
-                          "value": "route://category/Home-Entertainment.SmartHome",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link"
-                        }
+                      "link": {
+                        "title": "pwa_cat_teaser_1",
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_cat_teaser_1"
                       }
                     }
                   ]
                 }
-              },
-              "id": "pwa_homepage_grid_2",
-              "configurationParameters": {
-                "UpperBound": {
-                  "value": "1",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound"
-                },
-                "Grid": {
-                  "value": "ExtraSmall:12,Small:6,Medium:4,Large:0",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid"
-                }
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_3",
-                "title": "pwa_homepage_grid_3"
+              "configurationParameters": {
+                "CSSClass": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+                  "value": "p-2"
+                },
+                "Grid": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+                  "value": "ExtraSmall:12,Small:6,Medium:4,Large:0"
+                },
+                "UpperBound": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound",
+                  "value": "1"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
               "displayName": "PWA Homepage Grid - Third Width Single Slot - middle",
+              "id": "pwa_homepage_grid_3",
+              "link": {
+                "title": "pwa_homepage_grid_3",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_3"
+              },
               "slots": {
                 "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
                   "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                   "link": {
+                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                     "type": "Link",
-                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_3/app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
-                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_3/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
                   },
                   "pagelets": [
                     {
-                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-                      "link": {
-                        "type": "Link",
-                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_cat_teaser_2",
-                        "title": "pwa_cat_teaser_2"
+                      "configurationParameters": {
+                        "Image": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                          "value": "assets/pwa/pwa_home_cat_teaser_2.jpg"
+                        },
+                        "Link": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link",
+                          "value": "route://category/Computers.1835.151"
+                        }
                       },
+                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
                       "displayName": "PWA Cat Teaser 2",
                       "id": "pwa_cat_teaser_2",
-                      "configurationParameters": {
-                        "Image": {
-                          "value": "inSPIRED-inTRONICS-b2c-responsive:/pwa/pwa_home_cat_teaser_2.jpg",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                        },
-                        "Link": {
-                          "value": "route://category/Computers.1835.151",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link"
-                        }
+                      "link": {
+                        "title": "pwa_cat_teaser_2",
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_cat_teaser_2"
                       }
                     }
                   ]
                 }
-              },
-              "id": "pwa_homepage_grid_3",
-              "configurationParameters": {
-                "UpperBound": {
-                  "value": "1",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound"
-                },
-                "Grid": {
-                  "value": "ExtraSmall:12,Small:6,Medium:4,Large:0",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid"
-                }
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_4",
-                "title": "pwa_homepage_grid_4"
+              "configurationParameters": {
+                "CSSClass": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+                  "value": "p-2"
+                },
+                "Grid": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+                  "value": "ExtraSmall:12,Small:0,Medium:4,Large:0"
+                },
+                "UpperBound": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound",
+                  "value": "1"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
               "displayName": "PWA Homepage Grid - Third Width Single Slot - right (smal full width)",
+              "id": "pwa_homepage_grid_4",
+              "link": {
+                "title": "pwa_homepage_grid_4",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_4"
+              },
               "slots": {
                 "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
                   "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                   "link": {
+                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                     "type": "Link",
-                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_4/app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
-                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_4/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
                   },
                   "pagelets": [
                     {
-                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-                      "link": {
-                        "type": "Link",
-                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_cat_teaser_3",
-                        "title": "pwa_cat_teaser_3"
+                      "configurationParameters": {
+                        "Image": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                          "value": "assets/pwa/pwa_home_cat_teaser_3.jpg"
+                        },
+                        "Link": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link",
+                          "value": "route://category/Computers.897"
+                        }
                       },
+                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
                       "displayName": "PWA Cat Teaser 3",
                       "id": "pwa_cat_teaser_3",
-                      "configurationParameters": {
-                        "Image": {
-                          "value": "inSPIRED-inTRONICS-b2c-responsive:/pwa/pwa_home_cat_teaser_3.jpg",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                        },
-                        "Link": {
-                          "value": "route://category/Computers.897",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Link"
-                        }
+                      "link": {
+                        "title": "pwa_cat_teaser_3",
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_cat_teaser_3"
                       }
                     }
                   ]
-                }
-              },
-              "id": "pwa_homepage_grid_4",
-              "configurationParameters": {
-                "UpperBound": {
-                  "value": "1",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-UpperBound"
-                },
-                "Grid": {
-                  "value": "ExtraSmall:12,Small:0,Medium:4,Large:0",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid"
                 }
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_5",
-                "title": "pwa_homepage_grid_5"
+              "configurationParameters": {
+                "CSSClass": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass",
+                  "value": "pt-4"
+                },
+                "Grid": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid",
+                  "value": "ExtraSmall:12,Small:0,Medium:0,Large:0"
+                }
               },
-              "displayName": "Homepage Grid - Full Width Multiple Slot",
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component",
+              "displayName": "PWA Homepage Grid - Full Width Multiple Slot",
+              "id": "pwa_homepage_grid_5",
+              "link": {
+                "title": "pwa_homepage_grid_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_5"
+              },
               "slots": {
                 "app_sf_responsive_cm:slot.container.content.pagelet2-Slot": {
                   "definitionQualifiedName": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                   "link": {
+                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
                     "type": "Link",
-                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_5/app_sf_responsive_cm:slot.container.content.pagelet2-Slot",
-                    "title": "app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
+                    "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_homepage_grid_5/app_sf_responsive_cm:slot.container.content.pagelet2-Slot"
                   },
                   "pagelets": [
                     {
-                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component",
-                      "link": {
-                        "type": "Link",
-                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_featured_products",
-                        "title": "pwa_featured_products"
-                      },
-                      "displayName": "PWA Featured Products",
-                      "id": "pwa_featured_products",
                       "configurationParameters": {
+                        "CSSClass": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-CSSClass",
+                          "value": "container"
+                        },
+                        "ListItemCSSClass": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ListItemCSSClass",
+                          "value": "col-12 col-sm-6 col-lg-3"
+                        },
                         "ListStyle": {
-                          "value": "carousel",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ListStyle"
-                        },
-                        "Products": {
-                          "value": [
-                            "5920217@inSPIRED-inTRONICS",
-                            "8806086011815@inSPIRED-inTRONICS",
-                            "GiftCardBlank50@inSPIRED-inTRONICS",
-                            "8182790134363@inSPIRED-inTRONICS"
-                          ],
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-Products"
-                        },
-                        "SlideItems": {
-                          "value": "4",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-SlideItems"
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ListStyle",
+                          "value": "none"
                         },
                         "ProductView": {
-                          "value": "app_sf_responsive:vc_productTile@inSPIRED-MasterRepository",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ProductView"
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-ProductView",
+                          "value": "app_sf_responsive:vc_productTile@inSPIRED-MasterRepository"
+                        },
+                        "Products": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-Products",
+                          "value": [
+                            "201807171@inSPIRED-inTRONICS",
+                            "201807204-01@inSPIRED-inTRONICS",
+                            "201807194@inSPIRED-inTRONICS",
+                            "201807231-03@inSPIRED-inTRONICS"
+                          ]
+                        },
+                        "SlideItems": {
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-SlideItems",
+                          "value": "4"
                         },
                         "Title": {
-                          "value": "Featured Products",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-Title"
-                        },
-                        "CSSClass": {
-                          "value": "container",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-CSSClass"
+                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component-Title",
+                          "value": "Featured Products"
                         }
-                      }
-                    },
-                    {
-                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component",
-                      "link": {
-                        "type": "Link",
-                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_featured_products_dummy",
-                        "title": "pwa_featured_products_dummy"
                       },
-                      "displayName": "PWA Featured Products Dummy",
-                      "id": "pwa_featured_products_dummy",
-                      "configurationParameters": {
-                        "HTML": {
-                          "value": "<h3 style=\"text-align: center;\"><em>Featured Products</em> <span style=\"text-decoration: underline;\">Dummy</span></h3>\n<p style=\"text-align: center;\">This is just a stand in for a featured products carousel that is expected to be shown here.<span style=\"text-decoration: underline;\"><br /></span></p>",
-                          "definitionQualifiedName": "app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component-HTML"
-                        }
+                      "definitionQualifiedName": "app_sf_responsive_cm:component.common.productListManual.pagelet2-Component",
+                      "displayName": "PWA Featured Products",
+                      "id": "pwa_featured_products",
+                      "link": {
+                        "title": "pwa_featured_products",
+                        "type": "Link",
+                        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/pwa_featured_products"
                       }
                     }
                   ]
-                }
-              },
-              "id": "pwa_homepage_grid_5",
-              "configurationParameters": {
-                "Grid": {
-                  "value": "ExtraSmall:12,Small:0,Medium:0,Large:0",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid"
                 }
               }
             }
           ]
-        }
-      },
-      "id": "pwa_homepage_grid",
-      "configurationParameters": {
-        "Grid": {
-          "value": "ExtraSmall:0,Small:0,Medium:0,Large:0",
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-Grid"
-        },
-        "CSSClass": {
-          "value": "homepage-grid clearfix",
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.container.pagelet2-Component-CSSClass"
         }
       }
     },
     {
-      "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component",
-      "link": {
-        "type": "Link",
-        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brands_carousel",
-        "title": "cmp_brands_carousel"
+      "configurationParameters": {
+        "CSSClass": {
+          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CSSClass",
+          "value": "brands-carousel hidden-xs"
+        },
+        "CarouselCSSClass": {
+          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CarouselCSSClass",
+          "value": "container carousel-indent"
+        },
+        "ShowIndicators": {
+          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-ShowIndicators",
+          "value": "false"
+        },
+        "StartCycling": {
+          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-StartCycling",
+          "value": "false"
+        }
       },
+      "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component",
       "displayName": "Brands Carousel",
+      "id": "cmp_brands_carousel",
+      "link": {
+        "title": "cmp_brands_carousel",
+        "type": "Link",
+        "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brands_carousel"
+      },
       "slots": {
         "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot": {
           "definitionQualifiedName": "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot",
           "link": {
+            "title": "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot",
             "type": "Link",
-            "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brands_carousel/app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot",
-            "title": "app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot"
+            "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brands_carousel/app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot"
           },
           "pagelets": [
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_1",
-                "title": "cmp_brandImage_1"
+              "configurationParameters": {
+                "Image": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/acer.jpg"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
               "displayName": "Brand Image 1",
               "id": "cmp_brandImage_1",
-              "configurationParameters": {
-                "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/acer.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                }
+              "link": {
+                "title": "cmp_brandImage_1",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_1"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_2",
-                "title": "cmp_brandImage_2"
+              "configurationParameters": {
+                "Image": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
               "displayName": "Brand Image 2",
               "id": "cmp_brandImage_2",
-              "configurationParameters": {
-                "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                }
+              "link": {
+                "title": "cmp_brandImage_2",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_2"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_3",
-                "title": "cmp_brandImage_3"
+              "configurationParameters": {
+                "Image": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/benq.jpg"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
               "displayName": "Brand Image 3",
               "id": "cmp_brandImage_3",
-              "configurationParameters": {
-                "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/benq.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                }
+              "link": {
+                "title": "cmp_brandImage_3",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_3"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_4",
-                "title": "cmp_brandImage_4"
+              "configurationParameters": {
+                "Image": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/acer.jpg"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
               "displayName": "Brand Image 4",
               "id": "cmp_brandImage_4",
-              "configurationParameters": {
-                "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/acer.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                }
+              "link": {
+                "title": "cmp_brandImage_4",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_4"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5",
-                "title": "cmp_brandImage_5"
+              "configurationParameters": {
+                "Image": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
               "displayName": "Brand Image 5",
               "id": "cmp_brandImage_5",
-              "configurationParameters": {
-                "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                }
+              "link": {
+                "title": "cmp_brandImage_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_6",
-                "title": "cmp_brandImage_6"
+              "configurationParameters": {
+                "Image": {
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/benq.jpg"
+                }
               },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
               "displayName": "Brand Image 6",
               "id": "cmp_brandImage_6",
-              "configurationParameters": {
-                "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/benq.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
-                }
+              "link": {
+                "title": "cmp_brandImage_6",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_6"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5",
-                "title": "cmp_brandImage_5"
-              },
-              "displayName": "Brand Image 5",
-              "id": "cmp_brandImage_5",
               "configurationParameters": {
                 "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
                 }
+              },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
+              "displayName": "Brand Image 5",
+              "id": "cmp_brandImage_5",
+              "link": {
+                "title": "cmp_brandImage_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5",
-                "title": "cmp_brandImage_5"
-              },
-              "displayName": "Brand Image 5",
-              "id": "cmp_brandImage_5",
               "configurationParameters": {
                 "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
                 }
+              },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
+              "displayName": "Brand Image 5",
+              "id": "cmp_brandImage_5",
+              "link": {
+                "title": "cmp_brandImage_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5",
-                "title": "cmp_brandImage_5"
-              },
-              "displayName": "Brand Image 5",
-              "id": "cmp_brandImage_5",
               "configurationParameters": {
                 "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
                 }
+              },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
+              "displayName": "Brand Image 5",
+              "id": "cmp_brandImage_5",
+              "link": {
+                "title": "cmp_brandImage_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5",
-                "title": "cmp_brandImage_5"
-              },
-              "displayName": "Brand Image 5",
-              "id": "cmp_brandImage_5",
               "configurationParameters": {
                 "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
                 }
+              },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
+              "displayName": "Brand Image 5",
+              "id": "cmp_brandImage_5",
+              "link": {
+                "title": "cmp_brandImage_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5",
-                "title": "cmp_brandImage_5"
-              },
-              "displayName": "Brand Image 5",
-              "id": "cmp_brandImage_5",
               "configurationParameters": {
                 "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
                 }
+              },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
+              "displayName": "Brand Image 5",
+              "id": "cmp_brandImage_5",
+              "link": {
+                "title": "cmp_brandImage_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5"
               }
             },
             {
-              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
-              "link": {
-                "type": "Link",
-                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5",
-                "title": "cmp_brandImage_5"
-              },
-              "displayName": "Brand Image 5",
-              "id": "cmp_brandImage_5",
               "configurationParameters": {
                 "Image": {
-                  "value": "inSPIRED-inTRONICS-b2c-responsive:/brands/adata.jpg",
-                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image"
+                  "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component-Image",
+                  "value": "assets/brands/adata.jpg"
                 }
+              },
+              "definitionQualifiedName": "app_sf_responsive_cm:component.common.image.pagelet2-Component",
+              "displayName": "Brand Image 5",
+              "id": "cmp_brandImage_5",
+              "link": {
+                "title": "cmp_brandImage_5",
+                "type": "Link",
+                "uri": "inSPIRED-inTRONICS-Site/-/cms/pagelets/cmp_brandImage_5"
               }
             }
           ]
         }
-      },
-      "id": "cmp_brands_carousel",
-      "configurationParameters": {
-        "StartCycling": {
-          "value": "false",
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-StartCycling"
-        },
-        "ShowIndicators": {
-          "value": "false",
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-ShowIndicators"
-        },
-        "CarouselCSSClass": {
-          "value": "container carousel-indent",
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CarouselCSSClass"
-        },
-        "CSSClass": {
-          "value": "brands-carousel hidden-xs",
-          "definitionQualifiedName": "app_sf_responsive_cm:component.common.carousel.pagelet2-Component-CSSClass"
-        }
       }
     }
-  ],
-  "displayName": "PWA Homepage Content"
+  ]
 }

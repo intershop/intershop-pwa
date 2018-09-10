@@ -1,0 +1,132 @@
+{
+  "attributes": [
+    {
+      "name": "Warranty",
+      "type": "String",
+      "value": "2 years"
+    }
+  ],
+  "availability": true,
+  "bundles": "inSPIRED-inTRONICS-Site/-/products/201807194/bundles",
+  "images": [
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "front L",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "front M",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "front S",
+      "primaryImage": true,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "front"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 500,
+      "imageActualWidth": 500,
+      "name": "side L",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "L",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 270,
+      "imageActualWidth": 270,
+      "name": "side M",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "M",
+      "viewID": "side"
+    },
+    {
+      "effectiveUrl": "/assets/product_img/a.jpg",
+      "imageActualHeight": 110,
+      "imageActualWidth": 110,
+      "name": "side S",
+      "primaryImage": false,
+      "type": "Image",
+      "typeID": "S",
+      "viewID": "side"
+    }
+  ],
+  "inStock": true,
+  "listPrice": {
+    "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
+    "type": "ProductPrice",
+    "value": 105.99
+  },
+  "longDescription": "Philips Hue apps for iOS and Android let you remotely control your lamps wherever you are. Check if you have left the light on before leaving and switch it on if you come home later.",
+  "manufacturer": "Philips",
+  "mastered": false,
+  "minOrderQuantity": 1,
+  "name": "Philips Hue White Starter Kit",
+  "productBundle": true,
+  "productMaster": false,
+  "productName": "Philips Hue White Starter Kit",
+  "readyForShipmentMax": 7,
+  "readyForShipmentMin": 3,
+  "retailSet": false,
+  "reviews": "inSPIRED-inTRONICS-Site/-/products/201807194/reviews",
+  "roundedAverageRating": "4.5",
+  "salePrice": {
+    "currencyMnemonic": "USD",
+    "priceText": "incl VAT",
+    "type": "ProductPrice",
+    "value": 105.99
+  },
+  "shippingMethods": [
+    {
+      "id": "STD_2DAY",
+      "name": "2-Business Day",
+      "shippingTimeMax": 2,
+      "shippingTimeMin": 1,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_5DAY",
+      "name": "5-Business Day",
+      "shippingTimeMax": 5,
+      "shippingTimeMin": 2,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "SATURDAY",
+      "name": "Saturday Delivery",
+      "shippingTimeMax": 6,
+      "shippingTimeMin": 0,
+      "type": "ShippingMethod"
+    },
+    {
+      "id": "STD_GROUND",
+      "name": "Standard Ground",
+      "shippingTimeMax": 7,
+      "shippingTimeMin": 3,
+      "type": "ShippingMethod"
+    }
+  ],
+  "shortDescription": "Automate your lamps for easy control and convenience",
+  "sku": "201807194",
+  "type": "Product"
+}
