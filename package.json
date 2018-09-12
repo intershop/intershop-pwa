@@ -139,6 +139,7 @@
     "tslint-html-report": "^2.0.0",
     "tslint-jasmine-rules": "1.4.0",
     "typescript": "~2.9.2",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^2.1.5"
   }
 }
