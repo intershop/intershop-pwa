@@ -9,6 +9,6 @@ import { IconModule } from './icon.module';
 @NgModule({
   imports: [RouterModule, NgbCollapseModule, IconModule, TranslateModule.forRoot()],
   declarations: [FooterComponent],
-  exports: [FooterComponent, IconModule],
+  exports: [FooterComponent],
 })
 export class FooterModule {}

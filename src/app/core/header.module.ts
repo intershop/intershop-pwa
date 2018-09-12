@@ -68,6 +68,6 @@ import { IconModule } from './icon.module';
     HeaderStickyComponent,
     UserInformationMobileComponent,
   ],
-  exports: [HeaderComponent, HeaderCheckoutComponent, HeaderContainerComponent, IconModule],
+  exports: [HeaderComponent, HeaderCheckoutComponent, HeaderContainerComponent],
 })
 export class HeaderModule {}
