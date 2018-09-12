@@ -34,7 +34,7 @@ import {
   exports: [FontAwesomeModule],
 })
 export class IconModule {
-  constructor() {
+  static init() {
     library.add(
       faAngleDown,
       faAngleRight,
