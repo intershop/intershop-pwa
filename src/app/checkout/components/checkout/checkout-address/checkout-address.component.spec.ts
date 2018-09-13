@@ -3,10 +3,13 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { anything, spy, verify } from 'ts-mockito';
 
+import { IconModule } from '../../../../core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { Address } from '../../../../models/address/address.model';
 import { HttpError } from '../../../../models/http-error/http-error.model';
+import { User } from '../../../../models/user/user.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
@@ -41,8 +44,9 @@ describe('Checkout Address Component', () => {
           template: 'Address Component',
           inputs: ['countries', 'regions', 'titles', 'resetForm'],
         }),
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, NgbModule],
+      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, NgbModule, IconModule],
     }).compileComponents();
   }));
 
@@ -57,6 +61,7 @@ describe('Checkout Address Component', () => {
       { id: '4713', firstName: 'Susan', invoiceToAddress: false, shipToAddress: true } as Address,
       { id: '4714', firstName: 'Dave', invoiceToAddress: true, shipToAddress: false } as Address,
     ];
+    component.currentUser = { firstName: 'Patricia', lastName: 'Miller' } as User;
   });
 
   it('should be created', () => {
@@ -195,20 +200,54 @@ describe('Checkout Address Component', () => {
     expect(element.querySelector('div[data-testing-id=create-shipping-address-link]')).toBeFalsy();
   });
 
-  it('should throw createInvoiceAddress event when createCustomerInvoiceAddress is triggered', done => {
-    component.createInvoiceAddress.subscribe(() => {
-      done();
-    });
-
-    component.createCustomerInvoiceAddress(BasketMockData.getAddress());
+  it('should set isShippingAddressDeleteable to true if the user has no preferred addresses', () => {
+    const changes: SimpleChanges = {
+      addresses: new SimpleChange(undefined, component.addresses, false),
+    };
+    component.ngOnChanges(changes);
+    expect(component.isShippingAddressDeleteable).toBeTrue();
   });
 
-  it('should throw createShippingAddress event when createCustomerShippingAddress is triggered', done => {
-    component.createShippingAddress.subscribe(() => {
-      done();
-    });
+  it('should set isShippingAddressDeleteable to false if the user has a preferred invoice address', () => {
+    const changes: SimpleChanges = {
+      addresses: new SimpleChange(undefined, component.addresses, false),
+    };
+    component.currentUser.preferredInvoiceToAddress = BasketMockData.getAddress();
+    component.ngOnChanges(changes);
+    expect(component.isShippingAddressDeleteable).toBeFalse();
+  });
+
+  it('should set isShippingAddressDeleteable to false if the user has a preferred shipping address', () => {
+    const changes: SimpleChanges = {
+      addresses: new SimpleChange(undefined, component.addresses, false),
+    };
+    component.currentUser.preferredShipToAddress = BasketMockData.getAddress();
+    component.ngOnChanges(changes);
+    expect(component.isShippingAddressDeleteable).toBeFalse();
+  });
+
+  it('should throw createInvoiceAddress event when createCustomerInvoiceAddress is triggered', () => {
+    const emitter = spy(component.createInvoiceAddress);
+
+    component.createCustomerInvoiceAddress(BasketMockData.getAddress());
+
+    verify(emitter.emit(anything())).once();
+  });
+
+  it('should throw createShippingAddress event when createCustomerShippingAddress is triggered', () => {
+    const emitter = spy(component.createShippingAddress);
 
     component.createCustomerShippingAddress(BasketMockData.getAddress());
+
+    verify(emitter.emit(anything())).once();
+  });
+
+  it('should throw deleteShippingAddress event when deleteAddress is triggered', () => {
+    const emitter = spy(component.deleteShippingAddress);
+
+    component.deleteAddress(BasketMockData.getAddress());
+
+    verify(emitter.emit(anything())).once();
   });
 
   it('should collape invoice address form when cancelCreateCustomerInvoiceAddress is triggered', () => {
@@ -225,11 +264,11 @@ describe('Checkout Address Component', () => {
     expect(component.isShippingAddressFormCollapsed).toBeTrue();
   });
 
-  it('should throw countryChange event when handleCountryChange is triggered', done => {
-    component.countryChange.subscribe(() => {
-      done();
-    });
+  it('should throw countryChange event when handleCountryChange is triggered', () => {
+    const emitter = spy(component.countryChange);
 
     component.handleCountryChange('DE');
+
+    verify(emitter.emit(anything())).once();
   });
 });

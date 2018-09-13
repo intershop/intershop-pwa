@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { RegionService } from '../../../core/services/countries/region.service';
 import { getAllCountries } from '../../../core/store/countries';
+import { getLoggedInUser } from '../../../core/store/user';
 import { determineSalutations } from '../../../forms/shared/utils/form-utils';
 import { Address } from '../../../models/address/address.model';
 import { Region } from '../../../models/region/region.model';
@@ -12,6 +13,7 @@ import { LoadAddresses } from '../../store/addresses/addresses.actions';
 import {
   CreateBasketInvoiceAddress,
   CreateBasketShippingAddress,
+  DeleteBasketShippingAddress,
   UpdateBasketInvoiceAddress,
   UpdateBasketShippingAddress,
   getBasketError,
@@ -36,6 +38,7 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   addressesError$ = this.store.pipe(select(getAddressesError));
   addressesLoading$ = this.store.pipe(select(getAddressesLoading));
   countries$ = this.store.pipe(select(getAllCountries));
+  currentUser$ = this.store.pipe(select(getLoggedInUser));
 
   regionsForSelectedCountry$: Observable<Region[]>;
   titlesForSelectedCountry$: Observable<string[]>;
@@ -65,5 +68,9 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
 
   createCustomerShippingAddress(address: Address) {
     this.store.dispatch(new CreateBasketShippingAddress(address));
+  }
+
+  deleteCustomerAddress(addressId: string) {
+    this.store.dispatch(new DeleteBasketShippingAddress(addressId));
   }
 }

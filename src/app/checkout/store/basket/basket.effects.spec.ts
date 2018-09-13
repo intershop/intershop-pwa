@@ -21,6 +21,7 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { AddressService } from '../../services/address/address.service';
 import { BasketService } from '../../services/basket/basket.service';
+import { DeleteCustomerAddressFail, DeleteCustomerAddressSuccess } from '../addresses/addresses.actions';
 import { checkoutReducers } from '../checkout.system';
 
 import * as basketActions from './basket.actions';
@@ -260,6 +261,48 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteBasketShippingAddress$', () => {
+    beforeEach(() => {
+      when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(of(undefined));
+    });
+
+    it('should call the addressService for deleteBasketShippingAddress', done => {
+      const payload = 'addressId';
+      const action = new basketActions.DeleteBasketShippingAddress(payload);
+      actions$ = of(action);
+
+      effects.deleteBasketShippingAddress$.subscribe(() => {
+        verify(addressServiceMock.deleteCustomerAddress('-', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type DeleteCustomerAddressSuccess and LoadBasket', () => {
+      const payload = 'addressId';
+      const action = new basketActions.DeleteBasketShippingAddress(payload);
+      const completion1 = new DeleteCustomerAddressSuccess(payload);
+      const completion2 = new basketActions.LoadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.deleteBasketShippingAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type DeleteCustomerAddressFail', () => {
+      const payload = 'addressId';
+      when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+
+      const action = new basketActions.DeleteBasketShippingAddress(payload);
+      const completion = new DeleteCustomerAddressFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteBasketShippingAddress$).toBeObservable(expected$);
     });
   });
 

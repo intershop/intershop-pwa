@@ -6,6 +6,7 @@ import {
   CreateBasketInvoiceAddressSuccess,
   CreateBasketShippingAddress,
   CreateBasketShippingAddressSuccess,
+  DeleteBasketShippingAddress,
 } from '../basket/basket.actions';
 
 import * as fromActions from './addresses.actions';
@@ -105,6 +106,45 @@ describe('Addresses Reducer', () => {
 
         expect(state.ids).toHaveLength(1);
         expect(state.entities.test).toEqual({ id: 'test' } as Address);
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
+  describe('DeleteCustomerAddress actions', () => {
+    describe('DeleteBasketShippingAddress action', () => {
+      it('should set loading to true', () => {
+        const action = new DeleteBasketShippingAddress('addressId');
+        const state = addressesReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('DeleteCustomerAddressFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.DeleteCustomerAddressFail(error);
+        const state = addressesReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('DeleteCustomerAddressSuccess action', () => {
+      it('should delete address from store, set loading to false and reset error', () => {
+        const address = {
+          id: 'addressId',
+        } as Address;
+
+        const preAction = new CreateBasketShippingAddressSuccess(address);
+        let state = addressesReducer(initialState, preAction);
+
+        const action = new fromActions.DeleteCustomerAddressSuccess(address.id);
+        state = addressesReducer(initialState, action);
+
+        expect(state.ids).toHaveLength(0);
         expect(state.loading).toBeFalse();
       });
     });

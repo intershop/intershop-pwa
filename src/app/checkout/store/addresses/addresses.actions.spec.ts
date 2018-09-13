@@ -44,13 +44,25 @@ describe('Addresses Actions', () => {
         payload,
       });
     });
+  });
 
-    it('should create new action for LoadAddressesSuccess', () => {
-      const payload = [{ urn: '123' } as Address];
-      const action = new fromActions.LoadAddressesSuccess(payload);
+  describe('Delete Customer Address Actions', () => {
+    it('should create new action for DeleteCustomerAddressFail', () => {
+      const payload = { message: 'error' } as HttpError;
+      const action = new fromActions.DeleteCustomerAddressFail(payload);
 
       expect({ ...action }).toEqual({
-        type: fromActions.AddressActionTypes.LoadAddressesSuccess,
+        type: fromActions.AddressActionTypes.DeleteCustomerAddressFail,
+        payload,
+      });
+    });
+
+    it('should create new action for DeleteCustomerAddressSuccess', () => {
+      const payload = '123';
+      const action = new fromActions.DeleteCustomerAddressSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.DeleteCustomerAddressSuccess,
         payload,
       });
     });
