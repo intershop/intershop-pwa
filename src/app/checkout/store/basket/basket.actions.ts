@@ -20,12 +20,13 @@ export enum BasketActionTypes {
   CreateBasketInvoiceAddressSuccess = '[Basket API] Create Basket Invoice Address Success',
   UpdateBasketInvoiceAddress = '[Basket] Update Baskets Invoive Address',
   CreateBasketShippingAddress = '[Basket] Create Basket Shipping Address',
-  CreateBasketShippingAddressSuccess = '[Basket] Create Basket Shipping Address Success',
+  CreateBasketShippingAddressSuccess = '[Basket Internal] Create Basket Shipping Address Success',
   UpdateBasketShippingAddress = '[Basket] Update Baskets Shipping Address',
   UpdateBasketShippingMethod = '[Basket] Update Baskets Shipping Method',
   UpdateBasket = '[Basket Internal] Update Basket',
   UpdateBasketFail = '[Basket API] Update Basket Fail',
   UpdateBasketSuccess = '[Basket API] Update Basket Success',
+  DeleteBasketShippingAddress = '[Basket] Delete Basket Shipping Address',
   LoadBasketItems = '[Basket Internal] Load Basket Items',
   LoadBasketItemsFail = '[Basket API] Load Basket Items Fail',
   LoadBasketItemsSuccess = '[Basket API] Load Basket Items Success',
@@ -123,6 +124,10 @@ export class UpdateBasketFail implements Action {
 
 export class UpdateBasketSuccess implements Action {
   readonly type = BasketActionTypes.UpdateBasketSuccess;
+}
+export class DeleteBasketShippingAddress implements Action {
+  readonly type = BasketActionTypes.DeleteBasketShippingAddress;
+  constructor(public payload: string) {}
 }
 
 export class LoadBasketItems implements Action {
@@ -294,6 +299,7 @@ export type BasketAction =
   | UpdateBasket
   | UpdateBasketFail
   | UpdateBasketSuccess
+  | DeleteBasketShippingAddress
   | LoadBasketItems
   | LoadBasketItemsFail
   | LoadBasketItemsSuccess

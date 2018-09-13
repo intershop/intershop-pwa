@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 
 import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { Address } from '../../../models/address/address.model';
@@ -34,5 +35,14 @@ export class AddressService {
     return this.apiService
       .post(`customers/${customerId}/addresses`, address)
       .pipe(resolveLink<Address>(this.apiService));
+  }
+
+  /**
+   * Deletes an address for the given customer id. Falls back to '-' as customer id if no customer id is given
+   * @param customerId  The customer id.
+   * @param address     The address id
+   */
+  deleteCustomerAddress(customerId: string = '-', addressId: string): Observable<string> {
+    return this.apiService.delete(`customers/${customerId}/addresses/${addressId}`).pipe(mapTo(addressId));
   }
 }

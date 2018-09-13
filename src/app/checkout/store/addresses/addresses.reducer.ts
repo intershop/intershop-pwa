@@ -22,7 +22,8 @@ export function addressesReducer(state = initialState, action: AddressAction | B
   switch (action.type) {
     case AddressActionTypes.LoadAddresses:
     case BasketActionTypes.CreateBasketInvoiceAddress:
-    case BasketActionTypes.CreateBasketShippingAddress: {
+    case BasketActionTypes.CreateBasketShippingAddress:
+    case BasketActionTypes.DeleteBasketShippingAddress: {
       return {
         ...state,
         loading: true,
@@ -30,7 +31,8 @@ export function addressesReducer(state = initialState, action: AddressAction | B
     }
 
     case AddressActionTypes.LoadAddressesFail:
-    case AddressActionTypes.CreateCustomerAddressFail: {
+    case AddressActionTypes.CreateCustomerAddressFail:
+    case AddressActionTypes.DeleteCustomerAddressFail: {
       const error = action.payload;
 
       return {
@@ -56,6 +58,16 @@ export function addressesReducer(state = initialState, action: AddressAction | B
 
       return {
         ...addressAdapter.addOne(payload, state),
+        loading: false,
+        error: undefined,
+      };
+    }
+
+    case AddressActionTypes.DeleteCustomerAddressSuccess: {
+      const payload = action.payload;
+
+      return {
+        ...addressAdapter.removeOne(payload, state),
         loading: false,
         error: undefined,
       };

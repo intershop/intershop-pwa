@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { concat, forkJoin, of } from 'rxjs';
 import {
   concatMap,
+  concatMapTo,
   defaultIfEmpty,
   filter,
   last,
@@ -23,7 +24,11 @@ import { LoadProduct, getProductEntities } from '../../../shopping/store/product
 import { mapErrorToAction } from '../../../utils/operators';
 import { AddressService } from '../../services/address/address.service';
 import { BasketService } from '../../services/basket/basket.service';
-import { CreateCustomerAddressFail } from '../addresses/addresses.actions';
+import {
+  CreateCustomerAddressFail,
+  DeleteCustomerAddressFail,
+  DeleteCustomerAddressSuccess,
+} from '../addresses/addresses.actions';
 
 import * as basketActions from './basket.actions';
 import { getCurrentBasket } from './basket.selectors';
@@ -159,6 +164,21 @@ export class BasketEffects {
       this.basketService.updateBasket(basket.id, payload).pipe(
         mapTo(new basketActions.UpdateBasketSuccess()),
         mapErrorToAction(basketActions.UpdateBasketFail)
+      )
+    )
+  );
+
+  /**
+   * Deletes a basket shipping address and reloads the basket in case of success
+   */
+  @Effect()
+  deleteBasketShippingAddress$ = this.actions$.pipe(
+    ofType<basketActions.DeleteBasketShippingAddress>(basketActions.BasketActionTypes.DeleteBasketShippingAddress),
+    map(action => action.payload),
+    mergeMap(addressId =>
+      this.addressService.deleteCustomerAddress('-', addressId).pipe(
+        concatMapTo([new DeleteCustomerAddressSuccess(addressId), new basketActions.LoadBasket()]),
+        mapErrorToAction(DeleteCustomerAddressFail)
       )
     )
   );

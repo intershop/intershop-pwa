@@ -19,12 +19,14 @@ import { Basket } from '../../../../models/basket/basket.model';
 import { Country } from '../../../../models/country/country.model';
 import { HttpError } from '../../../../models/http-error/http-error.model';
 import { Region } from '../../../../models/region/region.model';
+import { User } from '../../../../models/user/user.model';
 
 /**
  * The Checkout Address Component renders the checkout address page. On this page the user can change invoice and shipping address and create a new invoice or shipping address, respectively. See also {@link CheckoutAddressPageContainerComponent}
  *
  * @example
  *<ish-checkout-address
+    [currentUser]="currentUser$ | async"
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
     [error]="basketError$ | async"
@@ -35,6 +37,7 @@ import { Region } from '../../../../models/region/region.model';
     (updateShippingAddress)="updateBasketShippingAddress($event)"
     (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
     (createShippingAddress)="createCustomerShippingAddress($event)"
+    (deleteShippingAddress)="deleteCustomerAddress($event)"
     (countryChange)="updateDataAfterCountryChange($event)"
   ></ish-checkout-address>
  */
@@ -44,6 +47,8 @@ import { Region } from '../../../../models/region/region.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
+  @Input()
+  currentUser: User;
   @Input()
   basket: Basket;
   @Input()
@@ -66,6 +71,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   createShippingAddress = new EventEmitter<Address>();
   @Output()
+  deleteShippingAddress = new EventEmitter<string>();
+  @Output()
   countryChange = new EventEmitter<string>();
 
   invoiceAddresses: Address[] = [];
@@ -79,6 +86,7 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   emptyShippingAddressOptionLabel: string;
   isShippingAddressFormCollapsed = true;
   resetShippingAddressForm = false;
+  isShippingAddressDeleteable = false;
 
   destroy$ = new Subject();
 
@@ -121,9 +129,17 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
       this.isInvoiceAddressFormCollapsed = true;
       this.isShippingAddressFormCollapsed = true;
 
-      // ToDo: reset address form components
+      // reset address form components
       this.resetInvoiceAddressForm = true;
       this.resetShippingAddressForm = true;
+
+      this.isShippingAddressDeleteable =
+        this.basket.commonShipToAddress &&
+        this.currentUser &&
+        (!this.currentUser.preferredInvoiceToAddress ||
+          this.basket.commonShipToAddress.id !== this.currentUser.preferredInvoiceToAddress.id) &&
+        (!this.currentUser.preferredShipToAddress ||
+          this.basket.commonShipToAddress.id !== this.currentUser.preferredShipToAddress.id);
     }
   }
 
@@ -188,6 +204,10 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
 
   cancelCreateCustomerShippingAddress() {
     this.isShippingAddressFormCollapsed = true;
+  }
+
+  deleteAddress(address: Address) {
+    this.deleteShippingAddress.emit(address.id);
   }
 
   handleCountryChange(countryCode: string) {

@@ -38,4 +38,13 @@ describe('Address Service', () => {
       done();
     });
   });
+
+  it("should delete an address when 'deleteCustomerAddress' is called", done => {
+    when(apiService.delete(`customers/-/addresses/addressid`)).thenReturn(of({}));
+
+    addressService.deleteCustomerAddress('-', 'addressid').subscribe(() => {
+      verify(apiService.delete(`customers/-/addresses/addressid`)).once();
+      done();
+    });
+  });
 });

@@ -146,6 +146,18 @@ describe('Basket Actions', () => {
     });
   });
 
+  describe('Delete Basket Shipping Address Actions', () => {
+    it('should create new action for DeleteBasketShippingAddress', () => {
+      const payload = 'addressId';
+      const action = new fromActions.DeleteBasketShippingAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.DeleteBasketShippingAddress,
+        payload,
+      });
+    });
+  });
+
   describe('Load Basket Items Actions', () => {
     it('should create new action for LoadBasketItems', () => {
       const payload = '123';
