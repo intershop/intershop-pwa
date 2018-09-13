@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { range } from 'lodash';
+import range from 'lodash-es/range';
 
 import { getProductEntities } from '../products';
 import { ShoppingState, getShoppingState } from '../shopping.state';
