@@ -5,6 +5,19 @@
     "stylelint-config-recess-order"
   ],
   "rules": {
-    "no-descending-specificity": null
+    "at-rule-no-vendor-prefix": true,
+    "color-named": "never",
+    "font-family-name-quotes": "always-unless-keyword",
+    "function-url-no-scheme-relative": true,
+    "function-url-quotes": "always",
+    "media-feature-name-no-vendor-prefix": true,
+    "media-feature-name-no-unknown": true,
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": true,
+    "property-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "string-quotes": "single",
+    "value-keyword-case": "lower",
+    "value-no-vendor-prefix": true
   }
 }
