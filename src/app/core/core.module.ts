@@ -68,5 +68,7 @@ export class CoreModule {
     popoverConfig.container = 'body';
 
     crosstabService.listen();
+
+    IconModule.init();
   }
 }
