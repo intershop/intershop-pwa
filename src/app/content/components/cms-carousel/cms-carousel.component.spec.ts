@@ -26,13 +26,19 @@ describe('Cms Carousel Component', () => {
     fixture = TestBed.createComponent(CMSCarouselComponent);
     component = fixture.componentInstance;
     pagelet = {
+      definitionQualifiedName: 'fq',
+      displayName: 'name',
+      id: 'id',
       configurationParameters: {
-        CSSClass: { value: 'foo-class' },
-      } as any,
-      slots: {
-        'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot': { pagelets: [] },
-      } as any,
-    } as ContentPagelet;
+        CSSClass: 'foo-class',
+      },
+      slots: [
+        {
+          definitionQualifiedName: 'fq',
+          pageletIDs: [],
+        },
+      ],
+    };
     component.pagelet = pagelet;
     element = fixture.nativeElement;
   });

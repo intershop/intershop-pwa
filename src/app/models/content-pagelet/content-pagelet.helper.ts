@@ -13,26 +13,21 @@ export class ContentPageletHelper {
     configurationParameterName: string,
     valueType?: string
   ): any {
-    if (
-      !(
-        pagelet &&
-        pagelet.configurationParameters &&
-        pagelet.configurationParameters[configurationParameterName] &&
-        pagelet.configurationParameters[configurationParameterName].value
-      )
-    ) {
+    if (!(pagelet && pagelet.configurationParameters && pagelet.configurationParameters[configurationParameterName])) {
       return;
     }
     if (valueType) {
       switch (valueType) {
         case 'boolean':
-          return pagelet.configurationParameters[configurationParameterName].value.toLowerCase().trim() === 'true';
+          return (
+            (pagelet.configurationParameters[configurationParameterName] as string).toLowerCase().trim() === 'true'
+          );
         case 'number':
-          return Number(pagelet.configurationParameters[configurationParameterName].value);
+          return Number(pagelet.configurationParameters[configurationParameterName]);
         default:
           break;
       }
     }
-    return pagelet.configurationParameters[configurationParameterName].value;
+    return pagelet.configurationParameters[configurationParameterName];
   }
 }

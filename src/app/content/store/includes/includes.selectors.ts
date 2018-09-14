@@ -1,10 +1,10 @@
 import { createSelector } from '@ngrx/store';
 
-import { ContentState, getContentState } from '../content.state';
+import { getContentState } from '../content.state';
 
 import { includesAdapter } from './includes.reducer';
 
-const getIncludesState = createSelector(getContentState, (state: ContentState) => state.includes);
+const getIncludesState = createSelector(getContentState, state => state.includes);
 
 const { selectEntities: getContentIncludeEntities } = includesAdapter.getSelectors(getIncludesState);
 

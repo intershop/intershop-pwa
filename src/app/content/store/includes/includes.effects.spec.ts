@@ -38,7 +38,7 @@ describe('Includes Effects', () => {
   describe('loadContentInclude$', () => {
     it('should send success action when loading action via service is successful', done => {
       when(contentIncludesServiceMock.getContentInclude('dummy')).thenReturn(
-        of({ displayName: 'dummy' } as ContentInclude)
+        of({ include: { displayName: 'dummy' } as ContentInclude, pagelets: [] })
       );
 
       actions$ = of(new LoadContentInclude('dummy'));
@@ -46,7 +46,7 @@ describe('Includes Effects', () => {
       effects.loadContentInclude$.subscribe((action: LoadContentIncludeSuccess) => {
         verify(contentIncludesServiceMock.getContentInclude('dummy')).once();
         expect(action.type).toEqual(IncludesActionTypes.LoadContentIncludeSuccess);
-        expect(action.payload).toHaveProperty('displayName', 'dummy');
+        expect(action.payload.include).toHaveProperty('displayName', 'dummy');
         done();
       });
     });

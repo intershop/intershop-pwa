@@ -26,17 +26,18 @@ describe('Includes Actions', () => {
     });
 
     it('should create new action for LoadContentIncludeSuccess', () => {
-      const payload = {
+      const include = {
         id: 'pwa.include',
         displayName: 'pwa.include',
         definitionQualifiedName: 'app_sf_pwa:pwa.include.pagelet2-Include',
         pagelets: [],
       } as ContentInclude;
-      const action = new fromActions.LoadContentIncludeSuccess(payload);
+      const pagelets = [];
+      const action = new fromActions.LoadContentIncludeSuccess({ include, pagelets });
 
       expect({ ...action }).toEqual({
         type: fromActions.IncludesActionTypes.LoadContentIncludeSuccess,
-        payload,
+        payload: { include, pagelets },
       });
     });
   });

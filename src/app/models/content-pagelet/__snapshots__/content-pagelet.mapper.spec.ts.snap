@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Pagelet Mapper should convert pagelet with slots and additional pagelets to multi array instance 1`] = `
+Array [
+  Object {
+    "configurationParameters": Object {
+      "key": "test",
+    },
+    "definitionQualifiedName": "domain-pagelet",
+    "displayName": "pagelet",
+    "id": "pagelet",
+    "slots": Array [
+      Object {
+        "configurationParameters": Object {},
+        "definitionQualifiedName": "quali-slot",
+        "pageletIDs": Array [
+          "pagelet-nested",
+        ],
+      },
+      Object {
+        "configurationParameters": Object {
+          "key1": "hallo",
+          "key2": Array [
+            "hallo",
+            "welt",
+          ],
+        },
+        "definitionQualifiedName": "quali-slot",
+        "pageletIDs": Array [
+          "pagelet-nested2",
+        ],
+      },
+    ],
+  },
+  Object {
+    "configurationParameters": Object {},
+    "definitionQualifiedName": "fq",
+    "displayName": "name-nested",
+    "id": "pagelet-nested",
+    "slots": Array [],
+  },
+  Object {
+    "configurationParameters": Object {
+      "key1": "test-key1",
+    },
+    "definitionQualifiedName": "domain-pagelet",
+    "displayName": "name1",
+    "id": "pagelet-nested2",
+    "slots": Array [
+      Object {
+        "configurationParameters": Object {},
+        "definitionQualifiedName": "fq-2",
+        "pageletIDs": Array [
+          "pagelet-deeply-nested",
+        ],
+      },
+    ],
+  },
+  Object {
+    "configurationParameters": Object {
+      "key3": "1",
+    },
+    "definitionQualifiedName": "fq",
+    "displayName": "name-nested",
+    "id": "pagelet-deeply-nested",
+    "slots": Array [],
+  },
+]
+`;
+
+exports[`Content Pagelet Mapper should convert pagelet with slots to single array instance 1`] = `
+Array [
+  Object {
+    "configurationParameters": Object {
+      "key": "test",
+    },
+    "definitionQualifiedName": "domain-pagelet",
+    "displayName": "pagelet",
+    "id": "pagelet",
+    "slots": Array [
+      Object {
+        "configurationParameters": Object {},
+        "definitionQualifiedName": "quali-slot",
+        "pageletIDs": Array [],
+      },
+    ],
+  },
+]
+`;
+
+exports[`Content Pagelet Mapper should convert simple pagelet to single array instance 1`] = `
+Array [
+  Object {
+    "configurationParameters": Object {
+      "key": "test",
+    },
+    "definitionQualifiedName": "domain-pagelet",
+    "displayName": "pagelet",
+    "id": "pagelet",
+    "slots": Array [],
+  },
+]
+`;

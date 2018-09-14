@@ -1,11 +1,10 @@
 import { ContentConfigurationParameterData } from '../content-configuration-parameter/content-configuration-parameter.interface';
-import { ContentPageletData } from '../content-pagelet/content-pagelet.interface';
-import { Link } from '../link/link.model';
+import { ContentSlotData } from '../content-slot/content-slot.interface';
 
-export interface ContentIncludeData {
+export interface ContentPageletData {
   definitionQualifiedName: string;
+  id: string;
   displayName: string;
-  pagelets: ContentPageletData[];
   configurationParameters?: { [name: string]: ContentConfigurationParameterData };
-  link: Link;
+  slots?: { [definitionQualifiedName: string]: ContentSlotData };
 }

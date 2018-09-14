@@ -25,7 +25,7 @@ describe('Content Slot Container', () => {
     component = fixture.componentInstance;
     slot = {
       definitionQualifiedName: 'test.slot',
-      pagelets: [],
+      pageletIDs: [],
     } as ContentSlot;
     component.slot = slot;
     element = fixture.nativeElement;

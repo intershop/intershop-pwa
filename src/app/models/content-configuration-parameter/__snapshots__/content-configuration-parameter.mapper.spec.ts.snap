@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Configuration Parameter Mapper should map to simple dictionary 1`] = `
+Object {
+  "key1": "1",
+  "key2": "hello",
+  "key3": Array [
+    "hello",
+    "world",
+  ],
+}
+`;

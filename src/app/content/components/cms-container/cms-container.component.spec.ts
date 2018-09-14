@@ -26,17 +26,20 @@ describe('Cms Container Component', () => {
     fixture = TestBed.createComponent(CMSContainerComponent);
     component = fixture.componentInstance;
     pagelet = {
+      definitionQualifiedName: 'fq',
+      displayName: 'name',
+      id: 'id',
       configurationParameters: {
-        CSSClass: { value: 'foo-class' },
-        Grid: { value: 'ExtraSmall:12,Small:6,Medium:4,Large:0' },
-      } as any,
-      slots: {
-        'app_sf_responsive_cm:slot.container.content.pagelet2-Slot': {
+        CSSClass: 'foo-class',
+        Grid: 'ExtraSmall:12,Small:6,Medium:4,Large:0',
+      },
+      slots: [
+        {
           definitionQualifiedName: 'test.slot',
-          pagelets: [{}, {}],
+          pageletIDs: [],
         },
-      } as any,
-    } as ContentPagelet;
+      ],
+    };
     component.pagelet = pagelet;
     element = fixture.nativeElement;
   });
