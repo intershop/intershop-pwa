@@ -27,6 +27,7 @@ export class ContentIncludeMapper {
     const include: ContentInclude = {
       id: data.link.title,
       displayName: data.displayName,
+      definitionQualifiedName: data.definitionQualifiedName,
       configurationParameters,
       pageletIDs,
     };

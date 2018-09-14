@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ContentSlot } from '../../../models/content-slot/content-slot.model';
+import { ContentSlotView } from '../../../models/content-view/content-views';
 
 @Component({
   selector: 'ish-content-slot',
@@ -9,5 +9,5 @@ import { ContentSlot } from '../../../models/content-slot/content-slot.model';
 })
 export class ContentSlotContainerComponent {
   @Input()
-  slot: ContentSlot;
+  slot: ContentSlotView;
 }

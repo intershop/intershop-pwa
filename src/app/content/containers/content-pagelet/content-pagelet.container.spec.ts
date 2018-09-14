@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 
 import { ContentPageletContainerComponent } from './content-pagelet.container';
 
@@ -28,8 +29,9 @@ describe('Content Pagelet Container', () => {
       configurationParameters: {
         HTMLText: 'foo',
       },
+      slots: [],
     };
-    component.pagelet = pagelet;
+    component.pagelet = createSimplePageletView(pagelet);
     element = fixture.nativeElement;
   });
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { createPageletView } from '../../../models/content-view/content-views';
 import { PipesModule } from '../../../shared/pipes.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
@@ -10,7 +10,6 @@ describe('Cms Container Component', () => {
   let component: CMSContainerComponent;
   let fixture: ComponentFixture<CMSContainerComponent>;
   let element: HTMLElement;
-  let pagelet: ContentPagelet;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,7 +24,21 @@ describe('Cms Container Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSContainerComponent);
     component = fixture.componentInstance;
-    pagelet = {
+    const slide1 = {
+      definitionQualifiedName: 'fq',
+      displayName: 'name',
+      id: 'slide1',
+      configurationParameters: {},
+      slots: [],
+    };
+    const slide2 = {
+      definitionQualifiedName: 'fq',
+      displayName: 'name',
+      id: 'slide2',
+      configurationParameters: {},
+      slots: [],
+    };
+    const pagelet = {
       definitionQualifiedName: 'fq',
       displayName: 'name',
       id: 'id',
@@ -35,12 +48,17 @@ describe('Cms Container Component', () => {
       },
       slots: [
         {
-          definitionQualifiedName: 'test.slot',
-          pageletIDs: [],
+          definitionQualifiedName: 'app_sf_responsive_cm:slot.container.content.pagelet2-Slot',
+          pageletIDs: [slide1.id, slide2.id],
+          configurationParameters: {},
         },
       ],
     };
-    component.pagelet = pagelet;
+    component.pagelet = createPageletView(pagelet.id, {
+      [pagelet.id]: pagelet,
+      [slide1.id]: slide1,
+      [slide2.id]: slide2,
+    });
     element = fixture.nativeElement;
   });
 

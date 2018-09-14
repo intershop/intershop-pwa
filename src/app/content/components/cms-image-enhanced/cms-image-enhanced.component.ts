@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
-import { ContentPageletHelper } from '../../../models/content-pagelet/content-pagelet.helper';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { ContentPageletView } from '../../../models/content-view/content-views';
 
 // tslint:disable-next-line:project-structure
 @Component({
@@ -12,9 +11,7 @@ import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.
 })
 export class CMSImageEnhancedComponent {
   @Input()
-  pagelet: ContentPagelet;
-
-  getConfigurationParameterValue = ContentPageletHelper.getConfigurationParameterValue;
+  pagelet: ContentPageletView;
 
   constructor(@Inject(STATIC_URL) private staticURL: string) {}
 

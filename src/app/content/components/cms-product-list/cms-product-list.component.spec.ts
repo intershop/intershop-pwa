@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { CMSProductListComponent } from './cms-product-list.component';
@@ -32,7 +33,7 @@ describe('Cms Product List Component', () => {
   });
 
   it('should render product list pagelet if available', () => {
-    component.pagelet = {
+    const pagelet = {
       definitionQualifiedName: 'fq',
       displayName: 'name',
       id: 'id',
@@ -42,7 +43,11 @@ describe('Cms Product List Component', () => {
         CSSClass: 'css-class',
         ListItemCSSClass: 'li-css-class',
       },
+      slots: [],
     };
+    component.pagelet = createSimplePageletView(pagelet);
+    component.ngOnChanges();
+
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });

@@ -1,12 +1,12 @@
-<div *ngIf="getConfigurationParameterValue(pagelet, 'Products') && getConfigurationParameterValue(pagelet, 'Products').length > 0" class="product-list-container" [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')">
-  <h2 *ngIf="getConfigurationParameterValue(pagelet, 'Title')">{{ getConfigurationParameterValue(pagelet, 'Title') }}</h2>
+<div *ngIf="productSKUs.length" class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
+  <h2 *ngIf="pagelet.hasParam('Title')">{{ pagelet.stringParam('Title') }}</h2>
   <div class="product-list row">
-    <div *ngFor="let product of getConfigurationParameterValue(pagelet, 'Products')"
+    <div *ngFor="let productSKU of productSKUs"
       class="product-list-item"
-      [ngClass]="getConfigurationParameterValue(pagelet, 'ListItemCSSClass')"
+      [ngClass]="pagelet.stringParam('ListItemCSSClass')"
     >
       <ish-product-tile-container
-        [productSku]="product.split('@')[0]"
+        [productSku]="productSKU"
       ></ish-product-tile-container>
     </div>
   </div>

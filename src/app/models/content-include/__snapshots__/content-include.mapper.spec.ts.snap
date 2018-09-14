@@ -4,6 +4,7 @@ exports[`Content Include Mapper should convert a complex example to complex type
 Object {
   "include": Object {
     "configurationParameters": Object {},
+    "definitionQualifiedName": "fq",
     "displayName": "name-include",
     "id": "include-id",
     "pageletIDs": Array [

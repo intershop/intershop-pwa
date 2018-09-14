@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 import { PipesModule } from '../../../shared/pipes.module';
 
 import { CMSTextComponent } from './cms-text.component';
@@ -30,12 +31,15 @@ describe('Cms Text Component', () => {
   });
 
   it('should render html text pagelet if set', () => {
-    component.pagelet = {
+    const pagelet = {
       id: 'id',
       displayName: 'name',
       definitionQualifiedName: 'fq',
       configurationParameters: { HTMLText: 'foo' },
+      slots: [],
     };
+    component.pagelet = createSimplePageletView(pagelet);
+
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });

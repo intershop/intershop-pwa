@@ -33,6 +33,7 @@ describe('Pagelets Integration', () => {
         definitionQualifiedName: 'fq',
         displayName: 'name',
         id: 'id',
+        slots: [],
       },
     ];
 

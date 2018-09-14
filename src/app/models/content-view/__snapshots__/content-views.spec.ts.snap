@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Views include view created should have a pagelet on slot view on p2 1`] = `
+Array [
+  Object {
+    "booleanParam": [Function],
+    "configParam": [Function],
+    "definitionQualifiedName": "fq",
+    "displayName": "p3",
+    "hasParam": [Function],
+    "id": "p3",
+    "numberParam": [Function],
+    "slot": [Function],
+    "stringParam": [Function],
+  },
+]
+`;
+
+exports[`Content Views include view created should have a slot view on p2 1`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "definitionQualifiedName": "fq",
+  "hasParam": [Function],
+  "numberParam": [Function],
+  "pagelets": [Function],
+  "stringParam": [Function],
+}
+`;
+
+exports[`Content Views include view created should have deepest level navigateable on tree 1`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "definitionQualifiedName": "fq",
+  "displayName": "p4",
+  "hasParam": [Function],
+  "id": "p4",
+  "numberParam": [Function],
+  "slot": [Function],
+  "stringParam": [Function],
+}
+`;
+
+exports[`Content Views include view created should have pagelets on top level 1`] = `
+Array [
+  Object {
+    "booleanParam": [Function],
+    "configParam": [Function],
+    "definitionQualifiedName": "fq",
+    "displayName": "p1",
+    "hasParam": [Function],
+    "id": "p1",
+    "numberParam": [Function],
+    "slot": [Function],
+    "stringParam": [Function],
+  },
+  Object {
+    "booleanParam": [Function],
+    "configParam": [Function],
+    "definitionQualifiedName": "fq",
+    "displayName": "p2",
+    "hasParam": [Function],
+    "id": "p2",
+    "numberParam": [Function],
+    "slot": [Function],
+    "stringParam": [Function],
+  },
+]
+`;
+
+exports[`Content Views should be able to create a view of includes 1`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "definitionQualifiedName": "fq",
+  "displayName": "name",
+  "hasParam": [Function],
+  "id": "include",
+  "numberParam": [Function],
+  "pagelets": [Function],
+  "stringParam": [Function],
+}
+`;
+
+exports[`Content Views should be able to create a view of includes 2`] = `
+Object {
+  "booleanParam": [Function],
+  "configParam": [Function],
+  "hasParam": [Function],
+  "numberParam": [Function],
+  "stringParam": [Function],
+}
+`;
