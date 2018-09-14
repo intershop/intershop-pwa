@@ -68,6 +68,11 @@
     {
       "name": "Supported video modes",
       "type": "String",
+      "value": "GoPro App|GoPro Studio"
+    },
+    {
+      "name": "Supported video modes",
+      "type": "String",
       "value": "1080p|1440p|720p|960p"
     },
     {

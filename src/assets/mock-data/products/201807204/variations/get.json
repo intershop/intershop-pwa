@@ -1,0 +1,193 @@
+{
+  "elements": [
+    {
+      "attributes": [
+        {
+          "name": "defaultVariation",
+          "type": "Boolean",
+          "value": true
+        }
+      ],
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-02",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "512GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Platinum",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-07",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "256GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Burgundy",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-01",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "256GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Platinum",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-08",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "512GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Burgundy",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-05",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "512GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Graphite Gold",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-03",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "1TB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Platinum",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-04",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "256GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Graphite Gold",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-11",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "512GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Cobalt Blue",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    },
+    {
+      "description": "Style and speed: Power through your day beautifully with up to 14.5 hours of battery life, Intel Core processor, and stunning touchscreen in a thin, light design and rich colors.",
+      "title": "Microsoft Surface Laptop",
+      "type": "VariationLink",
+      "uri": "inSPIRED-inTRONICS-Site/-/products/201807204-10",
+      "variableVariationAttributeValues": [
+        {
+          "name": "Hard drive size",
+          "type": "VariationAttribute",
+          "value": "256GB",
+          "variationAttributeId": "Attr_harddrivesize"
+        },
+        {
+          "name": "Color",
+          "type": "VariationAttribute",
+          "value": "Cobalt Blue",
+          "variationAttributeId": "Colour_of_product"
+        }
+      ]
+    }
+  ],
+  "name": "variations",
+  "type": "Variations"
+}
