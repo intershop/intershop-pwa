@@ -5,7 +5,7 @@ COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN npm install
-RUN npx webdriver-manager update --chrome --chrome.version=2.38 --gecko false
+RUN npx webdriver-manager update --chrome --versions.chrome=2.38 --gecko false
 COPY . /workspace/
 RUN npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
 RUN npm run docs
