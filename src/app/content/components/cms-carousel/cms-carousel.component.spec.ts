@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { CMSCarouselComponent } from './cms-carousel.component';
@@ -10,7 +10,6 @@ describe('Cms Carousel Component', () => {
   let component: CMSCarouselComponent;
   let fixture: ComponentFixture<CMSCarouselComponent>;
   let element: HTMLElement;
-  let pagelet: ContentPagelet;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,7 +24,7 @@ describe('Cms Carousel Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSCarouselComponent);
     component = fixture.componentInstance;
-    pagelet = {
+    const pagelet = {
       definitionQualifiedName: 'fq',
       displayName: 'name',
       id: 'id',
@@ -34,12 +33,13 @@ describe('Cms Carousel Component', () => {
       },
       slots: [
         {
+          configurationParameters: {},
           definitionQualifiedName: 'fq',
           pageletIDs: [],
         },
       ],
     };
-    component.pagelet = pagelet;
+    component.pagelet = createSimplePageletView(pagelet);
     element = fixture.nativeElement;
   });
 

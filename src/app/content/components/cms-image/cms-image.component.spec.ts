@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 
 import { CMSImageComponent } from './cms-image.component';
 
@@ -23,7 +24,7 @@ describe('Cms Image Component', () => {
     fixture = TestBed.createComponent(CMSImageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.pagelet = {
+    const pagelet = {
       definitionQualifiedName: 'fq',
       displayName: 'name',
       id: 'id',
@@ -34,7 +35,9 @@ describe('Cms Image Component', () => {
         Link: 'link://foo',
         LinkTitle: 'bar',
       },
+      slots: [],
     };
+    component.pagelet = createSimplePageletView(pagelet);
   });
 
   it('should be created', () => {

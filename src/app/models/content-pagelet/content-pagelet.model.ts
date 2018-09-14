@@ -6,5 +6,5 @@ export interface ContentPagelet {
   id: string;
   displayName: string;
   configurationParameters: ContentConfigurationParameters;
-  slots?: ContentSlot[];
+  slots: ContentSlot[];
 }

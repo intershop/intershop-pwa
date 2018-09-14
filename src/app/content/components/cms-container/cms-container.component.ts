@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
-import { ContentPageletHelper } from '../../../models/content-pagelet/content-pagelet.helper';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { ContentPageletView } from '../../../models/content-view/content-views';
 
 // tslint:disable-next-line:project-structure
 @Component({
@@ -11,23 +10,20 @@ import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.
 })
 export class CMSContainerComponent implements OnInit {
   @Input()
-  pagelet: ContentPagelet;
+  pagelet: ContentPageletView;
 
-  contentSlotPagelets: ContentPagelet[] = [];
+  contentSlotPagelets: ContentPageletView[] = [];
   containerClasses = '';
 
-  getConfigurationParameterValue = ContentPageletHelper.getConfigurationParameterValue;
-
   ngOnInit() {
-    const upperBound = this.getConfigurationParameterValue(this.pagelet, 'UpperBound', 'number');
-    this.contentSlotPagelets = upperBound
-      ? this.pagelet.slots['app_sf_responsive_cm:slot.container.content.pagelet2-Slot'].pagelets.slice(0, upperBound)
-      : this.pagelet.slots['app_sf_responsive_cm:slot.container.content.pagelet2-Slot'].pagelets;
+    let contentSlotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot').pagelets();
+    if (this.pagelet.hasParam('UpperBound')) {
+      contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));
+    }
+    this.contentSlotPagelets = contentSlotPagelets;
 
-    this.containerClasses = this.getGridCSS(this.getConfigurationParameterValue(this.pagelet, 'Grid'));
-    this.containerClasses += this.getConfigurationParameterValue(this.pagelet, 'CSSClass')
-      ? this.getConfigurationParameterValue(this.pagelet, 'CSSClass')
-      : '';
+    this.containerClasses = this.getGridCSS(this.pagelet.stringParam('Grid'));
+    this.containerClasses += this.pagelet.stringParam('CSSClass', '');
   }
 
   getGridCSS(grid: string): string {

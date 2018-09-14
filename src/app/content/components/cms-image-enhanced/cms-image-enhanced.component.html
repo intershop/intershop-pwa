@@ -1,6 +1,6 @@
-<ng-container *ngIf="getConfigurationParameterValue(pagelet, 'Link') && !(getConfigurationParameterValue(pagelet, 'LinkText')); else imageEnhanced">
-  <a [routerLink]="getRouterLink(getConfigurationParameterValue(pagelet, 'Link'))"
-    [attr.title]="getConfigurationParameterValue(pagelet, 'LinkTitle')"
+<ng-container *ngIf="pagelet.stringParam('Link') && !(pagelet.stringParam('LinkText')); else imageEnhanced">
+  <a [routerLink]="getRouterLink(pagelet.stringParam('Link'))"
+    [attr.title]="pagelet.stringParam('LinkTitle')"
     class="teaser-link"
   >
     <ng-container *ngTemplateOutlet="imageEnhanced"></ng-container>
@@ -8,33 +8,33 @@
 </ng-container>
 
 <ng-template #imageEnhanced>
-  <div class="enhanced-image-container" [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')">
+  <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
     <picture class="enhanced-image">
-      <source *ngIf="getConfigurationParameterValue(pagelet, 'ImageXS')"
-        [srcset]="getImagePath(getConfigurationParameterValue(pagelet, 'ImageXS'))" media="(max-width: 767px)"
+      <source *ngIf="pagelet.stringParam('ImageXS')"
+        [srcset]="getImagePath(pagelet.stringParam('ImageXS'))" media="(max-width: 767px)"
       >
-      <source *ngIf="getConfigurationParameterValue(pagelet, 'ImageSM')"
-        [srcset]="getImagePath(getConfigurationParameterValue(pagelet, 'ImageSM'))" media="(max-width: 991px)"
+      <source *ngIf="pagelet.stringParam('ImageSM')"
+        [srcset]="getImagePath(pagelet.stringParam('ImageSM'))" media="(max-width: 991px)"
       >
-      <source *ngIf="getConfigurationParameterValue(pagelet, 'ImageMD')"
-        [srcset]="getImagePath(getConfigurationParameterValue(pagelet, 'ImageMD'))" media="(max-width: 1199px)"
+      <source *ngIf="pagelet.stringParam('ImageMD')"
+        [srcset]="getImagePath(pagelet.stringParam('ImageMD'))" media="(max-width: 1199px)"
       >
-      <img [src]="getImagePath(getConfigurationParameterValue(pagelet, 'Image'))"
-        [attr.alt]="getConfigurationParameterValue(pagelet, 'AlternateText')"
-        [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')"
+      <img [src]="getImagePath(pagelet.stringParam('Image'))"
+        [attr.alt]="pagelet.stringParam('AlternateText')"
+        [ngClass]="pagelet.stringParam('CSSClass')"
         class="enhanced-image"
       >
     </picture>
     <div class="enhanced-image-text">
-      <h1 *ngIf="getConfigurationParameterValue(pagelet, 'Heading1')">{{ getConfigurationParameterValue(pagelet, 'Heading1') }}</h1>
-      <h2 *ngIf="getConfigurationParameterValue(pagelet, 'Heading2')">{{ getConfigurationParameterValue(pagelet, 'Heading2') }}</h2>
-      <p *ngIf="getConfigurationParameterValue(pagelet, 'Description')" class="hidden-xs" [innerHTML]="getConfigurationParameterValue(pagelet, 'Description') | safeHtml"></p>
-      <a *ngIf="getConfigurationParameterValue(pagelet, 'Link') && getConfigurationParameterValue(pagelet, 'LinkText')"
-        [routerLink]="getRouterLink(getConfigurationParameterValue(pagelet, 'Link'))"
-        [attr.title]="getConfigurationParameterValue(pagelet, 'LinkTitle')"
+      <h1 *ngIf="pagelet.stringParam('Heading1')">{{ pagelet.stringParam('Heading1') }}</h1>
+      <h2 *ngIf="pagelet.stringParam('Heading2')">{{ pagelet.stringParam('Heading2') }}</h2>
+      <p *ngIf="pagelet.stringParam('Description')" class="hidden-xs" [innerHTML]="pagelet.stringParam('Description') | safeHtml"></p>
+      <a *ngIf="pagelet.stringParam('Link') && pagelet.stringParam('LinkText')"
+        [routerLink]="getRouterLink(pagelet.stringParam('Link'))"
+        [attr.title]="pagelet.stringParam('LinkTitle')"
         class="btn btn-lg btn-primary"
       >
-        {{ getConfigurationParameterValue(pagelet, 'LinkText') }}
+        {{ pagelet.stringParam('LinkText') }}
       </a>
     </div>
   </div>

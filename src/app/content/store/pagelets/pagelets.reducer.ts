@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
-import { IncludesAction, IncludesActionTypes } from '../includes';
+import { IncludesAction, IncludesActionTypes } from '../includes/includes.actions';
 
 export interface PageletsState extends EntityState<ContentPagelet> {}
 

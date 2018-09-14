@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { ContentSlot } from '../../../models/content-slot/content-slot.model';
+import { ContentSlotView, createSlotView } from '../../../models/content-view/content-views';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { ContentSlotContainerComponent } from './content-slot.container';
@@ -9,7 +9,7 @@ describe('Content Slot Container', () => {
   let component: ContentSlotContainerComponent;
   let fixture: ComponentFixture<ContentSlotContainerComponent>;
   let element: HTMLElement;
-  let slot: ContentSlot;
+  let slot: ContentSlotView;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,10 +23,14 @@ describe('Content Slot Container', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentSlotContainerComponent);
     component = fixture.componentInstance;
-    slot = {
-      definitionQualifiedName: 'test.slot',
-      pageletIDs: [],
-    } as ContentSlot;
+    slot = createSlotView(
+      {
+        definitionQualifiedName: 'test.slot',
+        pageletIDs: [],
+        configurationParameters: {},
+      },
+      {}
+    );
     component.slot = slot;
     element = fixture.nativeElement;
   });

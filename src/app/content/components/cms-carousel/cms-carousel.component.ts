@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { ContentPageletHelper } from '../../../models/content-pagelet/content-pagelet.helper';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { ContentPageletView } from '../../../models/content-view/content-views';
 
 // tslint:disable-next-line:project-structure
 @Component({
@@ -11,26 +10,24 @@ import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.
 })
 export class CMSCarouselComponent implements OnChanges {
   @Input()
-  pagelet: ContentPagelet;
-
-  getConfigurationParameterValue = ContentPageletHelper.getConfigurationParameterValue;
+  pagelet: ContentPageletView;
 
   slideItems = 6;
   itemGridSize = 12;
-  pageletSlides: ContentPagelet[][] = [];
+  pageletSlides: ContentPageletView[][] = [];
   intervalValue = 0;
 
   ngOnChanges() {
-    if (this.getConfigurationParameterValue(this.pagelet, 'SlideItems', 'number')) {
-      this.slideItems = this.getConfigurationParameterValue(this.pagelet, 'SlideItems', 'number');
+    if (this.pagelet.hasParam('SlideItems')) {
+      this.slideItems = this.pagelet.numberParam('SlideItems');
     }
     this.itemGridSize = (12 - (12 % this.slideItems)) / this.slideItems;
     this.pageletSlides = this.generateSlides();
     this.intervalValue = this.getIntervalValue();
   }
 
-  generateSlides(): ContentPagelet[][] {
-    const slotPagelets = this.pagelet.slots['app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot'].pagelets;
+  generateSlides(): ContentPageletView[][] {
+    const slotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot').pagelets();
     let slidePagelets = [];
     const slides = [];
 
@@ -45,10 +42,8 @@ export class CMSCarouselComponent implements OnChanges {
   }
 
   getIntervalValue(): number {
-    if (this.getConfigurationParameterValue(this.pagelet, 'StartCycling', 'boolean')) {
-      return this.getConfigurationParameterValue(this.pagelet, 'SlideInterval', 'number')
-        ? this.getConfigurationParameterValue(this.pagelet, 'SlideInterval', 'number')
-        : 5000;
+    if (this.pagelet.booleanParam('StartCycling')) {
+      return this.pagelet.numberParam('SlideInterval', 5000);
     } else {
       return 0;
     }

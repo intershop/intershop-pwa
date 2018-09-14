@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 import { PipesModule } from '../../../shared/pipes.module';
 
 import { CMSImageEnhancedComponent } from './cms-image-enhanced.component';
@@ -11,7 +11,6 @@ describe('Cms Image Enhanced Component', () => {
   let component: CMSImageEnhancedComponent;
   let fixture: ComponentFixture<CMSImageEnhancedComponent>;
   let element: HTMLElement;
-  let pagelet: ContentPagelet;
   const BASE_URL = 'http://www.example.org';
 
   beforeEach(async(() => {
@@ -25,15 +24,16 @@ describe('Cms Image Enhanced Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSImageEnhancedComponent);
     component = fixture.componentInstance;
-    pagelet = {
+    const pagelet = {
       definitionQualifiedName: 'fq',
       displayName: 'name',
       id: 'id',
       configurationParameters: {
         Image: 'foo:bar.png',
       },
+      slots: [],
     };
-    component.pagelet = pagelet;
+    component.pagelet = createSimplePageletView(pagelet);
     element = fixture.nativeElement;
   });
 

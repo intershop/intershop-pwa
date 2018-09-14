@@ -1,6 +1,6 @@
-<ng-container *ngIf="getConfigurationParameterValue(pagelet, 'Link'); else image">
-  <a [routerLink]="getRouterLink(getConfigurationParameterValue(pagelet, 'Link'))"
-    [attr.title]="getConfigurationParameterValue(pagelet, 'LinkTitle')"
+<ng-container *ngIf="pagelet.stringParam('Link'); else image">
+  <a [routerLink]="getRouterLink(pagelet.stringParam('Link'))"
+    [attr.title]="pagelet.stringParam('LinkTitle')"
     class="teaser-link"
   >
     <ng-container *ngTemplateOutlet="image"></ng-container>
@@ -8,9 +8,9 @@
 </ng-container>
 
 <ng-template #image>
-  <img [src]="getImagePath(getConfigurationParameterValue(pagelet, 'Image'))"
-    [attr.alt]="getConfigurationParameterValue(pagelet, 'AlternateText')"
-    [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')"
+  <img [src]="getImagePath(pagelet.stringParam('Image'))"
+    [attr.alt]="pagelet.stringParam('AlternateText')"
+    [ngClass]="pagelet.stringParam('CSSClass')"
   >
 </ng-template>
 
