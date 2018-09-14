@@ -33,10 +33,10 @@ export function includesReducer(state = initialState, action: IncludesAction): I
     }
 
     case IncludesActionTypes.LoadContentIncludeSuccess: {
-      const loadedInclude = action.payload;
+      const { include } = action.payload;
 
       return {
-        ...includesAdapter.upsertOne(loadedInclude, state),
+        ...includesAdapter.upsertOne(include, state),
         loading: false,
       };
     }

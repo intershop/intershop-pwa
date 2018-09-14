@@ -22,10 +22,13 @@ describe('Content Pagelet Container', () => {
     fixture = TestBed.createComponent(ContentPageletContainerComponent);
     component = fixture.componentInstance;
     pagelet = {
+      definitionQualifiedName: 'fq',
+      displayName: 'name',
+      id: 'id',
       configurationParameters: {
-        HTMLText: { value: 'foo' },
-      } as any,
-    } as ContentPagelet;
+        HTMLText: 'foo',
+      },
+    };
     component.pagelet = pagelet;
     element = fixture.nativeElement;
   });

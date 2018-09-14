@@ -35,7 +35,10 @@ describe('Includes Reducer', () => {
     });
 
     it('should add include when reducing LoadContentIncludeSuccess', () => {
-      const newState = includesReducer(loadingState, new LoadContentIncludeSuccess({ id: 'dummy' } as ContentInclude));
+      const newState = includesReducer(
+        loadingState,
+        new LoadContentIncludeSuccess({ include: { id: 'dummy' } as ContentInclude, pagelets: [] })
+      );
 
       expect(newState.entities).toHaveProperty('dummy');
       expect(newState.ids).toHaveLength(1);
@@ -49,7 +52,11 @@ describe('Includes Reducer', () => {
 
     beforeEach(() => {
       IDS.forEach(
-        title => (state = includesReducer(state, new LoadContentIncludeSuccess({ id: title } as ContentInclude)))
+        title =>
+          (state = includesReducer(
+            state,
+            new LoadContentIncludeSuccess({ include: { id: title } as ContentInclude, pagelets: [] })
+          ))
       );
     });
 

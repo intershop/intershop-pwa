@@ -1,9 +1,8 @@
-import { ContentConfigurationParameter } from '../content-configuration-parameter/content-configuration-parameter.model';
-import { ContentPagelet } from '../content-pagelet/content-pagelet.model';
+import { ContentConfigurationParameters } from '../content-configuration-parameter/content-configuration-parameter.mapper';
 
 export interface ContentInclude {
   id: string;
   displayName: string;
-  pagelets: ContentPagelet[];
-  configurationParameters?: { [name: string]: ContentConfigurationParameter };
+  pageletIDs: string[];
+  configurationParameters?: ContentConfigurationParameters;
 }

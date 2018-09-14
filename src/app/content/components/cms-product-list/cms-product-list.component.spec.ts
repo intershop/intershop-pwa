@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { CMSProductListComponent } from './cms-product-list.component';
@@ -34,13 +33,16 @@ describe('Cms Product List Component', () => {
 
   it('should render product list pagelet if available', () => {
     component.pagelet = {
+      definitionQualifiedName: 'fq',
+      displayName: 'name',
+      id: 'id',
       configurationParameters: {
-        Products: { value: ['1@Domain', '2@Domain'] },
-        Title: { value: 'PageletTitle' },
-        CSSClass: { value: 'css-class' },
-        ListItemCSSClass: { value: 'li-css-class' },
-      } as any,
-    } as ContentPagelet;
+        Products: ['1@Domain', '2@Domain'],
+        Title: 'PageletTitle',
+        CSSClass: 'css-class',
+        ListItemCSSClass: 'li-css-class',
+      },
+    };
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });

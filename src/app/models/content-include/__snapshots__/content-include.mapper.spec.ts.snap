@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Include Mapper should convert a complex example to complex type 1`] = `
+Object {
+  "include": Object {
+    "configurationParameters": Object {},
+    "displayName": "name-include",
+    "id": "include-id",
+    "pageletIDs": Array [
+      "pagelet1",
+      "pagelet2",
+    ],
+  },
+  "pagelets": Array [
+    Object {
+      "configurationParameters": Object {
+        "key1": "hallo 1",
+      },
+      "definitionQualifiedName": "fq",
+      "displayName": "name1",
+      "id": "pagelet1",
+      "slots": Array [
+        Object {
+          "configurationParameters": Object {},
+          "definitionQualifiedName": "fq",
+          "pageletIDs": Array [
+            "pagelet11",
+          ],
+        },
+      ],
+    },
+    Object {
+      "configurationParameters": Object {
+        "key11": "test",
+      },
+      "definitionQualifiedName": "fq",
+      "displayName": "name11",
+      "id": "pagelet11",
+      "slots": Array [],
+    },
+    Object {
+      "configurationParameters": Object {},
+      "definitionQualifiedName": "fq",
+      "displayName": "name2",
+      "id": "pagelet2",
+      "slots": Array [],
+    },
+  ],
+}
+`;

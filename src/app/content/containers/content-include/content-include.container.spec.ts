@@ -23,7 +23,7 @@ describe('Content Include Container', () => {
       id: 'test.include',
       displayName: 'test.include',
       definitionQualifiedName: 'test.include-Include',
-      pagelets: [],
+      pageletIDs: [],
     } as ContentInclude;
 
     TestBed.configureTestingModule({
@@ -63,7 +63,7 @@ describe('Content Include Container', () => {
   describe('with content', () => {
     beforeEach(() => {
       fixture.detectChanges();
-      store$.dispatch(new LoadContentIncludeSuccess(include));
+      store$.dispatch(new LoadContentIncludeSuccess({ include, pagelets: [] }));
     });
 
     it('should have the matching include available for rendering', () => {

@@ -1,6 +1,7 @@
 // tslint:disable:ccp-no-markup-in-containers
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { ContentConfigurationParameters } from '../../../models/content-configuration-parameter/content-configuration-parameter.mapper';
 import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
 
 @Component({
@@ -12,7 +13,7 @@ export class ContentPageletContainerComponent {
   @Input()
   pagelet: ContentPagelet;
 
-  stringify(object: any): string {
+  stringify(object: ContentConfigurationParameters): string {
     return JSON.stringify(object);
   }
 }

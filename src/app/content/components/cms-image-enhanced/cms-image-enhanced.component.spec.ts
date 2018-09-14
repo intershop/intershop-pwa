@@ -26,10 +26,13 @@ describe('Cms Image Enhanced Component', () => {
     fixture = TestBed.createComponent(CMSImageEnhancedComponent);
     component = fixture.componentInstance;
     pagelet = {
+      definitionQualifiedName: 'fq',
+      displayName: 'name',
+      id: 'id',
       configurationParameters: {
-        Image: { value: 'foo:bar.png' },
-      } as any,
-    } as ContentPagelet;
+        Image: 'foo:bar.png',
+      },
+    };
     component.pagelet = pagelet;
     element = fixture.nativeElement;
   });
