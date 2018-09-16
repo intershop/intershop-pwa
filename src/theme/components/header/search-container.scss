@@ -140,28 +140,6 @@
         }
       }
     }
-
-    // Placeholder Styles
-
-    &::-webkit-input-placeholder {
-      /* WebKit browsers */
-      color: $text-color-quarternary !important;
-    }
-
-    &:-moz-placeholder {
-      /* Mozilla Firefox 4 to 18 */
-      color: $text-color-quarternary !important;
-    }
-
-    &::-moz-placeholder {
-      /* Mozilla Firefox 19+ */
-      color: $text-color-quarternary !important;
-    }
-
-    &:-ms-input-placeholder {
-      /* Internet Explorer 10+ */
-      color: $text-color-quarternary !important;
-    }
   }
 
   ul.search-suggest-results {
