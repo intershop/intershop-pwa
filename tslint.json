@@ -235,7 +235,8 @@
       { "starImport": true, "from": "\\.(?!.*(actions|selectors|keys)$).*", "filePattern": ".*src/app.*", "message": "use star imports only for specific selectors, actions and injection-keys" },
       { "starImport": true, "from": "\\.\\..*", "filePattern": ".*src/app.*", "message": "use star imports only for local files" },
       { "starImport": true, "from": "lodash.*" },
-      { "import": "^(?!range$).*", "from": "lodash.*" }
+      { "import": "^(?!range$).*", "from": "lodash.*" },
+      { "import": "CustomFormsModule", "from": "ng2-validation", "message": "This module is for the template-driven approach which we don't use." }
     ],
     "ban-types": [
       true,
