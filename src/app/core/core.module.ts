@@ -13,7 +13,6 @@ import {
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
-import { CustomFormsModule } from 'ng2-validation';
 
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { PipesModule } from '../shared/pipes.module';
@@ -37,7 +36,6 @@ export function translateFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
-    CustomFormsModule,
     RecaptchaModule.forRoot(),
     NgbDropdownModule,
     NgbCarouselModule,

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { CustomFormsModule } from 'ng2-validation';
 
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { HttpError } from '../../../models/http-error/http-error.model';
@@ -16,7 +15,7 @@ describe('Login Form Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginFormComponent],
-      imports: [FormsSharedModule, TranslateModule.forRoot(), CustomFormsModule, RouterTestingModule],
+      imports: [FormsSharedModule, TranslateModule.forRoot(), RouterTestingModule],
     }).compileComponents();
   }));
 
