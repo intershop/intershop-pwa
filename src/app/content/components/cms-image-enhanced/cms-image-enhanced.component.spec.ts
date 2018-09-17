@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
+import { createImagePageletView } from '../../../models/content-view/content-image-view';
 import { createSimplePageletView } from '../../../models/content-view/content-views';
 import { PipesModule } from '../../../shared/pipes.module';
 
@@ -33,7 +34,7 @@ describe('Cms Image Enhanced Component', () => {
       },
       slots: [],
     };
-    component.pagelet = createSimplePageletView(pagelet);
+    component.pagelet = createImagePageletView(createSimplePageletView(pagelet));
     element = fixture.nativeElement;
   });
 
