@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
 
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
+import { ContentImagePageletView, createImagePageletView } from '../../../models/content-view/content-image-view';
 import { ContentPageletView } from '../../../models/content-view/content-views';
 
 // tslint:disable-next-line:project-structure
@@ -9,48 +10,15 @@ import { ContentPageletView } from '../../../models/content-view/content-views';
   templateUrl: './cms-image.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSImageComponent {
-  @Input()
-  pagelet: ContentPageletView;
+export class CMSImageComponent implements OnChanges {
+  // tslint:disable-next-line:no-input-rename
+  @Input('pagelet')
+  private incomingPagelet: ContentPageletView;
+  pagelet: ContentImagePageletView;
 
-  constructor(@Inject(STATIC_URL) private staticURL: string) {}
+  constructor(@Inject(STATIC_URL) public staticURL: string) {}
 
-  getImagePath(configParam: string): string {
-    // TODO: the local has to be considered too
-    if (configParam.indexOf(':') > 0) {
-      return `${this.staticURL}/${configParam.split(':')[0]}/-${configParam.split(':')[1]}`;
-    }
-    return configParam;
-  }
-
-  getRouterLink(configParam: string): string {
-    const linkPrefix = configParam.split(':')[0];
-    let routerLink = '/home';
-    switch (linkPrefix) {
-      case 'product':
-        // for consistent product links it should have the default category in the route
-        routerLink = `/product/${configParam.substring(10, configParam.indexOf('@'))}`;
-        break;
-      case 'category':
-        // the configuration parameter currently only works for first level categories
-        routerLink = `/category/${configParam.substring(11, configParam.indexOf('@'))}`;
-        break;
-      case 'page':
-        // we do not yet have a '/page' route
-        routerLink = `/page/${configParam.substring(7)}`;
-        break;
-      case 'route':
-        // direct router links for the PWA
-        routerLink = `/${configParam.substring(8)}`;
-        break;
-      case 'http':
-      case 'https':
-        // use 'href' instead of 'routerLink' with external links
-        console.log('External links need handling', configParam);
-        break;
-      default:
-        console.log('Unknown link type:', configParam);
-    }
-    return routerLink;
+  ngOnChanges() {
+    this.pagelet = createImagePageletView(this.incomingPagelet);
   }
 }

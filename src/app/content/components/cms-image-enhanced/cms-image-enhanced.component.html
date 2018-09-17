@@ -1,5 +1,5 @@
-<ng-container *ngIf="pagelet.stringParam('Link') && !(pagelet.stringParam('LinkText')); else imageEnhanced">
-  <a [routerLink]="getRouterLink(pagelet.stringParam('Link'))"
+<ng-container *ngIf="pagelet && pagelet.hasParam('Link') && !(pagelet.hasParam('LinkText')); else imageEnhanced">
+  <a [routerLink]="pagelet.routerLink('Link')"
     [attr.title]="pagelet.stringParam('LinkTitle')"
     class="teaser-link"
   >
@@ -10,27 +10,27 @@
 <ng-template #imageEnhanced>
   <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
     <picture class="enhanced-image">
-      <source *ngIf="pagelet.stringParam('ImageXS')"
-        [srcset]="getImagePath(pagelet.stringParam('ImageXS'))" media="(max-width: 767px)"
+      <source *ngIf="pagelet.hasParam('ImageXS')"
+        [srcset]="pagelet.imagePath('ImageXS', staticURL)" media="(max-width: 767px)"
       >
-      <source *ngIf="pagelet.stringParam('ImageSM')"
-        [srcset]="getImagePath(pagelet.stringParam('ImageSM'))" media="(max-width: 991px)"
+      <source *ngIf="pagelet.hasParam('ImageSM')" 
+        [srcset]="pagelet.imagePath('ImageSM', staticURL)" media="(max-width: 991px)"
       >
-      <source *ngIf="pagelet.stringParam('ImageMD')"
-        [srcset]="getImagePath(pagelet.stringParam('ImageMD'))" media="(max-width: 1199px)"
+      <source *ngIf="pagelet.hasParam('ImageMD')"
+        [srcset]="pagelet.imagePath('ImageMD', staticURL)" media="(max-width: 1199px)"
       >
-      <img [src]="getImagePath(pagelet.stringParam('Image'))"
+      <img [src]="pagelet.imagePath('Image', staticURL)"
         [attr.alt]="pagelet.stringParam('AlternateText')"
         [ngClass]="pagelet.stringParam('CSSClass')"
         class="enhanced-image"
       >
     </picture>
     <div class="enhanced-image-text">
-      <h1 *ngIf="pagelet.stringParam('Heading1')">{{ pagelet.stringParam('Heading1') }}</h1>
-      <h2 *ngIf="pagelet.stringParam('Heading2')">{{ pagelet.stringParam('Heading2') }}</h2>
-      <p *ngIf="pagelet.stringParam('Description')" class="hidden-xs" [innerHTML]="pagelet.stringParam('Description') | safeHtml"></p>
-      <a *ngIf="pagelet.stringParam('Link') && pagelet.stringParam('LinkText')"
-        [routerLink]="getRouterLink(pagelet.stringParam('Link'))"
+      <h1 *ngIf="pagelet.hasParam('Heading1')">{{ pagelet.stringParam('Heading1') }}</h1>
+      <h2 *ngIf="pagelet.hasParam('Heading2')">{{ pagelet.stringParam('Heading2') }}</h2>
+      <p *ngIf="pagelet.hasParam('Description')" class="hidden-xs" [innerHTML]="pagelet.stringParam('Description') | safeHtml"></p>
+      <a *ngIf="pagelet.hasParam('Link') && pagelet.hasParam('LinkText')"
+        [routerLink]="pagelet.routerLink('Link')"
         [attr.title]="pagelet.stringParam('LinkTitle')"
         class="btn btn-lg btn-primary"
       >

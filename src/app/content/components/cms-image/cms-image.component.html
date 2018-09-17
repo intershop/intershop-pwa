@@ -1,5 +1,5 @@
-<ng-container *ngIf="pagelet.stringParam('Link'); else image">
-  <a [routerLink]="getRouterLink(pagelet.stringParam('Link'))"
+<ng-container *ngIf="pagelet && pagelet.hasParam('Link'); else image">
+  <a [routerLink]="pagelet.routerLink('Link')"
     [attr.title]="pagelet.stringParam('LinkTitle')"
     class="teaser-link"
   >
@@ -8,7 +8,7 @@
 </ng-container>
 
 <ng-template #image>
-  <img [src]="getImagePath(pagelet.stringParam('Image'))"
+  <img [src]="pagelet.imagePath('Image', staticURL)"
     [attr.alt]="pagelet.stringParam('AlternateText')"
     [ngClass]="pagelet.stringParam('CSSClass')"
   >
