@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { Basket } from '../../../models/basket/basket.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
 import { CreateOrder, getBasketError, getBasketLoading, getCurrentBasket } from '../../store/basket';
 
 @Component({
@@ -11,18 +9,12 @@ import { CreateOrder, getBasketError, getBasketLoading, getCurrentBasket } from 
   templateUrl: './checkout-review-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutReviewPageContainerComponent implements OnInit {
-  basket$: Observable<Basket>;
-  basketError$: Observable<HttpError>;
-  loading$: Observable<boolean>;
+export class CheckoutReviewPageContainerComponent {
+  basket$ = this.store.pipe(select(getCurrentBasket));
+  basketError$ = this.store.pipe(select(getBasketError));
+  loading$ = this.store.pipe(select(getBasketLoading));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.basket$ = this.store.pipe(select(getCurrentBasket));
-    this.loading$ = this.store.pipe(select(getBasketLoading));
-    this.basketError$ = this.store.pipe(select(getBasketError));
-  }
 
   /**
    * creates an order and routes to receipt page in case of success

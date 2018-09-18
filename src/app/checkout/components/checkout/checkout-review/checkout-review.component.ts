@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 import { Basket } from '../../../../models/basket/basket.model';
@@ -21,8 +20,6 @@ export class CheckoutReviewComponent implements OnInit {
 
   form: FormGroup;
   submitted = false;
-
-  constructor(private router: Router) {}
 
   ngOnInit() {
     // create t&c form

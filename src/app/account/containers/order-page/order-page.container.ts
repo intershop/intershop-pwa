@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { getSelectedOrder } from '../../../core/store/orders';
-import { OrderView } from '../../../models/order/order.model';
 
 /**
  * The Order Page Container reads order data from store and displays them using the {@link OrderPageComponent}
@@ -15,15 +13,11 @@ import { OrderView } from '../../../models/order/order.model';
   templateUrl: './order-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderPageContainerComponent implements OnInit {
-  order$: Observable<OrderView>;
+export class OrderPageContainerComponent {
+  order$ = this.store.pipe(
+    select(getSelectedOrder),
+    filter(order => !!order)
+  );
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.order$ = this.store.pipe(
-      select(getSelectedOrder),
-      filter(order => !!order)
-    );
-  }
 }

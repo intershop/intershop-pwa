@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, from, timer } from 'rxjs';
-import { delayWhen, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import { Observable, concat, of, timer } from 'rxjs';
+import { distinctUntilChanged, filter, map, mapTo, switchMap } from 'rxjs/operators';
 
 import { getCurrentBasket } from '../../../../checkout/store/basket';
-import { BasketHelper, BasketView } from '../../../../models/basket/basket.model';
+import { BasketHelper } from '../../../../models/basket/basket.model';
 
 @Component({
   selector: 'ish-mini-basket-container',
@@ -12,7 +12,7 @@ import { BasketHelper, BasketView } from '../../../../models/basket/basket.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiniBasketContainerComponent implements OnInit {
-  basket$: Observable<BasketView>;
+  basket$ = this.store.pipe(select(getCurrentBasket));
   basketAnimation$: Observable<string>;
 
   @Input()
@@ -20,13 +20,12 @@ export class MiniBasketContainerComponent implements OnInit {
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.basket$ = this.store.pipe(select(getCurrentBasket));
     this.basketAnimation$ = this.store.pipe(
       select(getCurrentBasket),
       map(a => (a && a.lineItems ? BasketHelper.getBasketItemsCount(a.lineItems) : 0)),
       distinctUntilChanged(),
       filter(a => a !== 0),
-      switchMap(() => from(['tada', '']).pipe(delayWhen(x => timer(x === '' ? 2000 : 0))))
+      switchMap(() => concat(of('tada'), timer(2000).pipe(mapTo(''))))
     );
   }
 }

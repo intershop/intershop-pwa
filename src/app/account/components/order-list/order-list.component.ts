@@ -23,10 +23,10 @@ export class OrderListComponent {
   /**
    * The maximum number of items to be displayed.
    * Use 0, if you want to display all items without any restrictions.
-   * Default: At most 30 items will be displayed
+   * Default value: see {@link OrderListContainerComponent}
    */
   @Input()
-  maxListItems = 30;
+  maxListItems: number;
 
   /**
    * Indicates whether or not the list should be displayed in a compact view (single row)

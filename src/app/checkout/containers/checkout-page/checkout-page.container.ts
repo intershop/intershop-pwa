@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { getCheckoutStep } from '../../store/viewconf';
 
@@ -8,12 +7,8 @@ import { getCheckoutStep } from '../../store/viewconf';
   templateUrl: './checkout-page.container.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CheckoutPageContainerComponent implements OnInit {
-  checkoutStep$: Observable<number>;
+export class CheckoutPageContainerComponent {
+  checkoutStep$ = this.store.pipe(select(getCheckoutStep));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.checkoutStep$ = this.store.pipe(select(getCheckoutStep));
-  }
 }
