@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 
+import { MEDIUM_BREAKPOINT_WIDTH } from '../../../../core/configurations/injection-keys';
+import { IconModule } from '../../../../core/icon.module';
 import { createCategoryView } from '../../../../models/category-view/category-view.model';
 import { Category } from '../../../../models/category/category.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
@@ -14,6 +18,7 @@ describe('Category Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
       declarations: [
         CategoryPageComponent,
         MockComponent({
@@ -23,6 +28,7 @@ describe('Category Page Component', () => {
         }),
         MockComponent({ selector: 'ish-category-list', template: 'Category List Component', inputs: ['categories'] }),
       ],
+      providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     }).compileComponents();
   }));
 

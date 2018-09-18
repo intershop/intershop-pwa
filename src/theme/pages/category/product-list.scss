@@ -345,6 +345,14 @@
   .product-tile-actions {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+
+    @media (hover: none) {
+      opacity: 1;
+    }
+
+    @media (-moz-touch-enabled) {
+      opacity: 1;
+    }
   }
 
   &:hover {
