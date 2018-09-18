@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { interval } from 'rxjs';
 import { mapTo, startWith } from 'rxjs/operators';
 
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { User } from '../../../models/user/user.model';
@@ -44,7 +45,7 @@ export class QuoteEditComponent implements OnChanges {
   @Output()
   submitQuoteRequest = new EventEmitter<void>();
   @Output()
-  updateItem = new EventEmitter<{ itemId: string; quantity: number }>();
+  updateItem = new EventEmitter<LineItemQuantity>();
   @Output()
   deleteItem = new EventEmitter<string>();
   @Output()
@@ -107,7 +108,7 @@ export class QuoteEditComponent implements OnChanges {
    * Throws updateItem event when onUpdateItem event trigggerd.
    * @param item Item id and quantity pair that should be changed
    */
-  onUpdateItem(item: { itemId: string; quantity: number }) {
+  onUpdateItem(item: LineItemQuantity) {
     this.updateItem.emit(item);
   }
 
