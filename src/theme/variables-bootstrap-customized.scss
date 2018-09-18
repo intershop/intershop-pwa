@@ -75,9 +75,7 @@ $headings-color: $text-color-primary;
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
 // Forms
-
-// $input-placeholder-color: $gray-light;
-$input-placeholder-color: $gray-500; // TODO: replace with matching gray shade
+$input-placeholder-color: $text-color-quarternary;
 
 // Dropdowns
 //

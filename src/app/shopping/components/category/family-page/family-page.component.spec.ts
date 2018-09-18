@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 
+import { MEDIUM_BREAKPOINT_WIDTH } from '../../../../core/configurations/injection-keys';
+import { IconModule } from '../../../../core/icon.module';
 import { createCategoryView } from '../../../../models/category-view/category-view.model';
 import { Category } from '../../../../models/category/category.model';
 import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
@@ -15,6 +19,7 @@ describe('Family Page Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [IconModule, NgbCollapseModule, TranslateModule.forRoot()],
       declarations: [
         FamilyPageComponent,
         MockComponent({
@@ -27,6 +32,7 @@ describe('Family Page Component', () => {
           template: 'Filter Navigation',
         }),
       ],
+      providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     }).compileComponents();
   }));
 
