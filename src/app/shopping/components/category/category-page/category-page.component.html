@@ -2,13 +2,18 @@
   <div class="row">
 
     <div class="col-md-3">
-      <div class="navigation-panel">
-        <h1>{{category.name}}</h1>
+      <h1>{{category.name}}</h1>
+      <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <ish-category-navigation
           [category]="category"
           [categoryNavigationLevel]="0"
         ></ish-category-navigation>
       </div>
+      <a class="d-md-none mobile-filter-toggle" (click)="isCollapsed = !isCollapsed">
+          {{ 'search.mobile.filter.trigger' | translate }}
+          <fa-icon *ngIf="isCollapsed" [icon]="['fas', 'angle-down']"></fa-icon>
+          <fa-icon *ngIf="!isCollapsed" [icon]="['fas', 'angle-up']"></fa-icon>
+        </a>
     </div>
 
     <div class="col-md-9">
