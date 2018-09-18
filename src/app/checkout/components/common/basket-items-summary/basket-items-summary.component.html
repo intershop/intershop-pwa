@@ -1,5 +1,5 @@
 <div *ngIf="basket?.lineItems" class="cart-summary">
-  <div *ngFor="let pli of basket.lineItems; let i = index" class="row cart-summary-checkout">
+  <div *ngFor="let pli of basket.lineItems; index as i" class="row cart-summary-checkout">
     <ng-container *ngIf="i + 1 <= collapsedItemsCount || !isCollapsed">
 
       <!-- product name and price -->

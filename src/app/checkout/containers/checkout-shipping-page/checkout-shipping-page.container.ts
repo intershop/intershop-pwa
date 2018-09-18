@@ -1,10 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { Basket } from '../../../models/basket/basket.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 import {
   LoadBasketEligibleShippingMethods,
   UpdateBasketShippingMethod,
@@ -20,20 +16,15 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutShippingPageContainerComponent implements OnInit {
-  basket$: Observable<Basket>;
-  loading$: Observable<boolean>;
-  shippingMethods$: Observable<ShippingMethod[]>;
-  basketError$: Observable<HttpError>;
+  basket$ = this.store.pipe(select(getCurrentBasket));
+  loading$ = this.store.pipe(select(getBasketLoading));
+  shippingMethods$ = this.store.pipe(select(getBasketEligibleShippingMethods));
+  basketError$ = this.store.pipe(select(getBasketError));
 
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.basket$ = this.store.pipe(select(getCurrentBasket));
-    this.loading$ = this.store.pipe(select(getBasketLoading));
-    this.basketError$ = this.store.pipe(select(getBasketError));
-
     this.store.dispatch(new LoadBasketEligibleShippingMethods());
-    this.shippingMethods$ = this.store.pipe(select(getBasketEligibleShippingMethods));
   }
 
   updateBasketShippingMethod(shippingId: string) {
