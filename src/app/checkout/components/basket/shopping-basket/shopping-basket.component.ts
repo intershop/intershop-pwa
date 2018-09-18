@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { BasketView } from '../../../../models/basket/basket.model';
 import { HttpError } from '../../../../models/http-error/http-error.model';
+import { LineItemQuantity } from '../../../../models/line-item-quantity/line-item-quantity.model';
 
 /**
  * The Shopping Basket Component displays the users basket items and cost summary.
@@ -34,7 +35,7 @@ export class ShoppingBasketComponent {
   error: HttpError;
 
   @Output()
-  updateItem = new EventEmitter<{ itemId: string; quantity: number }>();
+  updateItem = new EventEmitter<LineItemQuantity>();
   @Output()
   deleteItem = new EventEmitter<string>();
   @Output()
@@ -61,7 +62,7 @@ export class ShoppingBasketComponent {
    * Throws updateItem event when onUpdateItem event trigggerd.
    * @param item Item id and quantity pair that should be changed
    */
-  onUpdateItem(item: { itemId: string; quantity: number }) {
+  onUpdateItem(item: LineItemQuantity) {
     this.updateItem.emit(item);
   }
 

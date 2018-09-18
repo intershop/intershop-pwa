@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import {
   DeleteItemFromQuoteRequest,
@@ -45,7 +46,7 @@ export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDest
     this.store.dispatch(new DeleteItemFromQuoteRequest({ itemId: payload }));
   }
 
-  updateQuoteRequestItem(payload: { itemId: string; quantity: number }) {
+  updateQuoteRequestItem(payload: LineItemQuantity) {
     this.store.dispatch(new UpdateQuoteRequestItems([payload]));
   }
 

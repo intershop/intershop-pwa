@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { getLoggedInUser } from '../../../core/store/user';
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { User } from '../../../models/user/user.model';
 import {
@@ -34,7 +35,7 @@ export class QuoteRequestEditPageContainerComponent implements OnInit {
     this.user$ = this.store.pipe(select(getLoggedInUser));
   }
 
-  updateQuoteRequestItem(payload: { itemId: string; quantity: number }) {
+  updateQuoteRequestItem(payload: LineItemQuantity) {
     this.store.dispatch(new UpdateQuoteRequestItems([payload]));
   }
 

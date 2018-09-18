@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { AddBasketToQuoteRequest, getQuoteRequestLoading } from '../../../quoting/store/quote-request';
 import {
   DeleteBasketItem,
@@ -37,7 +38,7 @@ export class BasketPageContainerComponent implements OnInit {
     this.store.dispatch(new DeleteBasketItem(itemId));
   }
 
-  updateBasketItem(formValue: { itemId: string; quantity: number }) {
+  updateBasketItem(formValue: LineItemQuantity) {
     this.store.dispatch(new UpdateBasketItems([formValue]));
   }
 
