@@ -57,7 +57,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.local.ts"
                 }
-              ]
+              ],
+              "sourceMap": true,
+              "extractCss": true
             }
           }
         },
