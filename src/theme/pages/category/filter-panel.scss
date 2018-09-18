@@ -266,21 +266,12 @@ label {
     text-align: center;
     text-transform: uppercase;
 
-    &.collapsed {
-      .fa-angle-up {
-        &::before {
-          content: '\e114';
-        }
-      }
-    }
-
     &:hover {
       text-decoration: none;
     }
 
     .ng-fa-icon {
       display: block;
-      font-size: 12px;
     }
   }
 }
