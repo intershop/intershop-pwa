@@ -26,7 +26,7 @@
             <ish-line-item-description [pli]="pli"></ish-line-item-description>
 
             <a class="btn-tool"
-              *ngIf="editable"
+              *ngIf="!pli.isFreeGift && editable"
               [attr.data-testing-id]="'remove-pli-'+pli.id+'-element'"
               [attr.data-id]="pli.id"
               title="{{'shopping_cart.remove.item.button.label' | translate }}"
