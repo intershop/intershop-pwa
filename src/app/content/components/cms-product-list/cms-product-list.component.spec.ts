@@ -35,7 +35,6 @@ describe('Cms Product List Component', () => {
   it('should render product list pagelet if available', () => {
     const pagelet = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'id',
       configurationParameters: {
         Products: ['1@Domain', '2@Domain'],
@@ -43,7 +42,6 @@ describe('Cms Product List Component', () => {
         CSSClass: 'css-class',
         ListItemCSSClass: 'li-css-class',
       },
-      slots: [],
     };
     component.pagelet = createSimplePageletView(pagelet);
 

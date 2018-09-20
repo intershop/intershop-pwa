@@ -13,9 +13,6 @@ describe('Content Image View', () => {
       pagelet = {
         id: 'id',
         definitionQualifiedName: 'fq',
-        displayName: 'name',
-        slots: [],
-        configurationParameters: {},
       };
     });
 

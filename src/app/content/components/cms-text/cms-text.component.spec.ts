@@ -33,10 +33,8 @@ describe('Cms Text Component', () => {
   it('should render html text pagelet if set', () => {
     const pagelet = {
       id: 'id',
-      displayName: 'name',
       definitionQualifiedName: 'fq',
       configurationParameters: { HTMLText: 'foo' },
-      slots: [],
     };
     component.pagelet = createSimplePageletView(pagelet);
 

@@ -38,12 +38,10 @@ describe('Content Pagelet Container', () => {
     element = fixture.nativeElement;
     pagelet = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'id',
       configurationParameters: {
         HTMLText: 'foo',
       },
-      slots: [],
     };
   });
 

@@ -16,19 +16,16 @@ export interface ConfigParameterView {
 }
 
 export interface ContentSlotView extends ConfigParameterView {
-  definitionQualifiedName: string;
   pagelets(): ContentPageletView[];
 }
 
 export interface ContentIncludeView extends ContentSlotView {
   id: string;
-  displayName: string;
 }
 
 export interface ContentPageletView extends ConfigParameterView {
   definitionQualifiedName: string;
   id: string;
-  displayName: string;
   slot(qualifiedName: string): ContentSlotView;
 }
 
@@ -64,11 +61,12 @@ export const createPageletView = (id: string, pagelets: { [id: string]: ContentP
   return {
     definitionQualifiedName: pagelet.definitionQualifiedName,
     id: pagelet.id,
-    displayName: pagelet.displayName,
-    slot: memoize(qualifiedName =>
-      createSlotView(pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName), pagelets)
-    ),
-    ...createConfigParameterView(pagelet.configurationParameters),
+    slot: !pagelet.slots
+      ? () => undefined
+      : memoize(qualifiedName =>
+          createSlotView(pagelet.slots.find(slot => slot.definitionQualifiedName === qualifiedName), pagelets)
+        ),
+    ...createConfigParameterView(pagelet.configurationParameters || {}),
   };
 };
 
@@ -79,9 +77,8 @@ export const createSlotView = (slot: ContentSlot, pagelets: { [id: string]: Cont
   !slot
     ? undefined
     : {
-        definitionQualifiedName: slot.definitionQualifiedName,
-        pagelets: once(() => slot.pageletIDs.map(id => createPageletView(id, pagelets))),
-        ...createConfigParameterView(slot.configurationParameters),
+        pagelets: !slot.pageletIDs ? () => [] : once(() => slot.pageletIDs.map(id => createPageletView(id, pagelets))),
+        ...createConfigParameterView(slot.configurationParameters || {}),
       };
 
 export const createIncludeView = (
@@ -89,6 +86,5 @@ export const createIncludeView = (
   pagelets: { [id: string]: ContentPagelet }
 ): ContentIncludeView => ({
   id: include.id,
-  displayName: include.displayName,
   ...createSlotView(include, pagelets),
 });

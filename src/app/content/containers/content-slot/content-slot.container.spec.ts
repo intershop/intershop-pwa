@@ -26,8 +26,6 @@ describe('Content Slot Container', () => {
     slot = createSlotView(
       {
         definitionQualifiedName: 'test.slot',
-        pageletIDs: [],
-        configurationParameters: {},
       },
       {}
     );

@@ -11,12 +11,12 @@ export class ContentPageletMapper {
       throw new Error('falsy input');
     }
 
-    const { definitionQualifiedName, displayName, id } = data;
+    const { definitionQualifiedName, id } = data;
     const configurationParameters = ContentConfigurationParameterMapper.fromData(data.configurationParameters);
 
     let slots: ContentSlot[] = [];
     let pagelets: ContentPagelet[] = [];
-    if (!!data.slots) {
+    if (data.slots) {
       const deep = Object.values(data.slots).map(ContentPageletMapper.fromSlotData);
       slots = deep.map(val => val.slot);
       pagelets = deep.map(val => val.pagelets).reduce((acc, val) => [...acc, ...val]);
@@ -26,7 +26,6 @@ export class ContentPageletMapper {
       {
         configurationParameters,
         definitionQualifiedName,
-        displayName,
         id,
         slots,
       },

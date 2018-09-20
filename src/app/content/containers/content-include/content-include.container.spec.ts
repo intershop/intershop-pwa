@@ -20,9 +20,8 @@ describe('Content Include Container', () => {
   beforeEach(async(() => {
     include = {
       id: 'test.include',
-      displayName: 'test.include',
       definitionQualifiedName: 'test.include-Include',
-      pageletIDs: [],
+
       configurationParameters: {
         key: '1',
       },
@@ -44,7 +43,7 @@ describe('Content Include Container', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentIncludeContainerComponent);
     component = fixture.componentInstance;
-    component.includeId = include.displayName;
+    component.includeId = include.id;
     element = fixture.nativeElement;
   });
 
