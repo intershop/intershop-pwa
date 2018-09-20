@@ -46,7 +46,6 @@ describe('Cms Product List Component', () => {
       slots: [],
     };
     component.pagelet = createSimplePageletView(pagelet);
-    component.ngOnChanges();
 
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();

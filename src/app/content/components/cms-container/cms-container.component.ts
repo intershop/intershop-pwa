@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 
 import { ContentPageletView } from '../../../models/content-view/content-views';
 
@@ -8,14 +8,14 @@ import { ContentPageletView } from '../../../models/content-view/content-views';
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSContainerComponent implements OnInit {
+export class CMSContainerComponent implements DoCheck {
   @Input()
   pagelet: ContentPageletView;
 
   contentSlotPagelets: ContentPageletView[] = [];
   containerClasses = '';
 
-  ngOnInit() {
+  ngDoCheck() {
     let contentSlotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot').pagelets();
     if (this.pagelet.hasParam('UpperBound')) {
       contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));

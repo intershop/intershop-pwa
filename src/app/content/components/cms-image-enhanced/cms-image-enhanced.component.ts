@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
 import { ContentImagePageletView, createImagePageletView } from '../../../models/content-view/content-image-view';
-import { ContentPageletView } from '../../../models/content-view/content-views';
 
 // tslint:disable-next-line:project-structure
 @Component({
@@ -10,15 +9,16 @@ import { ContentPageletView } from '../../../models/content-view/content-views';
   templateUrl: './cms-image-enhanced.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSImageEnhancedComponent implements OnChanges {
-  // tslint:disable-next-line:no-input-rename
-  @Input('pagelet')
-  private incomingPagelet: ContentPageletView;
-  pagelet: ContentImagePageletView;
+export class CMSImageEnhancedComponent {
+  private pageletInternal: ContentImagePageletView;
 
   constructor(@Inject(STATIC_URL) public staticURL: string) {}
 
-  ngOnChanges() {
-    this.pagelet = createImagePageletView(this.incomingPagelet);
+  get pagelet(): ContentImagePageletView {
+    return this.pageletInternal;
+  }
+
+  set pagelet(newVal) {
+    this.pageletInternal = createImagePageletView(newVal);
   }
 }
