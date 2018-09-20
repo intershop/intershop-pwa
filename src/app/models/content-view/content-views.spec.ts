@@ -20,7 +20,6 @@ describe('Content Views', () => {
     include = {
       id: 'include',
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       pageletIDs: ['p1', 'p2'],
       configurationParameters,
     };
@@ -33,13 +32,16 @@ describe('Content Views', () => {
         configurationParameters: {
           key4: '2',
         },
-        slots: [],
+        slots: [
+          {
+            definitionQualifiedName: 'fq',
+          },
+        ],
       },
       {
         id: 'p2',
         displayName: 'p2',
         definitionQualifiedName: 'fq',
-        configurationParameters: {},
         slots: [
           {
             definitionQualifiedName: 'fq',
@@ -54,7 +56,6 @@ describe('Content Views', () => {
         id: 'p3',
         displayName: 'p3',
         definitionQualifiedName: 'fq',
-        configurationParameters: {},
         slots: [
           {
             definitionQualifiedName: 'fq',
@@ -72,7 +73,6 @@ describe('Content Views', () => {
         configurationParameters: {
           key7: '4',
         },
-        slots: [],
       },
     ]
       .map(pagelet => ({ [pagelet.id]: pagelet }))
@@ -217,6 +217,15 @@ describe('Content Views', () => {
       expect(view.pagelets()[0]).not.toBeUndefined();
       expect(view.pagelets()[1]).not.toBeUndefined();
       expect(view.pagelets()).toMatchSnapshot();
+    });
+
+    it('should have a slot for p1', () => {
+      expect(view.pagelets()[0]).toBeTruthy();
+      const p1 = view.pagelets()[0];
+      expect(p1.slot('fq')).toBeTruthy();
+      const slot = p1.slot('fq');
+      expect(slot.pagelets()).toBeEmpty();
+      expect(slot.configParam('no')).toBeUndefined();
     });
 
     it('should have a slot view on p2', () => {

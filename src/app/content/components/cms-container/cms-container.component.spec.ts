@@ -26,21 +26,14 @@ describe('Cms Container Component', () => {
     component = fixture.componentInstance;
     const slide1 = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'slide1',
-      configurationParameters: {},
-      slots: [],
     };
     const slide2 = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'slide2',
-      configurationParameters: {},
-      slots: [],
     };
     const pagelet = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'id',
       configurationParameters: {
         CSSClass: 'foo-class',
@@ -50,7 +43,6 @@ describe('Cms Container Component', () => {
         {
           definitionQualifiedName: 'app_sf_responsive_cm:slot.container.content.pagelet2-Slot',
           pageletIDs: [slide1.id, slide2.id],
-          configurationParameters: {},
         },
       ],
     };

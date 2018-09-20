@@ -3,7 +3,6 @@ import { ContentConfigurationParameters } from '../content-configuration-paramet
 export interface ContentInclude {
   definitionQualifiedName: string;
   id: string;
-  displayName: string;
-  pageletIDs: string[];
-  configurationParameters: ContentConfigurationParameters;
+  pageletIDs?: string[];
+  configurationParameters?: ContentConfigurationParameters;
 }

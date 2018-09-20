@@ -29,11 +29,8 @@ describe('Pagelets Integration', () => {
   it('should contain pagelets when they are loaded', () => {
     const pagelets: ContentPagelet[] = [
       {
-        configurationParameters: {},
         definitionQualifiedName: 'fq',
-        displayName: 'name',
         id: 'id',
-        slots: [],
       },
     ];
 

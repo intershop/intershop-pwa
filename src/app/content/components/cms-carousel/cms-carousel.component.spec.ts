@@ -28,14 +28,10 @@ describe('Cms Carousel Component', () => {
     const slide1 = {
       id: 'slide1',
       definitionQualifiedName: 'fq',
-      configurationParameters: {},
-      slots: [],
     };
     const slide2 = {
       id: 'slide2',
       definitionQualifiedName: 'fq',
-      configurationParameters: {},
-      slots: [],
     };
 
     const pagelet = {
@@ -47,7 +43,6 @@ describe('Cms Carousel Component', () => {
       },
       slots: [
         {
-          configurationParameters: {},
           definitionQualifiedName: 'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot',
           pageletIDs: [slide1.id, slide2.id],
         },

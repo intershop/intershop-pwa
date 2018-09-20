@@ -27,7 +27,6 @@ describe('Cms Image Component', () => {
     element = fixture.nativeElement;
     const pagelet = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'id',
       configurationParameters: {
         Image: 'foo:bar.png',
@@ -36,7 +35,6 @@ describe('Cms Image Component', () => {
         Link: 'link://foo',
         LinkTitle: 'bar',
       },
-      slots: [],
     };
     component.pagelet = createImagePageletView(createSimplePageletView(pagelet));
   });

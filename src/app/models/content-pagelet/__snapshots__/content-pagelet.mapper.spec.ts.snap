@@ -7,7 +7,6 @@ Array [
       "key": "test",
     },
     "definitionQualifiedName": "domain-pagelet",
-    "displayName": "pagelet",
     "id": "pagelet",
     "slots": Array [
       Object {
@@ -35,7 +34,6 @@ Array [
   Object {
     "configurationParameters": Object {},
     "definitionQualifiedName": "fq",
-    "displayName": "name-nested",
     "id": "pagelet-nested",
     "slots": Array [],
   },
@@ -44,7 +42,6 @@ Array [
       "key1": "test-key1",
     },
     "definitionQualifiedName": "domain-pagelet",
-    "displayName": "name1",
     "id": "pagelet-nested2",
     "slots": Array [
       Object {
@@ -61,7 +58,6 @@ Array [
       "key3": "1",
     },
     "definitionQualifiedName": "fq",
-    "displayName": "name-nested",
     "id": "pagelet-deeply-nested",
     "slots": Array [],
   },
@@ -75,7 +71,6 @@ Array [
       "key": "test",
     },
     "definitionQualifiedName": "domain-pagelet",
-    "displayName": "pagelet",
     "id": "pagelet",
     "slots": Array [
       Object {
@@ -95,7 +90,6 @@ Array [
       "key": "test",
     },
     "definitionQualifiedName": "domain-pagelet",
-    "displayName": "pagelet",
     "id": "pagelet",
     "slots": Array [],
   },

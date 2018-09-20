@@ -2,6 +2,6 @@ import { ContentConfigurationParameters } from '../content-configuration-paramet
 
 export interface ContentSlot {
   definitionQualifiedName: string;
-  pageletIDs: string[];
-  configurationParameters: ContentConfigurationParameters;
+  pageletIDs?: string[];
+  configurationParameters?: ContentConfigurationParameters;
 }

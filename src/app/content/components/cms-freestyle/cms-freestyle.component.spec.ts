@@ -33,10 +33,8 @@ describe('Cms Freestyle Component', () => {
   it('should render content if available', () => {
     const pagelet = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'id',
       configurationParameters: { HTML: '<h3>foo</h3>bar' },
-      slots: [],
     };
     component.pagelet = createSimplePageletView(pagelet);
     expect(() => fixture.detectChanges()).not.toThrow();

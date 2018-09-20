@@ -27,12 +27,10 @@ describe('Cms Image Enhanced Component', () => {
     component = fixture.componentInstance;
     const pagelet = {
       definitionQualifiedName: 'fq',
-      displayName: 'name',
       id: 'id',
       configurationParameters: {
         Image: 'foo:bar.png',
       },
-      slots: [],
     };
     component.pagelet = createImagePageletView(createSimplePageletView(pagelet));
     element = fixture.nativeElement;
