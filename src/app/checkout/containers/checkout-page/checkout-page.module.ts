@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../../../core/guards/auth.guard';
-import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { FormsAddressModule } from '../../../forms/forms-address.module';
 import { SharedAddressModule } from '../../../shared/shared-address.module';
 import { SharedBasketModule } from '../../../shared/shared-basket.module';
 import { SharedProductModule } from '../../../shared/shared-product.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { ShoppingSharedModule } from '../../../shopping/shopping-shared.module';
 import { CheckoutSharedModule } from '../../checkout-shared.module';
+import { CheckoutAddressFormComponent } from '../../components/checkout/checkout-address-form/checkout-address-form.component';
 import { CheckoutAddressComponent } from '../../components/checkout/checkout-address/checkout-address.component';
 import { CheckoutPaymentComponent } from '../../components/checkout/checkout-payment/checkout-payment/checkout-payment.component';
 import { CheckoutReceiptComponent } from '../../components/checkout/checkout-receipt/checkout-receipt.component';
@@ -30,7 +31,7 @@ import { checkoutPageRoutes } from './checkout-page.routes';
     SharedBasketModule,
     CheckoutSharedModule,
     ShoppingSharedModule,
-    FormsSharedModule,
+    FormsAddressModule,
     SharedProductModule,
     SharedAddressModule,
   ],
@@ -38,6 +39,7 @@ import { checkoutPageRoutes } from './checkout-page.routes';
     CheckoutPageContainerComponent,
     CheckoutAddressPageContainerComponent,
     CheckoutAddressComponent,
+    CheckoutAddressFormComponent,
     CheckoutShippingPageContainerComponent,
     CheckoutShippingComponent,
     CheckoutPaymentPageContainerComponent,

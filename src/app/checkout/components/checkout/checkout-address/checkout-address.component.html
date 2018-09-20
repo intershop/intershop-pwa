@@ -9,7 +9,7 @@
 
     <div *ngIf="(!basket.invoiceToAddress || !basket.commonShipToAddress) && !error" class="col-md-12">
       <div class="alert alert-danger">
-        <p>{{ 'checkout.addresses.no_Selection.error' | translate }}</p>
+        {{ 'checkout.addresses.no_Selection.error' | translate }}
       </div>
     </div>
 
@@ -34,12 +34,57 @@
           ></ish-select-address>
         </form>
       </ng-container>
+
+      <!-- Add a new Invoice to address -->
+      <div class="row" *ngIf="isInvoiceAddressFormCollapsed" data-testing-id="create-invoice-address-link">
+        <button
+          class="btn btn-link"
+          (click)="showInvoiceAddressForm()"
+          [attr.aria-expanded]="!isInvoiceAddressFormCollapsed"
+          aria-controls="collapseBasic">
+            {{ 'checkout.create_address.link' | translate }}
+        </button>
+      </div>
+
+      <div id="collapseBasic" [ngbCollapse]="isInvoiceAddressFormCollapsed" data-testing-id="create-invoice-address-form">
+         <ish-checkout-address-form
+            [regions]="regions"
+            [titles]="titles"
+            [countries]="countries"
+            [resetForm]="resetInvoiceAddressForm"
+            (save)="createCustomerInvoiceAddress($event)"
+            (cancel)="cancelCreateCustomerInvoiceAddress()"
+            (countryChange)="handleCountryChange($event)"
+          ></ish-checkout-address-form>
+      </div>
     </div>
 
     <!-- shipping address -->
     <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
       <h2> {{ 'checkout.address.shipping.label' | translate }}</h2>
+
       <div *ngIf="basket.commonShipToAddress"  class="address-box">
+        <!-- delete shipping address -->
+        <a *ngIf="isShippingAddressDeleteable"
+          class="btn-tool float-right"
+          title="{{ 'checkout.address.delete.button.label' | translate }}"
+          (click)="modalDialog.show(basket.commonShipToAddress)"
+        >
+          <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+        </a>
+        <ish-modal-dialog #modalDialog
+          [options]="{
+            titleText: 'checkout.address.delete.confirmation.heading' | translate,
+            confirmText: 'checkout.address.button.delete' | translate,
+            rejectText: 'checkout.address.button.cancel' | translate
+          }"
+          (confirmed)="deleteAddress($event)"
+        >
+          <p>{{ 'checkout.address.delete.confirmation.text' | translate }}</p>
+          <small class="help-block">{{ 'checkout.address.delete.confirmation.deletionhint' | translate }}</small>
+        </ish-modal-dialog>
+
+        <!-- Display shipping address -->
         <ish-address *ngIf="basket.commonShipToAddress.urn !== basket.invoiceToAddress.urn" [address]="basket.commonShipToAddress"></ish-address>
         <p *ngIf="basket.commonShipToAddress.urn === basket.invoiceToAddress.urn" data-testing-id="sameAsInvoice" class="section">
           {{ 'checkout.same_as_billing_address.text' | translate}}
@@ -60,6 +105,29 @@
           ></ish-select-address>
         </form>
       </ng-container>
+
+      <!-- Add a new Shipping to address -->
+      <div class="row" *ngIf="isShippingAddressFormCollapsed" data-testing-id="create-shipping-address-link">
+        <button
+          class="btn btn-link"
+          (click)="showShippingAddressForm()"
+          [attr.aria-expanded]="!isShippingAddressFormCollapsed"
+          aria-controls="collapseBasic">
+            {{ 'checkout.create_address.link' | translate }}
+        </button>
+      </div>
+
+      <div id="collapseBasic" [ngbCollapse]="isShippingAddressFormCollapsed" data-testing-id="create-shipping-address-form">
+         <ish-checkout-address-form
+            [regions]="regions"
+            [titles]="titles"
+            [countries]="countries"
+            [resetForm]="resetShippingAddressForm"
+            (save)="createCustomerShippingAddress($event)"
+            (cancel)="cancelCreateCustomerShippingAddress()"
+            (countryChange)="handleCountryChange($event)"
+          ></ish-checkout-address-form>
+      </div>
     </div>
 
     <!-- Cart Summary -->

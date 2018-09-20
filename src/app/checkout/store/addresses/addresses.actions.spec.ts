@@ -34,6 +34,40 @@ describe('Addresses Actions', () => {
     });
   });
 
+  describe('Create Customer Address Actions', () => {
+    it('should create new action for CreateCustomerAddressFail', () => {
+      const payload = { message: 'error' } as HttpError;
+      const action = new fromActions.CreateCustomerAddressFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.CreateCustomerAddressFail,
+        payload,
+      });
+    });
+  });
+
+  describe('Delete Customer Address Actions', () => {
+    it('should create new action for DeleteCustomerAddressFail', () => {
+      const payload = { message: 'error' } as HttpError;
+      const action = new fromActions.DeleteCustomerAddressFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.DeleteCustomerAddressFail,
+        payload,
+      });
+    });
+
+    it('should create new action for DeleteCustomerAddressSuccess', () => {
+      const payload = '123';
+      const action = new fromActions.DeleteCustomerAddressSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.DeleteCustomerAddressSuccess,
+        payload,
+      });
+    });
+  });
+
   describe('Reset Addresses Action', () => {
     it('should create new action for Reset Addresses', () => {
       const action = new fromActions.ResetAddresses();

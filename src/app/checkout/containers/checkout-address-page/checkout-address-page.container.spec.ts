@@ -21,7 +21,7 @@ describe('Checkout Address Page Container', () => {
         MockComponent({
           selector: 'ish-checkout-address',
           template: 'Checkout Address Component',
-          inputs: ['basket', 'addresses', 'error'],
+          inputs: ['currentUser', 'basket', 'addresses', 'error', 'countries', 'regions', 'titles'],
         }),
       ],
 
@@ -45,5 +45,10 @@ describe('Checkout Address Page Container', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should render checkout address component on page', () => {
+    fixture.detectChanges();
+    expect(element.querySelector('ish-checkout-address')).toBeTruthy();
   });
 });

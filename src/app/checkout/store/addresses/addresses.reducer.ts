@@ -2,6 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
 import { Address } from '../../../models/address/address.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { BasketAction, BasketActionTypes } from '../basket';
 
 import { AddressAction, AddressActionTypes } from './addresses.actions';
 
@@ -17,16 +18,21 @@ export const initialState: AddressesState = addressAdapter.getInitialState({
   error: undefined,
 });
 
-export function addressesReducer(state = initialState, action: AddressAction): AddressesState {
+export function addressesReducer(state = initialState, action: AddressAction | BasketAction): AddressesState {
   switch (action.type) {
-    case AddressActionTypes.LoadAddresses: {
+    case AddressActionTypes.LoadAddresses:
+    case BasketActionTypes.CreateBasketInvoiceAddress:
+    case BasketActionTypes.CreateBasketShippingAddress:
+    case BasketActionTypes.DeleteBasketShippingAddress: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case AddressActionTypes.LoadAddressesFail: {
+    case AddressActionTypes.LoadAddressesFail:
+    case AddressActionTypes.CreateCustomerAddressFail:
+    case AddressActionTypes.DeleteCustomerAddressFail: {
       const error = action.payload;
 
       return {
@@ -43,6 +49,27 @@ export function addressesReducer(state = initialState, action: AddressAction): A
         ...addressAdapter.addAll(loadedAddresses, state),
         error: undefined,
         loading: false,
+      };
+    }
+
+    case BasketActionTypes.CreateBasketInvoiceAddressSuccess:
+    case BasketActionTypes.CreateBasketShippingAddressSuccess: {
+      const payload = action.payload;
+
+      return {
+        ...addressAdapter.addOne(payload, state),
+        loading: false,
+        error: undefined,
+      };
+    }
+
+    case AddressActionTypes.DeleteCustomerAddressSuccess: {
+      const payload = action.payload;
+
+      return {
+        ...addressAdapter.removeOne(payload, state),
+        loading: false,
+        error: undefined,
       };
     }
 
