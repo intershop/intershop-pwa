@@ -20,6 +20,11 @@ export const accountPageRoutes: Routes = [
         loadChildren: '../profile-settings-page/profile-settings-page.module#ProfileSettingsPageModule',
       },
       {
+        path: 'addresses',
+        data: { breadcrumbData: [{ key: 'account.saved_addresses.link' }] },
+        loadChildren: '../account-addresses-page/account-addresses-page.module#AccountAddressesPageModule',
+      },
+      {
         path: 'orders',
         data: { breadcrumbData: [{ key: 'account.order_history.link' }] },
         loadChildren: '../order-history-page/order-history-page.module#OrderHistoryPageModule',
