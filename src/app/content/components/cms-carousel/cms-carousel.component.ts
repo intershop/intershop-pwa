@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 
 import { ContentPageletView } from '../../../models/content-view/content-views';
 
@@ -8,7 +8,7 @@ import { ContentPageletView } from '../../../models/content-view/content-views';
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CMSCarouselComponent implements OnChanges {
+export class CMSCarouselComponent implements DoCheck {
   @Input()
   pagelet: ContentPageletView;
 
@@ -17,7 +17,7 @@ export class CMSCarouselComponent implements OnChanges {
   pageletSlides: ContentPageletView[][] = [];
   intervalValue = 0;
 
-  ngOnChanges() {
+  ngDoCheck() {
     if (this.pagelet.hasParam('SlideItems')) {
       this.slideItems = this.pagelet.numberParam('SlideItems');
     }
@@ -28,6 +28,7 @@ export class CMSCarouselComponent implements OnChanges {
 
   generateSlides(): ContentPageletView[][] {
     const slotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot').pagelets();
+
     let slidePagelets = [];
     const slides = [];
 
@@ -38,6 +39,7 @@ export class CMSCarouselComponent implements OnChanges {
         slidePagelets = [];
       }
     });
+
     return slides;
   }
 

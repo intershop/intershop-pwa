@@ -23,6 +23,38 @@ exports[`Cms Carousel Component should be created 1`] = `
           class="carousel-inner"
         >
           
+          <div
+            class="carousel-item active"
+          >
+            
+            <div
+              class="row"
+            >
+              
+              
+              <div
+                class="col-sm-6"
+                ng-reflect-ng-class="col-sm-6"
+              >
+                <ish-content-pagelet
+                  ng-reflect-pagelet="[object Object]"
+                >
+                  Content Pagelet
+                </ish-content-pagelet>
+              </div>
+              
+              <div
+                class="col-sm-6"
+                ng-reflect-ng-class="col-sm-6"
+              >
+                <ish-content-pagelet
+                  ng-reflect-pagelet="[object Object]"
+                >
+                  Content Pagelet
+                </ish-content-pagelet>
+              </div>
+            </div>
+          </div>
         </div>
         
         
