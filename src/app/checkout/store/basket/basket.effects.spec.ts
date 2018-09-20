@@ -19,7 +19,9 @@ import { Product } from '../../../models/product/product.model';
 import { LoadProduct, LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
+import { AddressService } from '../../services/address/address.service';
 import { BasketService } from '../../services/basket/basket.service';
+import { DeleteCustomerAddressFail, DeleteCustomerAddressSuccess } from '../addresses/addresses.actions';
 import { checkoutReducers } from '../checkout.system';
 
 import * as basketActions from './basket.actions';
@@ -29,6 +31,7 @@ describe('Basket Effects', () => {
   let actions$: Observable<Action>;
   let basketServiceMock: BasketService;
   let orderServiceMock: OrderService;
+  let addressServiceMock: AddressService;
   let effects: BasketEffects;
   let routerMock: Router;
   let store$: Store<{}>;
@@ -37,6 +40,7 @@ describe('Basket Effects', () => {
     routerMock = mock(Router);
     basketServiceMock = mock(BasketService);
     orderServiceMock = mock(OrderService);
+    addressServiceMock = mock(AddressService);
 
     TestBed.configureTestingModule({
       imports: [
@@ -50,6 +54,7 @@ describe('Basket Effects', () => {
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
+        { provide: AddressService, useFactory: () => instance(addressServiceMock) },
         { provide: Router, useFactory: () => instance(routerMock) },
       ],
     });
@@ -92,6 +97,82 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createCustomerInvoiceAddress$', () => {
+    beforeEach(() => {
+      when(addressServiceMock.createCustomerAddress('-', anything())).thenReturn(of(BasketMockData.getAddress()));
+    });
+    it('should call the addressService for createCustomerInvoiceAddress', done => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketInvoiceAddress(payload);
+      actions$ = of(action);
+
+      effects.createCustomerAddressForBasket$.subscribe(() => {
+        verify(addressServiceMock.createCustomerAddress('-', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to Action createCustomerInvoiceAddressSuccess', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketInvoiceAddress(payload);
+      const completion = new basketActions.CreateBasketInvoiceAddressSuccess(BasketMockData.getAddress());
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createCustomerAddressForBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketWithNewInvoiceAddress$', () => {
+    it('should map to Action UpdateBasketInvoiceAddress', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketInvoiceAddressSuccess(payload);
+      const completion = new basketActions.UpdateBasketInvoiceAddress(BasketMockData.getAddress().id);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketWithNewAddress$).toBeObservable(expected$);
+    });
+  });
+
+  describe('createCustomerShippingAddress$', () => {
+    beforeEach(() => {
+      when(addressServiceMock.createCustomerAddress('-', anything())).thenReturn(of(BasketMockData.getAddress()));
+    });
+    it('should call the addressService for createCustomerShippingAddress', done => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketShippingAddress(payload);
+      actions$ = of(action);
+
+      effects.createCustomerAddressForBasket$.subscribe(() => {
+        verify(addressServiceMock.createCustomerAddress('-', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to Action createCustomerShippingAddressSuccess', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketShippingAddress(payload);
+      const completion = new basketActions.CreateBasketShippingAddressSuccess(BasketMockData.getAddress());
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.createCustomerAddressForBasket$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketWithNewShippingAddress$', () => {
+    it('should map to Action UpdateBasketShippingAddress', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.CreateBasketShippingAddressSuccess(payload);
+      const completion = new basketActions.UpdateBasketShippingAddress(BasketMockData.getAddress().id);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketWithNewAddress$).toBeObservable(expected$);
     });
   });
 
@@ -180,6 +261,48 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
+    });
+  });
+
+  describe('deleteBasketShippingAddress$', () => {
+    beforeEach(() => {
+      when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(of(undefined));
+    });
+
+    it('should call the addressService for deleteBasketShippingAddress', done => {
+      const payload = 'addressId';
+      const action = new basketActions.DeleteBasketShippingAddress(payload);
+      actions$ = of(action);
+
+      effects.deleteBasketShippingAddress$.subscribe(() => {
+        verify(addressServiceMock.deleteCustomerAddress('-', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type DeleteCustomerAddressSuccess and LoadBasket', () => {
+      const payload = 'addressId';
+      const action = new basketActions.DeleteBasketShippingAddress(payload);
+      const completion1 = new DeleteCustomerAddressSuccess(payload);
+      const completion2 = new basketActions.LoadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.deleteBasketShippingAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type DeleteCustomerAddressFail', () => {
+      const payload = 'addressId';
+      when(addressServiceMock.deleteCustomerAddress(anyString(), anyString())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+
+      const action = new basketActions.DeleteBasketShippingAddress(payload);
+      const completion = new DeleteCustomerAddressFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.deleteBasketShippingAddress$).toBeObservable(expected$);
     });
   });
 

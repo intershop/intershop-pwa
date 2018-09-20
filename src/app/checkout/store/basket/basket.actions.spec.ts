@@ -42,6 +42,50 @@ describe('Basket Actions', () => {
     });
   });
 
+  describe('Create Basket Invoice Address Actions', () => {
+    it('should create new action for CreateBasketInvoiceAddress', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new fromActions.CreateBasketInvoiceAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateBasketInvoiceAddress,
+        payload,
+      });
+    });
+
+    it('should create new action for CreateBasketInvoiceAddressSuccess', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new fromActions.CreateBasketInvoiceAddressSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateBasketInvoiceAddressSuccess,
+        payload,
+      });
+    });
+  });
+
+  describe('Create Basket Shipping Address Actions', () => {
+    it('should create new action for CreateBasketShippingAddress', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new fromActions.CreateBasketShippingAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateBasketShippingAddress,
+        payload,
+      });
+    });
+
+    it('should create new action for CreateBasketShippingAddressSuccess', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new fromActions.CreateBasketShippingAddressSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.CreateBasketShippingAddressSuccess,
+        payload,
+      });
+    });
+  });
+
   describe('Update Basket Actions', () => {
     it('should create new action for UpdateBasketInvoiceAddress', () => {
       const payload = '123';
@@ -98,6 +142,18 @@ describe('Basket Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.BasketActionTypes.UpdateBasketSuccess,
+      });
+    });
+  });
+
+  describe('Delete Basket Shipping Address Actions', () => {
+    it('should create new action for DeleteBasketShippingAddress', () => {
+      const payload = 'addressId';
+      const action = new fromActions.DeleteBasketShippingAddress(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.BasketActionTypes.DeleteBasketShippingAddress,
+        payload,
       });
     });
   });

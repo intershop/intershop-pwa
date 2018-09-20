@@ -2,12 +2,20 @@
   <h1>{{ 'checkout.addresses.heading' | translate }}</h1>
 
   <ish-checkout-address
+    [currentUser]="currentUser$ | async"
     [basket]="basket$ | async"
     [addresses]="addresses$ | async"
-    [error]="basketError$ | async"
+    [error]="(basketError$ | async) || (addressesError$ | async)"
+    [countries]="countries$ | async"
+    [regions]="regionsForSelectedCountry$ | async"
+    [titles]="titlesForSelectedCountry$ | async"
     (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
     (updateShippingAddress)="updateBasketShippingAddress($event)"
+    (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
+    (createShippingAddress)="createCustomerShippingAddress($event)"
+    (deleteShippingAddress)="deleteCustomerAddress($event)"
+    (countryChange)="updateDataAfterCountryChange($event)"
   ></ish-checkout-address>
 
-  <ish-loading *ngIf="loading$ | async"></ish-loading>
+  <ish-loading *ngIf="(basketLoading$ | async) || (addressesLoading$ | async)"></ish-loading>
 </div>
