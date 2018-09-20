@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { Link } from '../../../models/link/link.model';
 import { Order } from '../../../models/order/order.model';
 import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
@@ -151,7 +152,7 @@ export class AddQuoteToBasketSuccess implements Action {
 
 export class UpdateBasketItems implements Action {
   readonly type = BasketActionTypes.UpdateBasketItems;
-  constructor(public payload: { itemId: string; quantity: number }[]) {}
+  constructor(public payload: LineItemQuantity[]) {}
 }
 
 export class UpdateBasketItemsFail implements Action {

@@ -5,6 +5,7 @@ import { concatMap, filter, map, mapTo, shareReplay, take } from 'rxjs/operators
 
 import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { Link } from '../../../models/link/link.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
@@ -205,7 +206,7 @@ export class QuoteRequestService {
    * @param item            The item id and quantity pair to be updated
    * @returns               The id of the updated quote request
    */
-  updateQuoteRequestItem(quoteRequestId: string, item: { itemId: string; quantity: number }): Observable<string> {
+  updateQuoteRequestItem(quoteRequestId: string, item: LineItemQuantity): Observable<string> {
     const body = {
       quantity: {
         value: item.quantity,

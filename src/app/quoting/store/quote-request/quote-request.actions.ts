@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
@@ -179,7 +180,7 @@ export class AddBasketToQuoteRequestSuccess implements Action {
 
 export class UpdateQuoteRequestItems implements Action {
   readonly type = QuoteRequestActionTypes.UpdateQuoteRequestItems;
-  constructor(public payload: { itemId: string; quantity: number }[]) {}
+  constructor(public payload: LineItemQuantity[]) {}
 }
 
 export class UpdateQuoteRequestItemsFail implements Action {

@@ -28,7 +28,7 @@
       <a class="breadcrumbs-list-link" routerLink="/account">{{ 'account.my_account.link' | translate }}</a><span class="breadcrumb-list-separator">{{ separator }}</span>
     </li>
 
-    <li *ngFor="let item of trail; let index = index;" class="breadcrumbs-list">
+    <li *ngFor="let item of trail; index as index;" class="breadcrumbs-list">
       <a *ngIf="item.link" [routerLink]="item.link" class="breadcrumbs-list-link">{{ item.text || (item.key | translate) }}</a>
       <ng-container *ngIf="!item.link">{{ item.text || (item.key | translate) }}</ng-container>
       <span *ngIf="index < trail.length - 1" class="breadcrumb-list-separator">{{ separator }}</span>

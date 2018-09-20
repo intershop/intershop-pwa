@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -45,7 +44,7 @@ describe('Checkout Review Component', () => {
           inputs: ['form', 'controlName', 'errorMessages'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

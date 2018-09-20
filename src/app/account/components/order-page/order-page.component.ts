@@ -11,7 +11,7 @@ import { OrderView } from '../../../models/order/order.model';
 @Component({
   selector: 'ish-order-page',
   templateUrl: './order-page.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderPageComponent {
   @Input()
