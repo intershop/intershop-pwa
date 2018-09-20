@@ -1,10 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { Basket } from '../../../models/basket/basket.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
 import {
   LoadBasketEligiblePaymentMethods,
   SetBasketPayment,
@@ -20,20 +16,15 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutPaymentPageContainerComponent implements OnInit {
-  basket$: Observable<Basket>;
-  loading$: Observable<boolean>;
-  paymentMethods$: Observable<PaymentMethod[]>;
-  basketError$: Observable<HttpError>;
+  basket$ = this.store.pipe(select(getCurrentBasket));
+  loading$ = this.store.pipe(select(getBasketLoading));
+  paymentMethods$ = this.store.pipe(select(getBasketEligiblePaymentMethods));
+  basketError$ = this.store.pipe(select(getBasketError));
 
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.basket$ = this.store.pipe(select(getCurrentBasket));
-    this.loading$ = this.store.pipe(select(getBasketLoading));
-    this.basketError$ = this.store.pipe(select(getBasketError));
-
     this.store.dispatch(new LoadBasketEligiblePaymentMethods());
-    this.paymentMethods$ = this.store.pipe(select(getBasketEligiblePaymentMethods));
   }
 
   updateBasketPaymentMethod(paymentName: string) {

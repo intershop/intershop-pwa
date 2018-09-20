@@ -9,7 +9,7 @@
     <div class="list-header-item col-sm-1">&nbsp;</div>
   </div>
   <div class="list-body">
-    <ng-container *ngFor="let order of orders; let i = index">
+    <ng-container *ngFor="let order of orders; index as i">
       <div *ngIf="!maxListItems || i < maxListItems" class="list-item-row-big list-item-row d-flex flex-row flex-wrap">
 
         <!-- Creation Date -->
@@ -22,14 +22,14 @@
 
         <!-- Details -->
         <div class="col-2 col-md-1 order-md-12 list-item text-right">
-          <a routerLink="/account/orders/{{ order.id }}">{{ 'account.order.view_this_order.link' | translate }}</a>
+          <a [routerLink]="'/account/orders/' + order.id">{{ 'account.order.view_this_order.link' | translate }}</a>
         </div>
 
         <!-- Order No -->
         <div class="col-12 col-md-2 order-md-4 list-item">
           <label class="d-xl-none d-lg-none d-md-none control-label">
             {{ 'account.orderlist.orderDetails.orderNo.label' | translate }}</label>
-            <a routerLink="/account/orders/{{ order.id }}">{{ order.documentNo }}</a>
+            <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
         </div>
 
         <!-- Order items count -->

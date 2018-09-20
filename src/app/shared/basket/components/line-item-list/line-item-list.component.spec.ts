@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IconModule } from '../../../../core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
+import { LineItemQuantity } from '../../../../models/line-item-quantity/line-item-quantity.model';
 import { Price } from '../../../../models/price/price.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { PipesModule } from '../../../pipes.module';
@@ -79,7 +80,7 @@ describe('Line Item List Component', () => {
   });
 
   it('should throw updateItem event when form group item changes', done => {
-    let firedItem = {} as { itemId: string; quantity: number };
+    let firedItem = {} as LineItemQuantity;
     component.lineItems = [
       {
         id: 'IID',

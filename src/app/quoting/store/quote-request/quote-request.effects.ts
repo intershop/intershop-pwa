@@ -8,6 +8,7 @@ import { concatMap, defaultIfEmpty, filter, map, mapTo, mergeMap, tap, withLates
 
 import { getCurrentBasket } from '../../../checkout/store/basket';
 import { UserActionTypes, getUserAuthorized } from '../../../core/store/user';
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
@@ -330,11 +331,11 @@ export class QuoteRequestEffects {
    * @returns                     An array of filtered itemId and quantity pairs.
    */
   filterQuoteRequestsForQuantityChanges(
-    payloadItems: { itemId: string; quantity: number }[],
+    payloadItems: LineItemQuantity[],
     selectedQuoteRequest: QuoteRequest
-  ): { itemId: string; quantity: number }[] {
+  ): LineItemQuantity[] {
     const quoteRequestItems = selectedQuoteRequest.items;
-    const updatedItems: { itemId: string; quantity: number }[] = [];
+    const updatedItems: LineItemQuantity[] = [];
     if (quoteRequestItems) {
       for (const quoteRequestItem of quoteRequestItems as QuoteRequestItem[]) {
         for (const item of payloadItems) {

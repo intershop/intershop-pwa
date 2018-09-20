@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 
 /**
@@ -41,7 +42,7 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
   @Output()
   submitQuoteRequest = new EventEmitter<void>();
   @Output()
-  updateItem = new EventEmitter<{ itemId: string; quantity: number }>();
+  updateItem = new EventEmitter<LineItemQuantity>();
   @Output()
   deleteItem = new EventEmitter<string>();
 
@@ -74,7 +75,7 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
    * Throws updateItem event when onUpdateItem event trigggerd.
    * @param item Item id and quantity pair that should be changed
    */
-  onUpdateItem(item: { itemId: string; quantity: number }) {
+  onUpdateItem(item: LineItemQuantity) {
     this.updateItem.emit(item);
   }
 

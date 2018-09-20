@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
 import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
+import { LineItemQuantity } from '../../../../models/line-item-quantity/line-item-quantity.model';
 import { Price } from '../../../../models/price/price.model';
 import { ProductHelper } from '../../../../models/product/product.model';
 
@@ -36,7 +37,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
   total: Price;
 
   @Output()
-  updateItem = new EventEmitter<{ itemId: string; quantity: number }>();
+  updateItem = new EventEmitter<LineItemQuantity>();
   @Output()
   deleteItem = new EventEmitter<string>();
 
@@ -95,7 +96,7 @@ export class LineItemListComponent implements OnChanges, OnDestroy {
    * Throws updateItem event when item quantity was changed.
    * @param item ItemId and quantity pair that should be updated
    */
-  onUpdateItem(item: { itemId: string; quantity: number }) {
+  onUpdateItem(item: LineItemQuantity) {
     this.updateItem.emit(item);
   }
 
