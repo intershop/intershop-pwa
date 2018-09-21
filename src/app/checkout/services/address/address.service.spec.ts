@@ -39,6 +39,19 @@ describe('Address Service', () => {
     });
   });
 
+  it("should update an address when 'updateCustomerAddress' is called", done => {
+    const newAddress = BasketMockData.getAddress();
+    newAddress.firstName = 'John';
+
+    when(apiService.put(`customers/-/addresses/${newAddress.id}`, anything())).thenReturn(of(newAddress));
+
+    addressService.updateCustomerAddress('-', newAddress).subscribe(data => {
+      verify(apiService.put(`customers/-/addresses/${newAddress.id}`, anything())).once();
+      expect(data).toHaveProperty('firstName', 'John');
+      done();
+    });
+  });
+
   it("should delete an address when 'deleteCustomerAddress' is called", done => {
     when(apiService.delete(`customers/-/addresses/addressid`)).thenReturn(of({}));
 

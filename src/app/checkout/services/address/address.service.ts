@@ -41,6 +41,17 @@ export class AddressService {
   }
 
   /**
+   * Updates an address for the given customer id. Falls back to '-' as customer id if no customer id is given
+   * @param customerId  The customer id.
+   * @param address     The address
+   */
+  updateCustomerAddress(customerId: string = '-', address: Address): Observable<Address> {
+    return this.apiService
+      .put(`customers/${customerId}/addresses/${address.id}`, address)
+      .pipe(map(AddressMapper.fromData));
+  }
+
+  /**
    * Deletes an address for the given customer id. Falls back to '-' as customer id if no customer id is given
    * @param customerId  The customer id.
    * @param address     The address id
