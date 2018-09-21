@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { map, mapTo } from 'rxjs/operators';
 
 import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
+import { AddressMapper } from '../../../models/address/address.mapper';
 import { Address } from '../../../models/address/address.model';
 import { Link } from '../../../models/link/link.model';
 
@@ -21,7 +22,8 @@ export class AddressService {
   getCustomerAddresses(customerId: string = '-'): Observable<Address[]> {
     return this.apiService.get(`customers/${customerId}/addresses`).pipe(
       unpackEnvelope<Link>(),
-      resolveLinks<Address>(this.apiService)
+      resolveLinks<Address>(this.apiService),
+      map(addressesData => addressesData.map(AddressMapper.fromData))
     );
   }
 
@@ -32,9 +34,10 @@ export class AddressService {
    * @returns           The new customer's address.
    */
   createCustomerAddress(customerId: string = '-', address: Address): Observable<Address> {
-    return this.apiService
-      .post(`customers/${customerId}/addresses`, address)
-      .pipe(resolveLink<Address>(this.apiService));
+    return this.apiService.post(`customers/${customerId}/addresses`, address).pipe(
+      resolveLink<Address>(this.apiService),
+      map(AddressMapper.fromData)
+    );
   }
 
   /**

@@ -1,4 +1,4 @@
-export interface Address {
+export interface AddressData {
   id: string;
   urn: string;
   type?: string;
@@ -27,4 +27,11 @@ export interface Address {
   shipFromAddress?: boolean;
   serviceToAddress?: boolean;
   installToAddress?: boolean;
+
+  company?: string;
+  street: string;
+  street2?: string;
+  street3?: string;
+  state?: string;
+  mobile?: string;
 }
