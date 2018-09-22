@@ -10,6 +10,7 @@ COPY . /workspace/
 RUN npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
 RUN npm run docs
 RUN node reports/tslint-report
+RUN node reports/jscpd-report
 RUN rm -Rf dist && npx ng build --progress false --aot --stats-json && npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_aot/index.html -m static
 RUN rm -Rf dist && npx ng build --progress false --prod --stats-json && npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
 RUN rm -Rf dist && npm run build:dynamic:prod
