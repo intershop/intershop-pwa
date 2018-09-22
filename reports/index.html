@@ -31,6 +31,11 @@
                 var summary = $('span.badge', html)[0];
                 $("#tslint").append("TSLint: ").append(summary);
             });
+            $.get("jscpd/index.html", function (data, status) {
+                var html = $.parseHTML(data);
+                var summary = $('h3', html)[0].textContent;
+                $("#jscpd").append(summary);
+            });
         });
     </script>
 </head>
@@ -57,6 +62,10 @@
         <h2>TSLint Report</h2>
         <div id="tslint"></div>
     </a>
+    <a href="jscpd/index.html">
+        <h2>jscpd - Duplicate Code Report</h2>
+        <div id="jscpd"></div>
+    </a>
     <a href="bundle_prod/index.html">
         <h2>Bundle Analyzer Report - Production</h2>
         <div id="bundle_prod"></div>
@@ -71,6 +80,10 @@
     </a>
     <a href="e2e/junit.xml">
         <h2>E2E JUnit XML</h2>
+    </a>
+    <hr/>
+    <a href="licenses/index.html">
+        <h2>3rd Party Licenses</h2>
     </a>
 </body>
 
