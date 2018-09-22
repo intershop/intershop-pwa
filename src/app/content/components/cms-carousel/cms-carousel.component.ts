@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 
 import { ContentPageletView } from '../../../models/content-view/content-views';
+import { arraySlices } from '../../../utils/functions';
 
 @Component({
   selector: 'ish-cms-carousel',
@@ -27,19 +28,7 @@ export class CMSCarouselComponent implements DoCheck {
 
   generateSlides(): ContentPageletView[][] {
     const slotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot').pagelets();
-
-    let slidePagelets = [];
-    const slides = [];
-
-    slotPagelets.map((pagelet, index) => {
-      slidePagelets.push(pagelet);
-      if ((index % this.slideItems) + 1 === this.slideItems) {
-        slides.push(slidePagelets);
-        slidePagelets = [];
-      }
-    });
-
-    return slides;
+    return arraySlices(slotPagelets, this.slideItems);
   }
 
   getIntervalValue(): number {
