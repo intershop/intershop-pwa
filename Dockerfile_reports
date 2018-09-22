@@ -11,6 +11,7 @@ RUN npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
 RUN npm run docs
 RUN node reports/tslint-report
 RUN node reports/jscpd-report
+RUN npx license-checker --csv --out reports/licenses/licenses.csv --customPath templates/3rd-party-licenses_format.json && node node_modules/htmlify-csv/htmlify-csv convert reports/licenses/licenses.csv --output reports/licenses/index.html
 RUN rm -Rf dist && npx ng build --progress false --aot --stats-json && npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_aot/index.html -m static
 RUN rm -Rf dist && npx ng build --progress false --prod --stats-json && npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
 RUN rm -Rf dist && npm run build:dynamic:prod

@@ -97,6 +97,7 @@
     "codelyzer": "^4.4.4",
     "conventional-changelog-cli": "^2.0.5",
     "cpy-cli": "^1.0.1",
+    "htmlify-csv": "^1.0.1",
     "husky": "^0.14.3",
     "intershop-tslint-rules": "file:tslint-rules",
     "istanbul": "^0.4.5",
