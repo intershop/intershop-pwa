@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/cor
 
 import { ContentPageletView } from '../../../models/content-view/content-views';
 
+// naming collision with container-component-pattern
 // tslint:disable-next-line:project-structure
 @Component({
   selector: 'ish-cms-container',
