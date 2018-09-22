@@ -15,6 +15,9 @@ export class CMSImageComponent implements DoCheck {
   constructor(@Inject(STATIC_URL) public staticURL: string) {}
 
   ngDoCheck() {
-    this.pagelet = createImagePageletView(this.pagelet);
+    if (this.pagelet && !this.pagelet.routerLink) {
+      // tslint:disable-next-line:no-assignement-to-inputs
+      this.pagelet = createImagePageletView(this.pagelet);
+    }
   }
 }

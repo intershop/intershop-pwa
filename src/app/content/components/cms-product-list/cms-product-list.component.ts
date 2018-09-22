@@ -13,12 +13,13 @@ export class CMSProductListComponent implements DoCheck {
 
   productSKUs: string[] = [];
 
-  ngDoCheck() {
-    if (!this.pagelet || !this.pagelet.hasParam('Products')) {
-      this.productSKUs = [];
-      return;
-    }
+  private initialized: boolean;
 
-    this.productSKUs = this.pagelet.configParam<string[]>('Products').map(product => product.split('@')[0]);
+  ngDoCheck() {
+    if (!this.initialized && this.pagelet) {
+      this.productSKUs = this.pagelet.hasParam('Products')
+        ? this.pagelet.configParam<string[]>('Products').map(product => product.split('@')[0])
+        : [];
+    }
   }
 }

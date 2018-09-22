@@ -16,15 +16,23 @@ export class CMSContainerComponent implements DoCheck {
   contentSlotPagelets: ContentPageletView[] = [];
   containerClasses = '';
 
-  ngDoCheck() {
-    let contentSlotPagelets = this.pagelet.slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot').pagelets();
-    if (this.pagelet.hasParam('UpperBound')) {
-      contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));
-    }
-    this.contentSlotPagelets = contentSlotPagelets;
+  private initialized: boolean;
 
-    this.containerClasses = this.getGridCSS(this.pagelet.stringParam('Grid'));
-    this.containerClasses += this.pagelet.stringParam('CSSClass', '');
+  ngDoCheck() {
+    if (!this.initialized && this.pagelet) {
+      let contentSlotPagelets = this.pagelet
+        .slot('app_sf_responsive_cm:slot.container.content.pagelet2-Slot')
+        .pagelets();
+      if (this.pagelet.hasParam('UpperBound')) {
+        contentSlotPagelets = contentSlotPagelets.slice(0, this.pagelet.numberParam('UpperBound'));
+      }
+      this.contentSlotPagelets = contentSlotPagelets;
+
+      this.containerClasses = this.getGridCSS(this.pagelet.stringParam('Grid'));
+      this.containerClasses += this.pagelet.stringParam('CSSClass', '');
+
+      this.initialized = true;
+    }
   }
 
   getGridCSS(grid: string): string {
