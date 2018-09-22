@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
 import { ContentImagePageletView, createImagePageletView } from '../../../models/content-view/content-image-view';
 
-// tslint:disable-next-line:project-structure
 @Component({
   selector: 'ish-cms-image-enhanced',
   templateUrl: './cms-image-enhanced.component.html',

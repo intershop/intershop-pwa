@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/cor
 
 import { ContentPageletView } from '../../../models/content-view/content-views';
 
-// tslint:disable-next-line:project-structure
 @Component({
   selector: 'ish-cms-carousel',
   templateUrl: './cms-carousel.component.html',
