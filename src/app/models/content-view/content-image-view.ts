@@ -45,9 +45,11 @@ export const getRouterLink = (configParam: string): string => {
     case 'http':
     case 'https':
       // use 'href' instead of 'routerLink' with external links
+      // tslint:disable-next-line:no-console
       console.log('External links need handling', configParam);
       break;
     default:
+      // tslint:disable-next-line:no-console
       console.log('Unknown link type:', configParam);
   }
   return routerLink;
