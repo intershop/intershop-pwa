@@ -32,9 +32,9 @@ var ComponentCreationTestWalker = (function (_super) {
             }
         }
         else if (sourceFile.fileName.search(/.(component|container).spec.ts/) > 0) {
-            var describe = ruleHelpers_1.RuleHelpers.getDescribeBody(sourceFile);
-            if (describe) {
-                var creationCheck = describe
+            var describe_1 = ruleHelpers_1.RuleHelpers.getDescribeBody(sourceFile);
+            if (describe_1) {
+                var creationCheck = describe_1
                     .getChildren()
                     .find(function (n) {
                     return n.kind === ts.SyntaxKind.ExpressionStatement &&
