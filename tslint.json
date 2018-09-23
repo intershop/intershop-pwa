@@ -124,6 +124,7 @@
     ],
     "one-variable-per-declaration": true,
     "prefer-const": true,
+    "use-shorthand-property-in-object-creation": true,
     "radix": true,
     "rxjs-no-add": true,
     "rxjs-no-operator": true,

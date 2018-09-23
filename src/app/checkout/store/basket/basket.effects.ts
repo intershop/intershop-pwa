@@ -444,7 +444,7 @@ export class BasketEffects {
         quantity: lineItem.quantity.value,
       }));
 
-      return new basketActions.AddItemsToBasket({ items: items, basketId: newBasket.id });
+      return new basketActions.AddItemsToBasket({ items, basketId: newBasket.id });
     })
   );
 
