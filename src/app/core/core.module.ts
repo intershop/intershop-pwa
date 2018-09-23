@@ -15,7 +15,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
 
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
-import { PipesModule } from '../shared/pipes.module';
 
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
@@ -45,7 +44,6 @@ export function translateFactory(http: HttpClient) {
     HeaderModule,
     IconModule,
     FooterModule,
-    PipesModule,
     FeatureToggleModule.forRoot(),
   ],
   exports: [IconModule, HeaderModule, FooterModule],
