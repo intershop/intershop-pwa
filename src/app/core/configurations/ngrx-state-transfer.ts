@@ -24,7 +24,7 @@ export function filterState(store) {
     return Object.keys(store)
       .filter(k => !k.startsWith('_'))
       .map(k => ({ [k]: filterState(store[k]) }))
-      .reduce((acc, val) => Object.assign(acc, val), {});
+      .reduce((acc, val) => ({ ...acc, ...val }), {});
   } else {
     return store;
   }
