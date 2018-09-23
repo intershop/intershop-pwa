@@ -131,6 +131,10 @@
       }
     }
 
+    @mixin filter-list-item-layer($layer) {
+      padding-left: $layer * $space-default;
+    }
+
     &.filter-layer1 {
       @include filter-list-item-layer(1);
     }

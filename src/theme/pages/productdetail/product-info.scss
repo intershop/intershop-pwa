@@ -177,8 +177,7 @@ ul {
         text-indent: -999em;
         background-color: $color-tertiary;
         border: $border-width-default solid $border-color-light;
-
-        @include round-corner(50%);
+        border-radius: 50%;
       }
 
       &.selected {
