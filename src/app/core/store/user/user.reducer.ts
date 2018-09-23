@@ -54,7 +54,7 @@ export function userReducer(state = initialState, action: UserAction): UserState
 
       return {
         ...initialState,
-        error: error,
+        error,
       };
     }
 

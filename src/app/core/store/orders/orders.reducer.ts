@@ -51,7 +51,7 @@ export function ordersReducer(state = initialState, action: OrdersAction | Baske
       const error = action.payload;
       return {
         ...state,
-        error: error,
+        error,
         loading: false,
       };
     }

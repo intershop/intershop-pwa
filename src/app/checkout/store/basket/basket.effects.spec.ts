@@ -65,7 +65,7 @@ describe('Basket Effects', () => {
 
   describe('loadBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.getBasket(anyString())).thenCall((id: string) => of({ id: id } as Basket));
+      when(basketServiceMock.getBasket(anyString())).thenCall((id: string) => of({ id } as Basket));
     });
 
     it('should call the basketService for loadBasket', done => {
