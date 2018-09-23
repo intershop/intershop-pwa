@@ -31,7 +31,7 @@ export class OrderMapper {
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.dynamicMessages,
       invoiceToAddress: data.invoiceToAddress,
-      totals: totals,
+      totals,
     };
 
     if (data.shippingBuckets && data.shippingBuckets.length > 0) {

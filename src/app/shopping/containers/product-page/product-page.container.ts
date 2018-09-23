@@ -39,7 +39,7 @@ export class ProductPageContainerComponent implements OnInit {
   }
 
   addToBasket({ sku, quantity }) {
-    this.store.dispatch(new AddProductToBasket({ sku: sku, quantity: quantity }));
+    this.store.dispatch(new AddProductToBasket({ sku, quantity }));
   }
 
   addToCompare(sku) {
@@ -47,7 +47,7 @@ export class ProductPageContainerComponent implements OnInit {
   }
 
   addToQuote({ sku, quantity }) {
-    this.store.dispatch(new AddProductToQuoteRequest({ sku: sku, quantity: quantity }));
+    this.store.dispatch(new AddProductToQuoteRequest({ sku, quantity }));
     this.store
       .pipe(
         select(getUserAuthorized),

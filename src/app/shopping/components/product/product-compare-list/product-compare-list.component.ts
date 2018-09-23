@@ -119,6 +119,6 @@ export class ProductCompareListComponent implements OnChanges {
    * @param quantity  The quantity to be added
    */
   addToBasket(sku: string, quantity: number) {
-    this.productToBasket.emit({ sku: sku, quantity: quantity });
+    this.productToBasket.emit({ sku, quantity });
   }
 }
