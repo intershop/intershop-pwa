@@ -157,8 +157,7 @@
       height: 16px;
       padding: 3px 0 0 0;
       margin-right: ($space-default / 2);
-
-      @include round-corner(50%);
+      border-radius: 50%;
 
       a {
         display: none;
