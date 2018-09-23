@@ -26,7 +26,7 @@ export class OrderService {
     return this.apiService
       .post<Link>('orders', {
         basketID: basket.id,
-        acceptTermsAndConditions: acceptTermsAndConditions,
+        acceptTermsAndConditions,
       })
       .pipe(
         resolveLink<OrderData>(this.apiService),

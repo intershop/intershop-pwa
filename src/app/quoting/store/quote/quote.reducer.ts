@@ -54,7 +54,7 @@ export function quoteReducer(state = initialState, action: QuoteAction): QuoteSt
 
       return {
         ...state,
-        quotes: quotes,
+        quotes,
         loading: false,
       };
     }

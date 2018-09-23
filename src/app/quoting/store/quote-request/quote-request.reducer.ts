@@ -76,7 +76,7 @@ export function quoteRequestReducer(state = initialState, action: QuoteAction | 
 
       return {
         ...state,
-        quoteRequests: quoteRequests,
+        quoteRequests,
         loading: false,
       };
     }

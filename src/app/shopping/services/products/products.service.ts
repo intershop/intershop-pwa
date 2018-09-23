@@ -67,7 +67,7 @@ export class ProductsService {
         map(response => ({
           products: response.elements.map((element: ProductDataStub) => ProductMapper.fromStubData(element) as Product),
           sortKeys: response.sortKeys,
-          categoryUniqueId: categoryUniqueId,
+          categoryUniqueId,
           total: !!response.total ? response.total : response.elements.length,
         }))
       );

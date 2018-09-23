@@ -23,7 +23,7 @@ export class ComparePageContainerComponent implements OnInit {
   }
 
   addToBasket({ sku, quantity }) {
-    this.store.dispatch(new AddProductToBasket({ sku: sku, quantity: quantity }));
+    this.store.dispatch(new AddProductToBasket({ sku, quantity }));
   }
 
   removeFromCompare(sku: string) {

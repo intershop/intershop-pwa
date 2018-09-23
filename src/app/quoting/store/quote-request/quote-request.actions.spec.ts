@@ -244,7 +244,7 @@ describe('Quote Request Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteRequestActionTypes.AddProductToQuoteRequest,
-        payload: payload,
+        payload,
       });
     });
 
@@ -311,7 +311,7 @@ describe('Quote Request Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteRequestActionTypes.UpdateQuoteRequestItems,
-        payload: payload,
+        payload,
       });
     });
 
@@ -345,7 +345,7 @@ describe('Quote Request Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.QuoteRequestActionTypes.DeleteItemFromQuoteRequest,
-        payload: payload,
+        payload,
       });
     });
 

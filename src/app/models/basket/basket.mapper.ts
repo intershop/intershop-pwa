@@ -33,7 +33,7 @@ export class BasketMapper {
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.dynamicMessages,
       invoiceToAddress: data.invoiceToAddress,
-      totals: totals,
+      totals,
     };
 
     if (shippingBucket) {
