@@ -201,6 +201,12 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
+    "initialize-observables-in-declaration": {
+      "severity": "warning",
+      "options": {
+        "only-simple": true
+      }
+    },
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": [
       true,
