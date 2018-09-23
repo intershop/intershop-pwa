@@ -139,7 +139,7 @@
       }],
       "severity": "error"
     },
-    "rxjs-no-create": { "severity": "off" },
+    "rxjs-no-create": true,
     "rxjs-no-ignored-subscribe": { "severity": "warning" },
     "rxjs-no-patched": true,
     "rxjs-no-deep-operators": true,

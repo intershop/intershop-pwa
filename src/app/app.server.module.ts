@@ -22,7 +22,7 @@ import { coreReducers } from './core/store/core.system';
 
 export class TranslateUniversalLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<string> {
-    return Observable.create((observer: Observer<string>) => {
+    return new Observable((observer: Observer<string>) => {
       let rootPath = process.cwd();
       if (!!rootPath && rootPath.indexOf('browser') > 0) {
         rootPath = process.cwd().split('browser')[0];
