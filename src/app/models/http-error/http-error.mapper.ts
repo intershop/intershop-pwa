@@ -7,7 +7,7 @@ export class HttpErrorMapper {
   static fromError(error: HttpErrorResponse): HttpError {
     const headers = !error.headers
       ? undefined
-      : error.headers.keys().reduce((acc, val) => Object.assign(acc, { [val]: error.headers.get(val) }), {});
+      : error.headers.keys().reduce((acc, val) => ({ ...acc, [val]: error.headers.get(val) }), {});
 
     return {
       name: error.name,

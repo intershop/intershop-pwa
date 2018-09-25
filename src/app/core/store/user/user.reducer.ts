@@ -12,12 +12,6 @@ export interface UserState {
   error: HttpError;
 }
 
-export const getCustomer = (state: UserState) => state.customer;
-export const getUser = (state: UserState) => state.user;
-export const getAuthorized = (state: UserState) => state.authorized;
-export const getAuthToken = (state: UserState) => state._authToken;
-export const getError = (state: UserState) => state.error;
-
 export const initialState: UserState = {
   customer: undefined,
   user: undefined,
