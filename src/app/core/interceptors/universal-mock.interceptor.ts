@@ -20,7 +20,7 @@ export class UniversalMockInterceptor implements HttpInterceptor {
     if (!req.url.startsWith('http')) {
       // tslint:disable-next-line:no-console
       console.log(`loading mock-data for '${req.url}' from file system.`);
-      return Observable.create((observer: Observer<HttpResponse<any>>) => {
+      return new Observable((observer: Observer<HttpResponse<any>>) => {
         let rootPath = process.cwd();
         if (!!rootPath && rootPath.indexOf('browser') > 0) {
           rootPath = process.cwd().split('browser')[0];

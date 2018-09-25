@@ -20,11 +20,3 @@ export const getCompareProductsCount = createSelector(
   getCompareProductsSKUs,
   productSKUs => (productSKUs && productSKUs.length) || 0
 );
-
-export function getCompareProductsByCurrentPageAndItemsPerPage(currentPage: number, itemsPerPage: number) {
-  return createSelector(getCompareProducts, compareProducts => {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return compareProducts.slice(start, end);
-  });
-}
