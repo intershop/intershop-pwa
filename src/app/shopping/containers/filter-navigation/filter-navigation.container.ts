@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
 import { ApplyFilter, getAvailableFilter } from '../../store/filter';
 
 @Component({
@@ -10,13 +8,9 @@ import { ApplyFilter, getAvailableFilter } from '../../store/filter';
   templateUrl: './filter-navigation.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterNavigationContainerComponent implements OnInit {
-  filter$: Observable<FilterNavigation>;
+export class FilterNavigationContainerComponent {
+  filter$ = this.store.pipe(select(getAvailableFilter));
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.filter$ = this.store.pipe(select(getAvailableFilter));
-  }
 
   applyFilter(event: { filterId: string; searchParameter: string }) {
     this.store.dispatch(new ApplyFilter(event));

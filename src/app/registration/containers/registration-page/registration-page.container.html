@@ -1,6 +1,6 @@
 <ish-registration-form
   [countries]="countries$ | async"
-  [languages]="languages$ | async"
+  [languages]="locales"
   [regions]="regionsForSelectedCountry"
   [titles]="titlesForSelectedCountry"
   [error]="userCreateError$ | async"

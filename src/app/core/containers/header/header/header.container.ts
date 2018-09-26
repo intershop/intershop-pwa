@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { getHeaderType } from '../../../store/viewconf';
 
@@ -9,12 +8,8 @@ import { getHeaderType } from '../../../store/viewconf';
   templateUrl: './header.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderContainerComponent implements OnInit {
-  headerType$: Observable<string>;
+export class HeaderContainerComponent {
+  headerType$ = this.store.pipe(select(getHeaderType));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.headerType$ = this.store.pipe(select(getHeaderType));
-  }
 }

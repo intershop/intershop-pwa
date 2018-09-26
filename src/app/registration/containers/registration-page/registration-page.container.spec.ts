@@ -63,14 +63,6 @@ describe('Registration Page Container', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should retrieve countries and languages on creation', done => {
-    fixture.detectChanges();
-    component.languages$.subscribe(result => {
-      expect(result.length).toBeGreaterThan(0);
-      done();
-    });
-  });
-
   it('should retrieve regions if country changes', () => {
     component.updateData('DE');
     expect(component.regionsForSelectedCountry.length).toBeGreaterThan(0);

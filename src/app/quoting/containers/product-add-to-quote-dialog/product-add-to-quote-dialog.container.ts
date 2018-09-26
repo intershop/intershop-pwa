@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 
 import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import {
   DeleteItemFromQuoteRequest,
   SelectQuoteRequest,
@@ -22,17 +21,14 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteDialogContainerComponent implements OnInit, OnDestroy {
-  activeQuoteRequest$: Observable<QuoteRequest>;
-  quoteRequestLoading$: Observable<boolean>;
+  activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));
+  quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
 
   destroy$ = new Subject();
 
   constructor(public ngbActiveModal: NgbActiveModal, private store: Store<{}>) {}
 
   ngOnInit() {
-    this.activeQuoteRequest$ = this.store.pipe(select(getActiveQuoteRequest));
-    this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
-
     this.activeQuoteRequest$
       .pipe(
         filter(quoteRequest => !!quoteRequest),
