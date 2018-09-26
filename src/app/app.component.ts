@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { getWrapperClass } from './core/store/viewconf';
 
@@ -9,12 +8,8 @@ import { getWrapperClass } from './core/store/viewconf';
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
-  wrapperClass$: Observable<string>;
+export class AppComponent {
+  wrapperClass$ = this.store.pipe(select(getWrapperClass));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.wrapperClass$ = this.store.pipe(select(getWrapperClass));
-  }
 }
