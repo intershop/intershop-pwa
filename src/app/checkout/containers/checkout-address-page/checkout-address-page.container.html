@@ -11,6 +11,7 @@
     [titles]="titlesForSelectedCountry$ | async"
     (updateInvoiceAddress)="updateBasketInvoiceAddress($event)"
     (updateShippingAddress)="updateBasketShippingAddress($event)"
+    (updateCustomerAddress)="updateBasketCustomerAddress($event)"
     (createInvoiceAddress)="createCustomerInvoiceAddress($event)"
     (createShippingAddress)="createCustomerShippingAddress($event)"
     (deleteShippingAddress)="deleteCustomerAddress($event)"

@@ -14,6 +14,7 @@ import {
   CreateBasketInvoiceAddress,
   CreateBasketShippingAddress,
   DeleteBasketShippingAddress,
+  UpdateBasketCustomerAddress,
   UpdateBasketInvoiceAddress,
   UpdateBasketShippingAddress,
   getBasketError,
@@ -60,6 +61,10 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
 
   updateBasketShippingAddress(addressId: string) {
     this.store.dispatch(new UpdateBasketShippingAddress(addressId));
+  }
+
+  updateBasketCustomerAddress(address: Address) {
+    this.store.dispatch(new UpdateBasketCustomerAddress(address));
   }
 
   createCustomerInvoiceAddress(address: Address) {
