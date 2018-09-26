@@ -25,8 +25,8 @@ import { Region } from '../../../models/region/region.model';
 export class RegistrationPageContainerComponent implements OnInit {
   countries$: Observable<Country[]>;
   languages$: Observable<Locale[]>;
-  regionsForSelectedCountry$: Observable<Region[]>;
-  titlesForSelectedCountry$: Observable<string[]>;
+  regionsForSelectedCountry: Region[];
+  titlesForSelectedCountry: string[];
   userCreateError$: Observable<HttpError>;
 
   constructor(
@@ -44,8 +44,8 @@ export class RegistrationPageContainerComponent implements OnInit {
   }
 
   updateData(countryCode: string) {
-    this.regionsForSelectedCountry$ = this.rs.getRegions(countryCode);
-    this.titlesForSelectedCountry$ = determineSalutations(countryCode);
+    this.regionsForSelectedCountry = this.rs.getRegions(countryCode);
+    this.titlesForSelectedCountry = determineSalutations(countryCode);
   }
 
   onCancel() {
