@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { range } from 'lodash-es';
 
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select';
 import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
@@ -10,7 +11,7 @@ import { Product } from '../../../../models/product/product.model';
   templateUrl: './product-quantity.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductQuantityComponent implements OnInit {
+export class ProductQuantityComponent implements OnInit, OnChanges {
   @Input()
   product: Product;
   @Input()
@@ -23,6 +24,8 @@ export class ProductQuantityComponent implements OnInit {
   class?: string;
 
   readonly selectType = 'select';
+
+  quantityOptions: SelectOption[];
 
   ngOnInit() {
     this.parentForm.get(this.controlName).setValidators(this.getValidations());
@@ -39,14 +42,11 @@ export class ProductQuantityComponent implements OnInit {
     }
   }
 
-  get quantityOptions(): SelectOption[] {
-    return Array.from(
-      { length: this.product.maxOrderQuantity - this.product.minOrderQuantity + 1 },
-      (_, index) =>
-        ({
-          label: (this.product.minOrderQuantity + index).toString(),
-          value: (this.product.minOrderQuantity + index).toString(),
-        } as SelectOption)
-    );
+  ngOnChanges(change: SimpleChanges) {
+    if (change.product && change.product.currentValue) {
+      this.quantityOptions = range(this.product.minOrderQuantity, this.product.maxOrderQuantity)
+        .map(num => num.toString())
+        .map(num => ({ label: num, value: num } as SelectOption));
+    }
   }
 }

@@ -46,7 +46,7 @@ export function translateFactory(http: HttpClient) {
     FooterModule,
     FeatureToggleModule.forRoot(),
   ],
-  exports: [IconModule, HeaderModule, FooterModule],
+  exports: [HeaderModule, FooterModule],
 })
 export class CoreModule {
   constructor(
