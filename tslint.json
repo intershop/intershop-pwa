@@ -264,7 +264,8 @@
         { "from": "^\\.\\..*(component|container|reducer|effects|store)", "filePattern": ".*.module.ts", "message": "Modules should only aggregate deeper lying components." },
         { "from": ".*/extensions/.*", "filePattern": "^((?!module\\.ts).)*$", "message": "Imports from (other) extensions are not allowed here." },
         { "from": ".*/pages/.*", "filePattern": "^((?!(cypress|\\.module\\.ts$)).)*$", "message": "Imports from pages are not allowed." },
-        { "import": "^SharedModule$", "from": "\\..*", "filePattern": "^(?!.+(page|src/app/cms|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$", "message": "SharedModule must only be imported in page or extension modules." }
+        { "import": "^SharedModule$", "from": "\\..*", "filePattern": "^(?!.+(page|src/app/cms|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module)).+\\.module\\.ts$", "message": "SharedModule must only be imported in page or extension modules." },
+        { "import": "pluck", "from": "rxjs/operators", "message": "This operator is not typesafe. Use 'mapToProperty' instead." }
       ]
     },
     "ban-types": [

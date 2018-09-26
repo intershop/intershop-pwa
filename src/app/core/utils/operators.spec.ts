@@ -6,7 +6,7 @@ import { concatMap, filter, last, mapTo } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-import { Partition, distinctCompareWith, mapErrorToAction, partitionBy } from './operators';
+import { Partition, distinctCompareWith, mapErrorToAction, mapToProperty, partitionBy } from './operators';
 
 describe('Operators', () => {
   describe('distinctCompareWith', () => {
@@ -106,6 +106,23 @@ describe('Operators', () => {
       });
 
       expect(input$.pipe(mapErrorToAction(DummyFail))).toBeObservable(resu$);
+    });
+  });
+
+  describe('mapToProperty', () => {
+    it('should map to property', () => {
+      expect(of({ test: 'hello world' }).pipe(mapToProperty('test'))).toBeObservable(
+        cold('(a|)', { a: 'hello world' })
+      );
+    });
+
+    it('should ignore falsy input when used', done => {
+      of(undefined)
+        .pipe(mapToProperty('test'))
+        .subscribe(data => {
+          expect(data).toBeUndefined();
+          done();
+        });
     });
   });
 });
