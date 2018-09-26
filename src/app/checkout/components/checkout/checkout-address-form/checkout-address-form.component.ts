@@ -20,15 +20,16 @@ import { Country } from '../../../../models/country/country.model';
 import { Region } from '../../../../models/region/region.model';
 
 /**
- * The Checkout Address Form Component renders an address form so that the user can create a new address during the checkout process. See also {@link CheckoutAddressComponent}
+ * The Checkout Address Form Component renders an address form so that the user can create or edit an address during the checkout process. See also {@link CheckoutAddressComponent}
  *
  * @example
  * <ish-checkout-address-form
       [regions]="regions"
       [titles]="titles"
       [countries]="countries"
+      [address]="basket.invoiceToAddress"
       [resetForm]="resetForm"
-      (submit)="createCustomerInvoiceAddress($event)"
+      (save)="createCustomerInvoiceAddress($event)"
       (cancel)="cancelCreateCustomerInvoiceAddress()"
       (countryChange)="handleCountryChange($event)"
    ></ish-checkout-address-form>
@@ -45,6 +46,8 @@ export class CheckoutAddressFormComponent implements OnInit, OnChanges, OnDestro
   regions: Region[];
   @Input()
   titles: string[];
+  @Input()
+  address: Address;
   @Input()
   resetForm = false;
 
@@ -74,6 +77,9 @@ export class CheckoutAddressFormComponent implements OnInit, OnChanges, OnDestro
       .get('countryCodeSwitch')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe(countryCodeSwitch => this.handleCountryChange(countryCodeSwitch));
+
+    // initialize address form
+    this.initializeAddressForm(this.address);
   }
 
   /**
@@ -82,6 +88,19 @@ export class CheckoutAddressFormComponent implements OnInit, OnChanges, OnDestro
   ngOnChanges(c: SimpleChanges) {
     if (c.resetForm && this.form) {
       this.form.reset();
+    }
+    if (c.address) {
+      // initialize address form
+      this.initializeAddressForm(this.address);
+    }
+  }
+
+  initializeAddressForm(address: Address) {
+    if (this.form && address) {
+      this.form.reset();
+      this.form.controls.address.patchValue(this.address);
+      this.form.controls.countryCodeSwitch.setValue(this.address.countryCode);
+      this.handleCountryChange(this.address.countryCode);
     }
   }
 
@@ -118,8 +137,12 @@ export class CheckoutAddressFormComponent implements OnInit, OnChanges, OnDestro
     }
 
     // build address from form data and send it to the parent
-    const address: Address = this.form.value.address;
-    this.save.emit(address);
+    let formAddress: Address = this.form.value.address;
+    if (this.address) {
+      // update form values in the original address
+      formAddress = { ...this.address, ...formAddress };
+    }
+    this.save.emit(formAddress);
   }
 
   cancelForm() {
