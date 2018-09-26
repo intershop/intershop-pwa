@@ -12,11 +12,11 @@ import { AddressFormFactoryProvider } from '../../../../forms/address/configurat
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
-import { CheckoutAddressFormComponent } from './checkout-address-form.component';
+import { CustomerAddressFormComponent } from './customer-address-form.component';
 
-describe('Checkout Address Form Component', () => {
-  let component: CheckoutAddressFormComponent;
-  let fixture: ComponentFixture<CheckoutAddressFormComponent>;
+describe('Customer Address Form Component', () => {
+  let component: CustomerAddressFormComponent;
+  let fixture: ComponentFixture<CustomerAddressFormComponent>;
   let element: HTMLElement;
   let fb: FormBuilder;
 
@@ -27,7 +27,7 @@ describe('Checkout Address Form Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        CheckoutAddressFormComponent,
+        CustomerAddressFormComponent,
         MockComponent({
           selector: 'ish-address-form',
           template: 'Address Component',
@@ -43,7 +43,7 @@ describe('Checkout Address Form Component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckoutAddressFormComponent);
+    fixture = TestBed.createComponent(CustomerAddressFormComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fb = TestBed.get(FormBuilder);

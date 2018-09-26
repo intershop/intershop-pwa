@@ -20,10 +20,10 @@ import { Country } from '../../../../models/country/country.model';
 import { Region } from '../../../../models/region/region.model';
 
 /**
- * The Checkout Address Form Component renders an address form so that the user can create or edit an address during the checkout process. See also {@link CheckoutAddressComponent}
+ * The Customer Address Form Component renders an address form with apply/cancel buttons so that the user can create or edit an address. When the user submits the form the new/changed address will be sent to the parent component.
  *
  * @example
- * <ish-checkout-address-form
+ * <ish-customer-address-form
       [regions]="regions"
       [titles]="titles"
       [countries]="countries"
@@ -35,11 +35,11 @@ import { Region } from '../../../../models/region/region.model';
    ></ish-checkout-address-form>
  */
 @Component({
-  selector: 'ish-checkout-address-form',
-  templateUrl: './checkout-address-form.component.html',
+  selector: 'ish-customer-address-form',
+  templateUrl: './customer-address-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckoutAddressFormComponent implements OnInit, OnChanges, OnDestroy {
+export class CustomerAddressFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   countries: Country[];
   @Input()

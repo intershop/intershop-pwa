@@ -40,8 +40,8 @@ describe('Checkout Address Component', () => {
           inputs: ['address'],
         }),
         MockComponent({
-          selector: 'ish-checkout-address-form',
-          template: 'Address Component',
+          selector: 'ish-customer-address-form',
+          template: 'Customer Address Form Component',
           inputs: ['countries', 'regions', 'titles', 'address', 'resetForm'],
         }),
         MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
@@ -190,7 +190,7 @@ describe('Checkout Address Component', () => {
     expect(component.invoice.isFormCollapsed).toBeFalse();
     expect(component.shipping.isFormCollapsed).toBeTrue();
     expect(
-      element.querySelector('div.show[data-testing-id=invoice-address-form] ish-checkout-address-form')
+      element.querySelector('div.show[data-testing-id=invoice-address-form] ish-customer-address-form')
     ).toBeTruthy();
     expect(
       element.querySelector('div.show[data-testing-id=shipping-address-form] ish-checkout-address-form')
@@ -206,7 +206,7 @@ describe('Checkout Address Component', () => {
     expect(component.invoice.isFormCollapsed).toBeTrue();
     expect(component.shipping.isFormCollapsed).toBeFalse();
     expect(
-      element.querySelector('div.show[data-testing-id=shipping-address-form] ish-checkout-address-form')
+      element.querySelector('div.show[data-testing-id=shipping-address-form] ish-customer-address-form')
     ).toBeTruthy();
     expect(
       element.querySelector('div.show[data-testing-id=invoice-address-form] ish-checkout-address-form')
