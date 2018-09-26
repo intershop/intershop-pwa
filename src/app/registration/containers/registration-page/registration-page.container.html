@@ -1,8 +1,8 @@
 <ish-registration-form
   [countries]="countries$ | async"
   [languages]="languages$ | async"
-  [regions]="regionsForSelectedCountry$ | async"
-  [titles]="titlesForSelectedCountry$ | async"
+  [regions]="regionsForSelectedCountry"
+  [titles]="titlesForSelectedCountry"
   [error]="userCreateError$ | async"
   (create)="onCreate($event)"
   (cancel)="onCancel()"

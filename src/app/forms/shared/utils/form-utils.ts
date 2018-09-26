@@ -1,5 +1,4 @@
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
 
 /**
  * Marks all fields in a form group as dirty recursively (i.e. for nested form groups also)
@@ -76,7 +75,7 @@ export function markFormControlsAsInvalid(form: FormGroup, fields: string[]) {
  * @param countryCode country code of the country for which the salutations should be determined.
  * @returns translation keys of the salutations
  */
-export function determineSalutations(countryCode: string): Observable<string[]> {
+export function determineSalutations(countryCode: string): string[] {
   // TODO: should come from configuration?
   let salutationlabels = [];
 
@@ -100,7 +99,7 @@ export function determineSalutations(countryCode: string): Observable<string[]> 
       break;
     }
   }
-  return of(salutationlabels);
+  return salutationlabels;
 }
 
 /**

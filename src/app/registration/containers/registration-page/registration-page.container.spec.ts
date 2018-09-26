@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
@@ -28,12 +27,10 @@ describe('Registration Page Container', () => {
     storeMock$ = mock(Store);
 
     const regionServiceMock = mock(RegionService);
-    when(regionServiceMock.getRegions(anything())).thenReturn(
-      of([
-        { countryCode: 'DE', regionCode: 'AL', name: 'Alabama' },
-        { countryCode: 'DE', regionCode: 'FL', name: 'Florida' },
-      ])
-    );
+    when(regionServiceMock.getRegions(anything())).thenReturn([
+      { countryCode: 'DE', regionCode: 'AL', name: 'Alabama' },
+      { countryCode: 'DE', regionCode: 'FL', name: 'Florida' },
+    ]);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -74,20 +71,14 @@ describe('Registration Page Container', () => {
     });
   });
 
-  it('should retrieve regions if country changes', done => {
+  it('should retrieve regions if country changes', () => {
     component.updateData('DE');
-    component.regionsForSelectedCountry$.subscribe(result => {
-      expect(result.length).toBeGreaterThan(0);
-      done();
-    });
+    expect(component.regionsForSelectedCountry.length).toBeGreaterThan(0);
   });
 
-  it('should retrieve titles if country changes', done => {
+  it('should retrieve titles if country changes', () => {
     component.updateData('DE');
-    component.titlesForSelectedCountry$.subscribe(result => {
-      expect(result.length).toBeGreaterThan(0);
-      done();
-    });
+    expect(component.titlesForSelectedCountry.length).toBeGreaterThan(0);
   });
 
   it('should navigate to homepage when cancel is clicked', async(() => {
