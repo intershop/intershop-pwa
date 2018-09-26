@@ -142,28 +142,6 @@
         color: $text-muted;
       }
     }
-
-    .add-to-compare {
-      // TODO: (Bootstrap 4) - @include hidden-xs();
-    }
-  }
-
-  .color-variations {
-    width: auto;
-    margin: 0 auto;
-
-    li {
-      width: 16px;
-      height: 16px;
-      padding: 3px 0 0 0;
-      margin-right: ($space-default / 2);
-
-      @include round-corner(50%);
-
-      a {
-        display: none;
-      }
-    }
   }
 
   .product-number {

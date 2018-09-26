@@ -2,11 +2,6 @@
   padding-left: 0;
 }
 
-.server-error {
-  // TODO: (Bootstrap 4) form-control-validation no longer an existing mixin
-  // @include form-control-validation($state-danger-text, $state-danger-text, $state-danger-bg);
-}
-
 .has-feedback {
   .form-control[type='number'] {
     padding: $grid-gutter-width / 5 $grid-gutter-width / 2.5;
