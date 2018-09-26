@@ -134,58 +134,6 @@ img.marketing {
   padding-bottom: $space-default;
 }
 
-//
-// Text alignments: ToDo - should be deleted and replaced by bootstrap standard classes, e.g. .text-lg-right
-.text-right-lg {
-  @media (min-width: $screen-lg-min) {
-    text-align: right;
-  }
-}
-
-.text-left-lg {
-  @media (min-width: $screen-lg-min) {
-    text-align: left;
-  }
-}
-
-.text-right-md {
-  @media (max-width: $screen-md-max) {
-    text-align: right;
-  }
-}
-
-.text-left-md {
-  @media (max-width: $screen-md-max) {
-    text-align: left;
-  }
-}
-
-.text-right-sm {
-  @media (max-width: $screen-sm-max) {
-    text-align: right;
-  }
-}
-
-.text-left-sm {
-  @media (max-width: $screen-sm-max) {
-    text-align: left;
-  }
-}
-
-.text-right-xs {
-  @media (max-width: $screen-xs-max) {
-    text-align: right;
-  }
-}
-
-.text-left-xs {
-  @media (max-width: $screen-xs-max) {
-    text-align: left;
-  }
-}
-
-// end should be deleted
-
 // Detail links and tooltips
 [data-toggle='popover'] {
   .ng-fa-icon {

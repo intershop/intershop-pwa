@@ -49,10 +49,11 @@ $border-radius-sm: 0;
 // Fonts
 //
 // Font, line-height, and color for body text, headings, and more.
-
+// stylelint-disable value-keyword-case
 $font-family-sans-serif: $font-family-regular;
 $font-family-monospace: Menlo, Monaco, Consolas, 'Courier New', monospace;
 $font-family-base: $font-family-regular;
+// stylelint-enable value-keyword-case
 
 // TODO: round font size values
 $font-size-base: $font-size-corporate; // 14px is the bootstrap 3 default font size (1rem should be around 16px)
