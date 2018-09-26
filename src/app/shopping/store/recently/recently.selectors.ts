@@ -13,11 +13,17 @@ export const getRecentlyViewedProducts = createSelector(
   (productSKUs, products) => (productSKUs && productSKUs.map(sku => products[sku])) || []
 );
 
+const getMostRecentlyViewedProductSKUs = createSelector(
+  getRecentlyProducts,
+  getSelectedProductId,
+  (skus, selectedSKU) => skus.filter(productSKU => productSKU && productSKU !== selectedSKU).slice(0, 4)
+);
+
 /**
  * Selector to get the most recent 4 products without the currently viewed product on product detail pages
  */
 export const getMostRecentlyViewedProducts = createSelector(
-  getRecentlyViewedProducts,
-  getSelectedProductId,
-  (products, sku) => products.filter(product => product && product.sku !== sku).slice(0, 4)
+  getMostRecentlyViewedProductSKUs,
+  getProductEntities,
+  (skus, products) => skus.map(sku => products[sku])
 );

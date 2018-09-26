@@ -75,7 +75,7 @@ describe('Categories Reducer', () => {
           name: 'Updated',
           description: 'Updated category',
           completenessLevel: 2,
-        } as Category;
+        };
 
         const action2 = new fromActions.LoadCategorySuccess(categoryTree([updatedCategory]));
         const state2 = categoriesReducer(state1, action2);
