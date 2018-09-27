@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
 
 import { getSelectedOrder } from '../../../core/store/orders';
 
@@ -14,10 +13,7 @@ import { getSelectedOrder } from '../../../core/store/orders';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderPageContainerComponent {
-  order$ = this.store.pipe(
-    select(getSelectedOrder),
-    filter(order => !!order)
-  );
+  order$ = this.store.pipe(select(getSelectedOrder));
 
   constructor(private store: Store<{}>) {}
 }

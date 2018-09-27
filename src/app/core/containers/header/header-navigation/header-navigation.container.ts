@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { CategoryView } from '../../../../models/category-view/category-view.model';
 import { getTopLevelCategories } from '../../../../shopping/store/categories';
 
 @Component({
@@ -10,15 +8,11 @@ import { getTopLevelCategories } from '../../../../shopping/store/categories';
   templateUrl: './header-navigation.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderNavigationContainerComponent implements OnInit {
+export class HeaderNavigationContainerComponent {
   @Input()
   view: 'auto' | 'small' | 'full' = 'auto';
 
-  categories$: Observable<CategoryView[]>;
+  categories$ = this.store.pipe(select(getTopLevelCategories));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.categories$ = this.store.pipe(select(getTopLevelCategories));
-  }
 }

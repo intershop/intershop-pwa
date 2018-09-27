@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { Category } from '../../../models/category/category.model';
-import { Product } from '../../../models/product/product.model';
 import { ViewType } from '../../../models/viewtype/viewtype.types';
 import {
   ChangeSortBy,
@@ -27,7 +26,7 @@ import {
   templateUrl: './product-list.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductListContainerComponent implements OnInit {
+export class ProductListContainerComponent {
   @Input()
   category?: Category;
 
@@ -37,35 +36,23 @@ export class ProductListContainerComponent implements OnInit {
   @Output()
   loadMore = new EventEmitter<void>();
 
-  products$: Observable<Product[]>;
-  totalItems$: Observable<number>;
-  viewType$: Observable<ViewType>;
-  sortBy$: Observable<string>;
-  sortKeys$: Observable<string[]>;
-  loadingMore$: Observable<boolean>;
-  currentPage$: Observable<number>;
-  pageIndices$: Observable<number[]>;
-  displayPaging$: Observable<boolean>;
+  products$ = this.store.pipe(select(getVisibleProducts));
+  totalItems$ = this.store.pipe(select(getTotalItems));
+  viewType$ = this.store.pipe(select(getViewType));
+  sortBy$ = this.store.pipe(select(getSortBy));
+  sortKeys$ = this.store.pipe(select(getSortKeys));
+  loadingMore$ = this.store.pipe(select(getPagingLoading));
+  pageIndices$ = this.store.pipe(select(getPageIndices));
+  currentPage$ = this.store.pipe(
+    select(getPagingPage),
+    map(x => x + 1)
+  );
+  displayPaging$ = this.store.pipe(
+    select(isEveryProductDisplayed),
+    map(b => !b)
+  );
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.products$ = this.store.pipe(select(getVisibleProducts));
-    this.totalItems$ = this.store.pipe(select(getTotalItems));
-    this.viewType$ = this.store.pipe(select(getViewType));
-    this.sortBy$ = this.store.pipe(select(getSortBy));
-    this.sortKeys$ = this.store.pipe(select(getSortKeys));
-    this.loadingMore$ = this.store.pipe(select(getPagingLoading));
-    this.currentPage$ = this.store.pipe(
-      select(getPagingPage),
-      map(x => x + 1)
-    );
-    this.pageIndices$ = this.store.pipe(select(getPageIndices));
-    this.displayPaging$ = this.store.pipe(
-      select(isEveryProductDisplayed),
-      map(b => !b)
-    );
-  }
 
   /**
    * Emits the event for switching the view type of the product list.

@@ -1,13 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { AddProductToBasket } from '../../../checkout/store/basket';
 import { getUserAuthorized } from '../../../core/store/user';
-import { CategoryView } from '../../../models/category-view/category-view.model';
-import { Product } from '../../../models/product/product.model';
 import { ProductAddToQuoteDialogContainerComponent } from '../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
 import { getSelectedCategory } from '../../store/categories';
@@ -19,24 +16,12 @@ import { getProductLoading, getSelectedProduct } from '../../store/products';
   templateUrl: './product-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductPageContainerComponent implements OnInit {
-  product$: Observable<Product>;
-  productLoading$: Observable<boolean>;
-  category$: Observable<CategoryView>;
+export class ProductPageContainerComponent {
+  product$ = this.store.pipe(select(getSelectedProduct));
+  category$ = this.store.pipe(select(getSelectedCategory));
+  productLoading$ = this.store.pipe(select(getProductLoading));
 
   constructor(private ngbModal: NgbModal, private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.product$ = this.store.pipe(
-      select(getSelectedProduct),
-      filter(product => !!product)
-    );
-    this.category$ = this.store.pipe(
-      select(getSelectedCategory),
-      filter(category => !!category)
-    );
-    this.productLoading$ = this.store.pipe(select(getProductLoading));
-  }
 
   addToBasket({ sku, quantity }) {
     this.store.dispatch(new AddProductToBasket({ sku, quantity }));
