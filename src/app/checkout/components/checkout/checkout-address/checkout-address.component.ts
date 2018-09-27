@@ -90,6 +90,8 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
   invoice = new FormType();
   shipping = new FormType();
 
+  submitted = false;
+
   destroy$ = new Subject();
 
   constructor(private router: Router, private fb: FormBuilder) {}
@@ -220,7 +222,14 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
    */
   nextStep() {
     // ToDo: routing should be handled in another way, see #ISREST-317
-    this.router.navigate(['/checkout/shipping']);
+    this.submitted = true;
+    if (!this.nextDisabled) {
+      this.router.navigate(['/checkout/shipping']);
+    }
+  }
+
+  get nextDisabled() {
+    return (!this.basket.invoiceToAddress || !this.basket.commonShipToAddress) && this.submitted;
   }
 
   ngOnDestroy() {

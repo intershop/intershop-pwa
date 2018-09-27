@@ -4,7 +4,7 @@
     <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
       {{ error.status }}: {{ error.error }}
     </div>
-    <div *ngIf="!basket.payment && !error" role="alert" class="alert alert-danger">
+    <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.payment.no_Selection.error' | translate }}
     </div>
     <h3>{{ 'checkout.payment.method.select.heading' | translate }}</h3>
@@ -36,7 +36,11 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
-      <button class="btn btn-lg btn-block btn-primary" type="button" [disabled]="!basket.payment" (click)="nextStep()">
+      <button
+        class="btn btn-lg btn-block btn-primary"
+        type="button"
+        [disabled]="nextDisabled"
+        (click)="nextStep()">
         {{'checkout.button.label' | translate}}
       </button>
     </div>

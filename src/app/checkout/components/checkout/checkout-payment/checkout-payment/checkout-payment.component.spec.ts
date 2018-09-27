@@ -68,8 +68,15 @@ describe('Checkout Payment Component', () => {
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 
-  it('should render an error if the user has currently no payment method selected', () => {
+  it('should not render an error if the user has currently no payment method selected', () => {
     component.basket.payment = undefined;
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+  });
+
+  it('should render an error if the user clicks next and has currently no payment method selected', () => {
+    component.basket.payment = undefined;
+    component.nextStep();
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
@@ -83,5 +90,24 @@ describe('Checkout Payment Component', () => {
     });
 
     component.paymentForm.get('name').setValue('testPayment');
+  });
+
+  it('should set submitted if next button is clicked', () => {
+    expect(component.submitted).toBeFalse();
+    component.nextStep();
+    expect(component.submitted).toBeTrue();
+  });
+
+  it('should not disable next button if basket payment method is set and next button is clicked', () => {
+    expect(component.nextDisabled).toBeFalse();
+    component.nextStep();
+    expect(component.nextDisabled).toBeFalse();
+  });
+
+  it('should disable next button if basket payment method is missing and next button is clicked', () => {
+    component.basket.payment = undefined;
+
+    component.nextStep();
+    expect(component.nextDisabled).toBeTrue();
   });
 });
