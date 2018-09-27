@@ -21,7 +21,12 @@ import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 import { AddressService } from '../../services/address/address.service';
 import { BasketService } from '../../services/basket/basket.service';
-import { DeleteCustomerAddressFail, DeleteCustomerAddressSuccess } from '../addresses/addresses.actions';
+import {
+  DeleteCustomerAddressFail,
+  DeleteCustomerAddressSuccess,
+  UpdateCustomerAddressFail,
+  UpdateCustomerAddressSuccess,
+} from '../addresses/addresses.actions';
 import { checkoutReducers } from '../checkout.system';
 
 import * as basketActions from './basket.actions';
@@ -261,6 +266,50 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.updateBasketShippingMethod$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateBasketCustomerAddress$', () => {
+    beforeEach(() => {
+      when(addressServiceMock.updateCustomerAddress(anyString(), anything())).thenReturn(
+        of(BasketMockData.getAddress())
+      );
+    });
+
+    it('should call the addressService for updateBasketCustomerAddress', done => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.UpdateBasketCustomerAddress(payload);
+      actions$ = of(action);
+
+      effects.updateBasketCustomerAddress$.subscribe(() => {
+        verify(addressServiceMock.updateCustomerAddress('-', anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type UpdateCustomerAddressSuccess and LoadBasket', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new basketActions.UpdateBasketCustomerAddress(payload);
+      const completion1 = new UpdateCustomerAddressSuccess(payload);
+      const completion2 = new basketActions.LoadBasket();
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.updateBasketCustomerAddress$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type UpdateCustomerAddressFail', () => {
+      const payload = BasketMockData.getAddress();
+      when(addressServiceMock.updateCustomerAddress(anyString(), anything())).thenReturn(
+        throwError({ message: 'invalid' })
+      );
+
+      const action = new basketActions.UpdateBasketCustomerAddress(payload);
+      const completion = new UpdateCustomerAddressFail({ message: 'invalid' } as HttpError);
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.updateBasketCustomerAddress$).toBeObservable(expected$);
     });
   });
 

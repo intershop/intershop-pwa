@@ -3,24 +3,28 @@ import { BasketItem } from './basket-item.model';
 
 export class BasketItemMapper {
   static fromData(data: BasketItemData): BasketItem {
-    return {
-      id: data.id,
-      name: data.name,
-      position: data.position,
-      quantity: data.quantity,
-      price: data.price,
-      singleBasePrice: data.singleBasePrice,
-      itemSurcharges: data.itemSurcharges,
-      valueRebates: data.valueRebates,
-      isHiddenGift: data.isHiddenGift,
-      isFreeGift: data.isFreeGift,
-      inStock: data.inStock,
-      variationProduct: data.variationProduct,
-      bundleProduct: data.bundleProduct,
-      availability: data.availability,
-      totals: data.totals,
+    if (data) {
+      return {
+        id: data.id,
+        name: data.name,
+        position: data.position,
+        quantity: data.quantity,
+        price: data.price,
+        singleBasePrice: data.singleBasePrice,
+        itemSurcharges: data.itemSurcharges,
+        valueRebates: data.valueRebates,
+        isHiddenGift: data.isHiddenGift,
+        isFreeGift: data.isFreeGift,
+        inStock: data.inStock,
+        variationProduct: data.variationProduct,
+        bundleProduct: data.bundleProduct,
+        availability: data.availability,
+        totals: data.totals,
 
-      productSKU: data.product.title,
-    };
+        productSKU: data.product ? data.product.title : undefined,
+      };
+    } else {
+      throw new Error(`'BasketItemData' is required for the mapping`);
+    }
   }
 }

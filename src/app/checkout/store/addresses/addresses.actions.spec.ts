@@ -1,5 +1,6 @@
 import { Address } from '../../../models/address/address.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
+import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 
 import * as fromActions from './addresses.actions';
 
@@ -41,6 +42,28 @@ describe('Addresses Actions', () => {
 
       expect({ ...action }).toEqual({
         type: fromActions.AddressActionTypes.CreateCustomerAddressFail,
+        payload,
+      });
+    });
+  });
+
+  describe('Update Customer Address Actions', () => {
+    it('should create new action for UpdateCustomerAddressFail', () => {
+      const payload = { message: 'error' } as HttpError;
+      const action = new fromActions.UpdateCustomerAddressFail(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.UpdateCustomerAddressFail,
+        payload,
+      });
+    });
+
+    it('should create new action for UpdateCustomerAddressSuccess', () => {
+      const payload = BasketMockData.getAddress();
+      const action = new fromActions.UpdateCustomerAddressSuccess(payload);
+
+      expect({ ...action }).toEqual({
+        type: fromActions.AddressActionTypes.UpdateCustomerAddressSuccess,
         payload,
       });
     });

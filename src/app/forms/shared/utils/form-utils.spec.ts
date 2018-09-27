@@ -110,39 +110,24 @@ describe('Form Utils', () => {
   });
 
   describe('determineSalutations', () => {
-    it('should return an empty array if countryCode is empty', done => {
-      determineSalutations('').subscribe(salutations => {
-        expect(salutations).toBeEmpty();
-        done();
-      });
+    it('should return an empty array if countryCode is empty', () => {
+      expect(determineSalutations('')).toBeEmpty();
     });
 
-    it('should return an empty array if countryCode is not known', done => {
-      determineSalutations('BG').subscribe(salutations => {
-        expect(salutations).toBeEmpty();
-        done();
-      });
+    it('should return an empty array if countryCode is not known', () => {
+      expect(determineSalutations('BG')).toBeEmpty();
     });
 
-    it('should return salutations if countryCode is GB', done => {
-      determineSalutations('GB').subscribe(salutations => {
-        expect(salutations).toHaveLength(5);
-        done();
-      });
+    it('should return salutations if countryCode is GB', () => {
+      expect(determineSalutations('GB')).toHaveLength(5);
     });
 
-    it('should return salutations if countryCode is DE', done => {
-      determineSalutations('DE').subscribe(salutations => {
-        expect(salutations).toHaveLength(3);
-        done();
-      });
+    it('should return salutations if countryCode is DE', () => {
+      expect(determineSalutations('DE')).toHaveLength(3);
     });
 
-    it('should return salutations if countryCode is FR', done => {
-      determineSalutations('FR').subscribe(salutations => {
-        expect(salutations).toHaveLength(3);
-        done();
-      });
+    it('should return salutations if countryCode is FR', () => {
+      expect(determineSalutations('FR')).toHaveLength(3);
     });
   });
 });

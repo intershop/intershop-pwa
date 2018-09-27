@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { RegionService } from '../../../core/services/countries/region.service';
 import { getAllCountries } from '../../../core/store/countries';
@@ -14,6 +13,7 @@ import {
   CreateBasketInvoiceAddress,
   CreateBasketShippingAddress,
   DeleteBasketShippingAddress,
+  UpdateBasketCustomerAddress,
   UpdateBasketInvoiceAddress,
   UpdateBasketShippingAddress,
   getBasketError,
@@ -40,18 +40,19 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
   countries$ = this.store.pipe(select(getAllCountries));
   currentUser$ = this.store.pipe(select(getLoggedInUser));
 
-  regionsForSelectedCountry$: Observable<Region[]>;
-  titlesForSelectedCountry$: Observable<string[]>;
+  regionsForSelectedCountry: Region[];
+  titlesForSelectedCountry: string[];
 
-  constructor(private store: Store<{}>, private rs: RegionService) {}
+  constructor(private store: Store<{}>, private rs: RegionService, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadAddresses());
   }
 
   updateDataAfterCountryChange(countryCode: string) {
-    this.regionsForSelectedCountry$ = this.rs.getRegions(countryCode);
-    this.titlesForSelectedCountry$ = determineSalutations(countryCode);
+    this.regionsForSelectedCountry = this.rs.getRegions(countryCode);
+    this.titlesForSelectedCountry = determineSalutations(countryCode);
+    this.cd.detectChanges(); // necessary to show titles/regions while editing an existing address
   }
 
   updateBasketInvoiceAddress(addressId: string) {
@@ -60,6 +61,10 @@ export class CheckoutAddressPageContainerComponent implements OnInit {
 
   updateBasketShippingAddress(addressId: string) {
     this.store.dispatch(new UpdateBasketShippingAddress(addressId));
+  }
+
+  updateBasketCustomerAddress(address: Address) {
+    this.store.dispatch(new UpdateBasketCustomerAddress(address));
   }
 
   createCustomerInvoiceAddress(address: Address) {
