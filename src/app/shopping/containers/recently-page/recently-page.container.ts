@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
 
-import { Product } from '../../../models/product/product.model';
 import { ClearRecently, getRecentlyViewedProducts } from '../../store/recently';
 
 @Component({
@@ -10,14 +8,10 @@ import { ClearRecently, getRecentlyViewedProducts } from '../../store/recently';
   templateUrl: './recently-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecentlyPageContainerComponent implements OnInit {
-  products$: Observable<Product[]> = of([]);
+export class RecentlyPageContainerComponent {
+  products$ = this.store.pipe(select(getRecentlyViewedProducts));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.products$ = this.store.pipe(select(getRecentlyViewedProducts));
-  }
 
   clearAll() {
     this.store.dispatch(new ClearRecently());

@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
 import { SuggestSearch, getSearchTerm, getSuggestSearchResults } from '../../../../shopping/store/search';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
@@ -21,22 +19,17 @@ import { SearchBoxConfiguration } from '../../configurations/search-box.configur
   templateUrl: './search-box.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBoxContainerComponent implements OnInit {
+export class SearchBoxContainerComponent {
   /**
    * the configuration for this component
    */
   @Input()
   configuration?: SearchBoxConfiguration;
 
-  searchResults$: Observable<SuggestTerm[]>;
-  previousSearchTerm$: Observable<string>;
+  searchResults$ = this.store.pipe(select(getSuggestSearchResults));
+  previousSearchTerm$ = this.store.pipe(select(getSearchTerm));
 
   constructor(private store: Store<{}>, private router: Router) {}
-
-  ngOnInit() {
-    this.searchResults$ = this.store.pipe(select(getSuggestSearchResults));
-    this.previousSearchTerm$ = this.store.pipe(select(getSearchTerm));
-  }
 
   suggestSearch(term: string) {
     this.store.dispatch(new SuggestSearch(term));

@@ -1,11 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { getLoggedInUser } from '../../../core/store/user';
 import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
-import { User } from '../../../models/user/user.model';
 import {
   CreateQuoteRequestFromQuoteRequest,
   DeleteItemFromQuoteRequest,
@@ -21,19 +18,12 @@ import {
   templateUrl: './quote-request-edit-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuoteRequestEditPageContainerComponent implements OnInit {
-  quote$: Observable<QuoteRequest>;
-  quoteLoading$: Observable<boolean>;
-  quoteRequestLoading$: Observable<boolean>;
-  user$: Observable<User>;
+export class QuoteRequestEditPageContainerComponent {
+  quote$ = this.store.pipe(select(getSelectedQuoteRequest));
+  quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
+  user$ = this.store.pipe(select(getLoggedInUser));
 
   constructor(private store: Store<{}>) {}
-
-  ngOnInit() {
-    this.quote$ = this.store.pipe(select(getSelectedQuoteRequest));
-    this.quoteRequestLoading$ = this.store.pipe(select(getQuoteRequestLoading));
-    this.user$ = this.store.pipe(select(getLoggedInUser));
-  }
 
   updateQuoteRequestItem(payload: LineItemQuantity) {
     this.store.dispatch(new UpdateQuoteRequestItems([payload]));
