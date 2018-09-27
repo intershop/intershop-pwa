@@ -1,4 +1,4 @@
-import { SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -21,9 +21,15 @@ describe('Checkout Address Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    // tslint:disable-next-line:use-component-change-detection
+    @Component({ template: 'dummy' })
+    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressComponent,
+        DummyComponent,
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
@@ -46,7 +52,13 @@ describe('Checkout Address Component', () => {
         }),
         MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, NgbModule, IconModule],
+      imports: [
+        TranslateModule.forRoot(),
+        RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),
+        FormsSharedModule,
+        NgbModule,
+        IconModule,
+      ],
     }).compileComponents();
   }));
 
