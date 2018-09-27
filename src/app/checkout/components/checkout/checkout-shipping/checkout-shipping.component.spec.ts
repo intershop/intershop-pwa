@@ -70,8 +70,15 @@ describe('Checkout Shipping Component', () => {
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
 
-  it('should render an error if the user has currently no shipping method selected', () => {
+  it('should not render an error if the user has currently no shipping method selected', () => {
     component.basket.commonShippingMethod = undefined;
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+  });
+
+  it('should render an error if the user clicks next and has currently no shipping method selected', () => {
+    component.basket.commonShippingMethod = undefined;
+    component.nextStep();
     fixture.detectChanges();
     expect(element.querySelector('div.alert-danger')).toBeTruthy();
   });
@@ -85,5 +92,24 @@ describe('Checkout Shipping Component', () => {
     });
 
     component.shippingForm.get('id').setValue('testShipping');
+  });
+
+  it('should set submitted if next button is clicked', () => {
+    expect(component.submitted).toBeFalse();
+    component.nextStep();
+    expect(component.submitted).toBeTrue();
+  });
+
+  it('should not disable next button if basket shipping method is set and next button is clicked', () => {
+    expect(component.nextDisabled).toBeFalse();
+    component.nextStep();
+    expect(component.nextDisabled).toBeFalse();
+  });
+
+  it('should disable next button if basket shipping method is missing and next button is clicked', () => {
+    component.basket.commonShippingMethod = undefined;
+
+    component.nextStep();
+    expect(component.nextDisabled).toBeTrue();
   });
 });

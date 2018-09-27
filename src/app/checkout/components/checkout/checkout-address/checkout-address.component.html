@@ -7,7 +7,7 @@
     </div>
   </div>
 
-  <div *ngIf="(!basket.invoiceToAddress || !basket.commonShipToAddress) && !error" class="col-md-12">
+  <div *ngIf="nextDisabled && !error" class="col-md-12">
     <div class="alert alert-danger">
       {{ 'checkout.addresses.no_Selection.error' | translate }}
     </div>
@@ -171,7 +171,7 @@
       <button
         class="btn btn-lg btn-block btn-primary"
         type="button"
-        [disabled]="!basket.invoiceToAddress || !basket.commonShipToAddress"
+        [disabled]="nextDisabled"
         (click)="nextStep()">
         {{'checkout.button.label' | translate}}
       </button>

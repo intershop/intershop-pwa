@@ -35,6 +35,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
   updatePaymentMethod = new EventEmitter<string>();
 
   paymentForm: FormGroup;
+  submitted = false;
   destroy$ = new Subject();
 
   constructor(private router: Router) {}
@@ -67,7 +68,14 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges, OnDestroy {
    * leads to next checkout page (checkout review)
    */
   nextStep() {
-    this.router.navigate(['/checkout/review']);
+    this.submitted = true;
+    if (!this.nextDisabled) {
+      this.router.navigate(['/checkout/review']);
+    }
+  }
+
+  get nextDisabled() {
+    return !this.basket.payment && this.submitted;
   }
 
   ngOnDestroy() {

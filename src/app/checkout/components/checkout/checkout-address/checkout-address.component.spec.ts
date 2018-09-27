@@ -316,4 +316,45 @@ describe('Checkout Address Component', () => {
 
     verify(emitter.emit(anything())).once();
   });
+
+  it('should not render an error if the user has currently no addresses selected', () => {
+    component.basket.invoiceToAddress = undefined;
+    component.basket.commonShipToAddress = undefined;
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeFalsy();
+  });
+
+  it('should render an error if the user clicks next and has currently no addresses selected', () => {
+    component.basket.invoiceToAddress = undefined;
+    component.basket.commonShipToAddress = undefined;
+    component.nextStep();
+    fixture.detectChanges();
+    expect(element.querySelector('div.alert-danger')).toBeTruthy();
+  });
+
+  it('should set submitted if next button is clicked', () => {
+    expect(component.submitted).toBeFalse();
+    component.nextStep();
+    expect(component.submitted).toBeTrue();
+  });
+
+  it('should not disable next button if basket addresses are set and next button is clicked', () => {
+    expect(component.nextDisabled).toBeFalse();
+    component.nextStep();
+    expect(component.nextDisabled).toBeFalse();
+  });
+
+  it('should disable next button if basket invoice is missing and next button is clicked', () => {
+    component.basket.invoiceToAddress = undefined;
+
+    component.nextStep();
+    expect(component.nextDisabled).toBeTrue();
+  });
+
+  it('should disable next button if basket shipping is missing and next button is clicked', () => {
+    component.basket.commonShipToAddress = undefined;
+
+    component.nextStep();
+    expect(component.nextDisabled).toBeTrue();
+  });
 });
