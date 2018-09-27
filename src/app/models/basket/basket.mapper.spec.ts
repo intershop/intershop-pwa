@@ -60,9 +60,9 @@ describe('Basket Mapper', () => {
     it(`should return Basket when getting BasketData`, () => {
       basket = BasketMapper.fromData(basketData);
       expect(basket).toBeTruthy();
-      expect(basket.lineItems).toBe(basketData.shippingBuckets[0].lineItems);
+      expect(basket.lineItems.length).toBe(basketData.shippingBuckets[0].lineItems.length);
       expect(basket.commonShippingMethod).toBe(basketData.shippingBuckets[0].shippingMethod);
-      expect(basket.commonShipToAddress).toBe(basketData.shippingBuckets[0].shipToAddress);
+      expect(basket.commonShipToAddress.urn).toBe(basketData.shippingBuckets[0].shipToAddress.urn);
       expect(basket.totals.itemTotal.value).toBe(basketData.totals.itemTotal.value);
       expect(basket.totals.valueRebates[0].rebateType).toBe(basketData.valueRebates[0].rebateType);
       expect(basket.totals.itemSurchargeTotalsByType[0].amount.value).toBe(

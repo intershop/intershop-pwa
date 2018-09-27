@@ -7,6 +7,7 @@ import {
   CreateBasketShippingAddress,
   CreateBasketShippingAddressSuccess,
   DeleteBasketShippingAddress,
+  UpdateBasketCustomerAddress,
 } from '../basket/basket.actions';
 
 import * as fromActions from './addresses.actions';
@@ -111,6 +112,48 @@ describe('Addresses Reducer', () => {
     });
   });
 
+  describe('UpdateCustomerAddress actions', () => {
+    describe('UpdateBasketCustomerAddress action', () => {
+      it('should set loading to true', () => {
+        const action = new UpdateBasketCustomerAddress(BasketMockData.getAddress());
+        const state = addressesReducer(initialState, action);
+
+        expect(state.loading).toBeTrue();
+      });
+    });
+
+    describe('UpdateCustomerAddressFail action', () => {
+      it('should set loading to false', () => {
+        const error = { message: 'invalid' } as HttpError;
+        const action = new fromActions.UpdateCustomerAddressFail(error);
+        const state = addressesReducer(initialState, action);
+
+        expect(state.loading).toBeFalse();
+        expect(state.error).toEqual(error);
+      });
+    });
+
+    describe('UpdateCustomerAddressSuccess action', () => {
+      it('should update address in store, set loading to false and reset error', () => {
+        const address = {
+          id: 'addressId',
+          firstName: 'Patricia',
+        } as Address;
+
+        const preAction = new CreateBasketShippingAddressSuccess(address);
+        let state = addressesReducer(initialState, preAction);
+
+        address.firstName = 'John';
+        const action = new fromActions.UpdateCustomerAddressSuccess(address);
+        state = addressesReducer(state, action);
+
+        expect(state.ids).toHaveLength(1);
+        expect(state.entities.addressId.firstName).toEqual('John');
+        expect(state.loading).toBeFalse();
+      });
+    });
+  });
+
   describe('DeleteCustomerAddress actions', () => {
     describe('DeleteBasketShippingAddress action', () => {
       it('should set loading to true', () => {
@@ -142,7 +185,7 @@ describe('Addresses Reducer', () => {
         let state = addressesReducer(initialState, preAction);
 
         const action = new fromActions.DeleteCustomerAddressSuccess(address.id);
-        state = addressesReducer(initialState, action);
+        state = addressesReducer(state, action);
 
         expect(state.ids).toHaveLength(0);
         expect(state.loading).toBeFalse();

@@ -1,12 +1,14 @@
+import { AddressMapper } from '../address/address.mapper';
+import { BasketItemMapper } from '../basket-item/basket-item.mapper';
 import { BasketTotal } from '../basket-total/basket-total.model';
 import { BasketData } from '../basket/basket.interface';
-import { ShippingBucket } from '../shipping-bucket/shipping-bucket.model';
+import { ShippingBucketData } from '../shipping-bucket/shipping-bucket.interface';
 
 import { Basket } from './basket.model';
 
 export class BasketMapper {
   static fromData(data: BasketData) {
-    let shippingBucket: ShippingBucket;
+    let shippingBucket: ShippingBucketData;
     if (data.shippingBuckets && data.shippingBuckets.length > 0) {
       shippingBucket = data.shippingBuckets[0];
     }
@@ -32,14 +34,17 @@ export class BasketMapper {
       id: data.id,
       purchaseCurrency: data.purchaseCurrency,
       dynamicMessages: data.dynamicMessages,
-      invoiceToAddress: data.invoiceToAddress,
+
+      invoiceToAddress: data.invoiceToAddress ? AddressMapper.fromData(data.invoiceToAddress) : undefined,
       totals,
     };
 
     if (shippingBucket) {
       basket.commonShippingMethod = shippingBucket.shippingMethod;
-      basket.commonShipToAddress = shippingBucket.shipToAddress;
-      basket.lineItems = shippingBucket.lineItems;
+      basket.commonShipToAddress = shippingBucket.shipToAddress
+        ? AddressMapper.fromData(shippingBucket.shipToAddress)
+        : undefined;
+      basket.lineItems = shippingBucket.lineItems.map(item => BasketItemMapper.fromData(item));
     }
 
     return basket;

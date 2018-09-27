@@ -4,7 +4,7 @@
     <div *ngIf="error && error.status" role="alert" class="alert alert-danger">
       {{ error.status }}: {{ error.error }}
     </div>
-    <div *ngIf="!basket.commonShippingMethod && !error" role="alert" class="alert alert-danger">
+    <div *ngIf="nextDisabled && !error" role="alert" class="alert alert-danger">
       {{ 'checkout.shipping_method.no_Selection.error' | translate }}
     </div>
     <!-- shipping method selection -->
@@ -62,7 +62,7 @@
       <button
         class="btn btn-lg btn-block btn-primary"
         type="button"
-        [disabled]="!basket.commonShippingMethod"
+        [disabled]="nextDisabled"
         (click)="nextStep()"
       >
         {{'checkout.button.label' | translate}}

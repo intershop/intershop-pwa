@@ -28,6 +28,8 @@ import {
   CreateCustomerAddressFail,
   DeleteCustomerAddressFail,
   DeleteCustomerAddressSuccess,
+  UpdateCustomerAddressFail,
+  UpdateCustomerAddressSuccess,
 } from '../addresses/addresses.actions';
 
 import * as basketActions from './basket.actions';
@@ -169,7 +171,22 @@ export class BasketEffects {
   );
 
   /**
-   * Deletes a basket shipping address and reloads the basket in case of success
+   * Updates a basket customer address (invoice or shipping) and reloads the basket in case of success.
+   */
+  @Effect()
+  updateBasketCustomerAddress$ = this.actions$.pipe(
+    ofType<basketActions.UpdateBasketCustomerAddress>(basketActions.BasketActionTypes.UpdateBasketCustomerAddress),
+    map(action => action.payload),
+    mergeMap(address =>
+      this.addressService.updateCustomerAddress('-', address).pipe(
+        concatMapTo([new UpdateCustomerAddressSuccess(address), new basketActions.LoadBasket()]),
+        mapErrorToAction(UpdateCustomerAddressFail)
+      )
+    )
+  );
+
+  /**
+   * Deletes a basket shipping address and reloads the basket in case of success.
    */
   @Effect()
   deleteBasketShippingAddress$ = this.actions$.pipe(

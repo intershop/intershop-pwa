@@ -23,6 +23,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
     case AddressActionTypes.LoadAddresses:
     case BasketActionTypes.CreateBasketInvoiceAddress:
     case BasketActionTypes.CreateBasketShippingAddress:
+    case BasketActionTypes.UpdateBasketCustomerAddress:
     case BasketActionTypes.DeleteBasketShippingAddress: {
       return {
         ...state,
@@ -32,6 +33,7 @@ export function addressesReducer(state = initialState, action: AddressAction | B
 
     case AddressActionTypes.LoadAddressesFail:
     case AddressActionTypes.CreateCustomerAddressFail:
+    case AddressActionTypes.UpdateCustomerAddressFail:
     case AddressActionTypes.DeleteCustomerAddressFail: {
       const error = action.payload;
 
@@ -58,6 +60,16 @@ export function addressesReducer(state = initialState, action: AddressAction | B
 
       return {
         ...addressAdapter.addOne(payload, state),
+        loading: false,
+        error: undefined,
+      };
+    }
+
+    case AddressActionTypes.UpdateCustomerAddressSuccess: {
+      const payload = action.payload;
+
+      return {
+        ...addressAdapter.updateOne({ id: payload.id, changes: payload }, state),
         loading: false,
         error: undefined,
       };

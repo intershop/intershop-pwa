@@ -15,11 +15,13 @@ export class AddressFormDefaultFactory extends AddressFormFactory {
     return this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      title: [''],
       addressLine1: ['', Validators.required],
       addressLine2: [],
+      addressLine3: [],
       postalCode: ['', [Validators.required]],
       city: ['', Validators.required],
-      state: [''],
+      mainDivision: [''],
       phoneHome: [''],
     });
   }
