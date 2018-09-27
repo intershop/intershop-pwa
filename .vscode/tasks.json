@@ -21,6 +21,7 @@
             ]
         },
         {
+            "label": "run tslint",
             "type": "npm",
             "script": "lint",
             "problemMatcher": [
