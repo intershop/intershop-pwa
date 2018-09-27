@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,9 +16,15 @@ describe('Checkout Payment Component', () => {
   let element: HTMLElement;
 
   beforeEach(async(() => {
+    // tslint:disable-next-line:use-component-change-detection
+    @Component({ template: 'dummy' })
+    // tslint:disable-next-line:prefer-mocks-instead-of-stubs-in-tests
+    class DummyComponent {}
+
     TestBed.configureTestingModule({
       declarations: [
         CheckoutPaymentComponent,
+        DummyComponent,
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
@@ -34,7 +41,11 @@ describe('Checkout Payment Component', () => {
           inputs: ['basket'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule],
+      imports: [
+        TranslateModule.forRoot(),
+        RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
+        FormsSharedModule,
+      ],
     }).compileComponents();
   }));
 
