@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Subject, combineLatest } from 'rxjs';
-import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Store, createSelector, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { SearchMoreProducts, getSearchLoading, getSearchTerm } from '../../store/search';
 import { getPagingLoading, getTotalItems, isProductsAvailable } from '../../store/viewconf';
+
+const loading = createSelector(getSearchLoading, getPagingLoading, (a, b) => a && !b);
 
 @Component({
   selector: 'ish-search-page-container',
@@ -15,10 +17,7 @@ export class SearchPageContainerComponent implements OnInit, OnDestroy {
   searchTerm$ = this.store.pipe(select(getSearchTerm));
   totalItems$ = this.store.pipe(select(getTotalItems));
   productsAvailable$ = this.store.pipe(select(isProductsAvailable));
-  searchLoading$ = combineLatest(
-    this.store.pipe(select(getSearchLoading)),
-    this.store.pipe(select(getPagingLoading))
-  ).pipe(map(([a, b]) => a && !b));
+  searchLoading$ = this.store.pipe(select(loading));
 
   loadMore = new EventEmitter<void>();
 
