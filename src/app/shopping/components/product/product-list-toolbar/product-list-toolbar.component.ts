@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -36,17 +36,22 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   sortByChange = new EventEmitter<string>();
 
   destroy$ = new Subject();
-  sortForm: FormControl;
+  sortForm: FormGroup;
   sortOptions: SelectOption[] = [];
 
   ngOnInit() {
-    this.sortForm = new FormControl(this.sortBy);
-    this.sortForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.sortByChange);
+    this.sortForm = new FormGroup({
+      sortDropdown: new FormControl(''),
+    });
+    this.sortForm
+      .get('sortDropdown')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(this.sortByChange);
   }
 
   ngOnChanges(c: SimpleChanges) {
     if (c.sortBy && this.sortForm) {
-      this.sortForm.setValue(this.sortBy, { emitEvent: false });
+      this.sortForm.get('sortDropdown').setValue(this.sortBy, { emitEvent: false });
     }
 
     if (c.sortKeys) {

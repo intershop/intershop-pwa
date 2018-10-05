@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Subject, combineLatest } from 'rxjs';
-import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Store, createSelector, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { getCategoryLoading, getSelectedCategory, getSelectedCategoryId } from '../../store/categories';
 import { LoadMoreProductsForCategory } from '../../store/products';
 import { getPagingLoading } from '../../store/viewconf';
+
+const loading = createSelector(getCategoryLoading, getPagingLoading, (a, b) => a && !b);
 
 @Component({
   selector: 'ish-category-page-container',
@@ -14,10 +16,7 @@ import { getPagingLoading } from '../../store/viewconf';
 })
 export class CategoryPageContainerComponent implements OnInit, OnDestroy {
   category$ = this.store.pipe(select(getSelectedCategory));
-  categoryLoading$ = combineLatest(
-    this.store.pipe(select(getCategoryLoading)),
-    this.store.pipe(select(getPagingLoading))
-  ).pipe(map(([a, b]) => a && !b));
+  categoryLoading$ = this.store.pipe(select(loading));
 
   loadMore = new EventEmitter<void>();
 
