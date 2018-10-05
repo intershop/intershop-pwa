@@ -51,7 +51,7 @@
     <div class="cost-summary">
       <ish-basket-cost-summary [totals]="basket.totals"></ish-basket-cost-summary>
 
-      <form>
+      <form [formGroup]="form">
         <ish-checkbox
           [form]="form"
           controlName="termsAndConditions"

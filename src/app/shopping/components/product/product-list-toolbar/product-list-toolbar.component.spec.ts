@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from '../../../../core/icon.module';
@@ -14,7 +14,7 @@ describe('Product List Toolbar Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ProductListToolbarComponent],
-      imports: [TranslateModule.forRoot(), FormsModule, ReactiveFormsModule, IconModule],
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule, IconModule],
     }).compileComponents();
   }));
 
