@@ -15,8 +15,8 @@
     </div>
   </div>
   <div class="col-8 col-md-12 col-lg-3 sort-by">
-    <form class="sort-by-filter" method="post" name="sortByForm" novalidate=""> <!-- TODO: Remove form tag, it's not needed -->
-      <select class="form-control" [formControl]="sortForm" data-submit-form-handler="change" id="SortingAttribute" name="SortingAttribute">
+    <form class="sort-by-filter" name="sortByForm" novalidate="" [formGroup]="sortForm"> <!-- TODO: Remove form tag, it's not needed -->
+      <select class="form-control" formControlName="sortDropdown" id="SortingAttribute" name="SortingAttribute">
         <option *ngFor="let o of sortOptions" [value]="o.value">{{ o.label }}</option>
       </select>
     </form>

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -44,7 +45,7 @@ describe('Checkout Review Component', () => {
           inputs: ['form', 'controlName', 'errorMessages'],
         }),
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), ReactiveFormsModule],
     }).compileComponents();
   }));
 
