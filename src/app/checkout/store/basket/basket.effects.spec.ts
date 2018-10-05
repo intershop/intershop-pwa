@@ -4,7 +4,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyNumber, anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { OrderService } from '../../../account/services/order/order.service';
 import { LoginUserSuccess, LogoutUser } from '../../../core/store/user/user.actions';
@@ -679,7 +679,7 @@ describe('Basket Effects', () => {
 
   describe('updateBasketItems$', () => {
     beforeEach(() => {
-      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anyNumber())).thenReturn(of());
+      when(basketServiceMock.updateBasketItem(anyString(), anyString(), anything())).thenReturn(of());
 
       store$.dispatch(
         new basketActions.LoadBasketSuccess({

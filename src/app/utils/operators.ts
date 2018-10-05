@@ -35,6 +35,20 @@ export function distinctCompareWith<T>(observable: Observable<T>): OperatorFunct
 
 export function mapErrorToAction<S, T>(actionType: { new (error: HttpError): T }) {
   return (source$: Observable<S | T>) =>
-    // tslint:disable-next-line:ban
-    source$.pipe(catchError(err => of(new actionType(HttpErrorMapper.fromError(err)))));
+    source$.pipe(
+      // tslint:disable-next-line:ban
+      catchError(err => {
+        /*
+          display error in certain circumstances:
+          typeof window === 'undefined' -- universal mode
+          window.name !== 'nodejs' -- excludes display for jest
+          process.env.DEBUG -- when environment explicitely wants it
+          err instanceof Error -- i.e. TypeErrors that would be suppressed otherwise
+         */
+        if (typeof window === 'undefined' || window.name !== 'nodejs' || process.env.DEBUG || err instanceof Error) {
+          console.error(err);
+        }
+        return of(new actionType(HttpErrorMapper.fromError(err)));
+      })
+    );
 }
