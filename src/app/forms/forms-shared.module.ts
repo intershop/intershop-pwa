@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 
@@ -15,7 +15,7 @@ import { selectComponents } from './shared/components/form-controls/select';
 import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedback.directive';
 
 @NgModule({
-  imports: [SharedModule, RecaptchaModule, TranslateModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, RecaptchaModule, TranslateModule, CommonModule, ReactiveFormsModule],
   declarations: [
     FormControlFeedbackComponent,
     ShowFormFeedbackDirective,
@@ -27,7 +27,6 @@ import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedbac
   ],
   exports: [
     CommonModule,
-    FormsModule,
     ReactiveFormsModule,
     TranslateModule,
     FormControlFeedbackComponent,
