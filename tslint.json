@@ -192,6 +192,7 @@
       "kebab-case"
     ],
     "use-input-property-decorator": true,
+    "no-assignement-to-inputs": true,
     "use-output-property-decorator": true,
     "use-component-change-detection": { "severity": "warning" },
     "use-host-property-decorator": true,
