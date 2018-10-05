@@ -10,7 +10,7 @@
       [formControlName]="controlName"
       [attr.data-testing-id]="controlName"
       [maxlength]="maxlength"
-      [attr.autocomplete]="autocomplete"
+      [attr.autocomplete]="calculatedAutocomplete"
       [min]="min || ''"
       [max]="max || ''"
       [placeholder]="placeholderText ? (placeholderText | translate) : ''"

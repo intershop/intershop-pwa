@@ -77,7 +77,6 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   setViewType(mode: ViewType) {
-    this.viewType = mode;
     this.viewTypeChange.emit(mode);
   }
 }
