@@ -22,4 +22,13 @@
 //
 //
 // -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
+  cy.server();
+  cy.route('**/categories*').as('categories');
+  originalFn(url, options);
+  return cy.get('body').then(body => {
+    if (!body.find('#intershop-pwa-state')) {
+      cy.wait('@categories');
+    }
+  });
+});
