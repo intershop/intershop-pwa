@@ -1,21 +1,18 @@
-FROM caltha/protractor
-RUN apt-get update
-RUN apt-get install -y wget
+FROM cypress/browsers:chrome67
 COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
-RUN npm install
-RUN npx webdriver-manager update --chrome --versions.chrome=2.38 --gecko false
+RUN npm install | grep -v 'title changed'
 ARG ICM_BASE_URL="http://localhost:4200"
 COPY . /workspace/
 RUN npm run build:dynamic:prod
 RUN echo ICM_BASE_URL=${ICM_BASE_URL}
-RUN (npm run serve:dynamic&) \
+RUN nohup bash -c "Xvfb :5 &" \
+ && export DISPLAY=:5 \
+ && nohup bash -c "npm run serve:dynamic &" \
  && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200 \
  && sh .gitlab-ci-test-universal.sh \
- && npx protractor e2e/protractor.conf.js --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4200 \
- && npx cypress run
-RUN (npx ng serve --aot --progress false --port 4400&) \
+ && npx cypress run -b chrome -c "baseUrl=http://localhost:4200" \
+ && nohup bash -c "npx ng serve --aot --progress false --port 4400 &" \
  && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4400 \
- && npx protractor e2e/protractor.conf.js --suite local --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4400 \
- && npx cypress run
+ && npx cypress run -b chrome -c "baseUrl=http://localhost:4400,integrationFolder=cypress/integration/local"

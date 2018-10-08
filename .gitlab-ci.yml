@@ -23,6 +23,7 @@ e2e:
   tags:
   - shell-executor
   - docker
+  - performance
   script: docker build --file Dockerfile_e2e --build-arg ICM_BASE_URL=${ICM_BASE_URL} .
 
 .job-template: &job_definition

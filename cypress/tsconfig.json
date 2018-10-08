@@ -1,8 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "integration/*.ts",
+    "pages/**/*.ts",
+    "framework/*.ts",
     "support/*.ts",
+    "integration/**/*.ts",
     "../node_modules/cypress"
   ],
   "exclude": [
