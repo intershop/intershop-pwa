@@ -19,6 +19,7 @@
 *.jar
 *.snap
 *.hbs
+*.mp4
 *config*.json
 .gitignore
 /*.*
