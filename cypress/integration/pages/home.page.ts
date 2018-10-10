@@ -9,12 +9,6 @@ export class HomePage {
     cy.visit('/');
   }
 
-  gotoCategoryPage(categoryUniqueId: string) {
-    cy.get(`ish-header [data-testing-id="${categoryUniqueId}-link"]`)
-      .last()
-      .click();
-  }
-
   get content() {
     return cy.get(this.tag);
   }

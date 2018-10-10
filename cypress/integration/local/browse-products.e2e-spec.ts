@@ -25,7 +25,7 @@ describe('Browsing User', () => {
 
     it(`should go from home page to category page`, () => {
       at(HomePage, page => {
-        page.gotoCategoryPage(_.catalog);
+        page.header.gotoCategoryPage(_.catalog);
       });
     });
 

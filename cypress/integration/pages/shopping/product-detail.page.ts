@@ -11,11 +11,11 @@ export class ProductDetailPage {
     cy.visit(`/category/${categoryUniqueId}/product/${sku}`);
   }
 
-  private addToCardButton = () => cy.get('[data-testing-id="addToCartButton"]');
+  private addToCartButton = () => cy.get('[data-testing-id="addToCartButton"]');
   private addToCompareButton = () => cy.get('[data-testing-id*="compare"]');
 
   isComplete() {
-    return this.addToCardButton().should('be.visible');
+    return this.addToCartButton().should('be.visible');
   }
 
   get sku() {
@@ -28,6 +28,11 @@ export class ProductDetailPage {
 
   addProductToCompare() {
     this.addToCompareButton().click();
+  }
+
+  addProductToCart() {
+    cy.wait(1000);
+    this.addToCartButton().click();
   }
 
   get recentlyViewedItems() {
