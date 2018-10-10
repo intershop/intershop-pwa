@@ -12,6 +12,12 @@ export class HeaderModule {
       .click();
   }
 
+  gotoRegistrationPage() {
+    cy.get('ish-header a.my-account-register')
+      .first()
+      .click();
+  }
+
   logout() {
     cy.get('ish-header a.my-account-logout')
       .first()
