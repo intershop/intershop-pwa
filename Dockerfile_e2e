@@ -12,7 +12,7 @@ RUN nohup bash -c "Xvfb :5 &" \
  && nohup bash -c "npm run serve:dynamic &" \
  && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200 \
  && sh .gitlab-ci-test-universal.sh \
- && npx cypress run -b chrome -c "baseUrl=http://localhost:4200" \
+ && npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" \
  && nohup bash -c "npx ng serve --aot --progress false --port 4400 &" \
  && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4400 \
- && npx cypress run -b chrome -c "baseUrl=http://localhost:4400,integrationFolder=cypress/integration/local"
+ && npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4400,integrationFolder=cypress/integration/local"

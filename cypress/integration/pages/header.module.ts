@@ -1,4 +1,8 @@
+import { MiniCartModule } from './checkout/mini-cart.module';
+
 export class HeaderModule {
+  miniCart = new MiniCartModule();
+
   get numberOfCompareItems() {
     return cy
       .get('ish-header .compare-status .badge')
@@ -15,6 +19,12 @@ export class HeaderModule {
   gotoRegistrationPage() {
     cy.get('ish-header a.my-account-register')
       .first()
+      .click();
+  }
+
+  gotoCategoryPage(categoryUniqueId: string) {
+    cy.get(`ish-header [data-testing-id="${categoryUniqueId}-link"]`)
+      .last()
       .click();
   }
 
