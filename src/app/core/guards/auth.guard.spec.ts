@@ -25,7 +25,6 @@ describe('Auth Guard', () => {
           RouterTestingModule.withRoutes([{ path: 'login', component: loginComponentMock }]),
           StoreModule.forRoot(coreReducers),
         ],
-        providers: [AuthGuard],
         declarations: [loginComponentMock],
       }).compileComponents();
     }));

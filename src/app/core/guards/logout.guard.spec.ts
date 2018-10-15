@@ -17,7 +17,7 @@ describe('Logout Guard', () => {
 
       TestBed.configureTestingModule({
         imports: [RouterTestingModule],
-        providers: [LogoutGuard, { provide: Store, useFactory: () => instance(storeMock$) }],
+        providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
       }).compileComponents();
     }));
 

@@ -9,7 +9,7 @@ import { getUserAuthorized } from '../store/user';
 /**
  * guards a route against unprivileged access (no user is logged in)
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private store: Store<{}>, private router: Router) {}
   canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {

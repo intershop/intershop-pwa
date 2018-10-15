@@ -18,7 +18,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  providers: [LogoutGuard],
   exports: [RouterModule],
 })
 export class RegistrationRoutingModule {}
