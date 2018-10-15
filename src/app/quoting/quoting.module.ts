@@ -3,8 +3,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { QuotingRoutingModule } from './quoting-routing.module';
-import { QuoteRequestService } from './services/quote-request/quote-request.service';
-import { QuoteService } from './services/quote/quote.service';
 import { quotingEffects, quotingReducers } from './store/quoting.system';
 
 @NgModule({
@@ -13,6 +11,5 @@ import { quotingEffects, quotingReducers } from './store/quoting.system';
     StoreModule.forFeature('quoting', quotingReducers),
     EffectsModule.forFeature(quotingEffects),
   ],
-  providers: [QuoteService, QuoteRequestService],
 })
 export class QuotingModule {}

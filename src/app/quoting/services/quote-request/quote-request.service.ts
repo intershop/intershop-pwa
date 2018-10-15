@@ -18,7 +18,7 @@ import { getActiveQuoteRequest } from '../../store/quote-request';
 /**
  * The Quote Request Service handles the interaction with the 'quoteRequest' related REST API.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class QuoteRequestService {
   /**
    * Observable containing user and customer information for ReST requests.
