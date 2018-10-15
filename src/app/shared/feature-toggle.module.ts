@@ -12,7 +12,7 @@ export class FeatureToggleModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: FeatureToggleModule,
-      providers: [FeatureToggleService, FeatureToggleGuard],
+      providers: [FeatureToggleGuard],
     };
   }
 
