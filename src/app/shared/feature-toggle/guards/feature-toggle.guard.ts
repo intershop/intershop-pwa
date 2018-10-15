@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 
 import { FeatureToggleService } from '../services/feature-toggle.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FeatureToggleGuard implements CanActivate {
   constructor(private featureToggleService: FeatureToggleService, private router: Router) {}
 
