@@ -24,6 +24,8 @@ export class InputComponent extends FormElement implements OnInit {
   @Input()
   placeholderText?: string;
 
+  calculatedAutocomplete: string;
+
   constructor(protected translate: TranslateService) {
     super(translate);
   }
@@ -47,8 +49,6 @@ export class InputComponent extends FormElement implements OnInit {
     set default values for empty input parameters
   */
   protected setDefaultValues() {
-    if (!this.autocomplete) {
-      this.autocomplete = this.type === 'password' ? 'off' : undefined;
-    }
+    this.calculatedAutocomplete = this.autocomplete ? this.autocomplete : this.type === 'password' ? 'off' : undefined;
   }
 }

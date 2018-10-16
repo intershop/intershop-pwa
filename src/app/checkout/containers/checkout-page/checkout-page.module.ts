@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AuthGuard } from '../../../core/guards/auth.guard';
 import { FormsAddressModule } from '../../../forms/forms-address.module';
 import { SharedAddressModule } from '../../../shared/shared-address.module';
 import { SharedBasketModule } from '../../../shared/shared-basket.module';
@@ -47,6 +46,5 @@ import { checkoutPageRoutes } from './checkout-page.routes';
     CheckoutReceiptPageContainerComponent,
     CheckoutReceiptComponent,
   ],
-  providers: [AuthGuard],
 })
 export class CheckoutPageModule {}

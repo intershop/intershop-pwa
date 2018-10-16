@@ -4,6 +4,12 @@ import { ImportDeclaration, SourceFile, SyntaxKind } from 'typescript';
 import { RuleHelpers } from './ruleHelpers';
 
 class DoNotImportEnvironmentWalker extends Lint.RuleWalker {
+  visitSourceFile(sourceFile: SourceFile) {
+    if (!sourceFile.fileName.endsWith('module.ts')) {
+      super.visitSourceFile(sourceFile);
+    }
+  }
+
   visitImportDeclaration(importStatement: ImportDeclaration) {
     const fromStringToken = RuleHelpers.getNextChildTokenOfKind(importStatement, SyntaxKind.StringLiteral);
     const fromStringText = fromStringToken.getText();

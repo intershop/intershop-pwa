@@ -18,6 +18,11 @@ var DoNotImportEnvironmentWalker = (function (_super) {
     function DoNotImportEnvironmentWalker() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    DoNotImportEnvironmentWalker.prototype.visitSourceFile = function (sourceFile) {
+        if (!sourceFile.fileName.endsWith('module.ts')) {
+            _super.prototype.visitSourceFile.call(this, sourceFile);
+        }
+    };
     DoNotImportEnvironmentWalker.prototype.visitImportDeclaration = function (importStatement) {
         var fromStringToken = ruleHelpers_1.RuleHelpers.getNextChildTokenOfKind(importStatement, typescript_1.SyntaxKind.StringLiteral);
         var fromStringText = fromStringToken.getText();
