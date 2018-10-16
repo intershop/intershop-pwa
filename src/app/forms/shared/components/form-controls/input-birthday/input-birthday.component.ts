@@ -51,7 +51,10 @@ export class InputBirthdayComponent extends FormElement implements OnInit {
     }; // ToDo
 
     const currentDate = new Date();
+    // TODO: move into template?
+    // tslint:disable-next-line:no-assignement-to-inputs
     this.minYear = this.minYear || currentDate.getFullYear() - 116;
+    // tslint:disable-next-line:no-assignement-to-inputs
     this.maxYear = this.maxYear || currentDate.getFullYear() - 16;
   }
 

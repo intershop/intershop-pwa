@@ -44,7 +44,6 @@ describe('Feature Toggle Guard', () => {
         ]),
         FeatureToggleModule.testingFeatures({ feature1: true, feature2: false }),
       ],
-      providers: [FeatureToggleGuard],
     });
 
     router = TestBed.get(Router);

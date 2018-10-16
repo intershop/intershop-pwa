@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AuthGuard } from '../../../core/guards/auth.guard';
 import { SharedModule } from '../../../shared/shared.module';
 import { AccountSharedModule } from '../../account-shared.module';
 import { AccountNavigationComponent } from '../../components/account-navigation/account-navigation.component';
@@ -21,6 +20,5 @@ import { accountPageRoutes } from './account-page.routes';
     AccountOverviewPageContainerComponent,
     AccountOverviewPageComponent,
   ],
-  providers: [AuthGuard],
 })
 export class AccountPageModule {}

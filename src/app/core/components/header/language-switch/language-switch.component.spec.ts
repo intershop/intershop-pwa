@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { deepEqual, spy, verify } from 'ts-mockito';
 
 import { Locale } from '../../../../models/locale/locale.model';
 import { IconModule } from '../../../icon.module';
@@ -59,7 +60,14 @@ describe('Language Switch Component', () => {
   }));
 
   it('should change language when languageChange method is called', () => {
-    component.switch(findLang('fr'));
+    const FR = findLang('fr');
+
+    const emitter = spy(component.localeChange);
+    component.switch(FR);
+    verify(emitter.emit(deepEqual(FR))).once();
+
+    // setting from container
+    component.locale = FR;
     fixture.detectChanges();
     const selectedLanguage = element.getElementsByClassName('language-switch-current-selection');
     expect(selectedLanguage[0].textContent.trim()).toEqual('fr');

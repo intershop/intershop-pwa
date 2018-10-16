@@ -192,6 +192,7 @@
       "kebab-case"
     ],
     "use-input-property-decorator": true,
+    "no-assignement-to-inputs": true,
     "use-output-property-decorator": true,
     "use-component-change-detection": { "severity": "warning" },
     "use-host-property-decorator": true,
@@ -240,8 +241,7 @@
       { "from": "ts-mockito\/lib\/ts-mockito", "message": "use import from 'ts-mockito'", "fix": "ts-mockito" },
       { "from": "@angular/common/http", "message": "http classes are not serializable and should therefor not be stored in ngrx related files", "filePattern": "(?!.*.spec.ts$).*\/store\/.*" },
       { "from": "@angular/common/http", "message": "http classes should not propagate to components and containers", "filePattern": ".*\\.(container|component)\\..*ts" },
-      { "starImport": true, "from": "\\.(?!.*(actions|selectors|keys)$).*", "filePattern": ".*src/app.*", "message": "use star imports only for specific selectors, actions and injection-keys" },
-      { "starImport": true, "from": "\\.\\..*", "filePattern": ".*src/app.*", "message": "use star imports only for local files" },
+      { "starImport": true, "from": "\\.\\..*", "filePattern": ".*src/app.*", "message": "use star imports only for aggregation of deeper lying imports" },
       { "starImport": true, "from": "lodash.*" },
       { "import": "^(?!range$).*", "from": "lodash.*" },
       { "import": "CustomFormsModule", "from": "ng2-validation", "message": "This module is for the template-driven approach which we don't use." },
