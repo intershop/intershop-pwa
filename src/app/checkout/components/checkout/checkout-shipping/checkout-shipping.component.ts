@@ -42,7 +42,7 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.shippingForm = new FormGroup({
-      id: new FormControl(this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : ''),
+      id: new FormControl(this.getCommonShippingMethod()),
     });
 
     // trigger update shipping method if selection changes
@@ -52,14 +52,16 @@ export class CheckoutShippingComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(shippingId => this.updateShippingMethod.emit(shippingId));
   }
 
+  private getCommonShippingMethod(): string {
+    return this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : '';
+  }
+
   /**
    * set shipping selection to the corresponding basket value (important in case of an error)
    */
   ngOnChanges(c: SimpleChanges) {
     if (c.basket && this.shippingForm) {
-      this.shippingForm
-        .get('id')
-        .setValue(this.basket.commonShippingMethod ? this.basket.commonShippingMethod.id : '', { emitEvent: false });
+      this.shippingForm.get('id').setValue(this.getCommonShippingMethod(), { emitEvent: false });
     }
   }
 
