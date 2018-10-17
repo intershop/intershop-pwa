@@ -7,6 +7,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -50,11 +51,18 @@ export class ProductListToolbarComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnChanges(c: SimpleChanges) {
-    if (c.sortBy && this.sortForm) {
+    this.updateSortBy(c.sortBy);
+    this.updateSortKeys(c.sortKeys);
+  }
+
+  private updateSortBy(sortBy: SimpleChange) {
+    if (sortBy && this.sortForm) {
       this.sortForm.get('sortDropdown').setValue(this.sortBy, { emitEvent: false });
     }
+  }
 
-    if (c.sortKeys) {
+  private updateSortKeys(sortKeys: SimpleChange) {
+    if (sortKeys) {
       this.sortOptions = this.mapSortKeysToSelectOptions(this.sortKeys);
     }
   }

@@ -57,7 +57,6 @@ export class QuoteEditComponent implements OnChanges {
 
   form: FormGroup;
 
-  description: string;
   sellerComment: string;
   validFromDate: number;
   validToDate: number;
@@ -76,31 +75,21 @@ export class QuoteEditComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.description = undefined;
-    this.sellerComment = undefined;
-    this.validFromDate = undefined;
-    this.validToDate = undefined;
-
     const quote = this.quote as Quote;
 
+    this.sellerComment = quote.sellerComment;
+    this.validFromDate = quote.validFromDate;
+    this.validToDate = quote.validToDate;
+
+    this.patchForm(quote);
+  }
+
+  private patchForm(quote: Quote) {
     if (quote.displayName) {
       this.form.patchValue({ displayName: quote.displayName });
     }
-
     if (quote.description) {
       this.form.patchValue({ description: quote.description });
-    }
-
-    if (quote.sellerComment) {
-      this.sellerComment = quote.sellerComment;
-    }
-
-    if (quote.validFromDate) {
-      this.validFromDate = quote.validFromDate;
-    }
-
-    if (quote.validToDate) {
-      this.validToDate = quote.validToDate;
     }
   }
 

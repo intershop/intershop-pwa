@@ -7,6 +7,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -88,16 +89,25 @@ export class RegistrationFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(c: SimpleChanges) {
-    // update validators for "state" control in address form according to regions
+    this.updateRegions(c.regions);
+    this.applyError(c.error);
+  }
+
+  /**
+   * update validators for "state" control in address form according to regions
+   */
+  private updateRegions(regions: SimpleChange) {
     const stateControl = this.form && this.form.get('address.state');
-    if (c.regions && stateControl) {
+    if (regions && stateControl) {
       updateValidatorsByDataLength(stateControl, this.regions, Validators.required, true);
     }
-    if (c.error && c.error.currentValue && c.error.currentValue.headers.get('error-missing-attributes')) {
-      const missingAttributes: string = c.error.currentValue.headers.get('error-missing-attributes');
+  }
+
+  private applyError(error: SimpleChange) {
+    if (error && error.currentValue && error.currentValue.headers['error-missing-attributes']) {
+      const missingAttributes = error.currentValue.headers['error-missing-attributes'];
       // map missing 'email' response to login field
       const list = missingAttributes.split(',').map(attr => (attr === 'email' ? 'credentials.login' : attr));
-
       markFormControlsAsInvalid(this.form, list);
     }
   }

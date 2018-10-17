@@ -86,12 +86,13 @@ export class CustomerAddressFormComponent implements OnInit, OnChanges, OnDestro
    * Trigger reset form from parent.
    */
   ngOnChanges(c: SimpleChanges) {
-    if (c.resetForm && this.form) {
+    this.doResetForm(c.resetForm && c.resetForm.currentValue);
+    this.initializeAddressForm(c.address && this.address);
+  }
+
+  doResetForm(resetForm: boolean) {
+    if (resetForm && this.form) {
       this.form.reset();
-    }
-    if (c.address) {
-      // initialize address form
-      this.initializeAddressForm(this.address);
     }
   }
 

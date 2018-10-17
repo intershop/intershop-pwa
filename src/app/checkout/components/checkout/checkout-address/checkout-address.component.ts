@@ -130,15 +130,21 @@ export class CheckoutAddressComponent implements OnInit, OnChanges, OnDestroy {
       this.invoice.isFormCollapsed = true;
       this.shipping.isFormCollapsed = true;
 
-      // determine whether the shipping address is deleteable
-      this.shipping.isAddressDeleteable =
-        this.basket.commonShipToAddress &&
-        this.currentUser &&
-        (!this.currentUser.preferredInvoiceToAddress ||
-          this.basket.commonShipToAddress.id !== this.currentUser.preferredInvoiceToAddress.id) &&
-        (!this.currentUser.preferredShipToAddress ||
-          this.basket.commonShipToAddress.id !== this.currentUser.preferredShipToAddress.id);
+      this.calculateShippingAddressDeletable();
     }
+  }
+
+  /**
+   * determine whether the shipping address is deleteable
+   */
+  private calculateShippingAddressDeletable() {
+    this.shipping.isAddressDeleteable =
+      this.basket.commonShipToAddress &&
+      this.currentUser &&
+      (!this.currentUser.preferredInvoiceToAddress ||
+        this.basket.commonShipToAddress.id !== this.currentUser.preferredInvoiceToAddress.id) &&
+      (!this.currentUser.preferredShipToAddress ||
+        this.basket.commonShipToAddress.id !== this.currentUser.preferredShipToAddress.id);
   }
 
   /**
