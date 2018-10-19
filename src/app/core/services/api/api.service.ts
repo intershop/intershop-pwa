@@ -132,7 +132,7 @@ export class ApiService {
    */
   put<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
-      .put<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
+      .put<T>(`${this.restEndpoint}/${path}`, body, { headers: this.defaultHeaders })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
@@ -142,7 +142,7 @@ export class ApiService {
    */
   post<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
-      .post<T>(`${this.restEndpoint}/${path}`, JSON.stringify(body), { headers: this.defaultHeaders })
+      .post<T>(`${this.restEndpoint}/${path}`, body, { headers: this.defaultHeaders })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
