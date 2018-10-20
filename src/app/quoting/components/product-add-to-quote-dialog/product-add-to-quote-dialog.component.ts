@@ -56,16 +56,15 @@ export class ProductAddToQuoteDialogComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    const quote = this.quote;
-
-    if (!quote) {
-      return;
+    if (this.quote) {
+      this.patchForm(this.quote);
     }
+  }
 
+  private patchForm(quote: QuoteRequest) {
     if (quote.displayName) {
       this.form.patchValue({ displayName: quote.displayName });
     }
-
     if (quote.description) {
       this.form.patchValue({ description: quote.description });
     }

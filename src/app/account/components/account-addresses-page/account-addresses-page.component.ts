@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
+import { AddressHelper } from '../../../models/address/address.helper';
 import { Address } from '../../../models/address/address.model';
 import { User } from '../../../models/user/user.model';
 
@@ -29,20 +30,22 @@ export class AccountAddressesPageComponent implements OnChanges {
     on changes - update the shown further addresses
   */
   ngOnChanges() {
+    this.calculareFurtherAddresses();
+
+    this.hasPreferredAddresses = !!this.user.preferredInvoiceToAddress || !!this.user.preferredShipToAddress;
+
+    this.preferredAddressesEqual = AddressHelper.equal(
+      this.user.preferredInvoiceToAddress,
+      this.user.preferredShipToAddress
+    );
+  }
+
+  private calculareFurtherAddresses() {
     // all addresses of the user except the preferred invoiceTo and shipTo addresses
     this.furtherAddresses = this.addresses.filter(
       (address: Address) =>
         (!this.user.preferredInvoiceToAddress || address.id !== this.user.preferredInvoiceToAddress.id) &&
         (!this.user.preferredShipToAddress || address.id !== this.user.preferredShipToAddress.id)
     );
-
-    if (this.user.preferredInvoiceToAddress || this.user.preferredShipToAddress) {
-      this.hasPreferredAddresses = true;
-    }
-
-    this.preferredAddressesEqual =
-      this.user.preferredInvoiceToAddress &&
-      this.user.preferredShipToAddress &&
-      this.user.preferredInvoiceToAddress.id === this.user.preferredShipToAddress.id;
   }
 }

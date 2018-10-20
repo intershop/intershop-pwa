@@ -21,11 +21,15 @@ export class ProductPriceComponent implements OnChanges {
   priceSavings: Price;
 
   ngOnChanges() {
-    if (this.product.listPrice && this.product.salePrice) {
-      this.isListPriceGreaterThanSalePrice = this.product.listPrice.value > this.product.salePrice.value;
-      this.isListPriceLessThanSalePrice = this.product.listPrice.value < this.product.salePrice.value;
+    this.applyPriceParameters(this.product);
+  }
+
+  private applyPriceParameters(product: Product) {
+    if (product.listPrice && product.salePrice) {
+      this.isListPriceGreaterThanSalePrice = product.listPrice.value > product.salePrice.value;
+      this.isListPriceLessThanSalePrice = product.listPrice.value < product.salePrice.value;
       if (this.showPriceSavings) {
-        this.priceSavings = PriceHelper.diff(this.product.listPrice, this.product.salePrice);
+        this.priceSavings = PriceHelper.diff(product.listPrice, product.salePrice);
       }
     }
   }

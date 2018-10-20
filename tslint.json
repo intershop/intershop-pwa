@@ -208,6 +208,13 @@
         "only-simple": true
       }
     },
+    "lifecycle-cyclomatic-complexity": {
+      "severity": "warning",
+      "options": {
+        "ngOnInit": 2,
+        "ngOnChanges": 3
+      }
+    },
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
     "ordered-imports": [
       true,
