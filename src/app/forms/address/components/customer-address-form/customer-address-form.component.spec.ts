@@ -122,4 +122,17 @@ describe('Customer Address Form Component', () => {
 
     expect(component.form.value.control).toBeNull();
   });
+
+  it('should not reset the form if resetForm changes and is false', () => {
+    component.form = fb.group({
+      control: new FormControl('foo', Validators.required),
+      address: fb.group({}),
+    });
+    const changes: SimpleChanges = {
+      resetForm: new SimpleChange(false, false, false),
+    };
+    component.ngOnChanges(changes);
+
+    expect(component.form.value.control).toEqual('foo');
+  });
 });

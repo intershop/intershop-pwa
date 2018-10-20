@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -57,23 +58,35 @@ export class SearchBoxComponent implements OnInit, OnChanges, OnDestroy {
       search: new FormControl(''),
     });
 
-    if (this.configuration && this.configuration.autoSuggest) {
+    if (this.configuration.autoSuggest) {
       this.searchForm
         .get('search')
         .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe(this.searchTermChange);
     }
-
-    this.icon = this.configuration && this.configuration.icon ? this.configuration.icon : 'search';
   }
 
   ngOnChanges(c: SimpleChanges) {
+    this.applyConfiguration(c.configuration);
+    this.updatePopupStatus(c);
+    this.updateSearchTerm(c.searchTerm);
+  }
+
+  private applyConfiguration(configuration: SimpleChange) {
+    if (configuration) {
+      this.icon = this.configuration.icon ? this.configuration.icon : 'search';
+    }
+  }
+
+  private updatePopupStatus(c: SimpleChanges) {
     if (c.results) {
       const resultsAvailable = !!this.results && this.results.length > 0;
       this.isHidden = !resultsAvailable;
     }
+  }
 
-    if (c.searchTerm) {
+  private updateSearchTerm(searchTerm: SimpleChange) {
+    if (searchTerm) {
       this.setSearchFormValue(this.searchTerm);
     }
   }

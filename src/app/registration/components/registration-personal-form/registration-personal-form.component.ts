@@ -15,6 +15,10 @@ export class RegistrationPersonalFormComponent implements OnInit {
   languages: Locale[];
 
   ngOnInit() {
+    this.checkRequired();
+  }
+
+  private checkRequired() {
     if (!this.parentForm) {
       throw new Error('required input parameter <parentForm> is missing for RegistrationPersonalFormComponent');
     }
