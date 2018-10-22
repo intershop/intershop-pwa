@@ -3,8 +3,8 @@ import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from 'src/environments/environment';
 
+import { environment } from '../../environments/environment';
 import { FeatureToggleModule } from '../shared/feature-toggle.module';
 import { FEATURE_TOGGLES } from '../shared/feature-toggle/configurations/injection-keys';
 

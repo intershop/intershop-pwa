@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { Product } from 'src/app/models/product/product.model';
-import { TestStore, ngrxTesting } from 'src/app/utils/dev/ngrx-testing';
 import { anything, spy, verify } from 'ts-mockito';
 
+import { Product } from '../../../models/product/product.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
+import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { AddToCompare } from '../../store/compare';
 import { LoadProductSuccess } from '../../store/products';
 import { shoppingReducers } from '../../store/shopping.system';
