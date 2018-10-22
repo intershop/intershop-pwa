@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
-import { QuoteRequest } from 'src/app/models/quote-request/quote-request.model';
 
+import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
 import { DeleteQuote, LoadQuotes, getCurrentQuotes, getQuoteLoading } from '../../store/quote';
 import {
