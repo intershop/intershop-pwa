@@ -16,15 +16,38 @@ build:
   script: docker build --file Dockerfile_build .
 
 e2e:
+  image: cypress/browsers:chrome67
   stage: e2e
   except:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
-  - performance
-  script: docker build --file Dockerfile_e2e --build-arg ICM_BASE_URL=${ICM_BASE_URL} .
+    - docker-executor
+  services:
+    - name: registry.intershop.de/ispwa/intershop7-devenv/master/a_responsive
+      alias: icm
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  script:
+    - node --version && npm --version
+    - npm install --prefer-offline
+    - npm run build:dynamic:prod
+    - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
+    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - nohup bash -c "npm run serve:dynamic &"
+    - wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200
+    - sh .gitlab-ci-test-universal.sh
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml'
+    - nohup bash -c "npx ng serve --aot --progress false --port 4400 &"
+    - wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4400
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4400,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml'
+    - echo "E2E complete"
 
 .job-template: &job_definition
   stage: publish
