@@ -5,15 +5,42 @@ stages:
   - distribute
   - deploy
 
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/cache/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - cache
+    - node_modules
+
 build:
+  image: node:8.11.4-stretch
   stage: build
   except:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
-  script: docker build --file Dockerfile_build .
+    - docker-executor
+  artifacts:
+    reports:
+      junit: reports/junit.xml
+  coverage: '/^Statements\s*:\s*([^%]+)/'
+  script:
+    - set -e
+    - node --version && npm --version
+    - bash -c "cd tslint-rules ; npm run build"
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
+    - npm install --prefer-offline
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
+    - npx jest -c jest-reports.config.js --ci
+    - npm run lint -- --format stylish
+    - npm run format
+    - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
+    - npx ng build --aot --progress=false
+    - npx tsc -p src/tsconfig.spec.json
+    - echo "build complete"
 
 e2e:
   image: cypress/browsers:chrome67
