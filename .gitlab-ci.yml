@@ -32,7 +32,7 @@ setup:
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
     - echo "setup complete"
 
-test:
+jest_test:
   image: node:8.11.4-stretch
   stage: build
   cache:
@@ -51,28 +51,31 @@ test:
       junit: reports/junit.xml
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
+    - sleep 5
     - test -d node_modules || npm install --prefer-offline
     - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
 
 compile:
-  image: node:8.11.4-stretch
+  image: cypress/browsers:chrome67
   stage: build
   cache:
-    policy: pull
+    policy: pull-push
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - cache
       - node_modules
+      - dist
   except:
     refs:
       - develop
   tags:
     - docker-executor
   script:
+    - sleep 5
     - test -d node_modules || npm install --prefer-offline
-    - npx ng build --aot --progress=false
     - npx tsc -p src/tsconfig.spec.json
+    - npm run build:dynamic:prod
     - echo "build complete"
 
 codestyle:
@@ -90,13 +93,14 @@ codestyle:
   tags:
     - docker-executor
   script:
+    - sleep 5
     - test -d node_modules || npm install --prefer-offline
     - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
     - echo "build complete"
 
-e2e:
+cypress_local:
   image: cypress/browsers:chrome67
   stage: e2e
   cache:
@@ -105,6 +109,42 @@ e2e:
     paths:
       - cache
       - node_modules
+      - dist
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  script:
+    - sleep 5
+    - test -d node_modules || npm install --prefer-offline
+    - node --version && npm --version
+    - npm run build:dynamic
+    - export ICM_BASE_URL=http://localhost:4200 DISPLAY=:5
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - nohup bash -c "npm run serve:dynamic &"
+    - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
+    - sh .gitlab-ci-test-universal.sh
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml'
+    - echo "E2E complete"
+
+cypress_remote:
+  image: cypress/browsers:chrome67
+  stage: e2e
+  cache:
+    policy: pull
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - cache
+      - node_modules
+      - dist
   except:
     refs:
       - develop
@@ -121,19 +161,17 @@ e2e:
     paths:
       - cypress/screenshots
   script:
+    - sleep 5
     - test -d node_modules || npm install --prefer-offline
+    - test -d dist || npm run build:dynamic:prod
     - node --version && npm --version
-    - npm run build:dynamic:prod
     - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npm run serve:dynamic &"
-    - wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200
+    - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
     - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml'
-    - nohup bash -c "npx ng serve --aot --progress false --port 4400 &"
-    - wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4400
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4400,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml'
     - echo "E2E complete"
 
 .job-template: &job_definition
