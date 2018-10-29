@@ -10,15 +10,15 @@ variables:
   npm_config_cache: "$CI_PROJECT_DIR/cache/.npm"
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - cache
-    - node_modules
-
 setup:
   image: node:8.11.4-stretch
   stage: setup
+  cache:
+    policy: pull-push
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - cache
+      - node_modules
   except:
     refs:
       - develop
@@ -35,6 +35,12 @@ setup:
 test:
   image: node:8.11.4-stretch
   stage: build
+  cache:
+    policy: pull
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - cache
+      - node_modules
   except:
     refs:
       - develop
@@ -45,18 +51,26 @@ test:
       junit: reports/junit.xml
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
+    - test -d node_modules || npm install --prefer-offline
     - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
 
 compile:
   image: node:8.11.4-stretch
   stage: build
+  cache:
+    policy: pull
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - cache
+      - node_modules
   except:
     refs:
       - develop
   tags:
     - docker-executor
   script:
+    - test -d node_modules || npm install --prefer-offline
     - npx ng build --aot --progress=false
     - npx tsc -p src/tsconfig.spec.json
     - echo "build complete"
@@ -64,12 +78,19 @@ compile:
 codestyle:
   image: node:8.11.4-stretch
   stage: build
+  cache:
+    policy: pull
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - cache
+      - node_modules
   except:
     refs:
       - develop
   tags:
     - docker-executor
   script:
+    - test -d node_modules || npm install --prefer-offline
     - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
@@ -78,6 +99,12 @@ codestyle:
 e2e:
   image: cypress/browsers:chrome67
   stage: e2e
+  cache:
+    policy: pull
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - cache
+      - node_modules
   except:
     refs:
       - develop
@@ -94,6 +121,7 @@ e2e:
     paths:
       - cypress/screenshots
   script:
+    - test -d node_modules || npm install --prefer-offline
     - node --version && npm --version
     - npm run build:dynamic:prod
     - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
