@@ -1,4 +1,5 @@
 stages:
+  - setup
   - build
   - e2e
   - publish
@@ -15,7 +16,23 @@ cache:
     - cache
     - node_modules
 
-build:
+setup:
+  image: node:8.11.4-stretch
+  stage: setup
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  script:
+    - node --version && npm --version
+    - bash -c "cd tslint-rules ; npm run build"
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
+    - npm install --prefer-offline
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
+    - echo "setup complete"
+
+test:
   image: node:8.11.4-stretch
   stage: build
   except:
@@ -28,18 +45,34 @@ build:
       junit: reports/junit.xml
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
-    - set -e
-    - node --version && npm --version
-    - bash -c "cd tslint-rules ; npm run build"
-    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
-    - npm install --prefer-offline
-    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
     - npx jest -c jest-reports.config.js --ci
+    - echo "build complete"
+
+compile:
+  image: node:8.11.4-stretch
+  stage: build
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  script:
+    - npx ng build --aot --progress=false
+    - npx tsc -p src/tsconfig.spec.json
+    - echo "build complete"
+
+codestyle:
+  image: node:8.11.4-stretch
+  stage: build
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  script:
     - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
-    - npx ng build --aot --progress=false
-    - npx tsc -p src/tsconfig.spec.json
     - echo "build complete"
 
 e2e:
@@ -62,7 +95,6 @@ e2e:
       - cypress/screenshots
   script:
     - node --version && npm --version
-    - npm install --prefer-offline
     - npm run build:dynamic:prod
     - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
