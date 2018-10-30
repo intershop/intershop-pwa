@@ -2,4 +2,5 @@
 
 sleep 5
 
-test -d node_modules || npm install --prefer-offline
+(test -d cache && echo "cache found") || echo "cache not found"
+(test -d node_modules && echo "node_modules found") || npm install --prefer-offline
