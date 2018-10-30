@@ -14,7 +14,7 @@ setup:
   image: node:8.11.4-stretch
   stage: setup
   cache:
-    policy: pull-push
+    policy: push
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - cache
@@ -26,7 +26,7 @@ setup:
     - docker-executor
   script:
     - node --version && npm --version
-    - bash -c "cd tslint-rules ; npm run build"
+    - bash -c "cd tslint-rules ; npm --silent run build"
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
     - npm install --prefer-offline
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
@@ -38,21 +38,20 @@ jest_test:
   cache:
     policy: pull
     key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - cache
-      - node_modules
   except:
     refs:
       - develop
   tags:
     - docker-executor
   artifacts:
+    paths:
+      - reports/coverage
+    expire_in: 30 days
     reports:
       junit: reports/junit.xml
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
-    - sleep 5
-    - test -d node_modules || npm install --prefer-offline
+    - sh .gitlab-ci-regenerate-node-modules.sh
     - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
 
@@ -60,22 +59,22 @@ compile:
   image: cypress/browsers:chrome67
   stage: build
   cache:
-    policy: pull-push
+    policy: pull
     key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - cache
-      - node_modules
-      - dist
   except:
     refs:
       - develop
   tags:
     - docker-executor
+  artifacts:
+    paths:
+      - reports/bundle
+    expire_in: 30 days
   script:
-    - sleep 5
-    - test -d node_modules || npm install --prefer-offline
+    - sh .gitlab-ci-regenerate-node-modules.sh
     - npx tsc -p src/tsconfig.spec.json
-    - npm run build:dynamic:prod
+    - npx ng build --progress false --prod --stats-json
+    - npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle/index.html -m static
     - echo "build complete"
 
 codestyle:
@@ -84,20 +83,23 @@ codestyle:
   cache:
     policy: pull
     key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - cache
-      - node_modules
   except:
     refs:
       - develop
   tags:
     - docker-executor
+  artifacts:
+    expire_in: 30 days
+    paths:
+      - reports/jscpd
+      - reports/tslint
   script:
-    - sleep 5
-    - test -d node_modules || npm install --prefer-offline
+    - sh .gitlab-ci-regenerate-node-modules.sh
     - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
+    - node reports/tslint-report
+    - node reports/jscpd-report
     - echo "build complete"
 
 cypress_local:
@@ -106,10 +108,6 @@ cypress_local:
   cache:
     policy: pull
     key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - cache
-      - node_modules
-      - dist
   except:
     refs:
       - develop
@@ -123,8 +121,7 @@ cypress_local:
     paths:
       - cypress/screenshots
   script:
-    - sleep 5
-    - test -d node_modules || npm install --prefer-offline
+    - sh .gitlab-ci-regenerate-node-modules.sh
     - node --version && npm --version
     - npm run build:dynamic
     - export ICM_BASE_URL=http://localhost:4200 DISPLAY=:5
@@ -141,10 +138,6 @@ cypress_remote:
   cache:
     policy: pull
     key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - cache
-      - node_modules
-      - dist
   except:
     refs:
       - develop
@@ -161,9 +154,8 @@ cypress_remote:
     paths:
       - cypress/screenshots
   script:
-    - sleep 5
-    - test -d node_modules || npm install --prefer-offline
-    - test -d dist || npm run build:dynamic:prod
+    - sh .gitlab-ci-regenerate-node-modules.sh
+    - npm run build:dynamic:prod
     - node --version && npm --version
     - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
