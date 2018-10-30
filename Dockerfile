@@ -2,7 +2,7 @@ FROM node:8.11.4-alpine as buildstep
 COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
-RUN npm install
+RUN npm install | grep -v changed
 COPY . /workspace
 ENV PATH=$PATH:/workspace/node_modules/.bin
 ARG env=dev

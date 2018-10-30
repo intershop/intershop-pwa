@@ -156,36 +156,27 @@ cypress_remote:
     - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml'
     - echo "E2E complete"
 
-.job-template: &job_definition
-  stage: publish
-  retry: 2
-  only:
-    refs:
-      - develop
-  tags:
-  - shell-executor
-  - docker
-  script:
-  - docker build -t ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
-           --build-arg env=${ENVIRONMENT}
-           --label environment="${ENVIRONMENT}"
-           --label revision="${CI_BUILD_REF}"
-           --label project="${CI_PROJECT_URL}"
-           .
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
-  - docker tag ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:latest
-  - docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:latest
-
-push_dev:
-  <<: *job_definition
-  variables:
-    ENVIRONMENT: "dev"
-
-push_prod:
-  <<: *job_definition
+publish:
+  cache: {}
+  dependencies: []
+  image: docker:stable
   variables:
     ENVIRONMENT: "prod"
+  stage: publish
+  tags:
+    - docker-executor
+  services:
+    - docker:dind
+  script:
+    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    - docker build -t ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
+            --build-arg env=${ENVIRONMENT}
+            --label environment="${ENVIRONMENT}"
+            --label revision="${CI_BUILD_REF}"
+            --label project="${CI_PROJECT_URL}"
+            .
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
 
 push_reports:
   stage: publish
