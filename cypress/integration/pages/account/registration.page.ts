@@ -34,6 +34,10 @@ export const sensibleDefaults: Partial<Registration> = {
 export class RegistrationPage {
   readonly tag = 'ish-registration-form';
 
+  static navigateTo() {
+    cy.visit('/register');
+  }
+
   private fillInput(key: string, value: string) {
     cy.get(`[data-testing-id="${key}"]`)
       .clear()
@@ -80,6 +84,12 @@ export class RegistrationPage {
       .first()
       .submit();
     return cy.wait('@customers');
+  }
+
+  cancel() {
+    cy.get(this.tag)
+      .find('input[value="Cancel"]')
+      .click();
   }
 
   get errorText() {

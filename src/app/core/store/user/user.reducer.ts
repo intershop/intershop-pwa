@@ -30,9 +30,12 @@ export function userReducer(state = initialState, action: UserAction): UserState
     }
 
     case UserActionTypes.LoginUser:
-    case UserActionTypes.LogoutUser:
-    case UserActionTypes.CreateUserFail: {
+    case UserActionTypes.LogoutUser: {
       return initialState;
+    }
+
+    case UserActionTypes.CreateUserFail: {
+      return { ...initialState, error: action.payload };
     }
 
     case UserActionTypes.SetAPIToken: {
