@@ -10,15 +10,15 @@ variables:
   npm_config_cache: "$CI_PROJECT_DIR/cache/.npm"
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  untracked: false
+  paths:
+    - cache
+
 setup:
   image: node:8.11.4-stretch
   stage: setup
-  cache:
-    policy: push
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - cache
-      - node_modules
   except:
     refs:
       - develop
@@ -35,9 +35,6 @@ setup:
 jest_test:
   image: node:8.11.4-stretch
   stage: build
-  cache:
-    policy: pull
-    key: ${CI_COMMIT_REF_SLUG}
   except:
     refs:
       - develop
@@ -49,6 +46,7 @@ jest_test:
     expire_in: 30 days
     reports:
       junit: reports/junit.xml
+  dependencies: []
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - sh .gitlab-ci-regenerate-node-modules.sh
@@ -58,9 +56,6 @@ jest_test:
 compile:
   image: cypress/browsers:chrome67
   stage: build
-  cache:
-    policy: pull
-    key: ${CI_COMMIT_REF_SLUG}
   except:
     refs:
       - develop
@@ -70,6 +65,7 @@ compile:
     paths:
       - reports/bundle
     expire_in: 30 days
+  dependencies: []
   script:
     - sh .gitlab-ci-regenerate-node-modules.sh
     - npx tsc -p src/tsconfig.spec.json
@@ -80,9 +76,6 @@ compile:
 codestyle:
   image: node:8.11.4-stretch
   stage: build
-  cache:
-    policy: pull
-    key: ${CI_COMMIT_REF_SLUG}
   except:
     refs:
       - develop
@@ -93,6 +86,7 @@ codestyle:
     paths:
       - reports/jscpd
       - reports/tslint
+  dependencies: []
   script:
     - sh .gitlab-ci-regenerate-node-modules.sh
     - npm run lint -- --format stylish
@@ -105,9 +99,6 @@ codestyle:
 cypress_local:
   image: cypress/browsers:chrome67
   stage: e2e
-  cache:
-    policy: pull
-    key: ${CI_COMMIT_REF_SLUG}
   except:
     refs:
       - develop
@@ -120,6 +111,7 @@ cypress_local:
     expire_in: 2 weeks
     paths:
       - cypress/screenshots
+  dependencies: []
   script:
     - sh .gitlab-ci-regenerate-node-modules.sh
     - node --version && npm --version
@@ -135,9 +127,6 @@ cypress_local:
 cypress_remote:
   image: cypress/browsers:chrome67
   stage: e2e
-  cache:
-    policy: pull
-    key: ${CI_COMMIT_REF_SLUG}
   except:
     refs:
       - develop
@@ -153,6 +142,7 @@ cypress_remote:
     expire_in: 2 weeks
     paths:
       - cypress/screenshots
+  dependencies: []
   script:
     - sh .gitlab-ci-regenerate-node-modules.sh
     - npm run build:dynamic:prod
