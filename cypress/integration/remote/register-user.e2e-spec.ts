@@ -12,51 +12,81 @@ const _ = {
 };
 
 describe('New User', () => {
-  before(() => HomePage.navigateTo());
+  describe('first time registering', () => {
+    before(() => HomePage.navigateTo());
 
-  it('should click register link and land at registration page', () => {
-    at(HomePage, page => {
-      page.header.gotoRegistrationPage();
+    it('should click register link and land at registration page', () => {
+      at(HomePage, page => {
+        page.header.gotoRegistrationPage();
+      });
+      at(RegistrationPage);
     });
-    at(RegistrationPage);
+
+    it('should fill in registration form an submit', () => {
+      at(RegistrationPage, page => {
+        page.fillForm(_.user);
+        page
+          .submit()
+          .its('statusMessage')
+          .should('equal', '201 (Created)');
+      });
+    });
+
+    it('should be at my account page and logged in', () => {
+      at(MyAccountPage, page => {
+        page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
+      });
+    });
+
+    it('should log out and log in and log out again', () => {
+      at(MyAccountPage, page => {
+        page.header.logout();
+      });
+      at(HomePage, page => {
+        page.header.gotoLoginPage();
+      });
+      at(LoginPage, page => {
+        page.fillForm(_.user.login, _.user.password);
+        page
+          .submit()
+          .its('status')
+          .should('equal', 200);
+      });
+      at(MyAccountPage, page => {
+        page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
+      });
+      at(MyAccountPage, page => {
+        page.header.logout();
+      });
+      at(HomePage);
+    });
   });
 
-  it('should fill in registration form an submit', () => {
-    at(RegistrationPage, page => {
-      page.fillForm(_.user);
-      page
-        .submit()
-        .its('statusMessage')
-        .should('equal', '201 (Created)');
-    });
-  });
+  describe('second time registering', () => {
+    before(() => RegistrationPage.navigateTo());
 
-  it('should be at my account page and logged in', () => {
-    at(MyAccountPage, page => {
-      page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
+    it('should fill in registration form', () => {
+      at(RegistrationPage, page => {
+        page.fillForm(_.user);
+      });
     });
-  });
 
-  it('should log out and log in and log out again', () => {
-    at(MyAccountPage, page => {
-      page.header.logout();
+    it('should get an error when submitting', () => {
+      at(RegistrationPage, page => {
+        page
+          .submit()
+          .its('statusMessage')
+          .should('equal', '409 (Conflict)');
+        page.errorText.should('be.visible').and('contain', 'email address already exists');
+      });
     });
-    at(HomePage, page => {
-      page.header.gotoLoginPage();
+
+    it('should cancel and be redirected to home page', () => {
+      at(RegistrationPage, page => {
+        page.cancel();
+      });
+
+      at(HomePage);
     });
-    at(LoginPage, page => {
-      page.fillForm(_.user.login, _.user.password);
-      page
-        .submit()
-        .its('status')
-        .should('equal', 200);
-    });
-    at(MyAccountPage, page => {
-      page.header.myAccountLink.should('have.text', `${_.user.firstName} ${_.user.lastName}`);
-    });
-    at(MyAccountPage, page => {
-      page.header.logout();
-    });
-    at(HomePage);
   });
 });

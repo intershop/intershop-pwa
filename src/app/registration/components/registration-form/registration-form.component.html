@@ -1,8 +1,8 @@
 <h1>{{'account.register.heading' | translate}}</h1>
 <p>{{'account.register.message' | translate}}</p>
 
-<div *ngIf="error as error" role="alert" class="alert alert-danger">
-  <span>{{error.headers.get('error-key') | translate}}</span>
+<div *ngIf="error" role="alert" class="alert alert-danger">
+  <span>{{error.headers['error-key'] | translate}}</span>
 </div>
 
 <div class="section" data-testing-id="account-create-full-page">
