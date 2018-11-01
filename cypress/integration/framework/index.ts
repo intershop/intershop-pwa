@@ -5,8 +5,8 @@ interface Page {
 
 let currentPage: Page;
 
-export function waitLoadingEnd() {
-  cy.wait(500);
+export function waitLoadingEnd(initialWait: number = 500) {
+  cy.wait(initialWait);
   cy.get('div.loading', { timeout: 60000 }).should('not.exist');
 }
 
