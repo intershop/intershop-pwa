@@ -26,9 +26,14 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
   cy.server();
   cy.route('**/categories*').as('categories');
   originalFn(url, options);
+  cy.url().should('match', new RegExp(`${url.replace(/[\/\?]/g, '.')}`));
+  cy.get('body', { timeout: 60000 }).should('have.descendants', 'ish-root');
+
   return cy.get('body').then(body => {
-    if (!body.find('#intershop-pwa-state')) {
-      cy.wait('@categories');
+    if (!body.find('#intershop-pwa-state').length) {
+      return cy.wait('@categories').log('page ready -- top level categories loaded');
+    } else {
+      return cy.log('page ready -- found transferred state');
     }
   });
 });
