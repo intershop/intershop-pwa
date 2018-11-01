@@ -1,22 +1,22 @@
 <!-- logged in -->
 <ng-container *ngIf="user; else notLoggedIn">
-  <a routerLink="/account" class="my-account-link" attr.data-testing-id="link-myaccount">
+  <a routerLink="/account" class="my-account-link" data-testing-id="link-myaccount">
     <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
     <span *ngIf="user.lastName; else nameNotDisplayed" class="login-name" [ngClass]="getViewClasses()">{{user.firstName + ' ' + user.lastName}}</span>
     <ng-template #nameNotDisplayed><span class="login-name" [ngClass]="getViewClasses()">{{'account.login_status.myaccount.link' | translate}}</span></ng-template>
   </a>
   <span class="separator" [ngClass]="getViewClasses()">&#124;</span>
-  <a routerLink="/logout" class="my-account-link my-account-logout" attr.data-testing-id="link-logout">
+  <a routerLink="/logout" class="my-account-link my-account-logout" data-testing-id="link-logout">
     <span [ngClass]="getViewClasses()">{{'account.logout.link' | translate}}</span>
   </a>
 </ng-container>
 <!-- not logged in -->
 <ng-template #notLoggedIn>
-  <a routerLink="/login" class="my-account-link my-account-login" attr.rel="nofollow">
+  <a routerLink="/login" class="my-account-link my-account-login" rel="nofollow">
     <fa-icon [icon]="['fas', 'user']" class="header-icon"></fa-icon>
     <span [ngClass]="getViewClasses()">{{'account.login.link' | translate}}</span>
   </a>
-  <span class="separator" [ngClass]="getViewClasses()">&#124;</span><a routerLink="/register" class="my-account-link my-account-register" attr.rel="nofollow">
+  <span class="separator" [ngClass]="getViewClasses()">&#124;</span><a routerLink="/register" class="my-account-link my-account-register" rel="nofollow">
     <span [ngClass]="getViewClasses()">{{'account.register.link' | translate}}</span>
   </a>
 </ng-template>

@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "pages/**/*.ts",
+    "framework/*.ts",
+    "support/*.ts",
+    "integration/**/*.ts",
+    "../node_modules/cypress"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "module": "commonjs",
+    "target": "es5",
+    "types": [
+      "node"
+    ]
+  }
+}

@@ -113,20 +113,6 @@
           }
         }
       }
-    },
-    "intershop-pwa-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "intershop-pwa:serve",
-            "port": 4400
-          }
-        }
-      }
     }
   },
   "defaultProject": "intershop-pwa"

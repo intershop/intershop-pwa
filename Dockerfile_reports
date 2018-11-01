@@ -1,11 +1,8 @@
-FROM caltha/protractor as reporting
-RUN apt-get update
-RUN apt-get install -y wget
+FROM node:8.11.4-alpine as reporting
 COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN npm install
-RUN npx webdriver-manager update --chrome --versions.chrome=2.38 --gecko false
 COPY . /workspace/
 RUN npx jest -c jest-reports.config.js --ci --testFailureExitCode 0
 RUN npm run docs
@@ -15,9 +12,6 @@ RUN npx license-checker --csv --out reports/licenses/licenses.csv --customPath t
 RUN rm -Rf dist && npx ng build --progress false --aot --stats-json && npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_aot/index.html -m static
 RUN rm -Rf dist && npx ng build --progress false --prod --stats-json && npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
 RUN rm -Rf dist && npm run build:dynamic:prod
-ARG ICM_BASE_URL="http://localhost:4200"
-RUN echo ICM_BASE_URL=${ICM_BASE_URL}
-RUN nohup bash -c "npm run serve:dynamic &" && wget -q --wait 10 --tries 30 --retry-connrefused http://localhost:4200 && (npx protractor e2e/protractor.conf.js --capabilities.chromeOptions.args="--no-sandbox" --capabilities.chromeOptions.args="--headless" --baseUrl http://localhost:4200 || true)
 
 FROM danjellz/http-server
 COPY --from=reporting /workspace/reports /public

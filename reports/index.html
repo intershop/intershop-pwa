@@ -15,12 +15,6 @@
                 var failures = $xml.attr('failures');
                 $("#unit-tests").text(`Tests: ${tests}, Failures: ${failures}`);
             });
-            $.get("e2e/junit.xml", function (data, status) {
-                $xml = $(data).find('testsuites');
-                var tests = $xml.attr('tests');
-                var failures = $xml.attr('failures');
-                $("#e2e-tests").text(`Tests: ${tests}, Failures: ${failures}`);
-            });
             $.get("coverage/index.html", function (data, status) {
                 var html = $.parseHTML(data);
                 var summary = $('div.clearfix', html)[0];
@@ -54,10 +48,6 @@
         <h2>Coverage Report</h2>
         <div id="coverage"></div>
     </a>
-    <a href="e2e/htmlReport.html">
-        <h2>End-to-end Test Report</h2>
-        <div id="e2e-tests"></div>
-    </a>
     <a href="tslint/index.html">
         <h2>TSLint Report</h2>
         <div id="tslint"></div>
@@ -77,9 +67,6 @@
     <hr/>
     <a href="junit.xml">
         <h2>JUnit XML</h2>
-    </a>
-    <a href="e2e/junit.xml">
-        <h2>E2E JUnit XML</h2>
     </a>
     <hr/>
     <a href="licenses/index.html">
