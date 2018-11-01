@@ -9,7 +9,7 @@ export class FamilyPage {
 
   readonly productList = new ProductListModule();
 
-  static navigateTo(categoryUniqueId: string) {
-    cy.visit(`/category/${categoryUniqueId}`);
+  static navigateTo(categoryUniqueId: string, page?: number) {
+    cy.visit(`/category/${categoryUniqueId}${!!page ? `?page=${page}` : ''}`);
   }
 }
