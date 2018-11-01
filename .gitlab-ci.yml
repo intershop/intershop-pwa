@@ -1,60 +1,182 @@
 stages:
+  - setup
   - build
   - e2e
   - publish
   - distribute
   - deploy
 
-build:
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/cache/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  untracked: false
+  paths:
+    - cache
+
+setup:
+  image: node:8.11.4-stretch
+  stage: setup
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  script:
+    - node --version && npm --version
+    - bash -c "cd tslint-rules ; npm --silent run build"
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
+    - npm install --prefer-offline
+    - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
+    - echo "setup complete"
+
+jest_test:
+  image: node:8.11.4-stretch
   stage: build
   except:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
-  script: docker build --file Dockerfile_build .
+    - docker-executor
+  artifacts:
+    paths:
+      - reports/coverage
+    expire_in: 30 days
+    reports:
+      junit: reports/junit.xml
+  dependencies: []
+  coverage: '/^Statements\s*:\s*([^%]+)/'
+  script:
+    - sh .gitlab-ci-regenerate-node-modules.sh
+    - npx jest -c jest-reports.config.js --ci
+    - echo "build complete"
 
-e2e:
+compile:
+  image: cypress/browsers:chrome67
+  stage: build
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  artifacts:
+    paths:
+      - reports/bundle
+    expire_in: 30 days
+  dependencies: []
+  script:
+    - sh .gitlab-ci-regenerate-node-modules.sh
+    - npx tsc -p src/tsconfig.spec.json
+    - npx ng build --progress false --prod --stats-json
+    - npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle/index.html -m static
+    - echo "build complete"
+
+codestyle:
+  image: node:8.11.4-stretch
+  stage: build
+  except:
+    refs:
+      - develop
+  tags:
+    - docker-executor
+  artifacts:
+    expire_in: 30 days
+    paths:
+      - reports/jscpd
+      - reports/tslint
+  dependencies: []
+  script:
+    - sh .gitlab-ci-regenerate-node-modules.sh
+    - npm run lint -- --format stylish
+    - npm run format
+    - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
+    - node reports/tslint-report
+    - node reports/jscpd-report
+    - echo "build complete"
+
+cypress_local:
+  image: cypress/browsers:chrome67
   stage: e2e
   except:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
-  script: docker build --file Dockerfile_e2e --build-arg ICM_BASE_URL=${ICM_BASE_URL} .
+    - docker-executor
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  dependencies: []
+  script:
+    - sh .gitlab-ci-regenerate-node-modules.sh
+    - node --version && npm --version
+    - npm run build:dynamic
+    - export ICM_BASE_URL=http://localhost:4200 DISPLAY=:5
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - nohup bash -c "npm run serve:dynamic &"
+    - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
+    - sh .gitlab-ci-test-universal.sh
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml'
+    - echo "E2E complete"
 
-.job-template: &job_definition
-  stage: publish
-  retry: 2
-  only:
+cypress_remote:
+  image: cypress/browsers:chrome67
+  stage: e2e
+  except:
     refs:
       - develop
   tags:
-  - shell-executor
-  - docker
+    - docker-executor
+  services:
+    - name: registry.intershop.de/ispwa/intershop7-devenv/master/a_responsive
+      alias: icm
+  artifacts:
+    reports:
+      junit: reports/e2e-*.xml
+    when: on_failure
+    expire_in: 2 weeks
+    paths:
+      - cypress/screenshots
+  dependencies: []
   script:
-  - docker build -t ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
-           --build-arg env=${ENVIRONMENT}
-           --label environment="${ENVIRONMENT}"
-           --label revision="${CI_BUILD_REF}"
-           --label project="${CI_PROJECT_URL}"
-           .
-  - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-  - docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
-  - docker tag ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF} ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:latest
-  - docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:latest
+    - sh .gitlab-ci-regenerate-node-modules.sh
+    - npm run build:dynamic:prod
+    - node --version && npm --version
+    - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
+    - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
+    - nohup bash -c "Xvfb ${DISPLAY} &"
+    - nohup bash -c "npm run serve:dynamic &"
+    - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
+    - sh .gitlab-ci-test-universal.sh
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml'
+    - echo "E2E complete"
 
-push_dev:
-  <<: *job_definition
-  variables:
-    ENVIRONMENT: "dev"
-
-push_prod:
-  <<: *job_definition
+publish:
+  cache: {}
+  dependencies: []
+  image: docker:stable
   variables:
     ENVIRONMENT: "prod"
+  stage: publish
+  tags:
+    - docker-executor
+  services:
+    - docker:dind
+  script:
+    - docker info --format '{{json .Name}}' || (export DOCKER_HOST=tcp://localhost:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}') || (export DOCKER_HOST=tcp://docker:2375/ DOCKER_DRIVER=overlay2 && docker info --format '{{json .Name}}')
+    - docker build -t ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
+            --build-arg env=${ENVIRONMENT}
+            --label environment="${ENVIRONMENT}"
+            --label revision="${CI_BUILD_REF}"
+            --label project="${CI_PROJECT_URL}"
+            .
+    - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
 
 push_reports:
   stage: publish

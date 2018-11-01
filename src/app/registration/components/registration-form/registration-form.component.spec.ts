@@ -1,3 +1,4 @@
+import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -6,6 +7,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 import { AddressFormFactory } from '../../../forms/address/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from '../../../forms/address/configurations/address-form-factory.provider';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { RegistrationFormComponent } from './registration-form.component';
@@ -110,5 +112,18 @@ describe('Registration Form Component', () => {
 
     component.submitForm();
     fixture.detectChanges();
+  });
+
+  it('should display error when supplied', () => {
+    const error = {
+      headers: { 'error-key': 'customer.credentials.login.not_unique.error' } as HttpHeader,
+    } as HttpError;
+
+    component.error = error;
+    component.ngOnChanges({ error: new SimpleChange(undefined, component.error, false) });
+    fixture.detectChanges();
+
+    expect(element.querySelector('div.alert')).toBeTruthy();
+    expect(element.querySelector('div.alert').textContent).toContain('customer.credentials.login.not_unique.error');
   });
 });
