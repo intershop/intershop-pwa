@@ -121,7 +121,7 @@ cypress_local:
     - nohup bash -c "npm run serve:dynamic &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
     - echo "E2E complete"
 
 cypress_remote:
@@ -153,7 +153,7 @@ cypress_remote:
     - nohup bash -c "npm run serve:dynamic &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml,toConsole=true'
     - echo "E2E complete"
 
 publish:
