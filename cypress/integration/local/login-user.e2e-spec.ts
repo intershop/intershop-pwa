@@ -58,8 +58,10 @@ describe('Returning User', () => {
       });
     });
   });
+});
 
-  describe('with protected url', () => {
+describe('Anonymous User', () => {
+  describe('navigating to protected url', () => {
     before(() => MyAccountPage.navigateTo());
 
     it('should be redirected to login page', () => {

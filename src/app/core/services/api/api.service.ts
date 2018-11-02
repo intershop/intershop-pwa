@@ -68,6 +68,36 @@ function catchApiError<T>(handler: ApiServiceErrorHandler) {
     source$.pipe(catchError(error => handler.dispatchCommunicationErrors<T>(error)));
 }
 
+/**
+ * constructs a full server URL with locale and currency for given input path
+ */
+export function constructUrlForPath(
+  path: string,
+  method: 'GET' | 'OPTIONS' | 'POST' | 'PUT' | 'DELETE',
+  restEndpoint: string,
+  currentLocale?: Locale
+): string {
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  } else {
+    switch (method) {
+      case 'GET':
+      case 'OPTIONS':
+        let localeAndCurrency = '';
+        if (!!currentLocale) {
+          localeAndCurrency = `;loc=${currentLocale.lang};cur=${currentLocale.currency}`;
+        }
+        return `${restEndpoint}${localeAndCurrency}/${path}`;
+      case 'POST':
+      case 'PUT':
+      case 'DELETE':
+        return `${restEndpoint}/${path}`;
+      default:
+        throw new Error(`unhandled method '${method}'`);
+    }
+  }
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private currentLocale: Locale;
@@ -87,44 +117,26 @@ export class ApiService {
 
   /**
    * http options request
-   * @param  {string} path
-   * @param  {URLSearchParams=newURLSearchParams(} params
-   * @returns Observable
    */
   options<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    let localeAndCurrency = '';
-    if (!!this.currentLocale) {
-      localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
-    }
-    let url;
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-      url = path;
-    } else {
-      url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
-    }
-
-    return this.httpClient.options<T>(url, options).pipe(catchApiError(this.apiServiceErrorHandler));
+    return this.httpClient
+      .options<T>(constructUrlForPath(path, 'OPTIONS', this.restEndpoint, this.currentLocale), {
+        headers: this.defaultHeaders,
+        ...options,
+      })
+      .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
    * http get request
-   * @param  {string} path
-   * @param  {URLSearchParams=newURLSearchParams(} params
-   * @returns Observable
    */
   get<T>(path: string, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
-    let localeAndCurrency = '';
-    if (!!this.currentLocale) {
-      localeAndCurrency = `;loc=${this.currentLocale.lang};cur=${this.currentLocale.currency}`;
-    }
-    let url;
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-      url = path;
-    } else {
-      url = `${this.restEndpoint}${localeAndCurrency}/${path}`;
-    }
-
-    return this.httpClient.get<T>(url, options).pipe(catchApiError(this.apiServiceErrorHandler));
+    return this.httpClient
+      .get<T>(constructUrlForPath(path, 'GET', this.restEndpoint, this.currentLocale), {
+        headers: this.defaultHeaders,
+        ...options,
+      })
+      .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
@@ -132,26 +144,25 @@ export class ApiService {
    */
   put<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
-      .put<T>(`${this.restEndpoint}/${path}`, body, { headers: this.defaultHeaders })
+      .put<T>(constructUrlForPath(path, 'PUT', this.restEndpoint), body, { headers: this.defaultHeaders })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
    * http post request
-   * @returns Observable
    */
   post<T>(path: string, body = {}): Observable<T> {
     return this.httpClient
-      .post<T>(`${this.restEndpoint}/${path}`, body, { headers: this.defaultHeaders })
+      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint), body, { headers: this.defaultHeaders })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
   /**
    * http delete request
-   * @param  {} path
-   * @returns Observable
    */
   delete<T>(path): Observable<T> {
-    return this.httpClient.delete<T>(`${this.restEndpoint}/${path}`).pipe(catchApiError(this.apiServiceErrorHandler));
+    return this.httpClient
+      .delete<T>(constructUrlForPath(path, 'DELETE', this.restEndpoint))
+      .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 }
