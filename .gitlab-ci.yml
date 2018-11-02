@@ -43,7 +43,7 @@ jest_test:
   artifacts:
     paths:
       - reports/coverage
-    expire_in: 30 days
+    expire_in: 1 day
     reports:
       junit: reports/junit.xml
   dependencies: []
@@ -65,7 +65,7 @@ compile:
   artifacts:
     paths:
       - reports/bundle
-    expire_in: 30 days
+    expire_in: 1 day
   dependencies: []
   script:
     - sh .gitlab-ci-check-app-changes.sh || exit 0
@@ -84,7 +84,7 @@ codestyle:
   tags:
     - docker-executor
   artifacts:
-    expire_in: 30 days
+    expire_in: 1 day
     paths:
       - reports/jscpd
       - reports/tslint
@@ -179,6 +179,17 @@ publish:
             .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
+
+reports:
+  cache: {}
+  stage: publish
+  tags:
+    - docker-executor
+  artifacts:
+    expire_in: 30 days
+    paths:
+      - reports
+  script: echo "accumulate reports"
 
 push_reports:
   stage: publish
