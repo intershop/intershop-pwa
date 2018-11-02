@@ -17,7 +17,7 @@ cache:
     - cache
 
 setup:
-  image: node:8.11.4-stretch
+  image: node:8-stretch
   stage: setup
   except:
     refs:
@@ -33,7 +33,7 @@ setup:
     - echo "setup complete"
 
 jest_test:
-  image: node:8.11.4-stretch
+  image: node:8-stretch
   stage: build
   except:
     refs:
@@ -76,7 +76,7 @@ compile:
     - echo "build complete"
 
 codestyle:
-  image: node:8.11.4-stretch
+  image: node:8-stretch
   stage: build
   except:
     refs:
