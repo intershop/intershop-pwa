@@ -17,7 +17,7 @@ cache:
     - cache
 
 setup:
-  image: node:8.11.4-stretch
+  image: node:10
   stage: setup
   except:
     refs:
@@ -28,12 +28,12 @@ setup:
     - node --version && npm --version
     - bash -c "cd tslint-rules ; npm --silent run build"
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit compiled binaries in tslint-rules'
-    - npm install --prefer-offline
+    - npm ci --prefer-offline
     - bash .gitlab-ci-test-no-changes.sh 'you probably did not commit package-lock.json after installing packages'
     - echo "setup complete"
 
 jest_test:
-  image: node:8.11.4-stretch
+  image: node:10
   stage: build
   except:
     refs:
@@ -50,12 +50,12 @@ jest_test:
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
     - sh .gitlab-ci-check-app-changes.sh || exit 0
-    - sh .gitlab-ci-regenerate-node-modules.sh
+    - npm ci --prefer-offline
     - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
 
 compile:
-  image: cypress/browsers:chrome67
+  image: node:10
   stage: build
   except:
     refs:
@@ -69,14 +69,15 @@ compile:
   dependencies: []
   script:
     - sh .gitlab-ci-check-app-changes.sh || exit 0
-    - sh .gitlab-ci-regenerate-node-modules.sh
-    - npx tsc -p src/tsconfig.spec.json
+    - npm ci --prefer-offline --production
     - npx ng build --progress false --prod --stats-json
     - npx webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle/index.html -m static
+    - npm ci --prefer-offline
+    - npx tsc -p src/tsconfig.spec.json
     - echo "build complete"
 
 codestyle:
-  image: node:8.11.4-stretch
+  image: node:10
   stage: build
   except:
     refs:
@@ -90,7 +91,7 @@ codestyle:
       - reports/tslint
   dependencies: []
   script:
-    - sh .gitlab-ci-regenerate-node-modules.sh
+    - npm ci --prefer-offline
     - npm run lint -- --format stylish
     - npm run format
     - bash .gitlab-ci-test-no-changes.sh 'you probably committed unformatted code'
@@ -99,7 +100,7 @@ codestyle:
     - echo "build complete"
 
 cypress_local:
-  image: cypress/browsers:chrome67
+  image: cypress/browsers:chrome69
   stage: e2e
   except:
     refs:
@@ -115,19 +116,20 @@ cypress_local:
       - cypress/screenshots
   dependencies: []
   script:
-    - sh .gitlab-ci-regenerate-node-modules.sh
     - node --version && npm --version
+    - npm ci --prefer-offline --production
     - npm run build:dynamic
     - export ICM_BASE_URL=http://localhost:4200 DISPLAY=:5
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npm run serve:dynamic &"
+    - npm ci --prefer-offline
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
     - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
     - echo "E2E complete"
 
 cypress_remote:
-  image: cypress/browsers:chrome67
+  image: cypress/browsers:chrome69
   stage: e2e
   except:
     refs:
@@ -146,10 +148,11 @@ cypress_remote:
       - cypress/screenshots
   dependencies: []
   script:
-    - sh .gitlab-ci-regenerate-node-modules.sh
-    - npm run build:dynamic:prod
     - node --version && npm --version
+    - npm ci --prefer-offline --production
+    - npm run build:dynamic:prod
     - export ICM_BASE_URL=http://icm:8081 DISPLAY=:5
+    - npm ci --prefer-offline
     - wget --wait 10 --tries 30 --retry-connrefused ${ICM_BASE_URL}/INTERSHOP/rest/WFS/inSPIRED-inTRONICS-Site/-
     - nohup bash -c "Xvfb ${DISPLAY} &"
     - nohup bash -c "npm run serve:dynamic &"
