@@ -17,7 +17,7 @@ cache:
     - cache
 
 setup:
-  image: node:8-stretch
+  image: node:10
   stage: setup
   except:
     refs:
@@ -33,7 +33,7 @@ setup:
     - echo "setup complete"
 
 jest_test:
-  image: node:8-stretch
+  image: node:10
   stage: build
   except:
     refs:
@@ -55,7 +55,7 @@ jest_test:
     - echo "build complete"
 
 compile:
-  image: cypress/browsers:chrome67
+  image: node:10
   stage: build
   except:
     refs:
@@ -77,7 +77,7 @@ compile:
     - echo "build complete"
 
 codestyle:
-  image: node:8-stretch
+  image: node:10
   stage: build
   except:
     refs:
@@ -100,7 +100,7 @@ codestyle:
     - echo "build complete"
 
 cypress_local:
-  image: cypress/browsers:chrome67
+  image: cypress/browsers:chrome69
   stage: e2e
   except:
     refs:
@@ -129,7 +129,7 @@ cypress_local:
     - echo "E2E complete"
 
 cypress_remote:
-  image: cypress/browsers:chrome67
+  image: cypress/browsers:chrome69
   stage: e2e
   except:
     refs:
