@@ -1,4 +1,4 @@
-FROM node:8 as buildstep
+FROM node:10-alpine as buildstep
 COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
@@ -8,7 +8,7 @@ ARG env=dev
 RUN npm run build:dynamic:${env}
 RUN echo -e "trap \"ps -o pid,comm | grep node | awk '{print $1}' | xargs -r kill\" INT TERM\nnode server" > /workspace/dist/start.sh
 
-FROM node:8
+FROM node:10-alpine
 COPY --from=buildstep /workspace/dist /workspace/healthcheck.js /
 EXPOSE 4200
 USER nobody

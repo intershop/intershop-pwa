@@ -1,4 +1,4 @@
-FROM node:8.11.4-alpine as reporting
+FROM node:10-alpine as reporting
 COPY package.json package-lock.json /workspace/
 COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
