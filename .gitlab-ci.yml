@@ -43,12 +43,13 @@ jest_test:
   artifacts:
     paths:
       - reports/coverage
-    expire_in: 30 days
+    expire_in: 1 day
     reports:
       junit: reports/junit.xml
   dependencies: []
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
+    - sh .gitlab-ci-check-app-changes.sh || exit 0
     - sh .gitlab-ci-regenerate-node-modules.sh
     - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
@@ -64,9 +65,10 @@ compile:
   artifacts:
     paths:
       - reports/bundle
-    expire_in: 30 days
+    expire_in: 1 day
   dependencies: []
   script:
+    - sh .gitlab-ci-check-app-changes.sh || exit 0
     - sh .gitlab-ci-regenerate-node-modules.sh
     - npx tsc -p src/tsconfig.spec.json
     - npx ng build --progress false --prod --stats-json
@@ -82,7 +84,7 @@ codestyle:
   tags:
     - docker-executor
   artifacts:
-    expire_in: 30 days
+    expire_in: 1 day
     paths:
       - reports/jscpd
       - reports/tslint
@@ -121,7 +123,7 @@ cypress_local:
     - nohup bash -c "npm run serve:dynamic &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
     - echo "E2E complete"
 
 cypress_remote:
@@ -153,7 +155,7 @@ cypress_remote:
     - nohup bash -c "npm run serve:dynamic &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
     - sh .gitlab-ci-test-universal.sh
-    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml'
+    - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200" -r junit --reporter-options 'mochaFile=reports/e2e-remote-[hash]-report.xml,toConsole=true'
     - echo "E2E complete"
 
 publish:
@@ -177,6 +179,17 @@ publish:
             .
     - test -z "${CI_JOB_TOKEN}" || docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - test -z "${CI_JOB_TOKEN}" || docker push ${CI_REGISTRY_IMAGE}/${ENVIRONMENT}:${CI_BUILD_REF}
+
+reports:
+  cache: {}
+  stage: publish
+  tags:
+    - docker-executor
+  artifacts:
+    expire_in: 30 days
+    paths:
+      - reports
+  script: echo "accumulate reports"
 
 push_reports:
   stage: publish
