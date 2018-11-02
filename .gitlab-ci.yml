@@ -49,6 +49,7 @@ jest_test:
   dependencies: []
   coverage: '/^Statements\s*:\s*([^%]+)/'
   script:
+    - sh .gitlab-ci-check-app-changes.sh || exit 0
     - sh .gitlab-ci-regenerate-node-modules.sh
     - npx jest -c jest-reports.config.js --ci
     - echo "build complete"
@@ -67,6 +68,7 @@ compile:
     expire_in: 30 days
   dependencies: []
   script:
+    - sh .gitlab-ci-check-app-changes.sh || exit 0
     - sh .gitlab-ci-regenerate-node-modules.sh
     - npx tsc -p src/tsconfig.spec.json
     - npx ng build --progress false --prod --stats-json
