@@ -7,8 +7,8 @@
     "intershop"
   ],
   "engines": {
-    "node": ">=8.11.0 <8.12",
-    "npm": "~5.6.0"
+    "node": ">=8.12.0",
+    "npm": "~6.4.1"
   },
   "private": true,
   "scripts": {
@@ -95,7 +95,7 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "^1.1.5",
+    "@compodoc/compodoc": "^1.1.6",
     "@cypress/webpack-preprocessor": "^3.0.0",
     "codelyzer": "^4.4.4",
     "conventional-changelog-cli": "^2.0.5",
@@ -114,7 +114,7 @@
     "jest-junit": "^5.1.0",
     "jest-marbles": "^2.0.0",
     "jest-preset-angular": "^5.2.3",
-    "jscpd-html-reporter": "^2.0.0",
+    "jscpd-html-reporter": "^2.0.1",
     "license-checker": "^20.2.0",
     "lint-staged": "^7.2.2",
     "prettier": "^1.14.2",
@@ -134,7 +134,7 @@
     "tslint-clean-code": "^0.2.7",
     "tslint-consistent-codestyle": "^1.13.3",
     "tslint-etc": "^1.2.4",
-    "tslint-html-report": "^2.0.0",
+    "tslint-html-report": "^2.0.2",
     "tslint-jasmine-rules": "1.4.0",
     "typescript": "~2.9.2",
     "webpack-bundle-analyzer": "^3.0.2"
