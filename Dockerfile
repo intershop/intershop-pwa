@@ -4,7 +4,6 @@ COPY tslint-rules /workspace/tslint-rules/
 WORKDIR /workspace
 RUN npm ci --production
 COPY . /workspace
-ENV PATH=$PATH:/workspace/node_modules/.bin
 ARG env=dev
 RUN npm run build:dynamic:${env}
 RUN echo -e "trap \"ps -o pid,comm | grep node | awk '{print $1}' | xargs -r kill\" INT TERM\nnode server" > /workspace/dist/start.sh
