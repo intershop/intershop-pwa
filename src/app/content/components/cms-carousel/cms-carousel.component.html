@@ -1,9 +1,9 @@
-<div [ngClass]="getConfigurationParameterValue(pagelet, 'CSSClass')">
-  <div [ngClass]="getConfigurationParameterValue(pagelet, 'CarouselCSSClass')">
+<div *ngIf="pagelet" [ngClass]="pagelet.stringParam('CSSClass')">
+  <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
     <ngb-carousel
       [interval]="intervalValue"
       [showNavigationArrows]="pageletSlides.length > 1"
-      [showNavigationIndicators]="getConfigurationParameterValue(pagelet, 'ShowIndicators', 'boolean')"
+      [showNavigationIndicators]="pagelet.booleanParam('ShowIndicators')"
     >
       <ng-template ngbSlide *ngFor="let slidePagelets of pageletSlides">
         <div class="row">

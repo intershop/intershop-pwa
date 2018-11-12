@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentIncludeView } from '../../../models/content-view/content-views';
 import { LoadContentInclude, getContentInclude } from '../../store/includes';
 
 @Component({
@@ -14,12 +15,17 @@ export class ContentIncludeContainerComponent implements OnInit {
   @Input()
   includeId: string;
 
-  contentInclude$: Observable<ContentInclude>;
+  contentInclude$: Observable<ContentIncludeView>;
 
   constructor(private store: Store<{}>) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadContentInclude(this.includeId));
-    this.contentInclude$ = this.store.pipe(select(getContentInclude, { includeId: this.includeId }));
+    this.contentInclude$ = this.store.pipe(select(getContentInclude, this.includeId));
+    this.contentInclude$
+      .pipe(
+        take(1),
+        filter(x => !x)
+      )
+      .subscribe(() => this.store.dispatch(new LoadContentInclude(this.includeId)));
   }
 }

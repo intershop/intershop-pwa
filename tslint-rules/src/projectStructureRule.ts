@@ -6,8 +6,15 @@ interface RuleDeclaration {
   file: string;
 }
 
-const kebabCaseFromPascalCase = (input: string): string =>
-  input.replace(/[A-Z]+/g, match => `-${match.toLowerCase()}`).replace(/^-/, '');
+export const kebabCaseFromPascalCase = (input: string): string =>
+  input
+    .replace(/[A-Z]{2,}$/, m => `${m.substr(0, 1)}${m.substr(1, m.length - 1).toLowerCase()}`)
+    .replace(
+      /[A-Z]{3,}/g,
+      m => `${m.substr(0, 1)}${m.substr(1, m.length - 2).toLowerCase()}${m.substr(m.length - 1, 1)}`
+    )
+    .replace(/[A-Z]/g, match => `-${match.toLowerCase()}`)
+    .replace(/^-/, '');
 
 const camelCaseFromPascalCase = (input: string): string =>
   `${input.substring(0, 1).toLowerCase()}${input.substring(1)}`;
