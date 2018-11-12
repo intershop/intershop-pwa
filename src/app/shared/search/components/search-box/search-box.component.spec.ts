@@ -39,7 +39,6 @@ describe('Search Box Component', () => {
   function triggerSearch(term: string, results: SuggestTerm[]) {
     component.results = results;
     component.searchTerm = term;
-    fixture.detectChanges();
     component.ngOnChanges({
       results: { currentValue: results } as SimpleChange,
       searchTerm: { currentValue: term } as SimpleChange,
