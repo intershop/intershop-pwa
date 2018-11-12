@@ -117,14 +117,11 @@ cypress_local:
   dependencies: []
   script:
     - node --version && npm --version
-    - npm ci --prefer-offline --production
-    - npm run build:dynamic
+    - npm ci --prefer-offline
     - export ICM_BASE_URL=http://localhost:4200 DISPLAY=:5
     - nohup bash -c "Xvfb ${DISPLAY} &"
-    - nohup bash -c "npm run serve:dynamic &"
-    - npm ci --prefer-offline
+    - nohup bash -c "npx ng serve &"
     - wget -q --wait 10 --tries 10 --retry-connrefused http://localhost:4200
-    - sh .gitlab-ci-test-universal.sh
     - npx cypress run -b chrome -e ICM_BASE_URL=${ICM_BASE_URL} -c "baseUrl=http://localhost:4200,integrationFolder=cypress/integration/local" -r junit --reporter-options 'mochaFile=reports/e2e-local-[hash]-report.xml,toConsole=true'
     - echo "E2E complete"
 
