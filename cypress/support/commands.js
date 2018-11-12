@@ -24,8 +24,10 @@
 // -- This is will overwrite an existing command --
 Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
   cy.server();
-  cy.route('**/categories*').as('categories');
+  cy.route(/\/categories/).as('categories');
+  cy.route('**/i18n/*.json').as('translations');
   originalFn(url, options);
+  cy.wait('@translations');
   cy.url().should('match', new RegExp(`${url.replace(/[\/\?]/g, '.')}`));
   cy.get('body', { timeout: 60000 }).should('have.descendants', 'ish-root');
 
