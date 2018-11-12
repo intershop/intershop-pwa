@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 
 export enum IncludesActionTypes {
@@ -21,7 +22,7 @@ export class LoadContentIncludeFail implements Action {
 
 export class LoadContentIncludeSuccess implements Action {
   readonly type = IncludesActionTypes.LoadContentIncludeSuccess;
-  constructor(public payload: ContentInclude) {}
+  constructor(public payload: { include: ContentInclude; pagelets: ContentPagelet[] }) {}
 }
 
 export type IncludesAction = LoadContentInclude | LoadContentIncludeFail | LoadContentIncludeSuccess;

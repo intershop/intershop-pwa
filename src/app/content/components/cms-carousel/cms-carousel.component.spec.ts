@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { createPageletView } from '../../../models/content-view/content-views';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { CMSCarouselComponent } from './cms-carousel.component';
@@ -10,7 +10,6 @@ describe('Cms Carousel Component', () => {
   let component: CMSCarouselComponent;
   let fixture: ComponentFixture<CMSCarouselComponent>;
   let element: HTMLElement;
-  let pagelet: ContentPagelet;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,16 +24,35 @@ describe('Cms Carousel Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CMSCarouselComponent);
     component = fixture.componentInstance;
-    pagelet = {
-      configurationParameters: {
-        CSSClass: { value: 'foo-class' },
-      } as any,
-      slots: {
-        'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot': { pagelets: [] },
-      } as any,
-    } as ContentPagelet;
-    component.pagelet = pagelet;
     element = fixture.nativeElement;
+    const slide1 = {
+      id: 'slide1',
+      definitionQualifiedName: 'fq',
+    };
+    const slide2 = {
+      id: 'slide2',
+      definitionQualifiedName: 'fq',
+    };
+
+    const pagelet = {
+      id: 'id',
+      definitionQualifiedName: 'fq',
+      configurationParameters: {
+        CSSClass: 'foo-class',
+        SlideItems: 2,
+      },
+      slots: [
+        {
+          definitionQualifiedName: 'app_sf_responsive_cm:slot.carousel.items.pagelet2-Slot',
+          pageletIDs: [slide1.id, slide2.id],
+        },
+      ],
+    };
+    component.pagelet = createPageletView(pagelet.id, {
+      [pagelet.id]: pagelet,
+      [slide1.id]: slide1,
+      [slide2.id]: slide2,
+    });
   });
 
   it('should be created', () => {

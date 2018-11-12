@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 import { PipesModule } from '../../../shared/pipes.module';
 
 import { CMSFreestyleComponent } from './cms-freestyle.component';
@@ -31,9 +31,12 @@ describe('Cms Freestyle Component', () => {
   });
 
   it('should render content if available', () => {
-    component.pagelet = {
-      configurationParameters: { HTML: { value: '<h3>foo</h3>bar' } } as any,
-    } as ContentPagelet;
+    const pagelet = {
+      definitionQualifiedName: 'fq',
+      id: 'id',
+      configurationParameters: { HTML: '<h3>foo</h3>bar' },
+    };
+    component.pagelet = createSimplePageletView(pagelet);
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchSnapshot();
   });

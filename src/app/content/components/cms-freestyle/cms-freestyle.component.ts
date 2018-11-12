@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ContentPageletHelper } from '../../../models/content-pagelet/content-pagelet.helper';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { ContentPageletView } from '../../../models/content-view/content-views';
 
-// tslint:disable-next-line:project-structure
 @Component({
   selector: 'ish-cms-freestyle',
   templateUrl: './cms-freestyle.component.html',
@@ -11,7 +9,5 @@ import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.
 })
 export class CMSFreestyleComponent {
   @Input()
-  pagelet: ContentPagelet;
-
-  getConfigurationParameterValue = ContentPageletHelper.getConfigurationParameterValue;
+  pagelet: ContentPageletView;
 }

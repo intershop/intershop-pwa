@@ -1,1 +1,1 @@
-<span *ngIf="getConfigurationParameterValue(pagelet, 'HTMLText')" [innerHTML]="getConfigurationParameterValue(pagelet, 'HTMLText') | safeHtml"></span>
+<span *ngIf="pagelet && pagelet.hasParam('HTMLText')" [innerHTML]="pagelet.stringParam('HTMLText') | safeHtml"></span>

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, combineReducers } from '@ngrx/store';
-import { cold } from 'jest-marbles';
 import { deepEqual, spy, verify } from 'ts-mockito';
 
 import { ContentInclude } from '../../../models/content-include/content-include.model';
@@ -21,10 +20,12 @@ describe('Content Include Container', () => {
   beforeEach(async(() => {
     include = {
       id: 'test.include',
-      displayName: 'test.include',
       definitionQualifiedName: 'test.include-Include',
-      pagelets: [],
-    } as ContentInclude;
+
+      configurationParameters: {
+        key: '1',
+      },
+    };
 
     TestBed.configureTestingModule({
       declarations: [
@@ -42,7 +43,7 @@ describe('Content Include Container', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentIncludeContainerComponent);
     component = fixture.componentInstance;
-    component.includeId = include.displayName;
+    component.includeId = include.id;
     element = fixture.nativeElement;
   });
 
@@ -63,11 +64,15 @@ describe('Content Include Container', () => {
   describe('with content', () => {
     beforeEach(() => {
       fixture.detectChanges();
-      store$.dispatch(new LoadContentIncludeSuccess(include));
+      store$.dispatch(new LoadContentIncludeSuccess({ include, pagelets: [] }));
     });
 
-    it('should have the matching include available for rendering', () => {
-      expect(component.contentInclude$).toBeObservable(cold('a', { a: include }));
+    it('should have the matching include available for rendering', done => {
+      component.contentInclude$.subscribe(inc => {
+        expect(inc.id).toEqual('test.include');
+        expect(inc.numberParam('key')).toBe(1);
+        done();
+      });
     });
   });
 });

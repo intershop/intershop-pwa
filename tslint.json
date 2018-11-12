@@ -250,7 +250,7 @@
       { "from": "@angular/common/http", "message": "http classes should not propagate to components and containers", "filePattern": ".*\\.(container|component)\\..*ts" },
       { "starImport": true, "from": "\\.\\..*", "filePattern": ".*src/app.*", "message": "use star imports only for aggregation of deeper lying imports" },
       { "starImport": true, "from": "lodash.*" },
-      { "import": "^(?!range$).*", "from": "lodash.*" },
+      { "import": "^(?!(range|uniq|memoize|once)$).*", "from": "lodash.*" },
       { "import": "CustomFormsModule", "from": "ng2-validation", "message": "This module is for the template-driven approach which we don't use." },
       { "import": "^FormsModule$", "from": "@angular/forms", "message": "This module is for the template-driven approach which we don't use." }
     ],

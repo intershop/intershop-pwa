@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { STATIC_URL } from '../../../core/services/state-transfer/factories';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
+import { createImagePageletView } from '../../../models/content-view/content-image-view';
+import { createSimplePageletView } from '../../../models/content-view/content-views';
 
 import { CMSImageComponent } from './cms-image.component';
 
@@ -24,15 +25,18 @@ describe('Cms Image Component', () => {
     fixture = TestBed.createComponent(CMSImageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.pagelet = {
+    const pagelet = {
+      definitionQualifiedName: 'fq',
+      id: 'id',
       configurationParameters: {
-        Image: { value: 'foo:bar.png' },
-        AlternateText: { value: 'foo' },
-        CSSClass: { value: 'foo' },
-        Link: { value: 'link://foo' },
-        LinkTitle: { value: 'bar' },
-      } as any,
-    } as ContentPagelet;
+        Image: 'foo:bar.png',
+        AlternateText: 'foo',
+        CSSClass: 'foo',
+        Link: 'link://foo',
+        LinkTitle: 'bar',
+      },
+    };
+    component.pagelet = createImagePageletView(createSimplePageletView(pagelet));
   });
 
   it('should be created', () => {

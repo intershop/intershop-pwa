@@ -10,9 +10,12 @@
   "devDependencies": {
     "@angular/compiler": "^6.0.3",
     "@angular/core": "^6.0.3",
+    "@types/jest": "^23.3.2",
     "@types/node": "^10.1.2",
     "codelyzer": "4.3.0",
+    "jest": "^23.6.0",
     "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.1",
     "tslint": "5.10.0",
     "typescript": "^2.8.3"
   },
@@ -23,8 +26,8 @@
     "typescript": "^2.7.3"
   },
   "scripts": {
-    "prebuild": "npm i",
-    "build": "tsc",
-    "postbuild": "rimraf node_modules"
+    "prebuild": "npm ci",
+    "build": "npx jest && tsc",
+    "postbuild": "npx rimraf node_modules && npx rimraf dist/*.spec.js"
   }
 }
