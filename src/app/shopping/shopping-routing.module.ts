@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeatureToggleGuard } from '../shared/feature-toggle/guards/feature-toggle.guard';
+import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 
 const routes: Routes = [
   { path: 'home', loadChildren: './containers/home-page/home-page.module#HomePageModule' },

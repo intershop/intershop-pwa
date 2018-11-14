@@ -7,6 +7,7 @@ import { RouteNavigation } from 'ngrx-router';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -21,7 +22,6 @@ import { LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checko
 import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { LoadProduct } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';

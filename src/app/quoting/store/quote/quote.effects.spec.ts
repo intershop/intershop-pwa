@@ -5,6 +5,7 @@ import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from 'ish-core/models/quote-line-item-result/quote-line-item-result.model';
@@ -13,7 +14,6 @@ import { QuoteData } from 'ish-core/models/quote/quote.interface';
 import { User } from 'ish-core/models/user/user.model';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteService } from '../../services/quote/quote.service';
 import { SubmitQuoteRequestSuccess } from '../quote-request';

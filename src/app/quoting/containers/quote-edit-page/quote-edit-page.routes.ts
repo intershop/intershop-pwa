@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { FeatureToggleGuard } from '../../../shared/feature-toggle/guards/feature-toggle.guard';
+import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 
 import { QuoteEditPageContainerComponent } from './quote-edit-page.container';
 

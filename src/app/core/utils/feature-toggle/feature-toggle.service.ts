@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { FEATURE_TOGGLES } from '../configurations/injection-keys';
+import { FEATURE_TOGGLES } from '../../configurations/injection-keys';
 
 @Injectable({ providedIn: 'root' })
 export class FeatureToggleService {

@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
-import { FeatureToggleDirective } from './feature-toggle/directives/feature-toggle.directive';
-import { FeatureToggleService } from './feature-toggle/services/feature-toggle.service';
+import { FeatureToggleDirective } from './directives/feature-toggle.directive';
+import { FeatureToggleService } from './utils/feature-toggle/feature-toggle.service';
 
 @NgModule({
   declarations: [FeatureToggleDirective],
@@ -21,3 +21,7 @@ export class FeatureToggleModule {
     };
   }
 }
+
+export { FEATURE_TOGGLES } from './configurations/injection-keys';
+export { FeatureToggleService } from './utils/feature-toggle/feature-toggle.service';
+export { FeatureToggleGuard } from './guards/feature-toggle.guard';

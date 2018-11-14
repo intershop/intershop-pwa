@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
-import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { ProductTileComponent } from './product-tile.component';
