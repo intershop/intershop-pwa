@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
-import { BasketPageContainerComponent } from '../../../checkout/containers/basket-page/basket-page.container';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
 import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { Quote } from '../../../models/quote/quote.model';
@@ -20,7 +19,6 @@ describe('Quote Edit Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        BasketPageContainerComponent,
         MockComponent({
           selector: 'ish-line-item-list',
           template: 'Line Item List Component',
