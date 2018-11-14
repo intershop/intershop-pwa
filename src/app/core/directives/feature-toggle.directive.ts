@@ -1,6 +1,6 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
-import { FeatureToggleService } from '../services/feature-toggle.service';
+import { FeatureToggleService } from '../utils/feature-toggle/feature-toggle.service';
 
 @Directive({
   selector: '[ishFeature]',

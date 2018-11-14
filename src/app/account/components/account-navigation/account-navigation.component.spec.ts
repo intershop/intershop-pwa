@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { LARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
-import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 
 import { AccountNavigationComponent } from './account-navigation.component';
 

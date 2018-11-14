@@ -8,6 +8,7 @@ import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
@@ -22,7 +23,6 @@ import {
   getLoggedInCustomer,
   getLoggedInUser,
 } from 'ish-core/store/user';
-import { FeatureToggleModule } from '../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../shopping/store/shopping.system';
 import {
   TestStore,

@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
-import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 
 import { ProductDetailComponent } from './product-detail.component';
 

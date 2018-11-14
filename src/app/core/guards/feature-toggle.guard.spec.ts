@@ -3,9 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { FeatureToggleModule } from '../../feature-toggle.module';
-
-import { FeatureToggleGuard } from './feature-toggle.guard';
+import { FeatureToggleGuard, FeatureToggleModule } from '../feature-toggle.module';
 
 describe('Feature Toggle Guard', () => {
   let router: Router;

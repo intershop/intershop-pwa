@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import * as using from 'jasmine-data-provider';
 
-import { FeatureToggleModule } from '../../feature-toggle.module';
-import { FEATURE_TOGGLES } from '../configurations/injection-keys';
-
-import { FeatureToggleService } from './feature-toggle.service';
+import { FEATURE_TOGGLES, FeatureToggleModule, FeatureToggleService } from '../../feature-toggle.module';
 
 describe('Feature Toggle Service', () => {
   describe('without features defined', () => {

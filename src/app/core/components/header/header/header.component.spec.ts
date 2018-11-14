@@ -3,9 +3,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { MEDIUM_BREAKPOINT_WIDTH } from '../../../configurations/injection-keys';
+import { FeatureToggleModule } from '../../../feature-toggle.module';
 import { IconModule } from '../../../icon.module';
 
 import { HeaderComponent } from './header.component';

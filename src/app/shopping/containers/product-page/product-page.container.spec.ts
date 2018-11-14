@@ -3,10 +3,10 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 
+import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
 import { coreReducers } from 'ish-core/store/core.system';
 import { quotingReducers } from '../../../quoting/store/quoting.system';
-import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadProduct, LoadProductSuccess, SelectProduct } from '../../store/products';
