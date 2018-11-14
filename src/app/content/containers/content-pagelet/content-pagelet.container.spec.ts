@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createSimplePageletView } from 'ish-core/models/content-view/content-views';
-import { PipesModule } from '../../../shared/pipes.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { CMSTextComponent } from '../../components/cms-text/cms-text.component';
 import { CMS_COMPONENT } from '../../configurations/injection-keys';
 
