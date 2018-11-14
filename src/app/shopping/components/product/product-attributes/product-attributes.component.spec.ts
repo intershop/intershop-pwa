@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { PipesModule } from '../../../../shared/pipes.module';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { ProductAttributesComponent } from './product-attributes.component';
 

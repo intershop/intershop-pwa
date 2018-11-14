@@ -6,6 +6,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { FormsSharedModule } from '../forms/forms-shared.module';
 
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
@@ -13,7 +14,6 @@ import { BasketCostSummaryComponent } from './basket/components/basket-cost-summ
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
-import { PipesModule } from './pipes.module';
 import { SharedAddressModule } from './shared-address.module';
 import { SharedProductModule } from './shared-product.module';
 

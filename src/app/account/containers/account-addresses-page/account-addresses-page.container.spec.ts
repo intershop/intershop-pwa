@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
-import { PipesModule } from '../../../shared/pipes.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { AccountAddressesPageContainerComponent } from './account-addresses-page.container';

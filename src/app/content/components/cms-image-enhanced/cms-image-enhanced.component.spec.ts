@@ -3,8 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { createImagePageletView } from 'ish-core/models/content-view/content-image-view';
 import { createSimplePageletView } from 'ish-core/models/content-view/content-views';
+import { PipesModule } from 'ish-core/pipes.module';
 import { STATIC_URL } from 'ish-core/services/state-transfer/factories';
-import { PipesModule } from '../../../shared/pipes.module';
 
 import { CMSImageEnhancedComponent } from './cms-image-enhanced.component';
 

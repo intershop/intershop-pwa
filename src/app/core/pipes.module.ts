@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 
-import { AttributeToStringPipe } from './pipes/attribute.pipe';
-import { PricePipe } from './pipes/price.pipe';
-import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '../content/pipes/safe-html.pipe';
+
+import { AttributeToStringPipe } from './models/attribute/attribute.pipe';
+import { PricePipe } from './models/price/price.pipe';
 
 @NgModule({
   declarations: [AttributeToStringPipe, PricePipe, SafeHtmlPipe],

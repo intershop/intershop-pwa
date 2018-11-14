@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { createSimplePageletView } from 'ish-core/models/content-view/content-views';
-import { PipesModule } from '../../../shared/pipes.module';
+import { PipesModule } from 'ish-core/pipes.module';
 
 import { CMSTextComponent } from './cms-text.component';
 

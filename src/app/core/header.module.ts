@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { PipesModule } from '../shared/pipes.module';
 import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedSearchModule } from '../shared/shared-search.module';
 
@@ -31,6 +30,7 @@ import { ProductCompareStatusContainerComponent } from './containers/header/prod
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { FeatureToggleModule } from './feature-toggle.module';
 import { IconModule } from './icon.module';
+import { PipesModule } from './pipes.module';
 
 @NgModule({
   imports: [

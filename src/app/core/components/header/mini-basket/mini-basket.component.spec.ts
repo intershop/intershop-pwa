@@ -5,12 +5,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { IconModule } from '../../../icon.module';
 import { BasketItemView } from '../../../models/basket-item/basket-item.model';
 import { BasketView } from '../../../models/basket/basket.model';
+import { PipesModule } from '../../../pipes.module';
 
 import { MiniBasketComponent } from './mini-basket.component';
 

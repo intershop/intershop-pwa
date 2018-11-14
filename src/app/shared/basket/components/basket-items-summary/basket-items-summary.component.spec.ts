@@ -3,8 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
-import { PipesModule } from '../../../pipes.module';
 
 import { BasketItemsSummaryComponent } from './basket-items-summary.component';
 

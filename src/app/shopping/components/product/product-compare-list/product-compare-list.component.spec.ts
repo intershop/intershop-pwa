@@ -5,7 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { Product } from 'ish-core/models/product/product.model';
-import { PipesModule } from '../../../../shared/pipes.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { ProductCompareListComponent } from './product-compare-list.component';

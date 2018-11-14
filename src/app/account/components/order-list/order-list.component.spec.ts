@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { OrderView } from 'ish-core/models/order/order.model';
-import { PipesModule } from '../../../shared/pipes.module';
+import { PipesModule } from 'ish-core/pipes.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { OrderListComponent } from './order-list.component';

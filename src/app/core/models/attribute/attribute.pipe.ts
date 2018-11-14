@@ -2,10 +2,10 @@ import { formatDate, formatNumber } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
-import { Price } from 'ish-core/models/price/price.model';
+import { Price } from '../price/price.model';
+import { formatPrice } from '../price/price.pipe';
 
-import { formatPrice } from './price.pipe';
+import { Attribute } from './attribute.model';
 
 @Pipe({ name: 'ishAttribute', pure: false })
 export class AttributeToStringPipe implements PipeTransform {
