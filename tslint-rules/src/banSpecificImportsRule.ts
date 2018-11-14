@@ -28,7 +28,8 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
     this.patterns.forEach(pattern => {
       if (
         new RegExp(pattern.filePattern).test(importStatement.getSourceFile().fileName) &&
-        new RegExp(pattern.from).test(fromStringText)
+        new RegExp(pattern.from).test(fromStringText) &&
+        importStatement.getChildAt(1).getChildAt(0)
       ) {
         const importSpecifier = importStatement.getChildAt(1).getChildAt(0);
 
