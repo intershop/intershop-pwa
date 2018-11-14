@@ -239,6 +239,7 @@
     "ban-specific-imports": {
       "severity": "warning",
       "options": [
+        { "import": "^Address$", "from": "^cluster$", "message": "Most likely you would've wanted to import the model instead." },
         { "import": "Router(Go|Back|Forward)", "from": "ngrx-router", "message": "We don't use router actions from ngrx-router. Use routing with router.navigate()." },
         { "from": "^[\\.\/]*\/core\/(.*)$", "message": "Use import alias ish-core", "fix": "ish-core/$1" },
         { "from": ".*node_modules\/(.*)", "message": "import with 'node_modules' seems to be wrong", "fix": "$1" },

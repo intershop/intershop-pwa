@@ -1,0 +1,20 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+
+import { getBasketLoading } from 'ish-core/store/checkout/basket';
+import { getSelectedOrder } from 'ish-core/store/orders';
+import { getLoggedInUser } from 'ish-core/store/user';
+
+@Component({
+  selector: 'ish-checkout-receipt-page-container',
+  templateUrl: './checkout-receipt-page.container.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class CheckoutReceiptPageContainerComponent {
+  order$ = this.store.pipe(select(getSelectedOrder));
+  /* ToDo: User data should be available by the Order, see #IS-17616 */
+  user$ = this.store.pipe(select(getLoggedInUser));
+  loading$ = this.store.pipe(select(getBasketLoading));
+
+  constructor(private store: Store<{}>) {}
+}

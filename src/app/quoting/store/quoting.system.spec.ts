@@ -13,6 +13,7 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
 import { coreEffects, coreReducers } from 'ish-core/store/core.system';
 import {
   LoadCompanyUserSuccess,
@@ -21,7 +22,6 @@ import {
   getLoggedInCustomer,
   getLoggedInUser,
 } from 'ish-core/store/user';
-import { checkoutReducers } from '../../checkout/store/checkout.system';
 import { FeatureToggleModule } from '../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../shopping/store/shopping.system';
 import {

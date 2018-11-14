@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
-import { AddQuoteToBasket } from '../../../checkout/store/basket';
+import { AddQuoteToBasket } from 'ish-core/store/checkout/basket';
 import { CreateQuoteRequestFromQuote, RejectQuote, getQuoteLoading, getSelectedQuote } from '../../store/quote';
 
 @Component({
