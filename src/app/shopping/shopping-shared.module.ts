@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 
 import { FormsSharedModule } from '../forms/forms-shared.module';
 import { QuotingSharedModule } from '../quoting/quoting-shared.module';
-import { SharedProductModule } from '../shared/shared-product.module';
 import { SharedModule } from '../shared/shared.module';
 
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
@@ -30,7 +29,7 @@ import { ProductTileContainerComponent } from './containers/product-tile/product
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
-  imports: [FormsSharedModule, QuotingSharedModule, SharedModule, SharedProductModule],
+  imports: [FormsSharedModule, QuotingSharedModule, SharedModule],
   declarations: [
     CategoryListComponent,
     CategoryNavigationComponent,
@@ -77,7 +76,6 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductTileContainerComponent,
     RecentlyViewedComponent,
     RecentlyViewedContainerComponent,
-    SharedProductModule,
   ],
 })
 export class ShoppingSharedModule {}

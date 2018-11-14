@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SharedProductModule } from '../shared/shared-product.module';
-import { SharedSearchModule } from '../shared/shared-search.module';
+import { ProductImageSharedModule } from '../shared/product/product-image.module';
+import { SearchBoxSharedModule } from '../shared/search/search-box.module';
 
 import { HeaderCheckoutComponent } from './components/header/header-checkout/header-checkout.component';
 import { HeaderNavigationComponent } from './components/header/header-navigation/header-navigation.component';
@@ -41,10 +41,10 @@ import { PipesModule } from './pipes.module';
     NgbCollapseModule,
     NgbDropdownModule,
     PipesModule,
+    ProductImageSharedModule,
     ReactiveFormsModule,
     RouterModule,
-    SharedProductModule,
-    SharedSearchModule,
+    SearchBoxSharedModule,
     TranslateModule,
   ],
   declarations: [

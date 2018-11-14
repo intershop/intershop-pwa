@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import { SuggestSearch, getSearchTerm, getSuggestSearchResults } from '../../../../shopping/store/search';
+
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
 /**
