@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { AddProductToBasket } from '../../../checkout/store/basket';
+import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { RemoveFromCompare, getCompareProducts, getCompareProductsCount } from '../../store/compare';
 
 @Component({

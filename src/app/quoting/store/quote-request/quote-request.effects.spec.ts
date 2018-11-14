@@ -17,10 +17,10 @@ import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-reque
 import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
 import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { User } from 'ish-core/models/user/user.model';
+import { LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { LoadBasketItemsSuccess, LoadBasketSuccess } from '../../../checkout/store/basket';
-import { checkoutReducers } from '../../../checkout/store/checkout.system';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';
 import { LoadProduct } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';

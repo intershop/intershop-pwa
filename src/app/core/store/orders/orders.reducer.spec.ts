@@ -1,6 +1,6 @@
-import { CreateOrderSuccess } from '../../../checkout/store/basket/basket.actions';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { Order } from '../../models/order/order.model';
+import { CreateOrderSuccess } from '../checkout/basket/basket.actions';
 
 import * as fromActions from './orders.actions';
 import { initialState, ordersReducer } from './orders.reducer';

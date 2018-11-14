@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable, concat, of, timer } from 'rxjs';
 import { distinctUntilChanged, filter, map, mapTo, switchMap } from 'rxjs/operators';
 
-import { getCurrentBasket } from '../../../../checkout/store/basket';
 import { BasketHelper } from '../../../models/basket/basket.model';
+import { getCurrentBasket } from '../../../store/checkout/basket';
 
 @Component({
   selector: 'ish-mini-basket-container',

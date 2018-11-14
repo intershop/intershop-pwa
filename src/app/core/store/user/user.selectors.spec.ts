@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { checkoutReducers } from '../../../checkout/store/checkout.system';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
@@ -9,6 +8,7 @@ import { Customer } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { Product } from '../../models/product/product.model';
 import { User } from '../../models/user/user.model';
+import { checkoutReducers } from '../checkout/checkout.system';
 import { coreReducers } from '../core.system';
 
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
