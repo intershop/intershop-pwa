@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FormsSharedModule } from '../../forms/forms-shared.module';
 import { QuotingSharedModule } from '../../quoting/quoting-shared.module';
-import { SharedBasketModule } from '../../shared/shared-basket.module';
 import { SharedModule } from '../../shared/shared.module';
 import { ShoppingSharedModule } from '../../shopping/shopping-shared.module';
 
@@ -18,7 +17,6 @@ const basketPageRoutes: Routes = [{ path: '', component: BasketPageContainerComp
     FormsSharedModule,
     QuotingSharedModule,
     RouterModule.forChild(basketPageRoutes),
-    SharedBasketModule,
     SharedModule,
     ShoppingSharedModule,
   ],

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
 
-import { SharedModule } from '../shared/shared.module';
+import { IconModule } from 'ish-core/icon.module';
 
 import { FormControlFeedbackComponent } from './shared/components/form-control-feedback/form-control-feedback.component';
 import { CaptchaComponent } from './shared/components/form-controls/captcha/captcha.component';
@@ -15,7 +15,7 @@ import { selectComponents } from './shared/components/form-controls/select';
 import { ShowFormFeedbackDirective } from './shared/directives/show-form-feedback.directive';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, RecaptchaModule, SharedModule, TranslateModule],
+  imports: [CommonModule, IconModule, ReactiveFormsModule, RecaptchaModule, TranslateModule],
   declarations: [
     ...selectComponents,
     CaptchaComponent,

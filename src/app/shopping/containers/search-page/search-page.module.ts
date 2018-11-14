@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { SharedSearchModule } from '../../../shared/shared-search.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { SearchNoResultComponent } from '../../components/search/search-no-result/search-no-result.component';
 import { SearchResultComponent } from '../../components/search/search-result/search-result.component';
@@ -11,7 +10,7 @@ import { SearchPageContainerComponent } from './search-page.container';
 import { searchPageRoutes } from './search-page.routes';
 
 @NgModule({
-  imports: [RouterModule.forChild(searchPageRoutes), SharedModule, SharedSearchModule, ShoppingSharedModule],
+  imports: [RouterModule.forChild(searchPageRoutes), SharedModule, ShoppingSharedModule],
   declarations: [SearchNoResultComponent, SearchPageContainerComponent, SearchResultComponent],
 })
 export class SearchPageModule {}

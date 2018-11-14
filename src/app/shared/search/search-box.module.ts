@@ -5,12 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 
-import { SearchBoxComponent } from './search/components/search-box/search-box.component';
-import { SearchBoxContainerComponent } from './search/containers/search-box/search-box.container';
+import { SearchBoxComponent } from './components/search-box/search-box.component';
+import { SearchBoxContainerComponent } from './containers/search-box/search-box.container';
 
 @NgModule({
   imports: [CommonModule, IconModule, ReactiveFormsModule, TranslateModule],
   declarations: [SearchBoxComponent, SearchBoxContainerComponent],
-  exports: [SearchBoxComponent, SearchBoxContainerComponent],
+  exports: [SearchBoxContainerComponent],
 })
-export class SharedSearchModule {}
+export class SearchBoxSharedModule {}
