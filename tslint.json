@@ -216,6 +216,12 @@
       }
     },
     "local-imports-format": [ true, "TypeScriptHeroPlugin" ],
+    "ng-module-sorted-fields": {
+      "severity": "error",
+      "options": {
+        "ignore-tokens": [ "AppRouting", "StoreDevtoolsModule" ]
+      }
+    },
     "ordered-imports": [
       true,
       {
