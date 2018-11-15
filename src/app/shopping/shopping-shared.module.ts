@@ -9,7 +9,6 @@ import { CategoryNavigationComponent } from './components/category/category-navi
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
 import { FilterSwatchImagesComponent } from './components/filter/filter-swatch-images/filter-swatch-images.component';
-import { ProductAddToBasketComponent } from './components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductDetailActionsComponent } from './components/product/product-detail-actions/product-detail-actions.component';
 import { ProductImagesComponent } from './components/product/product-images/product-images.component';
@@ -17,15 +16,12 @@ import { ProductInventoryComponent } from './components/product/product-inventor
 import { ProductListPagingComponent } from './components/product/product-list-paging/product-list-paging.component';
 import { ProductListToolbarComponent } from './components/product/product-list-toolbar/product-list-toolbar.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
-import { ProductPriceComponent } from './components/product/product-price/product-price.component';
 import { ProductQuantityComponent } from './components/product/product-quantity/product-quantity.component';
 import { ProductRowComponent } from './components/product/product-row/product-row.component';
-import { ProductTileComponent } from './components/product/product-tile/product-tile.component';
 import { RecentlyViewedComponent } from './components/recently/recently-viewed/recently-viewed.component';
 import { FilterNavigationContainerComponent } from './containers/filter-navigation/filter-navigation.container';
 import { ProductListContainerComponent } from './containers/product-list/product-list.container';
 import { ProductRowContainerComponent } from './containers/product-row/product-row.container';
-import { ProductTileContainerComponent } from './containers/product-tile/product-tile.container';
 import { RecentlyViewedContainerComponent } from './containers/recently-viewed/recently-viewed.container';
 
 @NgModule({
@@ -37,7 +33,6 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     FilterDropdownComponent,
     FilterNavigationContainerComponent,
     FilterSwatchImagesComponent,
-    ProductAddToBasketComponent,
     ProductAttributesComponent,
     ProductDetailActionsComponent,
     ProductImagesComponent,
@@ -46,12 +41,9 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductListContainerComponent,
     ProductListPagingComponent,
     ProductListToolbarComponent,
-    ProductPriceComponent,
     ProductQuantityComponent,
     ProductRowComponent,
     ProductRowContainerComponent,
-    ProductTileComponent,
-    ProductTileContainerComponent,
     RecentlyViewedComponent,
     RecentlyViewedContainerComponent,
   ],
@@ -59,7 +51,6 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     CategoryListComponent,
     CategoryNavigationComponent,
     FilterNavigationContainerComponent,
-    ProductAddToBasketComponent,
     ProductAttributesComponent,
     ProductDetailActionsComponent,
     ProductImagesComponent,
@@ -68,12 +59,9 @@ import { RecentlyViewedContainerComponent } from './containers/recently-viewed/r
     ProductListContainerComponent,
     ProductListPagingComponent,
     ProductListToolbarComponent,
-    ProductPriceComponent,
     ProductQuantityComponent,
     ProductRowComponent,
     ProductRowContainerComponent,
-    ProductTileComponent,
-    ProductTileContainerComponent,
     RecentlyViewedComponent,
     RecentlyViewedContainerComponent,
   ],

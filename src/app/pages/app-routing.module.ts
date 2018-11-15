@@ -12,6 +12,7 @@ const routes: Routes = [
     data: { headerType: 'checkout' },
     canActivate: [AuthGuard],
   },
+  { path: 'page', loadChildren: './content/content-page.module#ContentPageModule' },
 ];
 
 @NgModule({

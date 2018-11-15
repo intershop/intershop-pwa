@@ -22,17 +22,26 @@ import { BasketCostSummaryComponent } from './basket/components/basket-cost-summ
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
+import { CMSSharedModule } from './cms/cms.module';
+import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
+import { CMSProductListComponent } from './cms/components/cms-product-list/cms-product-list.component';
+import { CMS_COMPONENT } from './cms/configurations/injection-keys';
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
 import { InfoBoxComponent } from './common/components/info-box/info-box.component';
 import { LoadingComponent } from './common/components/loading/loading.component';
 import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
+import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
+import { ProductPriceComponent } from './product/components/product-price/product-price.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
+import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
+import { ProductTileContainerComponent } from './product/containers/product-tile/product-tile.container';
 import { ProductImageSharedModule } from './product/product-image.module';
 import { SearchBoxSharedModule } from './search/search-box.module';
 
 const importExportModules = [
+  CMSSharedModule,
   CommonModule,
   FeatureToggleModule,
   FormsSharedModule,
@@ -50,7 +59,9 @@ const importExportModules = [
   TranslateModule,
 ];
 
-const declaredComponents = [LineItemDescriptionComponent];
+const declaredComponents = [LineItemDescriptionComponent, ProductTileComponent];
+
+const entryComponents = [CMSCarouselComponent, CMSProductListComponent];
 
 const exportedComponents = [
   AccordionComponent,
@@ -64,12 +75,34 @@ const exportedComponents = [
   LineItemListComponent,
   LoadingComponent,
   ModalDialogComponent,
+  ProductAddToBasketComponent,
+  ProductPriceComponent,
   ProductShipmentComponent,
+  ProductTileContainerComponent,
 ];
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...exportedComponents],
+  declarations: [...declaredComponents, ...entryComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
+  providers: [
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:component.common.carousel.pagelet2-Component',
+        class: CMSCarouselComponent,
+      },
+      multi: true,
+    },
+    {
+      provide: CMS_COMPONENT,
+      useValue: {
+        definitionQualifiedName: 'app_sf_responsive_cm:component.common.productListManual.pagelet2-Component',
+        class: CMSProductListComponent,
+      },
+      multi: true,
+    },
+  ],
+  entryComponents,
 })
 export class SharedModule {}
