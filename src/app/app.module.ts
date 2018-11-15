@@ -3,11 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { CoreModule } from 'ish-core/core.module';
 import { CheckoutModule } from 'ish-core/store/checkout/checkout.module';
+import { ContentModule } from 'ish-core/store/content/content.module';
 
 import { AccountModule } from './account/account.module';
 import { AppNotFoundRoutingModule } from './app-not-found-routing.module';
 import { AppComponent } from './app.component';
-import { ContentModule } from './content/content.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { QuotingModule } from './quoting/quoting.module';
 import { RegistrationModule } from './registration/registration.module';
