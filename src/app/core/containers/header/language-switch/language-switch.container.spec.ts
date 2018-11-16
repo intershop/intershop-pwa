@@ -14,12 +14,12 @@ describe('Language Switch Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        LanguageSwitchContainerComponent,
         MockComponent({
           selector: 'ish-language-switch',
           template: 'Language Switch',
           inputs: ['locale', 'availableLocales', 'view'],
         }),
-        LanguageSwitchContainerComponent,
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })

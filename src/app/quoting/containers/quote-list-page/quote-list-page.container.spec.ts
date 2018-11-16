@@ -19,15 +19,15 @@ describe('Quote List Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        QuoteListPageContainerComponent,
-        MockComponent({ selector: 'ish-quote-list', template: 'Quote List Component', inputs: ['quotes'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-quote-list', template: 'Quote List Component', inputs: ['quotes'] }),
+        QuoteListPageContainerComponent,
       ],
       imports: [
-        TranslateModule.forRoot(),
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
         }),
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   }));

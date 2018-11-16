@@ -17,7 +17,7 @@ describe('Cms Image Enhanced Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CMSImageEnhancedComponent],
-      imports: [RouterTestingModule, PipesModule],
+      imports: [PipesModule, RouterTestingModule],
       providers: [{ provide: STATIC_URL, useValue: BASE_URL }],
     }).compileComponents();
   }));

@@ -16,14 +16,14 @@ describe('Order List Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OrderListComponent,
         MockComponent({
           selector: 'ish-address',
           template: 'Address Component',
           inputs: ['address'],
         }),
+        OrderListComponent,
       ],
-      imports: [TranslateModule.forRoot(), PipesModule, RouterTestingModule],
+      imports: [PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

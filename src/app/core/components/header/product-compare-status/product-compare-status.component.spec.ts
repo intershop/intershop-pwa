@@ -15,9 +15,9 @@ describe('Product Compare Status Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        IconModule,
         RouterTestingModule.withRoutes([{ path: 'compare', component: ProductCompareStatusComponent }]),
         TranslateModule.forRoot(),
-        IconModule,
       ],
       declarations: [ProductCompareStatusComponent],
     }).compileComponents();

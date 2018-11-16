@@ -9,6 +9,6 @@ import { contentPageRoutes } from './content-page.routes';
 
 @NgModule({
   imports: [RouterModule.forChild(contentPageRoutes), SharedModule],
-  declarations: [ContentPageContainerComponent, ContentPageComponent],
+  declarations: [ContentPageComponent, ContentPageContainerComponent],
 })
 export class ContentPageModule {}

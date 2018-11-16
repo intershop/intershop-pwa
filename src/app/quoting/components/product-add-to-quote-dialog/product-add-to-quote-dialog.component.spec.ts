@@ -19,12 +19,6 @@ describe('Product Add To Quote Dialog Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ProductAddToQuoteDialogComponent,
-        MockComponent({
-          selector: 'ish-quote-state',
-          template: 'Quote State Component',
-          inputs: ['quote'],
-        }),
         MockComponent({
           selector: 'ish-line-item-list',
           template: 'Line Item List Component',
@@ -34,8 +28,14 @@ describe('Product Add To Quote Dialog Component', () => {
           selector: 'ish-loading',
           template: 'Loading Component',
         }),
+        MockComponent({
+          selector: 'ish-quote-state',
+          template: 'Quote State Component',
+          inputs: ['quote'],
+        }),
+        ProductAddToQuoteDialogComponent,
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, NgbModalModule],
+      imports: [FormsSharedModule, NgbModalModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

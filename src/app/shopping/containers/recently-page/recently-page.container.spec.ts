@@ -15,13 +15,13 @@ describe('Recently Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        RecentlyPageContainerComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trail'] }),
         MockComponent({
           selector: 'ish-recently-viewed-all',
           template: 'Recently Viewed All Component',
           inputs: ['products'],
         }),
+        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['trail'] }),
+        RecentlyPageContainerComponent,
       ],
       imports: [TranslateModule.forRoot()],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],

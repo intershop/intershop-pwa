@@ -14,14 +14,14 @@ describe('Product Row Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ProductRowContainerComponent,
         MockComponent({
           selector: 'ish-product-row',
           template: 'Product Row Component',
           inputs: ['product', 'category'],
         }),
+        ProductRowContainerComponent,
       ],
-      imports: [StoreModule.forRoot({}), NgbModalModule],
+      imports: [NgbModalModule, StoreModule.forRoot({})],
     }).compileComponents();
   }));
 

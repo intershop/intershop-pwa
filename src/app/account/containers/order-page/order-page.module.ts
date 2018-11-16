@@ -13,11 +13,11 @@ import { orderPageRoutes } from './order-page.routes';
 @NgModule({
   imports: [
     RouterModule.forChild(orderPageRoutes),
-    SharedModule,
     SharedAddressModule,
     SharedBasketModule,
+    SharedModule,
     ShoppingSharedModule,
   ],
-  declarations: [OrderPageContainerComponent, OrderPageComponent],
+  declarations: [OrderPageComponent, OrderPageContainerComponent],
 })
 export class OrderPageModule {}

@@ -30,10 +30,10 @@ describe('Compare Page Container', () => {
         }),
       ],
       imports: [
-        TranslateModule.forRoot(),
         ...ngrxTesting({
           shopping: combineReducers(shoppingReducers),
         }),
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
     store$ = TestBed.get(TestStore);

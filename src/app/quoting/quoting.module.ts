@@ -7,9 +7,9 @@ import { quotingEffects, quotingReducers } from './store/quoting.system';
 
 @NgModule({
   imports: [
+    EffectsModule.forFeature(quotingEffects),
     QuotingRoutingModule,
     StoreModule.forFeature('quoting', quotingReducers),
-    EffectsModule.forFeature(quotingEffects),
   ],
 })
 export class QuotingModule {}

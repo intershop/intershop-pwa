@@ -25,13 +25,13 @@ describe('Mini Basket Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NoopAnimationsModule,
-        NgbCollapseModule,
         CommonModule,
+        IconModule,
+        NgbCollapseModule,
+        NoopAnimationsModule,
+        PipesModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
-        PipesModule,
-        IconModule,
       ],
       declarations: [
         MiniBasketComponent,

@@ -24,7 +24,7 @@ describe('Show Form Feedback Directive', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BrowserModule],
-      declarations: [TestComponent, ShowFormFeedbackDirective],
+      declarations: [ShowFormFeedbackDirective, TestComponent],
     });
   });
 

@@ -11,7 +11,7 @@ import { SearchPageContainerComponent } from './search-page.container';
 import { searchPageRoutes } from './search-page.routes';
 
 @NgModule({
-  imports: [RouterModule.forChild(searchPageRoutes), SharedModule, ShoppingSharedModule, SharedSearchModule],
-  declarations: [SearchPageContainerComponent, SearchResultComponent, SearchNoResultComponent],
+  imports: [RouterModule.forChild(searchPageRoutes), SharedModule, SharedSearchModule, ShoppingSharedModule],
+  declarations: [SearchNoResultComponent, SearchPageContainerComponent, SearchResultComponent],
 })
 export class SearchPageModule {}

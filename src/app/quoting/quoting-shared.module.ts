@@ -14,22 +14,22 @@ import { QuoteStateComponent } from './components/quote-state/quote-state.compon
 import { ProductAddToQuoteDialogContainerComponent } from './containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 
 @NgModule({
-  imports: [CommonModule, FormsSharedModule, SharedModule, SharedBasketModule, NgbModalModule],
+  imports: [CommonModule, FormsSharedModule, NgbModalModule, SharedBasketModule, SharedModule],
   declarations: [
     BasketAddToQuoteComponent,
     ProductAddToQuoteComponent,
     ProductAddToQuoteDialogComponent,
     ProductAddToQuoteDialogContainerComponent,
-    QuoteStateComponent,
     QuoteEditComponent,
+    QuoteStateComponent,
   ],
   exports: [
     BasketAddToQuoteComponent,
     ProductAddToQuoteComponent,
     ProductAddToQuoteDialogComponent,
     ProductAddToQuoteDialogContainerComponent,
-    QuoteStateComponent,
     QuoteEditComponent,
+    QuoteStateComponent,
   ],
   entryComponents: [ProductAddToQuoteDialogContainerComponent],
 })

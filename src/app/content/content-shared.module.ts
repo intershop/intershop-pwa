@@ -17,13 +17,13 @@ import { ContentPageletContainerComponent } from './containers/content-pagelet/c
 import { ContentSlotContainerComponent } from './containers/content-slot/content-slot.container';
 
 const cmsComponents = [
-  CMSTextComponent,
-  CMSFreestyleComponent,
+  CMSCarouselComponent,
   CMSContainerComponent,
+  CMSFreestyleComponent,
   CMSImageComponent,
   CMSImageEnhancedComponent,
-  CMSCarouselComponent,
   CMSProductListComponent,
+  CMSTextComponent,
 ];
 
 @NgModule({
@@ -34,10 +34,10 @@ const cmsComponents = [
     ShoppingSharedModule,
   ],
   declarations: [
+    ...cmsComponents,
     ContentIncludeContainerComponent,
     ContentPageletContainerComponent,
     ContentSlotContainerComponent,
-    ...cmsComponents,
   ],
   providers: [
     {

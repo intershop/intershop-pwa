@@ -18,11 +18,20 @@ describe('Checkout Review Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
+        MockComponent({
+          selector: 'ish-address',
+          template: 'Address Component',
+          inputs: ['address'],
+        }),
         MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
           inputs: ['totals'],
+        }),
+        MockComponent({
+          selector: 'ish-checkbox',
+          template: 'Checkbox Component',
+          inputs: ['form', 'controlName', 'errorMessages'],
         }),
         MockComponent({
           selector: 'ish-info-box',
@@ -30,22 +39,13 @@ describe('Checkout Review Component', () => {
           inputs: ['heading', 'editRouterLink'],
         }),
         MockComponent({
-          selector: 'ish-address',
-          template: 'Address Component',
-          inputs: ['address'],
-        }),
-        MockComponent({
           selector: 'ish-line-item-list',
           template: 'Line Item List Component',
           inputs: ['lineItems', 'editable'],
         }),
-        MockComponent({
-          selector: 'ish-checkbox',
-          template: 'Checkbox Component',
-          inputs: ['form', 'controlName', 'errorMessages'],
-        }),
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
       ],
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

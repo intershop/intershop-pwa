@@ -10,7 +10,7 @@ import { CheckoutProgressBarComponent } from './components/common/checkout-progr
 
 const sharedComponents = [BasketAddressSummaryComponent, BasketItemsSummaryComponent, CheckoutProgressBarComponent];
 @NgModule({
-  imports: [SharedModule, SharedProductModule, SharedAddressModule],
+  imports: [SharedAddressModule, SharedModule, SharedProductModule],
   declarations: [...sharedComponents],
   exports: [...sharedComponents],
 })

@@ -43,13 +43,13 @@ describe('Quote Request Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        FeatureToggleModule.testingFeatures({ quoting: true }),
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
           checkout: combineReducers(checkoutReducers),
           user: userReducer,
         }),
-        FeatureToggleModule.testingFeatures({ quoting: true }),
       ],
       providers: [
         QuoteRequestEffects,

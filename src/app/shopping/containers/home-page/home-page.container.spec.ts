@@ -12,8 +12,8 @@ describe('Home Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MockComponent({ selector: 'ish-home-page', template: 'Home Page Component' }),
         HomePageContainerComponent,
+        MockComponent({ selector: 'ish-home-page', template: 'Home Page Component' }),
       ],
     }).compileComponents();
   }));

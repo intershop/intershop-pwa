@@ -15,7 +15,7 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule, NgbCollapseModule, IconModule],
+      imports: [IconModule, NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [FilterDropdownComponent],
     }).compileComponents();
   }));

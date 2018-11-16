@@ -10,7 +10,7 @@ import { AddressFormFactoryProvider } from './address/configurations/address-for
 import { FormsSharedModule } from './forms-shared.module';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, SharedModule, FormsSharedModule],
+  imports: [CommonModule, FormsSharedModule, ReactiveFormsModule, SharedModule],
   declarations: [...components, CustomerAddressFormComponent],
   exports: [...components, CustomerAddressFormComponent, FormsSharedModule],
   providers: [AddressFormFactoryProvider, ...factoryProviders],

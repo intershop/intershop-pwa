@@ -10,6 +10,6 @@ import { quoteRequestEditPageRoutes } from './quote-request-edit-page.routes';
 
 @NgModule({
   declarations: [QuoteRequestEditPageContainerComponent],
-  imports: [RouterModule.forChild(quoteRequestEditPageRoutes), SharedModule, AccountSharedModule, QuotingSharedModule],
+  imports: [AccountSharedModule, QuotingSharedModule, RouterModule.forChild(quoteRequestEditPageRoutes), SharedModule],
 })
 export class QuoteRequestEditPageModule {}

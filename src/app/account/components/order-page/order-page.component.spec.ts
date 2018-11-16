@@ -15,29 +15,29 @@ describe('Order Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OrderPageComponent,
-        MockComponent({
-          selector: 'ish-info-box',
-          template: 'Checkout Infobox Component',
-          inputs: ['heading', 'editRouterLink'],
-        }),
         MockComponent({
           selector: 'ish-address',
           template: 'Address Component',
           inputs: ['address', 'displayEmail'],
         }),
         MockComponent({
-          selector: 'ish-line-item-list',
-          template: 'Line Item List Component',
-          inputs: ['lineItems', 'editable'],
-        }),
-        MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
           inputs: ['totals'],
         }),
+        MockComponent({
+          selector: 'ish-info-box',
+          template: 'Checkout Infobox Component',
+          inputs: ['heading', 'editRouterLink'],
+        }),
+        MockComponent({
+          selector: 'ish-line-item-list',
+          template: 'Line Item List Component',
+          inputs: ['lineItems', 'editable'],
+        }),
+        OrderPageComponent,
       ],
-      imports: [TranslateModule.forRoot(), IconModule],
+      imports: [IconModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

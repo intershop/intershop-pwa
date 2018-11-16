@@ -16,7 +16,7 @@ describe('Search Box Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), RouterTestingModule],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent({
           selector: 'ish-search-box',
