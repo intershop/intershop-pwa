@@ -22,48 +22,33 @@ import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.com
 import { FeatureToggleModule } from './feature-toggle.module';
 import { PipesModule } from './pipes.module';
 
+const importExportModules = [
+  CommonModule,
+  FeatureToggleModule,
+  IconModule,
+  InfiniteScrollModule,
+  NgbCarouselModule,
+  NgbCollapseModule,
+  NgbDropdownModule,
+  NgbModalModule,
+  NgbPopoverModule,
+  PipesModule,
+  RouterModule,
+  TranslateModule,
+];
+
+const exportedComponents = [
+  AccordionComponent,
+  AccordionItemComponent,
+  BreadcrumbComponent,
+  InfoBoxComponent,
+  LoadingComponent,
+  ModalDialogComponent,
+];
+
 @NgModule({
-  imports: [
-    CommonModule,
-    FeatureToggleModule,
-    IconModule,
-    InfiniteScrollModule,
-    NgbCarouselModule,
-    NgbCollapseModule,
-    NgbDropdownModule,
-    NgbModalModule,
-    NgbPopoverModule,
-    PipesModule,
-    RouterModule,
-    TranslateModule,
-  ],
-  declarations: [
-    AccordionComponent,
-    AccordionItemComponent,
-    BreadcrumbComponent,
-    InfoBoxComponent,
-    LoadingComponent,
-    ModalDialogComponent,
-  ],
-  exports: [
-    AccordionComponent,
-    AccordionItemComponent,
-    BreadcrumbComponent,
-    CommonModule,
-    FeatureToggleModule,
-    IconModule,
-    InfiniteScrollModule,
-    InfoBoxComponent,
-    LoadingComponent,
-    ModalDialogComponent,
-    NgbCarouselModule,
-    NgbCollapseModule,
-    NgbDropdownModule,
-    NgbModalModule,
-    NgbPopoverModule,
-    PipesModule,
-    RouterModule,
-    TranslateModule,
-  ],
+  imports: [...importExportModules],
+  declarations: [...exportedComponents],
+  exports: [...exportedComponents, ...importExportModules],
 })
 export class SharedModule {}
