@@ -15,7 +15,7 @@ describe('Login Form Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginFormComponent],
-      imports: [FormsSharedModule, TranslateModule.forRoot(), RouterTestingModule],
+      imports: [FormsSharedModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

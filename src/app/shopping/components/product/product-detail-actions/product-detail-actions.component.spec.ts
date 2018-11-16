@@ -21,9 +21,9 @@ describe('Product Detail Actions Component', () => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
-        TranslateModule.forRoot(),
         FeatureToggleModule.testingFeatures({ compare: true }),
         IconModule,
+        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: Location, useFactory: () => instance(mock(Location)) },

@@ -12,12 +12,12 @@ import { productPageRoutes } from './product-page.routes';
 
 @NgModule({
   imports: [
+    FormsSharedModule,
+    QuotingSharedModule,
     RouterModule.forChild(productPageRoutes),
     SharedModule,
-    FormsSharedModule,
     ShoppingSharedModule,
-    QuotingSharedModule,
   ],
-  declarations: [ProductPageContainerComponent, ProductDetailComponent],
+  declarations: [ProductDetailComponent, ProductPageContainerComponent],
 })
 export class ProductPageModule {}

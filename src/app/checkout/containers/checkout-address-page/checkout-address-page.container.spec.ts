@@ -17,19 +17,19 @@ describe('Checkout Address Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutAddressPageContainerComponent,
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         MockComponent({
           selector: 'ish-checkout-address',
           template: 'Checkout Address Component',
           inputs: ['currentUser', 'basket', 'addresses', 'error', 'countries', 'regions', 'titles'],
         }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
 
       imports: [
-        TranslateModule.forRoot(),
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
         }),
+        TranslateModule.forRoot(),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     }).compileComponents();

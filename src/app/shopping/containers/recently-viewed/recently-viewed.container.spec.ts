@@ -14,12 +14,12 @@ describe('Recently Viewed Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        RecentlyViewedContainerComponent,
         MockComponent({
           selector: 'ish-recently-viewed',
           template: 'Recently Viewed Container',
           inputs: ['products'],
         }),
+        RecentlyViewedContainerComponent,
       ],
       imports: [
         StoreModule.forRoot({

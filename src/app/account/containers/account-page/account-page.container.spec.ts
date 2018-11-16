@@ -20,20 +20,20 @@ describe('Account Page Container', () => {
       declarations: [
         AccountPageContainerComponent,
         MockComponent({
+          selector: 'ish-account-page',
+          template: 'Account Page Component',
+        }),
+        MockComponent({
           selector: 'ish-breadcrumb',
           template: 'Breadcrumb Component',
           inputs: ['account', 'trail'],
-        }),
-        MockComponent({
-          selector: 'ish-account-page',
-          template: 'Account Page Component',
         }),
       ],
       providers: [
         { provide: Store, useFactory: () => instance(mock(Store)) },
         { provide: ActivatedRoute, useValue: { firstChild: { data: EMPTY } } },
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

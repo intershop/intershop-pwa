@@ -27,17 +27,17 @@ describe('Registration Form Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        RegistrationFormComponent,
-        MockComponent({
-          selector: 'ish-registration-credentials-form',
-          template: 'Credentials Template',
-          inputs: ['parentForm', 'controlName'],
-        }),
         MockComponent({
           selector: 'ish-address-form',
           template: 'Address Template',
           inputs: ['parentForm', 'controlName', 'countryCode', 'regions', 'countries', 'titles'],
         }),
+        MockComponent({
+          selector: 'ish-registration-credentials-form',
+          template: 'Credentials Template',
+          inputs: ['parentForm', 'controlName'],
+        }),
+        RegistrationFormComponent,
       ],
       providers: [{ provide: AddressFormFactoryProvider, useFactory: () => instance(addressFormFactoryProviderMock) }],
       imports: [FormsSharedModule, TranslateModule.forRoot()],

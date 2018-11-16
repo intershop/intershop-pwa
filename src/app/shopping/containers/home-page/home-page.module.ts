@@ -9,7 +9,7 @@ import { HomePageContainerComponent } from './home-page.container';
 import { homePageRoutes } from './home-page.routes';
 
 @NgModule({
-  imports: [RouterModule.forChild(homePageRoutes), SharedModule, ContentSharedModule],
+  imports: [ContentSharedModule, RouterModule.forChild(homePageRoutes), SharedModule],
   declarations: [HomePageComponent, HomePageContainerComponent],
 })
 export class HomePageModule {}

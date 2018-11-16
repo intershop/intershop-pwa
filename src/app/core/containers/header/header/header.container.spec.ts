@@ -14,12 +14,12 @@ describe('Header Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot(coreReducers), RouterTestingModule],
+      imports: [RouterTestingModule, StoreModule.forRoot(coreReducers)],
       declarations: [
         HeaderContainerComponent,
         MockComponent({ selector: 'ish-header', template: 'Header Component' }),
-        MockComponent({ selector: 'ish-header-simple', template: 'Simple Header Component' }),
         MockComponent({ selector: 'ish-header-checkout', template: 'Checkout Header Component' }),
+        MockComponent({ selector: 'ish-header-simple', template: 'Simple Header Component' }),
         MockComponent({ selector: 'ish-header-sticky', template: 'Sticky Header' }),
         MockComponent({ selector: 'ish-header-sticky-mobile', template: 'Sticky Header Mobile' }),
       ],

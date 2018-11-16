@@ -15,18 +15,18 @@ describe('Product List Component', () => {
     TestBed.configureTestingModule({
       imports: [InfiniteScrollModule],
       declarations: [
-        ProductListComponent,
-        MockComponent({
-          selector: 'ish-product-tile-container',
-          template: 'Product Tile Container',
-          inputs: ['productSku', 'category'],
-        }),
         MockComponent({
           selector: 'ish-product-row-container',
           template: 'Product Row Container',
           inputs: ['product', 'category'],
         }),
+        MockComponent({
+          selector: 'ish-product-tile-container',
+          template: 'Product Tile Container',
+          inputs: ['productSku', 'category'],
+        }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component', inputs: ['standalone'] }),
+        ProductListComponent,
       ],
     }).compileComponents();
   }));

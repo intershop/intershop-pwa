@@ -48,16 +48,16 @@ export function translateLoaderFactory() {
 @NgModule({
   imports: [
     AppModule,
+    ModuleMapLoaderModule,
     ServerModule,
     ServerTransferStateModule,
-    ModuleMapLoaderModule,
+    StoreModule.forRoot(coreReducers, {}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: translateLoaderFactory,
       },
     }),
-    StoreModule.forRoot(coreReducers, {}),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true }],
   bootstrap: [AppComponent],

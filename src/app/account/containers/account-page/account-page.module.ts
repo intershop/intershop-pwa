@@ -12,13 +12,13 @@ import { AccountPageContainerComponent } from './account-page.container';
 import { accountPageRoutes } from './account-page.routes';
 
 @NgModule({
-  imports: [RouterModule.forChild(accountPageRoutes), SharedModule, AccountSharedModule],
+  imports: [AccountSharedModule, RouterModule.forChild(accountPageRoutes), SharedModule],
   declarations: [
-    AccountPageContainerComponent,
-    AccountPageComponent,
     AccountNavigationComponent,
-    AccountOverviewPageContainerComponent,
     AccountOverviewPageComponent,
+    AccountOverviewPageContainerComponent,
+    AccountPageComponent,
+    AccountPageContainerComponent,
   ],
 })
 export class AccountPageModule {}

@@ -15,7 +15,7 @@ describe('Product Attributes Component', () => {
     product = { sku: 'sku' } as Product;
     product.attributes = [{ name: 'A', type: 'String', value: 'A' }, { name: 'B', type: 'String', value: 'B' }];
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), PipesModule],
+      imports: [PipesModule, TranslateModule.forRoot()],
       declarations: [ProductAttributesComponent],
     }).compileComponents();
   }));

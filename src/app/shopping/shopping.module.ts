@@ -7,9 +7,9 @@ import { shoppingEffects, shoppingReducers } from './store/shopping.system';
 
 @NgModule({
   imports: [
+    EffectsModule.forFeature(shoppingEffects),
     ShoppingRoutingModule,
     StoreModule.forFeature('shopping', shoppingReducers),
-    EffectsModule.forFeature(shoppingEffects),
   ],
 })
 export class ShoppingModule {}

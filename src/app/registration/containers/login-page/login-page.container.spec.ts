@@ -18,12 +18,12 @@ describe('Login Page Container', () => {
 
     TestBed.configureTestingModule({
       declarations: [
+        LoginPageContainerComponent,
         MockComponent({
           selector: 'ish-login-form',
           template: 'Login Form',
           inputs: ['loginType', 'isLoggedIn', 'error'],
         }),
-        LoginPageContainerComponent,
       ],
       providers: [
         { provide: USER_REGISTRATION_LOGIN_TYPE, useValue: 'email' },

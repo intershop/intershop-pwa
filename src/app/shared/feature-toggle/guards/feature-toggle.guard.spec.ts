@@ -18,6 +18,7 @@ describe('Feature Toggle Guard', () => {
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
       imports: [
+        FeatureToggleModule.testingFeatures({ feature1: true, feature2: false }),
         RouterTestingModule.withRoutes([
           {
             path: 'error',
@@ -42,7 +43,6 @@ describe('Feature Toggle Guard', () => {
             data: { feature: 'feature3' },
           },
         ]),
-        FeatureToggleModule.testingFeatures({ feature1: true, feature2: false }),
       ],
     });
 

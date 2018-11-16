@@ -15,13 +15,13 @@ import { basketPageRoutes } from './basket-page.routes';
 
 @NgModule({
   imports: [
-    RouterModule.forChild(basketPageRoutes),
-    SharedModule,
     CheckoutSharedModule,
-    ShoppingSharedModule,
     FormsSharedModule,
     QuotingSharedModule,
+    RouterModule.forChild(basketPageRoutes),
     SharedBasketModule,
+    SharedModule,
+    ShoppingSharedModule,
   ],
   declarations: [BasketPageContainerComponent, ShoppingBasketComponent, ShoppingBasketEmptyComponent],
 })

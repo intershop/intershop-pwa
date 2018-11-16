@@ -16,7 +16,7 @@ describe('Sub Category Navigation Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, IconModule],
+      imports: [IconModule, RouterTestingModule],
       declarations: [SubCategoryNavigationComponent],
       providers: [{ provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 }],
     }).compileComponents();

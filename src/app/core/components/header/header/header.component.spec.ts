@@ -18,26 +18,26 @@ describe('Header Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgbCollapseModule,
-        TranslateModule.forRoot(),
-        RouterTestingModule,
         FeatureToggleModule.testingFeatures({ compare: true }),
         IconModule,
+        NgbCollapseModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [
         HeaderComponent,
-        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
         MockComponent({
           selector: 'ish-product-compare-status-container',
           template: 'Product Compare Status Container',
         }),
-        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
         MockComponent({
           selector: 'ish-search-box-container',
           template: 'Search Box Container',
           inputs: ['configuration'],
         }),
         MockComponent({ selector: 'ish-header-navigation-container', template: 'Header Navigation Container' }),
+        MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
+        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
         MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
         MockComponent({ selector: 'ish-user-information-mobile', template: 'Mobile User Information' }),
       ],

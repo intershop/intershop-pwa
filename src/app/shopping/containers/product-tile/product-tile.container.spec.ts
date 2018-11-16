@@ -15,22 +15,22 @@ describe('Product Tile Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        NgbModalModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
-        NgbModalModule,
       ],
       declarations: [
-        ProductTileContainerComponent,
+        MockComponent({
+          selector: 'ish-loading',
+          template: 'Loading Component',
+        }),
         MockComponent({
           selector: 'ish-product-tile',
           template: 'Product Tile Component',
           inputs: ['product', 'category', 'isInCompareList'],
         }),
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
+        ProductTileContainerComponent,
       ],
     }).compileComponents();
   }));

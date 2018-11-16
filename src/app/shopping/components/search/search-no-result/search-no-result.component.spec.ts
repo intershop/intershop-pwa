@@ -15,12 +15,12 @@ describe('Search No Result Component', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        SearchNoResultComponent,
         MockComponent({
           selector: 'ish-search-box-container',
           template: 'Search Box Container',
           inputs: ['buttonText', 'placeholderText', 'autoSuggest', 'maxAutoSuggests'],
         }),
+        SearchNoResultComponent,
       ],
     });
   }));

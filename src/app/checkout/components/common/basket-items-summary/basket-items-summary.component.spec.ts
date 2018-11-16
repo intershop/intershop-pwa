@@ -16,7 +16,7 @@ describe('Basket Items Summary Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BasketItemsSummaryComponent],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, PipesModule, IconModule],
+      imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

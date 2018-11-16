@@ -33,12 +33,12 @@ describe('Quote Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        FeatureToggleModule.testingFeatures({ quoting: true }),
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
           user: userReducer,
         }),
-        FeatureToggleModule.testingFeatures({ quoting: true }),
       ],
       providers: [
         QuoteEffects,

@@ -23,29 +23,29 @@ describe('Product Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        FeatureToggleModule.testingFeatures({ recently: true }),
+        NgbModalModule,
         StoreModule.forRoot({
           ...coreReducers,
           shopping: combineReducers(shoppingReducers),
           quoting: combineReducers(quotingReducers),
         }),
-        FeatureToggleModule.testingFeatures({ recently: true }),
-        NgbModalModule,
       ],
       declarations: [
-        ProductPageContainerComponent,
         MockComponent({
           selector: 'ish-breadcrumb',
           template: 'Breadcrumb Component',
           inputs: ['category', 'categoryPath', 'product'],
         }),
-        MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
-        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         MockComponent({
           selector: 'ish-product-add-to-quote-dialog',
           template: 'Product Add To Quote Dialog',
           inputs: ['quote', 'quoteLoading'],
         }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-product-detail', template: 'Category Page Component', inputs: ['product'] }),
+        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        ProductPageContainerComponent,
       ],
     }).compileComponents();
   }));

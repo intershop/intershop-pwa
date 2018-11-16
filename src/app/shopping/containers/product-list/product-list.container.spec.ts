@@ -23,12 +23,6 @@ describe('Product List Container', () => {
         }),
       ],
       declarations: [
-        ProductListContainerComponent,
-        MockComponent({
-          selector: 'ish-product-list-toolbar',
-          template: 'Product List Toolbar Component',
-          inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
-        }),
         MockComponent({
           selector: 'ish-product-list',
           template: 'Product List Component',
@@ -39,6 +33,12 @@ describe('Product List Container', () => {
           template: 'Product List Paging Component',
           inputs: ['currentPage', 'pageIndices', 'pageUrl'],
         }),
+        MockComponent({
+          selector: 'ish-product-list-toolbar',
+          template: 'Product List Toolbar Component',
+          inputs: ['itemCount', 'viewType', 'sortBy', 'sortKeys'],
+        }),
+        ProductListContainerComponent,
       ],
     }).compileComponents();
 
