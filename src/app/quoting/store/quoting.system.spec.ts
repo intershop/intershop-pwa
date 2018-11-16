@@ -80,12 +80,12 @@ describe('Quoting System', () => {
           },
           [...coreEffects, ...quotingEffects]
         ),
+        FeatureToggleModule.testingFeatures({ quoting: true }),
         RouterTestingModule.withRoutes([
           { path: 'account', component: DummyComponent },
           { path: 'home', component: DummyComponent },
         ]),
         TranslateModule.forRoot(),
-        FeatureToggleModule.testingFeatures({ quoting: true }),
       ],
       providers: [
         QuoteRequestService,

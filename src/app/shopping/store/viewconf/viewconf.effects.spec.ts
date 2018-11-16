@@ -23,10 +23,10 @@ describe('Viewconf Effects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
         StoreModule.forRoot({
           shopping: combineReducers(shoppingReducers),
         }),
-        RouterTestingModule,
       ],
       providers: [
         ViewconfEffects,

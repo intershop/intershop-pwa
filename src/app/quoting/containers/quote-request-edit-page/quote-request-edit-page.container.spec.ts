@@ -18,16 +18,16 @@ describe('Quote Request Edit Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        QuoteRequestEditPageContainerComponent,
-        MockComponent({ selector: 'ish-quote-edit', template: 'Quote Edit Component', inputs: ['quote', 'user'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-quote-edit', template: 'Quote Edit Component', inputs: ['quote', 'user'] }),
+        QuoteRequestEditPageContainerComponent,
       ],
       imports: [
-        TranslateModule.forRoot(),
         StoreModule.forRoot({
           quoting: combineReducers(quotingReducers),
           shopping: combineReducers(shoppingReducers),
         }),
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   }));

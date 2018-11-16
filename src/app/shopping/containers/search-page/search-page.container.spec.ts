@@ -22,13 +22,6 @@ describe('Search Page Container', () => {
         }),
       ],
       declarations: [
-        SearchPageContainerComponent,
-        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['searchTerm'] }),
-        MockComponent({
-          selector: 'ish-search-result',
-          template: 'Search Result Component',
-          inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys', 'loadingMore'],
-        }),
         MockComponent({
           selector: 'ish-product-list-paging',
           template: 'Product List Paging Component',
@@ -39,7 +32,14 @@ describe('Search Page Container', () => {
           template: 'Search No Result Component',
           inputs: ['searchTerm'],
         }),
+        MockComponent({
+          selector: 'ish-search-result',
+          template: 'Search Result Component',
+          inputs: ['searchTerm', 'products', 'totalItems', 'viewType', 'sortBy', 'sortKeys', 'loadingMore'],
+        }),
+        MockComponent({ selector: 'ish-breadcrumb', template: 'Breadcrumb Component', inputs: ['searchTerm'] }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        SearchPageContainerComponent,
       ],
     }).compileComponents();
   }));

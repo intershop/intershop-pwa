@@ -15,7 +15,7 @@ describe('Registration Credentials Form Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RegistrationCredentialsFormComponent, InputComponent, SelectSecurityQuestionComponent],
+      declarations: [InputComponent, RegistrationCredentialsFormComponent, SelectSecurityQuestionComponent],
       providers: [FormBuilder],
       imports: [TranslateModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],

@@ -24,14 +24,14 @@ describe('Filter Navigation Container', () => {
         }),
       ],
       declarations: [
-        MockComponent({ selector: 'ish-filter-dropdown', template: 'Dropdown Filter', inputs: ['filterElement'] }),
-        MockComponent({ selector: 'ish-filter-checkbox', template: 'Checkbox Filter', inputs: ['filterElement'] }),
+        FilterNavigationContainerComponent,
         MockComponent({
           selector: 'ish-filter-swatch-images',
           template: 'Swatch Images Filter',
           inputs: ['filterElement'],
         }),
-        FilterNavigationContainerComponent,
+        MockComponent({ selector: 'ish-filter-checkbox', template: 'Checkbox Filter', inputs: ['filterElement'] }),
+        MockComponent({ selector: 'ish-filter-dropdown', template: 'Dropdown Filter', inputs: ['filterElement'] }),
       ],
     }).compileComponents();
   }));

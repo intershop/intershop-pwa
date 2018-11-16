@@ -27,9 +27,20 @@ export function translateFactory(http: HttpClient) {
 }
 @NgModule({
   imports: [
-    HttpClientModule,
     CommonModule,
+    ConfigurationModule,
+    FooterModule,
+    HeaderModule,
+    HttpClientModule,
+    IconModule,
+    NgbCarouselModule,
+    NgbCollapseModule,
+    NgbDropdownModule,
+    NgbModalModule,
+    NgbPopoverModule,
+    RecaptchaModule.forRoot(),
     RouterModule,
+    StateManagementModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -37,23 +48,12 @@ export function translateFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
-    RecaptchaModule.forRoot(),
-    NgbDropdownModule,
-    NgbCarouselModule,
-    NgbCollapseModule,
-    NgbModalModule,
-    NgbPopoverModule,
-    HeaderModule,
-    IconModule,
-    FooterModule,
-    StateManagementModule,
-    ConfigurationModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
   ],
-  exports: [HeaderModule, FooterModule],
+  exports: [FooterModule, HeaderModule],
 })
 export class CoreModule {
   constructor(

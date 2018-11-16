@@ -24,7 +24,7 @@ describe('Basket Address Summary Component', () => {
           inputs: ['address'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, IconModule],
+      imports: [IconModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

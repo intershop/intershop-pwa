@@ -19,12 +19,12 @@ describe('Header Navigation Container', () => {
 
     TestBed.configureTestingModule({
       declarations: [
+        HeaderNavigationContainerComponent,
         MockComponent({
           selector: 'ish-header-navigation',
           template: 'Header Navigation',
           inputs: ['categories', 'view'],
         }),
-        HeaderNavigationContainerComponent,
       ],
       providers: [{ provide: Store, useFactory: () => instance(storeMock$) }],
     })

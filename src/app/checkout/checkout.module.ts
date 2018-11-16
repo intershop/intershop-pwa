@@ -8,8 +8,8 @@ import { checkoutEffects, checkoutReducers } from './store/checkout.system';
 @NgModule({
   imports: [
     CheckoutRoutingModule,
-    StoreModule.forFeature('checkout', checkoutReducers),
     EffectsModule.forFeature(checkoutEffects),
+    StoreModule.forFeature('checkout', checkoutReducers),
   ],
 })
 export class CheckoutModule {}

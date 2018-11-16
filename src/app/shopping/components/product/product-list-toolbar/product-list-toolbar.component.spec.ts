@@ -14,7 +14,7 @@ describe('Product List Toolbar Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ProductListToolbarComponent],
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule, IconModule],
+      imports: [IconModule, ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

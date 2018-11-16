@@ -13,7 +13,7 @@ describe('Filter Swatch Images Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, IconModule],
+      imports: [IconModule, NgbCollapseModule],
       declarations: [FilterSwatchImagesComponent],
     }).compileComponents();
   }));

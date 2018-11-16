@@ -17,6 +17,11 @@ describe('Checkout Receipt Component', () => {
       declarations: [
         CheckoutReceiptComponent,
         MockComponent({
+          selector: 'ish-address',
+          template: 'Address Component',
+          inputs: ['address'],
+        }),
+        MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
           inputs: ['totals'],
@@ -25,11 +30,6 @@ describe('Checkout Receipt Component', () => {
           selector: 'ish-info-box',
           template: 'Checkout Infobox Component',
           inputs: ['heading'],
-        }),
-        MockComponent({
-          selector: 'ish-address',
-          template: 'Address Component',
-          inputs: ['address'],
         }),
         MockComponent({
           selector: 'ish-line-item-list',

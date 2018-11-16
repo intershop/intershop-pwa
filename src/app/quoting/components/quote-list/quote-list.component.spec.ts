@@ -17,19 +17,19 @@ describe('Quote List Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        QuoteListComponent,
-        MockComponent({
-          selector: 'ish-quote-state',
-          template: 'Quote State Component',
-          inputs: ['quote'],
-        }),
         MockComponent({
           selector: 'ish-modal-dialog',
           template: 'Modal Dialog Component',
           inputs: ['options', 'confirmed'],
         }),
+        MockComponent({
+          selector: 'ish-quote-state',
+          template: 'Quote State Component',
+          inputs: ['quote'],
+        }),
+        QuoteListComponent,
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, IconModule],
+      imports: [IconModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [DatePipe],
     }).compileComponents();
   }));

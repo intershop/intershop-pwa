@@ -15,14 +15,8 @@ describe('Product Quantity Component', () => {
   let element: HTMLElement;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       declarations: [
-        ProductQuantityComponent,
-        MockComponent({
-          selector: 'ish-select',
-          template: '<select> </select>',
-          inputs: ['options', 'controlName', 'form', 'label', 'labelClass', 'inputClass'],
-        }),
         MockComponent({
           selector: 'ish-input',
           template: '<input type="number" />',
@@ -41,6 +35,12 @@ describe('Product Quantity Component', () => {
             'type',
           ],
         }),
+        MockComponent({
+          selector: 'ish-select',
+          template: '<select> </select>',
+          inputs: ['options', 'controlName', 'form', 'label', 'labelClass', 'inputClass'],
+        }),
+        ProductQuantityComponent,
       ],
     }).compileComponents();
   }));

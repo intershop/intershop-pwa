@@ -19,12 +19,12 @@ describe('Order Page Container', () => {
         }),
       ],
       declarations: [
-        OrderPageContainerComponent,
         MockComponent({
           selector: 'ish-order-page',
           template: 'Account Order Detail Page Component',
           inputs: ['order'],
         }),
+        OrderPageContainerComponent,
       ],
     }).compileComponents();
   }));

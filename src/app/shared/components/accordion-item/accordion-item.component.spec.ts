@@ -12,7 +12,7 @@ describe('Accordion Item Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbCollapseModule, IconModule],
+      imports: [IconModule, NgbCollapseModule],
       declarations: [AccordionItemComponent],
     }).compileComponents();
   }));

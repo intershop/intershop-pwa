@@ -28,6 +28,11 @@ describe('Checkout Shipping Component', () => {
         CheckoutShippingComponent,
         DummyComponent,
         MockComponent({
+          selector: 'ish-basket-address-summary',
+          template: 'Basket Address Summary Component',
+          inputs: ['basket'],
+        }),
+        MockComponent({
           selector: 'ish-basket-cost-summary',
           template: 'Basket Cost Summary Component',
           inputs: ['totals'],
@@ -37,18 +42,13 @@ describe('Checkout Shipping Component', () => {
           template: 'Basket Items Summary Component',
           inputs: ['basket'],
         }),
-        MockComponent({
-          selector: 'ish-basket-address-summary',
-          template: 'Basket Address Summary Component',
-          inputs: ['basket'],
-        }),
       ],
       imports: [
-        TranslateModule.forRoot(),
-        NgbPopoverModule,
-        RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),
         FormsSharedModule,
         IconModule,
+        NgbPopoverModule,
+        RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   }));

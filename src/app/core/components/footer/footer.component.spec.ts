@@ -15,7 +15,7 @@ describe('Footer Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NgbCollapseModule, IconModule, TranslateModule.forRoot()],
+      imports: [IconModule, NgbCollapseModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [FooterComponent],
       providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],
     })

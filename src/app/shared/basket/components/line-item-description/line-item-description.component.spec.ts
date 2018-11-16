@@ -16,7 +16,7 @@ describe('Line Item Description Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), NgbPopoverModule, PipesModule, IconModule],
+      imports: [IconModule, NgbPopoverModule, PipesModule, TranslateModule.forRoot()],
       declarations: [
         LineItemDescriptionComponent,
         MockComponent({

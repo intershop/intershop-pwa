@@ -14,12 +14,12 @@ describe('Mini Basket Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        MiniBasketContainerComponent,
         MockComponent({
           selector: 'ish-mini-basket',
           template: 'Mini Basket',
           inputs: ['basket', 'view', 'basketAnimation'],
         }),
-        MiniBasketContainerComponent,
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })

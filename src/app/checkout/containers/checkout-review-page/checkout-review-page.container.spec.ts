@@ -17,18 +17,18 @@ describe('Checkout Review Page Container', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewPageContainerComponent,
-        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
         MockComponent({
           selector: 'ish-checkout-review',
           template: 'Checkout Review Component',
           inputs: ['basket', 'error'],
         }),
+        MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
       ],
       imports: [
-        TranslateModule.forRoot(),
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
         }),
+        TranslateModule.forRoot(),
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     }).compileComponents();

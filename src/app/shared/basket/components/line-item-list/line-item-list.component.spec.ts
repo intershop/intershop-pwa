@@ -33,7 +33,7 @@ describe('Line Item List Component', () => {
           inputs: ['product'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule, FormsSharedModule, PipesModule, IconModule],
+      imports: [FormsSharedModule, IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
       providers: [FormBuilder],
     }).compileComponents();
   }));

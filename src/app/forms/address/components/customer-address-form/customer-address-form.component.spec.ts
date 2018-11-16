@@ -34,7 +34,7 @@ describe('Customer Address Form Component', () => {
           inputs: ['parentForm', 'countryCode', 'countries', 'regions', 'titles'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), FormsSharedModule],
+      imports: [FormsSharedModule, TranslateModule.forRoot()],
       providers: [
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },

@@ -28,17 +28,17 @@ describe('Basket Page Container', () => {
           template: 'Shopping Basket Component',
           inputs: ['basket', 'error'],
         }),
-        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
-        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
       ],
       imports: [
-        TranslateModule.forRoot(),
         StoreModule.forRoot({
           checkout: combineReducers(checkoutReducers),
           shopping: combineReducers(shoppingReducers),
           quoting: combineReducers(quotingReducers),
         }),
+        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   }));

@@ -14,7 +14,7 @@ describe('Info Box Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), RouterTestingModule, PipesModule, IconModule],
+      imports: [IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [InfoBoxComponent],
     }).compileComponents();
   }));

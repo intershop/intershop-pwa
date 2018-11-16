@@ -14,7 +14,7 @@ const sharedComponents = [
 ];
 
 @NgModule({
-  imports: [SharedModule, FormsAddressModule],
+  imports: [FormsAddressModule, SharedModule],
   declarations: [...sharedComponents],
   exports: [...sharedComponents],
 })

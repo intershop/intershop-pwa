@@ -15,16 +15,16 @@ describe('Order List Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OrderListContainerComponent,
+        MockComponent({
+          selector: 'ish-loading',
+          template: 'Loading Component',
+        }),
         MockComponent({
           selector: 'ish-order-list',
           template: 'Order List Component',
           inputs: ['orders', 'maxListItems', 'compact'],
         }),
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
+        OrderListContainerComponent,
       ],
       imports: [PipesModule],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],

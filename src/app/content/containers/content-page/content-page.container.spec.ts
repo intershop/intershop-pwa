@@ -17,7 +17,7 @@ describe('Content Page Container', () => {
         ContentPageContainerComponent,
         MockComponent({ selector: 'ish-content-page', template: 'Content Page Component', inputs: ['contentPageId'] }),
       ],
-      imports: [TranslateModule.forRoot(), RouterTestingModule],
+      imports: [RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

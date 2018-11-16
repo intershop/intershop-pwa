@@ -21,12 +21,9 @@ describe('Shopping Basket Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ShoppingBasketComponent,
-        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
         MockComponent({
-          selector: 'ish-line-item-list',
-          template: 'Line Item List Component',
-          inputs: ['lineItems'],
+          selector: 'ish-basket-add-to-quote',
+          template: 'Baskt add To Quote Component',
         }),
         MockComponent({
           selector: 'ish-basket-cost-summary',
@@ -34,16 +31,19 @@ describe('Shopping Basket Component', () => {
           inputs: ['totals'],
         }),
         MockComponent({
-          selector: 'ish-basket-add-to-quote',
-          template: 'Baskt add To Quote Component',
+          selector: 'ish-line-item-list',
+          template: 'Line Item List Component',
+          inputs: ['lineItems'],
         }),
+        MockComponent({ selector: 'ish-modal-dialog', template: 'Modal Component', inputs: ['options'] }),
+        ShoppingBasketComponent,
       ],
       imports: [
-        TranslateModule.forRoot(),
-        RouterTestingModule,
+        FeatureToggleModule.testingFeatures({ quoting: true }),
         FormsSharedModule,
         PipesModule,
-        FeatureToggleModule.testingFeatures({ quoting: true }),
+        RouterTestingModule,
+        TranslateModule.forRoot(),
       ],
       providers: [FormBuilder],
     }).compileComponents();

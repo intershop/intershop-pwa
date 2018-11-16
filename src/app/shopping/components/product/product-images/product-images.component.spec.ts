@@ -59,12 +59,12 @@ describe('Product Images Component', () => {
     TestBed.configureTestingModule({
       imports: [NgbCarouselModule],
       declarations: [
-        ProductImagesComponent,
         MockComponent({
           selector: 'ish-product-image',
           template: '<img src="/assets/product_img/a.jpg" />',
           inputs: ['product', 'imageType', 'class', 'imageView'],
         }),
+        ProductImagesComponent,
       ],
     }).compileComponents();
   }));

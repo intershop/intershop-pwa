@@ -20,7 +20,7 @@ describe('Language Switch Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbDropdownModule, TranslateModule.forRoot(), IconModule],
+      imports: [IconModule, NgbDropdownModule, TranslateModule.forRoot()],
       declarations: [LanguageSwitchComponent],
     })
       .compileComponents()

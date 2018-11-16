@@ -15,7 +15,7 @@ describe('Basket Cost Summary Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), NgbPopoverModule, PipesModule, IconModule],
+      imports: [IconModule, NgbPopoverModule, PipesModule, TranslateModule.forRoot()],
       declarations: [BasketCostSummaryComponent],
     }).compileComponents();
   }));
