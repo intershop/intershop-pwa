@@ -4,10 +4,10 @@ import b64u from 'b64u';
 import { Observable } from 'rxjs';
 import { switchMapTo } from 'rxjs/operators';
 
-import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
-import { Customer } from 'ish-core/models/customer/customer.model';
-import { User } from 'ish-core/models/user/user.model';
-import { ApiService } from 'ish-core/services/api/api.service';
+import { LoginCredentials } from '../../models/credentials/credentials.model';
+import { Customer } from '../../models/customer/customer.model';
+import { User } from '../../models/user/user.model';
+import { ApiService } from '../api/api.service';
 /**
  * The Registration Service handles the registration related interaction with the 'customers' REST API.
  */

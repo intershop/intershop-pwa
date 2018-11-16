@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 
 import { LoginFormComponent } from './login-form.component';
 

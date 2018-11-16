@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
+import { LogoutGuard } from 'ish-core/guards/logout.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -31,6 +32,16 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'page', loadChildren: './content/content-page.module#ContentPageModule' },
+  {
+    path: 'register',
+    loadChildren: './registration/registration-page.module#RegistrationPageModule',
+  },
+  { path: 'login', loadChildren: './login/login-page.module#LoginPageModule' },
+  {
+    path: 'logout',
+    loadChildren: './home/home-page.module#HomePageModule',
+    canActivate: [LogoutGuard],
+  },
 ];
 
 @NgModule({
