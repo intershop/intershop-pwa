@@ -9,12 +9,6 @@ import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import { OrderService } from '../../../account/services/order/order.service';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
-import { CategoriesService } from '../../../shopping/services/categories/categories.service';
-import { FilterService } from '../../../shopping/services/filter/filter.service';
-import { ProductsService } from '../../../shopping/services/products/products.service';
-import { SuggestService } from '../../../shopping/services/suggest/suggest.service';
-import { LoadProduct } from '../../../shopping/store/products';
-import { shoppingEffects, shoppingReducers } from '../../../shopping/store/shopping.system';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import {
@@ -32,8 +26,14 @@ import { PaymentMethod } from '../../models/payment-method/payment-method.model'
 import { Price } from '../../models/price/price.model';
 import { AddressService } from '../../services/address/address.service';
 import { BasketService } from '../../services/basket/basket.service';
+import { CategoriesService } from '../../services/categories/categories.service';
 import { CountryService } from '../../services/countries/country.service';
+import { FilterService } from '../../services/filter/filter.service';
+import { ProductsService } from '../../services/products/products.service';
+import { SuggestService } from '../../services/suggest/suggest.service';
 import { coreEffects, coreReducers } from '../core.system';
+import { LoadProduct } from '../shopping/products';
+import { shoppingEffects, shoppingReducers } from '../shopping/shopping.system';
 import { LoginUser } from '../user';
 
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';

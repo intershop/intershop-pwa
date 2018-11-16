@@ -20,10 +20,10 @@ import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model'
 import { User } from 'ish-core/models/user/user.model';
 import { LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
+import { LoadProduct } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { LoadProduct } from '../../../shopping/store/products';
-import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { quotingReducers } from '../quoting.system';
 

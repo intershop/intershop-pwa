@@ -16,11 +16,11 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { Product } from 'ish-core/models/product/product.model';
 import { LoginUserSuccess, LogoutUser } from 'ish-core/store/user/user.actions';
 import { OrderService } from '../../../../account/services/order/order.service';
-import { LoadProduct, LoadProductSuccess } from '../../../../shopping/store/products';
-import { shoppingReducers } from '../../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
+import { LoadProduct, LoadProductSuccess } from '../../shopping/products';
+import { shoppingReducers } from '../../shopping/shopping.system';
 import {
   DeleteCustomerAddressFail,
   DeleteCustomerAddressSuccess,

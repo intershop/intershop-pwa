@@ -11,9 +11,9 @@ import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.in
 import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
 import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
-import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { LoadQuoteRequestsSuccess } from '../../store/quote-request';
 import { quotingReducers } from '../../store/quoting.system';
 

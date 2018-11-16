@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
-import { SuggestSearch, getSearchTerm, getSuggestSearchResults } from '../../../../shopping/store/search';
+import { SuggestSearch, getSearchTerm, getSuggestSearchResults } from 'ish-core/store/shopping/search';
 
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
