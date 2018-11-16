@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule, combineReducers } from '@ngrx/store';
 
-import { shoppingReducers } from '../../../../shopping/store/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { ProductTileContainerComponent } from './product-tile.container';

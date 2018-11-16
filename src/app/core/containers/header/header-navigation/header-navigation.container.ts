@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getTopLevelCategories } from '../../../../shopping/store/categories';
+import { getTopLevelCategories } from '../../../store/shopping/categories';
 
 @Component({
   selector: 'ish-header-navigation-container',

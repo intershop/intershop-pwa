@@ -11,8 +11,8 @@ import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-q
 import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
 import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { getCurrentBasket } from 'ish-core/store/checkout/basket';
+import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
-import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';
 import { QuoteRequestService } from '../../services/quote-request/quote-request.service';
 import { QuoteActionTypes } from '../quote/quote.actions';

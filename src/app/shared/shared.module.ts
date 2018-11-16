@@ -32,12 +32,26 @@ import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.c
 import { InfoBoxComponent } from './common/components/info-box/info-box.component';
 import { LoadingComponent } from './common/components/loading/loading.component';
 import { ModalDialogComponent } from './common/components/modal-dialog/modal-dialog.component';
+import { FilterCheckboxComponent } from './filter/components/filter-checkbox/filter-checkbox.component';
+import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
+import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
+import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
+import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
+import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
+import { ProductListPagingComponent } from './product/components/product-list-paging/product-list-paging.component';
+import { ProductListToolbarComponent } from './product/components/product-list-toolbar/product-list-toolbar.component';
+import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { ProductPriceComponent } from './product/components/product-price/product-price.component';
+import { ProductRowComponent } from './product/components/product-row/product-row.component';
 import { ProductShipmentComponent } from './product/components/product-shipment/product-shipment.component';
 import { ProductTileComponent } from './product/components/product-tile/product-tile.component';
+import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
+import { ProductRowContainerComponent } from './product/containers/product-row/product-row.container';
 import { ProductTileContainerComponent } from './product/containers/product-tile/product-tile.container';
 import { ProductImageSharedModule } from './product/product-image.module';
+import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
+import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
 import { SearchBoxSharedModule } from './search/search-box.module';
 
 const importExportModules = [
@@ -59,7 +73,19 @@ const importExportModules = [
   TranslateModule,
 ];
 
-const declaredComponents = [LineItemDescriptionComponent, ProductTileComponent];
+const declaredComponents = [
+  FilterCheckboxComponent,
+  FilterDropdownComponent,
+  FilterSwatchImagesComponent,
+  LineItemDescriptionComponent,
+  ProductListComponent,
+  ProductListPagingComponent,
+  ProductListToolbarComponent,
+  ProductRowComponent,
+  ProductRowContainerComponent,
+  ProductTileComponent,
+  RecentlyViewedComponent,
+];
 
 const entryComponents = [CMSCarouselComponent, CMSProductListComponent];
 
@@ -71,14 +97,19 @@ const exportedComponents = [
   BasketCostSummaryComponent,
   BasketItemsSummaryComponent,
   BreadcrumbComponent,
+  FilterNavigationContainerComponent,
   InfoBoxComponent,
   LineItemListComponent,
   LoadingComponent,
   ModalDialogComponent,
   ProductAddToBasketComponent,
+  ProductAttributesComponent,
+  ProductInventoryComponent,
+  ProductListContainerComponent,
   ProductPriceComponent,
   ProductShipmentComponent,
   ProductTileContainerComponent,
+  RecentlyViewedContainerComponent,
 ];
 
 @NgModule({

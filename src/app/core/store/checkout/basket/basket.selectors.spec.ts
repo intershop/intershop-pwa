@@ -6,10 +6,10 @@ import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Payment } from 'ish-core/models/payment/payment.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { LoadProductSuccess } from '../../../../shopping/store/products';
-import { shoppingReducers } from '../../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
+import { LoadProductSuccess } from '../../shopping/products';
+import { shoppingReducers } from '../../shopping/shopping.system';
 import { checkoutReducers } from '../checkout.system';
 
 import {

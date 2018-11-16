@@ -4,11 +4,11 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checkout/basket/basket.actions';
+import { LoadBasket, LoadBasketItemsSuccess, LoadBasketSuccess } from 'ish-core/store/checkout/basket';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
 import { AddBasketToQuoteRequest } from '../../quoting/store/quote-request';
 import { quotingReducers } from '../../quoting/store/quoting.system';
-import { shoppingReducers } from '../../shopping/store/shopping.system';
 import { MockComponent } from '../../utils/dev/mock.component';
 
 import { BasketPageContainerComponent } from './basket-page.container';

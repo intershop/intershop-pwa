@@ -5,8 +5,8 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { QuoteData } from 'ish-core/models/quote/quote.interface';
 import { Quote } from 'ish-core/models/quote/quote.model';
-import { LoadProductSuccess } from '../../../shopping/store/products';
-import { shoppingReducers } from '../../../shopping/store/shopping.system';
+import { LoadProductSuccess } from 'ish-core/store/shopping/products';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { quotingReducers } from '../quoting.system';
 

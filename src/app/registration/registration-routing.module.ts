@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: './containers/login-page/login-page.module#LoginPageModule' },
   {
     path: 'logout',
-    loadChildren: '../shopping/containers/home-page/home-page.module#HomePageModule',
+    loadChildren: '../pages/home/home-page.module#HomePageModule',
     canActivate: [LogoutGuard],
   },
 ];

@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { shoppingReducers } from '../../../shopping/store/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuotes } from '../../store/quote';
 import { quotingReducers } from '../../store/quoting.system';

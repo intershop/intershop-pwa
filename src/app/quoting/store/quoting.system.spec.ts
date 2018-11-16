@@ -16,6 +16,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
 import { coreEffects, coreReducers } from 'ish-core/store/core.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
 import {
   LoadCompanyUserSuccess,
   LoginUserSuccess,
@@ -23,7 +24,6 @@ import {
   getLoggedInCustomer,
   getLoggedInUser,
 } from 'ish-core/store/user';
-import { shoppingReducers } from '../../shopping/store/shopping.system';
 import {
   TestStore,
   containsActionWithType,
