@@ -18,9 +18,9 @@ describe('Product Detail Component', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
         ReactiveFormsModule,
         TranslateModule.forRoot(),
-        FeatureToggleModule.testingFeatures({ compare: true, quoting: true }),
       ],
       declarations: [ProductDetailComponent],
       // TODO: prepare more detailed test

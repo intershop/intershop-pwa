@@ -7,7 +7,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { IconModule } from './icon.module';
 
 @NgModule({
-  imports: [RouterModule, NgbCollapseModule, IconModule, TranslateModule],
+  imports: [IconModule, NgbCollapseModule, RouterModule, TranslateModule],
   declarations: [FooterComponent],
   exports: [FooterComponent],
 })

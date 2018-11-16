@@ -15,7 +15,7 @@ describe('Form Control Feedback Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserModule, TranslateModule.forRoot(), IconModule],
+      imports: [BrowserModule, IconModule, TranslateModule.forRoot()],
       declarations: [FormControlFeedbackComponent],
     }).compileComponents();
 

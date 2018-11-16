@@ -23,13 +23,13 @@ describe('Family Page Component', () => {
       declarations: [
         FamilyPageComponent,
         MockComponent({
+          selector: 'ish-filter-navigation',
+          template: 'Filter Navigation',
+        }),
+        MockComponent({
           selector: 'ish-product-list-container',
           template: 'Products List Toolbar Component',
           inputs: ['pageUrl', 'category'],
-        }),
-        MockComponent({
-          selector: 'ish-filter-navigation',
-          template: 'Filter Navigation',
         }),
       ],
       providers: [{ provide: MEDIUM_BREAKPOINT_WIDTH, useValue: 768 }],

@@ -10,7 +10,7 @@ import { SharedModule } from './shared.module';
 const sharedComponents = [ProductImageComponent, ProductShipmentComponent];
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, SharedModule],
+  imports: [CommonModule, SharedModule, TranslateModule],
   declarations: [...sharedComponents],
   exports: [...sharedComponents],
 })

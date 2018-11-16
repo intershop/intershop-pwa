@@ -14,6 +14,7 @@ describe('Login Status Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        LoginStatusContainerComponent,
         MockComponent({
           selector: 'ish-login-status',
           template: 'Login Status',
@@ -24,7 +25,6 @@ describe('Login Status Container', () => {
           template: 'Logout',
           inputs: ['user', 'view'],
         }),
-        LoginStatusContainerComponent,
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
     })

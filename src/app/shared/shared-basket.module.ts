@@ -14,18 +14,18 @@ import { LineItemListComponent } from './basket/components/line-item-list/line-i
 import { PipesModule } from './pipes.module';
 import { SharedProductModule } from './shared-product.module';
 
-const sharedComponents = [LineItemListComponent, LineItemDescriptionComponent, BasketCostSummaryComponent];
+const sharedComponents = [BasketCostSummaryComponent, LineItemDescriptionComponent, LineItemListComponent];
 @NgModule({
   imports: [
     CommonModule,
     FormsSharedModule,
-    PipesModule,
+    IconModule,
     NgbPopoverModule,
+    PipesModule,
     ReactiveFormsModule,
     RouterModule,
     SharedProductModule,
     TranslateModule,
-    IconModule,
   ],
   declarations: [...sharedComponents],
   exports: [...sharedComponents],

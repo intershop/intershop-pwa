@@ -17,7 +17,7 @@ describe('Content Pagelet Container', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ContentPageletContainerComponent, CMSTextComponent],
+      declarations: [CMSTextComponent, ContentPageletContainerComponent],
       imports: [PipesModule],
       providers: [
         {

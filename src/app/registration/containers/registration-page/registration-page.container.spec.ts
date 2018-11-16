@@ -34,12 +34,12 @@ describe('Registration Page Container', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        RegistrationPageContainerComponent,
         MockComponent({
           selector: 'ish-registration-form',
           template: 'Form Template',
           inputs: ['countries', 'languages', 'regions', 'titles', 'error'],
         }),
+        RegistrationPageContainerComponent,
       ],
       providers: [
         { provide: RegionService, useFactory: () => instance(regionServiceMock) },

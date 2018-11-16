@@ -15,16 +15,16 @@ describe('Order History Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OrderHistoryPageContainerComponent,
+        MockComponent({
+          selector: 'ish-loading',
+          template: 'Loading Component',
+        }),
         MockComponent({
           selector: 'ish-order-history-page',
           template: 'Order History Page Component',
           inputs: ['orders'],
         }),
-        MockComponent({
-          selector: 'ish-loading',
-          template: 'Loading Component',
-        }),
+        OrderHistoryPageContainerComponent,
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       imports: [TranslateModule.forRoot()],

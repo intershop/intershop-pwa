@@ -9,7 +9,7 @@ import { LoginPageContainerComponent } from './login-page.container';
 import { loginPageRoutes } from './login-page.routes';
 
 @NgModule({
-  imports: [RouterModule.forChild(loginPageRoutes), SharedModule, FormsSharedModule],
-  declarations: [LoginPageContainerComponent, LoginFormComponent],
+  imports: [FormsSharedModule, RouterModule.forChild(loginPageRoutes), SharedModule],
+  declarations: [LoginFormComponent, LoginPageContainerComponent],
 })
 export class LoginPageModule {}

@@ -21,27 +21,27 @@ describe('Quote Edit Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         BasketPageContainerComponent,
-        QuoteEditComponent,
-        MockComponent({
-          selector: 'ish-quote-state',
-          template: 'Quote State Component',
-          inputs: ['quote'],
-        }),
         MockComponent({
           selector: 'ish-line-item-list',
           template: 'Line Item List Component',
           inputs: ['lineItems', 'editable', 'total'],
         }),
         MockComponent({
+          selector: 'ish-quote-state',
+          template: 'Quote State Component',
+          inputs: ['quote'],
+        }),
+        MockComponent({
           selector: 'ish-shopping-basket',
           template: 'Shopping Basket Component',
           inputs: ['basket', 'error'],
         }),
-        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
-        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
         MockComponent({ selector: 'ish-loading', template: 'Loading Component' }),
+        MockComponent({ selector: 'ish-recently-viewed-container', template: 'Recently Viewed Container' }),
+        MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
+        QuoteEditComponent,
       ],
-      imports: [TranslateModule.forRoot(), FormsSharedModule, RouterTestingModule],
+      imports: [FormsSharedModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

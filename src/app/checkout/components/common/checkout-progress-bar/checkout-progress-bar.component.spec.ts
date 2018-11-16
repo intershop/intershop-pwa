@@ -13,7 +13,7 @@ describe('Checkout Progress Bar Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), RouterTestingModule, IconModule],
+      imports: [IconModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [CheckoutProgressBarComponent],
     }).compileComponents();
   }));

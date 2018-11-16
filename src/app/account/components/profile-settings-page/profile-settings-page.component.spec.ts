@@ -15,7 +15,7 @@ describe('Profile Settings Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ProfileSettingsPageComponent],
-      imports: [TranslateModule.forRoot(), IconModule],
+      imports: [IconModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

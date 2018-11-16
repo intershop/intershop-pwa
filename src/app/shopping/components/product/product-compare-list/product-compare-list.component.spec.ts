@@ -19,28 +19,11 @@ describe('Product Compare List Component', () => {
   let compareProduct2: Product;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, TranslateModule.forRoot(), StoreModule.forRoot({}), PipesModule, IconModule],
+      imports: [IconModule, PipesModule, RouterTestingModule, StoreModule.forRoot({}), TranslateModule.forRoot()],
       declarations: [
-        ProductCompareListComponent,
-        MockComponent({
-          selector: 'ish-product-compare-paging',
-          template: 'Product Compare Paging Component',
-          inputs: ['itemsPerPage', 'currentPage', 'totalItems'],
-        }),
-        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
-        MockComponent({
-          selector: 'ish-product-price',
-          template: 'Product Price Component',
-          inputs: ['product', 'showInformationalPrice'],
-        }),
         MockComponent({
           selector: 'ish-product-add-to-basket',
           template: 'Product Add To Basket',
-          inputs: ['product'],
-        }),
-        MockComponent({
-          selector: 'ish-product-inventory',
-          template: 'Product Inventory Component',
           inputs: ['product'],
         }),
         MockComponent({
@@ -48,6 +31,23 @@ describe('Product Compare List Component', () => {
           template: 'Product Attributes Component',
           inputs: ['product'],
         }),
+        MockComponent({
+          selector: 'ish-product-compare-paging',
+          template: 'Product Compare Paging Component',
+          inputs: ['itemsPerPage', 'currentPage', 'totalItems'],
+        }),
+        MockComponent({
+          selector: 'ish-product-inventory',
+          template: 'Product Inventory Component',
+          inputs: ['product'],
+        }),
+        MockComponent({
+          selector: 'ish-product-price',
+          template: 'Product Price Component',
+          inputs: ['product', 'showInformationalPrice'],
+        }),
+        MockComponent({ selector: 'ish-product-image', template: 'Product Image Component', inputs: ['product'] }),
+        ProductCompareListComponent,
       ],
     }).compileComponents();
   }));

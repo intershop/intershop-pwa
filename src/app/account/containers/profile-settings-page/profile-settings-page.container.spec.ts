@@ -26,14 +26,14 @@ describe('Profile Settings Page Container', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ProfileSettingsPageContainerComponent,
         MockComponent({
           selector: 'ish-profile-settings-page',
           template: 'Profile Settings Component',
           inputs: ['user'],
         }),
+        ProfileSettingsPageContainerComponent,
       ],
-      imports: [TranslateModule.forRoot(), StoreModule.forRoot(coreReducers)],
+      imports: [StoreModule.forRoot(coreReducers), TranslateModule.forRoot()],
     })
       .compileComponents()
       .then(() => {

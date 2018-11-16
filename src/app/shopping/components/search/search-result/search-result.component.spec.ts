@@ -15,16 +15,16 @@ describe('Search Result Component', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        SearchResultComponent,
+        MockComponent({
+          selector: 'ish-filter-navigation',
+          template: 'Filter Navigation',
+        }),
         MockComponent({
           selector: 'ish-product-list-container',
           template: 'Products List Toolbar Component',
           inputs: ['pageUrl'],
         }),
-        MockComponent({
-          selector: 'ish-filter-navigation',
-          template: 'Filter Navigation',
-        }),
+        SearchResultComponent,
       ],
     }).compileComponents();
   }));

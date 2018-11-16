@@ -13,11 +13,11 @@ describe('Order History Page Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        OrderHistoryPageComponent,
         MockComponent({
           selector: 'ish-order-list-container',
           template: 'Order List Container Component',
         }),
+        OrderHistoryPageComponent,
       ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();

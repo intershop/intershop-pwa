@@ -10,7 +10,7 @@ import { AccountAddressesPageContainerComponent } from './account-addresses-page
 import { accountAddressesPageRoutes } from './account-addresses-page.routes';
 
 @NgModule({
-  imports: [RouterModule.forChild(accountAddressesPageRoutes), SharedModule, AccountSharedModule, SharedAddressModule],
-  declarations: [AccountAddressesPageContainerComponent, AccountAddressesPageComponent],
+  imports: [AccountSharedModule, RouterModule.forChild(accountAddressesPageRoutes), SharedAddressModule, SharedModule],
+  declarations: [AccountAddressesPageComponent, AccountAddressesPageContainerComponent],
 })
 export class AccountAddressesPageModule {}

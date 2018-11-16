@@ -14,15 +14,14 @@ describe('User Information Mobile Component', () => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
-        UserInformationMobileComponent,
-        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
         MockComponent({
           selector: 'ish-product-compare-status-container',
           template: 'Product Compare Status Container',
         }),
         MockComponent({ selector: 'ish-language-switch-container', template: 'Language Switch Container' }),
-
+        MockComponent({ selector: 'ish-login-status-container', template: 'Login Status Container' }),
         MockComponent({ selector: 'ish-mini-basket-container', template: 'Mini Basket Container' }),
+        UserInformationMobileComponent,
       ],
     }).compileComponents();
   }));

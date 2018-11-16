@@ -24,7 +24,7 @@ describe('Account Overview Page Component', () => {
           inputs: ['maxListItems', 'compact'],
         }),
       ],
-      imports: [TranslateModule.forRoot(), IconModule],
+      imports: [IconModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

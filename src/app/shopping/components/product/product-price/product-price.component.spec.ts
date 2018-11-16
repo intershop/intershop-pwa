@@ -17,7 +17,7 @@ describe('Product Price Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), CommonModule, PipesModule],
+      imports: [CommonModule, PipesModule, TranslateModule.forRoot()],
       declarations: [ProductPriceComponent],
     }).compileComponents();
   }));

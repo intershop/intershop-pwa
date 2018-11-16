@@ -8,8 +8,8 @@ import { contentEffects, contentReducers } from './store/content.system';
 @NgModule({
   imports: [
     ContentRoutingModule,
-    StoreModule.forFeature('content', contentReducers),
     EffectsModule.forFeature(contentEffects),
+    StoreModule.forFeature('content', contentReducers),
   ],
 })
 export class ContentModule {}

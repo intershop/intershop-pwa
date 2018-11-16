@@ -9,7 +9,7 @@ import { SearchBoxComponent } from './search/components/search-box/search-box.co
 import { SearchBoxContainerComponent } from './search/containers/search-box/search-box.container';
 
 @NgModule({
-  imports: [CommonModule, IconModule, TranslateModule, ReactiveFormsModule],
+  imports: [CommonModule, IconModule, ReactiveFormsModule, TranslateModule],
   declarations: [SearchBoxComponent, SearchBoxContainerComponent],
   exports: [SearchBoxComponent, SearchBoxContainerComponent],
 })

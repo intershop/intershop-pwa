@@ -10,7 +10,7 @@ import { QuoteListPageContainerComponent } from './quote-list-page.container';
 import { quoteListPageRoutes } from './quote-list-page.routes';
 
 @NgModule({
-  declarations: [QuoteListPageContainerComponent, QuoteListComponent],
-  imports: [RouterModule.forChild(quoteListPageRoutes), SharedModule, AccountSharedModule, QuotingSharedModule],
+  declarations: [QuoteListComponent, QuoteListPageContainerComponent],
+  imports: [AccountSharedModule, QuotingSharedModule, RouterModule.forChild(quoteListPageRoutes), SharedModule],
 })
 export class QuoteListPageModule {}

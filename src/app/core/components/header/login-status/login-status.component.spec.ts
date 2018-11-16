@@ -19,7 +19,7 @@ describe('Login Status Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), IconModule],
+      imports: [IconModule, TranslateModule.forRoot()],
       declarations: [LoginStatusComponent],
       providers: [],
     })

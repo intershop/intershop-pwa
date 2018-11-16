@@ -16,7 +16,7 @@ describe('Search Box Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchBoxComponent],
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule, IconModule],
+      imports: [IconModule, ReactiveFormsModule, TranslateModule.forRoot()],
     })
       .overrideComponent(SearchBoxComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
