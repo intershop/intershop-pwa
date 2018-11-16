@@ -4,7 +4,7 @@ import { CustomValidators } from 'ng2-validation';
 
 import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { markAsDirtyRecursive } from '../../../forms/shared/utils/form-utils';
+import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
 
 @Component({
   selector: 'ish-login-form',

@@ -21,13 +21,13 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { AddressFormFactoryProvider } from '../../../forms/address/configurations/address-form-factory.provider';
+import { AddressFormFactoryProvider } from '../../../../forms/address/configurations/address-form-factory.provider';
 import {
   markAsDirtyRecursive,
   markFormControlsAsInvalid,
   updateValidatorsByDataLength,
-} from '../../../forms/shared/utils/form-utils';
-import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
+} from '../../../../forms/shared/utils/form-utils';
+import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
 
 @Component({
   selector: 'ish-registration-form',

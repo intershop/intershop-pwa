@@ -11,7 +11,6 @@ import { AppNotFoundRoutingModule } from './app-not-found-routing.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { QuotingModule } from './quoting/quoting.module';
-import { RegistrationModule } from './registration/registration.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +24,6 @@ import { RegistrationModule } from './registration/registration.module';
     ShoppingModule,
     ContentModule,
     CheckoutModule,
-    RegistrationModule,
     AccountModule,
     QuotingModule,
     AppNotFoundRoutingModule,

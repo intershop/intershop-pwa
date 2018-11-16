@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
-import { MockComponent } from '../../../utils/dev/mock.component';
+import { MockComponent } from '../../utils/dev/mock.component';
 
 import { LoginPageContainerComponent } from './login-page.container';
 

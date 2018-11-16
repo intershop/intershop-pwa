@@ -8,11 +8,11 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { Customer } from '../../models/customer/customer.model';
 import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
+import { RegistrationService } from '../../services/registration/registration.service';
 import { coreReducers } from '../core.system';
 
 import * as ua from './user.actions';

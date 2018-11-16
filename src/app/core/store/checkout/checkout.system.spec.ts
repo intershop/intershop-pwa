@@ -8,7 +8,6 @@ import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
 import { OrderService } from '../../../account/services/order/order.service';
-import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import {
@@ -30,6 +29,7 @@ import { CategoriesService } from '../../services/categories/categories.service'
 import { CountryService } from '../../services/countries/country.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { ProductsService } from '../../services/products/products.service';
+import { RegistrationService } from '../../services/registration/registration.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
 import { coreEffects, coreReducers } from '../core.system';
 import { LoadProduct } from '../shopping/products';
