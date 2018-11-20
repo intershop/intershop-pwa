@@ -6,7 +6,7 @@ import { instance, mock, spy, verify } from 'ts-mockito';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { Product, ProductType } from 'ish-core/models/product/product.model';
-import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 

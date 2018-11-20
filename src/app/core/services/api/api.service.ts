@@ -7,7 +7,7 @@ import { catchError, defaultIfEmpty, filter, map, switchMap, throwIfEmpty } from
 import { Link } from '../../models/link/link.model';
 import { Locale } from '../../models/locale/locale.model';
 import { getCurrentLocale } from '../../store/locale';
-import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
+import { ICM_SERVER_URL, REST_ENDPOINT } from '../../utils/state-transfer/factories';
 
 import { ApiServiceErrorHandler } from './api.service.errorhandler';
 

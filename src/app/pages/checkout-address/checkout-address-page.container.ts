@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { RegionService } from 'ish-core/services/countries/region.service';
+import { RegionService } from 'ish-core/services/region/region.service';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from 'ish-core/store/checkout/addresses';
 import { LoadAddresses } from 'ish-core/store/checkout/addresses/addresses.actions';
 import {

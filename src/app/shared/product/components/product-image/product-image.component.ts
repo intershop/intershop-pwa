@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@a
 
 import { Image } from 'ish-core/models/image/image.model';
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 @Component({
   selector: 'ish-product-image',

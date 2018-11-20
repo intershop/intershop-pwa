@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Storage } from '../../store/local-storage-sync/local-storage-sync.reducer';
+import { Storage } from './local-storage-sync.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class CrosstabService {

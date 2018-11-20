@@ -7,8 +7,8 @@ import { ContentModule } from 'ish-core/store/content/content.module';
 import { ShoppingModule } from 'ish-core/store/shopping/shopping.module';
 
 import { AccountModule } from './account/account.module';
-import { AppNotFoundRoutingModule } from './app-not-found-routing.module';
 import { AppComponent } from './app.component';
+import { AppNotFoundRoutingModule } from './pages/app-not-found-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { QuotingModule } from './quoting/quoting.module';
 

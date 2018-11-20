@@ -22,7 +22,7 @@ import { FilterNavigation } from '../../models/filter-navigation/filter-navigati
 import { Locale } from '../../models/locale/locale.model';
 import { Product } from '../../models/product/product.model';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { CountryService } from '../../services/countries/country.service';
+import { CountryService } from '../../services/country/country.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { ProductsService } from '../../services/products/products.service';
 import { RegistrationService } from '../../services/registration/registration.service';
