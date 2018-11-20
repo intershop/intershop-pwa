@@ -3,8 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Facet } from '../../../../models/facet/facet.model';
-import { Filter } from '../../../../models/filter/filter.model';
+import { Facet } from 'ish-core/models/facet/facet.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 
 /**
  * The Filter Swatch Images Component displays filter group for colors. The facets of the filter group are presented as swatch images.

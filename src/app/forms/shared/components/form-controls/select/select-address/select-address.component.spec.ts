@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { Address } from '../../../../../../models/address/address.model';
+import { Address } from 'ish-core/models/address/address.model';
 
 import { SelectAddressComponent } from './select-address.component';
 

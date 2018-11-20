@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Order } from '../../../../models/order/order.model';
-import { User } from '../../../../models/user/user.model';
+import { Order } from 'ish-core/models/order/order.model';
+import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-checkout-receipt',

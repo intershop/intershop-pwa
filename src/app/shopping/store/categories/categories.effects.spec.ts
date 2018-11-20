@@ -8,12 +8,12 @@ import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category, CategoryHelper } from 'ish-core/models/category/category.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { SelectLocale, SetAvailableLocales } from 'ish-core/store/locale';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
-import { CategoryView } from '../../../models/category-view/category-view.model';
-import { Category, CategoryHelper } from '../../../models/category/category.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Locale } from '../../../models/locale/locale.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';

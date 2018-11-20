@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Product } from '../../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-add-to-basket',

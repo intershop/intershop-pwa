@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store, StoreModule } from '@ngrx/store';
 import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { HttpError } from '../../models/http-error/http-error.model';
 import { coreReducers } from '../core.system';
 
 import { CommunicationTimeoutError } from './error.actions';

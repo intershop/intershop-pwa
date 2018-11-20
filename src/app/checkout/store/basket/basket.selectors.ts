@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { BasketHelper, BasketView } from '../../../models/basket/basket.model';
+import { BasketHelper, BasketView } from 'ish-core/models/basket/basket.model';
 import { getProductEntities } from '../../../shopping/store/products';
 import { getCheckoutState } from '../checkout.state';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Region } from '../../../models/region/region.model';
+import { Region } from '../../models/region/region.model';
 
 @Injectable({ providedIn: 'root' })
 export class RegionService {

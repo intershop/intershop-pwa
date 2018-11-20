@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { Product } from '../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { ShoppingState, getShoppingState } from '../shopping.state';
 
 import { productAdapter } from './products.reducer';

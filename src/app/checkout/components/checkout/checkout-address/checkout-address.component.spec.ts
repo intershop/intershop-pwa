@@ -6,10 +6,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
+import { Address } from 'ish-core/models/address/address.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { User } from 'ish-core/models/user/user.model';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
-import { Address } from '../../../../models/address/address.model';
-import { HttpError } from '../../../../models/http-error/http-error.model';
-import { User } from '../../../../models/user/user.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 

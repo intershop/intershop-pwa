@@ -8,6 +8,10 @@ import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
+import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { coreEffects, coreReducers } from 'ish-core/store/core.system';
 import {
@@ -18,10 +22,6 @@ import {
   getLoggedInUser,
 } from 'ish-core/store/user';
 import { checkoutReducers } from '../../checkout/store/checkout.system';
-import { Customer } from '../../models/customer/customer.model';
-import { Locale } from '../../models/locale/locale.model';
-import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
-import { User } from '../../models/user/user.model';
 import { FeatureToggleModule } from '../../shared/feature-toggle.module';
 import { shoppingReducers } from '../../shopping/store/shopping.system';
 import {

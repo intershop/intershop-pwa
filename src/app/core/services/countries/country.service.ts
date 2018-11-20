@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { Country } from '../../../models/country/country.model';
+import { Country } from '../../models/country/country.model';
 
 @Injectable({ providedIn: 'root' })
 export class CountryService {

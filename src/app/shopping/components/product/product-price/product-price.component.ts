@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { Price, PriceHelper } from '../../../../models/price/price.model';
-import { Product } from '../../../../models/product/product.model';
+import { Price, PriceHelper } from 'ish-core/models/price/price.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',

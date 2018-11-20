@@ -2,8 +2,8 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 /**
  * The Suggest Service handles the interaction with the 'suggest' REST API.

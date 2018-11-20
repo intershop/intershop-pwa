@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { Address } from '../../../../../../models/address/address.model';
+import { Address } from 'ish-core/models/address/address.model';
 import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';
 

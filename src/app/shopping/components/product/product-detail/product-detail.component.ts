@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { Product } from '../../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-detail',

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 import { interval } from 'rxjs';
 import { mapTo, startWith } from 'rxjs/operators';
 
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
+import { Quote } from 'ish-core/models/quote/quote.model';
 
 /**
  * The Quote State Component displays the current state of a quote.

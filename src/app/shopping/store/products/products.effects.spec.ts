@@ -8,11 +8,11 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { SelectLocale, SetAvailableLocales } from 'ish-core/store/locale';
 import { localeReducer } from 'ish-core/store/locale/locale.reducer';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Locale } from '../../../models/locale/locale.model';
-import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../services/products/products.service';
 import { shoppingReducers } from '../shopping.system';
 import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';

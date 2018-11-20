@@ -1,9 +1,9 @@
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
-import { ContentIncludeView, createIncludeView } from '../../../models/content-view/content-views';
+import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
+import { ContentIncludeView, createIncludeView } from 'ish-core/models/content-view/content-views';
 import { getContentState } from '../content.state';
 import { getContentPageletEntities } from '../pagelets';
 

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { Product } from 'ish-core/models/product/product.model';
 import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
-import { Product } from '../../../../models/product/product.model';
 
 import { ProductImageComponent } from './product-image.component';
 

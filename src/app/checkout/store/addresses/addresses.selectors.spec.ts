@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { Address } from '../../../models/address/address.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { Address } from 'ish-core/models/address/address.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { checkoutReducers } from '../checkout.system';
 

@@ -5,8 +5,8 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ContentIncludesService } from '../../services/content-includes/content-includes.service';
 
 import {

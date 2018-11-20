@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
 
+import { Product } from 'ish-core/models/product/product.model';
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select';
 import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
-import { Product } from '../../../../models/product/product.model';
 
 @Component({
   selector: 'ish-product-quantity',

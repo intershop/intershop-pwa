@@ -5,8 +5,8 @@ import * as using from 'jasmine-data-provider';
 import { EMPTY } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { Link } from '../../../models/link/link.model';
-import { Locale } from '../../../models/locale/locale.model';
+import { Link } from '../../models/link/link.model';
+import { Locale } from '../../models/locale/locale.model';
 import { ErrorActionTypes, ServerError } from '../../store/error';
 import { ICM_SERVER_URL, REST_ENDPOINT } from '../state-transfer/factories';
 

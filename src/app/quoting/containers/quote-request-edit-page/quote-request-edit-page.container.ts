@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { getLoggedInUser } from 'ish-core/store/user';
-import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
 import {
   CreateQuoteRequestFromQuoteRequest,
   DeleteItemFromQuoteRequest,

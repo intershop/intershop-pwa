@@ -3,7 +3,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as using from 'jasmine-data-provider';
 
-import { Product } from '../../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { ModalDialogComponent } from '../../../../shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductShipmentComponent } from './product-shipment.component';

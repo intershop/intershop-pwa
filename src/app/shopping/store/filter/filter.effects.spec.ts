@@ -6,9 +6,9 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { Category } from '../../../models/category/category.model';
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { Category } from 'ish-core/models/category/category.model';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import { FilterService } from '../../services/filter/filter.service';
 import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';

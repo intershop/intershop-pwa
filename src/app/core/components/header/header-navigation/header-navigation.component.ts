@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { CategoryView } from '../../../../models/category-view/category-view.model';
-import { Category } from '../../../../models/category/category.model';
+import { CategoryView } from '../../../models/category-view/category-view.model';
+import { Category } from '../../../models/category/category.model';
 
 /**
  * The Header Navigation Component displays the first level navigation.

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { createCategoryView } from '../../../../../models/category-view/category-view.model';
-import { Category } from '../../../../../models/category/category.model';
 import { categoryTree } from '../../../../../utils/dev/test-data-utils';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../../configurations/injection-keys';
 import { IconModule } from '../../../../icon.module';
+import { createCategoryView } from '../../../../models/category-view/category-view.model';
+import { Category } from '../../../../models/category/category.model';
 
 import { SubCategoryNavigationComponent } from './sub-category-navigation.component';
 

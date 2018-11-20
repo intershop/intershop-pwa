@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DoCheck, Inject, Input } from '@angular/core';
 
+import { ContentImagePageletView, createImagePageletView } from 'ish-core/models/content-view/content-image-view';
 import { STATIC_URL } from 'ish-core/services/state-transfer/factories';
-import { ContentImagePageletView, createImagePageletView } from '../../../models/content-view/content-image-view';
 
 @Component({
   selector: 'ish-cms-image',

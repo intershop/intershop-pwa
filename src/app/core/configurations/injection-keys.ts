@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 
-import { Locale } from '../../models/locale/locale.model';
+import { Locale } from '../models/locale/locale.model';
 
 /**
  * If 'true' the application has to work with the implemented mock data, if 'false' a backend system is used

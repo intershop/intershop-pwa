@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { OrderView } from '../../../models/order/order.model';
+import { OrderView } from 'ish-core/models/order/order.model';
 
 /**
  * The Order List Component displays all (or only a limited amount of) orders. See also {@link OrderListContainerComponent}

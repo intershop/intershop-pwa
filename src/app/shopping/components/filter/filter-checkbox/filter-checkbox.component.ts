@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Facet } from '../../../../models/facet/facet.model';
-import { Filter } from '../../../../models/filter/filter.model';
+import { Facet } from 'ish-core/models/facet/facet.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 
 /**
  * The Filter Checkbox Component displays a filter group. The items of the filter group are presented as checkboxes.

@@ -4,7 +4,7 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { Product } from '../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { LoadProductSuccess, SelectProduct } from '../products';
 import { shoppingReducers } from '../shopping.system';
 

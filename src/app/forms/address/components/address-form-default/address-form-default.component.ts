@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { Region } from '../../../../models/region/region.model';
+import { Region } from 'ish-core/models/region/region.model';
 
 @Component({
   selector: 'ish-address-form-default',

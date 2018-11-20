@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { User } from '../../../models/user/user.model';
+import { User } from 'ish-core/models/user/user.model';
 /**
  * The Account Overview Page Component displays the account overview dashboard of the user's 'MyAccount' section. See also {@link OrderOverviewPageContainerComponent}
  *

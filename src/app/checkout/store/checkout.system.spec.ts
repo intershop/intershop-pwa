@@ -12,18 +12,18 @@ import {
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from 'ish-core/configurations/injection-keys';
+import { Address } from 'ish-core/models/address/address.model';
+import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { Price } from 'ish-core/models/price/price.model';
 import { CountryService } from 'ish-core/services/countries/country.service';
 import { coreEffects, coreReducers } from 'ish-core/store/core.system';
 import { LoginUser } from 'ish-core/store/user';
 import { OrderService } from '../../account/services/order/order.service';
-import { Address } from '../../models/address/address.model';
-import { BasketItem } from '../../models/basket-item/basket-item.model';
-import { Basket } from '../../models/basket/basket.model';
-import { LoginCredentials } from '../../models/credentials/credentials.model';
-import { Customer } from '../../models/customer/customer.model';
-import { Locale } from '../../models/locale/locale.model';
-import { PaymentMethod } from '../../models/payment-method/payment-method.model';
-import { Price } from '../../models/price/price.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { CategoriesService } from '../../shopping/services/categories/categories.service';
 import { FilterService } from '../../shopping/services/filter/filter.service';

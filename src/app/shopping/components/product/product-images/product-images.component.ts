@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Product, ProductHelper } from '../../../../models/product/product.model';
+import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 
 /**
  * The Product Images Component

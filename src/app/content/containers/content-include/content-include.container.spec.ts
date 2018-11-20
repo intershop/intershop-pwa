@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, combineReducers } from '@ngrx/store';
 import { deepEqual, spy, verify } from 'ts-mockito';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { contentReducers } from '../../store/content.system';

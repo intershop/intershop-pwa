@@ -1,6 +1,6 @@
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
-import { QuoteData } from '../../../models/quote/quote.interface';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { QuoteLineItemResultModel } from 'ish-core/models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteData } from 'ish-core/models/quote/quote.interface';
 
 import * as fromActions from './quote.actions';
 import { initialState, quoteReducer } from './quote.reducer';

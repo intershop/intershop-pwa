@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
-import { Quote } from '../../../models/quote/quote.model';
+import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
+import { Quote } from 'ish-core/models/quote/quote.model';
 
 /**
  * The Quote List Component displays a list of quotes.

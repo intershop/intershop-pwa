@@ -3,10 +3,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
+import { Category } from 'ish-core/models/category/category.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { getUserAuthorized } from 'ish-core/store/user';
 import { AddProductToBasket } from '../../../checkout/store/basket';
-import { Category } from '../../../models/category/category.model';
-import { Product } from '../../../models/product/product.model';
 import { ProductAddToQuoteDialogContainerComponent } from '../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 import { AddProductToQuoteRequest } from '../../../quoting/store/quote-request';
 

@@ -4,8 +4,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { instance, mock, spy, verify } from 'ts-mockito';
 
 import { IconModule } from 'ish-core/icon.module';
+import { Product, ProductType } from 'ish-core/models/product/product.model';
 import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
-import { Product, ProductType } from '../../../../models/product/product.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';

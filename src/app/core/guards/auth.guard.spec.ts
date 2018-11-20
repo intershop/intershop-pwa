@@ -4,8 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { Customer } from '../../models/customer/customer.model';
 import { MockComponent } from '../../utils/dev/mock.component';
+import { Customer } from '../models/customer/customer.model';
 import { coreReducers } from '../store/core.system';
 import { LoginUserSuccess } from '../store/user';
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { createPageletView } from '../../../models/content-view/content-views';
+import { createPageletView } from 'ish-core/models/content-view/content-views';
 import { PipesModule } from '../../../shared/pipes.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 

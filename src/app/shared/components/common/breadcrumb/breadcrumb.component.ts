@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { BreadcrumbItem } from '../../../../models/breadcrumb-item/breadcrumb-item.interface';
-import { CategoryView } from '../../../../models/category-view/category-view.model';
-import { Product } from '../../../../models/product/product.model';
+import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.interface';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-breadcrumb',

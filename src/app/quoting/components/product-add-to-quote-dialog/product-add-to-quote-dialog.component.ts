@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 
 /**
  * The Product Add To Quote Dialog Component displays and updates quote request data.

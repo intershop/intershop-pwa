@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ContentSlotView } from '../../../models/content-view/content-views';
+import { ContentSlotView } from 'ish-core/models/content-view/content-views';
 
 @Component({
   selector: 'ish-content-slot',

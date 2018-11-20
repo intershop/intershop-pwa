@@ -1,4 +1,4 @@
-import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
+import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 
 import { SearchAction, SearchActionTypes } from './search.actions';
 

@@ -3,7 +3,7 @@ import { Store, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { Product } from '../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';

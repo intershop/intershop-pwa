@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { Basket, BasketView } from '../../../models/basket/basket.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Payment } from '../../../models/payment/payment.model';
-import { Product } from '../../../models/product/product.model';
+import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { Basket, BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';

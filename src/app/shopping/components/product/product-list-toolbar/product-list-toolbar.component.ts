@@ -14,8 +14,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { SelectOption } from '../../../../forms/shared/components/form-controls/select/select-option.interface';
-import { ViewType } from '../../../../models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-product-list-toolbar',

@@ -14,14 +14,14 @@ import {
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
 } from 'ish-core/configurations/injection-keys';
+import { Category } from 'ish-core/models/category/category.model';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { CountryService } from 'ish-core/services/countries/country.service';
 import { coreEffects, coreReducers } from 'ish-core/store/core.system';
 import { SelectLocale } from 'ish-core/store/locale';
 import { OrderService } from '../../account/services/order/order.service';
-import { Category } from '../../models/category/category.model';
-import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
-import { Locale } from '../../models/locale/locale.model';
-import { Product } from '../../models/product/product.model';
 import { RegistrationService } from '../../registration/services/registration/registration.service';
 import { TestStore, ngrxTesting } from '../../utils/dev/ngrx-testing';
 import { categoryTree } from '../../utils/dev/test-data-utils';

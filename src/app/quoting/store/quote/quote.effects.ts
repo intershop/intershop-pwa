@@ -5,8 +5,8 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
+import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
 import { UserActionTypes } from 'ish-core/store/user';
-import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
 import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';

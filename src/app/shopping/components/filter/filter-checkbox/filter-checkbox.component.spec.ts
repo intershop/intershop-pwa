@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { IconModule } from 'ish-core/icon.module';
-import { Filter } from '../../../../models/filter/filter.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 
 import { FilterCheckboxComponent } from './filter-checkbox.component';
 

@@ -3,10 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
+import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
+import { Quote } from 'ish-core/models/quote/quote.model';
+import { User } from 'ish-core/models/user/user.model';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
-import { Quote } from '../../../models/quote/quote.model';
-import { User } from '../../../models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { QuoteEditComponent } from './quote-edit.component';

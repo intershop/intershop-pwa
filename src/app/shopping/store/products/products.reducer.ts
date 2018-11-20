@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { ProductMapper } from '../../../models/product/product.mapper';
-import { Product } from '../../../models/product/product.model';
+import { ProductMapper } from 'ish-core/models/product/product.mapper';
+import { Product } from 'ish-core/models/product/product.model';
 
 import { ProductsAction, ProductsActionTypes } from './products.actions';
 

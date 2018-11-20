@@ -10,7 +10,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
-import { ContentPageletView } from '../../../models/content-view/content-views';
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 import { CMSComponentInterface, CMSComponentProvider, CMS_COMPONENT } from '../../configurations/injection-keys';
 
 @Component({

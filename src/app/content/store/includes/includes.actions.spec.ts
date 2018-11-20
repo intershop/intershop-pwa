@@ -1,5 +1,5 @@
-import { ContentInclude } from '../../../models/content-include/content-include.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import * as fromActions from './includes.actions';
 

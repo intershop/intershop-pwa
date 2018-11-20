@@ -2,8 +2,8 @@ import { TestBed, async } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 
 import { SuggestService } from './suggest.service';
 

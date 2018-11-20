@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { Product } from '../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { LoadProductSuccess, SelectProduct } from '../products';
 import { shoppingReducers } from '../shopping.system';

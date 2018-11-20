@@ -1,12 +1,12 @@
-import { Address } from '../../models/address/address.model';
-import { BasketItemView } from '../../models/basket-item/basket-item.model';
-import { BasketRebate } from '../../models/basket-rebate/basket-rebate.model';
-import { BasketTotal } from '../../models/basket-total/basket-total.model';
-import { BasketView } from '../../models/basket/basket.model';
-import { OrderView } from '../../models/order/order.model';
-import { PaymentMethod } from '../../models/payment-method/payment-method.model';
-import { Payment } from '../../models/payment/payment.model';
-import { ShippingMethod } from '../../models/shipping-method/shipping-method.model';
+import { Address } from 'ish-core/models/address/address.model';
+import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
+import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
+import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
+import { BasketView } from 'ish-core/models/basket/basket.model';
+import { OrderView } from 'ish-core/models/order/order.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 export class BasketMockData {
   static getBasket(): BasketView {

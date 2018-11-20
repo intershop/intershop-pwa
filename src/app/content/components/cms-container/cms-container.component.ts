@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 
-import { ContentPageletView } from '../../../models/content-view/content-views';
+import { ContentPageletView } from 'ish-core/models/content-view/content-views';
 
 // naming collision with container-component-pattern
 // tslint:disable-next-line:project-structure

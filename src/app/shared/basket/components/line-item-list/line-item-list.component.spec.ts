@@ -4,10 +4,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { Price } from 'ish-core/models/price/price.model';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
-import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
-import { LineItemQuantity } from '../../../../models/line-item-quantity/line-item-quantity.model';
-import { Price } from '../../../../models/price/price.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { PipesModule } from '../../../pipes.module';
 

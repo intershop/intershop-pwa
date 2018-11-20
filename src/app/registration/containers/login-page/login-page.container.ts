@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
+import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
 import { LoginUser, getUserAuthorized, getUserError } from 'ish-core/store/user';
-import { LoginCredentials } from '../../../models/credentials/credentials.model';
 
 @Component({
   templateUrl: './login-page.container.html',

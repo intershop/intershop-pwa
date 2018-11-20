@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { AddressHelper } from '../../../models/address/address.helper';
-import { Address } from '../../../models/address/address.model';
-import { User } from '../../../models/user/user.model';
+import { AddressHelper } from 'ish-core/models/address/address.helper';
+import { Address } from 'ish-core/models/address/address.model';
+import { User } from 'ish-core/models/user/user.model';
 
 /**
  * The Account Address Page Component displays the preferred InvoiceTo and ShipTo addresses of the user

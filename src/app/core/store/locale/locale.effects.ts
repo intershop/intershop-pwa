@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { filter, map, mapTo, mergeMapTo, take, tap } from 'rxjs/operators';
 
-import { Locale } from '../../../models/locale/locale.model';
 import { AVAILABLE_LOCALES } from '../../configurations/injection-keys';
+import { Locale } from '../../models/locale/locale.model';
 
 import * as fromActions from './locale.actions';
 import { getAvailableLocales, getCurrentLocale } from './locale.selectors';

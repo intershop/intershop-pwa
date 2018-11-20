@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { Locale } from '../../../../models/locale/locale.model';
+import { Locale } from '../../../models/locale/locale.model';
 import { SelectLocale, getAvailableLocales, getCurrentLocale } from '../../../store/locale';
 
 @Component({

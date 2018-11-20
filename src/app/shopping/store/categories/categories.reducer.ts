@@ -1,5 +1,5 @@
+import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
 import { LocaleActionTypes, SelectLocale } from 'ish-core/store/locale';
-import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
 
 import {
   CategoriesAction,

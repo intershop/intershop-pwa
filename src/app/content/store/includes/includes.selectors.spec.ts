@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { contentReducers } from '../content.system';
 

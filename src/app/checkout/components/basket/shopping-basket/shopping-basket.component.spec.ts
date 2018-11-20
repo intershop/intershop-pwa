@@ -4,8 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
-import { HttpError } from '../../../../models/http-error/http-error.model';
 import { FeatureToggleModule } from '../../../../shared/feature-toggle.module';
 import { PipesModule } from '../../../../shared/pipes.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
