@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from '../../../../forms/shared/utils/form-utils';
-import { Basket } from '../../../../models/basket/basket.model';
-import { HttpError } from '../../../../models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-checkout-review',

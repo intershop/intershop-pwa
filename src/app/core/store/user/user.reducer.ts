@@ -1,6 +1,6 @@
-import { Customer } from '../../../models/customer/customer.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { User } from '../../../models/user/user.model';
+import { Customer } from '../../models/customer/customer.model';
+import { HttpError } from '../../models/http-error/http-error.model';
+import { User } from '../../models/user/user.model';
 
 import { UserAction, UserActionTypes } from './user.actions';
 

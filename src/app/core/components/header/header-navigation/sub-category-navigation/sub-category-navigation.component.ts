@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 
-import { CategoryView } from '../../../../../models/category-view/category-view.model';
-import { Category } from '../../../../../models/category/category.model';
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../../configurations/injection-keys';
+import { CategoryView } from '../../../../models/category-view/category-view.model';
+import { Category } from '../../../../models/category/category.model';
 
 /**
  * The Sub Category Navigation Component displays second level category navigation.

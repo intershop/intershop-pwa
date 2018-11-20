@@ -1,5 +1,5 @@
-import { CategoryTree, CategoryTreeHelper } from '../../models/category-tree/category-tree.model';
-import { Category } from '../../models/category/category.model';
+import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
+import { Category } from 'ish-core/models/category/category.model';
 
 export function categoryTree(categories?: Category[]): CategoryTree {
   const tree = CategoryTreeHelper.empty();

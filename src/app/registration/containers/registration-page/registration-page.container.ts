@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { Region } from 'ish-core/models/region/region.model';
 import { RegionService } from 'ish-core/services/countries/region.service';
 import { getAllCountries } from 'ish-core/store/countries/countries.selectors';
 import { CreateUser, getUserError } from 'ish-core/store/user';
 import { determineSalutations } from '../../../forms/shared/utils/form-utils';
-import { Customer } from '../../../models/customer/customer.model';
-import { Locale } from '../../../models/locale/locale.model';
-import { Region } from '../../../models/region/region.model';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}

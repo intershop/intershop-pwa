@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { AddBasketToQuoteRequest, getQuoteRequestLoading } from '../../../quoting/store/quote-request';
 import {
   DeleteBasketItem,

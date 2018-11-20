@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, throwError } from 'rxjs';
 
-import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
+import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { CommunicationTimeoutError, ServerError } from '../../store/error/error.actions';
 
 @Injectable({ providedIn: 'root' })

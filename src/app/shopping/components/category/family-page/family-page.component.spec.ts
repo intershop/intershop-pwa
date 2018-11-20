@@ -4,8 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { IconModule } from 'ish-core/icon.module';
-import { createCategoryView } from '../../../../models/category-view/category-view.model';
-import { Category } from '../../../../models/category/category.model';
+import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category } from 'ish-core/models/category/category.model';
 import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 import { categoryTree } from '../../../../utils/dev/test-data-utils';

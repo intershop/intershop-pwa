@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { createCategoryView } from '../../../../models/category-view/category-view.model';
-import { Category } from '../../../../models/category/category.model';
+import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
+import { Category } from 'ish-core/models/category/category.model';
 import { categoryTree } from '../../../../utils/dev/test-data-utils';
 
 import { CategoryNavigationComponent } from './category-navigation.component';

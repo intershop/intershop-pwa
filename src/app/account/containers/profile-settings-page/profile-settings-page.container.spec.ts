@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { Customer } from 'ish-core/models/customer/customer.model';
 import { coreReducers } from 'ish-core/store/core.system';
 import { LoginUserSuccess } from 'ish-core/store/user';
-import { Customer } from '../../../models/customer/customer.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { ProfileSettingsPageContainerComponent } from './profile-settings-page.container';

@@ -6,10 +6,10 @@ import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { Customer } from '../../../models/customer/customer.model';
-import { HttpErrorMapper } from '../../../models/http-error/http-error.mapper';
 import { RegistrationService } from '../../../registration/services/registration/registration.service';
 import { mapErrorToAction } from '../../../utils/operators';
+import { Customer } from '../../models/customer/customer.model';
+import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { GeneralError } from '../error';
 
 import * as userActions from './user.actions';

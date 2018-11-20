@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { createPageletView } from '../../../models/content-view/content-views';
+import { createPageletView } from 'ish-core/models/content-view/content-views';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { CMSCarouselComponent } from './cms-carousel.component';

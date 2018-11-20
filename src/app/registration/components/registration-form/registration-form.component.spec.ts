@@ -4,10 +4,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { HttpError, HttpHeader } from 'ish-core/models/http-error/http-error.model';
 import { AddressFormFactory } from '../../../forms/address/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from '../../../forms/address/configurations/address-form-factory.provider';
 import { FormsSharedModule } from '../../../forms/forms-shared.module';
-import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { RegistrationFormComponent } from './registration-form.component';

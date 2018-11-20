@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
-import { Category } from '../../../models/category/category.model';
+import { Category } from 'ish-core/models/category/category.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { categoryTree } from '../../../utils/dev/test-data-utils';

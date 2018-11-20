@@ -3,8 +3,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { deepEqual, spy, verify } from 'ts-mockito';
 
-import { Locale } from '../../../../models/locale/locale.model';
 import { IconModule } from '../../../icon.module';
+import { Locale } from '../../../models/locale/locale.model';
 
 import { LanguageSwitchComponent } from './language-switch.component';
 

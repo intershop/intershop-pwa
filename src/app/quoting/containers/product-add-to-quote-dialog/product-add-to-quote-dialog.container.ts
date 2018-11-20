@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 
-import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import {
   DeleteItemFromQuoteRequest,
   SelectQuoteRequest,

@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 
+import { LoginCredentials } from 'ish-core/models/credentials/credentials.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { markAsDirtyRecursive } from '../../../forms/shared/utils/form-utils';
-import { LoginCredentials } from '../../../models/credentials/credentials.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-login-form',

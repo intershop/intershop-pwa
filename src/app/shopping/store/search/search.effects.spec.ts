@@ -8,9 +8,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { ProductsService } from '../../services/products/products.service';
 import { SuggestService } from '../../services/suggest/suggest.service';

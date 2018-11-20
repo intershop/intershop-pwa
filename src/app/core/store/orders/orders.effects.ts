@@ -6,9 +6,9 @@ import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
 import { OrderService } from '../../../account/services/order/order.service';
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';
+import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { UserActionTypes } from '../user';
 
 import * as ordersActions from './orders.actions';

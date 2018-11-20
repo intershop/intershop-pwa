@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Filter } from '../../../../models/filter/filter.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 
 /**
  * The Filter Dropdown Component displays a filter group. The facets of the filter group are presented as options of a select box.

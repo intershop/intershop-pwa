@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { Link } from 'ish-core/models/link/link.model';
+import { OrderData } from 'ish-core/models/order/order.interface';
+import { OrderMapper } from 'ish-core/models/order/order.mapper';
+import { Order } from 'ish-core/models/order/order.model';
 import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { Basket } from '../../../models/basket/basket.model';
-import { Link } from '../../../models/link/link.model';
-import { OrderData } from '../../../models/order/order.interface';
-import { OrderMapper } from '../../../models/order/order.mapper';
-import { Order } from '../../../models/order/order.model';
 
 /**
  * The Order Service handles the interaction with the REST API concerning orders.

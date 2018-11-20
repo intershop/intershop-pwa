@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { Basket } from '../../../models/basket/basket.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { CreateOrder, getBasketError, getBasketLoading, getCurrentBasket } from '../../store/basket';
 
 @Component({

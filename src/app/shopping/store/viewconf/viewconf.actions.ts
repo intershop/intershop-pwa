@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 export enum ViewconfActionTypes {
   SetEndlessScrollingPageSize = '[Shopping Internal] Set Endless Scrolling Page Size',

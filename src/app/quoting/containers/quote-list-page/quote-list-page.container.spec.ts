@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { QuoteData } from '../../../models/quote/quote.interface';
+import { QuoteData } from 'ish-core/models/quote/quote.interface';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadQuotes, LoadQuotesSuccess } from '../../store/quote';
 import { LoadQuoteRequests } from '../../store/quote-request';

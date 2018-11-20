@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { CategoryHelper } from 'ish-core/models/category/category.model';
+import { ProductData, ProductDataStub } from 'ish-core/models/product/product.interface';
+import { ProductMapper } from 'ish-core/models/product/product.mapper';
+import { Product } from 'ish-core/models/product/product.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { CategoryHelper } from '../../../models/category/category.model';
-import { ProductData, ProductDataStub } from '../../../models/product/product.interface';
-import { ProductMapper } from '../../../models/product/product.mapper';
-import { Product } from '../../../models/product/product.model';
 
 /**
  * The Products Service handles the interaction with the 'products' REST API.

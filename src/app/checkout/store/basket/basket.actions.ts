@@ -1,15 +1,15 @@
 import { Action } from '@ngrx/store';
 
-import { Address } from '../../../models/address/address.model';
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { Basket } from '../../../models/basket/basket.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
-import { Link } from '../../../models/link/link.model';
-import { Order } from '../../../models/order/order.model';
-import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
-import { Payment } from '../../../models/payment/payment.model';
-import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
+import { Address } from 'ish-core/models/address/address.model';
+import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { Link } from 'ish-core/models/link/link.model';
+import { Order } from 'ish-core/models/order/order.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { BasketUpdateType } from '../../services/basket/basket.service';
 
 export enum BasketActionTypes {

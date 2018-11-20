@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Basket } from '../../../../models/basket/basket.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
 
 @Component({
   selector: 'ish-basket-address-summary',

@@ -1,9 +1,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { createCategoryView } from '../../../../models/category-view/category-view.model';
-import { Category } from '../../../../models/category/category.model';
 import { categoryTree } from '../../../../utils/dev/test-data-utils';
+import { createCategoryView } from '../../../models/category-view/category-view.model';
+import { Category } from '../../../models/category/category.model';
 
 import { HeaderNavigationComponent } from './header-navigation.component';
 

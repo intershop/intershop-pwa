@@ -1,6 +1,6 @@
 import * as using from 'jasmine-data-provider';
 
-import { categoryTree } from '../../utils/dev/test-data-utils';
+import { categoryTree } from '../../../utils/dev/test-data-utils';
 
 import { CategoryData } from './category.interface';
 import { CategoryMapper } from './category.mapper';

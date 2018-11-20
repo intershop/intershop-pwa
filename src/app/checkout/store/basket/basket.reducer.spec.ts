@@ -1,9 +1,9 @@
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { Basket } from '../../../models/basket/basket.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Link } from '../../../models/link/link.model';
-import { Order } from '../../../models/order/order.model';
-import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
+import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Link } from 'ish-core/models/link/link.model';
+import { Order } from 'ish-core/models/order/order.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 
 import * as fromActions from './basket.actions';

@@ -4,7 +4,7 @@ import { cold, hot } from 'jest-marbles';
 import { Observable, merge, of } from 'rxjs';
 import { concatMap, filter, last, mapTo } from 'rxjs/operators';
 
-import { HttpError } from '../models/http-error/http-error.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { Partition, distinctCompareWith, mapErrorToAction, partitionBy } from './operators';
 

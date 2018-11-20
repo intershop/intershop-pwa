@@ -1,5 +1,5 @@
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product } from '../../../models/product/product.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 import * as fromActions from './products.actions';
 

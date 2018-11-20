@@ -1,9 +1,9 @@
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { Basket } from '../../../models/basket/basket.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
-import { Payment } from '../../../models/payment/payment.model';
-import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
+import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { Payment } from 'ish-core/models/payment/payment.model';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 
 import { BasketAction, BasketActionTypes } from './basket.actions';
 

@@ -5,8 +5,8 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
-import { HttpError } from '../../../../models/http-error/http-error.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 

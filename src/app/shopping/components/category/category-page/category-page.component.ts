@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 
 import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
-import { CategoryView } from '../../../../models/category-view/category-view.model';
+import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 
 @Component({
   selector: 'ish-category-page',

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-import { SuggestTerm } from '../../../../models/suggest-term/suggest-term.model';
+import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 
 import { SearchBoxComponent } from './search-box.component';
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Locale } from '../../../../models/locale/locale.model';
+import { Locale } from '../../../models/locale/locale.model';
 
 @Component({
   selector: 'ish-language-switch',

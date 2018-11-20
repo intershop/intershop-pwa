@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { Basket } from '../../../models/basket/basket.model';
+import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { AddBasketToQuoteRequest } from '../../../quoting/store/quote-request';
 import { quotingReducers } from '../../../quoting/store/quoting.system';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';

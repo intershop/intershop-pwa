@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
-import { FilterNavigation } from '../../../models/filter-navigation/filter-navigation.model';
-import { Filter } from '../../../models/filter/filter.model';
+import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllIshElements } from '../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../utils/dev/mock.component';
 import { LoadFilterForCategorySuccess } from '../../store/filter/filter.actions';

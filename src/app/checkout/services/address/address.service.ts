@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { AddressMapper } from 'ish-core/models/address/address.mapper';
+import { Address } from 'ish-core/models/address/address.model';
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { AddressMapper } from '../../../models/address/address.mapper';
-import { Address } from '../../../models/address/address.model';
-import { Link } from '../../../models/link/link.model';
 
 /**
  * The Address Service handles the interaction with the REST API concerning addresses.

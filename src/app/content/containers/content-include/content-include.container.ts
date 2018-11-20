@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
-import { ContentIncludeView } from '../../../models/content-view/content-views';
+import { ContentIncludeView } from 'ish-core/models/content-view/content-views';
 import { LoadContentInclude, getContentInclude } from '../../store/includes';
 
 @Component({

@@ -1,6 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
-import { ContentInclude } from '../../../models/content-include/content-include.model';
+import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
 
 import { IncludesAction, IncludesActionTypes } from './includes.actions';
 

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
-import { Price } from '../../../../models/price/price.model';
-import { QuoteRequestItemView } from '../../../../models/quote-request-item/quote-request-item.model';
+import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
+import { Price } from 'ish-core/models/price/price.model';
+import { QuoteRequestItemView } from 'ish-core/models/quote-request-item/quote-request-item.model';
 
 /**
  * The Line Item Description Component displays detailed line item information.

@@ -1,8 +1,8 @@
 import { Observable, OperatorFunction, of } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, partition, withLatestFrom } from 'rxjs/operators';
 
-import { HttpErrorMapper } from '../models/http-error/http-error.mapper';
-import { HttpError } from '../models/http-error/http-error.model';
+import { HttpErrorMapper } from 'ish-core/models/http-error/http-error.mapper';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 export interface Partition<T> {
   isTrue: Observable<T>;

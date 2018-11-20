@@ -1,6 +1,6 @@
-import { Customer, CustomerType } from '../../../models/customer/customer.model';
-import { HttpError, HttpHeader } from '../../../models/http-error/http-error.model';
-import { User } from '../../../models/user/user.model';
+import { Customer, CustomerType } from '../../models/customer/customer.model';
+import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
+import { User } from '../../models/user/user.model';
 
 import {
   CreateUserFail,

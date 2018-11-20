@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Locale } from '../../../models/locale/locale.model';
+import { Locale } from '../../models/locale/locale.model';
 
 export enum LocaleActionTypes {
   SelectLocale = '[Locale] Set Locale',

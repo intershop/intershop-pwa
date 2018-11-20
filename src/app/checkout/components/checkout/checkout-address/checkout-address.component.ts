@@ -14,12 +14,12 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Address } from '../../../../models/address/address.model';
-import { Basket } from '../../../../models/basket/basket.model';
-import { Country } from '../../../../models/country/country.model';
-import { HttpError } from '../../../../models/http-error/http-error.model';
-import { Region } from '../../../../models/region/region.model';
-import { User } from '../../../../models/user/user.model';
+import { Address } from 'ish-core/models/address/address.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { Country } from 'ish-core/models/country/country.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Region } from 'ish-core/models/region/region.model';
+import { User } from 'ish-core/models/user/user.model';
 
 class FormType {
   addresses: Address[]; // address select options

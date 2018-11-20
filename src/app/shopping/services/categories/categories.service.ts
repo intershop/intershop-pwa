@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { CategoryTree, CategoryTreeHelper } from 'ish-core/models/category-tree/category-tree.model';
+import { CategoryData } from 'ish-core/models/category/category.interface';
+import { CategoryMapper } from 'ish-core/models/category/category.mapper';
+import { CategoryHelper } from 'ish-core/models/category/category.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
-import { CategoryData } from '../../../models/category/category.interface';
-import { CategoryMapper } from '../../../models/category/category.mapper';
-import { CategoryHelper } from '../../../models/category/category.model';
 
 /**
  * The Categories Service handles the interaction with the 'categories' REST API.

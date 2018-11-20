@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 
+import { BasketItemData } from 'ish-core/models/basket-item/basket-item.interface';
+import { BasketItemMapper } from 'ish-core/models/basket-item/basket-item.mapper';
+import { BasketItem } from 'ish-core/models/basket-item/basket-item.model';
+import { BasketData } from 'ish-core/models/basket/basket.interface';
+import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { Link } from 'ish-core/models/link/link.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
-import { BasketItemData } from '../../../models/basket-item/basket-item.interface';
-import { BasketItemMapper } from '../../../models/basket-item/basket-item.mapper';
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { BasketData } from '../../../models/basket/basket.interface';
-import { BasketMapper } from '../../../models/basket/basket.mapper';
-import { Basket } from '../../../models/basket/basket.model';
-import { Link } from '../../../models/link/link.model';
-import { PaymentMethod } from '../../../models/payment-method/payment-method.model';
-import { ShippingMethod } from '../../../models/shipping-method/shipping-method.model';
 
 export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
 export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };

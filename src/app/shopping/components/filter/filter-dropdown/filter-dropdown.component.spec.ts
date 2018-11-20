@@ -4,7 +4,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-import { Filter } from '../../../../models/filter/filter.model';
+import { Filter } from 'ish-core/models/filter/filter.model';
 
 import { FilterDropdownComponent } from './filter-dropdown.component';
 

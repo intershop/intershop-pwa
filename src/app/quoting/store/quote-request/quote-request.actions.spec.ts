@@ -1,7 +1,7 @@
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
-import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { QuoteLineItemResultModel } from 'ish-core/models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
+import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
 
 import * as fromActions from './quote-request.actions';
 

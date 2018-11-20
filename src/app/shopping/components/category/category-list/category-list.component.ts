@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 
+import { Category } from 'ish-core/models/category/category.model';
 import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
-import { Category } from '../../../../models/category/category.model';
 
 @Component({
   selector: 'ish-category-list',

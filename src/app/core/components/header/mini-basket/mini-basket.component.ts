@@ -1,8 +1,8 @@
 import { AnimationBuilder, animate, style } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 
-import { BasketView } from '../../../../models/basket/basket.model';
-import { ProductHelper } from '../../../../models/product/product.model';
+import { BasketView } from '../../../models/basket/basket.model';
+import { ProductHelper } from '../../../models/product/product.model';
 
 /**
  * The Mini Basket Component displays a quick overview over the users basket items.

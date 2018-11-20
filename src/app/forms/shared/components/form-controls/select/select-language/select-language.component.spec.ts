@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { Locale } from '../../../../../../models/locale/locale.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 
 import { SelectLanguageComponent } from './select-language.component';
 

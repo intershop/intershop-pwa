@@ -2,8 +2,8 @@ import { formatDate, formatNumber } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Attribute } from '../../models/attribute/attribute.model';
-import { Price } from '../../models/price/price.model';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Price } from 'ish-core/models/price/price.model';
 
 import { formatPrice } from './price.pipe';
 

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Product } from '../../../models/product/product.model';
-import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Product } from 'ish-core/models/product/product.model';
+import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
+import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';

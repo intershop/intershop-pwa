@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { HttpError } from '../../../../models/http-error/http-error.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 

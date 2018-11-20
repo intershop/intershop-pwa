@@ -1,4 +1,4 @@
-import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { CategoriesAction, CategoriesActionTypes } from '../categories';
 import { SearchAction, SearchActionTypes } from '../search';
 

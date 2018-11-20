@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { BasketView } from '../../../../models/basket/basket.model';
-import { HttpError } from '../../../../models/http-error/http-error.model';
-import { LineItemQuantity } from '../../../../models/line-item-quantity/line-item-quantity.model';
+import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 
 /**
  * The Shopping Basket Component displays the users basket items and cost summary.

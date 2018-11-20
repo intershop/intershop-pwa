@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { ContentSlotView, createSlotView } from '../../../models/content-view/content-views';
+import { ContentSlotView, createSlotView } from 'ish-core/models/content-view/content-views';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { ContentSlotContainerComponent } from './content-slot.container';

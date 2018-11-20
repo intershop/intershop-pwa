@@ -1,4 +1,4 @@
-import { BreadcrumbItem } from '../../../models/breadcrumb-item/breadcrumb-item.interface';
+import { BreadcrumbItem } from '../../models/breadcrumb-item/breadcrumb-item.interface';
 
 import { ViewconfActionTypes, ViewconfActions } from './viewconf.actions';
 

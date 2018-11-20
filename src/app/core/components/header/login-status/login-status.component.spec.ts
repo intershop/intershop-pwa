@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { User } from '../../../../models/user/user.model';
 import { IconModule } from '../../../icon.module';
+import { User } from '../../../models/user/user.model';
 
 import { LoginStatusComponent } from './login-status.component';
 

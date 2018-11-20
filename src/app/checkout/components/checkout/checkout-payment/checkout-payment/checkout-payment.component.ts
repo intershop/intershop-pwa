@@ -14,9 +14,9 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Basket } from '../../../../../models/basket/basket.model';
-import { HttpError } from '../../../../../models/http-error/http-error.model';
-import { PaymentMethod } from '../../../../../models/payment-method/payment-method.model';
+import { Basket } from 'ish-core/models/basket/basket.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 
 @Component({
   selector: 'ish-checkout-payment',

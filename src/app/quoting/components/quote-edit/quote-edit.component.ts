@@ -3,10 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { interval } from 'rxjs';
 import { mapTo, startWith } from 'rxjs/operators';
 
-import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
-import { Quote } from '../../../models/quote/quote.model';
-import { User } from '../../../models/user/user.model';
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
+import { Quote } from 'ish-core/models/quote/quote.model';
+import { User } from 'ish-core/models/user/user.model';
 
 /**
  * The Quote Edit Component displays and updates quote or quote request data.

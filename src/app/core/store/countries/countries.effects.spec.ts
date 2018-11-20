@@ -6,8 +6,8 @@ import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { Country } from '../../../models/country/country.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { Country } from '../../models/country/country.model';
+import { HttpError } from '../../models/http-error/http-error.model';
 import { CountryService } from '../../services/countries/country.service';
 import { coreReducers } from '../core.system';
 

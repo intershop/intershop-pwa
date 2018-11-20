@@ -16,6 +16,11 @@ import { CustomValidators } from 'ng2-validation';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Country } from 'ish-core/models/country/country.model';
+import { Customer } from 'ish-core/models/customer/customer.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
+import { Region } from 'ish-core/models/region/region.model';
 import { AddressFormFactoryProvider } from '../../../forms/address/configurations/address-form-factory.provider';
 import {
   markAsDirtyRecursive,
@@ -23,11 +28,6 @@ import {
   updateValidatorsByDataLength,
 } from '../../../forms/shared/utils/form-utils';
 import { SpecialValidators } from '../../../forms/shared/validators/special-validators';
-import { Country } from '../../../models/country/country.model';
-import { Customer } from '../../../models/customer/customer.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { Locale } from '../../../models/locale/locale.model';
-import { Region } from '../../../models/region/region.model';
 
 @Component({
   selector: 'ish-registration-form',

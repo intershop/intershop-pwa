@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { Locale } from '../../../../../../models/locale/locale.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { SelectOption } from '../select-option.interface';
 import { SelectComponent } from '../select.component';
 

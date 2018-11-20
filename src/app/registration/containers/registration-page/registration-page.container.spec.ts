@@ -5,8 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { RegionService } from 'ish-core/services/countries/region.service';
-import { Locale } from '../../../models/locale/locale.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { RegistrationPageContainerComponent } from './registration-page.container';

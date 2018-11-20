@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { combineReducers } from '@ngrx/store';
 
-import { BasketItem } from '../../../models/basket-item/basket-item.model';
-import { HttpError } from '../../../models/http-error/http-error.model';
-import { OrderView } from '../../../models/order/order.model';
-import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../../../shopping/store/products';
 import { shoppingReducers } from '../../../shopping/store/shopping.system';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
+import { BasketItem } from '../../models/basket-item/basket-item.model';
+import { HttpError } from '../../models/http-error/http-error.model';
+import { OrderView } from '../../models/order/order.model';
+import { Product } from '../../models/product/product.model';
 import { coreReducers } from '../core.system';
 
 import { LoadOrders, LoadOrdersFail, LoadOrdersSuccess, SelectOrder } from './orders.actions';

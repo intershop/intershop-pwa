@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-import { BasketHelper } from '../../../models/basket/basket.model';
-import { OrderView } from '../../../models/order/order.model';
 import { getProductEntities } from '../../../shopping/store/products';
+import { BasketHelper } from '../../models/basket/basket.model';
+import { OrderView } from '../../models/order/order.model';
 import { CoreState } from '../core.state';
 
 import { orderAdapter } from './orders.reducer';

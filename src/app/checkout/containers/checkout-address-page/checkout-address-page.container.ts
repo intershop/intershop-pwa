@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
+import { Address } from 'ish-core/models/address/address.model';
+import { Region } from 'ish-core/models/region/region.model';
 import { RegionService } from 'ish-core/services/countries/region.service';
 import { getAllCountries } from 'ish-core/store/countries';
 import { getLoggedInUser } from 'ish-core/store/user';
 import { determineSalutations } from '../../../forms/shared/utils/form-utils';
-import { Address } from '../../../models/address/address.model';
-import { Region } from '../../../models/region/region.model';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from '../../store/addresses';
 import { LoadAddresses } from '../../store/addresses/addresses.actions';
 import {

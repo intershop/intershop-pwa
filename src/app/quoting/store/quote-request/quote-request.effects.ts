@@ -6,11 +6,11 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { combineLatest, forkJoin } from 'rxjs';
 import { concatMap, defaultIfEmpty, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
+import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
+import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
+import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { UserActionTypes, getUserAuthorized } from 'ish-core/store/user';
 import { getCurrentBasket } from '../../../checkout/store/basket';
-import { LineItemQuantity } from '../../../models/line-item-quantity/line-item-quantity.model';
-import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
-import { QuoteRequest } from '../../../models/quote-request/quote-request.model';
 import { FeatureToggleService } from '../../../shared/feature-toggle/services/feature-toggle.service';
 import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';

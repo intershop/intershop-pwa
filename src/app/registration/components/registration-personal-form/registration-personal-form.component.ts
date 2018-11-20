@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { Locale } from '../../../models/locale/locale.model';
+import { Locale } from 'ish-core/models/locale/locale.model';
 
 @Component({
   selector: 'ish-registration-personal-form',

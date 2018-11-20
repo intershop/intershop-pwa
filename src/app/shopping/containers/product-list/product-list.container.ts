@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
-import { Category } from '../../../models/category/category.model';
-import { ViewType } from '../../../models/viewtype/viewtype.types';
+import { Category } from 'ish-core/models/category/category.model';
+import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import {
   ChangeSortBy,
   ChangeViewType,

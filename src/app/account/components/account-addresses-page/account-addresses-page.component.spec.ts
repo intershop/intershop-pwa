@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { Address } from '../../../models/address/address.model';
-import { User } from '../../../models/user/user.model';
+import { Address } from 'ish-core/models/address/address.model';
+import { User } from 'ish-core/models/user/user.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { AccountAddressesPageComponent } from './account-addresses-page.component';

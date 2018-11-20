@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { User } from '../../../models/user/user.model';
+import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-profile-settings-page',

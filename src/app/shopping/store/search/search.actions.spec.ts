@@ -1,4 +1,4 @@
-import { HttpError } from '../../../models/http-error/http-error.model';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { SearchActionTypes, SearchProducts, SearchProductsFail, SearchProductsSuccess } from './search.actions';
 

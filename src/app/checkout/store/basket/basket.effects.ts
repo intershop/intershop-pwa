@@ -17,9 +17,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { Basket } from 'ish-core/models/basket/basket.model';
 import { UserActionTypes } from 'ish-core/store/user/user.actions';
 import { OrderService } from '../../../account/services/order/order.service';
-import { Basket } from '../../../models/basket/basket.model';
 import { LoadProduct, getProductEntities } from '../../../shopping/store/products';
 import { mapErrorToAction } from '../../../utils/operators';
 import { AddressService } from '../../services/address/address.service';

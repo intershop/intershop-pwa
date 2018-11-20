@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ContentIncludeData } from 'ish-core/models/content-include/content-include.interface';
+import { ContentIncludeMapper } from 'ish-core/models/content-include/content-include.mapper';
+import { ContentInclude } from 'ish-core/models/content-include/content-include.model';
+import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { ContentIncludeData } from '../../../models/content-include/content-include.interface';
-import { ContentIncludeMapper } from '../../../models/content-include/content-include.mapper';
-import { ContentInclude } from '../../../models/content-include/content-include.model';
-import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
 
 /**
  * The Content Includes Service handles the interaction with the Content Include API.

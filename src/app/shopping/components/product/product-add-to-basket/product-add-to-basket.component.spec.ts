@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
-import { Product } from '../../../../models/product/product.model';
+import { Product } from 'ish-core/models/product/product.model';
 
 import { ProductAddToBasketComponent } from './product-add-to-basket.component';
 
