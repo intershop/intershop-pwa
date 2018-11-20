@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { AppNotFoundRoutingModule } from './pages/app-not-found-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { QuotingModule } from './quoting/quoting.module';
+import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { QuotingModule } from './quoting/quoting.module';
       appId: 'intershop-pwa',
     }),
     CoreModule,
+    ShellModule,
     AppRoutingModule,
     // import the feature modules that provide the application functionalities
     ShoppingModule,
