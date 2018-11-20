@@ -26,7 +26,7 @@ import { Price } from '../../models/price/price.model';
 import { AddressService } from '../../services/address/address.service';
 import { BasketService } from '../../services/basket/basket.service';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { CountryService } from '../../services/countries/country.service';
+import { CountryService } from '../../services/country/country.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { ProductsService } from '../../services/products/products.service';
 import { RegistrationService } from '../../services/registration/registration.service';

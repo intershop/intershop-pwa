@@ -14,10 +14,11 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RecaptchaModule } from 'ng-recaptcha/recaptcha/recaptcha.module';
 
+import { IconModule } from './icon.module';
+
 import { ConfigurationModule } from './configuration.module';
 import { FooterModule } from './footer.module';
 import { HeaderModule } from './header.module';
-import { IconModule } from './icon.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MockInterceptor } from './interceptors/mock.interceptor';
 import { StateManagementModule } from './state-management.module';

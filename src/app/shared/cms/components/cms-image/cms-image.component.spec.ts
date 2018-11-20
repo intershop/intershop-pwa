@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { createImagePageletView } from 'ish-core/models/content-view/content-image-view';
 import { createSimplePageletView } from 'ish-core/models/content-view/content-views';
-import { STATIC_URL } from 'ish-core/services/state-transfer/factories';
+import { STATIC_URL } from 'ish-core/utils/state-transfer/factories';
 
 import { CMSImageComponent } from './cms-image.component';
 

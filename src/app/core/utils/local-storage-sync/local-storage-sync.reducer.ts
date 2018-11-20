@@ -2,7 +2,7 @@
 import { Action, ActionReducer } from '@ngrx/store';
 import { localStorageSync, rehydrateApplicationState } from 'ngrx-store-localstorage';
 
-import { CoreState } from '../core.state';
+import { CoreState } from '../../store/core.state';
 
 // https://github.com/btroncone/ngrx-store-localstorage/issues/40#issuecomment-336283880
 

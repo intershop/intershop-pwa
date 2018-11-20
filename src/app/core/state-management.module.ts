@@ -8,11 +8,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
 
 import { NgrxStateTransfer, ngrxStateTransferMeta } from './configurations/ngrx-state-transfer';
-import { CrosstabService } from './services/crosstab/crosstab.service';
-import * as stateTransfer from './services/state-transfer/factories';
-import { StatePropertiesService } from './services/state-transfer/state-properties.service';
 import { coreEffects, coreReducers } from './store/core.system';
-import { localStorageSyncReducer } from './store/local-storage-sync/local-storage-sync.reducer';
+import { CrosstabService } from './utils/local-storage-sync/crosstab.service';
+import { localStorageSyncReducer } from './utils/local-storage-sync/local-storage-sync.reducer';
+import * as stateTransfer from './utils/state-transfer/factories';
+import { StatePropertiesService } from './utils/state-transfer/state-properties.service';
 
 // tslint:disable-next-line: no-any
 export const metaReducers: MetaReducer<any>[] = [

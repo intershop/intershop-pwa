@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 
 import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
+import { ICM_BASE_URL } from 'ish-core/utils/state-transfer/factories';
 
 @Component({
   selector: 'ish-product-detail-actions',
