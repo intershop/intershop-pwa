@@ -9,11 +9,11 @@ import { OrderView } from 'ish-core/models/order/order.model';
  * <ish-order-page [order]="order"></ish-order-page>
  */
 @Component({
-  selector: 'ish-order-page',
-  templateUrl: './order-page.component.html',
+  selector: 'ish-account-order-page',
+  templateUrl: './account-order-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderPageComponent {
+export class AccountOrderPageComponent {
   @Input()
   order: OrderView;
 }

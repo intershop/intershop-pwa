@@ -21,7 +21,7 @@ const accountPageRoutes: Routes = [
       {
         path: 'orders',
         data: { breadcrumbData: [{ key: 'account.order_history.link' }] },
-        loadChildren: '../order-history/order-history-page.module#OrderHistoryPageModule',
+        loadChildren: '../account-order-history/account-order-history-page.module#AccountOrderHistoryPageModule',
       },
       {
         path: 'orders/:orderId',
@@ -31,7 +31,7 @@ const accountPageRoutes: Routes = [
             { key: 'account.orderdetails.breadcrumb' },
           ],
         },
-        loadChildren: '../order/order-page.module#OrderPageModule',
+        loadChildren: '../account-order/account-order-page.module#AccountOrderPageModule',
       },
       {
         path: 'overview',

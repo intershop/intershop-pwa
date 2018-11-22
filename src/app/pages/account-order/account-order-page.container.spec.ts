@@ -4,11 +4,11 @@ import { StoreModule } from '@ngrx/store';
 import { coreReducers } from 'ish-core/store/core.system';
 import { MockComponent } from '../../utils/dev/mock.component';
 
-import { OrderPageContainerComponent } from './order-page.container';
+import { AccountOrderPageContainerComponent } from './account-order-page.container';
 
-describe('Order Page Container', () => {
-  let component: OrderPageContainerComponent;
-  let fixture: ComponentFixture<OrderPageContainerComponent>;
+describe('Account Order Page Container', () => {
+  let component: AccountOrderPageContainerComponent;
+  let fixture: ComponentFixture<AccountOrderPageContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
@@ -19,18 +19,18 @@ describe('Order Page Container', () => {
         }),
       ],
       declarations: [
+        AccountOrderPageContainerComponent,
         MockComponent({
-          selector: 'ish-order-page',
+          selector: 'ish-account-order-page',
           template: 'Account Order Detail Page Component',
           inputs: ['order'],
         }),
-        OrderPageContainerComponent,
       ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderPageContainerComponent);
+    fixture = TestBed.createComponent(AccountOrderPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

@@ -8,11 +8,11 @@ import { getSelectedOrder } from 'ish-core/store/orders';
  *
  */
 @Component({
-  selector: 'ish-order-page-container',
-  templateUrl: './order-page.container.html',
+  selector: 'ish-account-order-page-container',
+  templateUrl: './account-order-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderPageContainerComponent {
+export class AccountOrderPageContainerComponent {
   order$ = this.store.pipe(select(getSelectedOrder));
 
   constructor(private store: Store<{}>) {}
