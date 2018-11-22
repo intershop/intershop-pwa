@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AccountSharedModule } from '../../../account/account-shared.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { QuotingSharedModule } from '../../quoting-shared.module';
 
@@ -10,6 +9,6 @@ import { quoteRequestEditPageRoutes } from './quote-request-edit-page.routes';
 
 @NgModule({
   declarations: [QuoteRequestEditPageContainerComponent],
-  imports: [AccountSharedModule, QuotingSharedModule, RouterModule.forChild(quoteRequestEditPageRoutes), SharedModule],
+  imports: [QuotingSharedModule, RouterModule.forChild(quoteRequestEditPageRoutes), SharedModule],
 })
 export class QuoteRequestEditPageModule {}

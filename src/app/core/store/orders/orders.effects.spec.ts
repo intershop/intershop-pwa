@@ -6,9 +6,9 @@ import { RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { OrderService } from '../../../account/services/order/order.service';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { Order } from '../../models/order/order.model';
+import { OrderService } from '../../services/order/order.service';
 import { coreReducers } from '../core.system';
 import { LogoutUser } from '../user';
 

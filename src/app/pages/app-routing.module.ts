@@ -12,6 +12,11 @@ const routes: Routes = [
   { path: 'product', loadChildren: './product/product-page.module#ProductPageModule' },
   { path: 'category', loadChildren: './category/category-page.module#CategoryPageModule' },
   {
+    path: 'account',
+    loadChildren: './account/account-page.module#AccountPageModule',
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'compare',
     loadChildren: './compare/compare-page.module#ComparePageModule',
     canActivate: [FeatureToggleGuard],

@@ -17,11 +17,11 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { OrderService } from '../../../../account/services/order/order.service';
 import { mapErrorToAction } from '../../../../utils/operators';
 import { Basket } from '../../../models/basket/basket.model';
 import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
+import { OrderService } from '../../../services/order/order.service';
 import { LoadProduct, getProductEntities } from '../../shopping/products';
 import { UserActionTypes } from '../../user';
 import {

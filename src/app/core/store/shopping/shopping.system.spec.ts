@@ -9,7 +9,6 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import { OrderService } from '../../../account/services/order/order.service';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { categoryTree } from '../../../utils/dev/test-data-utils';
 import {
@@ -24,6 +23,7 @@ import { Product } from '../../models/product/product.model';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { CountryService } from '../../services/country/country.service';
 import { FilterService } from '../../services/filter/filter.service';
+import { OrderService } from '../../services/order/order.service';
 import { ProductsService } from '../../services/products/products.service';
 import { RegistrationService } from '../../services/registration/registration.service';
 import { SuggestService } from '../../services/suggest/suggest.service';

@@ -36,6 +36,8 @@ import { FilterCheckboxComponent } from './filter/components/filter-checkbox/fil
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
 import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
+import { OrderListComponent } from './order/components/order-list/order-list.component';
+import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
 import { ProductAttributesComponent } from './product/components/product-attributes/product-attributes.component';
 import { ProductInventoryComponent } from './product/components/product-inventory/product-inventory.component';
@@ -78,6 +80,7 @@ const declaredComponents = [
   FilterDropdownComponent,
   FilterSwatchImagesComponent,
   LineItemDescriptionComponent,
+  OrderListComponent,
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
@@ -102,6 +105,7 @@ const exportedComponents = [
   LineItemListComponent,
   LoadingComponent,
   ModalDialogComponent,
+  OrderListContainerComponent,
   ProductAddToBasketComponent,
   ProductAttributesComponent,
   ProductInventoryComponent,
