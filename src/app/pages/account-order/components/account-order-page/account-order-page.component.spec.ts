@@ -5,16 +5,17 @@ import { IconModule } from 'ish-core/icon.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
-import { OrderPageComponent } from './order-page.component';
+import { AccountOrderPageComponent } from './account-order-page.component';
 
-describe('Order Page Component', () => {
-  let component: OrderPageComponent;
-  let fixture: ComponentFixture<OrderPageComponent>;
+describe('Account Order Page Component', () => {
+  let component: AccountOrderPageComponent;
+  let fixture: ComponentFixture<AccountOrderPageComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        AccountOrderPageComponent,
         MockComponent({
           selector: 'ish-address',
           template: 'Address Component',
@@ -35,14 +36,13 @@ describe('Order Page Component', () => {
           template: 'Line Item List Component',
           inputs: ['lineItems', 'editable'],
         }),
-        OrderPageComponent,
       ],
       imports: [IconModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderPageComponent);
+    fixture = TestBed.createComponent(AccountOrderPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     component.order = BasketMockData.getOrder();

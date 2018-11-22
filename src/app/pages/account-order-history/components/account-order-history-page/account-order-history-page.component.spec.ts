@@ -3,28 +3,28 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
-import { OrderHistoryPageComponent } from './order-history-page.component';
+import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
-describe('Order History Page Component', () => {
-  let component: OrderHistoryPageComponent;
-  let fixture: ComponentFixture<OrderHistoryPageComponent>;
+describe('Account Order History Page Component', () => {
+  let component: AccountOrderHistoryPageComponent;
+  let fixture: ComponentFixture<AccountOrderHistoryPageComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        AccountOrderHistoryPageComponent,
         MockComponent({
           selector: 'ish-order-list-container',
           template: 'Order List Container Component',
         }),
-        OrderHistoryPageComponent,
       ],
       imports: [TranslateModule.forRoot()],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderHistoryPageComponent);
+    fixture = TestBed.createComponent(AccountOrderHistoryPageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });

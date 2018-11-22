@@ -5,26 +5,26 @@ import { instance, mock } from 'ts-mockito';
 
 import { MockComponent } from '../../utils/dev/mock.component';
 
-import { OrderHistoryPageContainerComponent } from './order-history-page.container';
+import { AccountOrderHistoryPageContainerComponent } from './account-order-history-page.container';
 
-describe('Order History Page Container', () => {
-  let component: OrderHistoryPageContainerComponent;
-  let fixture: ComponentFixture<OrderHistoryPageContainerComponent>;
+describe('Account Order History Page Container', () => {
+  let component: AccountOrderHistoryPageContainerComponent;
+  let fixture: ComponentFixture<AccountOrderHistoryPageContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
+        AccountOrderHistoryPageContainerComponent,
+        MockComponent({
+          selector: 'ish-account-order-history-page',
+          template: 'Order History Page Component',
+          inputs: ['orders'],
+        }),
         MockComponent({
           selector: 'ish-loading',
           template: 'Loading Component',
         }),
-        MockComponent({
-          selector: 'ish-order-history-page',
-          template: 'Order History Page Component',
-          inputs: ['orders'],
-        }),
-        OrderHistoryPageContainerComponent,
       ],
       providers: [{ provide: Store, useFactory: () => instance(mock(Store)) }],
       imports: [TranslateModule.forRoot()],
@@ -32,7 +32,7 @@ describe('Order History Page Container', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderHistoryPageContainerComponent);
+    fixture = TestBed.createComponent(AccountOrderHistoryPageContainerComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
   });
@@ -45,6 +45,6 @@ describe('Order History Page Container', () => {
 
   it('should render order list component on page', () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-order-history-page')).toBeTruthy();
+    expect(element.querySelector('ish-account-order-history-page')).toBeTruthy();
   });
 });

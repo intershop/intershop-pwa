@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
  *
  */
 @Component({
-  templateUrl: './order-history-page.container.html',
+  templateUrl: './account-order-history-page.container.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderHistoryPageContainerComponent {}
+export class AccountOrderHistoryPageContainerComponent {}
