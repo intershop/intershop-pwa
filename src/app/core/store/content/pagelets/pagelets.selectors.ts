@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { getContentState } from '../content.state';
+import { getContentState } from '../content-store';
 
 import { pageletsAdapter } from './pagelets.reducer';
 

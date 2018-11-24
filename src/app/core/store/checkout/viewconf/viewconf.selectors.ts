@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { getCheckoutState } from '../checkout.state';
+import { getCheckoutState } from '../checkout-store';
 
 const getViewconfState = createSelector(getCheckoutState, state => state.viewconf);
 

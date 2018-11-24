@@ -14,7 +14,7 @@ import { Product } from '../../../models/product/product.model';
 import { ProductsService } from '../../../services/products/products.service';
 import { SelectLocale, SetAvailableLocales } from '../../locale';
 import { localeReducer } from '../../locale/locale.reducer';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 import { ChangeSortBy, SetPage, SetPagingInfo, SetPagingLoading, SetSortKeys } from '../viewconf';
 
 import * as fromActions from './products.actions';

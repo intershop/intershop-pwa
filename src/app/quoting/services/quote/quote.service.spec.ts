@@ -10,7 +10,7 @@ import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-reque
 import { Quote } from 'ish-core/models/quote/quote.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { coreReducers } from 'ish-core/store/core.system';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { QuoteRequestService } from '../quote-request/quote-request.service';
 

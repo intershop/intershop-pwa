@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess, SelectProduct } from '../products';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 
 import { AddToRecently } from './recently.actions';
 import { RecentlyEffects } from './recently.effects';

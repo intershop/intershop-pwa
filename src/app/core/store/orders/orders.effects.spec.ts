@@ -9,7 +9,7 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { Order } from '../../models/order/order.model';
 import { OrderService } from '../../services/order/order.service';
-import { coreReducers } from '../core.system';
+import { coreReducers } from '../core-store.module';
 import { LogoutUser } from '../user';
 
 import * as orderActions from './orders.actions';

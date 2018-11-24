@@ -27,7 +27,7 @@ import { OrderService } from '../../services/order/order.service';
 import { ProductsService } from '../../services/products/products.service';
 import { RegistrationService } from '../../services/registration/registration.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
-import { coreEffects, coreReducers } from '../core.system';
+import { coreEffects, coreReducers } from '../core-store.module';
 import { SelectLocale } from '../locale';
 
 import {
@@ -42,10 +42,10 @@ import { FilterActionTypes } from './filter';
 import { LoadProduct, ProductsActionTypes, SelectProduct, getProductIds, getSelectedProduct } from './products';
 import { RecentlyActionTypes, getRecentlyProducts } from './recently';
 import { SearchActionTypes, SearchProducts, SuggestSearch, SuggestSearchSuccess } from './search';
-import { shoppingEffects, shoppingReducers } from './shopping.system';
+import { shoppingEffects, shoppingReducers } from './shopping-store.module';
 import { ViewconfActionTypes } from './viewconf';
 
-describe('Shopping System', () => {
+describe('Shopping Store', () => {
   const DEBUG = false;
   let store: TestStore;
   let router: Router;

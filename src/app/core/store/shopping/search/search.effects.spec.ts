@@ -14,7 +14,7 @@ import { SuggestTerm } from '../../../models/suggest-term/suggest-term.model';
 import { ApiService } from '../../../services/api/api.service';
 import { ProductsService } from '../../../services/products/products.service';
 import { SuggestService } from '../../../services/suggest/suggest.service';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 import { SetEndlessScrollingPageSize, SetPage, SetPagingLoading, ViewconfActionTypes } from '../viewconf';
 
 import {

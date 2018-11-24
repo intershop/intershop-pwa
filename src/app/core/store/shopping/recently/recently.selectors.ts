@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { getProductEntities, getSelectedProductId } from '../products';
-import { getShoppingState } from '../shopping.state';
+import { getShoppingState } from '../shopping-store';
 
 const getRecentlyState = createSelector(getShoppingState, state => state.recently);
 

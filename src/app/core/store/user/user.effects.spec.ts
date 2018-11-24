@@ -13,7 +13,7 @@ import { HttpErrorMapper } from '../../models/http-error/http-error.mapper';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { User } from '../../models/user/user.model';
 import { RegistrationService } from '../../services/registration/registration.service';
-import { coreReducers } from '../core.system';
+import { coreReducers } from '../core-store.module';
 
 import * as ua from './user.actions';
 import { UserEffects } from './user.effects';

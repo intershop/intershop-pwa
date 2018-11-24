@@ -3,7 +3,7 @@ import { combineReducers } from '@ngrx/store';
 
 import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
 import { ContentInclude } from '../../../models/content-include/content-include.model';
-import { contentReducers } from '../content.system';
+import { contentReducers } from '../content-store.module';
 
 import { LoadContentIncludeSuccess } from './includes.actions';
 import { getContentInclude } from './includes.selectors';

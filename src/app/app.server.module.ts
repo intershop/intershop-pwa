@@ -10,7 +10,7 @@ import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
-import { coreReducers } from 'ish-core/store/core.system';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import {
   ICM_APPLICATION_SK,
   ICM_BASE_URL_SK,

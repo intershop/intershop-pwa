@@ -4,7 +4,7 @@ import { combineReducers } from '@ngrx/store';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
-import { checkoutReducers } from '../checkout.system';
+import { checkoutReducers } from '../checkout-store.module';
 
 import { LoadAddresses, LoadAddressesFail, LoadAddressesSuccess } from './addresses.actions';
 import { getAddressesError, getAddressesLoading, getAllAddresses } from './addresses.selectors';

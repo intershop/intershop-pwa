@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
-import { coreReducers } from '../store/core.system';
+import { coreReducers } from '../store/core-store.module';
 import { SetAPIToken } from '../store/user';
 
 import { AuthInterceptor } from './auth.interceptor';

@@ -12,7 +12,7 @@ import { QuoteLineItemResultModel } from 'ish-core/models/quote-line-item-result
 import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
 import { QuoteData } from 'ish-core/models/quote/quote.interface';
 import { User } from 'ish-core/models/user/user.model';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
 import { QuoteService } from '../../services/quote/quote.service';

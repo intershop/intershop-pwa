@@ -31,17 +31,17 @@ import { OrderService } from '../../services/order/order.service';
 import { ProductsService } from '../../services/products/products.service';
 import { RegistrationService } from '../../services/registration/registration.service';
 import { SuggestService } from '../../services/suggest/suggest.service';
-import { coreEffects, coreReducers } from '../core.system';
+import { coreEffects, coreReducers } from '../core-store.module';
 import { LoadProduct } from '../shopping/products';
-import { shoppingEffects, shoppingReducers } from '../shopping/shopping.system';
+import { shoppingEffects, shoppingReducers } from '../shopping/shopping-store.module';
 import { LoginUser } from '../user';
 
 import { AddItemsToBasket, AddProductToBasket, BasketActionTypes } from './basket';
-import { checkoutEffects, checkoutReducers } from './checkout.system';
+import { checkoutEffects, checkoutReducers } from './checkout-store.module';
 
 let basketId: string;
 
-describe('Checkout System', () => {
+describe('Checkout Store', () => {
   const DEBUG = false;
   let store: TestStore;
   let locales: Locale[];

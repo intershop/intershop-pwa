@@ -17,7 +17,7 @@ import { CategoriesService } from '../../../services/categories/categories.servi
 import { SelectLocale, SetAvailableLocales } from '../../locale';
 import { localeReducer } from '../../locale/locale.reducer';
 import { LoadProductsForCategory, SelectProduct } from '../products/products.actions';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 
 import * as fromActions from './categories.actions';
 import { CategoriesEffects } from './categories.effects';

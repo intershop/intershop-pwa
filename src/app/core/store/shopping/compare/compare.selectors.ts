@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { getProductEntities } from '../products';
-import { ShoppingState, getShoppingState } from '../shopping.state';
+import { ShoppingState, getShoppingState } from '../shopping-store';
 
 export const getCompareState = createSelector(getShoppingState, (state: ShoppingState) => state.compare);
 

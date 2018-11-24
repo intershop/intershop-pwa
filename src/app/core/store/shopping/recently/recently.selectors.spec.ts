@@ -4,7 +4,7 @@ import { combineReducers } from '@ngrx/store';
 import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess, SelectProduct } from '../products';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 
 import { RecentlyEffects } from './recently.effects';
 import { getMostRecentlyViewedProducts, getRecentlyProducts, getRecentlyViewedProducts } from './recently.selectors';

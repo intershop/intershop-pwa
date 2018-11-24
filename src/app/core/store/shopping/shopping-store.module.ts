@@ -1,4 +1,6 @@
-import { ActionReducerMap } from '@ngrx/store';
+import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { ActionReducerMap, StoreModule } from '@ngrx/store';
 
 import { CategoriesEffects } from './categories/categories.effects';
 import { categoriesReducer } from './categories/categories.reducer';
@@ -12,7 +14,7 @@ import { RecentlyEffects } from './recently/recently.effects';
 import { recentlyReducer } from './recently/recently.reducer';
 import { SearchEffects } from './search/search.effects';
 import { searchReducer } from './search/search.reducer';
-import { ShoppingState } from './shopping.state';
+import { ShoppingState } from './shopping-store';
 import { ViewconfEffects } from './viewconf/viewconf.effects';
 import { viewconfReducer } from './viewconf/viewconf.reducer';
 
@@ -25,7 +27,6 @@ export const shoppingReducers: ActionReducerMap<ShoppingState> = {
   viewconf: viewconfReducer,
   filter: filterReducer,
 };
-
 export const shoppingEffects = [
   CategoriesEffects,
   ProductsEffects,
@@ -35,3 +36,8 @@ export const shoppingEffects = [
   ViewconfEffects,
   FilterEffects,
 ];
+
+@NgModule({
+  imports: [EffectsModule.forFeature(shoppingEffects), StoreModule.forFeature('shopping', shoppingReducers)],
+})
+export class ShoppingStoreModule {}

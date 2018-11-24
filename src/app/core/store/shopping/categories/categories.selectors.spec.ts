@@ -7,7 +7,7 @@ import { Category } from '../../../models/category/category.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
 import { LoadProductSuccess } from '../products';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 
 import {
   LoadCategory,

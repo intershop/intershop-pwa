@@ -3,7 +3,7 @@ import { combineReducers } from '@ngrx/store';
 import { RouteNavigation } from 'ngrx-router';
 
 import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
-import { checkoutReducers } from '../checkout.system';
+import { checkoutReducers } from '../checkout-store.module';
 
 import { ViewconfEffects } from './viewconf.effects';
 import { getCheckoutStep } from './viewconf.selectors';
