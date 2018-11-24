@@ -7,7 +7,7 @@ import { Category } from 'ish-core/models/category/category.model';
 import { Product } from 'ish-core/models/product/product.model';
 import { AddProductToBasket } from 'ish-core/store/checkout/basket';
 import { getUserAuthorized } from 'ish-core/store/user';
-import { ProductAddToQuoteDialogContainerComponent } from '../../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
+import { ProductAddToQuoteDialogContainerComponent } from '../../../../quoting/shared/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
 import { AddProductToQuoteRequest } from '../../../../quoting/store/quote-request';
 
 @Component({

@@ -5,14 +5,14 @@ import { concatMap, filter, map, mapTo, shareReplay, take } from 'rxjs/operators
 
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { QuoteLineItemResultModel } from 'ish-core/models/quote-line-item-result/quote-line-item-result.model';
-import { QuoteRequestItemData } from 'ish-core/models/quote-request-item/quote-request-item.interface';
-import { QuoteRequestItemMapper } from 'ish-core/models/quote-request-item/quote-request-item.mapper';
-import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
-import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
-import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
+import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
+import { QuoteRequestItemMapper } from '../../models/quote-request-item/quote-request-item.mapper';
+import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
+import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
+import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { getActiveQuoteRequest } from '../../store/quote-request';
 
 /**

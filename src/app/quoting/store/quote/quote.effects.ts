@@ -6,10 +6,10 @@ import { combineLatest } from 'rxjs';
 import { concatMap, filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
 import { LoadProduct, getProductEntities } from 'ish-core/store/shopping/products';
 import { UserActionTypes } from 'ish-core/store/user';
 import { mapErrorToAction } from '../../../utils/operators';
+import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
 import { QuoteService } from '../../services/quote/quote.service';
 import { QuoteRequestActionTypes } from '../quote-request';
 

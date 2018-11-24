@@ -1,10 +1,10 @@
 import { createSelector } from '@ngrx/store';
 
-import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
-import { QuoteHelper } from 'ish-core/models/quote/quote.helper';
-import { Quote } from 'ish-core/models/quote/quote.model';
 import { getProductEntities } from 'ish-core/store/shopping/products';
-import { getQuotingState } from '../quoting.state';
+import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
+import { QuoteHelper } from '../../models/quote/quote.helper';
+import { Quote } from '../../models/quote/quote.model';
+import { getQuotingState } from '../quoting-store';
 
 const getQuoteState = createSelector(getQuotingState, state => state.quote);
 

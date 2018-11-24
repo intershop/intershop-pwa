@@ -3,14 +3,14 @@ import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, take } from 'rxjs/operators';
 
-import { QuoteLineItemResultModel } from 'ish-core/models/quote-line-item-result/quote-line-item-result.model';
-import { QuoteRequestItemData } from 'ish-core/models/quote-request-item/quote-request-item.interface';
-import { QuoteRequestItemMapper } from 'ish-core/models/quote-request-item/quote-request-item.mapper';
-import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
-import { QuoteData } from 'ish-core/models/quote/quote.interface';
-import { Quote } from 'ish-core/models/quote/quote.model';
 import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
+import { QuoteLineItemResultModel } from '../../models/quote-line-item-result/quote-line-item-result.model';
+import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
+import { QuoteRequestItemMapper } from '../../models/quote-request-item/quote-request-item.mapper';
+import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
+import { QuoteData } from '../../models/quote/quote.interface';
+import { Quote } from '../../models/quote/quote.model';
 import { QuoteRequestService } from '../quote-request/quote-request.service';
 
 /**

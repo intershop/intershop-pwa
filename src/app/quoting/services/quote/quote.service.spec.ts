@@ -5,13 +5,13 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { QuoteRequestItemData } from 'ish-core/models/quote-request-item/quote-request-item.interface';
-import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
-import { Quote } from 'ish-core/models/quote/quote.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
+import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
+import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
+import { Quote } from '../../models/quote/quote.model';
 import { QuoteRequestService } from '../quote-request/quote-request.service';
 
 import { QuoteService } from './quote.service';
