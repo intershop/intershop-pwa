@@ -21,7 +21,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { AddressFormFactoryProvider } from '../../../../forms/address/configurations/address-form-factory.provider';
+import { AddressFormFactoryProvider } from '../../../../shared/address-forms/configurations/address-form-factory.provider';
 import {
   markAsDirtyRecursive,
   markFormControlsAsInvalid,

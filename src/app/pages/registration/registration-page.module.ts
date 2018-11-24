@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FormsAddressModule } from '../../forms/forms-address.module';
+import { AddressFormsSharedModule } from '../../shared/address-forms/address-forms.module';
 import { SharedModule } from '../../shared/shared.module';
 
 import { RegistrationCredentialsFormComponent } from './components/registration-credentials-form/registration-credentials-form.component';
@@ -12,7 +12,7 @@ import { RegistrationPageContainerComponent } from './registration-page.containe
 const registrationPageRoutes: Routes = [{ path: '', component: RegistrationPageContainerComponent }];
 
 @NgModule({
-  imports: [FormsAddressModule, RouterModule.forChild(registrationPageRoutes), SharedModule],
+  imports: [AddressFormsSharedModule, RouterModule.forChild(registrationPageRoutes), SharedModule],
   declarations: [
     RegistrationCredentialsFormComponent,
     RegistrationFormComponent,

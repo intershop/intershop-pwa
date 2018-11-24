@@ -3,9 +3,8 @@ import { FormBuilder } from '@angular/forms';
 
 import { AddressFormDEFactory } from '../components/address-form-de/address-form-de.factory';
 import { AddressFormDefaultFactory } from '../components/address-form-default/address-form-default.factory';
-import { ADDRESS_FORM_FACTORY } from '../components/address-form/address-form.factory';
 
-import { AddressFormFactoryProvider } from './address-form-factory.provider';
+import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from './address-form-factory.provider';
 
 describe('Address Form Factory Provider', () => {
   let addressFormService: AddressFormFactoryProvider;

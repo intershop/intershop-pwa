@@ -3,38 +3,41 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
-import { SelectTitleComponent } from '../../../../shared/forms/components/select-title/select-title.component';
+import { InputComponent } from '../../../forms/components/input/input.component';
+import { SelectTitleComponent } from '../../../forms/components/select-title/select-title.component';
 
-import { AddressFormUSComponent } from './address-form-us.component';
+import { AddressFormDEComponent } from './address-form-de.component';
 
-describe('Address Form Us Component', () => {
-  let component: AddressFormUSComponent;
-  let fixture: ComponentFixture<AddressFormUSComponent>;
+describe('Address Form De Component', () => {
+  let component: AddressFormDEComponent;
+  let fixture: ComponentFixture<AddressFormDEComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressFormUSComponent, InputComponent, SelectTitleComponent],
+      declarations: [AddressFormDEComponent, InputComponent, SelectTitleComponent],
       imports: [TranslateModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(AddressFormUSComponent);
+        fixture = TestBed.createComponent(AddressFormDEComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 
         const addressForm = new FormGroup({
-          countryCode: new FormControl('BG'),
+          countryCode: new FormControl('DE'),
+          title: new FormControl(''),
           firstName: new FormControl(''),
           lastName: new FormControl(''),
           addressLine1: new FormControl(''),
           addressLine2: new FormControl(''),
+          addressLine3: new FormControl(''),
           postalCode: new FormControl(''),
           city: new FormControl(''),
         });
         component.addressForm = addressForm;
+        component.titles = ['Mrs.'];
       });
   }));
 
@@ -46,33 +49,18 @@ describe('Address Form Us Component', () => {
 
   it('should throw an error if input parameter addressForm is not set', () => {
     component.addressForm = undefined;
-    expect(() => fixture.detectChanges()).toThrow();
+    expect(() => fixture.detectChanges()).toThrowError(/.*addressForm.*missing.*/);
   });
 
   it('should display form input fields on creation', () => {
     fixture.detectChanges();
+    expect(element.querySelector('select[data-testing-id=title]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=firstName]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=lastName]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=addressLine1]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=addressLine2]')).toBeTruthy();
+    expect(element.querySelector('input[data-testing-id=addressLine3]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=postalCode]')).toBeTruthy();
     expect(element.querySelector('input[data-testing-id=city]')).toBeTruthy();
-  });
-
-  it('should display region select box if regions  input parameter is not empty', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();
-
-    component.regions = [
-      { countryCode: 'US', regionCode: 'AL', name: 'Alabama' },
-      { countryCode: 'US', regionCode: 'FL', name: 'Florida' },
-    ];
-    fixture.detectChanges();
-    expect(element.querySelector('select[data-testing-id=state]')).toBeFalsy();
-  });
-
-  it('should display an apo/fpo popover link on creation', () => {
-    fixture.detectChanges();
-    expect(element.querySelector('a[placement]')).toBeTruthy();
   });
 });
