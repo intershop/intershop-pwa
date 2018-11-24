@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { IconModule } from 'ish-core/icon.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
@@ -47,6 +48,7 @@ describe('Checkout Shipping Component', () => {
         FormsSharedModule,
         IconModule,
         NgbPopoverModule,
+        ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/payment', component: DummyComponent }]),
         TranslateModule.forRoot(),
       ],

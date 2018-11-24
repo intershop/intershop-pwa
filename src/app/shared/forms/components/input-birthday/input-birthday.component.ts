@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElement } from '../form-element';
+import { FormElementComponent } from '../form-element/form-element.component';
 
 @Component({
   selector: 'ish-input-birthday',
   templateUrl: './input-birthday.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class InputBirthdayComponent extends FormElement implements OnInit {
+export class InputBirthdayComponent extends FormElementComponent implements OnInit {
   @Input()
   minYear = 0;
   @Input()

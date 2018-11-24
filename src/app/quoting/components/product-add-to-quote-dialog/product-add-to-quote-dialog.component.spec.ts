@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -6,7 +7,7 @@ import { noop } from 'rxjs';
 import { spy, verify } from 'ts-mockito';
 
 import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
-import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../shared/forms/forms.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { ProductAddToQuoteDialogComponent } from './product-add-to-quote-dialog.component';
@@ -35,7 +36,7 @@ describe('Product Add To Quote Dialog Component', () => {
         }),
         ProductAddToQuoteDialogComponent,
       ],
-      imports: [FormsSharedModule, NgbModalModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FormsSharedModule, NgbModalModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

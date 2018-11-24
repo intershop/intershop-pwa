@@ -1,16 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElement } from '../form-element';
+import { FormElementComponent } from '../form-element/form-element.component';
 
-import { SelectOption } from './select-option.interface';
+export interface SelectOption {
+  value: string;
+  label: string;
+}
 
 @Component({
   selector: 'ish-select',
   templateUrl: './select.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class SelectComponent extends FormElement implements OnInit {
+export class SelectComponent extends FormElementComponent implements OnInit {
   @Input()
   options: SelectOption[]; // required
   @Input()

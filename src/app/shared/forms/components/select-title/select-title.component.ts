@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { SelectOption } from '../select-option.interface';
-import { SelectComponent } from '../select.component';
+import { SelectComponent, SelectOption } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-title',
-  templateUrl: '../select.component.html',
+  templateUrl: '../select/select.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectTitleComponent extends SelectComponent implements OnChanges, OnInit {

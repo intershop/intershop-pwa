@@ -19,7 +19,7 @@ import {
 } from 'ish-core/store/checkout/basket';
 import { getAllCountries } from 'ish-core/store/countries';
 import { getLoggedInUser } from 'ish-core/store/user';
-import { determineSalutations } from '../../forms/shared/utils/form-utils';
+import { determineSalutations } from '../../shared/forms/utils/form-utils';
 
 /**
  * The Checkout Address Page Container Component renders the checkout address page of a logged in user using the {@link CheckoutAddressComponent}

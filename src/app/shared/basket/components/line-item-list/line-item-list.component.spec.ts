@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -8,8 +8,8 @@ import { BasketItemView } from 'ish-core/models/basket-item/basket-item.model';
 import { LineItemQuantity } from 'ish-core/models/line-item-quantity/line-item-quantity.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+import { FormsSharedModule } from '../../../forms/forms.module';
 
 import { LineItemListComponent } from './line-item-list.component';
 
@@ -33,8 +33,14 @@ describe('Line Item List Component', () => {
           inputs: ['product'],
         }),
       ],
-      imports: [FormsSharedModule, IconModule, PipesModule, RouterTestingModule, TranslateModule.forRoot()],
-      providers: [FormBuilder],
+      imports: [
+        FormsSharedModule,
+        IconModule,
+        PipesModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+      ],
     }).compileComponents();
   }));
 

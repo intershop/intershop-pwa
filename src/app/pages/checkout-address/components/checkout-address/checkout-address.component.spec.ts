@@ -1,5 +1,6 @@
 import { Component, SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,7 +10,7 @@ import { IconModule } from 'ish-core/icon.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
-import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
@@ -56,6 +57,7 @@ describe('Checkout Address Component', () => {
         FormsSharedModule,
         IconModule,
         NgbModule,
+        ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/shipping', component: DummyComponent }]),
         TranslateModule.forRoot(),
       ],

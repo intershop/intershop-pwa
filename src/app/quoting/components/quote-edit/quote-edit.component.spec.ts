@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
@@ -6,7 +7,7 @@ import { spy, verify } from 'ts-mockito';
 import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { Quote } from 'ish-core/models/quote/quote.model';
 import { User } from 'ish-core/models/user/user.model';
-import { FormsSharedModule } from '../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../shared/forms/forms.module';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { QuoteEditComponent } from './quote-edit.component';
@@ -39,7 +40,7 @@ describe('Quote Edit Component', () => {
         MockComponent({ selector: 'ish-shopping-basket-empty', template: 'Shopping Basket Empty Component' }),
         QuoteEditComponent,
       ],
-      imports: [FormsSharedModule, RouterTestingModule, TranslateModule.forRoot()],
+      imports: [FormsSharedModule, ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   }));
 

@@ -1,10 +1,10 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { InputComponent } from '../../../../forms/shared/components/form-controls/input/input.component';
-import { SelectSecurityQuestionComponent } from '../../../../forms/shared/components/form-controls/select/select-security-question/select-security-question.component';
+import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { SelectSecurityQuestionComponent } from '../../../../shared/forms/components/select-security-question/select-security-question.component';
 
 import { RegistrationCredentialsFormComponent } from './registration-credentials-form.component';
 
@@ -16,7 +16,6 @@ describe('Registration Credentials Form Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent, RegistrationCredentialsFormComponent, SelectSecurityQuestionComponent],
-      providers: [FormBuilder],
       imports: [TranslateModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
     })

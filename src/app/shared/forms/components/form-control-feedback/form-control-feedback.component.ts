@@ -3,7 +3,9 @@ import { AbstractControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { FormErrorMessages } from './form-error-messages.interface';
+interface FormErrorMessages {
+  [key: string]: string;
+}
 
 @Component({
   selector: 'ish-form-control-feedback',
