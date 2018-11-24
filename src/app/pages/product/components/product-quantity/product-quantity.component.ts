@@ -3,8 +3,8 @@ import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { range } from 'lodash-es';
 
 import { Product } from 'ish-core/models/product/product.model';
-import { SelectOption } from '../../../../forms/shared/components/form-controls/select';
-import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
+import { SelectOption } from '../../../../shared/forms/components/select/select.component';
+import { SpecialValidators } from '../../../../shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-product-quantity',

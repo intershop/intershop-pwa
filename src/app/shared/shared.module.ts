@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   NgbCarouselModule,
@@ -14,7 +15,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
-import { FormsSharedModule } from '../forms/forms-shared.module';
 
 import { AddressComponent } from './address/components/address/address.component';
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
@@ -32,6 +32,7 @@ import { FilterCheckboxComponent } from './filter/components/filter-checkbox/fil
 import { FilterDropdownComponent } from './filter/components/filter-dropdown/filter-dropdown.component';
 import { FilterSwatchImagesComponent } from './filter/components/filter-swatch-images/filter-swatch-images.component';
 import { FilterNavigationContainerComponent } from './filter/containers/filter-navigation/filter-navigation.container';
+import { FormsSharedModule } from './forms/forms.module';
 import { OrderListComponent } from './order/components/order-list/order-list.component';
 import { OrderListContainerComponent } from './order/containers/order-list/order-list.container';
 import { ProductAddToBasketComponent } from './product/components/product-add-to-basket/product-add-to-basket.component';
@@ -65,6 +66,7 @@ const importExportModules = [
   NgbPopoverModule,
   PipesModule,
   ProductImageSharedModule,
+  ReactiveFormsModule,
   RouterModule,
   SearchBoxSharedModule,
   TranslateModule,

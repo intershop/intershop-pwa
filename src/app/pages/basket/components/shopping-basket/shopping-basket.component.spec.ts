@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
@@ -7,7 +7,7 @@ import { spy, verify } from 'ts-mockito';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PipesModule } from 'ish-core/pipes.module';
-import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
@@ -42,10 +42,10 @@ describe('Shopping Basket Component', () => {
         FeatureToggleModule.testingFeatures({ quoting: true }),
         FormsSharedModule,
         PipesModule,
+        ReactiveFormsModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
       ],
-      providers: [FormBuilder],
     }).compileComponents();
   }));
 

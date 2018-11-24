@@ -26,8 +26,8 @@ import {
   markAsDirtyRecursive,
   markFormControlsAsInvalid,
   updateValidatorsByDataLength,
-} from '../../../../forms/shared/utils/form-utils';
-import { SpecialValidators } from '../../../../forms/shared/validators/special-validators';
+} from '../../../../shared/forms/utils/form-utils';
+import { SpecialValidators } from '../../../../shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-registration-form',

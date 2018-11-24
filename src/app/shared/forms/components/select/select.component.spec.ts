@@ -3,8 +3,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SelectOption } from './select-option.interface';
-import { SelectComponent } from './select.component';
+import { SelectComponent, SelectOption } from './select.component';
 
 describe('Select Component', () => {
   let component: SelectComponent;

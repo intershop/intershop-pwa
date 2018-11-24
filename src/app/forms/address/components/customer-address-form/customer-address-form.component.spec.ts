@@ -1,6 +1,6 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -9,7 +9,7 @@ import {
   AddressFormFactory,
 } from '../../../../forms/address/components/address-form/address-form.factory';
 import { AddressFormFactoryProvider } from '../../../../forms/address/configurations/address-form-factory.provider';
-import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { CustomerAddressFormComponent } from './customer-address-form.component';
@@ -34,7 +34,7 @@ describe('Customer Address Form Component', () => {
           inputs: ['parentForm', 'countryCode', 'countries', 'regions', 'titles'],
         }),
       ],
-      imports: [FormsSharedModule, TranslateModule.forRoot()],
+      imports: [FormsSharedModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
         AddressFormFactoryProvider,
         { provide: ADDRESS_FORM_FACTORY, useFactory: () => instance(addressFormFactoryMock), multi: true },

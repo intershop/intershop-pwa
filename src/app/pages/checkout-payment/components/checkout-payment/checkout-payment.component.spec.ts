@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { FormsSharedModule } from '../../../../forms/forms-shared.module';
+import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
@@ -43,6 +44,7 @@ describe('Checkout Payment Component', () => {
       ],
       imports: [
         FormsSharedModule,
+        ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'checkout/review', component: DummyComponent }]),
         TranslateModule.forRoot(),
       ],

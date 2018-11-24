@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FormElement } from '../form-element';
+import { FormElementComponent } from '../form-element/form-element.component';
 
 @Component({
   selector: 'ish-input',
   templateUrl: './input.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class InputComponent extends FormElement implements OnInit {
+export class InputComponent extends FormElementComponent implements OnInit {
   @Input()
   type = 'text'; // values: 'text' (default), 'password', 'email'
   @Input()

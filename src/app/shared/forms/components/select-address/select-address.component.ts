@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { SelectOption } from '../select-option.interface';
-import { SelectComponent } from '../select.component';
+import { SelectComponent, SelectOption } from '../select/select.component';
 
 @Component({
   selector: 'ish-select-address',
-  templateUrl: '../select.component.html',
+  templateUrl: '../select/select.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SelectAddressComponent extends SelectComponent implements OnChanges {

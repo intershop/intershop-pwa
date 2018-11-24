@@ -9,7 +9,7 @@ import { Region } from 'ish-core/models/region/region.model';
 import { RegionService } from 'ish-core/services/region/region.service';
 import { getAllCountries } from 'ish-core/store/countries/countries.selectors';
 import { CreateUser, getUserError } from 'ish-core/store/user';
-import { determineSalutations } from '../../forms/shared/utils/form-utils';
+import { determineSalutations } from '../../shared/forms/utils/form-utils';
 
 /**
  * The Registration Page Container renders the customer registration form using the {@link RegistrationFormComponent}

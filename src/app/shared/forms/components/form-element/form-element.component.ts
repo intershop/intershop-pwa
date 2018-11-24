@@ -1,9 +1,10 @@
+// tslint:disable:component-creation-test
 import { Input } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 
-export class FormElement {
+export class FormElementComponent {
   @Input()
   form: FormGroup; // required
   @Input()

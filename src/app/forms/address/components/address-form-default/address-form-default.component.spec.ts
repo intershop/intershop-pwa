@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { InputComponent } from '../../../shared/components/form-controls/input/input.component';
-import { SelectTitleComponent } from '../../../shared/components/form-controls/select/select-title/select-title.component';
+import { InputComponent } from '../../../../shared/forms/components/input/input.component';
+import { SelectTitleComponent } from '../../../../shared/forms/components/select-title/select-title.component';
 
 import { AddressFormDefaultComponent } from './address-form-default.component';
 
