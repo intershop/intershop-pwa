@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from '../../shared/shared.module';
+import { CMSModule } from '../../utils/cms/cms.module';
 
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { HomePageContainerComponent } from './home-page.container';
@@ -11,7 +12,7 @@ const homePageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(homePageRoutes), SharedModule],
+  imports: [CMSModule, RouterModule.forChild(homePageRoutes), SharedModule],
   declarations: [HomePageComponent, HomePageContainerComponent],
 })
 export class HomePageModule {}
