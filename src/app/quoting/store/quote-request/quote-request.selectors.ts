@@ -1,11 +1,13 @@
 import { createSelector } from '@ngrx/store';
 
-import { QuoteRequestHelper } from 'ish-core/models/quote-request/quote-request.helper';
-import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { getProductEntities } from 'ish-core/store/shopping/products';
-import { getQuotingState } from '../quoting.state';
+import { QuoteRequestHelper } from '../../models/quote-request/quote-request.helper';
+import { QuoteRequest } from '../../models/quote-request/quote-request.model';
+import { getQuotingState } from '../quoting-store';
 
-const getQuoteRequestState = createSelector(getQuotingState, state => state.quoteRequest);
+import { initialState } from './quote-request.reducer';
+
+const getQuoteRequestState = createSelector(getQuotingState, state => (state ? state.quoteRequest : initialState));
 
 export const getSelectedQuoteRequestId = createSelector(getQuoteRequestState, state => state.selected);
 

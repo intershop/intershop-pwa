@@ -6,16 +6,16 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Link } from 'ish-core/models/link/link.model';
-import { QuoteRequestItemData } from 'ish-core/models/quote-request-item/quote-request-item.interface';
-import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
-import { QuoteRequest } from 'ish-core/models/quote-request/quote-request.model';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { LoadCompanyUserSuccess, LoginUserSuccess, LogoutUser } from 'ish-core/store/user';
 import { userReducer } from 'ish-core/store/user/user.reducer';
+import { QuoteRequestItemData } from '../../models/quote-request-item/quote-request-item.interface';
+import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
+import { QuoteRequest } from '../../models/quote-request/quote-request.model';
 import { LoadQuoteRequestsSuccess } from '../../store/quote-request';
-import { quotingReducers } from '../../store/quoting.system';
+import { quotingReducers } from '../../store/quoting-store.module';
 
 import { QuoteRequestService } from './quote-request.service';
 

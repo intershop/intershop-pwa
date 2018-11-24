@@ -3,12 +3,12 @@ import { combineReducers } from '@ngrx/store';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { QuoteRequestItem } from 'ish-core/models/quote-request-item/quote-request-item.model';
-import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
-import { quotingReducers } from '../quoting.system';
+import { QuoteRequestItem } from '../../models/quote-request-item/quote-request-item.model';
+import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
+import { quotingReducers } from '../quoting-store.module';
 
 import {
   LoadQuoteRequestItems,
