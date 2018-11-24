@@ -4,13 +4,10 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import {
-  ADDRESS_FORM_FACTORY,
-  AddressFormFactory,
-} from '../../../../forms/address/components/address-form/address-form.factory';
-import { AddressFormFactoryProvider } from '../../../../forms/address/configurations/address-form-factory.provider';
-import { FormsSharedModule } from '../../../../shared/forms/forms.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
+import { FormsSharedModule } from '../../../forms/forms.module';
+import { ADDRESS_FORM_FACTORY, AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
+import { AddressFormFactory } from '../address-form/address-form.factory';
 
 import { CustomerAddressFormComponent } from './customer-address-form.component';
 

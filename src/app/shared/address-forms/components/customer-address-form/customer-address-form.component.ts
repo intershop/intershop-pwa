@@ -16,8 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Address } from 'ish-core/models/address/address.model';
 import { Country } from 'ish-core/models/country/country.model';
 import { Region } from 'ish-core/models/region/region.model';
-import { AddressFormFactoryProvider } from '../../../../forms/address/configurations/address-form-factory.provider';
-import { markAsDirtyRecursive } from '../../../../shared/forms/utils/form-utils';
+import { markAsDirtyRecursive } from '../../../forms/utils/form-utils';
+import { AddressFormFactoryProvider } from '../../configurations/address-form-factory.provider';
 
 /**
  * The Customer Address Form Component renders an address form with apply/cancel buttons so that the user can create or edit an address. When the user submits the form the new/changed address will be sent to the parent component.

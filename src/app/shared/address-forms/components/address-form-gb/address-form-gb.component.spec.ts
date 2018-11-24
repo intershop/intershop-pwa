@@ -3,30 +3,30 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { InputComponent } from '../../../../shared/forms/components/input/input.component';
-import { SelectTitleComponent } from '../../../../shared/forms/components/select-title/select-title.component';
+import { InputComponent } from '../../../forms/components/input/input.component';
+import { SelectTitleComponent } from '../../../forms/components/select-title/select-title.component';
 
-import { AddressFormDEComponent } from './address-form-de.component';
+import { AddressFormGBComponent } from './address-form-gb.component';
 
-describe('Address Form De Component', () => {
-  let component: AddressFormDEComponent;
-  let fixture: ComponentFixture<AddressFormDEComponent>;
+describe('Address Form Gb Component', () => {
+  let component: AddressFormGBComponent;
+  let fixture: ComponentFixture<AddressFormGBComponent>;
   let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddressFormDEComponent, InputComponent, SelectTitleComponent],
+      declarations: [AddressFormGBComponent, InputComponent, SelectTitleComponent],
       imports: [TranslateModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(AddressFormDEComponent);
+        fixture = TestBed.createComponent(AddressFormGBComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 
         const addressForm = new FormGroup({
-          countryCode: new FormControl('DE'),
+          countryCode: new FormControl('GB'),
           title: new FormControl(''),
           firstName: new FormControl(''),
           lastName: new FormControl(''),
@@ -49,7 +49,7 @@ describe('Address Form De Component', () => {
 
   it('should throw an error if input parameter addressForm is not set', () => {
     component.addressForm = undefined;
-    expect(() => fixture.detectChanges()).toThrowError(/.*addressForm.*missing.*/);
+    expect(() => fixture.detectChanges()).toThrow();
   });
 
   it('should display form input fields on creation', () => {
