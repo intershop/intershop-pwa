@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { createSimplePageletView } from 'ish-core/models/content-view/content-views';
-import { MockComponent } from '../../../../utils/dev/mock.component';
+import { MockComponent } from '../../../dev/mock.component';
 
 import { CMSProductListComponent } from './cms-product-list.component';
 

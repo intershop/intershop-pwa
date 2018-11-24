@@ -22,10 +22,6 @@ import { BasketCostSummaryComponent } from './basket/components/basket-cost-summ
 import { BasketItemsSummaryComponent } from './basket/components/basket-items-summary/basket-items-summary.component';
 import { LineItemDescriptionComponent } from './basket/components/line-item-description/line-item-description.component';
 import { LineItemListComponent } from './basket/components/line-item-list/line-item-list.component';
-import { CMSSharedModule } from './cms/cms.module';
-import { CMSCarouselComponent } from './cms/components/cms-carousel/cms-carousel.component';
-import { CMSProductListComponent } from './cms/components/cms-product-list/cms-product-list.component';
-import { CMS_COMPONENT } from './cms/configurations/injection-keys';
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
@@ -57,7 +53,6 @@ import { RecentlyViewedContainerComponent } from './recently/containers/recently
 import { SearchBoxSharedModule } from './search/search-box.module';
 
 const importExportModules = [
-  CMSSharedModule,
   CommonModule,
   FeatureToggleModule,
   FormsSharedModule,
@@ -90,8 +85,6 @@ const declaredComponents = [
   RecentlyViewedComponent,
 ];
 
-const entryComponents = [CMSCarouselComponent, CMSProductListComponent];
-
 const exportedComponents = [
   AccordionComponent,
   AccordionItemComponent,
@@ -118,26 +111,7 @@ const exportedComponents = [
 
 @NgModule({
   imports: [...importExportModules],
-  declarations: [...declaredComponents, ...entryComponents, ...exportedComponents],
+  declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules],
-  providers: [
-    {
-      provide: CMS_COMPONENT,
-      useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.carousel.pagelet2-Component',
-        class: CMSCarouselComponent,
-      },
-      multi: true,
-    },
-    {
-      provide: CMS_COMPONENT,
-      useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.productListManual.pagelet2-Component',
-        class: CMSProductListComponent,
-      },
-      multi: true,
-    },
-  ],
-  entryComponents,
 })
 export class SharedModule {}
