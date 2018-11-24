@@ -10,7 +10,7 @@ import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../configurations/inject
 import { Category } from '../../../models/category/category.model';
 import { LoadCategorySuccess, SelectCategory } from '../categories';
 import { LoadProductsForCategory } from '../products';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 
 import { ChangeSortBy } from './viewconf.actions';
 import { ViewconfEffects } from './viewconf.effects';

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { spy, verify } from 'ts-mockito';
 
-import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { SetEndlessScrollingPageSize, SetPagingInfo } from 'ish-core/store/shopping/viewconf';
 import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../../utils/dev/mock.component';

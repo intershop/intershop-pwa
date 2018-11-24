@@ -14,9 +14,9 @@ import { Locale } from 'ish-core/models/locale/locale.model';
 import { QuoteRequestData } from 'ish-core/models/quote-request/quote-request.interface';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
-import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
-import { coreEffects, coreReducers } from 'ish-core/store/core.system';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
+import { coreEffects, coreReducers } from 'ish-core/store/core-store.module';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import {
   LoadCompanyUserSuccess,
   LoginUserSuccess,

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 
-import { coreReducers } from 'ish-core/store/core.system';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 
 import { HeaderContainerComponent } from './header.container';

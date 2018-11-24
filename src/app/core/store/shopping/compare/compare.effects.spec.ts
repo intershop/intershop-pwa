@@ -4,7 +4,7 @@ import { Action, Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold, hot } from 'jest-marbles';
 import { Observable } from 'rxjs';
 
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 
 import * as fromActions from './compare.actions';
 import { CompareEffects } from './compare.effects';

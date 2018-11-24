@@ -5,9 +5,9 @@ import { cold } from 'jest-marbles';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Product } from 'ish-core/models/product/product.model';
-import { coreReducers } from 'ish-core/store/core.system';
+import { coreReducers } from 'ish-core/store/core-store.module';
 import { LoadProduct, LoadProductSuccess, SelectProduct } from 'ish-core/store/shopping/products';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { quotingReducers } from '../../quoting/store/quoting.system';
 import { findAllIshElements } from '../../utils/dev/html-query-utils';
 import { MockComponent } from '../../utils/dev/mock.component';

@@ -4,7 +4,7 @@ import { combineReducers } from '@ngrx/store';
 import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { Product } from '../../../models/product/product.model';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 
 import { LoadProduct, LoadProductFail, LoadProductSuccess, SelectProduct } from './products.actions';
 import {

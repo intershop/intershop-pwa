@@ -4,7 +4,7 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { LoadFilterForCategorySuccess } from 'ish-core/store/shopping/filter';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from '../../../../utils/dev/html-query-utils';
 import { MockComponent } from '../../../../utils/dev/mock.component';
 

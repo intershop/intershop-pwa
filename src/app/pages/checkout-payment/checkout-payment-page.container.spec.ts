@@ -3,7 +3,7 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
-import { checkoutReducers } from 'ish-core/store/checkout/checkout.system';
+import { checkoutReducers } from 'ish-core/store/checkout/checkout-store.module';
 import { MockComponent } from '../../utils/dev/mock.component';
 
 import { CheckoutPaymentPageContainerComponent } from './checkout-payment-page.container';

@@ -6,7 +6,7 @@ import { anything, spy, verify } from 'ts-mockito';
 
 import { MockComponent } from '../../utils/dev/mock.component';
 import { Customer } from '../models/customer/customer.model';
-import { coreReducers } from '../store/core.system';
+import { coreReducers } from '../store/core-store.module';
 import { LoginUserSuccess } from '../store/user';
 
 import { AuthGuard } from './auth.guard';

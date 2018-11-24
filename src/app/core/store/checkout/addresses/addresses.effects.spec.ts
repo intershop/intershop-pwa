@@ -8,7 +8,7 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import { Address } from '../../../models/address/address.model';
 import { AddressService } from '../../../services/address/address.service';
 import { LogoutUser } from '../../user';
-import { checkoutReducers } from '../checkout.system';
+import { checkoutReducers } from '../checkout-store.module';
 
 import * as addressesActions from './addresses.actions';
 import { AddressesEffects } from './addresses.effects';

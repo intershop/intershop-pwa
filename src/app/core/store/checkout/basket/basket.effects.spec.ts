@@ -20,14 +20,14 @@ import { AddressService } from '../../../services/address/address.service';
 import { BasketService } from '../../../services/basket/basket.service';
 import { OrderService } from '../../../services/order/order.service';
 import { LoadProduct, LoadProductSuccess } from '../../shopping/products';
-import { shoppingReducers } from '../../shopping/shopping.system';
+import { shoppingReducers } from '../../shopping/shopping-store.module';
 import {
   DeleteCustomerAddressFail,
   DeleteCustomerAddressSuccess,
   UpdateCustomerAddressFail,
   UpdateCustomerAddressSuccess,
 } from '../addresses/addresses.actions';
-import { checkoutReducers } from '../checkout.system';
+import { checkoutReducers } from '../checkout-store.module';
 
 import * as basketActions from './basket.actions';
 import { BasketEffects } from './basket.effects';

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
 import { SearchProductsSuccess } from 'ish-core/store/shopping/search';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { SetPagingInfo } from 'ish-core/store/shopping/viewconf';
 import { MockComponent } from '../../utils/dev/mock.component';
 

@@ -6,9 +6,9 @@ import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { HttpError } from '../../models/http-error/http-error.model';
 import { OrderView } from '../../models/order/order.model';
 import { Product } from '../../models/product/product.model';
-import { coreReducers } from '../core.system';
+import { coreReducers } from '../core-store.module';
 import { LoadProductSuccess } from '../shopping/products';
-import { shoppingReducers } from '../shopping/shopping.system';
+import { shoppingReducers } from '../shopping/shopping-store.module';
 
 import { LoadOrders, LoadOrdersFail, LoadOrdersSuccess, SelectOrder } from './orders.actions';
 import { getOrders, getOrdersLoading, getSelectedOrder, getSelectedOrderId } from './orders.selectors';

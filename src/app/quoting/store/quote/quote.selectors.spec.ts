@@ -6,7 +6,7 @@ import { Product } from 'ish-core/models/product/product.model';
 import { QuoteData } from 'ish-core/models/quote/quote.interface';
 import { Quote } from 'ish-core/models/quote/quote.model';
 import { LoadProductSuccess } from 'ish-core/store/shopping/products';
-import { shoppingReducers } from 'ish-core/store/shopping/shopping.system';
+import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { TestStore, ngrxTesting } from '../../../utils/dev/ngrx-testing';
 import { quotingReducers } from '../quoting.system';
 

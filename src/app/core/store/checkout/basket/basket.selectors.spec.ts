@@ -9,8 +9,8 @@ import { Product } from 'ish-core/models/product/product.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';
 import { TestStore, ngrxTesting } from '../../../../utils/dev/ngrx-testing';
 import { LoadProductSuccess } from '../../shopping/products';
-import { shoppingReducers } from '../../shopping/shopping.system';
-import { checkoutReducers } from '../checkout.system';
+import { shoppingReducers } from '../../shopping/shopping-store.module';
+import { checkoutReducers } from '../checkout-store.module';
 
 import {
   LoadBasket,

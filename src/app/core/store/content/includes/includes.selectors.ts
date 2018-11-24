@@ -4,7 +4,7 @@ import { createSelector } from '@ngrx/store';
 import { ContentInclude } from '../../../models/content-include/content-include.model';
 import { ContentPagelet } from '../../../models/content-pagelet/content-pagelet.model';
 import { ContentIncludeView, createIncludeView } from '../../../models/content-view/content-views';
-import { getContentState } from '../content.state';
+import { getContentState } from '../content-store';
 import { getContentPageletEntities } from '../pagelets';
 
 import { includesAdapter } from './includes.reducer';

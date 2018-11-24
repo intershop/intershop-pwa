@@ -6,10 +6,10 @@ import { Customer } from '../../models/customer/customer.model';
 import { HttpError, HttpHeader } from '../../models/http-error/http-error.model';
 import { Product } from '../../models/product/product.model';
 import { User } from '../../models/user/user.model';
-import { checkoutReducers } from '../checkout/checkout.system';
-import { coreReducers } from '../core.system';
+import { checkoutReducers } from '../checkout/checkout-store.module';
+import { coreReducers } from '../core-store.module';
 import { LoadProductSuccess } from '../shopping/products';
-import { shoppingReducers } from '../shopping/shopping.system';
+import { shoppingReducers } from '../shopping/shopping-store.module';
 
 import { LoadCompanyUserSuccess, LoginUserFail, LoginUserSuccess } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserAuthorized, getUserError } from './user.selectors';

@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { ShoppingState, getShoppingState } from '../shopping.state';
+import { ShoppingState, getShoppingState } from '../shopping-store';
 
 export const getSearchState = createSelector(getShoppingState, (state: ShoppingState) => state.search);
 

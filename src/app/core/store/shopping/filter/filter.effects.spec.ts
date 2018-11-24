@@ -14,7 +14,7 @@ import { FilterService } from '../../../services/filter/filter.service';
 import { LoadCategorySuccess, SelectCategory, SelectedCategoryAvailable } from '../categories';
 import { LoadProduct } from '../products';
 import { SearchProductsSuccess } from '../search';
-import { shoppingReducers } from '../shopping.system';
+import { shoppingReducers } from '../shopping-store.module';
 import { SetPagingInfo } from '../viewconf';
 
 import * as fromActions from './filter.actions';
