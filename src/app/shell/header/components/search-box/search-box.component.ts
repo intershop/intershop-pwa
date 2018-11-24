@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SuggestTerm } from 'ish-core/models/suggest-term/suggest-term.model';
 import { SearchBoxConfiguration } from '../../configurations/search-box.configuration';
 
+// TODO: implement without ReactiveFormsModule so shell.module does not depend on it
 /**
  * displays the search box with search button
  *

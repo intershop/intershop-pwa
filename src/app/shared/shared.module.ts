@@ -15,6 +15,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { IconModule } from 'ish-core/icon.module';
 import { PipesModule } from 'ish-core/pipes.module';
+import { ShellModule } from '../shell/shell.module';
 
 import { AddressComponent } from './address/components/address/address.component';
 import { BasketAddressSummaryComponent } from './basket/components/basket-address-summary/basket-address-summary.component';
@@ -48,10 +49,8 @@ import { ProductTileComponent } from './product/components/product-tile/product-
 import { ProductListContainerComponent } from './product/containers/product-list/product-list.container';
 import { ProductRowContainerComponent } from './product/containers/product-row/product-row.container';
 import { ProductTileContainerComponent } from './product/containers/product-tile/product-tile.container';
-import { ProductImageSharedModule } from './product/product-image.module';
 import { RecentlyViewedComponent } from './recently/components/recently-viewed/recently-viewed.component';
 import { RecentlyViewedContainerComponent } from './recently/containers/recently-viewed/recently-viewed.container';
-import { SearchBoxSharedModule } from './search/search-box.module';
 
 const importExportModules = [
   CommonModule,
@@ -65,10 +64,9 @@ const importExportModules = [
   NgbModalModule,
   NgbPopoverModule,
   PipesModule,
-  ProductImageSharedModule,
   ReactiveFormsModule,
   RouterModule,
-  SearchBoxSharedModule,
+  ShellModule,
   TranslateModule,
 ];
 
