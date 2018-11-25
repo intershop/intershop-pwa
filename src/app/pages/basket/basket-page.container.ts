@@ -9,7 +9,7 @@ import {
   getBasketLoading,
   getCurrentBasket,
 } from 'ish-core/store/checkout/basket';
-import { AddBasketToQuoteRequest, getQuoteRequestLoading } from '../../quoting/store/quote-request';
+import { AddBasketToQuoteRequest, getQuoteRequestLoading } from '../../extensions/quoting/store/quote-request';
 
 @Component({
   selector: 'ish-basket-page-container',
