@@ -5,6 +5,9 @@ module.exports = {
     transformIgnorePatterns: [
       "node_modules/(?!(@ngrx|ngx-bootstrap|@angular/common/locales|lodash-es/.*))"
     ],
+    moduleNameMapper: {
+      "^ish-core(.*)$": "<rootDir>/src/app/core$1"
+    },
     collectCoverage: true,
     coverageDirectory: "reports/coverage",
     coverageReporters: [ "html" ],

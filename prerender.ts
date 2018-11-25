@@ -1,4 +1,4 @@
-// tslint:disable:ordered-imports
+// tslint:disable:ish-ordered-imports
 // Load zone.js for the server.
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
