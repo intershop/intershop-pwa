@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { QuotingSharedModule } from '../../quoting/shared/quoting-shared.module';
+import { QuotingSharedModule } from '../../extensions/quoting/shared/quoting-shared.module';
 import { SharedModule } from '../../shared/shared.module';
 
 import { BasketPageContainerComponent } from './basket-page.container';

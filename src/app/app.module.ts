@@ -5,9 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from 'ish-core/core.module';
 
 import { AppComponent } from './app.component';
+import { QuotingModule } from './extensions/quoting/quoting.module';
 import { AppNotFoundRoutingModule } from './pages/app-not-found-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
-import { QuotingModule } from './quoting/quoting.module';
 import { ShellModule } from './shell/shell.module';
 
 @NgModule({

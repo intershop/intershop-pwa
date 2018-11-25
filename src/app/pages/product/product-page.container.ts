@@ -8,8 +8,8 @@ import { getSelectedCategory } from 'ish-core/store/shopping/categories';
 import { AddToCompare } from 'ish-core/store/shopping/compare';
 import { getProductLoading, getSelectedProduct } from 'ish-core/store/shopping/products';
 import { getUserAuthorized } from 'ish-core/store/user';
-import { ProductAddToQuoteDialogContainerComponent } from '../../quoting/shared/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
-import { AddProductToQuoteRequest } from '../../quoting/store/quote-request';
+import { ProductAddToQuoteDialogContainerComponent } from '../../extensions/quoting/shared/product/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';
+import { AddProductToQuoteRequest } from '../../extensions/quoting/store/quote-request';
 
 @Component({
   selector: 'ish-product-page-container',
