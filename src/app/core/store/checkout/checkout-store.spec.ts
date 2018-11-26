@@ -141,6 +141,28 @@ describe('Checkout Store', () => {
 
       return of(newBasket);
     });
+    when(basketServiceMock.getBasket(anything(), anything())).thenCall(() => {
+      const newBasket = {
+        ...basket,
+      };
+
+      if (basketId) {
+        newBasket.id = basketId;
+      }
+
+      return of(newBasket);
+    });
+    when(basketServiceMock.createBasket()).thenCall(() => {
+      const newBasket = {
+        ...basket,
+      };
+
+      if (basketId) {
+        newBasket.id = basketId;
+      }
+
+      return of(newBasket);
+    });
     when(basketServiceMock.getBasketItems(anything())).thenReturn(of([lineItem]));
     when(basketServiceMock.addItemsToBasket(anything(), anything())).thenReturn(of(undefined));
     when(basketServiceMock.getBasketPayments(anything())).thenReturn(of([{ id: 'p_test' } as PaymentMethod]));

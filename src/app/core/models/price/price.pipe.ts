@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Price } from './price.model';
 
 export function formatPrice(price: Price, lang: string): string {
-  const symbol = getCurrencySymbol(price.currencyMnemonic, 'wide', lang);
+  const symbol = getCurrencySymbol(price.currencyMnemonic ? price.currencyMnemonic : price.currency, 'wide', lang);
   return formatCurrency(price.value, lang, symbol);
 }
 

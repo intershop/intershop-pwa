@@ -151,9 +151,12 @@ export class ApiService {
   /**
    * http post request
    */
-  post<T>(path: string, body = {}): Observable<T> {
+  post<T>(path: string, body = {}, options?: { params?: HttpParams; headers?: HttpHeaders }): Observable<T> {
     return this.httpClient
-      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint), body, { headers: this.defaultHeaders })
+      .post<T>(constructUrlForPath(path, 'POST', this.restEndpoint), body, {
+        headers: this.defaultHeaders,
+        ...options,
+      })
       .pipe(catchApiError(this.apiServiceErrorHandler));
   }
 
