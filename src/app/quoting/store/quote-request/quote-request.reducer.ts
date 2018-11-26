@@ -1,4 +1,4 @@
-import { UserAction, UserActionTypes } from '../../../core/store/user';
+import { UserAction, UserActionTypes } from 'ish-core/store/user';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';
 import { QuoteRequestData } from '../../../models/quote-request/quote-request.interface';

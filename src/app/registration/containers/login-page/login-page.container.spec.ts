@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { instance, mock } from 'ts-mockito';
 
-import { USER_REGISTRATION_LOGIN_TYPE } from '../../../core/configurations/injection-keys';
+import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { LoginPageContainerComponent } from './login-page.container';

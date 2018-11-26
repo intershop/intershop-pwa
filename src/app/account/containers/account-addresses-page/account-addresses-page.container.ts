@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
+import { getLoggedInUser } from 'ish-core/store/user';
 import { LoadAddresses, getAllAddresses } from '../../../checkout/store/addresses';
 import { getAddressesLoading } from '../../../checkout/store/addresses/addresses.selectors';
-import { getLoggedInUser } from '../../../core/store/user';
 
 /**
  * The Account Addresses Page Container Component renders the account addresses page of a logged in user using the {@link AccountAddressesPageComponent}

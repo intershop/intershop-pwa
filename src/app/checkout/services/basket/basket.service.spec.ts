@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ApiService } from '../../../core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 import { BasketItemUpdateType, BasketService } from './basket.service';
 

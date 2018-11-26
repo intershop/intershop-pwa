@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of, throwError } from 'rxjs';
 import { concatMap, map, mapTo, take } from 'rxjs/operators';
 
-import { ApiService, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
-import { getLoggedInCustomer, getLoggedInUser } from '../../../core/store/user';
+import { ApiService, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/user';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItemMapper } from '../../../models/quote-request-item/quote-request-item.mapper';

@@ -1,6 +1,6 @@
 import { capture } from 'ts-mockito';
 
-import { ApiService } from '../../core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 
 // tslint:disable:no-console
 export function logApiCalls(apiServiceMock: ApiService) {

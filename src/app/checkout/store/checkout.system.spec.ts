@@ -7,15 +7,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
 
-import { OrderService } from '../../account/services/order/order.service';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-} from '../../core/configurations/injection-keys';
-import { CountryService } from '../../core/services/countries/country.service';
-import { coreEffects, coreReducers } from '../../core/store/core.system';
-import { LoginUser } from '../../core/store/user';
+} from 'ish-core/configurations/injection-keys';
+import { CountryService } from 'ish-core/services/countries/country.service';
+import { coreEffects, coreReducers } from 'ish-core/store/core.system';
+import { LoginUser } from 'ish-core/store/user';
+import { OrderService } from '../../account/services/order/order.service';
 import { Address } from '../../models/address/address.model';
 import { BasketItem } from '../../models/basket-item/basket-item.model';
 import { Basket } from '../../models/basket/basket.model';

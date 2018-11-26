@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
 
-import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
+import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
 import { Image } from '../../../../models/image/image.model';
 import { Product, ProductHelper } from '../../../../models/product/product.model';
 

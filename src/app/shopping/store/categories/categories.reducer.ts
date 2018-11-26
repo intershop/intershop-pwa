@@ -1,4 +1,4 @@
-import { LocaleActionTypes, SelectLocale } from '../../../core/store/locale';
+import { LocaleActionTypes, SelectLocale } from 'ish-core/store/locale';
 import { CategoryTree, CategoryTreeHelper } from '../../../models/category-tree/category-tree.model';
 
 import {

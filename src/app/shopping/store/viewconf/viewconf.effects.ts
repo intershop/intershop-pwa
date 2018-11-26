@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION_TYPE } from 'ngrx-router';
 import { filter, map, mapTo, mergeMap, switchMapTo, take, withLatestFrom } from 'rxjs/operators';
 
-import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from '../../../core/configurations/injection-keys';
+import { ENDLESS_SCROLLING_ITEMS_PER_PAGE } from 'ish-core/configurations/injection-keys';
 import { distinctCompareWith } from '../../../utils/operators';
 import { getSelectedCategory } from '../categories';
 import { LoadProductsForCategory } from '../products';
