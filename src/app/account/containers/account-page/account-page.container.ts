@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getBreadcrumbData } from '../../../core/store/viewconf';
+import { getBreadcrumbData } from 'ish-core/store/viewconf';
 
 @Component({
   templateUrl: './account-page.container.html',

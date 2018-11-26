@@ -7,10 +7,10 @@ import { RouteNavigation } from 'ngrx-router';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
+import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
+import { userReducer } from 'ish-core/store/user/user.reducer';
 import { LoadBasketItemsSuccess, LoadBasketSuccess } from '../../../checkout/store/basket';
 import { checkoutReducers } from '../../../checkout/store/checkout.system';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
-import { userReducer } from '../../../core/store/user/user.reducer';
 import { BasketItem } from '../../../models/basket-item/basket-item.model';
 import { Basket } from '../../../models/basket/basket.model';
 import { Customer } from '../../../models/customer/customer.model';

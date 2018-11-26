@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getErrorState } from '../../../core/store/error';
+import { getErrorState } from 'ish-core/store/error';
 
 @Component({
   selector: 'ish-error-page-container',

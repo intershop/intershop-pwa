@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
-import { UserActionTypes } from '../../../core/store/user/user.actions';
+import { UserActionTypes } from 'ish-core/store/user/user.actions';
 import { mapErrorToAction } from '../../../utils/operators';
 import { AddressService } from '../../services/address/address.service';
 

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
 
-import { coreReducers } from '../../../core/store/core.system';
+import { coreReducers } from 'ish-core/store/core.system';
 import { MockComponent } from '../../../utils/dev/mock.component';
 
 import { OrderPageContainerComponent } from './order-page.container';

@@ -3,7 +3,7 @@ import { FormArray, FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from '../../../../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { BasketItemView } from '../../../../models/basket-item/basket-item.model';
 import { LineItemQuantity } from '../../../../models/line-item-quantity/line-item-quantity.model';

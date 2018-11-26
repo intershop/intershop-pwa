@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 
-import { STATIC_URL } from '../../../core/services/state-transfer/factories';
+import { STATIC_URL } from 'ish-core/services/state-transfer/factories';
 import { CMSImageComponent } from '../cms-image/cms-image.component';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 
-import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
+import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
 import { Product, ProductHelper } from '../../../../models/product/product.model';
 
 @Component({

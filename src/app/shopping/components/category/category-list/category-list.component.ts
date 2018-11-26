@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
 
-import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
+import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
 import { Category } from '../../../../models/category/category.model';
 
 @Component({

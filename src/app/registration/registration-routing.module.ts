@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LogoutGuard } from '../core/guards/logout.guard';
+import { LogoutGuard } from 'ish-core/guards/logout.guard';
 
 const routes: Routes = [
   {

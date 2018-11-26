@@ -9,15 +9,15 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
-import { OrderService } from '../../account/services/order/order.service';
 import {
   AVAILABLE_LOCALES,
   ENDLESS_SCROLLING_ITEMS_PER_PAGE,
   MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH,
-} from '../../core/configurations/injection-keys';
-import { CountryService } from '../../core/services/countries/country.service';
-import { coreEffects, coreReducers } from '../../core/store/core.system';
-import { SelectLocale } from '../../core/store/locale';
+} from 'ish-core/configurations/injection-keys';
+import { CountryService } from 'ish-core/services/countries/country.service';
+import { coreEffects, coreReducers } from 'ish-core/store/core.system';
+import { SelectLocale } from 'ish-core/store/locale';
+import { OrderService } from '../../account/services/order/order.service';
 import { Category } from '../../models/category/category.model';
 import { FilterNavigation } from '../../models/filter-navigation/filter-navigation.model';
 import { Locale } from '../../models/locale/locale.model';

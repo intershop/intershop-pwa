@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
-import { IconModule } from '../../../../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { Address } from '../../../../models/address/address.model';
 import { HttpError } from '../../../../models/http-error/http-error.model';

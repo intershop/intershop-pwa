@@ -11,7 +11,7 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-import { IconModule } from '../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 
 import { AccordionItemComponent } from './components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/accordion/accordion.component';

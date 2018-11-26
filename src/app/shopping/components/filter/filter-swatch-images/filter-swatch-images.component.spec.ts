@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { IconModule } from '../../../../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 import { Filter } from '../../../../models/filter/filter.model';
 
 import { FilterSwatchImagesComponent } from './filter-swatch-images.component';

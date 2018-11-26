@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { IconModule } from '../../../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 
 import { AccordionItemComponent } from './accordion-item.component';
 

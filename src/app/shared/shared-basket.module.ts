@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from '../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 import { FormsSharedModule } from '../forms/forms-shared.module';
 
 import { BasketCostSummaryComponent } from './basket/components/basket-cost-summary/basket-cost-summary.component';

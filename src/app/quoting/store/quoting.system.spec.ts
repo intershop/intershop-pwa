@@ -7,17 +7,17 @@ import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
-import { checkoutReducers } from '../../checkout/store/checkout.system';
-import { AVAILABLE_LOCALES } from '../../core/configurations/injection-keys';
-import { ApiService } from '../../core/services/api/api.service';
-import { coreEffects, coreReducers } from '../../core/store/core.system';
+import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { ApiService } from 'ish-core/services/api/api.service';
+import { coreEffects, coreReducers } from 'ish-core/store/core.system';
 import {
   LoadCompanyUserSuccess,
   LoginUserSuccess,
   LogoutUser,
   getLoggedInCustomer,
   getLoggedInUser,
-} from '../../core/store/user';
+} from 'ish-core/store/user';
+import { checkoutReducers } from '../../checkout/store/checkout.system';
 import { Customer } from '../../models/customer/customer.model';
 import { Locale } from '../../models/locale/locale.model';
 import { QuoteRequestData } from '../../models/quote-request/quote-request.interface';
