@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from '../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 
 import { SearchBoxComponent } from './search/components/search-box/search-box.component';
 import { SearchBoxContainerComponent } from './search/containers/search-box/search-box.container';

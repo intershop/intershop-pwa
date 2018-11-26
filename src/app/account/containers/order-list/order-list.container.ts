@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { LoadOrders, getOrders, getOrdersLoading } from '../../../core/store/orders';
+import { LoadOrders, getOrders, getOrdersLoading } from 'ish-core/store/orders';
 
 /**
  * The Order List Container Component fetches order data and displays them all (or only a limited amount) using the {@link OrderListComponent}

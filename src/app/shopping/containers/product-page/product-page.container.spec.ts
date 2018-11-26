@@ -3,7 +3,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { cold } from 'jest-marbles';
 
-import { coreReducers } from '../../../core/store/core.system';
+import { coreReducers } from 'ish-core/store/core.system';
 import { Product } from '../../../models/product/product.model';
 import { quotingReducers } from '../../../quoting/store/quoting.system';
 import { FeatureToggleModule } from '../../../shared/feature-toggle.module';

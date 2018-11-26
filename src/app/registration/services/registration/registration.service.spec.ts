@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { ApiService } from '../../../core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { Customer } from '../../../models/customer/customer.model';
 import { User } from '../../../models/user/user.model';
 

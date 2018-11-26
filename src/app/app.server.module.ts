@@ -9,16 +9,17 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { Observable, Observer } from 'rxjs';
 
-import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
-import { UniversalMockInterceptor } from './core/interceptors/universal-mock.interceptor';
+import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
 import {
   ICM_APPLICATION_SK,
   ICM_BASE_URL_SK,
   ICM_SERVER_SK,
   StatePropertiesService,
-} from './core/services/state-transfer/state-properties.service';
-import { coreReducers } from './core/store/core.system';
+} from 'ish-core/services/state-transfer/state-properties.service';
+import { coreReducers } from 'ish-core/store/core.system';
+
+import { AppComponent } from './app.component';
+import { AppModule } from './app.module';
 
 export class TranslateUniversalLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<string> {

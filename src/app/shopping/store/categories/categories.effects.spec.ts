@@ -7,9 +7,9 @@ import { ROUTER_NAVIGATION_TYPE, RouteNavigation } from 'ngrx-router';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
-import { SelectLocale, SetAvailableLocales } from '../../../core/store/locale';
-import { localeReducer } from '../../../core/store/locale/locale.reducer';
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
+import { SelectLocale, SetAvailableLocales } from 'ish-core/store/locale';
+import { localeReducer } from 'ish-core/store/locale/locale.reducer';
 import { CategoryView } from '../../../models/category-view/category-view.model';
 import { Category, CategoryHelper } from '../../../models/category/category.model';
 import { HttpError } from '../../../models/http-error/http-error.model';

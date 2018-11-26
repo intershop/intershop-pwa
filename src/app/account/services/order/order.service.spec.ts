@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ApiService } from '../../../core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { BasketMockData } from '../../../utils/dev/basket-mock-data';
 
 import { OrderService } from './order.service';

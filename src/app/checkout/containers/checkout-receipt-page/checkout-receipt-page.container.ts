@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getSelectedOrder } from '../../../core/store/orders';
-import { getLoggedInUser } from '../../../core/store/user';
+import { getSelectedOrder } from 'ish-core/store/orders';
+import { getLoggedInUser } from 'ish-core/store/user';
 import { getBasketLoading } from '../../store/basket';
 
 @Component({

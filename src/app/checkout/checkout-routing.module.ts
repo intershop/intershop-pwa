@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthGuard } from '../core/guards/auth.guard';
+import { AuthGuard } from 'ish-core/guards/auth.guard';
 
 const routes: Routes = [
   { path: 'basket', loadChildren: './containers/basket-page/basket-page.module#BasketPageModule' },

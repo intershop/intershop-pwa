@@ -4,8 +4,8 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
-import { RegionService } from '../../../core/services/countries/region.service';
+import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { RegionService } from 'ish-core/services/countries/region.service';
 import { Locale } from '../../../models/locale/locale.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 

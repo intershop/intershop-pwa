@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService } from '../../../core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { ProductData, ProductDataStub } from '../../../models/product/product.interface';
 import { ProductMapper } from '../../../models/product/product.mapper';
