@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getWrapperClass } from './core/store/viewconf';
+import { getWrapperClass } from 'ish-core/store/viewconf';
 
 @Component({
   selector: 'ish-root',

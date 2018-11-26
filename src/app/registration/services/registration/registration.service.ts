@@ -4,7 +4,7 @@ import b64u from 'b64u';
 import { Observable } from 'rxjs';
 import { switchMapTo } from 'rxjs/operators';
 
-import { ApiService } from '../../../core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { LoginCredentials } from '../../../models/credentials/credentials.model';
 import { Customer } from '../../../models/customer/customer.model';
 import { User } from '../../../models/user/user.model';

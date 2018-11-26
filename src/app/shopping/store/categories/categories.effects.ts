@@ -17,7 +17,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from '../../../core/configurations/injection-keys';
+import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
 import { CategoryHelper } from '../../../models/category/category.model';
 import { distinctCompareWith, mapErrorToAction } from '../../../utils/operators';
 import { CategoriesService } from '../../services/categories/categories.service';

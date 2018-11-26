@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from '../../../core/services/api/api.service';
+import { ApiService, resolveLink, resolveLinks, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { Basket } from '../../../models/basket/basket.model';
 import { Link } from '../../../models/link/link.model';
 import { OrderData } from '../../../models/order/order.interface';

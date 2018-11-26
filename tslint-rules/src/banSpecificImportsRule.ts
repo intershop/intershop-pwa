@@ -65,7 +65,6 @@ class BanSpecificImportsWalker extends Lint.RuleWalker {
         } else {
           let fix;
           if (pattern.fix) {
-            RuleHelpers.dumpNode(fromStringToken);
             fix = new Lint.Replacement(
               fromStringToken.getStart(),
               fromStringToken.getWidth(),

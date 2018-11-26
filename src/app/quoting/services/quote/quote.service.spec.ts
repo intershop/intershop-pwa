@@ -4,9 +4,9 @@ import { cold } from 'jest-marbles';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ApiService } from '../../../core/services/api/api.service';
-import { coreReducers } from '../../../core/store/core.system';
-import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
+import { ApiService } from 'ish-core/services/api/api.service';
+import { coreReducers } from 'ish-core/store/core.system';
+import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
 import { QuoteRequestItemData } from '../../../models/quote-request-item/quote-request-item.interface';
 import { QuoteRequestItem } from '../../../models/quote-request-item/quote-request-item.model';

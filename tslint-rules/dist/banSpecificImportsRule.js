@@ -56,7 +56,6 @@ var BanSpecificImportsWalker = (function (_super) {
                 else {
                     var fix = void 0;
                     if (pattern.fix) {
-                        ruleHelpers_1.RuleHelpers.dumpNode(fromStringToken);
                         fix = new Lint.Replacement(fromStringToken.getStart(), fromStringToken.getWidth(), "'" + fromStringText.replace(new RegExp(pattern.from), pattern.fix) + "'");
                     }
                     _this.addFailureAtNode(fromStringToken, pattern.message || "Importing from '" + fromStringText + " is banned.", fix);

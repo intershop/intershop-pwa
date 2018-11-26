@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { ICM_BASE_URL } from '../../../../core/services/state-transfer/factories';
+import { ICM_BASE_URL } from 'ish-core/services/state-transfer/factories';
 import { Category } from '../../../../models/category/category.model';
 
 import { CategoryListComponent } from './category-list.component';

@@ -3,8 +3,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, select } from '@ngrx/store';
 import { filter, take } from 'rxjs/operators';
 
+import { getUserAuthorized } from 'ish-core/store/user';
 import { AddProductToBasket } from '../../../checkout/store/basket';
-import { getUserAuthorized } from '../../../core/store/user';
 import { Category } from '../../../models/category/category.model';
 import { Product } from '../../../models/product/product.model';
 import { ProductAddToQuoteDialogContainerComponent } from '../../../quoting/containers/product-add-to-quote-dialog/product-add-to-quote-dialog.container';

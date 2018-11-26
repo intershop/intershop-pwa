@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { IconModule } from '../../../../core/icon.module';
+import { IconModule } from 'ish-core/icon.module';
 import { FormsSharedModule } from '../../../../forms/forms-shared.module';
 import { HttpError } from '../../../../models/http-error/http-error.model';
 import { BasketMockData } from '../../../../utils/dev/basket-mock-data';

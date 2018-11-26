@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { MEDIUM_BREAKPOINT_WIDTH } from '../../../../core/configurations/injection-keys';
-import { IconModule } from '../../../../core/icon.module';
+import { MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { IconModule } from 'ish-core/icon.module';
 import { createCategoryView } from '../../../../models/category-view/category-view.model';
 import { Category } from '../../../../models/category/category.model';
 import { MockComponent } from '../../../../utils/dev/mock.component';

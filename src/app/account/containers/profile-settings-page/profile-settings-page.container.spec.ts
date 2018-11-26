@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { coreReducers } from '../../../core/store/core.system';
-import { LoginUserSuccess } from '../../../core/store/user';
+import { coreReducers } from 'ish-core/store/core.system';
+import { LoginUserSuccess } from 'ish-core/store/user';
 import { Customer } from '../../../models/customer/customer.model';
 import { MockComponent } from '../../../utils/dev/mock.component';
 

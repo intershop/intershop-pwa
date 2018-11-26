@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService } from '../../../core/services/api/api.service';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { ContentIncludeData } from '../../../models/content-include/content-include.interface';
 import { ContentIncludeMapper } from '../../../models/content-include/content-include.mapper';
 import { ContentInclude } from '../../../models/content-include/content-include.model';

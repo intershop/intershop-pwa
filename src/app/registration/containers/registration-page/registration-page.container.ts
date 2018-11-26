@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
-import { AVAILABLE_LOCALES } from '../../../core/configurations/injection-keys';
-import { RegionService } from '../../../core/services/countries/region.service';
-import { getAllCountries } from '../../../core/store/countries/countries.selectors';
-import { CreateUser, getUserError } from '../../../core/store/user';
+import { AVAILABLE_LOCALES } from 'ish-core/configurations/injection-keys';
+import { RegionService } from 'ish-core/services/countries/region.service';
+import { getAllCountries } from 'ish-core/store/countries/countries.selectors';
+import { CreateUser, getUserError } from 'ish-core/store/user';
 import { determineSalutations } from '../../../forms/shared/utils/form-utils';
 import { Customer } from '../../../models/customer/customer.model';
 import { Locale } from '../../../models/locale/locale.model';

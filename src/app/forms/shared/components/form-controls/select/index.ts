@@ -1,6 +1,5 @@
 /* tslint:disable:no-barrel-files */
 export { SelectOption } from './select-option.interface';
-
 import { SelectAddressComponent } from './select-address/select-address.component';
 import { SelectCountryComponent } from './select-country/select-country.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { getSelectedOrder } from '../../../core/store/orders';
+import { getSelectedOrder } from 'ish-core/store/orders';
 
 /**
  * The Order Page Container reads order data from store and displays them using the {@link OrderPageComponent}

@@ -5,8 +5,8 @@ import { cold, hot } from 'jest-marbles';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { LoadCompanyUserSuccess, LoginUserSuccess } from '../../../core/store/user';
-import { userReducer } from '../../../core/store/user/user.reducer';
+import { LoadCompanyUserSuccess, LoginUserSuccess } from 'ish-core/store/user';
+import { userReducer } from 'ish-core/store/user/user.reducer';
 import { Customer } from '../../../models/customer/customer.model';
 import { HttpError } from '../../../models/http-error/http-error.model';
 import { QuoteLineItemResultModel } from '../../../models/quote-line-item-result/quote-line-item-result.model';
