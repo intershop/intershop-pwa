@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
@@ -15,6 +16,13 @@ import { ApiService, resolveLinks, unpackEnvelope } from '../api/api.service';
 
 export declare type BasketUpdateType = { invoiceToAddress: { id: string } } | { commonShipToAddress: { id: string } };
 export declare type BasketItemUpdateType = { quantity: { value: number } } | { shippingMethod: { id: string } };
+export declare type BasketIncludeType =
+  | 'invoiceToAddress'
+  | 'commonShipToAddress'
+  | 'commonShippingMethod'
+  | 'discounts'
+  | 'lineItems'
+  | 'attributes';
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.
@@ -23,13 +31,46 @@ export declare type BasketItemUpdateType = { quantity: { value: number } } | { s
 export class BasketService {
   constructor(private apiService: ApiService) {}
 
+  // declare http header for Basket API v1
+  private basketHeaders = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('Accept', 'application/vnd.intershop.basket.v1+json');
+
   /**
    * Get the basket for the given basket id or fallback to '-' as basket id to get the current basket for the current user.
    * @param basketId  The basket id.
+   * @param include   The name of related objects which are to be included into the response;
+   *                  If the parameter is missing all possible data is included
+   *                  If the parameter is empty no additional data is included
    * @returns         The basket.
    */
-  getBasket(basketId: string = '-'): Observable<Basket> {
-    return this.apiService.get<BasketData>(`baskets/${basketId}`).pipe(map(BasketMapper.fromData));
+  getBasket(
+    basketId: string = 'current',
+    include: BasketIncludeType[] = ['invoiceToAddress', 'commonShipToAddress', 'commonShippingMethod', 'discounts']
+  ): Observable<Basket> {
+    const includeStr = include && include.length > 0 ? '?include=' + include.join('&include=') : '';
+
+    return this.apiService
+      .get<BasketData>(`baskets/${basketId}${includeStr}`, {
+        headers: this.basketHeaders,
+      })
+      .pipe(map(BasketMapper.fromData));
+  }
+
+  /**
+   * Creates a basket for the current user.
+   * @returns         The basket.
+   */
+  createBasket(): Observable<Basket> {
+    return this.apiService
+      .post<BasketData>(
+        `baskets`,
+        {},
+        {
+          headers: this.basketHeaders,
+        }
+      )
+      .pipe(map(BasketMapper.fromData));
   }
 
   /**

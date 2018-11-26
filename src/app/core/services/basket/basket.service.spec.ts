@@ -34,6 +34,25 @@ describe('Basket Service', () => {
     },
   };
 
+  const basketMockDataV1 = {
+    data: {
+      id: 'test',
+      calculationState: 'UNCALCULATED',
+      buckets: [
+        {
+          lineItems: [],
+          shippingMethod: {},
+          shipToAddress: {},
+        },
+      ],
+      payment: {
+        name: 'testPayment',
+        id: 'paymentId',
+      },
+      totals: {},
+    },
+  };
+
   const itemMockData = {
     sku: 'test',
     quantity: 10,
@@ -45,11 +64,21 @@ describe('Basket Service', () => {
   });
 
   it("should get basket data when 'getBasket' is called", done => {
-    when(apiService.get(`baskets/${basketMockData.id}`)).thenReturn(of(basketMockData));
+    when(apiService.get(`baskets/${basketMockDataV1.data.id}`, anything())).thenReturn(of(basketMockDataV1));
 
-    basketService.getBasket(basketMockData.id).subscribe(data => {
+    basketService.getBasket(basketMockDataV1.data.id, []).subscribe(data => {
       expect(data.id).toEqual(basketMockData.id);
-      verify(apiService.get(`baskets/${basketMockData.id}`)).once();
+      verify(apiService.get(`baskets/${basketMockDataV1.data.id}`, anything())).once();
+      done();
+    });
+  });
+
+  it("should create a basket data when 'createBasket' is called", done => {
+    when(apiService.post(anything(), anything(), anything())).thenReturn(of(basketMockDataV1));
+
+    basketService.createBasket().subscribe(data => {
+      expect(data.id).toEqual(basketMockData.id);
+      verify(apiService.post(`baskets`, anything(), anything())).once();
       done();
     });
   });

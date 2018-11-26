@@ -492,15 +492,15 @@ describe('Basket Effects', () => {
       verify(basketServiceMock.addItemsToBasket(anything(), 'BID')).never();
     });
 
-    it('should call the basketService for getBasket when no basket is present', done => {
-      when(basketServiceMock.getBasket()).thenReturn(of({} as Basket));
+    it('should call the basketService for createBasket when no basket is present', done => {
+      when(basketServiceMock.createBasket()).thenReturn(of({} as Basket));
 
       const payload = { items: [{ sku: 'SKU', quantity: 1 }] };
       const action = new basketActions.AddItemsToBasket(payload);
       actions$ = of(action);
 
       effects.getBasketBeforeAddItemsToBasket$.subscribe(() => {
-        verify(basketServiceMock.getBasket()).once();
+        verify(basketServiceMock.createBasket()).once();
         done();
       });
     });

@@ -442,7 +442,7 @@ export class BasketEffects {
     withLatestFrom(this.store.pipe(select(getCurrentBasket))),
     filter(([payload, basket]) => !basket && !payload.basketId),
     // TODO: add create basket if LoadBasket does not create basket anymore
-    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.getBasket())),
+    mergeMap(([payload]) => forkJoin(of(payload), this.basketService.createBasket())),
     map(([payload, newBasket]) => new basketActions.AddItemsToBasket({ items: payload.items, basketId: newBasket.id }))
   );
 
